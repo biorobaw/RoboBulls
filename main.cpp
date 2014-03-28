@@ -8,6 +8,8 @@
 #include "include/messages_robocup_ssl_wrapper.pb.h"
 #include "include/robocup_ssl_client.h"
 
+
+// This is a test comment
 // RefComm Test
 int main(int argc, char *argv[])
 {
