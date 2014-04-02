@@ -11,7 +11,7 @@ class StrategyController;
 class GameModel
 {
 public:
-
+    GameModel();
 
     //sets
     void setOponentTeam(Robot**);
@@ -19,6 +19,7 @@ public:
     void setXBall(int);
     void setYball(int);
     void setGameState(char gameState);
+    void setStrategyController(StrategyController * sc);
 
     //gets
     Robot **getOponentTeam();
@@ -34,7 +35,7 @@ public:
 private:
     static GameModel * model;
 
-    GameModel(StrategyController * sc);
+    //GameModel(StrategyController * sc);
 
 
     Robot *oponentTeam[MAX_ROBOTS];

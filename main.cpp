@@ -8,8 +8,6 @@
 #include "include/messages_robocup_ssl_wrapper.pb.h"
 #include "include/robocup_ssl_client.h"
 
-
-// This is a test comment
 // RefComm Test
 int main(int argc, char *argv[])
 {
@@ -17,9 +15,10 @@ int main(int argc, char *argv[])
     char comm[13] = {'~', 0,0,0,0,8,500,500,0,0,0,0,0};
 
     StrategyController *sc = new StrategyController();
-   //GameModel * myGameModel = new GameModel(sc);
+    //GameModel * myGameModel = new GameModel(sc);
     GameModel * myGameModel = GameModel::getModel();
     sc->setGameModel(myGameModel);
+    myGameModel->setStrategyController(sc);
 
     QCoreApplication a(argc, argv);
     

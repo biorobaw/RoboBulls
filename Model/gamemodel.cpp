@@ -1,18 +1,15 @@
 #include "gamemodel.h"
+#include <stddef.h>  // defines NULL
 
-GameModel::GameModel(StrategyController * sc)
+// Global static pointer used to ensure a single instance of the class.
+GameModel* GameModel::model = NULL;
+
+GameModel::GameModel()
 {
-    this->sc = sc;
+   //this->sc = sc;
     gameState = '\0';
 }
 
-
-GameModel * GameModel::getModel(){
-    if (model == 0)
-        model = new GameModel();
-
-    return model;
-}
 
 void GameModel::setOponentTeam(Robot** robot)
 {
@@ -94,4 +91,14 @@ char GameModel::getGameState()
     return gameState;
 }
 
+GameModel * GameModel::getModel(){
+    if (model == NULL)
+        model = new GameModel();
+
+    return model;
+}
+
+void GameModel::setStrategyController(StrategyController *sc){
+    this->sc = sc;
+}
 
