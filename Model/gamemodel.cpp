@@ -11,21 +11,21 @@ GameModel::GameModel()
 }
 
 
-void GameModel::setOponentTeam(Robot** robot)
+void GameModel::setOponentTeam(vector<Robot*> robot )
 {
 
     for (int i=0; i < MAX_ROBOTS; i++)
     {
-        oponentTeam[i] = robot[i];
+        oponentTeam.push_back(robot.at(i));
     }
 }
 
-void GameModel::setMyTeam(Robot** robot)
+void GameModel::setMyTeam(vector <Robot*> robot)
 {
 
     for (int i=0; i < MAX_ROBOTS; i++)
     {
-        myTeam[i] = robot[i];
+        myTeam.push_back(robot[i]);
     }
 }
 
@@ -51,12 +51,12 @@ void GameModel::setGameState(char gameState)
 
 }
 
-Robot ** GameModel::getOponentTeam()
+vector<Robot*> GameModel::getOponentTeam()
 {
     return oponentTeam;
 }
 
-Robot **GameModel::getMyTeam()
+vector<Robot*> GameModel::getMyTeam()
 {
     return myTeam;
 }

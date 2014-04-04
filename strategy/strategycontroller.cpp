@@ -16,6 +16,8 @@ void StrategyController::gameModelUpdated()
     if (model->getGameState() == 'S')
     {
         activeStrategy = new StopStrategy();
+    } else {
+        activeStrategy = new StopStrategy();
     }
 
     activeStrategy->assignBeh();

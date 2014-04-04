@@ -3,6 +3,9 @@
 
 #include "Robot/robot.h"
 #include "../strategy/strategycontroller.h"
+#include <vector>
+
+using namespace std;
 
 const int MAX_ROBOTS = 3;
 
@@ -14,16 +17,16 @@ public:
     GameModel();
 
     //sets
-    void setOponentTeam(Robot**);
-    void setMyTeam(Robot**);
+    void setOponentTeam(vector<Robot*>);
+    void setMyTeam(vector<Robot*>);
     void setXBall(int);
     void setYball(int);
     void setGameState(char gameState);
     void setStrategyController(StrategyController * sc);
 
     //gets
-    Robot **getOponentTeam();
-    Robot **getMyTeam();
+    vector <Robot *> getOponentTeam();
+    vector <Robot *> getMyTeam();
     int getXBall();
     int getYBall();
     int getBlueGoals();
@@ -38,8 +41,8 @@ private:
     //GameModel(StrategyController * sc);
 
 
-    Robot *oponentTeam[MAX_ROBOTS];
-    Robot *myTeam[MAX_ROBOTS];
+    vector <Robot*>oponentTeam;
+    vector <Robot*>myTeam;
     int x_ballPosition;
     int y_ballPosition;
 

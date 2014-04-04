@@ -11,12 +11,12 @@ void StopBehavior::perform(Robot * myRobot, Ball gameBall)
 
     if (Measurments::distance(myRobot->getRobotPosition(),gameBall.getBallPosition()) < 10.0)
     {
-        cout<<"going backward in stop behavior"<<endl;
+        cout<<"Calling GoBackward"<<endl;
         robotSkill = new GoBackward();
     }
     else
     {
-        cout<<"going forward in stop behavior"<<endl;
+        cout<<"Calling GoForward"<<endl;
         robotSkill = new GoForward();
     }
 

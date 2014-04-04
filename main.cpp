@@ -1,5 +1,6 @@
 #include <QCoreApplication>
 #include "communication/refcomm.h"
+#include "communication/visioncomm.h"
 #include "Model/gamemodel.h"
 #include "communication/robcomm.h"
 #include "Robot/robot.h"
@@ -23,6 +24,7 @@ int main(int argc, char *argv[])
     QCoreApplication a(argc, argv);
     
     RefComm refCommunicator(myGameModel);
+    VisionComm visionCommunicator(myGameModel);
 
     robComm nxtbee;
 
@@ -34,6 +36,7 @@ int main(int argc, char *argv[])
 //    client.open(true);
 //    SSL_WrapperPacket packet;
 
+    visionCommunicator.start();
     refCommunicator.run();
 
     return a.exec();
