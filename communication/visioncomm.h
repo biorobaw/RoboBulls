@@ -3,15 +3,27 @@
 
 #include "include/netraw.h"
 #include <string>
+#include <iostream>
 #include <QtCore>
 #include "Model/gamemodel.h"
 #include "include/messages_robocup_ssl_detection.pb.h"
 #include "include/messages_robocup_ssl_geometry.pb.h"
 #include "include/messages_robocup_ssl_wrapper.pb.h"
 #include "include/robocup_ssl_client.h"
+#include "Robot/ball.h"
+#include "Robot/robot.h"
+#include "Measure/point.h"
 
 using namespace std;
 
+/**
+ * @brief CONF_THRESHOLD sets the minimum confidence to consider the ball as detected.
+*/
+const float CONF_THRESHOLD = 0;
+
+/**
+ * @brief The VisionComm class
+ */
 class VisionComm: public QThread
 {
 public:

@@ -19,7 +19,9 @@ int main(int argc, char *argv[])
     //GameModel * myGameModel = new GameModel(sc);
     GameModel * myGameModel = GameModel::getModel();
     sc->setGameModel(myGameModel);
+//    myGameModel->play();
     myGameModel->setStrategyController(sc);
+
 
     QCoreApplication a(argc, argv);
     

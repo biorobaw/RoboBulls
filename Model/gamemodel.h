@@ -2,8 +2,11 @@
 #define GAMEMODEL_H
 
 #include "Robot/robot.h"
+#include "Robot/ball.h"
+#include "Measure/point.h"
 #include "../strategy/strategycontroller.h"
 #include <vector>
+#include <iostream>
 
 using namespace std;
 
@@ -19,20 +22,25 @@ public:
     //sets
     void setOponentTeam(vector<Robot*>);
     void setMyTeam(vector<Robot*>);
-    void setXBall(int);
-    void setYball(int);
+    void setXBall(float);
+    void setYball(float);
+    void setBallPoint(Point);
+    void setBall(Ball);
     void setGameState(char gameState);
     void setStrategyController(StrategyController * sc);
 
     //gets
     vector <Robot *> getOponentTeam();
     vector <Robot *> getMyTeam();
-    int getXBall();
-    int getYBall();
+    float getXBall();
+    float getYBall();
+    Point getBallPoint();
     int getBlueGoals();
     int getYellowGoals();
+    Ball getBall();
     float getRemainingTime();
     char getGameState();
+//    void play();
 
     static GameModel * getModel();
 private:
@@ -43,8 +51,10 @@ private:
 
     vector <Robot*>oponentTeam;
     vector <Robot*>myTeam;
-    int x_ballPosition;
-    int y_ballPosition;
+    Ball gameBall;
+    float x_ballPosition;
+    float y_ballPosition;
+    Point ballPoint;
 
     //State gameState;
     int blueGoals;

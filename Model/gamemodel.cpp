@@ -29,14 +29,24 @@ void GameModel::setMyTeam(vector <Robot*> robot)
     }
 }
 
-void GameModel::setXBall(int x)
+void GameModel::setXBall(float x)
 {
     x_ballPosition = x;
 }
 
-void GameModel::setYball(int y)
+void GameModel::setYball(float y)
 {
     y_ballPosition = y;
+}
+
+void GameModel::setBallPoint(Point bp)
+{
+    ballPoint = bp;
+}
+
+void GameModel::setBall(Ball ball)
+{
+    gameBall = ball;
 }
 
 void GameModel::setGameState(char gameState)
@@ -51,6 +61,11 @@ void GameModel::setGameState(char gameState)
 
 }
 
+void GameModel::setStrategyController(StrategyController *sc)
+{
+    this->sc = sc;
+}
+
 vector<Robot*> GameModel::getOponentTeam()
 {
     return oponentTeam;
@@ -61,14 +76,24 @@ vector<Robot*> GameModel::getMyTeam()
     return myTeam;
 }
 
-int GameModel::getXBall()
+float GameModel::getXBall()
 {
     return x_ballPosition;
 }
 
-int GameModel::getYBall()
+float GameModel::getYBall()
 {
     return y_ballPosition;
+}
+
+Point GameModel::getBallPoint()
+{
+    return ballPoint;
+}
+
+Ball GameModel::getBall()
+{
+    return gameBall;
 }
 
 int GameModel::getBlueGoals()
@@ -98,7 +123,14 @@ GameModel * GameModel::getModel(){
     return model;
 }
 
-void GameModel::setStrategyController(StrategyController *sc){
-    this->sc = sc;
-}
+//void GameModel::play()
+//{
+//    cout<<"Playing!"<<endl;
+//    for (int i=0; i<MAX_ROBOTS; i++)
+//    {
+//        myTeam.at(i)->getCurrentBeh().perform(myTeam.at(i), gameBall);
+//    }
+//}
+
+
 

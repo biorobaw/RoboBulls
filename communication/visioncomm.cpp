@@ -32,109 +32,97 @@ bool VisionComm::receive()
 
         if (packet.has_detection())
         {
-          cout<<"Packet detected!"<<endl;
+            cout<<"Packet detected!"<<endl;
+
+            SSL_DetectionFrame detection = packet.detection();
+
+            int robots_blue_n =  detection.robots_blue_size();
+            int balls_n = detection.balls_size();
+            vector<Robot*> myTeam = gamemodel->getMyTeam();
+
+            int detected_id = 0;
+
+            Point robPoint;
+            Point ballPoint;
+
+            Ball * gameBall = NULL;
+
+            float conf = 0.0;
+
+            //Ball info:
+            for (int i = 0; i < balls_n; i++)
+            {
+                SSL_DetectionBall ball;
+                ball = detection.balls(i);
+
+                if (ball.confidence()>conf)
+                {
+                    conf = ball.confidence();
+
+                    if(conf > CONF_THRESHOLD)
+                    {
+
+                        ballPoint.setX(ball.x());
+                        ballPoint.setY(ball.y());
+
+                        gamemodel->setBallPoint(ballPoint);
+                    }
+                }
 
 
-          SSL_DetectionFrame detection = packet.detection();
 
-        //      int balls_n = detection.balls_size();
-        //      SSL_DetectionBall ball;
+//                if (gameBall = NULL)
+//                    gameBall = new Ball();
 
-        //      //Ball info:
-        //      for (int i = 0; i < balls_n; i++) {
-        //          ball = detection.balls(i);
-        //      }
+//                gameBall->setBallPosition(ballPoint);
+            }
 
-         // if (refclient.getCommand() == 's'){
-              ///////strategy///////
-              // set detection for strat
-        //          strat.setDetection(&detection);
-        //          // set team
-        //          strat.setTeam(sets.team);
-        //          // set ball
-        //          strat.setBall(ball.x(),ball.y());
-        //          //set robot objects
-        //          strat.setRobots(NXTrobot);
-        //          // compute strat
-        //          strat.test();
-              /////////////////////
-        //  }
+            cout << "Ball Found: " << ballPoint.getX() << ballPoint.getY()<< endl;
+            cout <<"Confidece is" << conf << endl;
 
-        //  if (sets.team == 'b'){
-              int robots_blue_n =  detection.robots_blue_size();
-              vector<Robot*> myTeam = gamemodel->getMyTeam();
-              //int robot_id = 0;
-              int detected_id = 0;
-              //int index = -1;
-              Point robPoint;
 
-              //Blue robot info:
-              for (int i = 0; i < robots_blue_n; i++) {
-                  SSL_DetectionRobot robot = detection.robots_blue(i);
-                  cout<<"Robot(B) : "<<i+1<< "  " << robots_blue_n<<endl;
+            //Blue robot info:
+            for (int i = 0; i < robots_blue_n; i++)
+            {
+              SSL_DetectionRobot robot = detection.robots_blue(i);
+              cout<<"Robot(B) : "<<i+1<< "  " << robots_blue_n<<endl;
 
-        //              robot.
-                  if (robot.has_robot_id())
+            //              robot.
+              if (robot.has_robot_id())
+              {
+                  detected_id = robot.robot_id();
+                  cout<<"ID=  "<<robot.robot_id()<<endl;
+
+                  Robot * rob = NULL;
+                  //identify which blue robot id corisponds to which robot object.
+                  for(vector<Robot*>::iterator it = myTeam.begin(); it != myTeam.end(); it++)
                   {
-                      detected_id = robot.robot_id();
-                      cout<<"ID=  "<<robot.robot_id()<<endl;
-
-                      Robot * rob = NULL;
-                      //identify which blue robot id corisponds to which robot object.
-                      //for (int j = 0; j<TOTAL_ROBOTS; j++)
-                      for(vector<Robot*>::iterator it = myTeam.begin(); it != myTeam.end(); it++)
+                      if ((*it)->getID() == detected_id)
                       {
-                          if ((*it)->getID() == detected_id)
-                          {
-                              rob = (*it);
-                              cout<<" id = \n" <<(*it)->getID()<<endl;
-                          }
+                          rob = (*it);
+                          cout<<" id = \n" <<(*it)->getID()<<endl;
                       }
+                  }
 
-                      if (rob == NULL){
-                          rob = new Robot();
-                          rob->setID(detected_id);
-                          myTeam.push_back(rob);
-                      }
-
-
-                      // Assumption: rob contains the robot with id == detected_id
-                      rob->setOrientation(robot.orientation());
-                      // TODO: set position
-                      //rob->setRobotPosition();
-                      robPoint.setX(robot.x());
-                      robPoint.setY(robot.y());
-                      rob->setRobotPosition(robPoint);
+                  if (rob == NULL){
+                      rob = new Robot();
+                      rob->setID(detected_id);
+                      myTeam.push_back(rob);
+                  }
 
 
-        //                  Point ball_pos(ball.x(),ball.y());
-        //                  Point bot(robot.x(),robot.y());
+                  // Assumption: rob contains the robot with id == detected_id
+                  rob->setOrientation(robot.orientation());
+                  robPoint.setX(robot.x());
+                  robPoint.setY(robot.y());
+                  rob->setRobotPosition(robPoint);
 
-        //                  //send information to robot object
-        //                  NXTrobot[index].set(bot,ball_pos,robot.orientation(),i);
-        //                  //send the entire detection object
-        //                  NXTrobot[index].setDetection(&detection);
-        //                  //update settings
-        //                  NXTrobot[index].setSettings(&sets);
 
-                      //robot objects compute values
-
-        //                  control.penalty(sets,refclient, index, comm, NXTrobot);
-        //                  if (refclient.getCommand() == ' ')
-        //                  {
-        //                      control.shoot(sets, index, NXTrobot);
-        //                  }
-
-        //                  control.kickOff(sets, refclient, index, comm, NXTrobot);
-
-        //              //fill in communication array
-        //                  control.sendCommand(index, comm, NXTrobot);
               }//if robot has id
         //  }//for blue robots
             }//if_team
 
-
-        return false;
+            return false;
         }
     }
 }
