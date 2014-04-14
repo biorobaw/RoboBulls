@@ -38,8 +38,8 @@ SOURCES += main.cpp \
     Functionality/gobackward.cpp \
     Measure/point.cpp \
     Measure/measurments.cpp \
-    Robot/ball.cpp \
-    communication/visioncomm.cpp
+    communication/visioncomm.cpp \
+    Functionality/stop.cpp
 
 HEADERS += \
     communication/refcomm.h \
@@ -66,7 +66,7 @@ HEADERS += \
     Functionality/gobackward.h \
     Measure/point.h \
     Measure/measurments.h \
-    Robot/ball.h \
-    communication/visioncomm.h
+    communication/visioncomm.h \
+    Functionality/stop.h
 
 unix|win32: LIBS += -lprotobuf

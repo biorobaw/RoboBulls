@@ -16,17 +16,24 @@ void StrategyController::gameModelUpdated()
     if (model->getGameState() == 'S')
     {
         activeStrategy = new StopStrategy();
+        beh = new StopBehavior();
     } else {
         activeStrategy = new StopStrategy();
+        beh = new StopBehavior();
     }
 
     activeStrategy->assignBeh();
+    // USING ANY ROBOT TO MAKE IT WORK!!!!!!!!!!!! CHANGE!!!!!!!!!!!!!!!!
 
-//    for (int i=0; i < MAX_ROBOTS; i++)
-//    {
+    cout << "Size   " << model->getMyTeam().size() << endl;
 
-//    }
 
+    for (int i=0; i < model->getMyTeam().size(); i++)
+    {
+        cout<<"sending perform!"<<endl;
+        beh->perform(model->getMyTeam().at(i));
+    }
+    cout<<"Game model updates!" << endl;
 //    for each robot in myTeam
 //      robot->currentBehaviour->perform()
 }

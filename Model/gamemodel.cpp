@@ -1,4 +1,5 @@
 #include "gamemodel.h"
+#include "Robot/robot.h"
 #include <stddef.h>  // defines NULL
 
 // Global static pointer used to ensure a single instance of the class.
@@ -20,13 +21,14 @@ void GameModel::setOponentTeam(vector<Robot*> robot )
     }
 }
 
-void GameModel::setMyTeam(vector <Robot*> robot)
+void GameModel::setMyTeam(vector <Robot*> team)
 {
-
-    for (int i=0; i < MAX_ROBOTS; i++)
-    {
-        myTeam.push_back(robot[i]);
-    }
+    myTeam = team;
+    sc->gameModelUpdated();
+//    for (int i=0; i < MAX_ROBOTS; i++)
+//    {
+//        myTeam.push_back(robot[i]);
+//    }
 }
 
 void GameModel::setXBall(float x)
@@ -42,11 +44,6 @@ void GameModel::setYball(float y)
 void GameModel::setBallPoint(Point bp)
 {
     ballPoint = bp;
-}
-
-void GameModel::setBall(Ball ball)
-{
-    gameBall = ball;
 }
 
 void GameModel::setGameState(char gameState)
@@ -91,10 +88,6 @@ Point GameModel::getBallPoint()
     return ballPoint;
 }
 
-Ball GameModel::getBall()
-{
-    return gameBall;
-}
 
 int GameModel::getBlueGoals()
 {
@@ -116,7 +109,8 @@ char GameModel::getGameState()
     return gameState;
 }
 
-GameModel * GameModel::getModel(){
+GameModel * GameModel::getModel()
+{
     if (model == NULL)
         model = new GameModel();
 

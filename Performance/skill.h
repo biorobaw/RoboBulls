@@ -4,13 +4,14 @@
 #include <iostream>
 #include "behavior.h"
 
+
 using namespace std;
 
 class Skill
 {
 public:
     Skill();
-    void perform();
+    virtual void perform(Robot * robot) = 0;
 };
 
 #endif // SKILL_H

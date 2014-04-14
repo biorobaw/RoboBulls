@@ -10,7 +10,6 @@
 #include "include/messages_robocup_ssl_geometry.pb.h"
 #include "include/messages_robocup_ssl_wrapper.pb.h"
 #include "include/robocup_ssl_client.h"
-#include "Robot/ball.h"
 #include "Robot/robot.h"
 #include "Measure/point.h"
 
@@ -21,9 +20,6 @@ using namespace std;
 */
 const float CONF_THRESHOLD = 0;
 
-/**
- * @brief The VisionComm class
- */
 class VisionComm: public QThread
 {
 public:
@@ -41,6 +37,7 @@ protected:
     GameModel *gamemodel;
     SSL_WrapperPacket packet;
     RoboCupSSLClient client;
+    int count;
 };
 
 #endif // VISIONCOMM_H

@@ -10,7 +10,7 @@ class GoForward: public Skill
 {
 public:
     GoForward();
-    void perform();
+    void perform(Robot *robot);
 };
 
 #endif // GOFORWARD_H

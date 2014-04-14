@@ -12,8 +12,7 @@
 // RefComm Test
 int main(int argc, char *argv[])
 {
-    //array for communication values 3 robots.
-    char comm[13] = {'~', 0,0,0,0,8,500,500,0,0,0,0,0};
+
 
     StrategyController *sc = new StrategyController();
     //GameModel * myGameModel = new GameModel(sc);
@@ -30,7 +29,10 @@ int main(int argc, char *argv[])
 
     robComm nxtbee;
 
-    nxtbee.send(&comm[0], 13);
+    //array for communication values 3 robots.
+//    char comm[13] = {'~', 0,0,0,0,5,500,500,0,0,0,0,0};
+
+    /*nxtbee.send(&comm[0], 13)*/;
 
 //    Robot myRobots[MAX_ROBOTS];
 

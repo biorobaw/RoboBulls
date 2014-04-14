@@ -1,8 +1,7 @@
 #ifndef GAMEMODEL_H
 #define GAMEMODEL_H
 
-#include "Robot/robot.h"
-#include "Robot/ball.h"
+
 #include "Measure/point.h"
 #include "../strategy/strategycontroller.h"
 #include <vector>
@@ -13,6 +12,7 @@ using namespace std;
 const int MAX_ROBOTS = 3;
 
 class StrategyController;
+class Robot;
 
 class GameModel
 {
@@ -25,7 +25,6 @@ public:
     void setXBall(float);
     void setYball(float);
     void setBallPoint(Point);
-    void setBall(Ball);
     void setGameState(char gameState);
     void setStrategyController(StrategyController * sc);
 
@@ -37,7 +36,6 @@ public:
     Point getBallPoint();
     int getBlueGoals();
     int getYellowGoals();
-    Ball getBall();
     float getRemainingTime();
     char getGameState();
 //    void play();
@@ -51,7 +49,6 @@ private:
 
     vector <Robot*>oponentTeam;
     vector <Robot*>myTeam;
-    Ball gameBall;
     float x_ballPosition;
     float y_ballPosition;
     Point ballPoint;

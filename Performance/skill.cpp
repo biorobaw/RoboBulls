@@ -4,7 +4,7 @@ Skill::Skill()
 {
 }
 
-void Skill::perform()
-{
-    cout<<"Perform works in skills!Woohoooo!!!"<<endl;
-}
+//void Skill::perform()
+//{
+//    cout<<"Perform works in skills!Woohoooo!!!"<<endl;
+//}

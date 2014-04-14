@@ -4,7 +4,7 @@ GoToPosition::GoToPosition()
 {
 }
 
-void GoToPosition::perform()
+void GoToPosition::perform(Robot * robot)
 {
-
+    cout << "Running perform in goToPosition!"<< endl;
 }

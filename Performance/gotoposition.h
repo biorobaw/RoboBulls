@@ -8,7 +8,7 @@ class GoToPosition:public Skill
 {
 public:
     GoToPosition();
-    void perform();
+    void perform(Robot * robot);
 };
 
 #endif // GOTOPOSITION_H

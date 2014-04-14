@@ -5,6 +5,7 @@
 #include "Performance/behavior.h"
 
 class Behavior;
+
 class Robot
 {
 public:

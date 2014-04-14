@@ -1,6 +1,8 @@
 #include "robcomm.h"
 #include <stdio.h>
 
+robComm* robComm::nxtbee = NULL;
+
 robComm::robComm()
 {
     int Ret; //used for return values
@@ -30,6 +32,21 @@ void robComm::send(unsigned b)
 void robComm::send(char* commptr, int size)
 {
     Xbee.Write(commptr, size);
+}
+
+
+void robComm::sendVels(int leftVel, int rightVel, int robotId){
+
+    char comm[13] = {'~', 0,0,0,0,robotId,leftVel,rightVel,0,0,0,0,0};
+    send(&comm[0], 13);
+}
+
+robComm * robComm::getnxtbee()
+{
+    if (nxtbee == NULL)
+        nxtbee = new robComm();
+
+    return nxtbee;
 }
 
 //void robComm::sendVels(int id, int rVel, int lVel)

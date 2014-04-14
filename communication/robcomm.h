@@ -10,6 +10,13 @@ class robComm
 public:
     robComm();
     ~robComm();
+
+
+    void sendVels(int leftVel, int rightVel, int robotId);
+
+    static robComm * getnxtbee();
+private:
+    static robComm * nxtbee;
     void send(unsigned);
     void send(char*, int size);
 };

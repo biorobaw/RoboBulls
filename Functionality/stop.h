@@ -1,17 +1,16 @@
-#ifndef GOBACKWARD_H
-#define GOBACKWARD_H
+#ifndef STOP_H
+#define STOP_H
 
+#endif // STOP_H
 #include <iostream>
 #include "Performance/skill.h"
 #include "communication/robcomm.h"
 
 using namespace std;
 
-class GoBackward:public Skill
+class Stop:public Skill
 {
 public:
-    GoBackward();
+    Stop();
     void perform(Robot *);
 };
-
-#endif // GOBACKWARD_H

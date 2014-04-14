@@ -3,24 +3,31 @@
 
 #include <iostream>
 #include "Performance/behavior.h"
-#include "Robot/robot.h"
-#include "Robot/ball.h"
+
 #include "Performance/skill.h"
 #include "Measure/measurments.h"
 #include "Functionality/gobackward.h"
 #include "Functionality/goforward.h"
+#include "Functionality/stop.h"
+
 
 using namespace std;
 
-class StopBehavior: public Behavior
+class Robot;
+class GameModel;
+
+class StopBehavior : public Behavior
 {
 public:
     StopBehavior();
-    void perform(Robot *, Ball);
-    Skill getSkill();
+    void perform(Robot *);
+    Skill * getSkill();
 
 private:
-    Skill *robotSkill;
+    Skill * robotSkill;
+
+//protected:
+//    GameModel *gamemodel;
 };
 
 #endif // STOPBEHAVIOR_H
