@@ -13,6 +13,9 @@
 
 using namespace std;
 
+const float TARGET = 1000.0;
+const float TOLERENCE = 100.0;
+
 class Robot;
 class GameModel;
 

@@ -34,10 +34,10 @@ bool VisionComm::receive()
 
         if (packet.has_detection())
         {
-            count = count + 1;
+            count++;
 //            cout << "Count " << count << endl;
             //            cout<<"Packet detected!"<<endl;
-            if (count > 10)
+            if (count >= DISCARD_RATE)
             {
                 count = 0;
 
