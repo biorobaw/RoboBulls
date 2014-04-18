@@ -4,21 +4,18 @@
 class Point
 {
 public:
-    //constructor
-    Point();
+    Point() : x(0), y(0) {}
+    Point(float nx, float ny) : x(nx), y(ny) {}
 
-    //sets
-    void setX(float);
-    void setY(float);
+    bool	operator==(const Point& rhs);
+    bool	operator!=(const Point& rhs);
+    Point&	operator=(const Point& rhs);
+    Point	operator+(const Point& rhs);
+    Point	operator-(const Point& rhs);
 
-    //gets
-    float getX();
-    float getY();
-
-
-
-private:
+public:
     float x, y;
 };
+
 
 #endif // POINT_H

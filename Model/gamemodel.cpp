@@ -12,23 +12,17 @@ GameModel::GameModel()
 }
 
 
-void GameModel::setOponentTeam(vector<Robot*> robot )
+void GameModel::setOponentTeam(vector<Robot*> team )
 {
-
-    for (int i=0; i < MAX_ROBOTS; i++)
-    {
-        oponentTeam.push_back(robot.at(i));
-    }
+    oponentTeam = team;
+    sc->gameModelUpdated();
 }
 
 void GameModel::setMyTeam(vector <Robot*> team)
 {
     myTeam = team;
     sc->gameModelUpdated();
-//    for (int i=0; i < MAX_ROBOTS; i++)
-//    {
-//        myTeam.push_back(robot[i]);
-//    }
+
 }
 
 void GameModel::setXBall(float x)
