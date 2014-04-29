@@ -24,7 +24,7 @@ public:
 private:
     strategy *activeStrategy;
     GameModel * model;
-    StopStrategy stopS;
+//    StopStrategy stopS;
     Behavior * beh;
 
 };

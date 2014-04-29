@@ -2,6 +2,7 @@
 #include "Robot/robot.h"
 #include <stddef.h>  // defines NULL
 
+const float CONF_THRESHOLD=0.0;
 // Global static pointer used to ensure a single instance of the class.
 GameModel* GameModel::model = NULL;
 
@@ -14,7 +15,7 @@ GameModel::GameModel()
 
 void GameModel::setOponentTeam(vector<Robot*> team )
 {
-    oponentTeam = team;
+    opTeam = team;
     sc->gameModelUpdated();
 }
 
@@ -59,7 +60,7 @@ void GameModel::setStrategyController(StrategyController *sc)
 
 vector<Robot*> GameModel::getOponentTeam()
 {
-    return oponentTeam;
+    return opTeam;
 }
 
 vector<Robot*> GameModel::getMyTeam()
@@ -111,14 +112,56 @@ GameModel * GameModel::getModel()
     return model;
 }
 
-//void GameModel::play()
-//{
-//    cout<<"Playing!"<<endl;
-//    for (int i=0; i<MAX_ROBOTS; i++)
-//    {
-//        myTeam.at(i)->getCurrentBeh().perform(myTeam.at(i), gameBall);
-//    }
-//}
+/**
+ * @brief GameModel::find : find robot in team, compare ids, return robot if ids are same
+ * @param robot
+ * @param team
+ * @return
+ */
+Robot * GameModel::find(int detected_id, vector<Robot*> team)
+{
+    Robot *rob = NULL;
+//    cout << "finding robot" << endl;
+    for(vector<Robot*>::iterator it = team.begin(); it != team.end(); it++)
+    {
+        if ((*it)->getID() == detected_id)
+        {
+            // TODO: Compare with current's confidence - low priority
+            rob = (*it);
+//            cout<<" id = \n" <<(*it)->getID()<<endl;
+        }
+    }
 
+//    if (rob == NULL)
+//        cout <<"Robot was NULL"<<endl;
+//    else
+//        cout << "Robot was not NULL" << endl;
+
+    return rob;
+}
+
+
+ string GameModel::toString()
+ {
+//     stringstream myString;
+//     cout<<"Trying to print ball position!" <<endl;
+//     myString << "Ball Position: " << ballPoint.toString() <<endl;
+     cout << "Ball Position: ";
+     cout<< ballPoint.toString() <<endl;
+
+     cout<<"\nMy Team Robots: \n";
+     for (vector<Robot*>::iterator it = myTeam.begin(); it != myTeam.end(); it++)
+     {
+         cout << (*it)->getRobotPosition().toString()<<endl;
+     }
+
+     cout<<"\nOponent Team Robots: \n";
+     for (vector<Robot*>::iterator it = opTeam.begin(); it != opTeam.end(); it++)
+     {
+         cout << (*it)->getRobotPosition().toString()<<endl;
+     }
+     return ""; //myString.str();
+//     cout<< "Ball Position: " << ballPoint.toString() <<endl;
+ }
 
 

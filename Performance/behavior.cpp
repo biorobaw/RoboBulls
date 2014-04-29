@@ -10,5 +10,5 @@ Behavior::Behavior()
 
 void Behavior::perform(Robot *)
 {
-    cout<<"running perform in bahavior.cpp"<<endl;
+//    cout<<"running perform in bahavior.cpp"<<endl;
 }

@@ -31,6 +31,16 @@ Point Point::operator-(const Point& rhs)
     return ret;
 }
 
+string Point::toString()
+{
+//    stringstream myString;
+//    cout<<"trying to access x and y"<<endl;
+    cout<<"(x, y)= "<<"("<<x << ", "<<y<<" )";
+//    myString << "(x, y)= " << "("<<x<<", "<<y<<")";
+//    return myString.str();
+    return "";
+}
+
 /*
  * Old: float x = Point.getX();
  * New: float x = Point.x;
