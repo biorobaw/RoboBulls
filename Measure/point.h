@@ -1,6 +1,13 @@
 #ifndef POINT_H
 #define POINT_H
 
+#include <string>
+#include <iostream>
+
+#include <sstream>
+
+using namespace std;
+
 class Point
 {
 public:
@@ -12,7 +19,7 @@ public:
     Point&	operator=(const Point& rhs);
     Point	operator+(const Point& rhs);
     Point	operator-(const Point& rhs);
-
+    string toString();
 public:
     float x, y;
 };

@@ -4,8 +4,13 @@
 
 #include "Measure/point.h"
 #include "../strategy/strategycontroller.h"
+#include "include/messages_robocup_ssl_detection.pb.h"
+#include "include/messages_robocup_ssl_geometry.pb.h"
+#include "include/messages_robocup_ssl_wrapper.pb.h"
+#include "include/robocup_ssl_client.h"
 #include <vector>
 #include <iostream>
+#include <sstream>
 
 using namespace std;
 
@@ -40,14 +45,19 @@ public:
     char getGameState();
 //    void play();
 
+    //Other Functions
+    Robot * find(int , vector<Robot*>);
+
     static GameModel * getModel();
+
+    string toString();
 private:
     static GameModel * model;
 
     //GameModel(StrategyController * sc);
 
 
-    vector <Robot*>oponentTeam;
+    vector <Robot*>opTeam;
     vector <Robot*>myTeam;
     float x_ballPosition;
     float y_ballPosition;

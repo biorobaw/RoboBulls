@@ -5,6 +5,7 @@
 #include <string>
 #include <iostream>
 #include <QtCore>
+#include <string>
 #include "Model/gamemodel.h"
 #include "include/messages_robocup_ssl_detection.pb.h"
 #include "include/messages_robocup_ssl_geometry.pb.h"
@@ -18,7 +19,7 @@ using namespace std;
 /**
  * @brief CONF_THRESHOLD sets the minimum confidence to consider the ball as detected.
 */
-const float CONF_THRESHOLD = 0;
+const float CONF_THRESHOLD = 0.91;
 
 /**
  * @brief DISCARD_RATE sets the rate in which packets are discarded. only 1/DISCARD_RATE packages are processed.
@@ -31,12 +32,15 @@ public:
     VisionComm(GameModel *gm);
     ~VisionComm();
 
+    Robot detection();
 
     //communicating with reciver
     bool receive();
 
     //void VisionThread();
     void run();
+
+    void updateInfo(SSL_DetectionRobot, string);
 
 protected:
     GameModel *gamemodel;
