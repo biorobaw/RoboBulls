@@ -23,7 +23,7 @@ const float CONF_THRESHOLD = 0;
 /**
  * @brief DISCARD_RATE sets the rate in which packets are discarded. only 1/DISCARD_RATE packages are processed.
  */
-const int DISCARD_RATE = 5;
+const int DISCARD_RATE = 1;
 
 class VisionComm: public QThread
 {

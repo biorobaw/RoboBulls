@@ -22,7 +22,7 @@ public:
 
     //gets
     Point getRobotPosition();
-    int getOrientation();
+    float getOrientation();
     int getID();
     int getR();
     int getL();

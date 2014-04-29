@@ -39,7 +39,8 @@ SOURCES += main.cpp \
     Measure/point.cpp \
     Measure/measurments.cpp \
     communication/visioncomm.cpp \
-    Functionality/stop.cpp
+    Functionality/stop.cpp \
+    Functionality/rotate.cpp
 
 HEADERS += \
     communication/refcomm.h \
@@ -67,6 +68,8 @@ HEADERS += \
     Measure/point.h \
     Measure/measurments.h \
     communication/visioncomm.h \
-    Functionality/stop.h
+    Functionality/stop.h \
+    Performance/rotate.h \
+    Functionality/rotate.h
 
 unix|win32: LIBS += -lprotobuf

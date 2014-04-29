@@ -7,13 +7,13 @@
 class Measurments
 {
 public:
-    Measurments(){};
+    Measurments(){}
 
 
     /*  Returns the distance between two points using the
         standard distance formula.
         */
-    static float distance(const Point, Point);
+    static float distance(const Point&, const Point&);
 
 
     /*  Returns the angle in (degrees)? between two points as measured

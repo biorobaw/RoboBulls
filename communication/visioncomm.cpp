@@ -207,7 +207,7 @@ bool VisionComm::receive()
 
         }    //            return false;
     }
-        cout << "Size at end of detection: " << gamemodel->getMyTeam().size()+gamemodel->getOponentTeam().size() << endl;
+        //cout << "Size at end of detection: " << gamemodel->getMyTeam().size()+gamemodel->getOponentTeam().size() << endl;
 
 }
 

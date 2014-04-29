@@ -29,6 +29,10 @@ public:
 private:
     Skill * robotSkill;
 
+    bool    kickSent;
+    int     direction;
+    float   targetAngle;
+
 //protected:
 //    GameModel *gamemodel;
 };

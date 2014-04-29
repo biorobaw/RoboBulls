@@ -10,7 +10,7 @@ StopStrategy::StopStrategy()
 void StopStrategy::assignBeh()
 {
     //TODO: should be assigning behaviours
-    cout<<"test!!!"<<endl;
+   // cout<<"test!!!"<<endl;
     //control.stop(comm, NXTrobot);
 
     // Assign stop behaviour to every robot

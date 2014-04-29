@@ -42,7 +42,7 @@ Point Robot::getRobotPosition()
     return robotPosition;
 }
 
-int Robot::getOrientation()
+float Robot::getOrientation()
 {
     return orientation;
 }

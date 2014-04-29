@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "measurments.h"
 
-float Measurments::distance(Point p1, Point p2)
+float Measurments::distance(const Point& p1, const Point& p2)
 {
     return sqrt(pow(p2.y - p1.y, 2) + pow(p2.x - p1.x, 2));
 }
@@ -16,7 +16,7 @@ float Measurments::angleBetween(const Point& p1, const Point& p2)
 
 bool Measurments::isClose(const Point& p1, const Point& p2, float tol)
 {
-    return ((p1.y - p2.y) <= tol) && ((p2.x - p1.x) <= tol);
+    return (fabs(p1.y - p2.y) <= tol) && (fabs(p2.x - p1.x) <= tol);
 }
 
 

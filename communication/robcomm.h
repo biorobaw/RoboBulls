@@ -11,8 +11,8 @@ public:
     robComm();
     ~robComm();
 
-
     void sendVels(int leftVel, int rightVel, int robotId);
+    void sendKick(int robotId);
 
     static robComm * getnxtbee();
 private:
