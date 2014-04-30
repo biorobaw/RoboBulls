@@ -67,3 +67,13 @@ Behavior Robot::getCurrentBeh()
     return *currentBehavior;
 }
 
+stringstream& Robot::toString()
+{
+    stringstream myString;
+
+    myString << "\t" << getRobotPosition().toString().str() << "\t ID: " << getID();
+
+    return myString;
+
+}
+

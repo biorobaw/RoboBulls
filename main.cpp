@@ -12,14 +12,14 @@
 
 void exitStopRobot(void)
 {
-    GameModel* mod = GameModel::getModel();
-    auto team = mod->getMyTeam();
+//    GameModel* mod = GameModel::getModel();
+//    auto team = mod->getMyTeam();
 
-    robComm* nxt = robComm::getnxtbee();
+//    robComm* nxt = robComm::getnxtbee();
 
-    for(auto& i : team) {
-        nxt->sendVels(0, 0, i->getID());
-    }
+//    for(auto& i : team) {
+//        nxt->sendVels(0, 0, i->getID());
+//    }
 }
 
 // RefComm Test

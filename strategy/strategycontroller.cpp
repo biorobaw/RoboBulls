@@ -23,14 +23,12 @@ void StrategyController::gameModelUpdated()
     }
 
     activeStrategy->assignBeh();
-    // USING ANY ROBOT TO MAKE IT WORK!!!!!!!!!!!! CHANGE!!!!!!!!!!!!!!!!
 
-    for (int i=0; i < model->getMyTeam().size(); i++)
+
+    for (unsigned int i=0; i < model->getMyTeam().size(); i++)
     {
         Robot *rob = model->getMyTeam().at(i);
         rob->getCurrentBeh().perform(rob);
-//        beh->perform(model->getMyTeam().at(i)); // TODO: robot->getBeh()->perform(robot)
-                                                //       robot->performBeh();
     }
 }
 

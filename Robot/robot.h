@@ -3,6 +3,7 @@
 
 #include "Measure/point.h"
 #include "Performance/behavior.h"
+#include <sstream>
 
 class Behavior;
 
@@ -27,6 +28,8 @@ public:
     int getR();
     int getL();
     Behavior getCurrentBeh();
+
+    stringstream& toString();
 
 
 private:

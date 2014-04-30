@@ -1,36 +1,40 @@
-#include <stdio.h>
 #include "stopbehavior.h"
 #include "Robot/robot.h"
-#include "Model/gamemodel.h"
-#include "Functionality/rotate.h"
-#include "Model/gamemodel.h"
-#include "Performance/gotoposition.h"
-#include "include/util.h"
+#include  "Model/gamemodel.h"
 
 StopBehavior::StopBehavior()
 {
-    kickSent = false;
+//    Skill * activeSkill;
 }
 
 void StopBehavior::perform(Robot * myRobot)
 {
-    GameModel* model = GameModel::getModel();
-    Point bpos = model->getBallPoint();
-    robComm* nxt = robComm::getnxtbee();
+    cout<<"Stop behavior performing start!"<<endl;
 
-    GoToPosition toPos(bpos);
-    toPos.perform(myRobot);
+    GameModel * gamemodel = GameModel::getModel();
 
-    if(Measurments::distance(bpos, myRobot->getRobotPosition()) <= DIST_TOLERANCE+50) {
-       // puts("Close!");
-        if(!kickSent) {
-            kickSent = true;
-            nxt->sendKick(myRobot->getID());
-        }
-    } else {
-        kickSent = false;
+
+    cout << "Distance " << Measurments::distance(myRobot->getRobotPosition(),gamemodel->getBallPoint()) << endl;
+
+    if (Measurments::distance(myRobot->getRobotPosition(),gamemodel->getBallPoint()) < (TARGET - TOLERENCE))
+    {
+        cout<<"Calling GoBackward"<<endl;
+        robotSkill = new GoBackward();
+    }
+    else if (Measurments::distance(myRobot->getRobotPosition(),gamemodel->getBallPoint())> (TARGET - TOLERENCE) &&
+             Measurments::distance(myRobot->getRobotPosition(),gamemodel->getBallPoint()) < (TARGET + TOLERENCE))
+    {
+        cout << "Stopping!" << endl;
+        robotSkill = new Stop();
+    }
+    else
+    {
+        cout<<"Calling GoForward"<<endl;
+        robotSkill = new GoForward();
     }
 
+
+    robotSkill->perform(myRobot);
     //myRobot->setCurrentBeh(StopBehavior);
 }
 

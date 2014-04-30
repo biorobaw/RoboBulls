@@ -19,7 +19,7 @@ public:
     Point&	operator=(const Point& rhs);
     Point	operator+(const Point& rhs);
     Point	operator-(const Point& rhs);
-    string toString();
+    stringstream& toString();
 public:
     float x, y;
 };

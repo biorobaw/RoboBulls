@@ -31,14 +31,13 @@ Point Point::operator-(const Point& rhs)
     return ret;
 }
 
-string Point::toString()
+stringstream& Point::toString()
 {
-//    stringstream myString;
-//    cout<<"trying to access x and y"<<endl;
-    cout<<"(x, y)= "<<"("<<x << ", "<<y<<" )";
-//    myString << "(x, y)= " << "("<<x<<", "<<y<<")";
-//    return myString.str();
-    return "";
+    stringstream myString;
+
+    myString << "(x, y)= " << "("<<x<<", "<<y<<")";
+
+    return myString;
 }
 
 /*

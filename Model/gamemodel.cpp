@@ -121,47 +121,40 @@ GameModel * GameModel::getModel()
 Robot * GameModel::find(int detected_id, vector<Robot*> team)
 {
     Robot *rob = NULL;
-//    cout << "finding robot" << endl;
+
     for(vector<Robot*>::iterator it = team.begin(); it != team.end(); it++)
     {
         if ((*it)->getID() == detected_id)
         {
             // TODO: Compare with current's confidence - low priority
             rob = (*it);
-//            cout<<" id = \n" <<(*it)->getID()<<endl;
         }
     }
 
-//    if (rob == NULL)
-//        cout <<"Robot was NULL"<<endl;
-//    else
-//        cout << "Robot was not NULL" << endl;
 
     return rob;
 }
 
 
- string GameModel::toString()
+ stringstream& GameModel::toString()
  {
-//     stringstream myString;
-//     cout<<"Trying to print ball position!" <<endl;
-//     myString << "Ball Position: " << ballPoint.toString() <<endl;
-     cout << "Ball Position: ";
-     cout<< ballPoint.toString() <<endl;
+     stringstream myString;
 
-     cout<<"\nMy Team Robots: \n";
+     myString << "Ball Position: " << ballPoint.toString().str() <<endl;
+
+     myString<<"\nMy Team Robots: \n";
      for (vector<Robot*>::iterator it = myTeam.begin(); it != myTeam.end(); it++)
      {
-         cout << (*it)->getRobotPosition().toString()<<endl;
+         myString << "\t" << (*it)->toString().str()<<endl;
      }
 
-     cout<<"\nOponent Team Robots: \n";
+     myString<<"\nOponent Team Robots: \n";
      for (vector<Robot*>::iterator it = opTeam.begin(); it != opTeam.end(); it++)
      {
-         cout << (*it)->getRobotPosition().toString()<<endl;
+         myString << "\t" << (*it)->toString().str()<<endl;
      }
-     return ""; //myString.str();
-//     cout<< "Ball Position: " << ballPoint.toString() <<endl;
+
+     return myString;
  }
 
 

@@ -50,7 +50,7 @@ public:
 
     static GameModel * getModel();
 
-    string toString();
+    stringstream& toString();
 private:
     static GameModel * model;
 

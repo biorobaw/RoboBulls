@@ -78,9 +78,6 @@ void VisionComm::updateInfo(SSL_DetectionRobot robot, string color)
 
 bool VisionComm::receive()
 {
-
-    //cout<<("I'm in vissionComm now and receiving something!")<<endl;
-
     client.open(true);
 
     if (client.receive(packet))
