@@ -11,8 +11,8 @@
 #include "include/messages_robocup_ssl_geometry.pb.h"
 #include "include/messages_robocup_ssl_wrapper.pb.h"
 #include "include/robocup_ssl_client.h"
-#include "Robot/robot.h"
-#include "Measure/point.h"
+#include "Model/robot.h"
+#include "Utilities/point.h"
 
 using namespace std;
 

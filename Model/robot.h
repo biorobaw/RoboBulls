@@ -1,8 +1,8 @@
 #ifndef ROBOT_H
 #define ROBOT_H
 
-#include "Measure/point.h"
-#include "Performance/behavior.h"
+#include "Utilities/point.h"
+#include "behavior/behavior.h"
 #include <sstream>
 
 class Behavior;
@@ -27,10 +27,15 @@ public:
     int getID();
     int getR();
     int getL();
-    Behavior getCurrentBeh();
+    Behavior * getCurrentBeh();
 
     stringstream& toString();
 
+//    bool hasTheBall();
+
+    unsigned kick;
+    int count;
+    bool hasBall;
 
 private:
     Point robotPosition;

@@ -1,9 +1,9 @@
 #ifndef STOPSTRATEGY_H
 #define STOPSTRATEGY_H
 
-#include "strategy.h"
+#include "strategy/strategy.h"
 #include "Model/gamemodel.h"
-#include "Performance/behavior.h"
+#include "behavior/behavior.h"
 
 
 class StopStrategy:public strategy

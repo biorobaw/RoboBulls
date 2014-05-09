@@ -24,7 +24,7 @@ RefComm::~RefComm(void)
 
 void RefComm::close() {
     mc.close();
-    cout<<"close"<< endl;
+//    cout<<"close"<< endl;
 }
 
 bool RefComm::open(bool blocking) {

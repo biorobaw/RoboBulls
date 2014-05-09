@@ -16,10 +16,14 @@ void StrategyController::gameModelUpdated()
     if (model->getGameState() == 'S')
     {
         activeStrategy = new StopStrategy();
-//        beh = new StopBehavior(); // TODO: This should not be here - it's stopstrategy
-    } else {
+    }
+    else if (model->getGameState() == 'p')
+    {
+        activeStrategy = new PenaltyStrategy();
+    }
+    else
+    {
         activeStrategy = new StopStrategy();
-//        beh = new StopBehavior(); // TODO: This should not be here - it's stopstrategy
     }
 
     activeStrategy->assignBeh();
@@ -28,7 +32,8 @@ void StrategyController::gameModelUpdated()
     for (unsigned int i=0; i < model->getMyTeam().size(); i++)
     {
         Robot *rob = model->getMyTeam().at(i);
-        rob->getCurrentBeh().perform(rob);
+
+        rob->getCurrentBeh()->perform(rob);
     }
 }
 

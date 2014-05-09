@@ -25,22 +25,26 @@ SOURCES += main.cpp \
     include/robocup_ssl_client.cpp \
     include/serialib.cpp \
     Model/gamemodel.cpp \
-    Robot/robot.cpp \
     strategy/strategy.cpp \
     strategy/strategycontroller.cpp \
     strategy/stopstrategy.cpp \
     communication/robcomm.cpp \
-    Performance/behavior.cpp \
-    Performance/skill.cpp \
-    Performance/gotoposition.cpp \
-    Performance/stopbehavior.cpp \
-    Functionality/goforward.cpp \
-    Functionality/gobackward.cpp \
-    Measure/point.cpp \
-    Measure/measurments.cpp \
+    behavior/behavior.cpp \
+    skill/skill.cpp \
+    behavior/stopbehavior.cpp \
     communication/visioncomm.cpp \
-    Functionality/stop.cpp \
-    Functionality/rotate.cpp
+    skill/kick.cpp \
+    skill/waitforball.cpp \
+    Model/robot.cpp \
+    skill/gotoposition.cpp \
+    Utilities/point.cpp \
+    Utilities/measurments.cpp \
+    skill/gobackward.cpp \
+    skill/goforward.cpp \
+    skill/rotate.cpp \
+    skill/stop.cpp \
+    behavior/penaltybehavior.cpp \
+    strategy/penaltystrategy.cpp
 
 HEADERS += \
     communication/refcomm.h \
@@ -59,7 +63,7 @@ HEADERS += \
     strategy/strategycontroller.h \
     strategy/stopstrategy.h \
     communication/robcomm.h \
-    Performance/behavior.h \
+    behavior/behavior.h \
     Performance/skill.h \
     Performance/gotoposition.h \
     Performance/stopbehavior.h \
@@ -70,6 +74,20 @@ HEADERS += \
     communication/visioncomm.h \
     Functionality/stop.h \
     Performance/rotate.h \
-    Functionality/rotate.h
+    Functionality/rotate.h \
+    skill/kick.h \
+    skill/waitforball.h \
+    Model/robot.h \
+    skill/gotoposition.h \
+    skill/skill.h \
+    behavior/stopbehavior.h \
+    Utilities/measurments.h \
+    Utilities/point.h \
+    skill/gobackward.h \
+    skill/goforward.h \
+    skill/rotate.h \
+    skill/stop.h \
+    behavior/penaltybehavior.h \
+    strategy/penaltystrategy.h
 
 unix|win32: LIBS += -lprotobuf

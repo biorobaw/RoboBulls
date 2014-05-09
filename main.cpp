@@ -3,7 +3,7 @@
 #include "communication/visioncomm.h"
 #include "Model/gamemodel.h"
 #include "communication/robcomm.h"
-#include "Robot/robot.h"
+#include "Model/robot.h"
 #include "include/messages_robocup_ssl_detection.pb.h"
 #include "include/messages_robocup_ssl_geometry.pb.h"
 #include "include/messages_robocup_ssl_wrapper.pb.h"

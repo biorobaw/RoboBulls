@@ -1,5 +1,4 @@
 #include "gamemodel.h"
-#include "Robot/robot.h"
 #include <stddef.h>  // defines NULL
 
 const float CONF_THRESHOLD=0.0;
@@ -58,6 +57,36 @@ void GameModel::setStrategyController(StrategyController *sc)
     this->sc = sc;
 }
 
+void GameModel::setHasBall()
+{
+    for (vector<Robot*>::iterator it = myTeam.begin(); it != myTeam.end(); it++)
+    {
+        if (Measurments::isClose((*it)->getRobotPosition(), getBallPoint(), 30.00))
+        {
+            (*it)->hasBall=true;
+            cout << (*it)->getID() << " has the ball!!!!!"<<endl;
+        }
+        else
+        {
+            (*it)->hasBall=false;
+        }
+    }
+    for (vector<Robot*>::iterator it = opTeam.begin(); it != opTeam.end(); it++)
+    {
+        if (Measurments::isClose((*it)->getRobotPosition(), getBallPoint(), 30.00))
+        {
+            (*it)->hasBall=true;
+            cout << (*it)->getID() << " has the ball!!!!!"<<endl;
+        }
+        else
+        {
+            (*it)->hasBall=false;
+        }
+    }
+
+}
+
+
 vector<Robot*> GameModel::getOponentTeam()
 {
     return opTeam;
@@ -112,6 +141,13 @@ GameModel * GameModel::getModel()
     return model;
 }
 
+Point GameModel::getPenaltyPoint()
+{
+    penaltyPoint.x =2045.00;
+    penaltyPoint.y = 22.00;
+    return penaltyPoint;
+}
+
 /**
  * @brief GameModel::find : find robot in team, compare ids, return robot if ids are same
  * @param robot
@@ -130,10 +166,13 @@ Robot * GameModel::find(int detected_id, vector<Robot*> team)
             rob = (*it);
         }
     }
-
-
     return rob;
 }
+
+//Robot * GameModel::getHasBall()
+//{
+
+//}
 
 
  stringstream& GameModel::toString()

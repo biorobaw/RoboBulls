@@ -78,9 +78,6 @@ void VisionComm::updateInfo(SSL_DetectionRobot robot, string color)
 
 bool VisionComm::receive()
 {
-
-    //cout<<("I'm in vissionComm now and receiving something!")<<endl;
-
     client.open(true);
 
     if (client.receive(packet))
@@ -155,7 +152,7 @@ bool VisionComm::receive()
         }    //            return false;
     }
 //        cout << "Size at end of detection: " << gamemodel->getMyTeam().size()+gamemodel->getOponentTeam().size() << endl;
-    cout <<gamemodel->toString().str();
+//    cout <<gamemodel->toString().str();
 }
 
 

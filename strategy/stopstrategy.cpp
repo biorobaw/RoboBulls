@@ -9,24 +9,16 @@ StopStrategy::StopStrategy()
 
 void StopStrategy::assignBeh()
 {
-    vector <Robot*> team;
+    vector <Robot*> myTeam;
 
     beh = new StopBehavior();
 
     GameModel * gamemodel = GameModel::getModel();
 
-    //TODO: should be assigning behaviours
-    //control.stop(comm, NXTrobot);
+    myTeam = gamemodel->getMyTeam();
 
-    // Assign stop behaviour to every robot
-        //Get myteam from model
-            // For every robot in my team
-                // Assign new stopbehavior
-
-    team = gamemodel->getMyTeam();
-
-     for(int i=0; i<team.size(); i++)
-     {
-         team[i]->setCurrentBeh(beh);
-     }
+    for(unsigned int i=0; i<myTeam.size(); i++)
+    {
+        myTeam[i]->setCurrentBeh(beh);
+    }
 }

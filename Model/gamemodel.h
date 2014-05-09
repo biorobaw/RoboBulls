@@ -2,7 +2,9 @@
 #define GAMEMODEL_H
 
 
-#include "Measure/point.h"
+#include "Utilities/measurments.h"
+#include "Utilities/point.h"
+#include "../Model/robot.h"
 #include "../strategy/strategycontroller.h"
 #include "include/messages_robocup_ssl_detection.pb.h"
 #include "include/messages_robocup_ssl_geometry.pb.h"
@@ -32,6 +34,10 @@ public:
     void setBallPoint(Point);
     void setGameState(char gameState);
     void setStrategyController(StrategyController * sc);
+//    void setPenaltyPoint();
+
+    //calculates the distance between robots and ball, and determines which robot has the ball
+    void setHasBall();
 
     //gets
     vector <Robot *> getOponentTeam();
@@ -43,6 +49,10 @@ public:
     int getYellowGoals();
     float getRemainingTime();
     char getGameState();
+    Point getPenaltyPoint();
+
+    //returns the robot which has the ball
+//    Robot * getHasBall();
 //    void play();
 
     //Other Functions
@@ -51,6 +61,8 @@ public:
     static GameModel * getModel();
 
     stringstream& toString();
+
+
 private:
     static GameModel * model;
 
@@ -62,6 +74,7 @@ private:
     float x_ballPosition;
     float y_ballPosition;
     Point ballPoint;
+    Point penaltyPoint;
 
     //State gameState;
     int blueGoals;
