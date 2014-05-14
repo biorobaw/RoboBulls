@@ -3,7 +3,6 @@
 PenaltyBehavior::PenaltyBehavior()
 {
     pb = moving;
-//    cout<<"pb is in constructor : "<<pb<<endl;
 }
 
 /**
@@ -12,9 +11,6 @@ PenaltyBehavior::PenaltyBehavior()
  */
 void PenaltyBehavior::perform(Robot * myRobot)
 {
-    cout << "Penalty behavior performing"<<endl;
-
-//    robComm *nxtbee = robComm::getnxtbee();
 
     GameModel *model = GameModel::getModel();
 
@@ -25,7 +21,6 @@ void PenaltyBehavior::perform(Robot * myRobot)
     switch(pb)
     {
     case moving:
-//        cout<<"pb is : "<<pb<<endl;
         if(!(Measurments::isClose(myRobot->getRobotPosition(),model->getPenaltyPoint(),250)))
         {
             go->perform(myRobot);
@@ -33,10 +28,8 @@ void PenaltyBehavior::perform(Robot * myRobot)
         }
         else
             pb = kicking;
-//        cout<<"pb is : "<<pb<<endl;
         break;
     case kicking:
-//        cout<<"I'm here!"<<endl;
         kick->perform(myRobot);
         cout<<"kicking performed!"<<endl;
         pb = idling;
@@ -48,16 +41,6 @@ void PenaltyBehavior::perform(Robot * myRobot)
     default: cout<<"Default case!"<<endl;
 
     }
-
-//    robotSkill->perform(myRobot);
-
-//    if(Measurments::isClose(myRobot->getRobotPosition(),model->getPenaltyPoint(),300))
-//        kicking->perform(myRobot);
-
-//    if (myRobot->getRobotPosition()== model->getPenaltyPoint())
-//        kicking->perform(myRobot);
-
-//    nxtbee->sendKick(myRobot->getID());
 
 }
 
