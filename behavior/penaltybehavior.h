@@ -10,6 +10,7 @@
 #include "skill/stop.h"
 #include "skill/rotate.h"
 #include "skill/gotoposition.h"
+#include "skill/kick.h"
 #include "Model/gamemodel.h"
 
 
@@ -23,10 +24,12 @@ class PenaltyBehavior:public Behavior
 public:
     PenaltyBehavior();
     void perform(Robot *);
-    Skill * getSkill();
+//    Skill * getSkill();
 
-private:
-    Skill * robotSkill;
+    enum penaltyBehavior_t {moving, kicking, idling} pb;
+
+//private:
+//    Skill * robotSkill;
 
 };
 

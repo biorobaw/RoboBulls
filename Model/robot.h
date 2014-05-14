@@ -36,6 +36,7 @@ public:
     unsigned kick;
     int count;
     bool hasBall;
+    bool hasBeh;
 
 private:
     Point robotPosition;

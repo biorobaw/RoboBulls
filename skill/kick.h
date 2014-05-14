@@ -4,6 +4,7 @@
 
 #include "skill/skill.h"
 #include "Model/robot.h"
+#include "communication/robcomm.h"
 
 using namespace std;
 
@@ -14,11 +15,11 @@ class Kick:public Skill
 public:
     Kick();
 
-    void kickTheBall();
-//    void perform(Robot *);
+//    void kickTheBall();
+    void perform(Robot *);
 
 private:
-    unsigned roboKick;
+    bool roboKick;
 
 };
 

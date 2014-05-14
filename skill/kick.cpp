@@ -4,13 +4,23 @@ Kick::Kick()
 {
 }
 
-void Kick::kickTheBall()
+void Kick::perform(Robot *myRobot)
 {
-    int count = 0;
-    roboKick = 1;
-    if (count > 4)
-        roboKick = 0;
-    count++;
+    robComm *nxtbee = robComm::getnxtbee();
+//    int count = 0;
+    roboKick = true;
+//    if (count > 4)
+//    {
+    while (roboKick)
+    {
+        nxtbee->sendKick(myRobot->getID());
+//        count++;
+//        if (count > 1)
+            roboKick = false;
+    }
+//        roboKick = 0;
+//    }
+//    count++;
 }
 
 //void Kick::perform(Robot *rob)

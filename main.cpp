@@ -9,6 +9,10 @@
 #include "include/messages_robocup_ssl_wrapper.pb.h"
 #include "include/robocup_ssl_client.h"
 #include <stdio.h>
+#include "behavior/behavior.h"
+#include "behavior/penaltybehavior.h"
+#include <typeinfo>
+#include "behavior/stopbehavior.h"
 
 void exitStopRobot(void)
 {
@@ -48,4 +52,10 @@ int main(int argc, char *argv[])
     refCommunicator.run();
 
     return a.exec();
+
+//    Behavior *mybeh = new PenaltyBehavior();
+
+//    if (typeid(*mybeh) == typeid(StopBehavior))
+//        cout<<"yes!"<<endl;
+//    cout<<"ugh!"<<endl;
 }

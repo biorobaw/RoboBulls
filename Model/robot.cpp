@@ -32,6 +32,7 @@ void Robot::setR(float right)
 void Robot::setCurrentBeh(Behavior *currentBeh)
 {
     currentBehavior = currentBeh;
+    hasBeh = true;
 }
 
 
