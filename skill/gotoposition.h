@@ -6,7 +6,7 @@
 #include "skill/rotate.h"
 
 #define DIST_TOLERANCE 300
-#define DIST_VELOCITY 80
+#define DIST_VELOCITY 50
 
 /* GoToPosition Skill
    April 25 2014. Contributor: James Waugh

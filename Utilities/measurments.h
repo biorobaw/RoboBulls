@@ -33,6 +33,9 @@ public:
         that is closest to the given point p1.
         */
     static int closestPoint(const Point&, const Point*, Point* out = NULL);
+
+    //Calculates the slop, given two points
+    static float slop(Point, Point);
 };
 
 #endif // MEASURMENTS_H

@@ -20,6 +20,12 @@ public:
     void setL(float);
     void setCurrentBeh(Behavior *);
 
+//    //*******************************************************
+//    //Testing Shamsi's code
+//    void setRightWheelVelocity(int);
+//    void setLeftWheelVelocity(int);
+//    //*******************************************************
+
 
     //gets
     Point getRobotPosition();
@@ -28,6 +34,12 @@ public:
     int getR();
     int getL();
     Behavior * getCurrentBeh();
+
+//    //*******************************************************
+//    //Testing Shamsi's code
+//    int getRightWheelVelocity();
+//    int getLeftWheelVelocity();
+//    //*******************************************************
 
     stringstream& toString();
 
@@ -44,6 +56,12 @@ private:
     int id;
     float L, R; // used for robot's movements
     Behavior *currentBehavior;
+
+//    //*******************************************************
+//    //Testing Shamsi's code
+//    int right_wheel_vel;
+//    int left_wheel_vel;
+//    //*******************************************************
 
 };
 

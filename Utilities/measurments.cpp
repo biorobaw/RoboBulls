@@ -38,3 +38,8 @@ int closestPoint(const Point& p1, const Point* array, int n, Point* out)
 
     return ret;
 }
+
+float Measurments::slop(Point p1, Point p2)
+{
+    return ((p1.y-p2.y)/(p1.x-p2.x));
+}

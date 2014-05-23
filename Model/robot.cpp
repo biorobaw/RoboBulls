@@ -35,6 +35,20 @@ void Robot::setCurrentBeh(Behavior *currentBeh)
     hasBeh = true;
 }
 
+////*******************************************************
+////Testing Shamsi's code
+//void Robot::setRightWheelVelocity(int rVel)
+//{
+//    right_wheel_vel = rVel;
+//}
+
+//void Robot::setLeftWheelVelocity(int lVel)
+//{
+//    left_wheel_vel = lVel;
+//}
+
+////*******************************************************
+
 
 Point Robot::getRobotPosition()
 {
@@ -66,11 +80,26 @@ Behavior * Robot::getCurrentBeh()
     return currentBehavior;
 }
 
+////*******************************************************
+////Testing Shamsi's code
+//int Robot::getRightWheelVelocity()
+//{
+//    return right_wheel_vel;
+//}
+
+//int Robot::getLeftWheelVelocity()
+//{
+//    return left_wheel_vel;
+//}
+
+////*******************************************************
+
+
 stringstream& Robot::toString()
 {
     stringstream myString;
 
-    myString << "\t" << getRobotPosition().toString().str() << "\t ID: " << getID();
+    myString << "\t" << getRobotPosition().toString().str() << "\t ID: " << getID() << "\t Orientation: "<< getOrientation();
 
     return myString;
 

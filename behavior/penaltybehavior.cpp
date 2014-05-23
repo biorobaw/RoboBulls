@@ -14,14 +14,14 @@ void PenaltyBehavior::perform(Robot * myRobot)
 
     GameModel *model = GameModel::getModel();
 
-    Skill *go = new GoToPosition(model->getPenaltyPoint().x, model->getPenaltyPoint().y);
+    Skill *go = new GoToPosition(model->getXBall(), model->getYBall());
     Skill *kick = new Kick();
     Skill *stop = new Stop();
 
     switch(pb)
     {
     case moving:
-        if(!(Measurments::isClose(myRobot->getRobotPosition(),model->getPenaltyPoint(),250)))
+        if(!(Measurments::isClose(myRobot->getRobotPosition(),model->getBallPoint(),150)))
         {
             go->perform(myRobot);
             cout <<"moving performed!"<<endl;

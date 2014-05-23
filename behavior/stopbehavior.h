@@ -9,6 +9,7 @@
 #include "skill/gobackward.h"
 #include "skill/goforward.h"
 #include "skill/stop.h"
+#include "skill/gotoposition.h"
 
 
 using namespace std;

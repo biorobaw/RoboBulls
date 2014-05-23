@@ -7,7 +7,7 @@ StopStrategy::StopStrategy()
 {
 }
 
-void StopStrategy::assignBeh()
+void StopStrategy:: assignBeh()
 {
     vector <Robot*> myTeam;
 

@@ -44,7 +44,11 @@ SOURCES += main.cpp \
     skill/rotate.cpp \
     skill/stop.cpp \
     behavior/penaltybehavior.cpp \
-    strategy/penaltystrategy.cpp
+    strategy/penaltystrategy.cpp \
+    skill/robottoinertialvelocities.cpp \
+    skill/closedloopcontrol.cpp \
+    skill/matrixcalculator.cpp \
+    skill/gotopositionwithorientation.cpp
 
 HEADERS += \
     communication/refcomm.h \
@@ -58,23 +62,12 @@ HEADERS += \
     include/timer.h \
     include/util.h \
     Model/gamemodel.h \
-    Robot/robot.h \
     strategy/strategy.h \
     strategy/strategycontroller.h \
     strategy/stopstrategy.h \
     communication/robcomm.h \
     behavior/behavior.h \
-    Performance/skill.h \
-    Performance/gotoposition.h \
-    Performance/stopbehavior.h \
-    Functionality/goforward.h \
-    Functionality/gobackward.h \
-    Measure/point.h \
-    Measure/measurments.h \
     communication/visioncomm.h \
-    Functionality/stop.h \
-    Performance/rotate.h \
-    Functionality/rotate.h \
     skill/kick.h \
     skill/waitforball.h \
     Model/robot.h \
@@ -88,6 +81,10 @@ HEADERS += \
     skill/rotate.h \
     skill/stop.h \
     behavior/penaltybehavior.h \
-    strategy/penaltystrategy.h
+    strategy/penaltystrategy.h \
+    skill/robottoinertialvelocities.h \
+    skill/matrixcalculator.h \
+    skill/closedloopcontrol.h \
+    skill/gotopositionwithorientation.h
 
 unix|win32: LIBS += -lprotobuf

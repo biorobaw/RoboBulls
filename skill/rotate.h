@@ -6,7 +6,7 @@
 #include "Model/robot.h"
 
 #define ROT_TOLERANCE 6*(M_PI/180)
-#define ROT_VELOCITY 40
+#define ROT_VELOCITY 70
 #define CLOCKWISE   1
 #define CCLOCKWISE -1
 
