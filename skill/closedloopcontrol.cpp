@@ -61,14 +61,14 @@ wheelvelocities closed_loop_control(double x_current,double y_current, double th
     left_motor_velocity = (robot_xvel + (wheel_separation*robot_turnrate/wheel_radius)*k_turnrate)/2;
     right_motor_velocity = (robot_xvel - (wheel_separation*robot_turnrate/wheel_radius)*k_turnrate)/2;
 
-    cout << endl << "distance error: " << rho << endl;
-    cout << "direction error: " << alpha * 180 / M_PI << endl;
-    cout << "orientation error: " << (theta_goal-theta_current) * 180 / M_PI << endl;
+//    cout << endl << "distance error: " << rho << endl;
+//    cout << "direction error: " << alpha * 180 / M_PI << endl;
+//    cout << "orientation error: " << (theta_goal-theta_current) * 180 / M_PI << endl;
 
-    cout << endl << "x-velocity: " << robot_xvel << endl;
-    cout << "Turnrate: " <<robot_turnrate << endl;
-    cout << "LMV: " << left_motor_velocity << endl;
-    cout << "RMV: " << right_motor_velocity << endl;
+//    cout << endl << "x-velocity: " << robot_xvel << endl;
+//    cout << "Turnrate: " <<robot_turnrate << endl;
+//    cout << "LMV: " << left_motor_velocity << endl;
+//    cout << "RMV: " << right_motor_velocity << endl;
 
     if (left_motor_velocity > 100)
         left_motor_velocity = 100;

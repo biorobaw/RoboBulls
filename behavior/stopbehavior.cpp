@@ -7,7 +7,7 @@
 #include "Utilities/measurments.h"
 #include "skill/gotopositionwithorientation.h"
 
-#define RADIUS 500
+#define RADIUS 1000
 StopBehavior::StopBehavior()
 {
 //    Skill * activeSkill;
@@ -27,6 +27,8 @@ void StopBehavior::perform(Robot * myRobot)
 //    float distance = Measurments::distance(targetPoint, gamemodel->getBallPoint());
     targetPoint.x = (RADIUS*cos(angle))+ballPoint.x;
     targetPoint.y = (RADIUS*sin(angle))+ballPoint.y;
+
+    cout<<"Target point \t x: "<<targetPoint.x<<"\t y: "<<targetPoint.y<<endl;
 
 
 //    //************************************************************************
@@ -68,13 +70,6 @@ void StopBehavior::perform(Robot * myRobot)
 //    }
 
 
-//    //************************************************************************
-//    //Testing shamsi's code
-
-//    myRobot->setRightWheelVelocity(wheelvelocity.right);
-//    myRobot->setLeftWheelVelocity(wheelvelocity.left);
-//    robotSkill = new GoForward();
-//    //************************************************************************
     robotSkill = new GoToPositionWithOrientation(targetPoint);
     robotSkill->perform(myRobot);
     //myRobot->setCurrentBeh(StopBehavior);
