@@ -21,7 +21,7 @@ void GoToPositionWithOrientation::perform(Robot * robot)
 
     //********************************************************************
     //Checking shamsi's code
-    robComm* nxtbee= robComm::getnxtbee();
+    RobComm *nxtbee = RobComm::getRobComm();
     Point robotPosition = robot->getRobotPosition();
     float robot_x = robotPosition.x;
     float robot_y = robotPosition.y;

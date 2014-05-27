@@ -10,7 +10,7 @@ void Stop::perform(Robot *robot)
 {
     cout<<"Stoping!"<<endl;
 
-    robComm *nxtbee = robComm::getnxtbee();
+    RobComm *nxtbee = RobComm::getRobComm();
 
 //    //********************************************************************
 //    //Checking shamsi's code

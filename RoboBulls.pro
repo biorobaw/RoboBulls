@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core
+QT       += core network
 
 QT       -= gui
 
@@ -28,7 +28,6 @@ SOURCES += main.cpp \
     strategy/strategy.cpp \
     strategy/strategycontroller.cpp \
     strategy/stopstrategy.cpp \
-    communication/robcomm.cpp \
     behavior/behavior.cpp \
     skill/skill.cpp \
     behavior/stopbehavior.cpp \
@@ -48,7 +47,13 @@ SOURCES += main.cpp \
     skill/robottoinertialvelocities.cpp \
     skill/closedloopcontrol.cpp \
     skill/matrixcalculator.cpp \
-    skill/gotopositionwithorientation.cpp
+    skill/gotopositionwithorientation.cpp \
+    communication/simrobcomm.cpp \
+    include/grSim_Replacement.pb.cc \
+    include/grSim_Packet.pb.cc \
+    include/grSim_Commands.pb.cc \
+    communication/nxtrobcomm.cpp \
+    communication/robcomm.cpp
 
 HEADERS += \
     communication/refcomm.h \
@@ -65,7 +70,6 @@ HEADERS += \
     strategy/strategy.h \
     strategy/strategycontroller.h \
     strategy/stopstrategy.h \
-    communication/robcomm.h \
     behavior/behavior.h \
     communication/visioncomm.h \
     skill/kick.h \
@@ -85,6 +89,13 @@ HEADERS += \
     skill/robottoinertialvelocities.h \
     skill/matrixcalculator.h \
     skill/closedloopcontrol.h \
-    skill/gotopositionwithorientation.h
+    skill/gotopositionwithorientation.h \
+    communication/simrobcomm.h \
+    include/grSim_Replacement.pb.h \
+    include/grSim_Packet.pb.h \
+    include/grSim_Commands.pb.h \
+    include/globals.h \
+    communication/nxtrobcomm.h \
+    communication/robcomm.h
 
 unix|win32: LIBS += -lprotobuf

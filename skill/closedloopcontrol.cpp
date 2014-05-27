@@ -17,7 +17,7 @@ wheelvelocities closed_loop_control(double x_current,double y_current, double th
     //kRho, kAlpha, kBeta
 
     double krho = 3;
-    double kalpha = 8;
+    double kalpha = 1;
     double kbeta = -1.5;
 
     //*******************************************************************************************

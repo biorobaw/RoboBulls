@@ -13,6 +13,7 @@
 #include "include/robocup_ssl_client.h"
 #include "Model/robot.h"
 #include "Utilities/point.h"
+#include "include/globals.h"
 
 using namespace std;
 
@@ -24,7 +25,7 @@ const float CONF_THRESHOLD = 0.91;
 /**
  * @brief DISCARD_RATE sets the rate in which packets are discarded. only 1/DISCARD_RATE packages are processed.
  */
-const int DISCARD_RATE = 1;
+const int DISCARD_RATE = 60;
 
 class VisionComm: public QThread
 {

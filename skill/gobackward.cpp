@@ -10,7 +10,7 @@ void GoBackward::perform(Robot *robot)
 {
     cout<<"Going Backward!"<<endl;
 
-    robComm *nxtbee = robComm::getnxtbee();
+    RobComm *nxtbee = RobComm::getRobComm();
 
 //    //********************************************************************
 //    //Checking shamsi's code
