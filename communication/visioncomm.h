@@ -52,7 +52,7 @@ public:
 protected:
     GameModel *gamemodel;
     SSL_WrapperPacket packet;
-    RoboCupSSLClient client;
+    RoboCupSSLClient * client;
     int count;
 };
 

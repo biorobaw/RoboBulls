@@ -10,10 +10,11 @@ VisionComm::VisionComm(GameModel *gm)
 {
 // Use different ports depending on whether it is simulated or the actual vision system
 #ifdef SIMULATED
-    client.open(10002);
+    client = new RoboCupSSLClient(10020,"224.5.23.3");
 #else
-    client.open(10020);
+    client = new RoboCupSSLClient();
 #endif
+    client->open(true);
     gamemodel = gm;
     count=0;
 
@@ -21,7 +22,7 @@ VisionComm::VisionComm(GameModel *gm)
 
 VisionComm::~VisionComm(void)
 {
-    client.close();
+    client->close();
     //CloseHandle(hThread); //stop thread
 }
 
@@ -86,9 +87,9 @@ void VisionComm::updateInfo(SSL_DetectionRobot robot, string color)
 
 bool VisionComm::receive()
 {
-    client.open(true);
+//    client.open(true);
 
-    if (client.receive(packet))
+    if (client->receive(packet))
     {
 
         //Rcv packet
