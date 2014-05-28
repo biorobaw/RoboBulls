@@ -53,7 +53,8 @@ SOURCES += main.cpp \
     include/grSim_Packet.pb.cc \
     include/grSim_Commands.pb.cc \
     communication/nxtrobcomm.cpp \
-    communication/robcomm.cpp
+    communication/robcomm.cpp \
+    skill/gotopositionfacing.cpp
 
 HEADERS += \
     communication/refcomm.h \
@@ -96,6 +97,7 @@ HEADERS += \
     include/grSim_Commands.pb.h \
     include/globals.h \
     communication/nxtrobcomm.h \
-    communication/robcomm.h
+    communication/robcomm.h \
+    skill/gotopositionfacing.h
 
 unix|win32: LIBS += -lprotobuf

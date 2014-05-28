@@ -7,7 +7,7 @@
 #include "Utilities/measurments.h"
 #include "skill/gotopositionwithorientation.h"
 
-#define RADIUS 500
+#define RADIUS 1000
 StopBehavior::StopBehavior()
 {
 //    Skill * activeSkill;
@@ -28,54 +28,11 @@ void StopBehavior::perform(Robot * myRobot)
     targetPoint.x = (RADIUS*cos(angle))+ballPoint.x;
     targetPoint.y = (RADIUS*sin(angle))+ballPoint.y;
 
-
-//    //************************************************************************
-//    //Testing shamsi's code
-//    wheelvelocities wheelvelocity;
-//    double robot_x = myRobot->getRobotPosition().x;
-//    double robot_y = myRobot->getRobotPosition().y;
-//    double robot_orientation = myRobot->getOrientation();
-//    double ball_x = gamemodel->getBallPoint().x;
-//    double ball_y = gamemodel->getBallPoint().y;
-
-//    wheelvelocities wheelvelocity = closed_loop_control(robot_x, robot_y, robot_orientation,0,0,-M_PI);
-//    nxtbee->sendVels(wheelvelocity.left, wheelvelocity.right,robot->getID());
-//    myRobot->setRightWheelVelocity(wheelvelocity.right);
-//    myRobot->setLeftWheelVelocity(wheelvelocity.left);
-//    //************************************************************************
+    cout<<"Target point \t x: "<<targetPoint.x<<"\t y: "<<targetPoint.y<<endl;
 
 
-//    cout << "Distance " << Measurments::distance(myRobot->getRobotPosition(),gamemodel->getBallPoint()) << endl;
-
-//    if (Measurments::distance(myRobot->getRobotPosition(),gamemodel->getBallPoint()) < (TARGET - TOLERENCE))
-//    {
-//        cout<<"Calling GoBackward"<<endl;
-////        wheelvelocity = closed_loop_control(robot_x, robot_y, robot_orientation,0,0,-M_PI); //Cheking Shamsi's code
-//        robotSkill = new GoBackward();
-//    }
-//    else if (Measurments::distance(myRobot->getRobotPosition(),gamemodel->getBallPoint())> (TARGET - TOLERENCE) &&
-//             Measurments::distance(myRobot->getRobotPosition(),gamemodel->getBallPoint()) < (TARGET + TOLERENCE))
-//    {
-//        cout << "Stopping!" << endl;
-////        wheelvelocity = closed_loop_control(robot_x, robot_y, robot_orientation,0,0,-M_PI); //Cheking Shamsi's code
-//        robotSkill = new Stop();
-//    }
-//    else
-//    {
-//        cout<<"Calling GoForward"<<endl;
-////        wheelvelocity = closed_loop_control(robot_x, robot_y, robot_orientation,0,0,-M_PI); //Cheking Shamsi's code
-//        robotSkill = new GoForward();
-//    }
-
-
-//    //************************************************************************
-//    //Testing shamsi's code
-
-//    myRobot->setRightWheelVelocity(wheelvelocity.right);
-//    myRobot->setLeftWheelVelocity(wheelvelocity.left);
-//    robotSkill = new GoForward();
-//    //************************************************************************
-    robotSkill = new GoToPositionWithOrientation(targetPoint);
+    robotSkill = new GoToPositionWithOrientation(targetPoint, Measurments::angleBetween(robotPoint, ballPoint));
+//    robotSkill = new GoToPositionWithOrientation(Point(0,0),M_PI/2);
     robotSkill->perform(myRobot);
     //myRobot->setCurrentBeh(StopBehavior);
 }
@@ -84,3 +41,4 @@ Skill * StopBehavior::getSkill()
 {
     return robotSkill;
 }
+

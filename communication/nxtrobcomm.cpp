@@ -10,6 +10,7 @@ NXTRobComm::NXTRobComm()
 
     if (Ret!=1) { // If an error occured...
         printf ("Error while opening port. Permission problem ?\n"); // ... display a message ...
+        exit(1);
         //return Ret;// ... quit the application
     }
     else{

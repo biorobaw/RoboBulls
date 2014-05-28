@@ -1,4 +1,4 @@
-#include "gotopositionwithorientation.h"
+#include "gotopositionfacing.h"
 #include "Utilities/measurments.h"
 #include "communication/robcomm.h"
 #include "include/util.h"
@@ -7,19 +7,17 @@
 #include "Model/gamemodel.h"
 #include <math.h>
 
-GoToPositionWithOrientation::GoToPositionWithOrientation(Point target, double goalOrientation)
+GoToPositionFacing::GoToPositionFacing(Point target)
 {
     targetPosition = target;
-    this->goalOrientation = goalOrientation;
 }
 
-GoToPositionWithOrientation::GoToPositionWithOrientation(float tx, float ty, double goalOrientation)
+GoToPositionFacing::GoToPositionFacing(float tx, float ty)
 {
     targetPosition = Point(tx, ty);
-    this->goalOrientation = goalOrientation;
 }
 
-void GoToPositionWithOrientation::perform(Robot * robot)
+void GoToPositionFacing::perform(Robot * robot)
 {
     cout<<"calling go to position with orientation!"<<endl;
     //********************************************************************
@@ -29,10 +27,9 @@ void GoToPositionWithOrientation::perform(Robot * robot)
     double robot_x = robotPosition.x;
     double robot_y = robotPosition.y;
     double robot_orientation = robot->getOrientation();
-    cout << "Orientation " << robot_orientation << endl;
 //    float finalOrientation = Measurments::slop(robotPosition, targetPosition);
-    //double finalOrientation = atan2(targetPosition.y-robot_y, targetPosition.x-robot_x);
-    wheelvelocities wheelvelocity = closed_loop_control(robot_x, robot_y, robot_orientation, targetPosition.x, targetPosition.y, goalOrientation);
+    double finalOrientation = atan2(targetPosition.y-robot_y, targetPosition.x-robot_x);
+    wheelvelocities wheelvelocity = closed_loop_control(robot_x, robot_y, robot_orientation, targetPosition.x, targetPosition.y, finalOrientation);
 
     float left_wheel_velocity = wheelvelocity.left;
     float right_wheel_velocity = wheelvelocity.right;

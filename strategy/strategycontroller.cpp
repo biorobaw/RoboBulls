@@ -11,7 +11,7 @@ StrategyController::StrategyController()
 
 void StrategyController::gameModelUpdated()
 {
-    cout<< model->getGameState() << endl;
+//    cout<< model->getGameState() << endl;
 
     if (model->getGameState() == 'S')
     {

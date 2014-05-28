@@ -8,6 +8,7 @@ RobComm * RobComm::robComm = NULL;
 
 RobComm * RobComm::getRobComm()
 {
+
     if (robComm == NULL)
 #ifdef SIMULATED
         robComm = new SimRobComm();
@@ -16,4 +17,6 @@ RobComm * RobComm::getRobComm()
 #endif
 
     return robComm;
+
+
 }
