@@ -26,7 +26,8 @@ GoToPosition::GoToPosition(float tx, float ty)
 
 void GoToPosition::perform(Robot * robot)
 {
-    robComm* nxt       = robComm::getnxtbee();
+
+    RobComm* nxt       = RobComm::getRobComm();
     Point    rPos      = robot->getRobotPosition();
     float    targetAng = Measurments::angleBetween(rPos, targetPosition);
 

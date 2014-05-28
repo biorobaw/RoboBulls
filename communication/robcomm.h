@@ -4,29 +4,23 @@
 #pragma once
 #include "include/serialib.h"
 
+
 /*
  * RobComm
  * It is used to send signal to robots and control the robots
  * Narges Ghaedi
  */
-class robComm
+class RobComm
 {
-    serialib Xbee;
 public:
-    robComm();
-    ~robComm();
-
+    static RobComm * getRobComm();
     //Sends given velocities to left and right wheels a robot recognized by robot ID
-    void sendVels(int leftVel, int rightVel, int robotId);
-
+    virtual void sendVels(int leftVel, int rightVel, int robotId) = 0;
     //Sends a kick signal to a robot recognized by robot ID
-    void sendKick(int robotId);
+    virtual void sendKick(int robotId) = 0;
 
-    static robComm * getnxtbee();
 private:
-    static robComm * nxtbee;
-    void send(unsigned);
-    void send(char*, int size);
+    static RobComm * robComm;
 };
 
 #endif // ROBCOMM_H

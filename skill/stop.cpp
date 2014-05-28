@@ -8,7 +8,8 @@ Stop::Stop()
 
 void Stop::perform(Robot *robot)
 {
-    robComm *nxtbee = robComm::getnxtbee();
+
+    RobComm *nxtbee = RobComm::getRobComm();
 
     nxtbee->sendVels(0, 0, robot->getID());
 }

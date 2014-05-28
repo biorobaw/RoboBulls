@@ -1,5 +1,6 @@
 #include "visioncomm.h"
 #include <iostream>
+#include "include/globals.h"
 
 using namespace std;
 
@@ -7,7 +8,12 @@ const int TEAM = 0;
 
 VisionComm::VisionComm(GameModel *gm)
 {
-    client.open(true);
+// Use different ports depending on whether it is simulated or the actual vision system
+#ifdef SIMULATED
+    client.open(10002);
+#else
+    client.open(10020);
+#endif
     gamemodel = gm;
     count=0;
 
@@ -73,6 +79,8 @@ void VisionComm::updateInfo(SSL_DetectionRobot robot, string color)
 
     gamemodel->setMyTeam(myTeam);
     gamemodel->setOponentTeam(opTeam);
+
+//    cout << gamemodel->toString() << endl;
 }
 
 
@@ -142,7 +150,7 @@ bool VisionComm::receive()
                 for (int i=0; i < robots_yellow_n; i++)
                 {
                     float confR = detection.robots_yellow(i).confidence();
-//                    cout << "confR yellow: " << confR << endl;
+                    cout << "confR yellow: " << confR << endl;
                     if (confR > CONF_THRESHOLD)
                     {
                         updateInfo(detection.robots_yellow(i), "Yellow");

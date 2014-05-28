@@ -13,6 +13,7 @@
 #include "include/robocup_ssl_client.h"
 #include "Model/robot.h"
 #include "Utilities/point.h"
+#include "include/globals.h"
 
 using namespace std;
 

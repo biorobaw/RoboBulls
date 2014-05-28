@@ -8,7 +8,7 @@ GoBackward::GoBackward()
 
 void GoBackward::perform(Robot *robot)
 {
-    robComm *nxtbee = robComm::getnxtbee();
+    RobComm *nxtbee = RobComm::getRobComm();
 
     nxtbee->sendVels(-30, -30, robot->getID());
 }

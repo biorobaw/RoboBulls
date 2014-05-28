@@ -23,7 +23,8 @@ void StopBehavior::perform(Robot * myRobot)
     targetPoint.x = (RADIUS*cos(angle))+ballPoint.x;
     targetPoint.y = (RADIUS*sin(angle))+ballPoint.y;
 
-    robotSkill = new GoToPositionWithOrientation(targetPoint);
+    robotSkill = new GoToPositionWithOrientation(targetPoint, Measurments::angleBetween(robotPoint, ballPoint));
+
     robotSkill->perform(myRobot);
 }
 
@@ -31,3 +32,4 @@ Skill * StopBehavior::getSkill()
 {
     return robotSkill;
 }
+

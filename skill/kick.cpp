@@ -6,7 +6,8 @@ Kick::Kick()
 
 void Kick::perform(Robot *myRobot)
 {
-    robComm *nxtbee = robComm::getnxtbee();
+
+    RobComm *nxtbee = RobComm::getRobComm();
     roboKick = true;
 
     while (roboKick)

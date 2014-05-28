@@ -10,6 +10,7 @@
 #include "include/robocup_ssl_client.h"
 #include <stdio.h>
 #include "behavior/behavior.h"
+#include "communication/simrobcomm.h"
 
 void exitStopRobot(void)
 {
@@ -48,6 +49,12 @@ int main(int argc, char *argv[])
     visionCommunicator.start();
     refCommunicator.run();
 
+
     return a.exec();
+//    SimRobComm * comm = new SimRobComm();
+//    comm->sendVels(50, 100, 4);
+
+//    QCoreApplication a(argc, argv);
+//    return a.exec();
 
 }

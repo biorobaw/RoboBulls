@@ -7,25 +7,28 @@
 #include "Model/gamemodel.h"
 #include <math.h>
 
-GoToPositionWithOrientation::GoToPositionWithOrientation(Point target)
+GoToPositionWithOrientation::GoToPositionWithOrientation(Point target, double goalOrientation)
 {
     targetPosition = target;
+    this->goalOrientation = goalOrientation;
 }
 
-GoToPositionWithOrientation::GoToPositionWithOrientation(float tx, float ty)
+GoToPositionWithOrientation::GoToPositionWithOrientation(float tx, float ty, double goalOrientation)
 {
     targetPosition = Point(tx, ty);
+    this->goalOrientation = goalOrientation;
 }
 
 void GoToPositionWithOrientation::perform(Robot * robot)
 {
-    robComm* nxtbee= robComm::getnxtbee();
+    RobComm *nxtbee = RobComm::getRobComm();
+
     Point robotPosition = robot->getRobotPosition();
     double robot_x = robotPosition.x;
     double robot_y = robotPosition.y;
     double robot_orientation = robot->getOrientation();
-    double finalOrientation = atan2(targetPosition.y-robot_y, targetPosition.x-robot_x);
-    wheelvelocities wheelvelocity = closed_loop_control(robot_x, robot_y, robot_orientation, targetPosition.x, targetPosition.y, finalOrientation);
+
+    wheelvelocities wheelvelocity = closed_loop_control(robot_x, robot_y, robot_orientation, targetPosition.x, targetPosition.y, goalOrientation);
 
     float left_wheel_velocity = wheelvelocity.left;
     float right_wheel_velocity = wheelvelocity.right;

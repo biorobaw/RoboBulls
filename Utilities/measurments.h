@@ -36,6 +36,9 @@ public:
 
     //Calculates the slop, given two points
     static float slop(Point, Point);
+\
+    // Calculates the smallest difference between two orientations (angle2 - angle1)
+    static float angleDiff(float angle1, float angle2);
 };
 
 #endif // MEASURMENTS_H

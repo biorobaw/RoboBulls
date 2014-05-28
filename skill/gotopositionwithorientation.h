@@ -8,12 +8,13 @@
 class GoToPositionWithOrientation : public Skill
 {
 public:
-    GoToPositionWithOrientation(Point target);
-    GoToPositionWithOrientation(float tx, float ty);
+    GoToPositionWithOrientation(Point target, double goalOrientation);
+    GoToPositionWithOrientation(float tx, float ty, double goalOrientation);
 
     void perform(Robot * robot);
 private:
     Point   targetPosition;
+    double goalOrientation;
 };
 
 #endif // GOTOPOSITIONWITHORIENTATION_H
