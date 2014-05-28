@@ -11,6 +11,12 @@
 #include "skill/stop.h"
 #include "skill/gotoposition.h"
 
+/*
+ * Stop Behavior
+ * All robots position themself one meter away from the ball
+ * and face the ball
+ * Narges Ghaedi
+ */
 
 using namespace std;
 

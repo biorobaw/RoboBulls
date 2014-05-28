@@ -7,6 +7,12 @@
 
 class Behavior;
 
+/**
+ * @brief The Robot class
+ * The robot class includes the required infromation about robot
+ * such position, orientation, id, and etc.
+ * you can asssign these information to robot or access them when required
+ */
 class Robot
 {
 public:
@@ -20,13 +26,6 @@ public:
     void setL(float);
     void setCurrentBeh(Behavior *);
 
-//    //*******************************************************
-//    //Testing Shamsi's code
-//    void setRightWheelVelocity(int);
-//    void setLeftWheelVelocity(int);
-//    //*******************************************************
-
-
     //gets
     Point getRobotPosition();
     float getOrientation();
@@ -35,15 +34,7 @@ public:
     int getL();
     Behavior * getCurrentBeh();
 
-//    //*******************************************************
-//    //Testing Shamsi's code
-//    int getRightWheelVelocity();
-//    int getLeftWheelVelocity();
-//    //*******************************************************
-
     stringstream& toString();
-
-//    bool hasTheBall();
 
     unsigned kick;
     int count;
@@ -56,12 +47,6 @@ private:
     int id;
     float L, R; // used for robot's movements
     Behavior *currentBehavior;
-
-//    //*******************************************************
-//    //Testing Shamsi's code
-//    int right_wheel_vel;
-//    int left_wheel_vel;
-//    //*******************************************************
 
 };
 

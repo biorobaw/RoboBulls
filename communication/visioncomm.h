@@ -26,6 +26,12 @@ const float CONF_THRESHOLD = 0.91;
  */
 const int DISCARD_RATE = 1;
 
+/**
+ * @brief The VisionComm class
+ * Detects the robots and ball and puts each robot in the corresponding team
+ * based on robot's color (Blue team/ Yellow team)
+ * Narges Ghaedi
+ */
 class VisionComm: public QThread
 {
 public:

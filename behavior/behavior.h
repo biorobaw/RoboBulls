@@ -7,6 +7,11 @@
 class Robot;
 class GameModel;
 
+/*
+ * General Behavior class which inheritas other behaviors
+ * Narges Ghaedi
+ */
+
 class Behavior
 {
 public:

@@ -13,6 +13,13 @@
 #include "skill/kick.h"
 #include "Model/gamemodel.h"
 
+/*
+ * Penalty Behavior
+ * The which has been chosen to kick the ball during penalty (in our case first robot entering the team)
+ * would move toward the ball, stops when it reaches the ball, and kicks the ball.
+ * We assume the ball is at the penalty point
+ * Narges Ghaedi
+ */
 
 using namespace std;
 
@@ -24,13 +31,8 @@ class PenaltyBehavior:public Behavior
 public:
     PenaltyBehavior();
     void perform(Robot *);
-//    Skill * getSkill();
 
     enum penaltyBehavior_t {moving, kicking, idling} pb;
-
-//private:
-//    Skill * robotSkill;
-
 };
 
 #endif // PENALTYBEHAVIOR_H
