@@ -5,12 +5,19 @@
 #include "behavior/behavior.h"
 
 #include "skill/skill.h"
+
 #include "utilities/measurments.h"
 #include "skill/basic_movement.h"
 #include "model/gamemodel.h"
 #include "model/robot.h"
 #include "utilities/paramlist.h"
 
+/*
+ * Stop Behavior
+ * All robots position themself one meter away from the ball
+ * and face the ball
+ * Narges Ghaedi
+ */
 
 using namespace std;
 
@@ -22,6 +29,7 @@ class GameModel;
 class StopBehavior : public Behavior
 {
 public:
+    StopBehavior(){};
     StopBehavior(const ParameterList &list);
     void perform(Robot *);
     Skill::Skill* getSkill();

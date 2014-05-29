@@ -20,7 +20,7 @@ void PenaltyBehavior::perform(Robot * myRobot)
     switch(pb)
     {
     case moving:
-        if(!(Measurments::isClose(myRobot->getRobotPosition(),model->getPenaltyPoint(),250)))
+        if(!(Measurments::isClose(myRobot->getRobotPosition(),model->getBallPoint(),150)))
         {
             go.perform(myRobot);
             cout <<"moving performed!"<<endl;

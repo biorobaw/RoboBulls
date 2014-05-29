@@ -36,7 +36,6 @@ void Robot::setCurrentBeh(Behavior *currentBeh)
     hasBeh = true;
 }
 
-
 Point Robot::getRobotPosition()
 {
     return robotPosition;
@@ -72,6 +71,7 @@ std::string Robot::toString()
     stringstream ss;
 
     ss << "\t" << getRobotPosition().toString() << "\t ID: " << getID();
+
 
     return ss.str();
 

@@ -7,6 +7,12 @@
 
 class Behavior;
 
+/**
+ * @brief The Robot class
+ * The robot class includes the required infromation about robot
+ * such position, orientation, id, and etc.
+ * you can asssign these information to robot or access them when required
+ */
 class Robot
 {
 public:
@@ -20,7 +26,6 @@ public:
     void setL(float);
     void setCurrentBeh(Behavior *);
 
-
     //gets
     Point getRobotPosition();
     float getOrientation();
@@ -30,8 +35,6 @@ public:
     Behavior * getCurrentBeh();
 
     std::string toString();
-
-//    bool hasTheBall();
 
     unsigned kick;
     int count;

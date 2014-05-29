@@ -10,13 +10,14 @@
 #include "include/messages_robocup_ssl_wrapper.pb.h"
 #include "include/robocup_ssl_client.h"
 #include "behavior/behavior.h"
+#include "communication/simrobcomm.h"
 
 void exitStopRobot(void)
 {
     GameModel* mod = GameModel::getModel();
     auto team = mod->getMyTeam();
 
-    robComm* nxt = robComm::getnxtbee();
+    RobComm* nxt = RobComm::getRobComm();
 
     for(Robot* rob : team) {
         nxt->sendVels(0, 0, rob->getID());
@@ -47,5 +48,7 @@ int main(int argc, char *argv[])
     visionCommunicator.start();
     refCommunicator.run();
 
+
     return a.exec();
+
 }

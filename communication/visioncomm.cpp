@@ -1,5 +1,6 @@
 #include "visioncomm.h"
 #include <iostream>
+#include "include/globals.h"
 
 using namespace std;
 
@@ -7,7 +8,13 @@ const int TEAM = 0;
 
 VisionComm::VisionComm(GameModel *gm)
 {
-    client.open(true);
+// Use different ports depending on whether it is simulated or the actual vision system
+#if SIMULATED
+    client = new RoboCupSSLClient(10020,"224.5.23.3");
+#else
+    client = new RoboCupSSLClient();
+#endif
+    client->open(true);
     gamemodel = gm;
     count=0;
 
@@ -15,7 +22,7 @@ VisionComm::VisionComm(GameModel *gm)
 
 VisionComm::~VisionComm(void)
 {
-    client.close();
+    client->close();
     //CloseHandle(hThread); //stop thread
 }
 
@@ -73,19 +80,21 @@ void VisionComm::updateInfo(SSL_DetectionRobot robot, string color)
 
     gamemodel->setMyTeam(myTeam);
     gamemodel->setOponentTeam(opTeam);
+
+//    cout << gamemodel->toString() << endl;
 }
 
 
 bool VisionComm::receive()
 {
-    client.open(true);
+//    client.open(true);
 
-    if (client.receive(packet))
+    if (client->receive(packet))
     {
 
         //Rcv packet
         //use the client to recieve the package and check if it's recieved... look at Wiliam's code
-        //take a look at refcomm
+        //take a look at refcommSIMULATED
 
         if (packet.has_detection())
         {
@@ -142,7 +151,7 @@ bool VisionComm::receive()
                 for (int i=0; i < robots_yellow_n; i++)
                 {
                     float confR = detection.robots_yellow(i).confidence();
-//                    cout << "confR yellow: " << confR << endl;
+                    cout << "confR yellow: " << confR << endl;
                     if (confR > CONF_THRESHOLD)
                     {
                         updateInfo(detection.robots_yellow(i), "Yellow");

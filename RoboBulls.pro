@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core
+QT       += core network
 
 QT       -= gui
 
@@ -46,7 +46,17 @@ SOURCES += main.cpp \
     utilities/paramlist.cpp \
     strategy/strategy.cpp \
     strategy/stopstrategy.cpp \
-    strategy/penaltystrategy.cpp
+    strategy/penaltystrategy.cpp \
+    skill/robottoinertialvelocities.cpp \
+    skill/matrixcalculator.cpp \
+    skill/gotopositionwithorientation.cpp \
+    skill/gotopositionfacing.cpp \
+    skill/closedloopcontrol.cpp \
+    communication/simrobcomm.cpp \
+    communication/nxtrobcomm.cpp \
+    include/grSim_Replacement.pb.cc \
+    include/grSim_Packet.pb.cc \
+    include/grSim_Commands.pb.cc
 
 HEADERS += \
     communication/refcomm.h \
@@ -84,7 +94,18 @@ HEADERS += \
 	utilities/paramlist.h \
     behavior/behaviorassignment.h \
     strategy/stopstrategy.h \
-    strategy/penaltystrategy.h
+    strategy/penaltystrategy.h \
+    skill/robottoinertialvelocities.h \
+    skill/matrixcalculator.h \
+    skill/gotopositionwithorientation.h \
+    skill/gotopositionfacing.h \
+    skill/closedloopcontrol.h \
+    communication/simrobcomm.h \
+    communication/nxtrobcomm.h \
+    include/grSim_Replacement.pb.h \
+    include/grSim_Packet.pb.h \
+    include/grSim_Commands.pb.h \
+    include/globals.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 

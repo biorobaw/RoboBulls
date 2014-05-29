@@ -3,9 +3,9 @@
 
 #include <iostream>
 #include "strategy/strategy.h"
-#include "../Model/gamemodel.h"
+#include "../model/gamemodel.h"
 #include "strategy/stopstrategy.h"
-#include "Model/robot.h"
+#include "model/robot.h"
 #include "behavior/behavior.h"
 #include "behavior/stopbehavior.h"
 #include "behavior/penaltybehavior.h"

@@ -8,6 +8,11 @@
 
 using namespace std;
 
+/*
+ * refree box
+ * Narges Ghaedi
+ */
+
 class RefComm : public QThread
 {
 public:

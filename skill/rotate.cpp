@@ -20,7 +20,7 @@ Rotate::Rotate(float tAngle, bool finishedStop)
 
 void Rotate::perform(Robot* robot)
 {
-    robComm* nxt          = robComm::getnxtbee();
+    RobComm *nxt = RobComm::getRobComm();
     float    currentAngle = robot->getOrientation();
     float    angleDiff    = angle_mod(targetAngle - currentAngle);
 

@@ -19,6 +19,31 @@ bool Measurments::isClose(const Point& p1, const Point& p2, float tol)
     return (fabs(p1.y - p2.y) <= tol) && (fabs(p2.x - p1.x) <= tol);
 }
 
+
+int closestPoint(const Point& p1, const Point* array, int n, Point* out)
+{
+    int ret = 0, i;
+    float closestDist = Measurments::distance(p1, array[0]);
+
+    for(i = 1; i != n; ++i) {
+        float newDist = Measurments::distance(p1, array[i]);
+
+        if(newDist < closestDist) {
+            closestDist = newDist;
+            ret = i;
+        }
+    }
+
+    if(out != NULL) *out = array[i];
+
+    return ret;
+}
+
+float Measurments::slop(Point p1, Point p2)
+{
+    return atan2((p1.y-p2.y),(p1.x-p2.x));
+}
+
 float Measurments::angleDiff(float angle1, float angle2){
     // Convert angles to unitary complex numbers z1 and z2
     float r1 = cos(angle1);
@@ -32,6 +57,16 @@ float Measurments::angleDiff(float angle1, float angle2){
     float i3 = i1*r2 + r1 * i2;
     // Get the argument
     float arg = atan2(i3, r3);
-
+//    // Find the complementary, just in case the returned angle by atan2 is not the smaller one
+//    float argComp;
+//    if (arg > 0)
+//        argComp = -(2 * M_PI - arg);
+//    else
+//        argComp = 2 * M_PI + arg;
+//    // Return the minimum in absolute value
+//    if (abs(arg) < abs(argComp))
+//        return arg;
+//    else
+//        return argComp;
     return arg;
 }

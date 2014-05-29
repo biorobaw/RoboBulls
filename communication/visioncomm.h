@@ -11,8 +11,10 @@
 #include "include/messages_robocup_ssl_geometry.pb.h"
 #include "include/messages_robocup_ssl_wrapper.pb.h"
 #include "include/robocup_ssl_client.h"
+
 #include "model/robot.h"
 #include "utilities/point.h"
+#include "include/globals.h"
 
 using namespace std;
 
@@ -26,6 +28,12 @@ const float CONF_THRESHOLD = 0.91;
  */
 const int DISCARD_RATE = 1;
 
+/**
+ * @brief The VisionComm class
+ * Detects the robots and ball and puts each robot in the corresponding team
+ * based on robot's color (Blue team/ Yellow team)
+ * Narges Ghaedi
+ */
 class VisionComm: public QThread
 {
 public:
@@ -45,7 +53,7 @@ public:
 protected:
     GameModel *gamemodel;
     SSL_WrapperPacket packet;
-    RoboCupSSLClient client;
+    RoboCupSSLClient * client;
     int count;
 };
 

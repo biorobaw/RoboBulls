@@ -16,11 +16,22 @@
 
 using namespace std;
 
+/**
+ * @brief MAX_ROBOTS
+ * defines the maximum number of robots that can exist in each team
+ * Narges Ghaedi
+ */
 const int MAX_ROBOTS = 3;
 
 class StrategyController;
 class Robot;
 
+/**
+ * @brief The GameModel class
+ * Game model class can be considered as the heart of robobulls project
+ * all the information from other classes gets updated in gamemodel
+ * you can recieve most up to date info about robots and ball from this class
+ */
 class GameModel
 {
 public:

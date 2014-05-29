@@ -5,7 +5,7 @@ namespace Skill
 
 void GoForward::perform(Robot* robot)
 {
-    robComm *nxtbee = robComm::getnxtbee();
+    RobComm *nxtbee = RobComm::getRobComm();
 
     nxtbee->sendVels(30, 30, robot->getID());
 }
@@ -13,7 +13,7 @@ void GoForward::perform(Robot* robot)
 
 void GoBackward::perform(Robot* robot)
 {
-    robComm *nxtbee = robComm::getnxtbee();
+    RobComm *nxtbee = RobComm::getRobComm();
 
     nxtbee->sendVels(-30, -30, robot->getID());
 }
@@ -21,7 +21,7 @@ void GoBackward::perform(Robot* robot)
 
 void Stop::perform(Robot* robot)
 {
-    robComm *nxtbee = robComm::getnxtbee();
+    RobComm *nxtbee = RobComm::getRobComm();
 
     nxtbee->sendVels(0, 0, robot->getID());
 }

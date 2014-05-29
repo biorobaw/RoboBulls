@@ -3,6 +3,8 @@
 #include "communication/robcomm.h"
 #include "include/util.h"
 #include "skill/rotate.h"
+#include "skill/closedloopcontrol.h"
+#include "model/gamemodel.h"
 
 namespace Skill
 {
@@ -22,7 +24,7 @@ GoToPosition::GoToPosition(float tx, float ty)
 
 void GoToPosition::perform(Robot * robot)
 {
-	robComm* nxt       = robComm::getnxtbee();
+    RobComm* nxt       = RobComm::getRobComm();
 	Point    rPos      = robot->getRobotPosition();
 	float    targetAng = Measurments::angleBetween(rPos, targetPosition);
 
@@ -35,5 +37,6 @@ void GoToPosition::perform(Robot * robot)
 		nxt->sendVels(0, 0, robot->getID());
 	}
 }
+
 
 }
