@@ -24,26 +24,28 @@ SOURCES += main.cpp \
     include/netraw.cpp \
     include/robocup_ssl_client.cpp \
     include/serialib.cpp \
-    Model/gamemodel.cpp \
-    strategy/strategy.cpp \
+	model/gamemodel.cpp \
     strategy/strategycontroller.cpp \
-    strategy/stopstrategy.cpp \
     communication/robcomm.cpp \
     behavior/behavior.cpp \
-    skill/skill.cpp \
     behavior/stopbehavior.cpp \
     communication/visioncomm.cpp \
     skill/kick.cpp \
     skill/waitforball.cpp \
-    Model/robot.cpp \
+	model/robot.cpp \
     skill/gotoposition.cpp \
-    Utilities/point.cpp \
-    Utilities/measurments.cpp \
-    skill/gobackward.cpp \
-    skill/goforward.cpp \
+	utilities/point.cpp \
+	utilities/measurments.cpp \
     skill/rotate.cpp \
-    skill/stop.cpp \
     behavior/penaltybehavior.cpp \
+    skill/gotoposition2.cpp \
+    behavior/gotoposition2behavior.cpp \
+    behavior/obstacleavoidbehavior.cpp \
+    skill/pathfinding/fppa_pathfinding.cpp \
+    skill/basic_movement.cpp \
+    utilities/paramlist.cpp \
+    strategy/strategy.cpp \
+    strategy/stopstrategy.cpp \
     strategy/penaltystrategy.cpp
 
 HEADERS += \
@@ -57,37 +59,33 @@ HEADERS += \
     include/serialib.h \
     include/timer.h \
     include/util.h \
-    Model/gamemodel.h \
+	model/gamemodel.h \
     Robot/robot.h \
     strategy/strategy.h \
     strategy/strategycontroller.h \
-    strategy/stopstrategy.h \
     communication/robcomm.h \
     behavior/behavior.h \
-    Performance/skill.h \
-    Performance/gotoposition.h \
-    Performance/stopbehavior.h \
-    Functionality/goforward.h \
-    Functionality/gobackward.h \
-    Measure/point.h \
-    Measure/measurments.h \
     communication/visioncomm.h \
-    Functionality/stop.h \
-    Performance/rotate.h \
-    Functionality/rotate.h \
     skill/kick.h \
     skill/waitforball.h \
-    Model/robot.h \
+	model/robot.h \
     skill/gotoposition.h \
     skill/skill.h \
     behavior/stopbehavior.h \
-    Utilities/measurments.h \
-    Utilities/point.h \
-    skill/gobackward.h \
-    skill/goforward.h \
+	utilities/measurments.h \
+	utilities/point.h \
     skill/rotate.h \
-    skill/stop.h \
+	skill/basic_movement.h \
     behavior/penaltybehavior.h \
+    skill/gotoposition2.h \
+    behavior/gotoposition2behavior.h \
+    behavior/obstacleavoidbehavior.h \
+    skill/pathfinding/fppa_pathfinding.hpp \
+	utilities/paramlist.h \
+    behavior/behaviorassignment.h \
+    strategy/stopstrategy.h \
     strategy/penaltystrategy.h
+
+QMAKE_CXXFLAGS += -std=c++0x
 
 unix|win32: LIBS += -lprotobuf

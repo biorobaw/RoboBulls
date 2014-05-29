@@ -36,13 +36,13 @@ void robComm::send(char* commptr, int size)
 
 void robComm::sendVels(int leftVel, int rightVel, int robotId)
 {
-    char comm[5] = {'~', robotId, leftVel, rightVel, 0};
+    char comm[5] = {'~', (char)robotId, (char)leftVel, (char)rightVel, 0};
     send(&comm[0], 5);
 }
 
 void robComm::sendKick(int robotId)
 {
-    char comm[5] = {'~', robotId, 0, 0, 1};
+    char comm[5] = {'~', (char)robotId, 0, 0, 1};
     send(&comm[0], 5);
 }
 

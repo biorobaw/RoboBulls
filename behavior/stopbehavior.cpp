@@ -1,44 +1,31 @@
 #include "stopbehavior.h"
-#include "Model/robot.h"
-#include  "Model/gamemodel.h"
+#include "model/robot.h"
+#include  "model/gamemodel.h"
 
-StopBehavior::StopBehavior()
+#define RADIUS 1000
+
+StopBehavior::StopBehavior(const ParameterList& list)
 {
 //    Skill * activeSkill;
 }
 
 void StopBehavior::perform(Robot * myRobot)
 {
-//    cout<<"Stop behavior performing start!"<<endl;
+    GameModel* gamemodel = GameModel::getModel();
+    Point ballPoint  = gamemodel->getBallPoint();
+    Point robotPoint = myRobot->getRobotPosition();
+    Point targetPoint;
+    float angle = Measurments::angleBetween(ballPoint, robotPoint);
+    targetPoint.x = (RADIUS*cos(angle))+ballPoint.x;
+    targetPoint.y = (RADIUS*sin(angle))+ballPoint.y;
 
-    GameModel * gamemodel = GameModel::getModel();
+    cout<<"Target point \t x: "<<targetPoint.x<<"\t y: "<<targetPoint.y<<endl;
 
-
-    cout << "Distance " << Measurments::distance(myRobot->getRobotPosition(),gamemodel->getBallPoint()) << endl;
-
-    if (Measurments::distance(myRobot->getRobotPosition(),gamemodel->getBallPoint()) < (TARGET - TOLERENCE))
-    {
-        cout<<"Calling GoBackward"<<endl;
-        robotSkill = new GoBackward();
-    }
-    else if (Measurments::distance(myRobot->getRobotPosition(),gamemodel->getBallPoint())> (TARGET - TOLERENCE) &&
-             Measurments::distance(myRobot->getRobotPosition(),gamemodel->getBallPoint()) < (TARGET + TOLERENCE))
-    {
-        cout << "Stopping!" << endl;
-        robotSkill = new Stop();
-    }
-    else
-    {
-        cout<<"Calling GoForward"<<endl;
-        robotSkill = new GoForward();
-    }
-
-
-    robotSkill->perform(myRobot);
-    //myRobot->setCurrentBeh(StopBehavior);
+    //robotSkill = new GoToPositionWithOrientation(targetPoint);
+    //robotSkill->perform(myRobot);
 }
 
-Skill * StopBehavior::getSkill()
+Skill::Skill* StopBehavior::getSkill()
 {
     return robotSkill;
 }

@@ -6,13 +6,13 @@
 #include <iostream>
 #include <QtCore>
 #include <string>
-#include "Model/gamemodel.h"
+#include "model/gamemodel.h"
 #include "include/messages_robocup_ssl_detection.pb.h"
 #include "include/messages_robocup_ssl_geometry.pb.h"
 #include "include/messages_robocup_ssl_wrapper.pb.h"
 #include "include/robocup_ssl_client.h"
-#include "Model/robot.h"
-#include "Utilities/point.h"
+#include "model/robot.h"
+#include "utilities/point.h"
 
 using namespace std;
 

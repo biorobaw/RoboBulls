@@ -5,10 +5,11 @@
 #include "behavior/behavior.h"
 
 #include "skill/skill.h"
-#include "Utilities/measurments.h"
-#include "skill/gobackward.h"
-#include "skill/goforward.h"
-#include "skill/stop.h"
+#include "utilities/measurments.h"
+#include "skill/basic_movement.h"
+#include "model/gamemodel.h"
+#include "model/robot.h"
+#include "utilities/paramlist.h"
 
 
 using namespace std;
@@ -16,23 +17,18 @@ using namespace std;
 const float TARGET = 1000.0;
 const float TOLERENCE = 100.0;
 
-class Robot;
 class GameModel;
 
 class StopBehavior : public Behavior
 {
 public:
-    StopBehavior();
+    StopBehavior(const ParameterList &list);
     void perform(Robot *);
-    Skill * getSkill();
+    Skill::Skill* getSkill();
 
 private:
-    Skill * robotSkill;
-
-    bool    kickSent;
-    int     direction;
-    float   targetAngle;
-  GameModel *gamemodel;
+    Skill::Skill* robotSkill;
+    GameModel *gamemodel;
 };
 
 #endif // STOPBEHAVIOR_H

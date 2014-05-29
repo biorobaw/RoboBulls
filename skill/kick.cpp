@@ -1,8 +1,7 @@
 #include "kick.h"
 
-Kick::Kick()
+namespace Skill
 {
-}
 
 void Kick::perform(Robot *myRobot)
 {
@@ -27,3 +26,5 @@ void Kick::perform(Robot *myRobot)
 //{
 
 //}
+
+}

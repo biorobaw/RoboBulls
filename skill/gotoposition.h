@@ -2,10 +2,10 @@
 #define GOTOPOSITION_H
 
 #include "skill.h"
-#include "Model/robot.h"
+#include "model/robot.h"
 #include "skill/rotate.h"
 
-#define DIST_TOLERANCE 300
+#define DIST_TOLERANCE 410
 #define DIST_VELOCITY 80
 
 /* GoToPosition Skill
@@ -26,10 +26,11 @@
         when going straight. Keep in mind this is usually not the
         actual velocity, as it is constantly rotating.
 */
+namespace Skill {
+
 class GoToPosition: public Skill
 {
 public:
-//    GoToPosition();
     GoToPosition(Point target);
     GoToPosition(float tx, float ty);
 
@@ -39,5 +40,7 @@ private:
     bool    rotationDone;
     Point   targetPosition;
 };
+
+}
 
 #endif // GOTOPOSITION_H

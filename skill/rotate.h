@@ -3,10 +3,10 @@
 
 #include "behavior/behavior.h"
 #include "skill/skill.h"
-#include "Model/robot.h"
+#include "model/robot.h"
 
-#define ROT_TOLERANCE 6*(M_PI/180)
-#define ROT_VELOCITY 40
+#define ROT_TOLERANCE 7*(M_PI/180)
+#define ROT_VELOCITY 20
 #define CLOCKWISE   1
 #define CCLOCKWISE -1
 
@@ -23,6 +23,8 @@
         to be considered equal.
     ROT_VELOCITY:  Velocity applied to each motor in rotation.
     */
+namespace Skill {
+
 class Rotate : public Skill
 {
 public:
@@ -35,5 +37,7 @@ private:
     int	  direction;
     bool  stopWhenDone;
 };
+
+}
 
 #endif // ROTATE_H

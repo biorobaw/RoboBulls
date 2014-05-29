@@ -5,32 +5,22 @@
 #include "behavior/behavior.h"
 
 #include "skill/skill.h"
-#include "Utilities/measurments.h"
-#include "skill/goforward.h"
-#include "skill/stop.h"
-#include "skill/rotate.h"
+#include "utilities/measurments.h"
+#include "skill/basic_movement.h"
 #include "skill/gotoposition.h"
+#include "skill/rotate.h"
 #include "skill/kick.h"
-#include "Model/gamemodel.h"
+#include "model/gamemodel.h"
+#include "utilities/paramlist.h"
 
 
-using namespace std;
-
-class Robot;
-class GameModel;
-
-class PenaltyBehavior:public Behavior
+class PenaltyBehavior : public Behavior
 {
 public:
-    PenaltyBehavior();
+    PenaltyBehavior(const ParameterList& list);
     void perform(Robot *);
-//    Skill * getSkill();
 
     enum penaltyBehavior_t {moving, kicking, idling} pb;
-
-//private:
-//    Skill * robotSkill;
-
 };
 
 #endif // PENALTYBEHAVIOR_H

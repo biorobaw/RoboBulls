@@ -1,10 +1,10 @@
 #ifndef REFCOMM_H
 #define REFCOMM_H
 
-#include "include/netraw.h"
 #include <string>
 #include <QtCore>
-#include "Model/gamemodel.h"
+#include "include/netraw.h"
+#include "model/gamemodel.h"
 
 using namespace std;
 

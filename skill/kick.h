@@ -3,24 +3,23 @@
 #define KICK_H
 
 #include "skill/skill.h"
-#include "Model/robot.h"
+#include "model/robot.h"
 #include "communication/robcomm.h"
 
-using namespace std;
+namespace Skill
+{
 
-//class skill;
-
-class Kick:public Skill
+class Kick: public Skill
 {
 public:
-    Kick();
-
-//    void kickTheBall();
+    //void kickTheBall();
     void perform(Robot *);
 
 private:
     bool roboKick;
 
 };
+
+}
 
 #endif // KICK_H
