@@ -18,10 +18,6 @@
 /*  Robot Radius and Ball Radius should be standardized
 	in some other file. We need a constants.h
 	*/
-#define MAX_RECURSION_DEPTH  3
-#define ROBOT_RADIUS 		 200
-
-#define FPPA_DEBUG 1
 
 namespace FPPA
 {

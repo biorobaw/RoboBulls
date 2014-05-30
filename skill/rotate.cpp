@@ -3,19 +3,26 @@
 #include "utilities/measurments.h"
 #include "communication/robcomm.h"
 #include "include/util.h"
+#include "include/globals.h"
+
+#define CLOCKWISE   1
+#define CCLOCKWISE -1
 
 namespace Skill
 {
 
 Rotate::Rotate()
 {
-    Rotate(0.0f);
+    //Rotate(0.0f);
+    targetAngle = 0;
 }
 
-Rotate::Rotate(float tAngle, bool finishedStop)
+Rotate::Rotate(float tAngle, float* lmvp, float* rmvp)
+    : lmv_ptr(lmvp)
+    , rmv_ptr(rmvp)
 {
     targetAngle  = tAngle;
-    stopWhenDone = finishedStop;
+    stopWhenDone = false;
 }
 
 void Rotate::perform(Robot* robot)
@@ -26,10 +33,14 @@ void Rotate::perform(Robot* robot)
 
     if(fabs(angleDiff) > ROT_TOLERANCE) {
         direction = (angle_pos(angleDiff) > M_PI) ? CCLOCKWISE : CLOCKWISE;
-        nxt->sendVels(-direction * ROT_VELOCITY, direction * ROT_VELOCITY, robot->getID());
+
+        *lmv_ptr = -direction * ROT_VELOCITY;
+        *rmv_ptr = direction * ROT_VELOCITY;
+
+        //nxt->sendVels(-direction * ROT_VELOCITY, direction * ROT_VELOCITY, robot->getID());
     } else {
-        if(stopWhenDone)
-            nxt->sendVels(0, 0, robot->getID());
+       // if(stopWhenDone)
+           // nxt->sendVels(0, 0, robot->getID());
     }
 }
 

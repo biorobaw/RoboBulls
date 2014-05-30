@@ -5,6 +5,7 @@
 #include "skill/rotate.h"
 #include "skill/closedloopcontrol.h"
 #include "model/gamemodel.h"
+#include "include/globals.h"
 
 namespace Skill
 {
@@ -28,11 +29,12 @@ void GoToPosition::perform(Robot * robot)
 	Point    rPos      = robot->getRobotPosition();
 	float    targetAng = Measurments::angleBetween(rPos, targetPosition);
 
-	Rotate rot(targetAng, false);
+    float lmv=0, rmv=0;
+    Rotate rot(targetAng, &lmv, &rmv);
 	rot.perform(robot);
 
     if(Measurments::isClose(rPos, targetPosition, 1.05*DIST_TOLERANCE) == false) {
-		nxt->sendVels(DIST_VELOCITY, DIST_VELOCITY, robot->getID());
+        nxt->sendVels(lmv + DIST_VELOCITY, rmv + DIST_VELOCITY, robot->getID());
 	} else {
 		nxt->sendVels(0, 0, robot->getID());
 	}

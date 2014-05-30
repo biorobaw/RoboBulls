@@ -6,6 +6,7 @@
 #include "skill/gotoposition.h"
 #include "skill/gotoposition2.h"
 #include "include/util.h"
+#include "include/globals.h"
 
 namespace Skill {
 
@@ -31,7 +32,9 @@ void GoToPosition2::perform(Robot* robot)
                 robot->getRobotPosition(), mTargetPoint);
     float angleDiff = angle_mod(targetAng - currentAng);
 
-    Rotate rot(targetAng, true);
+    float lmv=0, rmv=0;
+    Rotate rot(targetAng, &lmv, &rmv);
+
     GoToPosition go(mTargetPoint);
     Stop stop;
 

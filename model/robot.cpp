@@ -36,6 +36,12 @@ void Robot::setCurrentBeh(Behavior *currentBeh)
     hasBeh = true;
 }
 
+void Robot::clearCurrentBeh()
+{
+    hasBeh = false;
+    delete currentBehavior;
+}
+
 Point Robot::getRobotPosition()
 {
     return robotPosition;

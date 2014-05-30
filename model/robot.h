@@ -25,6 +25,7 @@ public:
     void setR(float);
     void setL(float);
     void setCurrentBeh(Behavior *);
+    void clearCurrentBeh();
 
     //gets
     Point getRobotPosition();

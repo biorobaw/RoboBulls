@@ -7,6 +7,7 @@
 #include "skill/gotoposition.h"
 #include "skill/gotoposition2.h"
 #include "behavior.h"
+#include "include/globals.h"
 
 #include "skill/pathfinding/fppa_pathfinding.hpp"
 
@@ -35,6 +36,7 @@ ObstacleAvoidBehavior::ObstacleAvoidBehavior(const ParameterList& list)
     pathQueue = std::queue<Point> ( pathDeque );
     std::cout << pathQueue.size() << " " << pathQueue.front().toString() << std::endl;
 
+    pathQueue.pop();
     nextPoint = pathQueue.front();
 
     //myGoto = new Skill::GoToPosition2(nextPoint);
@@ -47,28 +49,29 @@ void ObstacleAvoidBehavior::perform(Robot* robot)
     go.perform(robot);
 
     //if(myGoto != nullptr)
-       // myGoto->perform(robot);
-	
-	if(!pathQueue.empty() && 
-        Measurments::isClose(robot->getRobotPosition(), pathQueue.front(), DIST_TOLERANCE))
+    // myGoto->perform(robot);
+
+    if(!pathQueue.empty() &&
+    Measurments::isClose(robot->getRobotPosition(), pathQueue.front(), DIST_TOLERANCE))
     {
-            Point old = Point(nextPoint);
-            pathQueue.pop();
+        Point old = Point(nextPoint);
+        pathQueue.pop();
+
+        robot->clearCurrentBeh();
+        return;
 
         #if FPPA_DEBUG
             std::cout << "Updating;" << " Left: " << pathQueue.size()
-                      << " Empty: " << pathQueue.empty() << std::endl;
+            << " Empty: " << pathQueue.empty() << std::endl;
             std::cout << "Old: " << old.toString()
-                      << "New: " << pathQueue.front().toString() << std::endl;
+            << "New: " << pathQueue.front().toString() << std::endl;
         #endif
 
-            if(!pathQueue.empty()) {
-                nextPoint = Point(pathQueue.front());
-                    //delete myGoto;
-                    //myGoto = new Skill::GoToPosition2(nextPoint);
-               //} else {
-                   // myGoto = nullptr;
-                //}
-             }
+        if(!pathQueue.empty()) {
+            nextPoint = Point(pathQueue.front());
+        } else {
+            //robot->clearCurrentBeh();
+            //Skill Finished
+        }
     }
 }

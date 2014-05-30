@@ -4,16 +4,11 @@
 #include <iostream>
 #include "model/gamemodel.h"
 #include "skill/pathfinding/fppa_pathfinding.hpp"
+#include "include/globals.h"
 
-#define ROBOT_SIZE (ROBOT_RADIUS * 1.75)
-
-#ifndef M_PI
- #define M_PI    3.1415926535897932384626433832795
- #define M_PI_2  1.5707963267948966192313216916398
-#endif
-
-/*  Dont worry about how it works. Just know that it does.
-	*/
+/* Implementation of the Fast Path Planning Algorithm
+ * JamesW
+ */
 namespace FPPA
 {
 namespace impl
@@ -155,14 +150,17 @@ namespace impl
         for(Robot* rob : mod->getOponentTeam())
 			obstacles.push_back(rob->getRobotPosition());
 
-        obstacles.push_back(mod->getBallPoint());
+        //obstacles.push_back(mod->getBallPoint());
 		
 		/* In the likely case the the begin point was a robot's position, remove
 		   that point from the obstacles to avoid the robot detecting itself
 		   as an obstacle. 
-		   */
-        std::remove(obstacles.begin(), obstacles.end(), start);
-		std::remove(obstacles.begin(), obstacles.end(), end);
+           */
+        std::remove_if(obstacles.begin(), obstacles.end(),
+            [&](Point& pt){return Measurments::isClose(pt, start, ROBOT_SIZE);});
+
+        std::remove_if(obstacles.begin(), obstacles.end(),
+            [&](Point& pt){return Measurments::isClose(pt, end, ROBOT_SIZE);});
 
 		
 		/* Sort the range on how close each point is to the start.

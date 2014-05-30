@@ -5,10 +5,6 @@
 #include "model/robot.h"
 #include "skill/rotate.h"
 
-
-#define DIST_TOLERANCE 410
-#define DIST_VELOCITY 80
-
 /* GoToPosition Skill
    April 25 2014. Contributor: James Waugh
 
@@ -19,13 +15,6 @@
 
    -If the ball is too close to the side of the robot, it will
     do nothing, or infinitely loop around the ball.
-
-    Constants:
-    DIST_TOLERANCE: How close the robot needs to be to the target
-        before it is considered at that position
-    DIST_VELOCITY: The forward valocity applied to the motors
-        when going straight. Keep in mind this is usually not the
-        actual velocity, as it is constantly rotating.
 */
 namespace Skill {
 

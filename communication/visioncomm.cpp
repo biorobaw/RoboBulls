@@ -32,10 +32,10 @@ void VisionComm::updateInfo(SSL_DetectionRobot robot, string color)
 
     int ourTeamColor = TEAM;
 
-    float id;
+    float id = 0;
     Point robPoint;
 
-    int detectedTeamColor;   //if 0, then it's blue. If 1, then it's yellow team.
+    int detectedTeamColor = 0;   //if 0, then it's blue. If 1, then it's yellow team.
 
     vector<Robot*> myTeam = gamemodel->getMyTeam();
     vector<Robot*> opTeam = gamemodel->getOponentTeam();
@@ -151,7 +151,7 @@ bool VisionComm::receive()
                 for (int i=0; i < robots_yellow_n; i++)
                 {
                     float confR = detection.robots_yellow(i).confidence();
-                    cout << "confR yellow: " << confR << endl;
+                    //cout << "confR yellow: " << confR << endl;
                     if (confR > CONF_THRESHOLD)
                     {
                         updateInfo(detection.robots_yellow(i), "Yellow");
@@ -162,6 +162,8 @@ bool VisionComm::receive()
     }
 //        cout << "Size at end of detection: " << gamemodel->getMyTeam().size()+gamemodel->getOponentTeam().size() << endl;
 //    cout <<gamemodel->toString().str();
+
+    return true;
 }
 
 

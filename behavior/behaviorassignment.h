@@ -4,6 +4,12 @@
 /**********************************************/
 /*********** Behavior Assignment **************/
 /**********************************************/
+/* This class is meant to steamline specific behavior assigning
+ * to an arbitrary amount of robots. It is created with a template
+ * argument of a Behavior
+ *
+ * James W
+ */
 
 #include <string>
 #include <typeinfo>
@@ -36,9 +42,6 @@ private:
 
     ParameterList params;
 };
-
-typedef BehaviorAssignment<StopBehavior>    StopStrategy;
-typedef BehaviorAssignment<PenaltyBehavior> PenaltyStrategy;
 
 
 /**************************************************************/

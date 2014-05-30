@@ -1,6 +1,7 @@
 #include "behavior/gotoposition2behavior.h"
 #include "skill/gotoposition2.h"
 #include "model/gamemodel.h"
+#include "include/globals.h"
 
 GoToPosition2Behavior::GoToPosition2Behavior(const ParameterList& list)
 {
