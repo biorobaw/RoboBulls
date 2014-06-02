@@ -4,11 +4,16 @@
 #include <math.h>
 #include <stdlib.h>
 #include "include/globals.h"
-
+#include "skill/rotate.h"
+#include <cmath>
 
 using namespace std;
 
-wheelvelocities closed_loop_control(double x_current,double y_current, double theta_current, double x_goal, double y_goal, double theta_goal)
+deque <double> ClosedLoopControl::rhoQ;
+deque <double> ClosedLoopControl::alphaQ;
+deque <double> ClosedLoopControl::betaQ;
+
+wheelvelocities ClosedLoopControl::closed_loop_control(double x_current,double y_current, double theta_current, double x_goal, double y_goal, double theta_goal)
 {
     //*******************************************************************************************
     //*******************************************************************************************
@@ -28,35 +33,160 @@ wheelvelocities closed_loop_control(double x_current,double y_current, double th
 
     //*******************************************************************************************
     //*******************************************************************************************
+
+    //*******************************************************************************************
+    //*******************************************************************************************
+    //kRhoI, kAlphaI, kBetaI
+    //Constant
+
+    unsigned int sizeRhoQ = 400;
+    unsigned int sizeAlphaQ = 300;
+    unsigned int sizeBetaQ = 100;
+
+    const double kRhoI = krho/(4*sizeRhoQ);
+    const double kAlphaI = kalpha/(1*sizeAlphaQ);
+    double kBetaI = kbeta/(.2*sizeBetaQ);
+
+    //*******************************************************************************************
+    //*******************************************************************************************
+
     //Rho, Alpha, Beta
 
-    double thetha_in_goal_coords = Measurments::angleDiff(-theta_current, theta_goal);
+    double angleToGoal = atan2 ((y_goal-y_current) , (x_goal-x_current));
+
+//    double thetha_in_goal_coords = Measurments::angleDiff(-theta_current, theta_goal);
 
     double rho = sqrt(pow((y_current - y_goal),2) + pow((x_current-x_goal),2));
+    cout << "rho " << rho << endl;
+//    cout << x_current << " " << y_current << " " << theta_current << endl;
 
-    double alpha = Measurments::angleDiff(atan2 ((y_goal-y_current) , (x_goal-x_current)),theta_current);
-    cout << "alpha " << alpha << endl;
-
-    if (rho < 100)
-        alpha = 0;
+    double alpha = Measurments::angleDiff(theta_current, angleToGoal);
+    cout << "alpha " << 180 / M_PI * alpha << endl;
 
 
-    double beta = -Measurments::angleDiff(-thetha_in_goal_coords,alpha);
-    cout << "beta " << beta << endl;
 
-    double robot_xvel =  Globals::OVERALL_VELOCITY * krho * rho;
+//    double beta = Measurments::angleDiff(theta_goal,atan2 ((y_goal-y_current) , (x_goal-x_current)));
+    double beta = Measurments::angleDiff(angleToGoal, theta_goal);;
+    cout << "current theta " << 180 / M_PI * theta_current << endl;
+    cout << "beta " << 180 / M_PI * beta << endl;
+    cout << "Angle diff " << 180 / M_PI *  Measurments::angleDiff(theta_current, theta_goal) << endl;
+
+
+//    if (rho < 100){
+//        alpha = 0;
+////        rho = 0;
+////        beta = Measurments::angleDiff(theta_current, theta_goal);
+////        kBetaI = kBetaI * 1;
+//    }
+
+
+
+
+    //*******************************************************************************************
+    //*******************************************************************************************
+    //Storing the 10 most errors for rho, beta, and alpha in the  queue and calculate the sum of erros
+
+    double sumErrRho = 0;
+    double sumErrAlpha = 0;
+    double sumErrBeta = 0;
+
+
+
+
+    if (rhoQ.size()<sizeRhoQ)
+    {
+        rhoQ.push_back(rho);
+    }
+    else if (rhoQ.size()==sizeRhoQ)
+    {
+        rhoQ.pop_front();
+        rhoQ.push_back(rho);
+    }
+    else
+        cout << "rhoQ has too many elements!" <<endl;
+
+    if (alphaQ.size()<sizeAlphaQ)
+    {
+        alphaQ.push_back(alpha);
+    }
+    else if (alphaQ.size()==sizeAlphaQ)
+    {
+        alphaQ.pop_front();
+        alphaQ.push_back(alpha);
+    }
+    else
+        cout << "alphaQ has too many elements!" <<endl;
+
+    if (betaQ.size()<sizeBetaQ)
+    {
+        betaQ.push_back(beta);
+    }
+    else if (betaQ.size()==sizeBetaQ)
+    {
+        betaQ.pop_front();
+        betaQ.push_back(beta);
+    }
+    else
+        cout << "betaQ has too many elements!" <<endl;
+
+    for (unsigned int i=0; i < rhoQ.size(); i++)
+    {
+        sumErrRho += rhoQ.at(i);
+    }
+
+    for (unsigned int i=0; i < alphaQ.size(); i++)
+    {
+        sumErrAlpha += alphaQ.at(i);
+    }
+
+    for (unsigned int i=0; i < betaQ.size(); i++)
+    {
+        sumErrBeta += betaQ.at(i);
+    }
+
+    //*******************************************************************************************
+    //*******************************************************************************************
+
+
+    double robot_xvel =  Globals::OVERALL_VELOCITY * (krho * rho + kRhoI * sumErrRho);
 
 //    if (alpha > M_PI/2 || alpha < -M_PI/2)
 //        robot_xvel = -robot_xvel;
 
-    double robot_turnrate =  Globals::OVERALL_VELOCITY * (kalpha * alpha + kbeta * (beta));
+    double robot_turnrate =  Globals::OVERALL_VELOCITY * (kalpha * alpha  + kbeta * (beta) + kAlphaI * sumErrAlpha + kBetaI * sumErrBeta);
 
 
-    left_motor_velocity = (robot_xvel / (2*M_PI*wheel_radius) + (wheel_separation*robot_turnrate/(2*M_PI*wheel_radius)))/2;
-    right_motor_velocity = (robot_xvel / (2*M_PI*wheel_radius) - (wheel_separation*robot_turnrate/(2*M_PI*wheel_radius)))/2;
+    cout << "v " << robot_xvel << endl;
+    cout << "w " << robot_turnrate << endl;
 
-    cout << "LMV: " << left_motor_velocity << endl;
-    cout << "RMV: " << right_motor_velocity << endl;
+//    left_motor_velocity = (robot_xvel / (2*M_PI*wheel_radius) - (wheel_separation*robot_turnrate/(2*M_PI*wheel_radius)))/2;
+//    right_motor_velocity = (robot_xvel / (2*M_PI*wheel_radius) + (wheel_separation*robot_turnrate/(2*M_PI*wheel_radius)))/2;
+
+    if (rho > 100)
+    {
+        cout<<"Rho greater than 40"<<endl;
+        left_motor_velocity = (robot_xvel / (2*M_PI*wheel_radius) - (wheel_separation*robot_turnrate/(2*M_PI*wheel_radius)))/2;
+        right_motor_velocity = (robot_xvel / (2*M_PI*wheel_radius) + (wheel_separation*robot_turnrate/(2*M_PI*wheel_radius)))/2;
+    }
+    else
+    {
+        cout<<"Rho smaller than 40"<<endl;
+        if (abs(180 / M_PI *  Measurments::angleDiff(theta_current, theta_goal)) > 10)
+        {
+            left_motor_velocity = 5;
+            right_motor_velocity = 0;
+        }
+        else
+        {
+            left_motor_velocity = 0;
+            right_motor_velocity = 0;
+        }
+//        beta = Measurments::angleDiff(theta_current, theta_goal);
+//        kBetaI = kBetaI * 1;
+    }
+
+//    cout << "LMV: " << left_motor_velocity << endl;
+//    cout << "RMV: " << right_motor_velocity << endl;
 
     if (left_motor_velocity > 100)
         left_motor_velocity = 100;

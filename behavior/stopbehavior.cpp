@@ -20,10 +20,17 @@ void StopBehavior::perform(Robot * myRobot)
     Point robotPoint = myRobot->getRobotPosition();
     Point targetPoint ;
     float angle = Measurments::angleBetween(ballPoint, robotPoint);
-    targetPoint.x = (RADIUS*cos(angle))+ballPoint.x;
-    targetPoint.y = (RADIUS*sin(angle))+ballPoint.y;
+//    targetPoint.x = (RADIUS*cos(angle))+ballPoint.x;
+//    targetPoint.y = (RADIUS*sin(angle))+ballPoint.y;
 
-    robotSkill = new GoToPositionWithOrientation(targetPoint, Measurments::angleBetween(robotPoint, ballPoint));
+    /*******************************
+     *testing*/
+    targetPoint.x = 1000;
+    targetPoint.y = 1000;
+    robotSkill = new GoToPositionWithOrientation(targetPoint, M_PI/2);
+    //*********************************
+
+//    robotSkill = new GoToPositionWithOrientation(targetPoint, Measurments::angleBetween(robotPoint, ballPoint));
 
     robotSkill->perform(myRobot);
 }

@@ -70,3 +70,29 @@ float Measurments::angleDiff(float angle1, float angle2){
 //        return argComp;
     return arg;
 }
+
+float Measurments::angleSum(float angle1, float angle2){
+    // Convert angles to unitary complex numbers z1 and z2
+    float r1 = cos(angle1);
+    float i1 = sin(angle1);
+    float r2 = cos(angle2);
+    float i2 = sin(angle2);
+
+    // Multiply to get z3
+    float r3 = r1*r2 - i1 * i2;
+    float i3 = i1*r2 + r1 * i2;
+    // Get the argument
+    float arg = atan2(i3, r3);
+//    // Find the complementary, just in case the returned angle by atan2 is not the smaller one
+//    float argComp;
+//    if (arg > 0)
+//        argComp = -(2 * M_PI - arg);
+//    else
+//        argComp = 2 * M_PI + arg;
+//    // Return the minimum in absolute value
+//    if (abs(arg) < abs(argComp))
+//        return arg;
+//    else
+//        return argComp;
+    return arg;
+}

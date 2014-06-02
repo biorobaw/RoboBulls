@@ -10,7 +10,7 @@ VisionComm::VisionComm(GameModel *gm)
 {
 // Use different ports depending on whether it is simulated or the actual vision system
 #ifdef SIMULATED
-    client = new RoboCupSSLClient(10020,"224.5.23.3");
+    client = new RoboCupSSLClient(10020,"224.5.23.4");
 #else
     client = new RoboCupSSLClient();
 #endif
@@ -151,7 +151,7 @@ bool VisionComm::receive()
                 for (int i=0; i < robots_yellow_n; i++)
                 {
                     float confR = detection.robots_yellow(i).confidence();
-                    cout << "confR yellow: " << confR << endl;
+//                    cout << "confR yellow: " << confR << endl;
                     if (confR > CONF_THRESHOLD)
                     {
                         updateInfo(detection.robots_yellow(i), "Yellow");
