@@ -164,25 +164,26 @@ wheelvelocities ClosedLoopControl::closed_loop_control(double x_current,double y
 
     if (rho > 100)
     {
-        cout<<"Rho greater than 40"<<endl;
         left_motor_velocity = (robot_xvel / (2*M_PI*wheel_radius) - (wheel_separation*robot_turnrate/(2*M_PI*wheel_radius)))/2;
         right_motor_velocity = (robot_xvel / (2*M_PI*wheel_radius) + (wheel_separation*robot_turnrate/(2*M_PI*wheel_radius)))/2;
     }
     else
     {
-        cout<<"Rho smaller than 40"<<endl;
-        if (abs(180 / M_PI *  Measurments::angleDiff(theta_current, theta_goal)) > 10)
+        if (180 / M_PI *  Measurments::angleDiff(theta_current, theta_goal) < -10)
         {
             left_motor_velocity = 5;
-            right_motor_velocity = 0;
+            right_motor_velocity = -5;
+        }
+        else if (180 / M_PI *  Measurments::angleDiff(theta_current, theta_goal) > 10)
+        {
+            left_motor_velocity = -5;
+            right_motor_velocity = 5;
         }
         else
         {
             left_motor_velocity = 0;
             right_motor_velocity = 0;
         }
-//        beta = Measurments::angleDiff(theta_current, theta_goal);
-//        kBetaI = kBetaI * 1;
     }
 
 //    cout << "LMV: " << left_motor_velocity << endl;
