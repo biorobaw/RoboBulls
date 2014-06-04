@@ -8,6 +8,13 @@
 #include "behavior.h"
 #include "utilities/paramlist.h"
 
+/*
+ * Obstacle Avoid Behavior
+ * Behavior that implements using the FPPA pathfinding algorithm by
+ * managing a queue of points and going to each one.
+ * James W.
+ */
+ 
 class ObstacleAvoidBehavior : public Behavior
 {
 public: 
@@ -19,7 +26,6 @@ private:
 	Point targetPoint;
 	Point nextPoint;
     std::queue<Point> pathQueue;
-    Skill::GoToPosition2* myGoto;
 };
 
 #endif // OBSTACLEAVOIDBEHAVIOR_H

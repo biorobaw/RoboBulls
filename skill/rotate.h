@@ -7,7 +7,7 @@
 
 
 /*  Skill Rotate
-    April 25th 2014. Contributor: James Waugh
+    April 25th 2014. Contributor: JW
 
     Rotates the robot to a given angle. This is done by stopping the robot
     and determining fastest direction, then rotating at a constant velocity
@@ -20,14 +20,12 @@ class Rotate : public Skill
 {
 public:
     Rotate();
-    Rotate(float, float*, float*);
+    Rotate(float angle, float* lmv_out = nullptr, float* rmv_out = nullptr);
     void perform(Robot* robot);
 
 private:
     float targetAngle;
     int	  direction;
-    bool  stopWhenDone;
-
     float* lmv_ptr, *rmv_ptr;
 };
 

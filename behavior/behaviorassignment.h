@@ -99,9 +99,9 @@ template <typename BehaviorType>
 void BehaviorAssignment<BehaviorType>::assignBeh(Robot* robot) const
 {
     /* if BehaviorType has a ParameterList constructor, use it. Otherwise, default
-       should be all there is. Lambda solely because this is used twice below.
-       Honestly, this could cause some confusion down the road, watch for bugs.
-       */
+     * should be all there is. Lambda solely because this is used twice below.
+     * Honestly, this could cause some confusion down the road, watch for bugs.
+     */
     auto doAssignment = [&](Robot* rob) {
         //delete rob->getCurrentBeh();
         rob->setCurrentBeh(new BehaviorType(params));
@@ -111,12 +111,8 @@ void BehaviorAssignment<BehaviorType>::assignBeh(Robot* robot) const
         doAssignment(robot);
     } else {
         if(!robot->hasBeh) {
-            std::cout << "Assigning Beh Because it did not have" << std::endl;
             doAssignment(robot);
         } else if(typeid(*robot->getCurrentBeh()) != typeid(BehaviorType)) {
-             std::cout << "CUR: " << typeid(*robot->getCurrentBeh()).name()
-                       << "NEW: " << typeid(BehaviorType).name() << std::endl;
-
             doAssignment(robot);
         } else {
             robot->setCurrentBeh(robot->getCurrentBeh());
@@ -143,9 +139,7 @@ std::string BehaviorAssignment<BehaviorType>::toString() const
        << '\n' << std::endl;
 
     ss << "Parameters:" << std::endl;
-
-    for(const auto& entry : params)
-        ss << entry.second.toString() << std::endl;
+    ss << params.toString() << std::endl;
 
     return ss.str();
 }

@@ -6,7 +6,7 @@
 #include "skill/rotate.h"
 
 /* GoToPosition Skill
-   April 25 2014. Contributor: James Waugh
+   April 25 2014. Contributor: JW
 
    Moves the robot to a position. This is done by continually
    updating the rotation along a straight path. Unlike before,

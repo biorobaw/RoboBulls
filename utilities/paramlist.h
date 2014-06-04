@@ -19,10 +19,10 @@ public:
 	 /**
 	 * @brief ParameterList::setParam<T> :
 	 *	Set a parameter by a name to a value.
+	 * @param name :
+	 *  The name of the variable to store
 	 * @param value :
-	 * 	The name of the variable to store
-	 * @param T value :
-	 *  The value to set the variable ID'd by name to
+	 *  The value to set the variable to
 	 */
 	template<typename T>
     void setParam(std::string name, T value);
@@ -41,6 +41,12 @@ public:
     std::string toString() const;
 
 private:
+
+	/* ParameterList implementation classes.
+	 * Uses inheritence between these two classes 
+	 * to manage an unordered_map of any type.
+	 * Made possible by C++11 type_index
+	 */
 
     class GenericParamList
     {
@@ -84,6 +90,12 @@ template <typename T>
 T ParameterList::TypedParamList<T>::findParam(std::string name) const
 {
 	auto entry = myParams.find(name);
+	
+	/* IF YOU ARE GETTING AN ASSERT FAILED HERE 
+	 * It means that you tried to look up a variable by a string
+	 * that doesn't exist. Check the spelling of the names
+	 * that you looked up. 
+	 */
 	assert(entry != myParams.end());
 
 	return entry->second;
