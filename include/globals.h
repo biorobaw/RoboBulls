@@ -1,7 +1,9 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-#define SIMULATED 0
+#define SIMULATED 1
+// Overall velocity for all behaviors
+//  10 somewhat fast in the robots
 #define OVERALL_VELOCITY 10
 
 /* Defining PI if it is missing */

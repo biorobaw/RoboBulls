@@ -8,6 +8,8 @@
 
 #include "robcomm.h"
 
+const float mappingRatio = 20;
+
 class SimRobComm : public RobComm
 {
 public:
