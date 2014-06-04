@@ -139,7 +139,6 @@ bool VisionComm::receive()
                 for (int i=0; i < robots_blue_n; i++)
                 {
                     float confR = detection.robots_blue(i).confidence();
-//                    cout << "confR blue: " << confR << endl;
                     if (confR > CONF_THRESHOLD)
                     {
                         updateInfo(detection.robots_blue(i), "Blue");
@@ -151,14 +150,14 @@ bool VisionComm::receive()
                 for (int i=0; i < robots_yellow_n; i++)
                 {
                     float confR = detection.robots_yellow(i).confidence();
-                    //cout << "confR yellow: " << confR << endl;
+
                     if (confR > CONF_THRESHOLD)
                     {
                         updateInfo(detection.robots_yellow(i), "Yellow");
                     }
                 }
             }//if_team
-        }    //            return false;
+        }
     }
 //        cout << "Size at end of detection: " << gamemodel->getMyTeam().size()+gamemodel->getOponentTeam().size() << endl;
 //    cout <<gamemodel->toString().str();

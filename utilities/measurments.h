@@ -44,6 +44,10 @@ public:
 
     // Calculates the smallest difference between two orientations (angle2 - angle1)
     static float angleDiff(float angle1, float angle2);
+
+
+    // Calculates the sum of two orientations (angle2 + angle1)
+    static float angleSum(float angle1, float angle2);
 };
 
 

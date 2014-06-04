@@ -41,10 +41,11 @@ void SimRobComm::sendPacket(int id, int leftVel, int rightVel, bool kick)
     rotationVel = rotationVel * M_PI / 200;
     // Set the actual velocities
     command->set_wheelsspeed(true);
-    command->set_wheel1(-(double)leftVel/100 * 25);
-    command->set_wheel2(-(double)leftVel/100 * 25);
-    command->set_wheel3((double)rightVel/100 * 25);
-    command->set_wheel4((double)rightVel/100 * 25);
+
+    command->set_wheel1(-(double)leftVel/100 * mappingRatio);
+    command->set_wheel2(-(double)leftVel/100 * mappingRatio);
+    command->set_wheel3((double)rightVel/100 * mappingRatio);
+    command->set_wheel4((double)rightVel/100 * mappingRatio);
 
     command->set_veltangent(forwardVel);
     // No normal velocity, differentials cannot move sideways
