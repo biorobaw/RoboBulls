@@ -63,28 +63,15 @@ wheelvelocities ClosedLoopControl::closed_loop_control(double x_current,double y
     double alpha = Measurments::angleDiff(theta_current, angleToGoal);
     cout << "alpha " << 180 / M_PI * alpha << endl;
 
-
-
-//    double beta = Measurments::angleDiff(theta_goal,atan2 ((y_goal-y_current) , (x_goal-x_current)));
     double beta = Measurments::angleDiff(angleToGoal, theta_goal);;
     cout << "current theta " << 180 / M_PI * theta_current << endl;
     cout << "beta " << 180 / M_PI * beta << endl;
     cout << "Angle diff " << 180 / M_PI *  Measurments::angleDiff(theta_current, theta_goal) << endl;
 
 
-//    if (rho < 100){
-//        alpha = 0;
-////        rho = 0;
-////        beta = Measurments::angleDiff(theta_current, theta_goal);
-////        kBetaI = kBetaI * 1;
-//    }
-
-
-
-
     //*******************************************************************************************
     //*******************************************************************************************
-    //Storing the 10 most errors for rho, beta, and alpha in the  queue and calculate the sum of erros
+    //Storing a defined number of most errors for rho, beta, and alpha in the  queue and calculate the sum of erros
 
     double sumErrRho = 0;
     double sumErrAlpha = 0;
@@ -150,17 +137,11 @@ wheelvelocities ClosedLoopControl::closed_loop_control(double x_current,double y
 
     double robot_xvel =  Globals::OVERALL_VELOCITY * (krho * rho + kRhoI * sumErrRho);
 
-//    if (alpha > M_PI/2 || alpha < -M_PI/2)
-//        robot_xvel = -robot_xvel;
-
     double robot_turnrate =  Globals::OVERALL_VELOCITY * (kalpha * alpha  + kbeta * (beta) + kAlphaI * sumErrAlpha + kBetaI * sumErrBeta);
 
 
     cout << "v " << robot_xvel << endl;
     cout << "w " << robot_turnrate << endl;
-
-//    left_motor_velocity = (robot_xvel / (2*M_PI*wheel_radius) - (wheel_separation*robot_turnrate/(2*M_PI*wheel_radius)))/2;
-//    right_motor_velocity = (robot_xvel / (2*M_PI*wheel_radius) + (wheel_separation*robot_turnrate/(2*M_PI*wheel_radius)))/2;
 
     if (rho > 100)
     {
