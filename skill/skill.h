@@ -1,17 +1,20 @@
 #ifndef SKILL_H
 #define SKILL_H
 
-#include <iostream>
-#include "behavior/behavior.h"
+#include "model/robot.h"
+#include "communication/robcomm.h"
 
+namespace Skill
+{
 
-using namespace std;
 
 class Skill
 {
 public:
-    Skill();
-    virtual void perform(Robot * robot) = 0;
+    virtual void perform(Robot* robot) = 0;
 };
+
+
+}
 
 #endif // SKILL_H

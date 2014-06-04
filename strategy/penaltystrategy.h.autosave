@@ -5,8 +5,9 @@
 #include "model/gamemodel.h"
 #include "behavior/behavior.h"
 #include "behavior/penaltybehavior.h"
+#include "behavior/behaviorassignment.h"
 
-class PenaltyStrategy:public strategy
+class PenaltyStrategy: public strategy
 {
 public:
     PenaltyStrategy();

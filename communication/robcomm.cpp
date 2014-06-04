@@ -4,19 +4,17 @@
 #include "simrobcomm.h"
 #include "nxtrobcomm.h"
 
-RobComm * RobComm::robComm = NULL;
+RobComm * RobComm::robcomm = NULL;
 
 RobComm * RobComm::getRobComm()
 {
 
-    if (robComm == NULL)
-#ifdef SIMULATED
-        robComm = new SimRobComm();
+    if (robcomm == NULL)
+#if SIMULATED
+        robcomm = new SimRobComm();
 #else
-        robComm = new NXTRobComm();
+        robcomm = new NXTRobComm();
 #endif
 
-    return robComm;
-
-
+    return robcomm;
 }

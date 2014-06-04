@@ -1,3 +1,5 @@
+#include <iostream>
+#include <sstream>
 #include "point.h"
 
 bool Point::operator==(const Point& rhs)
@@ -31,13 +33,11 @@ Point Point::operator-(const Point& rhs)
     return ret;
 }
 
-stringstream& Point::toString()
+std::string Point::toString()
 {
-    stringstream myString;
-
-    myString << "(x, y)= " << "("<<x<<", "<<y<<")";
-
-    return myString;
+    stringstream ss;
+    ss << "(x, y)= " << "("<<x<<", "<<y<<")";
+    return ss.str();
 }
 
 /*

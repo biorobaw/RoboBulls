@@ -24,37 +24,39 @@ SOURCES += main.cpp \
     include/netraw.cpp \
     include/robocup_ssl_client.cpp \
     include/serialib.cpp \
-    Model/gamemodel.cpp \
-    strategy/strategy.cpp \
+	model/gamemodel.cpp \
     strategy/strategycontroller.cpp \
-    strategy/stopstrategy.cpp \
+    communication/robcomm.cpp \
     behavior/behavior.cpp \
-    skill/skill.cpp \
     behavior/stopbehavior.cpp \
     communication/visioncomm.cpp \
     skill/kick.cpp \
     skill/waitforball.cpp \
-    Model/robot.cpp \
+	model/robot.cpp \
     skill/gotoposition.cpp \
-    Utilities/point.cpp \
-    Utilities/measurments.cpp \
-    skill/gobackward.cpp \
-    skill/goforward.cpp \
+	utilities/point.cpp \
+	utilities/measurments.cpp \
     skill/rotate.cpp \
-    skill/stop.cpp \
     behavior/penaltybehavior.cpp \
+    skill/gotoposition2.cpp \
+    behavior/gotoposition2behavior.cpp \
+    behavior/obstacleavoidbehavior.cpp \
+    skill/pathfinding/fppa_pathfinding.cpp \
+    skill/basic_movement.cpp \
+    utilities/paramlist.cpp \
+    strategy/strategy.cpp \
+    strategy/stopstrategy.cpp \
     strategy/penaltystrategy.cpp \
     skill/robottoinertialvelocities.cpp \
-    skill/closedloopcontrol.cpp \
     skill/matrixcalculator.cpp \
     skill/gotopositionwithorientation.cpp \
+    skill/gotopositionfacing.cpp \
+    skill/closedloopcontrol.cpp \
     communication/simrobcomm.cpp \
+    communication/nxtrobcomm.cpp \
     include/grSim_Replacement.pb.cc \
     include/grSim_Packet.pb.cc \
-    include/grSim_Commands.pb.cc \
-    communication/nxtrobcomm.cpp \
-    communication/robcomm.cpp \
-    skill/gotopositionfacing.cpp
+    include/grSim_Commands.pb.cc
 
 HEADERS += \
     communication/refcomm.h \
@@ -67,37 +69,44 @@ HEADERS += \
     include/serialib.h \
     include/timer.h \
     include/util.h \
-    Model/gamemodel.h \
+	model/gamemodel.h \
+    Robot/robot.h \
     strategy/strategy.h \
     strategy/strategycontroller.h \
-    strategy/stopstrategy.h \
+    communication/robcomm.h \
     behavior/behavior.h \
     communication/visioncomm.h \
     skill/kick.h \
     skill/waitforball.h \
-    Model/robot.h \
+	model/robot.h \
     skill/gotoposition.h \
     skill/skill.h \
     behavior/stopbehavior.h \
-    Utilities/measurments.h \
-    Utilities/point.h \
-    skill/gobackward.h \
-    skill/goforward.h \
+	utilities/measurments.h \
+	utilities/point.h \
     skill/rotate.h \
-    skill/stop.h \
+	skill/basic_movement.h \
     behavior/penaltybehavior.h \
+    skill/gotoposition2.h \
+    behavior/gotoposition2behavior.h \
+    behavior/obstacleavoidbehavior.h \
+    skill/pathfinding/fppa_pathfinding.hpp \
+	utilities/paramlist.h \
+    behavior/behaviorassignment.h \
+    strategy/stopstrategy.h \
     strategy/penaltystrategy.h \
     skill/robottoinertialvelocities.h \
     skill/matrixcalculator.h \
-    skill/closedloopcontrol.h \
     skill/gotopositionwithorientation.h \
+    skill/gotopositionfacing.h \
+    skill/closedloopcontrol.h \
     communication/simrobcomm.h \
+    communication/nxtrobcomm.h \
     include/grSim_Replacement.pb.h \
     include/grSim_Packet.pb.h \
     include/grSim_Commands.pb.h \
-    include/globals.h \
-    communication/nxtrobcomm.h \
-    communication/robcomm.h \
-    skill/gotopositionfacing.h
+    include/globals.h
+
+QMAKE_CXXFLAGS += -std=c++0x
 
 unix|win32: LIBS += -lprotobuf

@@ -1,7 +1,7 @@
 #ifndef ROBOT_H
 #define ROBOT_H
 
-#include "Utilities/point.h"
+#include "utilities/point.h"
 #include "behavior/behavior.h"
 #include <sstream>
 
@@ -25,6 +25,7 @@ public:
     void setR(float);
     void setL(float);
     void setCurrentBeh(Behavior *);
+    void clearCurrentBeh();
 
     //gets
     Point getRobotPosition();
@@ -34,7 +35,7 @@ public:
     int getL();
     Behavior * getCurrentBeh();
 
-    stringstream& toString();
+    std::string toString();
 
     unsigned kick;
     int count;

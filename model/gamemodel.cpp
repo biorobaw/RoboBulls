@@ -59,6 +59,12 @@ void GameModel::setStrategyController(StrategyController *sc)
 
 void GameModel::setHasBall()
 {
+/* 	static auto ballDetermineFn = [](Robot* rob) {
+		rob->hasBall = Measurments::isClose(rob->getRobotPosition(), getBallPoint(), 30.00);
+		};
+	std::for_each(myTeam.begin(), myTeam.end(), ballDetermineFn);
+	std::for_each(opTeam.begin(), opTeam.end(), ballDetermineFn); */
+	
     for (vector<Robot*>::iterator it = myTeam.begin(); it != myTeam.end(); it++)
     {
         if (Measurments::isClose((*it)->getRobotPosition(), getBallPoint(), 30.00))
@@ -83,16 +89,15 @@ void GameModel::setHasBall()
             (*it)->hasBall=false;
         }
     }
-
 }
 
 
-vector<Robot*> GameModel::getOponentTeam()
+const vector<Robot*>& GameModel::getOponentTeam()
 {
     return opTeam;
 }
 
-vector<Robot*> GameModel::getMyTeam()
+const vector<Robot*>& GameModel::getMyTeam()
 {
     return myTeam;
 }
@@ -150,20 +155,21 @@ Point GameModel::getPenaltyPoint()
 
 /**
  * @brief GameModel::find : find robot in team, compare ids, return robot if ids are same
- * @param robot
- * @param team
- * @return
+ * @param detected_id : The ID to look for
+ * @param team : The team to look in
+ * @return : The robot with id detected_id, or NULL if not found.
  */
-Robot * GameModel::find(int detected_id, vector<Robot*> team)
+Robot * GameModel::find(int detected_id, const vector<Robot *>& team)
 {
     Robot *rob = NULL;
 
-    for(vector<Robot*>::iterator it = team.begin(); it != team.end(); it++)
+    for(vector<Robot*>::const_iterator it = team.cbegin(); it != team.cend(); it++)
     {
         if ((*it)->getID() == detected_id)
         {
             // TODO: Compare with current's confidence - low priority
             rob = (*it);
+            break;
         }
     }
     return rob;
@@ -175,25 +181,25 @@ Robot * GameModel::find(int detected_id, vector<Robot*> team)
 //}
 
 
- stringstream& GameModel::toString()
- {
-     stringstream myString;
+std::string GameModel::toString()
+{
+	stringstream myString;
 
-     myString << "Ball Position: " << ballPoint.toString().str() <<endl;
+	myString << "Ball Position: " << ballPoint.toString() <<endl;
 
-     myString<<"\nMy Team Robots: \n";
-     for (vector<Robot*>::iterator it = myTeam.begin(); it != myTeam.end(); it++)
-     {
-         myString << "\t" << (*it)->toString().str()<<endl;
-     }
+	myString<<"\nMy Team Robots: \n";
+	for (vector<Robot*>::iterator it = myTeam.begin(); it != myTeam.end(); it++)
+	{
+		myString << "\t" << (*it)->toString()<<endl;
+	}
 
-     myString<<"\nOponent Team Robots: \n";
-     for (vector<Robot*>::iterator it = opTeam.begin(); it != opTeam.end(); it++)
-     {
-         myString << "\t" << (*it)->toString().str()<<endl;
-     }
+	myString<<"\nOponent Team Robots: \n";
+	for (vector<Robot*>::iterator it = opTeam.begin(); it != opTeam.end(); it++)
+	{
+		myString << "\t" << (*it)->toString() <<endl;
+	}
 
-     return myString;
- }
+	return myString.str();
+}
 
 

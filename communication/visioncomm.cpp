@@ -9,8 +9,8 @@ const int TEAM = 0;
 VisionComm::VisionComm(GameModel *gm)
 {
 // Use different ports depending on whether it is simulated or the actual vision system
-#ifdef SIMULATED
-    client = new RoboCupSSLClient(10020,"224.5.23.4");
+#if SIMULATED
+    client = new RoboCupSSLClient(10020,"224.5.23.3");
 #else
     client = new RoboCupSSLClient();
 #endif
@@ -32,10 +32,10 @@ void VisionComm::updateInfo(SSL_DetectionRobot robot, string color)
 
     int ourTeamColor = TEAM;
 
-    float id;
+    float id = 0;
     Point robPoint;
 
-    int detectedTeamColor;   //if 0, then it's blue. If 1, then it's yellow team.
+    int detectedTeamColor = 0;   //if 0, then it's blue. If 1, then it's yellow team.
 
     vector<Robot*> myTeam = gamemodel->getMyTeam();
     vector<Robot*> opTeam = gamemodel->getOponentTeam();
@@ -94,7 +94,7 @@ bool VisionComm::receive()
 
         //Rcv packet
         //use the client to recieve the package and check if it's recieved... look at Wiliam's code
-        //take a look at refcomm
+        //take a look at refcommSIMULATED
 
         if (packet.has_detection())
         {
@@ -139,7 +139,6 @@ bool VisionComm::receive()
                 for (int i=0; i < robots_blue_n; i++)
                 {
                     float confR = detection.robots_blue(i).confidence();
-//                    cout << "confR blue: " << confR << endl;
                     if (confR > CONF_THRESHOLD)
                     {
                         updateInfo(detection.robots_blue(i), "Blue");
@@ -151,17 +150,19 @@ bool VisionComm::receive()
                 for (int i=0; i < robots_yellow_n; i++)
                 {
                     float confR = detection.robots_yellow(i).confidence();
-//                    cout << "confR yellow: " << confR << endl;
+
                     if (confR > CONF_THRESHOLD)
                     {
                         updateInfo(detection.robots_yellow(i), "Yellow");
                     }
                 }
             }//if_team
-        }    //            return false;
+        }
     }
 //        cout << "Size at end of detection: " << gamemodel->getMyTeam().size()+gamemodel->getOponentTeam().size() << endl;
 //    cout <<gamemodel->toString().str();
+
+    return true;
 }
 
 

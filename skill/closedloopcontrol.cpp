@@ -1,5 +1,5 @@
 #include "closedloopcontrol.h"
-#include "Utilities/measurments.h"
+#include "utilities/measurments.h"
 #include <iostream>
 #include <math.h>
 #include <stdlib.h>
@@ -53,6 +53,7 @@ wheelvelocities ClosedLoopControl::closed_loop_control(double x_current,double y
     //Rho, Alpha, Beta
 
     double angleToGoal = atan2 ((y_goal-y_current) , (x_goal-x_current));
+
 
 //    double thetha_in_goal_coords = Measurments::angleDiff(-theta_current, theta_goal);
 
@@ -131,13 +132,14 @@ wheelvelocities ClosedLoopControl::closed_loop_control(double x_current,double y
         sumErrBeta += betaQ.at(i);
     }
 
+
     //*******************************************************************************************
     //*******************************************************************************************
 
 
-    double robot_xvel =  Globals::OVERALL_VELOCITY * (krho * rho + kRhoI * sumErrRho);
+    double robot_xvel = OVERALL_VELOCITY * (krho * rho + kRhoI * sumErrRho);
 
-    double robot_turnrate =  Globals::OVERALL_VELOCITY * (kalpha * alpha  + kbeta * (beta) + kAlphaI * sumErrAlpha + kBetaI * sumErrBeta);
+    double robot_turnrate = OVERALL_VELOCITY * (kalpha * alpha  + kbeta * (beta) + kAlphaI * sumErrAlpha + kBetaI * sumErrBeta);
 
 
     cout << "v " << robot_xvel << endl;
@@ -179,7 +181,7 @@ wheelvelocities ClosedLoopControl::closed_loop_control(double x_current,double y
     if (right_motor_velocity < -100)
         right_motor_velocity = -100;
 
-    wheelvelocities result = {left_motor_velocity,right_motor_velocity};
+    wheelvelocities result = {(int)left_motor_velocity, (int)right_motor_velocity};
     return result;
 }
 

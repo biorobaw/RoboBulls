@@ -20,7 +20,7 @@ public:
     virtual void sendKick(int robotId) = 0;
 
 private:
-    static RobComm * robComm;
+    static RobComm * robcomm;
 };
 
 #endif // ROBCOMM_H

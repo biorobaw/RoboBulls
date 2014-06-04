@@ -11,6 +11,8 @@ StrategyController::StrategyController()
 
 void StrategyController::gameModelUpdated()
 {
+    static int count = 0;
+    if(count < 25) {++count; return;}
 //    cout<< model->getGameState() << endl;
 
     if (model->getGameState() == 'S')
@@ -33,7 +35,8 @@ void StrategyController::gameModelUpdated()
     {
         Robot *rob = model->getMyTeam().at(i);
 
-        rob->getCurrentBeh()->perform(rob);
+        if(rob->hasBeh)
+         rob->getCurrentBeh()->perform(rob);
     }
 }
 

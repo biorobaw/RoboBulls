@@ -2,19 +2,23 @@
 #define GOTOPOSITIONWITHORIENTATION_H
 
 #include "skill.h"
-#include "Model/robot.h"
+#include "model/robot.h"
 #include "skill/rotate.h"
 
-class GoToPositionWithOrientation : public Skill
-{
-public:
-    GoToPositionWithOrientation(Point target, double goalOrientation);
-    GoToPositionWithOrientation(float tx, float ty, double goalOrientation);
+namespace Skill {
 
-    void perform(Robot * robot);
-private:
-    Point   targetPosition;
-    double goalOrientation;
-};
+    class GoToPositionWithOrientation : public Skill
+    {
+    public:
+        GoToPositionWithOrientation(Point target, double goalOrientation);
+        GoToPositionWithOrientation(float tx, float ty, double goalOrientation);
+
+        void perform(Robot * robot);
+    private:
+        Point   targetPosition;
+        double goalOrientation;
+    };
+
+}
 
 #endif // GOTOPOSITIONWITHORIENTATION_H

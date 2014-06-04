@@ -1,11 +1,14 @@
 #include "gotopositionfacing.h"
-#include "Utilities/measurments.h"
+#include "utilities/measurments.h"
 #include "communication/robcomm.h"
 #include "include/util.h"
 #include "skill/rotate.h"
 #include "skill/closedloopcontrol.h"
-#include "Model/gamemodel.h"
+#include "model/gamemodel.h"
 #include <math.h>
+
+
+namespace Skill {
 
 GoToPositionFacing::GoToPositionFacing(Point target)
 {
@@ -38,4 +41,6 @@ void GoToPositionFacing::perform(Robot * robot)
 
     nxtbee->sendVels(left_wheel_velocity, right_wheel_velocity, robot->getID());
     //********************************************************************
+}
+
 }

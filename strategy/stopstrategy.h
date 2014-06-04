@@ -2,7 +2,7 @@
 #define STOPSTRATEGY_H
 
 #include "strategy/strategy.h"
-#include "Model/gamemodel.h"
+#include "model/gamemodel.h"
 #include "behavior/behavior.h"
 
 

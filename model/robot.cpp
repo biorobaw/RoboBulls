@@ -2,6 +2,7 @@
 
 Robot::Robot()
 {
+    hasBeh = false;
 }
 
 void Robot::setRobotPosition(Point rbtPoint)
@@ -35,6 +36,12 @@ void Robot::setCurrentBeh(Behavior *currentBeh)
     hasBeh = true;
 }
 
+void Robot::clearCurrentBeh()
+{
+    hasBeh = false;
+    delete currentBehavior;
+}
+
 Point Robot::getRobotPosition()
 {
     return robotPosition;
@@ -65,13 +72,14 @@ Behavior * Robot::getCurrentBeh()
     return currentBehavior;
 }
 
-stringstream& Robot::toString()
+std::string Robot::toString()
 {
-    stringstream myString;
+    stringstream ss;
 
-    myString << "\t" << getRobotPosition().toString().str() << "\t ID: " << getID() << "\t Orientation: "<< getOrientation();
+    ss << "\t" << getRobotPosition().toString() << "\t ID: " << getID();
 
-    return myString;
+
+    return ss.str();
 
 }
 

@@ -1,11 +1,13 @@
 #include "gotopositionwithorientation.h"
-#include "Utilities/measurments.h"
+#include "utilities/measurments.h"
 #include "communication/robcomm.h"
 #include "include/util.h"
 #include "skill/rotate.h"
 #include "skill/closedloopcontrol.h"
-#include "Model/gamemodel.h"
+#include "model/gamemodel.h"
 #include <math.h>
+
+namespace Skill {
 
 GoToPositionWithOrientation::GoToPositionWithOrientation(Point target, double goalOrientation)
 {
@@ -34,4 +36,6 @@ void GoToPositionWithOrientation::perform(Robot * robot)
     float right_wheel_velocity = wheelvelocity.right;
 
     nxtbee->sendVels(left_wheel_velocity, right_wheel_velocity, robot->getID());
+}
+
 }

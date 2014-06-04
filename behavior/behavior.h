@@ -1,11 +1,10 @@
 #ifndef BEHAVIOR_H
 #define BEHAVIOR_H
 
-//#include "Model/robot.h"
-//#include "Model/gamemodel.h"
+//#include "model/robot.h"
+//#include "model/gamemodel.h"
 
 class Robot;
-class GameModel;
 
 /*
  * General Behavior class which inheritas other behaviors
@@ -16,11 +15,8 @@ class Behavior
 {
 public:
     Behavior();
-    virtual void perform(Robot *)=0;
-
-protected:
-//    GameModel *gamemodel;
-
+    virtual void perform(Robot*) = 0;
 };
+
 
 #endif // BEHAVIOR_H

@@ -1,18 +1,18 @@
 #ifndef GAMEMODEL_H
 #define GAMEMODEL_H
 
-
-#include "Utilities/measurments.h"
-#include "Utilities/point.h"
-#include "../Model/robot.h"
-#include "../strategy/strategycontroller.h"
+#include <vector>
+#include <iostream>
+#include <sstream>
+#include "utilities/measurments.h"
+#include "utilities/point.h"
+#include "model/robot.h"
+#include "strategy/strategycontroller.h"
 #include "include/messages_robocup_ssl_detection.pb.h"
 #include "include/messages_robocup_ssl_geometry.pb.h"
 #include "include/messages_robocup_ssl_wrapper.pb.h"
 #include "include/robocup_ssl_client.h"
-#include <vector>
-#include <iostream>
-#include <sstream>
+
 
 using namespace std;
 
@@ -51,15 +51,15 @@ public:
     void setHasBall();
 
     //gets
-    vector <Robot *> getOponentTeam();
-    vector <Robot *> getMyTeam();
+    const vector<Robot *>& getOponentTeam();
+    const vector<Robot *>& getMyTeam();
     float getXBall();
     float getYBall();
     Point getBallPoint();
-    int getBlueGoals();
-    int getYellowGoals();
+    int   getBlueGoals();
+    int   getYellowGoals();
     float getRemainingTime();
-    char getGameState();
+    char  getGameState();
     Point getPenaltyPoint();
 
     //returns the robot which has the ball
@@ -67,11 +67,11 @@ public:
 //    void play();
 
     //Other Functions
-    Robot * find(int , vector<Robot*>);
+    Robot* find(int, const vector<Robot *>&);
 
     static GameModel * getModel();
 
-    stringstream& toString();
+    std::string toString();
 
 
 private:
@@ -80,8 +80,8 @@ private:
     //GameModel(StrategyController * sc);
 
 
-    vector <Robot*>opTeam;
-    vector <Robot*>myTeam;
+    vector <Robot*> opTeam;
+    vector <Robot*> myTeam;
     float x_ballPosition;
     float y_ballPosition;
     Point ballPoint;

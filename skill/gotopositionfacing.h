@@ -2,8 +2,10 @@
 #define GOTOPOSITIONFACING_H
 
 #include "skill.h"
-#include "Model/robot.h"
+#include "model/robot.h"
 #include "skill/rotate.h"
+
+namespace Skill {
 
 class GoToPositionFacing : public Skill
 {
@@ -15,5 +17,7 @@ public:
 private:
     Point   targetPosition;
 };
+
+}
 
 #endif // GOTOPOSITIONFACING_H
