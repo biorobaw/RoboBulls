@@ -151,11 +151,13 @@ namespace impl
          * This eliminates the algorithm not being able to reach the target
          * because there is an obstacle right next to the target.
          */
-        std::remove_if(obstacles->begin(), obstacles->end(),
+        auto pos = std::remove_if(obstacles->begin(), obstacles->end(),
             [&](Point pt) {
                 return Measurments::isClose(pt, start, ROBOT_SIZE) ||
                        Measurments::isClose(pt, end, ROBOT_SIZE);
             });
+
+        obstacles->erase(pos, obstacles->end());
 
         /* Sort the range on how close each point is to the start.
          * May help with forming proper paths by always finding the
