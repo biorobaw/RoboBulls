@@ -6,6 +6,7 @@
 #include "include/globals.h"
 #include "skill/rotate.h"
 #include <cmath>
+#include <algorithm>
 
 using namespace std;
 
@@ -175,14 +176,25 @@ wheelvelocities ClosedLoopControl::closed_loop_control(double x_current,double y
 //    cout << "LMV: " << left_motor_velocity << endl;
 //    cout << "RMV: " << right_motor_velocity << endl;
 
-    if (left_motor_velocity > 100)
-        left_motor_velocity = 100;
-    if (right_motor_velocity > 100)
-        right_motor_velocity = 100;
-    if (left_motor_velocity < -100)
-        left_motor_velocity = -100;
-    if (right_motor_velocity < -100)
-        right_motor_velocity = -100;
+//    if (left_motor_velocity > 100)
+//        left_motor_velocity = 100;
+//    if (right_motor_velocity > 100)
+//        right_motor_velocity = 100;
+//    if (left_motor_velocity < -100)
+//        left_motor_velocity = -100;
+//    if (right_motor_velocity < -100)
+//        right_motor_velocity = -100;
+
+    if (abs(left_motor_velocity) > 100 || abs(right_motor_velocity) > 100)
+    {
+        float maximum = max(abs(left_motor_velocity), abs(right_motor_velocity));
+
+        float ratio = maximum / 100;
+
+        left_motor_velocity = left_motor_velocity / ratio;
+        right_motor_velocity = right_motor_velocity / ratio;
+
+    }
 
     wheelvelocities result = {(int)left_motor_velocity, (int)right_motor_velocity};
     return result;
