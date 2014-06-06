@@ -27,12 +27,8 @@
  *    actual velocity, as it is constantly rotating.
  */
 #define DIST_TOLERANCE 410
+#define DIST_VELOCITY 80
 
-#if SIMULATED
- #define DIST_VELOCITY 30
-#else
- #define DIST_VELOCITY 80
-#endif
 
 
 /*
@@ -41,18 +37,14 @@
  * ROT_VELOCITY:  Velocity applied to each motor in rotation.
  */
 #define ROT_TOLERANCE 7*(M_PI/180)
+#define ROT_VELOCITY 20
 
-#if SIMULATED
- #define ROT_VELOCITY 5
-#else
- #define ROT_VELOCITY 20
-#endif
 
 
 /* FPPA Pathfinding Constants */
 #define FPPA_DEBUG 1
 #define MAX_RECURSION_DEPTH  3
-#define ROBOT_SIZE (ROBOT_RADIUS * 1.75)
+#define ROBOT_SIZE (ROBOT_RADIUS * 2.5)
 
 
 #endif // GLOBALS_H

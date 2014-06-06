@@ -196,5 +196,3 @@ wheelvelocities ClosedLoopControl::closed_loop_control(double x_current,double y
     wheelvelocities result = {(int)left_motor_velocity, (int)right_motor_velocity};
     return result;
 }
-
-

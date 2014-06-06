@@ -3,7 +3,7 @@
 #include "communication/robcomm.h"
 #include "include/util.h"
 #include "skill/rotate.h"
-#include "skill/closedloopcontrol.h"
+#include "skill/differential_control/closedloopcontrol.h"
 #include "model/gamemodel.h"
 #include "include/globals.h"
 

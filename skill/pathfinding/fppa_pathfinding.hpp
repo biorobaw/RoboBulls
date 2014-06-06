@@ -1,23 +1,18 @@
 #ifndef FPPA_PATHFINDING_H
 #define FPPA_PATHFINDING_H
 
-/*  Fast Path Planning Algorithm
-	Contributor: James Waugh
-
-	This namespace implements the Fast Path Planning Algorithm (FPPA)
-	as described in the paper "Fast Path Planning Algorithm for the RoboCub Small Size League"
-	by Rodriguez S., Rojas E., Calderon J. et al.
-
-	The algorithm is meant to provide reliable path-finding in real time, such as in
-	the case of the RoboCup league.
-	*/
+/* Fast Path Planning Algorithm
+ * Contributor: James
+ *
+ * This namespace implements the Fast Path Planning Algorithm (FPPA)
+ * as described in the paper "Fast Path Planning Algorithm for the RoboCub Small Size League"
+ * by Rodriguez S., Rojas E., Calderon J. et al.
+ * 
+ * The algorithm is meant to provide reliable path-finding in real time, such as in
+ * the case of the RoboCup league.
+ */
 #include <vector>
 #include "utilities/point.h"
-#include "utilities/measurments.h"
-
-/*  Robot Radius and Ball Radius should be standardized
-	in some other file. We need a constants.h
-	*/
 
 namespace FPPA
 {

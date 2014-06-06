@@ -47,16 +47,16 @@ SOURCES += main.cpp \
     strategy/strategy.cpp \
     strategy/stopstrategy.cpp \
     strategy/penaltystrategy.cpp \
-    skill/robottoinertialvelocities.cpp \
-    skill/matrixcalculator.cpp \
     skill/gotopositionwithorientation.cpp \
     skill/gotopositionfacing.cpp \
-    skill/closedloopcontrol.cpp \
     communication/simrobcomm.cpp \
     communication/nxtrobcomm.cpp \
     include/grSim_Replacement.pb.cc \
     include/grSim_Packet.pb.cc \
-    include/grSim_Commands.pb.cc
+    include/grSim_Commands.pb.cc \
+    skill/differential_control/robottoinertialvelocities.cpp \
+    skill/differential_control/matrixcalculator.cpp \
+    skill/differential_control/closedloopcontrol.cpp
 
 HEADERS += \
     communication/refcomm.h \
@@ -99,13 +99,15 @@ HEADERS += \
     skill/matrixcalculator.h \
     skill/gotopositionwithorientation.h \
     skill/gotopositionfacing.h \
-    skill/closedloopcontrol.h \
     communication/simrobcomm.h \
     communication/nxtrobcomm.h \
     include/grSim_Replacement.pb.h \
     include/grSim_Packet.pb.h \
     include/grSim_Commands.pb.h \
-    include/globals.h
+    include/globals.h \
+    skill/differential_control/robottoinertialvelocities.h \
+    skill/differential_control/matrixcalculator.h \
+    skill/differential_control/closedloopcontrol.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 
