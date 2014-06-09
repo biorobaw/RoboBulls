@@ -6,6 +6,8 @@
 
 using namespace std;
 
+#define CLOOP_CONTROL_DEBUG 1
+
 //results container
 struct wheelvelocities
 {

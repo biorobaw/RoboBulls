@@ -4,7 +4,6 @@
 
 using namespace std;
 
-const int TEAM = 0;
 
 VisionComm::VisionComm(GameModel *gm)
 {

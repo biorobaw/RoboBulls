@@ -36,6 +36,7 @@ namespace Skill
             direction = 0; //No rotation needed
         }
 
+
         /* If the velocities are requested to be outputted,
          * output them and don't send the vels directly.
          */
@@ -48,4 +49,3 @@ namespace Skill
     }
 
 } //namespace Skill
-
