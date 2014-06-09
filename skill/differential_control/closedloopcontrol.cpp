@@ -59,16 +59,16 @@ wheelvelocities ClosedLoopControl::closed_loop_control(double x_current,double y
 //    double thetha_in_goal_coords = Measurments::angleDiff(-theta_current, theta_goal);
 
     double rho = sqrt(pow((y_current - y_goal),2) + pow((x_current-x_goal),2));
-    cout << "rho " << rho << endl;
+//    cout << "rho " << rho << endl;
 //    cout << x_current << " " << y_current << " " << theta_current << endl;
 
     double alpha = Measurments::angleDiff(theta_current, angleToGoal);
-    cout << "alpha " << 180 / M_PI * alpha << endl;
+//    cout << "alpha " << 180 / M_PI * alpha << endl;
 
     double beta = Measurments::angleDiff(angleToGoal, theta_goal);;
-    cout << "current theta " << 180 / M_PI * theta_current << endl;
-    cout << "beta " << 180 / M_PI * beta << endl;
-    cout << "Angle diff " << 180 / M_PI *  Measurments::angleDiff(theta_current, theta_goal) << endl;
+//    cout << "current theta " << 180 / M_PI * theta_current << endl;
+//    cout << "beta " << 180 / M_PI * beta << endl;
+//    cout << "Angle diff " << 180 / M_PI *  Measurments::angleDiff(theta_current, theta_goal) << endl;
 
 
     //*******************************************************************************************
@@ -143,8 +143,8 @@ wheelvelocities ClosedLoopControl::closed_loop_control(double x_current,double y
     double robot_turnrate = OVERALL_VELOCITY * (kalpha * alpha  + kbeta * (beta) + kAlphaI * sumErrAlpha + kBetaI * sumErrBeta);
 
 
-    cout << "v " << robot_xvel << endl;
-    cout << "w " << robot_turnrate << endl;
+//    cout << "v " << robot_xvel << endl;
+//    cout << "w " << robot_turnrate << endl;
 
     if (rho > 100)
     {
@@ -155,13 +155,13 @@ wheelvelocities ClosedLoopControl::closed_loop_control(double x_current,double y
     {
         if (180 / M_PI *  Measurments::angleDiff(theta_current, theta_goal) < -10)
         {
-            left_motor_velocity = 5;
-            right_motor_velocity = -5;
+            left_motor_velocity = OVERALL_VELOCITY * 5;
+            right_motor_velocity = OVERALL_VELOCITY * -5;
         }
         else if (180 / M_PI *  Measurments::angleDiff(theta_current, theta_goal) > 10)
         {
-            left_motor_velocity = -5;
-            right_motor_velocity = 5;
+            left_motor_velocity = OVERALL_VELOCITY * -5;
+            right_motor_velocity = OVERALL_VELOCITY * 5;
         }
         else
         {

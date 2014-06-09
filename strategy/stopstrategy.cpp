@@ -3,6 +3,8 @@
 #include "behavior/behaviorassignment.h"
 #include "behavior/obstacleavoidbehavior.h"
 
+#include "behavior/stopbehavior.h"
+
 using namespace std;
 
 StopStrategy::StopStrategy()

@@ -6,7 +6,7 @@
 #include "behavior/behavior.h"
 
 
-class StopStrategy:public strategy
+class StopStrategy:public Strategy
 {
 public:
     StopStrategy();

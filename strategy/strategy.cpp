@@ -3,7 +3,7 @@
 
 using namespace std;
 
-strategy::strategy()
+Strategy::Strategy()
 {
 }
 

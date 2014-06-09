@@ -1,5 +1,6 @@
 #include "simrobcomm.h"
 #include <math.h>
+#include "include/globals.h"
 
 SimRobComm::SimRobComm()
 {
@@ -9,20 +10,20 @@ SimRobComm::SimRobComm()
 
 void SimRobComm::sendVels(int leftVel, int rightVel, int robotId)
 {
-    sendPacket(robotId, leftVel, rightVel, false);
+    sendPacket(robotId, leftVel, rightVel, false, true);
 }
 
 void SimRobComm::sendKick(int robotId)
 {
-    sendPacket(robotId, 0, 0, true);
+    sendPacket(robotId, 0, 0, true, false);
 }
 
 
-void SimRobComm::sendPacket(int id, int leftVel, int rightVel, bool kick)
+void SimRobComm::sendPacket(int id, int leftVel, int rightVel, bool kick, bool drible)
 {
     grSim_Packet packet;
     // TODO: set team
-    bool yellow = false;
+    bool yellow = TEAM == 1;
 
     packet.mutable_commands()->set_isteamyellow(yellow);
     packet.mutable_commands()->set_timestamp(0.0);
@@ -53,13 +54,15 @@ void SimRobComm::sendPacket(int id, int leftVel, int rightVel, bool kick)
     command->set_velangular(rotationVel);
 
     if (kick)
-        command->set_kickspeedx(2);
+        command->set_kickspeedx(6);
     else
         command->set_kickspeedx(0);
     // No chipper
     command->set_kickspeedz(0);
-    // No spinner
-    command->set_spinner(0);
+    if (drible)
+        command->set_spinner(2);
+    else
+        command->set_spinner(0);
 
     QByteArray dgram;
     dgram.resize(packet.ByteSize());
