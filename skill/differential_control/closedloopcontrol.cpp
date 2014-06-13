@@ -123,8 +123,8 @@ wheelvelocities ClosedLoopControl::closed_loop_control(Robot* robot, double x_go
     else
     {
         float angDiffDeg = (180 / M_PI) * Measurments::angleDiff(theta_current, theta_goal);
-        left_motor_velocity  = copysign(OVERALL_VELOCITY * 5 * (fabs(angDiffDeg)>10), -angDiffDeg);
-        right_motor_velocity = copysign(OVERALL_VELOCITY * 5 * (fabs(angDiffDeg)>10),  angDiffDeg);
+        left_motor_velocity  = copysign(OVERALL_VELOCITY * 0.5 * (fabs(angDiffDeg)>10), -angDiffDeg);
+        right_motor_velocity = copysign(OVERALL_VELOCITY * 0.5 * (fabs(angDiffDeg)>10),  angDiffDeg);
     }
 
 
@@ -143,7 +143,6 @@ wheelvelocities ClosedLoopControl::closed_loop_control(Robot* robot, double x_go
     if (abs(left_motor_velocity) > 100 || abs(right_motor_velocity) > 100)
     {
         float maximum = max(abs(left_motor_velocity), abs(right_motor_velocity));
-
         float ratio = maximum / 100;
 
         left_motor_velocity = left_motor_velocity / ratio;

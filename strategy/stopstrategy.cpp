@@ -5,17 +5,16 @@
 #include "behavior/behaviorassignment.h"
 #include "behavior/stopbehavior.h"
 
-using namespace std;
-
-
 #define RADIUS 1000
 #define STOPSTRAT_DEBUG 0
+
 
 /* A map of each robot to a target point around the ball */
 std::unordered_map<int, Point> StopStrategy::robTargetPoints;
 
 /* The previously-known position of the ball */
 Point StopStrategy::prevBallPoint;
+
 
 
 StopStrategy::StopStrategy()

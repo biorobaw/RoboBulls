@@ -34,8 +34,7 @@ void StrategyController::gameModelUpdated()
     }
     else
     {
-        activeStrategy = new StopStrategy();
-       // activeStrategy = new TestStrategy();
+        activeStrategy = new TestStrategy();
     }
 
     activeStrategy->assignBeh();

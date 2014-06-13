@@ -8,7 +8,6 @@
 //  10 somewhat fast in the robots
 #define OVERALL_VELOCITY 10
 
-
 /**
   The player's team. 0 is BLUE, 1 is Yellow.
   */
