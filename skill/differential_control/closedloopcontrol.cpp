@@ -10,8 +10,7 @@
 #include "skill/rotate.h"
 
 
-std::unordered_map<int, ClosedLoopControl::errorContainer>
-    ClosedLoopControl::errorContainerMap;
+std::unordered_map<int, ClosedLoopControl::errorContainer> ClosedLoopControl::errorContainerMap;
 
 
 wheelvelocities ClosedLoopControl::closed_loop_control(Robot* robot, double x_goal, double y_goal, double theta_goal)
@@ -41,8 +40,8 @@ wheelvelocities ClosedLoopControl::closed_loop_control(Robot* robot, double x_go
 	
     std::cout << "current theta " << 180/M_PI * theta_current << std::endl;
     std::cout << "beta "  		  << 180/M_PI * beta 		  << std::endl;
-    std::cout << "Angle diff " 	  << 180/M_PI * Measurments::angleDiff(theta_current, theta_goal) 
-			  << std::endl;
+    std::cout << "Angle diff " 	  << 180/M_PI * Measurments::angleDiff(theta_current, theta_goal)
+              << std::endl;
 #endif
 
 
@@ -56,19 +55,23 @@ wheelvelocities ClosedLoopControl::closed_loop_control(Robot* robot, double x_go
     double summedErrors[3]  = {0, 0, 0};
     static unsigned errQsizes[3] = {sizeRhoQ, sizeAlphaQ, sizeBetaQ};
 
+    //First retrieve the errorContainer for the robot
     errorContainer& robErrorCntr = errorContainerMap[robot->getID()];
 
     Point& lastTarget = robErrorCntr.lastTargetPoint;
 
+    /* Check if the target point is same as a previous call. The error
+     * containers are no longer valid on moving to a different point
+     */
     if(!Measurments::isClose(lastTarget, Point(x_goal, y_goal), 25))
     {
-        std::cout << "Error containers cleared!" << std::endl;
         for(auto& pair : robErrorCntr.containers) {
             pair.first.clear();
             pair.second = 0;
         }
         lastTarget = Point(x_goal, y_goal);
     }
+
 
     for(int i = 0; i != 3; ++i)
     {
@@ -136,9 +139,6 @@ wheelvelocities ClosedLoopControl::closed_loop_control(Robot* robot, double x_go
     //*******************************************************************************************
     //*******************************************************************************************
 	/* Magnitude clamping in the case magnitide is >= 100. Then finally return a result */
-	
-   // left_motor_velocity  = Measurments::clamp(left_motor_velocity, -100.0, 100.0);
-   // right_motor_velocity = Measurments::clamp(right_motor_velocity, -100.0, 100.0);
 
     if (abs(left_motor_velocity) > 100 || abs(right_motor_velocity) > 100)
     {

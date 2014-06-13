@@ -21,7 +21,7 @@ using namespace std;
  * defines the maximum number of robots that can exist in each team
  * Narges Ghaedi
  */
-const int MAX_ROBOTS = 3;
+const int MAX_ROBOTS = 5;
 
 class StrategyController;
 class Robot;

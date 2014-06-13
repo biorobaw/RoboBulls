@@ -1,10 +1,10 @@
 #ifndef STRATEGY_H
 #define STRATEGY_H
 
-class strategy
+class Strategy
 {
 public:
-    strategy();
+    Strategy();
 
     virtual void assignBeh() = 0;
 

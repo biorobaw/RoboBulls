@@ -1,8 +1,19 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
+// SIMULATED 1 ==> running simulator
+//SIMULATED 0 ==> running robots on the field
 #define SIMULATED 1
-#define OVERALL_VELOCITY 5
+// Overall velocity for all behaviors
+//  10 somewhat fast in the robots
+#define OVERALL_VELOCITY 10
+
+
+/**
+  The player's team. 0 is BLUE, 1 is Yellow.
+  */
+#define TEAM 0
+
 
 /* Defining PI if it is missing */
 #ifndef M_PI

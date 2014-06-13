@@ -1,5 +1,14 @@
 #include "strategycontroller.h"
 #include <iostream>
+#include "strategy/strategy.h"
+#include "model/gamemodel.h"
+
+#include "model/robot.h"
+#include "behavior/behavior.h"
+
+#include "strategy/stopstrategy.h"
+#include "strategy/penaltystrategy.h"
+#include "strategy/teststrategy.h"
 
 using namespace std;
 
@@ -26,6 +35,7 @@ void StrategyController::gameModelUpdated()
     else
     {
         activeStrategy = new StopStrategy();
+       // activeStrategy = new TestStrategy();
     }
 
     activeStrategy->assignBeh();

@@ -3,8 +3,13 @@
 #include "stopstrategy.h"
 #include "utilities/measurments.h"
 #include "behavior/behaviorassignment.h"
+#include "behavior/stopbehavior.h"
+
+using namespace std;
+
 
 #define RADIUS 1000
+#define STOPSTRAT_DEBUG 0
 
 /* A map of each robot to a target point around the ball */
 std::unordered_map<int, Point> StopStrategy::robTargetPoints;
@@ -30,8 +35,10 @@ void StopStrategy::assignBeh()
      */
     if(!Measurments::isClose(ballPoint, prevBallPoint, 50.0))
     {
+    #if STOPSTRAT_DEBUG
         std::cout << "Ball Change; " << prevBallPoint.toString()
                   << " New: " << ballPoint.toString() << std::endl;
+    #endif
 
         this->rebuildTargetPoints();
         prevBallPoint = ballPoint;
@@ -88,7 +95,10 @@ void StopStrategy::rebuildTargetPoints()
     for(Robot* rob : mod->getMyTeam())
     {
         auto min_pos = Measurments::closestPoint(newPoints, rob->getRobotPosition());
+
+    #if STOPSTRAT_DEBUG
         std::cout << rob->getID() << ": " << min_pos->toString() << std::endl;
+    #endif
 
         robTargetPoints[rob->getID()] = *min_pos;	//Set a new target point for rob
 

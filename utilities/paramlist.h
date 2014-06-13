@@ -17,11 +17,6 @@
 class ParameterList
 {
 public:
-    ParameterList()
-    {
-        //std::cout << "ParamList" << std::endl;
-    }
-
     ~ParameterList();
 	 /**
 	 * @brief ParameterList::setParam<T> :

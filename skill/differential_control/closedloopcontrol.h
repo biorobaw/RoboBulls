@@ -52,14 +52,17 @@ private:
 	
 	/*************************************************************/
 	
-	/* Static map of each Robot's ID to their respective three error containers. These are pairs
-	 * containing a deque and a double; the deque is the error container itself, and the double
-	 * is the sum of the deque. We're keeping the sum because it is much more efficient.
+    /* Static map of each Robot's ID to their respective error containers. These are structures
+     * containing the robot's previous target point, and the queues containing the error. These
+     * are pairs containing a deque and a double; the deque is the error container itself, and
+     * the double is the sum of the deque. We're keeping the sum because it is much more efficient.
 	 * deque is very similar  to queue with the ability to access all the elements (like an array).
 	 *
-	 * errorContainers[myRobot->getID()][0].first 	is rhoQ for myRobot
-	 * errorContainers[myRobot->getID()][1].first 	is alphaQ
-	 * errorContainers[myRobot->getID()][2].first 	is betaQ
+     * auto& robErrorContainer = errorContainerMap[rob->getID()];
+     *
+     * robErrorContainer.containers[0].first 	is rhoQ for rob
+     * robErrorContainer.containers[1].first 	is alphaQ
+     * robErrorContainer.containers[2].first 	is betaQ
 	 *
 	 * errorContainer.first is the deque itself, and errorContainer.second is the continuous sum
 	 */

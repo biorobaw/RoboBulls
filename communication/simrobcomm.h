@@ -8,7 +8,7 @@
 
 #include "robcomm.h"
 
-const float mappingRatio = 50;
+const float mappingRatio = 30;
 
 class SimRobComm : public RobComm
 {
@@ -22,7 +22,7 @@ private:
     QHostAddress _addr;
     quint16 _port;
 
-    void sendPacket(int id, int leftVel, int rightVel, bool kick);
+    void sendPacket(int id, int leftVel, int rightVel, bool kick, bool drible);
 };
 
 #endif // SIMROBCOMM_H

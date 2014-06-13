@@ -6,7 +6,7 @@
 #include "behavior/behavior.h"
 #include "behavior/penaltybehavior.h"
 
-class PenaltyStrategy:public strategy
+class PenaltyStrategy:public Strategy
 {
 public:
     PenaltyStrategy();
