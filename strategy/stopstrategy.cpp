@@ -11,21 +11,11 @@ StopStrategy::StopStrategy()
 
 void StopStrategy:: assignBeh()
 {
-    vector <Robot*> myTeam;
+//    GameModel * gamemodel = GameModel::getModel();
 
-//    beh = new StopBehavior();
-
-    GameModel * gamemodel = GameModel::getModel();
-
-    myTeam = gamemodel->getMyTeam();
+//    myTeam = gamemodel->getMyTeam();
 
     BehaviorAssignment<StopBehavior> stopAssignment;
-    stopAssignment.setSingleAssignment(true);
+    stopAssignment.assignBeh();
 
-
-    for(unsigned int i=0; i<myTeam.size(); i++)
-    {
-//        myTeam[i]->setCurrentBeh(beh);
-        stopAssignment.assignBeh(gamemodel->getMyTeam()[0]);
-    }
 }

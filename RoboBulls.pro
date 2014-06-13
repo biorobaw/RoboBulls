@@ -56,7 +56,8 @@ SOURCES += main.cpp \
     include/grSim_Commands.pb.cc \
     skill/differential_control/robottoinertialvelocities.cpp \
     skill/differential_control/matrixcalculator.cpp \
-    skill/differential_control/closedloopcontrol.cpp
+    skill/differential_control/closedloopcontrol.cpp \
+    skill/drivingball.cpp
 
 HEADERS += \
     communication/refcomm.h \
@@ -107,7 +108,8 @@ HEADERS += \
     include/globals.h \
     skill/differential_control/robottoinertialvelocities.h \
     skill/differential_control/matrixcalculator.h \
-    skill/differential_control/closedloopcontrol.h
+    skill/differential_control/closedloopcontrol.h \
+    skill/drivingball.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 

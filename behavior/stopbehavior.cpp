@@ -25,7 +25,8 @@ void StopBehavior::perform(Robot * myRobot)
 
 
     robotSkill = new Skill::GoToPositionWithOrientation
-            (targetPoint, Measurments::angleBetween(robotPoint, ballPoint));
+//            (targetPoint, Measurments::angleBetween(robotPoint, ballPoint));
+            (Point(0,0), 0);
 
     robotSkill->perform(myRobot);
 }
