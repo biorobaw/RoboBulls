@@ -25,7 +25,7 @@ public:
     void setR(float);
     void setL(float);
     void setCurrentBeh(Behavior *);
-    void clearCurrentBeh();
+    
 
     //gets
     Point getRobotPosition();
@@ -34,7 +34,8 @@ public:
     int getR();
     int getL();
     Behavior * getCurrentBeh();
-
+	
+	void clearCurrentBeh();
     std::string toString();
 
     unsigned kick;

@@ -3,15 +3,13 @@
 
 #include <iostream>
 #include "strategy/strategy.h"
-#include "../model/gamemodel.h"
+#include "model/gamemodel.h"
 #include "strategy/stopstrategy.h"
 #include "model/robot.h"
 #include "behavior/behavior.h"
 #include "behavior/stopbehavior.h"
 #include "behavior/penaltybehavior.h"
 #include "strategy/penaltystrategy.h"
-
-using namespace std;
 
 class GameModel;
 class Behavior;
@@ -26,9 +24,6 @@ public:
 private:
     strategy *activeStrategy;
     GameModel * model;
-//    StopStrategy stopS;
-    Behavior * beh;
-
 };
 
 #endif // STRATEGYCONTROLLER_H

@@ -1,189 +1,156 @@
-#include "closedloopcontrol.h"
-#include "utilities/measurments.h"
-#include <iostream>
+#include <cmath>
+#include <algorithm>
 #include <math.h>
 #include <stdlib.h>
+#include <iostream>
+#include <utility>
+#include "closedloopcontrol.h"
+#include "utilities/measurments.h"
 #include "include/globals.h"
 #include "skill/rotate.h"
-#include <cmath>
 
-using namespace std;
 
-deque <double> ClosedLoopControl::rhoQ;
-deque <double> ClosedLoopControl::alphaQ;
-deque <double> ClosedLoopControl::betaQ;
+std::unordered_map<int, ClosedLoopControl::errorContainer>
+    ClosedLoopControl::errorContainerMap;
 
-wheelvelocities ClosedLoopControl::closed_loop_control(double x_current,double y_current, double theta_current, double x_goal, double y_goal, double theta_goal)
+
+wheelvelocities ClosedLoopControl::closed_loop_control(Robot* robot, double x_goal, double y_goal, double theta_goal)
 {
-    //*******************************************************************************************
-    //*******************************************************************************************
-    // Robot Parameters
-    // 1 meter == 1000
-    double wheel_separation = 0.115 * 1000;
-    double wheel_radius = 0.027 * 1000;
     double left_motor_velocity, right_motor_velocity;
-
+	
     //*******************************************************************************************
     //*******************************************************************************************
-    //kRho, kAlpha, kBeta
+	/* Get initial information about the robot. Were previously parameters
+	 * for this function.*/
+	Point robotPos       = robot->getRobotPosition();
+	double x_current     = robotPos.x;
+	double y_current     = robotPos.y;
+	double theta_current = robot->getOrientation();
+    double angleToGoal   = atan2 ((y_goal-y_current) , (x_goal-x_current));
 
-    double krho = 3;
-    double kalpha = 8;
-    double kbeta = -1.5;
-
-    //*******************************************************************************************
-    //*******************************************************************************************
-
-    //*******************************************************************************************
-    //*******************************************************************************************
-    //kRhoI, kAlphaI, kBetaI
-    //Constant
-
-    unsigned int sizeRhoQ = 400;
-    unsigned int sizeAlphaQ = 300;
-    unsigned int sizeBetaQ = 100;
-
-    const double kRhoI = krho/(4*sizeRhoQ);
-    const double kAlphaI = kalpha/(1*sizeAlphaQ);
-    double kBetaI = kbeta/(.2*sizeBetaQ);
-
-    //*******************************************************************************************
-    //*******************************************************************************************
-
-    //Rho, Alpha, Beta
-
-    double angleToGoal = atan2 ((y_goal-y_current) , (x_goal-x_current));
-
-
-//    double thetha_in_goal_coords = Measurments::angleDiff(-theta_current, theta_goal);
-
-    double rho = sqrt(pow((y_current - y_goal),2) + pow((x_current-x_goal),2));
+	//Rho, Alpha, Beta
+    double rho   = sqrt(pow((y_current - y_goal),2) + pow((x_current-x_goal),2));
     double alpha = Measurments::angleDiff(theta_current, angleToGoal);
-    double beta = Measurments::angleDiff(angleToGoal, theta_goal);;
+    double beta  = Measurments::angleDiff(angleToGoal, theta_goal);
 
+
+	
 #if CLOOP_CONTROL_DEBUG
-    cout << "rho " << rho << endl;
-//    cout << x_current << " " << y_current << " " << theta_current << endl;
-
-    cout << "alpha " << 180 / M_PI * alpha << endl;
-
-    cout << "current theta " << 180 / M_PI * theta_current << endl;
-    cout << "beta " << 180 / M_PI * beta << endl;
-    cout << "Angle diff " << 180 / M_PI *  Measurments::angleDiff(theta_current, theta_goal) << endl;
+    std::cout << "rho "   << rho   			  << std::endl;
+    std::cout << "alpha " << 180/M_PI * alpha << std::endl;
+	
+    std::cout << "current theta " << 180/M_PI * theta_current << std::endl;
+    std::cout << "beta "  		  << 180/M_PI * beta 		  << std::endl;
+    std::cout << "Angle diff " 	  << 180/M_PI * Measurments::angleDiff(theta_current, theta_goal) 
+			  << std::endl;
 #endif
 
-    //*******************************************************************************************
-    //*******************************************************************************************
-    //Storing a defined number of most errors for rho, beta, and alpha in the  queue and calculate the sum of erros
-
-    double sumErrRho = 0;
-    double sumErrAlpha = 0;
-    double sumErrBeta = 0;
-
-
-
-
-    if (rhoQ.size()<sizeRhoQ)
-    {
-        rhoQ.push_back(rho);
-    }
-    else if (rhoQ.size()==sizeRhoQ)
-    {
-        rhoQ.pop_front();
-        rhoQ.push_back(rho);
-    }
-    else
-        cout << "rhoQ has too many elements!" <<endl;
-
-    if (alphaQ.size()<sizeAlphaQ)
-    {
-        alphaQ.push_back(alpha);
-    }
-    else if (alphaQ.size()==sizeAlphaQ)
-    {
-        alphaQ.pop_front();
-        alphaQ.push_back(alpha);
-    }
-    else
-        cout << "alphaQ has too many elements!" <<endl;
-
-    if (betaQ.size()<sizeBetaQ)
-    {
-        betaQ.push_back(beta);
-    }
-    else if (betaQ.size()==sizeBetaQ)
-    {
-        betaQ.pop_front();
-        betaQ.push_back(beta);
-    }
-    else
-        cout << "betaQ has too many elements!" <<endl;
-
-    for (unsigned int i=0; i < rhoQ.size(); i++)
-    {
-        sumErrRho += rhoQ.at(i);
-    }
-
-    for (unsigned int i=0; i < alphaQ.size(); i++)
-    {
-        sumErrAlpha += alphaQ.at(i);
-    }
-
-    for (unsigned int i=0; i < betaQ.size(); i++)
-    {
-        sumErrBeta += betaQ.at(i);
-    }
-
 
     //*******************************************************************************************
     //*******************************************************************************************
+    /* Storing a defined number of most errors for rho, beta, and alpha in the queue and calculate the sum of errors.
+	 * Instead of looping hundreds of times to add up the entire sum over and over, it can simply be adjusted on the 
+	 * change of the error containers */
+	
+    double newValues[3]     = {rho, alpha, beta};
+    double summedErrors[3]  = {0, 0, 0};
+    static unsigned errQsizes[3] = {sizeRhoQ, sizeAlphaQ, sizeBetaQ};
 
+    errorContainer& robErrorCntr = errorContainerMap[robot->getID()];
 
-    double robot_xvel = OVERALL_VELOCITY * (krho * rho + kRhoI * sumErrRho);
+    Point& lastTarget = robErrorCntr.lastTargetPoint;
 
-    double robot_turnrate = OVERALL_VELOCITY * (kalpha * alpha  + kbeta * (beta) + kAlphaI * sumErrAlpha + kBetaI * sumErrBeta);
+    if(!Measurments::isClose(lastTarget, Point(x_goal, y_goal), 25))
+    {
+        std::cout << "Error containers cleared!" << std::endl;
+        for(auto& pair : robErrorCntr.containers) {
+            pair.first.clear();
+            pair.second = 0;
+        }
+        lastTarget = Point(x_goal, y_goal);
+    }
 
-#if CLOOP_CONTROL_DEBUG
-    cout << "v " << robot_xvel << endl;
-    cout << "w " << robot_turnrate << endl;
-#endif
+    for(int i = 0; i != 3; ++i)
+    {
+        std::deque<double>& errorQ
+                = robErrorCntr.containers[i].first;
+
+        double& sumErrOfQ
+                = robErrorCntr.containers[i].second;
+			
+        summedErrors[i] = sumErrOfQ;
+		
+        if (errorQ.size() < errQsizes[i])
+        {
+            sumErrOfQ += newValues[i];
+			
+            errorQ.push_back(newValues[i]);
+        }
+        else if(errorQ.size() == errQsizes[i])
+        {
+            sumErrOfQ -= errorQ.front();
+            sumErrOfQ += newValues[i];
+		
+            errorQ.pop_front();
+            errorQ.push_back(newValues[i]);
+        }
+        else
+            std::cout << i << " has too many elements!" <<endl;
+    }
+
+	
+    //*******************************************************************************************
+    //*******************************************************************************************
+	/* Calculate and set left and right motor velocity. This is dependant on rho being > 100 or not. */
+	
+	double sumErrRho   = summedErrors[0];
+	double sumErrAlpha = summedErrors[1];
+	double sumErrBeta  = summedErrors[2];
+	
+    double robot_xvel 	  = OVERALL_VELOCITY * (krho*rho + kRhoI*sumErrRho);
+    double robot_turnrate = OVERALL_VELOCITY * (kalpha*alpha + kbeta*beta + kAlphaI*sumErrAlpha + kBetaI*sumErrBeta);
+
 
     if (rho > 100)
     {
-        left_motor_velocity = (robot_xvel / (2*M_PI*wheel_radius) - (wheel_separation*robot_turnrate/(2*M_PI*wheel_radius)))/2;
-        right_motor_velocity = (robot_xvel / (2*M_PI*wheel_radius) + (wheel_separation*robot_turnrate/(2*M_PI*wheel_radius)))/2;
+        float Pi2R = 2*M_PI*wheel_radius;
+        left_motor_velocity  = ((robot_xvel / Pi2R) - (wheel_separation * robot_turnrate/Pi2R))/2;
+        right_motor_velocity = ((robot_xvel / Pi2R) + (wheel_separation * robot_turnrate/Pi2R))/2;
     }
     else
     {
-        if (180 / M_PI *  Measurments::angleDiff(theta_current, theta_goal) < -10)
-        {
-            left_motor_velocity = 5;
-            right_motor_velocity = -5;
-        }
-        else if (180 / M_PI *  Measurments::angleDiff(theta_current, theta_goal) > 10)
-        {
-            left_motor_velocity = -5;
-            right_motor_velocity = 5;
-        }
-        else
-        {
-            left_motor_velocity = 0;
-            right_motor_velocity = 0;
-        }
+        float angDiffDeg = (180 / M_PI) * Measurments::angleDiff(theta_current, theta_goal);
+        left_motor_velocity  = copysign(OVERALL_VELOCITY * 5 * (fabs(angDiffDeg)>10), -angDiffDeg);
+        right_motor_velocity = copysign(OVERALL_VELOCITY * 5 * (fabs(angDiffDeg)>10),  angDiffDeg);
     }
 
-//    cout << "LMV: " << left_motor_velocity << endl;
-//    cout << "RMV: " << right_motor_velocity << endl;
 
-    if (left_motor_velocity > 100)
-        left_motor_velocity = 100;
-    if (right_motor_velocity > 100)
-        right_motor_velocity = 100;
-    if (left_motor_velocity < -100)
-        left_motor_velocity = -100;
-    if (right_motor_velocity < -100)
-        right_motor_velocity = -100;
+#if CLOOP_CONTROL_DEBUG
+    std::cout << "v "    << robot_xvel 		<< std::endl;
+    std::cout << "w "    << robot_turnrate  << std::endl;
+    std::cout << "LMV: " << left_motor_velocity  << std::endl;
+    std::cout << "RMV: " << right_motor_velocity << std::endl;
+#endif
+
+
+    //*******************************************************************************************
+    //*******************************************************************************************
+	/* Magnitude clamping in the case magnitide is >= 100. Then finally return a result */
+	
+   // left_motor_velocity  = Measurments::clamp(left_motor_velocity, -100.0, 100.0);
+   // right_motor_velocity = Measurments::clamp(right_motor_velocity, -100.0, 100.0);
+
+    if (abs(left_motor_velocity) > 100 || abs(right_motor_velocity) > 100)
+    {
+        float maximum = max(abs(left_motor_velocity), abs(right_motor_velocity));
+
+        float ratio = maximum / 100;
+
+        left_motor_velocity = left_motor_velocity / ratio;
+        right_motor_velocity = right_motor_velocity / ratio;
+    }
 
     wheelvelocities result = {(int)left_motor_velocity, (int)right_motor_velocity};
+	
     return result;
 }

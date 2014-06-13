@@ -64,6 +64,7 @@ void VisionComm::updateInfo(SSL_DetectionRobot robot, string color)
     if (rob == NULL)
     {
         rob = new Robot();
+        std::cout << "Creating robot" << std::endl;
         rob->setID(id);
         if (detectedTeamColor == ourTeamColor)
             myTeam.push_back(rob);

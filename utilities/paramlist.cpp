@@ -15,6 +15,12 @@ std::string ParameterList::GenericParamList::toString() const
 
 ParameterList::~ParameterList()
 {
+    for(auto& entry : params)
+    {
+        auto tList = reinterpret_cast<TypedParamList<long>*>(entry.second);
+        delete tList;
+    }
+
     params.clear();
 }
 

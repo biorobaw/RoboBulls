@@ -2,6 +2,7 @@
 #define PARAM_LIST_H
 
 #include <unordered_map>
+#include <iostream>
 #include <sstream>
 #include <assert.h>
 #include <utility>
@@ -16,7 +17,12 @@
 class ParameterList
 {
 public:
-	~ParameterList();
+    ParameterList()
+    {
+        //std::cout << "ParamList" << std::endl;
+    }
+
+    ~ParameterList();
 	 /**
 	 * @brief ParameterList::setParam<T> :
 	 *	Set a parameter by a name to a value.
@@ -111,12 +117,7 @@ std::string ParameterList::TypedParamList<T>::toString() const
 	for(const auto& entry : myParams)
     {
 		ss << entry.first << " : ";
-
-        //if(std::is_fundamental<T>::value) {		//Has ostream operator <<
-            //ss << entry.second << std::endl;
-       // } else {
-            ss << "(Value)" << std::endl;
-        //}
+        ss << "(Value)" << std::endl;
 	}
 
 	return ss.str();

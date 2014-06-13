@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <utility>
 #include <iostream>
+#include <functional>
 #include "utilities/measurments.h"
 #include "model/gamemodel.h"
 #include "include/globals.h"
@@ -13,10 +14,15 @@
  * But it is currently hardcoded to work with robobulls only.
  * JamesW.
  */
+using namespace std::placeholders;
+
 namespace FPPA
 {
 namespace impl
 {
+    const Point fieldTopLeft = Point(-3000, -2000);
+    const Point fieldBotRight = Point(3000, 2000);
+
     float perpendicularDistance(const Point& p0, const Point& LStart, const Point& LEnd)
     {
         float y2 = LEnd.y;
@@ -28,7 +34,7 @@ namespace impl
                 / Measurments::distance(LStart, LEnd);
     }
 
-    bool insideRadiusRectangle(const Point& p0, Point& p1, Point& p2)
+    bool insideRadiusRectangle(const Point& p0, const Point& p1, const Point& p2)
     {
         float rectTop = std::min(p1.y, p2.y) - ROBOT_SIZE;
         float rectBottom = std::max(p1.y, p2.y) + ROBOT_SIZE;
@@ -62,6 +68,7 @@ namespace impl
         if(obstacle_found)
             printf("[FPPA] Found: %.0f,%.0f\n", obstacle_position.x, obstacle_position.y);
     #endif
+
         return std::pair<bool, Point>(obstacle_found, obstacle_position);
     }
 
@@ -82,7 +89,7 @@ namespace impl
     {
         float theta = Measurments::angleBetween(initialPos, endPos);
 
-        /* Reducing the search size by a factor can help eliminate
+        /* Reducing the search size by a fisPointInsideFieldactor can help eliminate
          * the jagged edges in the path, but risks cutting corners
          * too close around obstacles.
          */
@@ -151,13 +158,13 @@ namespace impl
          * This eliminates the algorithm not being able to reach the target
          * because there is an obstacle right next to the target.
          */
-        auto pos = std::remove_if(obstacles->begin(), obstacles->end(),
+        auto last_pos = std::remove_if(obstacles->begin(), obstacles->end(),
             [&](Point pt) {
                 return Measurments::isClose(pt, start, ROBOT_SIZE) ||
                        Measurments::isClose(pt, end, ROBOT_SIZE);
             });
 
-        obstacles->erase(pos, obstacles->end());
+        obstacles->erase(last_pos, obstacles->end());
 
         /* Sort the range on how close each point is to the start.
          * May help with forming proper paths by always finding the
@@ -168,10 +175,10 @@ namespace impl
                 return Measurments::distance(start, a) < Measurments::distance(start, b);
             });
 
-        #if FPPA_DEBUG
+    #if FPPA_DEBUG
             std::cout << "[FPPA] All Obstacles: " << std::endl;
             for(Point pt : *obstacles) std::cout << pt.toString() << std::endl;
-        #endif
+    #endif
     }
 
 
@@ -193,13 +200,38 @@ namespace impl
         return std::pair<Path, Path>(topPath, bottomPath);
     }
 
+    /*********************************************************/
+
+    bool isValidPath(const Path& p)
+    {
+	    /* Bound function to determine if a point is inside the field or not */
+		static auto isPointInsideField =
+			std::bind(insideRadiusRectangle, _1, fieldTopLeft, fieldBotRight);
+			
+        return std::all_of(p.begin(), p.end(), isPointInsideField);
+    }
+
+
 } //namespace impl
+
 
     Path findShortestPath(Point start, Point end)
     {
         float totalDistTop = 0, totalDistBottom = 0;
 
         std::pair<Path, Path> foundPaths = impl::findBothPaths(start, end);
+
+
+        /* If one of the paths is invalid (contains points outside the field),
+         * return the other path. Otherside determine shortest. If both paths
+         * are invalid, it still returns an invalid path,
+         * but I am certain this never happens.
+         */
+        if(!impl::isValidPath(foundPaths.first)) {
+            return foundPaths.second;
+        } else if(!impl::isValidPath(foundPaths.second)) {
+            return foundPaths.first;
+        }
 
         /* Add up all the distances from each path and determine which path is shorter.
          * This shorter path is deemed the "better" path
@@ -216,4 +248,5 @@ namespace impl
             return foundPaths.second;
         }
     }
-}
+
+} //namespace FPPA

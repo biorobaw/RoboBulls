@@ -61,6 +61,8 @@ public:
     float getRemainingTime();
     char  getGameState();
     Point getPenaltyPoint();
+    Point getOpponentGoal();
+    Point getMyGoal();
 
     //returns the robot which has the ball
 //    Robot * getHasBall();

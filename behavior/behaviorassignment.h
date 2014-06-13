@@ -159,7 +159,7 @@ void BehaviorAssignment<BehaviorType>::assignBeh(Robot* robot) const
      */
     auto doAssignment = [&](Robot* rob) {
         rob->clearCurrentBeh();
-        rob->setCurrentBeh(new BehaviorType(params));
+        //rob->setCurrentBeh(new BehaviorType(params));
         };
 
     if(!this->singleAssignment) {

@@ -12,6 +12,7 @@
  * the case of the RoboCup league.
  */
 #include <vector>
+#include <queue>
 #include "utilities/point.h"
 
 namespace FPPA
