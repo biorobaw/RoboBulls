@@ -28,7 +28,8 @@ namespace Skill {
         double robot_y = robotPosition.y;
         double robot_orientation = robot->getOrientation();
         double finalOrientation = atan2(targetPosition.y-robot_y, targetPosition.x-robot_x);
-        wheelvelocities wheelvelocity = ClosedLoopControl::closed_loop_control(robot_x, robot_y, robot_orientation, targetPosition.x, targetPosition.y, finalOrientation);
+        wheelvelocities wheelvelocity = ClosedLoopControl::closed_loop_control(robot_x, robot_y, robot_orientation);
+        //what I took off : , targetPosition.x, targetPosition.y, finalOrientation
 
         float left_wheel_velocity = wheelvelocity.left;
         float right_wheel_velocity = wheelvelocity.right;

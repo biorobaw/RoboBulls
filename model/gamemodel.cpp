@@ -148,9 +148,24 @@ GameModel * GameModel::getModel()
 
 Point GameModel::getPenaltyPoint()
 {
-    penaltyPoint.x =2045.00;
-    penaltyPoint.y = 22.00;
-    return penaltyPoint;
+    if (TEAM == 0)
+        return Point(2045, 22);
+    else
+        return Point(-2045, 22);
+}
+
+Point GameModel::getOpponentGoal(){
+    if (TEAM == 0)
+        return Point(-3000, 0);
+    else
+        return Point(3000,0);
+}
+
+Point GameModel::getMyGoal(){
+    if (TEAM == 1)
+        return Point(-3000, 0);
+    else
+        return Point(3000,0);
 }
 
 /**

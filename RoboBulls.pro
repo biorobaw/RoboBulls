@@ -57,7 +57,10 @@ SOURCES += main.cpp \
     skill/differential_control/robottoinertialvelocities.cpp \
     skill/differential_control/matrixcalculator.cpp \
     skill/differential_control/closedloopcontrol.cpp \
-    skill/drivingball.cpp
+    skill/drivingball.cpp\
+    behavior/kicktogoal.cpp \
+    strategy/teststrategy.cpp \
+    behavior/defendoneonone.cpp
 
 HEADERS += \
     communication/refcomm.h \
@@ -109,7 +112,10 @@ HEADERS += \
     skill/differential_control/robottoinertialvelocities.h \
     skill/differential_control/matrixcalculator.h \
     skill/differential_control/closedloopcontrol.h \
-    skill/drivingball.h
+    skill/drivingball.h\
+    behavior/kicktogoal.h \
+    strategy/teststrategy.h \
+    behavior/defendoneonone.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 

@@ -25,27 +25,84 @@ class BehaviorAssignment
 public:
     BehaviorAssignment();
 
+    /* setBehParam(name, value)
+     * The setBehParam function is used to define parameters to
+     * be passed to the underlying behavior when assignBeh is called.
+     *
+     * Enter a string to refer to the variable by name. If we wanted to
+     * set an integer identified by "myValue" to 100:
+     *
+     *  BehaviorAssignment<MyRobotBehavior> myAssignment;
+     *  myAssignment.setBehParam("myValue", 100);
+     *  myAssignment.assignBeh();
+     *
+     * In MyRobotBehavior's constructor (One that takes a ParameterList called list)
+     * you would do this the value of "myValue":
+     *
+     * int value = list.getBehParam<int>("myValue");
+     */
     template<typename T>
     void setBehParam(std::string name, T value);
 
+
+    /* assignBeh(void)
+     * Assigns the current behavior configuration to
+     * all robots on myTeam via a loop.
+     */
     void assignBeh(void) const;
+
+
+    /* assignBeh(predicate)
+     * Assigns the current behavior config only to robots which
+     * predicate returns true. The function passes all robots
+     * in myTeam to predicate to determine this.
+     */
     void assignBeh(std::function<bool(Robot*)> predicate) const;
+
+
+    /* assignBeh(robot)
+     * Assigns the behavior to only one robot. This could be:
+     * assignBeh(model->getMyTeam().at(0));
+     */
     void assignBeh(Robot* robot) const;
+
+
+    /* assignBeh(robotList)
+     * Given a brace-enclosed list of Robot*, assigns the behavior
+     * to all of them. This is a shortcut of assigning to single
+     * robots one-by-one.
+     * Example:
+     *
+     * Robot* r1 = model->getMyTeam().at(0);
+     * Robot* r2 = model->getMyTeam().at(1);
+     * myBehaviorAssignment.assignBeh( {r1, r2} );
+     */
     void assignBeh(std::initializer_list<Robot*> robotList) const;
 
+
+    /* setSingleAssignment(bool)
+     * Set this true if you want the robot to retain its behavior each
+     * iteration. For example, PenaltyBehavior uses this to retain its
+     * Behavior state (moving, kicking, stopping) each update instead
+     * of being overwritten.
+     */
     void setSingleAssignment(bool assignment);
 
+
+    /* toString()
+     * Returns a string representation of the BehaviorAssignment.
+     * Includes Behavior Params and singleAssignment's status
+     */
     std::string toString() const;
 
 private:
     bool singleAssignment;
-
     ParameterList params;
 };
 
 
 /**************************************************************/
-/* Strategy Class Implementation */
+/* BehaviorAssignment Class Implementation */
 /**************************************************************/
 
 template <typename BehaviorType>
@@ -98,12 +155,10 @@ void BehaviorAssignment<BehaviorType>::assignBeh(std::function<bool(Robot*)> pre
 template <typename BehaviorType>
 void BehaviorAssignment<BehaviorType>::assignBeh(Robot* robot) const
 {
-    /* if BehaviorType has a ParameterList constructor, use it. Otherwise, default
-     * should be all there is. Lambda solely because this is used twice below.
-     * Honestly, this could cause some confusion down the road, watch for bugs.
+    /* Lambda solely because this is used twice below.
      */
     auto doAssignment = [&](Robot* rob) {
-        //delete rob->getCurrentBeh();
+        rob->clearCurrentBeh();
         rob->setCurrentBeh(new BehaviorType(params));
         };
 

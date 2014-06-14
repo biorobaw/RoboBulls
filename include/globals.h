@@ -6,7 +6,13 @@
 #define SIMULATED 1
 // Overall velocity for all behaviors
 //  10 somewhat fast in the robots
-#define OVERALL_VELOCITY 5
+#define OVERALL_VELOCITY 10
+
+/**
+  The player's team. 0 is BLUE, 1 is Yellow.
+  */
+#define TEAM 0
+
 
 /* Defining PI if it is missing */
 #ifndef M_PI

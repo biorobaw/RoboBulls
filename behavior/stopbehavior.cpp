@@ -1,13 +1,12 @@
 #include "stopbehavior.h"
 
 #include "model/robot.h"
-#include  "model/gamemodel.h"
+#include "model/gamemodel.h"
 #include "skill/gotopositionwithorientation.h"
 
 #define RADIUS 1000
 
 StopBehavior::StopBehavior(const ParameterList& list)
-
 {
 //    Skill * activeSkill;
 }
