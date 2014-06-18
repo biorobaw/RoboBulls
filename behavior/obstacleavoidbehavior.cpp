@@ -6,10 +6,9 @@
 #include "utilities/measurments.h"
 #include "skill/gotoposition.h"
 #include "skill/gotopositionwithorientation.h"
-#include "skill/gotoposition2.h"
 #include "include/globals.h"
 
-#include "skill/pathfinding/fppa_pathfinding.hpp"
+#include "skill/pathfinding/fppa_pathfinding.h"
 
 
 ObstacleAvoidBehavior::ObstacleAvoidBehavior(const ParameterList& list)

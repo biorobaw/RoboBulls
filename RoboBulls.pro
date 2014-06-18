@@ -13,7 +13,7 @@ CONFIG   += console
 CONFIG   -= app_bundle
 
 TEMPLATE = app
-
+QMAKE_CXX = g++-4.8
 
 SOURCES += main.cpp \
     communication/refcomm.cpp \
@@ -38,8 +38,6 @@ SOURCES += main.cpp \
 	utilities/measurments.cpp \
     skill/rotate.cpp \
     behavior/penaltybehavior.cpp \
-    skill/gotoposition2.cpp \
-    behavior/gotoposition2behavior.cpp \
     behavior/obstacleavoidbehavior.cpp \
     skill/pathfinding/fppa_pathfinding.cpp \
     skill/basic_movement.cpp \
@@ -48,7 +46,6 @@ SOURCES += main.cpp \
     strategy/stopstrategy.cpp \
     strategy/penaltystrategy.cpp \
     skill/gotopositionwithorientation.cpp \
-    skill/gotopositionfacing.cpp \
     communication/simrobcomm.cpp \
     communication/nxtrobcomm.cpp \
     include/grSim_Replacement.pb.cc \
@@ -59,7 +56,8 @@ SOURCES += main.cpp \
     skill/differential_control/closedloopcontrol.cpp \
     behavior/kicktogoal.cpp \
     strategy/teststrategy.cpp \
-    behavior/defendoneonone.cpp
+    behavior/defendoneonone.cpp \
+    skill/obstacleavoidmove.cpp
 
 HEADERS += \
     communication/refcomm.h \
@@ -73,7 +71,6 @@ HEADERS += \
     include/timer.h \
     include/util.h \
 	model/gamemodel.h \
-    Robot/robot.h \
     strategy/strategy.h \
     strategy/strategycontroller.h \
     communication/robcomm.h \
@@ -90,18 +87,12 @@ HEADERS += \
     skill/rotate.h \
 	skill/basic_movement.h \
     behavior/penaltybehavior.h \
-    skill/gotoposition2.h \
-    behavior/gotoposition2behavior.h \
     behavior/obstacleavoidbehavior.h \
-    skill/pathfinding/fppa_pathfinding.hpp \
 	utilities/paramlist.h \
     behavior/behaviorassignment.h \
     strategy/stopstrategy.h \
     strategy/penaltystrategy.h \
-    skill/robottoinertialvelocities.h \
-    skill/matrixcalculator.h \
     skill/gotopositionwithorientation.h \
-    skill/gotopositionfacing.h \
     communication/simrobcomm.h \
     communication/nxtrobcomm.h \
     include/grSim_Replacement.pb.h \
@@ -113,8 +104,11 @@ HEADERS += \
     skill/differential_control/closedloopcontrol.h \
     behavior/kicktogoal.h \
     strategy/teststrategy.h \
-    behavior/defendoneonone.h
+    behavior/defendoneonone.h \
+    skill/obstacleavoidmove.h \
+    skill/pathfinding/fppa_pathfinding.h
 
 QMAKE_CXXFLAGS += -std=c++0x
+QMAKE_CXXFLAGS += -Wunused-local-typedefs
 
 unix|win32: LIBS += -lprotobuf

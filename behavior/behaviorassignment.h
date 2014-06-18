@@ -158,6 +158,7 @@ void BehaviorAssignment<BehaviorType>::assignBeh(Robot* robot) const
     /* Lambda solely because this is used twice below.
      */
     auto doAssignment = [&](Robot* rob) {
+        std::cout << "Assigning beh" << std::endl;
         rob->clearCurrentBeh();
         rob->setCurrentBeh(new BehaviorType(params));
         };

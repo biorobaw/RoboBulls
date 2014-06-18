@@ -6,7 +6,7 @@
 #define SIMULATED 1
 // Overall velocity for all behaviors
 //  10 somewhat fast in the robots
-#define OVERALL_VELOCITY 10
+#define OVERALL_VELOCITY 20
 
 /**
   The player's team. 0 is BLUE, 1 is Yellow.
@@ -48,9 +48,9 @@
 
 
 /* FPPA Pathfinding Constants */
-#define FPPA_DEBUG 0
+#define FPPA_DEBUG 1
 #define MAX_RECURSION_DEPTH  3
-#define ROBOT_SIZE (ROBOT_RADIUS * 2.5)
+#define ROBOT_SIZE (ROBOT_RADIUS * 2.25)
 
 
 #endif // GLOBALS_H

@@ -4,11 +4,23 @@
 #include <math.h>
 #include <deque>
 #include <unordered_map>
-#include <array>
-#include <utility>
 #include "model/robot.h"
 
 #define CLOOP_CONTROL_DEBUG 0
+
+
+namespace ClosedLoopConstants
+{
+    constexpr double
+    defaultConstants[3] = {3, 8, -1.5};
+
+    constexpr double
+    noSlowdownConstants[3] = {0, 1, -0.5};	//Placeholders
+}
+
+
+//Container to hold error containers
+struct errorContainer;
 
 //results container
 struct wheelvelocities
@@ -16,31 +28,27 @@ struct wheelvelocities
     int left,right;
 };
 
-class ClosedLoopControl 
+
+/* ~ ClosedLoopBase~
+ * Closed-Loop control in our case is defined by three constants:
+ * krho, kalpha, and kbeta. Each of these have a specific effect on
+ * the wheelvelocities returned. Each may affect the width of the curves taken, 
+ * how quickly each is taken, and etc.
+ * The ClosedLoopBase is a general template class, taking three constants.
+ */
+template<const double constants[3]>
+class ClosedLoopBase 
 {
 public:
-    /* Returns the x-velocity, y-velocity, and turn-rate, given the starting and ending 
-	 * coordinates using closed loop control.
-	 */
     static wheelvelocities 
 	closed_loop_control(Robot* robot, double x_goal, double y_goal, double theta_goal);
 
 private:
-	/*************************************************************/
-	/* ~Closed Loop Control Constants ~
-	 * Defines the constants for the control system
-	 */
-
-	// Robot Parameters (1 meter == 1000)
-    static constexpr double wheel_separation = 0.115 * 1000;
-    static constexpr double wheel_radius = 0.027 * 1000; 
+	/* Block O' Constants */
+	static constexpr double krho   = constants[0];
+    static constexpr double kalpha = constants[1];
+    static constexpr double kbeta  = constants[2];
 	
-    //kRho, kAlpha, kBeta
-    static constexpr double krho = 3;
-    static constexpr double kalpha = 8;
-    static constexpr double kbeta = -1.5;
-	
-	//kRhoI, kAlphaI, kBetaI; Constant
 	static constexpr unsigned int sizeRhoQ = 400;
     static constexpr unsigned int sizeAlphaQ = 300;
     static constexpr unsigned int sizeBetaQ = 100;
@@ -49,31 +57,25 @@ private:
     static constexpr double kAlphaI = kalpha/(1*sizeAlphaQ);
     static constexpr double kBetaI  = kbeta/(.2*sizeBetaQ);
 
+	static constexpr double wheel_separation = 0.115 * 1000;
+	static constexpr double wheel_radius = 0.027 * 1000; 
 	
-	/*************************************************************/
-	
-    /* Static map of each Robot's ID to their respective error containers. These are structures
-     * containing the robot's previous target point, and the queues containing the error. These
-     * are pairs containing a deque and a double; the deque is the error container itself, and
-     * the double is the sum of the deque. We're keeping the sum because it is much more efficient.
-	 * deque is very similar  to queue with the ability to access all the elements (like an array).
-	 *
-     * auto& robErrorContainer = errorContainerMap[rob->getID()];
-     *
-     * robErrorContainer.containers[0].first 	is rhoQ for rob
-     * robErrorContainer.containers[1].first 	is alphaQ
-     * robErrorContainer.containers[2].first 	is betaQ
-	 *
-	 * errorContainer.first is the deque itself, and errorContainer.second is the continuous sum
-	 */
-    struct errorContainer
-    {
-        Point lastTargetPoint;
-        std::pair<std::deque<double>, double> containers[3];
-    };
 
+	/* Map of each robot's id to its respective error container */
     static std::unordered_map<int, errorContainer> errorContainerMap;
 };
 
+/***********************************/
+
+typedef ClosedLoopBase< ClosedLoopConstants::defaultConstants >
+    ClosedLoopControl;
+
+typedef ClosedLoopBase< ClosedLoopConstants::noSlowdownConstants >
+    ClosedLoopNoSlowdown;
+
+	
+#include "closedloopcontrol.cpp"
+
 
 #endif // CLOSEDLOOPCONTROL_H
+

@@ -4,7 +4,6 @@
 #include <vector>
 #include <queue>
 #include "utilities/point.h"
-#include "skill/gotoposition2.h"
 #include "behavior.h"
 #include "utilities/paramlist.h"
 

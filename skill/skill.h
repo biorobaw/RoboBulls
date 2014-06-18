@@ -3,6 +3,7 @@
 
 #include "model/robot.h"
 #include "communication/robcomm.h"
+#include "utilities/paramlist.h"
 
 namespace Skill
 {
