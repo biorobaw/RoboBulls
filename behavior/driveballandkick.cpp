@@ -18,12 +18,12 @@ void DriveBallAndKick::perform(Robot* robot)
 {
     GameModel* gm = GameModel::getModel();
 
+    Point goal(-3000, 0);
+    double direction = Measurments::angleBetween(robot->getRobotPosition(), goal);
+
     Point rp = robot->getRobotPosition();
     Point bp = gm->getBallPoint();
 
-
-//    Point ballPoint = gm->ballPoint;
-    double direction = M_PI;
     Point kickPoint(-1500,0);
 
     // Create a different skill depending on the state
@@ -48,7 +48,7 @@ void DriveBallAndKick::perform(Robot* robot)
     {
     case driving:
         cout << "in switch driving!"<<endl;
-        if (abs(rp.x - kickPoint.x) < 110)
+        if (abs(rp.x - kickPoint.x) < 110 && Measurments::isClose(rp,bp,110))
             state = kicking;
         break;
     case kicking:

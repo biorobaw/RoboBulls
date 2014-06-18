@@ -4,7 +4,6 @@
 #include "skill/gotopositionwithorientation.h"
 #include "skill/gotoposition.h"
 #include "skill/basic_movement.h"
-//#include "skill/rotate.h"
 #include "include/globals.h"
 
 namespace Skill
@@ -20,16 +19,11 @@ namespace Skill
     {
         cout<< "driving ball"<<endl;
         Point ballPosition = GameModel::getModel()->getBallPoint();
-        Point goal(-3000, 0);
-        double movingDirectionWithoutBall = Measurments::angleBetween(robot->getRobotPosition(), targetPosition);
-        double movingDirectionWithBall = Measurments::angleBetween(robot->getRobotPosition(), goal);
 
-        GoToPositionWithOrientation gotoBall(ballPosition, movingDirectionWithBall);
-//        GoToPosition driveTheBall(targetPosition);
+        GoToPositionWithOrientation gotoBall(ballPosition, direction);
 
-        GoToPositionWithOrientation driveTheBall(targetPosition, movingDirectionWithBall);
+        GoToPositionWithOrientation driveTheBall(targetPosition, direction);
         Stop stop;
-//        Rotate rotate(M_PI);
 
         switch(state)
         {
