@@ -5,6 +5,7 @@
 #include "behavior/obstacleavoidbehavior.h"
 #include "utilities/measurments.h"
 #include "skill/gotoposition.h"
+#include "skill/gotopositionwithorientation.h"
 #include "skill/gotoposition2.h"
 #include "include/globals.h"
 
@@ -39,7 +40,10 @@ ObstacleAvoidBehavior::ObstacleAvoidBehavior(const ParameterList& list)
 
 void ObstacleAvoidBehavior::perform(Robot* robot)
 {
-    Skill::GoToPosition go(nextPoint);
+    Skill::GoToPositionWithOrientation go(nextPoint,
+         Measurments::angleBetween(robot->getRobotPosition(), nextPoint));
+
+    //Skill::GoToPosition go(nextPoint);
     go.perform(robot);
 
 

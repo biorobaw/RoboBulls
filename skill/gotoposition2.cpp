@@ -33,8 +33,8 @@ void GoToPosition2::perform(Robot* robot)
     float angleDiff = angle_mod(targetAng - currentAng);
 
     float lmv=0, rmv=0;
-    Rotate rot(targetAng, &lmv, &rmv);
 
+    Rotate rot(targetAng, &lmv, &rmv);
     GoToPosition go(mTargetPoint);
     Stop stop;
 

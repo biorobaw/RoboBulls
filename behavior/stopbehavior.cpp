@@ -1,37 +1,27 @@
+#include <iostream>
+#include "model/robot.h"
+#include "skill/gotopositionwithorientation.h"
 #include "stopbehavior.h"
 
-#include "model/robot.h"
-#include "model/gamemodel.h"
-#include "skill/gotopositionwithorientation.h"
-
-#define RADIUS 1000
 
 StopBehavior::StopBehavior(const ParameterList& list)
 {
-//    Skill * activeSkill;
+    this->mTargetPoint = list.getParam<Point>("targetPoint");
+    this->curBallPoint = list.getParam<Point>("ballPoint");
 }
 
+
+/* StopBehavior is simply a wrapper for
+ * GoToPositionWithOrientation
+ */
 void StopBehavior::perform(Robot * myRobot)
 {
-    GameModel* gamemodel = GameModel::getModel();
-    Point ballPoint  = gamemodel->getBallPoint();
     Point robotPoint = myRobot->getRobotPosition();
-    Point targetPoint;
 
-    float angle = Measurments::angleBetween(ballPoint, robotPoint);
-    targetPoint.x = (RADIUS*cos(angle))+ballPoint.x;
-    targetPoint.y = (RADIUS*sin(angle))+ballPoint.y;
+    auto mySkill = Skill::GoToPositionWithOrientation
+        (mTargetPoint, Measurments::angleBetween(robotPoint, curBallPoint));
 
-
-    robotSkill = new Skill::GoToPositionWithOrientation
-//            (targetPoint, Measurments::angleBetween(robotPoint, ballPoint));
-            (Point(0,0), 0);
-
-    robotSkill->perform(myRobot);
+    mySkill.perform(myRobot);
 }
 
-Skill::Skill* StopBehavior::getSkill()
-{
-    return robotSkill;
-}
 

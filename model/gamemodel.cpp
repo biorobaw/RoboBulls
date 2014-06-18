@@ -25,16 +25,6 @@ void GameModel::setMyTeam(vector <Robot*> team)
 
 }
 
-void GameModel::setXBall(float x)
-{
-    x_ballPosition = x;
-}
-
-void GameModel::setYball(float y)
-{
-    y_ballPosition = y;
-}
-
 void GameModel::setBallPoint(Point bp)
 {
     ballPoint = bp;
@@ -102,21 +92,10 @@ const vector<Robot*>& GameModel::getMyTeam()
     return myTeam;
 }
 
-float GameModel::getXBall()
-{
-    return x_ballPosition;
-}
-
-float GameModel::getYBall()
-{
-    return y_ballPosition;
-}
-
 Point GameModel::getBallPoint()
 {
     return ballPoint;
 }
-
 
 int GameModel::getBlueGoals()
 {

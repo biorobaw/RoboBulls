@@ -1,3 +1,4 @@
+#include <math.h>
 #include "gotopositionwithorientation.h"
 #include "utilities/measurments.h"
 #include "communication/robcomm.h"
@@ -5,7 +6,7 @@
 #include "skill/rotate.h"
 #include "skill/differential_control/closedloopcontrol.h"
 #include "model/gamemodel.h"
-#include <math.h>
+
 
 namespace Skill {
 
@@ -21,22 +22,16 @@ namespace Skill {
         this->goalOrientation = goalOrientation;
     }
 
-    void GoToPositionWithOrientation::perform(Robot * robot)
+    void GoToPositionWithOrientation::perform(Robot* robot)
     {
         RobComm *nxtbee = RobComm::getRobComm();
 
-        Point robotPosition = robot->getRobotPosition();
-        double robot_x = robotPosition.x;
-        double robot_y = robotPosition.y;
-        double robot_orientation = robot->getOrientation();
+        wheelvelocities wheelvelocity =
+            ClosedLoopControl::closed_loop_control(robot, targetPosition.x, targetPosition.y, goalOrientation);
 
-        wheelvelocities wheelvelocity = ClosedLoopControl::closed_loop_control(robot_x, robot_y, robot_orientation);
-        // what I took off : targetPosition.x, targetPosition.y, goalOrientation
-
-        float left_wheel_velocity = wheelvelocity.left;
+        float left_wheel_velocity  = wheelvelocity.left;
         float right_wheel_velocity = wheelvelocity.right;
 
         nxtbee->sendVels(left_wheel_velocity, right_wheel_velocity, robot->getID());
     }
-
 }

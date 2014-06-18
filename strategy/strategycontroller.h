@@ -1,8 +1,6 @@
 #ifndef STRATEGYCONTROLLER_H
 #define STRATEGYCONTROLLER_H
 
-using namespace std;
-
 class GameModel;
 class Behavior;
 class Strategy;
@@ -17,9 +15,6 @@ public:
 private:
     Strategy *activeStrategy;
     GameModel * model;
-//    StopStrategy stopS;
-    Behavior * beh;
-
 };
 
 #endif // STRATEGYCONTROLLER_H

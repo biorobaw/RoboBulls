@@ -31,11 +31,12 @@ public:
     static bool isClose(const Point&, const Point&, float tol = DIST_TOLERANCE);
 
 
-    /* Given a container of points, returns the closest point in the
-     * container to p0.
+    /* Given a container of points, returns an iterator to the closest point 
+     * in the container to p0. 'cntr' can be of any type, including plain-old
+	 * C-style arrays or STL containers.
      */
     template <class Container>
-    static Point closestPoint(const Container& cntr, Point p0);
+    static auto closestPoint(Container& cntr, const Point p0) -> decltype(std::begin(cntr));
 
 
     //Calculates the slope, given two points
@@ -48,17 +49,37 @@ public:
 
     // Calculates the sum of two orientations (angle2 + angle1)
     static float angleSum(float angle1, float angle2);
+	
+	
+	/* Clamps a value beteen min and max */
+	template<typename T>
+    static T clamp(const T& value, const T& min, const T& max);
 };
 
 
+/***************************************************/
+
+
 template <class Container>
-Point Measurments::closestPoint(const Container& cntr, Point p0)
+auto Measurments::closestPoint(Container& cntr, const Point p0) -> decltype(std::begin(cntr))
 {
-    auto pos = std::min_element(cntr.begin(), cntr.end(),
-        [&](Point a, Point b) {
+	auto pos = std::min_element(std::begin(cntr), std::end(cntr),
+		[&](Point a, Point b) {
 			return Measurments::distance(p0, a) < Measurments::distance(p0, b);
 		});
-    return *pos;
+	return pos;
+}
+
+
+template<typename T> 
+T Measurments::clamp(const T& value, const T& min, const T& max)
+{
+    if(value > max) return max;
+    if(value < min) return min;
+
+    return value;
+    //return std::min(max, std::max(min, value));
+    //return std::max(min, std::min(max, value));
 }
 
 

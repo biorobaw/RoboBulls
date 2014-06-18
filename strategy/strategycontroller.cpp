@@ -45,8 +45,10 @@ void StrategyController::gameModelUpdated()
         Robot *rob = model->getMyTeam().at(i);
 
         if(rob->hasBeh)
-         rob->getCurrentBeh()->perform(rob);
+			rob->getCurrentBeh()->perform(rob);
     }
+	
+	delete activeStrategy;
 }
 
 void StrategyController::setGameModel(GameModel *myGameModel)
