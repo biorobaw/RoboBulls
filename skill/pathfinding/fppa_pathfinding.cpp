@@ -7,7 +7,7 @@
 #include "model/gamemodel.h"
 #include "include/globals.h"
 
-#include "skill/pathfinding/fppa_pathfinding.hpp"
+#include "skill/pathfinding/fppa_pathfinding.h"
 
 /* Implementation of the Fast Path Planning Algorithm
  * In a sense, this is a mostly a generalized implementation.
@@ -64,7 +64,7 @@ namespace impl
         }
 
     #if FPPA_DEBUG
-        printf("[FPPA] Checking Line (%f,%f)-(%f,%f)\n", beginPos.x, beginPos.y, endPos.x, endPos.y);
+        //printf("[FPPA] Checking Line (%f,%f)-(%f,%f)\n", beginPos.x, beginPos.y, endPos.x, endPos.y);
         if(obstacle_found)
             printf("[FPPA] Found: %.0f,%.0f\n", obstacle_position.x, obstacle_position.y);
     #endif
@@ -176,8 +176,8 @@ namespace impl
             });
 
     #if FPPA_DEBUG
-            std::cout << "[FPPA] All Obstacles: " << std::endl;
-            for(Point pt : *obstacles) std::cout << pt.toString() << std::endl;
+           // std::cout << "[FPPA] All Obstacles: " << std::endl;
+            //for(Point pt : *obstacles) std::cout << pt.toString() << std::endl;
     #endif
     }
 
@@ -204,10 +204,10 @@ namespace impl
 
     bool isValidPath(const Path& p)
     {
-	    /* Bound function to determine if a point is inside the field or not */
-		static auto isPointInsideField =
-			std::bind(insideRadiusRectangle, _1, fieldTopLeft, fieldBotRight);
-			
+        /* Bound function to determine if a point is inside the field or not */
+        static auto isPointInsideField =
+            std::bind(insideRadiusRectangle, _1, fieldBotRight, fieldTopLeft);
+
         return std::all_of(p.begin(), p.end(), isPointInsideField);
     }
 
@@ -247,6 +247,16 @@ namespace impl
         } else {
             return foundPaths.second;
         }
+    }
+
+    bool isObstacleInLine(Point start, Point end)
+    {
+        std::vector<Point> obstacles;
+
+        impl::buildObstacleCollection(&obstacles, start, end);
+        auto obstacle_info = impl::isObstacleinLine(&obstacles, start, end);
+
+        return obstacle_info.first;
     }
 
 } //namespace FPPA
