@@ -33,14 +33,9 @@ SOURCES += main.cpp \
     skill/kick.cpp \
     skill/waitforball.cpp \
 	model/robot.cpp \
-    skill/gotoposition.cpp \
 	utilities/point.cpp \
 	utilities/measurments.cpp \
-    skill/rotate.cpp \
     behavior/penaltybehavior.cpp \
-    skill/gotoposition2.cpp \
-    behavior/gotoposition2behavior.cpp \
-    behavior/obstacleavoidbehavior.cpp \
     skill/pathfinding/fppa_pathfinding.cpp \
     skill/basic_movement.cpp \
     utilities/paramlist.cpp \
@@ -48,7 +43,6 @@ SOURCES += main.cpp \
     strategy/stopstrategy.cpp \
     strategy/penaltystrategy.cpp \
     skill/gotopositionwithorientation.cpp \
-    skill/gotopositionfacing.cpp \
     communication/simrobcomm.cpp \
     communication/nxtrobcomm.cpp \
     include/grSim_Replacement.pb.cc \
@@ -85,16 +79,12 @@ HEADERS += \
     skill/kick.h \
     skill/waitforball.h \
 	model/robot.h \
-    skill/gotoposition.h \
     skill/skill.h \
     behavior/stopbehavior.h \
 	utilities/measurments.h \
 	utilities/point.h \
-    skill/rotate.h \
 	skill/basic_movement.h \
     behavior/penaltybehavior.h \
-    skill/gotoposition2.h \
-    behavior/gotoposition2behavior.h \
     behavior/obstacleavoidbehavior.h \
 	skill/pathfinding/fppa_pathfinding.h \
 	utilities/paramlist.h \
@@ -104,7 +94,6 @@ HEADERS += \
     skill/robottoinertialvelocities.h \
     skill/matrixcalculator.h \
     skill/gotopositionwithorientation.h \
-    skill/gotopositionfacing.h \
     communication/simrobcomm.h \
     communication/nxtrobcomm.h \
     include/grSim_Replacement.pb.h \

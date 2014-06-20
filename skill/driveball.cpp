@@ -2,7 +2,6 @@
 #include "communication/robcomm.h"
 #include "model/gamemodel.h"
 #include "skill/gotopositionwithorientation.h"
-#include "skill/gotoposition.h"
 #include "skill/basic_movement.h"
 #include "include/globals.h"
 

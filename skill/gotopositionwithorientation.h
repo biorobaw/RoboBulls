@@ -3,7 +3,6 @@
 
 #include "skill.h"
 #include "model/robot.h"
-#include "skill/rotate.h"
 #include "skill/differential_control/closedloopcontrol.h"
 
 namespace Skill {

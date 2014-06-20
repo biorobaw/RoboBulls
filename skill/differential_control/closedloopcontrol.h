@@ -68,13 +68,13 @@ private:
 class ClosedLoopControl : public ClosedLoopBase {
 public:
     ClosedLoopControl()
-        : ClosedLoopBase(ClosedLoopConstants::defaultConstants){};
+        : ClosedLoopBase(ClosedLoopConstants::defaultConstants){}
 };
 
 class ClosedLoopNoSlowdown : public ClosedLoopBase {
 public:
     ClosedLoopNoSlowdown()
-        : ClosedLoopBase(ClosedLoopConstants::noSlowdownConstants){};
+        : ClosedLoopBase(ClosedLoopConstants::noSlowdownConstants){}
 };
 
 
