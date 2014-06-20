@@ -3,7 +3,7 @@
 
 #include "skill.h"
 #include "model/robot.h"
-#include "skill/rotate.h"
+#include "skill/differential_control/closedloopcontrol.h"
 
 namespace Skill {
 
@@ -15,6 +15,7 @@ namespace Skill {
 
         void perform(Robot * robot);
     private:
+        ClosedLoopControl control;
         Point   targetPosition;
         double goalOrientation;
     };

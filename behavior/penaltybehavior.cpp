@@ -12,10 +12,11 @@ PenaltyBehavior::PenaltyBehavior(const ParameterList& list)
 void PenaltyBehavior::perform(Robot * myRobot)
 {
     GameModel *model = GameModel::getModel();
+    float myAngle = Measurments::angleBetween(myRobot->getRobotPosition(),model->getPenaltyPoint());
 
     Skill::Kick kick;
     Skill::Stop stop;
-    Skill::GoToPosition go(model->getPenaltyPoint());
+    Skill::GoToPositionWithOrientation go(model->getPenaltyPoint(), myAngle);
 
     switch(pb)
     {

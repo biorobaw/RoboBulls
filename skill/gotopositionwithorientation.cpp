@@ -3,7 +3,6 @@
 #include "utilities/measurments.h"
 #include "communication/robcomm.h"
 #include "include/util.h"
-#include "skill/rotate.h"
 #include "skill/differential_control/closedloopcontrol.h"
 #include "model/gamemodel.h"
 
@@ -27,7 +26,7 @@ namespace Skill {
         RobComm *nxtbee = RobComm::getRobComm();
 
         wheelvelocities wheelvelocity =
-            ClosedLoopControl::closed_loop_control(robot, targetPosition.x, targetPosition.y, goalOrientation);
+            control.closed_loop_control(robot, targetPosition.x, targetPosition.y, goalOrientation);
 
         float left_wheel_velocity  = wheelvelocity.left;
         float right_wheel_velocity = wheelvelocity.right;

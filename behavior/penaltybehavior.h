@@ -5,13 +5,11 @@
 #include "behavior/behavior.h"
 
 #include "skill/skill.h"
-#include "utilities/measurments.h"
 #include "skill/basic_movement.h"
-#include "skill/gotoposition.h"
-#include "skill/rotate.h"
 #include "skill/kick.h"
-
+#include "skill/gotopositionwithorientation.h"
 #include "model/gamemodel.h"
+#include "utilities/measurments.h"
 #include "utilities/paramlist.h"
 
 /*
@@ -26,7 +24,6 @@
 class PenaltyBehavior : public Behavior
 {
 public:
-    PenaltyBehavior(){};
     PenaltyBehavior(const ParameterList& list);
     void perform(Robot *);
 

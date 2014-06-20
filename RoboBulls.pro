@@ -13,7 +13,7 @@ CONFIG   += console
 CONFIG   -= app_bundle
 
 TEMPLATE = app
-
+QMAKE_CXX = g++-4.8
 
 SOURCES += main.cpp \
     communication/refcomm.cpp \
@@ -33,14 +33,9 @@ SOURCES += main.cpp \
     skill/kick.cpp \
     skill/waitforball.cpp \
 	model/robot.cpp \
-    skill/gotoposition.cpp \
 	utilities/point.cpp \
 	utilities/measurments.cpp \
-    skill/rotate.cpp \
     behavior/penaltybehavior.cpp \
-    skill/gotoposition2.cpp \
-    behavior/gotoposition2behavior.cpp \
-    behavior/obstacleavoidbehavior.cpp \
     skill/pathfinding/fppa_pathfinding.cpp \
     skill/basic_movement.cpp \
     utilities/paramlist.cpp \
@@ -48,7 +43,6 @@ SOURCES += main.cpp \
     strategy/stopstrategy.cpp \
     strategy/penaltystrategy.cpp \
     skill/gotopositionwithorientation.cpp \
-    skill/gotopositionfacing.cpp \
     communication/simrobcomm.cpp \
     communication/nxtrobcomm.cpp \
     include/grSim_Replacement.pb.cc \
@@ -61,7 +55,8 @@ SOURCES += main.cpp \
     strategy/teststrategy.cpp \
     behavior/defendoneonone.cpp \
     skill/driveball.cpp \
-    behavior/driveballandkick.cpp
+    behavior/driveballandkick.cpp \
+    skill/obstacleavoidmove.cpp
 
 HEADERS += \
     communication/refcomm.h \
@@ -84,18 +79,14 @@ HEADERS += \
     skill/kick.h \
     skill/waitforball.h \
 	model/robot.h \
-    skill/gotoposition.h \
     skill/skill.h \
     behavior/stopbehavior.h \
 	utilities/measurments.h \
 	utilities/point.h \
-    skill/rotate.h \
 	skill/basic_movement.h \
     behavior/penaltybehavior.h \
-    skill/gotoposition2.h \
-    behavior/gotoposition2behavior.h \
     behavior/obstacleavoidbehavior.h \
-    skill/pathfinding/fppa_pathfinding.hpp \
+	skill/pathfinding/fppa_pathfinding.h \
 	utilities/paramlist.h \
     behavior/behaviorassignment.h \
     strategy/stopstrategy.h \
@@ -103,7 +94,6 @@ HEADERS += \
     skill/robottoinertialvelocities.h \
     skill/matrixcalculator.h \
     skill/gotopositionwithorientation.h \
-    skill/gotopositionfacing.h \
     communication/simrobcomm.h \
     communication/nxtrobcomm.h \
     include/grSim_Replacement.pb.h \
@@ -117,7 +107,8 @@ HEADERS += \
     strategy/teststrategy.h \
     behavior/defendoneonone.h \
     skill/driveball.h \
-    behavior/driveballandkick.h
+    behavior/driveballandkick.h \
+    skill/obstacleavoidmove.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 
