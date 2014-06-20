@@ -27,7 +27,7 @@ void GoToPositionWithOrientation::perform(Robot* robot)
     RobComm *nxtbee = RobComm::getRobComm();
 
     wheelvelocities wheelvelocity = 
-		ClosedLoopControl::closed_loop_control(robot, targetPosition.x, targetPosition.y, goalOrientation);
+        controller.closed_loop_control(robot, targetPosition.x, targetPosition.y, goalOrientation);
 
     float left_wheel_velocity  = wheelvelocity.left;
     float right_wheel_velocity = wheelvelocity.right;

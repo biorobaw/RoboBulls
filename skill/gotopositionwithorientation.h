@@ -3,21 +3,22 @@
 
 #include "skill.h"
 #include "model/robot.h"
-#include "skill/rotate.h"
+#include "skill/differential_control/closedloopcontrol.h"
 
 namespace Skill {
 
-    class GoToPositionWithOrientation : public Skill
-    {
-    public:
-        GoToPositionWithOrientation(Point target, double goalOrientation);
-        GoToPositionWithOrientation(float tx, float ty, double goalOrientation);
+class GoToPositionWithOrientation : public Skill
+{
+public:
+    GoToPositionWithOrientation(Point target, double goalOrientation);
+    GoToPositionWithOrientation(float tx, float ty, double goalOrientation);
 
-        void perform(Robot * robot);
-    private:
-        Point   targetPosition;
-        double goalOrientation;
-    };
+    void perform(Robot * robot);
+private:
+    ClosedLoopControl controller;
+    Point   targetPosition;
+    double goalOrientation;
+};
 
 }
 

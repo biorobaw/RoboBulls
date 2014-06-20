@@ -155,10 +155,9 @@ void BehaviorAssignment<BehaviorType>::assignBeh(std::function<bool(Robot*)> pre
 template <typename BehaviorType>
 void BehaviorAssignment<BehaviorType>::assignBeh(Robot* robot) const
 {
-    /* Lambda solely because this is used twice below.
+    /* Lambda solely because this is used thrice below.
      */
     auto doAssignment = [&](Robot* rob) {
-        std::cout << "Assigning beh" << std::endl;
         rob->clearCurrentBeh();
         rob->setCurrentBeh(new BehaviorType(params));
         };

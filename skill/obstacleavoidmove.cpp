@@ -43,9 +43,8 @@ void ObstacleAvoidMove::perform(Robot* robot)
         std::cout << "Found obstacle in line or !HasPath" << std::endl;
 
 		FPPA::Path found = FPPA::findShortestPath(robotPoint, targetPoint);
-		
-		for(Point& pt : found) 
-			pathQueue.push(pt);		//Build the queue
+
+        pathQueue.assign(found.begin(), found.end());   //Build queue
 	}
 	
 	
@@ -57,7 +56,7 @@ void ObstacleAvoidMove::perform(Robot* robot)
 		std::cout << "Updating; Old: " << nextPoint.toString();
 		std::cout << " New: " << pathQueue.front().toString() << std::endl;
 	#endif
-		pathQueue.pop();
+        pathQueue.pop_front();
 		
 		if(!pathQueue.empty())
 			nextPoint = pathQueue.front();

@@ -109,6 +109,6 @@ HEADERS += \
     skill/pathfinding/fppa_pathfinding.h
 
 QMAKE_CXXFLAGS += -std=c++0x
-QMAKE_CXXFLAGS += -Wunused-local-typedefs
+#QMAKE_CXXFLAGS += -Wunused-local-typedefs
 
 unix|win32: LIBS += -lprotobuf

@@ -252,8 +252,8 @@ namespace impl
     bool isObstacleInLine(Point start, Point end)
     {
         std::vector<Point> obstacles;
-
         impl::buildObstacleCollection(&obstacles, start, end);
+
         auto obstacle_info = impl::isObstacleinLine(&obstacles, start, end);
 
         return obstacle_info.first;

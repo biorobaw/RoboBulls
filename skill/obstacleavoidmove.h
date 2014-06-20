@@ -1,4 +1,4 @@
-#include <queue>
+#include <deque>
 #include "skill/skill.h"
 
 namespace Skill {
@@ -21,7 +21,7 @@ private:
 	bool hasFoundPath;
 	bool hasFoundPathEnd;
 	Point targetPoint;
-    std::queue<Point> pathQueue;
+    std::deque<Point> pathQueue;
 };
 
 
