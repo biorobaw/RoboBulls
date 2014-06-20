@@ -47,9 +47,9 @@ namespace Skill
         case idiling:
             cout<<"stoping"<<endl;
             stop.perform(robot);
-//            if(!Measurments::isClose(robot->getRobotPosition(), ballPosition, 110)) {
-//                state = moveTowardBall;
-//            }
+            if(!Measurments::isClose(robot->getRobotPosition(), ballPosition, 110)) {
+                state = moveTowardBall;
+            }
             break;
         }
     }
