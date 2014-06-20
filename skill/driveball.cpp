@@ -17,7 +17,7 @@ namespace Skill
 
     void DriveBall::perform(Robot* robot)
     {
-       // cout<< "driving ball"<<endl;
+        cout<< "driving ball"<<endl;
         Point ballPosition = GameModel::getModel()->getBallPoint();
 
         GoToPositionWithOrientation gotoBall(ballPosition, direction);
@@ -28,14 +28,14 @@ namespace Skill
         switch(state)
         {
         case moveTowardBall:
-            //cout <<"Move toward the ball"<<endl;
+            cout <<"Move toward the ball"<<endl;
             gotoBall.perform(robot);
             if(Measurments::isClose(robot->getRobotPosition(), ballPosition, 110)) {
                 state = driveBall;
             }
             break;
         case driveBall:
-            //cout <<"drive the ball"<<endl;
+            cout <<"drive the ball"<<endl;
             driveTheBall.perform(robot);
             if(Measurments::isClose(robot->getRobotPosition(), targetPosition, 110)) {
                 state = idiling;
@@ -45,7 +45,7 @@ namespace Skill
             }
             break;
         case idiling:
-           // cout<<"stoping"<<endl;
+            cout<<"stoping"<<endl;
             stop.perform(robot);
 //            if(!Measurments::isClose(robot->getRobotPosition(), ballPosition, 110)) {
 //                state = moveTowardBall;

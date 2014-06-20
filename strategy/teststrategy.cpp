@@ -51,6 +51,7 @@ void TestStrategy::assignBeh()
 //        assignment.setSingleAssignment(true);
 //        assignment.assignBeh();
 //    }
+
     GameModel* gm = GameModel::getModel();
     Robot* r0 = gm->find(0, gm->getMyTeam());
     if(!r0) return;

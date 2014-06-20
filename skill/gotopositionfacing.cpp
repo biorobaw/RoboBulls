@@ -31,6 +31,7 @@ namespace Skill {
         double robot_y = robotPosition.y;
     //    float finalOrientation = Measurments::slop(robotPosition, targetPosition);
         double finalOrientation = atan2(targetPosition.y-robot_y, targetPosition.x-robot_x);
+
         wheelvelocities wheelvelocity ;
         //= ClosedLoopControl::closed_loop_control(
                     //robot, targetPosition.x, targetPosition.y, finalOrientation);
