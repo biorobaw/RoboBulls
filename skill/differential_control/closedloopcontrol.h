@@ -1,5 +1,5 @@
-#ifndef CLOSED_LOOP_H
-#define CLOSED_LOOP_H
+#ifndef CLOSEDLOOPCONTROL_H
+#define CLOSEDLOOPCONTROL_H
 
 /*******************************************************************/
 /** CLOSEDLOOPCONTROL.h **/
@@ -10,7 +10,7 @@
 #include <unordered_map>
 #include "model/robot.h"
 
-#define CLOOP_CONTROL_DEBUG 0
+#define CLOOP_CONTROL_DEBUG 1
 
 namespace ClosedLoopConstants
 {
@@ -45,18 +45,18 @@ public:
         (Robot* robot, double x_goal, double y_goal, double theta_goal);
 
 private:
-    static constexpr double wheel_separation = 0.115 * 1000;
-    static constexpr double wheel_radius = 0.027 * 1000;
+    static constexpr unsigned int sizeRhoQ = 400;
     static constexpr unsigned int sizeAlphaQ = 300;
     static constexpr unsigned int sizeBetaQ = 100;
-    static constexpr unsigned int sizeRhoQ = 400;
+    static constexpr double wheel_separation = 0.115 * 1000;
+    static constexpr double wheel_radius = 0.027 * 1000;
+
     double newRho, krho;
     double newAlpha, kalpha;
     double newBeta, kbeta;
     double kRhoI  = krho/(4.0 * sizeRhoQ);
     double kAlphaI = kalpha/(1.0 * sizeAlphaQ);
     double kBetaI  = kbeta/(0.2 * sizeBetaQ);
-
 
     void handleError(double x_goal, double y_goal);
     std::pair<std::deque<double>, double> errorContainers[3];
@@ -77,4 +77,6 @@ public:
         : ClosedLoopBase(ClosedLoopConstants::noSlowdownConstants){};
 };
 
-#endif
+
+
+#endif // CLOSEDLOOPCONTROL_H

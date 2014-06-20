@@ -38,6 +38,8 @@ SOURCES += main.cpp \
 	utilities/measurments.cpp \
     skill/rotate.cpp \
     behavior/penaltybehavior.cpp \
+    skill/gotoposition2.cpp \
+    behavior/gotoposition2behavior.cpp \
     behavior/obstacleavoidbehavior.cpp \
     skill/pathfinding/fppa_pathfinding.cpp \
     skill/basic_movement.cpp \
@@ -46,6 +48,7 @@ SOURCES += main.cpp \
     strategy/stopstrategy.cpp \
     strategy/penaltystrategy.cpp \
     skill/gotopositionwithorientation.cpp \
+    skill/gotopositionfacing.cpp \
     communication/simrobcomm.cpp \
     communication/nxtrobcomm.cpp \
     include/grSim_Replacement.pb.cc \
@@ -57,6 +60,8 @@ SOURCES += main.cpp \
     behavior/kicktogoal.cpp \
     strategy/teststrategy.cpp \
     behavior/defendoneonone.cpp \
+    skill/driveball.cpp \
+    behavior/driveballandkick.cpp \
     skill/obstacleavoidmove.cpp
 
 HEADERS += \
@@ -71,6 +76,7 @@ HEADERS += \
     include/timer.h \
     include/util.h \
 	model/gamemodel.h \
+    Robot/robot.h \
     strategy/strategy.h \
     strategy/strategycontroller.h \
     communication/robcomm.h \
@@ -87,12 +93,18 @@ HEADERS += \
     skill/rotate.h \
 	skill/basic_movement.h \
     behavior/penaltybehavior.h \
+    skill/gotoposition2.h \
+    behavior/gotoposition2behavior.h \
     behavior/obstacleavoidbehavior.h \
+	skill/pathfinding/fppa_pathfinding.h \
 	utilities/paramlist.h \
     behavior/behaviorassignment.h \
     strategy/stopstrategy.h \
     strategy/penaltystrategy.h \
+    skill/robottoinertialvelocities.h \
+    skill/matrixcalculator.h \
     skill/gotopositionwithorientation.h \
+    skill/gotopositionfacing.h \
     communication/simrobcomm.h \
     communication/nxtrobcomm.h \
     include/grSim_Replacement.pb.h \
@@ -105,10 +117,10 @@ HEADERS += \
     behavior/kicktogoal.h \
     strategy/teststrategy.h \
     behavior/defendoneonone.h \
-    skill/obstacleavoidmove.h \
-    skill/pathfinding/fppa_pathfinding.h
+    skill/driveball.h \
+    behavior/driveballandkick.h \
+    skill/obstacleavoidmove.h
 
 QMAKE_CXXFLAGS += -std=c++0x
-#QMAKE_CXXFLAGS += -Wunused-local-typedefs
 
 unix|win32: LIBS += -lprotobuf

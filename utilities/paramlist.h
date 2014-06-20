@@ -18,49 +18,37 @@ class ParameterList
 {
 public:
     ~ParameterList();
-     /**
-     * @brief ParameterList::setParam<T> :
-     *	Set a parameter by a name to a value.
-     * @param name :
-     *  The name of the variable to store
-     * @param value :
-     *  The value to set the variable to
-     */
-    template<typename T>
+	 /**
+	 * @brief ParameterList::setParam<T> :
+	 *	Set a parameter by a name to a value.
+	 * @param name :
+	 *  The name of the variable to store
+	 * @param value :
+	 *  The value to set the variable to
+	 */
+	template<typename T>
     void setParam(std::string name, T value);
 
-     /**
-     * @brief ParameterList::getParam<T> :
-     *	Get a parameter by name, set by setParam
-     * @param name :
-     *	Name of the parameter requested. Must exist.
-     * @return :
-     *  The value associated with name, of type T.
-     */
-    template<typename T>
+	 /**
+	 * @brief ParameterList::getParam<T> :
+	 *	Get a parameter by name, set by setParam
+	 * @param name :
+	 *	Name of the parameter requested. Must exist.
+	 * @return :
+	 *  The value associated with name, of type T.
+	 */
+	template<typename T>
     T getParam(std::string name) const;
-
-     /**
-     * @brief ParameterList::paramExists<T> :
-     *	Check if a parameter of the given type and
-     *	name exists in the list
-     * @param name :
-     *	Name of the parameter requested.
-     * @return :
-     *  true if the value exists
-     */
-    template<typename T>
-    bool paramExists(std::string name) const;
 
     std::string toString() const;
 
 private:
 
-    /* ParameterList implementation classes.
-     * Uses inheritence between these two classes
-     * to manage an unordered_map of any type.
-     * Made possible by C++11 type_index
-     */
+	/* ParameterList implementation classes.
+	 * Uses inheritence between these two classes 
+	 * to manage an unordered_map of any type.
+	 * Made possible by C++11 type_index
+	 */
 
     class GenericParamList
     {
@@ -72,16 +60,15 @@ private:
     class TypedParamList : public GenericParamList
     {
     public:
-        void insertParam(std::string& name, T value);
-        T findParam(std::string& name) const;
-        bool paramExists(std::string& name) const;
+        void insertParam(std::string name, T value);
+        T findParam(std::string name) const;
 
         std::string toString() const;
     private:
         std::unordered_map<std::string, T> myParams;
     };
 
-    std::unordered_map<std::type_index, GenericParamList*> params;
+	std::unordered_map<std::type_index, GenericParamList*> params;
 };
 
 
@@ -95,45 +82,40 @@ private:
 /******************/
 
 template <typename T>
-void ParameterList::TypedParamList<T>::insertParam(std::string& name, T value)
+void ParameterList::TypedParamList<T>::insertParam(std::string name, T value)
 {
-    myParams[name] = value;
+	myParams[name] = value;
 }
 
 
 template <typename T>
-T ParameterList::TypedParamList<T>::findParam(std::string& name) const
+T ParameterList::TypedParamList<T>::findParam(std::string name) const
 {
-    auto entry = myParams.find(name);
+	auto entry = myParams.find(name);
+	
+	/* IF YOU ARE GETTING AN ASSERT FAILED HERE 
+	 * It means that you tried to look up a variable by a string
+	 * that doesn't exist. Check the spelling of the names
+	 * that you looked up. 
+	 */
+	assert(entry != myParams.end());
 
-    /* IF YOU ARE GETTING AN ASSERT FAILED HERE
-     * It means that you tried to look up a variable by a string
-     * that doesn't exist. Check the spelling of the names
-     * that you looked up.
-     */
-    assert(entry != myParams.end());
-
-    return entry->second;
+	return entry->second;
 }
 
-template <typename T>
-bool ParameterList::TypedParamList<T>::paramExists(std::string& name) const
-{
-    return myParams.find(name) != myParams.end();
-}
 
 template <typename T>
 std::string ParameterList::TypedParamList<T>::toString() const
 {
-    std::stringstream ss;
+	std::stringstream ss;
 
-    for(const auto& entry : myParams)
+	for(const auto& entry : myParams)
     {
-        ss << entry.first << " : ";
+		ss << entry.first << " : ";
         ss << "(Value)" << std::endl;
-    }
+	}
 
-    return ss.str();
+	return ss.str();
 }
 
 
@@ -147,34 +129,22 @@ void ParameterList::setParam(std::string name, T value)
     if(params.find(typeid(T)) == params.end())
         params[typeid(T)] = new TypedParamList<T>();
 
-    /* Find the GenericParamList at typeid(T),
+	/* Find the GenericParamList at typeid(T),
        then cast result to TypedParamList<T>*.
-       This is where the magic happens.
-       */
-    ((TypedParamList<T>*)params[typeid(T)])->insertParam(name, value);
+	   This is where the magic happens.
+	   */
+	((TypedParamList<T>*)params[typeid(T)])->insertParam(name, value);
 }
 
 
 template<typename T>
 T ParameterList::getParam(std::string name) const
 {
-    assert(params.find(typeid(T)) != params.end());
+	assert(params.find(typeid(T)) != params.end());
 
     auto entry = params.find(typeid(T));
 
     return ((TypedParamList<T>*)entry->second)->findParam(name);
-}
-
-template<typename T>
-bool ParameterList::paramExists(std::string name) const
-{
-    auto typeEntry = params.find(typeid(T));
-
-    if(typeEntry == params.end()) {
-        return false;	//Type does not exist
-    }
-
-    return ((TypedParamList<T>*)typeEntry->second)->paramExists(name);
 }
 
 
