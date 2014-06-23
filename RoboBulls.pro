@@ -16,99 +16,96 @@ TEMPLATE = app
 QMAKE_CXX = g++-4.8
 
 SOURCES += main.cpp \
-    communication/refcomm.cpp \
-    include/messages_robocup_ssl_detection.pb.cc \
-    include/messages_robocup_ssl_geometry.pb.cc \
-    include/messages_robocup_ssl_refbox_log.pb.cc \
-    include/messages_robocup_ssl_wrapper.pb.cc \
-    include/netraw.cpp \
-    include/robocup_ssl_client.cpp \
-    include/serialib.cpp \
+	behavior/behavior.cpp \
+	behavior/defendoneonone.cpp \
+	behavior/driveballandkick.cpp \
+	behavior/kicktogoal.cpp \
+	behavior/penaltybehavior.cpp \
+	behavior/stopbehavior.cpp \
+	communication/nxtrobcomm.cpp \
+	communication/refcomm.cpp \
+	communication/robcomm.cpp \
+	communication/simrobcomm.cpp \
+	communication/visioncomm.cpp \
+	include/grSim_Commands.pb.cc \
+	include/grSim_Packet.pb.cc \
+	include/grSim_Replacement.pb.cc \
+	include/messages_robocup_ssl_detection.pb.cc \
+	include/messages_robocup_ssl_geometry.pb.cc \
+	include/messages_robocup_ssl_refbox_log.pb.cc \
+	include/messages_robocup_ssl_wrapper.pb.cc \
+	include/netraw.cpp \
+	include/robocup_ssl_client.cpp \
+	include/serialib.cpp \
 	model/gamemodel.cpp \
-    strategy/strategycontroller.cpp \
-    communication/robcomm.cpp \
-    behavior/behavior.cpp \
-    behavior/stopbehavior.cpp \
-    communication/visioncomm.cpp \
-    skill/kick.cpp \
-    skill/waitforball.cpp \
 	model/robot.cpp \
-	utilities/point.cpp \
+	skill/basic_movement.cpp \
+	skill/differential_control/closedloopcontrol.cpp \
+	skill/differential_control/matrixcalculator.cpp \
+	skill/differential_control/robottoinertialvelocities.cpp \
+	skill/driveball.cpp \
+	skill/gotopositionwithorientation.cpp \
+	skill/kick.cpp \
+	skill/obstacleavoidmove.cpp
+	skill/pathfinding/fppa_pathfinding.cpp \
+	skill/waitforball.cpp \
+	strategy/penaltystrategy.cpp \
+	strategy/stopstrategy.cpp \
+	strategy/strategy.cpp \
+	strategy/strategycontroller.cpp \
+	strategy/teststrategy.cpp \
 	utilities/measurments.cpp \
-    behavior/penaltybehavior.cpp \
-    skill/pathfinding/fppa_pathfinding.cpp \
-    skill/basic_movement.cpp \
-    utilities/paramlist.cpp \
-    strategy/strategy.cpp \
-    strategy/stopstrategy.cpp \
-    strategy/penaltystrategy.cpp \
-    skill/gotopositionwithorientation.cpp \
-    communication/simrobcomm.cpp \
-    communication/nxtrobcomm.cpp \
-    include/grSim_Replacement.pb.cc \
-    include/grSim_Packet.pb.cc \
-    include/grSim_Commands.pb.cc \
-    skill/differential_control/robottoinertialvelocities.cpp \
-    skill/differential_control/matrixcalculator.cpp \
-    skill/differential_control/closedloopcontrol.cpp \
-    behavior/kicktogoal.cpp \
-    strategy/teststrategy.cpp \
-    behavior/defendoneonone.cpp \
-    skill/driveball.cpp \
-    behavior/driveballandkick.cpp \
-    skill/obstacleavoidmove.cpp
+	utilities/paramlist.cpp \
+	utilities/point.cpp \
 
 HEADERS += \
-    communication/refcomm.h \
-    include/messages_robocup_ssl_detection.pb.h \
-    include/messages_robocup_ssl_geometry.pb.h \
-    include/messages_robocup_ssl_refbox_log.pb.h \
-    include/messages_robocup_ssl_wrapper.pb.h \
-    include/netraw.h \
-    include/robocup_ssl_client.h \
-    include/serialib.h \
-    include/timer.h \
-    include/util.h \
+	behavior/behavior.h \
+	behavior/behaviorassignment.h \
+	behavior/defendoneonone.h \
+	behavior/driveballandkick.h \
+	behavior/kicktogoal.h \
+	behavior/obstacleavoidbehavior.h \
+	behavior/penaltybehavior.h \
+	behavior/stopbehavior.h \
+	communication/nxtrobcomm.h \
+	communication/refcomm.h \
+	communication/robcomm.h \
+	communication/simrobcomm.h \
+	communication/visioncomm.h \
+	include/globals.h \
+	include/grSim_Commands.pb.h \
+	include/grSim_Packet.pb.h \
+	include/grSim_Replacement.pb.h \
+	include/messages_robocup_ssl_detection.pb.h \
+	include/messages_robocup_ssl_geometry.pb.h \
+	include/messages_robocup_ssl_refbox_log.pb.h \
+	include/messages_robocup_ssl_wrapper.pb.h \
+	include/netraw.h \
+	include/robocup_ssl_client.h \
+	include/serialib.h \
+	include/timer.h \
+	include/util.h \
 	model/gamemodel.h \
-    Robot/robot.h \
-    strategy/strategy.h \
-    strategy/strategycontroller.h \
-    communication/robcomm.h \
-    behavior/behavior.h \
-    communication/visioncomm.h \
-    skill/kick.h \
-    skill/waitforball.h \
 	model/robot.h \
-    skill/skill.h \
-    behavior/stopbehavior.h \
-	utilities/measurments.h \
-	utilities/point.h \
 	skill/basic_movement.h \
-    behavior/penaltybehavior.h \
-    behavior/obstacleavoidbehavior.h \
+	skill/differential_control/closedloopcontrol.h \
+	skill/differential_control/matrixcalculator.h \
+	skill/differential_control/robottoinertialvelocities.h \
+	skill/driveball.h \
+	skill/gotopositionwithorientation.h \
+	skill/kick.h \
+	skill/obstacleavoidmove.h
 	skill/pathfinding/fppa_pathfinding.h \
+	skill/skill.h \
+	skill/waitforball.h \
+	strategy/penaltystrategy.h \
+	strategy/stopstrategy.h \
+	strategy/strategy.h \
+	strategy/strategycontroller.h \
+	strategy/teststrategy.h \
+	utilities/measurments.h \
 	utilities/paramlist.h \
-    behavior/behaviorassignment.h \
-    strategy/stopstrategy.h \
-    strategy/penaltystrategy.h \
-    skill/robottoinertialvelocities.h \
-    skill/matrixcalculator.h \
-    skill/gotopositionwithorientation.h \
-    communication/simrobcomm.h \
-    communication/nxtrobcomm.h \
-    include/grSim_Replacement.pb.h \
-    include/grSim_Packet.pb.h \
-    include/grSim_Commands.pb.h \
-    include/globals.h \
-    skill/differential_control/robottoinertialvelocities.h \
-    skill/differential_control/matrixcalculator.h \
-    skill/differential_control/closedloopcontrol.h \
-    behavior/kicktogoal.h \
-    strategy/teststrategy.h \
-    behavior/defendoneonone.h \
-    skill/driveball.h \
-    behavior/driveballandkick.h \
-    skill/obstacleavoidmove.h
+	utilities/point.h \
 
 QMAKE_CXXFLAGS += -std=c++0x
 
