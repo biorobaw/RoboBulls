@@ -9,11 +9,17 @@
 #include "utilities/measurments.h"
 #include "include/globals.h"
 
+void ClosedLoopBase::setVelMultiplier(double newMultiplier)
+{
+	this->velMultiplier = newMultiplier;
+}
+
 void ClosedLoopBase::handleError(double x_goal, double y_goal)
 {
-    /* Storing a defined number of most errors for rho, beta, and alpha in the queue and calculate the sum of errors.
-     * Instead of looping hundreds of times to add up the entire sum over and over, it can simply be adjusted on the
-     * change of the error containers
+    /* Storing a defined number of most errors for rho, beta, and alpha 
+	 * in the queue and calculate the sum of errors.
+     * Instead of looping hundreds of times to add up the entire sum over and over, 
+	 * it can simply be adjusted on the change of the error containers
      */
     static unsigned errQsizes[3]
         = {sizeRhoQ, sizeAlphaQ, sizeBetaQ};
@@ -93,10 +99,10 @@ wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, double x_goal,
     //*******************************************************************************************
     /* Calculate and set left and right motor velocity. This is dependant on rho being > 100 or not. */
 
-    double robot_xvel = OVERALL_VELOCITY *
+    double robot_xvel = OVERALL_VELOCITY * velMultiplier *
         (krho*newRho + kRhoI*newSumErrRho);
 
-    double robot_turnrate = OVERALL_VELOCITY *
+    double robot_turnrate = OVERALL_VELOCITY * velMultiplier *
         (kalpha*newAlpha + kbeta*newBeta + kAlphaI*newSumErrAlpha + kBetaI*newSumErrBeta);
 
     if (newRho > 100)
@@ -107,9 +113,14 @@ wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, double x_goal,
     }
     else
     {
-        float angDiffDeg = (180 / M_PI) * Measurments::angleDiff(theta_current, theta_goal);
-        left_motor_velocity  = copysign(OVERALL_VELOCITY * 5 * (fabs(angDiffDeg)>10), -angDiffDeg);
-        right_motor_velocity = copysign(OVERALL_VELOCITY * 5 * (fabs(angDiffDeg)>10),  angDiffDeg);
+        float angDiffDeg = (180 / M_PI)*Measurments::angleDiff(theta_current, theta_goal);
+		
+		if(fabs(angDiffDeg) > 10) {
+			left_motor_velocity  = copysign(OVERALL_VELOCITY * velMultiplier, -angDiffDeg);
+			right_motor_velocity = copysign(OVERALL_VELOCITY * velMultiplier,  angDiffDeg);
+		} else {
+			left_motor_velocity = right_motor_velocity = 0;
+		}
     }
 
     //*******************************************************************************************
