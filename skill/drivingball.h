@@ -11,7 +11,7 @@ namespace skill{
     {
     public:
         drivingBall(Robot*, Point);
-        void perform(Robot*);
+        bool perform(Robot*);
     };
 }
 

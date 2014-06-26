@@ -3,7 +3,7 @@
 namespace Skill
 {
 
-void Kick::perform(Robot *myRobot)
+bool Kick::perform(Robot *myRobot)
 {
 
     RobComm *nxtbee = RobComm::getRobComm();
@@ -14,6 +14,8 @@ void Kick::perform(Robot *myRobot)
         nxtbee->sendKick(myRobot->getID());
         roboKick = false;
     }
+	
+	return true;
 }
 
 }

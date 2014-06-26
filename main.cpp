@@ -23,10 +23,6 @@ void exitStopRobot(int param)
         nxt->sendVels(0, 0, rob->getID());
     }
 	
-    for(Robot* rob : gm->getOponentTeam()) {
-        nxt->sendVels(0, 0, rob->getID());
-    }
-	
 	exit(1);
 }
 

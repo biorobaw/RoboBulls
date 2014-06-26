@@ -21,7 +21,7 @@ namespace Skill {
         this->goalOrientation = goalOrientation;
     }
 
-    void GoToPositionWithOrientation::perform(Robot* robot)
+    bool GoToPositionWithOrientation::perform(Robot* robot)
     {
         RobComm *nxtbee = RobComm::getRobComm();
 
@@ -32,5 +32,12 @@ namespace Skill {
         float right_wheel_velocity = wheelvelocity.right;
 
         nxtbee->sendVels(left_wheel_velocity, right_wheel_velocity, robot->getID());
+		
+		
+		if(Measurements::isClose(targetPosition, robot->getRobotPosition(), 100)) {
+			return true;
+		} else {
+			return false;
+		}
     }
 }

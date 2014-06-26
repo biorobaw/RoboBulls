@@ -3,27 +3,27 @@
 namespace Skill
 {
 
-void GoForward::perform(Robot* robot)
+bool GoForward::perform(Robot* robot)
 {
     RobComm *nxtbee = RobComm::getRobComm();
-
     nxtbee->sendVels(30, 30, robot->getID());
+	return true;
 }
 
 
-void GoBackward::perform(Robot* robot)
+bool GoBackward::perform(Robot* robot)
 {
     RobComm *nxtbee = RobComm::getRobComm();
-
     nxtbee->sendVels(-30, -30, robot->getID());
+	return true;
 }
 
 
-void Stop::perform(Robot* robot)
+bool Stop::perform(Robot* robot)
 {
     RobComm *nxtbee = RobComm::getRobComm();
-
     nxtbee->sendVels(0, 0, robot->getID());
+	return true;
 }
 
 }

@@ -11,7 +11,7 @@ class waitForBall : public Skill
 {
 public:
     waitForBall();
-//    void perform(Robot *);
+//    bool perform(Robot *);
 };
 
 }

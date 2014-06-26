@@ -11,7 +11,7 @@ namespace Skill
 class Skill
 {
 public:
-    virtual void perform(Robot* robot) = 0;
+    virtual bool perform(Robot* robot) = 0;
 };
 
 
