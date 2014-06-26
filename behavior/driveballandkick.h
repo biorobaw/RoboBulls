@@ -2,6 +2,7 @@
 #define DRIVEBALLANDKICK_H
 
 #include "behavior/behavior.h"
+#include "skill/skill.h"
 #include "utilities/paramlist.h"
 
 using namespace std;
@@ -13,7 +14,8 @@ public:
     void perform(Robot *);
 
 private:
-    enum states {driving, kicking, idling} state;
+    enum states {initial, driving, kicking, idling} state;
+    Skill::Skill * skill;
 };
 
 #endif // DRIVEBALLANDKICK_H

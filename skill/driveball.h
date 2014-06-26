@@ -15,7 +15,8 @@ namespace Skill{
     private:
         Point targetPosition;
         double direction;
-        enum states {moveTowardBall, driveBall, idiling} state;
+        enum states {initial, moveTowardBall, driveBall, idiling} state;
+        Skill * skill;
 
     };
 }

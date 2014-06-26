@@ -36,6 +36,7 @@ TestStrategy::TestStrategy()
 
 void TestStrategy::assignBeh()
 {
+    //Martin code
 //    cout << "running test strategy!" << endl;
 //    GameModel * gm = GameModel::getModel();
 
@@ -52,20 +53,26 @@ void TestStrategy::assignBeh()
 //        assignment.assignBeh();
 //    }
 
-    GameModel* gm = GameModel::getModel();
-    Robot* r0 = gm->find(0, gm->getMyTeam());
-    if(!r0) return;
+    //test behavior
+//    GameModel* gm = GameModel::getModel();
+//    Robot* r0 = gm->find(0, gm->getMyTeam());
+//    if(!r0) return;
 
-    //if(r0 != NULL) {
-     //   BehaviorAssignment<TestBehavior> ass;
-        //ass.setBehParam<Point>("targetPoint", point())
-     //   ass.assignBeh(r0);
-   // }
+//    //if(r0 != NULL) {
+//     //   BehaviorAssignment<TestBehavior> ass;
+//        //ass.setBehParam<Point>("targetPoint", point())
+//     //   ass.assignBeh(r0);
+//   // }
 
-    //BehaviorAssignment<DriveBallAndKick> assignment;
+//    //BehaviorAssignment<DriveBallAndKick> assignment;
 
-    BehaviorAssignment<TestBehavior> assignment;
-    assignment.setBehParam<Point>("targetPoint", gm->getBallPoint());
-    assignment.assignBeh(r0);
+//    BehaviorAssignment<TestBehavior> assignment;
+//    assignment.setBehParam<Point>("targetPoint", gm->getBallPoint());
+//    assignment.assignBeh(r0);
+
+    // Narges code
+    BehaviorAssignment<DriveBallAndKick> assignment;
+    assignment.setSingleAssignment(true);
+    assignment.assignBeh();
 }
 

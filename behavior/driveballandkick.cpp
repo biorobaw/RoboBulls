@@ -10,8 +10,10 @@
 
 DriveBallAndKick::DriveBallAndKick(const ParameterList& list)
 {
-    state = driving;
+    state = initial;
+
     cout<<"initial driving!"<<endl;
+
 }
 
 void DriveBallAndKick::perform(Robot* robot)
@@ -27,38 +29,52 @@ void DriveBallAndKick::perform(Robot* robot)
     Point kickPoint(-1500,0);
 
     // Create a different skill depending on the state
-    Skill::Skill * skill;
+
     switch (state)
     {
-    case driving:
+    case initial:
+        state = driving;
         skill = new Skill::DriveBall(kickPoint, direction);
         break;
+    case driving:
+        cout << "in switch driving!"<<endl;
+        if (abs(rp.x - kickPoint.x) < 110 && Measurments::isClose(rp,bp,110)){
+            state = kicking;
+            skill = new Skill::Kick();
+        }
+        break;
     case kicking:
-        skill = new Skill::Kick();
+        cout << "in switch kicking!"<<endl;
+        state = idling;
+        skill = new Skill::Stop();
         break;
     case idling:
-        skill = new Skill::Stop();
+        cout << "in switch idling!"<<endl;
+        if (!Measurments::isClose(rp, bp, 110)){
+            state = driving;
+            skill = new Skill::DriveBall(kickPoint, direction);
+        }
         break;
     }
 
     // Perform the skill
     skill->perform(robot);
 
-    switch (state)
-    {
-    case driving:
-        cout << "in switch driving!"<<endl;
-        if (abs(rp.x - kickPoint.x) < 110 && Measurments::isClose(rp,bp,110))
-            state = kicking;
-        break;
-    case kicking:
-        cout << "in switch kicking!"<<endl;
-        state = idling;
-        break;
-    case idling:
-        cout << "in switch idling!"<<endl;
-        if (!Measurments::isClose(rp, bp, 110))
-            state = driving;
-        break;
-    }
+//    switch (state)
+//    {
+//    case driving:
+//        cout << "in switch driving!"<<endl;
+//        if (abs(rp.x - kickPoint.x) < 110 && Measurments::isClose(rp,bp,110))
+//            state = kicking;
+//        break;
+//    case kicking:
+//        cout << "in switch kicking!"<<endl;
+//        state = idling;
+//        break;
+//    case idling:
+//        cout << "in switch idling!"<<endl;
+//        if (!Measurments::isClose(rp, bp, 110))
+//            state = driving;
+//        break;
+//    }
 }

@@ -4,6 +4,7 @@
 #include "skill/gotopositionwithorientation.h"
 #include "skill/basic_movement.h"
 #include "include/globals.h"
+#include "skill/skill.h"
 
 namespace Skill
 {
@@ -11,7 +12,7 @@ namespace Skill
     {
         targetPosition = targetPoint;
         direction = movingDirection;
-        state = moveTowardBall;
+        state = initial;
     }
 
     void DriveBall::perform(Robot* robot)
@@ -19,37 +20,42 @@ namespace Skill
         cout<< "driving ball"<<endl;
         Point ballPosition = GameModel::getModel()->getBallPoint();
 
-        GoToPositionWithOrientation gotoBall(ballPosition, direction);
-
-        GoToPositionWithOrientation driveTheBall(targetPosition, direction);
-        Stop stop;
-
         switch(state)
         {
+        case initial:
+            state = moveTowardBall;
+            skill = new GoToPositionWithOrientation (ballPosition, direction);
+            break;
         case moveTowardBall:
             cout <<"Move toward the ball"<<endl;
-            gotoBall.perform(robot);
             if(Measurments::isClose(robot->getRobotPosition(), ballPosition, 110)) {
                 state = driveBall;
+                skill = new GoToPositionWithOrientation (targetPosition, direction);
             }
             break;
         case driveBall:
             cout <<"drive the ball"<<endl;
-            driveTheBall.perform(robot);
             if(Measurments::isClose(robot->getRobotPosition(), targetPosition, 110)) {
                 state = idiling;
+                skill = new Stop();
             }
             else if(!Measurments::isClose(robot->getRobotPosition(), targetPosition, 110)) {
                 state = driveBall;
+                skill = new GoToPositionWithOrientation (targetPosition, direction);
+            }
+            else if(!Measurments::isClose(robot->getRobotPosition(), ballPosition, 110)) {
+                state = moveTowardBall;
+                skill = new GoToPositionWithOrientation (ballPosition, direction);
             }
             break;
         case idiling:
             cout<<"stoping"<<endl;
-            stop.perform(robot);
             if(!Measurments::isClose(robot->getRobotPosition(), ballPosition, 110)) {
                 state = moveTowardBall;
             }
             break;
         }
+
+        skill->perform(robot);
     }
 }

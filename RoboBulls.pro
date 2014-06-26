@@ -13,7 +13,7 @@ CONFIG   += console
 CONFIG   -= app_bundle
 
 TEMPLATE = app
-QMAKE_CXX = g++-4.8
+#QMAKE_CXX = g++-4.8
 
 SOURCES += main.cpp \
     communication/refcomm.cpp \

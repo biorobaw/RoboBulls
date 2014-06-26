@@ -20,19 +20,19 @@ void ClosedLoopBase::handleError(double x_goal, double y_goal)
     double newValues[3]
         = {newRho, newAlpha, newBeta};
 
-    Point newTarget = Point(x_goal, y_goal);
+//    Point newTarget = Point(x_goal, y_goal);
 
     /* We need to reset the error containers on movement to a different point,
      * because the accumulated error is no longer valid. Then update the last point
      */
-    if( !Measurments::isClose(lastTargetPoint, newTarget, 25) )
-    {
-        for(auto& pair : this->errorContainers) {
-            pair.first.clear();
-            pair.second = 0;
-        }
-        lastTargetPoint = newTarget;
-    }
+//    if( !Measurments::isClose(lastTargetPoint, newTarget, 25) )
+//    {
+//        for(auto& pair : this->errorContainers) {
+//            pair.first.clear();
+//            pair.second = 0;
+//        }
+//        lastTargetPoint = newTarget;
+//    }
 
     for(int i = 0; i != 3; ++i)
     {
@@ -75,12 +75,12 @@ wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, double x_goal,
     newBeta  = Measurments::angleDiff(angleToGoal, theta_goal);
 
 #if CLOOP_CONTROL_DEBUG
-    std::cout << "rho "   << newRho   			<< std::endl;
-    std::cout << "alpha " << 180/M_PI * newAlpha << std::endl;
-    std::cout << "current theta " << 180/M_PI * theta_current << std::endl;
-    std::cout << "beta "  		  << 180/M_PI * newBeta		  << std::endl;
-    std::cout << "Angle diff " 	  << 180/M_PI * Measurments::angleDiff(theta_current, theta_goal)
-              << std::endl;
+//    std::cout << "rho "   << newRho   			<< std::endl;
+//    std::cout << "alpha " << 180/M_PI * newAlpha << std::endl;
+//    std::cout << "current theta " << 180/M_PI * theta_current << std::endl;
+//    std::cout << "beta "  		  << 180/M_PI * newBeta		  << std::endl;
+//    std::cout << "Angle diff " 	  << 180/M_PI * Measurments::angleDiff(theta_current, theta_goal)
+//              << std::endl;
 #endif
 
     //*******************************************************************************************
@@ -125,10 +125,10 @@ wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, double x_goal,
     }
 
 #if CLOOP_CONTROL_DEBUG
-    std::cout << "v "    << robot_xvel 		<< std::endl;
-    std::cout << "w "    << robot_turnrate  << std::endl;
-    std::cout << "LMV: " << left_motor_velocity  << std::endl;
-    std::cout << "RMV: " << right_motor_velocity << std::endl;
+//    std::cout << "v "    << robot_xvel 		<< std::endl;
+//    std::cout << "w "    << robot_turnrate  << std::endl;
+//    std::cout << "LMV: " << left_motor_velocity  << std::endl;
+//    std::cout << "RMV: " << right_motor_velocity << std::endl;
 #endif
 
     wheelvelocities result = {(int)left_motor_velocity, (int)right_motor_velocity};
