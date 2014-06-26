@@ -30,7 +30,7 @@ void DriveBallAndKick::perform(Robot* robot)
     Skill::Skill * skill;
     switch (state)
     {
-    case driving:        
+    case driving:
         skill = new Skill::DriveBall(kickPoint, direction);
         break;
     case kicking:
@@ -50,20 +50,6 @@ void DriveBallAndKick::perform(Robot* robot)
         cout << "in switch driving!"<<endl;
         if (abs(rp.x - kickPoint.x) < 110 && Measurments::isClose(rp,bp,110))
             state = kicking;
-        if (bp.x < kickPoint.x)
-        {
-//            Point tmp = bp;
-//            Point newKickPoint;
-//            if (tmp.y > 0)
-//                newKickPoint.y = tmp.y - 200;
-//            else
-//                newKickPoint.y = tmp.y + 200;
-//            newKickPoint.x = tmp.x;
-//            state = driving;
-//            skill = new Skill::DriveBall(newKickPoint, direction);
-            if (Measurments::isClose(rp,bp,90))
-                state = kicking;
-        }
         break;
     case kicking:
         cout << "in switch kicking!"<<endl;
@@ -73,8 +59,6 @@ void DriveBallAndKick::perform(Robot* robot)
         cout << "in switch idling!"<<endl;
         if (!Measurments::isClose(rp, bp, 110))
             state = driving;
-        else
-            state = kicking;
         break;
     }
 }
