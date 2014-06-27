@@ -14,7 +14,7 @@ namespace Skill
         state = moveTowardBall;
     }
 
-    void DriveBall::perform(Robot* robot)
+    bool DriveBall::perform(Robot* robot)
     {
         cout<< "driving ball"<<endl;
         Point ballPosition = GameModel::getModel()->getBallPoint();

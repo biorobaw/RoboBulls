@@ -1,7 +1,7 @@
 #include "utilities/skillsequence.h"
 
 
-void SkillSequence::addSkill(Skill::Skill& sk, skillUpdateFn updateFn)
+void SkillSequence::addSkill(Skill::Skill* sk, skillUpdateFn updateFn)
 {
 	this->masterQueue.emplace_back(sk, updateFn);
 }
@@ -12,8 +12,8 @@ skillQueue& SkillSequence::getSkillQueue(Robot* robot)
 	int  robID = robot->getID();
 	auto robEntry = robQueueMap.find(robID);
 	
-	if(robEntry == robQueueMap.end()) {
-		robQueueMap[robID] = masterQueue;	//Copy full skill queue
+    if(robEntry == robQueueMap.end()) { //Copy full skill queue
+        robQueueMap[robID] = skillQueue(masterQueue);
 	}
 	
 	return robQueueMap[robID];
@@ -22,19 +22,23 @@ skillQueue& SkillSequence::getSkillQueue(Robot* robot)
 
 bool SkillSequence::executeSkills(skillQueue& queue, Robot* robot)
 {
-	int isFinished = false;
-	Skill::Skill& sk = queue.front().skill;
+    int isFinished = -1;    //Default to let skill decide
+    bool skillReportedFinished = false;
+
+    Skill::Skill* sk = queue.front().skill.get();
 	skillUpdateFn updateFn = queue.front().updateFn;
 
 	if(updateFn != nullptr)
-	   isFinished = updateFn(sk, robot);
+       isFinished = updateFn(*sk, robot);
 	   
-	bool skillReportedFinished = sk.perform(robot);
+    if(sk != nullptr)
+        skillReportedFinished = sk->perform(robot);
 	
 	if(isFinished < 0)
 	   isFinished = skillReportedFinished;
 	
 	if(isFinished == true) {
+        std::cout << typeid(*sk).name() << "Finished" << std::endl;
 		queue.pop_front();
 
 		if(queue.empty()) 

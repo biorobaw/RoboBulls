@@ -15,7 +15,7 @@ ObstacleAvoidMove::ObstacleAvoidMove(Point target)
 }
 
 
-void ObstacleAvoidMove::perform(Robot* robot)
+bool ObstacleAvoidMove::perform(Robot* robot)
 {
 	if(pathQueue.empty() && hasFoundPath) {
 	#if OBSTACLE_MOVE_DEBUG
@@ -24,7 +24,7 @@ void ObstacleAvoidMove::perform(Robot* robot)
 			std::cout << "End of path reached" << std::endl;
 		}
 	#endif
-		return;
+        return true;
 	}
 
 	Point robotPoint = robot->getRobotPosition();
@@ -62,7 +62,8 @@ void ObstacleAvoidMove::perform(Robot* robot)
 	
     GoToPositionWithOrientation go
         (nextPoint, Measurments::angleBetween(robotPoint, nextPoint));
-		
+
+    go.setVelocityMultiplier(10);
 	go.perform(robot);
 	
 	return false;	//Still beed to follow points
