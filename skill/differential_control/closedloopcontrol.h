@@ -47,8 +47,8 @@ private:
     static const unsigned int sizeRhoQ   = 400;
     static const unsigned int sizeAlphaQ = 300;
     static const unsigned int sizeBetaQ  = 100;
-    static const double wheel_separation = 0.115 * 1000;
-    static const double wheel_radius     = 0.027 * 1000;
+    static constexpr double wheel_separation = 0.115 * 1000;
+    static constexpr double wheel_radius     = 0.027 * 1000;
     double newRho  , krho;
     double newAlpha, kalpha;
     double newBeta , kbeta;

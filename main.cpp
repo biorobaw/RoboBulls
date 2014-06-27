@@ -13,6 +13,7 @@
 #include "include/robocup_ssl_client.h"
 #include "behavior/behavior.h"
 
+using namespace std;
 
 void exitStopRobot(int param)
 {
@@ -40,9 +41,9 @@ int main(int argc, char *argv[])
     VisionComm visionCommunicator(myGameModel);
 
 	
-	std::signal(SIGSEGV, exitStopRobot);
-	std::signal(SIGABRT, exitStopRobot);
-	std::signal(SIGTERM, exitStopRobot);
+    signal(SIGSEGV, exitStopRobot);
+    signal(SIGABRT, exitStopRobot);
+    signal(SIGTERM, exitStopRobot);
 	
 	
     visionCommunicator.start();

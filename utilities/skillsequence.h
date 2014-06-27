@@ -30,7 +30,7 @@ typedef std::deque<skillQueueEntry> skillQueue;
 class SkillSequence
 {
 public:
-	void addSkill(Skill::Skill& sk, skillUpdateFn updateFn = nullptr)
+    void addSkill(Skill::Skill& sk, skillUpdateFn updateFn = nullptr);
 	bool executeOn(Robot* robot);
 	
 private:
