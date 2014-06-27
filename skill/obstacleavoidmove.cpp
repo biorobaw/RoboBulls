@@ -11,10 +11,6 @@ ObstacleAvoidMove::ObstacleAvoidMove(Point target)
 	: hasFoundPath(false)
 	, hasFoundPathEnd(false)
 {
-    //if( !list.paramExists<Point>("targetPoint") ) {
-        //throw std::runtime_error("ObstacleAvoidMove param \"targetPoint\" does not exist");
-    //}
-    //this->targetPoint = list.getParam<Point>("targetPoint");
     this->targetPoint = target;
 }
 
@@ -60,12 +56,16 @@ void ObstacleAvoidMove::perform(Robot* robot)
 		
 		if(!pathQueue.empty())
 			nextPoint = pathQueue.front();
+		else
+			return true;	//All points followed
 	}
 	
     GoToPositionWithOrientation go
         (nextPoint, Measurments::angleBetween(robotPoint, nextPoint));
 		
 	go.perform(robot);
+	
+	return false;	//Still beed to follow points
 }
 
 

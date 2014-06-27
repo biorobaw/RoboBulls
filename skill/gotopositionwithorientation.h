@@ -13,7 +13,7 @@ namespace Skill {
         GoToPositionWithOrientation(Point target, double goalOrientation);
         GoToPositionWithOrientation(float tx, float ty, double goalOrientation);
 
-        void perform(Robot * robot);
+        bool perform(Robot * robot);
     private:
         ClosedLoopControl control;
         Point   targetPosition;

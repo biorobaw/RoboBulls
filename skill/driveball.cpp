@@ -50,12 +50,22 @@ namespace Skill
             break;
         case idiling:
             cout<<"stoping"<<endl;
+//            if(!Measurments::isClose(robot->getRobotPosition(), ballPosition, 110)) {
+//                state = moveTowardBall;
+//            }
+//            break;
+//        }
+
+//        skill->perform(robot);
+
+            stop.perform(robot);
+			return true;
             if(!Measurments::isClose(robot->getRobotPosition(), ballPosition, 110)) {
                 state = moveTowardBall;
             }
             break;
         }
-
-        skill->perform(robot);
+		
+        return false;
     }
 }

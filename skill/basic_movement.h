@@ -10,21 +10,21 @@ namespace Skill
 class GoForward : public Skill
 {
 public:
-	void perform(Robot *robot);
+	bool perform(Robot *robot);
 };
 
 
 class GoBackward : public Skill
 {
 public:
-	void perform(Robot *);
+	bool perform(Robot *);
 };
 
 
 class Stop : public Skill
 {
 public:
-	void perform(Robot *);
+	bool perform(Robot *);
 };
 
 }

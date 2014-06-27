@@ -11,7 +11,7 @@ namespace Skill{
     {
     public:
         DriveBall(Point, double);
-        void perform(Robot*);
+        bool perform(Robot*);
     private:
         Point targetPosition;
         double direction;

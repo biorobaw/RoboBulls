@@ -15,7 +15,7 @@ class ObstacleAvoidMove : public Skill
 {
 public:
     ObstacleAvoidMove(Point target);
-	void perform(Robot* robot);
+	bool perform(Robot* robot);
 	
 private:
 	bool hasFoundPath;

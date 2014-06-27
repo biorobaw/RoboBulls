@@ -13,7 +13,7 @@ class Kick: public Skill
 {
 public:
     //void kickTheBall();
-    void perform(Robot *);
+    bool perform(Robot *);
 
 private:
     bool roboKick;
