@@ -15,6 +15,7 @@ namespace ClosedLoopConstants
 {
     const double defaultConstants[3] = {3, 8, -1.5};
     const double noSlowdownConstants[3] = {0, 8, -1.5};
+    const double sharpTurnConstants[3] = {3, 16, 0};
 }
 
 //results container
@@ -79,6 +80,11 @@ public:
     : ClosedLoopBase(ClosedLoopConstants::noSlowdownConstants){}
 };
 
+class CloseLoopSharpTurns : public ClosedLoopBase {
+public:
+    CloseLoopSharpTurns()
+    : ClosedLoopBase(ClosedLoopConstants::sharpTurnConstants){}
+};
 
 /*************************************************************/
 
