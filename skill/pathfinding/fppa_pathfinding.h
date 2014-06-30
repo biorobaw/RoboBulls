@@ -25,7 +25,7 @@ namespace FPPA
     /* Check if there is an obstacle (robot or ball) in the
      * line defined from start to end
      */
-    bool isObstacleInLine(Point start, Point end);
+    bool isObstacleInLine(Point start, Point end, Point *obsPosOut = nullptr);
 }
 
 #endif // FPPA_PATHFINDING_H
