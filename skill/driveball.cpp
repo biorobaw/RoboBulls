@@ -6,6 +6,7 @@
 #include "include/globals.h"
 #include "skill/skill.h"
 #include "utilities/skillsequence.h"
+#include "skill/differential_control/closedloopcontrol.h"
 
 namespace Skill
 {
@@ -40,20 +41,27 @@ namespace Skill
 
     bool DriveBall::perform(Robot* robot)
     {
-        cout<< "driving ball"<<endl;
-        Point ballPosition = GameModel::getModel()->getBallPoint();
+//        cout<< "driving ball"<<endl;
+//        Point ballPosition = GameModel::getModel()->getBallPoint();
 
         switch(state)
         {
         case initial:
+            cout<<"Drive ball initial state"<<endl;
             state = moveTowardBall;
-            skill = new GoToPositionWithOrientation (ballPosition, direction);
+            skill = new GoToPositionWithOrientation (GameModel::getModel()->getBallPoint(), direction);
             break;
         case moveTowardBall:
             cout <<"Move toward the ball"<<endl;
-            if(Measurments::isClose(robot->getRobotPosition(), ballPosition, 110)) {
+            if(Measurments::isClose(robot->getRobotPosition(), GameModel::getModel()->getBallPoint(), 110)) {
                 state = driveBall;
                 skill = new GoToPositionWithOrientation (targetPosition, direction);
+            }
+            else if(!Measurments::isClose(robot->getRobotPosition(), GameModel::getModel()->getBallPoint(), 110)) {
+                state = moveTowardBall;
+                skill = new GoToPositionWithOrientation (GameModel::getModel()->getBallPoint(), direction);
+//                ClosedLoopControl clb;
+//                clb.setVelMultiplier(0.5);
             }
             break;
         case driveBall:
@@ -66,18 +74,19 @@ namespace Skill
                 state = driveBall;
                 skill = new GoToPositionWithOrientation (targetPosition, direction);
             }
-            else if(!Measurments::isClose(robot->getRobotPosition(), ballPosition, 110)) {
+            else if(!Measurments::isClose(robot->getRobotPosition(), GameModel::getModel()->getBallPoint(), 110)) {
                 state = moveTowardBall;
-                skill = new GoToPositionWithOrientation (ballPosition, direction);
+                skill = new GoToPositionWithOrientation (GameModel::getModel()->getBallPoint(), direction);
             }
             break;
         case idiling:
             cout<<"stoping"<<endl;
-            if(!Measurments::isClose(robot->getRobotPosition(), ballPosition, 110)) {
+            if(!Measurments::isClose(robot->getRobotPosition(), GameModel::getModel()->getBallPoint(), 110)) {
                 state = moveTowardBall;
+                skill = new GoToPositionWithOrientation (GameModel::getModel()->getBallPoint(), direction);
             }
             break;
-//        }
+        }
 
         skill->perform(robot);
 
@@ -87,7 +96,7 @@ namespace Skill
 //                state = moveTowardBall;
 //            }
 //            break;
-        }
+//        }
 		
         return false;
     }

@@ -21,6 +21,11 @@ namespace Skill {
         this->goalOrientation = goalOrientation;
     }
 
+    void GoToPositionWithOrientation::setVelocityMultiplier(double multipier)
+    {
+        this->control.setVelMultiplier(multipier);
+    }
+
     bool GoToPositionWithOrientation::perform(Robot* robot)
     {
         RobComm *nxtbee = RobComm::getRobComm();
@@ -34,7 +39,8 @@ namespace Skill {
         nxtbee->sendVels(left_wheel_velocity, right_wheel_velocity, robot->getID());
 		
 		
-		if(Measurements::isClose(targetPosition, robot->getRobotPosition(), 100)) {
+        if(Measurments::isClose(targetPosition, robot->getRobotPosition())) {
+            std::cout << "GOTOWO finished" << std::endl;
 			return true;
 		} else {
 			return false;

@@ -23,8 +23,8 @@ void DriveBallAndKick::perform(Robot* robot)
     Point goal(-3000, 0);
     double direction = Measurments::angleBetween(robot->getRobotPosition(), goal);
 
-    Point rp = robot->getRobotPosition();
-    Point bp = gm->getBallPoint();
+//    Point rp = robot->getRobotPosition();
+//    Point bp = gm->getBallPoint();
 
     Point kickPoint(-1500,0);
 
@@ -33,12 +33,13 @@ void DriveBallAndKick::perform(Robot* robot)
     switch (state)
     {
     case initial:
+        cout<<"drive ball and kick initial state"<<endl;
         state = driving;
         skill = new Skill::DriveBall(kickPoint, direction);
         break;
     case driving:
         cout << "in switch driving!"<<endl;
-        if (abs(rp.x - kickPoint.x) < 110 && Measurments::isClose(rp,bp,110)){
+        if (abs(robot->getRobotPosition().x - kickPoint.x) < 110 && Measurments::isClose(robot->getRobotPosition(),gm->getBallPoint(),110)){
             state = kicking;
             skill = new Skill::Kick();
         }
@@ -50,7 +51,7 @@ void DriveBallAndKick::perform(Robot* robot)
         break;
     case idling:
         cout << "in switch idling!"<<endl;
-        if (!Measurments::isClose(rp, bp, 110)){
+        if (!Measurments::isClose(robot->getRobotPosition(), gm->getBallPoint(), 110)){
             state = driving;
             skill = new Skill::DriveBall(kickPoint, direction);
         }

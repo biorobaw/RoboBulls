@@ -3,6 +3,7 @@
 Robot::Robot()
 {
     hasBeh = false;
+    currentBehavior = nullptr;
 }
 
 void Robot::setRobotPosition(Point rbtPoint)

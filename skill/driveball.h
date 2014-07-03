@@ -13,9 +13,11 @@ namespace Skill{
         DriveBall(Point, double);
         bool perform(Robot*);
     private:
+        Point targetPosition;
         double direction;
         enum states {initial, moveTowardBall, driveBall, idiling} state;
         Skill * skill;
+//        Point ballPosition;
 
     };
 }

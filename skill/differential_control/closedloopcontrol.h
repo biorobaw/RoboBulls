@@ -9,7 +9,7 @@
 #include <deque>
 #include "model/robot.h"
 
-#define CLOOP_CONTROL_DEBUG 1
+#define CLOOP_CONTROL_DEBUG 0
 
 namespace ClosedLoopConstants
 {

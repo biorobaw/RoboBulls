@@ -3,6 +3,7 @@
 
 #include <deque>
 #include <unordered_map>
+#include <memory>
 #include <functional>
 #include "skill/skill.h"
 #include "model/robot.h"
@@ -11,10 +12,14 @@ typedef std::function<int(Skill::Skill&, Robot*)> skillUpdateFn;
 
 struct skillQueueEntry
 {
-	skillQueueEntry(Skill::Skill& s, skillUpdateFn up_fn)
-		: skill(s), updateFn(up_fn) {}
+    skillQueueEntry(Skill::Skill* s, skillUpdateFn up_fn)
+        : skill(s), updateFn(up_fn) {}
 
-	Skill::Skill skill;			//Skill to perform
+    skillQueueEntry(const skillQueueEntry& rhs)
+        : skill(rhs.skill.get())
+        , updateFn(rhs.updateFn) {}
+
+    std::unique_ptr<Skill::Skill> skill; //Skill to perform
 	skillUpdateFn updateFn;		//Option function to update skill and determine if finished 
 };
 
@@ -30,7 +35,8 @@ typedef std::deque<skillQueueEntry> skillQueue;
 class SkillSequence
 {
 public:
-    void addSkill(Skill::Skill& sk, skillUpdateFn updateFn = nullptr);
+
+    void addSkill(Skill::Skill* sk, skillUpdateFn updateFn = nullptr);
 	bool executeOn(Robot* robot);
 	
 private:

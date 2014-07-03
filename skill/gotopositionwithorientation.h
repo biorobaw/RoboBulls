@@ -13,6 +13,7 @@ namespace Skill {
         GoToPositionWithOrientation(Point target, double goalOrientation);
         GoToPositionWithOrientation(float tx, float ty, double goalOrientation);
 
+        void setVelocityMultiplier(double multipier);
         bool perform(Robot * robot);
     private:
         ClosedLoopControl control;

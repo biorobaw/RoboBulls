@@ -1,6 +1,6 @@
 #include <QCoreApplication>
 #include <stdio.h>
-#include <signal.h>
+#include <csignal>
 #include "communication/refcomm.h"
 #include "communication/visioncomm.h"
 #include "communication/robcomm.h"
@@ -40,10 +40,11 @@ int main(int argc, char *argv[])
     RefComm refCommunicator(myGameModel);
     VisionComm visionCommunicator(myGameModel);
 
-	
-    signal(SIGSEGV, exitStopRobot);
-    signal(SIGABRT, exitStopRobot);
-    signal(SIGTERM, exitStopRobot);
+
+	std::signal(SIGSEGV, exitStopRobot);
+	std::signal(SIGABRT, exitStopRobot);
+	std::signal(SIGTERM, exitStopRobot);
+    std::signal(SIGHUP, exitStopRobot);
 	
 	
     visionCommunicator.start();

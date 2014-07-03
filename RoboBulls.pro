@@ -46,7 +46,7 @@ SOURCES += main.cpp \
 	skill/driveball.cpp \
 	skill/gotopositionwithorientation.cpp \
 	skill/kick.cpp \
-        skill/obstacleavoidmove.cpp\
+        skill/obstacleavoidmove.cpp \
 	skill/pathfinding/fppa_pathfinding.cpp \
 	skill/waitforball.cpp \
 	strategy/penaltystrategy.cpp \
@@ -57,7 +57,7 @@ SOURCES += main.cpp \
 	utilities/measurments.cpp \
 	utilities/paramlist.cpp \
 	utilities/point.cpp \
-    utilities/skillsequence.cpp
+    utilities/skillsequence.cpp\
 
 HEADERS += \
 	behavior/behavior.h \
@@ -95,7 +95,8 @@ HEADERS += \
 	skill/driveball.h \
 	skill/gotopositionwithorientation.h \
 	skill/kick.h \
-        skill/obstacleavoidmove.h\
+	skill/obstacleavoidmove.h \
+        utilities/skillsequence.h \
 	skill/pathfinding/fppa_pathfinding.h \
 	skill/skill.h \
 	skill/waitforball.h \
@@ -107,7 +108,7 @@ HEADERS += \
 	utilities/measurments.h \
 	utilities/paramlist.h \
 	utilities/point.h \
-    utilities/skillsequence.h
+    utilities/skillsequence.h\
 
 QMAKE_CXXFLAGS += -std=c++0x
 
