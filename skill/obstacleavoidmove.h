@@ -9,7 +9,7 @@ namespace Skill {
  *
  * This skill should not be remade each iteration.
  */
-#define OBSTACLE_MOVE_DEBUG 0
+#define OBSTACLE_MOVE_DEBUG 1
  
 class ObstacleAvoidMove : public Skill
 {
@@ -20,6 +20,8 @@ public:
 private:
 	bool hasFoundPath;
 	bool hasFoundPathEnd;
+    bool isUpdatingPath;
+    bool obsInLine;
 	Point targetPoint;
     std::deque<Point> pathQueue;
 };

@@ -80,6 +80,15 @@ public:
     void assignBeh(std::initializer_list<Robot*> robotList) const;
 
 
+    /* assignBeh(robotIDList)
+     * This version is similar to the above assignBeh, except
+     * that this version takes a brace-enclosed list of IDs,
+     * then the GameModel is utilized to find those robots and
+     * if found, assigns the behhavior
+     */
+    void assignBeh(std::initializer_list<int> robotIDList) const;
+
+
     /* setSingleAssignment(bool)
      * Set this true if you want the robot to retain its behavior each
      * iteration. For example, PenaltyBehavior uses this to retain its
@@ -181,6 +190,20 @@ void BehaviorAssignment<BehaviorType>::assignBeh(std::initializer_list<Robot*> r
 {
     for(Robot* rob : robotList)
         this->assignBeh(rob);
+}
+
+
+template<typename BehaviorType>
+void BehaviorAssignment<BehaviorType>::assignBeh(std::initializer_list<int> robotIDList) const
+{
+    GameModel* gm = GameModel::getModel();
+
+    for(int robID : robotIDList) {
+        Robot* rob = gm->find(robID, gm->getMyTeam());
+
+        if(rob != NULL)
+            this->assignBeh(rob);
+    }
 }
 
 

@@ -1,5 +1,13 @@
 #include "utilities/skillsequence.h"
 
+SkillSequence::~SkillSequence()
+{
+    for(auto& entry : this->masterQueue)
+        delete entry.skill;
+
+    masterQueue.clear();
+}
+
 
 void SkillSequence::addSkill(Skill::Skill* sk, skillUpdateFn updateFn)
 {
@@ -7,12 +15,16 @@ void SkillSequence::addSkill(Skill::Skill* sk, skillUpdateFn updateFn)
 }
 
 
-skillQueue& SkillSequence::getSkillQueue(Robot* robot)
+SkillSequence::skillQueue& SkillSequence::getSkillQueue(Robot* robot)
 {
 	int  robID = robot->getID();
 	auto robEntry = robQueueMap.find(robID);
 	
-    if(robEntry == robQueueMap.end()) { //Copy full skill queue
+    if(robEntry == robQueueMap.end()) //Copy full skill queue
+    {
+    #if SKILL_SEQUENCE_DEBUG
+        std::cout << "Making New for " << robot->getID() << std::endl;
+    #endif
         robQueueMap[robID] = skillQueue(masterQueue);
 	}
 	
@@ -25,7 +37,7 @@ bool SkillSequence::executeSkills(skillQueue& queue, Robot* robot)
     int isFinished = -1;    //Default to let skill decide
     bool skillReportedFinished = false;
 
-    Skill::Skill* sk = queue.front().skill.get();
+    Skill::Skill* sk = queue.front().skill;
 	skillUpdateFn updateFn = queue.front().updateFn;
 
 	if(updateFn != nullptr)
@@ -33,12 +45,19 @@ bool SkillSequence::executeSkills(skillQueue& queue, Robot* robot)
 	   
     if(sk != nullptr)
         skillReportedFinished = sk->perform(robot);
-	
+    #if SKILL_SEQUENCE_DEBUG
+    else
+        std::cout << "Skill was null" << std::endl;
+    #endif
+
 	if(isFinished < 0)
 	   isFinished = skillReportedFinished;
 	
-	if(isFinished == true) {
+    if(isFinished == true)
+    {
+    #if SKILL_SEQUENCE_DEBUG
         std::cout << typeid(*sk).name() << "Finished" << std::endl;
+    #endif
 		queue.pop_front();
 
 		if(queue.empty()) 
@@ -62,6 +81,17 @@ bool SkillSequence::executeOn(Robot* robot)
 	}
 	
 	return true;
+}
+
+
+void SkillSequence::restart(Robot* robot)
+{
+    auto entry = this->robQueueMap.find(robot->getID());
+
+    if(entry != robQueueMap.end())
+        this->robQueueMap.erase(entry);
+
+    //robQueueMap[robot->getID()] = skillQueue(masterQueue);
 }
 
 /**************************************************/

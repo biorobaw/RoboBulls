@@ -36,10 +36,10 @@ namespace impl
 
     bool insideRadiusRectangle(const Point& p0, const Point& p1, const Point& p2)
     {
-        float rectTop = std::min(p1.y, p2.y) - ROBOT_SIZE;
-        float rectBottom = std::max(p1.y, p2.y) + ROBOT_SIZE;
-        float rectLeft = std::min(p1.x, p2.x) - ROBOT_SIZE;
-        float rectRight = std::max(p1.x, p2.x) + ROBOT_SIZE;
+        float rectTop = std::min(p1.y, p2.y) - ROBOT_RADIUS;
+        float rectBottom = std::max(p1.y, p2.y) + ROBOT_RADIUS;
+        float rectLeft = std::min(p1.x, p2.x) - ROBOT_RADIUS;
+        float rectRight = std::max(p1.x, p2.x) + ROBOT_RADIUS;
 
         return (p0.x > rectLeft && p0.x < rectRight) && (p0.y > rectTop && p0.y < rectBottom);
     }
@@ -89,12 +89,12 @@ namespace impl
     {
         float theta = Measurments::angleBetween(initialPos, endPos);
 
-        /* Reducing the search size by a fisPointInsideFieldactor can help eliminate
+        /* Reducing the search size by a factor can help eliminate
          * the jagged edges in the path, but risks cutting corners
          * too close around obstacles.
          */
-        float dx = ROBOT_SIZE * cos(theta + M_PI_2);
-        float dy = ROBOT_SIZE * sin(theta + M_PI_2);
+        float dx = 1.5*ROBOT_RADIUS * cos(theta + M_PI_2);
+        float dy = 1.5*ROBOT_RADIUS * sin(theta + M_PI_2);
 
         return Point(sign * dx, sign * dy);
     }
@@ -113,12 +113,12 @@ namespace impl
         {
             Point deltaPoint = findSearchDirection(beginPos, endPos, sign);
             Point subGoal;
-            int i = 1;
+            float i = 1;
 
             while(obstacle_info.first && (i < 10)) {
                 subGoal = obstacle_info.second + Point(i * deltaPoint.x,  i * deltaPoint.y);
                 obstacle_info.first = isObstacleAtPoint(obstacles, subGoal);
-                i += 1;
+                i += 0.5;
             }
 
             /* Find the ending point and insert the new point before it
@@ -147,12 +147,17 @@ namespace impl
 
         obstacles->reserve(mod->getMyTeam().size() + mod->getOponentTeam().size() + 1);
 
-        obstacles->push_back(mod->getBallPoint());
+
 
         for(Robot* rob : mod->getMyTeam())
             obstacles->push_back(rob->getRobotPosition());
         for(Robot* rob : mod->getOponentTeam())
             obstacles->push_back(rob->getRobotPosition());
+
+       // Point dp = Point(ROBOT_RADIUS, ROBOT_RADIUS);
+        //for(Point& p : *obstacles) p = p + dp; //Robot pos reported from center, not edge
+
+        obstacles->push_back(mod->getBallPoint());
 
         /* Remove obstacles that are close to the start and the end.
          * This eliminates the algorithm not being able to reach the target
@@ -249,14 +254,19 @@ namespace impl
         }
     }
 
-    bool isObstacleInLine(Point start, Point end)
+    bool isObstacleInLine(Point start, Point end, Point* obsPosOut)
     {
         std::vector<Point> obstacles;
         impl::buildObstacleCollection(&obstacles, start, end);
 
         auto obstacle_info = impl::isObstacleinLine(&obstacles, start, end);
 
-        return obstacle_info.first;
+        if(obstacle_info.first) {
+            if(obsPosOut != nullptr) *obsPosOut = obstacle_info.second;
+            return Measurments::isClose(start, obstacle_info.second, 1450);
+        } else {
+            return false;
+        }
     }
 
 } //namespace FPPA

@@ -39,7 +39,7 @@ namespace Skill {
         nxtbee->sendVels(left_wheel_velocity, right_wheel_velocity, robot->getID());
 		
 		
-        if(Measurments::isClose(targetPosition, robot->getRobotPosition())) {
+        if(Measurments::isClose(targetPosition, robot->getRobotPosition(), 250)) {
             std::cout << "GOTOWO finished" << std::endl;
 			return true;
 		} else {

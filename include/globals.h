@@ -22,8 +22,11 @@
 
 
 /* The robot's radius in program points */
-#define ROBOT_RADIUS 200
-
+#if SIMULATED
+ #define ROBOT_RADIUS 100
+#else
+ #define ROBOT_RADIUS 200
+#endif
 
 /*
  * DIST_TOLERANCE: How close the robot needs to be to the target
