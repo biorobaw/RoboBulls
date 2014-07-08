@@ -57,7 +57,8 @@ SOURCES += main.cpp \
 	utilities/measurments.cpp \
 	utilities/paramlist.cpp \
 	utilities/point.cpp \
-    utilities/skillsequence.cpp\
+    utilities/skillsequence.cpp \
+    behavior/mytestbehavior.cpp
 
 HEADERS += \
 	behavior/behavior.h \
@@ -108,7 +109,8 @@ HEADERS += \
 	utilities/measurments.h \
 	utilities/paramlist.h \
 	utilities/point.h \
-    utilities/skillsequence.h\
+    utilities/skillsequence.h \
+    behavior/mytestbehavior.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 

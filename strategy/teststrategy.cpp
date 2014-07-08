@@ -9,6 +9,8 @@
 #include "skill/basic_movement.h"
 #include "utilities/skillsequence.h"
 #include "communication/robcomm.h"
+#include "behavior/mytestbehavior.h"
+
 
 class TestBehavior : public Behavior
 {
@@ -98,6 +100,12 @@ void TestStrategy::assignBeh()
     BehaviorAssignment<DriveBallAndKick> assignment;
     assignment.setSingleAssignment(true);
     assignment.assignBeh();
+
+//    //testing close loop
+//        BehaviorAssignment<myTestBehavior> assignment;
+//        assignment.setSingleAssignment(true);
+//        assignment.assignBeh();
+
 
 
     //James code
