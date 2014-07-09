@@ -14,7 +14,7 @@ public:
     void perform(Robot *);
 
 private:
-    enum states {initial, driving, kicking, idling} state;
+    enum states {initial, driving, kicking, idling, finalOrientationFixing} state;
     Skill::Skill * skill;
 };
 

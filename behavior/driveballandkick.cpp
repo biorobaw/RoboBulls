@@ -24,7 +24,7 @@ void DriveBallAndKick::perform(Robot* robot)
     Point goal = gm->getMyGoal();
     Point kickPoint(-1500,0);
 
-    double direction = Measurments::angleBetween(kickPoint, goal);
+    double direction = Measurments::angleBetween(goal, kickPoint);
 
 
     // Create a different skill depending on the state
@@ -38,9 +38,18 @@ void DriveBallAndKick::perform(Robot* robot)
         break;
     case driving:
         cout << "in switch driving!"<<endl;
-        if (Measurments::isClose(kickPoint, robot->getRobotPosition(), 110) && Measurments::isClose(robot->getRobotPosition(), gm->getBallPoint(), 110)){
-            state = kicking;
-            skill = new Skill::Kick();
+        if (Measurments::isClose(kickPoint, robot->getRobotPosition(), 110) && Measurments::isClose(robot->getRobotPosition(), gm->getBallPoint(), 110))
+        {
+            if (abs(Measurments::angleDiff(robot->getOrientation(), direction)) < 10 * M_PI/180)
+            {
+                state = kicking;
+                skill = new Skill::Kick();
+            }
+            else
+            {
+                state = finalOrientationFixing;
+                skill = new Skill::GoToPositionWithOrientation(kickPoint, direction);
+            }
         }
         break;
     case kicking:
@@ -50,11 +59,21 @@ void DriveBallAndKick::perform(Robot* robot)
         break;
     case idling:
         cout << "in switch idling!"<<endl;
-        if (kickPoint.x < gm->getBallPoint().x && abs(robot->getRobotPosition().x - gm->getBallPoint().x) > 110 ){
+        if (kickPoint.x < gm->getBallPoint().x && abs(robot->getRobotPosition().x - gm->getBallPoint().x) > 110 )
+        {
             state = driving;
             skill = new Skill::DriveBall(kickPoint, direction);
         }
-        if (Measurments::isClose(robot->getRobotPosition(), gm->getBallPoint(), 110)){
+        if (Measurments::isClose(robot->getRobotPosition(), gm->getBallPoint(), 110))
+        {
+            state = kicking;
+            skill = new Skill::Kick();
+        }
+        break;
+    case finalOrientationFixing:
+        cout<<"Fixing orientation before kicking!"<<endl;
+        if (abs(Measurments::angleDiff(robot->getOrientation(), direction)) < 10 * M_PI/180)
+        {
             state = kicking;
             skill = new Skill::Kick();
         }
