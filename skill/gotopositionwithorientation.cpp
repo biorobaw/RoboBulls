@@ -40,7 +40,7 @@ namespace Skill {
 		
 		
         if(Measurments::isClose(targetPosition, robot->getRobotPosition(), 250)) {
-            std::cout << "GOTOWO finished" << std::endl;
+            //std::cout << "GOTOWO finished" << std::endl;
 			return true;
 		} else {
 			return false;
