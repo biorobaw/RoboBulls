@@ -70,7 +70,8 @@ namespace Skill
         }
 
         skill->perform(robot);
-
+        delete skill;
+        delete behindBall;
 		
         return false;
     }
