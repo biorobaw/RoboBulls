@@ -60,7 +60,8 @@ namespace Skill
                 behindBall = new Point(50*cos(Measurments::angleBetween(targetPosition,gm->getBallPoint()))+gm->getBallPoint().x, 50*sin(Measurments::angleBetween(targetPosition,gm->getBallPoint()))+gm->getBallPoint().y);
                 skill = new GoToPositionWithOrientation (*behindBall, Measurments::angleBetween(gm->getBallPoint(), targetPosition));
             }
-            else if(Measurments::isClose(robot->getRobotPosition(), gm->getBallPoint(), 110) && !Measurments::isClose(robot->getRobotPosition(), targetPosition, 110))
+            else if(Measurments::isClose(robot->getRobotPosition(), gm->getBallPoint(), 110)
+                    && !Measurments::isClose(robot->getRobotPosition(), targetPosition, 110))
             {
                 state = driveBall;
                 skill = new GoToPositionWithOrientation (targetPosition, direction);
