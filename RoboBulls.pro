@@ -12,23 +12,23 @@ TARGET = RoboBulls
 CONFIG   += console
 CONFIG   -= app_bundle
 
-DESTDIR = ../../bin
-UI_DIR = .
+#DESTDIR = ../../bin
+#UI_DIR = .
 
-CONFIG(debug, debug|release) {
-        TARGET = myappd
-        OBJECTS_DIR = ../../Documents/RoboBulls-build-desktop-Qt_4_8_3_in_PATH__System__Debug
-        MOC_DIR = ../../Documents/RoboBulls-build-desktop-Qt_4_8_3_in_PATH__System__Debug
-}
+#CONFIG(debug, debug|release) {
+#        TARGET = myappd
+#        OBJECTS_DIR = ../../Documents/RoboBulls-build-desktop-Qt_4_8_3_in_PATH__System__Debug
+#        MOC_DIR = ../../Documents/RoboBulls-build-desktop-Qt_4_8_3_in_PATH__System__Debug
+#}
 
-CONFIG(release, debug|release) {
-        TARGET = myapp
-        OBJECTS_DIR = ../../Documents/RoboBulls-build-desktop-Qt_4_8_3_in_PATH__System__Release
-        MOC_DIR = ../../Documents/RoboBulls-build-desktop-Qt_4_8_3_in_PATH__System__Release
-}
+#CONFIG(release, debug|release) {
+#        TARGET = myapp
+#        OBJECTS_DIR = ../../Documents/RoboBulls-build-desktop-Qt_4_8_3_in_PATH__System__Release
+#        MOC_DIR = ../../Documents/RoboBulls-build-desktop-Qt_4_8_3_in_PATH__System__Release
+#}
 
 TEMPLATE = app
-#QMAKE_CXX = g++-4.8
+QMAKE_CXX = g++-4.8
 
 SOURCES += main.cpp \
 	behavior/behavior.cpp \
