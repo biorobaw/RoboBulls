@@ -1,4 +1,4 @@
-#include "defendclosetoball.h"
+#include "defendfarfromball.h"
 #include "model/gamemodel.h"
 #include "utilities/point.h"
 #include "math.h"
@@ -6,30 +6,29 @@
 #include "skill/differential_control/closedloopcontrol.h"
 #include "communication/robcomm.h"
 
-DefendCloseToBall::DefendCloseToBall(const ParameterList& list)
+//The distance from the goal where the defend robot stays
+#define DISTANCE 700
+
+DefendFarFromBall::DefendFarFromBall(const ParameterList& list)
 {
 }
 
-void DefendCloseToBall::perform(Robot *robot)
+void DefendFarFromBall::perform(Robot *robot)
 {
     GameModel *gm = GameModel::getModel();
-
     Point ballPoint = gm->getBallPoint();
     Point myGoal = gm->getMyGoal();
 
-    double angle = Measurments::angleBetween(ballPoint, myGoal);
-
-    Point frontOfBall(200*cos(angle) + ballPoint.x, 200*sin(angle) + ballPoint.y);
-    CloseLoopSharpTurns clc;
-//    ClosedLoopControl clc;
+    ClosedLoopControl clc;
     clc.setVelMultiplier(10);
 
     double direction = Measurments::angleBetween(myGoal, ballPoint);
 
-    wheelvelocities wheelVel = clc.closed_loop_control(robot, frontOfBall.x, frontOfBall.y, direction);
+    Point defensiveWall(cos(direction)*DISTANCE + myGoal.x, sin(direction)*DISTANCE + myGoal.y);
+
+    wheelvelocities wheelVel = clc.closed_loop_control(robot, defensiveWall.x, defensiveWall.y, direction);
 
     RobComm* rc = RobComm::getRobComm();
 
     rc->sendVels(wheelVel.left, wheelVel.right, robot->getID());
-
 }

@@ -13,8 +13,9 @@ class myTestBehavior: public Behavior
 public:
     myTestBehavior(const ParameterList &list);
     void perform(Robot *);
-//private:
+private:
 //    Point TargetPoint;
+    Skill::Skill *mySkill;
 };
 
 #endif // MYTESTBEHAVIOR_H

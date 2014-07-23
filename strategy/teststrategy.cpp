@@ -11,6 +11,7 @@
 #include "communication/robcomm.h"
 #include "behavior/mytestbehavior.h"
 #include "behavior/defendclosetoball.h"
+#include "behavior/defendfarfromball.h"
 
 
 class TestBehavior : public Behavior
@@ -107,7 +108,12 @@ void TestStrategy::assignBeh()
     assignment.setSingleAssignment(true);
     assignment.assignBeh();
 
-//    //testing close loop
+//    //Narges code testing defendfarfromball
+//    BehaviorAssignment<DefendFarFromBall> assignment;
+//    assignment.setSingleAssignment(true);
+//    assignment.assignBeh();
+
+//    //testing test behavior
 //        BehaviorAssignment<myTestBehavior> assignment;
 //        assignment.setSingleAssignment(true);
 //        assignment.assignBeh();

@@ -62,7 +62,7 @@ void SimRobComm::sendPacket(int id, int leftVel, int rightVel, bool kick, bool d
     // No chipper
     command->set_kickspeedz(0);
     if (drible)
-        command->set_spinner(8);
+        command->set_spinner(20);
     else
         command->set_spinner(0);
 

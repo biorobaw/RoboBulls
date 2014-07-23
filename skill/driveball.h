@@ -5,7 +5,7 @@
 #include "utilities/point.h"
 #include "model/robot.h"
 
-namespace Skill{
+namespace Skill {
 
     class DriveBall:public Skill
     {
@@ -17,6 +17,7 @@ namespace Skill{
         double direction;
         enum states {initial, moveTowardBall, driveBall, idiling} state;
         Skill * skill;
+        Point *behindBall;
 //        Point ballPosition;
 
     };
