@@ -93,8 +93,8 @@ namespace impl
          * the jagged edges in the path, but risks cutting corners
          * too close around obstacles.
          */
-        float dx = 1.5*ROBOT_RADIUS * cos(theta + M_PI_2);
-        float dy = 1.5*ROBOT_RADIUS * sin(theta + M_PI_2);
+        float dx = 1.75 * ROBOT_RADIUS * cos(theta + M_PI_2);
+        float dy = 1.75 * ROBOT_RADIUS * sin(theta + M_PI_2);
 
         return Point(sign * dx, sign * dy);
     }
@@ -147,8 +147,6 @@ namespace impl
 
         obstacles->reserve(mod->getMyTeam().size() + mod->getOponentTeam().size() + 1);
 
-
-
         for(Robot* rob : mod->getMyTeam())
             obstacles->push_back(rob->getRobotPosition());
         for(Robot* rob : mod->getOponentTeam())
@@ -186,6 +184,7 @@ namespace impl
     #endif
     }
 
+	/*********************************************************/
 
     std::pair<Path, Path> findBothPaths(Point& start, Point& end)
     {
@@ -210,7 +209,7 @@ namespace impl
     bool isValidPath(const Path& p)
     {
         /* Bound function to determine if a point is inside the field or not */
-        static auto isPointInsideField =
+        auto isPointInsideField =
             std::bind(insideRadiusRectangle, _1, fieldBotRight, fieldTopLeft);
 
         return std::all_of(p.begin(), p.end(), isPointInsideField);
@@ -220,12 +219,12 @@ namespace impl
 } //namespace impl
 
 
-    Path findShortestPath(Point start, Point end)
+    PathInfo findShortestPath(Point start, Point end, PathDirection pathHint)
     {
-        float totalDistTop = 0, totalDistBottom = 0;
-
         std::pair<Path, Path> foundPaths = impl::findBothPaths(start, end);
 
+        PathInfo topPath = std::make_pair(foundPaths.first, PathDirection::Top);
+        PathInfo botPath = std::make_pair(foundPaths.second, PathDirection::Bottom);
 
         /* If one of the paths is invalid (contains points outside the field),
          * return the other path. Otherside determine shortest. If both paths
@@ -233,24 +232,36 @@ namespace impl
          * but I am certain this never happens.
          */
         if(!impl::isValidPath(foundPaths.first)) {
-            return foundPaths.second;
+            return botPath;
         } else if(!impl::isValidPath(foundPaths.second)) {
-            return foundPaths.first;
+            return topPath;
         }
 
-        /* Add up all the distances from each path and determine which path is shorter.
-         * This shorter path is deemed the "better" path
-         */
-        for(auto it = foundPaths.first.begin(); it != foundPaths.first.end()-1; ++it)
-            totalDistTop += Measurments::distance(*it, *(it+1));
+        if(pathHint != PathDirection::None) {
+            /* The user has requested a certain direction of path
+             * be chosen.
+             */
+            if(pathHint == PathDirection::Top)
+               return topPath;
+            else
+               return botPath;
+         } else {
+            /* Add up all the distances from each path and determine which path is shorter.
+             * This shorter path is deemed the "better" path.
+             */
+            float totalDistTop = 0, totalDistBottom = 0;
 
-        for(auto it = foundPaths.second.begin(); it != foundPaths.second.end()-1; ++it)
-            totalDistBottom += Measurments::distance(*it, *(it+1));
+            for(auto it = foundPaths.first.begin(); it != foundPaths.first.end()-1; ++it)
+                totalDistTop += Measurments::distance(*it, *(it+1));
 
-        if(totalDistTop <= totalDistBottom) {
-            return foundPaths.first;
-        } else {
-            return foundPaths.second;
+            for(auto it = foundPaths.second.begin(); it != foundPaths.second.end()-1; ++it)
+                totalDistBottom += Measurments::distance(*it, *(it+1));
+
+            if(totalDistTop <= totalDistBottom) {
+                return botPath;
+            } else {
+                return topPath;
+            }
         }
     }
 
@@ -263,10 +274,24 @@ namespace impl
 
         if(obstacle_info.first) {
             if(obsPosOut != nullptr) *obsPosOut = obstacle_info.second;
-            return Measurments::isClose(start, obstacle_info.second, 1450);
+            return Measurments::isClose(start, obstacle_info.second, 2500);
         } else {
             return false;
         }
     }
+
+
+	bool isPointInLine(Point start, Point end, Point question)
+	{
+		std::vector<Point> singleObs;
+		singleObs.push_back(question);
+        return impl::isObstacleinLine(&singleObs, start, end).first;
+	}
+
+
+	void getCurrentObstacles(std::vector<Point>* points, Point start, Point end)
+	{
+		impl::buildObstacleCollection(points, start, end);
+	}
 
 } //namespace FPPA
