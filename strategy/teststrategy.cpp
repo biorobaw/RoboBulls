@@ -103,17 +103,17 @@ void TestStrategy::assignBeh()
 //    assignment.setSingleAssignment(true);
 //    assignment.assignBeh();
 
-//    //Narges code testing defendCloseToBall
-//    BehaviorAssignment<DefendCloseToBall> assignment;
-//    assignment.setSingleAssignment(true);
-//    assignment.assignBeh();
-
-    //Narges code testing defendfarfromball
-    BehaviorAssignment<DefendFarFromBall> assignment;
+    //Narges code testing defendCloseToBall
+    BehaviorAssignment<DefendCloseToBall> assignment;
     assignment.setSingleAssignment(true);
     assignment.assignBeh();
 
-//    //testing close loop
+//    //Narges code testing defendfarfromball
+//    BehaviorAssignment<DefendFarFromBall> assignment;
+//    assignment.setSingleAssignment(true);
+//    assignment.assignBeh();
+
+//    //testing test behavior
 //        BehaviorAssignment<myTestBehavior> assignment;
 //        assignment.setSingleAssignment(true);
 //        assignment.assignBeh();

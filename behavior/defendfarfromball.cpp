@@ -6,6 +6,7 @@
 #include "skill/differential_control/closedloopcontrol.h"
 #include "communication/robcomm.h"
 
+//The distance from the goal where the defend robot stays
 #define DISTANCE 700
 
 DefendFarFromBall::DefendFarFromBall(const ParameterList& list)
