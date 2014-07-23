@@ -80,7 +80,7 @@ void VisionComm::updateInfo(SSL_DetectionRobot robot, string color)
     gamemodel->setMyTeam(myTeam);
     gamemodel->setOponentTeam(opTeam);
 
-    cout<<"Ball Position:\t"<<gamemodel->getBallPoint().x << " , " << gamemodel->getBallPoint().y<<endl;
+    //cout<<"Ball Position:\t"<<gamemodel->getBallPoint().x << " , " << gamemodel->getBallPoint().y<<endl;
 
 //    cout << gamemodel->toString() << endl;
 }
