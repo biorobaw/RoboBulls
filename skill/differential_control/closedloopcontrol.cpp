@@ -9,9 +9,10 @@
 #include "utilities/measurments.h"
 #include "include/globals.h"
 
-void ClosedLoopBase::setVelMultiplier(double newMultiplier)
+ClosedLoopBase& ClosedLoopBase::setVelMultiplier(double newMultiplier)
 {
 	this->velMultiplier = newMultiplier;
+	return *this;
 }
 
 void ClosedLoopBase::handleError(double x_goal, double y_goal)
@@ -26,19 +27,20 @@ void ClosedLoopBase::handleError(double x_goal, double y_goal)
     double newValues[3]
         = {newRho, newAlpha, newBeta};
 
-//    Point newTarget = Point(x_goal, y_goal);
-
+#if 0
     /* We need to reset the error containers on movement to a different point,
      * because the accumulated error is no longer valid. Then update the last point
      */
-//    if( !Measurments::isClose(lastTargetPoint, newTarget, 25) )
-//    {
-//        for(auto& pair : this->errorContainers) {
-//            pair.first.clear();
-//            pair.second = 0;
-//        }
-//        lastTargetPoint = newTarget;
-//    }
+	Point newTarget = Point(x_goal, y_goal);
+    if( !Measurments::isClose(lastTargetPoint, newTarget, 25) )
+    {
+        for(auto& pair : this->errorContainers) {
+            pair.first.clear();
+            pair.second = 0;
+        }
+        lastTargetPoint = newTarget;
+    }
+#endif
 
     for(int i = 0; i != 3; ++i)
     {
@@ -63,6 +65,12 @@ void ClosedLoopBase::handleError(double x_goal, double y_goal)
 }
 
 
+wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, Point goal, double theta_goal)
+{
+	return closed_loop_control(robot, goal.x, goal.y, theta_goal);
+}
+
+
 wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, double x_goal, double y_goal, double theta_goal)
 {
     double left_motor_velocity, right_motor_velocity;
@@ -74,6 +82,9 @@ wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, double x_goal,
     double y_current     = robotPos.y;
     double theta_current = robot->getOrientation();
     double angleToGoal   = atan2 ((y_goal-y_current) , (x_goal-x_current));
+	
+	//If the theta_goal is the defult argument, use it as a signal for no specific angle
+	theta_goal = (theta_goal == -10 ? Measurments::angleBetween(robotPos, Point(x_goal, y_goal)) : theta_goal);
 
     //Rho, Alpha, Beta
     newRho   = sqrt(pow((y_current - y_goal),2) + pow((x_current-x_goal),2));
@@ -81,12 +92,12 @@ wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, double x_goal,
     newBeta  = Measurments::angleDiff(angleToGoal, theta_goal);
 
 #if CLOOP_CONTROL_DEBUG
-//    std::cout << "rho "   << newRho   			<< std::endl;
-//    std::cout << "alpha " << 180/M_PI * newAlpha << std::endl;
-//    std::cout << "current theta " << 180/M_PI * theta_current << std::endl;
-//    std::cout << "beta "  		  << 180/M_PI * newBeta		  << std::endl;
-//    std::cout << "Angle diff " 	  << 180/M_PI * Measurments::angleDiff(theta_current, theta_goal)
-//              << std::endl;
+	float angDiff = Measurments::angleDiff(theta_current, theta_goal);
+    std::cout << "rho "   		  << newRho   				  << std::endl;
+    std::cout << "alpha " 		  << 180/M_PI * newAlpha	  << std::endl;
+    std::cout << "current theta " << 180/M_PI * theta_current << std::endl;
+    std::cout << "beta "  		  << 180/M_PI * newBeta		  << std::endl;
+    std::cout << "Angle diff " 	  << 180/M_PI * angDiff		  << std::endl;
 #endif
 
     //*******************************************************************************************
@@ -136,13 +147,12 @@ wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, double x_goal,
     }
 
 #if CLOOP_CONTROL_DEBUG
-//    std::cout << "v "    << robot_xvel 		<< std::endl;
-//    std::cout << "w "    << robot_turnrate  << std::endl;
-//    std::cout << "LMV: " << left_motor_velocity  << std::endl;
-//    std::cout << "RMV: " << right_motor_velocity << std::endl;
+    std::cout << "v "    << robot_xvel 			 << std::endl;
+    std::cout << "w "    << robot_turnrate  	 << std::endl;
+    std::cout << "LMV: " << left_motor_velocity  << std::endl;
+    std::cout << "RMV: " << right_motor_velocity << std::endl;
 #endif
 
-    wheelvelocities result = {(int)left_motor_velocity, (int)right_motor_velocity};
-
+    wheelvelocities result {(int)left_motor_velocity, (int)right_motor_velocity, robot};
     return result;
 }

@@ -8,6 +8,7 @@
 #include <math.h>
 #include <deque>
 #include "model/robot.h"
+#include "communication/robcomm.h"
 
 #define CLOOP_CONTROL_DEBUG 0
 
@@ -15,13 +16,24 @@ namespace ClosedLoopConstants
 {
     const double defaultConstants[3] = {3, 8, -1.5};
     const double noSlowdownConstants[3] = {0, 8, -1.5};
-    const double sharpTurnConstants[3] = {3, 16, 0};
+    const double sharpTurnConstants[3] = {3, 25, 0};
 }
 
 //results container
 struct wheelvelocities
 {
+	wheelvelocities(int l, int r, Robot* p = nullptr) 
+		: left(l), right(r), robotPtr(p) 
+		{}
+
+	void sendVels() 
+	{
+		if(robotPtr != nullptr)
+			RobComm::getRobComm()->sendVels(left, right, robotPtr->getID());
+	}
+	
     int left,right;
+	Robot* robotPtr;
 };
 
 /*************************************************************/
@@ -39,10 +51,13 @@ public:
     ClosedLoopBase(const double constants[3])
         : krho(constants[0]), kalpha(constants[1]), kbeta(constants[2]) {}
 
-	void setVelMultiplier(double);
+	ClosedLoopBase& setVelMultiplier(double);
 		
     wheelvelocities closed_loop_control
-        (Robot* robot, double x_goal, double y_goal, double theta_goal);
+        (Robot* robot, double x_goal, double y_goal, double theta_goal = -10);
+		
+	wheelvelocities closed_loop_control
+        (Robot* robot, Point goal, double theta_goal = -10);
 
 private:
     static const unsigned int sizeRhoQ   = 400;
@@ -65,8 +80,8 @@ private:
     Point lastTargetPoint;
 };
 
-/*************************************************************/
 
+/*************************************************************/
 
 class ClosedLoopControl : public ClosedLoopBase {
 public:
@@ -80,12 +95,13 @@ public:
     : ClosedLoopBase(ClosedLoopConstants::noSlowdownConstants){}
 };
 
-class CloseLoopSharpTurns : public ClosedLoopBase {
+class ClosedLoopSharpTurns : public ClosedLoopBase {
 public:
-    CloseLoopSharpTurns()
+    ClosedLoopSharpTurns()
     : ClosedLoopBase(ClosedLoopConstants::sharpTurnConstants){}
 };
 
 /*************************************************************/
+
 
 #endif // CLOSEDLOOPCONTROL_H
