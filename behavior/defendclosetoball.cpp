@@ -20,8 +20,8 @@ void DefendCloseToBall::perform(Robot *robot)
     double angle = Measurments::angleBetween(ballPoint, myGoal);
 
     Point frontOfBall(200*cos(angle) + ballPoint.x, 200*sin(angle) + ballPoint.y);
-    CloseLoopSharpTurns clc;
-//    ClosedLoopControl clc;
+//    CloseLoopSharpTurns clc;
+    ClosedLoopControl clc;
     clc.setVelMultiplier(10);
 
     double direction = Measurments::angleBetween(myGoal, ballPoint);
