@@ -99,6 +99,11 @@ void TestStrategy::assignBeh()
     //assignment.setSingleAssignment(true);
    // assignment.assignBeh();
 
+//    //Narges code testing defendCloseToBall
+//    BehaviorAssignment<DefendCloseToBall> assignment;
+//    assignment.setSingleAssignment(true);
+//    assignment.assignBeh();
+
 //    //Narges code testing defendfarfromball
 //    BehaviorAssignment<DefendFarFromBall> assignment;
 //    assignment.setSingleAssignment(true);
@@ -109,12 +114,10 @@ void TestStrategy::assignBeh()
 //        assignment.setSingleAssignment(true);
 //        assignment.assignBeh();
 
-
-
     //James code
     BehaviorAssignment<TestBehavior> assignment;
     assignment.setSingleAssignment(true);
     assignment.setBehParam<Point>("targetPoint", gm->getBallPoint());
-    assignment.assignBeh({0, 1}); //Assigns to all
+    assignment.assignBeh({0, 1});
 }
 
