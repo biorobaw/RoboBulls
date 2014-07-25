@@ -20,7 +20,11 @@ namespace Skill {
         Point   targetPosition;
         double goalOrientation;
     };
-
+	
+	/* Generic easier-to-type typedef, since originally GoToPositionWithOrientation was a 
+	 * special case, but is now the standard movement skill
+	 */
+	typedef GoToPositionWithOrientation GoToPosition;
 }
 
 #endif // GOTOPOSITIONWITHORIENTATION_H

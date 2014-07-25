@@ -1,4 +1,3 @@
-#include <stdexcept>
 #include "utilities/measurments.h"
 #include "skill/gotopositionwithorientation.h"
 #include "skill/pathfinding/fppa_pathfinding.h"
@@ -11,100 +10,122 @@ namespace Skill
 
 ObstacleAvoidMove::ObstacleAvoidMove(Point target)
 	: hasFoundPath(false)
-    , hasFoundPathEnd(false)
-    , isUpdatingPath(false)
-    , obsInLine(false)
+	, currentPathIsClear(true)
+    , targetPoint(target)
+    , lastDirection(FPPA::PathDirection::None)
 {
-    this->targetPoint = target;
-    std::cout <<"Making ObstacleAvoidMove" << std::endl;
+#if OBSTACLE_MOVE_DEBUG
+	std::cout << "Making ObstacleAvoidMove" << std::endl;
+#endif
 }
+
 
 
 static bool ptIsInFrontOfRob(Robot* rob, const Point& pt)
 {
-    Point robPos   = rob->getRobotPosition();
-    float robAngle = rob->getOrientation();
-    float angleBetween = Measurments::angleBetween(robPos, pt);
+	Point robPos   = rob->getRobotPosition();
+	float robAngle = rob->getOrientation();
+	float angleBetween = Measurments::angleBetween(robPos, pt);
 
-    return (Measurments::angleDiff(robAngle, angleBetween) < (M_PI/180)*25);
+    return (Measurments::angleDiff(robAngle, angleBetween) < M_PI/6);
 }
+
 
 
 bool ObstacleAvoidMove::perform(Robot* robot)
 {
-    if(pathQueue.empty() && hasFoundPath)
-    {
+#if 0
+	if(pathQueue.empty() && hasFoundPath) 
+	{
 	#if OBSTACLE_MOVE_DEBUG
-		if(!hasFoundPathEnd) {
-			hasFoundPathEnd = true;
-			std::cout << "End of path reached" << std::endl;
-		}
+        std::cout << "End of path reached" << std::endl;
 	#endif
-        return true;
+		return true;
 	}
+#endif
 
 	Point robotPoint = robot->getRobotPosition();
-    Point nextPoint  = this->pathQueue.front();
-    Point obstaclePosInfo;
-    obsInLine  = FPPA::isObstacleInLine(robotPoint, nextPoint, &obstaclePosInfo);
 
-    if(!hasFoundPath || obsInLine)
-    {
-    #ifdef OBSTACLE_MOVE_DEBUG
-        if(!hasFoundPath) {
-            std::cout << "Did not have path for rob " << robot->getID() << ", Making" << std::endl;
-        } else if(obsInLine && !isUpdatingPath) {
-            std::cout << "New Obstacle for robot "    << robot->getID()
-                      << "At " << obstaclePosInfo.toString() << std::endl;
+	/**********///Initial condition: Robot has no path
+	if(!hasFoundPath) {
+		hasFoundPath = true;
+		this->assignNewPath(robotPoint);
+	}
+	/**********/
+
+	Point nextPoint = this->pathQueue.front();
+	
+	/**********///Dynamic path updating
+	if(currentPathIsClear)
+	{
+		//No known obstacles in path; test for new ones
+		Point obsPoint;
+		bool isNewObstacleInPath = FPPA::isObstacleInLine(robotPoint, nextPoint, &obsPoint);
+
+        if(pathQueue.size() > 2) {
+            const Point& nextNextPoint   = pathQueue[2];
+			bool isNewObstacleInNextPath = FPPA::isObstacleInLine(nextPoint, nextNextPoint, &obsPoint);
+            isNewObstacleInPath = isNewObstacleInPath || isNewObstacleInNextPath;
         }
-    #endif
 
-        /* If we have not found a path yet or there is a new obstacle in
-         * the current line, path needs to be rebult
-         */
-        if(!hasFoundPath ||
-                (obsInLine && isUpdatingPath && ptIsInFrontOfRob(robot, obstaclePosInfo)))
+        if(isNewObstacleInPath && !Measurments::isClose(obsPoint, lastObsPoint, 100))
         {
-            isUpdatingPath = true;
-            FPPA::Path found = FPPA::findShortestPath(robotPoint, targetPoint);
-            pathQueue.assign(found.begin(), found.end());   //Build queue
-        }
-
-        hasFoundPath = true;
+            /* We have a possible obstacle..
+             * If it is NOT close any of the obstacles used to generate
+             * the current path, it is a new obstacle
+             */
+            if(std::none_of(lastObstacles.begin(), lastObstacles.end(),
+                            [&](const Point& pt) {
+                                return Measurments::isClose(pt, obsPoint, 100);
+                             }))
+            {
+                /* We've found a new obstacle in the clear path.
+                 * We want to save the obstacle point to compare
+                 * against it later
+				 */
+                lastObsPoint = obsPoint;
+                currentPathIsClear = false;
+            }
+		}
+	} else {
+		/* There is a known obstacle in the current path
+		 * We want to rebuild the path and set the (new)
+		 * path to be clear again
+		 */
+		this->assignNewPath(robotPoint);
+		currentPathIsClear = true;
 	}
+
 	
-	
-	/* If rob is close to the next point, pop from the queue and begin
-	 * going to the next point in the path 
-	 */
-    if(Measurments::isClose(robotPoint, nextPoint))
-    {
-	#if OBSTACLE_MOVE_DEBUG
-        //std::cout << "Updating; Old: " << nextPoint.toString();
-        //std::cout << " New: " << pathQueue.front().toString() << std::endl;
-	#endif
-        pathQueue.pop_front();
-		
-		if(!pathQueue.empty())
+	/**********///Path Queue Updating
+    if(Measurments::isClose(robotPoint, nextPoint, 250)) 
+	{
+		pathQueue.pop_front();
+		if(!pathQueue.empty()) {
 			nextPoint = pathQueue.front();
-		else
+		} else {
 			return true;	//All points followed
+		}
 	}
 	
-
-
-    CloseLoopSharpTurns cnsd;
-    cnsd.setVelMultiplier(20);
-
-    wheelvelocities res = cnsd.closed_loop_control(robot, nextPoint.x, nextPoint.y,
-                             Measurments::angleBetween(robotPoint, nextPoint));
-
-    RobComm* rc = RobComm::getRobComm();
-
-    rc->sendVels(res.left, res.right, robot->getID());
 	
+	/**********///Velocity sending
+    ClosedLoopSharpTurns moveController;
+    moveController.setVelMultiplier(20).closed_loop_control(robot, nextPoint).sendVels();
 
-    return false;	//Still need to follow points
+	
+	return false;	//Still need to follow points
+}
+
+
+
+void ObstacleAvoidMove::assignNewPath(const Point& robotPoint)
+{
+    FPPA::getCurrentObstacles(&(this->lastObstacles), robotPoint, targetPoint);
+
+    FPPA::PathInfo p = FPPA::findShortestPath(robotPoint, targetPoint, lastDirection);
+    this->pathQueue.assign(p.first.begin(), p.first.end());
+    this->lastDirection = p.second;
 }
 
 

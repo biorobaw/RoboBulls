@@ -16,16 +16,32 @@
 
 namespace FPPA
 {
-    typedef std::vector<Point> Path;
+    enum class PathDirection
+    {
+        None, Bottom, Top
+    };
 
-    /* Use FPPA to find a path from start to end
-     */
-    Path findShortestPath(Point start, Point end);
+    typedef std::vector<Point> Path;
+    typedef std::pair<Path, PathDirection> PathInfo;
+
+
+    /* Use FPPA to find a path from start to end */
+    PathInfo findShortestPath(Point start, Point end, PathDirection pathHint = PathDirection::None);
+
 
     /* Check if there is an obstacle (robot or ball) in the
-     * line defined from start to end
-     */
+     * line defined from start to end*/
     bool isObstacleInLine(Point start, Point end, Point *obsPosOut = nullptr);
+
+
+    /* Test if a given single point in question
+     * is an obstacle in a given line */
+    bool isPointInLine(Point start, Point end, Point question);
+
+
+    /* Return a vector of all current obstacles
+     * in the field, relitive to a starting and ending point. */
+    void getCurrentObstacles(std::vector<Point>* points, Point start, Point end);
 }
 
 #endif // FPPA_PATHFINDING_H

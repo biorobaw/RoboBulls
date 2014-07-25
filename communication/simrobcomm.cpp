@@ -4,9 +4,9 @@
 
 SimRobComm::SimRobComm()
 {
-//   _addr = "131.247.10.87";
-    _addr = "127.0.0.1";    //Simulator for my computer
-//    _addr = "131.247.13.183";     //simulator for vision computer
+    //_addr = "131.247.10.87";
+   // _addr = "131.247.9.50";
+    _addr = "127.0.0.1";
     _port = 20011;
 }
 

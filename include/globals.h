@@ -6,7 +6,7 @@
 #define SIMULATED 1
 // Overall velocity for all behaviors
 //  10 somewhat fast in the robots
-#define OVERALL_VELOCITY 2
+#define OVERALL_VELOCITY 5
 
 /**
   The player's team. 0 is BLUE, 1 is Yellow.
