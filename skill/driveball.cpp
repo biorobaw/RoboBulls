@@ -42,7 +42,7 @@ namespace Skill
                 state = driveBall;
                 GoToPositionWithOrientation *gotoPos = new GoToPositionWithOrientation (targetPosition, direction);
                 //reducing speed when robot has the ball in order to keep the ball
-                gotoPos->setVelocityMultiplier(0.7);
+                gotoPos->setVelocityMultiplier(0.5);
                 skill = gotoPos;
             }
             // If the ball has changed position
@@ -57,7 +57,6 @@ namespace Skill
             cout <<"drive the ball"<<endl;
             if(Measurments::isClose(robot->getRobotPosition(), targetPosition, CLOSE_ENOUGH)) {
                 state = idiling;
-//                skill = new Stop();
             }
             else if(!Measurments::isClose(robot->getRobotPosition(), gm->getBallPoint(), CLOSE_ENOUGH)) {
                 state = moveTowardBall;
@@ -65,8 +64,6 @@ namespace Skill
                                        DIST*sin(Measurments::angleBetween(targetPosition,gm->getBallPoint()))+gm->getBallPoint().y);
                 skill = new GoToPositionWithOrientation (*behindBall, Measurments::angleBetween(gm->getBallPoint(), targetPosition));
             }
-//            else
-//                state = idiling;
             break;
         case idiling:
             cout<<"stoping"<<endl;
