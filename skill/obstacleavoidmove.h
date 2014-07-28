@@ -13,15 +13,17 @@ namespace Skill {
 class ObstacleAvoidMove : public Skill
 {
 public:
-	ObstacleAvoidMove(Point target);
+    ObstacleAvoidMove(Point target, double finalOrientation = -10);
 	bool perform(Robot* robot);
 	
 private:
 	void assignNewPath(const Point& robotPoint);
-	bool hasFoundPath;
-	bool currentPathIsClear;
-	Point targetPoint;
-	Point lastObsPoint;
+    double targetAngle;
+    bool   hasFoundPath;
+    bool   hasFoundPathEnd;
+    bool   currentPathIsClear;
+    Point  targetPoint;
+    Point  lastObsPoint;
 	std::deque<Point> pathQueue;
     std::vector<Point> lastObstacles;
     FPPA::PathDirection lastDirection;

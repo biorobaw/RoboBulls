@@ -4,7 +4,6 @@
 #include "behavior/behavior.h"
 #include "skill/skill.h"
 #include "utilities/paramlist.h"
-#include "utilities/point.h"
 
 using namespace std;
 
@@ -17,7 +16,6 @@ public:
 private:
     enum states {initial, driving, kicking, idling, finalOrientationFixing} state;
     Skill::Skill * skill;
-    Point *behindBall;
 };
 
 #endif // DRIVEBALLANDKICK_H

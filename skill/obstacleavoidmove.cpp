@@ -8,9 +8,11 @@
 namespace Skill 
 {
 
-ObstacleAvoidMove::ObstacleAvoidMove(Point target)
-	: hasFoundPath(false)
-	, currentPathIsClear(true)
+ObstacleAvoidMove::ObstacleAvoidMove(Point target, double finalOrientation)
+    : targetAngle(finalOrientation)
+    , hasFoundPath(false)
+    , hasFoundPathEnd(false)
+    , currentPathIsClear(true)
     , targetPoint(target)
     , lastDirection(FPPA::PathDirection::None)
 {
@@ -20,7 +22,7 @@ ObstacleAvoidMove::ObstacleAvoidMove(Point target)
 }
 
 
-
+#if 0
 static bool ptIsInFrontOfRob(Robot* rob, const Point& pt)
 {
 	Point robPos   = rob->getRobotPosition();
@@ -29,92 +31,104 @@ static bool ptIsInFrontOfRob(Robot* rob, const Point& pt)
 
     return (Measurments::angleDiff(robAngle, angleBetween) < M_PI/6);
 }
-
+#endif
 
 
 bool ObstacleAvoidMove::perform(Robot* robot)
 {
-#if 0
-	if(pathQueue.empty() && hasFoundPath) 
-	{
-	#if OBSTACLE_MOVE_DEBUG
-        std::cout << "End of path reached" << std::endl;
-	#endif
-		return true;
-	}
-#endif
+    if(!hasFoundPathEnd)
+    {
+        /* Primary: Obstacle avoidance
+         * Robot is currently in pathfinding mode
+         * and has not traveled to the end of the path
+         */
+        Point robotPoint = robot->getRobotPosition();
 
-	Point robotPoint = robot->getRobotPosition();
-
-	/**********///Initial condition: Robot has no path
-	if(!hasFoundPath) {
-		hasFoundPath = true;
-		this->assignNewPath(robotPoint);
-	}
-	/**********/
-
-	Point nextPoint = this->pathQueue.front();
-	
-	/**********///Dynamic path updating
-	if(currentPathIsClear)
-	{
-		//No known obstacles in path; test for new ones
-		Point obsPoint;
-		bool isNewObstacleInPath = FPPA::isObstacleInLine(robotPoint, nextPoint, &obsPoint);
-
-        if(pathQueue.size() > 2) {
-            const Point& nextNextPoint   = pathQueue[2];
-			bool isNewObstacleInNextPath = FPPA::isObstacleInLine(nextPoint, nextNextPoint, &obsPoint);
-            isNewObstacleInPath = isNewObstacleInPath || isNewObstacleInNextPath;
+        /**** Initial condition: Robot has no path ****/
+        if(!hasFoundPath) {
+            hasFoundPath = true;
+            this->assignNewPath(robotPoint);
         }
 
-        if(isNewObstacleInPath && !Measurments::isClose(obsPoint, lastObsPoint, 100))
+        Point nextPoint  = this->pathQueue.front();
+
+
+        /**** Dynamic path updating ****/
+        if(currentPathIsClear)
         {
-            /* We have a possible obstacle..
-             * If it is NOT close any of the obstacles used to generate
-             * the current path, it is a new obstacle
-             */
-            if(std::none_of(lastObstacles.begin(), lastObstacles.end(),
-                            [&](const Point& pt) {
-                                return Measurments::isClose(pt, obsPoint, 100);
-                             }))
+            //No known obstacles in path; test for new ones
+            Point obsPoint;
+            bool isNewObstacleInPath = FPPA::isObstacleInLine(robotPoint, nextPoint, &obsPoint);
+
+            if(pathQueue.size() > 2)
             {
-                /* We've found a new obstacle in the clear path.
-                 * We want to save the obstacle point to compare
-                 * against it later
-				 */
-                lastObsPoint = obsPoint;
-                currentPathIsClear = false;
+                const Point& nextNextPoint = pathQueue[2];
+
+                bool isNewObstacleInNextPath
+                        = FPPA::isObstacleInLine(nextPoint, nextNextPoint, &obsPoint);
+
+                isNewObstacleInPath
+                        = isNewObstacleInPath || isNewObstacleInNextPath;
             }
-		}
-	} else {
-		/* There is a known obstacle in the current path
-		 * We want to rebuild the path and set the (new)
-		 * path to be clear again
-		 */
-		this->assignNewPath(robotPoint);
-		currentPathIsClear = true;
-	}
 
-	
-	/**********///Path Queue Updating
-    if(Measurments::isClose(robotPoint, nextPoint, 250)) 
-	{
-		pathQueue.pop_front();
-		if(!pathQueue.empty()) {
-			nextPoint = pathQueue.front();
-		} else {
-			return true;	//All points followed
-		}
-	}
-	
-	
-	/**********///Velocity sending
-    ClosedLoopSharpTurns moveController;
-    moveController.setVelMultiplier(20).closed_loop_control(robot, nextPoint).sendVels();
+            if(isNewObstacleInPath && !Measurments::isClose(obsPoint, lastObsPoint, 100))
+            {
+                /* We have a possible obstacle..
+                 * If it is NOT close any of the obstacles used to generate
+                 * the current path, it is a new obstacle
+                 */
+                if(std::none_of(lastObstacles.begin(), lastObstacles.end(),
+                                [&](const Point& pt) {
+                                    return Measurments::isClose(pt, obsPoint, 100);
+                                 }))
+                {
+                    lastObsPoint = obsPoint;
+                    currentPathIsClear = false;
+                }
+            }
+        } else {
+            /* There is a known obstacle in the current path
+             * We want to rebuild the path and set the (new)
+             * path to be clear again
+             */
+            this->assignNewPath(robotPoint);
+            currentPathIsClear = true;
+        }
 
-	
-	return false;	//Still need to follow points
+        /**********///Path Queue Updating
+        if(Measurments::isClose(robotPoint, nextPoint, 250))
+        {
+            pathQueue.pop_front();
+            if(!pathQueue.empty())
+                nextPoint = pathQueue.front();
+            else
+                hasFoundPathEnd = true;  //Finished path
+        }
+
+        /**********///Velocity sending
+        ClosedLoopSharpTurns moveController;
+        moveController.setVelMultiplier(20).closed_loop_control(robot, nextPoint).sendVels();
+
+    } else {
+        /* Secondary: Rotating mode
+         * Dropped into by default, if there is a desired
+         * optional end orientation, that rotation is done here
+         */
+    #if OBSTACLE_MOVE_DEBUG
+        std::cout << "Entering Rotate for " << robot->getID() << std::endl;
+    #endif
+        double robAngle = robot->getOrientation();
+
+        if(this->targetAngle == -10 ||
+                Measurments::angleDiff(robAngle, targetAngle) < ROT_TOLERANCE)
+            return true;
+
+        ClosedLoopControl controller;
+        controller.closed_loop_control
+            (robot, robot->getRobotPosition(), targetAngle).sendVels();
+    }
+
+    return false;   //Skill not finished
 }
 
 
