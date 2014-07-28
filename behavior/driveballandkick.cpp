@@ -46,11 +46,11 @@ void DriveBallAndKick::perform(Robot* robot)
         cout << "in switch driving!"<<endl;
         cout << "dist kickpoint & robot\t" << Measurments::distance(kickPoint, robot->getRobotPosition()) << endl;
         cout << "dist ball & robot\t" << Measurments::distance(robot->getRobotPosition(), gm->getBallPoint()) << endl;
-        if (Measurments::isClose(kickPoint, robot->getRobotPosition(), CLOSE_ENOUGH/*/2*3 */)
-                && Measurments::isClose(robot->getRobotPosition(), gm->getBallPoint(), CLOSE_ENOUGH/*/4*3*/))
+        if (Measurments::isClose(kickPoint, robot->getRobotPosition(), CLOSE_ENOUGH/2)
+                && Measurments::isClose(robot->getRobotPosition(), gm->getBallPoint(), CLOSE_ENOUGH))
         {
             cout << "angle diff\t" << abs(Measurments::angleDiff(robot->getOrientation(), direction)) * 180 / M_PI << endl;
-            if (abs(Measurments::angleDiff(robot->getOrientation(), direction)) < ANGLE)
+            if (abs(Measurments::angleDiff(robot->getOrientation(), direction)) < ANGLE/2)
             {
                 state = kicking;
                 skill = new Skill::Kick();
