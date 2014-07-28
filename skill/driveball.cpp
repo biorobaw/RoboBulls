@@ -57,7 +57,7 @@ namespace Skill
             cout <<"drive the ball"<<endl;
             if(Measurments::isClose(robot->getRobotPosition(), targetPosition, CLOSE_ENOUGH)) {
                 state = idiling;
-                skill = new Stop();
+//                skill = new Stop();
             }
             else if(!Measurments::isClose(robot->getRobotPosition(), gm->getBallPoint(), CLOSE_ENOUGH)) {
                 state = moveTowardBall;
@@ -65,6 +65,8 @@ namespace Skill
                                        DIST*sin(Measurments::angleBetween(targetPosition,gm->getBallPoint()))+gm->getBallPoint().y);
                 skill = new GoToPositionWithOrientation (*behindBall, Measurments::angleBetween(gm->getBallPoint(), targetPosition));
             }
+//            else
+//                state = idiling;
             break;
         case idiling:
             cout<<"stoping"<<endl;
