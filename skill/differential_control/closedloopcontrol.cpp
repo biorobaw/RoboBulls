@@ -124,14 +124,10 @@ wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, double x_goal,
     }
     else
     {
-        float angDiffDeg = (180 / M_PI)*Measurments::angleDiff(theta_current, theta_goal);
-		
-		if(fabs(angDiffDeg) > 10) {
-            left_motor_velocity  = copysign(OVERALL_VELOCITY * velMultiplier, -angDiffDeg);
-            right_motor_velocity = copysign(OVERALL_VELOCITY * velMultiplier,  angDiffDeg);
-		} else {
-			left_motor_velocity = right_motor_velocity = 0;
-		}
+        float angDiff = Measurments::angleDiff(theta_current, theta_goal);
+
+        left_motor_velocity  = OVERALL_VELOCITY * velMultiplier*1*-angDiff;
+        right_motor_velocity = OVERALL_VELOCITY * velMultiplier*1*angDiff;
     }
 
     //*******************************************************************************************

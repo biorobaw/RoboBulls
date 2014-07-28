@@ -3,7 +3,7 @@
 
 // SIMULATED 1 ==> running simulator
 //SIMULATED 0 ==> running robots on the field
-#define SIMULATED 1
+#define SIMULATED 0
 // Overall velocity for all behaviors
 //  10 somewhat fast in the robots
 #define OVERALL_VELOCITY 5
