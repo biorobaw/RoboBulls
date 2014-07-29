@@ -119,6 +119,12 @@
 			<Var name="Max Area (sq-pixels)" type="int" minval="" maxval="">
 				600
 			</Var>
+			<Var name="Max Num Markers To Detect" type="int" minval="" maxval="">
+				16
+			</Var>
+			<Var name="Max Query Distance" type="double" minval="" maxval="">
+				20.000000
+			</Var>
 		</Var>
 		<Var name="Histogram Settings" type="list">
 			<Var name="Enable" type="bool">
@@ -291,6 +297,12 @@
 			</Var>
 			<Var name="Max Area (sq-pixels)" type="int" minval="" maxval="">
 				600
+			</Var>
+			<Var name="Max Num Markers To Detect" type="int" minval="" maxval="">
+				16
+			</Var>
+			<Var name="Max Query Distance" type="double" minval="" maxval="">
+				20.000000
 			</Var>
 		</Var>
 		<Var name="Histogram Settings" type="list">

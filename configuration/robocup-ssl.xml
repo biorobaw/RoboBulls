@@ -2,7 +2,7 @@
 <VarXML>
 	<Var name="Global" type="list">
 		<Var name="Field Configuration" type="list">
-			<Var name="Reset SSL 2009" type="trigger">
+			<Var name="Reset SSL 2012" type="trigger">
 			</Var>
 			<Var name="Line Width" type="int" minval="" maxval="">
 				10
@@ -85,6 +85,8 @@
 			<Var name="Half Total Surface Width" type="int" minval="" maxval="">
 				2700
 			</Var>
+			<Var name="Reset SSL 2009" type="trigger">
+			</Var>
 		</Var>
 		<Var name="Ball Detection" type="list">
 			<Var name="Max Ball Count" type="int" minval="" maxval="">
@@ -110,7 +112,7 @@
 					15
 				</Var>
 				<Var name="Min Area (sq-pixels)" type="int" minval="" maxval="">
-					64
+					10
 				</Var>
 				<Var name="Max Area (sq-pixels)" type="int" minval="" maxval="">
 					200
@@ -823,37 +825,37 @@
 		<Var name="Camera Calibrator" type="list">
 			<Var name="Camera Parameters" type="list">
 				<Var name="focal length" type="double" minval="" maxval="">
-					514.627726
+					526.518201
 				</Var>
 				<Var name="principal point x" type="double" minval="" maxval="">
-					361.542820
+					351.354302
 				</Var>
 				<Var name="principal point y" type="double" minval="" maxval="">
-					225.670922
+					202.640857
 				</Var>
 				<Var name="distortion" type="double" minval="0.000000" maxval="2.000000">
-					0.500000
+					0.540000
 				</Var>
 				<Var name="q0" type="double" minval="" maxval="">
-					0.703228
+					0.703828
 				</Var>
 				<Var name="q1" type="double" minval="" maxval="">
-					-0.708503
+					-0.706109
 				</Var>
 				<Var name="q2" type="double" minval="" maxval="">
-					0.023646
+					0.030121
 				</Var>
 				<Var name="q3" type="double" minval="" maxval="">
-					0.054173
+					0.071609
 				</Var>
 				<Var name="tx" type="double" minval="" maxval="">
-					472.422188
+					553.604392
 				</Var>
 				<Var name="ty" type="double" minval="" maxval="">
-					2021.827586
+					2174.338821
 				</Var>
 				<Var name="tz" type="double" minval="0.000000" maxval="5000.000000">
-					2936.000000
+					3002.000000
 				</Var>
 			</Var>
 			<Var name="Field Half Configuration" type="list">
@@ -956,10 +958,10 @@
 			</Var>
 			<Var name="Calibration Parameters" type="list">
 				<Var name="left corner in image x" type="double" minval="" maxval="">
-					146.000000
+					155.000000
 				</Var>
 				<Var name="left corner in image y" type="double" minval="" maxval="">
-					94.000000
+					97.000000
 				</Var>
 				<Var name="right corner in image x" type="double" minval="" maxval="">
 					684.000000
@@ -1323,10 +1325,10 @@
 						<Var name="one-push" type="trigger">
 						</Var>
 						<Var name="value U" type="int" minval="0" maxval="568">
-							512
+							500
 						</Var>
 						<Var name="value V" type="int" minval="" maxval="">
-							512
+							500
 						</Var>
 						<Var name="use absolute" type="bool">
 							false
@@ -1348,7 +1350,7 @@
 						<Var name="one-push" type="trigger">
 						</Var>
 						<Var name="value" type="int" minval="0" maxval="256">
-							128
+							0
 						</Var>
 						<Var name="use absolute" type="bool">
 							false
@@ -1362,7 +1364,7 @@
 					</Var>
 					<Var name="saturation" type="list">
 						<Var name="enabled" type="bool">
-							false
+							true
 						</Var>
 						<Var name="auto" type="bool">
 							false
@@ -1370,7 +1372,7 @@
 						<Var name="one-push" type="trigger">
 						</Var>
 						<Var name="value" type="int" minval="0" maxval="511">
-							256
+							300
 						</Var>
 						<Var name="use absolute" type="bool">
 							false
@@ -1384,7 +1386,7 @@
 					</Var>
 					<Var name="gamma" type="list">
 						<Var name="enabled" type="bool">
-							false
+							true
 						</Var>
 						<Var name="auto" type="bool">
 							false
@@ -1436,13 +1438,13 @@
 						<Var name="one-push" type="trigger">
 						</Var>
 						<Var name="value" type="int" minval="0" maxval="680">
-							680
+							550
 						</Var>
 						<Var name="use absolute" type="bool">
 							false
 						</Var>
 						<Var name="absolute value" type="double" minval="0.000000" maxval="23.868000">
-							23.799999
+							19.250000
 						</Var>
 						<Var name="was_read" type="bool">
 							true
@@ -1698,7 +1700,7 @@
 					-1972.951061
 				</Var>
 				<Var name="tz" type="double" minval="0.000000" maxval="5000.000000">
-					2347.000000
+					2400.000000
 				</Var>
 			</Var>
 			<Var name="Field Half Configuration" type="list">
@@ -1801,16 +1803,16 @@
 			</Var>
 			<Var name="Calibration Parameters" type="list">
 				<Var name="left corner in image x" type="double" minval="" maxval="">
-					730.000000
+					728.000000
 				</Var>
 				<Var name="left corner in image y" type="double" minval="" maxval="">
-					529.000000
+					527.000000
 				</Var>
 				<Var name="right corner in image x" type="double" minval="" maxval="">
-					119.000000
+					125.000000
 				</Var>
 				<Var name="right corner in image y" type="double" minval="" maxval="">
-					533.000000
+					530.000000
 				</Var>
 				<Var name="left centerline in image x" type="double" minval="" maxval="">
 					735.000000
@@ -1819,10 +1821,10 @@
 					79.000000
 				</Var>
 				<Var name="right centerline in image x" type="double" minval="" maxval="">
-					115.000000
+					122.000000
 				</Var>
 				<Var name="right centerline in image y" type="double" minval="" maxval="">
-					61.000000
+					62.000000
 				</Var>
 				<Var name="initial distortion" type="double" minval="" maxval="">
 					1.000000
@@ -1870,7 +1872,7 @@
 		</Var>
 		<Var name="Blob Finding" type="list">
 			<Var name="min_blob_area" type="int" minval="" maxval="">
-				5
+				20
 			</Var>
 			<Var name="enable" type="bool">
 				true
