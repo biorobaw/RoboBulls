@@ -90,34 +90,34 @@ void TestStrategy::assignBeh()
 //    assignment.assignBeh(r0);
 
 //    // Narges code testing DriveBallAndKick
-//    BehaviorAssignment<DriveBallAndKick> assignment;
-//    assignment.setSingleAssignment(true);
-//    assignment.assignBeh();
-
-//    Narges code testing defendCloseToBall
-    BehaviorAssignment<DefendCloseToBall> assignment;
+    BehaviorAssignment<DriveBallAndKick> assignment;
     assignment.setSingleAssignment(true);
     assignment.assignBeh();
 
-//    //Narges code testing defendCloseToBall
+////    Narges code testing defendCloseToBall
 //    BehaviorAssignment<DefendCloseToBall> assignment;
 //    assignment.setSingleAssignment(true);
 //    assignment.assignBeh();
 
-//    //Narges code testing defendfarfromball
+////    //Narges code testing defendCloseToBall
+//    BehaviorAssignment<DefendCloseToBall> assignment;
+//    assignment.setSingleAssignment(true);
+//    assignment.assignBeh();
+
+////    //Narges code testing defendfarfromball
 //    BehaviorAssignment<DefendFarFromBall> assignment;
 //    assignment.setSingleAssignment(true);
 //    assignment.assignBeh();
 
-//    //testing test behavior
+////    //Narges testing myTestBehavior
 //        BehaviorAssignment<myTestBehavior> assignment;
 //        assignment.setSingleAssignment(true);
 //        assignment.assignBeh();
 
-//    //James code
+//    James code
 //    BehaviorAssignment<TestBehavior> assignment;
 //    assignment.setSingleAssignment(true);
 //    assignment.setBehParam<Point>("targetPoint", gm->getBallPoint());
-//    assignment.assignBeh({0, 1});
+//    assignment.assignBeh();
 }
 

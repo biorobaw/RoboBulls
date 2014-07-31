@@ -127,7 +127,7 @@ GameModel * GameModel::getModel()
 
 Point GameModel::getPenaltyPoint()
 {
-    if (TEAM == 1)
+    if (TEAM == 0)
         return Point(2045, 22);
     else
         return Point(-2045, 22);

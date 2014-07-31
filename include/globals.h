@@ -3,10 +3,16 @@
 
 // SIMULATED 1 ==> running simulator
 //SIMULATED 0 ==> running robots on the field
-#define SIMULATED 0
+#define SIMULATED 1
 // Overall velocity for all behaviors
 //  10 somewhat fast in the robots
-#define OVERALL_VELOCITY 5
+#define OVERALL_VELOCITY 4
+
+#if SIMULATED
+    #define CLC_ROTATONG_VEL 5
+#else
+    #define CLC_ROTATONG_VEL 1
+#endif
 
 /**
   The player's team. 0 is BLUE, 1 is Yellow.
