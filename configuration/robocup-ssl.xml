@@ -2,7 +2,7 @@
 <VarXML>
 	<Var name="Global" type="list">
 		<Var name="Field Configuration" type="list">
-			<Var name="Reset SSL 2009" type="trigger">
+			<Var name="Reset SSL 2012" type="trigger">
 			</Var>
 			<Var name="Line Width" type="int" minval="" maxval="">
 				10
@@ -85,6 +85,8 @@
 			<Var name="Half Total Surface Width" type="int" minval="" maxval="">
 				2700
 			</Var>
+			<Var name="Reset SSL 2009" type="trigger">
+			</Var>
 		</Var>
 		<Var name="Ball Detection" type="list">
 			<Var name="Max Ball Count" type="int" minval="" maxval="">
@@ -98,19 +100,19 @@
 					80.000000
 				</Var>
 				<Var name="Min Width (pixels)" type="int" minval="" maxval="">
-					8
+					2
 				</Var>
 				<Var name="Max Width (pixels)" type="int" minval="" maxval="">
 					15
 				</Var>
 				<Var name="Min Height (pixels)" type="int" minval="" maxval="">
-					8
+					2
 				</Var>
 				<Var name="Max Height (pixels)" type="int" minval="" maxval="">
 					15
 				</Var>
 				<Var name="Min Area (sq-pixels)" type="int" minval="" maxval="">
-					64
+					2
 				</Var>
 				<Var name="Max Area (sq-pixels)" type="int" minval="" maxval="">
 					200
@@ -823,37 +825,37 @@
 		<Var name="Camera Calibrator" type="list">
 			<Var name="Camera Parameters" type="list">
 				<Var name="focal length" type="double" minval="" maxval="">
-					514.627726
+					619.527919
 				</Var>
 				<Var name="principal point x" type="double" minval="" maxval="">
-					361.542820
+					372.909670
 				</Var>
 				<Var name="principal point y" type="double" minval="" maxval="">
-					225.670922
+					209.673154
 				</Var>
 				<Var name="distortion" type="double" minval="0.000000" maxval="2.000000">
-					0.500000
+					0.750000
 				</Var>
 				<Var name="q0" type="double" minval="" maxval="">
-					0.703228
+					0.704847
 				</Var>
 				<Var name="q1" type="double" minval="" maxval="">
-					-0.708503
+					-0.705991
 				</Var>
 				<Var name="q2" type="double" minval="" maxval="">
-					0.023646
+					0.036830
 				</Var>
 				<Var name="q3" type="double" minval="" maxval="">
-					0.054173
+					0.058412
 				</Var>
 				<Var name="tx" type="double" minval="" maxval="">
-					472.422188
+					404.002412
 				</Var>
 				<Var name="ty" type="double" minval="" maxval="">
-					2021.827586
+					2146.188128
 				</Var>
 				<Var name="tz" type="double" minval="0.000000" maxval="5000.000000">
-					2936.000000
+					3561.000000
 				</Var>
 			</Var>
 			<Var name="Field Half Configuration" type="list">
@@ -956,10 +958,10 @@
 			</Var>
 			<Var name="Calibration Parameters" type="list">
 				<Var name="left corner in image x" type="double" minval="" maxval="">
-					146.000000
+					155.000000
 				</Var>
 				<Var name="left corner in image y" type="double" minval="" maxval="">
-					94.000000
+					97.000000
 				</Var>
 				<Var name="right corner in image x" type="double" minval="" maxval="">
 					684.000000
@@ -1053,7 +1055,7 @@
 				false
 			</Var>
 			<Var name="calibration result" type="bool">
-				false
+				true
 			</Var>
 			<Var name="detected edges" type="bool">
 				false
@@ -1323,10 +1325,10 @@
 						<Var name="one-push" type="trigger">
 						</Var>
 						<Var name="value U" type="int" minval="0" maxval="568">
-							512
+							500
 						</Var>
 						<Var name="value V" type="int" minval="" maxval="">
-							512
+							500
 						</Var>
 						<Var name="use absolute" type="bool">
 							false
@@ -1348,7 +1350,7 @@
 						<Var name="one-push" type="trigger">
 						</Var>
 						<Var name="value" type="int" minval="0" maxval="256">
-							128
+							0
 						</Var>
 						<Var name="use absolute" type="bool">
 							false
@@ -1362,7 +1364,7 @@
 					</Var>
 					<Var name="saturation" type="list">
 						<Var name="enabled" type="bool">
-							false
+							true
 						</Var>
 						<Var name="auto" type="bool">
 							false
@@ -1370,7 +1372,7 @@
 						<Var name="one-push" type="trigger">
 						</Var>
 						<Var name="value" type="int" minval="0" maxval="511">
-							256
+							300
 						</Var>
 						<Var name="use absolute" type="bool">
 							false
@@ -1384,7 +1386,7 @@
 					</Var>
 					<Var name="gamma" type="list">
 						<Var name="enabled" type="bool">
-							false
+							true
 						</Var>
 						<Var name="auto" type="bool">
 							false
@@ -1436,13 +1438,13 @@
 						<Var name="one-push" type="trigger">
 						</Var>
 						<Var name="value" type="int" minval="0" maxval="680">
-							680
+							550
 						</Var>
 						<Var name="use absolute" type="bool">
 							false
 						</Var>
 						<Var name="absolute value" type="double" minval="0.000000" maxval="23.868000">
-							23.799999
+							19.250000
 						</Var>
 						<Var name="was_read" type="bool">
 							true
@@ -1668,37 +1670,37 @@
 		<Var name="Camera Calibrator" type="list">
 			<Var name="Camera Parameters" type="list">
 				<Var name="focal length" type="double" minval="" maxval="">
-					458.496412
+					724.913353
 				</Var>
 				<Var name="principal point x" type="double" minval="" maxval="">
-					387.639358
+					470.534523
 				</Var>
 				<Var name="principal point y" type="double" minval="" maxval="">
-					377.287824
+					557.357195
 				</Var>
 				<Var name="distortion" type="double" minval="0.000000" maxval="2.000000">
-					0.320000
+					0.460000
 				</Var>
 				<Var name="q0" type="double" minval="" maxval="">
-					0.707780
+					0.701827
 				</Var>
 				<Var name="q1" type="double" minval="" maxval="">
-					-0.705444
+					-0.700241
 				</Var>
 				<Var name="q2" type="double" minval="" maxval="">
-					-0.029452
+					-0.056153
 				</Var>
 				<Var name="q3" type="double" minval="" maxval="">
-					-0.022991
+					-0.118108
 				</Var>
 				<Var name="tx" type="double" minval="" maxval="">
-					295.698097
+					-207.294428
 				</Var>
 				<Var name="ty" type="double" minval="" maxval="">
-					-1972.951061
+					-3085.421769
 				</Var>
 				<Var name="tz" type="double" minval="0.000000" maxval="5000.000000">
-					2347.000000
+					3621.000000
 				</Var>
 			</Var>
 			<Var name="Field Half Configuration" type="list">
@@ -1801,16 +1803,16 @@
 			</Var>
 			<Var name="Calibration Parameters" type="list">
 				<Var name="left corner in image x" type="double" minval="" maxval="">
-					730.000000
+					728.000000
 				</Var>
 				<Var name="left corner in image y" type="double" minval="" maxval="">
-					529.000000
+					527.000000
 				</Var>
 				<Var name="right corner in image x" type="double" minval="" maxval="">
-					119.000000
+					125.000000
 				</Var>
 				<Var name="right corner in image y" type="double" minval="" maxval="">
-					533.000000
+					530.000000
 				</Var>
 				<Var name="left centerline in image x" type="double" minval="" maxval="">
 					735.000000
@@ -1819,10 +1821,10 @@
 					79.000000
 				</Var>
 				<Var name="right centerline in image x" type="double" minval="" maxval="">
-					115.000000
+					122.000000
 				</Var>
 				<Var name="right centerline in image y" type="double" minval="" maxval="">
-					61.000000
+					62.000000
 				</Var>
 				<Var name="initial distortion" type="double" minval="" maxval="">
 					1.000000
@@ -1831,7 +1833,7 @@
 					4000.000000
 				</Var>
 				<Var name="line search corridor width" type="double" minval="" maxval="">
-					167.000000
+					214.000000
 				</Var>
 				<Var name="convergence timeout (s)" type="double" minval="" maxval="">
 					10.000000
@@ -1870,7 +1872,7 @@
 		</Var>
 		<Var name="Blob Finding" type="list">
 			<Var name="min_blob_area" type="int" minval="" maxval="">
-				5
+				20
 			</Var>
 			<Var name="enable" type="bool">
 				true
@@ -1898,7 +1900,7 @@
 				false
 			</Var>
 			<Var name="calibration result" type="bool">
-				false
+				true
 			</Var>
 			<Var name="detected edges" type="bool">
 				false
