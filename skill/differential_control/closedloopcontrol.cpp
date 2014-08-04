@@ -124,7 +124,7 @@ wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, double x_goal,
     }
     else
     {
-        cout << "Rotating" << endl;
+        //cout << "Rotating" << endl;
         float angDiff = Measurments::angleDiff(theta_current, theta_goal);
 
         left_motor_velocity  = OVERALL_VELOCITY * velMultiplier * CLC_ROTATONG_VEL*-angDiff;

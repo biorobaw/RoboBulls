@@ -4,6 +4,7 @@
 #include "skill/skill.h"
 #include "utilities/point.h"
 #include "model/robot.h"
+#include "include/globals.h"
 
 namespace Skill {
 

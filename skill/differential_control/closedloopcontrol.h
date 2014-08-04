@@ -29,7 +29,9 @@ struct wheelvelocities
 	void sendVels() 
 	{
 		if(robotPtr != nullptr)
-			RobComm::getRobComm()->sendVels(left, right, robotPtr->getID());
+            //RobComm::getRobComm()->sendVels(left, right, robotPtr->getID());
+            robotPtr->setL(left);
+            robotPtr->setR(right);
 	}
 	
     int left,right;

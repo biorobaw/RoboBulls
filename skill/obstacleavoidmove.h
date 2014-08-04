@@ -1,3 +1,6 @@
+#ifndef OBSTACLE_AVOID_MOVE_H
+#define OBSTACLE_AVOID_MOVE_H
+
 #include <deque>
 #include "skill/skill.h"
 #include "skill/pathfinding/fppa_pathfinding.h"
@@ -8,7 +11,7 @@ namespace Skill {
  * Constructor: Ending point to move robot to
  * This skill should not be remade each iteration.
  */
-#define OBSTACLE_MOVE_DEBUG 1
+#define OBSTACLE_MOVE_DEBUG 0
  
 class ObstacleAvoidMove : public Skill
 {
@@ -31,3 +34,5 @@ private:
 
 
 }	//namespace Skill
+
+#endif

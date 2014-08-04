@@ -75,7 +75,14 @@ SOURCES += main.cpp \
     utilities/skillsequence.cpp \
     behavior/mytestbehavior.cpp \
     behavior/defendclosetoball.cpp \
-    behavior/defendfarfromball.cpp
+    behavior/defendfarfromball.cpp \
+    behavior/attackmain.cpp \
+    behavior/attacksupport.cpp \
+    behavior/positionforkickoff.cpp \
+    behavior/sendballtoregion.cpp \
+    strategy/twovone.cpp \
+    skill/kicktopoint.cpp \
+    utilities/region.cpp
 
 HEADERS += \
 	behavior/behavior.h \
@@ -129,8 +136,18 @@ HEADERS += \
     utilities/skillsequence.h \
     behavior/mytestbehavior.h \
     behavior/defendclosetoball.h \
-    behavior/defendfarfromball.h
+    behavior/defendfarfromball.h \
+    behavior/attackmain.h \
+    behavior/attacksupport.h \
+    behavior/positionforkickoff.h \
+    behavior/sendballtoregion.h \
+    strategy/twovone.h \
+    skill/drivingball.h \
+    skill/kicktopoint.h \
+    utilities/region.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 
 unix|win32: LIBS += -lprotobuf
+
+OTHER_FILES +=

@@ -12,6 +12,7 @@
 #include "behavior/mytestbehavior.h"
 #include "behavior/defendclosetoball.h"
 #include "behavior/defendfarfromball.h"
+#include "behavior/attackmain.h"
 
 
 class TestBehavior : public Behavior
@@ -24,8 +25,8 @@ public:
         this->targetPoint = list.getParam<Point>("targetPoint");
 
        // mySeq.addSkill(new Skill::GoToPositionWithOrientation(targetPoint, 0));
-        mySeq.addSkill(new Skill::ObstacleAvoidMove(targetPoint, M_PI_2));
-        mySeq.addSkill(new Skill::ObstacleAvoidMove(pt, 0));
+        mySeq.addSkill(new Skill::ObstacleAvoidMove(targetPoint));
+        mySeq.addSkill(new Skill::ObstacleAvoidMove(pt));
         mySeq.addSkill(new Skill::Stop());
     }
 
@@ -37,8 +38,7 @@ public:
         //RobComm* com = RobComm::getRobComm();
         //com->sendVels(result.left, result.right, robot->getID());
 
-        bool f = mySeq.executeOn(robot);
-        if(f) robot->clearCurrentBeh();
+        mySeq.executeOn(robot);
     }
 
 private:
@@ -80,7 +80,17 @@ void TestStrategy::assignBeh()
 
 
     //james code
-    GameModel* gm = GameModel::getModel();
+//    GameModel* gm = GameModel::getModel();
+//    Robot* r0 = gm->find(0, gm->getMyTeam());
+//    Robot* r1 = gm->find(1, gm->getMyTeam());
+//    if(!r0 || !r1) return;
+
+
+//    //if(r0 != NULL) {
+//     //   BehaviorAssignment<TestBehavior> ass;
+//        //ass.setBehParam<Point>("targetPoint", point())
+//     //   ass.assignBeh(r0);
+//   // }
 
 //    //BehaviorAssignment<DriveBallAndKick> assignment;
 
@@ -90,34 +100,31 @@ void TestStrategy::assignBeh()
 //    assignment.assignBeh(r0);
 
 //    // Narges code testing DriveBallAndKick
-    BehaviorAssignment<DriveBallAndKick> assignment;
-    assignment.setSingleAssignment(true);
-    assignment.assignBeh();
+//    BehaviorAssignment<DriveBallAndKick> assignment;
+//    assignment.setSingleAssignment(true);
+//    assignment.assignBeh();
 
-////    Narges code testing defendCloseToBall
+    //Narges code testing defendCloseToBall
 //    BehaviorAssignment<DefendCloseToBall> assignment;
 //    assignment.setSingleAssignment(true);
 //    assignment.assignBeh();
 
-////    //Narges code testing defendCloseToBall
-//    BehaviorAssignment<DefendCloseToBall> assignment;
-//    assignment.setSingleAssignment(true);
-//    assignment.assignBeh();
-
-////    //Narges code testing defendfarfromball
+    //Narges code testing defendfarfromball
 //    BehaviorAssignment<DefendFarFromBall> assignment;
 //    assignment.setSingleAssignment(true);
 //    assignment.assignBeh();
 
-////    //Narges testing myTestBehavior
-//        BehaviorAssignment<myTestBehavior> assignment;
-//        assignment.setSingleAssignment(true);
-//        assignment.assignBeh();
+    //testing test behavior
+        BehaviorAssignment<AttackMain> assignment;
+        assignment.setSingleAssignment(true);
+        assignment.assignBeh();
 
-//    James code
+
+
+    //James code
 //    BehaviorAssignment<TestBehavior> assignment;
 //    assignment.setSingleAssignment(true);
 //    assignment.setBehParam<Point>("targetPoint", gm->getBallPoint());
-//    assignment.assignBeh();
+//    assignment.assignBeh({r0, r1});
 }
 

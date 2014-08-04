@@ -31,6 +31,11 @@ void Robot::setR(float right)
     R= right;
 }
 
+void Robot::setKick(int Kick)
+{
+    kick = Kick;
+}
+
 void Robot::setCurrentBeh(Behavior *currentBeh)
 {
     currentBehavior = currentBeh;
@@ -69,6 +74,11 @@ int Robot::getL()
 int Robot::getR()
 {
     return R;
+}
+
+int Robot::getKick()
+{
+    return kick;
 }
 
 Behavior * Robot::getCurrentBeh()
