@@ -38,7 +38,8 @@ public:
         //RobComm* com = RobComm::getRobComm();
         //com->sendVels(result.left, result.right, robot->getID());
 
-        mySeq.executeOn(robot);
+        if(mySeq.executeOn(robot))
+            robot->clearCurrentBeh();
     }
 
 private:
@@ -80,10 +81,16 @@ void TestStrategy::assignBeh()
 
 
     //james code
-//    GameModel* gm = GameModel::getModel();
-//    Robot* r0 = gm->find(0, gm->getMyTeam());
-//    Robot* r1 = gm->find(1, gm->getMyTeam());
-//    if(!r0 || !r1) return;
+
+    GameModel* gm = GameModel::getModel();
+#if SIMULATED
+    Robot* r0 = gm->find(0, gm->getMyTeam());
+    Robot* r1 = gm->find(1, gm->getMyTeam());
+#else
+    Robot* r0 = gm->find(3, gm->getMyTeam());
+    Robot* r1 = gm->find(8, gm->getMyTeam());
+#endif
+    if(!r0 || !r1) return;
 
 
 //    //if(r0 != NULL) {
@@ -104,7 +111,7 @@ void TestStrategy::assignBeh()
 //    assignment.setSingleAssignment(true);
 //    assignment.assignBeh();
 
-    //Narges code testing defendCloseToBall
+////    Narges code testing defendCloseToBall
 //    BehaviorAssignment<DefendCloseToBall> assignment;
 //    assignment.setSingleAssignment(true);
 //    assignment.assignBeh();
@@ -115,16 +122,17 @@ void TestStrategy::assignBeh()
 //    assignment.assignBeh();
 
     //testing test behavior
-        BehaviorAssignment<AttackMain> assignment;
-        assignment.setSingleAssignment(true);
-        assignment.assignBeh();
+//        BehaviorAssignment<AttackMain> assignment;
+//        assignment.setSingleAssignment(true);
+//        assignment.assignBeh();
 
 
 
     //James code
-//    BehaviorAssignment<TestBehavior> assignment;
-//    assignment.setSingleAssignment(true);
-//    assignment.setBehParam<Point>("targetPoint", gm->getBallPoint());
-//    assignment.assignBeh({r0, r1});
+    BehaviorAssignment<TestBehavior> assignment;
+    assignment.setSingleAssignment(true);
+    Point p = gm->getBallPoint() - Point (200,200);
+    assignment.setBehParam<Point>("targetPoint",p );
+    assignment.assignBeh({r0, r1});
 }
 

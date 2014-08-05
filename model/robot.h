@@ -25,6 +25,7 @@ public:
     void setR(float);
     void setL(float);
     void setKick(int);
+    void setDrible(bool);
     void setCurrentBeh(Behavior *);
     
 
@@ -35,6 +36,7 @@ public:
     int getR();
     int getL();
     int getKick();
+    bool getDrible();
     Behavior * getCurrentBeh();
 	
 	void clearCurrentBeh();
@@ -52,6 +54,7 @@ private:
     float L, R; // used for robot's movements
     Behavior *currentBehavior;
     unsigned kick;
+    bool drible;
 
 };
 
