@@ -18,6 +18,7 @@ namespace Skill {
         enum states {initial, moveBehindBall, moveTowardBall, driveBall, haveTheBall} state;
         Skill * skill;
         Point *behindBall;
+        Point *goal;
 
     };
 }
