@@ -45,18 +45,23 @@ void DriveBallAndKick::perform(Robot* robot)
             abs(Measurments::angleDiff(robot->getOrientation(), direction)) < ANGLE/2 &&
             Measurments::angleDiff(robot->getOrientation(), abs(Measurments::angleBetween(robot->getRobotPosition(), gm->getBallPoint()))) <= ANGLE/4*5)
         {
-                state = kicking;
-                skill = new Skill::Kick();
+            cout<<"first kick try"<<endl;
+            state = kicking;
+            skill = new Skill::Kick();
         }
-//        else/* if(Measurments::distance(gm->getBallPoint(), kickPoint))*/
+//        else if (Measurments::isClose(robot->getRobotPosition(), kickPoint, CLOSE_ENOUGH/2) &&
+//                 Measurments::angleDiff(robot->getOrientation(), abs(Measurments::angleBetween(robot->getRobotPosition(), gm->getBallPoint()))) > ANGLE/2)
 //        {
-//            state = driving;
-//            skill = new Skill::DriveBall(kickPoint, direction);
-//        }
-//        if (Measurments::distance(*ballPoint, gm->getBallPoint()) > CLOSE_ENOUGH)
-//        {
-//            state = driving;
-//            skill = new Skill::DriveBall(kickPoint, direction);
+//            cout << "second kick try!"<<endl;
+//            behindBall = new Point(DIST*5*cos(Measurments::angleBetween(goal,gm->getBallPoint()))+gm->getBallPoint().x,
+//                                   DIST*5*sin(Measurments::angleBetween(goal,gm->getBallPoint()))+gm->getBallPoint().y);
+//            skill = new Skill::GoToPositionWithOrientation (*behindBall, Measurments::angleBetween(gm->getBallPoint(), goal));
+//            if (Measurments::isClose(robot->getRobotPosition(), gm->getBallPoint(), CLOSE_ENOUGH) &&
+//                Measurments::angleDiff(robot->getOrientation(), Measurments::angleBetween(gm->getBallPoint(), goal)) < ANGLE)
+//            {
+//                state = kicking;
+//                skill = new Skill::Kick();
+//            }
 //        }
 
         break;
@@ -67,8 +72,6 @@ void DriveBallAndKick::perform(Robot* robot)
         break;
     case idling:
         cout << "in switch idling!"<<endl;
-        cout << "test\t" << Measurments::distance(robot->getRobotPosition(), kickPoint) << "\t"
-             << (Measurments::angleDiff(robot->getOrientation(), Measurments::angleBetween(robot->getRobotPosition(), gm->getBallPoint())))/M_PI*180<<endl;
         if (kickPoint.x > gm->getBallPoint().x)
         {
             state = driving;
@@ -81,12 +84,7 @@ void DriveBallAndKick::perform(Robot* robot)
             state = kicking;
             skill = new Skill::Kick();
         }
-//        else if (Measurments::isClose(robot->getRobotPosition(), kickPoint, CLOSE_ENOUGH) &&
-//                 Measurments::angleDiff(robot->getOrientation(), Measurments::angleBetween(robot->getRobotPosition(), gm->getBallPoint())) > ANGLE/2)
-//        {
-//            state = driving;
-//            skill = new Skill::DriveBall(kickPoint, direction);
-//        }
+
         break;
     }
 

@@ -78,11 +78,11 @@ namespace Skill
             break;
         case driveBall:
             cout <<"drive the ball"<<endl;
-            cout << "robot & ball dist\t"<< Measurments::distance(robot->getRobotPosition(), gm->getBallPoint()) <<endl;
-            cout << "robot and target dist\t" << Measurments::distance(robot->getRobotPosition(), targetPosition) <<endl;
-            cout << "target and ball dist\t" << Measurments::distance(targetPosition, gm->getBallPoint()) << endl;
-            cout << " angle diff robot and ball\t" <<
-                    Measurments::angleDiff(robot->getOrientation(), Measurments::angleBetween(robot->getRobotPosition(), gm->getBallPoint()))<< endl;
+//            cout << "robot & ball dist\t"<< Measurments::distance(robot->getRobotPosition(), gm->getBallPoint()) <<endl;
+//            cout << "robot and target dist\t" << Measurments::distance(robot->getRobotPosition(), targetPosition) <<endl;
+//            cout << "target and ball dist\t" << Measurments::distance(targetPosition, gm->getBallPoint()) << endl;
+//            cout << " angle diff robot and ball\t" <<
+//                    Measurments::angleDiff(robot->getOrientation(), Measurments::angleBetween(robot->getRobotPosition(), gm->getBallPoint()))/M_PI*180<< endl;
             if(!Measurments::isClose(robot->getRobotPosition(), gm->getBallPoint(), CLOSE_ENOUGH))
             {
                 state = moveBehindBall;
@@ -90,40 +90,6 @@ namespace Skill
                                        DIST*sin(Measurments::angleBetween(targetPosition,gm->getBallPoint()))+gm->getBallPoint().y);
                 skill = new GoToPositionWithOrientation (*behindBall, Measurments::angleBetween(gm->getBallPoint(), targetPosition));
             }
-//            else if(Measurments::isClose(targetPosition, gm->getBallPoint(), CLOSE_ENOUGH) &&
-//                    Measurments::isClose(robot->getRobotPosition(), targetPosition, CLOSE_ENOUGH) &&
-//                    Measurments::angleDiff(robot->getOrientation(), Measurments::angleBetween(robot->getRobotPosition(), gm->getBallPoint())) > ANGLE)
-//            {
-//                state = moveBehindBall;
-//                behindBall = new Point(DIST*cos(Measurments::angleBetween(targetPosition,gm->getBallPoint()))+gm->getBallPoint().x,
-//                                       DIST*sin(Measurments::angleBetween(targetPosition,gm->getBallPoint()))+gm->getBallPoint().y);
-//                skill = new GoToPositionWithOrientation (*behindBall, Measurments::angleBetween(gm->getBallPoint(), targetPosition));
-//            }
-//            else if(!Measurments::isClose(robot->getRobotPosition(), gm->getBallPoint(), CLOSE_ENOUGH) &&
-//                    Measurments::isClose(robot->getRobotPosition(), targetPosition, CLOSE_ENOUGH))
-//            {
-//                state = moveBehindBall;
-//                behindBall = new Point(DIST*cos(Measurments::angleBetween(targetPosition,gm->getBallPoint()))+gm->getBallPoint().x,
-//                                       DIST*sin(Measurments::angleBetween(targetPosition,gm->getBallPoint()))+gm->getBallPoint().y);
-//                skill = new GoToPositionWithOrientation (*behindBall, Measurments::angleBetween(gm->getBallPoint(), targetPosition));
-//            }
-            //****************
-//            else if(Measurments::isClose(targetPosition, gm->getBallPoint(), CLOSE_ENOUGH/3*4) &&
-//                    Measurments::angleDiff(robot->getOrientation(), Measurments::angleBetween(robot->getRobotPosition(), gm->getBallPoint())) > ANGLE)
-//            {
-//                state = moveBehindBall;
-//                behindBall = new Point(DIST*cos(Measurments::angleBetween(targetPosition,gm->getBallPoint()))+gm->getBallPoint().x,
-//                                       DIST*sin(Measurments::angleBetween(targetPosition,gm->getBallPoint()))+gm->getBallPoint().y);
-//                skill = new GoToPositionWithOrientation (*behindBall, Measurments::angleBetween(gm->getBallPoint(), targetPosition));
-//            }
-//            else if(!Measurments::isClose(targetPosition, gm->getBallPoint(), CLOSE_ENOUGH/3*4) &&
-//                    Measurments::angleDiff(robot->getOrientation(), Measurments::angleBetween(robot->getRobotPosition(), gm->getBallPoint())) > ANGLE)
-//            {
-//                state = moveBehindBall;
-//                behindBall = new Point(DIST*cos(Measurments::angleBetween(targetPosition,gm->getBallPoint()))+gm->getBallPoint().x,
-//                                       DIST*sin(Measurments::angleBetween(targetPosition,gm->getBallPoint()))+gm->getBallPoint().y);
-//                skill = new GoToPositionWithOrientation (*behindBall, Measurments::angleBetween(gm->getBallPoint(), targetPosition));
-//            }
             break;
         }
 
