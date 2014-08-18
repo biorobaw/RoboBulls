@@ -1,9 +1,9 @@
-#ifndef GLOBALS_H
+﻿#ifndef GLOBALS_H
 #define GLOBALS_H
 
 // SIMULATED 1 ==> running simulator
 //SIMULATED 0 ==> running robots on the field
-#define SIMULATED 0
+#define SIMULATED 1
 // Overall velocity for all behaviors
 //  10 somewhat fast in the robots
 #define OVERALL_VELOCITY 5
@@ -41,7 +41,7 @@
  *    actual velocity, as it is constantly rotating.
  */
 #if SIMULATED
-    #define DIST_TOLERANCE 20
+    #define DIST_TOLERANCE 10
     #define DIST_VELOCITY 80
 #else
     #define DIST_TOLERANCE 100
@@ -50,12 +50,11 @@
 
 
 /*
- * ROT_TOLERANCE: The range the target and robot angle have to be to each other
- *     to be considered equal (in radians).
+ * ROT_TOLERANCE: The max difference in angle for two angles to be considered equal
  * ROT_VELOCITY:  Velocity applied to each motor in rotation.
  */
 #if SIMULATED
-    #define ROT_TOLERANCE 7*(M_PI/180)
+    #define ROT_TOLERANCE 5*(M_PI/180)
     #define ROT_VELOCITY 20
 #else
     #define ROT_TOLERANCE 10*(M_PI/180)

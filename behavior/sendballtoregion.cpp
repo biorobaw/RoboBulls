@@ -9,7 +9,7 @@ SendBallToRegion::SendBallToRegion(const ParameterList & list)
 void SendBallToRegion::perform(Robot * robot)
 {
     #if TRACE
-        cout << "Performing Behavior::SendBallToRegion" << endl;
+        cout << endl<<"Performing Behavior::SendBallToRegion" << endl;
     #endif
 
 

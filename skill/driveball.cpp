@@ -9,9 +9,16 @@
 #include "skill/differential_control/closedloopcontrol.h"
 #include "math.h"
 
-#define DIST 100
-#define CLOSE_ENOUGH 200
-#define ANGLE 20*M_PI/180
+
+#if SIMULATED
+    #define CLOSE_ENOUGH 20
+    #define ANGLE 7*M_PI/180
+    #define DIST 50
+#else
+    #define CLOSE_ENOUGH 200
+    #define ANGLE 20*M_PI/180
+    #define DIST 100
+#endif
 
 namespace Skill
 {

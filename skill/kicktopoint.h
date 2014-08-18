@@ -14,7 +14,7 @@ public:
     bool perform(Robot *);
 private:
 #if SIMULATED
-    const int dist_position = 90;
+    const int dist_position = 100;
     const int dist_kick = 115;
 #else
     const int dist_position = 50;

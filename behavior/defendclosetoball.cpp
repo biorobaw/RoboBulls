@@ -28,8 +28,6 @@ void DefendCloseToBall::perform(Robot *robot)
 
     wheelvelocities wheelVel = clc.closed_loop_control(robot, frontOfBall.x, frontOfBall.y, direction);
 
-    RobComm* rc = RobComm::getRobComm();
-
-    rc->sendVels(wheelVel.left, wheelVel.right, robot->getID());
-
+    robot->setL(wheelVel.left);
+    robot->setR(wheelVel.right);
 }

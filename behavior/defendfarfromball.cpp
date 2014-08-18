@@ -7,7 +7,7 @@
 #include "communication/robcomm.h"
 
 //The distance from the goal where the defend robot stays
-#define DISTANCE 700
+#define DISTANCE 500
 
 DefendFarFromBall::DefendFarFromBall(const ParameterList& list)
 {
@@ -28,7 +28,6 @@ void DefendFarFromBall::perform(Robot *robot)
 
     wheelvelocities wheelVel = clc.closed_loop_control(robot, defensiveWall.x, defensiveWall.y, direction);
 
-    RobComm* rc = RobComm::getRobComm();
-
-    rc->sendVels(wheelVel.left, wheelVel.right, robot->getID());
+    robot->setL(wheelVel.left);
+    robot->setR(wheelVel.right);
 }

@@ -26,8 +26,7 @@ namespace Skill {
         this->control.setVelMultiplier(multipier);
     }
 
-    bool GoToPositionWithOrientation::
-    perform(Robot* robot)
+    bool GoToPositionWithOrientation::perform(Robot* robot)
     {
         #if TRACE
             cout <<"Performing Skill::GoToPosition" << endl;
@@ -38,16 +37,16 @@ namespace Skill {
         wheelvelocities wheelvelocity =
             control.closed_loop_control(robot, targetPosition.x, targetPosition.y, goalOrientation);
 
-        //float left_wheel_velocity  = wheelvelocity.left;
-        //float right_wheel_velocity = wheelvelocity.right;
-
-        //nxtbee->sendVels(left_wheel_velocity, right_wheel_velocity, robot->getID());
-
         robot->setL(wheelvelocity.left);
         robot->setR(wheelvelocity.right);
 		
-		
-        if(Measurments::isClose(targetPosition, robot->getRobotPosition(), 250)) {
+        #if SIMULATED
+            int dist_tolerance = 5;
+        #else
+            int dist_tolerance = 250;
+        #endif
+
+        if(Measurments::isClose(targetPosition, robot->getRobotPosition(), dist_tolerance)) {
 			return true;
 		} else {
 			return false;

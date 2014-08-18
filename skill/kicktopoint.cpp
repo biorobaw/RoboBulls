@@ -47,7 +47,7 @@ namespace Skill{
         case positioning:
             GoToPositionWithOrientation * goToPos = new GoToPositionWithOrientation (behindBall, ballToTarget);
             #if SIMULATED
-                goToPos->setVelocityMultiplier(7);
+                goToPos->setVelocityMultiplier(3);
             #else
                 goToPos->setVelocityMultiplier(1);
             #endif

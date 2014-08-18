@@ -1,6 +1,5 @@
 #include "simrobcomm.h"
-#include <math.h>
-#include "include/globals.h"
+
 
 SimRobComm::SimRobComm()
 {
@@ -12,6 +11,22 @@ SimRobComm::SimRobComm()
 void SimRobComm::sendVels(int leftVel, int rightVel, int robotId)
 {
     sendPacket(robotId, leftVel, rightVel, false, true);
+}
+
+void SimRobComm::sendVelsLarge(std::vector<Robot *> robots)
+{
+    for (Robot* rob : robots)
+    {
+        bool kick, dribble;
+
+        if (rob->getKick()==1) kick = true;
+        else kick = false;
+
+        dribble = false;
+
+        sendPacket(rob->getID(),rob->getL(),rob->getR(),kick,dribble);
+        rob->setKick(0);
+    }
 }
 
 void SimRobComm::sendKick(int robotId)
@@ -33,8 +48,8 @@ void SimRobComm::sendPacket(int id, int leftVel, int rightVel, bool kick, bool d
 
     // Adapt velocities to the format and range of the simulator
     // The simulator needs a forward velocity and spin velocity separate
-//    double forwardVel = (leftVel + rightVel) / 2;
-//    double rotationVel = (leftVel - rightVel) / 2;
+    //double forwardVel = (leftVel + rightVel) / 2;
+    //double rotationVel = (leftVel - rightVel) / 2;
     double forwardVel = 0;
     double rotationVel = 0;
     // Supposing that the robot goes 1 m/s at full speed

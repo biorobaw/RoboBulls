@@ -8,7 +8,7 @@ NXTRobComm::NXTRobComm()
     int Ret; //used for return values
 
     // open serial port
-    Ret=Xbee.Open("/dev/xbee",9600);
+    Ret=Xbee.Open("/dev/xbee",57600);
 
     if (Ret!=1) { // If an error occured...
         printf ("Error while opening port. Permission problem ?\n"); // ... display a message ...

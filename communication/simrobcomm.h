@@ -2,10 +2,13 @@
 #define SIMROBCOMM_H
 
 #include <QtNetwork>
+#include <math.h>
+
+#include "include/globals.h"
+#include "model/robot.h"
 #include "include/grSim_Packet.pb.h"
 #include "include/grSim_Commands.pb.h"
 #include "include/grSim_Replacement.pb.h"
-
 #include "robcomm.h"
 
 const float mappingRatio = 30;
@@ -15,6 +18,7 @@ class SimRobComm : public RobComm
 public:
     SimRobComm();
     void sendVels(int leftVel, int rightVel, int robotId);
+    void sendVelsLarge(std::vector<Robot *>);
     void sendKick(int robotId);
 
 private:
