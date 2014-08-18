@@ -36,6 +36,14 @@ void Robot::setKick(int Kick)
     kick = Kick;
 }
 
+bool Robot::getDrible(){
+    return drible;
+}
+
+void Robot::setDrible(bool drible){
+    this->drible = drible;
+}
+
 void Robot::setCurrentBeh(Behavior *currentBeh)
 {
     currentBehavior = currentBeh;

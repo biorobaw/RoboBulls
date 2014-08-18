@@ -1,11 +1,20 @@
 #include "simrobcomm.h"
 
+#include <math.h>
+#include "include/globals.h"
+#include "model/robot.h"
 
 SimRobComm::SimRobComm()
 {
     _addr = "131.247.14.106";
     //_addr = "127.0.0.1";
     _port = 20011;
+}
+
+void SimRobComm::sendVelsLarge(vector<Robot*> robots)
+{
+    for (Robot * r : robots)
+        sendPacket(r->getID(), r->getL(), r->getR(), r->getKick(), r->getDrible());
 }
 
 void SimRobComm::sendVels(int leftVel, int rightVel, int robotId)

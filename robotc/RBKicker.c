@@ -6,6 +6,8 @@
 /// Modified by Robobulls
 ///----------------------------------------------------------------------------
 
+
+
 #pragma platform(NXT)
 
 int readId(){
@@ -37,13 +39,31 @@ void setupHighSpeedLink()
 {
 	// Initialize port S$ to "high speed" mode.
 	nxtEnableHSPort();
-	nxtSetHSBaudRate(9600);
+	// XBees must be preset to 115200 on beforehand
+	// And also execute this function
+	nxtSetHSBaudRate(57600);
 	nxtHS_Mode = hsRawMode;
 	//nxtHS_Mode = hsMsgModeMaster;
 
 	return;
 }
 
+////////////////////////////////////////////////////////////////////////
+// Set the kicker in a known position
+////////////////////////////////////////////////////////////////////////
+void kickerToKnownPos(){
+	motor[motorA] = 20;
+	int prevEnc = nMotorEncoder[motorA];
+	int enc;
+	bool equal;
+	do {
+		wait1Msec(50);
+		enc = nMotorEncoder[motorA];
+		equal = (enc == prevEnc);
+		prevEnc = enc;
+	} while (!equal);
+	motor[motorA] = 0;
+}
 
 ////////////////////////////////////////////////////////////////////////
 // Steer the motors and kick
@@ -56,15 +76,16 @@ void steerMotors(int steerL, int steerR, int kick)
 
 	////Kicking////
 	if(kick == 1){
-		nMotorEncoderTarget[motorA] = -200;
+		nMotorEncoderTarget[motorA] = -100;
 		motor[motorA] = -100;
 		while(nMotorRunState[motorA] != runStateIdle){
 		}
-		nMotorEncoderTarget[motorA] = 200;
-		motor[motorA] = 100;
+		nMotorEncoderTarget[motorA] = 100;
+		motor[motorA] = 50;
 		while(nMotorRunState[motorA] != runStateIdle){
 		}
-		kick = 0;
+
+		kickerToKnownPos();
 	}
 }
 
@@ -95,6 +116,13 @@ task main()
 	nMotorPIDSpeedCtrl[motorC] = mtrSpeedReg;
 	nMotorPIDSpeedCtrl[motorA] = mtrSpeedReg;
 	nMotorEncoder[motorA] = 0;
+
+	// Get Kicker to known position
+	kickerToKnownPos();
+
+	//wait1Msec(50);
+
+	//steerMotors(0, 0, 1);
 
 	// State variable
 	//  - w: waiting for message
