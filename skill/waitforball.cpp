@@ -7,9 +7,6 @@ waitForBall::waitForBall()
 {
 }
 
-//void waitForBall::perform(Robot * rob)
-//{
 
-//}
 
 }

@@ -24,6 +24,10 @@ namespace Skill
 
     bool DriveBall::perform(Robot* robot)
     {
+//        #if TRACE
+//            cout << "Performing Skill::DriveBall" << endl;
+//        #endif
+
         GameModel *gm = GameModel::getModel();
 
         switch(state)
@@ -64,7 +68,7 @@ namespace Skill
                 state = driveBall;
                 GoToPositionWithOrientation *gotoPos = new GoToPositionWithOrientation (targetPosition, direction);
                 //reducing speed when robot has the ball in order to keep the ball
-                gotoPos->setVelocityMultiplier(0.5);
+                gotoPos->setVelocityMultiplier(0.7);
                 skill = gotoPos;
             }
             // If the ball has changed position
@@ -94,6 +98,7 @@ namespace Skill
         }
 
         skill->perform(robot);
+
         return false;
     }
 }

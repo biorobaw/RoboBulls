@@ -21,7 +21,8 @@ void exitStopRobot(int param)
     RobComm* nxt  = RobComm::getRobComm();
 
     for(Robot* rob : gm->getMyTeam()) {
-        nxt->sendVels(0, 0, rob->getID());
+        rob->setL(0);
+        rob->setR(0);
     }
 	
 	exit(1);

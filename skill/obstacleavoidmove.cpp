@@ -36,6 +36,10 @@ static bool ptIsInFrontOfRob(Robot* rob, const Point& pt)
 
 bool ObstacleAvoidMove::perform(Robot* robot)
 {
+//    #if TRACE
+//        cout << "Performing Skill::ObstacleAvoidMove" << endl;
+//    #endif
+
     if(!hasFoundPathEnd)
     {
         /* Primary: Obstacle avoidance

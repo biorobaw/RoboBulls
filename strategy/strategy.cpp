@@ -7,9 +7,6 @@ Strategy::Strategy()
 {
 }
 
-//void strategy::assignBeh()
-//{
-//    cout<<"Test 2!!!"<<endl;
-//}
+
 
 

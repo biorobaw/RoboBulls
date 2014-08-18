@@ -14,7 +14,7 @@ class SimRobComm : public RobComm
 {
 public:
     SimRobComm();
-    void sendVels(int leftVel, int rightVel, int robotId);
+    virtual void sendVelsLarge(std::vector <Robot*>);
     void sendKick(int robotId);
 
 private:
@@ -22,6 +22,7 @@ private:
     QHostAddress _addr;
     quint16 _port;
 
+    void sendVels(int leftVel, int rightVel, int robotId);
     void sendPacket(int id, int leftVel, int rightVel, bool kick, bool drible);
 };
 

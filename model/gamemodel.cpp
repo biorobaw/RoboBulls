@@ -9,25 +9,40 @@ GameModel::GameModel()
 {
    //this->sc = sc;
     gameState = '\0';
+    hasChanged = false;
+//    for (int i = 0; i < 5; i++){
+//        Robot * r = new Robot();
+//        r->setID(i);
+//        myTeam.push_back(r);
+//    }
 }
 
+
+void GameModel::notifyObservers(){
+    if (hasChanged)
+        sc->gameModelUpdated();
+
+    hasChanged = false;
+}
 
 void GameModel::setOponentTeam(vector<Robot*> team )
 {
     opTeam = team;
-    sc->gameModelUpdated();
+//    sc->gameModelUpdated();
+    hasChanged = true;
 }
 
 void GameModel::setMyTeam(vector <Robot*> team)
 {
     myTeam = team;
-    sc->gameModelUpdated();
-
+//    sc->gameModelUpdated();
+    hasChanged = true;
 }
 
 void GameModel::setBallPoint(Point bp)
 {
     ballPoint = bp;
+    hasChanged = true;
 }
 
 void GameModel::setGameState(char gameState)
@@ -127,7 +142,7 @@ GameModel * GameModel::getModel()
 
 Point GameModel::getPenaltyPoint()
 {
-    if (TEAM == 0)
+    if (TEAM == 1)
         return Point(2045, 22);
     else
         return Point(-2045, 22);

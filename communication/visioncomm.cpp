@@ -79,7 +79,6 @@ void VisionComm::updateInfo(SSL_DetectionRobot robot, string color)
 
     gamemodel->setMyTeam(myTeam);
     gamemodel->setOponentTeam(opTeam);
-
     //cout<<"Ball Position:\t"<<gamemodel->getBallPoint().x << " , " << gamemodel->getBallPoint().y<<endl;
 
 //    cout << gamemodel->toString() << endl;
@@ -158,10 +157,11 @@ bool VisionComm::receive()
                     }
                 }
             }//if_team
+            gamemodel->notifyObservers();
         }
     }
 //        cout << "Size at end of detection: " << gamemodel->getMyTeam().size()+gamemodel->getOponentTeam().size() << endl;
-//    cout <<gamemodel->toString().str();
+//    cout <<gamemodel->toString();
 
     return true;
 }

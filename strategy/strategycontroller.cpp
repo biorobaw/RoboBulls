@@ -7,8 +7,9 @@
 #include "behavior/behavior.h"
 
 #include "strategy/stopstrategy.h"
-#include "strategy/penaltystrategy.h"
+#include "strategy/twovone.h"
 #include "strategy/teststrategy.h"
+
 
 using namespace std;
 
@@ -30,7 +31,7 @@ void StrategyController::gameModelUpdated()
     }
     else if (model->getGameState() == 'p')
     {
-        activeStrategy = new PenaltyStrategy();
+        activeStrategy = new StopStrategy();
     }
     else
     {
@@ -45,8 +46,11 @@ void StrategyController::gameModelUpdated()
         Robot *rob = model->getMyTeam().at(i);
 
         if(rob->hasBeh)
-			rob->getCurrentBeh()->perform(rob);
+            rob->getCurrentBeh()->perform(rob);
     }
+
+    RobComm * robcom = RobComm::getRobComm();
+    robcom->sendVelsLarge(model->getMyTeam());
 	
 	delete activeStrategy;
 }

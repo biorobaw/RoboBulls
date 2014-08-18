@@ -24,6 +24,8 @@ public:
     void setID(int);
     void setR(float);
     void setL(float);
+    void setKick(int);
+    void setDrible(bool);
     void setCurrentBeh(Behavior *);
     
 
@@ -33,12 +35,14 @@ public:
     int getID();
     int getR();
     int getL();
+    int getKick();
+    bool getDrible();
     Behavior * getCurrentBeh();
 	
 	void clearCurrentBeh();
     std::string toString();
 
-    unsigned kick;
+
     int count;
     bool hasBall;
     bool hasBeh;
@@ -49,6 +53,8 @@ private:
     int id;
     float L, R; // used for robot's movements
     Behavior *currentBehavior;
+    unsigned kick;
+    bool drible;
 
 };
 

@@ -13,6 +13,7 @@ public:
     ~NXTRobComm();
 
     void sendVels(int leftVel, int rightVel, int robotId);
+    void sendVelsLarge(std::vector<Robot *>);
     void sendKick(int robotId);
 private:
     void send(unsigned);

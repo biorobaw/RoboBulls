@@ -26,21 +26,28 @@ namespace Skill {
         this->control.setVelMultiplier(multipier);
     }
 
-    bool GoToPositionWithOrientation::perform(Robot* robot)
+    bool GoToPositionWithOrientation::
+    perform(Robot* robot)
     {
+//        #if TRACE
+//            cout <<"Performing Skill::GoToPosition" << endl;
+//        #endif
+
         RobComm *nxtbee = RobComm::getRobComm();
 
         wheelvelocities wheelvelocity =
             control.closed_loop_control(robot, targetPosition.x, targetPosition.y, goalOrientation);
 
-        float left_wheel_velocity  = wheelvelocity.left;
-        float right_wheel_velocity = wheelvelocity.right;
+        //float left_wheel_velocity  = wheelvelocity.left;
+        //float right_wheel_velocity = wheelvelocity.right;
 
-        nxtbee->sendVels(left_wheel_velocity, right_wheel_velocity, robot->getID());
+        //nxtbee->sendVels(left_wheel_velocity, right_wheel_velocity, robot->getID());
+
+        robot->setL(wheelvelocity.left);
+        robot->setR(wheelvelocity.right);
 		
 		
         if(Measurments::isClose(targetPosition, robot->getRobotPosition(), 250)) {
-            //std::cout << "GOTOWO finished" << std::endl;
 			return true;
 		} else {
 			return false;

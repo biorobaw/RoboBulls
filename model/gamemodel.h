@@ -75,6 +75,8 @@ public:
 
     std::string toString();
 
+    void notifyObservers();
+
 
 private:
     static GameModel * model;
@@ -96,6 +98,7 @@ private:
 
     char gameState;
 
+    bool hasChanged;
     StrategyController *sc;
 };
 

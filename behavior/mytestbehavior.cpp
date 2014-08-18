@@ -9,9 +9,11 @@
 myTestBehavior::myTestBehavior(const ParameterList& list)
 {
     GameModel *model = GameModel::getModel();
+    Point kickPoint(-1600, M_PI);
     Point target = model->getPenaltyPoint();
 //    this->TargetPoint = list.getParam<Point>("targetPoint");
-    mySkill = new Skill::DriveBall(target, 0);
+    mySkill = new Skill::DriveBall(kickPoint, 0);
+    cout << "performing" << endl;
 }
 
 void myTestBehavior::perform(Robot * myRobot)
@@ -29,6 +31,9 @@ void myTestBehavior::perform(Robot * myRobot)
     //********************************************************************************
 
     //Testing drive ball
+
+//    cout << model->getOpponentGoal()
+    cout << "performing" << endl;
 
     mySkill->perform(myRobot);
 }
