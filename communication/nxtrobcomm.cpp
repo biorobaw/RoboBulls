@@ -39,7 +39,6 @@ void NXTRobComm::sendVels(int leftVel, int rightVel, int robotId)
 {
     char comm[5] = {'~', (char)robotId, (char)leftVel, (char)rightVel, 0};
     send(&comm[0], 5);
-    //usleep(10000);
 }
 
 void NXTRobComm::sendKick(int robotId)
@@ -65,4 +64,10 @@ void NXTRobComm::sendVelsLarge(vector<Robot *> robots)
     }
     send(&largePacket[0], robots.size()*5);
 
+}
+
+void NXTRobComm::sendVelsThreeOmni(int left, int right, int back, int ID)
+{
+    char comm[6] = {'~', (char)ID, (char)left, (char)right, (char)back, char(0)};
+    send(&comm[0], 6);
 }

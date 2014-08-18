@@ -19,6 +19,7 @@ public:
     //Sends given velocities to left and right wheels a robot recognized by robot ID
     //virtual void sendVels(int leftVel, int rightVel, int robotId) = 0;
     virtual void sendVelsLarge(std::vector <Robot*>)=0;
+    virtual void sendVelsThreeOmni(int left,int right, int back, int ID)=0;
     //Sends a kick signal to a robot recognized by robot ID
     virtual void sendKick(int robotId) = 0;
 

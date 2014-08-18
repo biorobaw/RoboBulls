@@ -13,6 +13,8 @@
 #include "behavior/defendclosetoball.h"
 #include "behavior/defendfarfromball.h"
 #include "behavior/attackmain.h"
+#include "skill/three_omni_motion/gotoposebasic.h"
+#include "communication/nxtrobcomm.h"
 
 
 class TestBehavior : public Behavior
@@ -56,6 +58,13 @@ TestStrategy::TestStrategy()
 
 void TestStrategy::assignBeh()
 {
+    //Shamsi 3 wheeled omnidrive
+        RobComm * comm = RobComm::getRobComm();
+        GoToPoseBasic instance;
+        threeWheelVels control = instance.calcWheelVels(0,-1000,M_PI/2);
+        comm->sendVelsThreeOmni(control.L,control.R,control.B,1);
+        cout << "Sending Velocities" << endl;
+
     //Martin code
 //    cout << "running test strategy!" << endl;
 //    GameModel * gm = GameModel::getModel();
@@ -82,15 +91,15 @@ void TestStrategy::assignBeh()
 
     //james code
 
-    GameModel* gm = GameModel::getModel();
-#if SIMULATED
-    Robot* r0 = gm->find(0, gm->getMyTeam());
-    Robot* r1 = gm->find(1, gm->getMyTeam());
-#else
-    Robot* r0 = gm->find(3, gm->getMyTeam());
-    Robot* r1 = gm->find(8, gm->getMyTeam());
-#endif
-    if(!r0 || !r1) return;
+//    GameModel* gm = GameModel::getModel();
+//#if SIMULATED
+//    Robot* r0 = gm->find(0, gm->getMyTeam());
+//    Robot* r1 = gm->find(1, gm->getMyTeam());
+//#else
+//    Robot* r0 = gm->find(3, gm->getMyTeam());
+//    Robot* r1 = gm->find(8, gm->getMyTeam());
+//#endif
+//    if(!r0 || !r1) return;
 
 
 //    //if(r0 != NULL) {
@@ -111,7 +120,7 @@ void TestStrategy::assignBeh()
 //    assignment.setSingleAssignment(true);
 //    assignment.assignBeh();
 
-////    Narges code testing defendCloseToBall
+//    Narges code testing defendCloseToBall
 //    BehaviorAssignment<DefendCloseToBall> assignment;
 //    assignment.setSingleAssignment(true);
 //    assignment.assignBeh();
@@ -129,10 +138,10 @@ void TestStrategy::assignBeh()
 
 
     //James code
-    BehaviorAssignment<TestBehavior> assignment;
-    assignment.setSingleAssignment(true);
-    Point p = gm->getBallPoint() - Point (200,200);
-    assignment.setBehParam<Point>("targetPoint",p );
-    assignment.assignBeh({r0, r1});
+//    BehaviorAssignment<TestBehavior> assignment;
+//    assignment.setSingleAssignment(true);
+//    Point p = gm->getBallPoint() - Point (200,200);
+//    assignment.setBehParam<Point>("targetPoint",p );
+//    assignment.assignBeh({r0, r1});
 }
 

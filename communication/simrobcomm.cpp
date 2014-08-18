@@ -11,12 +11,6 @@ SimRobComm::SimRobComm()
     _port = 20011;
 }
 
-void SimRobComm::sendVelsLarge(vector<Robot*> robots)
-{
-    for (Robot * r : robots)
-        sendPacket(r->getID(), r->getL(), r->getR(), r->getKick(), r->getDrible());
-}
-
 void SimRobComm::sendVels(int leftVel, int rightVel, int robotId)
 {
     sendPacket(robotId, leftVel, rightVel, false, true);
