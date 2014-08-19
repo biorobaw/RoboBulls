@@ -116,7 +116,7 @@ wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, double x_goal,
     double robot_turnrate = OVERALL_VELOCITY * velMultiplier *
         (kalpha*newAlpha + kbeta*newBeta + kAlphaI*newSumErrAlpha + kBetaI*newSumErrBeta);
 
-    if (newRho > DIST_TOLERANCE)
+    if (newRho > 100)
     {
         float Pi2R = 2*M_PI*wheel_radius;
         left_motor_velocity  = ((robot_xvel / Pi2R) - (wheel_separation * robot_turnrate/Pi2R))/2;
@@ -130,6 +130,7 @@ wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, double x_goal,
         left_motor_velocity  = OVERALL_VELOCITY * velMultiplier * CLC_ROTATONG_VEL*-angDiff;
         right_motor_velocity = OVERALL_VELOCITY * velMultiplier * CLC_ROTATONG_VEL*angDiff;
     }
+
 
     //*******************************************************************************************
     //*******************************************************************************************

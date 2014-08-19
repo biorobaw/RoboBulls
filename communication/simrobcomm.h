@@ -20,6 +20,8 @@ public:
 
     virtual void sendVelsLarge(std::vector <Robot*>);
 
+    virtual void sendVelsThreeOmni(int left,int right, int back, int ID);
+
     void sendKick(int robotId);
 
 private:

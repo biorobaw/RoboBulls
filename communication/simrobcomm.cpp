@@ -32,6 +32,8 @@ void SimRobComm::sendVelsLarge(std::vector<Robot *> robots)
     }
 }
 
+void SimRobComm::sendVelsThreeOmni(int left,int right, int back, int ID){}
+
 void SimRobComm::sendKick(int robotId)
 {
     sendPacket(robotId, 0, 0, true, false);

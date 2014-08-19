@@ -56,7 +56,6 @@ SOURCES += main.cpp \
 	model/robot.cpp \
 	skill/basic_movement.cpp \
 	skill/differential_control/closedloopcontrol.cpp \
-	skill/differential_control/robottoinertialvelocities.cpp \
 	skill/driveball.cpp \
 	skill/gotopositionwithorientation.cpp \
 	skill/kick.cpp \

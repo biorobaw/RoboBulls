@@ -58,12 +58,15 @@ TestStrategy::TestStrategy()
 
 void TestStrategy::assignBeh()
 {
-    //Shamsi 3 wheeled omnidrive
-        RobComm * comm = RobComm::getRobComm();
-        GoToPoseBasic instance;
-        threeWheelVels control = instance.calcWheelVels(0,-1000,M_PI/2);
-        comm->sendVelsThreeOmni(control.L,control.R,control.B,1);
-        cout << "Sending Velocities" << endl;
+    //Shamsi Code
+        GameModel * gm = GameModel::getModel();
+//        RobComm * comm = RobComm::getRobComm();
+//        GoToPoseBasic instance;
+//        threeWheelVels control = instance.calcWheelVels(gm->getMyTeam().at(0),0,0,0);
+//        comm->sendVelsThreeOmni(control.L,control.R,control.B,1);
+//        cout << "Sending Velocities" << endl;
+    Skill::GoToPosition skill = Skill::GoToPosition(Point(-1000,0),2);
+    skill.perform(gm->getMyTeam().at(0));
 
     //Martin code
 //    cout << "running test strategy!" << endl;
