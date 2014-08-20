@@ -95,6 +95,7 @@ bool ObstacleAvoidMove::perform(Robot* robot)
              * We want to rebuild the path and set the (new)
              * path to be clear again
              */
+
             this->assignNewPath(robotPoint);
             currentPathIsClear = true;
         }
@@ -104,9 +105,12 @@ bool ObstacleAvoidMove::perform(Robot* robot)
         {
             pathQueue.pop_front();
             if(!pathQueue.empty())
+            {
                 nextPoint = pathQueue.front();
-            else
+            }
+            else{
                 hasFoundPathEnd = true;  //Finished path
+            }
         }
 
         /**********///Velocity sending
@@ -124,12 +128,14 @@ bool ObstacleAvoidMove::perform(Robot* robot)
         double robAngle = robot->getOrientation();
 
         if(this->targetAngle == -10 ||
-                Measurments::angleDiff(robAngle, targetAngle) < ROT_TOLERANCE)
+                abs(Measurments::angleDiff(robAngle, targetAngle)) < ROT_TOLERANCE)
             return true;
 
-        ClosedLoopControl controller;
-        controller.closed_loop_control
-            (robot, robot->getRobotPosition(), targetAngle).sendVels();
+//        ClosedLoopControl controller;
+//        controller.closed_loop_control
+//            (robot, robot->getRobotPosition(), targetAngle).sendVels();
+        GoToPosition rotate = GoToPosition(robot->getRobotPosition(), targetAngle);
+        rotate.perform(robot);
     }
 
     return false;   //Skill not finished

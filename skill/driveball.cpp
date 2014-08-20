@@ -11,7 +11,7 @@
 
 
 #if SIMULATED
-    #define CLOSE_ENOUGH 20
+    #define CLOSE_ENOUGH 110
     #define ANGLE 7*M_PI/180
     #define DIST 50
 #else
@@ -79,7 +79,7 @@ namespace Skill
 
             break;
         case idiling:
-            cout<<"stoping"<<endl;
+            //cout<<"stoping"<<endl;
             if(!Measurments::isClose(robot->getRobotPosition(), gm->getBallPoint(), CLOSE_ENOUGH)) {
                 state = moveTowardBall;
                 behindBall = new Point(150*cos(Measurments::angleBetween(targetPosition,gm->getBallPoint()))+gm->getBallPoint().x,

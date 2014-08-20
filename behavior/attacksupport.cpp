@@ -14,11 +14,11 @@ void AttackSupport::perform(Robot * robot)
     GameModel * gm = GameModel::getModel();
 
     //Set either robID(1) or robID(2) as the support_attacker
-    Robot * main_attacker;
-    if(robot->getID()==0)
-        main_attacker = gm->getMyTeam().at(1);
-    else
-        main_attacker = gm->getMyTeam().at(0);
+//    Robot * main_attacker;
+//    if(robot->getID()==0)
+//        main_attacker = gm->getMyTeam().at(1);
+//    else
+//        main_attacker = gm->getMyTeam().at(0);
 
 
     //Get info from gamemodel

@@ -16,6 +16,7 @@ class Behavior
 public:
     Behavior();
     virtual void perform(Robot*) = 0;
+    virtual ~Behavior(){}
 };
 
 

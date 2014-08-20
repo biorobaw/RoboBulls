@@ -52,14 +52,14 @@ void PositionForKickoff::perform(Robot * robot)
 
     if(bp_updated)
     {
-
         #if SIMULATED==1
-            move_skill = new Skill::GoToPosition(move_point,orientation);
+            move_skill = new Skill::ObstacleAvoidMove(move_point,orientation);
         #else
             move_skill = new Skill::ObstacleAvoidMove(move_point,orientation);
         #endif
 
         bp_updated = false;
+        //cout << "BP UPDATED" << endl;
     }
 
     move_skill->perform(robot);
