@@ -63,11 +63,16 @@ void NXTRobComm::sendVelsLarge(vector<Robot *> robots)
         rob->setKick(0);
     }
     send(&largePacket[0], robots.size()*5);
-
 }
 
 void NXTRobComm::sendVelsThreeOmni(int left, int right, int back, int ID)
 {
     char comm[6] = {'~', (char)ID, (char)left, (char)right, (char)back, char(0)};
+    send(&comm[0], 6);
+}
+
+void NXTRobComm::sendVelsFourOmni(int front_left, int front_right, int rear_left, int rear_right, int ID)
+{
+    char comm[6] = {'~', (char)ID, (char)front_left, (char)front_right, (char)rear_left, (char)rear_right};
     send(&comm[0], 6);
 }

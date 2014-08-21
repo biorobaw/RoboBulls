@@ -63,7 +63,7 @@ void AttackSupport::perform(Robot * robot)
 #if SIMULATED
     Skill::GoToPosition move_skill = Skill::GoToPosition(wp,angle_to_ball);
 #else
-    Skill::Skill move_skill = Skill::ObstacleAvoidMove(wp,angle_to_ball);
+    Skill::ObstacleAvoidMove move_skill = Skill::ObstacleAvoidMove(wp,angle_to_ball);
 #endif
     move_skill.perform(robot);
 }

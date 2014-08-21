@@ -131,11 +131,10 @@ bool ObstacleAvoidMove::perform(Robot* robot)
                 abs(Measurments::angleDiff(robAngle, targetAngle)) < ROT_TOLERANCE)
             return true;
 
-//        ClosedLoopControl controller;
-//        controller.closed_loop_control
-//            (robot, robot->getRobotPosition(), targetAngle).sendVels();
-        GoToPosition rotate = GoToPosition(robot->getRobotPosition(), targetAngle);
-        rotate.perform(robot);
+        ClosedLoopControl controller;
+        controller.closed_loop_control
+            (robot, robot->getRobotPosition(), targetAngle).sendVels();
+
     }
 
     return false;   //Skill not finished

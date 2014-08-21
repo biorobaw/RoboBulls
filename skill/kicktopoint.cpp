@@ -52,7 +52,7 @@ namespace Skill{
             {
                 GoToPositionWithOrientation * goToPos = new GoToPositionWithOrientation (behindBall, ballToTarget);
                 #if SIMULATED
-                    goToPos->setVelocityMultiplier(3);
+                    goToPos->setVelocityMultiplier(5);
                 #else
                     goToPos->setVelocityMultiplier(1);
                 #endif
