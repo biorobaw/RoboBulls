@@ -39,16 +39,16 @@ void TwoVOne::assignBeh()
         //Define Regions
         //Assign Strategic Value
         //Add region to deque of regions
-#if SIMULATED==1
-        Region * right_defense = new Region(0,3000*rgd,-2000,r4.y+150);
-        strategicRegions.push_back(right_defense);
+        #if SIMULATED==1
+            Region * right_defense = new Region(0,3000*rgd,-2000,r4.y+150);
+            strategicRegions.push_back(right_defense);
 
-        Region * mid_defense = new Region(0,3000*rgd,r2.y-150,r4.y+150);
-        strategicRegions.push_back(mid_defense);
+            Region * mid_defense = new Region(0,3000*rgd,r2.y-150,r4.y+150);
+            strategicRegions.push_back(mid_defense);
 
-        Region * left_defense = new Region(0,3000*rgd,2000,r2.y-150);
-        strategicRegions.push_back(left_defense);
-#endif
+            Region * left_defense = new Region(0,3000*rgd,2000,r2.y-150);
+            strategicRegions.push_back(left_defense);
+        #endif
 
         Region * left_offense = new Region(0,-3000*rgd,2000,0);
         strategicRegions.push_back(left_offense);
@@ -80,7 +80,6 @@ void TwoVOne::assignBeh()
         bGoalie.setSingleAssignment(true);
 
         BehaviorAssignment<SendBallToRegion> bSendBall;
-        bSendBall.setSingleAssignment(true);
         bSendBall.setBehParam("region", strategicRegions.front());
 
 
@@ -106,28 +105,28 @@ void TwoVOne::assignBeh()
         }
 
         //Assign defender behaviors
-#if SIMULATED==1
-        bGoalie.assignBeh(gm->getMyTeam().at(5));
+        #if SIMULATED==1
+            bGoalie.assignBeh(gm->getMyTeam().at(5));
 
-        if(left_defense->contains(bp))
-            bSendBall.assignBeh(gm->getMyTeam().at(2));
-        else
-            bKickOff.assignBeh(gm->getMyTeam().at(2));
+            if(left_defense->contains(bp))
+                bSendBall.assignBeh(gm->getMyTeam().at(2));
+            else
+                bKickOff.assignBeh(gm->getMyTeam().at(2));
 
-        if(mid_defense->contains(bp))
-            bSendBall.assignBeh(gm->getMyTeam().at(3));
-        else
-            bKickOff.assignBeh(gm->getMyTeam().at(3));
+            if(mid_defense->contains(bp))
+                bSendBall.assignBeh(gm->getMyTeam().at(3));
+            else
+                bKickOff.assignBeh(gm->getMyTeam().at(3));
 
-        if(right_defense->contains(bp))
-            bSendBall.assignBeh(gm->getMyTeam().at(4));
-        else
-            bKickOff.assignBeh(gm->getMyTeam().at(4));
+            if(right_defense->contains(bp))
+                bSendBall.assignBeh(gm->getMyTeam().at(4));
+            else
+                bKickOff.assignBeh(gm->getMyTeam().at(4));
 
-        delete mid_defense;
-        delete left_defense;
-        delete right_defense;
-#endif
+            delete mid_defense;
+            delete left_defense;
+            delete right_defense;
+        #endif
         delete left_offense;
         delete right_offense;
     }
@@ -145,8 +144,6 @@ void TwoVOne::assignStrategicValue(Region * region)
 
     //Number of opponents
     value -= region->numOfOpponents();
-
-    //cout<< value<< endl;
 
     region->setStrategicValue(value);
 }

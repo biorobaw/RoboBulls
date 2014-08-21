@@ -10,11 +10,12 @@ RobComm * RobComm::getRobComm()
 {
 
     if (robcomm == NULL)
-#if SIMULATED
-        robcomm = new SimRobComm();
-#else
-        robcomm = new NXTRobComm();
-#endif
-
+    {
+        #if SIMULATED
+            robcomm = new SimRobComm();
+        #else
+            robcomm = new NXTRobComm();
+        #endif
+    }
     return robcomm;
 }

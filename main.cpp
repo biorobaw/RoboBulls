@@ -18,7 +18,6 @@ using namespace std;
 void exitStopRobot(int param)
 {
     GameModel* gm = GameModel::getModel();
-    RobComm* nxt  = RobComm::getRobComm();
 
     for(Robot* rob : gm->getMyTeam()) {
         rob->setL(0);

@@ -46,7 +46,9 @@ void AttackMain::perform(Robot * robot)
         drive_start_point = rp;
         if(Measurments::isClose(rp,bp,150))
         {
-            //touched_ball = true;
+            #if SIMULATED
+                touched_ball = true;
+            #endif
         }
     }
 

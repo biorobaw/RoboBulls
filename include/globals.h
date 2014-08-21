@@ -1,4 +1,4 @@
-#ifndef GLOBALS_H
+﻿#ifndef GLOBALS_H
 #define GLOBALS_H
 
 // SIMULATED 1 ==> running simulator
@@ -14,23 +14,23 @@
 #define TEAM 0
 
 #if SIMULATED
- #define CLC_ROTATONG_VEL 5
+    #define CLC_ROTATONG_VEL 5
 #else
- #define CLC_ROTATONG_VEL 1
+    #define CLC_ROTATONG_VEL 1
 #endif
 
 /* Defining PI if it is missing */
 #ifndef M_PI
- #define M_PI    3.141592653589793
- #define M_PI_2  1.570796326794896
+    #define M_PI    3.141592653589793
+    #define M_PI_2  1.570796326794896
 #endif
 
 
 /* The robot's radius in program points */
 #if SIMULATED
- #define ROBOT_RADIUS 100
+    #define ROBOT_RADIUS 100
 #else
- #define ROBOT_RADIUS 200
+    #define ROBOT_RADIUS 200
 #endif
 
 /*
@@ -41,7 +41,7 @@
  *    actual velocity, as it is constantly rotating.
  */
 #if SIMULATED
-    #define DIST_TOLERANCE 20
+    #define DIST_TOLERANCE 10
     #define DIST_VELOCITY 80
 #else
     #define DIST_TOLERANCE 100
@@ -50,12 +50,11 @@
 
 
 /*
- * ROT_TOLERANCE: The range the target and robot angle have to be to each other
- *     to be considered equal (in radians).
+ * ROT_TOLERANCE: The max difference in angle for two angles to be considered equal
  * ROT_VELOCITY:  Velocity applied to each motor in rotation.
  */
 #if SIMULATED
-    #define ROT_TOLERANCE 7*(M_PI/180)
+    #define ROT_TOLERANCE 5*(M_PI/180)
     #define ROT_VELOCITY 20
 #else
     #define ROT_TOLERANCE 10*(M_PI/180)

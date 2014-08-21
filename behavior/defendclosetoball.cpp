@@ -12,6 +12,7 @@ DefendCloseToBall::DefendCloseToBall(const ParameterList& list)
 
 void DefendCloseToBall::perform(Robot *robot)
 {
+//    cout << "defending close to the ball" << endl;
     GameModel *gm = GameModel::getModel();
 
     Point ballPoint = gm->getBallPoint();

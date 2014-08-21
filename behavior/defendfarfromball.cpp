@@ -7,7 +7,7 @@
 #include "communication/robcomm.h"
 
 //The distance from the goal where the defend robot stays
-#define DISTANCE 700
+#define DISTANCE 500
 
 DefendFarFromBall::DefendFarFromBall(const ParameterList& list)
 {
