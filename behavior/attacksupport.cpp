@@ -3,6 +3,7 @@
 
 AttackSupport::AttackSupport(const ParameterList& list)
 {
+    UNUSED_PARAM(list);
 }
 
 void AttackSupport::perform(Robot * robot)

@@ -14,6 +14,11 @@
 #include <vector>
 #include "utilities/point.h"
 
+/* FPPA Pathfinding Constants */
+#define FPPA_DEBUG 0
+#define MAX_RECURSION_DEPTH  3
+#define ROBOT_SIZE (ROBOT_RADIUS * 2.5)
+
 namespace FPPA
 {
     enum class PathDirection

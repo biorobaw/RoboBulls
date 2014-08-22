@@ -2,6 +2,7 @@
 
 PositionForKickoff::PositionForKickoff(const ParameterList &list)
 {
+    UNUSED_PARAM(list);
     bp_updated = false;
 }
 

@@ -17,6 +17,7 @@ using namespace std;
 
 void exitStopRobot(int param)
 {
+    UNUSED_PARAM(param);
     GameModel* gm = GameModel::getModel();
 
     for(Robot* rob : gm->getMyTeam()) {

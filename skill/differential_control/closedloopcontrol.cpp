@@ -40,6 +40,9 @@ void ClosedLoopBase::handleError(double x_goal, double y_goal)
         }
         lastTargetPoint = newTarget;
     }
+#else
+    UNUSED_PARAM(x_goal);
+    UNUSED_PARAM(y_goal);
 #endif
 
     for(int i = 0; i != 3; ++i)
