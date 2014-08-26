@@ -84,5 +84,4 @@ void AttackSupport::perform(Robot * robot)
         }
         move_skill->perform(robot);
     }
-    cout << previousBP.toString()<<endl;
 }

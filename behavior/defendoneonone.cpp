@@ -6,6 +6,7 @@
 
 DefendOneOnOne::DefendOneOnOne(const ParameterList& list)
 {
+    UNUSED_PARAM(list);
 }
 
 void DefendOneOnOne::perform(Robot *r)

@@ -8,6 +8,7 @@
 
 myTestBehavior::myTestBehavior(const ParameterList& list)
 {
+    UNUSED_PARAM(list);
     GameModel *model = GameModel::getModel();
     Point target = model->getPenaltyPoint();
 //    this->TargetPoint = list.getParam<Point>("targetPoint");

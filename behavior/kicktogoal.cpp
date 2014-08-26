@@ -7,6 +7,7 @@
 
 KickToGoal::KickToGoal(const ParameterList& list)
 {
+    UNUSED_PARAM(list);
     state = goingBehind;
 }
 

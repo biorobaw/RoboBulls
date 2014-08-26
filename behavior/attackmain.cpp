@@ -7,6 +7,7 @@
 
 AttackMain::AttackMain(const ParameterList& list)
 {
+    UNUSED_PARAM(list);
     state = initial;
 }
 

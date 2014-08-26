@@ -62,13 +62,13 @@
 #endif
 
 
-
-/* FPPA Pathfinding Constants */
-#define FPPA_DEBUG 0
-#define MAX_RECURSION_DEPTH  3
-#define ROBOT_SIZE (ROBOT_RADIUS * 2.5)
-
 /* Prints out which behaviors and skills are running */
 #define TRACE 0
+
+
+/* Use this on unused parameters to disables "unused parameter" warnings.
+   e.g, in Behavior constuctors with the ParameterList params */
+#define UNUSED_PARAM(x) (void)(x)
+
 
 #endif // GLOBALS_H

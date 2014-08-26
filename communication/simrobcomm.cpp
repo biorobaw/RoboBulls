@@ -32,7 +32,13 @@ void SimRobComm::sendVelsLarge(std::vector<Robot *> robots)
     }
 }
 
-void SimRobComm::sendVelsThreeOmni(int left,int right, int back, int ID){}
+void SimRobComm::sendVelsThreeOmni(int left,int right, int back, int ID)
+{
+    UNUSED_PARAM(left);
+    UNUSED_PARAM(right);
+    UNUSED_PARAM(back);
+    UNUSED_PARAM(ID);
+}
 
 void SimRobComm::sendKick(int robotId)
 {

@@ -11,6 +11,7 @@
 
 DefendFarFromBall::DefendFarFromBall(const ParameterList& list)
 {
+    UNUSED_PARAM(list);
 }
 
 void DefendFarFromBall::perform(Robot *robot)

@@ -2,6 +2,7 @@
 
 PenaltyBehavior::PenaltyBehavior(const ParameterList& list)
 {
+    UNUSED_PARAM(list);
     pb = moving;
 }
 
