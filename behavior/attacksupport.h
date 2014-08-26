@@ -21,6 +21,9 @@ class AttackSupport:public Behavior
 public:
     AttackSupport(const ParameterList& list);
     void perform(Robot *);
+    enum {initial, final} state;
+    Skill::Skill * move_skill;
+    Point previousBP;
 };
 
 #endif // ATTACK_SUPPORT_H

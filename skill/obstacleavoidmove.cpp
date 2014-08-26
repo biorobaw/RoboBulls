@@ -113,9 +113,12 @@ bool ObstacleAvoidMove::perform(Robot* robot)
             }
         }
 
-        /**********///Velocity sending
-        ClosedLoopSharpTurns moveController;
-        moveController.setVelMultiplier(20).closed_loop_control(robot, nextPoint).sendVels();
+        //Velocity sending
+        double orientation = Measurments::angleBetween(robotPoint,nextPoint);
+        GoToPosition moveController = GoToPosition(nextPoint,orientation);
+        moveController.perform(robot);
+        //ClosedLoopSharpTurns moveController;
+        //moveController.setVelMultiplier(20).closed_loop_control(robot, nextPoint).sendVels();
 
     } else {
         /* Secondary: Rotating mode
@@ -125,16 +128,9 @@ bool ObstacleAvoidMove::perform(Robot* robot)
     #if OBSTACLE_MOVE_DEBUG
         std::cout << "Entering Rotate for " << robot->getID() << std::endl;
     #endif
-        double robAngle = robot->getOrientation();
 
-        if(this->targetAngle == -10 ||
-                abs(Measurments::angleDiff(robAngle, targetAngle)) < ROT_TOLERANCE)
-            return true;
-
-        ClosedLoopControl controller;
-        controller.closed_loop_control
-            (robot, robot->getRobotPosition(), targetAngle).sendVels();
-
+        GoToPosition finalRotation = GoToPosition(robot->getRobotPosition(),targetAngle);
+        finalRotation.perform(robot);
     }
 
     return false;   //Skill not finished

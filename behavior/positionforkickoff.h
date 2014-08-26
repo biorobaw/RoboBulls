@@ -19,6 +19,7 @@ private:
     Point move_point, bp;
     bool bp_updated;
     float orientation;
+    GameModel * gm;
 
 public:
     PositionForKickoff(const ParameterList &list);

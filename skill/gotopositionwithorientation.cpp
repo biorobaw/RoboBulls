@@ -44,7 +44,8 @@ namespace Skill {
             int dist_tolerance = DIST_TOLERANCE;
         #endif
 
-        if(Measurments::isClose(targetPosition, robot->getRobotPosition(), dist_tolerance)) {
+        if(Measurments::isClose(targetPosition, robot->getRobotPosition(), dist_tolerance)
+           && abs(Measurments::angleDiff(robot->getOrientation(),goalOrientation))<ROT_TOLERANCE) {
 			return true;
 		} else {
 			return false;

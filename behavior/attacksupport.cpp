@@ -3,6 +3,7 @@
 
 AttackSupport::AttackSupport(const ParameterList& list)
 {
+    state = initial;
 }
 
 void AttackSupport::perform(Robot * robot)
@@ -60,10 +61,28 @@ void AttackSupport::perform(Robot * robot)
     //Initialize skills that are used in switch statement
     float angle_to_ball = Measurments::angleBetween(rp,bp);
 
-#if SIMULATED
-    Skill::GoToPosition move_skill = Skill::GoToPosition(wp,angle_to_ball);
-#else
-    Skill::ObstacleAvoidMove move_skill = Skill::ObstacleAvoidMove(wp,angle_to_ball);
-#endif
-    move_skill.perform(robot);
+    switch (state)
+    {
+    case initial:
+    {
+    #if SIMULATED
+        move_skill = new Skill::ObstacleAvoidMove(wp,angle_to_ball);
+        previousBP = bp;
+    #else
+        move_skill = new Skill::ObstacleAvoidMove(wp,angle_to_ball);
+        previousBP = bp;
+    #endif
+        state = final;
+        break;
+    }
+
+    case final:
+        if (!Measurments::isClose(bp,previousBP,100))
+        {
+            state = initial;
+            break;
+        }
+        move_skill->perform(robot);
+    }
+    cout << previousBP.toString()<<endl;
 }

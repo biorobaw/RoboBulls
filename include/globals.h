@@ -69,6 +69,6 @@
 #define ROBOT_SIZE (ROBOT_RADIUS * 2.5)
 
 /* Prints out which behaviors and skills are running */
-#define TRACE 1
+#define TRACE 0
 
 #endif // GLOBALS_H
