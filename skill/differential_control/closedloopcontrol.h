@@ -28,9 +28,10 @@ struct wheelvelocities
 
 	void sendVels() 
 	{
-		if(robotPtr != nullptr)
+        if(robotPtr != nullptr) {
             robotPtr->setL(left);
             robotPtr->setR(right);
+        }
 	}
 	
     int left,right;

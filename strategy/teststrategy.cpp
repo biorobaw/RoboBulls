@@ -23,29 +23,16 @@ public:
     TestBehavior(const ParameterList& list)
     {
         Point pt = GameModel::getModel()->getPenaltyPoint();
-
         this->targetPoint = list.getParam<Point>("targetPoint");
-
-        //mySeq.addSkill(new Skill::GoToPositionWithOrientation(targetPoint, 0));
-        mySeq.addSkill(new Skill::ObstacleAvoidMove(targetPoint));
+        mySeq.addSkill(new Skill::ObstacleAvoidMove(targetPoint, M_PI/2));
         mySeq.addSkill(new Skill::ObstacleAvoidMove(pt));
         mySeq.addSkill(new Skill::Stop());
     }
 
     void perform(Robot * robot)
     {
-       // auto result = controller.
-           //closed_loop_control(robot, targetPoint.x, targetPoint.y, 0);
-
-        //RobComm* com = RobComm::getRobComm();
-        //com->sendVels(result.left, result.right, robot->getID());
-
-        //if(mySeq.executeOn(robot))
-            //robot->clearCurrentBeh();
-
-        GameModel * gm = GameModel::getModel();
-        Skill::GoToPosition skill = Skill::GoToPosition(Point(0,0),0);
-        skill.perform(robot);
+        if(mySeq.executeOn(robot))
+            robot->clearCurrentBeh();
     }
 
 private:
@@ -131,8 +118,9 @@ void TestStrategy::assignBeh()
 
     GameModel * gm = GameModel::getModel();
     BehaviorAssignment<TestBehavior> assignment;
-    assignment.setBehParam<Point>("targetPoint", Point(0,0));
-    assignment.assignBeh();
+    assignment.setSingleAssignment(true);
+    assignment.setBehParam<Point>("targetPoint", gm->getBallPoint());
+    assignment.assignBeh({0, 1});
 
 //    // Narges code testing DriveBallAndKick
 //    BehaviorAssignment<DriveBallAndKick> assignment;
