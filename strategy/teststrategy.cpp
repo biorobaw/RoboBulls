@@ -13,6 +13,8 @@
 #include "behavior/defendclosetoball.h"
 #include "behavior/defendfarfromball.h"
 #include "behavior/attackmain.h"
+#include "skill/three_omni_motion/gotoposebasic.h"
+#include "communication/nxtrobcomm.h"
 
 
 class TestBehavior : public Behavior
@@ -21,30 +23,20 @@ public:
     TestBehavior(const ParameterList& list)
     {
         Point pt = GameModel::getModel()->getPenaltyPoint();
-
         this->targetPoint = list.getParam<Point>("targetPoint");
-
-       // mySeq.addSkill(new Skill::GoToPositionWithOrientation(targetPoint, 0));
-        mySeq.addSkill(new Skill::ObstacleAvoidMove(targetPoint));
+        mySeq.addSkill(new Skill::ObstacleAvoidMove(targetPoint, M_PI/2));
         mySeq.addSkill(new Skill::ObstacleAvoidMove(pt));
         mySeq.addSkill(new Skill::Stop());
     }
 
     void perform(Robot * robot)
     {
-       // auto result = controller.
-           //closed_loop_control(robot, targetPoint.x, targetPoint.y, 0);
-
-        //RobComm* com = RobComm::getRobComm();
-        //com->sendVels(result.left, result.right, robot->getID());
-
         if(mySeq.executeOn(robot))
             robot->clearCurrentBeh();
     }
 
 private:
     SkillSequence mySeq;
-    //ClosedLoopControl controller;
     Point targetPoint;
 };
 
@@ -56,6 +48,29 @@ TestStrategy::TestStrategy()
 
 void TestStrategy::assignBeh()
 {
+//***************************************************************************************************
+    //Shamsi Code
+    //Three Omni Wheel Test
+//        GameModel * gm = GameModel::getModel();
+//        RobComm * comm = RobComm::getRobComm();
+//        GoToPoseBasic instance;
+//        threeWheelVels control = instance.calcWheelVels(gm->getMyTeam().at(0),0,0,0);
+//        comm->sendVelsThreeOmni(control.L,control.R,control.B,1);
+//        cout << "Sending Velocities" << endl;
+
+    //GoToPosition Test
+//        GameModel * gm = GameModel::getModel();
+//        Skill::GoToPosition skill = Skill::GoToPosition(Point(-1000,0),0);
+//        skill.perform(gm->getMyTeam().at(1));
+
+    //Four Omni Wheel Test
+//    GameModel * gm = GameModel::getModel();
+//    Skill::GoToPosition skill = Skill::GoToPosition(Point(0,0),0);
+//    skill.perform(gm->getMyTeam().at(0));
+//    cout << "Sending Velocities" << endl;
+//***************************************************************************************************
+
+
     //Martin code
 //    cout << "running test strategy!" << endl;
 //    GameModel * gm = GameModel::getModel();
@@ -101,15 +116,17 @@ void TestStrategy::assignBeh()
 
 //    //BehaviorAssignment<DriveBallAndKick> assignment;
 
-
+//    GameModel * gm = GameModel::getModel();
 //    BehaviorAssignment<TestBehavior> assignment;
+//    assignment.setSingleAssignment(true);
 //    assignment.setBehParam<Point>("targetPoint", gm->getBallPoint());
-//    assignment.assignBeh(r0);
+//    assignment.assignBeh({0, 1});
 
 //    // Narges code testing DriveBallAndKick
 //    BehaviorAssignment<DriveBallAndKick> assignment;
 //    assignment.setSingleAssignment(true);
 //    assignment.assignBeh();
+
 
 ////    //Narges code testing defendCloseToBall
 //    BehaviorAssignment<DefendCloseToBall> assignment;

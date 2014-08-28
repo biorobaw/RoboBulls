@@ -21,20 +21,9 @@ class AttackSupport:public Behavior
 public:
     AttackSupport(const ParameterList& list);
     void perform(Robot *);
-private:
-    const double shot_distance=1200;
-    const double pass_distance=1200;
-
-    #if SIMULATED==1
-    Skill::ObstacleAvoidMove *move_skill;
-    #else
-    Skill::ObstacleAvoidMove *move_skill;
-    #endif
-
-
-    Skill::GoToPosition *wait_skill;
-
-    enum states { move, wait, initial } state;
+    enum {initial, final} state;
+    Skill::Skill * move_skill;
+    Point previousBP;
 };
 
 #endif // ATTACK_SUPPORT_H

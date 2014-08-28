@@ -11,12 +11,6 @@ SimRobComm::SimRobComm()
     _port = 20011;
 }
 
-//void SimRobComm::sendVelsLarge(vector<Robot*> robots)
-//{
-//    for (Robot * r : robots)
-//        sendPacket(r->getID(), r->getL(), r->getR(), r->getKick(), r->getDrible());
-//}
-
 void SimRobComm::sendVels(int leftVel, int rightVel, int robotId)
 {
     sendPacket(robotId, leftVel, rightVel, false, true);
@@ -36,6 +30,14 @@ void SimRobComm::sendVelsLarge(std::vector<Robot *> robots)
         sendPacket(rob->getID(),rob->getL(),rob->getR(),kick,dribble);
         rob->setKick(0);
     }
+}
+
+void SimRobComm::sendVelsThreeOmni(int left,int right, int back, int ID)
+{
+    UNUSED_PARAM(left);
+    UNUSED_PARAM(right);
+    UNUSED_PARAM(back);
+    UNUSED_PARAM(ID);
 }
 
 void SimRobComm::sendKick(int robotId)

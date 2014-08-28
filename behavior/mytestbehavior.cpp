@@ -14,6 +14,7 @@
 
 myTestBehavior::myTestBehavior(const ParameterList& list)
 {
+    UNUSED_PARAM(list);
     GameModel *model = GameModel::getModel();
     Point kickPoint(1600, 0);
     Point target = model->getPenaltyPoint();

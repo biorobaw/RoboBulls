@@ -2,7 +2,10 @@
 
 PositionForKickoff::PositionForKickoff(const ParameterList &list)
 {
-    bp_updated = false;
+    UNUSED_PARAM(list);
+    gm = GameModel::getModel();
+    bp = gm->getBallPoint();
+    bp_updated = true;
 }
 
 void PositionForKickoff::perform(Robot * robot)
@@ -11,9 +14,9 @@ void PositionForKickoff::perform(Robot * robot)
         cout << endl<<"Performing Behavior::PositionForKickoff" << endl;
     #endif
 
-    GameModel * gm = GameModel::getModel();
+    gm = GameModel::getModel();
 
-    if(gm->getBallPoint()!=bp)
+    if(!Measurments::isClose(gm->getBallPoint(),bp))
     {
         bp = gm->getBallPoint();
         bp_updated = true;
@@ -53,12 +56,13 @@ void PositionForKickoff::perform(Robot * robot)
     if(bp_updated)
     {
         #if SIMULATED==1
-        move_skill = new Skill::ObstacleAvoidMove(move_point,orientation);
+            move_skill = new Skill::ObstacleAvoidMove(move_point,orientation);
         #else
-        move_skill = new Skill::ObstacleAvoidMove(move_point,orientation);
+            move_skill = new Skill::ObstacleAvoidMove(move_point,orientation);
         #endif
 
         bp_updated = false;
+        //cout << "BP UPDATED" << endl;
     }
 
     move_skill->perform(robot);

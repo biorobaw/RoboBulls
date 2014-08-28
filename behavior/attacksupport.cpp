@@ -3,6 +3,7 @@
 
 AttackSupport::AttackSupport(const ParameterList& list)
 {
+    UNUSED_PARAM(list);
     state = initial;
 }
 
@@ -15,15 +16,14 @@ void AttackSupport::perform(Robot * robot)
     GameModel * gm = GameModel::getModel();
 
     //Set either robID(1) or robID(2) as the support_attacker
-    Robot * main_attacker;
-    if(robot->getID()==0)
-        main_attacker = gm->getMyTeam().at(1);
-    else
-        main_attacker = gm->getMyTeam().at(0);
+//    Robot * main_attacker;
+//    if(robot->getID()==0)
+//        main_attacker = gm->getMyTeam().at(1);
+//    else
+//        main_attacker = gm->getMyTeam().at(0);
 
 
     //Get info from gamemodel
-    Point mp = main_attacker->getRobotPosition();
     Point rp = robot->getRobotPosition();
     Point gp = gm->getOpponentGoal();
     Point bp = gm->getBallPoint();
@@ -36,7 +36,7 @@ void AttackSupport::perform(Robot * robot)
 
 
 
-    //Vector of robots to ignore (itself + opponents in penalty area)
+    //Vectors of robots to ignore (itself + opponents in penalty area)
     vector<Robot*> ignoreOpponents, ignoreTeammates;
 
     ignoreTeammates.push_back(robot);
@@ -61,27 +61,28 @@ void AttackSupport::perform(Robot * robot)
 
     //Initialize skills that are used in switch statement
     float angle_to_ball = Measurments::angleBetween(rp,bp);
-    wait_skill = new Skill::GoToPositionWithOrientation(rp,angle_to_ball);
 
-    //Create switch logic
     switch (state)
     {
-        case initial:
-            #if SIMULATED==1
-            move_skill = new Skill::ObstacleAvoidMove(wp,angle_to_ball);
-            #else
-            move_skill = new Skill::ObstacleAvoidMove(wp,angle_to_ball);
-            #endif
-            state = move;
-        case move:
-            if(Measurments::isClose(rp,wp,DIST_TOLERANCE))
-                state = wait;
-            else
-                move_skill->perform(robot);
-            break;
-
-        case wait:
-                wait_skill->perform(robot);
+    case initial:
+    {
+    #if SIMULATED
+        move_skill = new Skill::ObstacleAvoidMove(wp,angle_to_ball);
+        previousBP = bp;
+    #else
+        move_skill = new Skill::ObstacleAvoidMove(wp,angle_to_ball);
+        previousBP = bp;
+    #endif
+        state = final;
+        break;
     }
-    delete wait_skill;
+
+    case final:
+        if (!Measurments::isClose(bp,previousBP,100))
+        {
+            state = initial;
+            break;
+        }
+        move_skill->perform(robot);
+    }
 }

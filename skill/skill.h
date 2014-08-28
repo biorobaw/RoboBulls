@@ -12,6 +12,7 @@ class Skill
 {
 public:
     virtual bool perform(Robot* robot) = 0;
+    virtual ~Skill(){}
 };
 
 

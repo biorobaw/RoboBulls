@@ -56,8 +56,6 @@ SOURCES += main.cpp \
 	model/robot.cpp \
 	skill/basic_movement.cpp \
 	skill/differential_control/closedloopcontrol.cpp \
-	skill/differential_control/matrixcalculator.cpp \
-	skill/differential_control/robottoinertialvelocities.cpp \
 	skill/driveball.cpp \
 	skill/gotopositionwithorientation.cpp \
 	skill/kick.cpp \
@@ -82,7 +80,9 @@ SOURCES += main.cpp \
     behavior/sendballtoregion.cpp \
     strategy/twovone.cpp \
     skill/kicktopoint.cpp \
-    utilities/region.cpp
+    utilities/region.cpp \
+    skill/three_omni_motion/gotoposebasic.cpp \
+    skill/three_omni_motion/matrixcalculator.cpp
 
 HEADERS += \
 	behavior/behavior.h \
@@ -144,7 +144,9 @@ HEADERS += \
     strategy/twovone.h \
     skill/drivingball.h \
     skill/kicktopoint.h \
-    utilities/region.h
+    utilities/region.h \
+    skill/three_omni_motion/gotoposebasic.h \
+    skill/three_omni_motion/matrixcalculator.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 

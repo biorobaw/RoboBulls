@@ -32,8 +32,6 @@ namespace Skill {
 //            cout <<"Performing Skill::GoToPosition" << endl;
 //        #endif
 
-        RobComm *nxtbee = RobComm::getRobComm();
-
         wheelvelocities wheelvelocity =
             control.closed_loop_control(robot, targetPosition.x, targetPosition.y, goalOrientation);
 
@@ -41,12 +39,13 @@ namespace Skill {
         robot->setR(wheelvelocity.right);
 		
         #if SIMULATED
-            int dist_tolerance = 5;
+            int dist_tolerance = DIST_TOLERANCE;
         #else
-            int dist_tolerance = 250;
+            int dist_tolerance = DIST_TOLERANCE;
         #endif
 
-        if(Measurments::isClose(targetPosition, robot->getRobotPosition(), dist_tolerance)) {
+        if(Measurments::isClose(targetPosition, robot->getRobotPosition(), dist_tolerance)
+           && abs(Measurments::angleDiff(robot->getOrientation(),goalOrientation))<ROT_TOLERANCE) {
 			return true;
 		} else {
 			return false;

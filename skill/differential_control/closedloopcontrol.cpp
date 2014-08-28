@@ -40,6 +40,9 @@ void ClosedLoopBase::handleError(double x_goal, double y_goal)
         }
         lastTargetPoint = newTarget;
     }
+#else
+    UNUSED_PARAM(x_goal);
+    UNUSED_PARAM(y_goal);
 #endif
 
     for(int i = 0; i != 3; ++i)
@@ -115,8 +118,12 @@ wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, double x_goal,
 
     double robot_turnrate = OVERALL_VELOCITY * velMultiplier *
         (kalpha*newAlpha + kbeta*newBeta + kAlphaI*newSumErrAlpha + kBetaI*newSumErrBeta);
-
-    if (newRho > DIST_TOLERANCE)
+#if SIMULATED
+    int dist_tol=10;
+#else
+    int dist_tol=100;
+#endif
+    if (newRho > dist_tol)
     {
         float Pi2R = 2*M_PI*wheel_radius;
         left_motor_velocity  = ((robot_xvel / Pi2R) - (wheel_separation * robot_turnrate/Pi2R))/2;
@@ -130,6 +137,7 @@ wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, double x_goal,
         left_motor_velocity  = OVERALL_VELOCITY * velMultiplier * CLC_ROTATONG_VEL*-angDiff;
         right_motor_velocity = OVERALL_VELOCITY * velMultiplier * CLC_ROTATONG_VEL*angDiff;
     }
+
 
     //*******************************************************************************************
     //*******************************************************************************************

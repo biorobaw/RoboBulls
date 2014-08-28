@@ -8,6 +8,7 @@
 
 DefendCloseToBall::DefendCloseToBall(const ParameterList& list)
 {
+    UNUSED_PARAM(list);
 }
 
 void DefendCloseToBall::perform(Robot *robot)

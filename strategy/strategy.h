@@ -8,7 +8,7 @@ public:
 
     virtual void assignBeh() = 0;
 
-
+    virtual ~Strategy(){}
 
 private:
 };

@@ -7,6 +7,7 @@
 
 AttackMain::AttackMain(const ParameterList& list)
 {
+    UNUSED_PARAM(list);
     state = initial;
 }
 
@@ -36,8 +37,13 @@ void AttackMain::perform(Robot * robot)
 
 
     //Initialize skills that are used in switch statement
+#if SIMULATED
+    Skill::KickToPoint pass_skill = Skill::KickToPoint(sp,4*M_PI/180);
+    Skill::KickToPoint score_skill = Skill::KickToPoint(gp,10*M_PI/180);
+#else
     Skill::KickToPoint pass_skill = Skill::KickToPoint(sp,7*M_PI/180);
     Skill::KickToPoint score_skill = Skill::KickToPoint(gp,7*M_PI/180);
+#endif
 
 
     //When the robot reaches the ball for the first time, drive_start_point is set to current position
@@ -87,12 +93,9 @@ void AttackMain::perform(Robot * robot)
             break;
 
         case pass:
-            if(Measurments::angleDiff(Measurments::angleBetween(sp,bp),support_attacker->getOrientation())<5*M_PI/180)
-            {
-                pass_skill.perform(robot);
-                //std::cout << "AttackMain: Pass" << std::endl;
-                state = score;
-            }
+            pass_skill.perform(robot);
+            //std::cout << "AttackMain: Pass" << std::endl;
+            state = score;
     }
 
 }

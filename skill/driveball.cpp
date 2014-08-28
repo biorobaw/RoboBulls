@@ -11,9 +11,9 @@
 
 #if SIMULATED
     #define CLOSE_ENOUGH 150
-    #define ANGLE 20*M_PI/180
-    #define DIST 400
-    #define NXT_TO_BALL   75
+    #define CLOSE_ENOUGH 110
+    #define ANGLE 7*M_PI/180
+    #define DIST 50
 #else
     #define CLOSE_ENOUGH 350
     #define ANGLE 5*M_PI/180
@@ -56,7 +56,6 @@ namespace Skill
             cout<< "move behind the ball" << endl;
             if (Measurments::distance(*goal, *behindBall) > CLOSE_ENOUGH)
             {
-                cout << "in moveBehindball ==> changing to move behind the ball" << endl;
                 state = moveBehindBall;
                 skill = new GoToPositionWithOrientation (*behindBall, angleBallTarget);
                 goal = behindBall;
@@ -86,7 +85,6 @@ namespace Skill
             else if(Measurments::distance(*goal, gm->getBallPoint()) > CLOSE_ENOUGH)
             // If the ball has changed position
             {
-                cout << "in moveTowardBall state ==> changing to move Behind the ball" << endl;
                 state = moveBehindBall;
                 goal = behindBall;
                 skill = new GoToPositionWithOrientation (*behindBall, angleBallTarget);
@@ -94,12 +92,9 @@ namespace Skill
             break;
         case driveBall:
             cout <<"drive the ball"<<endl;
-            cout << "distance btw ball and robot\t" << Measurments::distance(robot->getRobotPosition(), gm->getBallPoint()) << endl;
-            cout << "ball point\t" << gm->getBallPoint().x << "\t" << gm->getBallPoint().y << endl;
             // Orientation
             if(!Measurments::isClose(robot->getRobotPosition(), gm->getBallPoint(), 700))
             {
-                cout << "in driveBall ==> changing to move behind the ball" << endl;
                 state = moveBehindBall;
                 goal = behindBall;
                 skill = new GoToPositionWithOrientation (*behindBall, angleBallTarget);

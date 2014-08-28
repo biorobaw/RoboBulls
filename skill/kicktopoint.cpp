@@ -30,6 +30,7 @@ namespace Skill{
 
         float targetToBall = Measurments::angleBetween(target,bp);
         Point behindBall = Point((dist_position)*cos(targetToBall)+bp.x, (dist_position)*sin(targetToBall)+bp.y);
+        Point aheadOfBall = Point(-(dist_position)*cos(targetToBall)+bp.x, -(dist_position)*sin(targetToBall)+bp.y);
         float ballToTarget = Measurments::angleBetween(bp, target);
         state = kick;
 
@@ -40,24 +41,34 @@ namespace Skill{
             if(Measurments::distance(bp, rp) < dist_kick && abs(Measurments::angleDiff(robot->getOrientation(), ballToTarget)) < target_tolerance)
             {
                 skill = new Kick();
-                cout << "KickToPoint: Kicking" << endl;
-                break;
+                skill->perform(robot);
+                delete skill;
+                //cout << "KickToPoint: Kicking" << endl;
+                return true;
             }
 
         case positioning:
-            GoToPositionWithOrientation * goToPos = new GoToPositionWithOrientation (behindBall, ballToTarget);
-            #if SIMULATED
-                goToPos->setVelocityMultiplier(3);
-            #else
-                goToPos->setVelocityMultiplier(1);
-            #endif
-            skill = goToPos;
-            cout << "KickToPoint: Positioning" << endl;
+            if(abs(Measurments::angleDiff(robot->getOrientation(), ballToTarget)) > target_tolerance)
+            {
+                GoToPositionWithOrientation * goToPos = new GoToPositionWithOrientation (behindBall, ballToTarget);
+                #if SIMULATED
+                    goToPos->setVelocityMultiplier(5);
+                #else
+                    goToPos->setVelocityMultiplier(1);
+                #endif
+                goToPos->perform(robot);
+                delete goToPos;
+            }
+            else
+            {
+                skill = new GoToPositionWithOrientation (aheadOfBall, ballToTarget);
+                skill->perform(robot);
+                delete skill;
+            }
+
+
+            //cout << "KickToPoint: Positioning" << endl;
         }
-
-        skill->perform(robot);
-
-        delete skill;
-        return true;
+        return false;
     }
 }
