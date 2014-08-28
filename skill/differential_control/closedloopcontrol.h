@@ -14,7 +14,7 @@
 
 namespace ClosedLoopConstants
 {
-    const double defaultConstants[3] = {3, 8, -1.5};
+    const double defaultConstants[3] = {3, 16, -1.5};
     const double noSlowdownConstants[3] = {0, 8, -1.5};
     const double sharpTurnConstants[3] = {3, 25, 0};
 }
@@ -72,7 +72,7 @@ private:
     double kRhoI   = krho/(4.0 * sizeRhoQ);
     double kAlphaI = kalpha/(1.0 * sizeAlphaQ);
     double kBetaI  = kbeta/(0.2 * sizeBetaQ);
-	double velMultiplier = 5;
+    double velMultiplier = 5;
 
     void handleError(double x_goal, double y_goal);
 	

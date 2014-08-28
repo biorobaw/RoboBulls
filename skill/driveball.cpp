@@ -9,22 +9,9 @@
 #include "skill/differential_control/closedloopcontrol.h"
 #include "math.h"
 
-////<<<<<<< HEAD
-//#define DIST 400
-//#define CLOSE_ENOUGH 150
-//#define ANGLE 20*M_PI/180
-////=======
-
-#if SIMULATED
-    #define CLOSE_ENOUGH 100
-    #define ANGLE 10*M_PI/180
-    #define DIST 200
-#else
-    #define CLOSE_ENOUGH 150
-    #define ANGLE 10*M_PI/180
-    #define DIST 300
-#endif
-//>>>>>>> 8107d343a283b3505469563893fd4a3d1a313260
+#define DIST 400
+#define CLOSE_ENOUGH 150
+#define ANGLE 20*M_PI/180
 
 namespace Skill
 {
@@ -37,10 +24,6 @@ namespace Skill
 
     bool DriveBall::perform(Robot* robot)
     {
-//        #if TRACE
-//            cout << "Performing Skill::DriveBall" << endl;
-//        #endif
-
         GameModel *gm = GameModel::getModel();
 
         switch(state)
@@ -55,9 +38,7 @@ namespace Skill
             break;
         case moveBehindBall:
             cout<< "move behind the ball" << endl;
-//            cout << "goal\t" << goal->x << "\t" << goal->y << endl;
-//            cout << "target\t" << targetPosition.x << "\t" << targetPosition.y << endl;
-//            cout<< "angle" << Measurments::angleBetween(gm->getBallPoint(), targetPosition) << endl;
+
             behindBall = new Point(DIST*cos(Measurments::angleBetween(targetPosition,gm->getBallPoint()))+gm->getBallPoint().x,
                                    DIST*sin(Measurments::angleBetween(targetPosition,gm->getBallPoint()))+gm->getBallPoint().y);
 
@@ -83,7 +64,7 @@ namespace Skill
                 state = driveBall;
                 GoToPositionWithOrientation *gotoPos = new GoToPositionWithOrientation (targetPosition, direction);
                 //reducing speed when robot has the ball in order to keep the ball
-                gotoPos->setVelocityMultiplier(0.4);
+                gotoPos->setVelocityMultiplier(0.5);
                 skill = gotoPos;
             }
             // If the ball has changed position
@@ -113,7 +94,6 @@ namespace Skill
         }
 
         skill->perform(robot);
-
         return false;
     }
 }
