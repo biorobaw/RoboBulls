@@ -9,11 +9,7 @@ VisionComm::VisionComm(GameModel *gm)
 {
 // Use different ports depending on whether it is simulated or the actual vision system
 #if SIMULATED
-<<<<<<< HEAD
     client = new RoboCupSSLClient(10020,"224.5.23.9");
-=======
-    client = new RoboCupSSLClient(10020,"224.5.23.2");
->>>>>>> 6e800cad2c487fcb6e07a7da113eda0e3e9fae00
 #else
     client = new RoboCupSSLClient();
 #endif
