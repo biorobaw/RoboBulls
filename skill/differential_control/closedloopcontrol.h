@@ -38,7 +38,7 @@ struct wheelvelocities
 	Robot* robotPtr;
 };
 
-/*************************************************************/
+/**************************************************************/
 /* ClosedLoopBase
  * Closed-Loop control in our case is defined by three constants:
  * krho, kalpha, and kbeta. Each of these have a specific effect on
