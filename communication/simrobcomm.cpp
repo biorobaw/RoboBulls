@@ -31,7 +31,7 @@ void SimRobComm::sendVelsLarge(std::vector<Robot *> robots)
         if (rob->getKick()==1) kick = true;
         else kick = false;
 
-        dribble = false;
+        dribble = true;
 
         sendPacket(rob->getID(),rob->getL(),rob->getR(),kick,dribble);
         rob->setKick(0);

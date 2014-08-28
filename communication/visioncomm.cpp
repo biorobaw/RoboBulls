@@ -131,6 +131,8 @@ bool VisionComm::receive()
                             ballPoint.y = ball.y();
 
                             gamemodel->setBallPoint(ballPoint);
+
+                            cout << "ball detected" << ballPoint.toString() << " " << conf << endl;
                         }
                     }
                 }
