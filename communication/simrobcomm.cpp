@@ -13,7 +13,7 @@ SimRobComm::SimRobComm()
 
 void SimRobComm::sendVels(int leftVel, int rightVel, int robotId)
 {
-    sendPacket(robotId, leftVel, rightVel, false, true);
+    sendPacket(robotId, leftVel, rightVel, leftVel, rightVel, false, true);
 }
 
 void SimRobComm::sendVelsLarge(std::vector<Robot *> robots)
@@ -27,7 +27,7 @@ void SimRobComm::sendVelsLarge(std::vector<Robot *> robots)
 
         dribble = false;
 
-        sendPacket(rob->getID(),rob->getL(),rob->getR(),kick,dribble);
+        sendPacket(rob->getID(),rob->getL(),rob->getR(),rob->getL(),rob->getR(),kick,dribble);
         rob->setKick(0);
     }
 }
@@ -42,11 +42,11 @@ void SimRobComm::sendVelsThreeOmni(int left,int right, int back, int ID)
 
 void SimRobComm::sendKick(int robotId)
 {
-    sendPacket(robotId, 0, 0, true, false);
+    sendPacket(robotId, 0, 0, 0, 0, true, false);
 }
 
 
-void SimRobComm::sendPacket(int id, int leftVel, int rightVel, bool kick, bool drible)
+void SimRobComm::sendPacket(int id, int LF, int RF, int LB, int RB, bool kick, bool drible)
 {
     grSim_Packet packet;
     // TODO: set team
@@ -70,10 +70,11 @@ void SimRobComm::sendPacket(int id, int leftVel, int rightVel, bool kick, bool d
     // Set the actual velocities
     command->set_wheelsspeed(true);
 
-    command->set_wheel1(-(double)leftVel/100 * mappingRatio);
-    command->set_wheel2(-(double)leftVel/100 * mappingRatio);
-    command->set_wheel3((double)rightVel/100 * mappingRatio);
-    command->set_wheel4((double)rightVel/100 * mappingRatio);
+    command->set_wheel1(-(double)LF/100 * mappingRatio);    //Left Forward
+    command->set_wheel2(-(double)LB/100 * mappingRatio);    //Left Backward
+    command->set_wheel3((double)RB/100 * mappingRatio);     //Right Backward
+    command->set_wheel4((double)RF/100 * mappingRatio);     //Right Forward
+
 
     command->set_veltangent(forwardVel);
     // No normal velocity, differentials cannot move sideways
