@@ -6,8 +6,8 @@
 
 SimRobComm::SimRobComm()
 {
-    _addr = "131.247.14.106";
-    //_addr = "127.0.0.1";
+//    _addr = "131.247.14.106";
+    _addr = "127.0.0.1";
     _port = 20011;
 }
 
@@ -25,7 +25,7 @@ void SimRobComm::sendVelsLarge(std::vector<Robot *> robots)
         if (rob->getKick()==1) kick = true;
         else kick = false;
 
-        dribble = false;
+        dribble = true;
 
         sendPacket(rob->getID(),rob->getL(),rob->getR(),rob->getL(),rob->getR(),kick,dribble);
         rob->setKick(0);

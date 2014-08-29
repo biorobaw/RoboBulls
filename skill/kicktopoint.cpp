@@ -19,9 +19,9 @@ namespace Skill{
 
     bool KickToPoint::perform(Robot * robot)
     {
-        #if TRACE
-            cout << "Performing Skill::KickToPoint" << endl;
-        #endif
+//        #if TRACE
+//            cout << "Performing Skill::KickToPoint" << endl;
+//        #endif
 
         GameModel * gm = GameModel::getModel();
         Point bp = gm->getBallPoint();

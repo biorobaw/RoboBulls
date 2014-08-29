@@ -3,10 +3,10 @@
 
 // SIMULATED 1 ==> running simulator
 //SIMULATED 0 ==> running robots on the field
-#define SIMULATED 1
+#define SIMULATED 0
 // Overall velocity for all behaviors
 //  10 somewhat fast in the robots
-#define OVERALL_VELOCITY 5
+#define OVERALL_VELOCITY 2
 
 /**
   The player's team. 0 is BLUE, 1 is Yellow.
@@ -14,23 +14,23 @@
 #define TEAM 0
 
 #if SIMULATED
-#define CLC_ROTATONG_VEL 5
+    #define CLC_ROTATONG_VEL 1
 #else
-#define CLC_ROTATONG_VEL 1
+    #define CLC_ROTATONG_VEL 1
 #endif
 
 /* Defining PI if it is missing */
 #ifndef M_PI
- #define M_PI    3.141592653589793
- #define M_PI_2  1.570796326794896
+    #define M_PI    3.141592653589793
+    #define M_PI_2  1.570796326794896
 #endif
 
 
 /* The robot's radius in program points */
 #if SIMULATED
- #define ROBOT_RADIUS 100
+    #define ROBOT_RADIUS 100
 #else
- #define ROBOT_RADIUS 200
+    #define ROBOT_RADIUS 200
 #endif
 
 /*
@@ -41,7 +41,7 @@
  *    actual velocity, as it is constantly rotating.
  */
 #if SIMULATED
-    #define DIST_TOLERANCE 10
+    #define DIST_TOLERANCE 100
     #define DIST_VELOCITY 80
 #else
     #define DIST_TOLERANCE 100

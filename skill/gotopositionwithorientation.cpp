@@ -28,9 +28,9 @@ namespace Skill {
 
     bool GoToPositionWithOrientation::perform(Robot* robot)
     {
-        #if TRACE
-            cout <<"Performing Skill::GoToPosition" << endl;
-        #endif
+//        #if TRACE
+//            cout <<"Performing Skill::GoToPosition" << endl;
+//        #endif
 
         wheelvelocities wheelvelocity =
             control.closed_loop_control(robot, targetPosition.x, targetPosition.y, goalOrientation);

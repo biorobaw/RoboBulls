@@ -2,6 +2,7 @@
 
 PositionForKickoff::PositionForKickoff(const ParameterList &list)
 {
+    UNUSED_PARAM(list);
     gm = GameModel::getModel();
     bp = gm->getBallPoint();
     bp_updated = true;
