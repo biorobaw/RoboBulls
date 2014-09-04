@@ -24,6 +24,10 @@ public:
     void setID(int);
     void setR(float);
     void setL(float);
+    void setLF(float left_forward);
+    void setRF(float right_forward);
+    void setLB(float left_backward);
+    void setRB(float right_backward);
     void setKick(int);
     void setDrible(bool);
     void setCurrentBeh(Behavior *);
@@ -51,8 +55,8 @@ private:
     Point robotPosition;
     float orientation; //orientation of the robot
     int id;
-    float L, R; // used for robot's movements
-    Behavior *currentBehavior;
+    float LF, RF, LB, RB; // used for robot's movements
+    Behavior * currentBehavior;
     unsigned kick;
     bool drible;
 

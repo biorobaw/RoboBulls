@@ -6,39 +6,25 @@ Robot::Robot()
     currentBehavior = nullptr;
 }
 
-void Robot::setRobotPosition(Point rbtPoint)
-{
-    robotPosition = rbtPoint;
-}
+void Robot::setRobotPosition(Point rbtPoint){robotPosition = rbtPoint;}
 
-void Robot:: setOrientation(float ornt)
-{
-    orientation = ornt;
-}
+void Robot::setOrientation(float ornt){orientation = ornt;}
 
-void Robot::setID(int ID)
-{
-    id = ID;
-}
+void Robot::setID(int ID){id = ID;}
 
-void Robot::setL(float left)
-{
-    L = left;
-}
+void Robot::setL(float left){LF = LB = left;}
 
-void Robot::setR(float right)
-{
-    R= right;
-}
+void Robot::setR(float right){RF = RB = right;}
 
-void Robot::setKick(int Kick)
-{
-    kick = Kick;
-}
+void Robot::setLF(float left_forward){LF = left_forward;}
 
-bool Robot::getDrible(){
-    return drible;
-}
+void Robot::setRF(float right_forward){RF = right_forward;}
+
+void Robot::setLB(float left_backward){LB = left_backward;}
+
+void Robot::setRB(float right_backward){RB = right_backward;}
+
+void Robot::setKick(int Kick){kick = Kick;}
 
 void Robot::setDrible(bool drible){
     this->drible = drible;
@@ -59,49 +45,26 @@ void Robot::clearCurrentBeh()
     }
 }
 
-Point Robot::getRobotPosition()
-{
-    return robotPosition;
-}
+Point Robot::getRobotPosition(){return robotPosition;}
 
-float Robot::getOrientation()
-{
-    return orientation;
-}
+float Robot::getOrientation(){return orientation;}
 
-int Robot::getID()
-{
-    return id;
-}
+int Robot::getID(){return id;}
 
-int Robot::getL()
-{
-    return L;
-}
+int Robot::getL(){return 0.5*(LF+LB);}
 
-int Robot::getR()
-{
-    return R;
-}
+int Robot::getR(){return 0.5*(RF+RB);}
 
-int Robot::getKick()
-{
-    return kick;
-}
+int Robot::getKick(){return kick;}
 
-Behavior * Robot::getCurrentBeh()
-{
-    return currentBehavior;
-}
+Behavior * Robot::getCurrentBeh(){return currentBehavior;}
 
 std::string Robot::toString()
 {
     stringstream ss;
-
     ss << "\t" << getRobotPosition().toString() << "\t ID: " << getID();
-
-
     return ss.str();
-
 }
+
+bool Robot::getDrible(){return drible;}
 
