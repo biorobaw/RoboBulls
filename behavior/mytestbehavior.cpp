@@ -41,8 +41,8 @@ void myTestBehavior::perform(Robot * myRobot)
 
 //    cout << model->getOpponentGoal()
 //    cout << "performing" << endl;
-//    cout << "angle\t" << myRobot->getOrientation() << endl;
-//    cout << "position" << myRobot->getRobotPosition().x << "\t" << myRobot->getRobotPosition().y << endl;
+//    cout << "angle\t" << myRobot->getOrientation()/M_PI*180 << endl;
+//    cout << "position" << myRobot->getRobotPosition().toString() << endl;
 
     mySkill->perform(myRobot);
 }

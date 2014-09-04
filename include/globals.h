@@ -6,7 +6,7 @@
 #define SIMULATED 0
 // Overall velocity for all behaviors
 //  10 somewhat fast in the robots
-#define OVERALL_VELOCITY 2
+#define OVERALL_VELOCITY 4
 
 /**
   The player's team. 0 is BLUE, 1 is Yellow.
@@ -14,9 +14,9 @@
 #define TEAM 0
 
 #if SIMULATED
-    #define CLC_ROTATONG_VEL 1
+    #define CLC_ROTATONG_VEL 5
 #else
-    #define CLC_ROTATONG_VEL 1
+    #define CLC_ROTATONG_VEL 5
 #endif
 
 /* Defining PI if it is missing */
