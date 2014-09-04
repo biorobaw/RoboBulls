@@ -90,7 +90,7 @@ wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, double x_goal,
 	theta_goal = (theta_goal == -10 ? Measurments::angleBetween(robotPos, Point(x_goal, y_goal)) : theta_goal);
 
     //Rho, Alpha, Beta
-    newRho   = sqrt(pow((y_current - y_goal),2) + pow((x_current-x_goal),2));
+    newRho   = (sqrt(pow((y_current - y_goal),2) + pow((x_current-x_goal),2)))/1;
     newAlpha = Measurments::angleDiff(theta_current, angleToGoal);
     newBeta  = Measurments::angleDiff(angleToGoal, theta_goal);
 
@@ -119,7 +119,7 @@ wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, double x_goal,
     double robot_turnrate = OVERALL_VELOCITY * velMultiplier *
         (kalpha*newAlpha + kbeta*newBeta + kAlphaI*newSumErrAlpha + kBetaI*newSumErrBeta);
 #if SIMULATED
-    int dist_tol=10;
+    int dist_tol=70;
 #else
     int dist_tol=100;
 #endif
@@ -133,6 +133,11 @@ wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, double x_goal,
     {
         float angDiff = Measurments::angleDiff(theta_current, theta_goal);
 
+//        double robot_turnrate = OVERALL_VELOCITY * velMultiplier *
+//            (kbeta*newBeta + kBetaI*newSumErrBeta);
+//        float Pi2R = 2*M_PI*wheel_radius;
+//        left_motor_velocity  = ((wheel_separation * robot_turnrate/Pi2R))/2;
+//        right_motor_velocity = (-(wheel_separation * robot_turnrate/Pi2R))/2;
         left_motor_velocity  = OVERALL_VELOCITY * velMultiplier * CLC_ROTATONG_VEL*-angDiff;
         right_motor_velocity = OVERALL_VELOCITY * velMultiplier * CLC_ROTATONG_VEL*angDiff;
     }

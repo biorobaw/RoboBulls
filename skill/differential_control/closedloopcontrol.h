@@ -62,9 +62,9 @@ public:
         (Robot* robot, Point goal, double theta_goal = -10);
 
 private:
-    static const unsigned int sizeRhoQ   = 400;
-    static const unsigned int sizeAlphaQ = 300;
-    static const unsigned int sizeBetaQ  = 100;
+    static const unsigned int sizeRhoQ   = 800;/*original value 400*/
+    static const unsigned int sizeAlphaQ = 600;/*original value 300*/
+    static const unsigned int sizeBetaQ  = 1000;/*original value 100*/
     static constexpr double wheel_separation = 0.115 * 1000;
     static constexpr double wheel_radius     = 0.027 * 1000;
     double newRho  , krho;
@@ -73,7 +73,7 @@ private:
     double kRhoI   = krho/(4.0 * sizeRhoQ);
     double kAlphaI = kalpha/(1.0 * sizeAlphaQ);
     double kBetaI  = kbeta/(0.2 * sizeBetaQ);
-    double velMultiplier = 5;
+    double velMultiplier = 1;
 
     void handleError(double x_goal, double y_goal);
 	
