@@ -29,7 +29,7 @@ private:
     quint16 _port;
 
     void sendVels(int leftVel, int rightVel, int robotId);
-    void sendPacket(int id, int leftVel, int rightVel, bool kick, bool drible);
+    void sendPacket(int id, int LF, int RF, int LB, int RB, bool kick, bool drible);
 };
 
 #endif // SIMROBCOMM_H

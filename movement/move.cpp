@@ -9,7 +9,7 @@ namespace Movement
  * a wide range of tolerances, and also  make it the user's responsibility 
  * to only recreate this object if the points are changed significantly.
  */
-#define ENOUGH_TO_CHANGE 25
+#define ENOUGH_TO_CHANGE 40
 
 
 Move::Move()

@@ -5,13 +5,21 @@
 #include "skill/driveball.h"
 #include "math.h"
 
+#if SIMULATED
+    #define xx 1600
+#else
+    #define xx -1600
+#endif
+
 myTestBehavior::myTestBehavior(const ParameterList& list)
 {
     UNUSED_PARAM(list);
-    GameModel *model = GameModel::getModel();
-    Point target = model->getPenaltyPoint();
+    //GameModel *model = GameModel::getModel();
+    Point kickPoint(1600, 0);
+    //Point target = model->getPenaltyPoint();
 //    this->TargetPoint = list.getParam<Point>("targetPoint");
-    mySkill = new Skill::DriveBall(target, 0);
+    mySkill = new Skill::DriveBall(kickPoint, 0);
+//    mySkill = new Skill::GoToPositionWithOrientation(kickPoint, 0);
 }
 
 void myTestBehavior::perform(Robot * myRobot)
@@ -29,6 +37,11 @@ void myTestBehavior::perform(Robot * myRobot)
     //********************************************************************************
 
     //Testing drive ball
+
+//    cout << model->getOpponentGoal()
+//    cout << "performing" << endl;
+//    cout << "angle\t" << myRobot->getOrientation()/M_PI*180 << endl;
+//    cout << "position" << myRobot->getRobotPosition().toString() << endl;
 
     mySkill->perform(myRobot);
 }

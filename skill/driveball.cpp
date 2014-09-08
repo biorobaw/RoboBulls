@@ -7,15 +7,15 @@
 #include "driveball.h"
 
 #if SIMULATED
-    #define CLOSE_ENOUGH 150
-    #define ANGLE 7*M_PI/180
-    #define DIST 50
-    #define NXT_TO_BALL 100
+    #define CLOSE_ENOUGH 110
+    #define ANGLE 13*M_PI/180
+    #define DIST 300
+    #define VEL_MULT 0.6
 #else
     #define CLOSE_ENOUGH 350
-    #define ANGLE 5*M_PI/180
+    #define ANGLE 10*M_PI/180
     #define DIST 650
-    #define NXT_TO_BALL   200
+    #define VEL_MULT 0.4
 #endif
 
 namespace Skill
@@ -41,53 +41,48 @@ namespace Skill
 
         GameModel *gm = GameModel::getModel();
 
-        behindBall = Point(DIST*cos(Measurments::angleBetween(targetPosition,gm->getBallPoint()))+gm->getBallPoint().x,
+        behindBall =Point(DIST*cos(Measurments::angleBetween(targetPosition,gm->getBallPoint()))+gm->getBallPoint().x,
                                DIST*sin(Measurments::angleBetween(targetPosition,gm->getBallPoint()))+gm->getBallPoint().y);
-        closeToBall = Point(NXT_TO_BALL*cos(Measurments::angleBetween(targetPosition,gm->getBallPoint()))+gm->getBallPoint().x,
-                               NXT_TO_BALL*sin(Measurments::angleBetween(targetPosition,gm->getBallPoint()))+gm->getBallPoint().y);
+
         float angleBallTarget = Measurments::angleBetween(gm->getBallPoint(), targetPosition);
 
         switch(state)
         {
         case initial:
-            cout<<"Drive ball initial state"<<endl;
+//            cout<<"Drive ball initial state"<<endl;
             state = moveBehindBall;
             goal = behindBall;
             delete skill;
-            skill = new Movement::GoToPositionWithOrientation (behindBall, angleBallTarget, false);
+            skill = new Movement::GoToPositionWithOrientation (behindBall, angleBallTarget);
             break;
         case moveBehindBall:
-            cout<< "move behind the ball" << endl;
+//            cout<< "move behind the ball" << endl;
             if (Measurments::distance(goal, behindBall) > CLOSE_ENOUGH)
             {
                 state = moveBehindBall;
                 delete skill;
-                skill = new Movement::GoToPositionWithOrientation (behindBall, angleBallTarget, false);
+                skill = new Movement::GoToPositionWithOrientation (behindBall, angleBallTarget);
                 goal = behindBall;
             }
             else if (Measurments::isClose(robot->getRobotPosition(), behindBall, CLOSE_ENOUGH)
                 && abs(Measurments::angleDiff(robot->getOrientation(), angleBallTarget)) < ANGLE)
             {
                 state = moveTowardBall;
-//                skill = new GoToPositionWithOrientation (*closeToBall, angleBallTarget);
                 delete skill;
-                skill = new Movement::
-						GoToPositionWithOrientation (gm->getBallPoint(), angleBallTarget, false);
+                skill = new Movement::GoToPositionWithOrientation (gm->getBallPoint(), angleBallTarget);
                 goal = gm->getBallPoint();
             }
 
             break;
         case moveTowardBall:
-            cout <<"Move toward the ball"<<endl;
-
-            if(Measurments::isClose(robot->getRobotPosition(), closeToBall, 150)
-               && abs(Measurments::angleDiff(robot->getOrientation(), angleBallTarget)) < ANGLE)
+//            cout <<"Move toward the ball"<<endl;
+            if(Measurments::isClose(robot->getRobotPosition(), gm->getBallPoint(), CLOSE_ENOUGH))
             {
                 state = driveBall;
-                delete skill;
                 //reducing speed when robot has the ball in order to keep the ball
+                delete skill;
                 skill = new Movement::GoToPositionWithOrientation (targetPosition, direction, false);
-                skill->setVelocityMultiplier(0.4);
+                skill->setVelocityMultiplier(VEL_MULT);
             }
             else if(Measurments::distance(goal, gm->getBallPoint()) > CLOSE_ENOUGH)
             // If the ball has changed position
@@ -95,23 +90,26 @@ namespace Skill
                 state = moveBehindBall;
                 goal = behindBall;
                 delete skill;
-                skill = new Movement::GoToPositionWithOrientation (behindBall, angleBallTarget,  false);
+                skill = new Movement::GoToPositionWithOrientation (behindBall, angleBallTarget);
             }
+
             break;
         case driveBall:
-            robot->setDrible(true);
-            cout <<"drive the ball"<<endl;
-            // Orientation
-            if(!Measurments::isClose(robot->getRobotPosition(), gm->getBallPoint(), 700))
+//            cout <<"drive the ball"<<endl;
+            if(!Measurments::isClose(robot->getRobotPosition(), gm->getBallPoint(), CLOSE_ENOUGH*2))
             {
                 state = moveBehindBall;
                 goal = behindBall;
                 delete skill;
-                skill = new Movement::GoToPositionWithOrientation (behindBall, angleBallTarget, false);
+                skill = new Movement::GoToPositionWithOrientation (behindBall, angleBallTarget);
             }
-            else if(Measurments::isClose(robot->getRobotPosition(), targetPosition, CLOSE_ENOUGH))
+            else if (abs(Measurments::angleDiff(robot->getOrientation(), Measurments::angleBetween(robot->getRobotPosition(), gm->getBallPoint()))) > ANGLE*3 &&
+                     Measurments::isClose(robot->getRobotPosition(), gm->getBallPoint(), CLOSE_ENOUGH))
             {
-                return true;
+                state = moveBehindBall;
+                goal = behindBall;
+                delete skill;
+                skill = new Movement::GoToPositionWithOrientation (behindBall, angleBallTarget);
             }
             break;
         case haveTheBall: break;
@@ -120,5 +118,6 @@ namespace Skill
         skill->perform(robot);
 
         return false;
+
     }
 }

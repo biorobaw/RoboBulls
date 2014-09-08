@@ -17,7 +17,7 @@
 
 namespace ClosedLoopConstants
 {
-    const double defaultConstants[3] = {3, 8, -1.5};
+    const double defaultConstants[3] = {3, 16, -1.5};
     const double noSlowdownConstants[3] = {0, 8, -1.5};
     const double sharpTurnConstants[3] = {3, 25, 0};
 }
@@ -28,7 +28,7 @@ struct wheelvelocities
     int left, right;
 };
 
-/*************************************************************/
+/**************************************************************/
 /* ClosedLoopBase
  * Closed-Loop control in our case is defined by three constants:
  * krho, kalpha, and kbeta. Each of these have a specific effect on
@@ -52,9 +52,9 @@ public:
         (Robot* robot, Point goal, double theta_goal = UNUSED_ANGLE_VALUE);
 
 private:
-    static const unsigned int sizeRhoQ   = 400;
-    static const unsigned int sizeAlphaQ = 300;
-    static const unsigned int sizeBetaQ  = 100;
+    static const unsigned int sizeRhoQ   = 800;/*original value 400*/
+    static const unsigned int sizeAlphaQ = 600;/*original value 300*/
+    static const unsigned int sizeBetaQ  = 1000;/*original value 100*/
     static constexpr double wheel_separation = 0.115 * 1000;
     static constexpr double wheel_radius     = 0.027 * 1000;
     double newRho  , krho;

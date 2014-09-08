@@ -5,9 +5,9 @@ namespace Skill
 
 bool Kick::perform(Robot * robot)
 {
-    #if TRACE
-        cout << "Performing Skill::Kick" << endl;
-    #endif
+//    #if TRACE
+//        cout << "Performing Skill::Kick" << endl;
+//    #endif
 
     //RobComm *nxtbee = RobComm::getRobComm();
     roboKick = true;

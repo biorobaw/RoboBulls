@@ -33,9 +33,9 @@ namespace Skill{
      */
     bool KickToPoint::perform(Robot * robot)
     {
-        #if TRACE
-            cout << "Performing Skill::KickToPoint" << endl;
-        #endif
+//        #if TRACE
+//            cout << "Performing Skill::KickToPoint" << endl;
+//        #endif
 
         GameModel * gm = GameModel::getModel();
         Point bp = gm->getBallPoint();
@@ -62,7 +62,11 @@ namespace Skill{
         case positioning:
             if(abs(Measurments::angleDiff(robot->getOrientation(), ballToTarget)) > target_tolerance)
             {
-                move_skill->recreate(behindBall, ballToTarget, false);
+                if(!Measurments::isClose(rp,bp))
+                    move_skill->recreate(behindBall, ballToTarget);
+                else
+                    move_skill->recreate(rp, ballToTarget, false);
+
                 #if SIMULATED
                     move_skill->setVelocityMultiplier(1);
                 #else
@@ -74,14 +78,14 @@ namespace Skill{
                 move_skill->recreate(aheadOfBall, ballToTarget, false);
             }
 
-            move_skill->perform(robot, Movement::Type::SharpTurns);
+            move_skill->perform(robot);
 
             if(Measurments::distance(bp, rp) < dist_kick && abs(Measurments::angleDiff(robot->getOrientation(), ballToTarget)) < target_tolerance)
             {
                 std::cout << "Moving to kick" << std::endl;
                 state = kick;
             }
-            cout << "KickToPoint: Positioning" << endl;
+            //cout << "KickToPoint: Positioning" << endl;
             break;
         }
         return false;

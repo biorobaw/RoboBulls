@@ -22,7 +22,6 @@ namespace Skill {
         Point behindBall;
         Point closeToBall;
         Point goal;
-
     };
 }
 

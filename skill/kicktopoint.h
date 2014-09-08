@@ -16,10 +16,10 @@ public:
     bool perform(Robot *);
 private:
 #if SIMULATED
-    const int dist_position = 115;
+    const int dist_position = ROBOT_RADIUS*3;
     const int dist_kick = 115;
 #else
-    const int dist_position = 50;
+    const int dist_position = ROBOT_RADIUS*3;
     const int dist_kick = 220;
 #endif
     Point target;
