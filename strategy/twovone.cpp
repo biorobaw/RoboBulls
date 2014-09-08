@@ -24,10 +24,9 @@ void TwoVOne::assignBeh()
     Robot * robot_0 = gm->getMyTeam().at(0);
     Robot * robot_1 = gm->getMyTeam().at(1);
 
-    float rgd = gm->getMyGoal().x/(abs)(gm->getMyGoal().x); //Relative friendly goal direction
+    static float rgd = gm->getMyGoal().x/(abs)(gm->getMyGoal().x); //Relative friendly goal direction
 
-    BehaviorAssignment<PositionForKickoff> bKickOff;
-    bKickOff.setSingleAssignment(true);
+    BehaviorAssignment<PositionForKickoff> bKickOff(true);
 
     if(Region::goalScored())
     {
@@ -61,25 +60,14 @@ void TwoVOne::assignBeh()
         });
 
         //Create Behaviors
-        BehaviorAssignment<AttackMain> bAttactMain;
-        bAttactMain.setSingleAssignment(true);
+        BehaviorAssignment<AttackMain> bAttactMain(true);
+        BehaviorAssignment<AttackSupport> bAttackSupport(true);
+        BehaviorAssignment<DefendCloseToBall> bMidDefender(true);
+        BehaviorAssignment<DefendCloseToBall> bRightDefender(true);
+        BehaviorAssignment<DefendCloseToBall> bLeftDefender(true);
+        BehaviorAssignment<DefendFarFromBall> bGoalie(true);
 
-        BehaviorAssignment<AttackSupport> bAttackSupport;
-        bAttackSupport.setSingleAssignment(true);
-
-        BehaviorAssignment<DefendCloseToBall> bMidDefender;
-        bMidDefender.setSingleAssignment(true);
-
-        BehaviorAssignment<DefendCloseToBall> bRightDefender;
-        bRightDefender.setSingleAssignment(true);
-
-        BehaviorAssignment<DefendCloseToBall> bLeftDefender;
-        bLeftDefender.setSingleAssignment(true);
-
-        BehaviorAssignment<DefendFarFromBall> bGoalie;
-        bGoalie.setSingleAssignment(true);
-
-        BehaviorAssignment<SendBallToRegion> bSendBall;
+        BehaviorAssignment<SendBallToRegion> bSendBall(true);
         bSendBall.setBehParam("region", strategicRegions.front());
 
 

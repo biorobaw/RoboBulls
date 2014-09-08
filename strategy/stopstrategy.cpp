@@ -44,11 +44,7 @@ void StopStrategy::assignBeh()
     }
 
 
-    /* Lookup the point the robot is supposed to be going to. For now, I'm using
-     * assert to ensure it should be there
-     */
-    BehaviorAssignment<StopBehavior> stopAssign;
-    stopAssign.setBehParam<Point>("ballPoint", ballPoint);
+    BehaviorAssignment<StopBehavior> stopAssign(true);
 
     for(Robot* rob : model->getMyTeam())
     {
@@ -57,8 +53,13 @@ void StopStrategy::assignBeh()
             this->rebuildTargetPoints();
         }
 
+        //Target angle to make robots face the ball
+        float targetAngle
+                = Measurments::angleBetween(rob->getRobotPosition(), ballPoint);
+
         stopAssign.setBehParam("targetPoint", robTargetPoints[rob->getID()]);
-        stopAssign.assignBeh(rob);
+        stopAssign.setBehParam("targetAngle", targetAngle);
+        stopAssign.assignBeh(rob);\
     }
 }
 
@@ -93,14 +94,13 @@ void StopStrategy::rebuildTargetPoints()
      */
     for(Robot* rob : mod->getMyTeam())
     {
-        auto min_pos = Measurments::closestPoint(newPoints, rob->getRobotPosition());
+        rob->clearCurrentBeh();
 
+        auto min_pos = Measurments::closestPoint(newPoints, rob->getRobotPosition());
     #if STOPSTRAT_DEBUG
         std::cout << rob->getID() << ": " << min_pos->toString() << std::endl;
     #endif
-
         robTargetPoints[rob->getID()] = *min_pos;	//Set a new target point for rob
-
         newPoints.erase(min_pos);	//Remove this point because it is now used
     }
 }

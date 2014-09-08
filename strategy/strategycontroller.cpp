@@ -10,6 +10,7 @@
 #include "strategy/twovone.h"
 #include "strategy/teststrategy.h"
 
+#include "movement/pathfinding/fppa_pathfinding.h"
 
 using namespace std;
 
@@ -23,7 +24,8 @@ void StrategyController::gameModelUpdated()
 {
     static int count = 0;
     if(count < 25) {++count; return;}
-//    cout<< model->getGameState() << endl;
+	
+	FPPA::pathfindingBegin();
 
     if (model->getGameState() == 'S')
     {
@@ -35,7 +37,7 @@ void StrategyController::gameModelUpdated()
     }
     else
     {
-        activeStrategy = new TestStrategy();
+        activeStrategy = new TwoVOne();
     }
 
     activeStrategy->assignBeh();
@@ -51,6 +53,8 @@ void StrategyController::gameModelUpdated()
 
     RobComm * robcom = RobComm::getRobComm();
     robcom->sendVelsLarge(model->getMyTeam());
+	
+	FPPA::pathfindingEnd();
 	
 	delete activeStrategy;
 }

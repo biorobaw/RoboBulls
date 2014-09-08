@@ -1,42 +1,35 @@
 #include "teststrategy.h"
 #include "behavior/behaviorassignment.h"
 #include "behavior/kicktogoal.h"
+#include "behavior/positionforkickoff.h"
 #include "behavior/defendoneonone.h"
 #include "behavior/driveballandkick.h"
-#include "skill/differential_control/closedloopcontrol.h"
-#include "skill/gotopositionwithorientation.h"
-#include "skill/obstacleavoidmove.h"
-#include "skill/basic_movement.h"
-#include "utilities/skillsequence.h"
-#include "communication/robcomm.h"
 #include "behavior/mytestbehavior.h"
 #include "behavior/defendclosetoball.h"
 #include "behavior/defendfarfromball.h"
 #include "behavior/attackmain.h"
-#include "skill/three_omni_motion/gotoposebasic.h"
-#include "communication/nxtrobcomm.h"
+#include "skill/stop.h"
+#include "behavior/genericmovementbehavior.h"
+#include "movement/movetype.h"
 
 
-class TestBehavior : public Behavior
+class TestBehavior : public GenericMovementBehavior
 {
 public:
     TestBehavior(const ParameterList& list)
+        : GenericMovementBehavior(list)
     {
-        Point pt = GameModel::getModel()->getPenaltyPoint();
-        this->targetPoint = list.getParam<Point>("targetPoint");
-        mySeq.addSkill(new Skill::ObstacleAvoidMove(targetPoint, M_PI/2));
-        mySeq.addSkill(new Skill::ObstacleAvoidMove(pt));
-        mySeq.addSkill(new Skill::Stop());
+        UNUSED_PARAM(list);
+        setVelocityMultiplier(0.75);
     }
 
     void perform(Robot * robot)
     {
-        if(mySeq.executeOn(robot))
-            robot->clearCurrentBeh();
+        setMovementTargets(GameModel::getModel()->getBallPoint());
+        GenericMovementBehavior::perform(robot, Movement::Type::SharpTurns);
     }
 
 private:
-    SkillSequence mySeq;
     Point targetPoint;
 };
 
@@ -116,11 +109,10 @@ void TestStrategy::assignBeh()
 
 //    //BehaviorAssignment<DriveBallAndKick> assignment;
 
-    GameModel * gm = GameModel::getModel();
-    BehaviorAssignment<TestBehavior> assignment;
-    assignment.setSingleAssignment(true);
-    assignment.setBehParam<Point>("targetPoint", gm->getBallPoint());
-    assignment.assignBeh({0, 1});
+    //GameModel * gm = GameModel::getModel();
+    BehaviorAssignment<PositionForKickoff> assignment(true);
+   // assignment.setBehParam<Point>("targetPoint", gm->getBallPoint());
+    assignment.assignBeh();
 
 //    // Narges code testing DriveBallAndKick
 //    BehaviorAssignment<DriveBallAndKick> assignment;
