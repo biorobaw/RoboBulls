@@ -54,13 +54,8 @@ SOURCES += main.cpp \
 	include/serialib.cpp \
 	model/gamemodel.cpp \
 	model/robot.cpp \
-	skill/basic_movement.cpp \
-	skill/differential_control/closedloopcontrol.cpp \
 	skill/driveball.cpp \
-	skill/gotopositionwithorientation.cpp \
 	skill/kick.cpp \
-        skill/obstacleavoidmove.cpp \
-	skill/pathfinding/fppa_pathfinding.cpp \
 	skill/waitforball.cpp \
 	strategy/penaltystrategy.cpp \
 	strategy/stopstrategy.cpp \
@@ -81,8 +76,18 @@ SOURCES += main.cpp \
     strategy/twovone.cpp \
     skill/kicktopoint.cpp \
     utilities/region.cpp \
-    skill/three_omni_motion/gotoposebasic.cpp \
-    skill/three_omni_motion/matrixcalculator.cpp
+    movement/basic_movement.cpp \
+    movement/gotopositionwithorientation.cpp \
+    movement/pathfinding/fppa_pathfinding.cpp \
+    movement/three_omni_motion/matrixcalculator.cpp \
+    movement/move.cpp \
+    movement/differential/closedloopcontrol.cpp \
+    include/config/robot_types.cpp \
+    behavior/genericmovementbehavior.cpp \
+    skill/stop.cpp \
+    movement/four_omni_motion/omni4_velcalculator.cpp \
+    movement/three_omni_motion/omni3_velcalculator.cpp \
+    movement/differential/differential_velcalculator.cpp
 
 HEADERS += \
 	behavior/behavior.h \
@@ -90,7 +95,6 @@ HEADERS += \
 	behavior/defendoneonone.h \
 	behavior/driveballandkick.h \
 	behavior/kicktogoal.h \
-	behavior/obstacleavoidbehavior.h \
 	behavior/penaltybehavior.h \
 	behavior/stopbehavior.h \
 	communication/nxtrobcomm.h \
@@ -98,7 +102,6 @@ HEADERS += \
 	communication/robcomm.h \
 	communication/simrobcomm.h \
 	communication/visioncomm.h \
-	include/globals.h \
 	include/grSim_Commands.pb.h \
 	include/grSim_Packet.pb.h \
 	include/grSim_Replacement.pb.h \
@@ -113,16 +116,9 @@ HEADERS += \
 	include/util.h \
 	model/gamemodel.h \
 	model/robot.h \
-	skill/basic_movement.h \
-	skill/differential_control/closedloopcontrol.h \
-	skill/differential_control/matrixcalculator.h \
-	skill/differential_control/robottoinertialvelocities.h \
 	skill/driveball.h \
-	skill/gotopositionwithorientation.h \
 	skill/kick.h \
-	skill/obstacleavoidmove.h \
-        utilities/skillsequence.h \
-	skill/pathfinding/fppa_pathfinding.h \
+	utilities/skillsequence.h \
 	skill/skill.h \
 	skill/waitforball.h \
 	strategy/penaltystrategy.h \
@@ -145,8 +141,25 @@ HEADERS += \
     skill/drivingball.h \
     skill/kicktopoint.h \
     utilities/region.h \
-    skill/three_omni_motion/gotoposebasic.h \
-    skill/three_omni_motion/matrixcalculator.h
+    movement/basic_movement.h \
+    movement/gotopositionwithorientation.h \
+    movement/pathfinding/fppa_pathfinding.h \
+    movement/three_omni_motion/matrixcalculator.h \
+	movement/move.h \
+    movement/differential/closedloopcontrol.h \
+    movement/gotoposition.h \
+    movement/movetype.h \
+    include/config/globals.h \
+    include/config/robot_types.h \
+    include/config/simulated.h \
+    include/config/team.h \
+    include/config/tolerances.h \
+    include/config/trace.h \
+    behavior/genericmovementbehavior.h \
+    skill/stop.h \
+    movement/three_omni_motion/omni3_velcalculator.h \
+    movement/differential/differential_velcalculator.h \
+    movement/four_omni_motion/omni4_velcalculator.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 

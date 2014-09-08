@@ -19,13 +19,16 @@ void exitStopRobot(int param)
 {
     UNUSED_PARAM(param);
     GameModel* gm = GameModel::getModel();
+    RobComm* rc = RobComm::getRobComm();
 
     for(Robot* rob : gm->getMyTeam()) {
         rob->setL(0);
         rob->setR(0);
     }
-	
-	exit(1);
+    
+    rc->sendVelsLarge(gm->getMyTeam());
+    
+    exit(1);
 }
 
 // RefComm Test
@@ -42,12 +45,12 @@ int main(int argc, char *argv[])
     VisionComm visionCommunicator(myGameModel);
 
 
-	std::signal(SIGSEGV, exitStopRobot);
-	std::signal(SIGABRT, exitStopRobot);
-	std::signal(SIGTERM, exitStopRobot);
+    std::signal(SIGSEGV, exitStopRobot);
+    std::signal(SIGABRT, exitStopRobot);
+    std::signal(SIGTERM, exitStopRobot);
     std::signal(SIGHUP, exitStopRobot);
-	
-	
+    
+    
     visionCommunicator.start();
     refCommunicator.run();
 
