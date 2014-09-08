@@ -1,7 +1,7 @@
-#include "visioncomm.h"
 #include <iostream>
-#include "include/globals.h"
-
+#include "include/config/simulated.h"
+#include "include/config/team.h"
+#include "visioncomm.h"
 using namespace std;
 
 

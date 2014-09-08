@@ -4,7 +4,6 @@
 #include <QtNetwork>
 #include <math.h>
 
-#include "include/globals.h"
 #include "model/robot.h"
 #include "include/grSim_Packet.pb.h"
 #include "include/grSim_Commands.pb.h"

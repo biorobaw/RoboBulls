@@ -1,6 +1,6 @@
-#include "nxtrobcomm.h"
 #include <stdio.h>
 #include <vector>
+#include "nxtrobcomm.h"
 #include "model/robot.h"
 
 NXTRobComm::NXTRobComm()
@@ -54,12 +54,14 @@ void NXTRobComm::sendVelsLarge(vector<Robot *> robots)
     for (unsigned int i=0; i < robots.size(); i++)
     {
         Robot *rob = robots.at(i);
-
-        largePacket[5*i] = '~';
-        largePacket[5*i+1] = (char)rob->getID();
-        largePacket[5*i+2] = (char)rob->getL();
-        largePacket[5*i+3] = (char)rob->getR();
-        largePacket[5*i+4] = (char)rob->getKick();
+		largePacket[5*i] = '~';
+		largePacket[5*i+1] = (char)rob->getID();
+		largePacket[5*i+2] = (char)rob->getL();
+		largePacket[5*i+3] = (char)rob->getR();
+		largePacket[5*i+4] = (char)rob->getKick();
+		
+		/*** TODO: This probably isn't going to work. Ask Martin ***/
+		
         rob->setKick(0);
     }
     send(&largePacket[0], robots.size()*5);

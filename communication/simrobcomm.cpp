@@ -1,7 +1,7 @@
 #include "simrobcomm.h"
 
 #include <math.h>
-#include "include/globals.h"
+#include "include/config/team.h"
 #include "model/robot.h"
 
 SimRobComm::SimRobComm()
@@ -20,15 +20,11 @@ void SimRobComm::sendVelsLarge(std::vector<Robot *> robots)
 {
     for (Robot* rob : robots)
     {
-        bool kick, dribble;
-
-        if (rob->getKick()==1) kick = true;
-        else kick = false;
-
-        dribble = false;
-
-        sendPacket(rob->getID(),rob->getL(),rob->getR(),kick,dribble);
+        bool kick    = rob->getKick();
+        bool dribble = rob->getDrible();
+        sendPacket(rob->getID(),rob->getL(),rob->getR(), kick, dribble);
         rob->setKick(0);
+		rob->setDrible(0);
     }
 }
 

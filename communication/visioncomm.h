@@ -1,21 +1,17 @@
 #ifndef VISIONCOMM_H
 #define VISIONCOMM_H
 
-#include "include/netraw.h"
 #include <string>
 #include <iostream>
 #include <QtCore>
 #include <string>
-#include "model/gamemodel.h"
+#include "include/netraw.h"
 #include "include/messages_robocup_ssl_detection.pb.h"
 #include "include/messages_robocup_ssl_geometry.pb.h"
 #include "include/messages_robocup_ssl_wrapper.pb.h"
 #include "include/robocup_ssl_client.h"
-
+#include "model/gamemodel.h"
 #include "model/robot.h"
-#include "utilities/point.h"
-#include "include/globals.h"
-
 using namespace std;
 
 /**

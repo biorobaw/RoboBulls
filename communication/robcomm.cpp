@@ -1,6 +1,6 @@
 #include "robcomm.h"
 #include <stdio.h>
-#include "include/globals.h"
+#include "include/config/simulated.h"
 #include "simrobcomm.h"
 #include "nxtrobcomm.h"
 
