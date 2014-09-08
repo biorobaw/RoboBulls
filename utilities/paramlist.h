@@ -27,7 +27,7 @@ public:
 	 *  The value to set the variable to
 	 */
 	template<typename T>
-    void setParam(std::string name, T value);
+    void setParam(const std::string& name, T value);
 
 	 /**
 	 * @brief ParameterList::getParam<T> :
@@ -38,14 +38,19 @@ public:
 	 *  The value associated with name, of type T.
 	 */
 	template<typename T>
-    T getParam(std::string name) const;
+    T getParam(const std::string& name) const;
 
     std::string toString() const;
+	
+	/* Returns the number of parameters entered across
+	 * all types 
+	 */
+	size_t size() const;
 
 private:
 
 	/* ParameterList implementation classes.
-	 * Uses inheritence between these two classes 
+	 * Uses inheritance between these two classes 
 	 * to manage an unordered_map of any type.
 	 * Made possible by C++11 type_index
 	 */
@@ -54,16 +59,19 @@ private:
     {
     public:
         virtual std::string toString() const;
+		virtual size_t size() const;
     };
 
     template<typename T>
     class TypedParamList : public GenericParamList
     {
     public:
-        void insertParam(std::string name, T value);
-        T findParam(std::string name) const;
+        void insertParam(const std::string& name, T value);
+        T findParam(const std::string& name) const;
 
         std::string toString() const;
+		
+		size_t size() const;
     private:
         std::unordered_map<std::string, T> myParams;
     };
@@ -82,25 +90,35 @@ private:
 /******************/
 
 template <typename T>
-void ParameterList::TypedParamList<T>::insertParam(std::string name, T value)
+void ParameterList::TypedParamList<T>::insertParam
+	(const std::string& name, T value)
 {
 	myParams[name] = value;
 }
 
 
 template <typename T>
-T ParameterList::TypedParamList<T>::findParam(std::string name) const
+T ParameterList::TypedParamList<T>::findParam
+	(const std::string& name) const
 {
 	auto entry = myParams.find(name);
 	
-	/* IF YOU ARE GETTING AN ASSERT FAILED HERE 
-	 * It means that you tried to look up a variable by a string
-	 * that doesn't exist. Check the spelling of the names
-	 * that you looked up. 
+	/* Instead of asserts, this throws and exception when
+	 * the name cannot be found.
 	 */
-	assert(entry != myParams.end());
+	if(entry == myParams.end()) {
+		std::string msg = "Unable to find parameter \"" + name + "\"";
+		throw std::runtime_error(msg.c_str());
+	}
 
 	return entry->second;
+}
+
+
+template<typename T>
+size_t ParameterList::TypedParamList<T>::size() const
+{
+	return myParams.size();
 }
 
 
@@ -124,7 +142,7 @@ std::string ParameterList::TypedParamList<T>::toString() const
 /*****************/
 
 template<typename T>
-void ParameterList::setParam(std::string name, T value)
+void ParameterList::setParam(const std::string& name, T value)
 {
     if(params.find(typeid(T)) == params.end())
         params[typeid(T)] = new TypedParamList<T>();
@@ -138,11 +156,15 @@ void ParameterList::setParam(std::string name, T value)
 
 
 template<typename T>
-T ParameterList::getParam(std::string name) const
+T ParameterList::getParam(const std::string& name) const
 {
-	assert(params.find(typeid(T)) != params.end());
-
     auto entry = params.find(typeid(T));
+	
+	if(entry == params.end()) {
+        std::string msg = "\"" + std::string(typeid(T).name())
+                + "\" does not have any entries";
+		throw std::runtime_error(msg.c_str());
+	}
 
     return ((TypedParamList<T>*)entry->second)->findParam(name);
 }

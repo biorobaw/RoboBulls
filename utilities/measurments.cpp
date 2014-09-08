@@ -3,7 +3,9 @@
 
 float Measurments::distance(const Point& p1, const Point& p2)
 {
-    return sqrt(pow(p2.y - p1.y, 2) + pow(p2.x - p1.x, 2));
+	float dy = p2.y - p1.y;
+	float dx = p2.x - p1.x;
+    return sqrt((dy * dy) + (dx * dx));
 }
 
 
@@ -20,7 +22,7 @@ bool Measurments::isClose(const Point& p1, const Point& p2, float tol)
 }
 
 
-float Measurments::slope(Point p1, Point p2)
+ float Measurments::slope(Point p1, Point p2)
 {
     return atan2((p1.y-p2.y),(p1.x-p2.x));
 }
@@ -41,3 +43,10 @@ float Measurments::angleDiff(float angle1, float angle2){
 
     return arg;
 }
+
+
+bool Measurments::isClose(float angle1, float angle2, float tol)
+{
+	return abs(Measurments::angleDiff(angle1, angle2)) < tol;
+}
+

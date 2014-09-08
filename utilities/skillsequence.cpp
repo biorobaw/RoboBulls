@@ -4,7 +4,6 @@ SkillSequence::~SkillSequence()
 {
     for(auto& entry : this->masterQueue)
         delete entry.skill;
-
     masterQueue.clear();
 }
 
@@ -12,23 +11,6 @@ SkillSequence::~SkillSequence()
 void SkillSequence::addSkill(Skill::Skill* sk, skillUpdateFn updateFn)
 {
 	this->masterQueue.emplace_back(sk, updateFn);
-}
-
-
-SkillSequence::skillQueue& SkillSequence::getSkillQueue(Robot* robot)
-{
-	int  robID = robot->getID();
-	auto robEntry = robQueueMap.find(robID);
-	
-    if(robEntry == robQueueMap.end()) //Copy full skill queue
-    {
-    #if SKILL_SEQUENCE_DEBUG
-        std::cout << "Making New for " << robot->getID() << std::endl;
-    #endif
-        robQueueMap[robID] = skillQueue(masterQueue);
-	}
-	
-	return robQueueMap[robID];
 }
 
 
@@ -45,10 +27,6 @@ bool SkillSequence::executeSkills(skillQueue& queue, Robot* robot)
 	   
     if(sk != nullptr)
         skillReportedFinished = sk->perform(robot);
-    #if SKILL_SEQUENCE_DEBUG
-    else
-        std::cout << "Skill was null" << std::endl;
-    #endif
 
 	if(isFinished < 0)
 	   isFinished = skillReportedFinished;
@@ -70,28 +48,13 @@ bool SkillSequence::executeSkills(skillQueue& queue, Robot* robot)
 
 bool SkillSequence::executeOn(Robot* robot)
 {
-	if( !masterQueue.empty() ) 
-	{
-		bool finished;
-		auto& robSkillQueue = getSkillQueue(robot);
-		
-		finished = executeSkills(robSkillQueue, robot);
-		
-		return finished;
-	}
+	bool finished = true;
+
+	if(!masterQueue.empty()) 
+		finished = executeSkills(masterQueue, robot);
 	
-	return true;
+	return finished;
 }
 
-
-void SkillSequence::restart(Robot* robot)
-{
-    auto entry = this->robQueueMap.find(robot->getID());
-
-    if(entry != robQueueMap.end())
-        this->robQueueMap.erase(entry);
-
-    //robQueueMap[robot->getID()] = skillQueue(masterQueue);
-}
 
 /**************************************************/

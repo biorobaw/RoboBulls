@@ -4,13 +4,12 @@
 #include <math.h>
 #include <algorithm>
 #include "utilities/point.h"
-#include "include/globals.h"
+#include "include/config/tolerances.h"
 
 class Measurments
 {
 public:
     Measurments(){}
-
 
     /* Returns the distance between two points using the
      * standard distance formula.
@@ -25,7 +24,7 @@ public:
 
 
     /* Compare the points to determine if they are within a certain
-     * tolerance of each other. A "close enough" alternitive to
+     * tolerance of each other. A "close enough" alternative to
      * the == operator.
      */
     static bool isClose(const Point&, const Point&, float tol = DIST_TOLERANCE);
@@ -51,6 +50,12 @@ public:
     static float angleSum(float angle1, float angle2);
 	
 	
+	/* isClose overload for angles; wrapper around angleDiff to make doing this less
+	 * of a pain.
+	 */
+    static bool isClose(float angle1, float angle2, float tol = ROT_TOLERANCE);
+	
+	
 	/* Clamps a value beteen min and max */
 	template<typename T>
     static T clamp(const T& value, const T& min, const T& max);
@@ -64,7 +69,7 @@ template <class Container>
 auto Measurments::closestPoint(Container& cntr, const Point p0) -> decltype(std::begin(cntr))
 {
 	auto pos = std::min_element(std::begin(cntr), std::end(cntr),
-		[&](Point a, Point b) {
+		[&](const Point& a, const Point& b) {
 			return Measurments::distance(p0, a) < Measurments::distance(p0, b);
 		});
 	return pos;
@@ -76,10 +81,7 @@ T Measurments::clamp(const T& value, const T& min, const T& max)
 {
     if(value > max) return max;
     if(value < min) return min;
-
     return value;
-    //return std::min(max, std::max(min, value));
-    //return std::max(min, std::min(max, value));
 }
 
 
