@@ -3,14 +3,16 @@
 
 #include "skill/skill.h"
 #include "model/gamemodel.h"
+#include "movement/move.h"
 
 namespace Skill{
 
-class KickToPoint
+class KickToPoint : public Skill
 {
 public:
     KickToPoint(Point target);
     KickToPoint(Point target,float targetToleranceRadians);
+   ~KickToPoint();
     bool perform(Robot *);
 private:
 #if SIMULATED
@@ -23,6 +25,7 @@ private:
     Point target;
     float target_tolerance = ROT_TOLERANCE;
     Skill * skill;
+    Movement::Move* move_skill;
     enum {positioning, kick} state;
 };
 
