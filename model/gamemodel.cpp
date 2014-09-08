@@ -1,5 +1,6 @@
-#include "gamemodel.h"
 #include <stddef.h>  // defines NULL
+#include "include/config/team.h"
+#include "gamemodel.h"
 
 const float CONF_THRESHOLD=0.0;
 // Global static pointer used to ensure a single instance of the class.
@@ -142,24 +143,29 @@ GameModel * GameModel::getModel()
 
 Point GameModel::getPenaltyPoint()
 {
-    if (TEAM == 1)
-        return Point(2045, 22);
-    else
+#if TEAM == TEAM_YELLOW
         return Point(-2045, 22);
+#else
+        return Point(2045, 22);
+#endif
 }
 
-Point GameModel::getOpponentGoal(){
-    if (TEAM == 1)
-        return Point(-3000, 0);
-    else
+Point GameModel::getOpponentGoal()
+{
+#if TEAM == TEAM_BLUE
         return Point(3000,0);
+#else
+        return Point(-3000, 0);
+#endif
 }
 
-Point GameModel::getMyGoal(){
-    if (TEAM == 0)
+Point GameModel::getMyGoal()
+{
+#if TEAM == TEAM_BLUE
         return Point(-3000, 0);
-    else
+#else
         return Point(3000,0);
+#endif
 }
 
 /**

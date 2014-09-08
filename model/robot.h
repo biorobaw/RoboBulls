@@ -3,15 +3,14 @@
 
 #include "utilities/point.h"
 #include "behavior/behavior.h"
-#include <sstream>
-
+#include "include/config/robot_types.h"
 class Behavior;
 
 /**
  * @brief The Robot class
- * The robot class includes the required infromation about robot
+ * The robot class includes the required information about robot
  * such position, orientation, id, and etc.
- * you can asssign these information to robot or access them when required
+ * you can assign these information to robot or access them when required
  */
 class Robot
 {
@@ -24,7 +23,12 @@ public:
     void setID(int);
     void setR(float);
     void setL(float);
-    void setKick(int);
+	void setB(float);
+    void setLF(float left_forward);
+    void setRF(float right_forward);
+    void setLB(float left_backward);
+    void setRB(float right_backward);
+    void setKick(bool);
     void setDrible(bool);
     void setCurrentBeh(Behavior *);
     
@@ -32,18 +36,22 @@ public:
     //gets
     Point getRobotPosition();
     float getOrientation();
-    int getID();
-    int getR();
-    int getL();
-    int getKick();
-    bool getDrible();
-    Behavior * getCurrentBeh();
+    int   getID();
+    int   getR();
+    int   getL();
+	int	  getB();
+    int   getLF();
+    int   getRF();
+    int   getLB();
+    int   getRB();
+    int   getKick();
+    bool  getDrible();
+    Behavior* getCurrentBeh();
+	robotType type();
 	
 	void clearCurrentBeh();
     std::string toString();
 
-
-    int count;
     bool hasBall;
     bool hasBeh;
 
@@ -51,9 +59,9 @@ private:
     Point robotPosition;
     float orientation; //orientation of the robot
     int id;
-    float L, R; // used for robot's movements
-    Behavior *currentBehavior;
-    unsigned kick;
+    float LF, RF, LB, RB; // used for robot's movements
+    Behavior * currentBehavior;
+    bool kick;
     bool drible;
 
 };
