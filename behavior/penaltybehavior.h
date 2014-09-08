@@ -2,15 +2,14 @@
 #define PENALTYBEHAVIOR_H
 
 #include <iostream>
-#include "behavior/behavior.h"
-
+#include "behavior/genericmovementbehavior.h"
 #include "skill/skill.h"
-#include "skill/basic_movement.h"
+#include "skill/stop.h"
 #include "skill/kick.h"
-#include "skill/gotopositionwithorientation.h"
+#include "movement/gotopositionwithorientation.h"
 #include "model/gamemodel.h"
-#include "utilities/measurments.h"
-#include "utilities/paramlist.h"
+
+#define PENALTY_BEHAVIOR_DEBUG 0
 
 /*
  * Penalty Behavior
@@ -21,12 +20,12 @@
  */
 
 
-class PenaltyBehavior : public Behavior
+class PenaltyBehavior : public GenericMovementBehavior
 {
 public:
     PenaltyBehavior(const ParameterList& list);
     void perform(Robot *);
-
+private:
     enum penaltyBehavior_t {moving, kicking, idling} pb;
 };
 

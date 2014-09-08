@@ -2,10 +2,12 @@
 
 
 AttackSupport::AttackSupport(const ParameterList& list)
+    : GenericMovementBehavior(list)
 {
     UNUSED_PARAM(list);
     state = initial;
 }
+
 
 void AttackSupport::perform(Robot * robot)
 {
@@ -30,9 +32,9 @@ void AttackSupport::perform(Robot * robot)
     int goal_dir = gp.x/abs(gp.x);
 
     //Declare regions in which to check for robots
-    Region left_of_main = Region(0, goal_dir*3000, 0, 2000);
+    Region left_of_main  = Region(0, goal_dir*3000, 0, 2000);
     Region right_of_main = Region(0, goal_dir*3000, 0, -2000);
-    Region penalty_area = Region(gp.x, gp.x-goal_dir*500,-500,500);
+    Region penalty_area  = Region(gp.x, gp.x-goal_dir*500,-500,500);
 
 
 
@@ -61,16 +63,19 @@ void AttackSupport::perform(Robot * robot)
 
     //Initialize skills that are used in switch statement
     float angle_to_ball = Measurments::angleBetween(rp,bp);
+	
+	//It's best to have the dribbler on when waiting for a pass
+	robot->setDrible(true);
 
     switch (state)
     {
     case initial:
     {
     #if SIMULATED
-        move_skill = new Skill::ObstacleAvoidMove(wp,angle_to_ball);
+		setMovementTargets(wp, angle_to_ball);
         previousBP = bp;
     #else
-        move_skill = new Skill::ObstacleAvoidMove(wp,angle_to_ball);
+        setMovementTargets(wp, angle_to_ball);
         previousBP = bp;
     #endif
         state = final;
@@ -83,6 +88,6 @@ void AttackSupport::perform(Robot * robot)
             state = initial;
             break;
         }
-        move_skill->perform(robot);
+        GenericMovementBehavior::perform(robot);
     }
 }

@@ -1,14 +1,13 @@
 #ifndef DEFENDCLOSETOBALL_H
 #define DEFENDCLOSETOBALL_H
 
-#include "behavior/behavior.h"
-#include "utilities/paramlist.h"
+#include "behavior/genericmovementbehavior.h"
 
-class DefendCloseToBall: public Behavior
+class DefendCloseToBall: public GenericMovementBehavior
 {
 public:
-    DefendCloseToBall(const ParameterList& list);
-    void perform(Robot *);
+	DefendCloseToBall(const ParameterList& list);
+    void perform(Robot*) override;
 };
 
 #endif // DEFENDCLOSETOBALL_H

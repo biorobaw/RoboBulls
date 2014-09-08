@@ -1,7 +1,6 @@
 #include "mytestbehavior.h"
 #include <iostream>
 #include "model/robot.h"
-#include "skill/gotopositionwithorientation.h"
 #include "model/gamemodel.h"
 #include "skill/driveball.h"
 #include "math.h"

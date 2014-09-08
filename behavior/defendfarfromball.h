@@ -1,10 +1,9 @@
 #ifndef DEFENDFARFROMBALL_H
 #define DEFENDFARFROMBALL_H
 
-#include "behavior/behavior.h"
-#include "utilities/paramlist.h"
+#include "behavior/genericmovementbehavior.h"
 
-class DefendFarFromBall : public Behavior
+class DefendFarFromBall : public GenericMovementBehavior
 {
 public:
     DefendFarFromBall(const ParameterList& list);

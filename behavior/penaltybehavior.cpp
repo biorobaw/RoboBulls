@@ -1,6 +1,7 @@
 #include "penaltybehavior.h"
 
 PenaltyBehavior::PenaltyBehavior(const ParameterList& list)
+	: GenericMovementBehavior(list)
 {
     UNUSED_PARAM(list);
     pb = moving;
@@ -15,32 +16,41 @@ void PenaltyBehavior::perform(Robot * myRobot)
     GameModel *model = GameModel::getModel();
     float myAngle = Measurments::angleBetween(myRobot->getRobotPosition(),model->getPenaltyPoint());
 
-    Skill::Kick kick;
-    Skill::Stop stop;
-    Skill::GoToPositionWithOrientation go(model->getPenaltyPoint(), myAngle);
-
     switch(pb)
     {
     case moving:
-        if(!(Measurments::isClose(myRobot->getRobotPosition(),model->getBallPoint(),100)))
-        {
-            go.perform(myRobot);
-            cout <<"moving performed!"<<endl;
-        }
-        else
-            pb = kicking;
+		{
+			setMovementTargets(model->getBallPoint(), myAngle);
+			
+			if(!(Measurments::isClose(myRobot->getRobotPosition(),model->getBallPoint(),100)))
+			{
+				GenericMovementBehavior::perform(myRobot);
+			#if PENALTY_BEHAVIOR_DEBUG
+				cout <<"moving performed!"<<endl;
+			#endif
+			}
+			else
+				pb = kicking;
+		}
         break;
     case kicking:
-        kick.perform(myRobot);
-        cout<<"kicking performed!"<<endl;
-        pb = idling;
+		{
+			Skill::Kick kick;
+			kick.perform(myRobot);
+		#if PENALTY_BEHAVIOR_DEBUG
+			cout<<"kicking performed!"<<endl;
+		#endif
+			pb = idling;
+		}
         break;
     case idling:
-        stop.perform(myRobot);
-        cout<<"idling performed!"<<endl;
+		{
+			Skill::Stop stop;
+			stop.perform(myRobot);
+		#if PENALTY_BEHAVIOR_DEBUG
+			cout<<"idling performed!"<<endl;
+		#endif
+		}
         break;
-    default: cout<<"Default case!"<<endl;
-
     }
-
 }

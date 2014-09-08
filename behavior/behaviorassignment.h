@@ -23,8 +23,13 @@ template <typename BehaviorType>
 class BehaviorAssignment
 {
 public:
-    BehaviorAssignment();
+	/* Constructor; Set single assignment on construction.
+	 * This is a large convenience to calling setSingleAssignment after
+	 * construction.
+	 */
+	BehaviorAssignment(bool assignment = false);
 
+	
     /* setBehParam(name, value)
      * The setBehParam function is used to define parameters to
      * be passed to the underlying behavior when assignBeh is called.
@@ -84,7 +89,7 @@ public:
      * This version is similar to the above assignBeh, except
      * that this version takes a brace-enclosed list of IDs,
      * then the GameModel is utilized to find those robots and
-     * if found, assigns the behhavior
+     * if found, assigns the behavior
      */
     void assignBeh(std::initializer_list<int> robotIDList) const;
 
@@ -115,8 +120,8 @@ private:
 /**************************************************************/
 
 template <typename BehaviorType>
-BehaviorAssignment<BehaviorType>::BehaviorAssignment()
-    : singleAssignment(false)
+BehaviorAssignment<BehaviorType>::BehaviorAssignment(bool assignment)
+    : singleAssignment(assignment)
 {
 }
 
@@ -139,10 +144,7 @@ void BehaviorAssignment<BehaviorType>::setBehParam(std::string name, T value)
 template <typename BehaviorType>
 void BehaviorAssignment<BehaviorType>::assignBeh(void) const
 {
-    //this->assignBeh([](Robot* rob){ return true; });	//Assign to all robots; inefficient
-
     GameModel* mod = GameModel::getModel();
-
     for(Robot* rob : mod->getMyTeam())
        this->assignBeh(rob);
 }
@@ -153,8 +155,7 @@ void BehaviorAssignment<BehaviorType>::assignBeh(std::function<bool(Robot*)> pre
 {
     GameModel* mod = GameModel::getModel();
 
-    for(Robot* rob : mod->getMyTeam())
-    {
+    for(Robot* rob : mod->getMyTeam()) {
         if(predicate(rob))
             this->assignBeh(rob);
     }

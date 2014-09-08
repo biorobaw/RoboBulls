@@ -1,12 +1,9 @@
 #ifndef KICKTOGOAL_H
 #define KICKTOGOAL_H
 
-#include "behavior.h"
-#include "utilities/paramlist.h"
+#include "behavior/genericmovementbehavior.h"
 
-#define CLOSE_TO_BALL 110
-
-class KickToGoal : public Behavior
+class KickToGoal : public GenericMovementBehavior
 {
 public:
     KickToGoal(const ParameterList& list);
@@ -15,7 +12,6 @@ public:
 
     enum StateEnum {goingBehind, approaching, kicking};
     StateEnum state;
-
 };
 
 #endif // KICKTOGOAL_H

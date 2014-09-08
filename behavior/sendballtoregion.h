@@ -10,12 +10,13 @@
 
 //Right now it just makes the robot kick the ball
 //to the specified region.
-//More sohpistication can be added later
+//More sophistication can be added later
 
 class SendBallToRegion:public Behavior
 {
 public:
     SendBallToRegion(const ParameterList & list);
+   ~SendBallToRegion();
     void perform(Robot *);
 private:
     Region * region;

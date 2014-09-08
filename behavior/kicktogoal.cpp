@@ -2,10 +2,14 @@
 
 #include "model/gamemodel.h"
 #include "skill/skill.h"
-#include "skill/gotopositionwithorientation.h"
 #include "skill/kick.h"
 
+#define TEN_DEGREES   (10 * M_PI/180)
+#define CLOSE_TO_BALL 110
+#define BEHIND_RADIUS (ROBOT_RADIUS*2.25)
+
 KickToGoal::KickToGoal(const ParameterList& list)
+	: GenericMovementBehavior(list)
 {
     UNUSED_PARAM(list);
     state = goingBehind;
@@ -14,44 +18,52 @@ KickToGoal::KickToGoal(const ParameterList& list)
 void KickToGoal::perform(Robot * r)
 {
     GameModel* gm = GameModel::getModel();
-
     Point ball = gm->getBallPoint();
     Point goal = gm->getOpponentGoal();
+	Point rob  = r->getRobotPosition();
+	float robAng = r->getOrientation();
     float goalToBall = Measurments::angleBetween(goal,ball);
     float ballToGoal = Measurments::angleBetween(ball, goal);
-    Point behindBall(50*cos(goalToBall)+ball.x, 50*sin(goalToBall)+ball.y);
+
+    Point behindBall(BEHIND_RADIUS*cos(goalToBall)+ball.x,
+                     BEHIND_RADIUS*sin(goalToBall)+ball.y);
 
     // Create a different skill depending on the state
-    Skill::Skill * skill;
     switch (state) {
     case goingBehind:
-        skill = new Skill::GoToPositionWithOrientation(behindBall, ballToGoal);
+        setMovementTargets(behindBall, ballToGoal);
+		GenericMovementBehavior::perform(r, Movement::Type::SharpTurns);
         break;
     case approaching:
-        skill = new Skill::GoToPositionWithOrientation(ball, ballToGoal);
+        setMovementTargets(ball, ballToGoal, false);
+		GenericMovementBehavior::perform(r, Movement::Type::SharpTurns);
         break;
     case kicking:
-        skill = new Skill::Kick();
+        {
+			Skill::Kick k;
+            k.perform(r);
+		}
         break;
     }
-
-    // Perform the skill
-    skill->perform(r);
 
     // Evaluate possible transitions
     switch (state){
     case goingBehind:
-        if (Measurments::distance(behindBall, r->getRobotPosition()) < 100 && abs(Measurments::angleDiff(r->getOrientation(), ballToGoal)) < 10 * M_PI/180)
+        if (Measurments::distance(behindBall, rob) < 100  &&
+            Measurments::isClose(robAng, ballToGoal, TEN_DEGREES)) {
             state = approaching;
+        }
         break;
     case approaching:
-        if (Measurments::distance(ball, r->getRobotPosition()) < 110 && abs(Measurments::angleDiff(r->getOrientation(), ballToGoal)) < 10 * M_PI/180)
+        if (Measurments::distance(ball, rob) < 110 &&
+            Measurments::isClose(robAng, ballToGoal, TEN_DEGREES))
             state = kicking;
-        else if (Measurments::distance(ball, r->getRobotPosition()) > 200)
+        else if (Measurments::distance(ball, rob) > 200) {
             state = goingBehind;
+        }
         break;
     case kicking:
         state = goingBehind;
+        break;
     }
-
 }

@@ -1,27 +1,22 @@
-#include <iostream>
-#include "model/robot.h"
-#include "skill/gotopositionwithorientation.h"
-#include "stopbehavior.h"
 
+#include "behavior/stopbehavior.h"
 
 StopBehavior::StopBehavior(const ParameterList& list)
+	: GenericMovementBehavior(list)
 {
-    this->mTargetPoint = list.getParam<Point>("targetPoint");
-    this->curBallPoint = list.getParam<Point>("ballPoint");
+	/* Here, the GenericMovementBehavior takes care
+	 * of the "targetPoint" entry on the ParameterList.
+	 */
 }
 
 
 /* StopBehavior is simply a wrapper for
- * GoToPositionWithOrientation
+ * GoToPositionWithOrientation It expects a point named targetPoint
+ * on the ParameterList on construction.
+ * Movement type is set to SharpTurns because it works
+ * Much better with pathfinding.
  */
 void StopBehavior::perform(Robot * myRobot)
 {
-    Point robotPoint = myRobot->getRobotPosition();
-
-    auto mySkill = Skill::GoToPositionWithOrientation
-        (mTargetPoint, Measurments::angleBetween(robotPoint, curBallPoint));
-
-    mySkill.perform(myRobot);
+    GenericMovementBehavior::perform(myRobot, Movement::Type::SharpTurns);
 }
-
-

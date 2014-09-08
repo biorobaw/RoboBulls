@@ -18,6 +18,7 @@ private:
     enum states {initial, driving, kicking, idling, finalOrientationFixing} state;
     Skill::Skill * skill;
     Point *behindBall;
+    Point *ballPoint;
 };
 
 #endif // DRIVEBALLANDKICK_H

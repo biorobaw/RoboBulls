@@ -2,9 +2,8 @@
 #define POSITIONFORKICKOFF_H
 
 #include "behavior.h"
-#include "skill/obstacleavoidmove.h"
-#include "skill/gotopositionwithorientation.h"
 #include "model/gamemodel.h"
+#include "movement/gotoposition.h"
 #include "utilities/paramlist.h"
 
 /* Sends Robot 5 to goalpost
@@ -15,7 +14,7 @@
 class PositionForKickoff:public Behavior
 {
 private:
-    Skill::Skill * move_skill;
+    Movement::Move* move_skill;
     Point move_point, bp;
     bool bp_updated;
     float orientation;
@@ -23,6 +22,7 @@ private:
 
 public:
     PositionForKickoff(const ParameterList &list);
+   ~PositionForKickoff();
     void perform(Robot *);
 };
 

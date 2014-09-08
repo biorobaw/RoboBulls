@@ -1,8 +1,7 @@
 #ifndef BEHAVIOR_H
 #define BEHAVIOR_H
 
-//#include "model/robot.h"
-//#include "model/gamemodel.h"
+#include "utilities/paramlist.h"
 
 /* UNUSED_PARAM is mostly used in Behaviors, so define it here
  * to avoid having to include globals.h.

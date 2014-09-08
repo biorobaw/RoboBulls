@@ -1,12 +1,10 @@
 #ifndef DEFENDONEONONE_H
 #define DEFENDONEONONE_H
 
-#include "behavior.h"
-#include "utilities/paramlist.h"
+#include "behavior/genericmovementbehavior.h"
+#include "model/robot.h"
 
-class Robot;
-
-class DefendOneOnOne : public Behavior
+class DefendOneOnOne : public GenericMovementBehavior
 {
 public:
     DefendOneOnOne(const ParameterList& list);
