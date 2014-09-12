@@ -17,7 +17,7 @@ class SimRobComm : public RobComm
 public:
     SimRobComm();
 
-    virtual void sendVelsLarge(std::vector <Robot*>);
+    virtual void sendVelsLarge(std::vector<Robot*>&);
 
     virtual void sendVelsThreeOmni(int left,int right, int back, int ID);
 

@@ -16,13 +16,14 @@ void SimRobComm::sendVels(int leftVel, int rightVel, int robotId)
     sendPacket(robotId, leftVel, rightVel, leftVel, rightVel, false, true);
 }
 
-void SimRobComm::sendVelsLarge(std::vector<Robot *> robots)
+void SimRobComm::sendVelsLarge(std::vector<Robot *>& robots)
 {
     for (Robot* rob : robots)
     {
         bool kick    = rob->getKick();
         bool dribble = rob->getDrible();
-        sendPacket(rob->getID(),rob->getL(),rob->getR(),rob->getL(),rob->getR(),kick,dribble);
+        sendPacket(rob->getID(),rob->getLF(),rob->getRF(),rob->getLB(),rob->getRB(),
+                   kick,dribble);
         rob->setKick(0);
 		rob->setDrible(0);
     }

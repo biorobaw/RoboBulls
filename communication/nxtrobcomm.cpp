@@ -2,6 +2,7 @@
 #include <vector>
 #include "nxtrobcomm.h"
 #include "model/robot.h"
+#include "utilities/measurments.h"
 
 NXTRobComm::NXTRobComm()
 {
@@ -47,20 +48,23 @@ void NXTRobComm::sendKick(int robotId)
     send(&comm[0], 5);
 }
 
-void NXTRobComm::sendVelsLarge(vector<Robot *> robots)
+void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
 {
     char largePacket[robots.size()*5];
 
     for (unsigned int i=0; i < robots.size(); i++)
     {
-        Robot *rob = robots.at(i);
+        Robot *rob = robots[i];
+
+        /* Protects 8-bit velocity values from overflow */
+        rob->setL(Measurments::clamp(rob->getL(), -127, 127));
+        rob->setR(Measurments::clamp(rob->getR(), -127, 127));
+
 		largePacket[5*i] = '~';
 		largePacket[5*i+1] = (char)rob->getID();
 		largePacket[5*i+2] = (char)rob->getL();
 		largePacket[5*i+3] = (char)rob->getR();
 		largePacket[5*i+4] = (char)rob->getKick();
-		
-		/*** TODO: This probably isn't going to work. Ask Martin ***/
 		
         rob->setKick(0);
     }
