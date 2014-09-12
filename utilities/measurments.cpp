@@ -22,10 +22,11 @@ bool Measurments::isClose(const Point& p1, const Point& p2, float tol)
 }
 
 
- float Measurments::slope(Point p1, Point p2)
+float Measurments::slope(Point p1, Point p2)
 {
     return atan2((p1.y-p2.y),(p1.x-p2.x));
 }
+
 
 float Measurments::angleDiff(float angle1, float angle2){
     // Convert angles to unitary complex numbers z1 and z2
@@ -48,5 +49,17 @@ float Measurments::angleDiff(float angle1, float angle2){
 bool Measurments::isClose(float angle1, float angle2, float tol)
 {
 	return abs(Measurments::angleDiff(angle1, angle2)) < tol;
+}
+
+
+float Measurments::lineDistance(const Point& p0, const Point& LStart, const Point& LEnd)
+{
+	float y2 = LEnd.y;
+	float y1 = LStart.y;
+	float x2 = LEnd.x;
+	float x1 = LStart.x;
+
+	return abs((y2-y1)*p0.x - (x2-x1)*p0.y - x1*y2 + x2*y1)
+			/ Measurments::distance(LStart, LEnd);
 }
 

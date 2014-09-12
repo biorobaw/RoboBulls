@@ -56,9 +56,16 @@ public:
     static bool isClose(float angle1, float angle2, float tol = ROT_TOLERANCE);
 	
 	
-	/* Clamps a value beteen min and max */
+	/* Clamps a value between min and max */
 	template<typename T>
     static T clamp(const T& value, const T& min, const T& max);
+	
+	
+	/* Given a line defined by LStart and LEnd, returns the shortest distance from the 
+	 * line to the point p0; this is always the length of the line perpendicular to
+	 * LStart and LEnd touching p0.
+	 */
+	static float lineDistance(const Point& p0, const Point& LStart, const Point& LEnd);
 };
 
 
@@ -79,9 +86,7 @@ auto Measurments::closestPoint(Container& cntr, const Point p0) -> decltype(std:
 template<typename T> 
 T Measurments::clamp(const T& value, const T& min, const T& max)
 {
-    if(value > max) return max;
-    if(value < min) return min;
-    return value;
+    return std::min(max, std::max(value, min));
 }
 
 
