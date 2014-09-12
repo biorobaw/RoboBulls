@@ -3,30 +3,58 @@
 
 #include "skill/skill.h"
 #include "model/gamemodel.h"
-#include "movement/move.h"
+#include "movement/gotoposition.h"
 
-namespace Skill{
+namespace Skill
+{
+
+/* KickToPoint: Positions the robot behind the ball, and kicks
+ * the ball to (torwards) a specified point.
+ * Constructor Params:
+*target
+*  | Target point to kick toarwards
+*targetTolerance:
+*  | Tolerance for the robot angle facing the target point before
+*  | a kick is made, for accuracy reasons
+* kickDistance:
+*  | How close should the robot be to the target before kicking.
+*  | use NO_KICK_DIST no kick as soon as possible.
+ */
+
+/* Constant that indicates the robot should kick as soon as possible;
+ * instead of only driving the ball until a certain distance away
+ */
+#define NO_KICK_DIST -1
+
+#define KICK_TO_POINT_DEBUG 1
 
 class KickToPoint : public Skill
 {
 public:
-    KickToPoint(Point target);
-    KickToPoint(Point target,float targetToleranceRadians);
-   ~KickToPoint();
-    bool perform(Robot *);
+    KickToPoint(Point target
+              , float targetTolerance = ROT_TOLERANCE
+              , float kickDistance = NO_KICK_DIST);
+
+    bool perform(Robot *) override;
+
 private:
-#if SIMULATED
-    const int dist_position = ROBOT_RADIUS*3;
-    const int dist_kick = 115;
-#else
-    const int dist_position = ROBOT_RADIUS*3;
-    const int dist_kick = 220;
-#endif
-    Point target;
-    float target_tolerance = ROT_TOLERANCE;
-    Skill * skill;
-    Movement::Move* move_skill;
-    enum {positioning, kick} state;
+    enum {Positioning, Moving, Kicking} state;
+
+    void doPositioningState(Robot* robot);
+    void doMovingState(Robot* robot);
+    void doKickingState(Robot* robot);
+
+    Movement::GoToPosition move_skill;
+    Point m_targetPoint;
+    float m_angleTolerance;
+    float m_kickDistance;
+    Point robPoint;
+    Point ballPoint;
+    Point behindBall;
+    float ballTargetAngle;
+    float targetBallAngle;
+    float robAngle;
+    bool  hasKicked = false;
 };
 
 } //namespace Skill
