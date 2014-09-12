@@ -24,18 +24,6 @@ namespace impl
     int framesUntilUpdate = 0;
     std::vector<Point> currentFrameObstacles;
 
-    float perpendicularDistance
-        (const Point& p0, const Point& LStart, const Point& LEnd)
-    {
-        float y2 = LEnd.y;
-        float y1 = LStart.y;
-        float x2 = LEnd.x;
-        float x1 = LStart.x;
-
-        return fabs((y2-y1)*p0.x - (x2-x1)*p0.y - x1*y2 + x2*y1)
-                / Measurments::distance(LStart, LEnd);
-    }
-
     bool insideRadiusRectangle(const Point& p0, const Point& p1, const Point& p2)
     {
         float rectTop = std::min(p1.y, p2.y) - ROBOT_RADIUS;
@@ -44,7 +32,7 @@ namespace impl
         float rectRight = std::max(p1.x, p2.x) + ROBOT_RADIUS;
 
         return (p0.x > rectLeft && p0.x < rectRight)
-                && (p0.y > rectTop && p0.y < rectBottom);
+            && (p0.y > rectTop  && p0.y < rectBottom);
     }
 
     /*********************************************************/
@@ -64,7 +52,7 @@ namespace impl
             || Measurments::isClose(pt, endPos, ROBOT_SIZE))
                 continue;
 
-            obstacle_found = perpendicularDistance(pt, beginPos, endPos) < ROBOT_SIZE &&
+            obstacle_found = Measurments::lineDistance(pt, beginPos, endPos) < ROBOT_SIZE &&
                 insideRadiusRectangle(pt, beginPos, endPos);
 
             if(obstacle_found) {
@@ -290,7 +278,7 @@ namespace impl
 
     bool isPointInLine(const Point& start, const Point& end, const Point& question)
     {
-        return impl::perpendicularDistance(question, start, end) < ROBOT_SIZE &&
+        return Measurments::lineDistance(question, start, end) < ROBOT_SIZE &&
                impl::insideRadiusRectangle(question, start, end);
     }
 

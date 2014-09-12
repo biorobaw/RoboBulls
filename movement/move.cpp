@@ -30,7 +30,7 @@ Move::Move(Point targetPoint, float targetAngle, bool withObstacleAvoid)
 
 void Move::recreate(Point targetPoint, float targetAngle, bool withObstacleAvoid)
 {
-    if(Measurments::distance(m_targetPoint, targetPoint) > ENOUGH_TO_CHANGE) {
+    if(Measurments::distance(m_targetPoint, targetPoint) > recrDistTolerance) {
         /* In most cases, this is called each loop to track a possibly moving point.
          * But that is very inefficient in that basically the pathfinding is 
          * remade each time, and other expensive things are done. So if the new point
@@ -51,7 +51,7 @@ void Move::recreate(Point targetPoint, float targetAngle, bool withObstacleAvoid
         lastObstacles.clear();
         isInitialized = true;
     } 
-    else if(!Measurments::isClose(m_targetAngle, targetAngle)) {
+    else if(!Measurments::isClose(m_targetAngle, targetAngle, recrAngleTolerance)) {
         /* ROT_TOLERANCE defines the tolerance at which two angles are
          * considered equal. So if the angles are "equal", let's not
          * bother updating it.
@@ -67,6 +67,20 @@ void Move::recreate(Point targetPoint, float targetAngle, bool withObstacleAvoid
 void Move::setVelocityMultiplier(float newMultiplier)
 {
     this->velMultiplier = newMultiplier;
+}
+
+
+void Move::setRecreateTolerances(float distTolerance, float angleTolerance)
+{
+    this->recrDistTolerance  = distTolerance;
+    this->recrAngleTolerance = angleTolerance;
+}
+
+
+void Move::setMovementTolerances(float distTolerance, float angleTolerance)
+{
+    this->lastDistTolerance = distTolerance;
+    this->lastAngTolerance  = angleTolerance;
 }
 
 
@@ -90,9 +104,9 @@ bool Move::perform(Robot *robot, Movement::Type moveType)
         m_targetAngle = Measurments::angleBetween(robot->getRobotPosition(), m_targetPoint);
 
     /* Let's only bother moving if we need to */
-    if(!Measurments::isClose(m_targetPoint, robot->getRobotPosition()) ||
-       !Measurments::isClose(m_targetAngle, robot->getOrientation())) 
-	{
+    //if(!Measurments::isClose(m_targetPoint, robot->getRobotPosition()) ||
+       // //!Measurments::isClose(m_targetAngle, robot->getOrientation()))
+    {
         if(useObstacleAvoid) {
             finished = this->calcObstacleAvoidance(robot, moveType);
         } else {
@@ -121,17 +135,11 @@ bool Move::calcRegularMovement(Robot* robot, Type moveType)
      */
     this->calculateVels(robot, m_targetPoint, m_targetAngle, moveType);
 
-#if SIMULATED
-    int dist_tolerance = DIST_TOLERANCE;
-#else
-    int dist_tolerance = DIST_TOLERANCE;
-#endif
-
     Point robotPos = robot->getRobotPosition();
     float robotAng = robot->getOrientation();
 
-    return Measurments::isClose(m_targetPoint, robotPos, dist_tolerance) &&
-           Measurments::isClose(m_targetAngle, robotAng);
+    return Measurments::isClose(m_targetPoint, robotPos, lastDistTolerance) &&
+           Measurments::isClose(m_targetAngle, robotAng, lastAngTolerance);
 }
 
 
@@ -160,7 +168,7 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
 			 */
             if(!isNewObstacleInPath && pathQueue.size() > 2) 
             {
-                const Point& nextNextPoint = pathQueue[2];
+                const Point& nextNextPoint = pathQueue[1];
                 isNewObstacleInPath 
 					= FPPA::isObstacleInLine(nextPoint, nextNextPoint, &obsPoint);
             }
@@ -193,8 +201,8 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
                     hasFoundPathEnd = true;  //Finished path
                 } 
 				else if(pathQueue.size() == 1) {
-                    nextDistTolerance = DIST_TOLERANCE;
-                    nextTargetAngle   = m_targetAngle;
+                    nextDistTolerance = lastDistTolerance;
+                    nextTargetAngle   = lastAngTolerance;
                 }
             }
         } else {
@@ -214,7 +222,7 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
          */
         if(this->m_targetAngle == UNUSED_ANGLE_VALUE)
             return true;
-        else if(Measurments::isClose(robot->getOrientation(), m_targetAngle))
+        else if(Measurments::isClose(robot->getOrientation(), m_targetAngle, lastAngTolerance))
             return true;
 
         this->calculateVels(robot, robot->getRobotPosition(), m_targetAngle, moveType);

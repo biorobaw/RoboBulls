@@ -12,11 +12,19 @@
 namespace Movement
 {
 
+GoToPosition::GoToPosition()
+    : Move()
+    {}
+
+GoToPosition::~GoToPosition()
+{
+
+}
+
 GoToPosition::GoToPosition
     (Point targetPoint, float targetAngle, bool withObstacleAvoid)
     : Move(targetPoint, targetAngle, withObstacleAvoid)
     {}
-
 
 GoToPosition::GoToPosition
     (float tx, float ty, float targetAngle, bool withObstacleAvoid)
@@ -36,7 +44,6 @@ void GoToPosition::calculateVels
         {
             if(!IS_DIFFERENTIAL(moveType))
                 moveType = ::Movement::Type::Default;
-            DifferentialCalculator dc;
             wheelvelocities vels 
                 = dc.calculateVels(rob, targetPoint, targetAngle, moveType);
             this->left  = vels.left;
@@ -47,7 +54,6 @@ void GoToPosition::calculateVels
         {
             if(!IS_OMNI(moveType))
                 moveType = ::Movement::Type::Default;
-            ThreeWheelCalculator twc;
             threeWheelVels vels 
                 = twc.calculateVels(rob, targetPoint, targetAngle, moveType);
             this->left  = vels.L;
@@ -59,7 +65,6 @@ void GoToPosition::calculateVels
         {
             if(!IS_OMNI(moveType))
                 moveType = ::Movement::Type::Default;
-            FourWheelCalculator fwc;
             fourWheelVels vels 
                 = fwc.calculateVels(rob, targetPoint, targetAngle, moveType);
             this->lfront = vels.LF;

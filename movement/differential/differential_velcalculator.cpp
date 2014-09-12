@@ -20,20 +20,17 @@ wheelvelocities DifferentialCalculator::calculateVels
 	{
     case Type::Default:
 		{
-			ClosedLoopControl clc;
 			result = clc.closed_loop_control(rob, x_goal, y_goal, theta_goal);
 		}
 		break;
     case Type::SharpTurns:
 		{
-			ClosedLoopSharpTurns clc;
-			result = clc.closed_loop_control(rob, x_goal, y_goal, theta_goal);
+            result = clst.closed_loop_control(rob, x_goal, y_goal, theta_goal);
 		}
 		break;
     case Type::NoSlowdown:
 		{
-			ClosedLoopNoSlowdown clc;
-			result = clc.closed_loop_control(rob, x_goal, y_goal, theta_goal);
+            result = clnsd.closed_loop_control(rob, x_goal, y_goal, theta_goal);
 		}
 		break;
 	default:

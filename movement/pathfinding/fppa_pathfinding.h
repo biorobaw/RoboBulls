@@ -13,6 +13,7 @@
  */
 #include <vector>
 #include "utilities/point.h"
+#include "include/config/tolerances.h"
 
 /* FPPA Pathfinding Constants */
 #define FPPA_DEBUG 0

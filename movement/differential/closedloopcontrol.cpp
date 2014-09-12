@@ -14,10 +14,16 @@
  * because it's only used in one file.
  */
 #if SIMULATED
- #define CLC_ROTATONG_VEL 5
+ #define CLC_ROTATONG_VEL 10
 #else
  #define CLC_ROTATONG_VEL 1
 #endif
+
+ClosedLoopBase::ClosedLoopBase()
+{
+    //for(auto& pair : errorContainers)
+        //pair.first.reserve(500);
+}
 
 void ClosedLoopBase::handleError(double x_goal, double y_goal)
 {
@@ -31,7 +37,7 @@ void ClosedLoopBase::handleError(double x_goal, double y_goal)
     double newValues[3]
         = {newRho, newAlpha, newBeta};
 
-#if 0
+#if 1
     /* We need to reset the error containers on movement to a different point,
      * because the accumulated error is no longer valid. Then update the last point
      */
@@ -91,8 +97,8 @@ wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, double x_goal,
     double angleToGoal   = atan2 ((y_goal-y_current) , (x_goal-x_current));
 	
 	//If the theta_goal is the defult argument, use it as a signal for no specific angle
-	theta_goal = (theta_goal == UNUSED_ANGLE_VALUE ? 
-		Measurments::angleBetween(robotPos, Point(x_goal, y_goal)) : theta_goal);
+    //theta_goal = (theta_goal == UNUSED_ANGLE_VALUE ?
+        //Measurments::angleBetween(robotPos, Point(x_goal, y_goal)) : theta_goal);
 
     //Rho, Alpha, Beta
     newRho   = (sqrt(pow((y_current - y_goal),2) + pow((x_current-x_goal),2)))/1;
@@ -124,7 +130,7 @@ wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, double x_goal,
     double robot_turnrate = OVERALL_VELOCITY * 5 *
         (kalpha*newAlpha + kbeta*newBeta + kAlphaI*newSumErrAlpha + kBetaI*newSumErrBeta);
 #if SIMULATED
-    int dist_tol=70;
+    int dist_tol=40;
 #else
     int dist_tol=100;
 #endif

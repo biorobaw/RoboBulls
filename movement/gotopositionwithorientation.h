@@ -3,7 +3,9 @@
 
 #include "model/robot.h"
 #include "movement/move.h"
-#include "movement/differential/closedloopcontrol.h"
+#include "movement/differential/differential_velcalculator.h"
+#include "movement/four_omni_motion/omni4_velcalculator.h"
+#include "movement/three_omni_motion/omni3_velcalculator.h"
 
 namespace Movement 
 {
@@ -18,6 +20,9 @@ namespace Movement
 class GoToPosition : public Move
 {
 public:
+    GoToPosition();
+   ~GoToPosition();
+
     GoToPosition(Point targetPoint,  float targetAngle = UNUSED_ANGLE_VALUE, 
         bool withObstacleAvoid = true);
         
@@ -27,6 +32,11 @@ public:
 protected:
     void calculateVels
         (Robot *rob, Point targetPoint, float targetAngle, Type moveType) override;
+
+private:
+    DifferentialCalculator dc;
+    ThreeWheelCalculator   twc;
+    FourWheelCalculator    fwc;
 };
 
 

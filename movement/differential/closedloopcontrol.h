@@ -37,13 +37,15 @@ struct wheelvelocities
 class ClosedLoopBase
 {
 public:
+    ClosedLoopBase();
+
     ClosedLoopBase(double rho, double alpha, double beta)
-        : krho(rho), kalpha(alpha), kbeta(beta) 
-		{}
+        : krho(rho), kalpha(alpha), kbeta(beta)
+        { ClosedLoopBase(); }
 
     ClosedLoopBase(const double constants[3])
-        : krho(constants[0]), kalpha(constants[1]), kbeta(constants[2]) 
-		{}
+        : krho(constants[0]), kalpha(constants[1]), kbeta(constants[2])
+        { ClosedLoopBase(); }
 		
     wheelvelocities closed_loop_control
         (Robot* robot, double x_goal, double y_goal, double theta_goal = UNUSED_ANGLE_VALUE);
@@ -52,17 +54,17 @@ public:
         (Robot* robot, Point goal, double theta_goal = UNUSED_ANGLE_VALUE);
 
 private:
-    static const unsigned int sizeRhoQ   = 800;/*original value 400*/
-    static const unsigned int sizeAlphaQ = 600;/*original value 300*/
-    static const unsigned int sizeBetaQ  = 1000;/*original value 100*/
+    static const unsigned int sizeRhoQ   = 400;/*original value 400*/
+    static const unsigned int sizeAlphaQ = 300;/*original value 300*/
+    static const unsigned int sizeBetaQ  = 100;/*original value 100*/
     static constexpr double wheel_separation = 0.115 * 1000;
     static constexpr double wheel_radius     = 0.027 * 1000;
     double newRho  , krho;
     double newAlpha, kalpha;
     double newBeta , kbeta;
-    double kRhoI   = krho/(4.0 * sizeRhoQ);
-    double kAlphaI = kalpha/(1.0 * sizeAlphaQ);
-    double kBetaI  = kbeta/(0.2 * sizeBetaQ);
+    double kRhoI   = krho/(5.0 * sizeRhoQ);
+    double kAlphaI = kalpha/(2.0 * sizeAlphaQ);
+    double kBetaI  = kbeta/(1.2 * sizeBetaQ);
 
     void handleError(double x_goal, double y_goal);
 	
