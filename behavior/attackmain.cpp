@@ -26,7 +26,7 @@ AttackMain::~AttackMain()
 
 #if SIMULATED
  #define SCORE_ANGLE_TOLERANCE  10*M_PI/180
- #define PASS_ANGLE_TOLERANCE   4*M_PI/180
+ #define PASS_ANGLE_TOLERANCE   6*M_PI/180
 #else
  #define SCORE_ANGLE_TOLERANCE  7*M_PI/180
  #define PASS_ANGLE_TOLERANCE   7*M_PI/180
@@ -79,8 +79,9 @@ void AttackMain::perform(Robot * robot)
     {
         case initial:
             state = drive;
-            delete drive_skill;
-            drive_skill = new Skill::DriveBall(gp, goal_direction);
+            //delete drive_skill;
+            //drive_skill = new Skill::DriveBall(gp, goal_direction);
+            drive_skill = new Skill::KickToPoint(gp, ROT_TOLERANCE*3, shot_distance);
             break;
 
         case drive:
@@ -91,25 +92,25 @@ void AttackMain::perform(Robot * robot)
             if(!Measurments::isClose(drive_start_point, rp, drive_distance)) 
             {
                 delete pass_skill;
-                pass_skill = new Skill::KickToPoint(sp, PASS_ANGLE_TOLERANCE);
+                pass_skill = new Skill::KickToPoint(sp, PASS_ANGLE_TOLERANCE, NO_KICK_DIST);
                 state = pass;
             }
             /***************************************************************
              * Evaluate transition to score state. If the robot is within 1500 units
              * of the enemy goal, this happens.
              */
-            else if(Measurments::isClose(bp, gp, shot_distance)) 
-            {
-                delete score_skill;
-                score_skill = new Skill::KickToPoint(gp, SCORE_ANGLE_TOLERANCE);
-                state = score;
-            }
+            //else if(Measurments::isClose(bp, gp, shot_distance))
+           // {
+              //  delete score_skill;
+              //  score_skill = new Skill::KickToPoint(gp, SCORE_ANGLE_TOLERANCE);
+                //state = score;
+            //}
             else  
             {
                 drive_skill->perform(robot);
             }
             break;
-            
+        #if 0
         case score:
             assert(score_skill != nullptr);
 
@@ -124,10 +125,11 @@ void AttackMain::perform(Robot * robot)
                 state = initial;
             }
             break;
-            
+        #endif
         case pass:
             assert(pass_skill != nullptr);
             pass_skill->perform(robot);
             break;
+        default: break;
     }
 }

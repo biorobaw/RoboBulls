@@ -1,7 +1,7 @@
 #include "positionforkickoff.h"
 
 PositionForKickoff::PositionForKickoff(const ParameterList &list)
-	: move_skill(nullptr)
+    //: move_skill(nullptr)
 {
     UNUSED_PARAM(list);
     gm = GameModel::getModel();
@@ -11,7 +11,7 @@ PositionForKickoff::PositionForKickoff(const ParameterList &list)
 
 PositionForKickoff::~PositionForKickoff()
 {
-	delete move_skill;
+    //delete move_skill;
 }
 
 void PositionForKickoff::perform(Robot * robot)
@@ -61,16 +61,20 @@ void PositionForKickoff::perform(Robot * robot)
 
     if(bp_updated)
     {
-		delete move_skill;
+        //if(move_skill != nullptr) {
+         //   delete move_skill;
+         //   move_skill = nullptr;
+        //}
         #if SIMULATED==1
-            move_skill = new Movement::GoToPosition(move_point, orientation, true);
+            move_skill.recreate(move_point, orientation, true);
+           // move_skill = new Movement::GoToPosition(move_point, orientation, true);
         #else
-            move_skill = new Movement::GoToPosition(move_point, orientation, true);
+            //move_skill = new Movement::GoToPosition(move_point, orientation, true);
         #endif
 
         bp_updated = false;
         //cout << "BP UPDATED" << endl;
     }
 
-    move_skill->perform(robot);
+    move_skill.perform(robot);
 }

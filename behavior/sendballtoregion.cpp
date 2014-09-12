@@ -35,6 +35,7 @@ void SendBallToRegion::perform(Robot * robot)
     case initial:
         kickball = new Skill::KickToPoint(region->centre());
         state = kick;
+        std::cout << "Moving to kick" <<std::endl;
     case kick:
         kickball->perform(robot);
     }
