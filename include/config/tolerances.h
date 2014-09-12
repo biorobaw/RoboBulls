@@ -14,7 +14,7 @@
  * before it is considered at that position
  */
 #if SIMULATED
- #define DIST_TOLERANCE 30
+ #define DIST_TOLERANCE 80
 #else
  #define DIST_TOLERANCE 100
 #endif
