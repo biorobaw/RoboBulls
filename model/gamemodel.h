@@ -51,8 +51,8 @@ public:
     void setHasBall();
 
     //gets
-    const vector<Robot *>& getOponentTeam();
-    const vector<Robot *>& getMyTeam();
+    vector<Robot *>& getOponentTeam();
+    vector<Robot *>& getMyTeam();
     float getXBall();
     float getYBall();
     Point getBallPoint();

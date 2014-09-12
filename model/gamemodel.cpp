@@ -98,12 +98,12 @@ void GameModel::setHasBall()
 }
 
 
-const vector<Robot*>& GameModel::getOponentTeam()
+vector<Robot*>& GameModel::getOponentTeam()
 {
     return opTeam;
 }
 
-const vector<Robot*>& GameModel::getMyTeam()
+vector<Robot *>& GameModel::getMyTeam()
 {
     return myTeam;
 }

@@ -9,28 +9,43 @@
 #include "behavior/defendfarfromball.h"
 #include "behavior/attackmain.h"
 #include "skill/stop.h"
+#include "skill/kicktopoint.h"
 #include "behavior/genericmovementbehavior.h"
 #include "movement/movetype.h"
 
 
-class TestBehavior : public GenericMovementBehavior
+class TestBehavior : public Behavior
 {
 public:
     TestBehavior(const ParameterList& list)
-        : GenericMovementBehavior(list)
     {
         UNUSED_PARAM(list);
-        setVelocityMultiplier(0.75);
     }
 
     void perform(Robot * robot)
     {
-        setMovementTargets(GameModel::getModel()->getBallPoint());
-        GenericMovementBehavior::perform(robot, Movement::Type::SharpTurns);
+        if(kp->perform(robot))
+            robot->clearCurrentBeh();
     }
 
 private:
+    Skill::KickToPoint* kp = nullptr;
     Point targetPoint;
+};
+
+class TestBehavior2 : public GenericMovementBehavior
+{
+public:
+    TestBehavior2(const ParameterList& list)
+    {
+        UNUSED_PARAM(list);
+    }
+
+    void perform(Robot *robot) override
+    {
+        setMovementTargets(GameModel::getModel()->getBallPoint(), 0, true);
+        GenericMovementBehavior::perform(robot);
+    }
 };
 
 
@@ -115,9 +130,8 @@ void TestStrategy::assignBeh()
 //    assignment.assignBeh({0, 1});
 
     // Narges code testing DriveBallAndKick
-    BehaviorAssignment<DriveBallAndKick> assignment;
-    assignment.setSingleAssignment(true);
-    assignment.assignBeh();
+    BehaviorAssignment<TestBehavior2> assignment(true);
+    assignment.assignBeh({0, 5});
 
 
 ////    //Narges code testing defendCloseToBall

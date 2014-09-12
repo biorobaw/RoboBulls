@@ -37,7 +37,7 @@ void StrategyController::gameModelUpdated()
     }
     else
     {
-        activeStrategy = new TwoVOne();
+        activeStrategy = new TestStrategy();
     }
 
     activeStrategy->assignBeh();
