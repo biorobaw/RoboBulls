@@ -138,7 +138,6 @@ HEADERS += \
     behavior/positionforkickoff.h \
     behavior/sendballtoregion.h \
     strategy/twovone.h \
-    skill/drivingball.h \
     skill/kicktopoint.h \
     utilities/region.h \
     movement/basic_movement.h \

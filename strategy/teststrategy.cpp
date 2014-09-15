@@ -20,16 +20,17 @@ public:
     TestBehavior(const ParameterList& list)
     {
         UNUSED_PARAM(list);
+        targetPoint = GameModel::getModel()->getPenaltyPoint();
+        db = new Skill::DriveBall(targetPoint, 0);
     }
 
     void perform(Robot * robot)
     {
-        if(kp->perform(robot))
-            robot->clearCurrentBeh();
+        db->perform(robot);
     }
 
 private:
-    Skill::KickToPoint* kp = nullptr;
+    Skill::DriveBall* db;
     Point targetPoint;
 };
 
@@ -130,8 +131,8 @@ void TestStrategy::assignBeh()
 //    assignment.assignBeh({0, 1});
 
     // Narges code testing DriveBallAndKick
-    BehaviorAssignment<TestBehavior2> assignment(true);
-    assignment.assignBeh({0, 5});
+    BehaviorAssignment<TestBehavior> assignment(true);
+    assignment.assignBeh({3});
 
 
 ////    //Narges code testing defendCloseToBall
