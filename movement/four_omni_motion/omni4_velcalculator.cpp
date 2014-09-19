@@ -45,7 +45,7 @@ fourWheelVels FourWheelCalculator::defaultCalc
     //PID
     //calc_error();
 
-    //Interial Frame Velocities
+    //Inertial Frame Velocities
     double x_vel = (distance_to_goal+dist_error_integral)*cos(angle_to_goal);
     double y_vel = (distance_to_goal+dist_error_integral)*sin(angle_to_goal);
     double theta_vel = theta_goal-theta_current;
