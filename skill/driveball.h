@@ -4,7 +4,7 @@
 #include "skill/skill.h"
 #include "utilities/point.h"
 #include "model/robot.h"
-#include "movement/move.h"
+#include "movement/gotoposition.h"
 
 namespace Skill {
 
@@ -12,16 +12,12 @@ namespace Skill {
     {
     public:
         DriveBall(Point, double);
-		~DriveBall();
         bool perform(Robot*) override;
     private:
-        Point targetPosition;
+        Point  targetPosition;
         double direction;
-        enum states {initial, moveBehindBall, moveTowardBall, driveBall, haveTheBall} state;
-        Movement::Move* skill;
-        Point behindBall;
-        Point closeToBall;
-        Point goal;
+        enum states {moveBehindBall, driveBall} state;
+        Movement::GoToPosition move_skill;
     };
 }
 

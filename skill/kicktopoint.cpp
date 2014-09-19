@@ -1,6 +1,17 @@
 #include "kicktopoint.h"
 #include "kick.h"
+#include "include/config/simulated.h"
 #include "movement/gotopositionwithorientation.h"
+
+#if SIMULATED
+ #define KDIST_TOLERANCE    120
+ #define CENTER_TOLERANCE   0.40
+ #define POSITION_ANGLE_TOL ROT_TOLERANCE*4
+#else
+ #define KDIST_TOLERANCE    DIST_TOLERANCE*2
+ #define CENTER_TOLERANCE   0.70
+ #define POSITION_ANGLE_TOL ROT_TOLERANCE
+#endif
 
 namespace Skill
 {
@@ -20,11 +31,11 @@ KickToPoint::KickToPoint(Point target, float targetTolerance, float kickDistance
 
 void KickToPoint::doPositioningState(Robot *robot)
 {
+#if SIMULATED
     move_skill.setRecreateTolerances(40, ROT_TOLERANCE);
-    move_skill.setMovementTolerances(ROBOT_RADIUS*1.5, ROT_TOLERANCE*4);
+#endif
+    move_skill.setMovementTolerances(ROBOT_RADIUS*1.5, POSITION_ANGLE_TOL);
     move_skill.recreate(behindBall, ballTargetAngle, false);
-
-    //std::cout << "KTP POS " << robPoint.toString() << behindBall.toString() << std::endl;
 
     if(move_skill.perform(robot, Movement::Type::SharpTurns))
         state = Moving;
@@ -43,17 +54,17 @@ void KickToPoint::doMovingState(Robot *robot)
 
     bool ballCloseToCenter
         = Measurments::lineDistance(ballPoint, robPoint, m_targetPoint)
-            < ROBOT_RADIUS * 0.45;
+            < ROBOT_RADIUS * CENTER_TOLERANCE;
 
     bool robotFacingTarget
         = Measurments::isClose(robAngle, robTargetAngle, m_angleTolerance);
 
     bool robotCloseToBall
-        = Measurments::isClose(robPoint, ballPoint, 120);
+        = Measurments::isClose(robPoint, ballPoint, KDIST_TOLERANCE);
 
     bool robotNotFacingBall
         = abs(Measurments::angleDiff(robAngle, robBallAngle))
-            > ROT_TOLERANCE *6;
+            > ROT_TOLERANCE * 6;
 
     bool robotCanKick
         = m_kickDistance == NO_KICK_DIST ||
@@ -116,7 +127,6 @@ bool KickToPoint::perform(Robot * robot)
     case Kicking:
         doKickingState(robot);
         break;
-
     }
 
     return (state == Kicking && hasKicked);
