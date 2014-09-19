@@ -49,7 +49,27 @@ public:
     }
 };
 
+class ShamsiBehavior : public GenericMovementBehavior
+{
+public:
+    ShamsiBehavior(const ParameterList& list)
+    {
+        UNUSED_PARAM(list);
+    }
 
+    void perform(Robot *robot) override
+    {
+        GameModel * gm = GameModel::getModel();
+        Robot * rob = gm->getMyTeam().at(0);
+
+        cout << "L "<<rob->getL() << endl;
+        cout << "R "<<rob->getR() << endl;
+        cout << "B "<<rob->getB() << endl << endl;
+
+        setMovementTargets(gm->getBallPoint(),0, false);
+        GenericMovementBehavior::perform(robot);
+    }
+};
 
 TestStrategy::TestStrategy()
 {
@@ -59,26 +79,8 @@ void TestStrategy::assignBeh()
 {
 //***************************************************************************************************
     //Shamsi Code
-    //Three Omni Wheel Test
-//        GameModel * gm = GameModel::getModel();
-//        RobComm * comm = RobComm::getRobComm();
-//        GoToPoseBasic instance;
-//        threeWheelVels control = instance.calcWheelVels(gm->getMyTeam().at(0),0,0,0);
-//        comm->sendVelsThreeOmni(control.L,control.R,control.B,1);
-//        cout << "Sending Velocities" << endl;
-
-    //GoToPosition Test
-//        GameModel * gm = GameModel::getModel();
-//        Skill::GoToPosition skill = Skill::GoToPosition(Point(-1000,0),0);
-//        skill.perform(gm->getMyTeam().at(1));
-
-    //Four Omni Wheel Test
-//    GameModel * gm = GameModel::getModel();
-//    Skill::GoToPosition skill = Skill::GoToPosition(Point(0,0),0);
-//    skill.perform(gm->getMyTeam().at(0));
-//    cout << "Sending Velocities" << endl;
-//***************************************************************************************************
-
+    BehaviorAssignment<ShamsiBehavior> assignment(true);
+    assignment.assignBeh();
 
     //Martin code
 //    cout << "running test strategy!" << endl;
@@ -131,8 +133,8 @@ void TestStrategy::assignBeh()
 //    assignment.assignBeh({0, 1});
 
     // Narges code testing DriveBallAndKick
-    BehaviorAssignment<TestBehavior> assignment(true);
-    assignment.assignBeh({3});
+//    BehaviorAssignment<TestBehavior> assignment(true);
+//    assignment.assignBeh({3});
 
 
 ////    //Narges code testing defendCloseToBall

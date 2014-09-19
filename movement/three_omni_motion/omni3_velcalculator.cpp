@@ -1,6 +1,9 @@
 #include <iostream>
 #include "movement/three_omni_motion/omni3_velcalculator.h"
 
+#include "include/config/tolerances.h"
+#include "utilities/measurments.h"
+
 namespace Movement
 {
 
@@ -14,76 +17,83 @@ threeWheelVels ThreeWheelCalculator::calculateVels
 threeWheelVels ThreeWheelCalculator::calculateVels
     (Robot* rob, float x_goal, float y_goal, float theta_goal, Type moveType)
 {
-	UNUSED_PARAM(moveType);
+    switch (moveType)
+    {
+        default:
+            return defaultCalc(rob,x_goal,y_goal,theta_goal);
+    }
+}
 
+threeWheelVels ThreeWheelCalculator::defaultCalc
+    (Robot* rob, float x_goal, float y_goal, float theta_goal)
+{
     //Current Position
     double x_current = rob->getRobotPosition().x;
     double y_current = rob->getRobotPosition().y;
     double theta_current = rob->getOrientation();
-	
-#if THREE_WHEEL_DEBUG
-	std::cout << "ID: "    << rob->getID() << std::endl;
-    std::cout << "X: "     << x_current    << std::endl;
-    std::cout << "Y: "     << y_current    << std::endl;
-    std::cout << "Theta: " << theta_current *180/M_PI << std::endl;
-#endif
 
-    //Robot Physical Properties
-    double axle_length = 100;  //distance from center of mass to wheel
-    double wheel_radius = 20;
-    double wheel_offset = M_PI/6;
+    Point rp = Point(x_current,y_current);
+    Point gp = Point(x_goal,y_goal);
+    distance_to_goal = Measurments::distance(rp,gp);
+    angle_to_goal = Measurments::angleBetween(rp,gp);
 
-    //Transformation Matrix
-    double t_matrix[3][3] = { { -sin(wheel_offset+theta_current),	  cos(wheel_offset+theta_current),	  axle_length },
-                              { -sin(wheel_offset-theta_current),	 -cos(wheel_offset-theta_current),	  axle_length },
-                              {               cos(theta_current),                  sin(theta_current),    axle_length }};
+    //Inertial Frame Velocities
+    double x_vel = (distance_to_goal)*cos(angle_to_goal);
+    double y_vel = (distance_to_goal)*sin(angle_to_goal);
+    double theta_vel = theta_goal-theta_current;
+    if (abs(Measurments::angleDiff(theta_goal,theta_current))<abs(Measurments::angleDiff(theta_goal,theta_current+theta_vel)))
+        theta_vel=-theta_vel;
 
-    //Cartesian Velocity Matrix
-    double cartVels[3][1] = {{x_goal-x_current},
-                             {y_goal-y_current},
-                             {theta_current-theta_goal}};
+    // Reduce speed near target
+    if (distance_to_goal < 300)
+    {
+        x_vel *= 0.5;
+        y_vel *= 0.5;
+    }
 
-    //Result Matrix
-    double wheelVels[3][1] = {{0},
-                              {0},
-                              {0}};
+    //Set tolerances
+    if (Measurments::isClose(rp,gp,200)) x_vel = y_vel = 0;
+    if (abs(Measurments::angleDiff(theta_goal,theta_current))<ROT_TOLERANCE) theta_vel = 0;
 
-    multiply_3x3_3x1(t_matrix,cartVels,wheelVels);
+    //x_vel=0;
+    //y_vel=0;
+    //theta_vel=-10;
 
-    threeWheelVels results;
+    // Robot Frame Velocities
+    double x_vel_robot = cos(theta_current)*x_vel+sin(theta_current)*y_vel;
+    double y_vel_robot = -sin(theta_current)*x_vel+cos(theta_current)*y_vel;
 
-    results.L = wheelVels[0][0]/wheel_radius;
-    results.R = -wheelVels[1][0]/wheel_radius;
-    results.B = wheelVels[2][0]/wheel_radius;
+    //Wheel Velocity Calculations
+    double R = -(-sin(M_PI/6)   * y_vel_robot + cos(M_PI/6)   *x_vel_robot + wheel_radius*theta_vel);
+    double L = -(-sin(5*M_PI/6) * y_vel_robot + cos(5*M_PI/6) *x_vel_robot + wheel_radius*theta_vel);
+    double B = -(-sin(9*M_PI/6) * y_vel_robot + cos(9*M_PI/6) *x_vel_robot + wheel_radius*theta_vel);
 
     //Normalize wheel velocities
-    if (abs(results.L)>100)
+    if (abs(R)>max_mtr_spd)
     {
-        results.B=(100/results.L)*results.B;
-        results.R=(100/results.L)*results.R;
-        results.L=100;
+        L=(max_mtr_spd/abs(R))*L;
+        B=(max_mtr_spd/abs(R))*B;
+        R=(max_mtr_spd/abs(R))*R;
     }
-    if (abs(results.R)>100)
+    if (abs(L)>max_mtr_spd)
     {
-        results.B=(100/results.R)*results.B;
-        results.L=(100/results.R)*results.L;
-        results.R=100;
+        R=(max_mtr_spd/abs(L))*R;
+        B=(max_mtr_spd/abs(L))*B;
+        L=(max_mtr_spd/abs(L))*L;
     }
-    if (abs(results.B)>100)
+    if (abs(B)>max_mtr_spd)
     {
-        results.L=(100/results.B)*results.L;
-        results.R=(100/results.B)*results.R;
-        results.B=100;
+        L=(max_mtr_spd/abs(B))*L;
+        R=(max_mtr_spd/abs(B))*R;
+        B=(max_mtr_spd/abs(B))*B;
     }
 
-#if THREE_WHEEL_DEBUG
-	std::cout << "ID: " << rob->getID()     << std::endl;
-    std::cout << "  WheelL: " << results.L  << std::endl;
-    std::cout << "  WheelR: " << -results.R << std::endl;
-    std::cout << "  WheelB: " << results.B  << std::endl;
-#endif
 
-    return results;
+    //Create and return result container
+    threeWheelVels vels;
+    vels.L = L;
+    vels.R = R;
+    vels.B = B;
+    return vels;
 }
-
 }

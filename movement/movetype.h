@@ -25,8 +25,7 @@ enum class Type : MovementType
     Count,			//Always leave last; do not use
 
     /*** Omni Movement Types ***/
-    OmniType1,
-    OnmiType2
+    facePoint
 };
 
 

@@ -1,8 +1,4 @@
-#include <stdio.h>
-#include <vector>
 #include "nxtrobcomm.h"
-#include "model/robot.h"
-#include "utilities/measurments.h"
 
 NXTRobComm::NXTRobComm()
 {
@@ -50,6 +46,25 @@ void NXTRobComm::sendKick(int robotId)
 
 void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
 {
+    for (Robot* rob : robots)
+    {
+        switch(rob->type())
+        {
+
+        case differential:
+            sendVelsDifferential(robots);
+            break;
+        case threeWheelOmni:
+            sendVelsThreeOmni(rob->getL(),rob->getR(),rob->getB(),rob->getID());
+            break;
+        case fourWheelOmni:
+            sendVelsFourOmni(rob->getLF(),rob->getRF(),rob->getLB(),rob->getRB(),rob->getID());
+        }
+    }
+}
+
+void NXTRobComm::sendVelsDifferential(std::vector<Robot*>& robots)
+{
     char largePacket[robots.size()*5];
 
     for (unsigned int i=0; i < robots.size(); i++)
@@ -73,7 +88,9 @@ void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
 
 void NXTRobComm::sendVelsThreeOmni(int left, int right, int back, int ID)
 {
-    char comm[6] = {'~', (char)ID, (char)left, (char)right, (char)back, char(0)};
+
+    char comm[6] = {'~', (char)4, (char)left, (char)right, (char)back, char(0)};
+    //char comm[6] = {'~', (char)4, (char)0, (char)0, (char)0, char(0)};
     send(&comm[0], 6);
 }
 
