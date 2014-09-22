@@ -6,7 +6,7 @@
 #if SIMULATED
  #define KDIST_TOLERANCE    120
  #define CENTER_TOLERANCE   0.40
- #define POSITION_ANGLE_TOL ROT_TOLERANCE*4
+ #define POSITION_ANGLE_TOL ROT_TOLERANCE
 #else
  #define KDIST_TOLERANCE    DIST_TOLERANCE*2
  #define CENTER_TOLERANCE   0.70
@@ -31,13 +31,14 @@ KickToPoint::KickToPoint(Point target, float targetTolerance, float kickDistance
 
 void KickToPoint::doPositioningState(Robot *robot)
 {
+
 #if SIMULATED
-    move_skill.setRecreateTolerances(40, ROT_TOLERANCE);
+    //move_skill.setRecreateTolerances(40, ROT_TOLERANCE);
 #endif
-    move_skill.setMovementTolerances(ROBOT_RADIUS*1.5, POSITION_ANGLE_TOL);
+    move_skill.setMovementTolerances(ROBOT_RADIUS*2, POSITION_ANGLE_TOL);
     move_skill.recreate(behindBall, ballTargetAngle, false);
 
-    if(move_skill.perform(robot, Movement::Type::SharpTurns))
+    if(move_skill.perform(robot))
         state = Moving;
 }
 

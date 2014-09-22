@@ -158,7 +158,8 @@ HEADERS += \
     skill/stop.h \
     movement/three_omni_motion/omni3_velcalculator.h \
     movement/differential/differential_velcalculator.h \
-    movement/four_omni_motion/omni4_velcalculator.h
+    movement/four_omni_motion/omni4_velcalculator.h \
+    include/config/model_averages.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 

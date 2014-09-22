@@ -3,6 +3,11 @@
 
 Robot::Robot()
 {
+    LF = 0; LB = 0;
+    RF = 0; RB = 0;
+    orientation = 0;
+    kick = false;
+    drible = false;
     hasBeh = false;
     currentBehavior = nullptr;
 }
