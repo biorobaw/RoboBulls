@@ -200,8 +200,7 @@ void BehaviorAssignment<BehaviorType>::assignBeh(std::initializer_list<int> robo
     GameModel* gm = GameModel::getModel();
 
     for(int robID : robotIDList) {
-        Robot* rob = gm->find(robID, gm->getMyTeam());
-
+        Robot* rob = gm->findMyTeam(robID);
         if(rob != NULL)
             this->assignBeh(rob);
     }
