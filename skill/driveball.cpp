@@ -49,12 +49,15 @@ bool DriveBall::perform(Robot* robot)
         break;
 
     case driveBall:
+        bool farFromBall   = !Measurments::isClose(robPoint, ballPoint, DIST*1.25);
+        bool notFacingBall =  Measurments::lineDistance(ballPoint, robPoint, targetPosition)
+                > ROBOT_RADIUS*1.75;
+        if(farFromBall || notFacingBall) {
+            state = moveBehindBall;
+        }
         robot->setDrible(true);
         move_skill.setVelocityMultiplier(VEL_MULT);
         move_skill.recreate(this->targetPosition, this->direction, false);
-        if(!Measurments::isClose(robPoint, ballPoint, CLOSE_ENOUGH*2)) {
-            state = moveBehindBall;
-        }
         move_skill.perform(robot, Movement::Type::SharpTurns);
         break;
     }
