@@ -13,9 +13,14 @@ public:
 
     bool	operator==(const Point& rhs);
     bool	operator!=(const Point& rhs);
-    Point&	operator=(const Point& rhs);
+    Point& 	operator=(const Point& rhs);
+	Point&	operator+=(const Point& rhs);
+	Point&	operator-=(const Point& rhs);
+	Point&	operator*=(float rhs);
+	Point&	operator/=(float rhs);
     Point	operator+(const Point& rhs);
     Point	operator-(const Point& rhs);
+	
     std::string toString();
 public:
     float x, y;

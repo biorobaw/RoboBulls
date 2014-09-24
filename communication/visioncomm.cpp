@@ -9,14 +9,13 @@ VisionComm::VisionComm(GameModel *gm)
 {
 // Use different ports depending on whether it is simulated or the actual vision system
 #if SIMULATED
-    client = new RoboCupSSLClient(10020,"224.5.23.24");
+    client = new RoboCupSSLClient(10020,"224.5.23.2");
 #else
     client = new RoboCupSSLClient();
 #endif
     client->open(true);
     gamemodel = gm;
     count=0;
-
 }
 
 VisionComm::~VisionComm(void)
@@ -25,63 +24,44 @@ VisionComm::~VisionComm(void)
     //CloseHandle(hThread); //stop thread
 }
 
-void VisionComm::updateInfo(SSL_DetectionRobot robot, string color)
+/* This function processes a DetectionRobot from the vision system and fills
+ * out the information in the GameModel
+ */
+void VisionComm::updateInfo(const SSL_DetectionRobot& robot, int detectedTeamColor)
 {
-    Robot * rob;
-
-    int ourTeamColor = TEAM;
-
+    Robot *rob;
+    int   ourTeamColor = TEAM;     //if 0, then it's blue. If 1, then it's yellow team.
     float id = 0;
     Point robPoint;
-
-    int detectedTeamColor = 0;   //if 0, then it's blue. If 1, then it's yellow team.
-
-    vector<Robot*> myTeam = gamemodel->getMyTeam();
-    vector<Robot*> opTeam = gamemodel->getOponentTeam();
-
-    if (color.compare("Blue") == 0)
-        detectedTeamColor = 0;
-    else if (color.compare("Yellow") == 0)
-        detectedTeamColor = 1;
+    vector<Robot*>* currentTeam;
+    GameModel* gm = GameModel::getModel();
+    
+    if (detectedTeamColor == ourTeamColor) {
+        currentTeam = &gamemodel->getMyTeam();
+    } else {
+        currentTeam = &gamemodel->getOponentTeam();
+    }
 
     if (robot.has_robot_id())
     {
-        id = robot.robot_id();
+        id  = robot.robot_id();
+        rob = gm->find(id, *currentTeam);
 
-        if (detectedTeamColor == ourTeamColor)
+        if (rob == NULL)
         {
-            rob = gamemodel->find(id, myTeam);
+            rob = new Robot();
+            rob->setID(id);
+            currentTeam->push_back(rob);
         }
-        else
-        {
-            rob = gamemodel->find(id, opTeam);
-        }
+		
+		// Assumption: rob contains the robot with id == detected_id
+		robPoint.x = robot.x();
+        robPoint.y = robot.y();
+        rob->setRobotPosition(robPoint);
+		rob->setOrientation(robot.orientation());
+        
+        gm->setRobotUpdated(rob, detectedTeamColor);
     }
-
-
-
-    if (rob == NULL)
-    {
-        rob = new Robot();
-        rob->setID(id);
-        if (detectedTeamColor == ourTeamColor)
-            myTeam.push_back(rob);
-        else
-            opTeam.push_back(rob);
-    }
-
-
-    // Assumption: rob contains the robot with id == detected_id
-    rob->setOrientation(robot.orientation());
-    robPoint.x = robot.x();
-    robPoint.y = robot.y();
-    rob->setRobotPosition(robPoint);
-
-    gamemodel->setMyTeam(myTeam);
-    gamemodel->setOponentTeam(opTeam);
-    //cout<<"Ball Position:\t"<<gamemodel->getBallPoint().x << " , " << gamemodel->getBallPoint().y<<endl;
-
-//    cout << gamemodel->toString() << endl;
 }
 
 
@@ -141,9 +121,8 @@ bool VisionComm::receive()
                     float confR = detection.robots_blue(i).confidence();
                     if (confR > CONF_THRESHOLD)
                     {
-                        updateInfo(detection.robots_blue(i), "Blue");
+                        updateInfo(detection.robots_blue(i), TEAM_BLUE);
                     }
-
                 }
 
 
@@ -153,7 +132,7 @@ bool VisionComm::receive()
 
                     if (confR > CONF_THRESHOLD)
                     {
-                        updateInfo(detection.robots_yellow(i), "Yellow");
+                        updateInfo(detection.robots_yellow(i), TEAM_YELLOW);
                     }
                 }
             }//if_team

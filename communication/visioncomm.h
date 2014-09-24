@@ -44,7 +44,7 @@ public:
     //void VisionThread();
     void run();
 
-    void updateInfo(SSL_DetectionRobot, string);
+    void updateInfo(const SSL_DetectionRobot& robot, int detectedTeamColor);
 
 protected:
     GameModel *gamemodel;

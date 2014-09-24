@@ -21,6 +21,34 @@ Point& Point::operator=(const Point& rhs)
     return *this;
 }
 
+Point& Point::operator+=(const Point& rhs)
+{
+	this->x += rhs.x;
+	this->y += rhs.y;
+    return *this;
+}
+
+Point& Point::operator-=(const Point& rhs)
+{
+	this->x -= rhs.x;
+	this->y -= rhs.y;
+    return *this;
+}
+
+Point& Point::operator*=(float rhs)
+{
+	this->x *= rhs;
+	this->y *= rhs;
+    return *this;
+}
+
+Point& Point::operator/=(float rhs)
+{
+	this->x /= rhs;
+	this->y /= rhs;
+    return *this;
+}
+
 Point Point::operator+(const Point& rhs)
 {
     Point ret(this->x + rhs.x, this->y + rhs.y);
