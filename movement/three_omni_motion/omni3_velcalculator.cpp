@@ -124,9 +124,9 @@ threeWheelVels ThreeWheelCalculator::facePointCalc
     // Rotate first
     if (abs(Measurments::angleDiff(theta_goal,theta_current))>ROT_TOLERANCE)
     {
-        x_vel *= 0.05;
-        y_vel *= 0.05;
-        theta_vel*=5;
+        x_vel *= 0.1;
+        y_vel *= 0.1;
+        theta_vel*=2;
     }
 
     //Set tolerances
