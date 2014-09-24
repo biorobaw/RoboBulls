@@ -49,10 +49,10 @@ public:
     }
 };
 
-class ShamsiBehavior : public GenericMovementBehavior
+class ShamsiStrafeBehavior : public GenericMovementBehavior
 {
 public:
-    ShamsiBehavior(const ParameterList& list)
+    ShamsiStrafeBehavior(const ParameterList& list)
     {
         UNUSED_PARAM(list);
     }
@@ -60,15 +60,29 @@ public:
     void perform(Robot *robot) override
     {
         GameModel * gm = GameModel::getModel();
-        Robot * rob = gm->getMyTeam().at(0);
+        Point rp = gm->getMyTeam().at(0)->getRobotPosition();
+        Point bp = gm->getBallPoint();
+        Point target_one = Point(-2000,0);
+        Point target_two = Point(2000,0);
+        double ori = Measurments::angleBetween(rp,bp);
 
-        cout << "L "<<rob->getL() << endl;
-        cout << "R "<<rob->getR() << endl;
-        cout << "B "<<rob->getB() << endl << endl;
+        switch(state)
+        {
+        case pos_one:
+            setMovementTargets(target_one,ori,false);
+            if (Measurments::isClose(rp,target_one))
+                state = pos_two;
+            break;
+        case pos_two:
+            setMovementTargets(target_two,ori,false);
+            if (Measurments::isClose(rp,target_two))
+                state = pos_one;
+        }
 
-        setMovementTargets(gm->getBallPoint(),0, false);
-        GenericMovementBehavior::perform(robot);
+        GenericMovementBehavior::perform(robot,Movement::Type::facePoint);
     }
+private:
+    enum {pos_one,pos_two} state = pos_one;
 };
 
 TestStrategy::TestStrategy()
@@ -79,7 +93,7 @@ void TestStrategy::assignBeh()
 {
 //***************************************************************************************************
     //Shamsi Code
-    BehaviorAssignment<ShamsiBehavior> assignment(true);
+    BehaviorAssignment<ShamsiStrafeBehavior> assignment(true);
     assignment.assignBeh();
 
     //Martin code

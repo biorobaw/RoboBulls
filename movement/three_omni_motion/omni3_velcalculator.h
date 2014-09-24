@@ -26,10 +26,12 @@ public:
 
 private:
     const double wheel_radius = 27;
-    unsigned int max_mtr_spd = 100;
+    unsigned int max_mtr_spd = 80;
     double distance_to_goal, angle_to_goal;
 
     threeWheelVels defaultCalc
+        (Robot* rob, float x_goal, float y_goal, float theta_goal);
+    threeWheelVels facePointCalc
         (Robot* rob, float x_goal, float y_goal, float theta_goal);
 };
 

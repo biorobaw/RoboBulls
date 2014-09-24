@@ -32,7 +32,7 @@ public:
 
 private:
     fourWheelVels defaultCalc(Robot* rob, float x_goal, float y_goal, float theta_goal);
-    fourWheelVels facePointCalc(Robot* rob, float x_goal, float y_goal, float theta_goal);
+    fourWheelVels facePointCalc(Robot* rob, float x_goal, float y_goal, float angle_to_point);
 
     //Robot Physical Properties
     const double frnt_axl_offset = M_PI/6;

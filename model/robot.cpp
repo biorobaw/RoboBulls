@@ -54,9 +54,9 @@ float Robot::getOrientation(){return orientation;}
 
 int Robot::getID(){return id;}
 
-int Robot::getL(){return 0.5*(LF+LB);}
+int Robot::getL(){return LF;}
 
-int Robot::getR(){return 0.5*(RF+RB);}
+int Robot::getR(){return RF;}
 
 int Robot::getB(){return RB;}	//RB and RL are the same for three-wheel
 

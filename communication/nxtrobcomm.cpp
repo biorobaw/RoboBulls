@@ -89,7 +89,7 @@ void NXTRobComm::sendVelsDifferential(std::vector<Robot*>& robots)
 void NXTRobComm::sendVelsThreeOmni(int left, int right, int back, int ID)
 {
 
-    char comm[6] = {'~', (char)4, (char)left, (char)right, (char)back, char(0)};
+    char comm[6] = {'~', (char)ID, (char)left, (char)right, (char)back, char(0)};
     //char comm[6] = {'~', (char)4, (char)0, (char)0, (char)0, char(0)};
     send(&comm[0], 6);
 }
