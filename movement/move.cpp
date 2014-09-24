@@ -4,14 +4,6 @@
 namespace Movement
 {
 
-/* This might be better off a settable member function. 
- * It's a low tolerance to not produce problems when users need 
- * a wide range of tolerances, and also  make it the user's responsibility 
- * to only recreate this object if the points are changed significantly.
- */
-#define ENOUGH_TO_CHANGE 40
-
-
 Move::Move()
     : velMultiplier(1.0)
 {
@@ -104,8 +96,8 @@ bool Move::perform(Robot *robot, Movement::Type moveType)
         m_targetAngle = Measurments::angleBetween(robot->getRobotPosition(), m_targetPoint);
 
     /* Let's only bother moving if we need to */
-    //if(!Measurments::isClose(m_targetPoint, robot->getRobotPosition()) ||
-       // //!Measurments::isClose(m_targetAngle, robot->getOrientation()))
+    if(!Measurments::isClose(m_targetPoint, robot->getRobotPosition(), lastDistTolerance) ||
+       !Measurments::isClose(m_targetAngle, robot->getOrientation(), lastAngTolerance))
     {
         if(useObstacleAvoid) {
             finished = this->calcObstacleAvoidance(robot, moveType);
@@ -192,7 +184,8 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
             /*********************************************
              * Velocity Calculating (Important part)
              * ******************************************/
-            this->calculateVels(robot, nextPoint, nextTargetAngle, moveType);
+            float nextAngle = Measurments::angleBetween(robotPoint, nextPoint);
+            this->calculateVels(robot, nextPoint, nextAngle, moveType);
             
             /**********///Path Queue Updating
             if(Measurments::isClose(robotPoint, nextPoint, nextDistTolerance)) {
@@ -202,7 +195,7 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
                 } 
 				else if(pathQueue.size() == 1) {
                     nextDistTolerance = lastDistTolerance;
-                    nextTargetAngle   = lastAngTolerance;
+                    nextTargetAngle   = m_targetAngle;
                 }
             }
         } else {
@@ -256,7 +249,7 @@ void Move::setVels(Robot *robot)
     case threeWheelOmni:
 		robot->setL(left  * velMultiplier);
 		robot->setR(right * velMultiplier);
-		robot->setB(back  * velMultiplier);    //?
+        robot->setB(back  * velMultiplier);
         break;
     case fourWheelOmni:
 		robot->setLF(lfront * velMultiplier);
