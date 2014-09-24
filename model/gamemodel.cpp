@@ -50,17 +50,17 @@ Point GameModel::getBallPoint()
     return ballPoint;
 }
 
-int GameModel::getBlueGoals()
+unsigned char GameModel::getBlueGoals()
 {
     return blueGoals;
 }
 
-int GameModel::getYellowGoals()
+unsigned char GameModel::getYellowGoals()
 {
     return yellowGoals;
 }
 
-float GameModel::getRemainingTime()
+unsigned char GameModel::getRemainingTime()
 {
     return remainingTime;
 }
@@ -193,6 +193,21 @@ void GameModel::setRobotHasBall()
         }
         this->robotWithBall = *ballBot;
     }
+}
+
+void GameModel::setTimeLeft(unsigned short time)
+{
+    remainingTime = time;
+}
+
+void GameModel::setBlueGoals(unsigned char goals)
+{
+    blueGoals = goals;
+}
+
+void GameModel::setYellowGoals(unsigned char goals)
+{
+    yellowGoals = goals;
 }
 
 Robot* GameModel::find(int id, std::vector<Robot*>& team)

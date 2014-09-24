@@ -45,9 +45,9 @@ public:
     vector<Robot*>& getOponentTeam();
     vector<Robot*>& getMyTeam();
     Point  	getBallPoint();
-    int    	getBlueGoals();
-    int    	getYellowGoals();
-    float  	getRemainingTime();
+    unsigned char getBlueGoals();
+    unsigned char getYellowGoals();
+    unsigned char getRemainingTime();
     char   	getGameState();
     Point  	getPenaltyPoint();
     Point  	getOpponentGoal();
@@ -95,12 +95,11 @@ private:
     vector <Robot*> myTeam;
 	Robot* robotWithBall = NULL;
     Point ballPoint      = Point(0,0);
-    int   blueGoals      = 0;
-    int   yellowGoals    = 0;
-    float remainingTime  = 0.0;
     char  gameState      = '\0';
     bool  hasChanged     = false;
-	
+    unsigned char  blueGoals     = 0;
+    unsigned char  yellowGoals   = 0;
+    unsigned short remainingTime = 0;
 
 	/* Functions to update gamemodel from vision system.
      * Provides *the* link between vision detection and
@@ -112,6 +111,9 @@ private:
     void setBallPoint(Point);
 	void setRobotHasBall();
 	void setGameState(char);
+    void setTimeLeft(unsigned short);
+    void setBlueGoals(unsigned char);
+    void setYellowGoals(unsigned char);
 	void notifyObservers();
 };
 
