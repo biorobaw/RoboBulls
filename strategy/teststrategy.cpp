@@ -93,8 +93,8 @@ void TestStrategy::assignBeh()
 {
 //***************************************************************************************************
     //Shamsi Code
-    BehaviorAssignment<ShamsiStrafeBehavior> assignment(true);
-    assignment.assignBeh();
+//    BehaviorAssignment<ShamsiStrafeBehavior> assignment(true);
+//    assignment.assignBeh();
 
     //Martin code
 //    cout << "running test strategy!" << endl;
@@ -146,9 +146,12 @@ void TestStrategy::assignBeh()
 //    assignment.setBehParam<Point>("targetPoint", gm->getBallPoint());
 //    assignment.assignBeh({0, 1});
 
-    // Narges code testing DriveBallAndKick
+//     Narges code testing DriveBallAndKick
+    BehaviorAssignment<DriveBallAndKick> assignment;
+    assignment.setSingleAssignment(true);
+    assignment.assignBeh();
 //    BehaviorAssignment<TestBehavior> assignment(true);
-//    assignment.assignBeh({3});
+//    assignment.assignBeh(/*{3}*/);
 
 
 ////    //Narges code testing defendCloseToBall

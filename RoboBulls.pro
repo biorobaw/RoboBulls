@@ -87,7 +87,12 @@ SOURCES += main.cpp \
     skill/stop.cpp \
     movement/four_omni_motion/omni4_velcalculator.cpp \
     movement/three_omni_motion/omni3_velcalculator.cpp \
-    movement/differential/differential_velcalculator.cpp
+    movement/differential/differential_velcalculator.cpp \
+    strategy/freekickstrategy.cpp \
+    strategy/haltstrategy.cpp \
+    strategy/indiectkickstrategy.cpp \
+    strategy/kickoffstrategy.cpp \
+    behavior/simplebehaviors.cpp
 
 HEADERS += \
 	behavior/behavior.h \
@@ -159,7 +164,12 @@ HEADERS += \
     movement/three_omni_motion/omni3_velcalculator.h \
     movement/differential/differential_velcalculator.h \
     movement/four_omni_motion/omni4_velcalculator.h \
-    include/config/model_averages.h
+    include/config/model_averages.h \
+    strategy/freekickstrategy.h \
+    strategy/haltstrategy.h \
+    strategy/indiectkickstrategy.h \
+    strategy/kickoffstrategy.h \
+    behavior/simplebehaviors.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 
