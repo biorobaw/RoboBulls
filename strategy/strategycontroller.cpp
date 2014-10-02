@@ -31,7 +31,7 @@ void StrategyController::gameModelUpdated()
 	
 	FPPA::pathfindingBegin();
 
-    cout << model->getGameState() << endl;
+//    cout << model->getGameState() << endl;
 
     if (model->getGameState() == 'S')   //stop game
     {
@@ -73,7 +73,6 @@ void StrategyController::gameModelUpdated()
     {
         activeStrategy = new TestStrategy();
     }
-
     activeStrategy->assignBeh();
 
 

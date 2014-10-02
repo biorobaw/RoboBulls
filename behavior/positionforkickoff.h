@@ -16,7 +16,6 @@ class PositionForKickoff:public Behavior
 private:
     Movement::GoToPosition move_skill;
     Point move_point, bp;
-    bool bp_updated;
     float orientation;
     GameModel * gm;
 

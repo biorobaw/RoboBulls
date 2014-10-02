@@ -48,7 +48,7 @@ fourWheelVels FourWheelCalculator::defaultCalc
     //Inertial Frame Velocities
     double x_vel = (distance_to_goal+dist_error_integral)*cos(angle_to_goal);
     double y_vel = (distance_to_goal+dist_error_integral)*sin(angle_to_goal);
-    double theta_vel = theta_goal-theta_current;
+    double theta_vel = Measurments::angleDiff(theta_current,theta_goal);
     if (abs(Measurments::angleDiff(theta_goal,theta_current))<abs(Measurments::angleDiff(theta_goal,theta_current+theta_vel)))
         theta_vel=-theta_vel;
 
@@ -134,7 +134,7 @@ fourWheelVels FourWheelCalculator::facePointCalc
     //Interial Frame Velocities
     double x_vel = (distance_to_goal+dist_error_integral)*cos(angle_to_goal);
     double y_vel = (distance_to_goal+dist_error_integral)*sin(angle_to_goal);
-    double theta_vel = 1.5*(theta_goal-theta_current);
+    double theta_vel = 1.5*Measurments::angleDiff(theta_current,theta_goal);
     if (abs(Measurments::angleDiff(theta_goal,theta_current))<abs(Measurments::angleDiff(theta_goal,theta_current+theta_vel)))
         theta_vel=-theta_vel;
 
@@ -146,10 +146,10 @@ fourWheelVels FourWheelCalculator::facePointCalc
     }
 
     // Rotate first
-    if (abs(Measurments::angleDiff(theta_goal,theta_current))>0.15)
+    if (abs(Measurments::angleDiff(theta_current,theta_goal))>ROT_TOLERANCE)
     {
-        x_vel *= 0.2;
-        y_vel *= 0.2;
+        x_vel *= 0.1;
+        y_vel *= 0.1;
     }
 
     //cout << dist_error_integral << endl;

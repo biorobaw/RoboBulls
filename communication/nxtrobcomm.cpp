@@ -46,19 +46,28 @@ void NXTRobComm::sendKick(int robotId)
 
 void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
 {
+    bool sent_diff = 0;
+    bool sent_three_wheel = 0;
+    bool sent_four_wheel = 0;
+
     for (Robot* rob : robots)
     {
         switch(rob->type())
         {
-
         case differential:
-            sendVelsDifferential(robots);
+            if (sent_diff == 0)
+                sendVelsDifferential(robots);
+            sent_diff=1;
             break;
         case threeWheelOmni:
-            sendVelsThreeOmni(rob->getL(),rob->getR(),rob->getB(),rob->getID());
+            if (sent_three_wheel == 0)
+                sendVelsThreeOmni(rob->getL(),rob->getR(),rob->getB(),rob->getID());
             break;
+            sent_three_wheel=1;
         case fourWheelOmni:
-            sendVelsFourOmni(rob->getLF(),rob->getRF(),rob->getLB(),rob->getRB(),rob->getID());
+            if (sent_four_wheel == 0)
+                sendVelsFourOmni(rob->getLF(),rob->getRF(),rob->getLB(),rob->getRB(),rob->getID());
+            sent_four_wheel=1;
         }
     }
 }
@@ -88,9 +97,7 @@ void NXTRobComm::sendVelsDifferential(std::vector<Robot*>& robots)
 
 void NXTRobComm::sendVelsThreeOmni(int left, int right, int back, int ID)
 {
-
     char comm[6] = {'~', (char)ID, (char)left, (char)right, (char)back, char(0)};
-    //char comm[6] = {'~', (char)4, (char)0, (char)0, (char)0, char(0)};
     send(&comm[0], 6);
 }
 
