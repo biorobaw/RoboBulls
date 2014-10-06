@@ -13,70 +13,98 @@
 #include "strategy/kickoffstrategy.h"
 #include "strategy/freekickstrategy.h"
 #include "strategy/haltstrategy.h"
+#include "strategy/attackstrategy.h"
 
 #include "movement/pathfinding/fppa_pathfinding.h"
 
 using namespace std;
 
-
-
 StrategyController::StrategyController()
 {
+    activeStrategy = nullptr;
+}
+
+void StrategyController::run()
+{
+    static int count = 0;
+    if(count < 25) { ++count; return; }
+
+    frameBegin();
+    
+    if(model->isNewCommand() || activeStrategy==nullptr) {
+        gameModelUpdated();
+    } else {
+        gameModelContinued();
+    }
+    
+    frameEnd();
 }
 
 void StrategyController::gameModelUpdated()
 {
-    static int count = 0;
-    if(count < 25) {++count; return;}
-	
-	FPPA::pathfindingBegin();
-
-    cout << model->getGameState() << endl;
-
-    if (model->getGameState() == 'S')   //stop game
+    delete activeStrategy;
+     
+#if 0
+    switch(model->getGameState())
     {
+    case 'S':    //stop game
+    case 'G':    //Blue Goal
+    case 'g':    //Yellow Goal
         activeStrategy = new StopStrategy();
-    }
-    else if (model->getGameState() == 'P')  //penalty
-    {
+        break;
+    case 'P':    //Penalty Kick
         activeStrategy = new PenaltyStrategy();
-    }
-    else if (model->getGameState() == 'K')  //kick off
-    {
-        activeStrategy = new KickOffStrategy();
-    }
-    else if (model->getGameState() == 'F')  //free kick
-    {
+        break;
+    case 'K':    //Kickoff
         activeStrategy = new FreeKickStrategy();
-    }
-    else if (model->getGameState() == 'H')  //halt
-    {
+        break;
+    case 'F':    //Free Kick
+        activeStrategy = new FreeKickStrategy();
+        break;
+    case 'H':    //Halt
         activeStrategy = new HaltStrategy();
-    }
-    else if (model->getGameState() == ' ')  //normal start
-    {
-        activeStrategy = new TestStrategy();
-    }
-    else if (model->getGameState() == 's')  //force start
-    {
+        break;
+    case ' ':    //Normal game play
+        activeStrategy = new AttackStrategy();
+        break;
+    case 's':    //Force Start
         activeStrategy = new FreeKickStrategy();
-    }
-    else if (model->getGameState() == 'I')    //indirect kick
-    {
-        activeStrategy = new FreeKickStrategy();
-    }
-//    else if (model->getGameState() == 'G' || model->getGameState() == 'g')    //add blue and yellow goal
-//    {
-//        activeStrategy = new AddGoalStrategy();
-//    }
-    else
-    {
-        activeStrategy = new TestStrategy();
-    }
-
+        break;
+    default:    //Anything Else
+        activeStrategy = new AttackStrategy();
+    };
+#endif
+    activeStrategy = new TestStrategy();
     activeStrategy->assignBeh();
+}
+
+void StrategyController::gameModelContinued()
+{
+    if(activeStrategy != nullptr) {
+        bool clearStratFlag = activeStrategy->update();
+        if(clearStratFlag)
+            clearCurrentStrategy();
+    }
+}
+
+void StrategyController::clearCurrentStrategy()
+{
+    delete activeStrategy;
+    activeStrategy = nullptr;
+    
+    for(Robot* robot : model->getMyTeam())
+        robot->clearCurrentBeh();
+}
 
 
+void StrategyController::frameBegin()
+{
+    FPPA::pathfindingBegin();
+}
+
+
+void StrategyController::frameEnd()
+{
     for (unsigned int i=0; i < model->getMyTeam().size(); i++)
     {
         Robot *rob = model->getMyTeam().at(i);
@@ -87,11 +115,10 @@ void StrategyController::gameModelUpdated()
 
     RobComm * robcom = RobComm::getRobComm();
     robcom->sendVelsLarge(model->getMyTeam());
-	
-	FPPA::pathfindingEnd();
-	
-	delete activeStrategy;
+    
+    FPPA::pathfindingEnd();
 }
+
 
 void StrategyController::setGameModel(GameModel *myGameModel)
 {

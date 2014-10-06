@@ -13,12 +13,10 @@ GameModel::GameModel()
     hasChanged = false;
 }
 
-
 void GameModel::setStrategyController(StrategyController *sc)
 {
     this->sc = sc;
 }
-
 
 Robot* GameModel::getHasBall()
 {
@@ -27,12 +25,12 @@ Robot* GameModel::getHasBall()
 
 Robot* GameModel::findMyTeam(int id)
 {
-	return find(id, myTeam);
+    return find(id, myTeam);
 }
 
 Robot* GameModel::findOpTeam(int id)
 {
-	return find(id, opTeam);
+    return find(id, opTeam);
 }
 
 vector<Robot*>& GameModel::getOponentTeam()
@@ -76,6 +74,11 @@ GameModel * GameModel::getModel()
         model = new GameModel();
 
     return model;
+}
+
+bool GameModel::isNewCommand()
+{
+    return this->hasNewCommand;
 }
 
 Point GameModel::getPenaltyPoint()
@@ -131,11 +134,27 @@ std::string GameModel::toString()
 /************************ Private Methods **************************/
 /*******************************************************************/
 
+
+/* Called by VisionComm */
+/**************************************************/
+/* Don't overlook this function, it's more important
+ * than you think 
+ */
 void GameModel::notifyObservers()
 {
-    if (hasChanged)
-        sc->gameModelUpdated();
-    hasChanged = false;
+    sc->run();
+}
+/**************************************************/
+
+/* Called by RefComm */
+/* I don't think both RefComm and VisionComm should both
+ * make the game run. This opens up the possibility for running the 
+ * loop twice, and possible interference. Before, this function also
+ * caused the StrategyController to update if the state was different
+ */
+void GameModel::setGameState(char gameState)
+{
+    this->gameState = gameState;
 }
 
 
@@ -146,43 +165,30 @@ void GameModel::setBallPoint(Point bp)
 #else
     ballPoint = bp;
 #endif
-    hasChanged = true;
-}
-
-
-void GameModel::setGameState(char gameState)
-{
-    char previousState = this->gameState;
-    this->gameState = gameState;
-
-    if (previousState != gameState)
-    {
-        sc->gameModelUpdated();
-    }
 }
 
 
 void GameModel::setRobotHasBall()
 {
-	static auto ptIsInFrontOfRob = [](Robot* rob, const Point& pt) {
-		Point robPos = rob->getRobotPosition();
-		float robAngle = rob->getOrientation();
-		float angleBetween = Measurments::angleBetween(robPos, pt);
-		return Measurments::isClose(robAngle, angleBetween, M_PI/6);
-		};
+    static auto ptIsInFrontOfRob = [](Robot* rob, const Point& pt) {
+        Point robPos = rob->getRobotPosition();
+        float robAngle = rob->getOrientation();
+        float angleBetween = Measurments::angleBetween(robPos, pt);
+        return Measurments::isClose(robAngle, angleBetween, M_PI/6);
+        };
 
     auto calculateHasBall = [&](Robot* rob) {
-		if(rob == NULL)
-			return false;
-		if(Measurments::distance(rob->getRobotPosition(), ballPoint) > 100.0) 
-			return false;
-		if(!ptIsInFrontOfRob(rob, ballPoint))
-			return false;
-		return true;
-		};
+        if(rob == NULL)
+            return false;
+        if(Measurments::distance(rob->getRobotPosition(), ballPoint) > 100.0) 
+            return false;
+        if(!ptIsInFrontOfRob(rob, ballPoint))
+            return false;
+        return true;
+        };
 
     if(!calculateHasBall(this->robotWithBall))
-	{
+    {
         auto ballBot = std::find_if(myTeam.begin(), myTeam.end(), calculateHasBall);
         if(ballBot == myTeam.end()) {            //Not found in myTeam        
             ballBot = std::find_if(opTeam.begin(), opTeam.end(), calculateHasBall);
@@ -212,23 +218,23 @@ void GameModel::setYellowGoals(unsigned char goals)
 
 Robot* GameModel::find(int id, std::vector<Robot*>& team)
 {
-	/* Often, the vision system (and also almost always on the simulator)
+    /* Often, the vision system (and also almost always on the simulator)
      * seems to report robots in order anyway. So first, 
-	 * I think it would be reasonable to check if the team at that `id` 
-	 * is actually that robot first.
-	 */
-	try {
+     * I think it would be reasonable to check if the team at that `id` 
+     * is actually that robot first.
+     */
+    try {
         if(team.at(id)->getID() == id)
-			return team[id];
-	}
+            return team[id];
+    }
     catch(...) {
     }
 
     for(Robot* rob : team)
         if(rob->getID() == id)
             return rob;
-	
-	return NULL;
+    
+    return NULL;
 }
 
 /* Start of Averaging functions
@@ -245,7 +251,7 @@ Robot* GameModel::find(int id, std::vector<Robot*>& team)
  * be made up of the same position multiple times. 2*MAX_ROBOTS times to be exact.
  *
  * The averaged positions for the robots and ball are then transparently available
- * from getRobotPosition(s) and getBallPoint
+ * from getRobotPosition()s and getBallPoint
  *
  * See VisionComm::updateInfo
  */
@@ -254,14 +260,16 @@ static bool shouldAddAverageValue(const Point& averageValue, const Point& newVal
     return Measurments::distance(averageValue, newValue) < OUTLIER_POINT_TOLERANCE;
 }
 static bool shouldAddAverageValue(const float& averageValue, const float& newValue) {
-	return Measurments::isClose(averageValue, newValue, OUTLIER_ANGLE_TOLERANCE);
+    return Measurments::isClose(averageValue, newValue, OUTLIER_ANGLE_TOLERANCE);
 }
 
 
 template<typename T>
 GameModel::AverageContainer<T>::AverageContainer()
     : numOutliers(MAX_OUTLIERS) //Important
-    {}
+    {
+        values.resize(MAX_AVERAGES+1);
+    }
 
 template<typename T>
 const T& GameModel::AverageContainer<T>::update(const T& newValue)
@@ -277,7 +285,7 @@ const T& GameModel::AverageContainer<T>::update(const T& newValue)
             averageValue -= values.front();
             values.pop_front();
         }
-        values.emplace_back(newValue);
+        values.push_back(newValue);
         averageValue += newValue;
         averageValue /= values.size();
     } else {
@@ -298,7 +306,7 @@ const T& GameModel::AverageContainer<T>::update(const T& newValue)
 void GameModel::setRobotUpdated(Robot* robot, int whichTeam)
 {
 #if MODEL_USE_AVERAGES
-	auto* currentAverages = &myTeamAverages;
+    auto* currentAverages = &myTeamAverages;
     if(whichTeam != TEAM)
         currentAverages = &opTeamAverages;
 
@@ -307,19 +315,18 @@ void GameModel::setRobotUpdated(Robot* robot, int whichTeam)
     Point newRobPoint;
     float newRobAngle;
 
-	/* While the myTeam/opTeam vectors are not guaranteed to be stored in order
-	 * (i.e, ID i is at myTeam[i]), these average arrays are. They are initially
-	 * sized to hold MAX_ROBOTS, so no out-of-range errors occur. Also, there is 
-	 * no iteration over these, so invalid entries are just ignored
-	 */
-	newRobPoint = currentAverages->at(robot->getID()).first.update(rawRobPoint);
-	newRobAngle = currentAverages->at(robot->getID()).second.update(rawRobAngle);
-	
+    /* While the myTeam/opTeam vectors are not guaranteed to be stored in order
+     * (i.e, ID i is at myTeam[i]), these average arrays are. They are initially
+     * sized to hold MAX_ROBOTS, so no out-of-range errors occur. Also, there is 
+     * no iteration over these, so invalid entries are just ignored
+     */
+    newRobPoint = currentAverages->at(robot->getID()).first.update(rawRobPoint);
+    newRobAngle = currentAverages->at(robot->getID()).second.update(rawRobAngle);
+    
     robot->setRobotPosition(newRobPoint);
     robot->setOrientation(newRobAngle);
 #else
     UNUSED_PARAM(robot);
     UNUSED_PARAM(whichTeam);
 #endif
-    hasChanged = true;
 }
