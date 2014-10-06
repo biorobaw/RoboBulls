@@ -5,9 +5,10 @@
  *- threeWheelOmni
  *- fourWheelOmni
  * Change one to have that ID registered as a robot of that type.
+ * Or change the #if option on one of the blocks below
  */
 
-#if 0
+#if 1
 const robotType robotIDTypes[] = {
  /*0*/	differential,
  /*1*/	differential,
@@ -22,7 +23,7 @@ const robotType robotIDTypes[] = {
 };
 #endif
 
-#if 1
+#if 0
 const robotType robotIDTypes[] = {
  /*0*/	fourWheelOmni,
  /*1*/	fourWheelOmni,
@@ -38,16 +39,16 @@ const robotType robotIDTypes[] = {
 #endif
 
 #if 0
-//const robotType robotIDTypes[] = {
-// /*0*/	threeWheelOmni,
-// /*1*/	threeWheelOmni,
-// /*2*/	threeWheelOmni,
-// /*3*/	threeWheelOmni,
-// /*4*/	threeWheelOmni,
-// /*5*/	threeWheelOmni,
-// /*6*/	threeWheelOmni,
-// /*7*/	threeWheelOmni,
-// /*8*/	threeWheelOmni,
-// /*9*/	threeWheelOmni,
-//};
+const robotType robotIDTypes[] = {
+ /*0*/	threeWheelOmni,
+ /*1*/	threeWheelOmni,
+ /*2*/	threeWheelOmni,
+ /*3*/	threeWheelOmni,
+ /*4*/	threeWheelOmni,
+ /*5*/	threeWheelOmni,
+ /*6*/	threeWheelOmni,
+ /*7*/	threeWheelOmni,
+ /*8*/	threeWheelOmni,
+ /*9*/	threeWheelOmni,
+};
 #endif

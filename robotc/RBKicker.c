@@ -80,6 +80,25 @@ void setup()
     kickerToKnownPos();
 }
 
+void setup()
+{
+	setupHighSpeedLink();
+
+	eraseDisplay();
+	bNxtLCDStatusDisplay = true; // Enable top status line display
+
+	//Setup the link to be a high-speed link.
+	setupHighSpeedLink();
+
+	nMotorPIDSpeedCtrl[motorB] = mtrSpeedReg;
+	nMotorPIDSpeedCtrl[motorC] = mtrSpeedReg;
+	nMotorPIDSpeedCtrl[motorA] = mtrSpeedReg;
+	nMotorEncoder[motorA] = 0;
+
+	// Get Kicker to known position
+	kickerToKnownPos();
+}
+
 ////////////////////////////////////////////////////////////////////////
 // Steer the motors and kick
 ////////////////////////////////////////////////////////////////////////

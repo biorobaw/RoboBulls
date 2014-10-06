@@ -1,17 +1,12 @@
 #include "positionforkickoff.h"
 
 PositionForKickoff::PositionForKickoff(const ParameterList &list)
-    //: move_skill(nullptr)
 {
     UNUSED_PARAM(list);
-    gm = GameModel::getModel();
-    bp = gm->getBallPoint();
-    bp_updated = true;
 }
 
 PositionForKickoff::~PositionForKickoff()
 {
-    //delete move_skill;
 }
 
 void PositionForKickoff::perform(Robot * robot)
@@ -21,16 +16,9 @@ void PositionForKickoff::perform(Robot * robot)
     #endif
 
     gm = GameModel::getModel();
-
-    if(!Measurments::isClose(gm->getBallPoint(),bp))
-    {
-        bp = gm->getBallPoint();
-        bp_updated = true;
-    }
-
+    bp = gm->getBallPoint();
     float ball_direction = Measurments::angleBetween(robot->getRobotPosition(),bp);
-
-    float goal_x = gm->getMyGoal().x;
+    float goal_x = gm->getOpponentGoal().x;
 
     switch(robot->getID())
     {
@@ -54,27 +42,15 @@ void PositionForKickoff::perform(Robot * robot)
             move_point = Point(goal_x/2,-800);
             orientation = ball_direction;
             break;
+
         case 5:
-            move_point = Point(gm->getMyGoal());
+            move_point = Point(goal_x*0.8,0);
             orientation= ball_direction;
     }
 
-    if(bp_updated)
-    {
-        //if(move_skill != nullptr) {
-         //   delete move_skill;
-         //   move_skill = nullptr;
-        //}
-        #if SIMULATED==1
-            move_skill.recreate(move_point, orientation, true);
-           // move_skill = new Movement::GoToPosition(move_point, orientation, true);
-        #else
-            //move_skill = new Movement::GoToPosition(move_point, orientation, true);
-        #endif
-
-        bp_updated = false;
-        //cout << "BP UPDATED" << endl;
-    }
-
-    move_skill.perform(robot);
+    move_skill.recreate(move_point, orientation, false);
+    if (robot->getID()==5)
+        move_skill.perform(robot,Movement::Type::facePoint);
+    else
+        move_skill.perform(robot);
 }

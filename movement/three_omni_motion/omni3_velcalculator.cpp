@@ -42,7 +42,7 @@ threeWheelVels ThreeWheelCalculator::defaultCalc
     //Inertial Frame Velocities
     double x_vel = (distance_to_goal)*cos(angle_to_goal);
     double y_vel = (distance_to_goal)*sin(angle_to_goal);
-    double theta_vel = theta_goal-theta_current;
+    double theta_vel = Measurments::angleDiff(theta_current,theta_goal);
     if (abs(Measurments::angleDiff(theta_goal,theta_current))<abs(Measurments::angleDiff(theta_goal,theta_current+theta_vel)))
         theta_vel=-theta_vel;
 
@@ -110,7 +110,7 @@ threeWheelVels ThreeWheelCalculator::facePointCalc
     //Inertial Frame Velocities
     double x_vel = (distance_to_goal)*cos(angle_to_goal);
     double y_vel = (distance_to_goal)*sin(angle_to_goal);
-    double theta_vel = theta_goal-theta_current;
+    double theta_vel = Measurments::angleDiff(theta_current,theta_goal);
     if (abs(Measurments::angleDiff(theta_goal,theta_current))<abs(Measurments::angleDiff(theta_goal,theta_current+theta_vel)))
         theta_vel=-theta_vel;
 
@@ -126,7 +126,7 @@ threeWheelVels ThreeWheelCalculator::facePointCalc
     {
         x_vel *= 0.1;
         y_vel *= 0.1;
-        theta_vel*=2;
+        theta_vel*=2.5;
     }
 
     //Set tolerances

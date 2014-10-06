@@ -43,8 +43,8 @@ void StrategyController::run()
 void StrategyController::gameModelUpdated()
 {
     delete activeStrategy;
-     
-#if 0
+
+#if 1
     switch(model->getGameState())
     {
     case 'S':    //stop game
@@ -74,7 +74,7 @@ void StrategyController::gameModelUpdated()
         activeStrategy = new AttackStrategy();
     };
 #endif
-    activeStrategy = new TestStrategy();
+
     activeStrategy->assignBeh();
 }
 
