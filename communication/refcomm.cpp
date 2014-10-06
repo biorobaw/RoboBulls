@@ -57,8 +57,15 @@ bool RefComm::receive()
     readBytes = mc.recv(&lastPacket, 6*sizeof(char), src);
 
     if (readBytes == 6) {
-        char cmd = lastPacket.command;
-        gamemodel->setGameState(cmd);
+        gamemodel->setGameState(lastPacket.command);
+        
+        if(this->last_count != lastPacket.counter) {
+            gamemodel->hasNewCommand = true;
+            last_count = lastPacket.counter;
+        } else {
+            gamemodel->hasNewCommand = false;
+        }
+        
         gamemodel->setTimeLeft(lastPacket.time_left);
         gamemodel->setBlueGoals(lastPacket.goals_blue);
         gamemodel->setYellowGoals(lastPacket.goals_yellow);
