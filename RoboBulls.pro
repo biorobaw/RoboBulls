@@ -93,7 +93,6 @@ SOURCES += main.cpp \
     strategy/indiectkickstrategy.cpp \
     strategy/kickoffstrategy.cpp \
     behavior/simplebehaviors.cpp \
-    utilities/xbeereceiver.cpp
 
 HEADERS += \
 	behavior/behavior.h \
@@ -171,7 +170,6 @@ HEADERS += \
     strategy/indiectkickstrategy.h \
     strategy/kickoffstrategy.h \
     behavior/simplebehaviors.h \
-    utilities/xbeereceiver.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 
