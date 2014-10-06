@@ -11,6 +11,21 @@
  #define M_PI_2  1.570796326794896
 #endif
 
+
+/* The "long ways" i.e, goal-to-goal length of the standard
+ * RoboCup field
+ */
+#define FIELD_LENGTH   3000
+#define FIELD_LENGTH_2 (FIELD_LENGTH/2)
+
+/* The "short-ways" i,e, side-to-side length of the standard
+ * RoboCup field
+ */
+#define FIELD_WIDTH   1500
+#define FIELD_WIDTH_2 (FIELD_WIDTH/2)
+
+
+
 /* Use this on unused parameters to disables "unused parameter" warnings.
    e.g, in Behavior constructors with the ParameterList params */
 #define UNUSED_PARAM(x) (void)(x)

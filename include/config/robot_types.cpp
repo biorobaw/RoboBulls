@@ -7,6 +7,7 @@
  * Change one to have that ID registered as a robot of that type.
  */
 
+#if 0
 const robotType robotIDTypes[] = {
  /*0*/	differential,
  /*1*/	differential,
@@ -19,21 +20,24 @@ const robotType robotIDTypes[] = {
  /*8*/	differential,
  /*9*/	differential
 };
+#endif
 
-//const robotType robotIDTypes[] = {
-// /*0*/	fourWheelOmni,
-// /*1*/	fourWheelOmni,
-// /*2*/	fourWheelOmni,
-// /*3*/	fourWheelOmni,
-// /*4*/	fourWheelOmni,
-// /*5*/	fourWheelOmni,
-// /*6*/	fourWheelOmni,
-// /*7*/	fourWheelOmni,
-// /*8*/	fourWheelOmni,
-// /*9*/	fourWheelOmni
-//};
+#if 1
+const robotType robotIDTypes[] = {
+ /*0*/	fourWheelOmni,
+ /*1*/	fourWheelOmni,
+ /*2*/	fourWheelOmni,
+ /*3*/	fourWheelOmni,
+ /*4*/	fourWheelOmni,
+ /*5*/	fourWheelOmni,
+ /*6*/	fourWheelOmni,
+ /*7*/	fourWheelOmni,
+ /*8*/	fourWheelOmni,
+ /*9*/	fourWheelOmni
+};
+#endif
 
-
+#if 0
 //const robotType robotIDTypes[] = {
 // /*0*/	threeWheelOmni,
 // /*1*/	threeWheelOmni,
@@ -46,3 +50,4 @@ const robotType robotIDTypes[] = {
 // /*8*/	threeWheelOmni,
 // /*9*/	threeWheelOmni,
 //};
+#endif
