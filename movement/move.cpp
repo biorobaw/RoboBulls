@@ -1,4 +1,5 @@
-#include "include/config/tolerances.h"
+#include "include/config/tolerances.h"    //ROT/DIST Tolerance
+#include "include/config/globals.h"        //OVERALL_VELOCITY
 #include "movement/move.h"
 
 namespace Movement
@@ -44,10 +45,6 @@ void Move::recreate(Point targetPoint, float targetAngle, bool withObstacleAvoid
         isInitialized = true;
     } 
     else if(!Measurments::isClose(m_targetAngle, targetAngle, recrAngleTolerance)) {
-        /* ROT_TOLERANCE defines the tolerance at which two angles are
-         * considered equal. So if the angles are "equal", let's not
-         * bother updating it.
-         */
         m_targetAngle = targetAngle;
     }
     else if(withObstacleAvoid != useObstacleAvoid) {
@@ -82,10 +79,10 @@ bool Move::perform(Robot *robot, Movement::Type moveType)
     
     if(!isInitialized) {
     #if MOVEMENT_MOVE_DEBUG
-		std::cout << "Warning: Move called without initialization" << std::endl;
-	#endif
-		return false;
-	}
+        std::cout << "Warning: Move called without initialization" << std::endl;
+    #endif
+        return false;
+    }
     
     /* This is a correction  factor; since all movement classes derive from
      * this class, the angle is corrected if the special flag is used. Likewise,
@@ -100,6 +97,8 @@ bool Move::perform(Robot *robot, Movement::Type moveType)
        !Measurments::isClose(m_targetAngle, robot->getOrientation(), lastAngTolerance))
     {
         if(useObstacleAvoid) {
+            if(hasFoundPathEnd) 
+                hasFoundPathEnd = false;
             finished = this->calcObstacleAvoidance(robot, moveType);
         } else {
             finished = this->calcRegularMovement(robot, moveType);
@@ -153,18 +152,18 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
             bool isNewObstacleInPath
                 = FPPA::isObstacleInLine(robotPoint, nextPoint, &obsPoint);
 
-			/* An interesting problem is that if the ending point for the
-			 * current line is right before an obstacle, then that obstacle 
-			 * will not be detected and it will be hit. So, if there are enough
-			 * points, this also checks the NEXT line
-			 */
+            /* An interesting problem is that if the ending point for the
+             * current line is right before an obstacle, then that obstacle 
+             * will not be detected and it will be hit. So, if there are enough
+             * points, this also checks the NEXT line
+             */
             if(!isNewObstacleInPath && pathQueue.size() > 2) 
             {
                 const Point& nextNextPoint = pathQueue[1];
                 isNewObstacleInPath 
-					= FPPA::isObstacleInLine(nextPoint, nextNextPoint, &obsPoint);
+                    = FPPA::isObstacleInLine(nextPoint, nextNextPoint, &obsPoint);
             }
-			
+            
             if(isNewObstacleInPath && !Measurments::isClose(obsPoint, lastObsPoint, 100)) 
             {
                 /* We have a possible obstacle..
@@ -180,7 +179,7 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
                     currentPathIsClear = false;
                 }
             }
-			
+            
             /*********************************************
              * Velocity Calculating (Important part)
              * ******************************************/
@@ -193,7 +192,7 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
                 if(pathQueue.empty()) {
                     hasFoundPathEnd = true;  //Finished path
                 } 
-				else if(pathQueue.size() == 1) {
+                else if(pathQueue.size() == 1) {
                     nextDistTolerance = lastDistTolerance;
                     nextTargetAngle   = m_targetAngle;
                 }
@@ -213,9 +212,7 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
          * Dropped into by default, if there is a desired
          * optional end orientation, that rotation is done here
          */
-        if(this->m_targetAngle == UNUSED_ANGLE_VALUE)
-            return true;
-        else if(Measurments::isClose(robot->getOrientation(), m_targetAngle, lastAngTolerance))
+        if(Measurments::isClose(robot->getOrientation(), m_targetAngle, lastAngTolerance))
             return true;
 
         this->calculateVels(robot, robot->getRobotPosition(), m_targetAngle, moveType);
@@ -230,7 +227,7 @@ void Move::assignNewPath(const Point& robotPoint)
     FPPA::PathInfo p = FPPA::findShortestPath(robotPoint, m_targetPoint, lastDirection);
     this->pathQueue.assign(p.first.begin(), p.first.end());
     this->lastDirection = p.second;
-    this->lastObstacles = FPPA::getCurrentObstacles();	//Copies
+    this->lastObstacles = FPPA::getCurrentObstacles();    //Copies
 }
 
 
@@ -238,24 +235,25 @@ void Move::setVels(Robot *robot)
 {
     /* This is the function that, after velocity is calculated above,
      * sets the velocities on the actual robot. This then funnels down
-     * to sendVelsLarge.
+     * to sendVelsLarge. Thus, OVERALL_VELOCITY allows the slowing down
+     * of the entire program since all movement comes through here.
      */
     switch(robot->type())
     {
     case differential:
-        robot->setL(left  * velMultiplier);
-        robot->setR(right * velMultiplier);
+        robot->setL(left  * velMultiplier * OVERALL_VELOCITY);
+        robot->setR(right * velMultiplier * OVERALL_VELOCITY);
         break;
     case threeWheelOmni:
-		robot->setL(left  * velMultiplier);
-		robot->setR(right * velMultiplier);
-        robot->setB(back  * velMultiplier);
+        robot->setL(left  * velMultiplier * OVERALL_VELOCITY);
+        robot->setR(right * velMultiplier * OVERALL_VELOCITY);
+        robot->setB(back  * velMultiplier * OVERALL_VELOCITY);
         break;
     case fourWheelOmni:
-		robot->setLF(lfront * velMultiplier);
-		robot->setRF(rfront * velMultiplier);
-		robot->setLB(lback  * velMultiplier);
-		robot->setRB(rback  * velMultiplier);
+        robot->setLF(lfront * velMultiplier * OVERALL_VELOCITY);
+        robot->setRF(rfront * velMultiplier * OVERALL_VELOCITY);
+        robot->setLB(lback  * velMultiplier * OVERALL_VELOCITY);
+        robot->setRB(rback  * velMultiplier * OVERALL_VELOCITY);
         break;
     }
 }

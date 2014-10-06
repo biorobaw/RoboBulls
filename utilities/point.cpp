@@ -61,6 +61,12 @@ Point Point::operator-(const Point& rhs)
     return ret;
 }
 
+Point Point::operator*(float rhs)
+{
+    Point ret(x * rhs, y * rhs);
+    return ret;
+}
+
 std::string Point::toString()
 {
     stringstream ss;

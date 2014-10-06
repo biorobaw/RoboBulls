@@ -52,7 +52,7 @@ namespace impl
             || Measurments::isClose(pt, endPos, ROBOT_SIZE))
                 continue;
 
-            obstacle_found = Measurments::lineDistance(pt, beginPos, endPos) < ROBOT_SIZE &&
+            obstacle_found = Measurments::lineDistance(pt, beginPos, endPos) < ROBOT_SIZE*1.5 &&
                 insideRadiusRectangle(pt, beginPos, endPos);
 
             if(obstacle_found) {
@@ -254,10 +254,10 @@ namespace impl
                      it != botPath.first.end()-1; ++it)
                 totalDistBottom += Measurments::distance(*it, *(it+1));
 
-            if(totalDistTop <= totalDistBottom) {
-                return botPath;
-            } else {
+            if(totalDistTop < totalDistBottom) {
                 return topPath;
+            } else {
+                return botPath;
             }
         }
     }
@@ -268,8 +268,10 @@ namespace impl
         auto obstacle_info = impl::isObstacleinLine(start, end);
 
         if(obstacle_info.first) {
-            if(obsPosOut != nullptr) *obsPosOut = obstacle_info.second;
-            return Measurments::isClose(start, obstacle_info.second, 2500);
+            if(obsPosOut != nullptr)
+                *obsPosOut = obstacle_info.second;
+            return true;
+            //return Measurments::isClose(start, obstacle_info.second, 2500);
         } else {
             return false;
         }
