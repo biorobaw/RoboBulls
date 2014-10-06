@@ -6,30 +6,49 @@
 /// Modified by Robobulls
 ///----------------------------------------------------------------------------
 
-
-
 #pragma platform(NXT)
+
+#if 0
+int readId()
+{
+	TFileHandle   hFileHandle;          // will keep track of our file
+	TFileIOResult nIOResult;            // will store our IO results
+	string        sFileName = "id.txt"; // the name of our file
+	int           nFileSize = 100;      // will store our file size
+	char          incommingChar;        // this will store each char as we read back in from the file
+	int           nLineCounter = 0;     // this will let us know which line we are on when reading and writing (used as the index to 'incommingString[]')
+
+	if(!OpenRead(hFileHandle, nIOResult, sFileName, nFileSize)){
+		OpenWrite(hFileHandle, nIOResult, sFileName, nFileSize);
+		WriteByte(hFileHandle, nIOResult, 1);         // write 'sMessageToWrite' to the file
+		Close(hFileHandle, nIOResult);
+		OpenRead(hFileHandle, nIOResult, sFileName, nFileSize);
+	}
+
+	ReadByte(hFileHandle, nIOResult, incommingChar);
+
+	return (int) (ubyte) incommingChar;
+}
+#endif
 
 int readId(){
 	TFileHandle   hFileHandle;              // will keep track of our file
-  TFileIOResult nIOResult;                // will store our IO results
-  string        sFileName = "id.txt";   // the name of our file
-  int           nFileSize = 100;          // will store our file size
+	TFileIOResult nIOResult;                // will store our IO results
+	char*         sFileName = "id.txt";   // the name of our file
+	short         nFileSize = 500;          // will store our file size
+	char          incommingChar;                          // this will store each char as we read back in from the file
+	int           nLineCounter = 0;                       // this will let us know which line we are on when reading and writing (used as the index to 'incommingString[]')
 
-
-  char          incommingChar;                          // this will store each char as we read back in from the file
-  int           nLineCounter = 0;                       // this will let us know which line we are on when reading and writing (used as the index to 'incommingString[]')
-
-  if(!OpenRead(hFileHandle, nIOResult, sFileName, nFileSize)){
-  	OpenWrite(hFileHandle, nIOResult, sFileName, nFileSize);
-  	WriteByte(hFileHandle, nIOResult, 1);         // write 'sMessageToWrite' to the file
-  	Close(hFileHandle, nIOResult);
-  	OpenRead(hFileHandle, nIOResult, sFileName, nFileSize);
+	if(!OpenRead(hFileHandle, nIOResult, sFileName, nFileSize)) {
+		OpenWrite(hFileHandle, nIOResult, sFileName, nFileSize);
+		WriteByte(hFileHandle, nIOResult, 1);         // write 'sMessageToWrite' to the file
+		Close(hFileHandle, nIOResult);
+		OpenRead(hFileHandle, nIOResult, sFileName, nFileSize);
 	}
 
-  ReadByte(hFileHandle, nIOResult, incommingChar);
+	ReadByte(hFileHandle, nIOResult, incommingChar);
 
-  return (int) (ubyte) incommingChar;
+	return (int) (ubyte) incommingChar;
 }
 
 /////////////////////////////////////////////////////
@@ -65,46 +84,9 @@ void kickerToKnownPos(){
 	motor[motorA] = 0;
 }
 
-////////////////////////////////////////////////////////////////////////
-// Steer the motors and kick
-////////////////////////////////////////////////////////////////////////
-void steerMotors(int steerL, int steerR, int kick)
+void setup()
 {
-	motor[motorB] = steerR;
-	motor[motorC] = steerL;
-
-
-	////Kicking////
-	if(kick == 1){
-		nMotorEncoderTarget[motorA] = -100;
-		motor[motorA] = -100;
-		while(nMotorRunState[motorA] != runStateIdle){
-		}
-		nMotorEncoderTarget[motorA] = 100;
-		motor[motorA] = 50;
-		while(nMotorRunState[motorA] != runStateIdle){
-		}
-
-		kickerToKnownPos();
-	}
-}
-
-////////////////////////////////////////////////////////////////////////
-// Display the velocities in the LCD screen
-////////////////////////////////////////////////////////////////////////
-void displayVels(int steerL, int steerR, int kick){
-	nxtDisplayCenteredTextLine(2, "Reading Bytes");
-	nxtDisplayCenteredTextLine(4, "SteerL......%i",steerL,);
-	nxtDisplayCenteredTextLine(5, "SteerR......%i",steerR,);
-	nxtDisplayCenteredTextLine(6, "Kick........%i",kick,);
-}
-
-
-////////////////////////////////////////////////////////////////////////
-//                         Main Task
-////////////////////////////////////////////////////////////////////////
-task main()
-{
+	setupHighSpeedLink();
 
 	eraseDisplay();
 	bNxtLCDStatusDisplay = true; // Enable top status line display
@@ -119,65 +101,128 @@ task main()
 
 	// Get Kicker to known position
 	kickerToKnownPos();
+}
 
-	//wait1Msec(50);
+////////////////////////////////////////////////////////////////////////
+// Steer the motors and kick
+////////////////////////////////////////////////////////////////////////
+void steerMotors(int steerL, int steerR, int kick)
+{
+	motor[motorB] = steerR;
+	motor[motorC] = steerL;
 
-	//steerMotors(0, 0, 1);
-
-	// State variable
-	//  - w: waiting for message
-	//  - i: waitinf for id
-	//  - l: waiting for left vel
-	//  - r: waiting for right vel
-	//  - k: waiting for kicker vel
-	char state = 'w';
-	byte byteRead[1];
-	int steerL = 0;    // Global variables for steering.
-	int steerR = 0;
-	int kick = 0;
-	int prevSteerL = 0;    // Global variables for steering.
-	int prevSteerR = 0;
-	int prevKick = 0;
-	int id;
-	int myId = readId();
-	nxtDisplayCenteredTextLine(2, "ID: %d", myId);
-	while (nNxtButtonPressed != kExitButton){
-		// Array we'll be reading into.
-		while (nxtGetAvailHSBytes() < 1) EndTimeSlice();
-
-		if (nxtReadRawHS(&byteRead[0], 1)){             // Read the array.
-			switch (state){
-			case 'w':
-				if(byteRead[0] == '~')
-					state = 'i';
-				break;
-			case 'i':
-				id = (int)(sbyte)byteRead[0];
-				nxtDisplayCenteredTextLine(1, "Read ID..%i", id);
-				state = 'l';
-				break;
-			case 'l':
-				steerL = (int)(sbyte)byteRead[0];
-				state = 'r';
-				break;
-			case 'r':
-				steerR = (int)(sbyte)byteRead[0];
-				state = 'k';
-				break;
-			case 'k':
-				kick = (int)(sbyte)byteRead[0];
-				if (id == myId){
-					if ( steerL != prevSteerL || steerR != prevSteerR || kick != prevKick)
-						steerMotors(steerL, steerR, kick);
-					prevSteerL = steerL;
-					prevSteerR = steerR;
-					prevKick = kick;
-					displayVels(steerL, steerR, kick);
-				}
-				state = 'w';
-				break;
-			}
+	////Kicking////
+	if(kick == 1){
+		nMotorEncoderTarget[motorA] = -100;
+		motor[motorA] = -100;
+		while(nMotorRunState[motorA] != runStateIdle){
 		}
-		wait1Msec(1);
+		nMotorEncoderTarget[motorA] = 100;
+		motor[motorA] = 50;
+		while(nMotorRunState[motorA] != runStateIdle){
+		}
+		kickerToKnownPos();
+	}
+}
+
+////////////////////////////////////////////////////////////////////////
+// Display the velocities in the LCD screen
+////////////////////////////////////////////////////////////////////////
+void displayVels(int steerL, int steerR, int kick){
+	nxtDisplayCenteredTextLine(4, "SteerL......%i",steerL,);
+	nxtDisplayCenteredTextLine(5, "SteerR......%i",steerR,);
+	nxtDisplayCenteredTextLine(6, "Kick........%i",kick,);
+}
+
+
+////////////////////////////////////////////////////////////////////////
+//                         Main Task
+////////////////////////////////////////////////////////////////////////
+void readBlock(byte* block, int n)
+{
+	for (int x = 0; x < n; x++)
+	{
+		nxtReadRawHS(&block[x], 1);
+	}
+}
+
+
+struct dataPacket {
+	byte id;   					//Robot ID
+	byte left_front;    //LF wheel velocity
+	byte left_back;     //LB wheel velocity
+	byte right_front;   //RF wheel velocity
+	byte right_back;    //RB wheel velocity
+	byte kick;          //Kick? 1/0
+	byte chip_power;    //Chip kick power
+	byte dribble_power; //Dribbler power
+};
+/* We recieve 5 of these^ in a single packet for the whole team. */
+
+
+task main()
+{
+	// High Speed Link
+	setup();
+
+	// Display ID
+	int myId = readId();
+	nxtDisplayCenteredTextLine(1, "ID: %d", myId);
+
+
+	byte current_block[10];
+	dataPacket robot_info;
+
+	// State machine
+	// t = check for tilde
+	// b = read bytes
+	// d = check for dollar
+	char state = 't';
+
+	while (nNxtButtonPressed != kExitButton)
+	{
+		//Wait for packets
+		while (nxtGetAvailHSBytes() < 1)
+			EndTimeSlice();
+
+		// If packets are detected
+		switch (state)
+		{
+		case 't':
+			nxtReadRawHS(&current_block[0], 2)
+			if(current_block[0] == '~' && current_block[1] == myId)
+				state = 'b';
+			break;
+
+		case 'b':
+			readBlock(&current_block[2],8);
+			state = 'd';
+			break;
+
+		case 'd':
+			if(current_block[9] == '$')
+			{
+				//nxtDisplayCenteredTextLine(1, "%c",current_block[0],);
+				//nxtDisplayCenteredTextLine(2, "%d", current_block[1],);
+				//nxtDisplayCenteredTextLine(3, "%d", current_block[2],);
+				//nxtDisplayCenteredTextLine(4, "%d", current_block[3],);
+				//nxtDisplayCenteredTextLine(5, "%d", current_block[4],);
+				//wait1Msec(2000);
+				steerMotors(current_block[2], current_block[4], current_block[6]);
+				displayVels(current_block[2], current_block[4], current_block[6]);
+			}
+			else
+			{
+				nxtDisplayCenteredTextLine(3,"Block Incomplete");
+				//nxtDisplayCenteredTextLine(1, "%c",current_block[0],);
+				//nxtDisplayCenteredTextLine(2, "%d", current_block[1],);
+				//nxtDisplayCenteredTextLine(3, "%d", current_block[2],);
+				//nxtDisplayCenteredTextLine(4, "%d", current_block[3],);
+				//nxtDisplayCenteredTextLine(5, "%d", current_block[4],);
+				//wait1Msec(2000);
+			}
+			state = 't';
+		}
+
 	}
 }// end task
