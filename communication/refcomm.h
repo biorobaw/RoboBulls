@@ -80,11 +80,6 @@ private:
         unsigned char goals_yellow;
         unsigned short time_left;
     } lastPacket;
-    
-    /* Used for comparison against a newly received packet to determine
-     * if the new command was received last time, or is a new command
-     */
-    unsigned char last_count;
 };
 
 #endif // REFCOMM_H

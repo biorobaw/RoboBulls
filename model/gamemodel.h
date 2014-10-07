@@ -59,6 +59,7 @@ public:
     bool    isNewCommand();
 
     void setStrategyController(StrategyController * sc);
+    void onCommandProcessed();
     std::string toString();
     
 private:
@@ -96,7 +97,6 @@ private:
     Robot* robotWithBall = NULL;
     Point ballPoint      = Point(0,0);
     char  gameState      = '\0';
-    bool  hasChanged     = false;
     bool  hasNewCommand  = false;
     unsigned char  blueGoals     = 0;
     unsigned char  yellowGoals   = 0;
