@@ -10,14 +10,14 @@
 
 using namespace std;
 
-class DriveBallAndKick : public Behavior/*, public GenericMovementBehavior*/
+class DriveBallAndKick : public Behavior
 {
 public:
     DriveBallAndKick(const ParameterList& list);
     void perform(Robot *);
 
 private:
-    enum states {initial, driving, kicking, idling, finalOrientationFixing} state;
+    enum states {initial, driving, kicking, idling} state;
     Skill::Skill * skill;
     Point *behindBall;
     Point *ballPoint;
