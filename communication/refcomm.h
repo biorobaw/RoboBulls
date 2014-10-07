@@ -13,36 +13,36 @@ using namespace std;
  * Narges Ghaedi
  *
  * Referee Box Command Quick Reference:
- * Command type 	 	     Command
+ * Command type               Command
  * ==========================================================
  * <<Control commands>>
- * 	Halt 	                    H
- * 	Stop 	                    S
- * 	Ready 	                    ' ' (space)
- * 	Start 	                    s
+ *     Halt                         H
+ *     Stop                         S
+ *     Ready                        ' ' (space)
+ *     Start                        s
  * <<Game Notifications>>
- * 	Begin first half 	        1
- * 	Begin half time 	        h
- * 	Begin second half 	        2
- * 	Begin overtime half 1 	    o
- * 	Begin overtime half 2 	    O
- * 	Begin penalty shootout 	    a
+ *     Begin first half             1
+ *     Begin half time              h
+ *     Begin second half            2
+ *     Begin overtime half 1        o
+ *     Begin overtime half 2        O
+ *     Begin penalty shootout       a
  *
- * Command type  	Yellow Team Command 	Blue Team Command
+ * Command type      Yellow Team Command     Blue Team Command
  * ==========================================================
  * <<Game restarts>>
- * 	Kick off 	                k                   K
- * 	Penalty 	                p 	                P
- * 	Direct Free kick 	        f 	                F
- * 	Indirect Free kick 	        i 	                I
+ *     Kick off                    k                     K
+ *     Penalty                     p                     P
+ *     Direct Free kick            f                     F
+ *     Indirect Free kick          i                     I
  * <<Extras>>
- * 	Timeout 	                t 	                T
- * 	Timeout end 	            z 	                z
- * 	Goal scored 	            g 	                G
- * 	decrease Goal score 	    d 	                D
- * 	Yellow Card 	            y 	                Y
- * 	Red Card 	                r 	                R
- * 	Cancel 	                    c
+ *     Timeout                     t                     T
+ *     Timeout end                 z                     z
+ *     Goal scored                 g                     G
+ *     decrease Goal score         d                     D
+ *     Yellow Card                 y                     Y
+ *     Red Card                    r                     R
+ *     Cancel                      c
  */
 
 class RefComm : public QThread

@@ -92,15 +92,15 @@ namespace impl
          * the jagged edges in the path, but risks cutting corners
          * too close around obstacles.
          */
-        float dx = 1.75 * ROBOT_RADIUS * cos(theta + M_PI_2);
-        float dy = 1.75 * ROBOT_RADIUS * sin(theta + M_PI_2);
+        float dx = 2.25 * ROBOT_RADIUS * cos(theta + M_PI_2);
+        float dy = 2.25 * ROBOT_RADIUS * sin(theta + M_PI_2);
 
         return Point(sign * dx, sign * dy);
     }
 
     /*********************************************************/
 
-    void buildPathimpl(Path* results, const Point& beginPos, const Point& endPos, 
+    void buildPathimpl(Path* results, const Point& beginPos, const Point& endPos,
                         int sign, int depth)
     {
         if(depth >= MAX_RECURSION_DEPTH)
@@ -216,9 +216,9 @@ namespace impl
         std::cout << "Finding Path" << std::endl;
     #endif
 
-        PathInfo topPath 
+        PathInfo topPath
             = std::make_pair(foundPaths.first, PathDirection::Top);
-        PathInfo botPath 
+        PathInfo botPath
             = std::make_pair(foundPaths.second, PathDirection::Bottom);
 
         /* If one of the paths is invalid (contains points outside the field),
@@ -241,12 +241,12 @@ namespace impl
             else
                return botPath;
          } else {
-            /* Add up all the distances from each path and determine which 
+            /* Add up all the distances from each path and determine which
              * path is shorter. This shorter path is deemed the "better" path.
              */
             float totalDistTop = 0, totalDistBottom = 0;
 
-            for(auto it = topPath.first.begin(); 
+            for(auto it = topPath.first.begin();
                      it != topPath.first.end()-1; ++it)
                 totalDistTop += Measurments::distance(*it, *(it+1));
 
@@ -287,8 +287,8 @@ namespace impl
     {
         return impl::currentFrameObstacles;
     }
-    
-    
+
+
     //std::vector<Point> getObstaclesForRobot(int id)
     //{
     //    UNUSED_PARAM(id);

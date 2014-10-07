@@ -23,7 +23,7 @@ public:
     void setID(int);
     void setR(float);
     void setL(float);
-	void setB(float);
+    void setB(float);
     void setLF(float left_forward);
     void setRF(float right_forward);
     void setLB(float left_backward);
@@ -31,7 +31,7 @@ public:
     void setKick(bool);
     void setDrible(bool);
     void setCurrentBeh(Behavior *);
-    
+
 
     //gets
     Point getRobotPosition();
@@ -39,7 +39,7 @@ public:
     int   getID();
     int   getR();
     int   getL();
-	int	  getB();
+    int   getB();
     int   getLF();
     int   getRF();
     int   getLB();
@@ -47,9 +47,9 @@ public:
     int   getKick();
     bool  getDrible();
     Behavior* getCurrentBeh();
-	robotType type();
-	
-	void clearCurrentBeh();
+    robotType type();
+
+    void clearCurrentBeh();
     std::string toString();
 
     bool hasBall;

@@ -37,12 +37,12 @@ void PenaltyBehavior::perform(Robot * myRobot)
     switch(pb)
     {
     case initial:
-        cout << "initial" << endl;
+//        cout << "initial" << endl;
         pb = moving;
         target = behindBall;
         break;
     case moving:
-        cout << "moving" << endl;
+//        cout << "moving" << endl;
         move.recreate(behindBall, ballTargetAngle, true);
         move.perform(myRobot, Movement::Type::Default);
         if (Measurments::isClose(robotPos,behindBall,CLOSE_ENOUGH) &&
@@ -57,7 +57,7 @@ void PenaltyBehavior::perform(Robot * myRobot)
         }
         break;
     case approching:
-        cout << "approaching" << endl;
+//        cout << "approaching" << endl;
         move.recreate(ballPos, ballTargetAngle, true);
         move.perform(myRobot, Movement::Type::Default);
         if (Measurments::isClose(robotPos,ballPos,CLOSE_ENOUGH) &&
@@ -72,7 +72,7 @@ void PenaltyBehavior::perform(Robot * myRobot)
         break;
 
     case kicking:
-        cout << "kicking" << endl;
+//        cout << "kicking" << endl;
         {
             Skill::Kick kick;
             kick.perform(myRobot);
@@ -83,7 +83,7 @@ void PenaltyBehavior::perform(Robot * myRobot)
         }
         break;
     case idling:
-        cout << "idling" << endl;
+//        cout << "idling" << endl;
         {
             Skill::Stop stop;
             stop.perform(myRobot);

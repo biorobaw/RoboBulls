@@ -49,12 +49,12 @@ void PenaltyStrategy::assignBeh()
 
     penAssignment.assignBeh(closestRobot);  // assigns penalty behavior to closest robot to the penalty point
 
-    if (gamemodel->getMyTeam().size() > 1)  // assigns simple behavior to the rest of robots
+    if (myTeam.size() > 1)  // assigns simple behavior to the rest of robots
     {
-        for (int i = 0; i < gamemodel->getMyTeam().size(); i++)
+        for (int i = 0; i < myTeam.size(); i++)
         {
-            if (gamemodel->getMyTeam().at(i)->getID() != closestRobotID)
-                simpleAssignment.assignBeh(gamemodel->getMyTeam().at(i));
+            if (myTeam.at(i)->getID() != closestRobotID)
+                simpleAssignment.assignBeh(myTeam.at(i));
         }
     }
 }

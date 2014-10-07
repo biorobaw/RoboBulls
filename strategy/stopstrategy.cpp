@@ -29,21 +29,6 @@ void StopStrategy::assignBeh()
     GameModel* model = GameModel::getModel();
     Point ballPoint  = model->getBallPoint();
 
-    /* Update prevBallPoint and the target point map
-     * if the ball has moved
-     */
-    if(!Measurments::isClose(ballPoint, prevBallPoint, 50.0))
-    {
-    #if STOPSTRAT_DEBUG
-        std::cout << "Ball Change; " << prevBallPoint.toString()
-                  << " New: " << ballPoint.toString() << std::endl;
-    #endif
-
-        this->rebuildTargetPoints();
-        prevBallPoint = ballPoint;
-    }
-
-
     BehaviorAssignment<StopBehavior> stopAssign(true);
 
     for(Robot* rob : model->getMyTeam())
@@ -61,6 +46,28 @@ void StopStrategy::assignBeh()
         stopAssign.setBehParam("targetAngle", targetAngle);
         stopAssign.assignBeh(rob);\
     }
+}
+
+
+bool StopStrategy::update()
+{
+    GameModel* model = GameModel::getModel();
+    Point ballPoint  = model->getBallPoint();
+
+    /* Update prevBallPoint and the target point map
+     * if the ball has moved
+     */
+    if(!Measurments::isClose(ballPoint, prevBallPoint, 50.0))
+    {
+    #if STOPSTRAT_DEBUG
+        std::cout << "Ball Change; " << prevBallPoint.toString()
+                  << " New: " << ballPoint.toString() << std::endl;
+    #endif
+        this->rebuildTargetPoints();
+        prevBallPoint = ballPoint;
+    }
+
+    return false;
 }
 
 

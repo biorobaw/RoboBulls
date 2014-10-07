@@ -25,7 +25,7 @@ void SimRobComm::sendVelsLarge(std::vector<Robot *>& robots)
         sendPacket(rob->getID(),rob->getLF(),rob->getRF(),rob->getLB(),rob->getRB(),
                    kick,dribble);
         rob->setKick(0);
-		rob->setDrible(0);
+        rob->setDrible(0);
     }
 }
 

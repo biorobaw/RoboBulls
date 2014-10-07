@@ -13,6 +13,7 @@
 #include "skill/kicktopoint.h"
 #include "behavior/genericmovementbehavior.h"
 #include "movement/movetype.h"
+#include "model/gamemodel.h"
 
 
 class TestBehavior : public Behavior
@@ -92,6 +93,7 @@ TestStrategy::TestStrategy()
 
 void TestStrategy::assignBeh()
 {
+    GameModel *gm = GameModel::getModel();
 //***************************************************************************************************
     //Shamsi Code
 //    BehaviorAssignment<ShamsiStrafeBehavior> assignment(true);
@@ -168,7 +170,7 @@ void TestStrategy::assignBeh()
 //    Narges testing myTestBehavior
     BehaviorAssignment<myTestBehavior> assignment;
     assignment.setSingleAssignment(true);
-    assignment.assignBeh();
+    assignment.assignBeh(gm->getMyTeam().at(0));
 
     //testing test behavior
 //        BehaviorAssignment<AttackMain> assignment;
