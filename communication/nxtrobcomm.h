@@ -29,6 +29,7 @@ private:
     void send(unsigned);
     void send(char*, int size);
     serialib Xbee;
+    bool sent = 0;
 };
 
 #endif // NXTROBCOMM_H

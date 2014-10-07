@@ -31,7 +31,7 @@ void StrategyController::gameModelUpdated()
 	
 	FPPA::pathfindingBegin();
 
-    cout << model->getGameState() << endl;
+    //cout << model->getGameState() << endl;
 
     if (model->getGameState() == 'S')   //stop game
     {
@@ -71,7 +71,8 @@ void StrategyController::gameModelUpdated()
 //    }
     else
     {
-        activeStrategy = new TestStrategy();
+//        activeStrategy = new TestStrategy();
+        activeStrategy = new TwoVOne();
     }
 
     activeStrategy->assignBeh();
@@ -86,8 +87,11 @@ void StrategyController::gameModelUpdated()
     }
 
     RobComm * robcom = RobComm::getRobComm();
-    robcom->sendVelsLarge(model->getMyTeam());
-	
+//    if(!sent) {
+//        sent = true;
+//        std::cout << "Send one" << std::endl;
+        robcom->sendVelsLarge(model->getMyTeam());
+//    }
 	FPPA::pathfindingEnd();
 	
 	delete activeStrategy;

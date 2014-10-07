@@ -31,8 +31,8 @@ void KickToGoal::perform(Robot * r)
     // Create a different skill depending on the state
     switch (state) {
     case goingBehind:
-        setMovementTargets(behindBall, ballToGoal);
-		GenericMovementBehavior::perform(r, Movement::Type::SharpTurns);
+        setMovementTargets(behindBall, ballToGoal, false);
+        GenericMovementBehavior::perform(r, Movement::Type::Default);
         break;
     case approaching:
         setMovementTargets(ball, ballToGoal, false);

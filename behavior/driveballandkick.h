@@ -5,10 +5,12 @@
 #include "skill/skill.h"
 #include "utilities/paramlist.h"
 #include "utilities/point.h"
+#include "behavior/genericmovementbehavior.h"
+#include "movement/gotopositionwithorientation.h"
 
 using namespace std;
 
-class DriveBallAndKick : public Behavior
+class DriveBallAndKick : public Behavior/*, public GenericMovementBehavior*/
 {
 public:
     DriveBallAndKick(const ParameterList& list);
@@ -19,6 +21,7 @@ private:
     Skill::Skill * skill;
     Point *behindBall;
     Point *ballPoint;
+    Movement::GoToPosition move;
 };
 
 #endif // DRIVEBALLANDKICK_H

@@ -22,7 +22,6 @@ private:
 
 public:
     PositionForKickoff(const ParameterList &list);
-   ~PositionForKickoff();
     void perform(Robot *);
 };
 

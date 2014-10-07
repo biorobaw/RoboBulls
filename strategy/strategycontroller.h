@@ -15,6 +15,7 @@ public:
 private:
     Strategy *activeStrategy;
     GameModel * model;
+    bool sent = false;
 };
 
 #endif // STRATEGYCONTROLLER_H

@@ -11,9 +11,9 @@
     #define VEL_MULT 0.6
     #define TURN_ANG ANGLE*4
 #else
-    #define CLOSE_ENOUGH 275
-    #define ANGLE 10*M_PI/180
-    #define DIST 480
+    #define CLOSE_ENOUGH 280
+    #define ANGLE 5*M_PI/180
+    #define DIST 350
     #define VEL_MULT 0.4
     #define TURN_ANG ANGLE*15
 #endif
@@ -41,6 +41,7 @@ bool DriveBall::perform(Robot* robot)
     switch (state)
     {
     case moveBehindBall:
+        cout << "moving behind ball" << endl;
         move_skill.setVelocityMultiplier(1.0);
         move_skill.recreate(behindBall, ballTargetAngle, false);
         if(move_skill.perform(robot)) {
@@ -49,6 +50,7 @@ bool DriveBall::perform(Robot* robot)
         break;
 
     case driveBall:
+        cout << "drive ball" << endl;
         bool farFromBall   = !Measurments::isClose(robPoint, ballPoint, DIST*1.25);
         bool notFacingBall =  Measurments::lineDistance(ballPoint, robPoint, targetPosition)
                 > ROBOT_RADIUS*1.75;
