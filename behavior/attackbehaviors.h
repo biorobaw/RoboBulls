@@ -86,11 +86,11 @@ public:
 private:
     static int numAttackBlockers;
     static int nextSide;
+    Robot* theDriverRobot;
     int myBlockerNum;
     int mySide;
     int isWaitingCount;
-    Robot* theDriverRobot;
-    float  curDistance;
+    float curDistance;
 };
 
 
