@@ -1,9 +1,11 @@
 ﻿#ifndef GLOBALS_H
 #define GLOBALS_H
 
-// Overall velocity for all behaviors
-//  10 somewhat fast in the robots
-#define OVERALL_VELOCITY 5
+/* Overall velocity for all behaviors
+ * Change this constant to slow down or speed up
+ * the whole game.
+ */
+#define OVERALL_VELOCITY 1
 
 /* Defining PI if it is missing */
 #ifndef M_PI

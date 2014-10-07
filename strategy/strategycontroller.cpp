@@ -71,7 +71,7 @@ void StrategyController::gameModelUpdated()
         activeStrategy = new FreeKickStrategy();
         break;
     default:    //Anything Else
-        activeStrategy = new AttackStrategy();
+        activeStrategy = new TestStrategy();
     };
 #endif
 
