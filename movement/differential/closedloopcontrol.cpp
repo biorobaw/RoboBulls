@@ -14,9 +14,9 @@
  * because it's only used in one file.
  */
 #if SIMULATED
- #define CLC_ROTATONG_VEL 10
+ #define CLC_ROTATONG_VEL 50
 #else
- #define CLC_ROTATONG_VEL 1
+ #define CLC_ROTATONG_VEL 5
 #endif
 
 ClosedLoopBase::ClosedLoopBase()
@@ -124,11 +124,8 @@ wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, double x_goal,
     //*******************************************************************************************
     /* Calculate and set left and right motor velocity. This is dependant on rho being > 100 or not. */
 
-    double robot_xvel = OVERALL_VELOCITY * 5 *
-		(krho*newRho + kRhoI*newSumErrRho);
-
-    double robot_turnrate = OVERALL_VELOCITY * 5 *
-        (kalpha*newAlpha + kbeta*newBeta + kAlphaI*newSumErrAlpha + kBetaI*newSumErrBeta);
+    double robot_xvel = 25 * (krho*newRho + kRhoI*newSumErrRho);
+    double robot_turnrate = 25 * (kalpha*newAlpha + kbeta*newBeta + kAlphaI*newSumErrAlpha + kBetaI*newSumErrBeta);
 #if SIMULATED
     int dist_tol=40;
 #else
@@ -143,8 +140,8 @@ wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, double x_goal,
     else
     {
         float angDiff = Measurments::angleDiff(theta_current, theta_goal);
-        left_motor_velocity  = OVERALL_VELOCITY * CLC_ROTATONG_VEL*-angDiff;
-        right_motor_velocity = OVERALL_VELOCITY * CLC_ROTATONG_VEL*angDiff;
+        left_motor_velocity  = CLC_ROTATONG_VEL * -angDiff;
+        right_motor_velocity = CLC_ROTATONG_VEL * angDiff;
     }
 
 

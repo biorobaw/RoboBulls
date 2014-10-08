@@ -254,10 +254,10 @@ namespace impl
                      it != botPath.first.end()-1; ++it)
                 totalDistBottom += Measurments::distance(*it, *(it+1));
 
-            if(totalDistTop <= totalDistBottom) {
-                return botPath;
-            } else {
+            if(totalDistTop < totalDistBottom) {
                 return topPath;
+            } else {
+                return botPath;
             }
         }
     }
