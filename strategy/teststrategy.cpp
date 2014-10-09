@@ -11,6 +11,7 @@
 #include "skill/kicktopoint.h"
 #include "behavior/genericmovementbehavior.h"
 #include "movement/movetype.h"
+#include <fstream>
 
 
 class TestBehavior : public Behavior
@@ -99,6 +100,26 @@ public:
     }
 };
 
+class ShamsiCalibrate : public GenericMovementBehavior
+{
+public:
+    ShamsiCalibrate(const ParameterList& list)
+    {
+        UNUSED_PARAM(list);
+        //ofstream myfile;
+    }
+
+    void perform(Robot *robot) override
+    {
+        setMovementTargets(Point(-2000,0),0,false);
+        GenericMovementBehavior::perform(robot);
+//        ofstream myfile;
+//        myfile.open ("/home/muhaimen/Desktop/MotionData 01.txt");
+//        myfile << robot->getRobotPosition().x << " " << robot->getRobotPosition().y;
+//        myfile.close();
+    }
+};
+
 TestStrategy::TestStrategy()
 {
 }
@@ -107,7 +128,7 @@ void TestStrategy::assignBeh()
 {
 //***************************************************************************************************
     //Shamsi Code
-    BehaviorAssignment<ShamsiGoToPose> assignment(true);
+    BehaviorAssignment<ShamsiStrafeBehavior> assignment(true);
     assignment.assignBeh();
 
     //Martin code

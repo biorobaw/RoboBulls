@@ -43,7 +43,7 @@ threeWheelVels ThreeWheelCalculator::defaultCalc
         theta_vel=-theta_vel;
 
     // Reduce speed near target
-    if (distance_to_goal < 300)
+    if (distance_to_goal < 400)
     {
         x_vel *= 0.5;
         y_vel *= 0.5;
@@ -57,10 +57,13 @@ threeWheelVels ThreeWheelCalculator::defaultCalc
     double x_vel_robot =  cos(theta_current)*x_vel + sin(theta_current)*y_vel;
     double y_vel_robot =  sin(theta_current)*x_vel - cos(theta_current)*y_vel;
 
+    // Physical Bias
+    std::vector<double> bias = calcBias(x_vel_robot,y_vel_robot);
+
     //Wheel Velocity Calculations
-    double R = -round(-sin(M_PI/6)   * y_vel_robot + cos(M_PI/6)   *x_vel_robot + wheel_radius*theta_vel);
-    double L = -round(-sin(5*M_PI/6) * y_vel_robot + cos(5*M_PI/6) *x_vel_robot + wheel_radius*theta_vel);
-    double B = -round(-sin(9*M_PI/6) * y_vel_robot + cos(9*M_PI/6) *x_vel_robot + wheel_radius*theta_vel);
+    double R = -round(-sin(M_PI/6)   * y_vel_robot + cos(M_PI/6)   *x_vel_robot + wheel_radius*theta_vel)*bias[0];
+    double L = -round(-sin(5*M_PI/6) * y_vel_robot + cos(5*M_PI/6) *x_vel_robot + wheel_radius*theta_vel)*bias[1];
+    double B = -round(-sin(9*M_PI/6) * y_vel_robot + cos(9*M_PI/6) *x_vel_robot + wheel_radius*theta_vel)*bias[2];
 
     //Normalize wheel velocities
     if (abs(R)>max_mtr_spd)
@@ -134,10 +137,13 @@ threeWheelVels ThreeWheelCalculator::facePointCalc
     double x_vel_robot = cos(theta_current)*x_vel + sin(theta_current)*y_vel;
     double y_vel_robot = sin(theta_current)*x_vel - cos(theta_current)*y_vel;
 
+    // Physical Bias
+    std::vector<double> bias = calcBias(x_vel_robot,y_vel_robot);
+
     //Wheel Velocity Calculations
-    double R = -round(-sin(M_PI/6)   * y_vel_robot + cos(M_PI/6)   *x_vel_robot + wheel_radius*theta_vel);
-    double L = -round(-sin(5*M_PI/6) * y_vel_robot + cos(5*M_PI/6) *x_vel_robot + wheel_radius*theta_vel);
-    double B = -round(-sin(9*M_PI/6) * y_vel_robot + cos(9*M_PI/6) *x_vel_robot + wheel_radius*theta_vel);
+    double R = -round(-sin(M_PI/6)   * y_vel_robot + cos(M_PI/6)   *x_vel_robot + wheel_radius*theta_vel)*bias[0];
+    double L = -round(-sin(5*M_PI/6) * y_vel_robot + cos(5*M_PI/6) *x_vel_robot + wheel_radius*theta_vel)*bias[1];
+    double B = -round(-sin(9*M_PI/6) * y_vel_robot + cos(9*M_PI/6) *x_vel_robot + wheel_radius*theta_vel)*bias[2];
 
     //Normalize wheel velocities
     if (abs(R)>max_mtr_spd)
@@ -165,5 +171,48 @@ threeWheelVels ThreeWheelCalculator::facePointCalc
     vels.R = R;
     vels.B = B;
     return vels;
+}
+
+std::vector<double> ThreeWheelCalculator::calcBias(double x, double y)
+{
+    std::vector<double> bias_result;
+    bias_result.push_back(1);
+    bias_result.push_back(2);
+    bias_result.push_back(3);
+
+    if (abs(x)>90)
+    {
+        bias_result[0] = 1;
+        bias_result[1] = 0.90;
+        bias_result[2] = 1;
+    }
+    else if (abs(x)>80)
+    {
+        bias_result[0] = 1;
+        bias_result[1] = 0.97;
+        bias_result[2] = 1;
+    }
+
+    if (abs(y)>90)
+    {
+        bias_result[0] = 1;
+        bias_result[1] = 1;
+        bias_result[2] = 1.3;
+    }
+    else if (abs(y)>80)
+    {
+        bias_result[0] = 1;
+        bias_result[1] = 1;
+        bias_result[2] = 1.35;
+    }
+    else if (abs(y)>70)
+    {
+        bias_result[0] = 1;
+        bias_result[1] = 1;
+        bias_result[2] = 1.33;
+    }
+
+
+    return bias_result;
 }
 }
