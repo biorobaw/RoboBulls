@@ -1,8 +1,4 @@
-#include <iostream>
 #include "movement/three_omni_motion/omni3_velcalculator.h"
-
-#include "include/config/tolerances.h"
-#include "utilities/measurments.h"
 
 namespace Movement
 {
@@ -121,21 +117,22 @@ threeWheelVels ThreeWheelCalculator::facePointCalc
         y_vel *= 0.5;
     }
 
-    // Rotate first
-    if (abs(Measurments::angleDiff(theta_goal,theta_current))>ROT_TOLERANCE)
+    //Set tolerances
+    if (Measurments::isClose(rp,gp,DIST_TOLERANCE)) x_vel = y_vel = 0;
+    if (abs(Measurments::angleDiff(theta_goal,theta_current))<ROT_TOLERANCE*0.5) theta_vel = 0;
+
+    // Focus on rotation
+    double vel = sqrt(x_vel*x_vel+y_vel*y_vel);
+    if (abs(Measurments::angleDiff(theta_goal,theta_current))>ROT_TOLERANCE*0.5 && vel > 40)
     {
-        x_vel *= 0.1;
-        y_vel *= 0.1;
+        x_vel = 40*cos(angle_to_goal);
+        y_vel = 40*sin(angle_to_goal);
         theta_vel*=2.5;
     }
 
-    //Set tolerances
-    if (Measurments::isClose(rp,gp,DIST_TOLERANCE)) x_vel = y_vel = 0;
-    if (abs(Measurments::angleDiff(theta_goal,theta_current))<ROT_TOLERANCE) theta_vel = 0;
-
     // Robot Frame Velocities
-    double x_vel_robot =  cos(theta_current)*x_vel + sin(theta_current)*y_vel;
-    double y_vel_robot =  sin(theta_current)*x_vel - cos(theta_current)*y_vel;
+    double x_vel_robot = cos(theta_current)*x_vel + sin(theta_current)*y_vel;
+    double y_vel_robot = sin(theta_current)*x_vel - cos(theta_current)*y_vel;
 
     //Wheel Velocity Calculations
     double R = -round(-sin(M_PI/6)   * y_vel_robot + cos(M_PI/6)   *x_vel_robot + wheel_radius*theta_vel);
