@@ -10,7 +10,6 @@ GameModel* GameModel::model = NULL;
 GameModel::GameModel()
 {
     gameState  = '\0';
-    hasChanged = false;
 }
 
 void GameModel::setStrategyController(StrategyController *sc)
@@ -154,7 +153,15 @@ void GameModel::notifyObservers()
  */
 void GameModel::setGameState(char gameState)
 {
+    char lastGameState = this->gameState;
+    if(lastGameState != gameState)
+        hasNewCommand = true;
     this->gameState = gameState;
+}
+
+void GameModel::onCommandProcessed()
+{
+    this->hasNewCommand = false;
 }
 
 

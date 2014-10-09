@@ -36,6 +36,8 @@ void StrategyController::run()
     } else {
         gameModelContinued();
     }
+
+    model->onCommandProcessed();
     
     frameEnd();
 }
@@ -43,7 +45,6 @@ void StrategyController::run()
 void StrategyController::gameModelUpdated()
 {
     delete activeStrategy;
-
 #if 1
     switch(model->getGameState())
     {

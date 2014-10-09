@@ -52,7 +52,7 @@ namespace impl
             || Measurments::isClose(pt, endPos, ROBOT_SIZE))
                 continue;
 
-            obstacle_found = Measurments::lineDistance(pt, beginPos, endPos) < ROBOT_SIZE*1.5 &&
+            obstacle_found = Measurments::lineDistance(pt, beginPos, endPos) < ROBOT_SIZE &&
                 insideRadiusRectangle(pt, beginPos, endPos);
 
             if(obstacle_found) {
@@ -92,8 +92,8 @@ namespace impl
          * the jagged edges in the path, but risks cutting corners
          * too close around obstacles.
          */
-        float dx = 1.75 * ROBOT_RADIUS * cos(theta + M_PI_2);
-        float dy = 1.75 * ROBOT_RADIUS * sin(theta + M_PI_2);
+        float dx = 2.25 * ROBOT_RADIUS * cos(theta + M_PI_2);
+        float dy = 2.25 * ROBOT_RADIUS * sin(theta + M_PI_2);
 
         return Point(sign * dx, sign * dy);
     }
@@ -268,10 +268,8 @@ namespace impl
         auto obstacle_info = impl::isObstacleinLine(start, end);
 
         if(obstacle_info.first) {
-            if(obsPosOut != nullptr)
-                *obsPosOut = obstacle_info.second;
-            return true;
-            //return Measurments::isClose(start, obstacle_info.second, 2500);
+            if(obsPosOut != nullptr) *obsPosOut = obstacle_info.second;
+            return Measurments::isClose(start, obstacle_info.second, 2500);
         } else {
             return false;
         }

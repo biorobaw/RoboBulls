@@ -58,14 +58,6 @@ bool RefComm::receive()
 
     if (readBytes == 6) {
         gamemodel->setGameState(lastPacket.command);
-        
-        if(this->last_count != lastPacket.counter) {
-            gamemodel->hasNewCommand = true;
-            last_count = lastPacket.counter;
-        } else {
-            gamemodel->hasNewCommand = false;
-        }
-        
         gamemodel->setTimeLeft(lastPacket.time_left);
         gamemodel->setBlueGoals(lastPacket.goals_blue);
         gamemodel->setYellowGoals(lastPacket.goals_yellow);

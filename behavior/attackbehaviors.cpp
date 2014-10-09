@@ -292,6 +292,7 @@ int AttackBlocker::nextSide = 1;
  
 AttackBlocker::AttackBlocker(const ParameterList& list)
     : theDriverRobot(NULL)
+    , isWaitingCount(0)
     , curDistance(BLOCK_DIST_DEFAULT)
 {
 #if 1

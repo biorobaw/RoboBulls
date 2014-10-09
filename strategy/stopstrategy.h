@@ -11,7 +11,8 @@ class StopStrategy:public Strategy
 {
 public:
     StopStrategy();
-    void assignBeh();
+    void assignBeh() override;
+    bool update() override;
 
 private:
     /* In case of ball movement or some other effect, the target points
