@@ -75,7 +75,7 @@ void StrategyController::gameModelUpdated()
         activeStrategy = new TestStrategy();
     };
 #endif
-    activeStrategy = new TestStrategy();
+    activeStrategy = new KickOffStrategy();
     activeStrategy->assignBeh();
 }
 
