@@ -22,41 +22,41 @@ StrategyController::StrategyController()
 
 void StrategyController::gameModelUpdated()
 {
-    static int count = 0;
-    if(count < 25) {++count; return;}
+//    static int count = 0;
+//    if(count < 25) {++count; return;}
 	
-	FPPA::pathfindingBegin();
+//    FPPA::pathfindingBegin();
 
-    if (model->getGameState() == 'S')
-    {
-        activeStrategy = new StopStrategy();
-    }
-    else if (model->getGameState() == 'p')
-    {
-        activeStrategy = new StopStrategy();
-    }
-    else
-    {
-        activeStrategy = new TestStrategy();
-    }
+//    if (model->getGameState() == 'S')
+//    {
+//        activeStrategy = new StopStrategy();
+//    }
+//    else if (model->getGameState() == 'p')
+//    {
+//        activeStrategy = new StopStrategy();
+//    }
+//    else
+//    {
+//        activeStrategy = new TwoVOne();
+//    }
 
-    activeStrategy->assignBeh();
+//    activeStrategy->assignBeh();
 
 
-    for (unsigned int i=0; i < model->getMyTeam().size(); i++)
-    {
-        Robot *rob = model->getMyTeam().at(i);
+//    for (unsigned int i=0; i < model->getMyTeam().size(); i++)
+//    {
+//        Robot *rob = model->getMyTeam().at(i);
 
-        if(rob->hasBeh)
-            rob->getCurrentBeh()->perform(rob);
-    }
+//        if(rob->hasBeh)
+//            rob->getCurrentBeh()->perform(rob);
+//    }
 
-    RobComm * robcom = RobComm::getRobComm();
-    robcom->sendVelsLarge(model->getMyTeam());
+//    RobComm * robcom = RobComm::getRobComm();
+//    robcom->sendVelsLarge(model->getMyTeam());
 	
-	FPPA::pathfindingEnd();
+//    FPPA::pathfindingEnd();
 	
-	delete activeStrategy;
+//    delete activeStrategy;
 }
 
 void StrategyController::setGameModel(GameModel *myGameModel)

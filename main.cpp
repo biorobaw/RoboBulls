@@ -12,6 +12,7 @@
 #include "include/messages_robocup_ssl_wrapper.pb.h"
 #include "include/robocup_ssl_client.h"
 #include "behavior/behavior.h"
+#include "gui/mainwindow.h"
 
 using namespace std;
 
@@ -39,7 +40,10 @@ int main(int argc, char *argv[])
     sc->setGameModel(myGameModel);
     myGameModel->setStrategyController(sc);
 
-    QCoreApplication a(argc, argv);
+    //QCoreApplication a(argc, argv);
+    QApplication a(argc, argv);
+    MainWindow w;
+    w.show();
 
     RefComm refCommunicator(myGameModel);
     VisionComm visionCommunicator(myGameModel);
@@ -52,7 +56,7 @@ int main(int argc, char *argv[])
     
     
     visionCommunicator.start();
-    refCommunicator.run();
+    refCommunicator.start();
 
 
     return a.exec();

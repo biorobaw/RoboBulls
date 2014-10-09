@@ -39,13 +39,14 @@ void TwoVOne::assignBeh()
         //Assign Strategic Value
         //Add region to deque of regions
         #if SIMULATED==1
-            Region * right_defense = new Region(0,3000*rgd,-2000,r4.y+250);
+            Region * right_defense = new Region(0,3000*rgd,-2000,r4.y+150);
             strategicRegions.push_back(right_defense);
 
-            Region * mid_defense = new Region(0,3000*rgd,r2.y-250,r4.y+250);
+            Region * mid_defense = new Region(0,3000*rgd,r2.y-150,r4.y+150);
             strategicRegions.push_back(mid_defense);
 
-            Region * left_defense = new Region(0,3000*rgd,2000,r2.y-250);
+            Region * left_defense = new Region(0,3000*rgd,2000,r2.y-150);
+            strategicRegions.push_back(left_defense);
         #endif
 
         Region * left_offense = new Region(0,-3000*rgd,2000,0);
@@ -53,9 +54,6 @@ void TwoVOne::assignBeh()
 
         Region * right_offense = new Region(0,-3000*rgd,-2000,0);
         strategicRegions.push_back(right_offense);
-
-        for(Region* r : strategicRegions)
-            this->assignStrategicValue(r);
 
         sort(strategicRegions.begin(),strategicRegions.end(),[](Region* i,Region* j){
             return i->getStrategicValue()>j->getStrategicValue();

@@ -14,7 +14,7 @@
 class PositionForKickoff:public Behavior
 {
 private:
-    Movement::GoToPosition move_skill;
+    Movement::Move* move_skill;
     Point move_point, bp;
     bool bp_updated;
     float orientation;

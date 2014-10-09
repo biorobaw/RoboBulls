@@ -8,6 +8,8 @@ QT       += core network
 
 QT       -= gui
 
+QT      += widgets
+
 TARGET = RoboBulls
 CONFIG   += console
 CONFIG   -= app_bundle
@@ -87,7 +89,14 @@ SOURCES += main.cpp \
     skill/stop.cpp \
     movement/four_omni_motion/omni4_velcalculator.cpp \
     movement/three_omni_motion/omni3_velcalculator.cpp \
-    movement/differential/differential_velcalculator.cpp
+    movement/differential/differential_velcalculator.cpp \
+    gui/guicomm.cpp \
+    gui/mainwindow.cpp \
+    gui/guirobot.cpp \
+    gui/guifield.cpp \
+    gui/guiball.cpp \
+    gui/guisidelines.cpp \
+    gui/guibotlabel.cpp
 
 HEADERS += \
 	behavior/behavior.h \
@@ -159,10 +168,61 @@ HEADERS += \
     movement/three_omni_motion/omni3_velcalculator.h \
     movement/differential/differential_velcalculator.h \
     movement/four_omni_motion/omni4_velcalculator.h \
-    include/config/model_averages.h
+    include/config/model_averages.h \
+    gui/guicomm.h \
+    gui/mainwindow.h \
+    gui/guirobot.h \
+    gui/guifield.h \
+    gui/guiball.h \
+    gui/guisidelines.h \
+    gui/guibotlabel.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 
 unix|win32: LIBS += -lprotobuf
 
-OTHER_FILES +=
+OTHER_FILES += \
+    gui/images/field.jpg \
+    gui/images/0.png \
+    gui/images/1.png \
+    gui/images/2.png \
+    gui/images/3.png \
+    gui/images/4.png \
+    gui/images/5.png \
+    gui/images/ball.png \
+    gui/images/bot0.png \
+    gui/images/bot1.png \
+    gui/images/bot2.png \
+    gui/images/bot3.png \
+    gui/images/bot4.png \
+    gui/images/bot5.png \
+    gui/images/bubble.png \
+    gui/images/button.png \
+    gui/images/button-pressed.png \
+    gui/images/document-open.png \
+    gui/images/document-open@2x.png \
+    gui/images/document-save-as.png \
+    gui/images/document-save-as@2x.png \
+    gui/images/folder_new.png \
+    gui/images/gear.png \
+    gui/images/gear2.png \
+    gui/images/go-next.png \
+    gui/images/go-previous.png \
+    gui/images/preferences-system.png \
+    gui/images/process-stop.png \
+    gui/images/progress-background.png \
+    gui/images/progress-fill.png \
+    gui/images/slider-handle.png \
+    gui/images/tab.png \
+    gui/images/tab_selected.png \
+    gui/images/textfield.png \
+    gui/images/toplevel_window.png \
+    gui/images/view-refresh.png \
+    gui/images/window-new.png \
+    gui/images/window-new@2x.png
+
+RESOURCES += \
+    gui/images.qrc
+
+FORMS += \
+    gui/mainwindow.ui

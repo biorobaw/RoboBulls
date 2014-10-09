@@ -6,8 +6,6 @@
 /**
   Class to test behaviors
 **/
-
-class Robot;
 class TestStrategy : public Strategy
 {
 public:

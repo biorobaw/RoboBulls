@@ -4,6 +4,7 @@
 #include "behavior.h"
 #include "skill/kicktopoint.h"
 #include "utilities/region.h"
+#include "utilities/paramlist.h"
 #include "model/robot.h"
 
 

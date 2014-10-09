@@ -9,81 +9,31 @@
 #include "behavior/defendfarfromball.h"
 #include "behavior/attackmain.h"
 #include "skill/stop.h"
-#include "skill/kicktopoint.h"
 #include "behavior/genericmovementbehavior.h"
 #include "movement/movetype.h"
 
 
-class TestBehavior : public Behavior
+class TestBehavior : public GenericMovementBehavior
 {
 public:
     TestBehavior(const ParameterList& list)
+        : GenericMovementBehavior(list)
     {
         UNUSED_PARAM(list);
-        targetPoint = GameModel::getModel()->getPenaltyPoint();
-        db = new Skill::DriveBall(targetPoint, 0);
+        setVelocityMultiplier(0.75);
     }
 
     void perform(Robot * robot)
     {
-        db->perform(robot);
+        setMovementTargets(GameModel::getModel()->getBallPoint());
+        GenericMovementBehavior::perform(robot, Movement::Type::SharpTurns);
     }
 
 private:
-    Skill::DriveBall* db;
     Point targetPoint;
 };
 
-class TestBehavior2 : public GenericMovementBehavior
-{
-public:
-    TestBehavior2(const ParameterList& list)
-    {
-        UNUSED_PARAM(list);
-    }
 
-    void perform(Robot *robot) override
-    {
-        setMovementTargets(GameModel::getModel()->getBallPoint(), 0, true);
-        GenericMovementBehavior::perform(robot);
-    }
-};
-
-class ShamsiStrafeBehavior : public GenericMovementBehavior
-{
-public:
-    ShamsiStrafeBehavior(const ParameterList& list)
-    {
-        UNUSED_PARAM(list);
-    }
-
-    void perform(Robot *robot) override
-    {
-        GameModel * gm = GameModel::getModel();
-        Point rp = gm->getMyTeam().at(0)->getRobotPosition();
-        Point bp = gm->getBallPoint();
-        Point target_one = Point(-2000,0);
-        Point target_two = Point(2000,0);
-        double ori = Measurments::angleBetween(rp,bp);
-
-        switch(state)
-        {
-        case pos_one:
-            setMovementTargets(target_one,ori,false);
-            if (Measurments::isClose(rp,target_one))
-                state = pos_two;
-            break;
-        case pos_two:
-            setMovementTargets(target_two,ori,false);
-            if (Measurments::isClose(rp,target_two))
-                state = pos_one;
-        }
-
-        GenericMovementBehavior::perform(robot,Movement::Type::facePoint);
-    }
-private:
-    enum {pos_one,pos_two} state = pos_one;
-};
 
 TestStrategy::TestStrategy()
 {
@@ -93,8 +43,26 @@ void TestStrategy::assignBeh()
 {
 //***************************************************************************************************
     //Shamsi Code
-    BehaviorAssignment<ShamsiStrafeBehavior> assignment(true);
-    assignment.assignBeh();
+    //Three Omni Wheel Test
+//        GameModel * gm = GameModel::getModel();
+//        RobComm * comm = RobComm::getRobComm();
+//        GoToPoseBasic instance;
+//        threeWheelVels control = instance.calcWheelVels(gm->getMyTeam().at(0),0,0,0);
+//        comm->sendVelsThreeOmni(control.L,control.R,control.B,1);
+//        cout << "Sending Velocities" << endl;
+
+    //GoToPosition Test
+//        GameModel * gm = GameModel::getModel();
+//        Skill::GoToPosition skill = Skill::GoToPosition(Point(-1000,0),0);
+//        skill.perform(gm->getMyTeam().at(1));
+
+    //Four Omni Wheel Test
+//    GameModel * gm = GameModel::getModel();
+//    Skill::GoToPosition skill = Skill::GoToPosition(Point(0,0),0);
+//    skill.perform(gm->getMyTeam().at(0));
+//    cout << "Sending Velocities" << endl;
+//***************************************************************************************************
+
 
     //Martin code
 //    cout << "running test strategy!" << endl;
@@ -147,8 +115,9 @@ void TestStrategy::assignBeh()
 //    assignment.assignBeh({0, 1});
 
     // Narges code testing DriveBallAndKick
-//    BehaviorAssignment<TestBehavior> assignment(true);
-//    assignment.assignBeh({3});
+    BehaviorAssignment<DriveBallAndKick> assignment;
+    assignment.setSingleAssignment(true);
+    assignment.assignBeh();
 
 
 ////    //Narges code testing defendCloseToBall

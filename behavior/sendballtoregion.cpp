@@ -15,7 +15,7 @@ SendBallToRegion::SendBallToRegion(const ParameterList & list)
     this->region = list.getParam<Region*>("region");
     state = initial;
 
-//    std::cout << "New SendBallToRegion" << std::endl;
+    std::cout << "New SendBallToRegion" << std::endl;
 }
 
 SendBallToRegion::~SendBallToRegion()
@@ -26,8 +26,8 @@ SendBallToRegion::~SendBallToRegion()
 void SendBallToRegion::perform(Robot * robot)
 {
     #if TRACE
-        cout <<"Performing Behavior::SendBallToRegion " <<
-                 robot->getID() << endl;
+//        cout <<"Performing Behavior::SendBallToRegion " <<
+//                 robot->getID() << endl;
     #endif
 
     switch (state)
@@ -35,7 +35,6 @@ void SendBallToRegion::perform(Robot * robot)
     case initial:
         kickball = new Skill::KickToPoint(region->centre());
         state = kick;
-        //std::cout << "Moving to kick" <<std::endl;
     case kick:
         kickball->perform(robot);
     }

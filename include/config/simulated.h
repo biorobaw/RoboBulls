@@ -12,4 +12,6 @@
 
 #define SIMULATED 0
 
+//bool SIMULATED;
+
 #endif
