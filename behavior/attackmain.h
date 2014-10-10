@@ -17,14 +17,12 @@ public:
     AttackMain(const ParameterList & list);
    ~AttackMain();
     void perform(Robot *);
-    string toString() { return "Attack Main";};
-
 private:
     GameModel * gm;
     Point drive_start_point, rp, sp, gp, bp;
 
     double goal_direction;
-    const double shot_distance = 1500;
+    const double shot_distance = 1600;
     const double drive_distance = 500;
 
     bool touched_ball = false;

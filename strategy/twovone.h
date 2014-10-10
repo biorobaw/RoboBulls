@@ -8,7 +8,6 @@
 #include "behavior/behaviorassignment.h"
 #include "behavior/attackmain.h"
 #include "behavior/attacksupport.h"
-#include "behavior/positionforkickoff.h"
 #include "behavior/defendclosetoball.h"
 #include "behavior/defendfarfromball.h"
 #include "behavior/sendballtoregion.h"

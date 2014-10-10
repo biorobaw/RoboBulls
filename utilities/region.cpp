@@ -1,5 +1,10 @@
 #include "region.h"
 
+Region::Region()
+{
+    minX = maxX = minY = maxY = 0;
+}
+
 Region::Region(float X1,float X2,float Y1,float Y2)
 {
     minX = min(X1,X2);

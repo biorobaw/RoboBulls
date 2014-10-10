@@ -11,15 +11,12 @@ RefComm::RefComm(GameModel *gm,
     _port=port;
     _net_address=net_address;
     _net_interface=net_interface;
-    in_buffer=new char[20];
     gamemodel = gm;
-
 }
 
-RefComm::~RefComm(void)
+RefComm::~RefComm()
 {
-    delete[] in_buffer;
-    //CloseHandle(hThread); //stop thread
+    close();
 }
 
 void RefComm::close() {
@@ -52,29 +49,20 @@ bool RefComm::open(bool blocking) {
     return(true);
 }
 
-bool RefComm::receive(){
+bool RefComm::receive()
+{
     Net::Address src;
-    int r=0;
+    int readBytes = 0;
 
-    r = mc.recv(in_buffer,MaxDataGramSize,src);
+    readBytes = mc.recv(&lastPacket, 6*sizeof(char), src);
 
-    if (r>0) {
-        fflush(stdout);
-
-        //decode packet:
-//        cout<<in_buffer[0]<<endl;
-        gamemodel->setGameState(in_buffer[0]);
-//        this->command = in_buffer [0];
-//        this->command_counter = (unsigned char) in_buffer[1];
-//        this->goals_blue = (unsigned char) in_buffer [2];
-//        this->goals_yellow = (unsigned char) in_buffer [3];
-//        this->time_remaining = ((unsigned char)in_buffer[4] *256 + (unsigned char)in_buffer[5]);
-        //cout<<"recieved"<<endl;
+    if (readBytes == 6) {
+        gamemodel->setGameState(lastPacket.command);
+        gamemodel->setTimeLeft(lastPacket.time_left);
+        gamemodel->setBlueGoals(lastPacket.goals_blue);
+        gamemodel->setYellowGoals(lastPacket.goals_yellow);
         return true;
-
     }
-    //else
-
 
     return false;
 }

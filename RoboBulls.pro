@@ -73,7 +73,6 @@ SOURCES += main.cpp \
     behavior/defendfarfromball.cpp \
     behavior/attackmain.cpp \
     behavior/attacksupport.cpp \
-    behavior/positionforkickoff.cpp \
     behavior/sendballtoregion.cpp \
     strategy/twovone.cpp \
     skill/kicktopoint.cpp \
@@ -81,7 +80,6 @@ SOURCES += main.cpp \
     movement/basic_movement.cpp \
     movement/gotopositionwithorientation.cpp \
     movement/pathfinding/fppa_pathfinding.cpp \
-    movement/three_omni_motion/matrixcalculator.cpp \
     movement/move.cpp \
     movement/differential/closedloopcontrol.cpp \
     include/config/robot_types.cpp \
@@ -90,13 +88,20 @@ SOURCES += main.cpp \
     movement/four_omni_motion/omni4_velcalculator.cpp \
     movement/three_omni_motion/omni3_velcalculator.cpp \
     movement/differential/differential_velcalculator.cpp \
-    gui/guicomm.cpp \
-    gui/mainwindow.cpp \
-    gui/guirobot.cpp \
-    gui/guifield.cpp \
+    strategy/freekickstrategy.cpp \
+    strategy/haltstrategy.cpp \
+    strategy/indiectkickstrategy.cpp \
+    strategy/kickoffstrategy.cpp \
+    behavior/simplebehaviors.cpp \
+    strategy/attackstrategy.cpp \
+    behavior/attackbehaviors.cpp \
     gui/guiball.cpp \
+    gui/guibotlabel.cpp \
+    gui/guicomm.cpp \
+    gui/guifield.cpp \
+    gui/guirobot.cpp \
     gui/guisidelines.cpp \
-    gui/guibotlabel.cpp
+    gui/mainwindow.cpp
 
 HEADERS += \
 	behavior/behavior.h \
@@ -144,7 +149,6 @@ HEADERS += \
     behavior/defendfarfromball.h \
     behavior/attackmain.h \
     behavior/attacksupport.h \
-    behavior/positionforkickoff.h \
     behavior/sendballtoregion.h \
     strategy/twovone.h \
     skill/kicktopoint.h \
@@ -169,13 +173,20 @@ HEADERS += \
     movement/differential/differential_velcalculator.h \
     movement/four_omni_motion/omni4_velcalculator.h \
     include/config/model_averages.h \
-    gui/guicomm.h \
-    gui/mainwindow.h \
-    gui/guirobot.h \
-    gui/guifield.h \
+    strategy/freekickstrategy.h \
+    strategy/haltstrategy.h \
+    strategy/indiectkickstrategy.h \
+    strategy/kickoffstrategy.h \
+    behavior/simplebehaviors.h \
+    strategy/attackstrategy.h \
+    behavior/attackbehaviors.h \
     gui/guiball.h \
+    gui/guibotlabel.h \
+    gui/guicomm.h \
+    gui/guifield.h \
+    gui/guirobot.h \
     gui/guisidelines.h \
-    gui/guibotlabel.h
+    gui/mainwindow.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 

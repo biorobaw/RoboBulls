@@ -20,6 +20,7 @@ public:
 	Point&	operator/=(float rhs);
     Point	operator+(const Point& rhs);
     Point	operator-(const Point& rhs);
+    Point   operator*(float rhs);
 	
     std::string toString();
 public:

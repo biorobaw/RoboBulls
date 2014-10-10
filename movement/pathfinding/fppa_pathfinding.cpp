@@ -92,8 +92,8 @@ namespace impl
          * the jagged edges in the path, but risks cutting corners
          * too close around obstacles.
          */
-        float dx = 1.75 * ROBOT_RADIUS * cos(theta + M_PI_2);
-        float dy = 1.75 * ROBOT_RADIUS * sin(theta + M_PI_2);
+        float dx = 2.25 * ROBOT_RADIUS * cos(theta + M_PI_2);
+        float dy = 2.25 * ROBOT_RADIUS * sin(theta + M_PI_2);
 
         return Point(sign * dx, sign * dy);
     }
@@ -254,10 +254,10 @@ namespace impl
                      it != botPath.first.end()-1; ++it)
                 totalDistBottom += Measurments::distance(*it, *(it+1));
 
-            if(totalDistTop <= totalDistBottom) {
-                return botPath;
-            } else {
+            if(totalDistTop < totalDistBottom) {
                 return topPath;
+            } else {
+                return botPath;
             }
         }
     }

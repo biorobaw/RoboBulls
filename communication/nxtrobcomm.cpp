@@ -32,70 +32,40 @@ void NXTRobComm::send(char* commptr, int size)
     Xbee.Write(commptr, size);
 }
 
-void NXTRobComm::sendVels(int leftVel, int rightVel, int robotId)
-{
-    char comm[5] = {'~', (char)robotId, (char)leftVel, (char)rightVel, 0};
-    send(&comm[0], 5);
-}
-
-void NXTRobComm::sendKick(int robotId)
-{
-    char comm[5] = {'~', (char)robotId, 0, 0, 1};
-    send(&comm[0], 5);
-}
-
 void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
 {
-    for (Robot* rob : robots)
+    // Create array of packets
+    packet_t teamPacketBuf[5];
+
+    assert(sizeof(int8_t) == 1);
+
+    // Initialize packet to zeros
+    memset(&teamPacketBuf, 0, sizeof(packet_t)*5);
+
+    // For each robot
+    for(unsigned i = 0; i != robots.size(); ++i)
     {
-        switch(rob->type())
-        {
+        // Load information into the packet
+        packet_t* packet = &teamPacketBuf[i];
+        Robot* rob =  robots[i];
+        packet->tilde = '~';
+        packet->id = rob->getID();
+        packet->left_front  = Measurments::clamp(rob->getLF(), -127, 127);
+        packet->left_back   = Measurments::clamp(rob->getLB(), -127, 127);
+        packet->right_front = Measurments::clamp(rob->getRF(), -127, 127);
+        packet->right_back  = Measurments::clamp(rob->getRB(), -127, 127);
+        packet->kick = rob->getKick();
+        packet->chip_power = 0;
+        packet->dribble_power = rob->getDrible() ? 1 : 0;
+        packet->dollar = '$';
 
-        case differential:
-            sendVelsDifferential(robots);
-            break;
-        case threeWheelOmni:
-            sendVelsThreeOmni(rob->getL(),rob->getR(),rob->getB(),rob->getID());
-            break;
-        case fourWheelOmni:
-            sendVelsFourOmni(rob->getLF(),rob->getRF(),rob->getLB(),rob->getRB(),rob->getID());
-        }
-    }
-}
-
-void NXTRobComm::sendVelsDifferential(std::vector<Robot*>& robots)
-{
-    char largePacket[robots.size()*5];
-
-    for (unsigned int i=0; i < robots.size(); i++)
-    {
-        Robot *rob = robots[i];
-
-        /* Protects 8-bit velocity values from overflow */
-        rob->setL(Measurments::clamp(rob->getL(), -127, 127));
-        rob->setR(Measurments::clamp(rob->getR(), -127, 127));
-
-		largePacket[5*i] = '~';
-		largePacket[5*i+1] = (char)rob->getID();
-		largePacket[5*i+2] = (char)rob->getL();
-		largePacket[5*i+3] = (char)rob->getR();
-		largePacket[5*i+4] = (char)rob->getKick();
-		
+        // Clear robot information
+        rob->setL(0);
+        rob->setR(0);
         rob->setKick(0);
+        rob->setDrible(0);
     }
-    send(&largePacket[0], robots.size()*5);
-}
 
-void NXTRobComm::sendVelsThreeOmni(int left, int right, int back, int ID)
-{
-
-    char comm[6] = {'~', (char)ID, (char)left, (char)right, (char)back, char(0)};
-    //char comm[6] = {'~', (char)4, (char)0, (char)0, (char)0, char(0)};
-    send(&comm[0], 6);
-}
-
-void NXTRobComm::sendVelsFourOmni(int front_left, int front_right, int rear_left, int rear_right, int ID)
-{
-    char comm[6] = {'~', (char)ID, (char)front_left, (char)front_right, (char)rear_left, (char)rear_right};
-    send(&comm[0], 6);
+    // Send Array of packets
+    send((char*)&teamPacketBuf, sizeof(packet_t)*5);
 }

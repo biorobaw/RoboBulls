@@ -5,6 +5,7 @@
 
 #include <stdio.h>
 #include <vector>
+#include <stdint.h>
 
 #include "include/serialib.h"
 #include "model/robot.h"
@@ -15,17 +16,28 @@
 class NXTRobComm : public RobComm
 {
 public:
-    NXTRobComm();
+     NXTRobComm();
     ~NXTRobComm();
-
-    void sendVels(int leftVel, int rightVel, int robotId);
-    void sendVelsThreeOmni(int left, int right, int back, int ID);
-    void sendVelsFourOmni(int front_left, int front_right, int rear_left, int rear_right, int ID);
-    void sendVelsDifferential(std::vector<Robot*>&);
     void sendVelsLarge(std::vector<Robot*>&);
-    void sendKick(int robotId);
 
 private:
+    /* The standard communicaiton packet for each
+     * robot type, contain all information nessecery
+     * for communicating with the robots
+     */
+    struct packet_t {
+        int8_t tilde;         //Always a tilde (~)
+        int8_t id;            //Robot ID
+        int8_t left_front;    //LF wheel velocity
+        int8_t left_back;     //LB wheel velocity
+        int8_t right_front;   //RF wheel velocity
+        int8_t right_back;    //RB wheel velocity
+        int8_t kick;          //Kick? 1/0
+        int8_t chip_power;    //Chip kick power
+        int8_t dribble_power; //Dribbler power
+        int8_t dollar;        //Always a dollar ('$')
+    };
+
     void send(unsigned);
     void send(char*, int size);
     serialib Xbee;

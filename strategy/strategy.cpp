@@ -1,12 +1,11 @@
 #include "strategy.h"
 #include <iostream>
 
-using namespace std;
-
-Strategy::Strategy()
+Strategy::~Strategy() 
 {
 }
 
-
-
-
+bool Strategy::update()
+{
+    return false;
+}

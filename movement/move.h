@@ -32,44 +32,47 @@ public:
     Move();
     Move(Point targetPoint, float targetAngle = UNUSED_ANGLE_VALUE, bool withObstacleAvoid = true);
     virtual ~Move();
-	
-	/* "Recreates" the Movement object, reposition the target point to a new 
-	 * point, and a target angle to a new angle. Also has to option to toggle
-	 * obstacle avoidance or not
-	 */
+    
+    /* "Recreates" the Movement object, reposition the target point to a new 
+     * point, and a target angle to a new angle. Also has to option to toggle
+     * obstacle avoidance or not
+     */
     void recreate(Point targetPoint, float targetAngle = UNUSED_ANGLE_VALUE, bool withObstacleAvoid = true);
     
-	/* A scalar applied to the calculated velocity when set to the robot. 
-	 * 1.0 is default, 0.0 means no velocity. Setting this over 2 
-	 */
+    /* A scalar applied to the calculated velocity when set to the robot. 
+     * 1.0 is default, 0.0 means no velocity. Setting this over 2 isn't very good
+     */
     void setVelocityMultiplier(float newMultiplier);
-	
-	/* This function is used to set the "recreation" tolerances. This object will not
-	 * recompute pathfinding and angle adjustments if the new parameters passed to
-	 * recreate are less than these values
-	 */
+    
+    /* This function is used to set the "recreation" tolerances. This object will not
+     * recompute pathfinding and angle adjustments if the new parameters passed to
+     * recreate are less than these values
+     */
     void setRecreateTolerances(float distTolerance, float angleTolerance);
 
+    /* Sets the distance and angle tolerance that are compared against when
+     * determining if a robot is close to the target or not
+     */
     void setMovementTolerances(float distTolerance, float angleTolerance);
     
-	/* Perform movement on the robot */
+    /* Perform movement on the robot */
     bool perform(Robot* robot, Type moveType = Type::Default);
-	
+    
 
 protected:
     float lfront, lback, rfront, rback;  //rob->type() == fourWheelOmni
     float left, right;                   //rob->type() == differential;
     float back;                          //rob->type() == threeWheelOmni;
 
-	/* Override this function is a derived class to provide the calculated
-	 * velocities to a general point targetPoint, and general angle targetAngle.
-	 * Store the results in *this (lfront, lback... etc); but in this function
-	 * do not set the velocities on the robot.
-	 */
+    /* Override this function is a derived class to provide the calculated
+     * velocities to a general point targetPoint, and general angle targetAngle.
+     * Store the results in *this (lfront, lback... etc); but in this function
+     * do not set the velocities on the robot.
+     */
     virtual void calculateVels
         (Robot* rob, Point targetPoint, float targetAngle, Type moveType) = 0;
 
-		
+        
 private:
     Point m_targetPoint      = Point(9999, 9999);
     float m_targetAngle      = UNUSED_ANGLE_VALUE;
@@ -86,7 +89,7 @@ private:
     std::deque<Point>   pathQueue;
     FPPA::PathDirection lastDirection;
     std::vector<Point>  lastObstacles;
-	
+    
     float recrDistTolerance  = 40;
     float recrAngleTolerance = ROT_TOLERANCE;
     float lastDistTolerance  = DIST_TOLERANCE;

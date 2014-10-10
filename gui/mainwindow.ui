@@ -2935,7 +2935,7 @@
           </rect>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="field">
           <attribute name="title">
@@ -3038,6 +3038,9 @@
               </property>
               <property name="text">
                <string>Show IDs</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
               </property>
              </widget>
             </item>

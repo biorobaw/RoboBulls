@@ -146,8 +146,9 @@ void MainWindow::updateScene() {
     for (int i=0; i<teamSize; i++) {
         if (gamemodel->find(i, gamemodel->getMyTeam()) != NULL) {
             QTransform flipLabel;
-            flipLabel.setMatrix(1,0,0,0,-1,0,0,0,1);
+            flipLabel.setMatrix(1,0,0,0,-1,0,0,200,1);
             guiLabels[i]->setTransform(flipLabel, false);
+            guiLabels[i]->setRotation(currentFieldAngle);
             guiLabels[i]->setZValue(3);
             guiLabels[i]->setX(getBotCoordX(true,i));
             guiLabels[i]->setY(getBotCoordY(true,i));
@@ -158,15 +159,16 @@ void MainWindow::updateScene() {
                 guiLabels[i]->hidden = true;
             }
             guiLabels[i]->myTeam = true;
-            guiLabels[i]->setScale(2);
+            guiLabels[i]->setScale(2.5);
         }
     }
 
     for (int i=0; i<teamSize; i++) {
         if (gamemodel->find(i, gamemodel->getOponentTeam()) != NULL) {
             QTransform flipLabel;
-            flipLabel.setMatrix(1,0,0,0,-1,0,0,0,1);
+            flipLabel.setMatrix(1,0,0,0,-1,0,0,200,1);
             guiLabelsY[i]->setTransform(flipLabel,false);
+            guiLabelsY[i]->setRotation(currentFieldAngle);
             guiLabelsY[i]->setZValue(3);
             guiLabelsY[i]->setX(getBotCoordX(false,i));
             guiLabelsY[i]->setY(getBotCoordY(false,i));
@@ -177,7 +179,7 @@ void MainWindow::updateScene() {
                 guiLabelsY[i]->hidden = true;
             }
             guiLabelsY[i]->myTeam = false;
-            guiLabelsY[i]->setScale(2);
+            guiLabelsY[i]->setScale(2.5);
         }
     }
 

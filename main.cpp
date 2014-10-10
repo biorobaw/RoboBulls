@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     sc->setGameModel(myGameModel);
     myGameModel->setStrategyController(sc);
 
-    //QCoreApplication a(argc, argv);
+//    QCoreApplication a(argc, argv);
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
