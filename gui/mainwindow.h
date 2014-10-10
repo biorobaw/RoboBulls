@@ -48,7 +48,9 @@ public:
     double  getBallCoordX();
     double  getBallCoordY();
     QString getRemTime();
-    void printBots();
+    void setupBotPanel();
+    void updateBotPanel();
+
     void printBall();
     void gameModelUpdated();
     // For getting milliseconds
@@ -76,6 +78,15 @@ private:
     QGraphicsEllipseItem *ellipse;
     QGraphicsRectItem *rectangle;
     int teamSize = 6;
+    // Robot Panel
+    std::vector<QLabel*> botBehavior;
+    std::vector<QLCDNumber*> botXcoords;
+    std::vector<QLCDNumber*> botYcoords;
+    std::vector<QLCDNumber*> botOrients;
+    std::vector<QLabel*> botIcons;
+    std::vector<QLabel*> botTitle;
+
+    // Field
     GuiRobot *robot0;
     GuiRobot *robot1;
     GuiRobot *robot2;
@@ -83,14 +94,6 @@ private:
     GuiRobot *robot4;
     GuiRobot *robot5;
     std::vector<GuiRobot*> guiTeam;
-//    GuiRobot* guiTeam[6] {
-//        robot0,
-//        robot1,
-//        robot2,
-//        robot3,
-//        robot4,
-//        robot5
-//    };
     GuiRobot *robot0Y;
     GuiRobot *robot1Y;
     GuiRobot *robot2Y;
@@ -98,14 +101,6 @@ private:
     GuiRobot *robot4Y;
     GuiRobot *robot5Y;
     std::vector<GuiRobot*> guiTeamY;
-//    GuiRobot* guiTeamY[6] {
-//        robot0Y,
-//        robot1Y,
-//        robot2Y,
-//        robot3Y,
-//        robot4Y,
-//        robot5Y
-//    };
     GuiBotLabel *botLabel0;
     GuiBotLabel *botLabel1;
     GuiBotLabel *botLabel2;
@@ -113,14 +108,6 @@ private:
     GuiBotLabel *botLabel4;
     GuiBotLabel *botLabel5;
     std::vector<GuiBotLabel*> guiLabels;
-//    GuiBotLabel* guiLabels[6] = {
-//        botLabel0,
-//        botLabel1,
-//        botLabel2,
-//        botLabel3,
-//        botLabel4,
-//        botLabel5
-//    };
     GuiBotLabel *botLabel0Y;
     GuiBotLabel *botLabel1Y;
     GuiBotLabel *botLabel2Y;
@@ -128,14 +115,6 @@ private:
     GuiBotLabel *botLabel4Y;
     GuiBotLabel *botLabel5Y;
     std::vector<GuiBotLabel*> guiLabelsY;
-//    GuiBotLabel* guiLabelsY[6] = {
-//        botLabel0Y,
-//        botLabel1Y,
-//        botLabel2Y,
-//        botLabel3Y,
-//        botLabel4Y,
-//        botLabel5Y
-//    };
 
     GuiField *field;
     GuiSidelines *sidelines;
@@ -159,6 +138,7 @@ private slots:
     void defaultZoom();
     void createPointer();
     void setUpScene();
+    void on_btn_Simulated_clicked();
 };
 
 #endif // MAINWINDOW_H

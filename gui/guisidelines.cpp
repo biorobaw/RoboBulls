@@ -39,7 +39,7 @@ void GuiSidelines::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 //            brush = (QColor::fromRgb(32,178,170,255), Qt::SolidPattern);
             painter->setBrush(QColor::fromRgb(160,82,45,255));
             painter->setPen(QPen(Qt::white, 60, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
-        } else if (colorScheme == "White") {
+        } else if (colorScheme == "Arctic") {
             painter->setBrush(QColor::fromRgb(200,200,200,255));
             painter->setPen(QPen(Qt::darkGray, 60, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
         } else if (colorScheme == "Game Boy") {

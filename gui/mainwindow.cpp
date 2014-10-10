@@ -36,6 +36,7 @@ MainWindow::MainWindow(QWidget *parent) :
     gamemodel = GameModel::getModel();
 
     setUpScene();
+    setupBotPanel();
 
     defaultZoom();
 
@@ -46,53 +47,36 @@ MainWindow::MainWindow(QWidget *parent) :
     // and stop threads
     threads.append(new GuiComm(50, this));
 //    threads.append(new GuiComm(30, this));
-//    threads.append(new GuiComm(30, this));
-//    threads.append(new GuiComm(40, this));
-//    threads.append(new GuiComm(50, this));
-//    threads.append(new GuiComm(60, this));
 
     // Connect each Widget to correcponding thread
-//    connect(threads[0], SIGNAL(valueChanged(int))
-//            , this, SLOT(test(int)));
-
     connect(threads[0], SIGNAL(valueChanged(int))
             , this, SLOT(launch(int)));
 
 //    connect(threads[1], SIGNAL(valueChanged(int))
 //            , this, SLOT(updateScene()));
 
-//    connect(threads[2], SIGNAL(valueChanged(int))
-//            , this, SLOT(updateFieldBots()));
-
-//    connect(threads[3], SIGNAL(valueChanged(int))
-//            , ui->lcdNumber, SLOT(display(int)));
-
-//    connect(threads[4], SIGNAL(valueChanged(int))
-//            , ui->horizontalSlider, SLOT(setValue(int)));
-
-//    connect(threads[5], SIGNAL(valueChanged(int))
-//            , ui->verticalSlider, SLOT(setValue(int)));
-
+    // Zoom slider
     connect(ui->zoom_slider, SIGNAL(valueChanged(int))
             , this, SLOT(zoomField(int)));
-
+    // Default zoom button
     connect(ui->zoom_default, SIGNAL(clicked())
             , this, SLOT(defaultZoom()));
 
 
-//    connect(ui->slider_fieldRotate, SIGNAL(valueChanged(int))
-//            , this, SLOT(rotateField(int)));
-
-//    connect(ui->pushButton, SIGNAL(clicked())
-//            , this, SLOT(setup()));
-
 }
+
 void MainWindow::launch(int value)
 {
+    if (SIMULATED) {
+        ui->menuDashboard->setTitle("Simulation");
+    } else {
+        ui->menuDashboard->setTitle("Camera");
+    }
+
     ui->label->setText(QString("Current Thread Processing Status : %1").arg(value));
-//    gameModelUpdated();
+
     updateScene();
-    printBots();
+    updateBotPanel();
     printBall();
 }
 
@@ -112,6 +96,187 @@ void MainWindow::defaultZoom() {
     ui->gView_field->centerOn(sidelines);
 }
 
+void MainWindow::setupBotPanel()
+{
+    // Behavior vector
+//    std::vector<QLabel*> botBehavior(teamSize);
+    botBehavior.push_back(ui->print_behavior_0);
+    botBehavior.push_back(ui->print_behavior_1);
+    botBehavior.push_back(ui->print_behavior_2);
+    botBehavior.push_back(ui->print_behavior_3);
+    botBehavior.push_back(ui->print_behavior_4);
+    botBehavior.push_back(ui->print_behavior_5);
+    // X Coordinate vector
+//    std::vector<QLCDNumber*> botXcoords(teamSize);
+    botXcoords.push_back(ui->lcd_coordX_0);
+    botXcoords.push_back(ui->lcd_coordX_1);
+    botXcoords.push_back(ui->lcd_coordX_2);
+    botXcoords.push_back(ui->lcd_coordX_3);
+    botXcoords.push_back(ui->lcd_coordX_4);
+    botXcoords.push_back(ui->lcd_coordX_5);
+    // Y Coordinate vector
+//    std::vector<QLCDNumber*> botYcoords(teamSize);
+    botYcoords.push_back(ui->lcd_coordY_0);
+    botYcoords.push_back(ui->lcd_coordY_1);
+    botYcoords.push_back(ui->lcd_coordY_2);
+    botYcoords.push_back(ui->lcd_coordY_3);
+    botYcoords.push_back(ui->lcd_coordY_4);
+    botYcoords.push_back(ui->lcd_coordY_5);
+    // Orientation vector
+//    std::vector<QLCDNumber*> botOrients(teamSize);
+    botOrients.push_back(ui->lcd_orient_0);
+    botOrients.push_back(ui->lcd_orient_1);
+    botOrients.push_back(ui->lcd_orient_2);
+    botOrients.push_back(ui->lcd_orient_3);
+    botOrients.push_back(ui->lcd_orient_4);
+    botOrients.push_back(ui->lcd_orient_5);
+    // Icon vector
+//    std::vector<QLabel*> botIcons(teamSize);
+    botIcons.push_back(ui->output_icon_0);
+    botIcons.push_back(ui->output_icon_1);
+    botIcons.push_back(ui->output_icon_2);
+    botIcons.push_back(ui->output_icon_3);
+    botIcons.push_back(ui->output_icon_4);
+    botIcons.push_back(ui->output_icon_5);
+    // Title label vector
+//    std::vector<QLabel*> botTitle(teamSize);
+    botTitle.push_back(ui->title_robPanel_0);
+    botTitle.push_back(ui->title_robPanel_1);
+    botTitle.push_back(ui->title_robPanel_2);
+    botTitle.push_back(ui->title_robPanel_3);
+    botTitle.push_back(ui->title_robPanel_4);
+    botTitle.push_back(ui->title_robPanel_5);
+
+}
+
+void MainWindow::updateBotPanel() {
+
+    // Printing to GUI
+    for (int i=0; i<teamSize; i++) {
+        if (gamemodel->find(i,gamemodel->getMyTeam()) != NULL) {
+            botTitle[i]->setText("Robot " + QString::number(i));
+            botIcons[i]->setPixmap(QPixmap::fromImage(getStatusImg(i)));
+            botXcoords[i]->display(getBotCoordX(true, i));
+            botYcoords[i]->display(getBotCoordY(true, i));
+            botOrients[i]->display(getBotOrientString(i));
+//            cout << "Robot " << i << " behavior: " << gamemodel->find(i, gamemodel->getMyTeam())->set << "\n";
+        }
+    }
+}
+
+void MainWindow::setUpScene()
+{
+    scene = new QGraphicsScene(this);
+
+    // Creating the sidelines
+    sidelines = new GuiSidelines();
+    sidelines->setX(-4000);         // Offsets are 50% of the item's height & width
+    sidelines->setY(-3000);
+    sidelines->setZValue(0);
+
+    // Creating the field
+    field = new GuiField();
+    field->setX(-2900);
+    field->setY(-1900); // Y seems to be 100 off (?)
+    field->setZValue(1);
+    field->grid = false;
+
+    // Creating the ball
+    ball = new GuiBall;
+
+    //Bot Labels - blue team
+    botLabel0 = new GuiBotLabel;
+    botLabel1 = new GuiBotLabel;
+    botLabel2 = new GuiBotLabel;
+    botLabel3 = new GuiBotLabel;
+    botLabel4 = new GuiBotLabel;
+    botLabel5 = new GuiBotLabel;
+    guiLabels.push_back(botLabel0);
+    guiLabels.push_back(botLabel1);
+    guiLabels.push_back(botLabel2);
+    guiLabels.push_back(botLabel3);
+    guiLabels.push_back(botLabel4);
+    guiLabels.push_back(botLabel5);
+
+    // Bot Labels - yellow team
+    botLabel0Y = new GuiBotLabel;
+    botLabel1Y = new GuiBotLabel;
+    botLabel2Y = new GuiBotLabel;
+    botLabel3Y = new GuiBotLabel;
+    botLabel4Y = new GuiBotLabel;
+    botLabel5Y = new GuiBotLabel;
+    guiLabelsY.push_back(botLabel0Y);
+    guiLabelsY.push_back(botLabel1Y);
+    guiLabelsY.push_back(botLabel2Y);
+    guiLabelsY.push_back(botLabel3Y);
+    guiLabelsY.push_back(botLabel4Y);
+    guiLabelsY.push_back(botLabel5Y);
+
+    // Blue Team Robots
+    robot0 = new GuiRobot();
+    robot1 = new GuiRobot();
+    robot2 = new GuiRobot();
+    robot3 = new GuiRobot();
+    robot4 = new GuiRobot();
+    robot5 = new GuiRobot();
+    guiTeam.push_back(robot0);
+    guiTeam.push_back(robot1);
+    guiTeam.push_back(robot2);
+    guiTeam.push_back(robot3);
+    guiTeam.push_back(robot4);
+    guiTeam.push_back(robot5);
+
+    // Yellow Team
+    robot0Y = new GuiRobot();
+    robot1Y = new GuiRobot();
+    robot2Y = new GuiRobot();
+    robot3Y = new GuiRobot();
+    robot4Y = new GuiRobot();
+    robot5Y = new GuiRobot();
+    guiTeamY.push_back(robot0Y);
+    guiTeamY.push_back(robot1Y);
+    guiTeamY.push_back(robot2Y);
+    guiTeamY.push_back(robot3Y);
+    guiTeamY.push_back(robot4Y);
+    guiTeamY.push_back(robot5Y);
+
+    // Adding the previous gui items to the scene
+    scene->addItem(botLabel0);
+    scene->addItem(botLabel1);
+    scene->addItem(botLabel2);
+    scene->addItem(botLabel3);
+    scene->addItem(botLabel4);
+    scene->addItem(botLabel5);
+    scene->addItem(botLabel0Y);
+    scene->addItem(botLabel1Y);
+    scene->addItem(botLabel2Y);
+    scene->addItem(botLabel3Y);
+    scene->addItem(botLabel4Y);
+    scene->addItem(botLabel5Y);
+    scene->addItem(robot0);
+    scene->addItem(robot1);
+    scene->addItem(robot2);
+    scene->addItem(robot3);
+    scene->addItem(robot4);
+    scene->addItem(robot5);
+    scene->addItem(robot0Y);
+    scene->addItem(robot1Y);
+    scene->addItem(robot2Y);
+    scene->addItem(robot3Y);
+    scene->addItem(robot4Y);
+    scene->addItem(robot5Y);
+    scene->addItem(sidelines);
+    scene->addItem(field);
+    scene->addItem(ball);
+
+    // Raising the curtains...
+    ui->gView_field->setScene(scene);
+
+    // Refreshes graphics view to eliminate glitchiness
+    ui->gView_field->hide();
+    ui->gView_field->show();
+}// setupScene
+
 void MainWindow::updateScene() {
     ui->gView_field->hide();
     ui->gView_field->show();
@@ -120,6 +285,13 @@ void MainWindow::updateScene() {
     if (ui->check_fieldGrid->isChecked()) {
         field->grid = true;
     }else{ field->grid = false; };
+    if (ui->combo_gridScale->currentText() == "200²") {
+        field->gridScale = 100;
+    } else if (ui->combo_gridScale->currentText() == "500²") {
+        field->gridScale = 250;
+    } else if (ui->combo_gridScale->currentText() == "1000²") {
+        field->gridScale = 500; // 1000x1000 unit sectors
+    }
     // Colored Goals
     if (ui->check_coloredGoals->isChecked()) {
         field->coloredGoals = true;
@@ -142,7 +314,7 @@ void MainWindow::updateScene() {
             ball->setScale(.8);
         }
         ball->color = ui->combo_ballColor->currentText();
-    // Updating blue labels
+    // updating Blue Labels
     for (int i=0; i<teamSize; i++) {
         if (gamemodel->find(i, gamemodel->getMyTeam()) != NULL) {
             QTransform flipLabel;
@@ -162,7 +334,7 @@ void MainWindow::updateScene() {
             guiLabels[i]->setScale(2.5);
         }
     }
-
+    // updating Yellow Labels
     for (int i=0; i<teamSize; i++) {
         if (gamemodel->find(i, gamemodel->getOponentTeam()) != NULL) {
             QTransform flipLabel;
@@ -182,7 +354,7 @@ void MainWindow::updateScene() {
             guiLabelsY[i]->setScale(2.5);
         }
     }
-
+    // updating Blue Robots
     for (int i=0; i<teamSize; i++) {
         if (gamemodel->find(i, gamemodel->getMyTeam()) != NULL) {
             guiTeam[i]->setX(getBotCoordX(true, i));
@@ -204,7 +376,7 @@ void MainWindow::updateScene() {
             }
         }
     }
-
+    // updating Yellow Robots
     for (int i=0; i<teamSize; i++) {
         if (gamemodel->find(i, gamemodel->getOponentTeam()) != NULL) {
             guiTeamY[i]->setX(getBotCoordX(false, i));
@@ -228,135 +400,11 @@ void MainWindow::updateScene() {
     }
 }//end updateScene
 
-void MainWindow::setUpScene()
-{
-    scene = new QGraphicsScene(this);
-
-    // Creating the sidelines
-    sidelines = new GuiSidelines();
-    sidelines->setX(-4000);         // Offsets are 50% of the item's height & width
-    sidelines->setY(-3000);
-    sidelines->setZValue(0);
-//    sidelines->plain = true;
-    // Creating the field
-    field = new GuiField();
-    field->setX(-2900);
-    field->setY(-1900); // Y seems to be 100 off (?)
-    field->setZValue(1);
-    field->grid = false;
-    // Creating the ball
-    ball = new GuiBall;
-
-    // Elaborate hide/show workaround to get the field centered on launch (works with defaultZoom();
-    ui->gView_field->setScene(scene);
-    ui->gView_field->show();
-
-    //Bot Labels - blue team
-    botLabel0 = new GuiBotLabel;
-    botLabel1 = new GuiBotLabel;
-    botLabel2 = new GuiBotLabel;
-    botLabel3 = new GuiBotLabel;
-    botLabel4 = new GuiBotLabel;
-    botLabel5 = new GuiBotLabel;
-    // Putting into blue vector
-    guiLabels.push_back(botLabel0);
-    guiLabels.push_back(botLabel1);
-    guiLabels.push_back(botLabel2);
-    guiLabels.push_back(botLabel3);
-    guiLabels.push_back(botLabel4);
-    guiLabels.push_back(botLabel5);
-
-    scene->addItem(botLabel0);
-    scene->addItem(botLabel1);
-    scene->addItem(botLabel2);
-    scene->addItem(botLabel3);
-    scene->addItem(botLabel4);
-    scene->addItem(botLabel5);
-
-    // Bot Labels - yellow team
-    botLabel0Y = new GuiBotLabel;
-    botLabel1Y = new GuiBotLabel;
-    botLabel2Y = new GuiBotLabel;
-    botLabel3Y = new GuiBotLabel;
-    botLabel4Y = new GuiBotLabel;
-    botLabel5Y = new GuiBotLabel;
-
-    // Putting into yellow vector
-    guiLabelsY.push_back(botLabel0Y);
-    guiLabelsY.push_back(botLabel1Y);
-    guiLabelsY.push_back(botLabel2Y);
-    guiLabelsY.push_back(botLabel3Y);
-    guiLabelsY.push_back(botLabel4Y);
-    guiLabelsY.push_back(botLabel5Y);
-
-    scene->addItem(botLabel0Y);
-    scene->addItem(botLabel1Y);
-    scene->addItem(botLabel2Y);
-    scene->addItem(botLabel3Y);
-    scene->addItem(botLabel4Y);
-    scene->addItem(botLabel5Y);
-
-    // Blue Team Robots
-    robot0 = new GuiRobot();
-    robot1 = new GuiRobot();
-    robot2 = new GuiRobot();
-    robot3 = new GuiRobot();
-    robot4 = new GuiRobot();
-    robot5 = new GuiRobot();
-
-    // Putting into blue team vector
-    guiTeam.push_back(robot0);
-    guiTeam.push_back(robot1);
-    guiTeam.push_back(robot2);
-    guiTeam.push_back(robot3);
-    guiTeam.push_back(robot4);
-    guiTeam.push_back(robot5);
-
-
-    scene->addItem(robot0);
-    scene->addItem(robot1);
-    scene->addItem(robot2);
-    scene->addItem(robot3);
-    scene->addItem(robot4);
-    scene->addItem(robot5);
-
-    // Yellow Team
-    robot0Y = new GuiRobot();
-    robot1Y = new GuiRobot();
-    robot2Y = new GuiRobot();
-    robot3Y = new GuiRobot();
-    robot4Y = new GuiRobot();
-    robot5Y = new GuiRobot();
-
-    guiTeamY.push_back(robot0Y);
-    guiTeamY.push_back(robot1Y);
-    guiTeamY.push_back(robot2Y);
-    guiTeamY.push_back(robot3Y);
-    guiTeamY.push_back(robot4Y);
-    guiTeamY.push_back(robot5Y);
-
-
-    scene->addItem(robot0Y);
-    scene->addItem(robot1Y);
-    scene->addItem(robot2Y);
-    scene->addItem(robot3Y);
-    scene->addItem(robot4Y);
-    scene->addItem(robot5Y);
-
-    scene->addItem(sidelines);
-    scene->addItem(field);
-    scene->addItem(ball);
-
-    ui->gView_field->hide();
-    ui->gView_field->show();
-}
 
 void MainWindow::createPointer()
 {
-//    QGraphicsScene *s;
-    //    updatePointer(s);
-}
 
+}
 
 void MainWindow::updatePointer() {
 
@@ -565,60 +613,6 @@ QString MainWindow::getRemTime() {
     return t;
 }
 
-void MainWindow::printBots() {
-
-
-    // X Coordinate vector
-    std::vector<QLCDNumber*> botXcoords(teamSize);
-    botXcoords[0] = ui->lcd_coordX_0;
-    botXcoords[1] = ui->lcd_coordX_1;
-    botXcoords[2] = ui->lcd_coordX_2;
-    botXcoords[3] = ui->lcd_coordX_3;
-    botXcoords[4] = ui->lcd_coordX_4;
-    botXcoords[5] = ui->lcd_coordX_5;
-    // Y Coordinate vector
-    std::vector<QLCDNumber*> botYcoords(teamSize);
-    botYcoords[0] = ui->lcd_coordY_0;
-    botYcoords[1] = ui->lcd_coordY_1;
-    botYcoords[2] = ui->lcd_coordY_2;
-    botYcoords[3] = ui->lcd_coordY_3;
-    botYcoords[4] = ui->lcd_coordY_4;
-    botYcoords[5] = ui->lcd_coordY_5;
-    // Orientation vector
-    std::vector<QLCDNumber*> botOrients(teamSize);
-    botOrients[0] = ui->lcd_orient_0;
-    botOrients[1] = ui->lcd_orient_1;
-    botOrients[2] = ui->lcd_orient_2;
-    botOrients[3] = ui->lcd_orient_3;
-    botOrients[4] = ui->lcd_orient_4;
-    botOrients[5] = ui->lcd_orient_5;
-    // Icon vector
-    std::vector<QLabel*> botIcons(teamSize);
-    botIcons[0] = ui->output_icon_0;
-    botIcons[1] = ui->output_icon_1;
-    botIcons[2] = ui->output_icon_2;
-    botIcons[3] = ui->output_icon_3;
-    botIcons[4] = ui->output_icon_4;
-    botIcons[5] = ui->output_icon_5;
-    // Title label vector
-    std::vector<QLabel*> botTitle(teamSize);
-    botTitle[0] = ui->title_robPanel_0;
-    botTitle[1] = ui->title_robPanel_1;
-    botTitle[2] = ui->title_robPanel_2;
-    botTitle[3] = ui->title_robPanel_3;
-    botTitle[4] = ui->title_robPanel_4;
-    botTitle[5] = ui->title_robPanel_5;
-    // Printing to GUI
-    for (int i=0; i<teamSize; i++) {
-        if (gamemodel->find(i,gamemodel->getMyTeam()) != NULL) {
-            botTitle[i]->setText("Robot " + QString::number(i));
-            botIcons[i]->setPixmap(QPixmap::fromImage(getStatusImg(i)));
-            botXcoords[i]->display(getBotCoordX(true, i));
-            botYcoords[i]->display(getBotCoordY(true, i));
-            botOrients[i]->display(getBotOrientString(i));
-        }
-    }
-}
 
 void MainWindow::printBall() {
     ui->lcd_coordX_ball->display(getBallCoordX());
@@ -646,16 +640,6 @@ void MainWindow::on_pushButton_3_clicked()
 
 
 void MainWindow::gameModelUpdated() {
-    if (SIMULATED) {
-        ui->menuDashboard->setTitle("Simulation");
-    } else {
-        ui->menuDashboard->setTitle("Camera");
-    }
-    // Print-to-GUI functions
-    printBots();
-    printBall();
-//    updateScene();
-//    QCoreApplication::processEvents();
 
 }
 
@@ -694,3 +678,14 @@ MainWindow::~MainWindow()
 }
 
 
+
+void MainWindow::on_btn_Simulated_clicked()
+{
+    cout << "btn_Simulated clicked \n";
+    if (SIMULATED) {
+        #define SIMULATED 0;
+    } else {
+        #define SIMULATED 1;
+    }
+
+}

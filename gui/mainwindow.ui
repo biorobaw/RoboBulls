@@ -51,7 +51,7 @@
       <property name="alignment">
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
       </property>
-      <widget class="QWidget" name="scrollAreaWidgetContents_2">
+      <widget class="QWidget" name="mainScrollArea">
        <property name="geometry">
         <rect>
          <x>0</x>
@@ -118,6 +118,9 @@
           </property>
           <item>
            <widget class="QFrame" name="frame_robot_0">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
             <property name="maximumSize">
              <size>
               <width>16777215</width>
@@ -216,7 +219,7 @@
                <height>21</height>
               </rect>
              </property>
-             <layout class="QGridLayout" name="gridLayout_6">
+             <layout class="QGridLayout" name="bot0Coord">
               <item row="0" column="0">
                <widget class="QLabel" name="label_coord_0">
                 <property name="minimumSize">
@@ -349,7 +352,7 @@
                <height>26</height>
               </rect>
              </property>
-             <layout class="QGridLayout" name="gridLayout_13">
+             <layout class="QGridLayout" name="bot0Pos">
               <item row="0" column="0">
                <widget class="QLabel" name="label_position_12">
                 <property name="minimumSize">
@@ -436,7 +439,7 @@
                <height>20</height>
               </rect>
              </property>
-             <layout class="QGridLayout" name="gridLayout_4">
+             <layout class="QGridLayout" name="bot0Orient">
               <item row="0" column="0">
                <widget class="QLabel" name="label_orient_0">
                 <property name="minimumSize">
@@ -526,17 +529,23 @@
               <rect>
                <x>30</x>
                <y>20</y>
-               <width>116</width>
+               <width>181</width>
                <height>24</height>
               </rect>
              </property>
-             <layout class="QGridLayout" name="gridLayout_32">
+             <layout class="QGridLayout" name="behavior_0">
               <item row="0" column="0">
-               <widget class="QLabel" name="label_status_18">
+               <widget class="QLabel" name="label_behavior_0">
                 <property name="minimumSize">
                  <size>
                   <width>20</width>
                   <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>60</width>
+                  <height>16777215</height>
                  </size>
                 </property>
                 <property name="baseSize">
@@ -553,7 +562,7 @@
                  </font>
                 </property>
                 <property name="text">
-                 <string>Status:     </string>
+                 <string>Behavior: </string>
                 </property>
                 <property name="margin">
                  <number>0</number>
@@ -561,19 +570,15 @@
                </widget>
               </item>
               <item row="0" column="1">
-               <widget class="QCheckBox" name="checkBox_active_7">
+               <widget class="QLabel" name="print_behavior_0">
                 <property name="font">
                  <font>
+                  <family>Courier 10 Pitch</family>
                   <pointsize>8</pointsize>
-                  <weight>50</weight>
-                  <bold>false</bold>
                  </font>
                 </property>
                 <property name="text">
-                 <string>Active</string>
-                </property>
-                <property name="checked">
-                 <bool>true</bool>
+                 <string>TextLabel</string>
                 </property>
                </widget>
               </item>
@@ -640,64 +645,6 @@
              <property name="alignment">
               <set>Qt::AlignHCenter|Qt::AlignTop</set>
              </property>
-            </widget>
-            <widget class="QWidget" name="layoutWidget_2">
-             <property name="geometry">
-              <rect>
-               <x>30</x>
-               <y>20</y>
-               <width>116</width>
-               <height>24</height>
-              </rect>
-             </property>
-             <layout class="QGridLayout" name="gridLayout_5">
-              <item row="0" column="0">
-               <widget class="QLabel" name="label_status_13">
-                <property name="minimumSize">
-                 <size>
-                  <width>20</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="baseSize">
-                 <size>
-                  <width>20</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="font">
-                 <font>
-                  <pointsize>8</pointsize>
-                  <weight>50</weight>
-                  <bold>false</bold>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Status:     </string>
-                </property>
-                <property name="margin">
-                 <number>0</number>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
-               <widget class="QCheckBox" name="checkBox_active_2">
-                <property name="font">
-                 <font>
-                  <pointsize>8</pointsize>
-                  <weight>50</weight>
-                  <bold>false</bold>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Active</string>
-                </property>
-                <property name="checked">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-             </layout>
             </widget>
             <widget class="QLabel" name="output_icon_1">
              <property name="geometry">
@@ -1025,6 +972,66 @@
               </item>
              </layout>
             </widget>
+            <widget class="QWidget" name="layoutWidget_23">
+             <property name="geometry">
+              <rect>
+               <x>30</x>
+               <y>20</y>
+               <width>181</width>
+               <height>24</height>
+              </rect>
+             </property>
+             <layout class="QGridLayout" name="behavior_1">
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_behavior_1">
+                <property name="minimumSize">
+                 <size>
+                  <width>20</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>60</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="baseSize">
+                 <size>
+                  <width>20</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>8</pointsize>
+                  <weight>50</weight>
+                  <bold>false</bold>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Behavior: </string>
+                </property>
+                <property name="margin">
+                 <number>0</number>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QLabel" name="print_behavior_1">
+                <property name="font">
+                 <font>
+                  <family>Courier 10 Pitch</family>
+                  <pointsize>8</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>TextLabel</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
            </widget>
           </item>
           <item>
@@ -1086,64 +1093,6 @@
              <property name="alignment">
               <set>Qt::AlignHCenter|Qt::AlignTop</set>
              </property>
-            </widget>
-            <widget class="QWidget" name="layoutWidget_6">
-             <property name="geometry">
-              <rect>
-               <x>30</x>
-               <y>20</y>
-               <width>116</width>
-               <height>24</height>
-              </rect>
-             </property>
-             <layout class="QGridLayout" name="gridLayout_9">
-              <item row="0" column="0">
-               <widget class="QLabel" name="label_status_14">
-                <property name="minimumSize">
-                 <size>
-                  <width>20</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="baseSize">
-                 <size>
-                  <width>20</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="font">
-                 <font>
-                  <pointsize>8</pointsize>
-                  <weight>50</weight>
-                  <bold>false</bold>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Status:     </string>
-                </property>
-                <property name="margin">
-                 <number>0</number>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
-               <widget class="QCheckBox" name="checkBox_active_3">
-                <property name="font">
-                 <font>
-                  <pointsize>8</pointsize>
-                  <weight>50</weight>
-                  <bold>false</bold>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Active</string>
-                </property>
-                <property name="checked">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-             </layout>
             </widget>
             <widget class="QLabel" name="output_icon_2">
              <property name="geometry">
@@ -1471,6 +1420,66 @@
               </item>
              </layout>
             </widget>
+            <widget class="QWidget" name="layoutWidget_24">
+             <property name="geometry">
+              <rect>
+               <x>30</x>
+               <y>20</y>
+               <width>181</width>
+               <height>24</height>
+              </rect>
+             </property>
+             <layout class="QGridLayout" name="behavior_2">
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_behavior_2">
+                <property name="minimumSize">
+                 <size>
+                  <width>20</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>60</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="baseSize">
+                 <size>
+                  <width>20</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>8</pointsize>
+                  <weight>50</weight>
+                  <bold>false</bold>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Behavior: </string>
+                </property>
+                <property name="margin">
+                 <number>0</number>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QLabel" name="print_behavior_2">
+                <property name="font">
+                 <font>
+                  <family>Courier 10 Pitch</family>
+                  <pointsize>8</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>TextLabel</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
            </widget>
           </item>
           <item>
@@ -1532,64 +1541,6 @@
              <property name="alignment">
               <set>Qt::AlignHCenter|Qt::AlignTop</set>
              </property>
-            </widget>
-            <widget class="QWidget" name="layoutWidget_10">
-             <property name="geometry">
-              <rect>
-               <x>30</x>
-               <y>20</y>
-               <width>116</width>
-               <height>24</height>
-              </rect>
-             </property>
-             <layout class="QGridLayout" name="gridLayout_12">
-              <item row="0" column="0">
-               <widget class="QLabel" name="label_status_15">
-                <property name="minimumSize">
-                 <size>
-                  <width>20</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="baseSize">
-                 <size>
-                  <width>20</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="font">
-                 <font>
-                  <pointsize>8</pointsize>
-                  <weight>50</weight>
-                  <bold>false</bold>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Status:     </string>
-                </property>
-                <property name="margin">
-                 <number>0</number>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
-               <widget class="QCheckBox" name="checkBox_active_4">
-                <property name="font">
-                 <font>
-                  <pointsize>8</pointsize>
-                  <weight>50</weight>
-                  <bold>false</bold>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Active</string>
-                </property>
-                <property name="checked">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-             </layout>
             </widget>
             <widget class="QLabel" name="output_icon_3">
              <property name="geometry">
@@ -1917,6 +1868,66 @@
               </item>
              </layout>
             </widget>
+            <widget class="QWidget" name="layoutWidget_25">
+             <property name="geometry">
+              <rect>
+               <x>30</x>
+               <y>20</y>
+               <width>181</width>
+               <height>24</height>
+              </rect>
+             </property>
+             <layout class="QGridLayout" name="behavior_3">
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_behavior_3">
+                <property name="minimumSize">
+                 <size>
+                  <width>20</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>60</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="baseSize">
+                 <size>
+                  <width>20</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>8</pointsize>
+                  <weight>50</weight>
+                  <bold>false</bold>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Behavior: </string>
+                </property>
+                <property name="margin">
+                 <number>0</number>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QLabel" name="print_behavior_3">
+                <property name="font">
+                 <font>
+                  <family>Courier 10 Pitch</family>
+                  <pointsize>8</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>TextLabel</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
            </widget>
           </item>
           <item>
@@ -1978,64 +1989,6 @@
              <property name="alignment">
               <set>Qt::AlignHCenter|Qt::AlignTop</set>
              </property>
-            </widget>
-            <widget class="QWidget" name="layoutWidget_14">
-             <property name="geometry">
-              <rect>
-               <x>30</x>
-               <y>20</y>
-               <width>116</width>
-               <height>24</height>
-              </rect>
-             </property>
-             <layout class="QGridLayout" name="gridLayout_20">
-              <item row="0" column="0">
-               <widget class="QLabel" name="label_status_16">
-                <property name="minimumSize">
-                 <size>
-                  <width>20</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="baseSize">
-                 <size>
-                  <width>20</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="font">
-                 <font>
-                  <pointsize>8</pointsize>
-                  <weight>50</weight>
-                  <bold>false</bold>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Status:     </string>
-                </property>
-                <property name="margin">
-                 <number>0</number>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
-               <widget class="QCheckBox" name="checkBox_active_5">
-                <property name="font">
-                 <font>
-                  <pointsize>8</pointsize>
-                  <weight>50</weight>
-                  <bold>false</bold>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Active</string>
-                </property>
-                <property name="checked">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-             </layout>
             </widget>
             <widget class="QLabel" name="output_icon_4">
              <property name="geometry">
@@ -2363,6 +2316,66 @@
               </item>
              </layout>
             </widget>
+            <widget class="QWidget" name="layoutWidget_26">
+             <property name="geometry">
+              <rect>
+               <x>30</x>
+               <y>20</y>
+               <width>181</width>
+               <height>24</height>
+              </rect>
+             </property>
+             <layout class="QGridLayout" name="behavior_4">
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_behavior_4">
+                <property name="minimumSize">
+                 <size>
+                  <width>20</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>60</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="baseSize">
+                 <size>
+                  <width>20</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>8</pointsize>
+                  <weight>50</weight>
+                  <bold>false</bold>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Behavior: </string>
+                </property>
+                <property name="margin">
+                 <number>0</number>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QLabel" name="print_behavior_4">
+                <property name="font">
+                 <font>
+                  <family>Courier 10 Pitch</family>
+                  <pointsize>8</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>TextLabel</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
            </widget>
           </item>
           <item>
@@ -2424,64 +2437,6 @@
              <property name="alignment">
               <set>Qt::AlignHCenter|Qt::AlignTop</set>
              </property>
-            </widget>
-            <widget class="QWidget" name="layoutWidget_18">
-             <property name="geometry">
-              <rect>
-               <x>30</x>
-               <y>20</y>
-               <width>116</width>
-               <height>24</height>
-              </rect>
-             </property>
-             <layout class="QGridLayout" name="gridLayout_26">
-              <item row="0" column="0">
-               <widget class="QLabel" name="label_status_17">
-                <property name="minimumSize">
-                 <size>
-                  <width>20</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="baseSize">
-                 <size>
-                  <width>20</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="font">
-                 <font>
-                  <pointsize>8</pointsize>
-                  <weight>50</weight>
-                  <bold>false</bold>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Status:     </string>
-                </property>
-                <property name="margin">
-                 <number>0</number>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
-               <widget class="QCheckBox" name="checkBox_active_6">
-                <property name="font">
-                 <font>
-                  <pointsize>8</pointsize>
-                  <weight>50</weight>
-                  <bold>false</bold>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Active</string>
-                </property>
-                <property name="checked">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-             </layout>
             </widget>
             <widget class="QLabel" name="output_icon_5">
              <property name="geometry">
@@ -2809,6 +2764,66 @@
               </item>
              </layout>
             </widget>
+            <widget class="QWidget" name="layoutWidget_27">
+             <property name="geometry">
+              <rect>
+               <x>30</x>
+               <y>20</y>
+               <width>181</width>
+               <height>24</height>
+              </rect>
+             </property>
+             <layout class="QGridLayout" name="behavior_5">
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_behavior_5">
+                <property name="minimumSize">
+                 <size>
+                  <width>20</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>60</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="baseSize">
+                 <size>
+                  <width>20</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>8</pointsize>
+                  <weight>50</weight>
+                  <bold>false</bold>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Behavior: </string>
+                </property>
+                <property name="margin">
+                 <number>0</number>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QLabel" name="print_behavior_5">
+                <property name="font">
+                 <font>
+                  <family>Courier 10 Pitch</family>
+                  <pointsize>8</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>TextLabel</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
            </widget>
           </item>
          </layout>
@@ -2928,14 +2943,14 @@
         <widget class="QTabWidget" name="tab_ball">
          <property name="geometry">
           <rect>
-           <x>0</x>
+           <x>10</x>
            <y>0</y>
-           <width>461</width>
+           <width>781</width>
            <height>71</height>
           </rect>
          </property>
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="field">
           <attribute name="title">
@@ -2946,7 +2961,7 @@
             <rect>
              <x>10</x>
              <y>0</y>
-             <width>299</width>
+             <width>411</width>
              <height>41</height>
             </rect>
            </property>
@@ -2961,7 +2976,7 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="1">
+            <item row="0" column="3">
              <widget class="QCheckBox" name="check_coloredGoals">
               <property name="text">
                <string>Team Colors</string>
@@ -2971,13 +2986,16 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="2">
+            <item row="0" column="5">
              <widget class="QComboBox" name="combo_fieldColor">
               <property name="minimumSize">
                <size>
                 <width>112</width>
                 <height>0</height>
                </size>
+              </property>
+              <property name="currentText">
+               <string>Default</string>
               </property>
               <property name="currentIndex">
                <number>0</number>
@@ -3004,7 +3022,7 @@
               </item>
               <item>
                <property name="text">
-                <string>White</string>
+                <string>Arctic</string>
                </property>
               </item>
               <item>
@@ -3013,6 +3031,57 @@
                </property>
               </item>
              </widget>
+            </item>
+            <item row="0" column="2">
+             <spacer name="horizontalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="0" column="1">
+             <widget class="QComboBox" name="combo_gridScale">
+              <property name="currentText">
+               <string>500²</string>
+              </property>
+              <property name="currentIndex">
+               <number>1</number>
+              </property>
+              <item>
+               <property name="text">
+                <string>200²</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>500²</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>1000²</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item row="0" column="4">
+             <spacer name="horizontalSpacer_3">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
             </item>
            </layout>
           </widget>
@@ -3040,7 +3109,7 @@
                <string>Show IDs</string>
               </property>
               <property name="checked">
-               <bool>true</bool>
+               <bool>false</bool>
               </property>
              </widget>
             </item>
@@ -3564,7 +3633,7 @@
            <widget class="QPushButton" name="pushButton">
             <property name="geometry">
              <rect>
-              <x>130</x>
+              <x>20</x>
               <y>90</y>
               <width>99</width>
               <height>27</height>
@@ -3585,6 +3654,19 @@
             </property>
             <property name="text">
              <string>Click button to connect to the project...</string>
+            </property>
+           </widget>
+           <widget class="QPushButton" name="btn_Simulated">
+            <property name="geometry">
+             <rect>
+              <x>160</x>
+              <y>90</y>
+              <width>99</width>
+              <height>27</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Simulated</string>
             </property>
            </widget>
           </widget>
@@ -3624,16 +3706,10 @@
   <tabstop>pushButton</tabstop>
   <tabstop>scrollArea</tabstop>
   <tabstop>tab_ball</tabstop>
-  <tabstop>checkBox_active_7</tabstop>
-  <tabstop>checkBox_active_2</tabstop>
-  <tabstop>checkBox_active_3</tabstop>
-  <tabstop>checkBox_active_4</tabstop>
-  <tabstop>checkBox_active_5</tabstop>
   <tabstop>comboBox_position_13</tabstop>
   <tabstop>comboBox_position_16</tabstop>
   <tabstop>zoom_slider</tabstop>
   <tabstop>zoom_default</tabstop>
-  <tabstop>checkBox_active_6</tabstop>
   <tabstop>comboBox_position_17</tabstop>
   <tabstop>comboBox_position_14</tabstop>
   <tabstop>pushButton_3</tabstop>
@@ -3647,6 +3723,7 @@
   <tabstop>comboBox_position_12</tabstop>
   <tabstop>combo_fieldColor</tabstop>
   <tabstop>comboBox_position_15</tabstop>
+  <tabstop>btn_Simulated</tabstop>
  </tabstops>
  <resources>
   <include location="images.qrc"/>

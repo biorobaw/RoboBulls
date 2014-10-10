@@ -26,7 +26,7 @@ void GuiBotLabel::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
     painter->setPen(QPen(Qt::black, 12, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
 //    painter->setBrush(QBrush(Qt::black, Qt::SolidPattern));
 
-    QString label(QString::number(id));
+    QString label("" + QString::number(id));
     if (hidden == false){
 //        painter->drawEllipse(rec);
         if (myTeam) {

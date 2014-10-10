@@ -15,6 +15,7 @@ public:
     bool grid = false;
     bool coloredGoals = false;
     QString colorScheme = "Default";
+    int gridScale = 100;
 
 };
 

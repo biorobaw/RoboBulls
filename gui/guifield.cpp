@@ -1,4 +1,6 @@
 #include "guifield.h"
+#include <iostream>
+
 
 GuiField::GuiField()
 {
@@ -42,6 +44,7 @@ void GuiField::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     QBrush plainBrush(Qt::darkGreen, Qt::SolidPattern);
     QBrush crossBrush(Qt::cyan, Qt::SolidPattern);
     QBrush brush(Qt::white, Qt::SolidPattern);
+    int fieldLineThick = 40;
 //    if (plain) {
 //        painter->fillRect(rec,plainBrush);
 //    } else {
@@ -49,41 +52,41 @@ void GuiField::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 //    }
     if (colorScheme == "Default") {
         brush = (QBrush(Qt::darkGreen, Qt::SolidPattern));
-        painter->setPen(QPen(Qt::white, 30, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
+        painter->setPen(QPen(Qt::white, fieldLineThick, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
         borderPen = (QPen(Qt::white, 50, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
         goalPen = (QPen(Qt::lightGray, goalThick, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
         painter->fillRect(rec, brush);
     } else if (colorScheme == "Ice Rink") {
-            brush = (QBrush(Qt::cyan, Qt::SolidPattern));
-            painter->setPen(QPen(Qt::red, 30, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
+            brush = (QBrush(QColor::fromRgb(200,255,255,255), Qt::SolidPattern));
+            painter->setPen(QPen(Qt::red, fieldLineThick, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
             borderPen = (QPen(Qt::red, 50, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
             goalPen = (QPen(Qt::darkRed, goalThick, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
             painter->fillRect(rec, brush);
 
     } else if (colorScheme == "Air Hockey") {
-        brush = (QBrush(QColor::fromRgb(0,0,200,255), Qt::SolidPattern));
-        painter->setPen(QPen(Qt::white, 30, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
+        brush = (QBrush(QColor::fromRgb(50,50,200,255), Qt::SolidPattern));
+        painter->setPen(QPen(Qt::white, fieldLineThick, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
         borderPen = (QPen(Qt::white, 50, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
         goalPen = (QPen(QColor::fromRgb(56,56,56,255), goalThick, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
         painter->fillRect(rec, brush);
 
     } else if (colorScheme == "Basketball") {
         brush = (QBrush(QColor::fromRgb(205,133,63,255), Qt::SolidPattern));
-        painter->setPen(QPen(Qt::white, 30, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
+        painter->setPen(QPen(Qt::white, fieldLineThick, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
         borderPen = (QPen(Qt::white, 50, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
         goalPen = (QPen(QColor::fromRgb(152,0,0,255), goalThick, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
         painter->fillRect(rec, brush);
 
-    } else if (colorScheme == "White") {
+    } else if (colorScheme == "Arctic") {
         brush = (QBrush(Qt::white, Qt::SolidPattern));
-        painter->setPen(QPen(Qt::darkGray, 30, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
+        painter->setPen(QPen(Qt::darkGray, fieldLineThick, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
         borderPen = (QPen(Qt::darkGray, 50, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
         goalPen = (QPen(QColor::fromRgb(32,32,32,255), goalThick, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
         painter->fillRect(rec, brush);
 
     } else if (colorScheme == "Game Boy") {
         brush = (QBrush(QColor::fromRgb(152,251,152,255), Qt::SolidPattern));
-        painter->setPen(QPen(QColor::fromRgb(85,107,47,255), 30, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
+        painter->setPen(QPen(QColor::fromRgb(85,107,47,255), fieldLineThick, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
         borderPen = (QPen(QColor::fromRgb(85,107,47,255), 50, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
         goalPen = (QPen(QColor::fromRgb(37,57,0,255), goalThick, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
         painter->fillRect(rec, brush);
@@ -98,17 +101,19 @@ void GuiField::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     // Drawing Grid
     if (grid) {
         painter->setPen(QPen(Qt::black, 5, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
-        int longDenom = (rec.width()/2) / 100;
-        int latiDenom = (rec.height()/2) / 100;
+        int longDenom = (rec.width()/2) / gridScale;
+        int latiDenom = (rec.height()/2) / gridScale;
         for (int i=1; i<longDenom; i++) {
             int gridX = i*rec.width()/longDenom;
             QLineF longitude(gridX,0, gridX,4000);
             painter->drawLine(longitude);
+            std::cout << "gridX: " << gridX << "\n";
         }
         for (int j=1; j<latiDenom; j++) {
             int gridY = j*rec.height()/latiDenom;
             QLineF latitude(0,gridY, 6000,gridY);
             painter->drawLine(latitude);
+            std::cout << "gridY: " << gridY << "\n";
         }
     }
     // Drawing goals
