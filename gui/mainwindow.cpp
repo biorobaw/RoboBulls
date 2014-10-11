@@ -265,6 +265,23 @@ void MainWindow::updateBotPanel() {
 }
 
 void MainWindow::scanForSelection() {
+    if (field->Pressed == true) {
+        cout << "field pressed \n";
+        field->highlighted = true;
+        field->Pressed = false;
+    }
+    if (field->highlighted == true) {
+        for (int i=0; i<teamSize; i++) {
+            if (gamemodel->find(i,gamemodel->getMyTeam()) != NULL) {
+                guiTeam[i]->highlighted = false;
+                guiTeam[i]->setSelected(false);
+                botIcons[i]->highlighted = false;
+                botIcons[i]->setSelected(false);
+            }//nullcheck
+        }
+        field->highlighted = false;
+        selectedBot = -1;
+    }
 
     for (int i=0; i<teamSize; i++) {
         if (gamemodel->find(i,gamemodel->getMyTeam()) != NULL) {
@@ -276,7 +293,9 @@ void MainWindow::scanForSelection() {
                     guiTeam[j]->setSelected(false);
                     botIcons[j]->highlighted = false;
                     botIcons[j]->setSelected(false);
+
                 }
+//                field->highlighted = false;
                 botIcons[i]->highlighted = true;
                 guiTeam[i]->highlighted = true;
                 refresh = true;
@@ -297,6 +316,7 @@ void MainWindow::scanForSelection() {
                     botIcons[j]->highlighted = false;
                     botIcons[j]->setSelected(false);
                 }
+//                field->highlighted = false;
                 botIcons[i]->highlighted = true;
                 guiTeam[i]->highlighted = true;
                 refresh = true;
@@ -337,7 +357,8 @@ int MainWindow::getVelocity(int id) {
         velocity += rb;
         wheels++;
     }
-    velocity /= wheels;
+    if (velocity != 0 && wheels != 0)
+        velocity /= wheels;
 
     return velocity;
 }
@@ -351,7 +372,7 @@ void MainWindow::setUpScene()
     spaceBar->setKey(Qt::Key_Space);
 
 
-    connect(enter, SIGNAL(activated()), this, SLOT(on_pushButton_clicked()));
+    connect(spaceBar, SIGNAL(activated()), this, SLOT(on_pushButton_clicked()));
 
     scene = new QGraphicsScene(this);
 
@@ -367,6 +388,8 @@ void MainWindow::setUpScene()
     field->setY(-1900); // Y seems to be 100 off (?)
     field->setZValue(1);
     field->grid = false;
+//    field->highlighted = false;
+//    field->Pressed = false;
 
     // Creating the ball
     ball = new GuiBall;
@@ -429,6 +452,7 @@ void MainWindow::setUpScene()
     guiTeamY.push_back(robot5Y);
 
     // Adding the previous gui items to the scene
+    scene->addItem(field);
     scene->addItem(botLabel0);
     scene->addItem(botLabel1);
     scene->addItem(botLabel2);
@@ -454,7 +478,6 @@ void MainWindow::setUpScene()
     scene->addItem(robot4Y);
     scene->addItem(robot5Y);
     scene->addItem(sidelines);
-    scene->addItem(field);
     scene->addItem(ball);
 
     // Raising the curtains...
@@ -909,8 +932,13 @@ void MainWindow::updateSelectedBotPanel(int id)
 {
     int v = 0;
     if (id == -1) {
-        ui->label_primeBot->setText(" ");
         ui->gView_robot_prime->hide();
+        ui->dial_botSpeed->setValue(0);
+        ui->lcd_botSpeed->display(0);
+        ui->lcd_orient_prime->display("0");
+        ui->lcd_coordX_prime->display("0");
+        ui->lcd_coordY_prime->display("0");
+        ui->box_primeBot->setTitle(" ");
     } else {
         v = getVelocity(id);
         ui->gView_robot_prime->show();
@@ -920,8 +948,8 @@ void MainWindow::updateSelectedBotPanel(int id)
         ui->lcd_coordX_prime->display(getBotCoordX(true, id));
         ui->lcd_coordY_prime->display(getBotCoordY(true,id));
         ui->box_primeBot->setTitle("Robot " + QString::number(id));
-
-
+        // TEST
+//        ui->frame_robot_3->hide();    // works!
         ui->gView_robot_prime->setScene(botIconSelScenes[id]);
 
     }

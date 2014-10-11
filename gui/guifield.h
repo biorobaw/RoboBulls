@@ -16,7 +16,12 @@ public:
     bool coloredGoals = false;
     QString colorScheme = "Default";
     int gridScale = 100;
+    bool Pressed = false;
+    bool highlighted = false;
 
+protected:
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);          // we want to know when the mouse is pressed...
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);       // ..and released
 };
 
 #endif // GUIFIELD_H

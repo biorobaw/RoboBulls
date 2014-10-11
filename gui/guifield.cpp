@@ -1,9 +1,11 @@
 #include "guifield.h"
 #include <iostream>
+#include <QApplication>
 
 
 GuiField::GuiField()
 {
+    Pressed = false;
 //    setFlag(ItemIsMovable); // makes it movable
 //    setFlag(ItemIsSelectable);
 }
@@ -16,6 +18,13 @@ QRectF GuiField::boundingRect() const
 void GuiField::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     QRectF rec = boundingRect();
+
+//    QRectF sideLines(0,0,8200,6200);
+//    painter->setPen(QPen(Qt::white, 0, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
+//    QBrush clearBrush(Qt::transparent, Qt::SolidPattern);
+//    painter->fillRect(sideLines, clearBrush);
+//    painter->drawRect(sideLines);
+
     QPen borderPen(QPen(Qt::white, 20, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
     // Lines
     QLineF centerLine(3000,0, 3000,4000);
@@ -134,4 +143,22 @@ void GuiField::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 
     painter->setPen(borderPen);
     painter->drawRect(rec);
+}
+
+void GuiField::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier) == false) {
+        Pressed = true;
+    }
+    update();
+    QGraphicsItem::mousePressEvent(event);
+}
+
+void GuiField::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier) == false) {
+        Pressed = false;
+    }
+    update();
+    QGraphicsItem::mouseReleaseEvent(event);
 }
