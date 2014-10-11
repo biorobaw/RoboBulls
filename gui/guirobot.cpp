@@ -93,7 +93,7 @@ void GuiRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 
     // Robot hat
     if (highlighted) {
-        painter->setPen(QPen(Qt::green, 25, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
+        painter->setPen(QPen(Qt::green, 35, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
 //        painter->drawRect(rec);
     } else {
         painter->setPen(QPen(Qt::black, 0, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));

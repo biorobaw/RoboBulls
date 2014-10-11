@@ -130,13 +130,13 @@ void MainWindow::setupBotPanel()
     botTitle.push_back(ui->title_robPanel_3);
     botTitle.push_back(ui->title_robPanel_4);
     botTitle.push_back(ui->title_robPanel_5);
-    // Behavior vector
-//    botBehavior.push_back(ui->print_behavior_0);
-//    botBehavior.push_back(ui->print_behavior_1);
-//    botBehavior.push_back(ui->print_behavior_2);
-//    botBehavior.push_back(ui->print_behavior_3);
-//    botBehavior.push_back(ui->print_behavior_4);
-//    botBehavior.push_back(ui->print_behavior_5);
+    // Velocity dials
+    velocityDials.push_back(ui->dial_botSpeed_0);
+    velocityDials.push_back(ui->dial_botSpeed_1);
+    velocityDials.push_back(ui->dial_botSpeed_2);
+    velocityDials.push_back(ui->dial_botSpeed_3);
+    velocityDials.push_back(ui->dial_botSpeed_4);
+    velocityDials.push_back(ui->dial_botSpeed_5);
     // X Coordinate vector
     botXcoords.push_back(ui->lcd_coordX_0);
     botXcoords.push_back(ui->lcd_coordX_1);
@@ -224,7 +224,7 @@ void MainWindow::setupBotPanel()
         botIconsSelected[i]->id = i;
         botIconsSelected[i]->icon = true;
         botIconSelScenes[i]->addItem(botIconsSelected[i]);
-        botIconFrames[i]->scale(.25, .25);
+        botIconFrames[i]->scale(.2, .2);
         botIconFrames[i]->scale(1,-1);
         botIconFrames[i]->rotate(90);
         // nullcheck
@@ -256,6 +256,8 @@ void MainWindow::updateBotPanel() {
             botIconScenes[i]->removeItem(botIcons[i]);
             botIconScenes[i]->addItem(botIcons[i]);
             botIconFrames[i]->setScene(botIconScenes[i]);
+            velocityDials[i]->setValue(getVelocity(i));
+
         }
     }
     ui->gView_robot_0->hide();
@@ -310,6 +312,34 @@ void MainWindow::scanForSelection() {
     }//for loop
     updateSelectedBotPanel(selectedBot);
 
+}
+
+int MainWindow::getVelocity(int id) {
+    int velocity = 0;
+    int wheels = 0;
+    int lF = gamemodel->find(id, gamemodel->getMyTeam())->getLF();
+    int rF = gamemodel->find(id, gamemodel->getMyTeam())->getRF();
+    int lb = gamemodel->find(id, gamemodel->getMyTeam())->getLB();
+    int rb = gamemodel->find(id, gamemodel->getMyTeam())->getRB();
+    if (lF != 0) {
+        velocity += lF;
+        wheels++;
+    }
+    if (rF != 0) {
+        velocity += rF;
+        wheels++;
+    }
+    if (lb != 0) {
+        velocity += lb;
+        wheels++;
+    }
+    if (rb != 0) {
+        velocity += rb;
+        wheels++;
+    }
+    velocity /= wheels;
+
+    return velocity;
 }
 
 void MainWindow::setUpScene()
@@ -877,15 +907,15 @@ void MainWindow::field_setDragMode() {
 
 void MainWindow::updateSelectedBotPanel(int id)
 {
+    int v = 0;
     if (id == -1) {
         ui->label_primeBot->setText(" ");
         ui->gView_robot_prime->hide();
     } else {
+        v = getVelocity(id);
         ui->gView_robot_prime->show();
-        int speed = ( gamemodel->find(id, gamemodel->getMyTeam())->getLF() + gamemodel->find(id, gamemodel->getMyTeam())->getRF()
-                      + gamemodel->find(id, gamemodel->getMyTeam())->getLB() + gamemodel->find(id, gamemodel->getMyTeam())->getRB()) / 4;
-        ui->dial_botSpeed->setValue(speed);
-        ui->lcd_botSpeed->display(speed);
+        ui->dial_botSpeed->setValue(v);
+        ui->lcd_botSpeed->display(v);
         ui->lcd_orient_prime->display(getBotOrientString(id));
         ui->lcd_coordX_prime->display(getBotCoordX(true, id));
         ui->lcd_coordY_prime->display(getBotCoordY(true,id));

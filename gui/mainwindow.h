@@ -53,6 +53,7 @@ public:
     void setupBotPanel();
     void updateBotPanel();
     void scanForSelection();
+    int getVelocity(int id);
 
     void printBall();
     void gameModelUpdated();
@@ -89,6 +90,7 @@ private:
     std::vector<QLCDNumber*> botOrients;
 //    std::vector<QLabel*> botIcons;
     std::vector<QLabel*> botTitle;
+    std::vector<QDial*> velocityDials;
 
     // Bot icon graphics views
     std::vector<QGraphicsView*> botIconFrames;
