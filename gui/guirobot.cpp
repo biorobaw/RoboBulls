@@ -21,8 +21,12 @@ void GuiRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     Q_UNUSED(widget);
     Q_UNUSED(option);
 
+    int diameter = boundingRect().width();
+    int radius = diameter/2;
+    int baseDiam = diameter*.8;
 
     QRectF rec = boundingRect();
+    QRectF base(30,25,150,150);
 
     QBrush brush(Qt::magenta, Qt::SolidPattern);
     // ID circles colors
@@ -41,8 +45,8 @@ void GuiRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     QRectF lowLtCircle(0,0,cornerDiam,cornerDiam);
     QRectF centerCircle(0,0,centerDiam, centerDiam);
     // Circle centerpoints based on the robot's front facing Right
-    QPointF topRtpt(140,45);
-    QPointF topLtpt(140,155);
+    QPointF topRtpt(135,45);
+    QPointF topLtpt(135,155);
     QPointF lowRtpt(45,55);
     QPointF lowLtpt(45,145);
     QPointF centerpt(95,100);
@@ -77,10 +81,16 @@ void GuiRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
         topLtBrush.setColor(Qt::green);
         lowRtBrush.setColor(Qt::green);
     }
+    painter->setRenderHint(QPainter::Antialiasing, true);
 
     // Robot body
-    painter->setRenderHint(QPainter::Antialiasing, true);
-    painter->setPen(QPen(Qt::black, 12, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
+    painter->setPen(QPen(Qt::gray, 0, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
+    painter->setBrush(QBrush(Qt::gray, Qt::SolidPattern));
+//    painter->fillRect(base, Qt::SolidPattern);
+    painter->drawRoundedRect(base,15,15);
+
+    // Robot hat
+    painter->setPen(QPen(Qt::black, 0, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
     painter->setBrush(QBrush(Qt::black, Qt::SolidPattern));
     int startAngle = 50 * 16;
     int spanAngle = 260 * 16;

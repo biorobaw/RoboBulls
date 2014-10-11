@@ -55,6 +55,8 @@ public:
     bool hasBall;
     bool hasBeh;
 
+//    Behavior * currentBehavior; // TEST
+
 private:
     Point robotPosition;
     float orientation; //orientation of the robot

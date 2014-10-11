@@ -173,7 +173,7 @@
               <bool>false</bool>
              </property>
              <property name="text">
-              <string>Robot 0</string>
+              <string>Robot  </string>
              </property>
              <property name="alignment">
               <set>Qt::AlignHCenter|Qt::AlignTop</set>
@@ -640,7 +640,7 @@
               <bool>false</bool>
              </property>
              <property name="text">
-              <string>Robot 0</string>
+              <string>Robot  </string>
              </property>
              <property name="alignment">
               <set>Qt::AlignHCenter|Qt::AlignTop</set>
@@ -1088,7 +1088,7 @@
               <bool>false</bool>
              </property>
              <property name="text">
-              <string>Robot 0</string>
+              <string>Robot  </string>
              </property>
              <property name="alignment">
               <set>Qt::AlignHCenter|Qt::AlignTop</set>
@@ -1536,7 +1536,7 @@
               <bool>false</bool>
              </property>
              <property name="text">
-              <string>Robot 0</string>
+              <string>Robot  </string>
              </property>
              <property name="alignment">
               <set>Qt::AlignHCenter|Qt::AlignTop</set>
@@ -1984,7 +1984,7 @@
               <bool>false</bool>
              </property>
              <property name="text">
-              <string>Robot 0</string>
+              <string>Robot  </string>
              </property>
              <property name="alignment">
               <set>Qt::AlignHCenter|Qt::AlignTop</set>
@@ -2432,7 +2432,7 @@
               <bool>false</bool>
              </property>
              <property name="text">
-              <string>Robot 0</string>
+              <string>Robot  </string>
              </property>
              <property name="alignment">
               <set>Qt::AlignHCenter|Qt::AlignTop</set>
@@ -2878,7 +2878,7 @@
           <bool>true</bool>
          </property>
          <property name="focusPolicy">
-          <enum>Qt::ClickFocus</enum>
+          <enum>Qt::StrongFocus</enum>
          </property>
          <property name="frameShape">
           <enum>QFrame::Panel</enum>
@@ -2916,6 +2916,9 @@
            </color>
           </brush>
          </property>
+         <property name="interactive">
+          <bool>true</bool>
+         </property>
          <property name="sceneRect">
           <rectf>
            <x>0.000000000000000</x>
@@ -2928,7 +2931,7 @@
           <set>QPainter::Antialiasing|QPainter::TextAntialiasing</set>
          </property>
          <property name="dragMode">
-          <enum>QGraphicsView::ScrollHandDrag</enum>
+          <enum>QGraphicsView::NoDrag</enum>
          </property>
          <property name="cacheMode">
           <set>QGraphicsView::CacheBackground</set>
@@ -2940,7 +2943,7 @@
           <enum>QGraphicsView::SmartViewportUpdate</enum>
          </property>
         </widget>
-        <widget class="QTabWidget" name="tab_ball">
+        <widget class="QTabWidget" name="tabs_field">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -2949,8 +2952,11 @@
            <height>71</height>
           </rect>
          </property>
+         <property name="focusPolicy">
+          <enum>Qt::ClickFocus</enum>
+         </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>3</number>
          </property>
          <widget class="QWidget" name="field">
           <attribute name="title">
@@ -3352,7 +3358,7 @@
                <bool>false</bool>
               </property>
               <property name="invertedControls">
-               <bool>true</bool>
+               <bool>false</bool>
               </property>
               <property name="tickPosition">
                <enum>QSlider::TicksAbove</enum>
@@ -3704,25 +3710,26 @@
  </widget>
  <tabstops>
   <tabstop>pushButton</tabstop>
+  <tabstop>tabs_field</tabstop>
   <tabstop>scrollArea</tabstop>
-  <tabstop>tab_ball</tabstop>
+  <tabstop>comboBox_position_12</tabstop>
   <tabstop>comboBox_position_13</tabstop>
-  <tabstop>comboBox_position_16</tabstop>
-  <tabstop>zoom_slider</tabstop>
-  <tabstop>zoom_default</tabstop>
-  <tabstop>comboBox_position_17</tabstop>
   <tabstop>comboBox_position_14</tabstop>
+  <tabstop>comboBox_position_15</tabstop>
+  <tabstop>comboBox_position_16</tabstop>
+  <tabstop>comboBox_position_17</tabstop>
+  <tabstop>check_fieldGrid</tabstop>
+  <tabstop>combo_gridScale</tabstop>
+  <tabstop>check_coloredGoals</tabstop>
+  <tabstop>combo_fieldColor</tabstop>
+  <tabstop>check_showIDs</tabstop>
+  <tabstop>combo_botScale</tabstop>
+  <tabstop>combo_ballColor</tabstop>
+  <tabstop>combo_ballScale</tabstop>
   <tabstop>pushButton_3</tabstop>
   <tabstop>pushButton_2</tabstop>
-  <tabstop>check_showIDs</tabstop>
-  <tabstop>check_fieldGrid</tabstop>
-  <tabstop>combo_botScale</tabstop>
-  <tabstop>check_coloredGoals</tabstop>
-  <tabstop>combo_ballScale</tabstop>
-  <tabstop>combo_ballColor</tabstop>
-  <tabstop>comboBox_position_12</tabstop>
-  <tabstop>combo_fieldColor</tabstop>
-  <tabstop>comboBox_position_15</tabstop>
+  <tabstop>zoom_slider</tabstop>
+  <tabstop>zoom_default</tabstop>
   <tabstop>btn_Simulated</tabstop>
  </tabstops>
  <resources>

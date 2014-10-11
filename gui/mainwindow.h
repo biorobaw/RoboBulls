@@ -19,6 +19,8 @@
 #include "guiball.h"
 #include "guisidelines.h"
 #include "guibotlabel.h"
+#include "communication/refcomm.h"
+
 
 //class GuiComm;
 namespace Ui {
@@ -63,6 +65,7 @@ protected:
     Robot *robot;
     GuiComm *guicomm;
     GuiRobot *guirobot;
+    RefComm *refcom;
 
 
 signals:
@@ -120,6 +123,9 @@ private:
     GuiSidelines *sidelines;
     GuiBall *ball;
 
+    bool refresh = true;   // set this to true whenever a change to the field is made to refresh on next frame.
+    bool justScrolled = false;
+
     long double currentTimeMS = 0;
     double ballOrigin = 0;
     double bot0Origin = 0;
@@ -139,6 +145,13 @@ private slots:
     void createPointer();
     void setUpScene();
     void on_btn_Simulated_clicked();
+    void on_check_fieldGrid_clicked();
+    void on_combo_gridScale_currentIndexChanged(int index);
+    void on_check_coloredGoals_clicked();
+    void on_combo_fieldColor_currentIndexChanged(int index);
+    void on_check_showIDs_stateChanged(int arg1);
+    void on_combo_botScale_currentIndexChanged(int index);
+    void field_setDragMode();
 };
 
 #endif // MAINWINDOW_H

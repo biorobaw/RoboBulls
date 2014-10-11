@@ -1,9 +1,12 @@
 #include "guiball.h"
+#include <include/config/simulated.h>
 
 GuiBall::GuiBall()
 {
     Pressed = false;
-//    setFlag(ItemIsMovable); // makes it movable
+    if (SIMULATED) {
+        setFlag(ItemIsMovable); // makes it movable
+    }
     int radius = boundingRect().width() / 2;
     setTransformOriginPoint(radius,radius);   // sets center point, around which it rotates
 

@@ -16,6 +16,7 @@ public:
     bool Pressed = false;
     QString color;
 
+
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);          // we want to know when the mouse is pressed...
     void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);       // ..and released

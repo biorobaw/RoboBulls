@@ -107,13 +107,13 @@ void GuiField::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
             int gridX = i*rec.width()/longDenom;
             QLineF longitude(gridX,0, gridX,4000);
             painter->drawLine(longitude);
-            std::cout << "gridX: " << gridX << "\n";
+//            std::cout << "gridX: " << gridX << "\n";
         }
         for (int j=1; j<latiDenom; j++) {
             int gridY = j*rec.height()/latiDenom;
             QLineF latitude(0,gridY, 6000,gridY);
             painter->drawLine(latitude);
-            std::cout << "gridY: " << gridY << "\n";
+//            std::cout << "gridY: " << gridY << "\n";
         }
     }
     // Drawing goals

@@ -20,9 +20,17 @@
 #include "include/config/simulated.h"
 #include <time.h>
 #include <math.h>
+#include "include/config/simulated.h"
 // QGraphicsView
 #include <QGraphicsPixmapItem>
 #include <QGraphicsView>
+#include <QShortcut>
+#include <QMenu>
+#include <QKeyEvent>
+#include <QMouseEvent>
+#include <QMap>
+#include <QCursor>
+#include "communication/refcomm.h"
 
 using namespace std;
 
@@ -37,6 +45,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     setUpScene();
     setupBotPanel();
+
+//    setUpScene();
+//    setupBotPanel();
 
     defaultZoom();
 
@@ -75,6 +86,19 @@ void MainWindow::launch(int value)
 
     ui->label->setText(QString("Current Thread Processing Status : %1").arg(value));
 
+    // CTRL modifer for field scrolling
+    if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier) == true) {
+        ui->gView_field->setDragMode(QGraphicsView::ScrollHandDrag);
+        justScrolled = true;
+    } else {
+        ui->gView_field->setDragMode(QGraphicsView::NoDrag);
+        if (justScrolled) {
+            justScrolled = false;
+            refresh = true;
+        }
+    }
+
+    // Updating GUI
     updateScene();
     updateBotPanel();
     printBall();
@@ -159,13 +183,24 @@ void MainWindow::updateBotPanel() {
             botXcoords[i]->display(getBotCoordX(true, i));
             botYcoords[i]->display(getBotCoordY(true, i));
             botOrients[i]->display(getBotOrientString(i));
-//            cout << "Robot " << i << " behavior: " << gamemodel->find(i, gamemodel->getMyTeam())->set << "\n";
+//            botBehavior[i]->
+
+//            cout << "Robot " << i << " behavior: " << gamemodel->find(i, gamemodel->getMyTeam())-> << "\n";
         }
     }
 }
 
 void MainWindow::setUpScene()
 {
+    QShortcut *enter = new QShortcut(this);
+    enter->setKey(Qt::Key_Enter);
+
+    QShortcut *spaceBar = new QShortcut(this);
+    spaceBar->setKey(Qt::Key_Space);
+
+
+    connect(spaceBar, SIGNAL(activated()), this, SLOT(on_pushButton_clicked()));
+
     scene = new QGraphicsScene(this);
 
     // Creating the sidelines
@@ -183,6 +218,7 @@ void MainWindow::setUpScene()
 
     // Creating the ball
     ball = new GuiBall;
+    ball->setToolTip("Ball");
 
     //Bot Labels - blue team
     botLabel0 = new GuiBotLabel;
@@ -275,11 +311,16 @@ void MainWindow::setUpScene()
     // Refreshes graphics view to eliminate glitchiness
     ui->gView_field->hide();
     ui->gView_field->show();
+
 }// setupScene
 
 void MainWindow::updateScene() {
-    ui->gView_field->hide();
-    ui->gView_field->show();
+//    ui->gView_field->hide();
+    if (refresh) {
+        ui->gView_field->hide();
+        ui->gView_field->show();
+        refresh = false;
+    }
 
     // Grid
     if (ui->check_fieldGrid->isChecked()) {
@@ -552,7 +593,7 @@ QImage MainWindow::getStatusImg(int id) {
 //        //cout << id << " hasBeh FALSE \n";
 //        botStatusPic.load(":/images/process-stop.png");
 //    }
-    //cout << id << ": " << gamemodel->find(id, team)->getCurrentBeh() << "\n";
+//    cout << id << ": " << gamemodel->find(id, team)->getCurrentBeh() << "\n";
     return botStatusPic;
 }
 
@@ -622,6 +663,9 @@ void MainWindow::printBall() {
     QImage ball;
     ball.load(":/images/ball.png");
     ui->label_BallPos->setPixmap(QPixmap::fromImage(ball));
+
+//    ui->output_remTime->setText(refcom->Packet::time_left);
+//    cout << refcom->Packet::time_left << "\n";
 }
 
 void MainWindow::on_pushButton_2_clicked()
@@ -681,11 +725,31 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_btn_Simulated_clicked()
 {
+
     cout << "btn_Simulated clicked \n";
     if (SIMULATED) {
-        #define SIMULATED 0;
+        #undef SIMULATED
+        #define SIMULATED 0
     } else {
-        #define SIMULATED 1;
+        #undef SIMULATED
+        #define SIMULATED 1
     }
+cout << SIMULATED;
+}
 
+// Field graphical settins which need to be refreshed when changed
+void MainWindow::on_check_fieldGrid_clicked(){refresh = true;}
+void MainWindow::on_combo_gridScale_currentIndexChanged(int index){refresh = true;}
+void MainWindow::on_check_coloredGoals_clicked(){refresh = true;}
+void MainWindow::on_combo_fieldColor_currentIndexChanged(int index){refresh = true;}
+void MainWindow::on_check_showIDs_stateChanged(int arg1){refresh = true;}
+void MainWindow::on_combo_botScale_currentIndexChanged(int index){refresh = true;}
+
+void MainWindow::field_setDragMode()
+{
+    if (ui->gView_field->dragMode() == QGraphicsView::NoDrag) {
+        ui->gView_field->setDragMode(QGraphicsView::ScrollHandDrag);
+    } else {
+//        ui->gView_field->setDragMode(QGraphicsView::NoDrag);
+    }
 }
