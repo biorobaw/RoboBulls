@@ -102,6 +102,7 @@ void MainWindow::launch(int value)
     updateScene();
     updateBotPanel();
     printBall();
+    scanForSelection();
 }
 
 void MainWindow::zoomField(int zoom) {
@@ -191,17 +192,7 @@ void MainWindow::setupBotPanel()
     botIconFrames.push_back(ui->gView_robot_4);
     botIconFrames.push_back(ui->gView_robot_5);
 
-//    // Icons
-////    robotIcon0 = new GuiRobot;
-////    robotIcon0->id = 0;
-////    robotIcon0->icon = true;
-////    scene_botIcon_0 = new QGraphicsScene(this);
-////    ui->gView_robot_0->scale(.35,.35);
-////    ui->gView_robot_0->rotate(-90);
-////    scene_botIcon_0->addItem(robotIcon0);
-////    ui->gView_robot_0->setScene(scene_botIcon_0);
-
-
+    // Icons added to GUI and formatted
     for (int i=0; i<teamSize; i++) {
         botIcons[i]->id = i;
         botIcons[i]->icon = true;
@@ -213,7 +204,7 @@ void MainWindow::setupBotPanel()
     }
 
 
-}
+}//setupBotPanel
 
 void MainWindow::updateBotPanel() {
 
@@ -231,37 +222,48 @@ void MainWindow::updateBotPanel() {
     ui->gView_robot_0->show();
 }
 
-void MainWindow::scanForSelection()
-{
-    // Prototype for bot selection (working)
-    if (robotIcon0->isSelected()) {
-        robotIcon0->setSelected(false);
-        robotIcon0->highlighted = true;
-        robot0->highlighted = true;
-        robot5->highlighted = false;
-        selectedBot = robotIcon0->id;
-    }
-    if (robot0->isSelected()) {
-        robot0->setSelected(false);
-        robot0->highlighted = true;
-        robotIcon0->highlighted = true;
-        robot5->highlighted = false;
-        selectedBot = robot0->id;
-    }
-    if (robot5->isSelected()) {
-        robot5->setSelected(false);
-        robot5->highlighted = true;
-        robotIcon0->highlighted = false;
-        robot0->highlighted = false;
-        selectedBot = robot5->id;
-    } else {
+void MainWindow::scanForSelection() {
 
+    for (int i=0; i<teamSize; i++) {
+        // Checking if any icons have been selected
+        if (botIcons[i]->isSelected()) {
+            selectedBot = i;
+            for (int j=0; j<teamSize; j++) {
+                guiTeam[j]->highlighted = false;
+                guiTeam[j]->setSelected(false);
+                botIcons[j]->highlighted = false;
+                botIcons[j]->setSelected(false);
+            }
+            botIcons[i]->highlighted = true;
+            guiTeam[i]->highlighted = true;
+            refresh = true;
+            // Refresh GUI
+            for (int r=0; r<teamSize; r++) {
+                botIconFrames[r]->hide();
+                botIconFrames[r]->show();
+            }
+        }
+        // Checking if any robots on the field have been selected
+        if (guiTeam[i]->isSelected()) {
+            selectedBot = i;
+            for (int j=0; j<teamSize; j++) {
+                guiTeam[j]->highlighted = false;
+                guiTeam[j]->setSelected(false);
+                botIcons[j]->highlighted = false;
+                botIcons[j]->setSelected(false);
+            }
+            botIcons[i]->highlighted = true;
+            guiTeam[i]->highlighted = true;
+            refresh = true;
+            // Refresh GUI
+            for (int r=0; r<teamSize; r++) {
+                botIconFrames[r]->hide();
+                botIconFrames[r]->show();
+            }
+        }
     }
     setupPrimeBotPanel(selectedBot);
 
-    for (int i=0; i<teamSize; i++) {
-
-    }
 }
 
 void MainWindow::setUpScene()
