@@ -191,17 +191,50 @@ void MainWindow::setupBotPanel()
     botIconFrames.push_back(ui->gView_robot_3);
     botIconFrames.push_back(ui->gView_robot_4);
     botIconFrames.push_back(ui->gView_robot_5);
+    // Selected bot icons
+    robotIcon0Sel = new GuiRobot;
+    robotIcon1Sel = new GuiRobot;
+    robotIcon2Sel = new GuiRobot;
+    robotIcon3Sel = new GuiRobot;
+    robotIcon4Sel = new GuiRobot;
+    robotIcon5Sel = new GuiRobot;
+    botIconsSelected.push_back(robotIcon0Sel);
+    botIconsSelected.push_back(robotIcon1Sel);
+    botIconsSelected.push_back(robotIcon2Sel);
+    botIconsSelected.push_back(robotIcon3Sel);
+    botIconsSelected.push_back(robotIcon4Sel);
+    botIconsSelected.push_back(robotIcon5Sel);
+    scene_botIconSel_0 = new QGraphicsScene;
+    scene_botIconSel_1 = new QGraphicsScene;
+    scene_botIconSel_2 = new QGraphicsScene;
+    scene_botIconSel_3 = new QGraphicsScene;
+    scene_botIconSel_4 = new QGraphicsScene;
+    scene_botIconSel_5 = new QGraphicsScene;
+    botIconSelScenes.push_back(scene_botIconSel_0);
+    botIconSelScenes.push_back(scene_botIconSel_1);
+    botIconSelScenes.push_back(scene_botIconSel_2);
+    botIconSelScenes.push_back(scene_botIconSel_3);
+    botIconSelScenes.push_back(scene_botIconSel_4);
+    botIconSelScenes.push_back(scene_botIconSel_5);
 
     // Icons added to GUI and formatted
     for (int i=0; i<teamSize; i++) {
         botIcons[i]->id = i;
         botIcons[i]->icon = true;
+        botIconsSelected[i]->id = i;
+        botIconsSelected[i]->icon = true;
         botIconScenes[i]->addItem(botIcons[i]);
         botIconFrames[i]->setScene(botIconScenes[i]);
-        botIconFrames[i]->scale(.35, .35);
+        botIconFrames[i]->scale(.25, .25);
         botIconFrames[i]->scale(1,-1);
         botIconFrames[i]->rotate(90);
+        botIconSelScenes[i]->addItem(botIconsSelected[i]);
     }
+    ui->gView_robot_prime->scale(.4, .4);
+    ui->gView_robot_prime->scale(1,-1);
+    ui->gView_robot_prime->rotate(90);
+//    ui->gView_robot_prime->setScene(scene_botIconSel_0);
+//    scene_botIconSel_0->addItem(botIconsSelected[0]);
 
 
 }//setupBotPanel
@@ -242,6 +275,8 @@ void MainWindow::scanForSelection() {
                 botIconFrames[r]->hide();
                 botIconFrames[r]->show();
             }
+            ui->gView_robot_prime->hide();
+            ui->gView_robot_prime->show();
         }
         // Checking if any robots on the field have been selected
         if (guiTeam[i]->isSelected()) {
@@ -260,6 +295,8 @@ void MainWindow::scanForSelection() {
                 botIconFrames[r]->hide();
                 botIconFrames[r]->show();
             }
+            ui->gView_robot_prime->hide();
+            ui->gView_robot_prime->show();
         }
     }
     setupPrimeBotPanel(selectedBot);
@@ -834,11 +871,20 @@ void MainWindow::setupPrimeBotPanel(int id)
 {
     if (id == -1) {
         ui->label_primeBot->setText(" ");
+        ui->gView_robot_prime->hide();
     } else {
+        ui->gView_robot_prime->show();
         int speed = ( gamemodel->find(id, gamemodel->getMyTeam())->getLF() + gamemodel->find(id, gamemodel->getMyTeam())->getRF() ) / 2;
         ui->dial_botSpeed->setValue(speed);
         ui->lcd_botSpeed->display(speed);
-        ui->label_primeBot->setText("Robot " + QString::number(id));
+        ui->lcd_orient_prime->display(getBotOrientString(id));
+        ui->lcd_coordX_prime->display(getBotCoordX(true, id));
+        ui->lcd_coordY_prime->display(getBotCoordY(true,id));
+        ui->box_primeBot->setTitle("Robot " + QString::number(id));
+
+
+        ui->gView_robot_prime->setScene(botIconSelScenes[id]);
+
     }
 
 }
