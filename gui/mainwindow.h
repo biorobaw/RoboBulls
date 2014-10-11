@@ -52,6 +52,7 @@ public:
     QString getRemTime();
     void setupBotPanel();
     void updateBotPanel();
+    void scanForSelection();
 
     void printBall();
     void gameModelUpdated();
@@ -86,10 +87,29 @@ private:
     std::vector<QLCDNumber*> botXcoords;
     std::vector<QLCDNumber*> botYcoords;
     std::vector<QLCDNumber*> botOrients;
-    std::vector<QLabel*> botIcons;
+//    std::vector<QLabel*> botIcons;
     std::vector<QLabel*> botTitle;
+
+    // Bot icon graphics views
+    std::vector<QGraphicsView*> botIconFrames;
+    // Bot icon scenes
     QGraphicsScene *scene_botIcon_0;
-    GuiRobot *robot0Icon;
+    QGraphicsScene *scene_botIcon_1;
+    QGraphicsScene *scene_botIcon_2;
+    QGraphicsScene *scene_botIcon_3;
+    QGraphicsScene *scene_botIcon_4;
+    QGraphicsScene *scene_botIcon_5;
+    std::vector<QGraphicsScene*> botIconScenes;
+    // Bot icons
+    GuiRobot *robotIcon0;
+    GuiRobot *robotIcon1;
+    GuiRobot *robotIcon2;
+    GuiRobot *robotIcon3;
+    GuiRobot *robotIcon4;
+    GuiRobot *robotIcon5;
+    std::vector<GuiRobot*> botIcons;
+
+
 
     // Field
     GuiRobot *robot0;

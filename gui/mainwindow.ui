@@ -646,37 +646,6 @@
               <set>Qt::AlignHCenter|Qt::AlignTop</set>
              </property>
             </widget>
-            <widget class="QLabel" name="output_icon_1">
-             <property name="geometry">
-              <rect>
-               <x>214</x>
-               <y>4</y>
-               <width>91</width>
-               <height>91</height>
-              </rect>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="toolTip">
-              <string>Bot's current status</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="pixmap">
-              <pixmap resource="images.qrc">:/images/process-stop.png</pixmap>
-             </property>
-             <property name="scaledContents">
-              <bool>true</bool>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
             <widget class="QWidget" name="layoutWidget_3">
              <property name="geometry">
               <rect>
@@ -1032,6 +1001,31 @@
               </item>
              </layout>
             </widget>
+            <widget class="QGraphicsView" name="gView_robot_1">
+             <property name="geometry">
+              <rect>
+               <x>220</x>
+               <y>10</y>
+               <width>81</width>
+               <height>81</height>
+              </rect>
+             </property>
+             <property name="mouseTracking">
+              <bool>true</bool>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::StrongFocus</enum>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::Panel</enum>
+             </property>
+             <property name="lineWidth">
+              <number>0</number>
+             </property>
+             <property name="renderHints">
+              <set>QPainter::Antialiasing|QPainter::TextAntialiasing</set>
+             </property>
+            </widget>
            </widget>
           </item>
           <item>
@@ -1092,37 +1086,6 @@
              </property>
              <property name="alignment">
               <set>Qt::AlignHCenter|Qt::AlignTop</set>
-             </property>
-            </widget>
-            <widget class="QLabel" name="output_icon_2">
-             <property name="geometry">
-              <rect>
-               <x>214</x>
-               <y>4</y>
-               <width>91</width>
-               <height>91</height>
-              </rect>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="toolTip">
-              <string>Bot's current status</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="pixmap">
-              <pixmap resource="images.qrc">:/images/process-stop.png</pixmap>
-             </property>
-             <property name="scaledContents">
-              <bool>true</bool>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
              </property>
             </widget>
             <widget class="QWidget" name="layoutWidget_7">
@@ -1480,6 +1443,31 @@
               </item>
              </layout>
             </widget>
+            <widget class="QGraphicsView" name="gView_robot_2">
+             <property name="geometry">
+              <rect>
+               <x>220</x>
+               <y>10</y>
+               <width>81</width>
+               <height>81</height>
+              </rect>
+             </property>
+             <property name="mouseTracking">
+              <bool>true</bool>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::StrongFocus</enum>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::Panel</enum>
+             </property>
+             <property name="lineWidth">
+              <number>0</number>
+             </property>
+             <property name="renderHints">
+              <set>QPainter::Antialiasing|QPainter::TextAntialiasing</set>
+             </property>
+            </widget>
            </widget>
           </item>
           <item>
@@ -1540,37 +1528,6 @@
              </property>
              <property name="alignment">
               <set>Qt::AlignHCenter|Qt::AlignTop</set>
-             </property>
-            </widget>
-            <widget class="QLabel" name="output_icon_3">
-             <property name="geometry">
-              <rect>
-               <x>214</x>
-               <y>4</y>
-               <width>91</width>
-               <height>91</height>
-              </rect>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="toolTip">
-              <string>Bot's current status</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="pixmap">
-              <pixmap resource="images.qrc">:/images/process-stop.png</pixmap>
-             </property>
-             <property name="scaledContents">
-              <bool>true</bool>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
              </property>
             </widget>
             <widget class="QWidget" name="layoutWidget_11">
@@ -1928,6 +1885,31 @@
               </item>
              </layout>
             </widget>
+            <widget class="QGraphicsView" name="gView_robot_3">
+             <property name="geometry">
+              <rect>
+               <x>220</x>
+               <y>10</y>
+               <width>81</width>
+               <height>81</height>
+              </rect>
+             </property>
+             <property name="mouseTracking">
+              <bool>true</bool>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::StrongFocus</enum>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::Panel</enum>
+             </property>
+             <property name="lineWidth">
+              <number>0</number>
+             </property>
+             <property name="renderHints">
+              <set>QPainter::Antialiasing|QPainter::TextAntialiasing</set>
+             </property>
+            </widget>
            </widget>
           </item>
           <item>
@@ -1988,37 +1970,6 @@
              </property>
              <property name="alignment">
               <set>Qt::AlignHCenter|Qt::AlignTop</set>
-             </property>
-            </widget>
-            <widget class="QLabel" name="output_icon_4">
-             <property name="geometry">
-              <rect>
-               <x>214</x>
-               <y>4</y>
-               <width>91</width>
-               <height>91</height>
-              </rect>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="toolTip">
-              <string>Bot's current status</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="pixmap">
-              <pixmap resource="images.qrc">:/images/process-stop.png</pixmap>
-             </property>
-             <property name="scaledContents">
-              <bool>true</bool>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
              </property>
             </widget>
             <widget class="QWidget" name="layoutWidget_15">
@@ -2376,6 +2327,31 @@
               </item>
              </layout>
             </widget>
+            <widget class="QGraphicsView" name="gView_robot_4">
+             <property name="geometry">
+              <rect>
+               <x>220</x>
+               <y>10</y>
+               <width>81</width>
+               <height>81</height>
+              </rect>
+             </property>
+             <property name="mouseTracking">
+              <bool>true</bool>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::StrongFocus</enum>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::Panel</enum>
+             </property>
+             <property name="lineWidth">
+              <number>0</number>
+             </property>
+             <property name="renderHints">
+              <set>QPainter::Antialiasing|QPainter::TextAntialiasing</set>
+             </property>
+            </widget>
            </widget>
           </item>
           <item>
@@ -2436,37 +2412,6 @@
              </property>
              <property name="alignment">
               <set>Qt::AlignHCenter|Qt::AlignTop</set>
-             </property>
-            </widget>
-            <widget class="QLabel" name="output_icon_5">
-             <property name="geometry">
-              <rect>
-               <x>214</x>
-               <y>4</y>
-               <width>91</width>
-               <height>91</height>
-              </rect>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="toolTip">
-              <string>Bot's current status</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="pixmap">
-              <pixmap resource="images.qrc">:/images/process-stop.png</pixmap>
-             </property>
-             <property name="scaledContents">
-              <bool>true</bool>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
              </property>
             </widget>
             <widget class="QWidget" name="layoutWidget_19">
@@ -2823,6 +2768,31 @@
                </widget>
               </item>
              </layout>
+            </widget>
+            <widget class="QGraphicsView" name="gView_robot_5">
+             <property name="geometry">
+              <rect>
+               <x>220</x>
+               <y>10</y>
+               <width>81</width>
+               <height>81</height>
+              </rect>
+             </property>
+             <property name="mouseTracking">
+              <bool>true</bool>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::StrongFocus</enum>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::Panel</enum>
+             </property>
+             <property name="lineWidth">
+              <number>0</number>
+             </property>
+             <property name="renderHints">
+              <set>QPainter::Antialiasing|QPainter::TextAntialiasing</set>
+             </property>
             </widget>
            </widget>
           </item>

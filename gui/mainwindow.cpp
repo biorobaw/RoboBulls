@@ -122,8 +122,14 @@ void MainWindow::defaultZoom() {
 
 void MainWindow::setupBotPanel()
 {
+    // Title label vector
+    botTitle.push_back(ui->title_robPanel_0);
+    botTitle.push_back(ui->title_robPanel_1);
+    botTitle.push_back(ui->title_robPanel_2);
+    botTitle.push_back(ui->title_robPanel_3);
+    botTitle.push_back(ui->title_robPanel_4);
+    botTitle.push_back(ui->title_robPanel_5);
     // Behavior vector
-//    std::vector<QLabel*> botBehavior(teamSize);
     botBehavior.push_back(ui->print_behavior_0);
     botBehavior.push_back(ui->print_behavior_1);
     botBehavior.push_back(ui->print_behavior_2);
@@ -131,7 +137,6 @@ void MainWindow::setupBotPanel()
     botBehavior.push_back(ui->print_behavior_4);
     botBehavior.push_back(ui->print_behavior_5);
     // X Coordinate vector
-//    std::vector<QLCDNumber*> botXcoords(teamSize);
     botXcoords.push_back(ui->lcd_coordX_0);
     botXcoords.push_back(ui->lcd_coordX_1);
     botXcoords.push_back(ui->lcd_coordX_2);
@@ -139,7 +144,6 @@ void MainWindow::setupBotPanel()
     botXcoords.push_back(ui->lcd_coordX_4);
     botXcoords.push_back(ui->lcd_coordX_5);
     // Y Coordinate vector
-//    std::vector<QLCDNumber*> botYcoords(teamSize);
     botYcoords.push_back(ui->lcd_coordY_0);
     botYcoords.push_back(ui->lcd_coordY_1);
     botYcoords.push_back(ui->lcd_coordY_2);
@@ -147,41 +151,66 @@ void MainWindow::setupBotPanel()
     botYcoords.push_back(ui->lcd_coordY_4);
     botYcoords.push_back(ui->lcd_coordY_5);
     // Orientation vector
-//    std::vector<QLCDNumber*> botOrients(teamSize);
     botOrients.push_back(ui->lcd_orient_0);
     botOrients.push_back(ui->lcd_orient_1);
     botOrients.push_back(ui->lcd_orient_2);
     botOrients.push_back(ui->lcd_orient_3);
     botOrients.push_back(ui->lcd_orient_4);
     botOrients.push_back(ui->lcd_orient_5);
-    // Icon vector
-//    std::vector<QLabel*> botIcons(teamSize);
-//    botIcons.push_back(ui->output_icon_0);
-//    botIcons.push_back(ui->output_icon_1);
-//    botIcons.push_back(ui->output_icon_2);
-//    botIcons.push_back(ui->output_icon_3);
-//    botIcons.push_back(ui->output_icon_4);
-//    botIcons.push_back(ui->output_icon_5);
-    // Title label vector
-//    std::vector<QLabel*> botTitle(teamSize);
-    botTitle.push_back(ui->title_robPanel_0);
-    botTitle.push_back(ui->title_robPanel_1);
-    botTitle.push_back(ui->title_robPanel_2);
-    botTitle.push_back(ui->title_robPanel_3);
-    botTitle.push_back(ui->title_robPanel_4);
-    botTitle.push_back(ui->title_robPanel_5);
+    // Icons vector
+    robotIcon0 = new GuiRobot;
+    robotIcon1 = new GuiRobot;
+    robotIcon2 = new GuiRobot;
+    robotIcon3 = new GuiRobot;
+    robotIcon4 = new GuiRobot;
+    robotIcon5 = new GuiRobot;
+    botIcons.push_back(robotIcon0);
+    botIcons.push_back(robotIcon1);
+    botIcons.push_back(robotIcon2);
+    botIcons.push_back(robotIcon3);
+    botIcons.push_back(robotIcon4);
+    botIcons.push_back(robotIcon5);
+    // Icon scenes vector
+    scene_botIcon_0 = new QGraphicsScene;
+    scene_botIcon_1 = new QGraphicsScene;
+    scene_botIcon_2 = new QGraphicsScene;
+    scene_botIcon_3 = new QGraphicsScene;
+    scene_botIcon_4 = new QGraphicsScene;
+    scene_botIcon_5 = new QGraphicsScene;
+    botIconScenes.push_back(scene_botIcon_0);
+    botIconScenes.push_back(scene_botIcon_1);
+    botIconScenes.push_back(scene_botIcon_2);
+    botIconScenes.push_back(scene_botIcon_3);
+    botIconScenes.push_back(scene_botIcon_4);
+    botIconScenes.push_back(scene_botIcon_5);
+    // Icon frames vector
+    botIconFrames.push_back(ui->gView_robot_0);
+    botIconFrames.push_back(ui->gView_robot_1);
+    botIconFrames.push_back(ui->gView_robot_2);
+    botIconFrames.push_back(ui->gView_robot_3);
+    botIconFrames.push_back(ui->gView_robot_4);
+    botIconFrames.push_back(ui->gView_robot_5);
 
-    // Icons
-    robot0Icon = new GuiRobot;
-    robot0Icon->id = 0;
-    robot0Icon->icon = true;
-    scene_botIcon_0 = new QGraphicsScene(this);
-    ui->gView_robot_0->scale(.35,.35);
-    ui->gView_robot_0->rotate(-90);
-    scene_botIcon_0->addItem(robot0Icon);
-    ui->gView_robot_0->setScene(scene_botIcon_0);
+//    // Icons
+////    robotIcon0 = new GuiRobot;
+////    robotIcon0->id = 0;
+////    robotIcon0->icon = true;
+////    scene_botIcon_0 = new QGraphicsScene(this);
+////    ui->gView_robot_0->scale(.35,.35);
+////    ui->gView_robot_0->rotate(-90);
+////    scene_botIcon_0->addItem(robotIcon0);
+////    ui->gView_robot_0->setScene(scene_botIcon_0);
 
 
+    for (int i=0; i<teamSize; i++) {
+        botIcons[i]->id = i;
+        botIcons[i]->icon = true;
+        botIconScenes[i]->addItem(botIcons[i]);
+        botIconFrames[i]->setScene(botIconScenes[i]);
+        botIconFrames[i]->scale(.35, .35);
+        botIconFrames[i]->scale(1,-1);
+        botIconFrames[i]->rotate(90);
+    }
 
 
 }
@@ -192,7 +221,6 @@ void MainWindow::updateBotPanel() {
     for (int i=0; i<teamSize; i++) {
         if (gamemodel->find(i,gamemodel->getMyTeam()) != NULL) {
             botTitle[i]->setText("Robot " + QString::number(i));
-//            botIcons[i]->setPixmap(QPixmap::fromImage(getStatusImg(i)));
             botXcoords[i]->display(getBotCoordX(true, i));
             botYcoords[i]->display(getBotCoordY(true, i));
             botOrients[i]->display(getBotOrientString(i));
@@ -201,6 +229,39 @@ void MainWindow::updateBotPanel() {
     }
     ui->gView_robot_0->hide();
     ui->gView_robot_0->show();
+}
+
+void MainWindow::scanForSelection()
+{
+    // Prototype for bot selection (working)
+    if (robotIcon0->isSelected()) {
+        robotIcon0->setSelected(false);
+        robotIcon0->highlighted = true;
+        robot0->highlighted = true;
+        robot5->highlighted = false;
+        selectedBot = robotIcon0->id;
+    }
+    if (robot0->isSelected()) {
+        robot0->setSelected(false);
+        robot0->highlighted = true;
+        robotIcon0->highlighted = true;
+        robot5->highlighted = false;
+        selectedBot = robot0->id;
+    }
+    if (robot5->isSelected()) {
+        robot5->setSelected(false);
+        robot5->highlighted = true;
+        robotIcon0->highlighted = false;
+        robot0->highlighted = false;
+        selectedBot = robot5->id;
+    } else {
+
+    }
+    setupPrimeBotPanel(selectedBot);
+
+    for (int i=0; i<teamSize; i++) {
+
+    }
 }
 
 void MainWindow::setUpScene()
@@ -451,31 +512,6 @@ void MainWindow::updateScene() {
             }
         }
     }
-    // Prototype for bot selection (working)
-    if (robot0Icon->isSelected()) {
-        robot0Icon->setSelected(false);
-        robot0Icon->highlighted = true;
-        robot0->highlighted = true;
-        robot5->highlighted = false;
-        selectedBot = robot0Icon->id;
-    }
-    if (robot0->isSelected()) {
-        robot0->setSelected(false);
-        robot0->highlighted = true;
-        robot0Icon->highlighted = true;
-        robot5->highlighted = false;
-        selectedBot = robot0->id;
-    }
-    if (robot5->isSelected()) {
-        robot5->setSelected(false);
-        robot5->highlighted = true;
-        robot0Icon->highlighted = false;
-        robot0->highlighted = false;
-        selectedBot = robot5->id;
-    } else {
-
-    }
-    setupPrimeBotPanel(selectedBot);
 
 }//end updateScene
 
