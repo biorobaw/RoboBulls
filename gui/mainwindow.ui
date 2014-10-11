@@ -134,6 +134,12 @@
               <bold>true</bold>
              </font>
             </property>
+            <property name="mouseTracking">
+             <bool>true</bool>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::ClickFocus</enum>
+            </property>
             <property name="toolTip">
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is my tool tip&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
@@ -177,37 +183,6 @@
              </property>
              <property name="alignment">
               <set>Qt::AlignHCenter|Qt::AlignTop</set>
-             </property>
-            </widget>
-            <widget class="QLabel" name="output_icon_0">
-             <property name="geometry">
-              <rect>
-               <x>214</x>
-               <y>4</y>
-               <width>91</width>
-               <height>91</height>
-              </rect>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="toolTip">
-              <string>Bot's current status</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="pixmap">
-              <pixmap resource="images.qrc">:/images/process-stop.png</pixmap>
-             </property>
-             <property name="scaledContents">
-              <bool>true</bool>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
              </property>
             </widget>
             <widget class="QWidget" name="layoutWidget">
@@ -512,7 +487,7 @@
                  <bool>false</bool>
                 </property>
                 <property name="digitCount">
-                 <number>3</number>
+                 <number>4</number>
                 </property>
                 <property name="segmentStyle">
                  <enum>QLCDNumber::Outline</enum>
@@ -583,6 +558,31 @@
                </widget>
               </item>
              </layout>
+            </widget>
+            <widget class="QGraphicsView" name="gView_robot_0">
+             <property name="geometry">
+              <rect>
+               <x>220</x>
+               <y>10</y>
+               <width>81</width>
+               <height>81</height>
+              </rect>
+             </property>
+             <property name="mouseTracking">
+              <bool>true</bool>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::StrongFocus</enum>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::Panel</enum>
+             </property>
+             <property name="lineWidth">
+              <number>0</number>
+             </property>
+             <property name="renderHints">
+              <set>QPainter::Antialiasing|QPainter::TextAntialiasing</set>
+             </property>
             </widget>
            </widget>
           </item>
@@ -2868,8 +2868,8 @@
         <widget class="QGraphicsView" name="gView_field">
          <property name="geometry">
           <rect>
-           <x>11</x>
-           <y>80</y>
+           <x>10</x>
+           <y>70</y>
            <width>781</width>
            <height>681</height>
           </rect>
@@ -3430,7 +3430,7 @@
            <property name="lineWidth">
             <number>3</number>
            </property>
-           <widget class="QLabel" name="label_9">
+           <widget class="QLabel" name="label_primeBot">
             <property name="geometry">
              <rect>
               <x>10</x>
@@ -3451,48 +3451,12 @@
              <string>Game Status</string>
             </property>
            </widget>
-           <widget class="QWidget" name="layoutWidget">
-            <property name="geometry">
-             <rect>
-              <x>170</x>
-              <y>30</y>
-              <width>171</width>
-              <height>20</height>
-             </rect>
-            </property>
-            <layout class="QGridLayout" name="gridLayout_18">
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_11">
-               <property name="font">
-                <font>
-                 <pointsize>9</pointsize>
-                </font>
-               </property>
-               <property name="text">
-                <string>Time Left: </string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QLabel" name="output_remTime">
-               <property name="font">
-                <font>
-                 <pointsize>9</pointsize>
-                </font>
-               </property>
-               <property name="text">
-                <string>TextLabel</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
            <widget class="QLabel" name="label_BallPos">
             <property name="geometry">
              <rect>
-              <x>80</x>
+              <x>130</x>
               <y>40</y>
-              <width>61</width>
+              <width>70</width>
               <height>61</height>
              </rect>
             </property>
@@ -3514,9 +3478,9 @@
            <widget class="QWidget" name="layoutWidget">
             <property name="geometry">
              <rect>
-              <x>170</x>
+              <x>200</x>
               <y>60</y>
-              <width>171</width>
+              <width>180</width>
               <height>20</height>
              </rect>
             </property>
@@ -3601,6 +3565,105 @@
               </widget>
              </item>
             </layout>
+           </widget>
+           <widget class="QDial" name="dial_botSpeed">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>30</y>
+              <width>111</width>
+              <height>101</height>
+             </rect>
+            </property>
+            <property name="minimum">
+             <number>-150</number>
+            </property>
+            <property name="maximum">
+             <number>150</number>
+            </property>
+            <property name="singleStep">
+             <number>5</number>
+            </property>
+            <property name="pageStep">
+             <number>150</number>
+            </property>
+            <property name="wrapping">
+             <bool>false</bool>
+            </property>
+            <property name="notchesVisible">
+             <bool>true</bool>
+            </property>
+           </widget>
+           <widget class="QLCDNumber" name="lcd_botSpeed">
+            <property name="geometry">
+             <rect>
+              <x>40</x>
+              <y>70</y>
+              <width>51</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>100</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <weight>50</weight>
+              <italic>false</italic>
+              <bold>false</bold>
+              <underline>false</underline>
+              <strikeout>false</strikeout>
+              <kerning>true</kerning>
+             </font>
+            </property>
+            <property name="mouseTracking">
+             <bool>true</bool>
+            </property>
+            <property name="toolTip">
+             <string>Degrees from opposing goal</string>
+            </property>
+            <property name="toolTipDuration">
+             <number>-2</number>
+            </property>
+            <property name="layoutDirection">
+             <enum>Qt::RightToLeft</enum>
+            </property>
+            <property name="autoFillBackground">
+             <bool>false</bool>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(0, 4, 133);</string>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Panel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Sunken</enum>
+            </property>
+            <property name="lineWidth">
+             <number>2</number>
+            </property>
+            <property name="smallDecimalPoint">
+             <bool>false</bool>
+            </property>
+            <property name="digitCount">
+             <number>4</number>
+            </property>
+            <property name="segmentStyle">
+             <enum>QLCDNumber::Outline</enum>
+            </property>
+            <property name="value" stdset="0">
+             <double>888888.000000000000000</double>
+            </property>
            </widget>
           </widget>
          </item>

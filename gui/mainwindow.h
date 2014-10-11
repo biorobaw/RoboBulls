@@ -88,6 +88,8 @@ private:
     std::vector<QLCDNumber*> botOrients;
     std::vector<QLabel*> botIcons;
     std::vector<QLabel*> botTitle;
+    QGraphicsScene *scene_botIcon_0;
+    GuiRobot *robot0Icon;
 
     // Field
     GuiRobot *robot0;
@@ -125,6 +127,7 @@ private:
 
     bool refresh = true;   // set this to true whenever a change to the field is made to refresh on next frame.
     bool justScrolled = false;
+    int selectedBot = -1;
 
     long double currentTimeMS = 0;
     double ballOrigin = 0;
@@ -152,6 +155,7 @@ private slots:
     void on_check_showIDs_stateChanged(int arg1);
     void on_combo_botScale_currentIndexChanged(int index);
     void field_setDragMode();
+    void setupPrimeBotPanel(int id);
 };
 
 #endif // MAINWINDOW_H

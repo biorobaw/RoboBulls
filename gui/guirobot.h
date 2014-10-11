@@ -16,13 +16,16 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     void subCircle(QPainter *painter, QBrush topLft, QBrush topRt, QBrush lowLft, QBrush lowRt);
     void paintEvent(QPaintEvent *);
-    int id = false;
+    int id;
     bool myTeam = true;
     bool Pressed = false;
+    bool highlighted = false;
+    bool icon = false;
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);          // we want to know when the mouse is pressed...
     void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);       // ..and released
+
 };
 
 #endif // GUIROBOT_H

@@ -156,12 +156,12 @@ void MainWindow::setupBotPanel()
     botOrients.push_back(ui->lcd_orient_5);
     // Icon vector
 //    std::vector<QLabel*> botIcons(teamSize);
-    botIcons.push_back(ui->output_icon_0);
-    botIcons.push_back(ui->output_icon_1);
-    botIcons.push_back(ui->output_icon_2);
-    botIcons.push_back(ui->output_icon_3);
-    botIcons.push_back(ui->output_icon_4);
-    botIcons.push_back(ui->output_icon_5);
+//    botIcons.push_back(ui->output_icon_0);
+//    botIcons.push_back(ui->output_icon_1);
+//    botIcons.push_back(ui->output_icon_2);
+//    botIcons.push_back(ui->output_icon_3);
+//    botIcons.push_back(ui->output_icon_4);
+//    botIcons.push_back(ui->output_icon_5);
     // Title label vector
 //    std::vector<QLabel*> botTitle(teamSize);
     botTitle.push_back(ui->title_robPanel_0);
@@ -171,6 +171,19 @@ void MainWindow::setupBotPanel()
     botTitle.push_back(ui->title_robPanel_4);
     botTitle.push_back(ui->title_robPanel_5);
 
+    // Icons
+    robot0Icon = new GuiRobot;
+    robot0Icon->id = 0;
+    robot0Icon->icon = true;
+    scene_botIcon_0 = new QGraphicsScene(this);
+    ui->gView_robot_0->scale(.35,.35);
+    ui->gView_robot_0->rotate(-90);
+    scene_botIcon_0->addItem(robot0Icon);
+    ui->gView_robot_0->setScene(scene_botIcon_0);
+
+
+
+
 }
 
 void MainWindow::updateBotPanel() {
@@ -179,15 +192,15 @@ void MainWindow::updateBotPanel() {
     for (int i=0; i<teamSize; i++) {
         if (gamemodel->find(i,gamemodel->getMyTeam()) != NULL) {
             botTitle[i]->setText("Robot " + QString::number(i));
-            botIcons[i]->setPixmap(QPixmap::fromImage(getStatusImg(i)));
+//            botIcons[i]->setPixmap(QPixmap::fromImage(getStatusImg(i)));
             botXcoords[i]->display(getBotCoordX(true, i));
             botYcoords[i]->display(getBotCoordY(true, i));
             botOrients[i]->display(getBotOrientString(i));
-//            botBehavior[i]->
 
-//            cout << "Robot " << i << " behavior: " << gamemodel->find(i, gamemodel->getMyTeam())-> << "\n";
         }
     }
+    ui->gView_robot_0->hide();
+    ui->gView_robot_0->show();
 }
 
 void MainWindow::setUpScene()
@@ -400,10 +413,9 @@ void MainWindow::updateScene() {
         if (gamemodel->find(i, gamemodel->getMyTeam()) != NULL) {
             guiTeam[i]->setX(getBotCoordX(true, i));
             guiTeam[i]->setY(getBotCoordY(true, i));
+            guiTeam[i]->setZValue(2);
             double angle = getBotOrientDouble(true, i) ;
             guiTeam[i]->setRotation(angle);
-            guiTeam[i]->setZValue(2);
-            guiTeam[i]->setScale(1.2);
             guiTeam[i]->id = i;
             guiTeam[i]->setToolTip("Robot " + QString::number(i));
             guiTeam[i]->myTeam = true;
@@ -415,6 +427,7 @@ void MainWindow::updateScene() {
             } else if (ui->combo_botScale->currentText() == "150%") {
                 guiTeam[i]->setScale(1.5);
             }
+
         }
     }
     // updating Yellow Robots
@@ -422,10 +435,9 @@ void MainWindow::updateScene() {
         if (gamemodel->find(i, gamemodel->getOponentTeam()) != NULL) {
             guiTeamY[i]->setX(getBotCoordX(false, i));
             guiTeamY[i]->setY(getBotCoordY(false, i));
+            guiTeamY[i]->setZValue(2);
             double angleY = getBotOrientDouble(false, i) ;
             guiTeamY[i]->setRotation(angleY);
-            guiTeamY[i]->setZValue(2);
-            guiTeamY[i]->setScale(1.2);
             guiTeamY[i]->id = i;
             guiTeamY[i]->setToolTip("Robot " + QString::number(i));
             guiTeamY[i]->myTeam = false;
@@ -439,6 +451,32 @@ void MainWindow::updateScene() {
             }
         }
     }
+    // Prototype for bot selection (working)
+    if (robot0Icon->isSelected()) {
+        robot0Icon->setSelected(false);
+        robot0Icon->highlighted = true;
+        robot0->highlighted = true;
+        robot5->highlighted = false;
+        selectedBot = robot0Icon->id;
+    }
+    if (robot0->isSelected()) {
+        robot0->setSelected(false);
+        robot0->highlighted = true;
+        robot0Icon->highlighted = true;
+        robot5->highlighted = false;
+        selectedBot = robot0->id;
+    }
+    if (robot5->isSelected()) {
+        robot5->setSelected(false);
+        robot5->highlighted = true;
+        robot0Icon->highlighted = false;
+        robot0->highlighted = false;
+        selectedBot = robot5->id;
+    } else {
+
+    }
+    setupPrimeBotPanel(selectedBot);
+
 }//end updateScene
 
 
@@ -659,7 +697,7 @@ void MainWindow::printBall() {
     ui->lcd_coordX_ball->display(getBallCoordX());
     ui->lcd_coordY_ball->display(getBallCoordY());
 
-    ui->output_remTime->setText(getRemTime());
+//    ui->output_remTime->setText(getRemTime());
     QImage ball;
     ball.load(":/images/ball.png");
     ui->label_BallPos->setPixmap(QPixmap::fromImage(ball));
@@ -752,4 +790,17 @@ void MainWindow::field_setDragMode()
     } else {
 //        ui->gView_field->setDragMode(QGraphicsView::NoDrag);
     }
+}
+
+void MainWindow::setupPrimeBotPanel(int id)
+{
+    if (id == -1) {
+        ui->label_primeBot->setText(" ");
+    } else {
+        int speed = ( gamemodel->find(id, gamemodel->getMyTeam())->getLF() + gamemodel->find(id, gamemodel->getMyTeam())->getRF() ) / 2;
+        ui->dial_botSpeed->setValue(speed);
+        ui->lcd_botSpeed->display(speed);
+        ui->label_primeBot->setText("Robot " + QString::number(id));
+    }
+
 }

@@ -1,10 +1,12 @@
 #include "guirobot.h"
 #include <QLabel>
+#include "mainwindow.h"
 
 GuiRobot::GuiRobot()
 {
     Pressed = false;
 //    setFlag(ItemIsMovable); // makes it movable
+    setFlag(ItemIsSelectable);
     int radius = boundingRect().width() / 2;
     setTransformOriginPoint(radius,radius);   // sets center point, around which it rotates
 }
@@ -90,7 +92,11 @@ void GuiRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     painter->drawRoundedRect(base,15,15);
 
     // Robot hat
-    painter->setPen(QPen(Qt::black, 0, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
+    if (highlighted) {
+        painter->setPen(QPen(Qt::green, 30, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
+    } else {
+        painter->setPen(QPen(Qt::black, 0, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
+    }
     painter->setBrush(QBrush(Qt::black, Qt::SolidPattern));
     int startAngle = 50 * 16;
     int spanAngle = 260 * 16;
