@@ -5,6 +5,7 @@
 GuiField::GuiField()
 {
 //    setFlag(ItemIsMovable); // makes it movable
+//    setFlag(ItemIsSelectable);
 }
 
 QRectF GuiField::boundingRect() const

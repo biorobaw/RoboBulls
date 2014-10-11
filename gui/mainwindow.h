@@ -189,7 +189,7 @@ private slots:
     void on_check_showIDs_stateChanged(int arg1);
     void on_combo_botScale_currentIndexChanged(int index);
     void field_setDragMode();
-    void setupPrimeBotPanel(int id);
+    void updateSelectedBotPanel(int id);
 };
 
 #endif // MAINWINDOW_H

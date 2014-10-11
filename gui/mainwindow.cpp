@@ -131,12 +131,12 @@ void MainWindow::setupBotPanel()
     botTitle.push_back(ui->title_robPanel_4);
     botTitle.push_back(ui->title_robPanel_5);
     // Behavior vector
-    botBehavior.push_back(ui->print_behavior_0);
-    botBehavior.push_back(ui->print_behavior_1);
-    botBehavior.push_back(ui->print_behavior_2);
-    botBehavior.push_back(ui->print_behavior_3);
-    botBehavior.push_back(ui->print_behavior_4);
-    botBehavior.push_back(ui->print_behavior_5);
+//    botBehavior.push_back(ui->print_behavior_0);
+//    botBehavior.push_back(ui->print_behavior_1);
+//    botBehavior.push_back(ui->print_behavior_2);
+//    botBehavior.push_back(ui->print_behavior_3);
+//    botBehavior.push_back(ui->print_behavior_4);
+//    botBehavior.push_back(ui->print_behavior_5);
     // X Coordinate vector
     botXcoords.push_back(ui->lcd_coordX_0);
     botXcoords.push_back(ui->lcd_coordX_1);
@@ -217,24 +217,27 @@ void MainWindow::setupBotPanel()
     botIconSelScenes.push_back(scene_botIconSel_4);
     botIconSelScenes.push_back(scene_botIconSel_5);
 
-    // Icons added to GUI and formatted
+    // relevant vectors filled & connected; initial details added to GUI
     for (int i=0; i<teamSize; i++) {
         botIcons[i]->id = i;
         botIcons[i]->icon = true;
         botIconsSelected[i]->id = i;
         botIconsSelected[i]->icon = true;
-        botIconScenes[i]->addItem(botIcons[i]);
-        botIconFrames[i]->setScene(botIconScenes[i]);
+        botIconSelScenes[i]->addItem(botIconsSelected[i]);
         botIconFrames[i]->scale(.25, .25);
         botIconFrames[i]->scale(1,-1);
         botIconFrames[i]->rotate(90);
-        botIconSelScenes[i]->addItem(botIconsSelected[i]);
+        // nullcheck
+        if (gamemodel->find(i,gamemodel->getMyTeam()) != NULL) {
+            botIconScenes[i]->addItem(botIcons[i]);
+            botIconFrames[i]->setScene(botIconScenes[i]);
+        }//if
     }
+
+    // Formatting selected bot panel
     ui->gView_robot_prime->scale(.4, .4);
     ui->gView_robot_prime->scale(1,-1);
     ui->gView_robot_prime->rotate(90);
-//    ui->gView_robot_prime->setScene(scene_botIconSel_0);
-//    scene_botIconSel_0->addItem(botIconsSelected[0]);
 
 
 }//setupBotPanel
@@ -243,12 +246,16 @@ void MainWindow::updateBotPanel() {
 
     // Printing to GUI
     for (int i=0; i<teamSize; i++) {
+        botTitle[i]->setText("Robot " + QString::number(i));
+        // Nullcheck
         if (gamemodel->find(i,gamemodel->getMyTeam()) != NULL) {
-            botTitle[i]->setText("Robot " + QString::number(i));
+//            botTitle[i]->setText("Robot " + QString::number(i));
             botXcoords[i]->display(getBotCoordX(true, i));
             botYcoords[i]->display(getBotCoordY(true, i));
             botOrients[i]->display(getBotOrientString(i));
-
+            botIconScenes[i]->removeItem(botIcons[i]);
+            botIconScenes[i]->addItem(botIcons[i]);
+            botIconFrames[i]->setScene(botIconScenes[i]);
         }
     }
     ui->gView_robot_0->hide();
@@ -258,48 +265,50 @@ void MainWindow::updateBotPanel() {
 void MainWindow::scanForSelection() {
 
     for (int i=0; i<teamSize; i++) {
+        if (gamemodel->find(i,gamemodel->getMyTeam()) != NULL) {
         // Checking if any icons have been selected
-        if (botIcons[i]->isSelected()) {
-            selectedBot = i;
-            for (int j=0; j<teamSize; j++) {
-                guiTeam[j]->highlighted = false;
-                guiTeam[j]->setSelected(false);
-                botIcons[j]->highlighted = false;
-                botIcons[j]->setSelected(false);
+            if (botIcons[i]->isSelected()) {
+                selectedBot = i;
+                for (int j=0; j<teamSize; j++) {
+                    guiTeam[j]->highlighted = false;
+                    guiTeam[j]->setSelected(false);
+                    botIcons[j]->highlighted = false;
+                    botIcons[j]->setSelected(false);
+                }
+                botIcons[i]->highlighted = true;
+                guiTeam[i]->highlighted = true;
+                refresh = true;
+                // Refresh GUI
+                for (int r=0; r<teamSize; r++) {
+                    botIconFrames[r]->hide();
+                    botIconFrames[r]->show();
+                }
+                ui->gView_robot_prime->hide();
+                ui->gView_robot_prime->show();
             }
-            botIcons[i]->highlighted = true;
-            guiTeam[i]->highlighted = true;
-            refresh = true;
-            // Refresh GUI
-            for (int r=0; r<teamSize; r++) {
-                botIconFrames[r]->hide();
-                botIconFrames[r]->show();
+            // Checking if any robots on the field have been selected
+            if (guiTeam[i]->isSelected()) {
+                selectedBot = i;
+                for (int j=0; j<teamSize; j++) {
+                    guiTeam[j]->highlighted = false;
+                    guiTeam[j]->setSelected(false);
+                    botIcons[j]->highlighted = false;
+                    botIcons[j]->setSelected(false);
+                }
+                botIcons[i]->highlighted = true;
+                guiTeam[i]->highlighted = true;
+                refresh = true;
+                // Refresh GUI
+                for (int r=0; r<teamSize; r++) {
+                    botIconFrames[r]->hide();
+                    botIconFrames[r]->show();
+                }
+                ui->gView_robot_prime->hide();
+                ui->gView_robot_prime->show();
             }
-            ui->gView_robot_prime->hide();
-            ui->gView_robot_prime->show();
-        }
-        // Checking if any robots on the field have been selected
-        if (guiTeam[i]->isSelected()) {
-            selectedBot = i;
-            for (int j=0; j<teamSize; j++) {
-                guiTeam[j]->highlighted = false;
-                guiTeam[j]->setSelected(false);
-                botIcons[j]->highlighted = false;
-                botIcons[j]->setSelected(false);
-            }
-            botIcons[i]->highlighted = true;
-            guiTeam[i]->highlighted = true;
-            refresh = true;
-            // Refresh GUI
-            for (int r=0; r<teamSize; r++) {
-                botIconFrames[r]->hide();
-                botIconFrames[r]->show();
-            }
-            ui->gView_robot_prime->hide();
-            ui->gView_robot_prime->show();
-        }
-    }
-    setupPrimeBotPanel(selectedBot);
+        }//null check
+    }//for loop
+    updateSelectedBotPanel(selectedBot);
 
 }
 
@@ -312,7 +321,7 @@ void MainWindow::setUpScene()
     spaceBar->setKey(Qt::Key_Space);
 
 
-    connect(spaceBar, SIGNAL(activated()), this, SLOT(on_pushButton_clicked()));
+    connect(enter, SIGNAL(activated()), this, SLOT(on_pushButton_clicked()));
 
     scene = new QGraphicsScene(this);
 
@@ -858,23 +867,23 @@ void MainWindow::on_combo_fieldColor_currentIndexChanged(int index){refresh = tr
 void MainWindow::on_check_showIDs_stateChanged(int arg1){refresh = true;}
 void MainWindow::on_combo_botScale_currentIndexChanged(int index){refresh = true;}
 
-void MainWindow::field_setDragMode()
-{
-    if (ui->gView_field->dragMode() == QGraphicsView::NoDrag) {
-        ui->gView_field->setDragMode(QGraphicsView::ScrollHandDrag);
-    } else {
+void MainWindow::field_setDragMode() {
+//    if (ui->gView_field->dragMode() == QGraphicsView::NoDrag) {
+//        ui->gView_field->setDragMode(QGraphicsView::ScrollHandDrag);
+//    } else {
 //        ui->gView_field->setDragMode(QGraphicsView::NoDrag);
-    }
+//    }
 }
 
-void MainWindow::setupPrimeBotPanel(int id)
+void MainWindow::updateSelectedBotPanel(int id)
 {
     if (id == -1) {
         ui->label_primeBot->setText(" ");
         ui->gView_robot_prime->hide();
     } else {
         ui->gView_robot_prime->show();
-        int speed = ( gamemodel->find(id, gamemodel->getMyTeam())->getLF() + gamemodel->find(id, gamemodel->getMyTeam())->getRF() ) / 2;
+        int speed = ( gamemodel->find(id, gamemodel->getMyTeam())->getLF() + gamemodel->find(id, gamemodel->getMyTeam())->getRF()
+                      + gamemodel->find(id, gamemodel->getMyTeam())->getLB() + gamemodel->find(id, gamemodel->getMyTeam())->getRB()) / 4;
         ui->dial_botSpeed->setValue(speed);
         ui->lcd_botSpeed->display(speed);
         ui->lcd_orient_prime->display(getBotOrientString(id));
