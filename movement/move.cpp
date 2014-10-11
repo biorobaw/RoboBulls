@@ -93,12 +93,10 @@ bool Move::perform(Robot *robot, Movement::Type moveType)
         m_targetAngle = Measurments::angleBetween(robot->getRobotPosition(), m_targetPoint);
 
     /* Let's only bother moving if we need to */
-    if(!Measurments::isClose(m_targetPoint, robot->getRobotPosition(), lastDistTolerance) ||
-       !Measurments::isClose(m_targetAngle, robot->getOrientation(), lastAngTolerance))
+   // if(!Measurments::isClose(m_targetPoint, robot->getRobotPosition(), lastDistTolerance) ||
+     //  !Measurments::isClose(m_targetAngle, robot->getOrientation(), lastAngTolerance))
     {
         if(useObstacleAvoid) {
-            if(hasFoundPathEnd) 
-                hasFoundPathEnd = false;
             finished = this->calcObstacleAvoidance(robot, moveType);
         } else {
             finished = this->calcRegularMovement(robot, moveType);
@@ -118,6 +116,78 @@ bool Move::perform(Robot *robot, Movement::Type moveType)
 /********************* Private Methods *********************/
 /***********************************************************/
 
+#if 0
+static bool robotIDMoveStatus[] = {
+ /*0*/	true,
+ /*1*/	true,
+ /*2*/	true,
+ /*3*/	true,
+ /*4*/	true,
+ /*5*/	true,
+ /*6*/	true,
+ /*7*/	true,
+ /*8*/	true,
+ /*9*/	true
+};
+
+bool robotFacingRobot(Robot* a, Robot* b)
+{
+    Point robPos = a->getRobotPosition();
+    float robAngle = a->getOrientation();
+    float angleBetween = Measurments::angleBetween
+            (robPos, b->getRobotPosition());
+    return Measurments::isClose(robAngle, angleBetween, M_PI/6);
+}
+
+bool robotCollideHazard(Robot* a, Robot* b)
+{
+#if 0
+    return Measurments::isClose(a->getRobotPosition(), b->getRobotPosition()) &&
+           robotFacingRobot(a, b);
+#else
+    return Measurments::isClose(a->getRobotPosition(), b->getRobotPosition());
+#endif
+}
+
+void configureRobotMoveStatus()
+{
+    GameModel* gm = GameModel::getModel();
+    auto& myTeam = gm->getMyTeam();
+    auto& opTeam = gm->getOponentTeam();
+    std::vector<Robot*> allRobots(myTeam.size() + opTeam.size());
+    std::copy(myTeam.begin(), myTeam.end(), allRobots.begin());
+    std::copy(opTeam.begin(), opTeam.end(), allRobots.begin() + myTeam.size());
+
+    for(unsigned i = 0;  i != allRobots.size(); ++i)
+    for(unsigned j =i+1; j != allRobots.size(); ++j)
+    {
+        Robot* robotA = allRobots.at(i);
+        Robot* robotB = allRobots.at(j);
+        bool robotACanMove, robotBCanMove;
+
+        robotACanMove = !robotCollideHazard(robotA, robotB);
+        robotBCanMove = !robotCollideHazard(robotB, robotA);
+
+        if(!robotACanMove || !robotBCanMove) {
+            if(robotFacingRobot(robotA, robotB)) {
+                robotIDMoveStatus[robotA->getID()] = false;
+            }
+            else if(robotFacingRobot(robotB, robotA))  {
+                robotIDMoveStatus[robotB->getID()] = false;
+            }
+            else {
+                int priorityA = robotA->getCurrentBeh()->getPriority();
+                int priorityB = robotB->getCurrentBeh()->getPriority();
+                if(priorityA > priorityB) {
+                    robotIDMoveStatus[robotB->getID()] = false;
+                } else {
+                    robotIDMoveStatus[robotA->getID()] = false;
+                }
+            }
+        }
+    }
+}
+#endif
 
 bool Move::calcRegularMovement(Robot* robot, Type moveType)
 {
@@ -212,10 +282,12 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
          * Dropped into by default, if there is a desired
          * optional end orientation, that rotation is done here
          */
-        if(Measurments::isClose(robot->getOrientation(), m_targetAngle, lastAngTolerance))
+        if(Measurments::isClose(robot->getOrientation(), m_targetAngle, lastAngTolerance)) {
+            left = right = 0;
             return true;
-
-        this->calculateVels(robot, robot->getRobotPosition(), m_targetAngle, moveType);
+        } else {
+            this->calculateVels(robot, robot->getRobotPosition(), m_targetAngle, moveType);
+        }
     }
 
     return false;   //Skill not finished
