@@ -43,8 +43,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
     gamemodel = GameModel::getModel();
 
+    printBehavior(0, "this is bot 0", false);
+    printBehavior(0, "and it is rad", false);
+    printBehavior(0, "i wouldn't want", false);
+    printBehavior(0, "this bot to be sad", false);
+    printBehavior(0, "so now i'm going to drone on and on and on to see if scrolling kicks in when i get so far it goes off the page", true);
+
+    ui->pushButton->setEnabled(false);
     setUpScene();
     setupBotPanel();
+    ui->pushButton->setEnabled(true);
 
 //    setUpScene();
 //    setupBotPanel();
@@ -103,6 +111,7 @@ void MainWindow::launch(int value)
     updateBotPanel();
     printBall();
     scanForSelection();
+
 }
 
 void MainWindow::zoomField(int zoom) {
@@ -123,6 +132,13 @@ void MainWindow::defaultZoom() {
 
 void MainWindow::setupBotPanel()
 {
+    // Bot Frames
+    botFrames.push_back(ui->frame_robot_0);
+    botFrames.push_back(ui->frame_robot_1);
+    botFrames.push_back(ui->frame_robot_2);
+    botFrames.push_back(ui->frame_robot_3);
+    botFrames.push_back(ui->frame_robot_4);
+    botFrames.push_back(ui->frame_robot_5);
     // Title label vector
     botTitle.push_back(ui->title_robPanel_0);
     botTitle.push_back(ui->title_robPanel_1);
@@ -243,7 +259,6 @@ void MainWindow::setupBotPanel()
 }//setupBotPanel
 
 void MainWindow::updateBotPanel() {
-
     // Printing to GUI
     for (int i=0; i<teamSize; i++) {
         botTitle[i]->setText("Robot " + QString::number(i));
@@ -262,11 +277,14 @@ void MainWindow::updateBotPanel() {
     }
     ui->gView_robot_0->hide();
     ui->gView_robot_0->show();
+
 }
 
 void MainWindow::scanForSelection() {
+    bool newSelection = true;
+
     if (field->Pressed == true) {
-        cout << "field pressed \n";
+//        cout << "field pressed \n";
         field->highlighted = true;
         field->Pressed = false;
     }
@@ -281,6 +299,7 @@ void MainWindow::scanForSelection() {
         }
         field->highlighted = false;
         selectedBot = -1;
+        newSelection = true;
     }
 
     for (int i=0; i<teamSize; i++) {
@@ -306,6 +325,7 @@ void MainWindow::scanForSelection() {
                 }
                 ui->gView_robot_prime->hide();
                 ui->gView_robot_prime->show();
+                newSelection = true;
             }
             // Checking if any robots on the field have been selected
             if (guiTeam[i]->isSelected()) {
@@ -327,10 +347,13 @@ void MainWindow::scanForSelection() {
                 }
                 ui->gView_robot_prime->hide();
                 ui->gView_robot_prime->show();
+                newSelection = true;
             }
         }//null check
     }//for loop
-    updateSelectedBotPanel(selectedBot);
+    if (newSelection) {
+        updateSelectedBotPanel(selectedBot);
+    } else { return; }
 
 }
 
@@ -361,6 +384,21 @@ int MainWindow::getVelocity(int id) {
         velocity /= wheels;
 
     return velocity;
+}
+
+void MainWindow::printBehavior(int id, string behavior, bool overwrite)
+{
+    QString b;
+    if (overwrite) {
+        b = QString::fromStdString(behavior) + "\n";
+        botBehavior[id] = b;
+        cout << botBehavior[id].toStdString();
+    } else {
+        b = QString::fromStdString(behavior) + "\n";
+        botBehavior[id] += b;
+    }
+
+
 }
 
 void MainWindow::setUpScene()
@@ -930,6 +968,7 @@ void MainWindow::field_setDragMode() {
 
 void MainWindow::updateSelectedBotPanel(int id)
 {
+//    cout << "updatedSelectedBotPanel; value: " << id << "\n";
     int v = 0;
     if (id == -1) {
         ui->gView_robot_prime->hide();
@@ -939,6 +978,15 @@ void MainWindow::updateSelectedBotPanel(int id)
         ui->lcd_coordX_prime->display("0");
         ui->lcd_coordY_prime->display("0");
         ui->box_primeBot->setTitle(" ");
+        ui->text_primeBot->setText(" ");
+//        for (int i=0; i<teamSize; i++) {
+//            if (gamemodel->find(i, gamemodel->getMyTeam()) != NULL) {
+//                if (botFrames[i]->isHidden()) {
+//                    botFrames[i]->show();
+//                }
+//            }
+//        }
+
     } else {
         v = getVelocity(id);
         ui->gView_robot_prime->show();
@@ -948,10 +996,18 @@ void MainWindow::updateSelectedBotPanel(int id)
         ui->lcd_coordX_prime->display(getBotCoordX(true, id));
         ui->lcd_coordY_prime->display(getBotCoordY(true,id));
         ui->box_primeBot->setTitle("Robot " + QString::number(id));
-        // TEST
-//        ui->frame_robot_3->hide();    // works!
+        ui->text_primeBot->setText(botBehavior[id]);
+//        for (int i=0; i<teamSize; i++) {
+//            if (gamemodel->find(id, gamemodel->getMyTeam()) != NULL) {
+//                if (botFrames[i]->isHidden()) {
+//                    botFrames[i]->show();
+//                }
+//            }
+//        }
+//        if (botFrames[id]->isHidden() == false) {
+//            botFrames[id]->hide();
+//        }
         ui->gView_robot_prime->setScene(botIconSelScenes[id]);
-
     }
 
 }

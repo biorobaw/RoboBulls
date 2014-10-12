@@ -54,6 +54,7 @@ public:
     void updateBotPanel();
     void scanForSelection();
     int getVelocity(int id);
+    void printBehavior(int id, string behavior, bool overwrite);    // puts the given bot's given string into a vector and prints it when the bot is selected
 
     void printBall();
     void gameModelUpdated();
@@ -83,11 +84,14 @@ private:
     QGraphicsEllipseItem *ellipse;
     QGraphicsRectItem *rectangle;
     int teamSize = 6;
+    // Behavior vector
+//    std::vector<QString*> botBehavior[6];
+    QString botBehavior[6];
     // Robot Panel
-    std::vector<QLabel*> botBehavior;
     std::vector<QLCDNumber*> botXcoords;
     std::vector<QLCDNumber*> botYcoords;
     std::vector<QLCDNumber*> botOrients;
+    std::vector<QFrame*> botFrames;
 //    std::vector<QLabel*> botIcons;
     std::vector<QLabel*> botTitle;
     std::vector<QDial*> velocityDials;
