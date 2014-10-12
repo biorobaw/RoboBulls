@@ -54,7 +54,7 @@ public:
     void updateBotPanel();
     void scanForSelection();
     int getVelocity(int id);
-    void printBehavior(int id, string behavior, bool overwrite);    // puts the given bot's given string into a vector and prints it when the bot is selected
+    void printBehavior(int botID, string behavior, bool append);    // puts the given bot's given string into a vector and prints it when the bot is selected
 
     void printBall();
     void gameModelUpdated();
@@ -90,7 +90,7 @@ private:
     // Robot Panel
     std::vector<QLCDNumber*> botXcoords;
     std::vector<QLCDNumber*> botYcoords;
-    std::vector<QLCDNumber*> botOrients;
+    std::vector<QDial*> botOrients;
     std::vector<QFrame*> botFrames;
 //    std::vector<QLabel*> botIcons;
     std::vector<QLabel*> botTitle;

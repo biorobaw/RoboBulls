@@ -43,11 +43,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     gamemodel = GameModel::getModel();
 
-    printBehavior(0, "this is bot 0", false);
-    printBehavior(0, "and it is rad", false);
-    printBehavior(0, "i wouldn't want", false);
-    printBehavior(0, "this bot to be sad", false);
-    printBehavior(0, "so now i'm going to drone on and on and on to see if scrolling kicks in when i get so far it goes off the page", true);
+    printBehavior(0, "behavior 1", true);
+    printBehavior(0, "behavior 2", true);
+    printBehavior(0, "behavior 3", true);
+    printBehavior(0, "behavior 4", true);
 
     ui->pushButton->setEnabled(false);
     setUpScene();
@@ -168,12 +167,12 @@ void MainWindow::setupBotPanel()
     botYcoords.push_back(ui->lcd_coordY_4);
     botYcoords.push_back(ui->lcd_coordY_5);
     // Orientation vector
-    botOrients.push_back(ui->lcd_orient_0);
-    botOrients.push_back(ui->lcd_orient_1);
-    botOrients.push_back(ui->lcd_orient_2);
-    botOrients.push_back(ui->lcd_orient_3);
-    botOrients.push_back(ui->lcd_orient_4);
-    botOrients.push_back(ui->lcd_orient_5);
+    botOrients.push_back(ui->dial_botOrient_0);
+    botOrients.push_back(ui->dial_botOrient_1);
+    botOrients.push_back(ui->dial_botOrient_2);
+    botOrients.push_back(ui->dial_botOrient_3);
+    botOrients.push_back(ui->dial_botOrient_4);
+    botOrients.push_back(ui->dial_botOrient_5);
     // Icons vector
     robotIcon0 = new GuiRobot;
     robotIcon1 = new GuiRobot;
@@ -267,7 +266,7 @@ void MainWindow::updateBotPanel() {
 //            botTitle[i]->setText("Robot " + QString::number(i));
             botXcoords[i]->display(getBotCoordX(true, i));
             botYcoords[i]->display(getBotCoordY(true, i));
-            botOrients[i]->display(getBotOrientString(i));
+            botOrients[i]->setValue(-getBotOrientDouble(true, i));
             botIconScenes[i]->removeItem(botIcons[i]);
             botIconScenes[i]->addItem(botIcons[i]);
             botIconFrames[i]->setScene(botIconScenes[i]);
@@ -277,7 +276,6 @@ void MainWindow::updateBotPanel() {
     }
     ui->gView_robot_0->hide();
     ui->gView_robot_0->show();
-
 }
 
 void MainWindow::scanForSelection() {
@@ -386,16 +384,17 @@ int MainWindow::getVelocity(int id) {
     return velocity;
 }
 
-void MainWindow::printBehavior(int id, string behavior, bool overwrite)
+void MainWindow::printBehavior(int botID, string behavior, bool append)
 {
     QString b;
-    if (overwrite) {
+    if (append == false) {
         b = QString::fromStdString(behavior) + "\n";
-        botBehavior[id] = b;
-        cout << botBehavior[id].toStdString();
+        botBehavior[botID] = b;
+        cout << botBehavior[botID].toStdString();
     } else {
         b = QString::fromStdString(behavior) + "\n";
-        botBehavior[id] += b;
+//        botBehavior[botID] += b;
+        botBehavior[botID].insert(0, b);
     }
 
 
@@ -995,6 +994,7 @@ void MainWindow::updateSelectedBotPanel(int id)
         ui->lcd_orient_prime->display(getBotOrientString(id));
         ui->lcd_coordX_prime->display(getBotCoordX(true, id));
         ui->lcd_coordY_prime->display(getBotCoordY(true,id));
+        ui->dial_botOrient_prime->setValue(-getBotOrientDouble(true, id));
         ui->box_primeBot->setTitle("Robot " + QString::number(id));
         ui->text_primeBot->setText(botBehavior[id]);
 //        for (int i=0; i<teamSize; i++) {

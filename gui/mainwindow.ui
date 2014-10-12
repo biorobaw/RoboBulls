@@ -177,11 +177,14 @@
            </property>
           </widget>
           <widget class="QDial" name="dial_botSpeed">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>213</y>
-             <width>121</width>
+             <y>189</y>
+             <width>111</width>
              <height>121</height>
             </rect>
            </property>
@@ -191,6 +194,9 @@
              <height>0</height>
             </size>
            </property>
+           <property name="cursor">
+            <cursorShape>ForbiddenCursor</cursorShape>
+           </property>
            <property name="focusPolicy">
             <enum>Qt::NoFocus</enum>
            </property>
@@ -198,7 +204,7 @@
             <enum>Qt::NoContextMenu</enum>
            </property>
            <property name="toolTip">
-            <string>Velocity of selected robot</string>
+            <string>Average forward or reverse force of the robot's wheels</string>
            </property>
            <property name="styleSheet">
             <string notr="true">background-color: rgb(255, 0, 0);</string>
@@ -234,8 +240,8 @@
           <widget class="QLCDNumber" name="lcd_botSpeed">
            <property name="geometry">
             <rect>
-             <x>41</x>
-             <y>263</y>
+             <x>35</x>
+             <y>239</y>
              <width>40</width>
              <height>22</height>
             </rect>
@@ -305,17 +311,17 @@
           <widget class="QLabel" name="label_4">
            <property name="geometry">
             <rect>
-             <x>38</x>
-             <y>289</y>
-             <width>41</width>
+             <x>14</x>
+             <y>306</y>
+             <width>80</width>
              <height>21</height>
             </rect>
            </property>
            <property name="font">
             <font>
-             <pointsize>16</pointsize>
+             <pointsize>11</pointsize>
              <weight>50</weight>
-             <italic>true</italic>
+             <italic>false</italic>
              <bold>false</bold>
             </font>
            </property>
@@ -323,225 +329,11 @@
             <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
            </property>
            <property name="text">
-            <string>V</string>
+            <string>Velocity</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
            </property>
-          </widget>
-          <widget class="QWidget" name="layoutWidget">
-           <property name="geometry">
-            <rect>
-             <x>10</x>
-             <y>160</y>
-             <width>221</width>
-             <height>50</height>
-            </rect>
-           </property>
-           <layout class="QGridLayout" name="gridLayout_4">
-            <item row="1" column="1">
-             <widget class="QLCDNumber" name="lcd_coordX_prime">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>73</width>
-                <height>23</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string>X coordinate from center of field</string>
-              </property>
-              <property name="layoutDirection">
-               <enum>Qt::RightToLeft</enum>
-              </property>
-              <property name="autoFillBackground">
-               <bool>false</bool>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">background-color: rgb(0, 4, 133);</string>
-              </property>
-              <property name="frameShape">
-               <enum>QFrame::Panel</enum>
-              </property>
-              <property name="frameShadow">
-               <enum>QFrame::Sunken</enum>
-              </property>
-              <property name="lineWidth">
-               <number>2</number>
-              </property>
-              <property name="midLineWidth">
-               <number>0</number>
-              </property>
-              <property name="smallDecimalPoint">
-               <bool>false</bool>
-              </property>
-              <property name="digitCount">
-               <number>5</number>
-              </property>
-              <property name="segmentStyle">
-               <enum>QLCDNumber::Outline</enum>
-              </property>
-              <property name="value" stdset="0">
-               <double>0.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="2">
-             <widget class="QLCDNumber" name="lcd_coordY_prime">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>73</width>
-                <height>23</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string>Y coordinate from center of field</string>
-              </property>
-              <property name="layoutDirection">
-               <enum>Qt::RightToLeft</enum>
-              </property>
-              <property name="autoFillBackground">
-               <bool>false</bool>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">background-color: rgb(0, 4, 133);</string>
-              </property>
-              <property name="frameShape">
-               <enum>QFrame::Panel</enum>
-              </property>
-              <property name="frameShadow">
-               <enum>QFrame::Sunken</enum>
-              </property>
-              <property name="lineWidth">
-               <number>2</number>
-              </property>
-              <property name="smallDecimalPoint">
-               <bool>false</bool>
-              </property>
-              <property name="digitCount">
-               <number>5</number>
-              </property>
-              <property name="segmentStyle">
-               <enum>QLCDNumber::Outline</enum>
-              </property>
-              <property name="value" stdset="0">
-               <double>0.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QLCDNumber" name="lcd_orient_prime">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>73</width>
-                <height>23</height>
-               </size>
-              </property>
-              <property name="mouseTracking">
-               <bool>true</bool>
-              </property>
-              <property name="toolTip">
-               <string comment="test" extracomment="test">Degrees from opposing goal</string>
-              </property>
-              <property name="layoutDirection">
-               <enum>Qt::RightToLeft</enum>
-              </property>
-              <property name="autoFillBackground">
-               <bool>false</bool>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">background-color: rgb(0, 4, 133);</string>
-              </property>
-              <property name="frameShape">
-               <enum>QFrame::Panel</enum>
-              </property>
-              <property name="frameShadow">
-               <enum>QFrame::Sunken</enum>
-              </property>
-              <property name="lineWidth">
-               <number>2</number>
-              </property>
-              <property name="smallDecimalPoint">
-               <bool>false</bool>
-              </property>
-              <property name="digitCount">
-               <number>5</number>
-              </property>
-              <property name="segmentStyle">
-               <enum>QLCDNumber::Outline</enum>
-              </property>
-              <property name="value" stdset="0">
-               <double>0.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="0">
-             <widget class="QLabel" name="label_orient_6">
-              <property name="minimumSize">
-               <size>
-                <width>20</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="font">
-               <font>
-                <pointsize>8</pointsize>
-                <weight>75</weight>
-                <bold>true</bold>
-               </font>
-              </property>
-              <property name="text">
-               <string>Heading:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="label_coord_6">
-              <property name="minimumSize">
-               <size>
-                <width>42</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="baseSize">
-               <size>
-                <width>20</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="font">
-               <font>
-                <pointsize>8</pointsize>
-                <weight>75</weight>
-                <bold>true</bold>
-               </font>
-              </property>
-              <property name="text">
-               <string>Position:</string>
-              </property>
-              <property name="indent">
-               <number>0</number>
-              </property>
-             </widget>
-            </item>
-           </layout>
           </widget>
           <widget class="QWidget" name="layoutWidget">
            <property name="geometry">
@@ -607,6 +399,291 @@
               </property>
               <property name="lineWidth">
                <number>2</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QDial" name="dial_botOrient_prime">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="geometry">
+            <rect>
+             <x>120</x>
+             <y>189</y>
+             <width>111</width>
+             <height>121</height>
+            </rect>
+           </property>
+           <property name="baseSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
+           <property name="contextMenuPolicy">
+            <enum>Qt::NoContextMenu</enum>
+           </property>
+           <property name="toolTip">
+            <string>Robot's orientation in relation to the opposing goal</string>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(0, 255, 0);</string>
+           </property>
+           <property name="minimum">
+            <number>-180</number>
+           </property>
+           <property name="maximum">
+            <number>180</number>
+           </property>
+           <property name="singleStep">
+            <number>1</number>
+           </property>
+           <property name="pageStep">
+            <number>5</number>
+           </property>
+           <property name="tracking">
+            <bool>false</bool>
+           </property>
+           <property name="invertedAppearance">
+            <bool>false</bool>
+           </property>
+           <property name="wrapping">
+            <bool>true</bool>
+           </property>
+           <property name="notchTarget">
+            <double>8.699999999999999</double>
+           </property>
+           <property name="notchesVisible">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_5">
+           <property name="geometry">
+            <rect>
+             <x>136</x>
+             <y>306</y>
+             <width>80</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>11</pointsize>
+             <weight>50</weight>
+             <italic>false</italic>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+           </property>
+           <property name="text">
+            <string>Bearing</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+          <widget class="QLCDNumber" name="lcd_orient_prime">
+           <property name="geometry">
+            <rect>
+             <x>155</x>
+             <y>240</y>
+             <width>40</width>
+             <height>23</height>
+            </rect>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>73</width>
+             <height>23</height>
+            </size>
+           </property>
+           <property name="mouseTracking">
+            <bool>true</bool>
+           </property>
+           <property name="toolTip">
+            <string comment="test" extracomment="test">Degrees from opposing goal</string>
+           </property>
+           <property name="layoutDirection">
+            <enum>Qt::RightToLeft</enum>
+           </property>
+           <property name="autoFillBackground">
+            <bool>false</bool>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(0, 4, 133);</string>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::Panel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Sunken</enum>
+           </property>
+           <property name="lineWidth">
+            <number>2</number>
+           </property>
+           <property name="smallDecimalPoint">
+            <bool>false</bool>
+           </property>
+           <property name="digitCount">
+            <number>4</number>
+           </property>
+           <property name="segmentStyle">
+            <enum>QLCDNumber::Outline</enum>
+           </property>
+           <property name="value" stdset="0">
+            <double>0.000000000000000</double>
+           </property>
+          </widget>
+          <widget class="QWidget" name="">
+           <property name="geometry">
+            <rect>
+             <x>11</x>
+             <y>160</y>
+             <width>221</width>
+             <height>25</height>
+            </rect>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_4">
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_coord_6">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="baseSize">
+               <size>
+                <width>20</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>11</pointsize>
+                <weight>50</weight>
+                <bold>false</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>Position:</string>
+              </property>
+              <property name="indent">
+               <number>0</number>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLCDNumber" name="lcd_coordX_prime">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>73</width>
+                <height>23</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>X coordinate from center of field</string>
+              </property>
+              <property name="layoutDirection">
+               <enum>Qt::RightToLeft</enum>
+              </property>
+              <property name="autoFillBackground">
+               <bool>false</bool>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(0, 4, 133);</string>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::Panel</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Sunken</enum>
+              </property>
+              <property name="lineWidth">
+               <number>2</number>
+              </property>
+              <property name="midLineWidth">
+               <number>0</number>
+              </property>
+              <property name="smallDecimalPoint">
+               <bool>false</bool>
+              </property>
+              <property name="digitCount">
+               <number>5</number>
+              </property>
+              <property name="segmentStyle">
+               <enum>QLCDNumber::Outline</enum>
+              </property>
+              <property name="value" stdset="0">
+               <double>0.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="QLCDNumber" name="lcd_coordY_prime">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>73</width>
+                <height>23</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>Y coordinate from center of field</string>
+              </property>
+              <property name="layoutDirection">
+               <enum>Qt::RightToLeft</enum>
+              </property>
+              <property name="autoFillBackground">
+               <bool>false</bool>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(0, 4, 133);</string>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::Panel</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Sunken</enum>
+              </property>
+              <property name="lineWidth">
+               <number>2</number>
+              </property>
+              <property name="smallDecimalPoint">
+               <bool>false</bool>
+              </property>
+              <property name="digitCount">
+               <number>5</number>
+              </property>
+              <property name="segmentStyle">
+               <enum>QLCDNumber::Outline</enum>
+              </property>
+              <property name="value" stdset="0">
+               <double>0.000000000000000</double>
               </property>
              </widget>
             </item>
@@ -734,9 +811,12 @@
              </property>
             </widget>
             <widget class="QDial" name="dial_botSpeed_0">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="geometry">
               <rect>
-               <x>70</x>
+               <x>55</x>
                <y>10</y>
                <width>55</width>
                <height>55</height>
@@ -767,178 +847,90 @@
               <bool>true</bool>
              </property>
             </widget>
-            <widget class="QLabel" name="label_6">
+            <widget class="QDial" name="dial_botOrient_0">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="geometry">
               <rect>
-               <x>86</x>
-               <y>30</y>
-               <width>21</width>
-               <height>17</height>
+               <x>115</x>
+               <y>10</y>
+               <width>55</width>
+               <height>55</height>
               </rect>
              </property>
-             <property name="font">
-              <font>
-               <weight>50</weight>
-               <italic>true</italic>
-               <bold>false</bold>
-              </font>
+             <property name="baseSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="contextMenuPolicy">
+              <enum>Qt::NoContextMenu</enum>
+             </property>
+             <property name="toolTip">
+              <string>Velocity of selected robot</string>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(0, 255, 0);</string>
+             </property>
+             <property name="minimum">
+              <number>-180</number>
+             </property>
+             <property name="maximum">
+              <number>180</number>
+             </property>
+             <property name="singleStep">
+              <number>1</number>
+             </property>
+             <property name="pageStep">
+              <number>5</number>
+             </property>
+             <property name="tracking">
+              <bool>false</bool>
+             </property>
+             <property name="invertedAppearance">
+              <bool>false</bool>
+             </property>
+             <property name="wrapping">
+              <bool>true</bool>
+             </property>
+             <property name="notchTarget">
+              <double>8.699999999999999</double>
+             </property>
+             <property name="notchesVisible">
+              <bool>true</bool>
+             </property>
+            </widget>
+            <widget class="QFrame" name="frame_2">
+             <property name="geometry">
+              <rect>
+               <x>170</x>
+               <y>5</y>
+               <width>81</width>
+               <height>71</height>
+              </rect>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
              </property>
-             <property name="text">
-              <string>V</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-            <widget class="QLabel" name="label_13">
-             <property name="geometry">
-              <rect>
-               <x>133</x>
-               <y>25</y>
-               <width>61</width>
-               <height>20</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font>
-               <family>Courier 10 Pitch</family>
-               <pointsize>8</pointsize>
-              </font>
-             </property>
-             <property name="text">
-              <string>Heading: </string>
-             </property>
-            </widget>
-            <widget class="QLCDNumber" name="lcd_orient_0">
-             <property name="geometry">
-              <rect>
-               <x>200</x>
-               <y>25</y>
-               <width>31</width>
-               <height>20</height>
-              </rect>
-             </property>
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>100</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <weight>50</weight>
-               <italic>false</italic>
-               <bold>false</bold>
-               <underline>false</underline>
-               <strikeout>false</strikeout>
-               <kerning>true</kerning>
-              </font>
-             </property>
-             <property name="mouseTracking">
-              <bool>true</bool>
-             </property>
-             <property name="toolTip">
-              <string>Degrees from opposing goal</string>
-             </property>
-             <property name="toolTipDuration">
-              <number>-2</number>
-             </property>
-             <property name="layoutDirection">
-              <enum>Qt::RightToLeft</enum>
-             </property>
-             <property name="autoFillBackground">
-              <bool>false</bool>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(0, 4, 133);</string>
-             </property>
              <property name="frameShape">
-              <enum>QFrame::Panel</enum>
+              <enum>QFrame::NoFrame</enum>
              </property>
              <property name="frameShadow">
-              <enum>QFrame::Sunken</enum>
+              <enum>QFrame::Plain</enum>
              </property>
              <property name="lineWidth">
-              <number>2</number>
+              <number>0</number>
              </property>
-             <property name="smallDecimalPoint">
-              <bool>false</bool>
-             </property>
-             <property name="digitCount">
-              <number>4</number>
-             </property>
-             <property name="segmentStyle">
-              <enum>QLCDNumber::Outline</enum>
-             </property>
-             <property name="value" stdset="0">
-              <double>888888.000000000000000</double>
-             </property>
-            </widget>
-            <widget class="QWidget" name="layoutWidget">
-             <property name="geometry">
-              <rect>
-               <x>131</x>
-               <y>49</y>
-               <width>101</width>
-               <height>20</height>
-              </rect>
-             </property>
-             <layout class="QGridLayout" name="gridLayout_9">
-              <property name="sizeConstraint">
-               <enum>QLayout::SetMaximumSize</enum>
-              </property>
+             <layout class="QGridLayout" name="gridLayout_5">
               <item row="0" column="0">
-               <widget class="QLCDNumber" name="lcd_coordX_0">
-                <property name="maximumSize">
-                 <size>
-                  <width>16777215</width>
-                  <height>18</height>
-                 </size>
-                </property>
-                <property name="toolTip">
-                 <string>X coordinate from center of field</string>
-                </property>
-                <property name="layoutDirection">
-                 <enum>Qt::RightToLeft</enum>
-                </property>
-                <property name="autoFillBackground">
-                 <bool>false</bool>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">background-color: rgb(0, 4, 133);</string>
-                </property>
-                <property name="frameShape">
-                 <enum>QFrame::Panel</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Sunken</enum>
-                </property>
-                <property name="lineWidth">
-                 <number>2</number>
-                </property>
-                <property name="midLineWidth">
-                 <number>0</number>
-                </property>
-                <property name="smallDecimalPoint">
-                 <bool>false</bool>
-                </property>
-                <property name="digitCount">
-                 <number>6</number>
-                </property>
-                <property name="segmentStyle">
-                 <enum>QLCDNumber::Outline</enum>
-                </property>
-                <property name="value" stdset="0">
-                 <double>0.000000000000000</double>
+               <widget class="QLabel" name="label_14">
+                <property name="text">
+                 <string>x</string>
                 </property>
                </widget>
               </item>
@@ -975,7 +967,60 @@
                  <bool>false</bool>
                 </property>
                 <property name="digitCount">
-                 <number>6</number>
+                 <number>5</number>
+                </property>
+                <property name="segmentStyle">
+                 <enum>QLCDNumber::Outline</enum>
+                </property>
+                <property name="value" stdset="0">
+                 <double>0.000000000000000</double>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_13">
+                <property name="text">
+                 <string>y</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLCDNumber" name="lcd_coordX_0">
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>18</height>
+                 </size>
+                </property>
+                <property name="toolTip">
+                 <string>X coordinate from center of field</string>
+                </property>
+                <property name="layoutDirection">
+                 <enum>Qt::RightToLeft</enum>
+                </property>
+                <property name="autoFillBackground">
+                 <bool>false</bool>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color: rgb(0, 4, 133);</string>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::Panel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Sunken</enum>
+                </property>
+                <property name="lineWidth">
+                 <number>2</number>
+                </property>
+                <property name="midLineWidth">
+                 <number>0</number>
+                </property>
+                <property name="smallDecimalPoint">
+                 <bool>false</bool>
+                </property>
+                <property name="digitCount">
+                 <number>5</number>
                 </property>
                 <property name="segmentStyle">
                  <enum>QLCDNumber::Outline</enum>
@@ -996,7 +1041,7 @@
             </property>
             <property name="maximumSize">
              <size>
-              <width>16777215</width>
+              <width>249</width>
               <height>80</height>
              </size>
             </property>
@@ -1099,9 +1144,12 @@
              </property>
             </widget>
             <widget class="QDial" name="dial_botSpeed_5">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="geometry">
               <rect>
-               <x>70</x>
+               <x>55</x>
                <y>10</y>
                <width>55</width>
                <height>55</height>
@@ -1132,178 +1180,87 @@
               <bool>true</bool>
              </property>
             </widget>
-            <widget class="QLabel" name="label_3">
+            <widget class="QDial" name="dial_botOrient_5">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="geometry">
               <rect>
-               <x>86</x>
-               <y>30</y>
-               <width>21</width>
-               <height>17</height>
+               <x>115</x>
+               <y>10</y>
+               <width>55</width>
+               <height>55</height>
               </rect>
              </property>
-             <property name="font">
-              <font>
-               <weight>50</weight>
-               <italic>true</italic>
-               <bold>false</bold>
-              </font>
+             <property name="baseSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="contextMenuPolicy">
+              <enum>Qt::NoContextMenu</enum>
+             </property>
+             <property name="toolTip">
+              <string>Velocity of selected robot</string>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(0, 255, 0);</string>
+             </property>
+             <property name="minimum">
+              <number>-180</number>
+             </property>
+             <property name="maximum">
+              <number>180</number>
+             </property>
+             <property name="singleStep">
+              <number>1</number>
+             </property>
+             <property name="pageStep">
+              <number>5</number>
+             </property>
+             <property name="tracking">
+              <bool>false</bool>
+             </property>
+             <property name="invertedAppearance">
+              <bool>false</bool>
+             </property>
+             <property name="wrapping">
+              <bool>true</bool>
+             </property>
+             <property name="notchTarget">
+              <double>8.699999999999999</double>
+             </property>
+             <property name="notchesVisible">
+              <bool>true</bool>
+             </property>
+            </widget>
+            <widget class="QFrame" name="frame_7">
+             <property name="geometry">
+              <rect>
+               <x>170</x>
+               <y>5</y>
+               <width>81</width>
+               <height>71</height>
+              </rect>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
              </property>
-             <property name="text">
-              <string>V</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-            <widget class="QLabel" name="label_18">
-             <property name="geometry">
-              <rect>
-               <x>133</x>
-               <y>15</y>
-               <width>61</width>
-               <height>20</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font>
-               <family>Courier 10 Pitch</family>
-               <pointsize>8</pointsize>
-              </font>
-             </property>
-             <property name="text">
-              <string>Heading: </string>
-             </property>
-            </widget>
-            <widget class="QLCDNumber" name="lcd_orient_5">
-             <property name="geometry">
-              <rect>
-               <x>200</x>
-               <y>13</y>
-               <width>31</width>
-               <height>20</height>
-              </rect>
-             </property>
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>100</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <weight>50</weight>
-               <italic>false</italic>
-               <bold>false</bold>
-               <underline>false</underline>
-               <strikeout>false</strikeout>
-               <kerning>true</kerning>
-              </font>
-             </property>
-             <property name="mouseTracking">
-              <bool>true</bool>
-             </property>
-             <property name="toolTip">
-              <string>Degrees from opposing goal</string>
-             </property>
-             <property name="toolTipDuration">
-              <number>-2</number>
-             </property>
-             <property name="layoutDirection">
-              <enum>Qt::RightToLeft</enum>
-             </property>
-             <property name="autoFillBackground">
-              <bool>false</bool>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(0, 4, 133);</string>
-             </property>
              <property name="frameShape">
-              <enum>QFrame::Panel</enum>
+              <enum>QFrame::NoFrame</enum>
              </property>
              <property name="frameShadow">
-              <enum>QFrame::Sunken</enum>
+              <enum>QFrame::Raised</enum>
              </property>
-             <property name="lineWidth">
-              <number>2</number>
-             </property>
-             <property name="smallDecimalPoint">
-              <bool>false</bool>
-             </property>
-             <property name="digitCount">
-              <number>4</number>
-             </property>
-             <property name="segmentStyle">
-              <enum>QLCDNumber::Outline</enum>
-             </property>
-             <property name="value" stdset="0">
-              <double>888888.000000000000000</double>
-             </property>
-            </widget>
-            <widget class="QWidget" name="layoutWidget">
-             <property name="geometry">
-              <rect>
-               <x>131</x>
-               <y>39</y>
-               <width>101</width>
-               <height>20</height>
-              </rect>
-             </property>
-             <layout class="QGridLayout" name="gridLayout_13">
-              <property name="sizeConstraint">
-               <enum>QLayout::SetMaximumSize</enum>
-              </property>
+             <layout class="QGridLayout" name="gridLayout_11">
               <item row="0" column="0">
-               <widget class="QLCDNumber" name="lcd_coordX_5">
-                <property name="maximumSize">
-                 <size>
-                  <width>16777215</width>
-                  <height>18</height>
-                 </size>
-                </property>
-                <property name="toolTip">
-                 <string>X coordinate from center of field</string>
-                </property>
-                <property name="layoutDirection">
-                 <enum>Qt::RightToLeft</enum>
-                </property>
-                <property name="autoFillBackground">
-                 <bool>false</bool>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">background-color: rgb(0, 4, 133);</string>
-                </property>
-                <property name="frameShape">
-                 <enum>QFrame::Panel</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Sunken</enum>
-                </property>
-                <property name="lineWidth">
-                 <number>2</number>
-                </property>
-                <property name="midLineWidth">
-                 <number>0</number>
-                </property>
-                <property name="smallDecimalPoint">
-                 <bool>false</bool>
-                </property>
-                <property name="digitCount">
-                 <number>6</number>
-                </property>
-                <property name="segmentStyle">
-                 <enum>QLCDNumber::Outline</enum>
-                </property>
-                <property name="value" stdset="0">
-                 <double>0.000000000000000</double>
+               <widget class="QLabel" name="label_23">
+                <property name="text">
+                 <string>x</string>
                 </property>
                </widget>
               </item>
@@ -1340,7 +1297,60 @@
                  <bool>false</bool>
                 </property>
                 <property name="digitCount">
-                 <number>6</number>
+                 <number>5</number>
+                </property>
+                <property name="segmentStyle">
+                 <enum>QLCDNumber::Outline</enum>
+                </property>
+                <property name="value" stdset="0">
+                 <double>0.000000000000000</double>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_24">
+                <property name="text">
+                 <string>y</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLCDNumber" name="lcd_coordX_5">
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>18</height>
+                 </size>
+                </property>
+                <property name="toolTip">
+                 <string>X coordinate from center of field</string>
+                </property>
+                <property name="layoutDirection">
+                 <enum>Qt::RightToLeft</enum>
+                </property>
+                <property name="autoFillBackground">
+                 <bool>false</bool>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color: rgb(0, 4, 133);</string>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::Panel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Sunken</enum>
+                </property>
+                <property name="lineWidth">
+                 <number>2</number>
+                </property>
+                <property name="midLineWidth">
+                 <number>0</number>
+                </property>
+                <property name="smallDecimalPoint">
+                 <bool>false</bool>
+                </property>
+                <property name="digitCount">
+                 <number>5</number>
                 </property>
                 <property name="segmentStyle">
                  <enum>QLCDNumber::Outline</enum>
@@ -1464,9 +1474,12 @@
              </property>
             </widget>
             <widget class="QDial" name="dial_botSpeed_4">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="geometry">
               <rect>
-               <x>70</x>
+               <x>55</x>
                <y>10</y>
                <width>55</width>
                <height>55</height>
@@ -1497,178 +1510,87 @@
               <bool>true</bool>
              </property>
             </widget>
-            <widget class="QLabel" name="label_12">
+            <widget class="QDial" name="dial_botOrient_4">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="geometry">
               <rect>
-               <x>86</x>
-               <y>30</y>
-               <width>21</width>
-               <height>17</height>
+               <x>115</x>
+               <y>10</y>
+               <width>55</width>
+               <height>55</height>
               </rect>
              </property>
-             <property name="font">
-              <font>
-               <weight>50</weight>
-               <italic>true</italic>
-               <bold>false</bold>
-              </font>
+             <property name="baseSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="contextMenuPolicy">
+              <enum>Qt::NoContextMenu</enum>
+             </property>
+             <property name="toolTip">
+              <string>Velocity of selected robot</string>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(0, 255, 0);</string>
+             </property>
+             <property name="minimum">
+              <number>-180</number>
+             </property>
+             <property name="maximum">
+              <number>180</number>
+             </property>
+             <property name="singleStep">
+              <number>1</number>
+             </property>
+             <property name="pageStep">
+              <number>5</number>
+             </property>
+             <property name="tracking">
+              <bool>false</bool>
+             </property>
+             <property name="invertedAppearance">
+              <bool>false</bool>
+             </property>
+             <property name="wrapping">
+              <bool>true</bool>
+             </property>
+             <property name="notchTarget">
+              <double>8.699999999999999</double>
+             </property>
+             <property name="notchesVisible">
+              <bool>true</bool>
+             </property>
+            </widget>
+            <widget class="QFrame" name="frame_6">
+             <property name="geometry">
+              <rect>
+               <x>170</x>
+               <y>5</y>
+               <width>81</width>
+               <height>71</height>
+              </rect>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
              </property>
-             <property name="text">
-              <string>V</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-            <widget class="QLabel" name="label_17">
-             <property name="geometry">
-              <rect>
-               <x>133</x>
-               <y>15</y>
-               <width>61</width>
-               <height>20</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font>
-               <family>Courier 10 Pitch</family>
-               <pointsize>8</pointsize>
-              </font>
-             </property>
-             <property name="text">
-              <string>Heading: </string>
-             </property>
-            </widget>
-            <widget class="QLCDNumber" name="lcd_orient_4">
-             <property name="geometry">
-              <rect>
-               <x>200</x>
-               <y>13</y>
-               <width>31</width>
-               <height>20</height>
-              </rect>
-             </property>
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>100</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <weight>50</weight>
-               <italic>false</italic>
-               <bold>false</bold>
-               <underline>false</underline>
-               <strikeout>false</strikeout>
-               <kerning>true</kerning>
-              </font>
-             </property>
-             <property name="mouseTracking">
-              <bool>true</bool>
-             </property>
-             <property name="toolTip">
-              <string>Degrees from opposing goal</string>
-             </property>
-             <property name="toolTipDuration">
-              <number>-2</number>
-             </property>
-             <property name="layoutDirection">
-              <enum>Qt::RightToLeft</enum>
-             </property>
-             <property name="autoFillBackground">
-              <bool>false</bool>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(0, 4, 133);</string>
-             </property>
              <property name="frameShape">
-              <enum>QFrame::Panel</enum>
+              <enum>QFrame::NoFrame</enum>
              </property>
              <property name="frameShadow">
-              <enum>QFrame::Sunken</enum>
+              <enum>QFrame::Raised</enum>
              </property>
-             <property name="lineWidth">
-              <number>2</number>
-             </property>
-             <property name="smallDecimalPoint">
-              <bool>false</bool>
-             </property>
-             <property name="digitCount">
-              <number>4</number>
-             </property>
-             <property name="segmentStyle">
-              <enum>QLCDNumber::Outline</enum>
-             </property>
-             <property name="value" stdset="0">
-              <double>888888.000000000000000</double>
-             </property>
-            </widget>
-            <widget class="QWidget" name="layoutWidget">
-             <property name="geometry">
-              <rect>
-               <x>131</x>
-               <y>39</y>
-               <width>101</width>
-               <height>20</height>
-              </rect>
-             </property>
-             <layout class="QGridLayout" name="gridLayout_12">
-              <property name="sizeConstraint">
-               <enum>QLayout::SetMaximumSize</enum>
-              </property>
+             <layout class="QGridLayout" name="gridLayout_10">
               <item row="0" column="0">
-               <widget class="QLCDNumber" name="lcd_coordX_4">
-                <property name="maximumSize">
-                 <size>
-                  <width>16777215</width>
-                  <height>18</height>
-                 </size>
-                </property>
-                <property name="toolTip">
-                 <string>X coordinate from center of field</string>
-                </property>
-                <property name="layoutDirection">
-                 <enum>Qt::RightToLeft</enum>
-                </property>
-                <property name="autoFillBackground">
-                 <bool>false</bool>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">background-color: rgb(0, 4, 133);</string>
-                </property>
-                <property name="frameShape">
-                 <enum>QFrame::Panel</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Sunken</enum>
-                </property>
-                <property name="lineWidth">
-                 <number>2</number>
-                </property>
-                <property name="midLineWidth">
-                 <number>0</number>
-                </property>
-                <property name="smallDecimalPoint">
-                 <bool>false</bool>
-                </property>
-                <property name="digitCount">
-                 <number>6</number>
-                </property>
-                <property name="segmentStyle">
-                 <enum>QLCDNumber::Outline</enum>
-                </property>
-                <property name="value" stdset="0">
-                 <double>0.000000000000000</double>
+               <widget class="QLabel" name="label_21">
+                <property name="text">
+                 <string>x</string>
                 </property>
                </widget>
               </item>
@@ -1705,7 +1627,60 @@
                  <bool>false</bool>
                 </property>
                 <property name="digitCount">
-                 <number>6</number>
+                 <number>5</number>
+                </property>
+                <property name="segmentStyle">
+                 <enum>QLCDNumber::Outline</enum>
+                </property>
+                <property name="value" stdset="0">
+                 <double>0.000000000000000</double>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_22">
+                <property name="text">
+                 <string>y</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLCDNumber" name="lcd_coordX_4">
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>18</height>
+                 </size>
+                </property>
+                <property name="toolTip">
+                 <string>X coordinate from center of field</string>
+                </property>
+                <property name="layoutDirection">
+                 <enum>Qt::RightToLeft</enum>
+                </property>
+                <property name="autoFillBackground">
+                 <bool>false</bool>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color: rgb(0, 4, 133);</string>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::Panel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Sunken</enum>
+                </property>
+                <property name="lineWidth">
+                 <number>2</number>
+                </property>
+                <property name="midLineWidth">
+                 <number>0</number>
+                </property>
+                <property name="smallDecimalPoint">
+                 <bool>false</bool>
+                </property>
+                <property name="digitCount">
+                 <number>5</number>
                 </property>
                 <property name="segmentStyle">
                  <enum>QLCDNumber::Outline</enum>
@@ -1829,9 +1804,12 @@
              </property>
             </widget>
             <widget class="QDial" name="dial_botSpeed_2">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="geometry">
               <rect>
-               <x>70</x>
+               <x>55</x>
                <y>10</y>
                <width>55</width>
                <height>55</height>
@@ -1862,178 +1840,87 @@
               <bool>true</bool>
              </property>
             </widget>
-            <widget class="QLabel" name="label_9">
+            <widget class="QDial" name="dial_botOrient_2">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="geometry">
               <rect>
-               <x>86</x>
-               <y>30</y>
-               <width>21</width>
-               <height>17</height>
+               <x>115</x>
+               <y>10</y>
+               <width>55</width>
+               <height>55</height>
               </rect>
              </property>
-             <property name="font">
-              <font>
-               <weight>50</weight>
-               <italic>true</italic>
-               <bold>false</bold>
-              </font>
+             <property name="baseSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="contextMenuPolicy">
+              <enum>Qt::NoContextMenu</enum>
+             </property>
+             <property name="toolTip">
+              <string>Velocity of selected robot</string>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(0, 255, 0);</string>
+             </property>
+             <property name="minimum">
+              <number>-180</number>
+             </property>
+             <property name="maximum">
+              <number>180</number>
+             </property>
+             <property name="singleStep">
+              <number>1</number>
+             </property>
+             <property name="pageStep">
+              <number>5</number>
+             </property>
+             <property name="tracking">
+              <bool>false</bool>
+             </property>
+             <property name="invertedAppearance">
+              <bool>false</bool>
+             </property>
+             <property name="wrapping">
+              <bool>true</bool>
+             </property>
+             <property name="notchTarget">
+              <double>8.699999999999999</double>
+             </property>
+             <property name="notchesVisible">
+              <bool>true</bool>
+             </property>
+            </widget>
+            <widget class="QFrame" name="frame_4">
+             <property name="geometry">
+              <rect>
+               <x>170</x>
+               <y>5</y>
+               <width>81</width>
+               <height>71</height>
+              </rect>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
              </property>
-             <property name="text">
-              <string>V</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-            <widget class="QLabel" name="label_15">
-             <property name="geometry">
-              <rect>
-               <x>133</x>
-               <y>15</y>
-               <width>61</width>
-               <height>20</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font>
-               <family>Courier 10 Pitch</family>
-               <pointsize>8</pointsize>
-              </font>
-             </property>
-             <property name="text">
-              <string>Heading: </string>
-             </property>
-            </widget>
-            <widget class="QLCDNumber" name="lcd_orient_2">
-             <property name="geometry">
-              <rect>
-               <x>200</x>
-               <y>13</y>
-               <width>31</width>
-               <height>20</height>
-              </rect>
-             </property>
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>100</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <weight>50</weight>
-               <italic>false</italic>
-               <bold>false</bold>
-               <underline>false</underline>
-               <strikeout>false</strikeout>
-               <kerning>true</kerning>
-              </font>
-             </property>
-             <property name="mouseTracking">
-              <bool>true</bool>
-             </property>
-             <property name="toolTip">
-              <string>Degrees from opposing goal</string>
-             </property>
-             <property name="toolTipDuration">
-              <number>-2</number>
-             </property>
-             <property name="layoutDirection">
-              <enum>Qt::RightToLeft</enum>
-             </property>
-             <property name="autoFillBackground">
-              <bool>false</bool>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(0, 4, 133);</string>
-             </property>
              <property name="frameShape">
-              <enum>QFrame::Panel</enum>
+              <enum>QFrame::NoFrame</enum>
              </property>
              <property name="frameShadow">
-              <enum>QFrame::Sunken</enum>
+              <enum>QFrame::Raised</enum>
              </property>
-             <property name="lineWidth">
-              <number>2</number>
-             </property>
-             <property name="smallDecimalPoint">
-              <bool>false</bool>
-             </property>
-             <property name="digitCount">
-              <number>4</number>
-             </property>
-             <property name="segmentStyle">
-              <enum>QLCDNumber::Outline</enum>
-             </property>
-             <property name="value" stdset="0">
-              <double>888888.000000000000000</double>
-             </property>
-            </widget>
-            <widget class="QWidget" name="layoutWidget">
-             <property name="geometry">
-              <rect>
-               <x>131</x>
-               <y>39</y>
-               <width>101</width>
-               <height>20</height>
-              </rect>
-             </property>
-             <layout class="QGridLayout" name="gridLayout_11">
-              <property name="sizeConstraint">
-               <enum>QLayout::SetMaximumSize</enum>
-              </property>
+             <layout class="QGridLayout" name="gridLayout_8">
               <item row="0" column="0">
-               <widget class="QLCDNumber" name="lcd_coordX_2">
-                <property name="maximumSize">
-                 <size>
-                  <width>16777215</width>
-                  <height>18</height>
-                 </size>
-                </property>
-                <property name="toolTip">
-                 <string>X coordinate from center of field</string>
-                </property>
-                <property name="layoutDirection">
-                 <enum>Qt::RightToLeft</enum>
-                </property>
-                <property name="autoFillBackground">
-                 <bool>false</bool>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">background-color: rgb(0, 4, 133);</string>
-                </property>
-                <property name="frameShape">
-                 <enum>QFrame::Panel</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Sunken</enum>
-                </property>
-                <property name="lineWidth">
-                 <number>2</number>
-                </property>
-                <property name="midLineWidth">
-                 <number>0</number>
-                </property>
-                <property name="smallDecimalPoint">
-                 <bool>false</bool>
-                </property>
-                <property name="digitCount">
-                 <number>6</number>
-                </property>
-                <property name="segmentStyle">
-                 <enum>QLCDNumber::Outline</enum>
-                </property>
-                <property name="value" stdset="0">
-                 <double>0.000000000000000</double>
+               <widget class="QLabel" name="label_17">
+                <property name="text">
+                 <string>x</string>
                 </property>
                </widget>
               </item>
@@ -2070,7 +1957,60 @@
                  <bool>false</bool>
                 </property>
                 <property name="digitCount">
-                 <number>6</number>
+                 <number>5</number>
+                </property>
+                <property name="segmentStyle">
+                 <enum>QLCDNumber::Outline</enum>
+                </property>
+                <property name="value" stdset="0">
+                 <double>0.000000000000000</double>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_18">
+                <property name="text">
+                 <string>y</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLCDNumber" name="lcd_coordX_2">
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>18</height>
+                 </size>
+                </property>
+                <property name="toolTip">
+                 <string>X coordinate from center of field</string>
+                </property>
+                <property name="layoutDirection">
+                 <enum>Qt::RightToLeft</enum>
+                </property>
+                <property name="autoFillBackground">
+                 <bool>false</bool>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color: rgb(0, 4, 133);</string>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::Panel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Sunken</enum>
+                </property>
+                <property name="lineWidth">
+                 <number>2</number>
+                </property>
+                <property name="midLineWidth">
+                 <number>0</number>
+                </property>
+                <property name="smallDecimalPoint">
+                 <bool>false</bool>
+                </property>
+                <property name="digitCount">
+                 <number>5</number>
                 </property>
                 <property name="segmentStyle">
                  <enum>QLCDNumber::Outline</enum>
@@ -2085,11 +2025,9 @@
             <zorder>title_robPanel_2</zorder>
             <zorder>gView_robot_2</zorder>
             <zorder>dial_botSpeed_2</zorder>
-            <zorder>label_9</zorder>
-            <zorder>label_15</zorder>
-            <zorder>lcd_orient_2</zorder>
-            <zorder>layoutWidget</zorder>
-            <zorder>frame_robot_1</zorder>
+            <zorder>dial_botOrient_2</zorder>
+            <zorder>dial_botOrient_2</zorder>
+            <zorder>frame_4</zorder>
            </widget>
           </item>
           <item row="4" column="0">
@@ -2202,9 +2140,12 @@
              </property>
             </widget>
             <widget class="QDial" name="dial_botSpeed_3">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="geometry">
               <rect>
-               <x>70</x>
+               <x>55</x>
                <y>10</y>
                <width>55</width>
                <height>55</height>
@@ -2235,178 +2176,87 @@
               <bool>true</bool>
              </property>
             </widget>
-            <widget class="QLabel" name="label_11">
+            <widget class="QDial" name="dial_botOrient_3">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="geometry">
               <rect>
-               <x>86</x>
-               <y>30</y>
-               <width>21</width>
-               <height>17</height>
+               <x>115</x>
+               <y>10</y>
+               <width>55</width>
+               <height>55</height>
               </rect>
              </property>
-             <property name="font">
-              <font>
-               <weight>50</weight>
-               <italic>true</italic>
-               <bold>false</bold>
-              </font>
+             <property name="baseSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="contextMenuPolicy">
+              <enum>Qt::NoContextMenu</enum>
+             </property>
+             <property name="toolTip">
+              <string>Velocity of selected robot</string>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(0, 255, 0);</string>
+             </property>
+             <property name="minimum">
+              <number>-180</number>
+             </property>
+             <property name="maximum">
+              <number>180</number>
+             </property>
+             <property name="singleStep">
+              <number>1</number>
+             </property>
+             <property name="pageStep">
+              <number>5</number>
+             </property>
+             <property name="tracking">
+              <bool>false</bool>
+             </property>
+             <property name="invertedAppearance">
+              <bool>false</bool>
+             </property>
+             <property name="wrapping">
+              <bool>true</bool>
+             </property>
+             <property name="notchTarget">
+              <double>8.699999999999999</double>
+             </property>
+             <property name="notchesVisible">
+              <bool>true</bool>
+             </property>
+            </widget>
+            <widget class="QFrame" name="frame_5">
+             <property name="geometry">
+              <rect>
+               <x>170</x>
+               <y>5</y>
+               <width>81</width>
+               <height>71</height>
+              </rect>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
              </property>
-             <property name="text">
-              <string>V</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-            <widget class="QLabel" name="label_16">
-             <property name="geometry">
-              <rect>
-               <x>133</x>
-               <y>15</y>
-               <width>61</width>
-               <height>20</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font>
-               <family>Courier 10 Pitch</family>
-               <pointsize>8</pointsize>
-              </font>
-             </property>
-             <property name="text">
-              <string>Heading: </string>
-             </property>
-            </widget>
-            <widget class="QLCDNumber" name="lcd_orient_3">
-             <property name="geometry">
-              <rect>
-               <x>200</x>
-               <y>13</y>
-               <width>31</width>
-               <height>20</height>
-              </rect>
-             </property>
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>100</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <weight>50</weight>
-               <italic>false</italic>
-               <bold>false</bold>
-               <underline>false</underline>
-               <strikeout>false</strikeout>
-               <kerning>true</kerning>
-              </font>
-             </property>
-             <property name="mouseTracking">
-              <bool>true</bool>
-             </property>
-             <property name="toolTip">
-              <string>Degrees from opposing goal</string>
-             </property>
-             <property name="toolTipDuration">
-              <number>-2</number>
-             </property>
-             <property name="layoutDirection">
-              <enum>Qt::RightToLeft</enum>
-             </property>
-             <property name="autoFillBackground">
-              <bool>false</bool>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(0, 4, 133);</string>
-             </property>
              <property name="frameShape">
-              <enum>QFrame::Panel</enum>
+              <enum>QFrame::NoFrame</enum>
              </property>
              <property name="frameShadow">
-              <enum>QFrame::Sunken</enum>
+              <enum>QFrame::Raised</enum>
              </property>
-             <property name="lineWidth">
-              <number>2</number>
-             </property>
-             <property name="smallDecimalPoint">
-              <bool>false</bool>
-             </property>
-             <property name="digitCount">
-              <number>4</number>
-             </property>
-             <property name="segmentStyle">
-              <enum>QLCDNumber::Outline</enum>
-             </property>
-             <property name="value" stdset="0">
-              <double>888888.000000000000000</double>
-             </property>
-            </widget>
-            <widget class="QWidget" name="layoutWidget">
-             <property name="geometry">
-              <rect>
-               <x>131</x>
-               <y>39</y>
-               <width>101</width>
-               <height>20</height>
-              </rect>
-             </property>
-             <layout class="QGridLayout" name="gridLayout_6">
-              <property name="sizeConstraint">
-               <enum>QLayout::SetMaximumSize</enum>
-              </property>
+             <layout class="QGridLayout" name="gridLayout_9">
               <item row="0" column="0">
-               <widget class="QLCDNumber" name="lcd_coordX_3">
-                <property name="maximumSize">
-                 <size>
-                  <width>16777215</width>
-                  <height>18</height>
-                 </size>
-                </property>
-                <property name="toolTip">
-                 <string>X coordinate from center of field</string>
-                </property>
-                <property name="layoutDirection">
-                 <enum>Qt::RightToLeft</enum>
-                </property>
-                <property name="autoFillBackground">
-                 <bool>false</bool>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">background-color: rgb(0, 4, 133);</string>
-                </property>
-                <property name="frameShape">
-                 <enum>QFrame::Panel</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Sunken</enum>
-                </property>
-                <property name="lineWidth">
-                 <number>2</number>
-                </property>
-                <property name="midLineWidth">
-                 <number>0</number>
-                </property>
-                <property name="smallDecimalPoint">
-                 <bool>false</bool>
-                </property>
-                <property name="digitCount">
-                 <number>6</number>
-                </property>
-                <property name="segmentStyle">
-                 <enum>QLCDNumber::Outline</enum>
-                </property>
-                <property name="value" stdset="0">
-                 <double>0.000000000000000</double>
+               <widget class="QLabel" name="label_19">
+                <property name="text">
+                 <string>x</string>
                 </property>
                </widget>
               </item>
@@ -2443,7 +2293,60 @@
                  <bool>false</bool>
                 </property>
                 <property name="digitCount">
-                 <number>6</number>
+                 <number>5</number>
+                </property>
+                <property name="segmentStyle">
+                 <enum>QLCDNumber::Outline</enum>
+                </property>
+                <property name="value" stdset="0">
+                 <double>0.000000000000000</double>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_20">
+                <property name="text">
+                 <string>y</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLCDNumber" name="lcd_coordX_3">
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>18</height>
+                 </size>
+                </property>
+                <property name="toolTip">
+                 <string>X coordinate from center of field</string>
+                </property>
+                <property name="layoutDirection">
+                 <enum>Qt::RightToLeft</enum>
+                </property>
+                <property name="autoFillBackground">
+                 <bool>false</bool>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color: rgb(0, 4, 133);</string>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::Panel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Sunken</enum>
+                </property>
+                <property name="lineWidth">
+                 <number>2</number>
+                </property>
+                <property name="midLineWidth">
+                 <number>0</number>
+                </property>
+                <property name="smallDecimalPoint">
+                 <bool>false</bool>
+                </property>
+                <property name="digitCount">
+                 <number>5</number>
                 </property>
                 <property name="segmentStyle">
                  <enum>QLCDNumber::Outline</enum>
@@ -2567,9 +2470,12 @@
              </property>
             </widget>
             <widget class="QDial" name="dial_botSpeed_1">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="geometry">
               <rect>
-               <x>70</x>
+               <x>55</x>
                <y>10</y>
                <width>55</width>
                <height>55</height>
@@ -2600,178 +2506,87 @@
               <bool>true</bool>
              </property>
             </widget>
-            <widget class="QLabel" name="label_7">
+            <widget class="QDial" name="dial_botOrient_1">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="geometry">
               <rect>
-               <x>86</x>
-               <y>30</y>
-               <width>21</width>
-               <height>17</height>
+               <x>115</x>
+               <y>10</y>
+               <width>55</width>
+               <height>55</height>
               </rect>
              </property>
-             <property name="font">
-              <font>
-               <weight>50</weight>
-               <italic>true</italic>
-               <bold>false</bold>
-              </font>
+             <property name="baseSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="contextMenuPolicy">
+              <enum>Qt::NoContextMenu</enum>
+             </property>
+             <property name="toolTip">
+              <string>Velocity of selected robot</string>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(0, 255, 0);</string>
+             </property>
+             <property name="minimum">
+              <number>-180</number>
+             </property>
+             <property name="maximum">
+              <number>180</number>
+             </property>
+             <property name="singleStep">
+              <number>1</number>
+             </property>
+             <property name="pageStep">
+              <number>5</number>
+             </property>
+             <property name="tracking">
+              <bool>false</bool>
+             </property>
+             <property name="invertedAppearance">
+              <bool>false</bool>
+             </property>
+             <property name="wrapping">
+              <bool>true</bool>
+             </property>
+             <property name="notchTarget">
+              <double>8.699999999999999</double>
+             </property>
+             <property name="notchesVisible">
+              <bool>true</bool>
+             </property>
+            </widget>
+            <widget class="QFrame" name="frame_3">
+             <property name="geometry">
+              <rect>
+               <x>170</x>
+               <y>5</y>
+               <width>81</width>
+               <height>71</height>
+              </rect>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
              </property>
-             <property name="text">
-              <string>V</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-            <widget class="QLabel" name="label_14">
-             <property name="geometry">
-              <rect>
-               <x>133</x>
-               <y>15</y>
-               <width>61</width>
-               <height>20</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font>
-               <family>Courier 10 Pitch</family>
-               <pointsize>8</pointsize>
-              </font>
-             </property>
-             <property name="text">
-              <string>Heading: </string>
-             </property>
-            </widget>
-            <widget class="QLCDNumber" name="lcd_orient_1">
-             <property name="geometry">
-              <rect>
-               <x>200</x>
-               <y>13</y>
-               <width>31</width>
-               <height>20</height>
-              </rect>
-             </property>
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>100</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <weight>50</weight>
-               <italic>false</italic>
-               <bold>false</bold>
-               <underline>false</underline>
-               <strikeout>false</strikeout>
-               <kerning>true</kerning>
-              </font>
-             </property>
-             <property name="mouseTracking">
-              <bool>true</bool>
-             </property>
-             <property name="toolTip">
-              <string>Degrees from opposing goal</string>
-             </property>
-             <property name="toolTipDuration">
-              <number>-2</number>
-             </property>
-             <property name="layoutDirection">
-              <enum>Qt::RightToLeft</enum>
-             </property>
-             <property name="autoFillBackground">
-              <bool>false</bool>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(0, 4, 133);</string>
-             </property>
              <property name="frameShape">
-              <enum>QFrame::Panel</enum>
+              <enum>QFrame::NoFrame</enum>
              </property>
              <property name="frameShadow">
-              <enum>QFrame::Sunken</enum>
+              <enum>QFrame::Raised</enum>
              </property>
-             <property name="lineWidth">
-              <number>2</number>
-             </property>
-             <property name="smallDecimalPoint">
-              <bool>false</bool>
-             </property>
-             <property name="digitCount">
-              <number>4</number>
-             </property>
-             <property name="segmentStyle">
-              <enum>QLCDNumber::Outline</enum>
-             </property>
-             <property name="value" stdset="0">
-              <double>888888.000000000000000</double>
-             </property>
-            </widget>
-            <widget class="QWidget" name="layoutWidget">
-             <property name="geometry">
-              <rect>
-               <x>131</x>
-               <y>39</y>
-               <width>101</width>
-               <height>20</height>
-              </rect>
-             </property>
-             <layout class="QGridLayout" name="gridLayout_10">
-              <property name="sizeConstraint">
-               <enum>QLayout::SetMaximumSize</enum>
-              </property>
+             <layout class="QGridLayout" name="gridLayout_6">
               <item row="0" column="0">
-               <widget class="QLCDNumber" name="lcd_coordX_1">
-                <property name="maximumSize">
-                 <size>
-                  <width>16777215</width>
-                  <height>18</height>
-                 </size>
-                </property>
-                <property name="toolTip">
-                 <string>X coordinate from center of field</string>
-                </property>
-                <property name="layoutDirection">
-                 <enum>Qt::RightToLeft</enum>
-                </property>
-                <property name="autoFillBackground">
-                 <bool>false</bool>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">background-color: rgb(0, 4, 133);</string>
-                </property>
-                <property name="frameShape">
-                 <enum>QFrame::Panel</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Sunken</enum>
-                </property>
-                <property name="lineWidth">
-                 <number>2</number>
-                </property>
-                <property name="midLineWidth">
-                 <number>0</number>
-                </property>
-                <property name="smallDecimalPoint">
-                 <bool>false</bool>
-                </property>
-                <property name="digitCount">
-                 <number>6</number>
-                </property>
-                <property name="segmentStyle">
-                 <enum>QLCDNumber::Outline</enum>
-                </property>
-                <property name="value" stdset="0">
-                 <double>0.000000000000000</double>
+               <widget class="QLabel" name="label_15">
+                <property name="text">
+                 <string>x</string>
                 </property>
                </widget>
               </item>
@@ -2808,7 +2623,60 @@
                  <bool>false</bool>
                 </property>
                 <property name="digitCount">
-                 <number>6</number>
+                 <number>5</number>
+                </property>
+                <property name="segmentStyle">
+                 <enum>QLCDNumber::Outline</enum>
+                </property>
+                <property name="value" stdset="0">
+                 <double>0.000000000000000</double>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_16">
+                <property name="text">
+                 <string>y</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLCDNumber" name="lcd_coordX_1">
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>18</height>
+                 </size>
+                </property>
+                <property name="toolTip">
+                 <string>X coordinate from center of field</string>
+                </property>
+                <property name="layoutDirection">
+                 <enum>Qt::RightToLeft</enum>
+                </property>
+                <property name="autoFillBackground">
+                 <bool>false</bool>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color: rgb(0, 4, 133);</string>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::Panel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Sunken</enum>
+                </property>
+                <property name="lineWidth">
+                 <number>2</number>
+                </property>
+                <property name="midLineWidth">
+                 <number>0</number>
+                </property>
+                <property name="smallDecimalPoint">
+                 <bool>false</bool>
+                </property>
+                <property name="digitCount">
+                 <number>5</number>
                 </property>
                 <property name="segmentStyle">
                  <enum>QLCDNumber::Outline</enum>
@@ -2926,7 +2794,7 @@
           <rect>
            <x>10</x>
            <y>0</y>
-           <width>781</width>
+           <width>841</width>
            <height>71</height>
           </rect>
          </property>
