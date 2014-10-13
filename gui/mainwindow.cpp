@@ -31,6 +31,7 @@
 #include <QMap>
 #include <QCursor>
 #include "communication/refcomm.h"
+#include "guidrawline.h"
 
 using namespace std;
 
@@ -48,6 +49,7 @@ MainWindow::MainWindow(QWidget *parent) :
     setUpScene();
     setupBotPanel();
     ui->pushButton->setEnabled(true);
+
 
     defaultZoom();
 
@@ -97,7 +99,6 @@ void MainWindow::launch(int value)
             refresh = true;
         }
     }
-
     // Updating GUI
     updateScene();
     updateBotPanel();
@@ -265,9 +266,9 @@ void MainWindow::updateBotPanel() {
             botXcoords[i]->display(getBotCoordX(true, i));
             botYcoords[i]->display(getBotCoordY(true, i));
             botOrients[i]->setValue(-getBotOrientDouble(true, i));
-//            botIconScenes[i]->removeItem(botIcons[i]);
-//            botIconScenes[i]->addItem(botIcons[i]);
-//            botIconFrames[i]->setScene(botIconScenes[i]);
+            if (gamemodel->find(i,gamemodel->getMyTeam())->getKick() == 1) {
+                printBehavior(i,"KICK!", true);
+            }
             botIcons[i]->setX(0);
             botIcons[i]->setY(0);
             botIcons[i]->setZValue(2);
@@ -455,6 +456,20 @@ void MainWindow::printBehavior(int botID, string behavior, bool append)
 
 }
 
+void MainWindow::drawLine(int originX, int originY, int endX, int endY) {
+//    guidrawline = new GuiDrawLine();
+//    guidrawline->setZValue(3);
+//    guidrawline->setX(100);
+//    guidrawline->setY(100);
+//    scene->addItem(guidrawline);
+
+        guidrawline->x1 = originX;
+        guidrawline->y1 = originY;
+        guidrawline->x2 = endX;
+        guidrawline->y2 = endY;
+        ui->gView_field->update();
+}
+
 void MainWindow::setUpScene()
 {
     QShortcut *enter = new QShortcut(this);
@@ -572,6 +587,13 @@ void MainWindow::setUpScene()
     scene->addItem(sidelines);
     scene->addItem(ball);
 
+    // Drawing debug line (optional)
+    guidrawline = new GuiDrawLine();
+    guidrawline->setZValue(4);
+    guidrawline->setX(100);
+    guidrawline->setY(100);
+    scene->addItem(guidrawline);
+
     // Raising the curtains...
     ui->gView_field->setScene(scene);
 
@@ -624,6 +646,7 @@ void MainWindow::updateScene() {
         ball->color = ui->combo_ballColor->currentText();
         ballIcon->color = ui->combo_ballColor->currentText();
         ui->gView_ball->update();
+
     // updating Blue Labels
     for (int i=0; i<teamSize; i++) {
         if (gamemodel->find(i, gamemodel->getMyTeam()) != NULL) {
@@ -707,6 +730,12 @@ void MainWindow::updateScene() {
             }
         }
     }
+
+    // drawLine TEST
+    drawLine(getBotCoordX(true, 0),getBotCoordY(true, 0), 0, 0 );
+//    ui->gView_field->update();
+    ui->gView_field->hide();
+    ui->gView_field->show();
 
 }//end updateScene
 
@@ -1079,6 +1108,7 @@ void MainWindow::updateSelectedBotPanel(int id)
         if (botBehavior[id] != ui->text_primeBot->toPlainText()) {
             ui->text_primeBot->setText(botBehavior[id]);
         }
+//        gamemodel->find(id,gamemodel->getMyTeam())->getki
 //        for (int i=0; i<teamSize; i++) {
 //            if (gamemodel->find(id, gamemodel->getMyTeam()) != NULL) {
 //                if (botFrames[i]->isHidden()) {

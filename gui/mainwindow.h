@@ -20,6 +20,7 @@
 #include "guisidelines.h"
 #include "guibotlabel.h"
 #include "communication/refcomm.h"
+#include "guidrawline.h"
 
 
 //class GuiComm;
@@ -54,8 +55,10 @@ public:
     void updateBotPanel();
     void scanForSelection();
     int getVelocity(int id);
+    // Debug functions
     void printBehavior(int botID, string behavior, bool append);    // puts the given bot's given string into a vector and prints it when the bot is selected
-//    bool isSnagged(int id);
+    void drawLine( int originX, int originY, int endX, int endY );
+
 
     void printBall();
     void gameModelUpdated();
@@ -71,6 +74,7 @@ protected:
     GuiComm *guicomm;
     GuiRobot *guirobot;
     RefComm *refcom;
+    GuiDrawLine *guidrawline;
 
 
 signals:

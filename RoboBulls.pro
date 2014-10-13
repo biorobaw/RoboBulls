@@ -101,7 +101,8 @@ SOURCES += main.cpp \
     gui/guifield.cpp \
     gui/guirobot.cpp \
     gui/guisidelines.cpp \
-    gui/mainwindow.cpp
+    gui/mainwindow.cpp \
+    gui/guidrawline.cpp
 
 HEADERS += \
 	behavior/behavior.h \
@@ -186,7 +187,8 @@ HEADERS += \
     gui/guifield.h \
     gui/guirobot.h \
     gui/guisidelines.h \
-    gui/mainwindow.h
+    gui/mainwindow.h \
+    gui/guidrawline.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 
