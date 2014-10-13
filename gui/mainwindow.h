@@ -47,19 +47,21 @@ public:
     bool    hasChangedQImage(QLabel* l, QImage s);
     int     getBotSpeed(std::vector<QLabel*> c, int id);
     QString getBallCoord();
-    double  getBallCoordX();
-    double  getBallCoordY();
+    int  getBallCoordX();
+    int  getBallCoordY();
     QString getRemTime();
     void setupBotPanel();
     void updateBotPanel();
     void scanForSelection();
     int getVelocity(int id);
     void printBehavior(int botID, string behavior, bool append);    // puts the given bot's given string into a vector and prints it when the bot is selected
+//    bool isSnagged(int id);
 
     void printBall();
     void gameModelUpdated();
     // For getting milliseconds
     int frequency_of_primes (int n);
+    int getClock();
     int getSpeed(QGraphicsItem* p, double o);
 
 

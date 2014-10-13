@@ -43,18 +43,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     gamemodel = GameModel::getModel();
 
-    printBehavior(0, "behavior 1", true);
-    printBehavior(0, "behavior 2", true);
-    printBehavior(0, "behavior 3", true);
-    printBehavior(0, "behavior 4", true);
 
     ui->pushButton->setEnabled(false);
     setUpScene();
     setupBotPanel();
     ui->pushButton->setEnabled(true);
-
-//    setUpScene();
-//    setupBotPanel();
 
     defaultZoom();
 
@@ -242,11 +235,9 @@ void MainWindow::setupBotPanel()
         botIconFrames[i]->scale(.2, .2);
         botIconFrames[i]->scale(1,-1);
         botIconFrames[i]->rotate(90);
-        // nullcheck
-        if (gamemodel->find(i,gamemodel->getMyTeam()) != NULL) {
-            botIconScenes[i]->addItem(botIcons[i]);
-            botIconFrames[i]->setScene(botIconScenes[i]);
-        }//if
+        botIconScenes[i]->addItem(botIcons[i]);
+        botIconFrames[i]->setScene(botIconScenes[i]);
+        botIconFrames[i]->hide();
     }
 
     // Formatting selected bot panel
@@ -254,28 +245,32 @@ void MainWindow::setupBotPanel()
     ui->gView_robot_prime->scale(1,-1);
     ui->gView_robot_prime->rotate(90);
 
-
 }//setupBotPanel
 
 void MainWindow::updateBotPanel() {
     // Printing to GUI
     for (int i=0; i<teamSize; i++) {
+//        botIconFrames[i]->hide();
         botTitle[i]->setText("Robot " + QString::number(i));
         // Nullcheck
         if (gamemodel->find(i,gamemodel->getMyTeam()) != NULL) {
-//            botTitle[i]->setText("Robot " + QString::number(i));
             botXcoords[i]->display(getBotCoordX(true, i));
             botYcoords[i]->display(getBotCoordY(true, i));
             botOrients[i]->setValue(-getBotOrientDouble(true, i));
-            botIconScenes[i]->removeItem(botIcons[i]);
-            botIconScenes[i]->addItem(botIcons[i]);
-            botIconFrames[i]->setScene(botIconScenes[i]);
+//            botIconScenes[i]->removeItem(botIcons[i]);
+//            botIconScenes[i]->addItem(botIcons[i]);
+//            botIconFrames[i]->setScene(botIconScenes[i]);
+            botIcons[i]->setX(0);
+            botIcons[i]->setY(0);
+            botIcons[i]->setZValue(2);
             velocityDials[i]->setValue(getVelocity(i));
-
-        }
+            if (botIconFrames[i]->isVisible() == false) {
+                botIconFrames[i]->show();
+            }
+            printBehavior(i, "The following reading and problem assignment will help you master the concepts of this module. The problem assignments are ordered as a set of problems dealing with a specific concept covered in the module. In most cases, the odd number problems are assigned to allow you to use the solution book to check your answers and ascertain what problems you are having trouble with.", false);
+            botIconFrames[i]->update();
+        }//nullcheck
     }
-    ui->gView_robot_0->hide();
-    ui->gView_robot_0->show();
 }
 
 void MainWindow::scanForSelection() {
@@ -318,8 +313,7 @@ void MainWindow::scanForSelection() {
                 refresh = true;
                 // Refresh GUI
                 for (int r=0; r<teamSize; r++) {
-                    botIconFrames[r]->hide();
-                    botIconFrames[r]->show();
+                    botIconFrames[i]->update();
                 }
                 ui->gView_robot_prime->hide();
                 ui->gView_robot_prime->show();
@@ -340,8 +334,7 @@ void MainWindow::scanForSelection() {
                 refresh = true;
                 // Refresh GUI
                 for (int r=0; r<teamSize; r++) {
-                    botIconFrames[r]->hide();
-                    botIconFrames[r]->show();
+                    botIconFrames[i]->update();
                 }
                 ui->gView_robot_prime->hide();
                 ui->gView_robot_prime->show();
@@ -390,7 +383,7 @@ void MainWindow::printBehavior(int botID, string behavior, bool append)
     if (append == false) {
         b = QString::fromStdString(behavior) + "\n";
         botBehavior[botID] = b;
-        cout << botBehavior[botID].toStdString();
+//        cout << botBehavior[botID].toStdString();
     } else {
         b = QString::fromStdString(behavior) + "\n";
 //        botBehavior[botID] += b;
@@ -844,15 +837,15 @@ QString MainWindow::getBallCoord() {
     return b;
 }
 
-double MainWindow::getBallCoordX() {
-    double b;
+int MainWindow::getBallCoordX() {
+    int b;
     b = gamemodel->getBallPoint().x;
 
     return b;
 }
 
-double MainWindow::getBallCoordY() {
-    double b;
+int MainWindow::getBallCoordY() {
+    int b;
     b = gamemodel->getBallPoint().y;
     return b;
 }
@@ -905,6 +898,28 @@ int MainWindow::frequency_of_primes (int n) {
   for (i=2; i<=n; ++i) for (j=sqrt(i);j>1;--j) if (i%j==0) {--freq; break;}
   return freq;
 }
+
+int MainWindow::getClock()
+{
+    time_t now;
+     struct tm newyear;
+     double seconds;
+
+     time(&now);  /* get current time; same as: now = time(NULL)  */
+
+     newyear = *localtime(&now);
+
+     newyear.tm_hour = 0; newyear.tm_min = 0; newyear.tm_sec = 0;
+     newyear.tm_mon = 0;  newyear.tm_mday = 1;
+
+     seconds = difftime(now,mktime(&newyear));
+
+     printf ("%.f seconds since new year in the current timezone.\n", seconds);
+
+     return 0;
+}
+
+
 
 int MainWindow::getSpeed(QGraphicsItem *p, double o)
 {
@@ -976,6 +991,7 @@ void MainWindow::updateSelectedBotPanel(int id)
         ui->lcd_orient_prime->display("0");
         ui->lcd_coordX_prime->display("0");
         ui->lcd_coordY_prime->display("0");
+        ui->dial_botOrient_prime->setValue(0);
         ui->box_primeBot->setTitle(" ");
         ui->text_primeBot->setText(" ");
 //        for (int i=0; i<teamSize; i++) {
@@ -996,7 +1012,9 @@ void MainWindow::updateSelectedBotPanel(int id)
         ui->lcd_coordY_prime->display(getBotCoordY(true,id));
         ui->dial_botOrient_prime->setValue(-getBotOrientDouble(true, id));
         ui->box_primeBot->setTitle("Robot " + QString::number(id));
-        ui->text_primeBot->setText(botBehavior[id]);
+        if (botBehavior[id] != ui->text_primeBot->toPlainText()) {
+            ui->text_primeBot->setText(botBehavior[id]);
+        }
 //        for (int i=0; i<teamSize; i++) {
 //            if (gamemodel->find(id, gamemodel->getMyTeam()) != NULL) {
 //                if (botFrames[i]->isHidden()) {
