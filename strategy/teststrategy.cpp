@@ -87,6 +87,21 @@ private:
     enum {pos_one,pos_two} state = pos_one;
 };
 
+class ShamsiGoToPose : public GenericMovementBehavior
+{
+public:
+    ShamsiGoToPose(const ParameterList& list)
+    {
+        UNUSED_PARAM(list);
+    }
+
+    void perform(Robot *robot) override
+    {
+        setMovementTargets(Point(2000,-400),-1,false);
+        GenericMovementBehavior::perform(robot);
+    }
+};
+
 TestStrategy::TestStrategy()
 {
 }
@@ -96,8 +111,8 @@ void TestStrategy::assignBeh()
     GameModel *gm = GameModel::getModel();
 //***************************************************************************************************
     //Shamsi Code
-//    BehaviorAssignment<ShamsiStrafeBehavior> assignment(true);
-//    assignment.assignBeh();
+//    BehaviorAssignment<ShamsiGoToPose> assignment(true);
+//    assignment.assignBeh({5});
 
     //Martin code
 //    cout << "running test strategy!" << endl;
@@ -149,12 +164,14 @@ void TestStrategy::assignBeh()
 //    assignment.setBehParam<Point>("targetPoint", gm->getBallPoint());
 //    assignment.assignBeh({0, 1});
 
-////     Narges code testing DriveBallAndKick
-//    BehaviorAssignment<DriveBallAndKick> assignment;
-//    assignment.setSingleAssignment(true);
-//    assignment.assignBeh();
+//     Narges code testing DriveBallAndKick
+    BehaviorAssignment<DriveBallAndKick> assignment;
+    assignment.setSingleAssignment(true);
+    assignment.assignBeh(gm->getMyTeam().at(0));
+
+    // Narges code testing DriveBallAndKick
 //    BehaviorAssignment<TestBehavior> assignment(true);
-//    assignment.assignBeh(/*{3}*/);
+//    assignment.assignBeh({3});
 
 
 ////    //Narges code testing defendCloseToBall
@@ -167,10 +184,10 @@ void TestStrategy::assignBeh()
 //    assignment.setSingleAssignment(true);
 //    assignment.assignBeh();
 
-//    Narges testing myTestBehavior
-    BehaviorAssignment<myTestBehavior> assignment;
-    assignment.setSingleAssignment(true);
-    assignment.assignBeh(gm->getMyTeam().at(0));
+////    Narges testing myTestBehavior
+//    BehaviorAssignment<myTestBehavior> assignment;
+//    assignment.setSingleAssignment(true);
+//    assignment.assignBeh(gm->getMyTeam().at(0));
 
     //testing test behavior
 //        BehaviorAssignment<AttackMain> assignment;

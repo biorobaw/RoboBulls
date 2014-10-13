@@ -13,7 +13,7 @@
 #include "strategy/kickoffstrategy.h"
 #include "strategy/freekickstrategy.h"
 #include "strategy/haltstrategy.h"
-//#include "strategy/attackstrategy.h"
+#include "strategy/attackstrategy.h"
 
 #include "movement/pathfinding/fppa_pathfinding.h"
 
@@ -30,7 +30,7 @@ void StrategyController::run()
     if(count < 25) { ++count; return; }
 
     frameBegin();
-
+    
     if(model->isNewCommand() || activeStrategy==nullptr) {
         gameModelUpdated();
     } else {
@@ -38,14 +38,16 @@ void StrategyController::run()
     }
 
     model->onCommandProcessed();
-
+    
     frameEnd();
 }
 
 void StrategyController::gameModelUpdated()
 {
     delete activeStrategy;
+
     cout << model->getGameState() << endl;
+
 #if 1
     switch(model->getGameState())
     {
@@ -58,7 +60,7 @@ void StrategyController::gameModelUpdated()
         activeStrategy = new PenaltyStrategy();
         break;
     case 'K':    //Kickoff
-        activeStrategy = new FreeKickStrategy();
+        activeStrategy = new KickOffStrategy();
         break;
     case 'F':    //Free Kick
         activeStrategy = new FreeKickStrategy();
@@ -66,9 +68,9 @@ void StrategyController::gameModelUpdated()
     case 'H':    //Halt
         activeStrategy = new HaltStrategy();
         break;
-//    case ' ':    //Normal game play
-//        activeStrategy = new AttackStrategy();
-//        break;
+    case ' ':    //Normal game play
+        activeStrategy = new TestStrategy();
+        break;
     case 's':    //Force Start
         activeStrategy = new FreeKickStrategy();
         break;

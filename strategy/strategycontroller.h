@@ -10,9 +10,9 @@ class StrategyController
 public:
     StrategyController();
     void setGameModel(GameModel *);
-
+    
     /* Performs one iteration of the RoboCup Game.
-     * Called by GameModel, which is called by VisionComm.
+     * Called by GameModel, which is called by VisionComm. 
      */
     void run();
 
@@ -40,7 +40,7 @@ private:
      * on the activeStrategy.
      */
     void clearCurrentStrategy();
-
+    
 private:
     Strategy*  activeStrategy;
     GameModel* model;

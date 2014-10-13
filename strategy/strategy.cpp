@@ -1,7 +1,8 @@
 #include "strategy.h"
 #include <iostream>
 
-Strategy::~Strategy()
+
+Strategy::~Strategy() 
 {
 }
 
@@ -9,3 +10,4 @@ bool Strategy::update()
 {
     return false;
 }
+

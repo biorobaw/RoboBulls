@@ -44,6 +44,7 @@ void StopStrategy::assignBeh()
 
         stopAssign.setBehParam("targetPoint", robTargetPoints[rob->getID()]);
         stopAssign.setBehParam("targetAngle", targetAngle);
+        stopAssign.setBehParam("obstacleAvoidance", false);
         stopAssign.assignBeh(rob);\
     }
 }
@@ -65,6 +66,10 @@ bool StopStrategy::update()
     #endif
         this->rebuildTargetPoints();
         prevBallPoint = ballPoint;
+
+        for(Robot* rob : model->getMyTeam())
+            rob->clearCurrentBeh();
+        assignBeh();
     }
 
     return false;

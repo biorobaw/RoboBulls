@@ -9,9 +9,15 @@
 #include "utilities/point.h"
 #include <math.h>
 
-#define CLOSE_ENOUGH 200
-#define ANGLE 20 * M_PI/180
-#define DIST 20
+#if SIMULATED
+    #define CLOSE_ENOUGH 110
+    #define ANGLE 10 * M_PI/180
+    #define DIST 20
+#else
+    #define CLOSE_ENOUGH 250
+    #define ANGLE 20 * M_PI/180
+    #define DIST 20
+#endif
 
 DriveBallAndKick::DriveBallAndKick(const ParameterList& list)
 	: skill(nullptr)

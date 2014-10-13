@@ -41,6 +41,7 @@ void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
 
     for(unsigned i = 0; i != robots.size(); ++i)
     {
+
         packet_t* packet = &teamPacketBuf[i];
         Robot* rob =  robots[i];
         packet->tilde = '~';
@@ -53,6 +54,8 @@ void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
         packet->chip_power = 0;
         packet->dribble_power = rob->getDrible() ? 1 : 0;
         packet->dollar = '$';
+
+        rob->setKick(0);
     }
 
     send((char*)&teamPacketBuf, sizeof(packet_t)*5);

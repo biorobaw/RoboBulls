@@ -4,9 +4,17 @@
 #include "skill/skill.h"
 #include "skill/kick.h"
 
-#define TEN_DEGREES   (10 * M_PI/180)
-#define CLOSE_TO_BALL 110
-#define BEHIND_RADIUS (ROBOT_RADIUS*2.25)
+#if SIMULATED
+    #define ANGLE   (10 * M_PI/180)
+    #define CLOSE_TO_BALL 110
+    #define BEHIND_RADIUS (ROBOT_RADIUS*2.25)
+    #define CLOSE_ENOUGH 110
+#else
+    #define ANGLE   (15 * M_PI/180)
+    #define CLOSE_TO_BALL 110
+    #define BEHIND_RADIUS (ROBOT_RADIUS*2.25)
+    #define CLOSE_ENOUGH 220
+#endif
 
 KickToGoal::KickToGoal(const ParameterList& list)
 	: GenericMovementBehavior(list)
@@ -31,6 +39,7 @@ void KickToGoal::perform(Robot * r)
     // Create a different skill depending on the state
     switch (state) {
     case goingBehind:
+        target = behindBall;
         setMovementTargets(behindBall, ballToGoal, false);
         GenericMovementBehavior::perform(r, Movement::Type::Default);
         break;
@@ -49,20 +58,36 @@ void KickToGoal::perform(Robot * r)
     // Evaluate possible transitions
     switch (state){
     case goingBehind:
-        if (Measurments::distance(behindBall, rob) < 100  &&
-            Measurments::isClose(robAng, ballToGoal, TEN_DEGREES)) {
+        cout << "going behind" << endl;
+//        cout << "1\t" << Measurments::distance(behindBall, rob) << endl;
+//        cout << "2\t" << abs(Measurments::angleDiff(robAng, ballToGoal))/M_PI*180 << endl;
+        if (Measurments::distance(behindBall, rob) < CLOSE_ENOUGH  &&
+            Measurments::isClose(robAng, ballToGoal, ANGLE)) {
             state = approaching;
+            target = ball;
         }
-        break;
-    case approaching:
-        if (Measurments::distance(ball, rob) < 110 &&
-            Measurments::isClose(robAng, ballToGoal, TEN_DEGREES))
-            state = kicking;
-        else if (Measurments::distance(ball, rob) > 200) {
+        else if (!Measurments::isClose(target, behindBall, CLOSE_ENOUGH))
+        {
             state = goingBehind;
         }
         break;
+    case approaching:
+        cout << "approching" << endl;
+//        cout << "1\t" << Measurments::distance(ball, rob) << endl;
+//        cout << "2\t" << abs(Measurments::angleDiff(robAng, ballToGoal))/M_PI*180 << endl;
+        if (Measurments::distance(ball, rob) < CLOSE_ENOUGH &&
+            Measurments::isClose(robAng, ballToGoal, ANGLE))
+            state = kicking;
+        else if (!Measurments::isClose(target, ball, CLOSE_ENOUGH))
+        {
+            state = goingBehind;
+        }
+//        else if (Measurments::distance(ball, rob) > CLOSE_ENOUGH*2) {
+//            state = goingBehind;
+//        }
+        break;
     case kicking:
+        cout << "kicking" << endl;
         state = goingBehind;
         break;
     }

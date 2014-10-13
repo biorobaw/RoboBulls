@@ -12,7 +12,7 @@
     #define TURN_ANG ANGLE*4
 #else
     #define CLOSE_ENOUGH 280
-    #define ANGLE 5*M_PI/180
+    #define ANGLE 7*M_PI/180
     #define DIST 350
     #define VEL_MULT 0.4
     #define TURN_ANG ANGLE*15
@@ -26,7 +26,7 @@ DriveBall::DriveBall(Point targetPoint, double finalDirection)
     , direction(finalDirection)
     , state(moveBehindBall)
 {
-    move_skill.setMovementTolerances(CLOSE_ENOUGH, ROT_TOLERANCE);
+    move_skill.setMovementTolerances(CLOSE_ENOUGH, ANGLE);
 }
 
 bool DriveBall::perform(Robot* robot)
@@ -42,7 +42,7 @@ bool DriveBall::perform(Robot* robot)
     {
     case moveBehindBall:
         cout << "moving behind ball" << endl;
-        move_skill.setVelocityMultiplier(1.0);
+        move_skill.setVelocityMultiplier(1.4);
         move_skill.recreate(behindBall, ballTargetAngle, false);
         if(move_skill.perform(robot)) {
             state = driveBall;

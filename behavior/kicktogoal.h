@@ -2,6 +2,7 @@
 #define KICKTOGOAL_H
 
 #include "behavior/genericmovementbehavior.h"
+#include "utilities/point.h"
 
 class KickToGoal : public GenericMovementBehavior
 {
@@ -12,6 +13,8 @@ public:
 
     enum StateEnum {goingBehind, approaching, kicking};
     StateEnum state;
+private:
+    Point target;
 };
 
 #endif // KICKTOGOAL_H

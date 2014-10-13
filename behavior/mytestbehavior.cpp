@@ -41,12 +41,12 @@ void myTestBehavior::perform(Robot * myRobot)
 
 //    cout << model->getOpponentGoal()
 //    cout << "performing" << endl;
-//    cout << "angle\t" << myRobot->getOrientation()/M_PI*180 << endl;
+    cout << "angle\t" << myRobot->getOrientation()/M_PI*180 << endl;
 //    cout << "position" << myRobot->getRobotPosition().toString() << endl;
     Point kickPoint(1600, 0);
 //    Point kick2(-1300, 500);
     move.setMovementTolerances(100, 10*(M_PI)/180);
-    move.setVelocityMultiplier(0.6);
+    move.setVelocityMultiplier(1);
     move.recreate(kickPoint, 0, false);
     move.perform(model->getMyTeam().at(0), Movement::Type::Default);
 //    move.recreate(kick2, 0, false);

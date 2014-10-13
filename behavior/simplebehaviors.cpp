@@ -45,7 +45,7 @@ void SimpleBehaviors::perform(Robot * r)
 
         move.setMovementTolerances(CLOSE_ENOUGH, ANGLE);
         move.setVelocityMultiplier(1);
-        move.recreate(position, direction, true);
+        move.recreate(position, direction, false);
         move.perform(r);
     }
     else if (gm->getGameState() == 'F')
@@ -61,7 +61,7 @@ void SimpleBehaviors::perform(Robot * r)
 
         move.setMovementTolerances(CLOSE_ENOUGH, ANGLE);
         move.setVelocityMultiplier(1);
-        move.recreate(position, direction, true);
+        move.recreate(position, direction, false);
         move.perform(r);
     }
 }

@@ -7,7 +7,7 @@
 #else
     #define DIST 350
     #define ANGLE (15*M_PI/180)
-    #define CLOSE_ENOUGH 200
+    #define CLOSE_ENOUGH 210
 #endif
 
 PenaltyBehavior::PenaltyBehavior(const ParameterList& list)
@@ -37,14 +37,16 @@ void PenaltyBehavior::perform(Robot * myRobot)
     switch(pb)
     {
     case initial:
-//        cout << "initial" << endl;
+        cout << "initial" << endl;
         pb = moving;
         target = behindBall;
         break;
     case moving:
-//        cout << "moving" << endl;
-        move.recreate(behindBall, ballTargetAngle, true);
+        cout << "moving" << endl;
+        move.recreate(behindBall, ballTargetAngle, false);
         move.perform(myRobot, Movement::Type::Default);
+//        cout << "1\t" << Measurments::distance(robotPos,behindBall) << endl;
+//        cout << "2\t" << abs(Measurments::angleDiff(robotOrient, ballTargetAngle))/M_PI*180 << endl;
         if (Measurments::isClose(robotPos,behindBall,CLOSE_ENOUGH) &&
             abs(Measurments::angleDiff(robotOrient, ballTargetAngle)) < ANGLE)
         {
@@ -57,8 +59,10 @@ void PenaltyBehavior::perform(Robot * myRobot)
         }
         break;
     case approching:
-//        cout << "approaching" << endl;
-        move.recreate(ballPos, ballTargetAngle, true);
+        cout << "approaching" << endl;
+//        cout << "1\t" << Measurments::distance(robotPos,ballPos) << endl;
+//        cout << "2\t" << abs(Measurments::angleDiff(robotOrient, ballTargetAngle))/M_PI*180 << endl;
+        move.recreate(ballPos, ballTargetAngle, false);
         move.perform(myRobot, Movement::Type::Default);
         if (Measurments::isClose(robotPos,ballPos,CLOSE_ENOUGH) &&
             abs(Measurments::angleDiff(robotOrient, ballTargetAngle)) < ANGLE )
@@ -72,7 +76,7 @@ void PenaltyBehavior::perform(Robot * myRobot)
         break;
 
     case kicking:
-//        cout << "kicking" << endl;
+        cout << "kicking" << endl;
         {
             Skill::Kick kick;
             kick.perform(myRobot);
@@ -83,7 +87,7 @@ void PenaltyBehavior::perform(Robot * myRobot)
         }
         break;
     case idling:
-//        cout << "idling" << endl;
+        cout << "idling" << endl;
         {
             Skill::Stop stop;
             stop.perform(myRobot);

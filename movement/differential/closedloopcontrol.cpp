@@ -16,7 +16,7 @@
 #if SIMULATED
  #define CLC_ROTATONG_VEL 10
 #else
- #define CLC_ROTATONG_VEL 1
+ #define CLC_ROTATONG_VEL 10
 #endif
 
 ClosedLoopBase::ClosedLoopBase()
