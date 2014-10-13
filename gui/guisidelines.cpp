@@ -1,4 +1,5 @@
 #include "guisidelines.h"
+#include <QApplication>
 
 GuiSidelines::GuiSidelines()
 {
@@ -50,3 +51,22 @@ void GuiSidelines::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 //        painter->fillRect(rec, brush);
         painter->drawRect(rec);
 }
+
+void GuiSidelines::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier) == false) {
+        Pressed = true;
+    }
+    update();
+    QGraphicsItem::mousePressEvent(event);
+}
+
+void GuiSidelines::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier) == false) {
+        Pressed = false;
+    }
+    update();
+    QGraphicsItem::mouseReleaseEvent(event);
+}
+

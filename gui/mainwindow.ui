@@ -152,7 +152,7 @@
            <string>no robot selected</string>
           </property>
           <property name="checkable">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
           <widget class="QGraphicsView" name="gView_robot_prime">
            <property name="geometry">
@@ -287,7 +287,7 @@
             <bool>false</bool>
            </property>
            <property name="styleSheet">
-            <string notr="true">background-color: rgb(0, 4, 133);</string>
+            <string notr="true">background-color: rgb(115, 0, 0);</string>
            </property>
            <property name="frameShape">
             <enum>QFrame::Panel</enum>
@@ -526,7 +526,7 @@
             <bool>false</bool>
            </property>
            <property name="styleSheet">
-            <string notr="true">background-color: rgb(0, 4, 133);</string>
+            <string notr="true">background-color: rgb(0, 86, 1);</string>
            </property>
            <property name="frameShape">
             <enum>QFrame::Panel</enum>

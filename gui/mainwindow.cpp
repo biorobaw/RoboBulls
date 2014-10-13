@@ -240,6 +240,7 @@ void MainWindow::setupBotPanel()
         botIconFrames[i]->hide();
     }
 
+
     // Formatting selected bot panel
     ui->gView_robot_prime->scale(.4, .4);
     ui->gView_robot_prime->scale(1,-1);
@@ -267,6 +268,13 @@ void MainWindow::updateBotPanel() {
             if (botIconFrames[i]->isVisible() == false) {
                 botIconFrames[i]->show();
             }
+            if (botIcons[i]->doubleClicked || guiTeam[i]->doubleClicked) {
+                if (justScrolled == false)
+                    ui->gView_field->centerOn(guiTeam[i]);
+    //                botIcons[i]->doubleClicked = false;
+    //                guiTeam[i]->doubleClicked = false;
+            }
+
             printBehavior(i, "The following reading and problem assignment will help you master the concepts of this module. The problem assignments are ordered as a set of problems dealing with a specific concept covered in the module. In most cases, the odd number problems are assigned to allow you to use the solution book to check your answers and ascertain what problems you are having trouble with.", false);
             botIconFrames[i]->update();
         }//nullcheck
@@ -275,7 +283,7 @@ void MainWindow::updateBotPanel() {
 
 void MainWindow::scanForSelection() {
     bool newSelection = true;
-
+    // Field clicked
     if (field->Pressed == true) {
 //        cout << "field pressed \n";
         field->highlighted = true;
@@ -288,6 +296,8 @@ void MainWindow::scanForSelection() {
                 guiTeam[i]->setSelected(false);
                 botIcons[i]->highlighted = false;
                 botIcons[i]->setSelected(false);
+                botIcons[i]->doubleClicked = false;
+                guiTeam[i]->doubleClicked = false;
             }//nullcheck
         }
         field->highlighted = false;
@@ -297,7 +307,7 @@ void MainWindow::scanForSelection() {
 
     for (int i=0; i<teamSize; i++) {
         if (gamemodel->find(i,gamemodel->getMyTeam()) != NULL) {
-        // Checking if any icons have been selected
+        // Bots on the panel clicked
             if (botIcons[i]->isSelected()) {
                 selectedBot = i;
                 for (int j=0; j<teamSize; j++) {
@@ -305,6 +315,8 @@ void MainWindow::scanForSelection() {
                     guiTeam[j]->setSelected(false);
                     botIcons[j]->highlighted = false;
                     botIcons[j]->setSelected(false);
+//                    botIcons[i]->doubleClicked = false;
+//                    guiTeam[i]->doubleClicked = false;
 
                 }
 //                field->highlighted = false;
@@ -319,7 +331,7 @@ void MainWindow::scanForSelection() {
                 ui->gView_robot_prime->show();
                 newSelection = true;
             }
-            // Checking if any robots on the field have been selected
+            // Bots on the field clicked
             if (guiTeam[i]->isSelected()) {
                 selectedBot = i;
                 for (int j=0; j<teamSize; j++) {
@@ -327,6 +339,8 @@ void MainWindow::scanForSelection() {
                     guiTeam[j]->setSelected(false);
                     botIcons[j]->highlighted = false;
                     botIcons[j]->setSelected(false);
+//                    botIcons[i]->doubleClicked = false;
+//                    guiTeam[i]->doubleClicked = false;
                 }
 //                field->highlighted = false;
                 botIcons[i]->highlighted = true;
@@ -351,26 +365,67 @@ void MainWindow::scanForSelection() {
 int MainWindow::getVelocity(int id) {
     int velocity = 0;
     int wheels = 0;
-    int lF = gamemodel->find(id, gamemodel->getMyTeam())->getLF();
-    int rF = gamemodel->find(id, gamemodel->getMyTeam())->getRF();
-    int lb = gamemodel->find(id, gamemodel->getMyTeam())->getLB();
-    int rb = gamemodel->find(id, gamemodel->getMyTeam())->getRB();
-    if (lF != 0) {
-        velocity += lF;
-        wheels++;
+
+    if ( gamemodel->find(id, gamemodel->getMyTeam())->type() == fourWheelOmni ) {
+        printBehavior(id,"fourWheelOmni",false);
+        int lF = gamemodel->find(id, gamemodel->getMyTeam())->getLF();
+        int rF = gamemodel->find(id, gamemodel->getMyTeam())->getRF();
+        int lb = gamemodel->find(id, gamemodel->getMyTeam())->getLB();
+        int rb = gamemodel->find(id, gamemodel->getMyTeam())->getRB();
+        if (lF != 0) {
+            velocity += lF;
+            wheels++;
+        }
+        if (rF != 0) {
+            velocity += rF;
+            wheels++;
+        }
+        if (lb != 0) {
+            velocity += lb;
+            wheels++;
+        }
+        if (rb != 0) {
+            velocity += rb;
+            wheels++;
+        }
+    } else if ( gamemodel->find(id, gamemodel->getMyTeam())->type() == differential ) {
+        printBehavior(id,"differential",false);
+        int lF = gamemodel->find(id, gamemodel->getMyTeam())->getL();
+        int rF = gamemodel->find(id, gamemodel->getMyTeam())->getR();
+//        int b = gamemodel->find(id, gamemodel->getMyTeam())->getB();
+
+//        if (lF != 0) {
+            velocity += lF;
+            wheels++;
+//        }
+//        if (rF != 0) {
+            velocity += rF;
+            wheels++;
+//        }
+//        if (b != 0) {
+//            velocity += b;
+//            wheels++;
+//        }
+    } else if ( gamemodel->find(id, gamemodel->getMyTeam())->type() == threeWheelOmni ) {
+        printBehavior(id,"threeWheelOmni",false);
+        int lF = gamemodel->find(id, gamemodel->getMyTeam())->getL();
+        int rF = gamemodel->find(id, gamemodel->getMyTeam())->getR();
+        int b = gamemodel->find(id, gamemodel->getMyTeam())->getB();
+
+//        if (lF != 0) {
+            velocity += lF;
+            wheels++;
+//        }
+//        if (rF != 0) {
+            velocity += rF;
+            wheels++;
+//        }
+//        if (b != 0) {
+            velocity += b;
+            wheels++;
+//        }
     }
-    if (rF != 0) {
-        velocity += rF;
-        wheels++;
-    }
-    if (lb != 0) {
-        velocity += lb;
-        wheels++;
-    }
-    if (rb != 0) {
-        velocity += rb;
-        wheels++;
-    }
+
     if (velocity != 0 && wheels != 0)
         velocity /= wheels;
 

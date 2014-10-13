@@ -36,7 +36,6 @@ VisionComm::~VisionComm(void)
  */
 void VisionComm::updateInfo(const SSL_DetectionRobot& robot, int detectedTeamColor)
 {
-
     Robot *rob;
     int   ourTeamColor = TEAM;     //if 0, then it's blue. If 1, then it's yellow team.
     float id = 0;
@@ -62,11 +61,11 @@ void VisionComm::updateInfo(const SSL_DetectionRobot& robot, int detectedTeamCol
             currentTeam->push_back(rob);
         }
 		
-        // Assumption: rob contains the robot with id == detected_id
-        robPoint.x = robot.x();
+		// Assumption: rob contains the robot with id == detected_id
+		robPoint.x = robot.x();
         robPoint.y = robot.y();
         rob->setRobotPosition(robPoint);
-        rob->setOrientation(robot.orientation());
+		rob->setOrientation(robot.orientation());
         
         gm->setRobotUpdated(rob, detectedTeamColor);
     }

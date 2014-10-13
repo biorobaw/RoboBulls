@@ -21,10 +21,12 @@ public:
     bool Pressed = false;
     bool highlighted = false;
     bool icon = false;
+    bool doubleClicked = false;
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);          // we want to know when the mouse is pressed...
     void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);       // ..and released
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
 
 };
 

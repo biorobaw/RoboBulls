@@ -6,75 +6,39 @@
 #include "behavior/stopbehavior.h"
 
 #define RADIUS 1000
-#define STOPSTRAT_DEBUG 0
+#define STOPSTRAT_DEBUG 1
 
-
-/* A map of each robot to a target point around the ball */
-std::unordered_map<int, Point> StopStrategy::robTargetPoints;
-
-/* The previously-known position of the ball */
-Point StopStrategy::prevBallPoint;
-
-
-
-StopStrategy::StopStrategy()
-{
-    if(robTargetPoints.empty())
-        this->rebuildTargetPoints();
-}
-
+static Point robTargetPoints[MAX_ROBOTS];
 
 void StopStrategy::assignBeh()
 {
     GameModel* model = GameModel::getModel();
-    Point ballPoint  = model->getBallPoint();
+    Point bp = model->getBallPoint();
+    rebuildTargetPoints();
 
-    BehaviorAssignment<StopBehavior> stopAssign(true);
-
-    for(Robot* rob : model->getMyTeam())
-    {
-         //There is a new robot added
-        if(robTargetPoints.find(rob->getID()) == robTargetPoints.end()) {
-            this->rebuildTargetPoints();
-        }
-
-        //Target angle to make robots face the ball
-        float targetAngle
-                = Measurments::angleBetween(rob->getRobotPosition(), ballPoint);
-
-        stopAssign.setBehParam("targetPoint", robTargetPoints[rob->getID()]);
-        stopAssign.setBehParam("targetAngle", targetAngle);
-        stopAssign.setBehParam("obstacleAvoidance", false);
-        stopAssign.assignBeh(rob);\
+    for(Robot* robot : model->getMyTeam()) {
+        Point robTarget = robTargetPoints[robot->getID()];
+        float targetAngle = Measurments::angleBetween(robTarget, bp);
+        BehaviorAssignment<StopBehavior> stopAssign(true);
+        stopAssign.setBehParam<Point>("targetPoint", robTarget);
+        stopAssign.setBehParam<float>("targetAngle", targetAngle);
+        stopAssign.setBehParam<bool>("obstacleAvoidance", true);
+        stopAssign.assignBeh(robot);
     }
 }
 
-
+#if 1
 bool StopStrategy::update()
 {
-    GameModel* model = GameModel::getModel();
-    Point ballPoint  = model->getBallPoint();
-
-    /* Update prevBallPoint and the target point map
-     * if the ball has moved
-     */
-    if(!Measurments::isClose(ballPoint, prevBallPoint, 50.0))
-    {
-    #if STOPSTRAT_DEBUG
-        std::cout << "Ball Change; " << prevBallPoint.toString()
-                  << " New: " << ballPoint.toString() << std::endl;
-    #endif
-        this->rebuildTargetPoints();
-        prevBallPoint = ballPoint;
-
-        for(Robot* rob : model->getMyTeam())
-            rob->clearCurrentBeh();
-        assignBeh();
+    static Point prevBallPoint = Point(9999, 9999);
+    Point nowBallPoint = GameModel::getModel()->getBallPoint();
+    if(Measurments::distance(nowBallPoint, prevBallPoint) > 50) {
+        prevBallPoint = nowBallPoint;
+        return true;
     }
-
     return false;
 }
-
+#endif
 
 void StopStrategy::rebuildTargetPoints()
 {
@@ -84,11 +48,9 @@ void StopStrategy::rebuildTargetPoints()
     Point ballPoint = mod->getBallPoint();
 
     /* Remove all old points; safe for now */
-    robTargetPoints.clear();
     int teamSize = mod->getMyTeam().size();
     float theta = 0;
     float theta_inc = (2*M_PI) / teamSize;
-
 
     /* First create an evenly distributed number of points around the ball.
      * Later, I want to make this so all robots are placed on one side.
@@ -100,13 +62,12 @@ void StopStrategy::rebuildTargetPoints()
         newPoints.emplace_back(x_pos, y_pos);
     }
 
-
     /* Then for each robot, find the closest point around the ball to the robot. This
      * will be the robot's new target point stored in robTargetPoints
      */
     for(Robot* rob : mod->getMyTeam())
     {
-        rob->clearCurrentBeh();
+        //rob->clearCurrentBeh();
 
         auto min_pos = Measurments::closestPoint(newPoints, rob->getRobotPosition());
     #if STOPSTRAT_DEBUG

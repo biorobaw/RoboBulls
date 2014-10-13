@@ -119,9 +119,6 @@ void GuiRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
         painter->setBrush(QBrush(Qt::yellow, Qt::SolidPattern));
     }
     painter->drawEllipse(centerCircle);
-    // Label
-//    painter->setFont(QFont("Arial", 50, QFont::Bold));
-//    painter->drawText(10,10,"test");
 
 
 }
@@ -150,4 +147,11 @@ void GuiRobot::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     Pressed = false;
     update();
     QGraphicsItem::mouseReleaseEvent(event);
+}
+
+void GuiRobot::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+{
+    doubleClicked = true;
+    update();
+    QGraphicsItem::mouseDoubleClickEvent(event);
 }

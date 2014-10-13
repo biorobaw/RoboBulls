@@ -39,7 +39,6 @@ GenericMovementBehavior::GenericMovementBehavior(const ParameterList& list)
     } else if(gotTargetPoint) {
         movement = new Movement::GoToPosition(targetPoint);
     }
-    cout << "GenericMovementBehavior \n";
 }
 
 
