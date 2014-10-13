@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1181</width>
-    <height>965</height>
+    <height>956</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -57,7 +57,7 @@
          <x>0</x>
          <y>0</y>
          <width>1163</width>
-         <height>922</height>
+         <height>913</height>
         </rect>
        </property>
        <widget class="QFrame" name="box_robots">
@@ -157,7 +157,7 @@
           <widget class="QGraphicsView" name="gView_robot_prime">
            <property name="geometry">
             <rect>
-             <x>0</x>
+             <x>-4</x>
              <y>30</y>
              <width>90</width>
              <height>90</height>
@@ -213,16 +213,16 @@
             <string notr="true">background-color: rgb(255, 0, 0);</string>
            </property>
            <property name="minimum">
-            <number>-200</number>
+            <number>-150</number>
            </property>
            <property name="maximum">
-            <number>200</number>
+            <number>150</number>
            </property>
            <property name="singleStep">
             <number>1</number>
            </property>
            <property name="pageStep">
-            <number>200</number>
+            <number>11</number>
            </property>
            <property name="tracking">
             <bool>false</bool>
@@ -234,7 +234,7 @@
             <bool>false</bool>
            </property>
            <property name="notchTarget">
-            <double>7.700000000000000</double>
+            <double>13.700000000000003</double>
            </property>
            <property name="notchesVisible">
             <bool>true</bool>
@@ -2580,14 +2580,7 @@
               <enum>QFrame::Raised</enum>
              </property>
              <layout class="QGridLayout" name="gridLayout_6">
-              <item row="0" column="0">
-               <widget class="QLabel" name="label_15">
-                <property name="text">
-                 <string>x</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
+              <item row="1" column="1">
                <widget class="QLCDNumber" name="lcd_coordY_1">
                 <property name="maximumSize">
                  <size>
@@ -2630,14 +2623,7 @@
                 </property>
                </widget>
               </item>
-              <item row="1" column="0">
-               <widget class="QLabel" name="label_16">
-                <property name="text">
-                 <string>y</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1">
+              <item row="0" column="1">
                <widget class="QLCDNumber" name="lcd_coordX_1">
                 <property name="maximumSize">
                  <size>
@@ -2680,6 +2666,20 @@
                 </property>
                 <property name="value" stdset="0">
                  <double>0.000000000000000</double>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_15">
+                <property name="text">
+                 <string>x</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_16">
+                <property name="text">
+                 <string>y</string>
                 </property>
                </widget>
               </item>
@@ -3264,9 +3264,6 @@
         <layout class="QGridLayout" name="gridLayout_3">
          <item row="0" column="0">
           <widget class="QFrame" name="frame_gameStatus">
-           <property name="styleSheet">
-            <string notr="true">background-color: rgb(255, 255, 255);</string>
-           </property>
            <property name="frameShape">
             <enum>QFrame::Panel</enum>
            </property>
@@ -3295,30 +3292,6 @@
             </property>
             <property name="text">
              <string>Game Status</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label_BallPos">
-            <property name="geometry">
-             <rect>
-              <x>180</x>
-              <y>30</y>
-              <width>50</width>
-              <height>50</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>9</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>Ball</string>
-            </property>
-            <property name="scaledContents">
-             <bool>true</bool>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
             </property>
            </widget>
            <widget class="QWidget" name="layoutWidget">
@@ -3423,6 +3396,28 @@
               </widget>
              </item>
             </layout>
+           </widget>
+           <widget class="QGraphicsView" name="gView_ball">
+            <property name="geometry">
+             <rect>
+              <x>180</x>
+              <y>30</y>
+              <width>45</width>
+              <height>45</height>
+             </rect>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Panel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="lineWidth">
+             <number>0</number>
+            </property>
            </widget>
           </widget>
          </item>

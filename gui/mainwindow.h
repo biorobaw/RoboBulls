@@ -116,6 +116,9 @@ private:
     QGraphicsScene *scene_botIconSel_4;
     QGraphicsScene *scene_botIconSel_5;
     std::vector<QGraphicsScene*> botIconSelScenes;
+    // Ball gui icon
+    GuiBall *ballIcon;
+    QGraphicsScene *scene_ballIcon;
     // Bot icons
     GuiRobot *robotIcon0;
     GuiRobot *robotIcon1;

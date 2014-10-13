@@ -101,7 +101,7 @@ void MainWindow::launch(int value)
     // Updating GUI
     updateScene();
     updateBotPanel();
-    printBall();
+//    printBall();
     scanForSelection();
 
 }
@@ -224,6 +224,9 @@ void MainWindow::setupBotPanel()
     botIconSelScenes.push_back(scene_botIconSel_3);
     botIconSelScenes.push_back(scene_botIconSel_4);
     botIconSelScenes.push_back(scene_botIconSel_5);
+    // Ball GUI icon
+    ballIcon = new GuiBall();
+    scene_ballIcon = new QGraphicsScene;
 
     // relevant vectors filled & connected; initial details added to GUI
     for (int i=0; i<teamSize; i++) {
@@ -239,7 +242,11 @@ void MainWindow::setupBotPanel()
         botIconFrames[i]->setScene(botIconScenes[i]);
         botIconFrames[i]->hide();
     }
-
+    // putting ball icon into GUI
+    scene_ballIcon->addItem(ballIcon);
+    ui->gView_ball->setScene(scene_ballIcon);
+    ui->gView_ball->scale(.2, .2);
+    ui->gView_ball->scale(1, -1);
 
     // Formatting selected bot panel
     ui->gView_robot_prime->scale(.4, .4);
@@ -615,6 +622,8 @@ void MainWindow::updateScene() {
             ball->setScale(.8);
         }
         ball->color = ui->combo_ballColor->currentText();
+        ballIcon->color = ui->combo_ballColor->currentText();
+        ui->gView_ball->update();
     // updating Blue Labels
     for (int i=0; i<teamSize; i++) {
         if (gamemodel->find(i, gamemodel->getMyTeam()) != NULL) {
@@ -916,13 +925,13 @@ QString MainWindow::getRemTime() {
 
 
 void MainWindow::printBall() {
-    ui->lcd_coordX_ball->display(getBallCoordX());
-    ui->lcd_coordY_ball->display(getBallCoordY());
+//    ui->lcd_coordX_ball->display(getBallCoordX());
+//    ui->lcd_coordY_ball->display(getBallCoordY());
 
-//    ui->output_remTime->setText(getRemTime());
-    QImage ball;
-    ball.load(":/images/ball.png");
-    ui->label_BallPos->setPixmap(QPixmap::fromImage(ball));
+////    ui->output_remTime->setText(getRemTime());
+//    QImage ball;
+//    ball.load(":/images/ball.png");
+//    ui->label_BallPos->setPixmap(QPixmap::fromImage(ball));
 
 //    ui->output_remTime->setText(refcom->Packet::time_left);
 //    cout << refcom->Packet::time_left << "\n";
