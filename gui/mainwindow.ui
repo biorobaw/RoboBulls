@@ -210,7 +210,7 @@
             <string>Average forward or reverse force of the robot's wheels</string>
            </property>
            <property name="styleSheet">
-            <string notr="true">background-color: rgb(255, 0, 0);</string>
+            <string notr="true">background-color: rgb(150, 150, 150);</string>
            </property>
            <property name="minimum">
             <number>-150</number>
@@ -287,7 +287,7 @@
             <bool>false</bool>
            </property>
            <property name="styleSheet">
-            <string notr="true">background-color: rgb(115, 0, 0);</string>
+            <string notr="true">background-color: rgb(100, 100, 100);</string>
            </property>
            <property name="frameShape">
             <enum>QFrame::Panel</enum>
@@ -435,7 +435,7 @@
             <string>Robot's orientation in relation to the opposing goal</string>
            </property>
            <property name="styleSheet">
-            <string notr="true">background-color: rgb(0, 255, 0);</string>
+            <string notr="true">background-color: rgb(255, 255, 0);</string>
            </property>
            <property name="minimum">
             <number>-180</number>
@@ -526,7 +526,7 @@
             <bool>false</bool>
            </property>
            <property name="styleSheet">
-            <string notr="true">background-color: rgb(0, 86, 1);</string>
+            <string notr="true">background-color: rgb(100, 100, 0);</string>
            </property>
            <property name="frameShape">
             <enum>QFrame::Panel</enum>
@@ -826,7 +826,7 @@
               </rect>
              </property>
              <property name="styleSheet">
-              <string notr="true">background-color: rgb(255, 0, 0);</string>
+              <string notr="true">background-color: rgb(150, 150, 150);</string>
              </property>
              <property name="minimum">
               <number>-200</number>
@@ -878,7 +878,7 @@
               <string>Velocity of selected robot</string>
              </property>
              <property name="styleSheet">
-              <string notr="true">background-color: rgb(0, 255, 0);</string>
+              <string notr="true">background-color: rgb(255, 255, 0);</string>
              </property>
              <property name="minimum">
               <number>-180</number>
@@ -1159,7 +1159,7 @@
               </rect>
              </property>
              <property name="styleSheet">
-              <string notr="true">background-color: rgb(255, 0, 0);</string>
+              <string notr="true">background-color: rgb(150, 150, 150);</string>
              </property>
              <property name="minimum">
               <number>-200</number>
@@ -1211,7 +1211,7 @@
               <string>Velocity of selected robot</string>
              </property>
              <property name="styleSheet">
-              <string notr="true">background-color: rgb(0, 255, 0);</string>
+              <string notr="true">background-color: rgb(255, 255, 0);</string>
              </property>
              <property name="minimum">
               <number>-180</number>
@@ -1489,7 +1489,7 @@
               </rect>
              </property>
              <property name="styleSheet">
-              <string notr="true">background-color: rgb(255, 0, 0);</string>
+              <string notr="true">background-color: rgb(150, 150, 150);</string>
              </property>
              <property name="minimum">
               <number>-200</number>
@@ -1541,7 +1541,7 @@
               <string>Velocity of selected robot</string>
              </property>
              <property name="styleSheet">
-              <string notr="true">background-color: rgb(0, 255, 0);</string>
+              <string notr="true">background-color: rgb(255, 255, 0);</string>
              </property>
              <property name="minimum">
               <number>-180</number>
@@ -1819,7 +1819,7 @@
               </rect>
              </property>
              <property name="styleSheet">
-              <string notr="true">background-color: rgb(255, 0, 0);</string>
+              <string notr="true">background-color: rgb(150, 150, 150);</string>
              </property>
              <property name="minimum">
               <number>-200</number>
@@ -1871,7 +1871,7 @@
               <string>Velocity of selected robot</string>
              </property>
              <property name="styleSheet">
-              <string notr="true">background-color: rgb(0, 255, 0);</string>
+              <string notr="true">background-color: rgb(255, 255, 0);</string>
              </property>
              <property name="minimum">
               <number>-180</number>
@@ -2149,7 +2149,7 @@
               </rect>
              </property>
              <property name="styleSheet">
-              <string notr="true">background-color: rgb(255, 0, 0);</string>
+              <string notr="true">background-color: rgb(150, 150, 150);</string>
              </property>
              <property name="minimum">
               <number>-200</number>
@@ -2201,7 +2201,7 @@
               <string>Velocity of selected robot</string>
              </property>
              <property name="styleSheet">
-              <string notr="true">background-color: rgb(0, 255, 0);</string>
+              <string notr="true">background-color: rgb(255, 255, 0);</string>
              </property>
              <property name="minimum">
               <number>-180</number>
@@ -2479,7 +2479,7 @@
               </rect>
              </property>
              <property name="styleSheet">
-              <string notr="true">background-color: rgb(255, 0, 0);</string>
+              <string notr="true">background-color: rgb(150, 150, 150);</string>
              </property>
              <property name="minimum">
               <number>-200</number>
@@ -2531,7 +2531,7 @@
               <string>Velocity of selected robot</string>
              </property>
              <property name="styleSheet">
-              <string notr="true">background-color: rgb(0, 255, 0);</string>
+              <string notr="true">background-color: rgb(255, 255, 0);</string>
              </property>
              <property name="minimum">
               <number>-180</number>
@@ -3526,12 +3526,12 @@
   </action>
  </widget>
  <tabstops>
-  <tabstop>pushButton</tabstop>
-  <tabstop>btn_Simulated</tabstop>
-  <tabstop>gView_field</tabstop>
-  <tabstop>pushButton_3</tabstop>
-  <tabstop>pushButton_2</tabstop>
-  <tabstop>zoom_slider</tabstop>
+  <tabstop>gView_robot_0</tabstop>
+  <tabstop>gView_robot_1</tabstop>
+  <tabstop>gView_robot_2</tabstop>
+  <tabstop>gView_robot_3</tabstop>
+  <tabstop>gView_robot_4</tabstop>
+  <tabstop>gView_robot_5</tabstop>
   <tabstop>zoom_default</tabstop>
   <tabstop>combo_fieldColor</tabstop>
   <tabstop>check_showIDs</tabstop>
@@ -3543,8 +3543,20 @@
   <tabstop>check_coloredGoals</tabstop>
   <tabstop>scrollArea</tabstop>
   <tabstop>gView_robot_prime</tabstop>
-  <tabstop>dial_botSpeed</tabstop>
-  <tabstop>gView_robot_5</tabstop>
+  <tabstop>zoom_slider</tabstop>
+  <tabstop>text_primeBot</tabstop>
+  <tabstop>pushButton</tabstop>
+  <tabstop>dial_botSpeed_0</tabstop>
+  <tabstop>dial_botSpeed_5</tabstop>
+  <tabstop>pushButton_2</tabstop>
+  <tabstop>dial_botSpeed_4</tabstop>
+  <tabstop>gView_field</tabstop>
+  <tabstop>dial_botSpeed_2</tabstop>
+  <tabstop>pushButton_3</tabstop>
+  <tabstop>dial_botSpeed_3</tabstop>
+  <tabstop>btn_Simulated</tabstop>
+  <tabstop>dial_botSpeed_1</tabstop>
+  <tabstop>gView_ball</tabstop>
  </tabstops>
  <resources>
   <include location="images.qrc"/>

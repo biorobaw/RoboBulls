@@ -102,7 +102,7 @@ void MainWindow::launch(int value)
     // Updating GUI
     updateScene();
     updateBotPanel();
-//    printBall();
+    printBall();
     scanForSelection();
 
 }
@@ -265,7 +265,7 @@ void MainWindow::updateBotPanel() {
         if (gamemodel->find(i,gamemodel->getMyTeam()) != NULL) {
             botXcoords[i]->display(getBotCoordX(true, i));
             botYcoords[i]->display(getBotCoordY(true, i));
-            botOrients[i]->setValue(-getBotOrientDouble(true, i));
+            botOrients[i]->setValue(getBotOrientDouble(true, i));
             if (gamemodel->find(i,gamemodel->getMyTeam())->getKick() == 1) {
                 printBehavior(i,"KICK!", true);
             }
@@ -282,11 +282,32 @@ void MainWindow::updateBotPanel() {
     //                botIcons[i]->doubleClicked = false;
     //                guiTeam[i]->doubleClicked = false;
             }
+            // dynamic velocity dial colors
+            if (velocityDials[i]->value() > 0) {            // forward
+                velocityDials[i]->setStyleSheet("background-color: rgb(0, 200, 0);");
+
+            } else if (velocityDials[i]->value() < 0) {     // reverse
+                velocityDials[i]->setStyleSheet("background-color: rgb(200, 0, 0);");
+
+            } else {                                        // motionless
+                velocityDials[i]->setStyleSheet("background-color: rgb(150, 150, 150);");
+            }
 
             printBehavior(i, "The following reading and problem assignment will help you master the concepts of this module. The problem assignments are ordered as a set of problems dealing with a specific concept covered in the module. In most cases, the odd number problems are assigned to allow you to use the solution book to check your answers and ascertain what problems you are having trouble with.", false);
             botIconFrames[i]->update();
         }//nullcheck
     }
+    if (ui->dial_botSpeed->value() > 0) {
+        ui->dial_botSpeed->setStyleSheet("background-color: rgb(0, 200, 0);");
+        ui->lcd_botSpeed->setStyleSheet("background-color: rgb(0, 100, 0);");
+    } else if (ui->dial_botSpeed->value() < 0 ) {
+        ui->dial_botSpeed->setStyleSheet("background-color: rgb(200, 0, 0);");
+        ui->lcd_botSpeed->setStyleSheet("background-color: rgb(100, 0, 0);");
+    } else {
+        ui->dial_botSpeed->setStyleSheet("background-color: rgb(150, 150, 150);");
+        ui->lcd_botSpeed->setStyleSheet("background-color: rgb(100, 100, 100);");
+    }
+
 }
 
 void MainWindow::scanForSelection() {
@@ -931,6 +952,7 @@ QString MainWindow::getBallCoord() {
 int MainWindow::getBallCoordX() {
     int b;
     b = gamemodel->getBallPoint().x;
+//    cout << "ball X: " << b << "\n";
 
     return b;
 }
@@ -952,14 +974,10 @@ QString MainWindow::getRemTime() {
 
 
 void MainWindow::printBall() {
-//    ui->lcd_coordX_ball->display(getBallCoordX());
-//    ui->lcd_coordY_ball->display(getBallCoordY());
+    ui->lcd_coordX_ball->display(getBallCoordX());
+    ui->lcd_coordY_ball->display(getBallCoordY());
 
-////    ui->output_remTime->setText(getRemTime());
-//    QImage ball;
-//    ball.load(":/images/ball.png");
-//    ui->label_BallPos->setPixmap(QPixmap::fromImage(ball));
-
+//    ui->output_remTime->setText(getRemTime());
 //    ui->output_remTime->setText(refcom->Packet::time_left);
 //    cout << refcom->Packet::time_left << "\n";
 }
@@ -1101,11 +1119,16 @@ void MainWindow::updateSelectedBotPanel(int id)
         ui->lcd_orient_prime->display(getBotOrientString(id));
         ui->lcd_coordX_prime->display(getBotCoordX(true, id));
         ui->lcd_coordY_prime->display(getBotCoordY(true,id));
-        ui->dial_botOrient_prime->setValue(-getBotOrientDouble(true, id));
+        ui->dial_botOrient_prime->setValue(getBotOrientDouble(true, id));
         ui->box_primeBot->setTitle("Robot " + QString::number(id));
         if (botBehavior[id] != ui->text_primeBot->toPlainText()) {
             ui->text_primeBot->setText(botBehavior[id]);
         }
+//        QString test = ui->dial_botOrient_prime->styleSheet();
+//        if (ui->text_primeBot->toPlainText() != test ){
+//            ui->text_primeBot->setText(test);
+//        }
+//        ui->dial_botOrient_prime->setStyleSheet();
 //        gamemodel->find(id,gamemodel->getMyTeam())->getki
 //        for (int i=0; i<teamSize; i++) {
 //            if (gamemodel->find(id, gamemodel->getMyTeam()) != NULL) {
