@@ -27,7 +27,7 @@ void GuiSidelines::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
         if (colorScheme == "Default") {
 //            brush = (QColor::fromRgb(0,100,0,255), Qt::SolidPattern);
             painter->setPen(QPen(Qt::white, 60, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
-            painter->setBrush(QColor::fromRgb(0,100,0,255));
+            painter->setBrush(QColor::fromRgb(0,75,0,255));
         } else if (colorScheme == "Ice Rink") {
 //            brush = (QColor::fromRgb(32,178,170,255), Qt::SolidPattern);
             painter->setBrush(QColor::fromRgb(32,178,170,255));

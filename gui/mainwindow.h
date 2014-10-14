@@ -58,6 +58,7 @@ public:
     // Debug functions
     void printBehavior(int botID, string behavior, bool append);    // puts the given bot's given string into a vector and prints it when the bot is selected
     void drawLine( int originX, int originY, int endX, int endY );
+    void guiPrint(string output);
 
 
     void printBall();
@@ -171,6 +172,8 @@ private:
     std::vector<GuiBotLabel*> guiLabelsY;
     // Camera
     int centeredBotID = -1;
+    // guiPrint
+    QString guiOutput;
 
     GuiField *field;
     GuiSidelines *sidelines;
@@ -198,7 +201,6 @@ private slots:
     void defaultZoom();
     void createPointer();
     void setUpScene();
-    void on_btn_Simulated_clicked();
     void on_check_fieldGrid_clicked();
     void on_combo_gridScale_currentIndexChanged(int index);
     void on_check_coloredGoals_clicked();

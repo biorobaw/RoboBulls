@@ -2,6 +2,7 @@
 #include "include/config/simulated.h"
 #include "include/config/team.h"
 #include "visioncomm.h"
+#include "gui/mainwindow.h"
 using namespace std;
 
 

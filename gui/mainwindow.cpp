@@ -288,7 +288,6 @@ void MainWindow::updateBotPanel() {
                 velocityDials[i]->setStyleSheet("background-color: rgb(150, 150, 150);");
             }
 
-            printBehavior(i, "The following reading and problem assignment will help you master the concepts of this module. The problem assignments are ordered as a set of problems dealing with a specific concept covered in the module. In most cases, the odd number problems are assigned to allow you to use the solution book to check your answers and ascertain what problems you are having trouble with.", false);
             botIconFrames[i]->update();
         }//nullcheck
     }
@@ -414,7 +413,7 @@ int MainWindow::getVelocity(int id) {
     int wheels = 0;
 
     if ( gamemodel->find(id, gamemodel->getMyTeam())->type() == fourWheelOmni ) {
-        printBehavior(id,"fourWheelOmni",false);
+//        printBehavior(id,"fourWheelOmni",false);
         int lF = gamemodel->find(id, gamemodel->getMyTeam())->getLF();
         int rF = gamemodel->find(id, gamemodel->getMyTeam())->getRF();
         int lb = gamemodel->find(id, gamemodel->getMyTeam())->getLB();
@@ -436,7 +435,7 @@ int MainWindow::getVelocity(int id) {
             wheels++;
         }
     } else if ( gamemodel->find(id, gamemodel->getMyTeam())->type() == differential ) {
-        printBehavior(id,"differential",false);
+//        printBehavior(id,"differential",false);
         int lF = gamemodel->find(id, gamemodel->getMyTeam())->getL();
         int rF = gamemodel->find(id, gamemodel->getMyTeam())->getR();
 //        int b = gamemodel->find(id, gamemodel->getMyTeam())->getB();
@@ -454,7 +453,7 @@ int MainWindow::getVelocity(int id) {
 //            wheels++;
 //        }
     } else if ( gamemodel->find(id, gamemodel->getMyTeam())->type() == threeWheelOmni ) {
-        printBehavior(id,"threeWheelOmni",false);
+//        printBehavior(id,"threeWheelOmni",false);
         int lF = gamemodel->find(id, gamemodel->getMyTeam())->getL();
         int rF = gamemodel->find(id, gamemodel->getMyTeam())->getR();
         int b = gamemodel->find(id, gamemodel->getMyTeam())->getB();
@@ -507,6 +506,12 @@ void MainWindow::drawLine(int originX, int originY, int endX, int endY) {
         guidrawline->x2 = endX;
         guidrawline->y2 = endY;
         ui->gView_field->update();
+}
+
+void MainWindow::guiPrint(string output) {
+//    guiOutput.insert(0, QString::fromStdString(output));
+    guiOutput += QString::fromStdString(output) + "\n";
+    ui->text_guiPrint->setText(guiOutput);
 }
 
 void MainWindow::setUpScene()
@@ -1081,19 +1086,6 @@ MainWindow::~MainWindow()
 
 
 
-void MainWindow::on_btn_Simulated_clicked()
-{
-
-    cout << "btn_Simulated clicked \n";
-    if (SIMULATED) {
-        #undef SIMULATED
-        #define SIMULATED 0
-    } else {
-        #undef SIMULATED
-        #define SIMULATED 1
-    }
-cout << SIMULATED;
-}
 
 // Field graphical settins which need to be refreshed when changed
 void MainWindow::on_check_fieldGrid_clicked(){refresh = true;}

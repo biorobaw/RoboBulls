@@ -51,8 +51,6 @@ void GuiField::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     QRectF blueGoal(blueGoalX,goalY, goalWidth,goalHeight);
     QRectF yellGoal(rec.width(),goalY, goalWidth,goalHeight);
     // Drawing field
-    QBrush plainBrush(Qt::darkGreen, Qt::SolidPattern);
-    QBrush crossBrush(Qt::cyan, Qt::SolidPattern);
     QBrush brush(Qt::white, Qt::SolidPattern);
     int fieldLineThick = 40;
 //    if (plain) {
@@ -131,7 +129,7 @@ void GuiField::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     painter->fillRect(blueGoal,goalBrush);
     painter->fillRect(yellGoal,goalBrush);
     if (coloredGoals) {
-        painter->setPen(QPen(Qt::blue, goalThick, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
+        painter->setPen(QPen(QColor::fromRgb(0,0,255,255), goalThick, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
         painter->drawRect(blueGoal);
         painter->setPen(QPen(Qt::yellow, goalThick, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
         painter->drawRect(yellGoal);
