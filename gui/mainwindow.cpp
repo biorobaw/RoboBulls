@@ -86,7 +86,7 @@ void MainWindow::launch(int value)
         ui->menuDashboard->setTitle("Camera");
     }
 
-    ui->label->setText(QString("Current Thread Processing Status : %1").arg(value));
+//    ui->label->setText(QString("Current Thread Processing Status : %1").arg(value));
 
     // CTRL modifer for field scrolling
     if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier) == true) {
@@ -276,12 +276,7 @@ void MainWindow::updateBotPanel() {
             if (botIconFrames[i]->isVisible() == false) {
                 botIconFrames[i]->show();
             }
-            if (botIcons[i]->doubleClicked || guiTeam[i]->doubleClicked) {
-                if (justScrolled == false)
-                    ui->gView_field->centerOn(guiTeam[i]);
-    //                botIcons[i]->doubleClicked = false;
-    //                guiTeam[i]->doubleClicked = false;
-            }
+
             // dynamic velocity dial colors
             if (velocityDials[i]->value() > 0) {            // forward
                 velocityDials[i]->setStyleSheet("background-color: rgb(0, 200, 0);");
@@ -312,9 +307,31 @@ void MainWindow::updateBotPanel() {
 
 void MainWindow::scanForSelection() {
     bool newSelection = true;
-    // Field clicked
+
+    // Scanning for double-click selection
+    for (int i=0; i<teamSize; i++) {
+        if (gamemodel->find(i,gamemodel->getMyTeam()) != NULL) {
+            if (botIcons[i]->doubleClicked || guiTeam[i]->doubleClicked) {
+                botIcons[i]->doubleClicked = false;
+                guiTeam[i]->doubleClicked = false;
+                centeredBotID = i;
+                break;
+            }
+        }//nullcheck
+    }//end for
+
+    // Scrolling the camera removes centeredOn but not selection
+    if (justScrolled) {
+        for (int i=0; i<teamSize; i++) {
+            if (gamemodel->find(i,gamemodel->getMyTeam()) != NULL) {
+                botIcons[i]->doubleClicked = false;
+                guiTeam[i]->doubleClicked = false;
+            }//nullcheck
+        }
+        centeredBotID = -1;
+    }
+    // Field clicked removes centeredOn and selection
     if (field->Pressed == true) {
-//        cout << "field pressed \n";
         field->highlighted = true;
         field->Pressed = false;
     }
@@ -331,6 +348,7 @@ void MainWindow::scanForSelection() {
         }
         field->highlighted = false;
         selectedBot = -1;
+        centeredBotID = -1;
         newSelection = true;
     }
 
@@ -726,6 +744,10 @@ void MainWindow::updateScene() {
                 guiTeam[i]->setScale(1.2);
             } else if (ui->combo_botScale->currentText() == "150%") {
                 guiTeam[i]->setScale(1.5);
+            }
+            // Centering camera on double-clicked bot
+            if (i == centeredBotID) {
+                ui->gView_field->centerOn(guiTeam[i]);
             }
 
         }

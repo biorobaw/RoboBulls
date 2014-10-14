@@ -169,6 +169,8 @@ private:
     GuiBotLabel *botLabel4Y;
     GuiBotLabel *botLabel5Y;
     std::vector<GuiBotLabel*> guiLabelsY;
+    // Camera
+    int centeredBotID = -1;
 
     GuiField *field;
     GuiSidelines *sidelines;
