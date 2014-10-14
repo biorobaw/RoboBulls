@@ -96,7 +96,7 @@ public:
 
     void perform(Robot *robot) override
     {
-        setMovementTargets(Point(-1000,0), M_PI, false);
+        setMovementTargets(Point(1000,0), M_PI, false);
         GenericMovementBehavior::perform(robot);
     }
 };
@@ -125,7 +125,7 @@ void TestStrategy::assignBeh()
 {
 //***************************************************************************************************
     //Shamsi Code
-    BehaviorAssignment<ShamsiGoToPose> assignment(true);
+    BehaviorAssignment<ShamsiKickToPoint> assignment(true);
     assignment.assignBeh({1});
 
     // Narges code testing DriveBallAndKick
