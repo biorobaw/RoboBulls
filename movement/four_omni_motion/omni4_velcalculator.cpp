@@ -62,8 +62,8 @@ fourWheelVels FourWheelCalculator::defaultCalc
     //cout << dist_error_integral << endl;
 
     //Set tolerances
-    //if (Measurments::isClose(rp,gp,10)) x_vel = y_vel = 0;
-    //if (abs(Measurments::angleDiff(theta_goal,theta_current))<ROT_TOLERANCE) theta_vel = 0;
+    if (Measurments::isClose(rp,gp,DIST_TOLERANCE)) x_vel = y_vel = 0;
+    if (abs(Measurments::angleDiff(theta_goal,theta_current))<ROT_TOLERANCE*0.5) theta_vel = 0;
 
     // Robot Frame Velocities
     double x_vel_robot = cos(theta_current)*x_vel+sin(theta_current)*y_vel;
@@ -145,18 +145,20 @@ fourWheelVels FourWheelCalculator::facePointCalc
         y_vel *= 0.5;
     }
 
-    // Rotate first
-    if (abs(Measurments::angleDiff(theta_current,theta_goal))>ROT_TOLERANCE)
+    //Set tolerances
+    if (Measurments::isClose(rp,gp,DIST_TOLERANCE)) x_vel = y_vel = 0;
+    if (abs(Measurments::angleDiff(theta_goal,theta_current))<ROT_TOLERANCE*0.5) theta_vel = 0;
+
+    // Focus on rotation
+    double vel = sqrt(x_vel*x_vel+y_vel*y_vel);
+    if (abs(Measurments::angleDiff(theta_goal,theta_current))>ROT_TOLERANCE*0.5 && vel > 40)
     {
-        x_vel *= 0.1;
-        y_vel *= 0.1;
+        x_vel = 40*cos(angle_to_goal);
+        y_vel = 40*sin(angle_to_goal);
+        theta_vel*=2.5;
     }
 
     //cout << dist_error_integral << endl;
-
-    //Set tolerances
-    //if (Measurments::isClose(rp,gp,10)) x_vel = y_vel = 0;
-    //if (abs(Measurments::angleDiff(theta_goal,theta_current))<ROT_TOLERANCE) theta_vel = 0;
 
     // Robot Frame Velocities
     double x_vel_robot = cos(theta_current)*x_vel+sin(theta_current)*y_vel;

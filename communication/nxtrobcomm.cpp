@@ -34,14 +34,18 @@ void NXTRobComm::send(char* commptr, int size)
 
 void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
 {
+    // Create array of packets
     packet_t teamPacketBuf[5];
 
     assert(sizeof(int8_t) == 1);
+
+    // Initialize packet to zeros
     memset(&teamPacketBuf, 0, sizeof(packet_t)*5);
 
+    // For each robot
     for(unsigned i = 0; i != robots.size(); ++i)
     {
-
+        // Load information into the packet
         packet_t* packet = &teamPacketBuf[i];
         Robot* rob =  robots[i];
         packet->tilde = '~';
@@ -55,8 +59,13 @@ void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
         packet->dribble_power = rob->getDrible() ? 1 : 0;
         packet->dollar = '$';
 
+        // Clear robot information
+        rob->setL(0);
+        rob->setR(0);
         rob->setKick(0);
+        rob->setDrible(0);
     }
 
+    // Send Array of packets
     send((char*)&teamPacketBuf, sizeof(packet_t)*5);
 }

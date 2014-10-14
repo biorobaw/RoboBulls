@@ -1,7 +1,6 @@
 #include "teststrategy.h"
 #include "behavior/behaviorassignment.h"
 #include "behavior/kicktogoal.h"
-#include "behavior/positionforkickoff.h"
 #include "behavior/defendoneonone.h"
 #include "behavior/driveballandkick.h"
 #include "behavior/mytestbehavior.h"
@@ -14,6 +13,8 @@
 #include "behavior/genericmovementbehavior.h"
 #include "movement/movetype.h"
 #include "model/gamemodel.h"
+#include <fstream>
+
 
 
 class TestBehavior : public Behavior
@@ -97,8 +98,28 @@ public:
 
     void perform(Robot *robot) override
     {
-        setMovementTargets(Point(2000,-400),-1,false);
+        setMovementTargets(Point(-2000,0),0,false);
         GenericMovementBehavior::perform(robot);
+    }
+};
+
+class ShamsiCalibrate : public GenericMovementBehavior
+{
+public:
+    ShamsiCalibrate(const ParameterList& list)
+    {
+        UNUSED_PARAM(list);
+        //ofstream myfile;
+    }
+
+    void perform(Robot *robot) override
+    {
+        setMovementTargets(Point(-2000,0),0,false);
+        GenericMovementBehavior::perform(robot);
+//        ofstream myfile;
+//        myfile.open ("/home/muhaimen/Desktop/MotionData 01.txt");
+//        myfile << robot->getRobotPosition().x << " " << robot->getRobotPosition().y;
+//        myfile.close();
     }
 };
 
@@ -111,8 +132,9 @@ void TestStrategy::assignBeh()
     GameModel *gm = GameModel::getModel();
 //***************************************************************************************************
     //Shamsi Code
-//    BehaviorAssignment<ShamsiGoToPose> assignment(true);
-//    assignment.assignBeh({5});
+//    BehaviorAssignment<ShamsiStrafeBehavior> assignment(true);
+//    assignment.assignBeh();
+
 
     //Martin code
 //    cout << "running test strategy!" << endl;

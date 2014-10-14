@@ -14,6 +14,7 @@
 #include "strategy/freekickstrategy.h"
 #include "strategy/haltstrategy.h"
 #include "strategy/attackstrategy.h"
+#include "strategy/indiectkickstrategy.h"
 
 #include "movement/pathfinding/fppa_pathfinding.h"
 
@@ -48,7 +49,7 @@ void StrategyController::gameModelUpdated()
 
     cout << model->getGameState() << endl;
 
-#if 1
+//#if 1
     switch(model->getGameState())
     {
     case 'S':    //stop game
@@ -65,6 +66,9 @@ void StrategyController::gameModelUpdated()
     case 'F':    //Free Kick
         activeStrategy = new FreeKickStrategy();
         break;
+    case 'I':   //Indirect kick
+        activeStrategy = new IndiectKickStrategy();
+        break;
     case 'H':    //Halt
         activeStrategy = new HaltStrategy();
         break;
@@ -77,8 +81,8 @@ void StrategyController::gameModelUpdated()
     default:    //Anything Else
         activeStrategy = new TestStrategy();
     };
-#endif
-
+//#endif
+//    activeStrategy = new KickOffStrategy();
     activeStrategy->assignBeh();
 }
 

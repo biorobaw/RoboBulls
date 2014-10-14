@@ -7,6 +7,9 @@ TwoVOne::TwoVOne()
 
 void TwoVOne::assignBeh()
 {
+    //**********************************************************
+    // BROKEN
+    //**********************************************************
     gm = GameModel::getModel();
     bp = gm->getBallPoint();
     ogp = gm->getOpponentGoal();
@@ -26,100 +29,80 @@ void TwoVOne::assignBeh()
 
     static float rgd = gm->getMyGoal().x/(abs)(gm->getMyGoal().x); //Relative friendly goal direction
 
-    BehaviorAssignment<PositionForKickoff> bKickOff(true);
+    //Define Regions
+    //Assign Strategic Value
+    //Add region to deque of regions
+    #if SIMULATED==1
+        Region * right_defense = new Region(0,3000*rgd,-2000,r4.y+250);
+        strategicRegions.push_back(right_defense);
 
-    if(Region::goalScored())
+        Region * mid_defense = new Region(0,3000*rgd,r2.y-250,r4.y+250);
+        strategicRegions.push_back(mid_defense);
+
+        Region * left_defense = new Region(0,3000*rgd,2000,r2.y-250);
+    #endif
+
+    Region * left_offense = new Region(0,-3000*rgd,2000,0);
+    strategicRegions.push_back(left_offense);
+
+    Region * right_offense = new Region(0,-3000*rgd,-2000,0);
+    strategicRegions.push_back(right_offense);
+
+    for(Region* r : strategicRegions)
+        this->assignStrategicValue(r);
+
+    sort(strategicRegions.begin(),strategicRegions.end(),[](Region* i,Region* j){
+        return i->getStrategicValue()>j->getStrategicValue();
+    });
+
+    //Create Behaviors
+    BehaviorAssignment<AttackMain> bAttactMain(true);
+    BehaviorAssignment<AttackSupport> bAttackSupport(true);
+    BehaviorAssignment<DefendCloseToBall> bMidDefender(true);
+    BehaviorAssignment<DefendCloseToBall> bRightDefender(true);
+    BehaviorAssignment<DefendCloseToBall> bLeftDefender(true);
+    BehaviorAssignment<DefendFarFromBall> bGoalie(true);
+
+    BehaviorAssignment<SendBallToRegion> bSendBall(true);
+    bSendBall.setBehParam("region", strategicRegions.front());
+
+
+    //Assign attacker behaviors
+    if((left_offense->contains(bp)||right_offense->contains(bp)))
     {
-        bKickOff.assignBeh();
-    }
-
-    else
-    {
-        //Define Regions
-        //Assign Strategic Value
-        //Add region to deque of regions
-        #if SIMULATED==1
-            Region * right_defense = new Region(0,3000*rgd,-2000,r4.y+250);
-            strategicRegions.push_back(right_defense);
-
-            Region * mid_defense = new Region(0,3000*rgd,r2.y-250,r4.y+250);
-            strategicRegions.push_back(mid_defense);
-
-            Region * left_defense = new Region(0,3000*rgd,2000,r2.y-250);
-        #endif
-
-        Region * left_offense = new Region(0,-3000*rgd,2000,0);
-        strategicRegions.push_back(left_offense);
-
-        Region * right_offense = new Region(0,-3000*rgd,-2000,0);
-        strategicRegions.push_back(right_offense);
-
-        for(Region* r : strategicRegions)
-            this->assignStrategicValue(r);
-
-        sort(strategicRegions.begin(),strategicRegions.end(),[](Region* i,Region* j){
-            return i->getStrategicValue()>j->getStrategicValue();
-        });
-
-        //Create Behaviors
-        BehaviorAssignment<AttackMain> bAttactMain(true);
-        BehaviorAssignment<AttackSupport> bAttackSupport(true);
-        BehaviorAssignment<DefendCloseToBall> bMidDefender(true);
-        BehaviorAssignment<DefendCloseToBall> bRightDefender(true);
-        BehaviorAssignment<DefendCloseToBall> bLeftDefender(true);
-        BehaviorAssignment<DefendFarFromBall> bGoalie(true);
-
-        BehaviorAssignment<SendBallToRegion> bSendBall(true);
-        bSendBall.setBehParam("region", strategicRegions.front());
-
-
-        //Assign attacker behaviors
-        if((left_offense->contains(bp)||right_offense->contains(bp)))
+        if(Measurments::distance(r0, bp)
+           < Measurments::distance(r1, bp))
         {
-            if(Measurments::distance(r0, bp)
-               < Measurments::distance(r1, bp))
-            {
-                bAttactMain.assignBeh(robot_0);
-                bAttackSupport.assignBeh(robot_1);
-            }
-            else
-            {
-                bAttactMain.assignBeh(robot_1);
-                bAttackSupport.assignBeh(robot_0);
-            }
+            bAttactMain.assignBeh(robot_0);
+            bAttackSupport.assignBeh(robot_1);
         }
         else
         {
-            bKickOff.assignBeh(robot_0);
-            bKickOff.assignBeh(robot_1);
+            bAttactMain.assignBeh(robot_1);
+            bAttackSupport.assignBeh(robot_0);
         }
-
-        //Assign defender behaviors
-        #if SIMULATED==1
-            bGoalie.assignBeh(gm->getMyTeam().at(5));
-
-            if(left_defense->contains(bp))
-                bSendBall.assignBeh(gm->getMyTeam().at(2));
-            else
-                bKickOff.assignBeh(gm->getMyTeam().at(2));
-
-            if(mid_defense->contains(bp))
-                bSendBall.assignBeh(gm->getMyTeam().at(3));
-            else
-                bKickOff.assignBeh(gm->getMyTeam().at(3));
-
-            if(right_defense->contains(bp))
-                bSendBall.assignBeh(gm->getMyTeam().at(4));
-            else
-                bKickOff.assignBeh(gm->getMyTeam().at(4));
-
-            delete mid_defense;
-            delete left_defense;
-            delete right_defense;
-        #endif
-        delete left_offense;
-        delete right_offense;
     }
+
+
+    //Assign defender behaviors
+    #if SIMULATED==1
+        bGoalie.assignBeh(gm->getMyTeam().at(5));
+
+        if(left_defense->contains(bp))
+            bSendBall.assignBeh(gm->getMyTeam().at(2));
+
+        if(mid_defense->contains(bp))
+            bSendBall.assignBeh(gm->getMyTeam().at(3));
+
+        if(right_defense->contains(bp))
+            bSendBall.assignBeh(gm->getMyTeam().at(4));
+
+        delete mid_defense;
+        delete left_defense;
+        delete right_defense;
+    #endif
+    delete left_offense;
+    delete right_offense;
 }
 
 void TwoVOne::assignStrategicValue(Region * region)

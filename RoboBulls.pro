@@ -71,7 +71,6 @@ SOURCES += main.cpp \
     behavior/defendfarfromball.cpp \
     behavior/attackmain.cpp \
     behavior/attacksupport.cpp \
-    behavior/positionforkickoff.cpp \
     behavior/sendballtoregion.cpp \
     strategy/twovone.cpp \
     skill/kicktopoint.cpp \
@@ -79,7 +78,6 @@ SOURCES += main.cpp \
     movement/basic_movement.cpp \
     movement/gotopositionwithorientation.cpp \
     movement/pathfinding/fppa_pathfinding.cpp \
-    movement/three_omni_motion/matrixcalculator.cpp \
     movement/move.cpp \
     movement/differential/closedloopcontrol.cpp \
     include/config/robot_types.cpp \
@@ -142,7 +140,6 @@ HEADERS += \
     behavior/defendfarfromball.h \
     behavior/attackmain.h \
     behavior/attacksupport.h \
-    behavior/positionforkickoff.h \
     behavior/sendballtoregion.h \
     strategy/twovone.h \
     skill/kicktopoint.h \

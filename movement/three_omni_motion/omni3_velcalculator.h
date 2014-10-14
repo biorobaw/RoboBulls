@@ -1,10 +1,14 @@
 #ifndef THREEWHEEL_VELCALCULATOR_H
 #define THREEWHEEL_VELCALCULATOR_H
 
-#include <math.h>
+#include <iostream>
+#include <cmath>
+
 #include "matrixcalculator.h"
 #include "model/robot.h"
 #include "movement/movetype.h"
+#include "include/config/tolerances.h"
+#include "utilities/measurments.h"
 
 #define THREE_WHEEL_DEBUG 0
 
@@ -26,13 +30,14 @@ public:
 
 private:
     const double wheel_radius = 27;
-    unsigned int max_mtr_spd = 80;
+    unsigned int max_mtr_spd = 100;
     double distance_to_goal, angle_to_goal;
 
     threeWheelVels defaultCalc
         (Robot* rob, float x_goal, float y_goal, float theta_goal);
     threeWheelVels facePointCalc
         (Robot* rob, float x_goal, float y_goal, float theta_goal);
+    std::vector<double> calcBias(double x, double y);
 };
 
 }
