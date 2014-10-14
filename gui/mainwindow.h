@@ -36,8 +36,12 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    static MainWindow* getWindow();
+
+
 public:
-    //Q_INVOKABLE static void printLabel(); DESTROY?
+
+
     QString getBotCoord(int id); // Returns the specified robot's x/y position as a QString
     QString getBotOrientString(int id);
     double  getBotOrientDouble(bool myTeam, int id);
@@ -178,6 +182,8 @@ private:
     GuiField *field;
     GuiSidelines *sidelines;
     GuiBall *ball;
+    // pointer to MainWindow
+    static MainWindow* window;
 
     bool refresh = true;   // set this to true whenever a change to the field is made to refresh on next frame.
     bool justScrolled = false;

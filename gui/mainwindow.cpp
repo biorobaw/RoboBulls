@@ -413,7 +413,7 @@ int MainWindow::getVelocity(int id) {
     int wheels = 0;
 
     if ( gamemodel->find(id, gamemodel->getMyTeam())->type() == fourWheelOmni ) {
-//        printBehavior(id,"fourWheelOmni",false);
+        printBehavior(id,"fourWheelOmni",false);
         int lF = gamemodel->find(id, gamemodel->getMyTeam())->getLF();
         int rF = gamemodel->find(id, gamemodel->getMyTeam())->getRF();
         int lb = gamemodel->find(id, gamemodel->getMyTeam())->getLB();
@@ -435,9 +435,10 @@ int MainWindow::getVelocity(int id) {
             wheels++;
         }
     } else if ( gamemodel->find(id, gamemodel->getMyTeam())->type() == differential ) {
-//        printBehavior(id,"differential",false);
+        printBehavior(id,"differential",false);
         int lF = gamemodel->find(id, gamemodel->getMyTeam())->getL();
         int rF = gamemodel->find(id, gamemodel->getMyTeam())->getR();
+        cout << lF << ", " << rF << "\n";
 //        int b = gamemodel->find(id, gamemodel->getMyTeam())->getB();
 
 //        if (lF != 0) {
@@ -453,7 +454,7 @@ int MainWindow::getVelocity(int id) {
 //            wheels++;
 //        }
     } else if ( gamemodel->find(id, gamemodel->getMyTeam())->type() == threeWheelOmni ) {
-//        printBehavior(id,"threeWheelOmni",false);
+        printBehavior(id,"threeWheelOmni",false);
         int lF = gamemodel->find(id, gamemodel->getMyTeam())->getL();
         int rF = gamemodel->find(id, gamemodel->getMyTeam())->getR();
         int b = gamemodel->find(id, gamemodel->getMyTeam())->getB();
@@ -1082,6 +1083,15 @@ MainWindow::~MainWindow()
         if(thread->isRunning())
             thread->exit(0);
     }
+}
+
+MainWindow *MainWindow::getWindow()
+{
+//    if (window == NULL)
+//        window = new MainWindow();
+
+//    return window;
+
 }
 
 

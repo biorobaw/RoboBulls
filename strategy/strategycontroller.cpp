@@ -17,6 +17,9 @@
 
 #include "movement/pathfinding/fppa_pathfinding.h"
 
+#include <QApplication>
+#include "gui/mainwindow.h"
+
 using namespace std;
 
 StrategyController::StrategyController()
@@ -113,6 +116,10 @@ void StrategyController::frameEnd()
         if(rob->hasBeh)
             rob->getCurrentBeh()->perform(rob);
     }
+//    QApplication a(argc, argv);
+//    MainWindow w;
+//    w.show();
+
 
     RobComm * robcom = RobComm::getRobComm();
     robcom->sendVelsLarge(model->getMyTeam());
