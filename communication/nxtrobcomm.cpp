@@ -36,6 +36,7 @@ void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
 {
     // Create array of packets
     packet_t teamPacketBuf[5];
+    //char testOmni[10] = {'~','6','100','100','100','100','0','0','0','$'};
 
     assert(sizeof(int8_t) == 1);
 
@@ -54,7 +55,7 @@ void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
         packet->left_back   = Measurments::clamp(rob->getLB(), -127, 127);
         packet->right_front = Measurments::clamp(rob->getRF(), -127, 127);
         packet->right_back  = Measurments::clamp(rob->getRB(), -127, 127);
-        packet->kick = rob->getKick();
+        packet->kick = rob->getKick() ? 'k' : 0;
         packet->chip_power = 0;
         packet->dribble_power = rob->getDrible() ? 1 : 0;
         packet->dollar = '$';
@@ -68,4 +69,5 @@ void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
 
     // Send Array of packets
     send((char*)&teamPacketBuf, sizeof(packet_t)*5);
+    //send(&testOmni[0], 10);
 }
