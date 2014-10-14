@@ -16,6 +16,8 @@ bool Kick::perform(Robot * robot)
     {
         //nxtbee->sendKick(robot->getID());
         robot->setKick(1);
+        robot->setL(100);
+        robot->setR(100);
         roboKick = false;
     }
 

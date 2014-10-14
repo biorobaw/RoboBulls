@@ -10,7 +10,7 @@
 
 #if 1
 const robotType robotIDTypes[] = {
- /*0*/	differential,
+ /*0*/	fourWheelOmni,
  /*1*/	differential,
  /*2*/	differential,
  /*3*/	differential,

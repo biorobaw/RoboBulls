@@ -732,10 +732,8 @@ void MainWindow::updateScene() {
     }
 
     // drawLine TEST
-    drawLine(getBotCoordX(true, 0),getBotCoordY(true, 0), 0, 0 );
+//    drawLine(getBotCoordX(true, 0),getBotCoordY(true, 0), 0, 0 );
 //    ui->gView_field->update();
-    ui->gView_field->hide();
-    ui->gView_field->show();
 
 }//end updateScene
 

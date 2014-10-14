@@ -9,6 +9,7 @@
 #include "behavior/attackmain.h"
 #include "skill/stop.h"
 #include "skill/kicktopoint.h"
+#include "skill/kick.h"
 #include "behavior/genericmovementbehavior.h"
 #include "movement/movetype.h"
 #include <fstream>
@@ -49,10 +50,10 @@ public:
     }
 };
 
-class ShamsiStrafeBehavior : public GenericMovementBehavior
+class ShamsiStrafe : public GenericMovementBehavior
 {
 public:
-    ShamsiStrafeBehavior(const ParameterList& list)
+    ShamsiStrafe(const ParameterList& list)
     {
         UNUSED_PARAM(list);
     }
@@ -69,17 +70,17 @@ public:
         switch(state)
         {
         case pos_one:
-            setMovementTargets(target_one,ori,false);
-            if (Measurments::isClose(rp,target_one))
+            setMovementTargets(target_one,M_PI,false);
+            if (Measurments::isClose(rp,target_one,50))
                 state = pos_two;
             break;
         case pos_two:
-            setMovementTargets(target_two,ori,false);
-            if (Measurments::isClose(rp,target_two))
+            setMovementTargets(target_two,0,false);
+            if (Measurments::isClose(rp,target_two,50))
                 state = pos_one;
         }
 
-        GenericMovementBehavior::perform(robot,Movement::Type::facePoint);
+        GenericMovementBehavior::perform(robot);
     }
 private:
     enum {pos_one,pos_two} state = pos_one;
@@ -95,28 +96,24 @@ public:
 
     void perform(Robot *robot) override
     {
-        setMovementTargets(Point(-2000,0),0,false);
+        setMovementTargets(Point(1000,0), M_PI, false);
         GenericMovementBehavior::perform(robot);
     }
 };
 
-class ShamsiCalibrate : public GenericMovementBehavior
+class ShamsiKickToPoint : public GenericMovementBehavior
 {
 public:
-    ShamsiCalibrate(const ParameterList& list)
+    Skill::KickToPoint * kkkk;
+    ShamsiKickToPoint(const ParameterList& list)
     {
+        kkkk = new Skill::KickToPoint(Point(0,0));
         UNUSED_PARAM(list);
-        //ofstream myfile;
     }
 
     void perform(Robot *robot) override
     {
-        setMovementTargets(Point(-2000,0),0,false);
-        GenericMovementBehavior::perform(robot);
-//        ofstream myfile;
-//        myfile.open ("/home/muhaimen/Desktop/MotionData 01.txt");
-//        myfile << robot->getRobotPosition().x << " " << robot->getRobotPosition().y;
-//        myfile.close();
+        kkkk->perform(robot);
     }
 };
 
@@ -128,58 +125,8 @@ void TestStrategy::assignBeh()
 {
 //***************************************************************************************************
     //Shamsi Code
-    BehaviorAssignment<ShamsiStrafeBehavior> assignment(true);
-    assignment.assignBeh();
-
-    //Martin code
-//    cout << "running test strategy!" << endl;
-//    GameModel * gm = GameModel::getModel();
-
-//    float ballToOpGoalDist = Measurments::distance(gm->getBallPoint(), gm->getOpponentGoal());
-//    float ballToMyGoalDist = Measurments::distance(gm->getBallPoint(), gm->getMyGoal());
-
-//    if (ballToOpGoalDist > ballToMyGoalDist){
-//        BehaviorAssignment<KickToGoal> assignment;
-//        assignment.setSingleAssignment(true);
-//        assignment.assignBeh();
-//    } else {
-//        BehaviorAssignment<DefendOneOnOne> assignment;
-//        assignment.setSingleAssignment(true);
-//        assignment.assignBeh();
-//    }
-
-
-    //test behavior
-//    GameModel* gm = GameModel::getModel();
-//    Robot* r0 = gm->find(0, gm->getMyTeam());
-//    if(!r0) return;
-
-
-    //james code
-
-//    GameModel* gm = GameModel::getModel();
-//#if SIMULATED
-//    Robot* r0 = gm->find(0, gm->getMyTeam());
-//    Robot* r1 = gm->find(1, gm->getMyTeam());
-//#else
-//    Robot* r0 = gm->find(3, gm->getMyTeam());
-//    Robot* r1 = gm->find(8, gm->getMyTeam());
-//#endif
-//    if(!r0 || !r1) return;
-
-
-//    //if(r0 != NULL) {
-//     //   BehaviorAssignment<TestBehavior> ass;
-//        //ass.setBehParam<Point>("targetPoint", point())
-//     //   ass.assignBeh(r0);
-//   // }
-
-//    //BehaviorAssignment<DriveBallAndKick> assignment;
-//    GameModel * gm = GameModel::getModel();
-//    BehaviorAssignment<TestBehavior> assignment;
-//    assignment.setSingleAssignment(true);
-//    assignment.setBehParam<Point>("targetPoint", gm->getBallPoint());
-//    assignment.assignBeh({0, 1});
+    BehaviorAssignment<ShamsiKickToPoint> assignment(true);
+    assignment.assignBeh({1});
 
     // Narges code testing DriveBallAndKick
 //    BehaviorAssignment<TestBehavior> assignment(true);
@@ -200,19 +147,6 @@ void TestStrategy::assignBeh()
 //    BehaviorAssignment<myTestBehavior> assignment;
 //    assignment.setSingleAssignment(true);
 //    assignment.assignBeh();
-
-    //testing test behavior
-//        BehaviorAssignment<AttackMain> assignment;
-//        assignment.setSingleAssignment(true);
-//        assignment.assignBeh();
-
-
-
-//    //James code
-//    BehaviorAssignment<TestBehavior> assignment;
-//    assignment.setSingleAssignment(true);
-//    Point p = gm->getBallPoint() - Point (200,200);
-//    assignment.setBehParam<Point>("targetPoint",p );
-//    assignment.assignBeh({r0, r1});
 }
+
 
