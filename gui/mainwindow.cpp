@@ -1,4 +1,9 @@
 #define _USE_MATH_DEFINES
+// to not generate gamemodel: comment out contents of strategy/strategycontroller.cpp->gameModelUpdated()
+// colision notification
+// different field & robot scales based on SIMULATED
+// make bearing dial gray if robot is NULL
+// nxtrobcomm - sets velocity to zero
 #include <math.h>
 
 #include "mainwindow.h"
@@ -436,9 +441,9 @@ int MainWindow::getVelocity(int id) {
         }
     } else if ( gamemodel->find(id, gamemodel->getMyTeam())->type() == differential ) {
         printBehavior(id,"differential",false);
-        int lF = gamemodel->find(id, gamemodel->getMyTeam())->getL();
-        int rF = gamemodel->find(id, gamemodel->getMyTeam())->getR();
-        cout << lF << ", " << rF << "\n";
+        int lF = gamemodel->find(id, gamemodel->getMyTeam())->getLF();
+        int rF = gamemodel->find(id, gamemodel->getMyTeam())->getRF();
+//        cout << lF << ", " << rF << "\n";
 //        int b = gamemodel->find(id, gamemodel->getMyTeam())->getB();
 
 //        if (lF != 0) {

@@ -47,39 +47,39 @@ void StrategyController::run()
 
 void StrategyController::gameModelUpdated()
 {
-    delete activeStrategy;
-#if 1
-    switch(model->getGameState())
-    {
-    case 'S':    //stop game
-    case 'G':    //Blue Goal
-    case 'g':    //Yellow Goal
-        activeStrategy = new StopStrategy();
-        break;
-    case 'P':    //Penalty Kick
-        activeStrategy = new PenaltyStrategy();
-        break;
-    case 'K':    //Kickoff
-        activeStrategy = new FreeKickStrategy();
-        break;
-    case 'F':    //Free Kick
-        activeStrategy = new FreeKickStrategy();
-        break;
-    case 'H':    //Halt
-        activeStrategy = new HaltStrategy();
-        break;
-    case ' ':    //Normal game play
-        activeStrategy = new AttackStrategy();
-        break;
-    case 's':    //Force Start
-        activeStrategy = new FreeKickStrategy();
-        break;
-    default:    //Anything Else
-        activeStrategy = new TestStrategy();
-    };
-#endif
-    activeStrategy = new TestStrategy();
-    activeStrategy->assignBeh();
+//    delete activeStrategy;
+//#if 1
+//    switch(model->getGameState())
+//    {
+//    case 'S':    //stop game
+//    case 'G':    //Blue Goal
+//    case 'g':    //Yellow Goal
+//        activeStrategy = new StopStrategy();
+//        break;
+//    case 'P':    //Penalty Kick
+//        activeStrategy = new PenaltyStrategy();
+//        break;
+//    case 'K':    //Kickoff
+//        activeStrategy = new FreeKickStrategy();
+//        break;
+//    case 'F':    //Free Kick
+//        activeStrategy = new FreeKickStrategy();
+//        break;
+//    case 'H':    //Halt
+//        activeStrategy = new HaltStrategy();
+//        break;
+//    case ' ':    //Normal game play
+//        activeStrategy = new AttackStrategy();
+//        break;
+//    case 's':    //Force Start
+//        activeStrategy = new FreeKickStrategy();
+//        break;
+//    default:    //Anything Else
+//        activeStrategy = new TestStrategy();
+//    };
+//#endif
+//    activeStrategy = new TestStrategy();
+//    activeStrategy->assignBeh();
 }
 
 void StrategyController::gameModelContinued()
