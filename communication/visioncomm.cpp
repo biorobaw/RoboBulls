@@ -58,6 +58,7 @@ void VisionComm::updateInfo(const SSL_DetectionRobot& robot, int detectedTeamCol
         {
             rob = new Robot();
             rob->setID(id);
+            rob->setTeam(detectedTeamColor == ourTeamColor);
             currentTeam->push_back(rob);
         }
 		

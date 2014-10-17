@@ -15,12 +15,6 @@
 #include "utilities/point.h"
 #include "include/config/tolerances.h"
 
-/* FPPA Pathfinding Constants */
-#define FPPA_DEBUG 0
-#define MAX_RECURSION_DEPTH  3
-#define ROBOT_SIZE (ROBOT_RADIUS * 2.5)
-#define FRAME_UPDATE_COUNT 8
-
 namespace FPPA
 {
     enum class PathDirection

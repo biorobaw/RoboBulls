@@ -32,6 +32,8 @@ void Robot::setLB(float left_backward){LB = left_backward;}
 
 void Robot::setRB(float right_backward){RB = right_backward;}
 
+void Robot::setTeam(bool which) { team = which; }
+
 void Robot::setKick(bool Kick){kick = Kick;}
 
 void Robot::setDrible(bool drible){
@@ -74,6 +76,8 @@ int Robot::getLB(){ return LB; }
 int Robot::getRB(){ return RB; }
 
 int Robot::getKick(){return kick;}
+
+bool Robot::isOnMyTeam() { return team; }
 
 Behavior * Robot::getCurrentBeh(){return currentBehavior;}
 

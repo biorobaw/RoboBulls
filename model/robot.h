@@ -30,6 +30,7 @@ public:
     void setRB(float right_backward);
     void setKick(bool);
     void setDrible(bool);
+    void setTeam(bool);
     void setCurrentBeh(Behavior *);
     
 
@@ -46,6 +47,7 @@ public:
     int   getRB();
     int   getKick();
     bool  getDrible();
+	bool  isOnMyTeam();
     Behavior* getCurrentBeh();
     robotType type();
     
@@ -63,7 +65,7 @@ private:
     Behavior * currentBehavior;
     bool kick;
     bool drible;
-
+	bool team;		//On myTeam? 1/0
 };
 
 #endif // ROBOT_H
