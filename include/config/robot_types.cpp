@@ -1,4 +1,5 @@
 #include "include/config/robot_types.h"
+#include "include/config/simulated.h"
 
 /* Robot types are:
  *- differential
@@ -15,8 +16,13 @@ const robotType robotIDTypes[] = {
  /*2*/	differential,
  /*3*/	differential,
  /*4*/	differential,
+#if SIMULATED
+  /*5*/	differential,
+#else
  /*5*/	threeWheelOmni,
- /*6*/	differential,
+#endif
+
+ /*6*/	fourWheelOmni,
  /*7*/	differential,
  /*8*/	differential,
  /*9*/	differential

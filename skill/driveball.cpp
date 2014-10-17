@@ -11,10 +11,10 @@
     #define VEL_MULT 0.6
     #define TURN_ANG ANGLE*4
 #else
-    #define CLOSE_ENOUGH 280
+    #define CLOSE_ENOUGH 180
     #define ANGLE 7*M_PI/180
     #define DIST 350
-    #define VEL_MULT 0.4
+    #define VEL_MULT 0.6
     #define TURN_ANG ANGLE*15
 #endif
 
@@ -38,11 +38,16 @@ bool DriveBall::perform(Robot* robot)
     float ballTargetAngle =  Measurments::angleBetween(ballPoint, targetPosition);
     Point behindBall      = ballPoint + Point(DIST*cos(targetBallAngle),
                                               DIST*sin(targetBallAngle));
+    cout << "ball pos\t" << gm->getBallPoint().toString() << endl;
+    for (Robot* rob: gm->getMyTeam())
+    {
+        cout << "rob " << rob->getID() << " pos\t" << rob->getRobotPosition().toString() << endl;
+    }
     switch (state)
     {
     case moveBehindBall:
         cout << "moving behind ball" << endl;
-        move_skill.setVelocityMultiplier(1.4);
+        move_skill.setVelocityMultiplier(VEL_MULT*2);
         move_skill.recreate(behindBall, ballTargetAngle, false);
         if(move_skill.perform(robot)) {
             state = driveBall;

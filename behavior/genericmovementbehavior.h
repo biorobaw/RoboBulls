@@ -52,10 +52,13 @@ protected:
      * Like old times, except now 1.0 is the normal multiplier, and 0 means no velocity.
      */
     void setVelocityMultiplier(float newMultiplier);
+    void setMovementTolerances(float newDistolerance, float newRotTolerance);
     
 private:
     Movement::GoToPosition* movement;
     float velocityMultipier;
+    float newDistTolerance;
+    float newRotTolerance;
     bool  useObstacleAvoid;
 };
 

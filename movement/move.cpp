@@ -191,16 +191,26 @@ void configureRobotMoveStatus()
 
 bool Move::calcRegularMovement(Robot* robot, Type moveType)
 {
-    /* Using regular movement, we calculate the velocities to move 
-     * directly to the target point and angle.
-     */
-    this->calculateVels(robot, m_targetPoint, m_targetAngle, moveType);
-
     Point robotPos = robot->getRobotPosition();
     float robotAng = robot->getOrientation();
 
-    return Measurments::isClose(m_targetPoint, robotPos, lastDistTolerance) &&
-           Measurments::isClose(m_targetAngle, robotAng, lastAngTolerance);
+    // Check to see if movement is necessary
+    if (Measurments::isClose(m_targetPoint, robotPos, lastDistTolerance) &&
+            Measurments::isClose(m_targetAngle, robotAng, lastAngTolerance))
+    {
+        left = right = 0;
+        return true;
+    }
+    else
+    {
+        /* Using regular movement, we calculate the velocities to move
+         * directly to the target point and angle.
+         */
+        this->calculateVels(robot, m_targetPoint, m_targetAngle, moveType);
+        return false;
+    }
+
+
 }
 
 

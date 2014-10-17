@@ -91,3 +91,13 @@ void GenericMovementBehavior::setVelocityMultiplier(float newMultiplier)
     if(movement != nullptr)
         movement->setVelocityMultiplier(newMultiplier);
 }
+
+void GenericMovementBehavior::setMovementTolerances(float newDistTolerance, float newRotTolerance)
+{
+    this->newDistTolerance = newDistTolerance;
+    this->newRotTolerance = newRotTolerance;
+    if(movement != nullptr)
+        movement->setMovementTolerances(newDistTolerance,newRotTolerance);
+}
+
+

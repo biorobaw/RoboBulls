@@ -50,7 +50,7 @@ threeWheelVels ThreeWheelCalculator::defaultCalc
     }
 
     //Set tolerances
-    if (Measurments::isClose(rp,gp,DIST_TOLERANCE)) x_vel = y_vel = 0;
+    if (Measurments::isClose(rp,gp,DIST_TOLERANCE*0.5)) x_vel = y_vel = 0;
     if (abs(Measurments::angleDiff(theta_goal,theta_current))<ROT_TOLERANCE) theta_vel = 0;
 
     // Robot Frame Velocities

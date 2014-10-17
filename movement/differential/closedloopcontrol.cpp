@@ -16,11 +16,7 @@
 #if SIMULATED
  #define CLC_ROTATONG_VEL 50
 #else
-<<<<<<< HEAD
- #define CLC_ROTATONG_VEL 10
-=======
- #define CLC_ROTATONG_VEL 5
->>>>>>> b6a3e0e1e6bd52b97ab0248fafa328746c88aa3e
+ #define CLC_ROTATONG_VEL 50
 #endif
 
 ClosedLoopBase::ClosedLoopBase()
@@ -74,7 +70,8 @@ void ClosedLoopBase::handleError(double x_goal, double y_goal)
         {
             sumErrOfQ -= errorQ.front();
             sumErrOfQ += newValues[i];
-
+            if (errorQ.empty())
+                cout << "errorQ is empty" << endl;
             errorQ.pop_front();
             errorQ.push_back(newValues[i]);
         }
@@ -128,14 +125,10 @@ wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, double x_goal,
     //*******************************************************************************************
     /* Calculate and set left and right motor velocity. This is dependant on rho being > 100 or not. */
 
-    double robot_xvel = 25 * (krho*newRho + kRhoI*newSumErrRho);
-    double robot_turnrate = 25 * (kalpha*newAlpha + kbeta*newBeta + kAlphaI*newSumErrAlpha + kBetaI*newSumErrBeta);
-#if SIMULATED
-    int dist_tol=40;
-#else
-    int dist_tol=100;
-#endif
-    if (newRho > dist_tol)
+    double robot_xvel = 12 * (krho*newRho + kRhoI*newSumErrRho);
+    double robot_turnrate = 20 * (kalpha*newAlpha + kbeta*newBeta + kAlphaI*newSumErrAlpha + kBetaI*newSumErrBeta);
+
+    if (newRho > 40)        //40 because 40 can be reliably determined by vision
     {
         float Pi2R = 2*M_PI*wheel_radius;
         left_motor_velocity  = ((robot_xvel / Pi2R) - (wheel_separation * robot_turnrate/Pi2R))/2;

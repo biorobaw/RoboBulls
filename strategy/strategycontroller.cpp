@@ -83,6 +83,7 @@ void StrategyController::gameModelUpdated()
     };
 //#endif
 //    activeStrategy = new KickOffStrategy();
+
     activeStrategy->assignBeh();
 }
 

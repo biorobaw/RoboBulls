@@ -18,7 +18,6 @@
 SimpleBehaviors::SimpleBehaviors(const ParameterList& list)
 {
     UNUSED_PARAM(list);
-    kickToPoint = new Skill::KickToPoint(target, ANGLE/*, DIST*/);
 }
 
 void SimpleBehaviors::perform(Robot * r)
@@ -66,14 +65,5 @@ void SimpleBehaviors::perform(Robot * r)
         move.setVelocityMultiplier(1);
         move.recreate(position, direction, false);
         move.perform(r);
-    }
-    else if (gm->getGameState() == 'I')
-    {
-        s = new Skill::Stop();
-        kickToPoint->perform(gm->getMyTeam().at(0));
-//        if (kickToPoint->kicked())
-//        {
-//            s->perform(gm->getMyTeam().at(0));
-//        }
     }
 }
