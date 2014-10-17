@@ -96,9 +96,9 @@ private:
     std::vector<Point>  lastObstacles;
     
     float recrDistTolerance  = 40;
-    float recrAngleTolerance = ROT_TOLERANCE;
-    float lastDistTolerance  = DIST_TOLERANCE;
-    float lastAngTolerance   = ROT_TOLERANCE;
+    float recrAngleTolerance = 3*M_PI/180;
+    float lastDistTolerance  = 30;
+    float lastAngTolerance   = 3*M_PI/180;
 
     bool calcObstacleAvoidance(Robot* rob, Type moveType);
     bool calcRegularMovement(Robot* rob, Type moveType);

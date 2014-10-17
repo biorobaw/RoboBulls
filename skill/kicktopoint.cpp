@@ -6,9 +6,9 @@
 #if SIMULATED
  #define KDIST_TOLERANCE    110
  #define CENTER_TOLERANCE   0.40
- #define POSITION_ANGLE_TOL ROT_TOLERANCE
+ #define POSITION_ANGLE_TOL 10*M_PI/180
 #else
- #define KDIST_TOLERANCE    DIST_TOLERANCE*2
+ #define KDIST_TOLERANCE    160
  #define CENTER_TOLERANCE   0.70
  #define POSITION_ANGLE_TOL ROT_TOLERANCE
 #endif
@@ -18,63 +18,59 @@ namespace Skill
 
 KickToPoint::KickToPoint(Point target, float targetTolerance, float kickDistance)
    : state(Positioning)
-   , m_targetPoint(target)
-   , m_angleTolerance(targetTolerance)
+   , m_kickTarget(target)
+   , m_kickAngleTol(targetTolerance)
    , m_kickDistance(kickDistance)
 {
-#if KICK_TO_POINT_DEBUG
-   std::cout << "~KickToPoint~" << std::endl;
-#endif
+//#if KICK_TO_POINT_DEBUG
+//   std::cout << "~KickToPoint~" << std::endl;
+//#endif
    move_skill.setVelocityMultiplier(1.0);
 }
 
 
 void KickToPoint::doPositioningState(Robot *robot)
 {
-    move_skill.setMovementTolerances(ROBOT_RADIUS*2, POSITION_ANGLE_TOL);
     move_skill.recreate(behindBall, ballTargetAngle, false);
-    move_skill.setVelocityMultiplier(1.0);
 
     if(move_skill.perform(robot))
+    {
         state = Moving;
+        cout << "KTP: MOVE RETURNS TRUE" << endl;
+    }
 }
 
 
 void KickToPoint::doMovingState(Robot *robot)
 {
-    float robTargetAngle = Measurments::angleBetween(robPoint, m_targetPoint);
+    float robTargetAngle = Measurments::angleBetween(robPoint, m_kickTarget);
     float robBallAngle = Measurments::angleBetween(robPoint, ballPoint);
     robot->setDrible(true);
 
-    move_skill.setRecreateTolerances(80, ROT_TOLERANCE);
-    move_skill.setMovementTolerances(DIST_TOLERANCE, ROT_TOLERANCE);
-    move_skill.recreate(m_targetPoint, UNUSED_ANGLE_VALUE, false);
-    move_skill.setVelocityMultiplier(0.75);
-
     bool ballCloseToCenter
-        = Measurments::lineDistance(ballPoint, robPoint, m_targetPoint)
+        = Measurments::lineDistance(ballPoint, robPoint, m_kickTarget)
             < ROBOT_RADIUS * CENTER_TOLERANCE;
 
     bool robotFacingTarget
-        = Measurments::isClose(robAngle, robTargetAngle, m_angleTolerance);
+        = Measurments::isClose(robAngle, robTargetAngle, m_kickAngleTol);
 
     bool robotCloseToBall
         = Measurments::isClose(robPoint, ballPoint, KDIST_TOLERANCE);
 
     bool robFarFromBall
-        = !Measurments::isClose(robPoint, ballPoint, KDIST_TOLERANCE*5);
+        = !Measurments::isClose(robPoint, ballPoint, 500);
 
     bool robotNotFacingBall
         = abs(Measurments::angleDiff(robAngle, robBallAngle))
-            > ROT_TOLERANCE * 6;
+            > 60*M_PI/180;
 
     bool robotCanKick
         = m_kickDistance == NO_KICK_DIST ||
-          Measurments::isClose(robPoint, m_targetPoint, m_kickDistance);
+          Measurments::isClose(robPoint, m_kickTarget, m_kickDistance);
 
 #if KICK_TO_POINT_DEBUG
     static int count = 0;
-    if(++count > 15) {
+    if(++count > 1) {
         count = 0;
         std::cout << ballCloseToCenter << robotFacingTarget
                   << robotCloseToBall  << robotCanKick
@@ -83,16 +79,27 @@ void KickToPoint::doMovingState(Robot *robot)
 #endif
 
     if(ballCloseToCenter && robotFacingTarget && robotCloseToBall && robotCanKick)
+    {
         state = Kicking;
+        cout << "KTP: KICKING" << endl;
+    }
     else if(robotNotFacingBall || robFarFromBall)
+    {
         state = Positioning;
+        cout << "KTP: POSITIONING" << endl;
+    }
     else
+    {
+        cout << "KTP: MOVING" << endl;
+        move_skill.recreate(m_kickTarget, UNUSED_ANGLE_VALUE, false);
         move_skill.perform(robot);
+    }
 }
 
 
 void KickToPoint::doKickingState(Robot *robot)
 {
+
 #if KICK_TO_POINT_DEBUG
     std::cout << "KTP KICK" << std::endl;
 #endif
@@ -100,7 +107,14 @@ void KickToPoint::doKickingState(Robot *robot)
         ::Skill::Kick k;
         k.perform(robot);
         hasKicked = true;
+        state = Positioning;
     }
+
+}
+
+bool KickToPoint::kicked()
+{
+    return hasKicked;
 }
 
 
@@ -111,28 +125,41 @@ bool KickToPoint::perform(Robot * robot)
     robPoint  = robot->getRobotPosition();
     robAngle  = robot->getOrientation();
     targetBallAngle
-        = Measurments::angleBetween(m_targetPoint, ballPoint);
+        = Measurments::angleBetween(m_kickTarget, ballPoint);
     ballTargetAngle
-        = Measurments::angleBetween(ballPoint, m_targetPoint);
+        = Measurments::angleBetween(ballPoint, m_kickTarget);
     behindBall
-        = Point(ROBOT_SIZE*1.2*cos(targetBallAngle), ROBOT_SIZE*1.2*sin(targetBallAngle))
+        = Point(350*cos(targetBallAngle), 350*sin(targetBallAngle))
           + ballPoint;
 
     switch(this->state)
     {
     case Positioning:
+        cout << "positioning" << endl;
         doPositioningState(robot);
         break;
     case Moving:
+        cout << "moving" << endl;
         doMovingState(robot);
         break;
     case Kicking:
+        cout << "kicking" << endl;
         doKickingState(robot);
         break;
     }
+//    if (hasKicked)
+//    {
+//        hasKicked = false;
+//        return true;
+//    }
+//    return false;
 
-    return (state == Kicking && hasKicked);
+    if (hasKicked)
+    {
+        hasKicked = false;
+        return true;
+    }
+    return false;
 }
-
 
 }

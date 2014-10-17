@@ -4,6 +4,7 @@
 #include "model/gamemodel.h"
 #include "skill/driveball.h"
 #include "math.h"
+#include "movement/gotopositionwithorientation.h"
 
 #if SIMULATED
     #define xx 1600
@@ -27,7 +28,7 @@ void myTestBehavior::perform(Robot * myRobot)
 //    Point robotPoint = myRobot->getRobotPosition();
     //Testing closed loop control by using GoToPositionWithOrientation
 
-//    GameModel *model = GameModel::getModel();
+    GameModel *model = GameModel::getModel();
 
 //    Point target = model->getBallPoint();
 
@@ -40,8 +41,16 @@ void myTestBehavior::perform(Robot * myRobot)
 
 //    cout << model->getOpponentGoal()
 //    cout << "performing" << endl;
-//    cout << "angle\t" << myRobot->getOrientation()/M_PI*180 << endl;
+    cout << "angle\t" << myRobot->getOrientation()/M_PI*180 << endl;
 //    cout << "position" << myRobot->getRobotPosition().toString() << endl;
+//    Point kickPoint(1600, 0);
+////    Point kick2(-1300, 500);
+//    move.setMovementTolerances(100, 10*(M_PI)/180);
+//    move.setVelocityMultiplier(1);
+//    move.recreate(kickPoint, 0, false);
+//    move.perform(model->getMyTeam().at(0), Movement::Type::Default);
+//    move.recreate(kick2, 0, false);
+//    move.perform(model->getMyTeam().at(1), Movement::Type::Default);
 
     mySkill->perform(myRobot);
 }

@@ -32,7 +32,7 @@ public:
     void setDrible(bool);
     void setTeam(bool);
     void setCurrentBeh(Behavior *);
-    
+
 
     //gets
     Point getRobotPosition();
@@ -50,7 +50,7 @@ public:
 	bool  isOnMyTeam();
     Behavior* getCurrentBeh();
     robotType type();
-    
+
     void clearCurrentBeh();
     std::string toString();
 

@@ -61,10 +61,6 @@ fourWheelVels FourWheelCalculator::defaultCalc
 
     //cout << dist_error_integral << endl;
 
-    //Set tolerances
-    if (Measurments::isClose(rp,gp,DIST_TOLERANCE)) x_vel = y_vel = 0;
-    if (abs(Measurments::angleDiff(theta_goal,theta_current))<ROT_TOLERANCE*0.5) theta_vel = 0;
-
     // Robot Frame Velocities
     double x_vel_robot = cos(theta_current)*x_vel+sin(theta_current)*y_vel;
     double y_vel_robot = -sin(theta_current)*x_vel+cos(theta_current)*y_vel;
@@ -145,10 +141,6 @@ fourWheelVels FourWheelCalculator::facePointCalc
         y_vel *= 0.5;
     }
 
-    //Set tolerances
-    if (Measurments::isClose(rp,gp,DIST_TOLERANCE)) x_vel = y_vel = 0;
-    if (abs(Measurments::angleDiff(theta_goal,theta_current))<ROT_TOLERANCE*0.5) theta_vel = 0;
-
     // Focus on rotation
     double vel = sqrt(x_vel*x_vel+y_vel*y_vel);
     if (abs(Measurments::angleDiff(theta_goal,theta_current))>ROT_TOLERANCE*0.5 && vel > 40)
@@ -165,10 +157,10 @@ fourWheelVels FourWheelCalculator::facePointCalc
     double y_vel_robot = -sin(theta_current)*x_vel+cos(theta_current)*y_vel;
 
     //Wheel Velocity Calculations
-    double RF = (sin(frnt_axl_offset) * y_vel_robot + cos(frnt_axl_offset)*x_vel_robot + wheel_radius*theta_vel);
+    double RF =  (sin(frnt_axl_offset) * y_vel_robot + cos(frnt_axl_offset)*x_vel_robot + wheel_radius*theta_vel);
     double LF = -(sin(frnt_axl_offset) * y_vel_robot - cos(frnt_axl_offset)*x_vel_robot + wheel_radius*theta_vel);
     double LB = -(-sin(rear_axl_offset) * y_vel_robot - cos(rear_axl_offset)*x_vel_robot + wheel_radius*theta_vel);
-    double RB = (-sin(rear_axl_offset) * y_vel_robot + cos(rear_axl_offset)*x_vel_robot + wheel_radius*theta_vel);
+    double RB =  (-sin(rear_axl_offset) * y_vel_robot + cos(rear_axl_offset)*x_vel_robot + wheel_radius*theta_vel);
 
     //Normalize wheel velocities
     unsigned int max_mtr_spd = 100;

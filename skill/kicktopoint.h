@@ -32,10 +32,11 @@ class KickToPoint : public Skill
 {
 public:
     KickToPoint(Point target
-              , float targetTolerance = ROT_TOLERANCE
+              , float targetTolerance = 10*M_PI/180
               , float kickDistance = NO_KICK_DIST);
 
     bool perform(Robot *) override;
+    bool kicked();
 
 private:
     enum {Positioning, Moving, Kicking} state;
@@ -45,8 +46,8 @@ private:
     void doKickingState(Robot* robot);
 
     Movement::GoToPosition move_skill;
-    Point m_targetPoint;
-    float m_angleTolerance;
+    Point m_kickTarget;
+    float m_kickAngleTol;
     float m_kickDistance;
     Point robPoint;
     Point ballPoint;

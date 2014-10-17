@@ -5,6 +5,8 @@
 #include "skill/skill.h"
 #include "utilities/paramlist.h"
 #include "utilities/point.h"
+#include "behavior/genericmovementbehavior.h"
+#include "movement/gotopositionwithorientation.h"
 
 using namespace std;
 
@@ -15,10 +17,11 @@ public:
     void perform(Robot *);
 
 private:
-    enum states {initial, driving, kicking, idling, finalOrientationFixing} state;
+    enum states {initial, driving, kicking, idling} state;
     Skill::Skill * skill;
     Point *behindBall;
     Point *ballPoint;
+    Movement::GoToPosition move;
 };
 
 #endif // DRIVEBALLANDKICK_H

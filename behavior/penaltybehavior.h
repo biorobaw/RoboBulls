@@ -26,7 +26,9 @@ public:
     PenaltyBehavior(const ParameterList& list);
     void perform(Robot *);
 private:
-    enum penaltyBehavior_t {moving, kicking, idling} pb;
+    enum penaltyBehavior_t {initial, moving, approching, kicking, idling} pb;
+    Movement::GoToPosition move;
+    Point target;
 };
 
 #endif // PENALTYBEHAVIOR_H

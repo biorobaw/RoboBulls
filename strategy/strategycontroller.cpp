@@ -14,6 +14,7 @@
 #include "strategy/freekickstrategy.h"
 #include "strategy/haltstrategy.h"
 #include "strategy/attackstrategy.h"
+#include "strategy/indiectkickstrategy.h"
 
 #include "movement/pathfinding/fppa_pathfinding.h"
 
@@ -45,7 +46,10 @@ void StrategyController::run()
 void StrategyController::gameModelUpdated()
 {
     delete activeStrategy;
-#if 1
+
+    cout << model->getGameState() << endl;
+
+//#if 1
     switch(model->getGameState())
     {
     case 'S':    //stop game
@@ -57,16 +61,19 @@ void StrategyController::gameModelUpdated()
         activeStrategy = new PenaltyStrategy();
         break;
     case 'K':    //Kickoff
-        activeStrategy = new FreeKickStrategy();
+        activeStrategy = new KickOffStrategy();
         break;
     case 'F':    //Free Kick
         activeStrategy = new FreeKickStrategy();
+        break;
+    case 'I':   //Indirect kick
+        activeStrategy = new IndiectKickStrategy();
         break;
     case 'H':    //Halt
         activeStrategy = new HaltStrategy();
         break;
     case ' ':    //Normal game play
-        activeStrategy = new AttackStrategy();
+        activeStrategy = new TestStrategy();
         break;
     case 's':    //Force Start
         activeStrategy = new FreeKickStrategy();
@@ -74,8 +81,9 @@ void StrategyController::gameModelUpdated()
     default:    //Anything Else
         activeStrategy = new TestStrategy();
     };
-#endif
-    activeStrategy = new KickOffStrategy();
+//#endif
+//    activeStrategy = new KickOffStrategy();
+
     activeStrategy->assignBeh();
 }
 
@@ -92,7 +100,7 @@ void StrategyController::clearCurrentStrategy()
 {
     delete activeStrategy;
     activeStrategy = nullptr;
-    
+
     for(Robot* robot : model->getMyTeam())
         robot->clearCurrentBeh();
 }
@@ -116,7 +124,7 @@ void StrategyController::frameEnd()
 
     RobComm * robcom = RobComm::getRobComm();
     robcom->sendVelsLarge(model->getMyTeam());
-    
+
     FPPA::pathfindingEnd();
 }
 
