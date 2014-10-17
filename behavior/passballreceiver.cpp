@@ -16,7 +16,7 @@
 
 GameModel *gm = GameModel::getModel();
 PassBallReceiver::PassBallReceiver(const ParameterList& list)
-    : ballOrg(gm->getBallPoint()), GenericMovementBehavior(list), hasKicked(0)
+    : GenericMovementBehavior(list), ballOrg(gm->getBallPoint()), hasKicked(0)
 {
     UNUSED_PARAM(list);
     state = moving;

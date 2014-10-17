@@ -17,7 +17,7 @@
 #endif
 
 PassBallSender::PassBallSender(const ParameterList& list) :
-                                kicked(0), GenericMovementBehavior(list)
+                                 GenericMovementBehavior(list), kicked(0)
 {
     UNUSED_PARAM(list);
     state = movingBehind;
@@ -27,23 +27,23 @@ Point PassBallSender::findPassPoint(Robot* sender)
 {
     GameModel *gm = GameModel::getModel();
 
-    Region *PlayerRegion;
+    Region PlayerRegion;
     vector<Robot*> myTeam = gm->getMyTeam();
     Point passPoint;
 
-    for (int it = 0 ; it < myTeam.size(); it++)
+    for (unsigned it = 0 ; it < myTeam.size(); it++)
     {
         if (sender->getID() != myTeam[it]->getID())
         {
-            PlayerRegion = new Region(myTeam[it]->getRobotPosition().x + R,
-                                      myTeam[it]->getRobotPosition().x - R,
-                                      myTeam[it]->getRobotPosition().y + R,
-                                      myTeam[it]->getRobotPosition().y - R);
+            PlayerRegion = Region(myTeam[it]->getRobotPosition().x + R,
+                                  myTeam[it]->getRobotPosition().x - R,
+                                  myTeam[it]->getRobotPosition().y + R,
+                                  myTeam[it]->getRobotPosition().y - R);
             playersCharactristics pch;
             pch.position = myTeam[it]->getRobotPosition();
             pch.ID = myTeam[it]->getID();
             pch.distanceToGoal = Measurments::distance(myTeam[it]->getRobotPosition(), gm->getOpponentGoal());
-            pch.surroundingAppNum = PlayerRegion->numOfOpponents();
+            pch.surroundingAppNum = PlayerRegion.numOfOpponents();
             pch.distanceToRobot = Measurments::distance(myTeam[it]->getRobotPosition(), sender->getRobotPosition());
             myTeamInfo.push_back(pch);
         }
@@ -52,7 +52,7 @@ Point PassBallSender::findPassPoint(Robot* sender)
     int i;
     int lessSurroundings = 0;
     double distance;
-    for (int j = 0; j < myTeamInfo.size(); j++)
+    for (unsigned j = 0; j < myTeamInfo.size(); j++)
     {
         if (j == 0)
         {

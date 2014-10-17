@@ -37,7 +37,7 @@ void IndiectKickStrategy::assignBeh()
         sender = myTeam.at(0);
     else if (myTeam.size() > 1)
     {
-        for (int i = 0; i < myTeam.size(); i++)
+        for (unsigned i = 0; i < myTeam.size(); i++)
         {
             if (i == 0)
                 sender = myTeam.at(i);
@@ -68,7 +68,7 @@ void IndiectKickStrategy::assignBeh()
      * sending the ball to. we call this robot
      * the receiver
      * */
-    Region *PlayerRegion;
+    Region PlayerRegion;
     struct playersCharactristics{
         int ID;
         int surroundingAppNum;  //number of opponent players surrounding our team players
@@ -76,17 +76,17 @@ void IndiectKickStrategy::assignBeh()
     };
     vector <playersCharactristics> myTeamInfo;
 
-    for (int it = 0 ; it < myTeam.size(); it++)
+    for (unsigned it = 0 ; it < myTeam.size(); it++)
     {
         if (sender->getID() != myTeam[it]->getID())
         {
-            PlayerRegion = new Region(myTeam[it]->getRobotPosition().x + R,
-                                      myTeam[it]->getRobotPosition().x - R,
-                                      myTeam[it]->getRobotPosition().y + R,
-                                      myTeam[it]->getRobotPosition().y - R);
+            PlayerRegion = Region(myTeam[it]->getRobotPosition().x + R,
+                                   myTeam[it]->getRobotPosition().x - R,
+                                   myTeam[it]->getRobotPosition().y + R,
+                                   myTeam[it]->getRobotPosition().y - R);
             playersCharactristics pch;
             pch.ID = myTeam[it]->getID();
-            pch.surroundingAppNum = PlayerRegion->numOfOpponents();
+            pch.surroundingAppNum = PlayerRegion.numOfOpponents();
             pch.distanceToRobot = Measurments::distance(myTeam[it]->getRobotPosition(), sender->getRobotPosition());
             myTeamInfo.push_back(pch);
         }
@@ -95,7 +95,7 @@ void IndiectKickStrategy::assignBeh()
     int i;
     int lessSurroundings = 0;
     double distance;
-    for (int j = 0; j < myTeamInfo.size(); j++)
+    for (unsigned j = 0; j < myTeamInfo.size(); j++)
     {
         if (j == 0)
         {

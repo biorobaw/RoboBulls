@@ -66,6 +66,7 @@ private:
     class TypedParamList : public GenericParamList
     {
     public:
+        virtual ~TypedParamList();
         void insertParam(const std::string& name, T value);
         T findParam(const std::string& name) const;
 
@@ -135,6 +136,10 @@ std::string ParameterList::TypedParamList<T>::toString() const
 
 	return ss.str();
 }
+
+template<typename T>
+ParameterList::TypedParamList<T>::~TypedParamList()
+{}
 
 
 /*****************/

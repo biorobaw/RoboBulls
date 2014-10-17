@@ -70,7 +70,7 @@ public:
         Point bp = gm->getBallPoint();
         Point target_one = Point(-2000,0);
         Point target_two = Point(2000,0);
-        double ori = Measurments::angleBetween(rp,bp);
+        //double ori = Measurments::angleBetween(rp,bp);
 
         switch(state)
         {

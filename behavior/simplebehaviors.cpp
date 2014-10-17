@@ -28,10 +28,10 @@ void SimpleBehaviors::perform(Robot * r)
 
     if (gm->getGameState() == 'H')
     {
-        s = new Skill::Stop();
-        for (int i = 0; i < gm->getMyTeam().size(); i++)
+        Skill::Stop s;
+        for (unsigned i = 0; i < gm->getMyTeam().size(); i++)
         {
-            s->perform(gm->getMyTeam().at(i));
+            s.perform(gm->getMyTeam().at(i));
         }
     }
     else if (gm->getGameState() == 'P')

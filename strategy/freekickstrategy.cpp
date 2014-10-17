@@ -29,7 +29,7 @@ void FreeKickStrategy::assignBeh()
     //Finds the closest robot to the penalty point and its ID
     if (myTeam.size() > 1)
     {
-        for (int i = 1; i < myTeam.size(); i++)
+        for (unsigned i = 1; i < myTeam.size(); i++)
         {
             Point iPos = myTeam.at(i)->getRobotPosition();
             Point closestPos = closestRobot->getRobotPosition();
@@ -43,7 +43,7 @@ void FreeKickStrategy::assignBeh()
 
     if (myTeam.size() > 1)  // assigns simple behavior to the rest of robots
     {
-        for (int i = 0; i < myTeam.size(); i++)
+        for (unsigned i = 0; i < myTeam.size(); i++)
         {
             if (myTeam.at(i)->getID() != closestRobotID)
                 simpleAssignment.assignBeh(myTeam.at(i));
