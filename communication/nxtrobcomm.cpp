@@ -60,6 +60,16 @@ void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
         packet->dribble_power = rob->getDrible() ? 1 : 0;
         packet->dollar = '$';
 
+        // Preserving robot information before clearing
+        gui_left_front = rob->getLF();
+        gui_left_back = rob->getLB();
+        gui_right_back = rob->getRB();
+        gui_right_front = rob->getRF();
+        gui_left = rob->getL();
+        gui_right = rob->getR();
+        gui_kick = rob->getKick();
+        gui_dribble = rob->getDrible();
+
         // Clear robot information
         rob->setL(0);
         rob->setR(0);

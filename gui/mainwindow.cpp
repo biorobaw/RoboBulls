@@ -37,6 +37,7 @@
 #include <QCursor>
 #include "communication/refcomm.h"
 #include "guidrawline.h"
+#include "communication/nxtrobcomm.h"
 
 using namespace std;
 
@@ -247,6 +248,7 @@ void MainWindow::setupBotPanel()
         botIconScenes[i]->addItem(botIcons[i]);
         botIconFrames[i]->setScene(botIconScenes[i]);
         botIconFrames[i]->hide();
+        velocityDials[i]->setValue(0);  // test
     }
     // putting ball icon into GUI
     scene_ballIcon->addItem(ballIcon);
@@ -262,26 +264,27 @@ void MainWindow::setupBotPanel()
 }//setupBotPanel
 
 void MainWindow::updateBotPanel() {
-    // Printing to GUI
+    // Printing current bot info to Robot Panels
     for (int i=0; i<teamSize; i++) {
-//        botIconFrames[i]->hide();
         botTitle[i]->setText("Robot " + QString::number(i));
         // Nullcheck
         if (gamemodel->find(i,gamemodel->getMyTeam()) != NULL) {
             botXcoords[i]->display(getBotCoordX(true, i));
             botYcoords[i]->display(getBotCoordY(true, i));
             botOrients[i]->setValue(getBotOrientDouble(true, i));
-            if (gamemodel->find(i,gamemodel->getMyTeam())->getKick() == 1) {
+            if (nxtrobcomm->gui_kick == 1) {
                 printBehavior(i,"KICK!", true);
             }
             botIcons[i]->setX(0);
             botIcons[i]->setY(0);
             botIcons[i]->setZValue(2);
-            velocityDials[i]->setValue(getVelocity(i));
             if (botIconFrames[i]->isVisible() == false) {
                 botIconFrames[i]->show();
             }
 
+            velocityDials[i]->setValue(getVelocity(i));
+            printBehavior(i, to_string(getVelocity(i)), true);
+//            cout << to_string(getVelocity(0)) << "\n";
             // dynamic velocity dial colors
             if (velocityDials[i]->value() > 0) {            // forward
                 velocityDials[i]->setStyleSheet("background-color: rgb(0, 200, 0);");
@@ -296,6 +299,7 @@ void MainWindow::updateBotPanel() {
             botIconFrames[i]->update();
         }//nullcheck
     }
+    // Selected Bot Panel velocity dial
     if (ui->dial_botSpeed->value() > 0) {
         ui->dial_botSpeed->setStyleSheet("background-color: rgb(0, 200, 0);");
         ui->lcd_botSpeed->setStyleSheet("background-color: rgb(0, 100, 0);");
@@ -416,70 +420,71 @@ void MainWindow::scanForSelection() {
 int MainWindow::getVelocity(int id) {
     int velocity = 0;
     int wheels = 0;
+    int LF = 0;
+    int RF = 0;
+    int LB = 0;
+    int RB = 0;
 
     if ( gamemodel->find(id, gamemodel->getMyTeam())->type() == fourWheelOmni ) {
         printBehavior(id,"fourWheelOmni",false);
-        int lF = gamemodel->find(id, gamemodel->getMyTeam())->getLF();
-        int rF = gamemodel->find(id, gamemodel->getMyTeam())->getRF();
-        int lb = gamemodel->find(id, gamemodel->getMyTeam())->getLB();
-        int rb = gamemodel->find(id, gamemodel->getMyTeam())->getRB();
-        if (lF != 0) {
-            velocity += lF;
-            wheels++;
+        if (SIMULATED) {
+            LF = gamemodel->find(id, gamemodel->getMyTeam())->getLF();
+            RF = gamemodel->find(id, gamemodel->getMyTeam())->getRF();
+            LB = gamemodel->find(id, gamemodel->getMyTeam())->getLB();
+            RB = gamemodel->find(id, gamemodel->getMyTeam())->getRB();
+        } else {
+            LF = nxtrobcomm->gui_left_front;
+            RF = nxtrobcomm->gui_right_front;
+            LB = nxtrobcomm->gui_left_back;
+            RB = nxtrobcomm->gui_right_back;
         }
-        if (rF != 0) {
-            velocity += rF;
+        cout << "Robot " << id << ": " << LF << ", " << RF << "\n";
+            velocity += LF;
             wheels++;
-        }
-        if (lb != 0) {
-            velocity += lb;
+            velocity += RF;
             wheels++;
-        }
-        if (rb != 0) {
-            velocity += rb;
+            velocity += LB;
             wheels++;
-        }
+            velocity += RB;
+            wheels++;
     } else if ( gamemodel->find(id, gamemodel->getMyTeam())->type() == differential ) {
         printBehavior(id,"differential",false);
-        int lF = gamemodel->find(id, gamemodel->getMyTeam())->getLF();
-        int rF = gamemodel->find(id, gamemodel->getMyTeam())->getRF();
-//        cout << lF << ", " << rF << "\n";
-//        int b = gamemodel->find(id, gamemodel->getMyTeam())->getB();
+        if (SIMULATED) {
+            LF = gamemodel->find(id, gamemodel->getMyTeam())->getL();
+            RF = gamemodel->find(id, gamemodel->getMyTeam())->getR();
+        } else {
+            LF = nxtrobcomm->gui_left;
+            RF = nxtrobcomm->gui_right;
+        }
+        cout << "Robot " << id << ": " << LF << ", " << RF << "\n";
 
-//        if (lF != 0) {
-            velocity += lF;
+            velocity += LF;
             wheels++;
-//        }
-//        if (rF != 0) {
-            velocity += rF;
+            velocity += RF;
             wheels++;
-//        }
-//        if (b != 0) {
-//            velocity += b;
-//            wheels++;
-//        }
     } else if ( gamemodel->find(id, gamemodel->getMyTeam())->type() == threeWheelOmni ) {
         printBehavior(id,"threeWheelOmni",false);
-        int lF = gamemodel->find(id, gamemodel->getMyTeam())->getL();
-        int rF = gamemodel->find(id, gamemodel->getMyTeam())->getR();
+        if (SIMULATED) {
+            LF = gamemodel->find(id, gamemodel->getMyTeam())->getLF();
+            RF = gamemodel->find(id, gamemodel->getMyTeam())->getRF();
+        } else {
+            LF = nxtrobcomm->gui_left_front;
+            RF = nxtrobcomm->gui_right_front;
+        }
         int b = gamemodel->find(id, gamemodel->getMyTeam())->getB();
+        cout << "Robot " << id << ": " << LF << ", " << RF << "\n";
 
-//        if (lF != 0) {
-            velocity += lF;
+            velocity += LF;
             wheels++;
-//        }
-//        if (rF != 0) {
-            velocity += rF;
+            velocity += RF;
             wheels++;
-//        }
-//        if (b != 0) {
             velocity += b;
             wheels++;
-//        }
     }
 
     if (velocity != 0 && wheels != 0)
         velocity /= wheels;
+
 
     return velocity;
 }

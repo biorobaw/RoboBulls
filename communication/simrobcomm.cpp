@@ -10,11 +10,11 @@ SimRobComm::SimRobComm()
 //    _addr = "131.247.14.101";
 
     //James Sim Address
-    _addr = "131.247.14.106";
+//    _addr = "131.247.14.106";
 
     //Narges Sim Address
-//    _addr = "127.0.0.1";
-//    _port = 20011;
+    _addr = "127.0.0.1";
+    _port = 20011;
 }
 
 void SimRobComm::sendVels(int leftVel, int rightVel, int robotId)

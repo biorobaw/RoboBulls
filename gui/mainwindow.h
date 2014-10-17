@@ -21,6 +21,7 @@
 #include "guibotlabel.h"
 #include "communication/refcomm.h"
 #include "guidrawline.h"
+#include "communication/nxtrobcomm.h"
 
 
 //class GuiComm;
@@ -80,6 +81,7 @@ protected:
     GuiRobot *guirobot;
     RefComm *refcom;
     GuiDrawLine *guidrawline;
+    NXTRobComm *nxtrobcomm;
 
 
 signals:
