@@ -92,7 +92,8 @@ SOURCES += main.cpp \
     strategy/kickoffstrategy.cpp \
     behavior/simplebehaviors.cpp \
     strategy/attackstrategy.cpp \
-    behavior/attackbehaviors.cpp
+    behavior/attackbehaviors.cpp \
+    strategy/normalgamestrategy.cpp
 
 HEADERS += \
 	behavior/behavior.h \
@@ -170,7 +171,8 @@ HEADERS += \
     strategy/kickoffstrategy.h \
     behavior/simplebehaviors.h \
     strategy/attackstrategy.h \
-    behavior/attackbehaviors.h
+    behavior/attackbehaviors.h \
+    strategy/normalgamestrategy.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 
