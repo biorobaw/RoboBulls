@@ -167,7 +167,7 @@
             <bool>true</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::StrongFocus</enum>
+            <enum>Qt::NoFocus</enum>
            </property>
            <property name="frameShape">
             <enum>QFrame::Panel</enum>
@@ -726,7 +726,7 @@
              <bool>true</bool>
             </property>
             <property name="focusPolicy">
-             <enum>Qt::ClickFocus</enum>
+             <enum>Qt::NoFocus</enum>
             </property>
             <property name="toolTip">
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is my tool tip&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -792,7 +792,7 @@
               <bool>true</bool>
              </property>
              <property name="focusPolicy">
-              <enum>Qt::StrongFocus</enum>
+              <enum>Qt::TabFocus</enum>
              </property>
              <property name="frameShape">
               <enum>QFrame::Panel</enum>
@@ -824,6 +824,9 @@
                <width>55</width>
                <height>55</height>
               </rect>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(150, 150, 150);</string>
@@ -1059,7 +1062,7 @@
              <bool>true</bool>
             </property>
             <property name="focusPolicy">
-             <enum>Qt::ClickFocus</enum>
+             <enum>Qt::NoFocus</enum>
             </property>
             <property name="toolTip">
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is my tool tip&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -1125,7 +1128,7 @@
               <bool>true</bool>
              </property>
              <property name="focusPolicy">
-              <enum>Qt::StrongFocus</enum>
+              <enum>Qt::TabFocus</enum>
              </property>
              <property name="frameShape">
               <enum>QFrame::Panel</enum>
@@ -1157,6 +1160,9 @@
                <width>55</width>
                <height>55</height>
               </rect>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(150, 150, 150);</string>
@@ -1389,7 +1395,7 @@
              <bool>true</bool>
             </property>
             <property name="focusPolicy">
-             <enum>Qt::ClickFocus</enum>
+             <enum>Qt::NoFocus</enum>
             </property>
             <property name="toolTip">
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is my tool tip&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -1455,7 +1461,7 @@
               <bool>true</bool>
              </property>
              <property name="focusPolicy">
-              <enum>Qt::StrongFocus</enum>
+              <enum>Qt::TabFocus</enum>
              </property>
              <property name="frameShape">
               <enum>QFrame::Panel</enum>
@@ -1487,6 +1493,9 @@
                <width>55</width>
                <height>55</height>
               </rect>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(150, 150, 150);</string>
@@ -1719,7 +1728,7 @@
              <bool>true</bool>
             </property>
             <property name="focusPolicy">
-             <enum>Qt::ClickFocus</enum>
+             <enum>Qt::NoFocus</enum>
             </property>
             <property name="toolTip">
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is my tool tip&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -1785,7 +1794,7 @@
               <bool>true</bool>
              </property>
              <property name="focusPolicy">
-              <enum>Qt::StrongFocus</enum>
+              <enum>Qt::TabFocus</enum>
              </property>
              <property name="frameShape">
               <enum>QFrame::Panel</enum>
@@ -1817,6 +1826,9 @@
                <width>55</width>
                <height>55</height>
               </rect>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(150, 150, 150);</string>
@@ -2049,7 +2061,7 @@
              <bool>true</bool>
             </property>
             <property name="focusPolicy">
-             <enum>Qt::ClickFocus</enum>
+             <enum>Qt::NoFocus</enum>
             </property>
             <property name="toolTip">
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is my tool tip&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -2115,7 +2127,7 @@
               <bool>true</bool>
              </property>
              <property name="focusPolicy">
-              <enum>Qt::StrongFocus</enum>
+              <enum>Qt::TabFocus</enum>
              </property>
              <property name="frameShape">
               <enum>QFrame::Panel</enum>
@@ -2147,6 +2159,9 @@
                <width>55</width>
                <height>55</height>
               </rect>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(150, 150, 150);</string>
@@ -2379,7 +2394,7 @@
              <bool>true</bool>
             </property>
             <property name="focusPolicy">
-             <enum>Qt::ClickFocus</enum>
+             <enum>Qt::NoFocus</enum>
             </property>
             <property name="toolTip">
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is my tool tip&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -2445,7 +2460,7 @@
               <bool>true</bool>
              </property>
              <property name="focusPolicy">
-              <enum>Qt::StrongFocus</enum>
+              <enum>Qt::TabFocus</enum>
              </property>
              <property name="frameShape">
               <enum>QFrame::Panel</enum>
@@ -2477,6 +2492,9 @@
                <width>55</width>
                <height>55</height>
               </rect>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(150, 150, 150);</string>
@@ -2721,7 +2739,7 @@
           <bool>true</bool>
          </property>
          <property name="focusPolicy">
-          <enum>Qt::StrongFocus</enum>
+          <enum>Qt::NoFocus</enum>
          </property>
          <property name="frameShape">
           <enum>QFrame::Panel</enum>
@@ -2796,7 +2814,7 @@
           </rect>
          </property>
          <property name="focusPolicy">
-          <enum>Qt::ClickFocus</enum>
+          <enum>Qt::TabFocus</enum>
          </property>
          <property name="currentIndex">
           <number>1</number>
@@ -2817,6 +2835,9 @@
            <layout class="QGridLayout" name="gridLayout_24">
             <item row="0" column="0">
              <widget class="QCheckBox" name="check_fieldGrid">
+              <property name="focusPolicy">
+               <enum>Qt::NoFocus</enum>
+              </property>
               <property name="toolTip">
                <string>Show Grid </string>
               </property>
@@ -2827,6 +2848,9 @@
             </item>
             <item row="0" column="3">
              <widget class="QCheckBox" name="check_coloredGoals">
+              <property name="focusPolicy">
+               <enum>Qt::NoFocus</enum>
+              </property>
               <property name="text">
                <string>Team Colors</string>
               </property>
@@ -2951,6 +2975,9 @@
            <layout class="QGridLayout" name="gridLayout_25">
             <item row="0" column="0">
              <widget class="QCheckBox" name="check_showIDs">
+              <property name="focusPolicy">
+               <enum>Qt::NoFocus</enum>
+              </property>
               <property name="toolTip">
                <string>Show Robot Identification Numbers</string>
               </property>
@@ -2995,53 +3022,121 @@
           <widget class="QToolButton" name="btn_botForward">
            <property name="geometry">
             <rect>
-             <x>430</x>
+             <x>252</x>
              <y>0</y>
-             <width>51</width>
-             <height>16</height>
+             <width>40</width>
+             <height>20</height>
             </rect>
            </property>
+           <property name="font">
+            <font>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
+           <property name="toolTip">
+            <string>(Hotkey: W) Move selected robot forward</string>
+           </property>
            <property name="text">
-            <string>^</string>
+            <string>▲</string>
            </property>
           </widget>
           <widget class="QToolButton" name="btn_botReverse">
            <property name="geometry">
             <rect>
-             <x>430</x>
-             <y>20</y>
-             <width>51</width>
-             <height>16</height>
+             <x>252</x>
+             <y>18</y>
+             <width>40</width>
+             <height>20</height>
             </rect>
            </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
+           <property name="toolTip">
+            <string>(Hotkey: S) Move selected robot backward</string>
+           </property>
            <property name="text">
-            <string>v</string>
+            <string>▼</string>
            </property>
           </widget>
           <widget class="QToolButton" name="btn_botTurnRight">
            <property name="geometry">
             <rect>
-             <x>480</x>
+             <x>290</x>
              <y>0</y>
-             <width>31</width>
-             <height>31</height>
+             <width>20</width>
+             <height>38</height>
             </rect>
            </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
+           <property name="toolTip">
+            <string>(Hotkey: D) Turn selected robot right</string>
+           </property>
            <property name="text">
-            <string>&gt;</string>
+            <string>▶</string>
            </property>
           </widget>
           <widget class="QToolButton" name="btn_botTurnLeft">
            <property name="geometry">
             <rect>
-             <x>400</x>
+             <x>234</x>
              <y>0</y>
-             <width>31</width>
-             <height>31</height>
+             <width>20</width>
+             <height>38</height>
             </rect>
            </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
+           <property name="toolTip">
+            <string>(Hotkey: A) Turn selected robot left</string>
+           </property>
            <property name="text">
-            <string>&lt;</string>
+            <string>◀</string>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="btn_botKick">
+           <property name="geometry">
+            <rect>
+             <x>380</x>
+             <y>3</y>
+             <width>60</width>
+             <height>30</height>
+            </rect>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
+           <property name="toolTip">
+            <string>(Hotkey: K) Kick with selected robot</string>
+           </property>
+           <property name="text">
+            <string>Kick</string>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="btn_botDrible">
+           <property name="geometry">
+            <rect>
+             <x>320</x>
+             <y>3</y>
+             <width>60</width>
+             <height>30</height>
+            </rect>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
+           <property name="toolTip">
+            <string>(Hotkey: J) Drible with selected robot</string>
+           </property>
+           <property name="text">
+            <string>Drible</string>
            </property>
           </widget>
          </widget>
@@ -3184,11 +3279,19 @@
                 <height>27</height>
                </size>
               </property>
+              <property name="font">
+               <font>
+                <pointsize>15</pointsize>
+               </font>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::NoFocus</enum>
+              </property>
               <property name="toolTip">
                <string>Rotate Left</string>
               </property>
               <property name="text">
-               <string>←</string>
+               <string>↶</string>
               </property>
              </widget>
             </item>
@@ -3206,11 +3309,19 @@
                 <height>27</height>
                </size>
               </property>
+              <property name="font">
+               <font>
+                <pointsize>15</pointsize>
+               </font>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::NoFocus</enum>
+              </property>
               <property name="toolTip">
                <string>Rotate Right</string>
               </property>
               <property name="text">
-               <string>→</string>
+               <string>↷</string>
               </property>
              </widget>
             </item>
@@ -3233,6 +3344,9 @@
                 <strikeout>false</strikeout>
                 <kerning>true</kerning>
                </font>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
                <string>Zoom Camera</string>
@@ -3268,6 +3382,9 @@
             </item>
             <item row="0" column="5">
              <widget class="QPushButton" name="zoom_default">
+              <property name="focusPolicy">
+               <enum>Qt::NoFocus</enum>
+              </property>
               <property name="toolTip">
                <string>Return Camera to Default</string>
               </property>
@@ -3480,6 +3597,9 @@
               <height>27</height>
              </rect>
             </property>
+            <property name="focusPolicy">
+             <enum>Qt::TabFocus</enum>
+            </property>
             <property name="text">
              <string>Connect</string>
             </property>
@@ -3584,30 +3704,24 @@
   <tabstop>gView_robot_3</tabstop>
   <tabstop>gView_robot_4</tabstop>
   <tabstop>gView_robot_5</tabstop>
-  <tabstop>zoom_default</tabstop>
-  <tabstop>combo_fieldColor</tabstop>
-  <tabstop>check_showIDs</tabstop>
   <tabstop>combo_botScale</tabstop>
   <tabstop>combo_ballColor</tabstop>
+  <tabstop>tabs_field</tabstop>
   <tabstop>combo_ballScale</tabstop>
-  <tabstop>check_fieldGrid</tabstop>
   <tabstop>combo_gridScale</tabstop>
-  <tabstop>check_coloredGoals</tabstop>
   <tabstop>scrollArea</tabstop>
-  <tabstop>gView_robot_prime</tabstop>
   <tabstop>zoom_slider</tabstop>
   <tabstop>text_primeBot</tabstop>
   <tabstop>pushButton</tabstop>
   <tabstop>dial_botSpeed_0</tabstop>
   <tabstop>dial_botSpeed_5</tabstop>
-  <tabstop>pushButton_2</tabstop>
   <tabstop>dial_botSpeed_4</tabstop>
-  <tabstop>gView_field</tabstop>
   <tabstop>dial_botSpeed_2</tabstop>
-  <tabstop>pushButton_3</tabstop>
   <tabstop>dial_botSpeed_3</tabstop>
   <tabstop>dial_botSpeed_1</tabstop>
   <tabstop>gView_ball</tabstop>
+  <tabstop>combo_fieldColor</tabstop>
+  <tabstop>text_guiPrint</tabstop>
  </tabstops>
  <resources>
   <include location="images.qrc"/>

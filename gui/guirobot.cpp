@@ -86,19 +86,28 @@ void GuiRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     painter->setRenderHint(QPainter::Antialiasing, true);
 
     // Robot body
-    painter->setPen(QPen(Qt::gray, 0, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
-    painter->setBrush(QBrush(Qt::gray, Qt::SolidPattern));
-//    painter->fillRect(base, Qt::SolidPattern);
+    if (kicking) {
+        painter->setPen(QPen(Qt::gray, 0, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
+        painter->setBrush(QBrush(Qt::red, Qt::SolidPattern));
+    } else if (dribling) {
+        painter->setPen(QPen(Qt::gray, 0, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
+        painter->setBrush(QBrush(QColor::fromRgb(255,153,0,255), Qt::SolidPattern));
+    } else {
+        painter->setPen(QPen(Qt::gray, 0, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
+        painter->setBrush(QBrush(Qt::gray, Qt::SolidPattern));
+    }
     painter->drawRoundedRect(base,15,15);
 
     // Robot hat
     if (highlighted) {
-        painter->setPen(QPen(Qt::cyan, 35, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
+        painter->setBrush(QBrush(Qt::cyan, Qt::SolidPattern));
+        painter->setPen(QPen(Qt::black, 0, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
 //        painter->drawRect(rec);
     } else {
         painter->setPen(QPen(Qt::black, 0, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
+        painter->setBrush(QBrush(Qt::black, Qt::SolidPattern));
+
     }
-    painter->setBrush(QBrush(Qt::black, Qt::SolidPattern));
     int startAngle = 50 * 16;
     int spanAngle = 260 * 16;
     painter->drawChord(rec, startAngle, spanAngle);

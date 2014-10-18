@@ -20,6 +20,8 @@ public:
     bool myTeam = true;
     bool Pressed = false;
     bool highlighted = false;
+    bool kicking = false;
+    bool dribling = false;
     bool icon = false;
     bool doubleClicked = false;
 

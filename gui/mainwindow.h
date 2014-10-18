@@ -71,8 +71,27 @@ public:
     int getClock();
     int getSpeed(QGraphicsItem* p, double o);
     void moveBot();
-
-
+    // Key Bindings
+    void keyPressEvent(QKeyEvent *event);
+    void keyReleaseEvent(QKeyEvent *event);
+//    void keyPressEvent(QKeyEvent* w);
+//    void keyReleaseEvent(QKeyEvent* w);
+//    void keyPressEvent(QKeyEvent* a);
+//    void keyReleaseEvent(QKeyEvent* a) {
+//        on_btn_botTurnLeft_released();
+//    }
+//    void keyPressEvent(QKeyEvent* s) {
+//        on_btn_botReverse_pressed();
+//    }
+//    void keyReleaseEvent(QKeyEvent* s) {
+//        on_btn_botReverse_released();
+//    }
+//    void keyPressEvent(QKeyEvent* d) {
+//        on_btn_botTurnRight_pressed();
+//    }
+//    void keyReleaseEvent(QKeyEvent* d) {
+//        on_btn_botTurnRight_released();
+//    }
 
 
 protected:
@@ -227,6 +246,12 @@ private slots:
     void on_btn_botReverse_released();
     void on_btn_botTurnLeft_pressed();
     void on_btn_botTurnLeft_released();
+    void on_btn_botKick_pressed();
+    void on_btn_botKick_released();
+    void on_btn_botDrible_pressed();
+    void on_btn_botDrible_released();
 };
 
 #endif // MAINWINDOW_H
+
+

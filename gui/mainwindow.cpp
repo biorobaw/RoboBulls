@@ -534,24 +534,24 @@ void MainWindow::setUpScene()
     QShortcut *spaceBar = new QShortcut(this);
     spaceBar->setKey(Qt::Key_Space);
 
-    QShortcut *w = new QShortcut(this);
-    w->setKey(Qt::Key_W);
-    QShortcut *a = new QShortcut(this);
-    a->setKey(Qt::Key_A);
-    QShortcut *s = new QShortcut(this);
-    s->setKey(Qt::Key_S);
-    QShortcut *d = new QShortcut(this);
-    d->setKey(Qt::Key_D);
+//    QShortcut *w = new QShortcut(this);
+//    w->setKey(Qt::Key_W);
+//    QShortcut *a = new QShortcut(this);
+//    a->setKey(Qt::Key_A);
+//    QShortcut *s = new QShortcut(this);
+//    s->setKey(Qt::Key_S);
+//    QShortcut *d = new QShortcut(this);
+//    d->setKey(Qt::Key_D);
 
 //    QKeyEvent *wPressed = new QKeyEvent(QEvent::KeyPress, Qt::Key_W, 0, "w", false, 1);
 //    this->keyPressEvent(wPressed);
 
-    w->setAutoRepeat(false);
+//    w->setAutoRepeat(false);
 
-    connect(w, SIGNAL(activated()), this, SLOT(on_btn_botForward_pressed()));
-    connect(d, SIGNAL(activated()), this, SLOT(on_btn_botTurnRight_pressed()));
-    connect(s, SIGNAL(activated()), this, SLOT(on_btn_botReverse_pressed()));
-    connect(a, SIGNAL(activated()), this, SLOT(on_btn_botTurnLeft_pressed()));
+//    connect(w, SIGNAL(activated()), this, SLOT(on_btn_botForward_pressed()));
+//    connect(d, SIGNAL(activated()), this, SLOT(on_btn_botTurnRight_pressed()));
+//    connect(s, SIGNAL(activated()), this, SLOT(on_btn_botReverse_pressed()));
+//    connect(a, SIGNAL(activated()), this, SLOT(on_btn_botTurnLeft_pressed()));
 
 
     connect(spaceBar, SIGNAL(activated()), this, SLOT(on_pushButton_clicked()));
@@ -773,6 +773,13 @@ void MainWindow::updateScene() {
             guiTeam[i]->id = i;
             guiTeam[i]->setToolTip("Robot " + QString::number(i));
             guiTeam[i]->myTeam = true;
+            // Action colors (may be better in the button slots)
+//            if (gamemodel->find(i, gamemodel->getMyTeam())->getDrible() ) {
+//                guiTeam[i]->dribling = true;
+//            } else { guiTeam[i]->dribling = false; }
+//            if (gamemodel->find(i, gamemodel->getMyTeam())->getKick() == 1) {
+//                guiTeam[i]->kicking = true;
+//            } else { guiTeam[i]->kicking = false; }
             // Robot Scale
             if (ui->combo_botScale->currentText() == "100%") {
                 guiTeam[i]->setScale(1);
@@ -1122,6 +1129,69 @@ void MainWindow::moveBot() {
 
 }
 
+void MainWindow::keyPressEvent(QKeyEvent *event) {
+//    if (event->count() == 1) {
+//        keys = "one";
+        switch(event->key()) {
+            case Qt::Key_W:
+                on_btn_botForward_pressed();
+                break;
+            case Qt::Key_A:
+                on_btn_botTurnLeft_pressed();
+                break;
+            case Qt::Key_S:
+                on_btn_botReverse_pressed();
+                break;
+            case Qt::Key_D:
+                on_btn_botTurnRight_pressed();
+                break;
+
+            case Qt::Key_K:
+                on_btn_botKick_pressed();
+                break;
+            case Qt::Key_J:
+                on_btn_botDrible_pressed();
+                break;
+
+        }
+        //    }
+}
+
+void MainWindow::keyReleaseEvent(QKeyEvent *event) {
+
+    switch(event->key()) {
+        case Qt::Key_W:
+            on_btn_botForward_released();
+            break;
+        case Qt::Key_A:
+            on_btn_botTurnLeft_released();
+            break;
+        case Qt::Key_S:
+            on_btn_botReverse_released();
+            break;
+        case Qt::Key_D:
+            on_btn_botTurnRight_released();
+            break;
+
+        case Qt::Key_K:
+            on_btn_botKick_released();
+            break;
+        case Qt::Key_J:
+            on_btn_botDrible_released();
+            break;
+    }
+}
+
+//void MainWindow::keyPressEvent(QKeyEvent *w)
+//{
+//    on_btn_botForward_pressed();
+//}
+
+//void MainWindow::keyReleaseEvent(QKeyEvent *w)
+//{
+//    on_btn_botForward_released();
+//}
+
 MainWindow::~MainWindow()
 {
     //delete ui;
@@ -1219,50 +1289,69 @@ void MainWindow::updateSelectedBotPanel(int id)
 
 void MainWindow::on_btn_botForward_pressed() {
     if (selectedBot > -1) {
+        ui->btn_botForward->setDown(true);
+        int sprintSpeed = 50;
+        if (QApplication::keyboardModifiers().testFlag(Qt::ShiftModifier) == true) {
+            sprintSpeed = 100;
+        } else if (QApplication::keyboardModifiers().testFlag(Qt::AltModifier) == true) {
+            sprintSpeed = 25;
+        } else {
+            sprintSpeed = 50;
+        }
 
         float currentFwd = ( gamemodel->find(selectedBot, gamemodel->getMyTeam())->getL() + gamemodel->find(selectedBot, gamemodel->getMyTeam())->getR() )/2;
         gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentFwd);
         gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(currentFwd);
-        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setB(currentFwd);
-        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setLF(currentFwd);
-        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setLB(currentFwd);
-        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setRF(currentFwd);
-        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setRB(currentFwd);
+//        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setB(currentFwd);
+//        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setLF(currentFwd);
+//        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setLB(currentFwd);
+//        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setRF(currentFwd);
+//        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setRB(currentFwd);
         if (currentFwd <= 0) {
-            gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentFwd+50);
-            gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(currentFwd+50);
+            gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentFwd+sprintSpeed);
+            gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(currentFwd+sprintSpeed);
 //            gamemodel->find(selectedBot, gamemodel->getMyTeam())->setLF(currentFwd+50);
 //            gamemodel->find(selectedBot, gamemodel->getMyTeam())->setLB(currentFwd+50);
 //            gamemodel->find(selectedBot, gamemodel->getMyTeam())->setRF(currentFwd+50);
 //            gamemodel->find(selectedBot, gamemodel->getMyTeam())->setRB(currentFwd+50);
         }
-        cout << "avg velocity: " << getVelocity(selectedBot) << "\n";
-        cout << "left velocity: " << gamemodel->find(selectedBot, gamemodel->getMyTeam())->getL() << "\n";
-        cout << "right velocity: "<< gamemodel->find(selectedBot, gamemodel->getMyTeam())->getR() << "\n";
+//        cout << "avg velocity: " << getVelocity(selectedBot) << "\n";
+//        cout << "left velocity: " << gamemodel->find(selectedBot, gamemodel->getMyTeam())->getL() << "\n";
+//        cout << "right velocity: "<< gamemodel->find(selectedBot, gamemodel->getMyTeam())->getR() << "\n";
 
     }
 }
 
-void MainWindow::on_btn_botForward_released()
-{
+void MainWindow::on_btn_botForward_released() {
     if (selectedBot > -1) {
-//        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(0);
-//        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(0);
+        ui->btn_botForward->setDown(false);
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(0);
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(0);
     }
 }
 
 void MainWindow::on_btn_botTurnRight_pressed() {
     if (selectedBot > -1) {
+        ui->btn_botTurnRight->setDown(true);
+        int sprintSpeed = 50;
+        if (QApplication::keyboardModifiers().testFlag(Qt::ShiftModifier) == true) {
+            sprintSpeed = 100;
+        } else if (QApplication::keyboardModifiers().testFlag(Qt::AltModifier) == true) {
+            sprintSpeed = 25;
+        } else {
+            sprintSpeed = 50;
+        }
         int currentFwd = getVelocity(selectedBot);
         float currentL = gamemodel->find(selectedBot, gamemodel->getMyTeam())->getL();
         float currentR = gamemodel->find(selectedBot, gamemodel->getMyTeam())->getR();
-        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentL+25);
-        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(currentR-25);
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentL+sprintSpeed/2);
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(currentR-sprintSpeed/2);
     }
 }
 
 void MainWindow::on_btn_botTurnRight_released() {
     if (selectedBot > -1) {
+        ui->btn_botTurnRight->setDown(false);
         float currentFwd = getVelocity(selectedBot);
         gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentFwd);
         gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(currentFwd);
@@ -1271,16 +1360,26 @@ void MainWindow::on_btn_botTurnRight_released() {
 
 void MainWindow::on_btn_botTurnLeft_pressed() {
     if (selectedBot > -1) {
+        ui->btn_botTurnLeft->setDown(true);
+        int sprintSpeed = 50;
+        if (QApplication::keyboardModifiers().testFlag(Qt::ShiftModifier) == true) {
+            sprintSpeed = 100;
+        } else if (QApplication::keyboardModifiers().testFlag(Qt::AltModifier) == true) {
+            sprintSpeed = 25;
+        } else {
+            sprintSpeed = 50;
+        }
         int currentFwd = getVelocity(selectedBot);
         int currentL = gamemodel->find(selectedBot, gamemodel->getMyTeam())->getL();
         int currentR = gamemodel->find(selectedBot, gamemodel->getMyTeam())->getR();
-        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentL-25);
-        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(currentR+25);
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentL-sprintSpeed/2);
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(currentR+sprintSpeed/2);
     }
 }
 
 void MainWindow::on_btn_botTurnLeft_released() {
     if (selectedBot > -1) {
+        ui->btn_botTurnLeft->setDown(false);
         float currentFwd = getVelocity(selectedBot);
         gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentFwd);
         gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(currentFwd);
@@ -1289,21 +1388,63 @@ void MainWindow::on_btn_botTurnLeft_released() {
 
 void MainWindow::on_btn_botReverse_pressed() {
     if (selectedBot > -1) {
+        ui->btn_botReverse->setDown(true);
+        int sprintSpeed = 50;
+        if (QApplication::keyboardModifiers().testFlag(Qt::ShiftModifier) == true) {
+            sprintSpeed = 100;
+        } else if (QApplication::keyboardModifiers().testFlag(Qt::AltModifier) == true) {
+            sprintSpeed = 25;
+        } else {
+            sprintSpeed = 50;
+        }
         int currentFwd = getVelocity(selectedBot);
         gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentFwd);
         gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(currentFwd);
         if (currentFwd >= 0) {
-            gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentFwd-50);
-            gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(currentFwd-50);
+            gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentFwd-sprintSpeed);
+            gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(currentFwd-sprintSpeed);
         }
     }
 }
 
 void MainWindow::on_btn_botReverse_released() {
     if (selectedBot > -1) {
+        ui->btn_botReverse->setDown(false);
         int currentFwd = getVelocity(selectedBot);
-//        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(0);
-//        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(0);
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(0);
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(0);
+    }
+}
+
+void MainWindow::on_btn_botKick_pressed() {
+    if (selectedBot > -1) {
+        ui->btn_botKick->setDown(true);
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setKick(true);
+        guiTeam[selectedBot]->kicking = true;
+    }
+}
+
+void MainWindow::on_btn_botKick_released() {
+    if (selectedBot > -1) {
+        ui->btn_botKick->setDown(false);
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setKick(false);
+        guiTeam[selectedBot]->kicking = false;
+    }
+}
+
+void MainWindow::on_btn_botDrible_pressed() {
+    if (selectedBot > -1) {
+        ui->btn_botDrible->setDown(true);
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setDrible(true);
+        guiTeam[selectedBot]->dribling = true;
+    }
+}
+
+void MainWindow::on_btn_botDrible_released() {
+    if (selectedBot > -1) {
+        ui->btn_botDrible->setDown(false);
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setDrible(false);
+        guiTeam[selectedBot]->dribling = false;
     }
 }
 
