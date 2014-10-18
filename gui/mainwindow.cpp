@@ -38,6 +38,7 @@
 #include "communication/refcomm.h"
 #include "guidrawline.h"
 #include "communication/nxtrobcomm.h"
+#include "movement/move.h"
 
 using namespace std;
 
@@ -438,7 +439,7 @@ int MainWindow::getVelocity(int id) {
             LB = nxtrobcomm->gui_left_back;
             RB = nxtrobcomm->gui_right_back;
         }
-        cout << "Robot " << id << ": " << LF << ", " << RF << "\n";
+//        cout << "Robot " << id << ": " << LF << ", " << RF << "\n";
             velocity += LF;
             wheels++;
             velocity += RF;
@@ -456,7 +457,7 @@ int MainWindow::getVelocity(int id) {
             LF = nxtrobcomm->gui_left;
             RF = nxtrobcomm->gui_right;
         }
-        cout << "Robot " << id << ": " << LF << ", " << RF << "\n";
+//        cout << "Robot " << id << ": " << LF << ", " << RF << "\n";
 
             velocity += LF;
             wheels++;
@@ -472,7 +473,7 @@ int MainWindow::getVelocity(int id) {
             RF = nxtrobcomm->gui_right_front;
         }
         int b = gamemodel->find(id, gamemodel->getMyTeam())->getB();
-        cout << "Robot " << id << ": " << LF << ", " << RF << "\n";
+//        cout << "Robot " << id << ": " << LF << ", " << RF << "\n";
 
             velocity += LF;
             wheels++;
@@ -532,6 +533,25 @@ void MainWindow::setUpScene()
 
     QShortcut *spaceBar = new QShortcut(this);
     spaceBar->setKey(Qt::Key_Space);
+
+    QShortcut *w = new QShortcut(this);
+    w->setKey(Qt::Key_W);
+    QShortcut *a = new QShortcut(this);
+    a->setKey(Qt::Key_A);
+    QShortcut *s = new QShortcut(this);
+    s->setKey(Qt::Key_S);
+    QShortcut *d = new QShortcut(this);
+    d->setKey(Qt::Key_D);
+
+//    QKeyEvent *wPressed = new QKeyEvent(QEvent::KeyPress, Qt::Key_W, 0, "w", false, 1);
+//    this->keyPressEvent(wPressed);
+
+    w->setAutoRepeat(false);
+
+    connect(w, SIGNAL(activated()), this, SLOT(on_btn_botForward_pressed()));
+    connect(d, SIGNAL(activated()), this, SLOT(on_btn_botTurnRight_pressed()));
+    connect(s, SIGNAL(activated()), this, SLOT(on_btn_botReverse_pressed()));
+    connect(a, SIGNAL(activated()), this, SLOT(on_btn_botTurnLeft_pressed()));
 
 
     connect(spaceBar, SIGNAL(activated()), this, SLOT(on_pushButton_clicked()));
@@ -789,6 +809,20 @@ void MainWindow::updateScene() {
             }
         }
     }
+
+    // Movement TEST
+//    if (ui->btn_botForward->isDown()) {
+//        cout << "Forward \n";
+////        Movement::Move::guiOverride = true;
+//        gamemodel->find(1, gamemodel->getMyTeam())->setL(50);
+//        gamemodel->find(1, gamemodel->getMyTeam())->setR(100);
+//        gamemodel->find(2, gamemodel->getMyTeam())->setL(50);
+//        gamemodel->find(2, gamemodel->getMyTeam())->setR(100);
+//    } else {
+////        move->guiOverride = false;
+
+//    }
+    moveBot();
 
     // drawLine TEST
 //    drawLine(getBotCoordX(true, 0),getBotCoordY(true, 0), 0, 0 );
@@ -1084,6 +1118,10 @@ int MainWindow::getSpeed(QGraphicsItem *p, double o)
 
 }
 
+void MainWindow::moveBot() {
+
+}
+
 MainWindow::~MainWindow()
 {
     //delete ui;
@@ -1178,3 +1216,94 @@ void MainWindow::updateSelectedBotPanel(int id)
     }
 
 }
+
+void MainWindow::on_btn_botForward_pressed() {
+    if (selectedBot > -1) {
+
+        float currentFwd = ( gamemodel->find(selectedBot, gamemodel->getMyTeam())->getL() + gamemodel->find(selectedBot, gamemodel->getMyTeam())->getR() )/2;
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentFwd);
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(currentFwd);
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setB(currentFwd);
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setLF(currentFwd);
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setLB(currentFwd);
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setRF(currentFwd);
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setRB(currentFwd);
+        if (currentFwd <= 0) {
+            gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentFwd+50);
+            gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(currentFwd+50);
+//            gamemodel->find(selectedBot, gamemodel->getMyTeam())->setLF(currentFwd+50);
+//            gamemodel->find(selectedBot, gamemodel->getMyTeam())->setLB(currentFwd+50);
+//            gamemodel->find(selectedBot, gamemodel->getMyTeam())->setRF(currentFwd+50);
+//            gamemodel->find(selectedBot, gamemodel->getMyTeam())->setRB(currentFwd+50);
+        }
+        cout << "avg velocity: " << getVelocity(selectedBot) << "\n";
+        cout << "left velocity: " << gamemodel->find(selectedBot, gamemodel->getMyTeam())->getL() << "\n";
+        cout << "right velocity: "<< gamemodel->find(selectedBot, gamemodel->getMyTeam())->getR() << "\n";
+
+    }
+}
+
+void MainWindow::on_btn_botForward_released()
+{
+    if (selectedBot > -1) {
+//        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(0);
+//        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(0);
+    }
+}
+
+void MainWindow::on_btn_botTurnRight_pressed() {
+    if (selectedBot > -1) {
+        int currentFwd = getVelocity(selectedBot);
+        float currentL = gamemodel->find(selectedBot, gamemodel->getMyTeam())->getL();
+        float currentR = gamemodel->find(selectedBot, gamemodel->getMyTeam())->getR();
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentL+25);
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(currentR-25);
+    }
+}
+
+void MainWindow::on_btn_botTurnRight_released() {
+    if (selectedBot > -1) {
+        float currentFwd = getVelocity(selectedBot);
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentFwd);
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(currentFwd);
+    }
+}
+
+void MainWindow::on_btn_botTurnLeft_pressed() {
+    if (selectedBot > -1) {
+        int currentFwd = getVelocity(selectedBot);
+        int currentL = gamemodel->find(selectedBot, gamemodel->getMyTeam())->getL();
+        int currentR = gamemodel->find(selectedBot, gamemodel->getMyTeam())->getR();
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentL-25);
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(currentR+25);
+    }
+}
+
+void MainWindow::on_btn_botTurnLeft_released() {
+    if (selectedBot > -1) {
+        float currentFwd = getVelocity(selectedBot);
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentFwd);
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(currentFwd);
+    }
+}
+
+void MainWindow::on_btn_botReverse_pressed() {
+    if (selectedBot > -1) {
+        int currentFwd = getVelocity(selectedBot);
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentFwd);
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(currentFwd);
+        if (currentFwd >= 0) {
+            gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentFwd-50);
+            gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(currentFwd-50);
+        }
+    }
+}
+
+void MainWindow::on_btn_botReverse_released() {
+    if (selectedBot > -1) {
+        int currentFwd = getVelocity(selectedBot);
+//        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(0);
+//        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(0);
+    }
+}
+

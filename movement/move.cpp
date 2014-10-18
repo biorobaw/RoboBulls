@@ -1,6 +1,7 @@
 #include "include/config/tolerances.h"    //ROT/DIST Tolerance
 #include "include/config/globals.h"        //OVERALL_VELOCITY
 #include "movement/move.h"
+#include "gui/mainwindow.h"
 
 namespace Movement
 {
@@ -317,6 +318,18 @@ void Move::setVels(Robot *robot)
      * to sendVelsLarge. Thus, OVERALL_VELOCITY allows the slowing down
      * of the entire program since all movement comes through here.
      */
+//    if (guiOverride) {
+//        cout << "local override \n";
+
+//    }
+//    if (mainwindow != NULL) {
+//        cout << "gui override \n";
+//    } else {
+//        cout << "mainwindow NULL \n";
+//    }
+
+
+
     switch(robot->type())
     {
     case differential:

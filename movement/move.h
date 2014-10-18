@@ -7,6 +7,8 @@
 #include "model/gamemodel.h"
 #include "movement/pathfinding/fppa_pathfinding.h"
 #include "movement/movetype.h"
+// Ryan
+#include "gui/mainwindow.h"
 
 namespace Movement
 {
@@ -57,6 +59,9 @@ public:
     
     /* Perform movement on the robot */
     bool perform(Robot* robot, Type moveType = Type::Default);
+
+    // Ryan
+    static bool guiOverride;
     
 
 protected:
@@ -71,6 +76,7 @@ protected:
      */
     virtual void calculateVels
         (Robot* rob, Point targetPoint, float targetAngle, Type moveType) = 0;
+
 
         
 private:
@@ -100,6 +106,10 @@ private:
     void assignNewPath(const Point& robotPoint);
     
     void setVels(Robot* robot);
+
+    // Ryan
+//    MainWindow *mainwindow;
+
 };
 
 

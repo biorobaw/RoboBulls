@@ -22,9 +22,9 @@
 #include "communication/refcomm.h"
 #include "guidrawline.h"
 #include "communication/nxtrobcomm.h"
+#include "movement/move.h"
 
 
-//class GuiComm;
 namespace Ui {
     class MainWindow;
 }
@@ -42,7 +42,7 @@ public:
 
 public:
 
-
+    bool guiOverride = false;
     QString getBotCoord(int id); // Returns the specified robot's x/y position as a QString
     QString getBotOrientString(int id);
     double  getBotOrientDouble(bool myTeam, int id);
@@ -64,14 +64,15 @@ public:
     void printBehavior(int botID, string behavior, bool append);    // puts the given bot's given string into a vector and prints it when the bot is selected
     void drawLine( int originX, int originY, int endX, int endY );
     void guiPrint(string output);
-
-
     void printBall();
     void gameModelUpdated();
     // For getting milliseconds
     int frequency_of_primes (int n);
     int getClock();
     int getSpeed(QGraphicsItem* p, double o);
+    void moveBot();
+
+
 
 
 protected:
@@ -82,6 +83,7 @@ protected:
     RefComm *refcom;
     GuiDrawLine *guidrawline;
     NXTRobComm *nxtrobcomm;
+
 
 
 signals:
@@ -217,6 +219,14 @@ private slots:
     void on_combo_botScale_currentIndexChanged(int index);
     void field_setDragMode();
     void updateSelectedBotPanel(int id);
+    void on_btn_botForward_pressed();
+    void on_btn_botForward_released();
+    void on_btn_botTurnRight_pressed();
+    void on_btn_botTurnRight_released();
+    void on_btn_botReverse_pressed();
+    void on_btn_botReverse_released();
+    void on_btn_botTurnLeft_pressed();
+    void on_btn_botTurnLeft_released();
 };
 
 #endif // MAINWINDOW_H
