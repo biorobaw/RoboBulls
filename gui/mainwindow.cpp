@@ -67,10 +67,12 @@ MainWindow::MainWindow(QWidget *parent) :
     // and stop threads
     threads.append(new GuiComm(50, this));
 //    threads.append(new GuiComm(30, this));
+//    cout << "threads.append \n";
 
     // Connect each Widget to correcponding thread
     connect(threads[0], SIGNAL(valueChanged(int))
             , this, SLOT(launch(int)));
+//    cout << "connect(threads[0] \n";
 
 //    connect(threads[1], SIGNAL(valueChanged(int))
 //            , this, SLOT(updateScene()));
@@ -115,6 +117,7 @@ void MainWindow::launch(int value)
 }
 
 void MainWindow::zoomField(int zoom) {
+    ui->zoom_slider->setValue(zoom);
     double zoomScale = zoom *.01;
     ui->gView_field->setTransform(QTransform::fromScale(zoomScale, zoomScale));
     ui->gView_field->scale(1, -1);
@@ -123,6 +126,9 @@ void MainWindow::zoomField(int zoom) {
 
 
 void MainWindow::defaultZoom() {
+    // Removing robot focus
+    centeredBotID = -1;
+
     currentFieldAngle = 0;
     zoomField(11);
     ui->zoom_slider->setValue(11);
@@ -324,6 +330,7 @@ void MainWindow::scanForSelection() {
                 botIcons[i]->doubleClicked = false;
                 guiTeam[i]->doubleClicked = false;
                 centeredBotID = i;
+                zoomField(20);
                 break;
             }
         }//nullcheck
@@ -339,12 +346,16 @@ void MainWindow::scanForSelection() {
         }
         centeredBotID = -1;
     }
-    // Field clicked removes centeredOn and selection
+    // Field/Sidelines clicked removes centeredOn and selection
     if (field->Pressed == true) {
         field->highlighted = true;
         field->Pressed = false;
     }
-    if (field->highlighted == true) {
+    if (sidelines->Pressed == true) {
+        sidelines->highlighted = true;
+        sidelines->Pressed = false;
+    }
+    if (field->highlighted || sidelines->highlighted) {
         for (int i=0; i<teamSize; i++) {
             if (gamemodel->find(i,gamemodel->getMyTeam()) != NULL) {
                 guiTeam[i]->highlighted = false;
@@ -356,6 +367,7 @@ void MainWindow::scanForSelection() {
             }//nullcheck
         }
         field->highlighted = false;
+        sidelines->highlighted = false;
         selectedBot = -1;
         centeredBotID = -1;
         newSelection = true;
@@ -774,12 +786,14 @@ void MainWindow::updateScene() {
             guiTeam[i]->setToolTip("Robot " + QString::number(i));
             guiTeam[i]->myTeam = true;
             // Action colors (may be better in the button slots)
-//            if (gamemodel->find(i, gamemodel->getMyTeam())->getDrible() ) {
-//                guiTeam[i]->dribling = true;
-//            } else { guiTeam[i]->dribling = false; }
-//            if (gamemodel->find(i, gamemodel->getMyTeam())->getKick() == 1) {
-//                guiTeam[i]->kicking = true;
-//            } else { guiTeam[i]->kicking = false; }
+            if (i != selectedBot) {
+                if (gamemodel->find(i, gamemodel->getMyTeam())->getDrible() ) {
+                    guiTeam[i]->dribling = true;
+                } else { guiTeam[i]->dribling = false; }
+                if (gamemodel->find(i, gamemodel->getMyTeam())->getKick() == 1) {
+                    guiTeam[i]->kicking = true;
+                } else { guiTeam[i]->kicking = false; }
+            }
             // Robot Scale
             if (ui->combo_botScale->currentText() == "100%") {
                 guiTeam[i]->setScale(1);
@@ -817,35 +831,15 @@ void MainWindow::updateScene() {
         }
     }
 
-    // Movement TEST
-//    if (ui->btn_botForward->isDown()) {
-//        cout << "Forward \n";
-////        Movement::Move::guiOverride = true;
-//        gamemodel->find(1, gamemodel->getMyTeam())->setL(50);
-//        gamemodel->find(1, gamemodel->getMyTeam())->setR(100);
-//        gamemodel->find(2, gamemodel->getMyTeam())->setL(50);
-//        gamemodel->find(2, gamemodel->getMyTeam())->setR(100);
-//    } else {
-////        move->guiOverride = false;
-
-//    }
-    moveBot();
+    if (ball->isSelected()) {
+        cout << "Ball selected \n";
+    }
 
     // drawLine TEST
 //    drawLine(getBotCoordX(true, 0),getBotCoordY(true, 0), 0, 0 );
 //    ui->gView_field->update();
 
 }//end updateScene
-
-
-void MainWindow::createPointer()
-{
-
-}
-
-void MainWindow::updatePointer() {
-
-}
 
 void MainWindow::on_pushButton_clicked()
 {
@@ -861,6 +855,7 @@ void MainWindow::on_pushButton_clicked()
         for(int i = 0; i < threads.count(); i++)
             threads[i]->exit(0);
     }
+//    cout << "on_pushButton_clicked() \n";
 }
 
 QString MainWindow::getBotCoord(int id) {

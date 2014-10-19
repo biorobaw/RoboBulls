@@ -7,7 +7,8 @@
 
 class GuiComm : public QThread
 {
-    Q_OBJECT;
+    Q_OBJECT
+
 public:
     explicit GuiComm(int interval, QObject* parent = 0);
     ~GuiComm();

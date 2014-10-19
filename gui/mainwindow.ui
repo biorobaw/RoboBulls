@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1181</width>
+    <width>1200</width>
     <height>956</height>
    </rect>
   </property>
@@ -56,7 +56,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>1163</width>
+         <width>1182</width>
          <height>913</height>
         </rect>
        </property>
@@ -347,7 +347,7 @@
              <height>131</height>
             </rect>
            </property>
-           <layout class="QVBoxLayout" name="verticalLayout">
+           <layout class="QVBoxLayout" name="layout_behavior">
             <item>
              <widget class="QLabel" name="label_behavior_prime">
               <property name="minimumSize">
@@ -2713,7 +2713,7 @@
          <rect>
           <x>290</x>
           <y>130</y>
-          <width>862</width>
+          <width>881</width>
           <height>771</height>
          </rect>
         </property>
@@ -2729,9 +2729,9 @@
         <widget class="QGraphicsView" name="gView_field">
          <property name="geometry">
           <rect>
-           <x>30</x>
+           <x>9</x>
            <y>80</y>
-           <width>840</width>
+           <width>861</width>
            <height>681</height>
           </rect>
          </property>
@@ -2807,9 +2807,9 @@
         <widget class="QTabWidget" name="tabs_field">
          <property name="geometry">
           <rect>
-           <x>20</x>
+           <x>10</x>
            <y>0</y>
-           <width>841</width>
+           <width>861</width>
            <height>71</height>
           </rect>
          </property>
@@ -2817,7 +2817,7 @@
           <enum>Qt::TabFocus</enum>
          </property>
          <property name="currentIndex">
-          <number>1</number>
+          <number>3</number>
          </property>
          <widget class="QWidget" name="field">
           <attribute name="title">
@@ -3260,7 +3260,7 @@
             <rect>
              <x>10</x>
              <y>0</y>
-             <width>441</width>
+             <width>481</width>
              <height>41</height>
             </rect>
            </property>
@@ -3335,7 +3335,7 @@
               </property>
               <property name="maximumSize">
                <size>
-                <width>250</width>
+                <width>303</width>
                 <height>16777215</height>
                </size>
               </property>
@@ -3355,10 +3355,10 @@
                <number>6</number>
               </property>
               <property name="maximum">
-               <number>60</number>
+               <number>80</number>
               </property>
               <property name="pageStep">
-               <number>5</number>
+               <number>3</number>
               </property>
               <property name="value">
                <number>11</number>
@@ -3382,6 +3382,12 @@
             </item>
             <item row="0" column="5">
              <widget class="QPushButton" name="zoom_default">
+              <property name="maximumSize">
+               <size>
+                <width>70</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="focusPolicy">
                <enum>Qt::NoFocus</enum>
               </property>
@@ -3395,8 +3401,17 @@
             </item>
             <item row="0" column="1">
              <widget class="QLabel" name="label_2">
+              <property name="maximumSize">
+               <size>
+                <width>50</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="text">
                <string>Rotate</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
               </property>
              </widget>
             </item>
@@ -3426,7 +3441,7 @@
          <rect>
           <x>290</x>
           <y>0</y>
-          <width>861</width>
+          <width>881</width>
           <height>131</height>
          </rect>
         </property>
@@ -3659,7 +3674,7 @@
              <rect>
               <x>10</x>
               <y>29</y>
-              <width>406</width>
+              <width>417</width>
               <height>91</height>
              </rect>
             </property>
@@ -3678,7 +3693,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1181</width>
+     <width>1200</width>
      <height>25</height>
     </rect>
    </property>

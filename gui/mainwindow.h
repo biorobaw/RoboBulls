@@ -220,7 +220,6 @@ private:
 
 
 private slots:
-    void updatePointer();
     void on_pushButton_clicked();
     void launch(int value);
     void updateScene();
@@ -228,7 +227,6 @@ private slots:
     void on_pushButton_3_clicked();
     void zoomField(int scale);
     void defaultZoom();
-    void createPointer();
     void setUpScene();
     void on_check_fieldGrid_clicked();
     void on_combo_gridScale_currentIndexChanged(int index);

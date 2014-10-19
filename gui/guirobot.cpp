@@ -38,7 +38,7 @@ void GuiRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     QBrush lowLtBrush(Qt::magenta, Qt::SolidPattern);
 
     // Setting ID circles' diameters to fractions of the robot's diameter
-    int cornerDiam = boundingRect().width() / 3.5 ;
+    int cornerDiam = boundingRect().width() / 3.8 ;
     int centerDiam = boundingRect().width() / 3 ;
 
     QRectF topRtCircle(0,0,cornerDiam,cornerDiam);
