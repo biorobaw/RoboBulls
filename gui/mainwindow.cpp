@@ -318,6 +318,10 @@ void MainWindow::updateBotPanel() {
         ui->lcd_botSpeed->setStyleSheet("background-color: rgb(100, 100, 100);");
     }
 
+    // Mouse point
+    ui->lcd_coordX_cursor->display(getMouseCoordX());
+    ui->lcd_coordY_cursor->display(getMouseCoordY());
+
 }
 
 void MainWindow::scanForSelection() {
@@ -568,7 +572,7 @@ void MainWindow::setUpScene()
 
     connect(spaceBar, SIGNAL(activated()), this, SLOT(on_pushButton_clicked()));
 
-    scene = new QGraphicsScene(this);
+    scene = new GuiScene();
 
     // Creating the sidelines
     sidelines = new GuiSidelines();
@@ -1175,6 +1179,16 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event) {
             on_btn_botDrible_released();
             break;
     }
+}
+
+int MainWindow::getMouseCoordX() {
+    int x = scene->mousePoint.x()-100;
+    return x;
+}
+
+int MainWindow::getMouseCoordY() {
+    int y = scene->mousePoint.y()-100;
+    return y;
 }
 
 //void MainWindow::keyPressEvent(QKeyEvent *w)

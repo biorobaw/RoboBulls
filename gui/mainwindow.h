@@ -23,7 +23,7 @@
 #include "guidrawline.h"
 #include "communication/nxtrobcomm.h"
 #include "movement/move.h"
-
+#include "guiscene.h"
 
 namespace Ui {
     class MainWindow;
@@ -74,25 +74,9 @@ public:
     // Key Bindings
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
-//    void keyPressEvent(QKeyEvent* w);
-//    void keyReleaseEvent(QKeyEvent* w);
-//    void keyPressEvent(QKeyEvent* a);
-//    void keyReleaseEvent(QKeyEvent* a) {
-//        on_btn_botTurnLeft_released();
-//    }
-//    void keyPressEvent(QKeyEvent* s) {
-//        on_btn_botReverse_pressed();
-//    }
-//    void keyReleaseEvent(QKeyEvent* s) {
-//        on_btn_botReverse_released();
-//    }
-//    void keyPressEvent(QKeyEvent* d) {
-//        on_btn_botTurnRight_pressed();
-//    }
-//    void keyReleaseEvent(QKeyEvent* d) {
-//        on_btn_botTurnRight_released();
-//    }
-
+    // Mouse stuff
+    int getMouseCoordX();
+    int getMouseCoordY();
 
 protected:
     GameModel *gamemodel;
@@ -114,7 +98,7 @@ signals:
 private:
     Ui::MainWindow *ui;
     QList<GuiComm*> threads;
-    QGraphicsScene *scene;
+    GuiScene *scene;
     QGraphicsEllipseItem *ellipse;
     QGraphicsRectItem *rectangle;
     int teamSize = 6;
