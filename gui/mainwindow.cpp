@@ -66,7 +66,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // create threads, and append them to the threads list, so that
     // threads can be accessed for making connections, and to start
     // and stop threads
-    threads.append(new GuiComm(30, this));
+    threads.append(new GuiComm(50, this));
 //    threads.append(new GuiComm(30, this));
 //    cout << "threads.append \n";
 
@@ -84,8 +84,6 @@ MainWindow::MainWindow(QWidget *parent) :
     // Default zoom button
     connect(ui->zoom_default, SIGNAL(clicked())
             , this, SLOT(defaultZoom()));
-
-
 }
 
 void MainWindow::launch(int value)
@@ -762,38 +760,109 @@ void MainWindow::updateScene() {
         }
         ball->color = ui->combo_ballColor->currentText();
 
+        // Tranformation matrix for robot ID labels
+        QTransform flipLabel;
+        flipLabel.setMatrix(1,0,0,0,-1,0,0,200,1);
+
+        // Updating objects in scene
+        for (int i=0; i<teamSize; i++) {
+            // Blue Team
+            if (gamemodel->find(i, gamemodel->getMyTeam()) != NULL) {
+                guiTeam[i]->setX(getBotCoordX(true, i));
+                guiTeam[i]->setY(getBotCoordY(true, i));
+                guiTeam[i]->setZValue(2);
+                double angle = getBotOrientDouble(true, i) ;
+                guiTeam[i]->setRotation(angle);
+                // Action colors (may be better in the button slots)
+                if (i != selectedBot) {
+                    if (gamemodel->find(i, gamemodel->getMyTeam())->getDrible() ) {
+                        guiTeam[i]->dribling = true;
+                    } else { guiTeam[i]->dribling = false; }
+                    if (gamemodel->find(i, gamemodel->getMyTeam())->getKick() == 1) {
+                        guiTeam[i]->kicking = true;
+                    } else { guiTeam[i]->kicking = false; }
+                }
+                // Robot Scale
+                if (ui->combo_botScale->currentText() == "100%") {
+                    guiTeam[i]->setScale(1);
+                } else if (ui->combo_botScale->currentText() == "120%") {
+                    guiTeam[i]->setScale(1.2);
+                } else if (ui->combo_botScale->currentText() == "150%") {
+                    guiTeam[i]->setScale(1.5);
+                }
+                // labels
+                guiLabels[i]->setTransform(flipLabel, false);
+                guiLabels[i]->setRotation(currentFieldAngle);
+                guiLabels[i]->setZValue(3);
+                guiLabels[i]->setX(getBotCoordX(true,i));
+                guiLabels[i]->setY(getBotCoordY(true,i));
+                if (ui->check_showIDs->isChecked()) {
+                    guiLabels[i]->hidden = false;
+                }else{
+                    guiLabels[i]->hidden = true;
+                }
+            }
+            // Yellow Team
+            if (gamemodel->find(i, gamemodel->getOponentTeam()) != NULL) {
+                guiTeamY[i]->setX(getBotCoordX(false, i));
+                guiTeamY[i]->setY(getBotCoordY(false, i));
+                guiTeamY[i]->setZValue(2);
+                double angleY = getBotOrientDouble(false, i) ;
+                guiTeamY[i]->setRotation(angleY);
+                // Robot Scale
+                if (ui->combo_botScale->currentText() == "100%") {
+                    guiTeamY[i]->setScale(1);
+                } else if (ui->combo_botScale->currentText() == "120%") {
+                    guiTeamY[i]->setScale(1.2);
+                } else if (ui->combo_botScale->currentText() == "150%") {
+                    guiTeamY[i]->setScale(1.5);
+                }
+                // labels
+                guiLabelsY[i]->setTransform(flipLabel,false);
+                guiLabelsY[i]->setRotation(currentFieldAngle);
+                guiLabelsY[i]->setZValue(3);
+                guiLabelsY[i]->setX(getBotCoordX(false,i));
+                guiLabelsY[i]->setY(getBotCoordY(false,i));
+                if (ui->check_showIDs->isChecked()) {
+                    guiLabelsY[i]->hidden = false;
+                }else{
+                    guiLabelsY[i]->hidden = true;
+                }
+            }
+        }
+
     // updating Blue Labels
     for (int i=0; i<teamSize; i++) {
         if (gamemodel->find(i, gamemodel->getMyTeam()) != NULL) {
-            QTransform flipLabel;
-            flipLabel.setMatrix(1,0,0,0,-1,0,0,200,1);
-            guiLabels[i]->setTransform(flipLabel, false);
-            guiLabels[i]->setRotation(currentFieldAngle);
-            guiLabels[i]->setZValue(3);
-            guiLabels[i]->setX(getBotCoordX(true,i));
-            guiLabels[i]->setY(getBotCoordY(true,i));
-            if (ui->check_showIDs->isChecked()) {
-                guiLabels[i]->hidden = false;
-            }else{
-                guiLabels[i]->hidden = true;
-            }
+//            QTransform flipLabel;
+//            flipLabel.setMatrix(1,0,0,0,-1,0,0,200,1);
+//            guiLabels[i]->setTransform(flipLabel, false);
+//            guiLabels[i]->setRotation(currentFieldAngle);
+//            guiLabels[i]->setZValue(3);
+//            guiLabels[i]->setX(getBotCoordX(true,i));
+//            guiLabels[i]->setY(getBotCoordY(true,i));
+//            if (ui->check_showIDs->isChecked()) {
+//                guiLabels[i]->hidden = false;
+//            }else{
+//                guiLabels[i]->hidden = true;
+//            }
         }
     }
     // updating Yellow Labels
     for (int i=0; i<teamSize; i++) {
         if (gamemodel->find(i, gamemodel->getOponentTeam()) != NULL) {
-            QTransform flipLabel;
-            flipLabel.setMatrix(1,0,0,0,-1,0,0,200,1);
-            guiLabelsY[i]->setTransform(flipLabel,false);
-            guiLabelsY[i]->setRotation(currentFieldAngle);
-            guiLabelsY[i]->setZValue(3);
-            guiLabelsY[i]->setX(getBotCoordX(false,i));
-            guiLabelsY[i]->setY(getBotCoordY(false,i));
-            if (ui->check_showIDs->isChecked()) {
-                guiLabelsY[i]->hidden = false;
-            }else{
-                guiLabelsY[i]->hidden = true;
-            }
+//            QTransform flipLabel;
+//            flipLabel.setMatrix(1,0,0,0,-1,0,0,200,1);
+//            guiLabelsY[i]->setTransform(flipLabel,false);
+//            guiLabelsY[i]->setRotation(currentFieldAngle);
+//            guiLabelsY[i]->setZValue(3);
+//            guiLabelsY[i]->setX(getBotCoordX(false,i));
+//            guiLabelsY[i]->setY(getBotCoordY(false,i));
+//            if (ui->check_showIDs->isChecked()) {
+//                guiLabelsY[i]->hidden = false;
+//            }else{
+//                guiLabelsY[i]->hidden = true;
+//            }
         }
     }
     // Bot moving TEST
@@ -804,28 +873,28 @@ void MainWindow::updateScene() {
     // updating Blue Robots
     for (int i=0; i<teamSize; i++) {
         if (gamemodel->find(i, gamemodel->getMyTeam()) != NULL) {
-            guiTeam[i]->setX(getBotCoordX(true, i));
-            guiTeam[i]->setY(getBotCoordY(true, i));
-            guiTeam[i]->setZValue(2);
-            double angle = getBotOrientDouble(true, i) ;
-            guiTeam[i]->setRotation(angle);
-            // Action colors (may be better in the button slots)
-            if (i != selectedBot) {
-                if (gamemodel->find(i, gamemodel->getMyTeam())->getDrible() ) {
-                    guiTeam[i]->dribling = true;
-                } else { guiTeam[i]->dribling = false; }
-                if (gamemodel->find(i, gamemodel->getMyTeam())->getKick() == 1) {
-                    guiTeam[i]->kicking = true;
-                } else { guiTeam[i]->kicking = false; }
-            }
-            // Robot Scale
-            if (ui->combo_botScale->currentText() == "100%") {
-                guiTeam[i]->setScale(1);
-            } else if (ui->combo_botScale->currentText() == "120%") {
-                guiTeam[i]->setScale(1.2);
-            } else if (ui->combo_botScale->currentText() == "150%") {
-                guiTeam[i]->setScale(1.5);
-            }
+//            guiTeam[i]->setX(getBotCoordX(true, i));
+//            guiTeam[i]->setY(getBotCoordY(true, i));
+//            guiTeam[i]->setZValue(2);
+//            double angle = getBotOrientDouble(true, i) ;
+//            guiTeam[i]->setRotation(angle);
+//            // Action colors (may be better in the button slots)
+//            if (i != selectedBot) {
+//                if (gamemodel->find(i, gamemodel->getMyTeam())->getDrible() ) {
+//                    guiTeam[i]->dribling = true;
+//                } else { guiTeam[i]->dribling = false; }
+//                if (gamemodel->find(i, gamemodel->getMyTeam())->getKick() == 1) {
+//                    guiTeam[i]->kicking = true;
+//                } else { guiTeam[i]->kicking = false; }
+//            }
+//            // Robot Scale
+//            if (ui->combo_botScale->currentText() == "100%") {
+//                guiTeam[i]->setScale(1);
+//            } else if (ui->combo_botScale->currentText() == "120%") {
+//                guiTeam[i]->setScale(1.2);
+//            } else if (ui->combo_botScale->currentText() == "150%") {
+//                guiTeam[i]->setScale(1.5);
+//            }
 
 
         }
@@ -833,19 +902,19 @@ void MainWindow::updateScene() {
     // updating Yellow Robots
     for (int i=0; i<teamSize; i++) {
         if (gamemodel->find(i, gamemodel->getOponentTeam()) != NULL) {
-            guiTeamY[i]->setX(getBotCoordX(false, i));
-            guiTeamY[i]->setY(getBotCoordY(false, i));
-            guiTeamY[i]->setZValue(2);
-            double angleY = getBotOrientDouble(false, i) ;
-            guiTeamY[i]->setRotation(angleY);
-            // Robot Scale
-            if (ui->combo_botScale->currentText() == "100%") {
-                guiTeamY[i]->setScale(1);
-            } else if (ui->combo_botScale->currentText() == "120%") {
-                guiTeamY[i]->setScale(1.2);
-            } else if (ui->combo_botScale->currentText() == "150%") {
-                guiTeamY[i]->setScale(1.5);
-            }
+//            guiTeamY[i]->setX(getBotCoordX(false, i));
+//            guiTeamY[i]->setY(getBotCoordY(false, i));
+//            guiTeamY[i]->setZValue(2);
+//            double angleY = getBotOrientDouble(false, i) ;
+//            guiTeamY[i]->setRotation(angleY);
+//            // Robot Scale
+//            if (ui->combo_botScale->currentText() == "100%") {
+//                guiTeamY[i]->setScale(1);
+//            } else if (ui->combo_botScale->currentText() == "120%") {
+//                guiTeamY[i]->setScale(1.2);
+//            } else if (ui->combo_botScale->currentText() == "150%") {
+//                guiTeamY[i]->setScale(1.5);
+//            }
         }
     }
 
