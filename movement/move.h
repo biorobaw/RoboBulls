@@ -9,6 +9,7 @@
 #include "movement/movetype.h"
 // Ryan
 #include "gui/mainwindow.h"
+#include "model/gamemodel.h"
 
 namespace Movement
 {
@@ -60,10 +61,6 @@ public:
     /* Perform movement on the robot */
     bool perform(Robot* robot, Type moveType = Type::Default);
 
-    // Ryan
-    static bool guiOverride;
-    
-
 protected:
     float lfront, lback, rfront, rback;  //rob->type() == fourWheelOmni
     float left, right;                   //rob->type() == differential;
@@ -76,7 +73,8 @@ protected:
      */
     virtual void calculateVels
         (Robot* rob, Point targetPoint, float targetAngle, Type moveType) = 0;
-
+    // Ryan
+    GameModel *gamemodel;
 
         
 private:

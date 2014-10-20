@@ -77,13 +77,13 @@
          </font>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Robot Team&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string/>
         </property>
         <property name="autoFillBackground">
          <bool>false</bool>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-color: rgb(237, 237, 255);</string>
+         <string notr="true">background-color: rgb(225, 225, 255);</string>
         </property>
         <property name="frameShape">
          <enum>QFrame::Panel</enum>
@@ -169,6 +169,9 @@
            <property name="focusPolicy">
             <enum>Qt::NoFocus</enum>
            </property>
+           <property name="toolTip">
+            <string>Selected robot</string>
+           </property>
            <property name="frameShape">
             <enum>QFrame::Panel</enum>
            </property>
@@ -207,7 +210,7 @@
             <enum>Qt::NoContextMenu</enum>
            </property>
            <property name="toolTip">
-            <string>Average forward or reverse force of the robot's wheels</string>
+            <string>Average velocity of all the robot's wheels</string>
            </property>
            <property name="styleSheet">
             <string notr="true">background-color: rgb(150, 150, 150);</string>
@@ -222,7 +225,7 @@
             <number>1</number>
            </property>
            <property name="pageStep">
-            <number>11</number>
+            <number>15</number>
            </property>
            <property name="tracking">
             <bool>false</bool>
@@ -230,11 +233,14 @@
            <property name="invertedAppearance">
             <bool>false</bool>
            </property>
+           <property name="invertedControls">
+            <bool>false</bool>
+           </property>
            <property name="wrapping">
             <bool>false</bool>
            </property>
            <property name="notchTarget">
-            <double>13.700000000000003</double>
+            <double>3.000000000000000</double>
            </property>
            <property name="notchesVisible">
             <bool>true</bool>
@@ -275,7 +281,7 @@
             <bool>true</bool>
            </property>
            <property name="toolTip">
-            <string>Degrees from opposing goal</string>
+            <string>Average forward or reverse force of the robot's wheels</string>
            </property>
            <property name="toolTipDuration">
             <number>-2</number>
@@ -390,12 +396,15 @@
              <widget class="QTextBrowser" name="text_primeBot">
               <property name="font">
                <font>
-                <family>Courier 10 Pitch</family>
-                <pointsize>8</pointsize>
+                <family>DejaVu Sans</family>
+                <pointsize>10</pointsize>
                </font>
               </property>
+              <property name="toolTip">
+               <string>Prints via printBehavior() function</string>
+              </property>
               <property name="styleSheet">
-               <string notr="true">background-color: rgb(255, 255, 255);</string>
+               <string notr="true">background-color: rgb(0, 0, 100);</string>
               </property>
               <property name="frameShape">
                <enum>QFrame::Panel</enum>
@@ -432,7 +441,7 @@
             <enum>Qt::NoContextMenu</enum>
            </property>
            <property name="toolTip">
-            <string>Robot's orientation in relation to the opposing goal</string>
+            <string>Robot's orientation in relation to the opposing end of the field</string>
            </property>
            <property name="styleSheet">
             <string notr="true">background-color: rgb(255, 255, 0);</string>
@@ -447,7 +456,7 @@
             <number>1</number>
            </property>
            <property name="pageStep">
-            <number>5</number>
+            <number>45</number>
            </property>
            <property name="tracking">
             <bool>false</bool>
@@ -517,7 +526,7 @@
             <bool>true</bool>
            </property>
            <property name="toolTip">
-            <string comment="test" extracomment="test">Degrees from opposing goal</string>
+            <string comment="test" extracomment="test">Robot's orientation in relation to the opposing end of the field</string>
            </property>
            <property name="layoutDirection">
             <enum>Qt::RightToLeft</enum>
@@ -553,9 +562,9 @@
           <widget class="QWidget" name="layoutWidget">
            <property name="geometry">
             <rect>
-             <x>11</x>
+             <x>30</x>
              <y>160</y>
-             <width>221</width>
+             <width>201</width>
              <height>31</height>
             </rect>
            </property>
@@ -600,7 +609,7 @@
               <property name="maximumSize">
                <size>
                 <width>73</width>
-                <height>23</height>
+                <height>50</height>
                </size>
               </property>
               <property name="toolTip">
@@ -613,7 +622,7 @@
                <bool>false</bool>
               </property>
               <property name="styleSheet">
-               <string notr="true">background-color: rgb(0, 4, 133);</string>
+               <string notr="true">background-color: rgb(0, 0, 100);</string>
               </property>
               <property name="frameShape">
                <enum>QFrame::Panel</enum>
@@ -665,7 +674,7 @@
                <bool>false</bool>
               </property>
               <property name="styleSheet">
-               <string notr="true">background-color: rgb(0, 4, 133);</string>
+               <string notr="true">background-color: rgb(0, 0, 100);</string>
               </property>
               <property name="frameShape">
                <enum>QFrame::Panel</enum>
@@ -828,26 +837,29 @@
              <property name="focusPolicy">
               <enum>Qt::NoFocus</enum>
              </property>
+             <property name="toolTip">
+              <string>Average velocity of all the robot's wheels</string>
+             </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(150, 150, 150);</string>
              </property>
              <property name="minimum">
-              <number>-200</number>
+              <number>-150</number>
              </property>
              <property name="maximum">
-              <number>200</number>
+              <number>150</number>
              </property>
              <property name="singleStep">
-              <number>5</number>
+              <number>1</number>
              </property>
              <property name="pageStep">
-              <number>200</number>
+              <number>15</number>
              </property>
              <property name="wrapping">
               <bool>false</bool>
              </property>
              <property name="notchTarget">
-              <double>7.700000000000000</double>
+              <double>6.000000000000000</double>
              </property>
              <property name="notchesVisible">
               <bool>true</bool>
@@ -878,7 +890,7 @@
               <enum>Qt::NoContextMenu</enum>
              </property>
              <property name="toolTip">
-              <string>Velocity of selected robot</string>
+              <string>Robot's orientation in relation to the opposing end of the field</string>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 0);</string>
@@ -951,7 +963,7 @@
                  <bool>false</bool>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">background-color: rgb(0, 4, 133);</string>
+                 <string notr="true">background-color: rgb(0, 0, 100);</string>
                 </property>
                 <property name="frameShape">
                  <enum>QFrame::Panel</enum>
@@ -994,7 +1006,7 @@
                  <bool>false</bool>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">background-color: rgb(0, 4, 133);</string>
+                 <string notr="true">background-color: rgb(0, 0, 100);</string>
                 </property>
                 <property name="frameShape">
                  <enum>QFrame::Panel</enum>
@@ -1164,26 +1176,29 @@
              <property name="focusPolicy">
               <enum>Qt::NoFocus</enum>
              </property>
+             <property name="toolTip">
+              <string>Average velocity of all the robot's wheels</string>
+             </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(150, 150, 150);</string>
              </property>
              <property name="minimum">
-              <number>-200</number>
+              <number>-150</number>
              </property>
              <property name="maximum">
-              <number>200</number>
+              <number>150</number>
              </property>
              <property name="singleStep">
-              <number>5</number>
+              <number>1</number>
              </property>
              <property name="pageStep">
-              <number>200</number>
+              <number>15</number>
              </property>
              <property name="wrapping">
               <bool>false</bool>
              </property>
              <property name="notchTarget">
-              <double>7.700000000000000</double>
+              <double>6.000000000000000</double>
              </property>
              <property name="notchesVisible">
               <bool>true</bool>
@@ -1214,7 +1229,7 @@
               <enum>Qt::NoContextMenu</enum>
              </property>
              <property name="toolTip">
-              <string>Velocity of selected robot</string>
+              <string>Robot's orientation in relation to the opposing end of the field</string>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 0);</string>
@@ -1284,7 +1299,7 @@
                  <bool>false</bool>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">background-color: rgb(0, 4, 133);</string>
+                 <string notr="true">background-color: rgb(0, 0, 100);</string>
                 </property>
                 <property name="frameShape">
                  <enum>QFrame::Panel</enum>
@@ -1327,7 +1342,7 @@
                  <bool>false</bool>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">background-color: rgb(0, 4, 133);</string>
+                 <string notr="true">background-color: rgb(0, 0, 100);</string>
                 </property>
                 <property name="frameShape">
                  <enum>QFrame::Panel</enum>
@@ -1497,26 +1512,29 @@
              <property name="focusPolicy">
               <enum>Qt::NoFocus</enum>
              </property>
+             <property name="toolTip">
+              <string>Average velocity of all the robot's wheels</string>
+             </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(150, 150, 150);</string>
              </property>
              <property name="minimum">
-              <number>-200</number>
+              <number>-150</number>
              </property>
              <property name="maximum">
-              <number>200</number>
+              <number>150</number>
              </property>
              <property name="singleStep">
-              <number>5</number>
+              <number>1</number>
              </property>
              <property name="pageStep">
-              <number>200</number>
+              <number>15</number>
              </property>
              <property name="wrapping">
               <bool>false</bool>
              </property>
              <property name="notchTarget">
-              <double>7.700000000000000</double>
+              <double>6.000000000000000</double>
              </property>
              <property name="notchesVisible">
               <bool>true</bool>
@@ -1547,7 +1565,7 @@
               <enum>Qt::NoContextMenu</enum>
              </property>
              <property name="toolTip">
-              <string>Velocity of selected robot</string>
+              <string>Robot's orientation in relation to the opposing end of the field</string>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 0);</string>
@@ -1617,7 +1635,7 @@
                  <bool>false</bool>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">background-color: rgb(0, 4, 133);</string>
+                 <string notr="true">background-color: rgb(0, 0, 100);</string>
                 </property>
                 <property name="frameShape">
                  <enum>QFrame::Panel</enum>
@@ -1660,7 +1678,7 @@
                  <bool>false</bool>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">background-color: rgb(0, 4, 133);</string>
+                 <string notr="true">background-color: rgb(0, 0, 100);</string>
                 </property>
                 <property name="frameShape">
                  <enum>QFrame::Panel</enum>
@@ -1830,26 +1848,29 @@
              <property name="focusPolicy">
               <enum>Qt::NoFocus</enum>
              </property>
+             <property name="toolTip">
+              <string>Average velocity of all the robot's wheels</string>
+             </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(150, 150, 150);</string>
              </property>
              <property name="minimum">
-              <number>-200</number>
+              <number>-150</number>
              </property>
              <property name="maximum">
-              <number>200</number>
+              <number>150</number>
              </property>
              <property name="singleStep">
-              <number>5</number>
+              <number>1</number>
              </property>
              <property name="pageStep">
-              <number>200</number>
+              <number>15</number>
              </property>
              <property name="wrapping">
               <bool>false</bool>
              </property>
              <property name="notchTarget">
-              <double>7.700000000000000</double>
+              <double>6.000000000000000</double>
              </property>
              <property name="notchesVisible">
               <bool>true</bool>
@@ -1880,7 +1901,7 @@
               <enum>Qt::NoContextMenu</enum>
              </property>
              <property name="toolTip">
-              <string>Velocity of selected robot</string>
+              <string>Robot's orientation in relation to the opposing end of the field</string>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 0);</string>
@@ -1950,7 +1971,7 @@
                  <bool>false</bool>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">background-color: rgb(0, 4, 133);</string>
+                 <string notr="true">background-color: rgb(0, 0, 100);</string>
                 </property>
                 <property name="frameShape">
                  <enum>QFrame::Panel</enum>
@@ -1993,7 +2014,7 @@
                  <bool>false</bool>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">background-color: rgb(0, 4, 133);</string>
+                 <string notr="true">background-color: rgb(0, 0, 100);</string>
                 </property>
                 <property name="frameShape">
                  <enum>QFrame::Panel</enum>
@@ -2163,26 +2184,29 @@
              <property name="focusPolicy">
               <enum>Qt::NoFocus</enum>
              </property>
+             <property name="toolTip">
+              <string>Average velocity of all the robot's wheels</string>
+             </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(150, 150, 150);</string>
              </property>
              <property name="minimum">
-              <number>-200</number>
+              <number>-150</number>
              </property>
              <property name="maximum">
-              <number>200</number>
+              <number>150</number>
              </property>
              <property name="singleStep">
-              <number>5</number>
+              <number>1</number>
              </property>
              <property name="pageStep">
-              <number>200</number>
+              <number>15</number>
              </property>
              <property name="wrapping">
               <bool>false</bool>
              </property>
              <property name="notchTarget">
-              <double>7.700000000000000</double>
+              <double>6.000000000000000</double>
              </property>
              <property name="notchesVisible">
               <bool>true</bool>
@@ -2213,7 +2237,7 @@
               <enum>Qt::NoContextMenu</enum>
              </property>
              <property name="toolTip">
-              <string>Velocity of selected robot</string>
+              <string>Robot's orientation in relation to the opposing end of the field</string>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 0);</string>
@@ -2283,7 +2307,7 @@
                  <bool>false</bool>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">background-color: rgb(0, 4, 133);</string>
+                 <string notr="true">background-color: rgb(0, 0, 100);</string>
                 </property>
                 <property name="frameShape">
                  <enum>QFrame::Panel</enum>
@@ -2326,7 +2350,7 @@
                  <bool>false</bool>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">background-color: rgb(0, 4, 133);</string>
+                 <string notr="true">background-color: rgb(0, 0, 100);</string>
                 </property>
                 <property name="frameShape">
                  <enum>QFrame::Panel</enum>
@@ -2496,26 +2520,29 @@
              <property name="focusPolicy">
               <enum>Qt::NoFocus</enum>
              </property>
+             <property name="toolTip">
+              <string>Average velocity of all the robot's wheels</string>
+             </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(150, 150, 150);</string>
              </property>
              <property name="minimum">
-              <number>-200</number>
+              <number>-150</number>
              </property>
              <property name="maximum">
-              <number>200</number>
+              <number>150</number>
              </property>
              <property name="singleStep">
-              <number>5</number>
+              <number>1</number>
              </property>
              <property name="pageStep">
-              <number>200</number>
+              <number>15</number>
              </property>
              <property name="wrapping">
               <bool>false</bool>
              </property>
              <property name="notchTarget">
-              <double>7.700000000000000</double>
+              <double>6.000000000000000</double>
              </property>
              <property name="notchesVisible">
               <bool>true</bool>
@@ -2546,7 +2573,7 @@
               <enum>Qt::NoContextMenu</enum>
              </property>
              <property name="toolTip">
-              <string>Velocity of selected robot</string>
+              <string>Robot's orientation in relation to the opposing end of the field</string>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 0);</string>
@@ -2616,7 +2643,7 @@
                  <bool>false</bool>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">background-color: rgb(0, 4, 133);</string>
+                 <string notr="true">background-color: rgb(0, 0, 100);</string>
                 </property>
                 <property name="frameShape">
                  <enum>QFrame::Panel</enum>
@@ -2659,7 +2686,7 @@
                  <bool>false</bool>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">background-color: rgb(0, 4, 133);</string>
+                 <string notr="true">background-color: rgb(0, 0, 100);</string>
                 </property>
                 <property name="frameShape">
                  <enum>QFrame::Panel</enum>
@@ -2817,7 +2844,7 @@
           <enum>Qt::TabFocus</enum>
          </property>
          <property name="currentIndex">
-          <number>3</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="field">
           <attribute name="title">
@@ -2839,7 +2866,7 @@
                <enum>Qt::NoFocus</enum>
               </property>
               <property name="toolTip">
-               <string>Show Grid </string>
+               <string>Toggle display of grid</string>
               </property>
               <property name="text">
                <string>Grid</string>
@@ -2850,6 +2877,9 @@
              <widget class="QCheckBox" name="check_coloredGoals">
               <property name="focusPolicy">
                <enum>Qt::NoFocus</enum>
+              </property>
+              <property name="toolTip">
+               <string>Toggle team-colored goals</string>
               </property>
               <property name="text">
                <string>Team Colors</string>
@@ -2866,6 +2896,9 @@
                 <width>112</width>
                 <height>0</height>
                </size>
+              </property>
+              <property name="toolTip">
+               <string>Field color scheme</string>
               </property>
               <property name="currentText">
                <string>Default</string>
@@ -2920,6 +2953,9 @@
             </item>
             <item row="0" column="1">
              <widget class="QComboBox" name="combo_gridScale">
+              <property name="toolTip">
+               <string>Interval size of grid lines</string>
+              </property>
               <property name="currentText">
                <string>500²</string>
               </property>
@@ -3288,7 +3324,7 @@
                <enum>Qt::NoFocus</enum>
               </property>
               <property name="toolTip">
-               <string>Rotate Left</string>
+               <string>Rotate camera 45 degrees to the left</string>
               </property>
               <property name="text">
                <string>↶</string>
@@ -3318,7 +3354,7 @@
                <enum>Qt::NoFocus</enum>
               </property>
               <property name="toolTip">
-               <string>Rotate Right</string>
+               <string>Rotate camera 45 degrees to the right</string>
               </property>
               <property name="text">
                <string>↷</string>
@@ -3392,7 +3428,7 @@
                <enum>Qt::NoFocus</enum>
               </property>
               <property name="toolTip">
-               <string>Return Camera to Default</string>
+               <string>Return camera to default zoom and rotation</string>
               </property>
               <property name="text">
                <string>Default</string>
@@ -3448,6 +3484,73 @@
         <layout class="QGridLayout" name="gridLayout_3">
          <item row="0" column="0">
           <widget class="QFrame" name="frame_gameStatus">
+           <property name="palette">
+            <palette>
+             <active>
+              <colorrole role="Base">
+               <brush brushstyle="SolidPattern">
+                <color alpha="255">
+                 <red>225</red>
+                 <green>255</green>
+                 <blue>225</blue>
+                </color>
+               </brush>
+              </colorrole>
+              <colorrole role="Window">
+               <brush brushstyle="SolidPattern">
+                <color alpha="255">
+                 <red>225</red>
+                 <green>255</green>
+                 <blue>225</blue>
+                </color>
+               </brush>
+              </colorrole>
+             </active>
+             <inactive>
+              <colorrole role="Base">
+               <brush brushstyle="SolidPattern">
+                <color alpha="255">
+                 <red>225</red>
+                 <green>255</green>
+                 <blue>225</blue>
+                </color>
+               </brush>
+              </colorrole>
+              <colorrole role="Window">
+               <brush brushstyle="SolidPattern">
+                <color alpha="255">
+                 <red>225</red>
+                 <green>255</green>
+                 <blue>225</blue>
+                </color>
+               </brush>
+              </colorrole>
+             </inactive>
+             <disabled>
+              <colorrole role="Base">
+               <brush brushstyle="SolidPattern">
+                <color alpha="255">
+                 <red>225</red>
+                 <green>255</green>
+                 <blue>225</blue>
+                </color>
+               </brush>
+              </colorrole>
+              <colorrole role="Window">
+               <brush brushstyle="SolidPattern">
+                <color alpha="255">
+                 <red>225</red>
+                 <green>255</green>
+                 <blue>225</blue>
+                </color>
+               </brush>
+              </colorrole>
+             </disabled>
+            </palette>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(225, 255, 225);</string>
+           </property>
            <property name="frameShape">
             <enum>QFrame::Panel</enum>
            </property>
@@ -3475,13 +3578,13 @@
              </font>
             </property>
             <property name="text">
-             <string>Game Status</string>
+             <string>Game Info</string>
             </property>
            </widget>
            <widget class="QGraphicsView" name="gView_ball">
             <property name="geometry">
              <rect>
-              <x>36</x>
+              <x>44</x>
               <y>29</y>
               <width>45</width>
               <height>45</height>
@@ -3511,6 +3614,9 @@
             </property>
             <property name="focusPolicy">
              <enum>Qt::TabFocus</enum>
+            </property>
+            <property name="toolTip">
+             <string>Toggles the GUI's connection with the running game</string>
             </property>
             <property name="text">
              <string>Connect</string>
@@ -3553,12 +3659,14 @@
               <height>300</height>
              </size>
             </property>
+            <property name="toolTip">
+             <string>Ball Y coordinate in the Field Panel</string>
+            </property>
             <property name="autoFillBackground">
              <bool>false</bool>
             </property>
             <property name="styleSheet">
-             <string notr="true">background-color: rgb(105, 105, 105);
-</string>
+             <string notr="true">background-color: rgb(0, 100, 0);</string>
             </property>
             <property name="frameShape">
              <enum>QFrame::Panel</enum>
@@ -3606,12 +3714,14 @@
               <height>300</height>
              </size>
             </property>
+            <property name="toolTip">
+             <string>Ball X coordinate in the Field Panel</string>
+            </property>
             <property name="autoFillBackground">
              <bool>false</bool>
             </property>
             <property name="styleSheet">
-             <string notr="true">background-color: rgb(105, 105, 105);
-</string>
+             <string notr="true">background-color: rgb(0, 100, 0);</string>
             </property>
             <property name="frameShape">
              <enum>QFrame::Panel</enum>
@@ -3638,14 +3748,20 @@
            <widget class="QLabel" name="label_3">
             <property name="geometry">
              <rect>
-              <x>244</x>
-              <y>46</y>
-              <width>51</width>
-              <height>17</height>
+              <x>260</x>
+              <y>33</y>
+              <width>31</width>
+              <height>41</height>
              </rect>
             </property>
             <property name="text">
-             <string>Cursor: </string>
+             <string/>
+            </property>
+            <property name="pixmap">
+             <pixmap resource="images.qrc">:/images/mouse_cursor_0.png</pixmap>
+            </property>
+            <property name="scaledContents">
+             <bool>true</bool>
             </property>
            </widget>
            <widget class="QLCDNumber" name="lcd_coordX_cursor">
@@ -3668,6 +3784,9 @@
               <width>16777215</width>
               <height>300</height>
              </size>
+            </property>
+            <property name="toolTip">
+             <string>Mouse cursor X coordinate in the Field Panel</string>
             </property>
             <property name="autoFillBackground">
              <bool>false</bool>
@@ -3719,6 +3838,9 @@
               <height>300</height>
              </size>
             </property>
+            <property name="toolTip">
+             <string>Mouse cursor Y coordinate in the Field Panel</string>
+            </property>
             <property name="autoFillBackground">
              <bool>false</bool>
             </property>
@@ -3755,6 +3877,9 @@
          </item>
          <item row="0" column="1">
           <widget class="QFrame" name="frame_gameStatus_2">
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 255);</string>
+           </property>
            <property name="frameShape">
             <enum>QFrame::Panel</enum>
            </property>
@@ -3782,7 +3907,7 @@
              </font>
             </property>
             <property name="text">
-             <string>Communication</string>
+             <string>Program Output</string>
             </property>
            </widget>
            <widget class="QTextBrowser" name="text_guiPrint">
@@ -3793,6 +3918,24 @@
               <width>417</width>
               <height>91</height>
              </rect>
+            </property>
+            <property name="font">
+             <font>
+              <family>DejaVu Sans</family>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="toolTip">
+             <string>Printed via guiPrint() function</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(59, 59, 59);</string>
+            </property>
+            <property name="lineWidth">
+             <number>3</number>
             </property>
            </widget>
           </widget>

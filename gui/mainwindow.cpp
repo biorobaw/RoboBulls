@@ -39,6 +39,7 @@
 #include "guidrawline.h"
 #include "communication/nxtrobcomm.h"
 #include "movement/move.h"
+#include <QScrollBar>
 
 using namespace std;
 
@@ -65,7 +66,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // create threads, and append them to the threads list, so that
     // threads can be accessed for making connections, and to start
     // and stop threads
-    threads.append(new GuiComm(50, this));
+    threads.append(new GuiComm(30, this));
 //    threads.append(new GuiComm(30, this));
 //    cout << "threads.append \n";
 
@@ -95,6 +96,7 @@ void MainWindow::launch(int value)
         ui->menuDashboard->setTitle("Camera");
     }
 
+
 //    ui->label->setText(QString("Current Thread Processing Status : %1").arg(value));
 
     // CTRL modifer for field scrolling
@@ -111,9 +113,8 @@ void MainWindow::launch(int value)
     // Updating GUI
     updateScene();
     updateBotPanel();
-    printBall();
+    updateBallInfo();
     scanForSelection();
-
 }
 
 void MainWindow::zoomField(int zoom) {
@@ -262,6 +263,7 @@ void MainWindow::setupBotPanel()
     ui->gView_ball->setScene(scene_ballIcon);
     ui->gView_ball->scale(.2, .2);
     ui->gView_ball->scale(1, -1);
+    ui->gView_ball->hide();
 
     // Formatting selected bot panel
     ui->gView_robot_prime->scale(.4, .4);
@@ -334,7 +336,9 @@ void MainWindow::scanForSelection() {
                 botIcons[i]->doubleClicked = false;
                 guiTeam[i]->doubleClicked = false;
                 centeredBotID = i;
+                centerViewOnBot();
                 zoomField(20);
+                guiPrint("Focused on Robot " + to_string(centeredBotID));
                 break;
             }
         }//nullcheck
@@ -508,6 +512,7 @@ int MainWindow::getVelocity(int id) {
 
 void MainWindow::printBehavior(int botID, string behavior, bool append)
 {
+    ui->text_primeBot->setTextColor(Qt::white);
     QString b;
     if (append == false) {
         b = QString::fromStdString(behavior) + "\n";
@@ -538,8 +543,11 @@ void MainWindow::drawLine(int originX, int originY, int endX, int endY) {
 
 void MainWindow::guiPrint(string output) {
 //    guiOutput.insert(0, QString::fromStdString(output));
+    ui->text_guiPrint->setTextColor(Qt::white);
     guiOutput += QString::fromStdString(output) + "\n";
     ui->text_guiPrint->setText(guiOutput);
+    QScrollBar *sb = ui->text_guiPrint->verticalScrollBar();
+    sb->setValue(sb->maximum());
 }
 
 void MainWindow::setUpScene()
@@ -677,13 +685,31 @@ void MainWindow::setUpScene()
     scene->addItem(robot5Y);
     scene->addItem(sidelines);
     scene->addItem(ball);
+    // Setting static details for robots
+    for (int i=0; i<teamSize; i++) {
+        // Blue team
+        guiTeam[i]->id = i;
+        guiTeam[i]->setToolTip("Robot " + QString::number(i));
+        guiTeam[i]->myTeam = true;
+        guiLabels[i]->id = i;
+        guiLabels[i]->myTeam = true;
+        guiLabels[i]->setScale(2.5);
+
+        // Yellow team
+        guiTeamY[i]->id = i;
+        guiTeamY[i]->setToolTip("Robot " + QString::number(i));
+        guiTeamY[i]->myTeam = false;
+        guiLabelsY[i]->id = i;
+        guiLabelsY[i]->myTeam = false;
+        guiLabelsY[i]->setScale(2.5);
+    }//end for
 
     // Drawing debug line (optional)
-    guidrawline = new GuiDrawLine();
-    guidrawline->setZValue(4);
-    guidrawline->setX(100);
-    guidrawline->setY(100);
-    scene->addItem(guidrawline);
+//    guidrawline = new GuiDrawLine();
+//    guidrawline->setZValue(4);
+//    guidrawline->setX(100);
+//    guidrawline->setY(100);
+//    scene->addItem(guidrawline);
 
     // Raising the curtains...
     ui->gView_field->setScene(scene);
@@ -735,8 +761,6 @@ void MainWindow::updateScene() {
             ball->setScale(.8);
         }
         ball->color = ui->combo_ballColor->currentText();
-        ballIcon->color = ui->combo_ballColor->currentText();
-        ui->gView_ball->update();
 
     // updating Blue Labels
     for (int i=0; i<teamSize; i++) {
@@ -748,14 +772,11 @@ void MainWindow::updateScene() {
             guiLabels[i]->setZValue(3);
             guiLabels[i]->setX(getBotCoordX(true,i));
             guiLabels[i]->setY(getBotCoordY(true,i));
-            guiLabels[i]->id = i;
             if (ui->check_showIDs->isChecked()) {
                 guiLabels[i]->hidden = false;
             }else{
                 guiLabels[i]->hidden = true;
             }
-            guiLabels[i]->myTeam = true;
-            guiLabels[i]->setScale(2.5);
         }
     }
     // updating Yellow Labels
@@ -768,16 +789,18 @@ void MainWindow::updateScene() {
             guiLabelsY[i]->setZValue(3);
             guiLabelsY[i]->setX(getBotCoordX(false,i));
             guiLabelsY[i]->setY(getBotCoordY(false,i));
-            guiLabelsY[i]->id = i;
             if (ui->check_showIDs->isChecked()) {
                 guiLabelsY[i]->hidden = false;
             }else{
                 guiLabelsY[i]->hidden = true;
             }
-            guiLabelsY[i]->myTeam = false;
-            guiLabelsY[i]->setScale(2.5);
         }
     }
+    // Bot moving TEST
+//    Point botPoint;
+//    botPoint.x = 0;
+//    botPoint.y = 0;
+//    gamemodel->find(0,gamemodel->getMyTeam())->setRobotPosition(botPoint);
     // updating Blue Robots
     for (int i=0; i<teamSize; i++) {
         if (gamemodel->find(i, gamemodel->getMyTeam()) != NULL) {
@@ -786,9 +809,6 @@ void MainWindow::updateScene() {
             guiTeam[i]->setZValue(2);
             double angle = getBotOrientDouble(true, i) ;
             guiTeam[i]->setRotation(angle);
-            guiTeam[i]->id = i;
-            guiTeam[i]->setToolTip("Robot " + QString::number(i));
-            guiTeam[i]->myTeam = true;
             // Action colors (may be better in the button slots)
             if (i != selectedBot) {
                 if (gamemodel->find(i, gamemodel->getMyTeam())->getDrible() ) {
@@ -806,10 +826,7 @@ void MainWindow::updateScene() {
             } else if (ui->combo_botScale->currentText() == "150%") {
                 guiTeam[i]->setScale(1.5);
             }
-            // Centering camera on double-clicked bot
-            if (i == centeredBotID) {
-                ui->gView_field->centerOn(guiTeam[i]);
-            }
+
 
         }
     }
@@ -821,9 +838,6 @@ void MainWindow::updateScene() {
             guiTeamY[i]->setZValue(2);
             double angleY = getBotOrientDouble(false, i) ;
             guiTeamY[i]->setRotation(angleY);
-            guiTeamY[i]->id = i;
-            guiTeamY[i]->setToolTip("Robot " + QString::number(i));
-            guiTeamY[i]->myTeam = false;
             // Robot Scale
             if (ui->combo_botScale->currentText() == "100%") {
                 guiTeamY[i]->setScale(1);
@@ -838,7 +852,8 @@ void MainWindow::updateScene() {
     if (ball->isSelected()) {
         cout << "Ball selected \n";
     }
-
+    // Keeping camera centered
+    centerViewOnBot();
     // drawLine TEST
 //    drawLine(getBotCoordX(true, 0),getBotCoordY(true, 0), 0, 0 );
 //    ui->gView_field->update();
@@ -1051,13 +1066,16 @@ QString MainWindow::getRemTime() {
 }
 
 
-void MainWindow::printBall() {
+void MainWindow::updateBallInfo() {
     ui->lcd_coordX_ball->display(getBallCoordX());
     ui->lcd_coordY_ball->display(getBallCoordY());
 
-//    ui->output_remTime->setText(getRemTime());
-//    ui->output_remTime->setText(refcom->Packet::time_left);
-//    cout << refcom->Packet::time_left << "\n";
+    ballIcon->color = ui->combo_ballColor->currentText();
+    ui->gView_ball->update();
+    // Displaying ball icon
+    if (ui->gView_ball->isHidden()) {
+        ui->gView_ball->show();
+    }
 }
 
 void MainWindow::on_pushButton_2_clicked()
@@ -1072,11 +1090,6 @@ void MainWindow::on_pushButton_3_clicked()
     int lAngle = 45;
     ui->gView_field->rotate(lAngle);
     currentFieldAngle += lAngle;
-}
-
-
-void MainWindow::gameModelUpdated() {
-
 }
 
 int MainWindow::frequency_of_primes (int n) {
@@ -1191,15 +1204,13 @@ int MainWindow::getMouseCoordY() {
     return y;
 }
 
-//void MainWindow::keyPressEvent(QKeyEvent *w)
-//{
-//    on_btn_botForward_pressed();
-//}
+void MainWindow::centerViewOnBot() {
+    // Centering camera on double-clicked bot
+    if (centeredBotID > -1) {
+        ui->gView_field->centerOn(guiTeam[centeredBotID]);
 
-//void MainWindow::keyReleaseEvent(QKeyEvent *w)
-//{
-//    on_btn_botForward_released();
-//}
+    }
+}
 
 MainWindow::~MainWindow()
 {
@@ -1308,7 +1319,7 @@ void MainWindow::on_btn_botForward_pressed() {
             sprintSpeed = 50;
         }
 
-        float currentFwd = ( gamemodel->find(selectedBot, gamemodel->getMyTeam())->getL() + gamemodel->find(selectedBot, gamemodel->getMyTeam())->getR() )/2;
+        int currentFwd = getVelocity(selectedBot);
         gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentFwd);
         gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(currentFwd);
 //        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setB(currentFwd);

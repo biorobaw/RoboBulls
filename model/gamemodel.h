@@ -57,6 +57,8 @@ public:
     Robot*  findOpTeam(int);    //Looks for a robot with specified id in opTeam
     Robot*  find(int, std::vector<Robot*>&);    //General-case find
     bool    isNewCommand();
+    // Ryan
+    bool    guiOverride = false;
 
     void setStrategyController(StrategyController * sc);
     void onCommandProcessed();

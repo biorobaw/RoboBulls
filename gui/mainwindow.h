@@ -64,8 +64,7 @@ public:
     void printBehavior(int botID, string behavior, bool append);    // puts the given bot's given string into a vector and prints it when the bot is selected
     void drawLine( int originX, int originY, int endX, int endY );
     void guiPrint(string output);
-    void printBall();
-    void gameModelUpdated();
+    void updateBallInfo();
     // For getting milliseconds
     int frequency_of_primes (int n);
     int getClock();
@@ -77,6 +76,7 @@ public:
     // Mouse stuff
     int getMouseCoordX();
     int getMouseCoordY();
+    void centerViewOnBot();
 
 protected:
     GameModel *gamemodel;
@@ -86,6 +86,7 @@ protected:
     RefComm *refcom;
     GuiDrawLine *guidrawline;
     NXTRobComm *nxtrobcomm;
+//    Movement *move;
 
 
 
@@ -201,6 +202,7 @@ private:
     double bot0Origin = 0;
     int currentFieldAngle = 0;
     int currentFieldScrollH;
+
 
 
 private slots:

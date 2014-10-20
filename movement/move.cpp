@@ -318,35 +318,23 @@ void Move::setVels(Robot *robot)
      * to sendVelsLarge. Thus, OVERALL_VELOCITY allows the slowing down
      * of the entire program since all movement comes through here.
      */
-//    if (guiOverride) {
-//        cout << "local override \n";
-
-//    }
-//    if (mainwindow != NULL) {
-//        cout << "gui override \n";
-//    } else {
-//        cout << "mainwindow NULL \n";
-//    }
-
-
-
     switch(robot->type())
     {
-    case differential:
-        robot->setL(left  * velMultiplier * OVERALL_VELOCITY);
-        robot->setR(right * velMultiplier * OVERALL_VELOCITY);
-        break;
-    case threeWheelOmni:
-        robot->setL(left  * velMultiplier * OVERALL_VELOCITY);
-        robot->setR(right * velMultiplier * OVERALL_VELOCITY);
-        robot->setB(back  * velMultiplier * OVERALL_VELOCITY);
-        break;
-    case fourWheelOmni:
-        robot->setLF(lfront * velMultiplier * OVERALL_VELOCITY);
-        robot->setRF(rfront * velMultiplier * OVERALL_VELOCITY);
-        robot->setLB(lback  * velMultiplier * OVERALL_VELOCITY);
-        robot->setRB(rback  * velMultiplier * OVERALL_VELOCITY);
-        break;
+        case differential:
+            robot->setL(left  * velMultiplier * OVERALL_VELOCITY);
+            robot->setR(right * velMultiplier * OVERALL_VELOCITY);
+            break;
+        case threeWheelOmni:
+            robot->setL(left  * velMultiplier * OVERALL_VELOCITY);
+            robot->setR(right * velMultiplier * OVERALL_VELOCITY);
+            robot->setB(back  * velMultiplier * OVERALL_VELOCITY);
+            break;
+        case fourWheelOmni:
+            robot->setLF(lfront * velMultiplier * OVERALL_VELOCITY);
+            robot->setRF(rfront * velMultiplier * OVERALL_VELOCITY);
+            robot->setLB(lback  * velMultiplier * OVERALL_VELOCITY);
+            robot->setRB(rback  * velMultiplier * OVERALL_VELOCITY);
+            break;
     }
 }
 
