@@ -320,7 +320,7 @@ void Move::setVels(Robot *robot)
      */
 
     // Ryan has perpetrated this boolean check
-    if (MainWindow::getMainWindow()->guiOverride == false) {
+    if (MainWindow::getMainWindow()->overriddenBots[robot->id] == false) {
 //        MainWindow::getMainWindow()->guiPrint("guiOverride OFF");
         switch(robot->type())
         {

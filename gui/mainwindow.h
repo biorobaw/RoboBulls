@@ -244,6 +244,7 @@ private slots:
     void on_btn_botDrible_pressed();
     void on_btn_botDrible_released();
     void on_check_botOverride_clicked(bool checked);
+    void on_check_botOverride_all_clicked(bool checked);
 };
 
 #endif // MAINWINDOW_H

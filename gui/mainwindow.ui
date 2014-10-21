@@ -328,10 +328,10 @@
            </property>
            <property name="font">
             <font>
-             <pointsize>11</pointsize>
-             <weight>50</weight>
+             <pointsize>10</pointsize>
+             <weight>75</weight>
              <italic>false</italic>
-             <bold>false</bold>
+             <bold>true</bold>
             </font>
            </property>
            <property name="styleSheet">
@@ -397,7 +397,9 @@
               <property name="font">
                <font>
                 <family>DejaVu Sans</family>
-                <pointsize>10</pointsize>
+                <pointsize>8</pointsize>
+                <weight>75</weight>
+                <bold>true</bold>
                </font>
               </property>
               <property name="toolTip">
@@ -485,10 +487,10 @@
            </property>
            <property name="font">
             <font>
-             <pointsize>11</pointsize>
-             <weight>50</weight>
+             <pointsize>10</pointsize>
+             <weight>75</weight>
              <italic>false</italic>
-             <bold>false</bold>
+             <bold>true</bold>
             </font>
            </property>
            <property name="styleSheet">
@@ -585,9 +587,10 @@
               </property>
               <property name="font">
                <font>
-                <pointsize>11</pointsize>
-                <weight>50</weight>
-                <bold>false</bold>
+                <pointsize>10</pointsize>
+                <weight>75</weight>
+                <italic>false</italic>
+                <bold>true</bold>
                </font>
               </property>
               <property name="text">
@@ -710,8 +713,22 @@
              <height>22</height>
             </rect>
            </property>
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+             <weight>75</weight>
+             <italic>false</italic>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Hotkey: O) Toggles manual control override on selected robot&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+           </property>
            <property name="text">
-            <string>Override</string>
+            <string>Manual</string>
            </property>
           </widget>
          </widget>
@@ -3186,6 +3203,22 @@
            </property>
            <property name="text">
             <string>Drible</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="check_botOverride_all">
+           <property name="geometry">
+            <rect>
+             <x>460</x>
+             <y>8</y>
+             <width>121</width>
+             <height>22</height>
+            </rect>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Toggles manual control override on all blue robots&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="text">
+            <string>Manual Team</string>
            </property>
           </widget>
          </widget>

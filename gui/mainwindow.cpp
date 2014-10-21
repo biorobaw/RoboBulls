@@ -72,7 +72,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // create threads, and append them to the threads list, so that
     // threads can be accessed for making connections, and to start
     // and stop threads
-    threads.append(new GuiComm(50, this));
+    threads.append(new GuiComm(30, this));
 //    threads.append(new GuiComm(30, this));
 //    cout << "threads.append \n";
 
@@ -101,7 +101,7 @@ void MainWindow::launch(int value)
     }
 
 
-//    ui->label->setText(QString("Current Thread Processing Status : %1").arg(value));
+    ui->label->setText(QString("Current Thread Processing Status : %1").arg(value));
 
     // CTRL modifer for field scrolling
     if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier) == true) {
@@ -262,7 +262,10 @@ void MainWindow::setupBotPanel()
         botIconScenes[i]->addItem(botIcons[i]);
         botIconFrames[i]->setScene(botIconScenes[i]);
         botIconFrames[i]->hide();
-        velocityDials[i]->setValue(0);  // test
+        velocityDials[i]->setValue(0);
+        overriddenBots.push_back(false);    // creating each element, and setting to false
+        cout << "overriddenBots.size: " << overriddenBots.size() << "\n";
+
     }
     // putting ball icon into GUI
     scene_ballIcon->addItem(ballIcon);
@@ -325,12 +328,20 @@ void MainWindow::updateBotPanel() {
         ui->dial_botSpeed->setStyleSheet("background-color: rgb(150, 150, 150);");
         ui->lcd_botSpeed->setStyleSheet("background-color: rgb(100, 100, 100);");
     }
-    // Override checkbox
-//    if (overriddenBots[selectedBot] == true) {
-//        ui->check_botOverride->setChecked(true);
-//    } else {
-//        ui->check_botOverride->setChecked(false);
-//    }
+    // Robot override checkbox
+    if (selectedBot > -1) {
+        ui->check_botOverride->setEnabled(true);
+        ui->check_botOverride->show();
+        if (overriddenBots[selectedBot] == true) {
+            ui->check_botOverride->setChecked(true);
+        } else {
+            ui->check_botOverride->setChecked(false);
+        }
+    } else {
+        ui->check_botOverride->setEnabled(false);
+        ui->check_botOverride->hide();
+    }
+
 
     // Mouse point
     ui->lcd_coordX_cursor->display(getMouseCoordX());
@@ -569,6 +580,9 @@ void MainWindow::setUpScene()
     QShortcut *spaceBar = new QShortcut(this);
     spaceBar->setKey(Qt::Key_Space);
 
+    QShortcut *o = new QShortcut(this);
+    o->setKey(Qt::Key_O);
+
 //    QShortcut *w = new QShortcut(this);
 //    w->setKey(Qt::Key_W);
 //    QShortcut *a = new QShortcut(this);
@@ -590,6 +604,7 @@ void MainWindow::setUpScene()
 
 
     connect(spaceBar, SIGNAL(activated()), this, SLOT(on_pushButton_clicked()));
+    connect(o, SIGNAL(activated()), ui->check_botOverride, SLOT(click()));
 
     scene = new GuiScene();
 
@@ -707,7 +722,6 @@ void MainWindow::setUpScene()
         guiLabels[i]->id = i;
         guiLabels[i]->myTeam = true;
         guiLabels[i]->setScale(2.5);
-        overriddenBots.push_back(false);    // creating each element, and setting to false
 
         // Yellow team
         guiTeamY[i]->id = i;
@@ -1420,7 +1434,8 @@ void MainWindow::updateSelectedBotPanel(int id)
 }
 
 void MainWindow::on_btn_botForward_pressed() {
-    if (selectedBot > -1) {
+    if (selectedBot > -1 && ui->check_botOverride->isChecked()) {
+
         ui->btn_botForward->setDown(true);
 
         int currentFwd = getVelocity(selectedBot);
@@ -1447,7 +1462,7 @@ void MainWindow::on_btn_botForward_pressed() {
 }
 
 void MainWindow::on_btn_botForward_released() {
-    if (selectedBot > -1) {
+    if (selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botForward->setDown(false);
         gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(0);
         gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(0);
@@ -1455,7 +1470,7 @@ void MainWindow::on_btn_botForward_released() {
 }
 
 void MainWindow::on_btn_botTurnRight_pressed() {
-    if (selectedBot > -1) {
+    if (selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botTurnRight->setDown(true);
         int currentVel = getVelocity(selectedBot);
         float currentL = gamemodel->find(selectedBot, gamemodel->getMyTeam())->getL();
@@ -1466,7 +1481,7 @@ void MainWindow::on_btn_botTurnRight_pressed() {
 }
 
 void MainWindow::on_btn_botTurnRight_released() {
-    if (selectedBot > -1) {
+    if (selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botTurnRight->setDown(false);
         float currentFwd = getVelocity(selectedBot);
         gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentFwd);
@@ -1475,7 +1490,7 @@ void MainWindow::on_btn_botTurnRight_released() {
 }
 
 void MainWindow::on_btn_botTurnLeft_pressed() {
-    if (selectedBot > -1) {
+    if (selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botTurnLeft->setDown(true);
         int currentVel = getVelocity(selectedBot);
         int currentL = gamemodel->find(selectedBot, gamemodel->getMyTeam())->getL();
@@ -1486,7 +1501,7 @@ void MainWindow::on_btn_botTurnLeft_pressed() {
 }
 
 void MainWindow::on_btn_botTurnLeft_released() {
-    if (selectedBot > -1) {
+    if (selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botTurnLeft->setDown(false);
         float currentVel = getVelocity(selectedBot);
         gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentVel);
@@ -1495,7 +1510,7 @@ void MainWindow::on_btn_botTurnLeft_released() {
 }
 
 void MainWindow::on_btn_botReverse_pressed() {
-    if (selectedBot > -1) {
+    if (selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botReverse->setDown(true);
         int currentVel = getVelocity(selectedBot);
         gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentVel);
@@ -1508,7 +1523,7 @@ void MainWindow::on_btn_botReverse_pressed() {
 }
 
 void MainWindow::on_btn_botReverse_released() {
-    if (selectedBot > -1) {
+    if (selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botReverse->setDown(false);
         int currentVel = getVelocity(selectedBot);
         gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(0);
@@ -1517,7 +1532,7 @@ void MainWindow::on_btn_botReverse_released() {
 }
 
 void MainWindow::on_btn_botKick_pressed() {
-    if (selectedBot > -1) {
+    if (selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botKick->setDown(true);
         gamemodel->find(selectedBot, gamemodel->getMyTeam())->setKick(true);
         guiTeam[selectedBot]->kicking = true;
@@ -1525,7 +1540,7 @@ void MainWindow::on_btn_botKick_pressed() {
 }
 
 void MainWindow::on_btn_botKick_released() {
-    if (selectedBot > -1) {
+    if (selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botKick->setDown(false);
         gamemodel->find(selectedBot, gamemodel->getMyTeam())->setKick(false);
         guiTeam[selectedBot]->kicking = false;
@@ -1533,7 +1548,7 @@ void MainWindow::on_btn_botKick_released() {
 }
 
 void MainWindow::on_btn_botDrible_pressed() {
-    if (selectedBot > -1) {
+    if (selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botDrible->setDown(true);
         gamemodel->find(selectedBot, gamemodel->getMyTeam())->setDrible(true);
         guiTeam[selectedBot]->dribling = true;
@@ -1541,7 +1556,7 @@ void MainWindow::on_btn_botDrible_pressed() {
 }
 
 void MainWindow::on_btn_botDrible_released() {
-    if (selectedBot > -1) {
+    if (selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botDrible->setDown(false);
         gamemodel->find(selectedBot, gamemodel->getMyTeam())->setDrible(false);
         guiTeam[selectedBot]->dribling = false;
@@ -1554,5 +1569,18 @@ void MainWindow::on_check_botOverride_clicked(bool checked) {
         overriddenBots[selectedBot] = true;
     } else {
         overriddenBots[selectedBot] = false;
+    }
+}
+
+void MainWindow::on_check_botOverride_all_clicked(bool checked) {
+    if (checked) {  // overrides all bots' software control
+        for (int i=0; i<overriddenBots.size(); i++) {
+            overriddenBots[i] = true;
+        }
+    } else {    // returns software control to all bots
+        for (int i=0; i<overriddenBots.size(); i++) {
+            overriddenBots[i] = false;
+        }
+
     }
 }
