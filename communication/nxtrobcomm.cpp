@@ -1,4 +1,5 @@
 #include "nxtrobcomm.h"
+#include "gui/mainwindow.h"
 
 NXTRobComm::NXTRobComm()
 {
@@ -70,11 +71,14 @@ void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
         gui_kick = rob->getKick();
         gui_dribble = rob->getDrible();
 
-        // Clear robot information
-        rob->setL(0);
-        rob->setR(0);
-        rob->setKick(0);
-        rob->setDrible(0);
+        // Ryan
+        if (MainWindow::getMainWindow()->guiOverride == false) {
+            // Clear robot information
+            rob->setL(0);
+            rob->setR(0);
+            rob->setKick(0);
+            rob->setDrible(0);
+        }
     }
 
     // Send Array of packets

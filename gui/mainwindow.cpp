@@ -3,7 +3,7 @@
 // colision notification
 // different field & robot scales based on SIMULATED
 // make bearing dial gray if robot is NULL
-// nxtrobcomm - sets velocity to zero
+// communication/nxtrobcomm.cpp - sets velocity to zero
 #include <math.h>
 
 #include "mainwindow.h"
@@ -41,7 +41,12 @@
 #include "movement/move.h"
 #include <QScrollBar>
 
+// Global static pointer used to ensure a single isntance of the class.
+MainWindow* MainWindow::mw = NULL;
+
 using namespace std;
+
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -58,6 +63,7 @@ MainWindow::MainWindow(QWidget *parent) :
     setupBotPanel();
     ui->pushButton->setEnabled(true);
 
+//    guiOverride = false;
 
     defaultZoom();
 
@@ -109,6 +115,8 @@ void MainWindow::launch(int value)
         }
     }
     // Updating GUI
+    setGuiOverride();
+    setMyVelocity();    //
     updateScene();
     updateBotPanel();
     updateBallInfo();
@@ -279,9 +287,9 @@ void MainWindow::updateBotPanel() {
             botXcoords[i]->display(getBotCoordX(true, i));
             botYcoords[i]->display(getBotCoordY(true, i));
             botOrients[i]->setValue(getBotOrientDouble(true, i));
-            if (nxtrobcomm->gui_kick == 1) {
-                printBehavior(i,"KICK!", true);
-            }
+//            if (nxtrobcomm->gui_kick == 1) {
+//                printBehavior(i,"KICK!", true);
+//            }
             botIcons[i]->setX(0);
             botIcons[i]->setY(0);
             botIcons[i]->setZValue(2);
@@ -317,6 +325,12 @@ void MainWindow::updateBotPanel() {
         ui->dial_botSpeed->setStyleSheet("background-color: rgb(150, 150, 150);");
         ui->lcd_botSpeed->setStyleSheet("background-color: rgb(100, 100, 100);");
     }
+    // Override checkbox
+//    if (overriddenBots[selectedBot] == true) {
+//        ui->check_botOverride->setChecked(true);
+//    } else {
+//        ui->check_botOverride->setChecked(false);
+//    }
 
     // Mouse point
     ui->lcd_coordX_cursor->display(getMouseCoordX());
@@ -446,18 +460,18 @@ int MainWindow::getVelocity(int id) {
 
     if ( gamemodel->find(id, gamemodel->getMyTeam())->type() == fourWheelOmni ) {
         printBehavior(id,"fourWheelOmni",false);
-        if (SIMULATED) {
+//        if (SIMULATED) {
             LF = gamemodel->find(id, gamemodel->getMyTeam())->getLF();
             RF = gamemodel->find(id, gamemodel->getMyTeam())->getRF();
             LB = gamemodel->find(id, gamemodel->getMyTeam())->getLB();
             RB = gamemodel->find(id, gamemodel->getMyTeam())->getRB();
-        } else {
-            LF = nxtrobcomm->gui_left_front;
-            RF = nxtrobcomm->gui_right_front;
-            LB = nxtrobcomm->gui_left_back;
-            RB = nxtrobcomm->gui_right_back;
-        }
-//        cout << "Robot " << id << ": " << LF << ", " << RF << "\n";
+//        } else {
+//            LF = nxtrobcomm->gui_left_front;
+//            RF = nxtrobcomm->gui_right_front;
+//            LB = nxtrobcomm->gui_left_back;
+//            RB = nxtrobcomm->gui_right_back;
+//        }
+//        cout << "4wheel Robot " << id << ": " << LF << ", " << RF << "\n";
             velocity += LF;
             wheels++;
             velocity += RF;
@@ -468,30 +482,29 @@ int MainWindow::getVelocity(int id) {
             wheels++;
     } else if ( gamemodel->find(id, gamemodel->getMyTeam())->type() == differential ) {
         printBehavior(id,"differential",false);
-        if (SIMULATED) {
+//        if (SIMULATED) {
             LF = gamemodel->find(id, gamemodel->getMyTeam())->getL();
             RF = gamemodel->find(id, gamemodel->getMyTeam())->getR();
-        } else {
-            LF = nxtrobcomm->gui_left;
-            RF = nxtrobcomm->gui_right;
-        }
-//        cout << "Robot " << id << ": " << LF << ", " << RF << "\n";
-
+//        } else {
+//            LF = nxtrobcomm->gui_left;
+//            RF = nxtrobcomm->gui_right;
+//        }
+//        cout << "diff Robot " << id << ": " << LF << ", " << RF << "\n";
             velocity += LF;
             wheels++;
             velocity += RF;
             wheels++;
     } else if ( gamemodel->find(id, gamemodel->getMyTeam())->type() == threeWheelOmni ) {
         printBehavior(id,"threeWheelOmni",false);
-        if (SIMULATED) {
+//        if (SIMULATED) {
             LF = gamemodel->find(id, gamemodel->getMyTeam())->getLF();
             RF = gamemodel->find(id, gamemodel->getMyTeam())->getRF();
-        } else {
-            LF = nxtrobcomm->gui_left_front;
-            RF = nxtrobcomm->gui_right_front;
-        }
+//        } else {
+//            LF = nxtrobcomm->gui_left_front;
+//            RF = nxtrobcomm->gui_right_front;
+//        }
         int b = gamemodel->find(id, gamemodel->getMyTeam())->getB();
-//        cout << "Robot " << id << ": " << LF << ", " << RF << "\n";
+//        cout << "3wheel Robot " << id << ": " << LF << ", " << RF << "\n";
 
             velocity += LF;
             wheels++;
@@ -504,7 +517,7 @@ int MainWindow::getVelocity(int id) {
     if (velocity != 0 && wheels != 0)
         velocity /= wheels;
 
-
+    printBehavior(id,"Velocities: " + to_string(LF) + " & " + to_string(RF), true);
     return velocity;
 }
 
@@ -683,6 +696,8 @@ void MainWindow::setUpScene()
     scene->addItem(robot5Y);
     scene->addItem(sidelines);
     scene->addItem(ball);
+
+
     // Setting static details for robots
     for (int i=0; i<teamSize; i++) {
         // Blue team
@@ -692,6 +707,7 @@ void MainWindow::setUpScene()
         guiLabels[i]->id = i;
         guiLabels[i]->myTeam = true;
         guiLabels[i]->setScale(2.5);
+        overriddenBots.push_back(false);    // creating each element, and setting to false
 
         // Yellow team
         guiTeamY[i]->id = i;
@@ -1281,6 +1297,25 @@ void MainWindow::centerViewOnBot() {
     }
 }
 
+void MainWindow::setMyVelocity() {
+    if (QApplication::keyboardModifiers().testFlag(Qt::ShiftModifier) == true) {
+        myVelocity = 100;
+    } else if (QApplication::keyboardModifiers().testFlag(Qt::AltModifier) == true) {
+        myVelocity = 25;
+    } else {
+        myVelocity = 50;
+    }
+}
+
+void MainWindow::setGuiOverride() {
+    if (ui->check_botOverride->isChecked()) {
+        guiOverride = true;
+    } else {
+        guiOverride = false;
+    }
+
+}
+
 MainWindow::~MainWindow()
 {
     //delete ui;
@@ -1299,6 +1334,14 @@ MainWindow *MainWindow::getWindow()
 
 //    return window;
 
+}
+
+MainWindow *MainWindow::getMainWindow() {
+    if (mw == NULL) {
+        mw = new MainWindow();
+    }
+
+    return mw;
 }
 
 
@@ -1379,14 +1422,6 @@ void MainWindow::updateSelectedBotPanel(int id)
 void MainWindow::on_btn_botForward_pressed() {
     if (selectedBot > -1) {
         ui->btn_botForward->setDown(true);
-        int sprintSpeed = 50;
-        if (QApplication::keyboardModifiers().testFlag(Qt::ShiftModifier) == true) {
-            sprintSpeed = 100;
-        } else if (QApplication::keyboardModifiers().testFlag(Qt::AltModifier) == true) {
-            sprintSpeed = 25;
-        } else {
-            sprintSpeed = 50;
-        }
 
         int currentFwd = getVelocity(selectedBot);
         gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentFwd);
@@ -1397,8 +1432,8 @@ void MainWindow::on_btn_botForward_pressed() {
 //        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setRF(currentFwd);
 //        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setRB(currentFwd);
         if (currentFwd <= 0) {
-            gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentFwd+sprintSpeed);
-            gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(currentFwd+sprintSpeed);
+            gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentFwd+myVelocity);
+            gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(currentFwd+myVelocity);
 //            gamemodel->find(selectedBot, gamemodel->getMyTeam())->setLF(currentFwd+50);
 //            gamemodel->find(selectedBot, gamemodel->getMyTeam())->setLB(currentFwd+50);
 //            gamemodel->find(selectedBot, gamemodel->getMyTeam())->setRF(currentFwd+50);
@@ -1422,19 +1457,11 @@ void MainWindow::on_btn_botForward_released() {
 void MainWindow::on_btn_botTurnRight_pressed() {
     if (selectedBot > -1) {
         ui->btn_botTurnRight->setDown(true);
-        int sprintSpeed = 50;
-        if (QApplication::keyboardModifiers().testFlag(Qt::ShiftModifier) == true) {
-            sprintSpeed = 100;
-        } else if (QApplication::keyboardModifiers().testFlag(Qt::AltModifier) == true) {
-            sprintSpeed = 25;
-        } else {
-            sprintSpeed = 50;
-        }
-        int currentFwd = getVelocity(selectedBot);
+        int currentVel = getVelocity(selectedBot);
         float currentL = gamemodel->find(selectedBot, gamemodel->getMyTeam())->getL();
         float currentR = gamemodel->find(selectedBot, gamemodel->getMyTeam())->getR();
-        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentL+sprintSpeed/2);
-        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(currentR-sprintSpeed/2);
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentL+myVelocity/2);
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(currentR-myVelocity/2);
     }
 }
 
@@ -1450,48 +1477,32 @@ void MainWindow::on_btn_botTurnRight_released() {
 void MainWindow::on_btn_botTurnLeft_pressed() {
     if (selectedBot > -1) {
         ui->btn_botTurnLeft->setDown(true);
-        int sprintSpeed = 50;
-        if (QApplication::keyboardModifiers().testFlag(Qt::ShiftModifier) == true) {
-            sprintSpeed = 100;
-        } else if (QApplication::keyboardModifiers().testFlag(Qt::AltModifier) == true) {
-            sprintSpeed = 25;
-        } else {
-            sprintSpeed = 50;
-        }
-        int currentFwd = getVelocity(selectedBot);
+        int currentVel = getVelocity(selectedBot);
         int currentL = gamemodel->find(selectedBot, gamemodel->getMyTeam())->getL();
         int currentR = gamemodel->find(selectedBot, gamemodel->getMyTeam())->getR();
-        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentL-sprintSpeed/2);
-        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(currentR+sprintSpeed/2);
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentL-myVelocity/2);
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(currentR+myVelocity/2);
     }
 }
 
 void MainWindow::on_btn_botTurnLeft_released() {
     if (selectedBot > -1) {
         ui->btn_botTurnLeft->setDown(false);
-        float currentFwd = getVelocity(selectedBot);
-        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentFwd);
-        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(currentFwd);
+        float currentVel = getVelocity(selectedBot);
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentVel);
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(currentVel);
     }
 }
 
 void MainWindow::on_btn_botReverse_pressed() {
     if (selectedBot > -1) {
         ui->btn_botReverse->setDown(true);
-        int sprintSpeed = 50;
-        if (QApplication::keyboardModifiers().testFlag(Qt::ShiftModifier) == true) {
-            sprintSpeed = 100;
-        } else if (QApplication::keyboardModifiers().testFlag(Qt::AltModifier) == true) {
-            sprintSpeed = 25;
-        } else {
-            sprintSpeed = 50;
-        }
-        int currentFwd = getVelocity(selectedBot);
-        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentFwd);
-        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(currentFwd);
-        if (currentFwd >= 0) {
-            gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentFwd-sprintSpeed);
-            gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(currentFwd-sprintSpeed);
+        int currentVel = getVelocity(selectedBot);
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentVel);
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(currentVel);
+        if (currentVel >= 0) {
+            gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentVel-myVelocity);
+            gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(currentVel-myVelocity);
         }
     }
 }
@@ -1499,7 +1510,7 @@ void MainWindow::on_btn_botReverse_pressed() {
 void MainWindow::on_btn_botReverse_released() {
     if (selectedBot > -1) {
         ui->btn_botReverse->setDown(false);
-        int currentFwd = getVelocity(selectedBot);
+        int currentVel = getVelocity(selectedBot);
         gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(0);
         gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(0);
     }
@@ -1537,3 +1548,11 @@ void MainWindow::on_btn_botDrible_released() {
     }
 }
 
+
+void MainWindow::on_check_botOverride_clicked(bool checked) {
+    if (checked) {
+        overriddenBots[selectedBot] = true;
+    } else {
+        overriddenBots[selectedBot] = false;
+    }
+}

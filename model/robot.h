@@ -54,11 +54,12 @@ public:
 
     bool hasBall;
     bool hasBeh;
+    int id;     // moved here by Ryan from private
 
 private:
     Point robotPosition;
     float orientation; //orientation of the robot
-    int id;
+//    int id;
     float LF, RF, LB, RB; // used for robot's movements
     Behavior * currentBehavior;
     bool kick;

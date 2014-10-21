@@ -34,15 +34,17 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
     static MainWindow* getWindow();
 
 
 public:
-
-    bool guiOverride = false;
+    static MainWindow* getMainWindow();
+    bool guiOverride = false;   // For the purpose of overriding gamemodel's commands with our own
+    int botOverride = -1;       // the id of the currently overridden bot
+    int selectedBot = -1;       // the ID of the currently selected bot
+    std::vector<bool> overriddenBots;
     QString getBotCoord(int id); // Returns the specified robot's x/y position as a QString
     QString getBotOrientString(int id);
     double  getBotOrientDouble(bool myTeam, int id);
@@ -77,6 +79,8 @@ public:
     int getMouseCoordX();
     int getMouseCoordY();
     void centerViewOnBot();
+    void setMyVelocity();
+    void setGuiOverride();
 
 protected:
     GameModel *gamemodel;
@@ -97,7 +101,11 @@ signals:
 
 
 private:
+    // moved from public
+    explicit MainWindow(QWidget *parent = 0);
     Ui::MainWindow *ui;
+    // my pointer
+    static MainWindow *mw;
     QList<GuiComm*> threads;
     GuiScene *scene;
     QGraphicsEllipseItem *ellipse;
@@ -195,7 +203,8 @@ private:
 
     bool refresh = true;   // set this to true whenever a change to the field is made to refresh on next frame.
     bool justScrolled = false;
-    int selectedBot = -1;
+    // For controlling bots manually
+    int myVelocity;
 
     long double currentTimeMS = 0;
     double ballOrigin = 0;
@@ -234,6 +243,7 @@ private slots:
     void on_btn_botKick_released();
     void on_btn_botDrible_pressed();
     void on_btn_botDrible_released();
+    void on_check_botOverride_clicked(bool checked);
 };
 
 #endif // MAINWINDOW_H

@@ -701,6 +701,19 @@
             </item>
            </layout>
           </widget>
+          <widget class="QCheckBox" name="check_botOverride">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>130</y>
+             <width>91</width>
+             <height>22</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Override</string>
+           </property>
+          </widget>
          </widget>
         </widget>
         <widget class="QWidget" name="layoutWidget">
@@ -2844,7 +2857,7 @@
           <enum>Qt::TabFocus</enum>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="field">
           <attribute name="title">

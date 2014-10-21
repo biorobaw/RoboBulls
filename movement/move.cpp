@@ -318,23 +318,30 @@ void Move::setVels(Robot *robot)
      * to sendVelsLarge. Thus, OVERALL_VELOCITY allows the slowing down
      * of the entire program since all movement comes through here.
      */
-    switch(robot->type())
-    {
-        case differential:
-            robot->setL(left  * velMultiplier * OVERALL_VELOCITY);
-            robot->setR(right * velMultiplier * OVERALL_VELOCITY);
-            break;
-        case threeWheelOmni:
-            robot->setL(left  * velMultiplier * OVERALL_VELOCITY);
-            robot->setR(right * velMultiplier * OVERALL_VELOCITY);
-            robot->setB(back  * velMultiplier * OVERALL_VELOCITY);
-            break;
-        case fourWheelOmni:
-            robot->setLF(lfront * velMultiplier * OVERALL_VELOCITY);
-            robot->setRF(rfront * velMultiplier * OVERALL_VELOCITY);
-            robot->setLB(lback  * velMultiplier * OVERALL_VELOCITY);
-            robot->setRB(rback  * velMultiplier * OVERALL_VELOCITY);
-            break;
+
+    // Ryan has perpetrated this boolean check
+    if (MainWindow::getMainWindow()->guiOverride == false) {
+//        MainWindow::getMainWindow()->guiPrint("guiOverride OFF");
+        switch(robot->type())
+        {
+            case differential:
+                robot->setL(left  * velMultiplier * OVERALL_VELOCITY);
+                robot->setR(right * velMultiplier * OVERALL_VELOCITY);
+                break;
+            case threeWheelOmni:
+                robot->setL(left  * velMultiplier * OVERALL_VELOCITY);
+                robot->setR(right * velMultiplier * OVERALL_VELOCITY);
+                robot->setB(back  * velMultiplier * OVERALL_VELOCITY);
+                break;
+            case fourWheelOmni:
+                robot->setLF(lfront * velMultiplier * OVERALL_VELOCITY);
+                robot->setRF(rfront * velMultiplier * OVERALL_VELOCITY);
+                robot->setLB(lback  * velMultiplier * OVERALL_VELOCITY);
+                robot->setRB(rback  * velMultiplier * OVERALL_VELOCITY);
+                break;
+        }
+    } else {
+//        MainWindow::getMainWindow()->guiPrint("guiOverride ON");
     }
 }
 
