@@ -41,18 +41,15 @@ public:
 
 public:
     static MainWindow* getMainWindow();
-    bool guiOverride = false;   // For the purpose of overriding gamemodel's commands with our own
-    int botOverride = -1;       // the id of the currently overridden bot
-    int selectedBot = -1;       // the ID of the currently selected bot
-    std::vector<bool> overriddenBots;
-    QString getBotCoord(int id); // Returns the specified robot's x/y position as a QString
+    bool guiOverride = false;           // For the purpose of overriding gamemodel's commands with our own
+    int botOverride = -1;               // the id of the currently overridden bot
+    int selectedBot = -1;               // the ID of the currently selected bot
+    std::vector<bool> overriddenBots;   // keeps track of whether each bot is overridden
+    QString getBotCoord(int id);        // Returns the specified robot's x/y position as a QString
     QString getBotOrientString(int id);
     double  getBotOrientDouble(bool myTeam, int id);
     int getBotCoordX(bool myTeam, int id);
     int getBotCoordY(bool myTeam,int id);
-    QImage  getStatusImg(int id);
-    bool    hasChangedQString(QLabel* l, QString s);
-    bool    hasChangedQImage(QLabel* l, QImage s);
     int     getBotSpeed(std::vector<QLabel*> c, int id);
     QString getBallCoord();
     int  getBallCoordX();
@@ -215,7 +212,7 @@ private:
 
 
 private slots:
-    void on_pushButton_clicked();
+    void on_btn_connectGui_clicked();
     void launch(int value);
     void updateScene();
     void on_pushButton_2_clicked();
@@ -244,7 +241,8 @@ private slots:
     void on_btn_botDrible_pressed();
     void on_btn_botDrible_released();
     void on_check_botOverride_clicked(bool checked);
-    void on_check_botOverride_all_clicked(bool checked);
+    void on_btn_override_all_released();
+    void on_btn_override_none_released();
 };
 
 #endif // MAINWINDOW_H

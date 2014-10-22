@@ -216,16 +216,16 @@
             <string notr="true">background-color: rgb(150, 150, 150);</string>
            </property>
            <property name="minimum">
-            <number>-150</number>
+            <number>-100</number>
            </property>
            <property name="maximum">
-            <number>150</number>
+            <number>100</number>
            </property>
            <property name="singleStep">
             <number>1</number>
            </property>
            <property name="pageStep">
-            <number>15</number>
+            <number>10</number>
            </property>
            <property name="tracking">
             <bool>false</bool>
@@ -240,7 +240,7 @@
             <bool>false</bool>
            </property>
            <property name="notchTarget">
-            <double>3.000000000000000</double>
+            <double>2.000000000000000</double>
            </property>
            <property name="notchesVisible">
             <bool>true</bool>
@@ -721,6 +721,9 @@
              <bold>true</bold>
             </font>
            </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Hotkey: O) Toggles manual control override on selected robot&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
@@ -728,7 +731,7 @@
             <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
            </property>
            <property name="text">
-            <string>Manual</string>
+            <string>Override</string>
            </property>
           </widget>
          </widget>
@@ -874,22 +877,22 @@
               <string notr="true">background-color: rgb(150, 150, 150);</string>
              </property>
              <property name="minimum">
-              <number>-150</number>
+              <number>-100</number>
              </property>
              <property name="maximum">
-              <number>150</number>
+              <number>100</number>
              </property>
              <property name="singleStep">
               <number>1</number>
              </property>
              <property name="pageStep">
-              <number>15</number>
+              <number>10</number>
              </property>
              <property name="wrapping">
               <bool>false</bool>
              </property>
              <property name="notchTarget">
-              <double>6.000000000000000</double>
+              <double>4.000000000000000</double>
              </property>
              <property name="notchesVisible">
               <bool>true</bool>
@@ -1213,22 +1216,22 @@
               <string notr="true">background-color: rgb(150, 150, 150);</string>
              </property>
              <property name="minimum">
-              <number>-150</number>
+              <number>-100</number>
              </property>
              <property name="maximum">
-              <number>150</number>
+              <number>100</number>
              </property>
              <property name="singleStep">
               <number>1</number>
              </property>
              <property name="pageStep">
-              <number>15</number>
+              <number>10</number>
              </property>
              <property name="wrapping">
               <bool>false</bool>
              </property>
              <property name="notchTarget">
-              <double>6.000000000000000</double>
+              <double>4.000000000000000</double>
              </property>
              <property name="notchesVisible">
               <bool>true</bool>
@@ -1549,22 +1552,22 @@
               <string notr="true">background-color: rgb(150, 150, 150);</string>
              </property>
              <property name="minimum">
-              <number>-150</number>
+              <number>-100</number>
              </property>
              <property name="maximum">
-              <number>150</number>
+              <number>100</number>
              </property>
              <property name="singleStep">
               <number>1</number>
              </property>
              <property name="pageStep">
-              <number>15</number>
+              <number>10</number>
              </property>
              <property name="wrapping">
               <bool>false</bool>
              </property>
              <property name="notchTarget">
-              <double>6.000000000000000</double>
+              <double>4.000000000000000</double>
              </property>
              <property name="notchesVisible">
               <bool>true</bool>
@@ -1885,22 +1888,22 @@
               <string notr="true">background-color: rgb(150, 150, 150);</string>
              </property>
              <property name="minimum">
-              <number>-150</number>
+              <number>-100</number>
              </property>
              <property name="maximum">
-              <number>150</number>
+              <number>100</number>
              </property>
              <property name="singleStep">
               <number>1</number>
              </property>
              <property name="pageStep">
-              <number>15</number>
+              <number>10</number>
              </property>
              <property name="wrapping">
               <bool>false</bool>
              </property>
              <property name="notchTarget">
-              <double>6.000000000000000</double>
+              <double>4.000000000000000</double>
              </property>
              <property name="notchesVisible">
               <bool>true</bool>
@@ -2221,22 +2224,22 @@
               <string notr="true">background-color: rgb(150, 150, 150);</string>
              </property>
              <property name="minimum">
-              <number>-150</number>
+              <number>-100</number>
              </property>
              <property name="maximum">
-              <number>150</number>
+              <number>100</number>
              </property>
              <property name="singleStep">
               <number>1</number>
              </property>
              <property name="pageStep">
-              <number>15</number>
+              <number>10</number>
              </property>
              <property name="wrapping">
               <bool>false</bool>
              </property>
              <property name="notchTarget">
-              <double>6.000000000000000</double>
+              <double>4.000000000000000</double>
              </property>
              <property name="notchesVisible">
               <bool>true</bool>
@@ -2557,22 +2560,22 @@
               <string notr="true">background-color: rgb(150, 150, 150);</string>
              </property>
              <property name="minimum">
-              <number>-150</number>
+              <number>-100</number>
              </property>
              <property name="maximum">
-              <number>150</number>
+              <number>100</number>
              </property>
              <property name="singleStep">
               <number>1</number>
              </property>
              <property name="pageStep">
-              <number>15</number>
+              <number>10</number>
              </property>
              <property name="wrapping">
               <bool>false</bool>
              </property>
              <property name="notchTarget">
-              <double>6.000000000000000</double>
+              <double>4.000000000000000</double>
              </property>
              <property name="notchesVisible">
               <bool>true</bool>
@@ -2871,10 +2874,10 @@
           </rect>
          </property>
          <property name="focusPolicy">
-          <enum>Qt::TabFocus</enum>
+          <enum>Qt::NoFocus</enum>
          </property>
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="field">
           <attribute name="title">
@@ -3034,13 +3037,19 @@
             <rect>
              <x>10</x>
              <y>0</y>
-             <width>211</width>
+             <width>161</width>
              <height>41</height>
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_25">
             <item row="0" column="0">
              <widget class="QCheckBox" name="check_showIDs">
+              <property name="maximumSize">
+               <size>
+                <width>95</width>
+                <height>16777215</height>
+               </size>
+              </property>
               <property name="focusPolicy">
                <enum>Qt::NoFocus</enum>
               </property>
@@ -3057,6 +3066,12 @@
             </item>
             <item row="0" column="1">
              <widget class="QComboBox" name="combo_botScale">
+              <property name="maximumSize">
+               <size>
+                <width>65</width>
+                <height>16777215</height>
+               </size>
+              </property>
               <property name="toolTip">
                <string>Robot Scale</string>
               </property>
@@ -3088,7 +3103,7 @@
           <widget class="QToolButton" name="btn_botForward">
            <property name="geometry">
             <rect>
-             <x>252</x>
+             <x>202</x>
              <y>0</y>
              <width>40</width>
              <height>20</height>
@@ -3113,7 +3128,7 @@
           <widget class="QToolButton" name="btn_botReverse">
            <property name="geometry">
             <rect>
-             <x>252</x>
+             <x>202</x>
              <y>18</y>
              <width>40</width>
              <height>20</height>
@@ -3132,7 +3147,7 @@
           <widget class="QToolButton" name="btn_botTurnRight">
            <property name="geometry">
             <rect>
-             <x>290</x>
+             <x>240</x>
              <y>0</y>
              <width>20</width>
              <height>38</height>
@@ -3151,7 +3166,7 @@
           <widget class="QToolButton" name="btn_botTurnLeft">
            <property name="geometry">
             <rect>
-             <x>234</x>
+             <x>184</x>
              <y>0</y>
              <width>20</width>
              <height>38</height>
@@ -3170,7 +3185,7 @@
           <widget class="QPushButton" name="btn_botKick">
            <property name="geometry">
             <rect>
-             <x>380</x>
+             <x>330</x>
              <y>3</y>
              <width>60</width>
              <height>30</height>
@@ -3189,7 +3204,7 @@
           <widget class="QPushButton" name="btn_botDrible">
            <property name="geometry">
             <rect>
-             <x>320</x>
+             <x>270</x>
              <y>3</y>
              <width>60</width>
              <height>30</height>
@@ -3205,21 +3220,80 @@
             <string>Drible</string>
            </property>
           </widget>
-          <widget class="QCheckBox" name="check_botOverride_all">
+          <widget class="QWidget" name="">
            <property name="geometry">
             <rect>
-             <x>460</x>
-             <y>8</y>
-             <width>121</width>
-             <height>22</height>
+             <x>400</x>
+             <y>0</y>
+             <width>261</width>
+             <height>35</height>
             </rect>
            </property>
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Toggles manual control override on all blue robots&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="text">
-            <string>Manual Team</string>
-           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>1</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="btn_override_all">
+              <property name="maximumSize">
+               <size>
+                <width>95</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::NoFocus</enum>
+              </property>
+              <property name="toolTip">
+               <string>Enables manual control override on entire team</string>
+              </property>
+              <property name="text">
+               <string>Override All</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_6">
+              <property name="maximumSize">
+               <size>
+                <width>56</width>
+                <height>500</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Manual</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btn_override_none">
+              <property name="maximumSize">
+               <size>
+                <width>95</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::NoFocus</enum>
+              </property>
+              <property name="toolTip">
+               <string>Disables manual control override on entire team</string>
+              </property>
+              <property name="text">
+               <string>Liberate All</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </widget>
          </widget>
          <widget class="QWidget" name="tab">
@@ -3676,7 +3750,7 @@
              <number>0</number>
             </property>
            </widget>
-           <widget class="QPushButton" name="pushButton">
+           <widget class="QPushButton" name="btn_connectGui">
             <property name="geometry">
              <rect>
               <x>31</x>
@@ -3686,10 +3760,13 @@
              </rect>
             </property>
             <property name="focusPolicy">
-             <enum>Qt::TabFocus</enum>
+             <enum>Qt::NoFocus</enum>
             </property>
             <property name="toolTip">
-             <string>Toggles the GUI's connection with the running game</string>
+             <string>(Hotkey: Backspace) Toggles the GUI's connection with the running game</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(255, 255, 255);</string>
             </property>
             <property name="text">
              <string>Connect</string>
@@ -4059,7 +4136,7 @@
   <tabstop>scrollArea</tabstop>
   <tabstop>zoom_slider</tabstop>
   <tabstop>text_primeBot</tabstop>
-  <tabstop>pushButton</tabstop>
+  <tabstop>btn_connectGui</tabstop>
   <tabstop>dial_botSpeed_0</tabstop>
   <tabstop>dial_botSpeed_5</tabstop>
   <tabstop>dial_botSpeed_4</tabstop>

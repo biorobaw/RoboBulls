@@ -61,6 +61,10 @@ public:
     /* Perform movement on the robot */
     bool perform(Robot* robot, Type moveType = Type::Default);
 
+    // Moved here by Ryan
+    std::deque<Point>   pathQueue;
+
+
 protected:
     float lfront, lback, rfront, rback;  //rob->type() == fourWheelOmni
     float left, right;                   //rob->type() == differential;
@@ -90,7 +94,7 @@ private:
     float nextDistTolerance  = 250;
     Point lastObsPoint       = Point(9999, 9999);
     FPPA::PathInfo      pathInfo;
-    std::deque<Point>   pathQueue;
+//    std::deque<Point>   pathQueue;
     FPPA::PathDirection lastDirection;
     std::vector<Point>  lastObstacles;
     

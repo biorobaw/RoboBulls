@@ -24,6 +24,7 @@ public:
     bool dribling = false;
     bool icon = false;
     bool doubleClicked = false;
+    bool enabled = true;
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);          // we want to know when the mouse is pressed...

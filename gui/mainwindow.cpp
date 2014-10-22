@@ -58,10 +58,10 @@ MainWindow::MainWindow(QWidget *parent) :
     gamemodel = GameModel::getModel();
 
 
-    ui->pushButton->setEnabled(false);
+    ui->btn_connectGui->setEnabled(false);
     setUpScene();
     setupBotPanel();
-    ui->pushButton->setEnabled(true);
+    ui->btn_connectGui->setEnabled(true);
 
 //    guiOverride = false;
 
@@ -115,8 +115,8 @@ void MainWindow::launch(int value)
         }
     }
     // Updating GUI
+    setMyVelocity();
     setGuiOverride();
-    setMyVelocity();    //
     updateScene();
     updateBotPanel();
     updateBallInfo();
@@ -264,8 +264,6 @@ void MainWindow::setupBotPanel()
         botIconFrames[i]->hide();
         velocityDials[i]->setValue(0);
         overriddenBots.push_back(false);    // creating each element, and setting to false
-        cout << "overriddenBots.size: " << overriddenBots.size() << "\n";
-
     }
     // putting ball icon into GUI
     scene_ballIcon->addItem(ballIcon);
@@ -290,9 +288,6 @@ void MainWindow::updateBotPanel() {
             botXcoords[i]->display(getBotCoordX(true, i));
             botYcoords[i]->display(getBotCoordY(true, i));
             botOrients[i]->setValue(getBotOrientDouble(true, i));
-//            if (nxtrobcomm->gui_kick == 1) {
-//                printBehavior(i,"KICK!", true);
-//            }
             botIcons[i]->setX(0);
             botIcons[i]->setY(0);
             botIcons[i]->setZValue(2);
@@ -301,7 +296,7 @@ void MainWindow::updateBotPanel() {
             }
 
             velocityDials[i]->setValue(getVelocity(i));
-            printBehavior(i, to_string(getVelocity(i)), true);
+//            printBehavior(i, to_string(getVelocity(i)), true);
 //            cout << to_string(getVelocity(0)) << "\n";
             // dynamic velocity dial colors
             if (velocityDials[i]->value() > 0) {            // forward
@@ -528,7 +523,7 @@ int MainWindow::getVelocity(int id) {
     if (velocity != 0 && wheels != 0)
         velocity /= wheels;
 
-    printBehavior(id,"Velocities: " + to_string(LF) + " & " + to_string(RF), true);
+    printBehavior(id,"Wheels: " + to_string(LF) + " & " + to_string(RF), true);
     return velocity;
 }
 
@@ -543,7 +538,7 @@ void MainWindow::printBehavior(int botID, string behavior, bool append)
     } else {
         b = QString::fromStdString(behavior) + "\n";
 //        botBehavior[botID] += b;
-        botBehavior[botID].insert(0, b);
+        botBehavior[botID].append(b);
     }
 
 
@@ -577,33 +572,17 @@ void MainWindow::setUpScene()
     QShortcut *enter = new QShortcut(this);
     enter->setKey(Qt::Key_Enter);
 
-    QShortcut *spaceBar = new QShortcut(this);
-    spaceBar->setKey(Qt::Key_Space);
+    QShortcut *backspace = new QShortcut(this);
+    backspace->setKey(Qt::Key_Backspace);
 
     QShortcut *o = new QShortcut(this);
     o->setKey(Qt::Key_O);
 
-//    QShortcut *w = new QShortcut(this);
-//    w->setKey(Qt::Key_W);
-//    QShortcut *a = new QShortcut(this);
-//    a->setKey(Qt::Key_A);
-//    QShortcut *s = new QShortcut(this);
-//    s->setKey(Qt::Key_S);
-//    QShortcut *d = new QShortcut(this);
-//    d->setKey(Qt::Key_D);
+//    QShortcut *spaceBar = new QShortcut(this);
+//    spaceBar->setKey(Qt::Key_Space);
 
-//    QKeyEvent *wPressed = new QKeyEvent(QEvent::KeyPress, Qt::Key_W, 0, "w", false, 1);
-//    this->keyPressEvent(wPressed);
-
-//    w->setAutoRepeat(false);
-
-//    connect(w, SIGNAL(activated()), this, SLOT(on_btn_botForward_pressed()));
-//    connect(d, SIGNAL(activated()), this, SLOT(on_btn_botTurnRight_pressed()));
-//    connect(s, SIGNAL(activated()), this, SLOT(on_btn_botReverse_pressed()));
-//    connect(a, SIGNAL(activated()), this, SLOT(on_btn_botTurnLeft_pressed()));
-
-
-    connect(spaceBar, SIGNAL(activated()), this, SLOT(on_pushButton_clicked()));
+    // Connecting key signals to their respective slots
+    connect(backspace, SIGNAL(activated()), this, SLOT(on_btn_connectGui_clicked()));
     connect(o, SIGNAL(activated()), ui->check_botOverride, SLOT(click()));
 
     scene = new GuiScene();
@@ -800,7 +779,7 @@ void MainWindow::updateScene() {
             if (gamemodel->find(i, gamemodel->getMyTeam()) != NULL) {
                 guiTeam[i]->setX(getBotCoordX(true, i));
                 guiTeam[i]->setY(getBotCoordY(true, i));
-                guiTeam[i]->setZValue(2);
+                guiTeam[i]->setZValue(3);
                 double angle = getBotOrientDouble(true, i) ;
                 guiTeam[i]->setRotation(angle);
                 // Action colors (may be better in the button slots)
@@ -823,7 +802,7 @@ void MainWindow::updateScene() {
                 // labels
                 guiLabels[i]->setTransform(flipLabel, false);
                 guiLabels[i]->setRotation(currentFieldAngle);
-                guiLabels[i]->setZValue(3);
+                guiLabels[i]->setZValue(4);
                 guiLabels[i]->setX(getBotCoordX(true,i));
                 guiLabels[i]->setY(getBotCoordY(true,i));
                 if (ui->check_showIDs->isChecked()) {
@@ -831,12 +810,16 @@ void MainWindow::updateScene() {
                 }else{
                     guiLabels[i]->hidden = true;
                 }
+                // drawLine TEST
+//                drawLine(getBotCoordX(true, 0),getBotCoordY(true, 0), Movement::Move.pathQueue[i].x, Movement::Move.pathQueue[i].y );
+//                ui->gView_field->update();
+
             }
             // Yellow Team
             if (gamemodel->find(i, gamemodel->getOponentTeam()) != NULL) {
                 guiTeamY[i]->setX(getBotCoordX(false, i));
                 guiTeamY[i]->setY(getBotCoordY(false, i));
-                guiTeamY[i]->setZValue(2);
+                guiTeamY[i]->setZValue(3);
                 double angleY = getBotOrientDouble(false, i) ;
                 guiTeamY[i]->setRotation(angleY);
                 // Robot Scale
@@ -850,7 +833,7 @@ void MainWindow::updateScene() {
                 // labels
                 guiLabelsY[i]->setTransform(flipLabel,false);
                 guiLabelsY[i]->setRotation(currentFieldAngle);
-                guiLabelsY[i]->setZValue(3);
+                guiLabelsY[i]->setZValue(4);
                 guiLabelsY[i]->setX(getBotCoordX(false,i));
                 guiLabelsY[i]->setY(getBotCoordY(false,i));
                 if (ui->check_showIDs->isChecked()) {
@@ -861,119 +844,28 @@ void MainWindow::updateScene() {
             }
         }
 
-    // updating Blue Labels
-    for (int i=0; i<teamSize; i++) {
-        if (gamemodel->find(i, gamemodel->getMyTeam()) != NULL) {
-//            QTransform flipLabel;
-//            flipLabel.setMatrix(1,0,0,0,-1,0,0,200,1);
-//            guiLabels[i]->setTransform(flipLabel, false);
-//            guiLabels[i]->setRotation(currentFieldAngle);
-//            guiLabels[i]->setZValue(3);
-//            guiLabels[i]->setX(getBotCoordX(true,i));
-//            guiLabels[i]->setY(getBotCoordY(true,i));
-//            if (ui->check_showIDs->isChecked()) {
-//                guiLabels[i]->hidden = false;
-//            }else{
-//                guiLabels[i]->hidden = true;
-//            }
-        }
-    }
-    // updating Yellow Labels
-    for (int i=0; i<teamSize; i++) {
-        if (gamemodel->find(i, gamemodel->getOponentTeam()) != NULL) {
-//            QTransform flipLabel;
-//            flipLabel.setMatrix(1,0,0,0,-1,0,0,200,1);
-//            guiLabelsY[i]->setTransform(flipLabel,false);
-//            guiLabelsY[i]->setRotation(currentFieldAngle);
-//            guiLabelsY[i]->setZValue(3);
-//            guiLabelsY[i]->setX(getBotCoordX(false,i));
-//            guiLabelsY[i]->setY(getBotCoordY(false,i));
-//            if (ui->check_showIDs->isChecked()) {
-//                guiLabelsY[i]->hidden = false;
-//            }else{
-//                guiLabelsY[i]->hidden = true;
-//            }
-        }
-    }
-    // Bot moving TEST
-//    Point botPoint;
-//    botPoint.x = 0;
-//    botPoint.y = 0;
-//    gamemodel->find(0,gamemodel->getMyTeam())->setRobotPosition(botPoint);
-    // updating Blue Robots
-    for (int i=0; i<teamSize; i++) {
-        if (gamemodel->find(i, gamemodel->getMyTeam()) != NULL) {
-//            guiTeam[i]->setX(getBotCoordX(true, i));
-//            guiTeam[i]->setY(getBotCoordY(true, i));
-//            guiTeam[i]->setZValue(2);
-//            double angle = getBotOrientDouble(true, i) ;
-//            guiTeam[i]->setRotation(angle);
-//            // Action colors (may be better in the button slots)
-//            if (i != selectedBot) {
-//                if (gamemodel->find(i, gamemodel->getMyTeam())->getDrible() ) {
-//                    guiTeam[i]->dribling = true;
-//                } else { guiTeam[i]->dribling = false; }
-//                if (gamemodel->find(i, gamemodel->getMyTeam())->getKick() == 1) {
-//                    guiTeam[i]->kicking = true;
-//                } else { guiTeam[i]->kicking = false; }
-//            }
-//            // Robot Scale
-//            if (ui->combo_botScale->currentText() == "100%") {
-//                guiTeam[i]->setScale(1);
-//            } else if (ui->combo_botScale->currentText() == "120%") {
-//                guiTeam[i]->setScale(1.2);
-//            } else if (ui->combo_botScale->currentText() == "150%") {
-//                guiTeam[i]->setScale(1.5);
-//            }
-
-
-        }
-    }
-    // updating Yellow Robots
-    for (int i=0; i<teamSize; i++) {
-        if (gamemodel->find(i, gamemodel->getOponentTeam()) != NULL) {
-//            guiTeamY[i]->setX(getBotCoordX(false, i));
-//            guiTeamY[i]->setY(getBotCoordY(false, i));
-//            guiTeamY[i]->setZValue(2);
-//            double angleY = getBotOrientDouble(false, i) ;
-//            guiTeamY[i]->setRotation(angleY);
-//            // Robot Scale
-//            if (ui->combo_botScale->currentText() == "100%") {
-//                guiTeamY[i]->setScale(1);
-//            } else if (ui->combo_botScale->currentText() == "120%") {
-//                guiTeamY[i]->setScale(1.2);
-//            } else if (ui->combo_botScale->currentText() == "150%") {
-//                guiTeamY[i]->setScale(1.5);
-//            }
-        }
-    }
-
     if (ball->isSelected()) {
         cout << "Ball selected \n";
     }
     // Keeping camera centered
     centerViewOnBot();
-    // drawLine TEST
-//    drawLine(getBotCoordX(true, 0),getBotCoordY(true, 0), 0, 0 );
-//    ui->gView_field->update();
 
 }//end updateScene
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_btn_connectGui_clicked()
 {
-    if(ui->pushButton->text() == "Connect")
+    if(ui->btn_connectGui->text() == "Connect")
     {
-        ui->pushButton->setText("Disconnect");
+        ui->btn_connectGui->setText("Disconnect");
         for(int i = 0; i < threads.count(); i++)
             threads[i]->start();
     }
     else
     {
-        ui->pushButton->setText("Connect");
+        ui->btn_connectGui->setText("Connect");
         for(int i = 0; i < threads.count(); i++)
             threads[i]->exit(0);
     }
-//    cout << "on_pushButton_clicked() \n";
 }
 
 QString MainWindow::getBotCoord(int id) {
@@ -1054,83 +946,10 @@ double MainWindow::getBotOrientDouble(bool myTeam, int id) {
     return o;
 }
 
-QImage MainWindow::getStatusImg(int id) {
-
-    // Return value
-    QImage botStatusPic;
-    botStatusPic.load(":/images/ball.png");
-    // Default icons
-    QImage bot0_default;
-    bot0_default.load(":/images/0.png");
-    QImage bot1_default;
-    bot1_default.load(":/images/1.png");
-    QImage bot2_default;
-    bot2_default.load(":/images/2.png");
-    QImage bot3_default;
-    bot3_default.load(":/images/3.png");
-    QImage bot4_default;
-    bot4_default.load(":/images/4.png");
-    QImage bot5_default;
-    bot5_default.load(":/images/5.png");
-    // Default icons vector
-    std::vector<QImage> bot_defaults(teamSize);
-    bot_defaults[0] = bot0_default;
-    bot_defaults[1] = bot1_default;
-    bot_defaults[2] = bot2_default;
-    bot_defaults[3] = bot3_default;
-    bot_defaults[4] = bot4_default;
-    bot_defaults[5] = bot5_default;
-    // Has Ball icon
-    QImage hasBall;
-    hasBall.load(":/images/ball.png");
-
-
-    std::vector<Robot*> team = gamemodel->getMyTeam();
-
-
-//    if (gamemodel->find(id, team)->hasBall) {
-//        //cout << "hasBall TRUE \n";
-//        botStatusPic = hasBall;
-//    }
-//    if (gamemodel->find(id, team)->drible) {
-//        botStatusPic = hasBall;
-//    }
-//    if ( gamemodel->find(id, team) != NULL ) {
-        //cout << id << " hasBeh TRUE \n";
-        botStatusPic = bot_defaults[id];
-//    } else {
-//        //cout << id << " hasBeh FALSE \n";
-//        botStatusPic.load(":/images/process-stop.png");
-//    }
-//    cout << id << ": " << gamemodel->find(id, team)->getCurrentBeh() << "\n";
-    return botStatusPic;
-}
 
 int MainWindow::getBotSpeed(std::vector<QLabel*> c, int id) {
     int s = 0;
     return s;
-}
-
-bool MainWindow::hasChangedQString(QLabel* l, QString s) {
-    QString old = l->text();
-
-    if (old == s) {
-        return false;
-    } else {
-        return true;
-    }
-}
-
-bool MainWindow::hasChangedQImage(QLabel* l, QImage s) {
-    QImage old = l->pixmap()->toImage();
-
-    if (old == s) {
-        cout << "same image - NO CHANGE \n";
-        return false;
-    } else {
-        cout << "diff image - CHANGING \n";
-        return true;
-    }
 }
 
 QString MainWindow::getBallCoord() {
@@ -1241,8 +1060,8 @@ void MainWindow::moveBot() {
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {
-//    if (event->count() == 1) {
-//        keys = "one";
+    // Robot binds
+    if (selectedBot > -1) {
         switch(event->key()) {
             case Qt::Key_W:
                 on_btn_botForward_pressed();
@@ -1256,8 +1075,21 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
             case Qt::Key_D:
                 on_btn_botTurnRight_pressed();
                 break;
+            // Alternate arrow bindings. Don't seem to work :(
+            case Qt::UpArrow:
+                on_btn_botForward_pressed();
+                break;
+            case Qt::LeftArrow:
+                on_btn_botTurnLeft_pressed();
+                break;
+            case Qt::DownArrow:
+                on_btn_botReverse_pressed();
+                break;
+            case Qt::RightArrow:
+                on_btn_botTurnRight_pressed();
+                break;
 
-            case Qt::Key_K:
+            case Qt::Key_Space:
                 on_btn_botKick_pressed();
                 break;
             case Qt::Key_J:
@@ -1265,31 +1097,46 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
                 break;
 
         }
-        //    }
+    }
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent *event) {
+    // Robot binds
+    if (selectedBot > -1) {
+        switch(event->key()) {
+            case Qt::Key_W:
+                on_btn_botForward_released();
+                break;
+            case Qt::Key_A:
+                on_btn_botTurnLeft_released();
+                break;
+            case Qt::Key_S:
+                on_btn_botReverse_released();
+                break;
+            case Qt::Key_D:
+                on_btn_botTurnRight_released();
+                break;
 
-    switch(event->key()) {
-        case Qt::Key_W:
-            on_btn_botForward_released();
-            break;
-        case Qt::Key_A:
-            on_btn_botTurnLeft_released();
-            break;
-        case Qt::Key_S:
-            on_btn_botReverse_released();
-            break;
-        case Qt::Key_D:
-            on_btn_botTurnRight_released();
-            break;
+            case Qt::Key_Up:
+                on_btn_botForward_released();
+                break;
+            case Qt::Key_Left:
+                on_btn_botTurnLeft_released();
+                break;
+            case Qt::Key_Down:
+                on_btn_botReverse_released();
+                break;
+            case Qt::Key_Right:
+                on_btn_botTurnRight_released();
+                break;
 
-        case Qt::Key_K:
-            on_btn_botKick_released();
-            break;
-        case Qt::Key_J:
-            on_btn_botDrible_released();
-            break;
+            case Qt::Key_Space:
+                on_btn_botKick_released();
+                break;
+            case Qt::Key_J:
+                on_btn_botDrible_released();
+                break;
+        }
     }
 }
 
@@ -1313,8 +1160,10 @@ void MainWindow::centerViewOnBot() {
 
 void MainWindow::setMyVelocity() {
     if (QApplication::keyboardModifiers().testFlag(Qt::ShiftModifier) == true) {
+        cout << "Shift \n";
         myVelocity = 100;
     } else if (QApplication::keyboardModifiers().testFlag(Qt::AltModifier) == true) {
+        cout << "Alt \n";
         myVelocity = 25;
     } else {
         myVelocity = 50;
@@ -1322,11 +1171,11 @@ void MainWindow::setMyVelocity() {
 }
 
 void MainWindow::setGuiOverride() {
-    if (ui->check_botOverride->isChecked()) {
-        guiOverride = true;
-    } else {
-        guiOverride = false;
-    }
+//    if (ui->check_botOverride->isChecked()) {
+//        guiOverride = true;
+//    } else {
+//        guiOverride = false;
+//    }
 
 }
 
@@ -1409,25 +1258,11 @@ void MainWindow::updateSelectedBotPanel(int id)
         ui->lcd_coordY_prime->display(getBotCoordY(true,id));
         ui->dial_botOrient_prime->setValue(getBotOrientDouble(true, id));
         ui->box_primeBot->setTitle("Robot " + QString::number(id));
-        if (botBehavior[id] != ui->text_primeBot->toPlainText()) {
+        if (ui->text_primeBot->toPlainText().contains(botBehavior[id]) == false ) {
             ui->text_primeBot->setText(botBehavior[id]);
+            QScrollBar *sb = ui->text_primeBot->verticalScrollBar();
+            sb->setValue(sb->maximum());
         }
-//        QString test = ui->dial_botOrient_prime->styleSheet();
-//        if (ui->text_primeBot->toPlainText() != test ){
-//            ui->text_primeBot->setText(test);
-//        }
-//        ui->dial_botOrient_prime->setStyleSheet();
-//        gamemodel->find(id,gamemodel->getMyTeam())->getki
-//        for (int i=0; i<teamSize; i++) {
-//            if (gamemodel->find(id, gamemodel->getMyTeam()) != NULL) {
-//                if (botFrames[i]->isHidden()) {
-//                    botFrames[i]->show();
-//                }
-//            }
-//        }
-//        if (botFrames[id]->isHidden() == false) {
-//            botFrames[id]->hide();
-//        }
         ui->gView_robot_prime->setScene(botIconSelScenes[id]);
     }
 
@@ -1437,7 +1272,7 @@ void MainWindow::on_btn_botForward_pressed() {
     if (selectedBot > -1 && ui->check_botOverride->isChecked()) {
 
         ui->btn_botForward->setDown(true);
-
+        setMyVelocity();
         int currentFwd = getVelocity(selectedBot);
         gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(currentFwd);
         gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(currentFwd);
@@ -1567,20 +1402,32 @@ void MainWindow::on_btn_botDrible_released() {
 void MainWindow::on_check_botOverride_clicked(bool checked) {
     if (checked) {
         overriddenBots[selectedBot] = true;
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(0);
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(0);
+        gamemodel->find(selectedBot, gamemodel->getMyTeam())->setB(0);
+        guiPrint("Overridden");
     } else {
         overriddenBots[selectedBot] = false;
+        guiPrint("Liberated");
     }
 }
 
-void MainWindow::on_check_botOverride_all_clicked(bool checked) {
-    if (checked) {  // overrides all bots' software control
-        for (int i=0; i<overriddenBots.size(); i++) {
-            overriddenBots[i] = true;
-        }
-    } else {    // returns software control to all bots
-        for (int i=0; i<overriddenBots.size(); i++) {
-            overriddenBots[i] = false;
-        }
+void MainWindow::on_btn_override_all_released() {
+    for (int i=0; i<overriddenBots.size(); i++) {
+        overriddenBots[i] = true;
+    }
+    // stopping all bots, so they don't fly off at their current velocities
+    for (int i=0; i<teamSize; i++) {
+        if (gamemodel->find(i, gamemodel->getMyTeam()) != NULL) {
+            gamemodel->find(i, gamemodel->getMyTeam())->setL(0);
+            gamemodel->find(i, gamemodel->getMyTeam())->setR(0);
+            gamemodel->find(i, gamemodel->getMyTeam())->setB(0);
+        }//nullcheck
+    }
+}
 
+void MainWindow::on_btn_override_none_released() {
+    for (int i=0; i<overriddenBots.size(); i++) {
+        overriddenBots[i] = false;
     }
 }
