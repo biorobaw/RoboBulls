@@ -9,6 +9,7 @@ VisionComm::VisionComm(GameModel *gm)
 {
 // Use different ports depending on whether it is simulated or the actual vision system
 #if SIMULATED
+
     //Shamsi Vision Address
     client = new RoboCupSSLClient(10020,"224.5.23.22");
 
@@ -16,7 +17,7 @@ VisionComm::VisionComm(GameModel *gm)
     //client = new RoboCupSSLClient(10020,"224.5.23.2");
 
     //Narges Vision Address
-    //client = new RoboCupSSLClient(10020,"127.0.0.1");
+    //client = new RoboCupSSLClient(10020,"224.5.23.8");
 #else
     client = new RoboCupSSLClient();
 #endif
@@ -42,7 +43,7 @@ void VisionComm::updateInfo(const SSL_DetectionRobot& robot, int detectedTeamCol
     Point robPoint;
     vector<Robot*>* currentTeam;
     GameModel* gm = GameModel::getModel();
-    
+
     if (detectedTeamColor == ourTeamColor) {
         currentTeam = &gamemodel->getMyTeam();
     } else {
@@ -58,15 +59,16 @@ void VisionComm::updateInfo(const SSL_DetectionRobot& robot, int detectedTeamCol
         {
             rob = new Robot();
             rob->setID(id);
+            rob->setTeam(detectedTeamColor == ourTeamColor);
             currentTeam->push_back(rob);
         }
-		
-		// Assumption: rob contains the robot with id == detected_id
-		robPoint.x = robot.x();
+
+        // Assumption: rob contains the robot with id == detected_id
+        robPoint.x = robot.x();
         robPoint.y = robot.y();
         rob->setRobotPosition(robPoint);
-		rob->setOrientation(robot.orientation());
-        
+        rob->setOrientation(robot.orientation());
+
         gm->setRobotUpdated(rob, detectedTeamColor);
     }
 }

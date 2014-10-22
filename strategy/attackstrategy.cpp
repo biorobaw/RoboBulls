@@ -37,11 +37,11 @@ void AttackStrategy::assignBeh()
         };
         std::sort(teamDeq.begin(), teamDeq.end(), distanceFn);
 
-        if(lastReciever != nullptr) {
+       if(lastReciever != nullptr) {
             /* Coming from another pass, lastReciever needs to be the new reciever
              * of the ball, not the always second closest to it
              */
-            passingRobots = {lastReciever, teamDeq.back()};
+            passingRobots = {lastReciever, teamDeq[0]};
             teamDeq.pop_front();
             teamDeq.erase(std::find(teamDeq.begin(), teamDeq.end(), lastReciever));
         } else {

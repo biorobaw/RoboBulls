@@ -6,7 +6,7 @@
 #if SIMULATED
  #define KDIST_TOLERANCE    110
  #define CENTER_TOLERANCE   0.40
- #define POSITION_ANGLE_TOL ROT_TOLERANCE
+ #define POSITION_ANGLE_TOL 10*M_PI/180
 #else
  #define KDIST_TOLERANCE    140
  #define CENTER_TOLERANCE   0.70
@@ -22,9 +22,9 @@ KickToPoint::KickToPoint(Point target, float targetTolerance, float kickDistance
    , m_kickAngleTol(targetTolerance)
    , m_kickDistance(kickDistance)
 {
-#if KICK_TO_POINT_DEBUG
-   std::cout << "~KickToPoint~" << std::endl;
-#endif
+//#if KICK_TO_POINT_DEBUG
+//   std::cout << "~KickToPoint~" << std::endl;
+//#endif
    move_skill.setVelocityMultiplier(1.0);
 }
 
@@ -111,6 +111,7 @@ void KickToPoint::doMovingState(Robot *robot)
 
 void KickToPoint::doKickingState(Robot *robot)
 {
+
 #if KICK_TO_POINT_DEBUG
     std::cout << "KTP KICK" << std::endl;
 #endif
@@ -120,6 +121,12 @@ void KickToPoint::doKickingState(Robot *robot)
         hasKicked = true;
         state = Positioning;
     }
+
+}
+
+bool KickToPoint::kicked()
+{
+    return hasKicked;
 }
 
 
@@ -140,15 +147,24 @@ bool KickToPoint::perform(Robot * robot)
     switch(this->state)
     {
     case Positioning:
+        cout << "positioning" << endl;
         doPositioningState(robot);
         break;
     case Moving:
+        cout << "moving" << endl;
         doMovingState(robot);
         break;
     case Kicking:
+        cout << "kicking" << endl;
         doKickingState(robot);
         break;
     }
+//    if (hasKicked)
+//    {
+//        hasKicked = false;
+//        return true;
+//    }
+//    return false;
 
     if (hasKicked)
     {

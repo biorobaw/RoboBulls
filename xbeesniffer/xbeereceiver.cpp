@@ -20,26 +20,26 @@ XbeeReceiver::XbeeReceiver()
 }
 
 void XbeeReceiver::receive(){
-    char * c = new char[1];
-    char * p = new char[10];
+    char c;
+    char p[10];
     int i = 0;
 
     while (true){
-        int received = xbee.ReadChar(c, 0);
+        int received = xbee.ReadChar(&c, 0);
         if (received > 0){
-            if (*c == '~'){
+            if (c == '~'){
                 i = 0;
                 cout << endl;
                 cout << '~' << " ";
-            } else if (*c == '$') {
+            } else if (c == '$') {
                 cout << '$' << " ";
                 // Not kicking
                 assert (i != 9 || p[6] == 0);
             } else {
-                cout << (int)(*c) << " ";
+                cout << (int)(c) << " ";
             }
 
-            p[i] = *c;
+            p[i] = c;
             i++;
         }
 

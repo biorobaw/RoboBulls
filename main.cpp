@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
     
     
     visionCommunicator.start();
-    refCommunicator.run();
+    refCommunicator.run(); 
 
 
     return a.exec();

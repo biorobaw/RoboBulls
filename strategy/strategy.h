@@ -14,8 +14,8 @@ public:
     /* update
      * Function (optional) that updates this object
      * This function is called when StrategyController is ran with
-     * a non-new command from GameModel. Return true to erase the 
-     * current Strategy in StrategyController, false to keep on this 
+     * a non-new command from GameModel. Return true to erase the
+     * current Strategy in StrategyController, false to keep on this
      * strategy
      */
     virtual bool update();

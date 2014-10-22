@@ -7,6 +7,7 @@
 #include "model/gamemodel.h"
 #include "model/robot.h"
 #include "utilities/paramlist.h"
+#include "movement/gotopositionwithorientation.h"
 
 class myTestBehavior: public Behavior
 {
@@ -16,6 +17,7 @@ public:
 private:
 //    Point TargetPoint;
     Skill::Skill *mySkill;
+    Movement::GoToPosition move;
 };
 
 #endif // MYTESTBEHAVIOR_H

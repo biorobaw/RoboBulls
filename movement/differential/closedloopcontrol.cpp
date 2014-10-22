@@ -68,7 +68,8 @@ void ClosedLoopBase::handleError(double x_goal, double y_goal)
         {
             sumErrOfQ -= errorQ.front();
             sumErrOfQ += newValues[i];
-
+            if (errorQ.empty())
+                cout << "errorQ is empty" << endl;
             errorQ.pop_front();
             errorQ.push_back(newValues[i]);
         }

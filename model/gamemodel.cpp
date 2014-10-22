@@ -137,7 +137,11 @@ std::string GameModel::toString()
 /* Called by VisionComm */
 /**************************************************/
 /* Don't overlook this function, it's more important
+<<<<<<< HEAD
+ * than you think
+=======
  * than you think 
+>>>>>>> 96d7dda63491cba6957b469991c98dec1a88ac64
  */
 void GameModel::notifyObservers()
 {
@@ -147,7 +151,11 @@ void GameModel::notifyObservers()
 
 /* Called by RefComm */
 /* I don't think both RefComm and VisionComm should both
+<<<<<<< HEAD
+ * make the game run. This opens up the possibility for running the
+=======
  * make the game run. This opens up the possibility for running the 
+>>>>>>> 96d7dda63491cba6957b469991c98dec1a88ac64
  * loop twice, and possible interference. Before, this function also
  * caused the StrategyController to update if the state was different
  */
@@ -187,6 +195,7 @@ void GameModel::setRobotHasBall()
     auto calculateHasBall = [&](Robot* rob) {
         if(rob == NULL)
             return false;
+
         if(Measurments::distance(rob->getRobotPosition(), ballPoint) > 100.0) 
             return false;
         if(!ptIsInFrontOfRob(rob, ballPoint))
@@ -197,7 +206,7 @@ void GameModel::setRobotHasBall()
     if(!calculateHasBall(this->robotWithBall))
     {
         auto ballBot = std::find_if(myTeam.begin(), myTeam.end(), calculateHasBall);
-        if(ballBot == myTeam.end()) {            //Not found in myTeam        
+        if(ballBot == myTeam.end()) {            //Not found in myTeam
             ballBot = std::find_if(opTeam.begin(), opTeam.end(), calculateHasBall);
             if(ballBot == opTeam.end()) {        //Not found in opTeam
                 this->robotWithBall = NULL;
@@ -226,8 +235,13 @@ void GameModel::setYellowGoals(unsigned char goals)
 Robot* GameModel::find(int id, std::vector<Robot*>& team)
 {
     /* Often, the vision system (and also almost always on the simulator)
+<<<<<<< HEAD
+     * seems to report robots in order anyway. So first,
+     * I think it would be reasonable to check if the team at that `id`
+=======
      * seems to report robots in order anyway. So first, 
      * I think it would be reasonable to check if the team at that `id` 
+>>>>>>> 96d7dda63491cba6957b469991c98dec1a88ac64
      * is actually that robot first.
      */
     try {
@@ -240,12 +254,11 @@ Robot* GameModel::find(int id, std::vector<Robot*>& team)
     for(Robot* rob : team)
         if(rob->getID() == id)
             return rob;
-    
     return NULL;
 }
 
 /* Start of Averaging functions
- * The function setRobotUpdated is in place of the setMyTeam / setOponentTeam functions 
+ * The function setRobotUpdated is in place of the setMyTeam / setOponentTeam functions
  * due to how the vision system interacts with the GameModel--one robot is updated
  * at a time. The previous system copied the entire team vectors three times
  * to update one entry in it--for EACH robot on BOTH teams. This function
@@ -253,8 +266,8 @@ Robot* GameModel::find(int id, std::vector<Robot*>& team)
  * can be efficiently computed individually as well.
  *
  * Because of the inefficient updating before, the averaging system would not function:
- * Consider the fact that the entire team vector was re-set each time one robot 
- * was updated, for all robots. This means the average for each robot would erroneously 
+ * Consider the fact that the entire team vector was re-set each time one robot
+ * was updated, for all robots. This means the average for each robot would erroneously
  * be made up of the same position multiple times. 2*MAX_ROBOTS times to be exact.
  *
  * The averaged positions for the robots and ball are then transparently available
@@ -324,12 +337,20 @@ void GameModel::setRobotUpdated(Robot* robot, int whichTeam)
 
     /* While the myTeam/opTeam vectors are not guaranteed to be stored in order
      * (i.e, ID i is at myTeam[i]), these average arrays are. They are initially
+<<<<<<< HEAD
+     * sized to hold MAX_ROBOTS, so no out-of-range errors occur. Also, there is
+=======
      * sized to hold MAX_ROBOTS, so no out-of-range errors occur. Also, there is 
+>>>>>>> 96d7dda63491cba6957b469991c98dec1a88ac64
      * no iteration over these, so invalid entries are just ignored
      */
     newRobPoint = currentAverages->at(robot->getID()).first.update(rawRobPoint);
     newRobAngle = currentAverages->at(robot->getID()).second.update(rawRobAngle);
+<<<<<<< HEAD
+
+=======
     
+>>>>>>> 96d7dda63491cba6957b469991c98dec1a88ac64
     robot->setRobotPosition(newRobPoint);
     robot->setOrientation(newRobAngle);
 #else

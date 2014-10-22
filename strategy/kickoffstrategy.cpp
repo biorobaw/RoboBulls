@@ -16,7 +16,7 @@ bool KickOffStrategy::update()
     gm = GameModel::getModel();
     bp = gm->getBallPoint();
     float goal_x = gm->getOpponentGoal().x;
-
+    cout << gm->getBallPoint().toString() << endl;
     for (Robot * robot : gm->getMyTeam())
     {
         // Define movement target for every robot

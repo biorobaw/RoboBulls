@@ -36,6 +36,7 @@ public:
               , float kickDistance = NO_KICK_DIST);
 
     bool perform(Robot *) override;
+    bool kicked();
 
 private:
     enum {Positioning, Moving, Kicking} state;

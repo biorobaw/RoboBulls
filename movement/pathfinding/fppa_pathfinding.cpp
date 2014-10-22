@@ -8,6 +8,11 @@
 #include "model/gamemodel.h"
 #include "movement/pathfinding/fppa_pathfinding.h"
 
+/* FPPA Pathfinding Constants */
+#define FPPA_DEBUG 0
+#define MAX_RECURSION_DEPTH  3
+#define FRAME_UPDATE_COUNT 10
+
 /* Implementation of the Fast Path Planning Algorithm
  * In a sense, this is a mostly a generalized implementation.
  * But it is currently hardcoded to work with robobulls only.
@@ -48,11 +53,11 @@ namespace impl
             /* With the new architecture, we need to manually exclude points that are
              * close to the start or ending point in this function.
              */
-            if(Measurments::isClose(pt, beginPos, ROBOT_SIZE)
-            || Measurments::isClose(pt, endPos, ROBOT_SIZE))
+            if(Measurments::isClose(pt, endPos, ROBOT_SIZE)
+            || Measurments::isClose(pt, beginPos, ROBOT_SIZE/2))
                 continue;
 
-            obstacle_found = Measurments::lineDistance(pt, beginPos, endPos) < ROBOT_SIZE &&
+            obstacle_found = Measurments::lineDistance(pt, beginPos, endPos) < ROBOT_SIZE*1.5 &&
                 insideRadiusRectangle(pt, beginPos, endPos);
 
             if(obstacle_found) {
@@ -77,7 +82,7 @@ namespace impl
 
         obstacle_found = std::any_of
             (currentFrameObstacles.begin(), currentFrameObstacles.end(),
-            [&](const Point& pt){return Measurments::isClose(pt, toCheck, ROBOT_SIZE);});
+            [&](const Point& pt){return Measurments::isClose(pt, toCheck, ROBOT_SIZE*1.5);});
 
         return obstacle_found;
     }
@@ -92,15 +97,15 @@ namespace impl
          * the jagged edges in the path, but risks cutting corners
          * too close around obstacles.
          */
-        float dx = 2.25 * ROBOT_RADIUS * cos(theta + M_PI_2);
-        float dy = 2.25 * ROBOT_RADIUS * sin(theta + M_PI_2);
+        float dx = 3 * ROBOT_RADIUS * cos(theta + M_PI_2);
+        float dy = 3 * ROBOT_RADIUS * sin(theta + M_PI_2);
 
         return Point(sign * dx, sign * dy);
     }
 
     /*********************************************************/
 
-    void buildPathimpl(Path* results, const Point& beginPos, const Point& endPos, 
+    void buildPathimpl(Path* results, const Point& beginPos, const Point& endPos,
                         int sign, int depth)
     {
         if(depth >= MAX_RECURSION_DEPTH)
@@ -216,9 +221,9 @@ namespace impl
         std::cout << "Finding Path" << std::endl;
     #endif
 
-        PathInfo topPath 
+        PathInfo topPath
             = std::make_pair(foundPaths.first, PathDirection::Top);
-        PathInfo botPath 
+        PathInfo botPath
             = std::make_pair(foundPaths.second, PathDirection::Bottom);
 
         /* If one of the paths is invalid (contains points outside the field),
@@ -241,12 +246,12 @@ namespace impl
             else
                return botPath;
          } else {
-            /* Add up all the distances from each path and determine which 
+            /* Add up all the distances from each path and determine which
              * path is shorter. This shorter path is deemed the "better" path.
              */
             float totalDistTop = 0, totalDistBottom = 0;
 
-            for(auto it = topPath.first.begin(); 
+            for(auto it = topPath.first.begin();
                      it != topPath.first.end()-1; ++it)
                 totalDistTop += Measurments::distance(*it, *(it+1));
 
@@ -287,8 +292,8 @@ namespace impl
     {
         return impl::currentFrameObstacles;
     }
-    
-    
+
+
     //std::vector<Point> getObstaclesForRobot(int id)
     //{
     //    UNUSED_PARAM(id);

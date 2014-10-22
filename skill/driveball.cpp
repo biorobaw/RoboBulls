@@ -11,10 +11,10 @@
     #define VEL_MULT 0.6
     #define TURN_ANG ANGLE*4
 #else
-    #define CLOSE_ENOUGH 275
-    #define ANGLE 10*M_PI/180
-    #define DIST 480
-    #define VEL_MULT 0.4
+    #define CLOSE_ENOUGH 180
+    #define ANGLE 7*M_PI/180
+    #define DIST 350
+    #define VEL_MULT 0.6
     #define TURN_ANG ANGLE*15
 #endif
 
@@ -26,7 +26,7 @@ DriveBall::DriveBall(Point targetPoint, double finalDirection)
     , direction(finalDirection)
     , state(moveBehindBall)
 {
-    move_skill.setMovementTolerances(CLOSE_ENOUGH, ROT_TOLERANCE);
+    move_skill.setMovementTolerances(CLOSE_ENOUGH, ANGLE);
 }
 
 bool DriveBall::perform(Robot* robot)
@@ -38,10 +38,16 @@ bool DriveBall::perform(Robot* robot)
     float ballTargetAngle =  Measurments::angleBetween(ballPoint, targetPosition);
     Point behindBall      = ballPoint + Point(DIST*cos(targetBallAngle),
                                               DIST*sin(targetBallAngle));
+    cout << "ball pos\t" << gm->getBallPoint().toString() << endl;
+    for (Robot* rob: gm->getMyTeam())
+    {
+        cout << "rob " << rob->getID() << " pos\t" << rob->getRobotPosition().toString() << endl;
+    }
     switch (state)
     {
     case moveBehindBall:
-        move_skill.setVelocityMultiplier(1.0);
+        cout << "moving behind ball" << endl;
+        move_skill.setVelocityMultiplier(VEL_MULT*2);
         move_skill.recreate(behindBall, ballTargetAngle, false);
         if(move_skill.perform(robot)) {
             state = driveBall;
@@ -49,6 +55,7 @@ bool DriveBall::perform(Robot* robot)
         break;
 
     case driveBall:
+        cout << "drive ball" << endl;
         bool farFromBall   = !Measurments::isClose(robPoint, ballPoint, DIST*1.25);
         bool notFacingBall =  Measurments::lineDistance(ballPoint, robPoint, targetPosition)
                 > ROBOT_RADIUS*1.75;

@@ -80,7 +80,12 @@ private:
     bool  isInitialized      = false; 
     bool  useObstacleAvoid   = true;
 
-    bool  hasFoundPathEnd    = false;
+    struct pathEndState
+    {
+        Point endingPoint;
+        bool  hasFoundPathEnd;
+    } pathEndInfo;
+
     bool  currentPathIsClear = false;
     float nextTargetAngle    = UNUSED_ANGLE_VALUE;
     float nextDistTolerance  = 250;
