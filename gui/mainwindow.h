@@ -98,6 +98,7 @@ signals:
 
 
 private:
+    void setupKeyShortcuts();
     // moved from public
     explicit MainWindow(QWidget *parent = 0);
     Ui::MainWindow *ui;

@@ -57,15 +57,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
     gamemodel = GameModel::getModel();
 
-
+    // Setting up GUI; not enabling thread until we're done
     ui->btn_connectGui->setEnabled(false);
     setUpScene();
+    defaultZoom();
     setupBotPanel();
+    setupKeyShortcuts();
     ui->btn_connectGui->setEnabled(true);
 
-//    guiOverride = false;
-
-    defaultZoom();
 
     // Create Threads, the parameters are the timer value, and parent.
     // threads is declated as QList<GuiComm*> threads;
@@ -101,7 +100,7 @@ void MainWindow::launch(int value)
     }
 
 
-    ui->label->setText(QString("Current Thread Processing Status : %1").arg(value));
+//    ui->label->setText(QString("Current Thread Processing Status : %1").arg(value));
 
     // CTRL modifer for field scrolling
     if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier) == true) {
@@ -569,21 +568,6 @@ void MainWindow::guiPrint(string output) {
 
 void MainWindow::setUpScene()
 {
-    QShortcut *enter = new QShortcut(this);
-    enter->setKey(Qt::Key_Enter);
-
-    QShortcut *backspace = new QShortcut(this);
-    backspace->setKey(Qt::Key_Backspace);
-
-    QShortcut *o = new QShortcut(this);
-    o->setKey(Qt::Key_O);
-
-//    QShortcut *spaceBar = new QShortcut(this);
-//    spaceBar->setKey(Qt::Key_Space);
-
-    // Connecting key signals to their respective slots
-    connect(backspace, SIGNAL(activated()), this, SLOT(on_btn_connectGui_clicked()));
-    connect(o, SIGNAL(activated()), ui->check_botOverride, SLOT(click()));
 
     scene = new GuiScene();
 
@@ -1177,6 +1161,25 @@ void MainWindow::setGuiOverride() {
 //        guiOverride = false;
 //    }
 
+}
+
+void MainWindow::setupKeyShortcuts() {
+    QShortcut *enter = new QShortcut(this);
+    enter->setKey(Qt::Key_Enter);
+
+    QShortcut *backspace = new QShortcut(this);
+    backspace->setKey(Qt::Key_Backspace);
+
+    QShortcut *o = new QShortcut(this);
+    o->setKey(Qt::Key_O);
+
+//    QShortcut *spaceBar = new QShortcut(this);
+//    spaceBar->setKey(Qt::Key_Space);
+
+    // Connecting key signals to their respective slots
+    connect(enter, SIGNAL(activated()), this, SLOT(on_btn_connectGui_clicked()));
+    connect(backspace, SIGNAL(activated()), this, SLOT(on_btn_connectGui_clicked()));
+    connect(o, SIGNAL(activated()), ui->check_botOverride, SLOT(click()));
 }
 
 MainWindow::~MainWindow()

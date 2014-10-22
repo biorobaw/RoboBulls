@@ -561,16 +561,49 @@
             <double>0.000000000000000</double>
            </property>
           </widget>
-          <widget class="QWidget" name="layoutWidget">
+          <widget class="QCheckBox" name="check_botOverride">
            <property name="geometry">
             <rect>
-             <x>30</x>
-             <y>160</y>
-             <width>201</width>
+             <x>0</x>
+             <y>130</y>
+             <width>91</width>
+             <height>22</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+             <weight>75</weight>
+             <italic>false</italic>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Hotkey: O) Toggles manual control override on selected robot&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+           </property>
+           <property name="text">
+            <string>Override</string>
+           </property>
+          </widget>
+          <widget class="QWidget" name="">
+           <property name="geometry">
+            <rect>
+             <x>31</x>
+             <y>158</y>
+             <width>181</width>
              <height>31</height>
             </rect>
            </property>
-           <layout class="QGridLayout" name="gridLayout_4">
+           <layout class="QGridLayout" name="gridLayout_2">
+            <property name="horizontalSpacing">
+             <number>8</number>
+            </property>
             <item row="0" column="0">
              <widget class="QLabel" name="label_coord_6">
               <property name="minimumSize">
@@ -609,10 +642,16 @@
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="minimumSize">
+               <size>
+                <width>56</width>
+                <height>29</height>
+               </size>
+              </property>
               <property name="maximumSize">
                <size>
-                <width>73</width>
-                <height>50</height>
+                <width>56</width>
+                <height>29</height>
                </size>
               </property>
               <property name="toolTip">
@@ -661,10 +700,16 @@
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="minimumSize">
+               <size>
+                <width>56</width>
+                <height>29</height>
+               </size>
+              </property>
               <property name="maximumSize">
                <size>
-                <width>73</width>
-                <height>23</height>
+                <width>56</width>
+                <height>29</height>
                </size>
               </property>
               <property name="toolTip">
@@ -703,36 +748,6 @@
              </widget>
             </item>
            </layout>
-          </widget>
-          <widget class="QCheckBox" name="check_botOverride">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>130</y>
-             <width>91</width>
-             <height>22</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <pointsize>10</pointsize>
-             <weight>75</weight>
-             <italic>false</italic>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Hotkey: O) Toggles manual control override on selected robot&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
-           </property>
-           <property name="text">
-            <string>Override</string>
-           </property>
           </widget>
          </widget>
         </widget>
@@ -2876,424 +2891,556 @@
          <property name="focusPolicy">
           <enum>Qt::NoFocus</enum>
          </property>
+         <property name="tabPosition">
+          <enum>QTabWidget::North</enum>
+         </property>
+         <property name="tabShape">
+          <enum>QTabWidget::Rounded</enum>
+         </property>
          <property name="currentIndex">
           <number>0</number>
+         </property>
+         <property name="elideMode">
+          <enum>Qt::ElideNone</enum>
+         </property>
+         <property name="usesScrollButtons">
+          <bool>false</bool>
          </property>
          <widget class="QWidget" name="field">
           <attribute name="title">
            <string>Field</string>
           </attribute>
-          <widget class="QWidget" name="layoutWidget">
+          <widget class="QFrame" name="frame_8">
            <property name="geometry">
             <rect>
-             <x>10</x>
+             <x>0</x>
              <y>0</y>
-             <width>411</width>
-             <height>41</height>
+             <width>137</width>
+             <height>38</height>
             </rect>
            </property>
-           <layout class="QGridLayout" name="gridLayout_24">
-            <item row="0" column="0">
-             <widget class="QCheckBox" name="check_fieldGrid">
-              <property name="focusPolicy">
-               <enum>Qt::NoFocus</enum>
-              </property>
-              <property name="toolTip">
-               <string>Toggle display of grid</string>
-              </property>
-              <property name="text">
-               <string>Grid</string>
-              </property>
-             </widget>
+           <property name="frameShape">
+            <enum>QFrame::Panel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Sunken</enum>
+           </property>
+           <property name="lineWidth">
+            <number>3</number>
+           </property>
+           <widget class="QCheckBox" name="check_fieldGrid">
+            <property name="geometry">
+             <rect>
+              <x>4</x>
+              <y>8</y>
+              <width>59</width>
+              <height>22</height>
+             </rect>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="toolTip">
+             <string>Toggle display of grid</string>
+            </property>
+            <property name="text">
+             <string>Grid</string>
+            </property>
+           </widget>
+           <widget class="QComboBox" name="combo_gridScale">
+            <property name="geometry">
+             <rect>
+              <x>67</x>
+              <y>6</y>
+              <width>65</width>
+              <height>27</height>
+             </rect>
+            </property>
+            <property name="toolTip">
+             <string>Interval size of grid lines</string>
+            </property>
+            <property name="currentText">
+             <string>500²</string>
+            </property>
+            <property name="currentIndex">
+             <number>1</number>
+            </property>
+            <item>
+             <property name="text">
+              <string>200²</string>
+             </property>
             </item>
-            <item row="0" column="3">
-             <widget class="QCheckBox" name="check_coloredGoals">
-              <property name="focusPolicy">
-               <enum>Qt::NoFocus</enum>
-              </property>
-              <property name="toolTip">
-               <string>Toggle team-colored goals</string>
-              </property>
-              <property name="text">
-               <string>Team Colors</string>
-              </property>
-              <property name="checked">
-               <bool>true</bool>
-              </property>
-             </widget>
+            <item>
+             <property name="text">
+              <string>500²</string>
+             </property>
             </item>
-            <item row="0" column="5">
-             <widget class="QComboBox" name="combo_fieldColor">
-              <property name="minimumSize">
-               <size>
-                <width>112</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string>Field color scheme</string>
-              </property>
-              <property name="currentText">
-               <string>Default</string>
-              </property>
-              <property name="currentIndex">
-               <number>0</number>
-              </property>
-              <item>
-               <property name="text">
-                <string>Default</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Ice Rink</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Basketball</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Air Hockey</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Arctic</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Game Boy</string>
-               </property>
-              </item>
-             </widget>
+            <item>
+             <property name="text">
+              <string>1000²</string>
+             </property>
             </item>
-            <item row="0" column="2">
-             <spacer name="horizontalSpacer_2">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
+           </widget>
+          </widget>
+          <widget class="QFrame" name="frame_9">
+           <property name="geometry">
+            <rect>
+             <x>140</x>
+             <y>0</y>
+             <width>245</width>
+             <height>38</height>
+            </rect>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::Panel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Sunken</enum>
+           </property>
+           <property name="lineWidth">
+            <number>3</number>
+           </property>
+           <widget class="QComboBox" name="combo_fieldColor">
+            <property name="geometry">
+             <rect>
+              <x>126</x>
+              <y>7</y>
+              <width>112</width>
+              <height>27</height>
+             </rect>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>112</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string>Field color scheme</string>
+            </property>
+            <property name="currentText">
+             <string>Default</string>
+            </property>
+            <property name="currentIndex">
+             <number>0</number>
+            </property>
+            <item>
+             <property name="text">
+              <string>Default</string>
+             </property>
             </item>
-            <item row="0" column="1">
-             <widget class="QComboBox" name="combo_gridScale">
-              <property name="toolTip">
-               <string>Interval size of grid lines</string>
-              </property>
-              <property name="currentText">
-               <string>500²</string>
-              </property>
-              <property name="currentIndex">
-               <number>1</number>
-              </property>
-              <item>
-               <property name="text">
-                <string>200²</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>500²</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>1000²</string>
-               </property>
-              </item>
-             </widget>
+            <item>
+             <property name="text">
+              <string>Ice Rink</string>
+             </property>
             </item>
-            <item row="0" column="4">
-             <spacer name="horizontalSpacer_3">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
+            <item>
+             <property name="text">
+              <string>Basketball</string>
+             </property>
             </item>
-           </layout>
+            <item>
+             <property name="text">
+              <string>Air Hockey</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Arctic</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Game Boy</string>
+             </property>
+            </item>
+           </widget>
+           <widget class="QCheckBox" name="check_coloredGoals">
+            <property name="geometry">
+             <rect>
+              <x>6</x>
+              <y>10</y>
+              <width>114</width>
+              <height>22</height>
+             </rect>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="toolTip">
+             <string>Toggle team-colored goals</string>
+            </property>
+            <property name="text">
+             <string>Team Colors</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </widget>
+          <widget class="QComboBox" name="combo_fieldProportions">
+           <property name="geometry">
+            <rect>
+             <x>400</x>
+             <y>5</y>
+             <width>96</width>
+             <height>27</height>
+            </rect>
+           </property>
+           <property name="currentIndex">
+            <number>0</number>
+           </property>
+           <item>
+            <property name="text">
+             <string>Simulator</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Lab Field</string>
+            </property>
+           </item>
           </widget>
          </widget>
          <widget class="QWidget" name="tab_robots">
           <attribute name="title">
            <string>Robots</string>
           </attribute>
-          <widget class="QWidget" name="layoutWidget">
-           <property name="geometry">
-            <rect>
-             <x>10</x>
-             <y>0</y>
-             <width>161</width>
-             <height>41</height>
-            </rect>
-           </property>
-           <layout class="QGridLayout" name="gridLayout_25">
-            <item row="0" column="0">
-             <widget class="QCheckBox" name="check_showIDs">
-              <property name="maximumSize">
-               <size>
-                <width>95</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::NoFocus</enum>
-              </property>
-              <property name="toolTip">
-               <string>Show Robot Identification Numbers</string>
-              </property>
-              <property name="text">
-               <string>Show IDs</string>
-              </property>
-              <property name="checked">
-               <bool>false</bool>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QComboBox" name="combo_botScale">
-              <property name="maximumSize">
-               <size>
-                <width>65</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string>Robot Scale</string>
-              </property>
-              <property name="currentText">
-               <string>120%</string>
-              </property>
-              <property name="currentIndex">
-               <number>1</number>
-              </property>
-              <item>
-               <property name="text">
-                <string>150%</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>120%</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>100%</string>
-               </property>
-              </item>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-          <widget class="QToolButton" name="btn_botForward">
-           <property name="geometry">
-            <rect>
-             <x>202</x>
-             <y>0</y>
-             <width>40</width>
-             <height>20</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="toolTip">
-            <string>(Hotkey: W) Move selected robot forward</string>
-           </property>
-           <property name="text">
-            <string>▲</string>
-           </property>
-          </widget>
-          <widget class="QToolButton" name="btn_botReverse">
-           <property name="geometry">
-            <rect>
-             <x>202</x>
-             <y>18</y>
-             <width>40</width>
-             <height>20</height>
-            </rect>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="toolTip">
-            <string>(Hotkey: S) Move selected robot backward</string>
-           </property>
-           <property name="text">
-            <string>▼</string>
-           </property>
-          </widget>
-          <widget class="QToolButton" name="btn_botTurnRight">
-           <property name="geometry">
-            <rect>
-             <x>240</x>
-             <y>0</y>
-             <width>20</width>
-             <height>38</height>
-            </rect>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="toolTip">
-            <string>(Hotkey: D) Turn selected robot right</string>
-           </property>
-           <property name="text">
-            <string>▶</string>
-           </property>
-          </widget>
-          <widget class="QToolButton" name="btn_botTurnLeft">
-           <property name="geometry">
-            <rect>
-             <x>184</x>
-             <y>0</y>
-             <width>20</width>
-             <height>38</height>
-            </rect>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="toolTip">
-            <string>(Hotkey: A) Turn selected robot left</string>
-           </property>
-           <property name="text">
-            <string>◀</string>
-           </property>
-          </widget>
-          <widget class="QPushButton" name="btn_botKick">
-           <property name="geometry">
-            <rect>
-             <x>330</x>
-             <y>3</y>
-             <width>60</width>
-             <height>30</height>
-            </rect>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="toolTip">
-            <string>(Hotkey: K) Kick with selected robot</string>
-           </property>
-           <property name="text">
-            <string>Kick</string>
-           </property>
-          </widget>
-          <widget class="QPushButton" name="btn_botDrible">
-           <property name="geometry">
-            <rect>
-             <x>270</x>
-             <y>3</y>
-             <width>60</width>
-             <height>30</height>
-            </rect>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="toolTip">
-            <string>(Hotkey: J) Drible with selected robot</string>
-           </property>
-           <property name="text">
-            <string>Drible</string>
-           </property>
-          </widget>
-          <widget class="QWidget" name="">
+          <widget class="QFrame" name="frame_10">
            <property name="geometry">
             <rect>
              <x>400</x>
              <y>0</y>
-             <width>261</width>
-             <height>35</height>
+             <width>228</width>
+             <height>38</height>
             </rect>
            </property>
-           <layout class="QHBoxLayout" name="horizontalLayout">
-            <property name="spacing">
-             <number>0</number>
+           <property name="frameShape">
+            <enum>QFrame::Panel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Sunken</enum>
+           </property>
+           <property name="lineWidth">
+            <number>3</number>
+           </property>
+           <widget class="QPushButton" name="btn_override_none">
+            <property name="geometry">
+             <rect>
+              <x>145</x>
+              <y>6</y>
+              <width>75</width>
+              <height>27</height>
+             </rect>
             </property>
-            <property name="leftMargin">
-             <number>0</number>
+            <property name="maximumSize">
+             <size>
+              <width>75</width>
+              <height>16777215</height>
+             </size>
             </property>
-            <property name="topMargin">
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="toolTip">
+             <string>Disables manual control override on entire team</string>
+            </property>
+            <property name="text">
+             <string>Liberate</string>
+            </property>
+           </widget>
+           <widget class="QPushButton" name="btn_override_all">
+            <property name="geometry">
+             <rect>
+              <x>8</x>
+              <y>6</y>
+              <width>75</width>
+              <height>27</height>
+             </rect>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>75</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="toolTip">
+             <string>Enables manual control override on entire team</string>
+            </property>
+            <property name="text">
+             <string>Override</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_6">
+            <property name="geometry">
+             <rect>
+              <x>86</x>
+              <y>11</y>
+              <width>55</width>
+              <height>17</height>
+             </rect>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>56</width>
+              <height>500</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Team AI</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </widget>
+          <widget class="QFrame" name="frame_11">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>0</y>
+             <width>218</width>
+             <height>39</height>
+            </rect>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::Panel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Sunken</enum>
+           </property>
+           <property name="lineWidth">
+            <number>3</number>
+           </property>
+           <widget class="QPushButton" name="btn_botKick">
+            <property name="geometry">
+             <rect>
+              <x>150</x>
+              <y>5</y>
+              <width>60</width>
+              <height>30</height>
+             </rect>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="toolTip">
+             <string>(Hotkey: SPACEBAR) Kick with selected robot</string>
+            </property>
+            <property name="text">
+             <string>Kick</string>
+            </property>
+           </widget>
+           <widget class="QToolButton" name="btn_botReverse">
+            <property name="geometry">
+             <rect>
+              <x>25</x>
+              <y>20</y>
+              <width>40</width>
+              <height>20</height>
+             </rect>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="toolTip">
+             <string>(Hotkey: S) Move selected robot backward</string>
+            </property>
+            <property name="text">
+             <string>▼</string>
+            </property>
+           </widget>
+           <widget class="QPushButton" name="btn_botDrible">
+            <property name="geometry">
+             <rect>
+              <x>90</x>
+              <y>5</y>
+              <width>60</width>
+              <height>30</height>
+             </rect>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="toolTip">
+             <string>(Hotkey: J) Drible with selected robot</string>
+            </property>
+            <property name="text">
+             <string>Drible</string>
+            </property>
+           </widget>
+           <widget class="QToolButton" name="btn_botForward">
+            <property name="geometry">
+             <rect>
+              <x>25</x>
+              <y>2</y>
+              <width>40</width>
+              <height>20</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <weight>50</weight>
+              <bold>false</bold>
+             </font>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="toolTip">
+             <string>(Hotkey: W) Move selected robot forward</string>
+            </property>
+            <property name="text">
+             <string>▲</string>
+            </property>
+           </widget>
+           <widget class="QToolButton" name="btn_botTurnLeft">
+            <property name="geometry">
+             <rect>
+              <x>7</x>
+              <y>2</y>
+              <width>20</width>
+              <height>38</height>
+             </rect>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="toolTip">
+             <string>(Hotkey: A) Turn selected robot left</string>
+            </property>
+            <property name="text">
+             <string>◀</string>
+            </property>
+           </widget>
+           <widget class="QToolButton" name="btn_botTurnRight">
+            <property name="geometry">
+             <rect>
+              <x>63</x>
+              <y>2</y>
+              <width>20</width>
+              <height>38</height>
+             </rect>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="toolTip">
+             <string>(Hotkey: D) Turn selected robot right</string>
+            </property>
+            <property name="text">
+             <string>▶</string>
+            </property>
+           </widget>
+          </widget>
+          <widget class="QFrame" name="frame_12">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>101</width>
+             <height>38</height>
+            </rect>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::Panel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Sunken</enum>
+           </property>
+           <property name="lineWidth">
+            <number>3</number>
+           </property>
+           <widget class="QCheckBox" name="check_showIDs">
+            <property name="geometry">
+             <rect>
+              <x>6</x>
+              <y>8</y>
+              <width>88</width>
+              <height>22</height>
+             </rect>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>95</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="toolTip">
+             <string>Show Robot Identification Numbers</string>
+            </property>
+            <property name="text">
+             <string>Show IDs</string>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </widget>
+          <widget class="QFrame" name="frame_13">
+           <property name="geometry">
+            <rect>
+             <x>100</x>
+             <y>0</y>
+             <width>75</width>
+             <height>37</height>
+            </rect>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::Panel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Sunken</enum>
+           </property>
+           <property name="lineWidth">
+            <number>3</number>
+           </property>
+           <widget class="QComboBox" name="combo_botScale">
+            <property name="geometry">
+             <rect>
+              <x>6</x>
+              <y>5</y>
+              <width>65</width>
+              <height>27</height>
+             </rect>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>65</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string>Robot Scale</string>
+            </property>
+            <property name="currentText">
+             <string>120%</string>
+            </property>
+            <property name="currentIndex">
              <number>1</number>
             </property>
             <item>
-             <widget class="QPushButton" name="btn_override_all">
-              <property name="maximumSize">
-               <size>
-                <width>95</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::NoFocus</enum>
-              </property>
-              <property name="toolTip">
-               <string>Enables manual control override on entire team</string>
-              </property>
-              <property name="text">
-               <string>Override All</string>
-              </property>
-             </widget>
+             <property name="text">
+              <string>150%</string>
+             </property>
             </item>
             <item>
-             <widget class="QLabel" name="label_6">
-              <property name="maximumSize">
-               <size>
-                <width>56</width>
-                <height>500</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>Manual</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
+             <property name="text">
+              <string>120%</string>
+             </property>
             </item>
             <item>
-             <widget class="QPushButton" name="btn_override_none">
-              <property name="maximumSize">
-               <size>
-                <width>95</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::NoFocus</enum>
-              </property>
-              <property name="toolTip">
-               <string>Disables manual control override on entire team</string>
-              </property>
-              <property name="text">
-               <string>Liberate All</string>
-              </property>
-             </widget>
+             <property name="text">
+              <string>100%</string>
+             </property>
             </item>
-           </layout>
+           </widget>
           </widget>
          </widget>
          <widget class="QWidget" name="tab">
@@ -3737,6 +3884,9 @@
               <height>45</height>
              </rect>
             </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
             <property name="styleSheet">
              <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
             </property>
@@ -3785,7 +3935,7 @@
              </rect>
             </property>
             <property name="text">
-             <string>Press SPACE to toggle thread</string>
+             <string>Press BACKSPACE to toggle thread</string>
             </property>
            </widget>
            <widget class="QLCDNumber" name="lcd_coordY_ball">
@@ -4128,24 +4278,15 @@
   <tabstop>gView_robot_3</tabstop>
   <tabstop>gView_robot_4</tabstop>
   <tabstop>gView_robot_5</tabstop>
-  <tabstop>combo_botScale</tabstop>
-  <tabstop>combo_ballColor</tabstop>
-  <tabstop>tabs_field</tabstop>
+  <tabstop>scrollArea</tabstop>
   <tabstop>combo_ballScale</tabstop>
   <tabstop>combo_gridScale</tabstop>
-  <tabstop>scrollArea</tabstop>
   <tabstop>zoom_slider</tabstop>
   <tabstop>text_primeBot</tabstop>
-  <tabstop>btn_connectGui</tabstop>
-  <tabstop>dial_botSpeed_0</tabstop>
-  <tabstop>dial_botSpeed_5</tabstop>
-  <tabstop>dial_botSpeed_4</tabstop>
-  <tabstop>dial_botSpeed_2</tabstop>
-  <tabstop>dial_botSpeed_3</tabstop>
-  <tabstop>dial_botSpeed_1</tabstop>
-  <tabstop>gView_ball</tabstop>
   <tabstop>combo_fieldColor</tabstop>
-  <tabstop>text_guiPrint</tabstop>
+  <tabstop>combo_ballColor</tabstop>
+  <tabstop>combo_botScale</tabstop>
+  <tabstop>combo_fieldProportions</tabstop>
  </tabstops>
  <resources>
   <include location="images.qrc"/>
