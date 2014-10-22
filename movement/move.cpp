@@ -197,7 +197,11 @@ bool Move::calcRegularMovement(Robot* robot, Type moveType)
     // Check to see if movement is necessary
     if (Measurments::isClose(m_targetPoint, robotPos, lastDistTolerance) &&
             Measurments::isClose(m_targetAngle, robotAng, lastAngTolerance))
+    {
+        lfront=lback=rfront=rback=left=right=back=0;
         return true;
+    }
+
     else
     {
         /* Using regular movement, we calculate the velocities to move

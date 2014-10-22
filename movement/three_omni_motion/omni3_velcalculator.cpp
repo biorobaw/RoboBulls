@@ -49,10 +49,6 @@ threeWheelVels ThreeWheelCalculator::defaultCalc
         y_vel *= 0.5;
     }
 
-    //Set tolerances
-    if (Measurments::isClose(rp,gp,DIST_TOLERANCE*0.5)) x_vel = y_vel = 0;
-    if (abs(Measurments::angleDiff(theta_goal,theta_current))<ROT_TOLERANCE) theta_vel = 0;
-
     // Robot Frame Velocities
     double x_vel_robot =  cos(theta_current)*x_vel + sin(theta_current)*y_vel;
     double y_vel_robot =  sin(theta_current)*x_vel - cos(theta_current)*y_vel;
@@ -119,10 +115,6 @@ threeWheelVels ThreeWheelCalculator::facePointCalc
         x_vel *= 0.5;
         y_vel *= 0.5;
     }
-
-    //Set tolerances
-    if (Measurments::isClose(rp,gp,DIST_TOLERANCE)) x_vel = y_vel = 0;
-    if (abs(Measurments::angleDiff(theta_goal,theta_current))<ROT_TOLERANCE*0.5) theta_vel = 0;
 
     // Focus on rotation
     double vel = sqrt(x_vel*x_vel+y_vel*y_vel);

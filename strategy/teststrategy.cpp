@@ -70,12 +70,12 @@ public:
         switch(state)
         {
         case pos_one:
-            setMovementTargets(target_one,M_PI,false);
+            setMovementTargets(target_one,ori,false);
             if (Measurments::isClose(rp,target_one,50))
                 state = pos_two;
             break;
         case pos_two:
-            setMovementTargets(target_two,0,false);
+            setMovementTargets(target_two,ori,false);
             if (Measurments::isClose(rp,target_two,50))
                 state = pos_one;
         }
@@ -96,7 +96,7 @@ public:
 
     void perform(Robot *robot) override
     {
-        setMovementTargets(Point(1000,0), M_PI, false);
+        setMovementTargets(Point(2000,0), M_PI, false);
         GenericMovementBehavior::perform(robot);
     }
 };
@@ -119,6 +119,7 @@ public:
 
 TestStrategy::TestStrategy()
 {
+
 }
 
 void TestStrategy::assignBeh()
@@ -126,7 +127,7 @@ void TestStrategy::assignBeh()
 //***************************************************************************************************
     //Shamsi Code
     BehaviorAssignment<ShamsiKickToPoint> assignment(true);
-    assignment.assignBeh({1});
+    assignment.assignBeh({3});
 
     // Narges code testing DriveBallAndKick
 //    BehaviorAssignment<TestBehavior> assignment(true);

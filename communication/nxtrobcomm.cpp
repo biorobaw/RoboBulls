@@ -36,7 +36,7 @@ void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
 {
     // Create array of packets
     packet_t teamPacketBuf[5];
-    //char testOmni[10] = {'~','6','100','100','100','100','0','0','0','$'};
+    //char testOmni[10] = {'~',6,0,0,0,0,0,0,0,'$'};
 
     assert(sizeof(int8_t) == 1);
 
@@ -69,5 +69,6 @@ void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
 
     // Send Array of packets
     send((char*)&teamPacketBuf, sizeof(packet_t)*5);
+    //cout << "test send" << endl;
     //send(&testOmni[0], 10);
 }
