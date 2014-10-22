@@ -106,7 +106,9 @@ void GuiRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     } else {
         painter->setPen(QPen(Qt::black, 0, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
         painter->setBrush(QBrush(Qt::black, Qt::SolidPattern));
-
+    }
+    if (enabled == false) {
+        painter->setBrush(QBrush(QColor::fromRgb(200,255,255,5), Qt::SolidPattern));
     }
     int startAngle = 50 * 16;
     int spanAngle = 260 * 16;

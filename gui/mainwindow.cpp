@@ -1079,7 +1079,10 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
             case Qt::Key_J:
                 on_btn_botDrible_pressed();
                 break;
-
+            // Hide/show bot icon
+//            case Qt::Key_Delete:
+//                cout << "delete \n";
+//                break;
         }
     }
 }
@@ -1144,7 +1147,7 @@ void MainWindow::centerViewOnBot() {
 
 void MainWindow::setMyVelocity() {
     if (QApplication::keyboardModifiers().testFlag(Qt::ShiftModifier) == true) {
-        cout << "Shift \n";
+//        cout << "Shift \n";
         myVelocity = 100;
     } else if (QApplication::keyboardModifiers().testFlag(Qt::AltModifier) == true) {
         cout << "Alt \n";
@@ -1174,6 +1177,9 @@ void MainWindow::setupKeyShortcuts() {
     QShortcut *o = new QShortcut(this);
     o->setKey(Qt::Key_O);
 
+    QShortcut *delKey = new QShortcut(this);
+    delKey->setKey(Qt::Key_Delete);
+
 //    QShortcut *spaceBar = new QShortcut(this);
 //    spaceBar->setKey(Qt::Key_Space);
 
@@ -1181,7 +1187,10 @@ void MainWindow::setupKeyShortcuts() {
     connect(enter, SIGNAL(activated()), this, SLOT(on_btn_connectGui_clicked()));
     connect(backspace, SIGNAL(activated()), this, SLOT(on_btn_connectGui_clicked()));
     connect(o, SIGNAL(activated()), ui->check_botOverride, SLOT(click()));
+    connect(delKey, SIGNAL(activated()), this, SLOT(toggleIconVisible()));
+    //    connect(delKey, SIGNAL(activated()), this, SLOT(on_btn_connectGui_clicked()));
 }
+
 
 MainWindow::~MainWindow()
 {
@@ -1433,5 +1442,24 @@ void MainWindow::on_btn_override_all_released() {
 void MainWindow::on_btn_override_none_released() {
     for (int i=0; i<overriddenBots.size(); i++) {
         overriddenBots[i] = false;
+    }
+}
+
+void MainWindow::toggleIconVisible()
+{
+    if (selectedBot > -1) {
+        if (guiTeam[selectedBot]->enabled) {
+            guiTeam[selectedBot]->enabled = false;
+        } else {
+            guiTeam[selectedBot]->enabled = true;
+        }
+//        if (guiTeam[selectedBot]->isVisible() == false) {
+////            robot0->setVisible(true);
+//            guiTeam[selectedBot]->setVisible(true);
+//            botIcons[selectedBot]->setVisible(true);
+//        } else {
+//            guiTeam[selectedBot]->setVisible(false);
+//            botIcons[selectedBot]->setVisible(false);
+//        }
     }
 }

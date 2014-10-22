@@ -244,6 +244,8 @@ private slots:
     void on_check_botOverride_clicked(bool checked);
     void on_btn_override_all_released();
     void on_btn_override_none_released();
+    void toggleIconVisible();
+
 };
 
 #endif // MAINWINDOW_H
