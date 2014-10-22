@@ -14,7 +14,6 @@
 #include "behavior/genericmovementbehavior.h"
 #include "movement/movetype.h"
 #include "model/gamemodel.h"
-#include <fstream>
 #include "behavior/passballsender.h"
 #include "behavior/passballreceiver.h"
 
@@ -54,6 +53,72 @@ public:
     }
 };
 
+class ShamsiStrafe : public GenericMovementBehavior
+{
+public:
+    ShamsiStrafe(const ParameterList& list)
+    {
+        UNUSED_PARAM(list);
+    }
+
+    void perform(Robot *robot) override
+    {
+        GameModel * gm = GameModel::getModel();
+        Point rp = gm->getMyTeam().at(0)->getRobotPosition();
+        Point bp = gm->getBallPoint();
+        Point target_one = Point(-2000,0);
+        Point target_two = Point(2000,0);
+        double ori = Measurments::angleBetween(rp,bp);
+
+        switch(state)
+        {
+        case pos_one:
+            setMovementTargets(target_one,ori,false);
+            if (Measurments::isClose(rp,target_one,50))
+                state = pos_two;
+            break;
+        case pos_two:
+            setMovementTargets(target_two,ori,false);
+            if (Measurments::isClose(rp,target_two,50))
+                state = pos_one;
+        }
+
+        GenericMovementBehavior::perform(robot);
+    }
+private:
+    enum {pos_one,pos_two} state = pos_one;
+};
+
+class ShamsiGoToPose : public GenericMovementBehavior
+{
+public:
+    ShamsiGoToPose(const ParameterList& list)
+    {
+        UNUSED_PARAM(list);
+    }
+
+    void perform(Robot *robot) override
+    {
+        setMovementTargets(Point(2000,0), M_PI, false);
+        GenericMovementBehavior::perform(robot);
+    }
+};
+
+class ShamsiKickToPoint : public GenericMovementBehavior
+{
+public:
+    Skill::KickToPoint * kkkk;
+    ShamsiKickToPoint(const ParameterList& list)
+    {
+        kkkk = new Skill::KickToPoint(Point(0,0));
+        UNUSED_PARAM(list);
+    }
+
+    void perform(Robot *robot) override
+    {
+        kkkk->perform(robot);
+    }
+};
 
 
 TestStrategy::TestStrategy()
@@ -64,17 +129,12 @@ TestStrategy::TestStrategy()
 void TestStrategy::assignBeh()
 {
 //*************************************************************
-////    Shamsi Code
+////  Shamsi Code
 //    BehaviorAssignment<ShamsiKickToPoint> assignment(true);
-//    assignment.assignBeh({4});
+//    assignment.assignBeh({5});
 
 
 //************************************************************
-////     Narges code testing DriveBallAndKick
-//    BehaviorAssignment<DriveBallAndKick> assignment;
-//    assignment.setSingleAssignment(true);
-//    assignment.assignBeh(gm->getMyTeam().at(0));
-
 ////     Narges code testing DriveBallAndKick
 //    BehaviorAssignment<TestBehavior> assignment(true);
 //    assignment.assignBeh({3});
@@ -146,70 +206,5 @@ void TestStrategy::assignBeh()
 }
 
 
-class ShamsiStrafe : public GenericMovementBehavior
-{
-public:
-    ShamsiStrafe(const ParameterList& list)
-    {
-        UNUSED_PARAM(list);
-    }
 
-    void perform(Robot *robot) override
-    {
-        GameModel * gm = GameModel::getModel();
-        Point rp = gm->getMyTeam().at(0)->getRobotPosition();
-        Point bp = gm->getBallPoint();
-        Point target_one = Point(-2000,0);
-        Point target_two = Point(2000,0);
-        //double ori = Measurments::angleBetween(rp,bp);
-
-        switch(state)
-        {
-        case pos_one:
-            setMovementTargets(target_one,ori,false);
-            if (Measurments::isClose(rp,target_one,50))
-                state = pos_two;
-            break;
-        case pos_two:
-            setMovementTargets(target_two,ori,false);
-            if (Measurments::isClose(rp,target_two,50))
-                state = pos_one;
-        }
-
-        GenericMovementBehavior::perform(robot);
-    }
-private:
-    enum {pos_one,pos_two} state = pos_one;
-};
-
-class ShamsiGoToPose : public GenericMovementBehavior
-{
-public:
-    ShamsiGoToPose(const ParameterList& list)
-    {
-        UNUSED_PARAM(list);
-    }
-
-    void perform(Robot *robot) override
-    {
-        setMovementTargets(Point(2000,0), M_PI, false);
-        GenericMovementBehavior::perform(robot);
-    }
-};
-
-class ShamsiKickToPoint : public GenericMovementBehavior
-{
-public:
-    Skill::KickToPoint * kkkk;
-    ShamsiKickToPoint(const ParameterList& list)
-    {
-        kkkk = new Skill::KickToPoint(Point(0,0));
-        UNUSED_PARAM(list);
-    }
-
-    void perform(Robot *robot) override
-    {
-        kkkk->perform(robot);
-    }
-};
 

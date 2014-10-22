@@ -129,10 +129,11 @@ wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, double x_goal,
     /*************************************************************************************************
     / If distance < 40, turn on flag to rotate only
     / Once on, this flag does not get turned off until the distance > 70
-    / This is to compensate for noise and small translations during rotation
-    / This calculator guarantees that the robot is within 70 distance of target
-    */
-    if (newRho > 30)
+    / providing a 40 distance window to compensate for noise and small
+    / translations during rotation. This calculator guarantees that the
+    / robot is within 70 distance of target.*/
+
+    if (newRho > 30) //Below this is too slow, above this is less precise
     {
         float Pi2R = 2*M_PI*wheel_radius;
         left_motor_velocity  = ((robot_xvel / Pi2R) - (wheel_separation * robot_turnrate/Pi2R))/2;

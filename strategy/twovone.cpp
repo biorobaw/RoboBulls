@@ -8,7 +8,7 @@ TwoVOne::TwoVOne()
 void TwoVOne::assignBeh()
 {
     //**********************************************************
-    // BROKEN
+    // BROKEN EXPECT CRASH
     //**********************************************************
     gm = GameModel::getModel();
     bp = gm->getBallPoint();

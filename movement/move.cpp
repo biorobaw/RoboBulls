@@ -448,7 +448,7 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
          * optional end orientation, that rotation is done here
          */
         if(Measurments::isClose(robot->getOrientation(), m_targetAngle, lastAngTolerance)) {
-            left = right = 0;
+            lfront=lback=rfront=rback=left=right=back=0;
             return true;
         } else {
             this->calculateVels(robot, robot->getRobotPosition(), m_targetAngle, moveType);

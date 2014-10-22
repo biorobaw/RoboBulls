@@ -1,8 +1,7 @@
 #include "strategycontroller.h"
-#include <iostream>
 #include "strategy/strategy.h"
-#include "model/gamemodel.h"
 
+#include "model/gamemodel.h"
 #include "model/robot.h"
 #include "behavior/behavior.h"
 
@@ -82,8 +81,6 @@ void StrategyController::gameModelUpdated()
         activeStrategy = new TestStrategy();
     };
 //#endif
-//    activeStrategy = new KickOffStrategy();
-
     activeStrategy->assignBeh();
 }
 

@@ -34,7 +34,7 @@ void KickToPoint::doPositioningState(Robot *robot)
 #if KICK_TO_POINT_DEBUG
     std::cout << "KTP POSITION" << std::endl;
 #endif
-    move_skill.recreate(behindBall, ballTargetAngle, false);
+    move_skill.recreate(behindBall, ballTargetAngle,false);
 
     if (robot->type()!=differential)
     {
@@ -103,7 +103,7 @@ void KickToPoint::doMovingState(Robot *robot)
     }
     else
     {
-        move_skill.recreate(m_kickTarget, UNUSED_ANGLE_VALUE, false);
+        move_skill.recreate(m_kickTarget, UNUSED_ANGLE_VALUE,false);
         move_skill.perform(robot);
     }
 }
@@ -147,24 +147,18 @@ bool KickToPoint::perform(Robot * robot)
     switch(this->state)
     {
     case Positioning:
-        cout << "positioning" << endl;
+        //cout << "positioning" << endl;
         doPositioningState(robot);
         break;
     case Moving:
-        cout << "moving" << endl;
+        //cout << "moving" << endl;
         doMovingState(robot);
         break;
     case Kicking:
-        cout << "kicking" << endl;
+        //cout << "kicking" << endl;
         doKickingState(robot);
         break;
     }
-//    if (hasKicked)
-//    {
-//        hasKicked = false;
-//        return true;
-//    }
-//    return false;
 
     if (hasKicked)
     {
