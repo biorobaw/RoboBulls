@@ -1155,11 +1155,12 @@ void MainWindow::setMyVelocity() {
 }
 
 void MainWindow::setGuiOverride() {
-//    if (ui->check_botOverride->isChecked()) {
-//        guiOverride = true;
-//    } else {
-//        guiOverride = false;
-//    }
+    // Required for Override to work with Vision
+    if (ui->check_botOverride->isChecked()) {
+        guiOverride = true;
+    } else {
+        guiOverride = false;
+    }
 
 }
 
