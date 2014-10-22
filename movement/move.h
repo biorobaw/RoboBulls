@@ -77,8 +77,6 @@ protected:
      */
     virtual void calculateVels
         (Robot* rob, Point targetPoint, float targetAngle, Type moveType) = 0;
-    // Ryan
-    GameModel *gamemodel;
 
         
 private:
@@ -109,8 +107,6 @@ private:
     
     void setVels(Robot* robot);
 
-    // Ryan
-//    MainWindow *mainwindow;
 
 };
 

@@ -63,6 +63,7 @@ public:
     void printBehavior(int botID, string behavior, bool append);    // puts the given bot's given string into a vector and prints it when the bot is selected
     void drawLine( int originX, int originY, int endX, int endY );
     void guiPrint(string output);
+    void guiPrintRobot(int robotID, string output);
     void updateBallInfo();
     // For getting milliseconds
     int frequency_of_primes (int n);
@@ -190,8 +191,9 @@ private:
     std::vector<GuiBotLabel*> guiLabelsY;
     // Camera
     int centeredBotID = -1;
-    // guiPrint
-    QString guiOutput;
+    // Keeps track of latest string received by guiPrint()
+    QString guiOutput = "...";
+    QString guiOutputRobot = "...";
 
     GuiField *field;
     GuiSidelines *sidelines;

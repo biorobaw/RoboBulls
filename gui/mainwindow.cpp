@@ -528,17 +528,17 @@ int MainWindow::getVelocity(int id) {
 
 void MainWindow::printBehavior(int botID, string behavior, bool append)
 {
-    ui->text_primeBot->setTextColor(Qt::white);
-    QString b;
-    if (append == false) {
-        b = QString::fromStdString(behavior) + "\n";
-        botBehavior[botID] = b;
-//        cout << botBehavior[botID].toStdString();
-    } else {
-        b = QString::fromStdString(behavior) + "\n";
-//        botBehavior[botID] += b;
-        botBehavior[botID].append(b);
-    }
+//    ui->text_primeBot->setTextColor(Qt::white);
+//    QString b;
+//    if (append == false) {
+//        b = QString::fromStdString(behavior) + "\n";
+//        botBehavior[botID] = b;
+////        cout << botBehavior[botID].toStdString();
+//    } else {
+//        b = QString::fromStdString(behavior) + "\n";
+////        botBehavior[botID] += b;
+//        botBehavior[botID].append(b);
+//    }
 
 
 }
@@ -560,11 +560,39 @@ void MainWindow::drawLine(int originX, int originY, int endX, int endY) {
 void MainWindow::guiPrint(string output) {
 //    guiOutput.insert(0, QString::fromStdString(output));
     ui->text_guiPrint->setTextColor(Qt::white);
-    guiOutput += QString::fromStdString(output) + "\n";
-    ui->text_guiPrint->setText(guiOutput);
-    QScrollBar *sb = ui->text_guiPrint->verticalScrollBar();
-    sb->setValue(sb->maximum());
+    if (guiOutput.toStdString() == output) {
+
+    } else {
+        // recording this string
+        guiOutput = QString::fromStdString(output);
+        // converting received string to QString for printing
+        QString msg = QString::fromStdString(output);
+        ui->text_guiPrint->append(msg);
+        // Scrolling to bottom of text box
+        QScrollBar *sb = ui->text_guiPrint->verticalScrollBar();
+        sb->setValue(sb->maximum());
+    }
 }
+
+void MainWindow::guiPrintRobot(int robotID, string output) {
+//    guiOutput.insert(0, QString::fromStdString(output));
+    ui->text_primeBot->setTextColor(Qt::white);
+    if (guiOutputRobot.toStdString() == output) {
+
+    } else {
+        // recording this string
+        guiOutputRobot = QString::fromStdString(output);
+        // converting received string to QString for printing
+        QString msg = QString::fromStdString(output);
+        botBehavior[robotID].append(msg);
+//        QString msg = QString::fromStdString(output);
+//        ui->text_primeBot->append(msg);
+//        // Scrolling to bottom of text box
+//        QScrollBar *sb = ui->text_primeBot->verticalScrollBar();
+//        sb->setValue(sb->maximum());
+    }
+}
+
 
 void MainWindow::setUpScene()
 {
@@ -712,7 +740,6 @@ void MainWindow::setUpScene()
 }// setupScene
 
 void MainWindow::updateScene() {
-//    ui->gView_field->hide();
     if (refresh) {
         ui->gView_field->hide();
         ui->gView_field->show();
@@ -828,9 +855,6 @@ void MainWindow::updateScene() {
             }
         }
 
-    if (ball->isSelected()) {
-        cout << "Ball selected \n";
-    }
     // Keeping camera centered
     centerViewOnBot();
 
@@ -872,11 +896,7 @@ int MainWindow::getBotCoordX(bool myTeam, int id) {
     } else {
         team = gamemodel->getOponentTeam();
     }
-
-//    if (gamemodel->find(id, team) != NULL) {
-        x = gamemodel->find(id, team)->getRobotPosition().x;
-//    }
-    //cout << x << " \n";
+    x = gamemodel->find(id, team)->getRobotPosition().x;
     return x;
 }
 
@@ -888,11 +908,7 @@ int MainWindow::getBotCoordY(bool myTeam, int id) {
     } else {
         team = gamemodel->getOponentTeam();
     }
-
-//    if (team.at(id) != NULL) {
-        y = gamemodel->find(id, team)->getRobotPosition().y;
-//    }
-    //cout << y << " \n";
+    y = gamemodel->find(id, team)->getRobotPosition().y;
     return y;
 }
 
@@ -902,13 +918,11 @@ QString MainWindow::getBotOrientString(int id) {
     std::string sOrient;
     double  dRads = 8888;
     int     iRads = 8888;
-//    if (team.at(0) != NULL){
-        dRads = gamemodel->find(id, team)->getOrientation(); // angle in radians
-        dRads *= (180/M_PI);
-        iRads = dRads;
-        sOrient = std::to_string(iRads);
-        qOrient = QString::fromStdString(sOrient);
-//    }//end if
+    dRads = gamemodel->find(id, team)->getOrientation(); // angle in radians
+    dRads *= (180/M_PI);
+    iRads = dRads;
+    sOrient = std::to_string(iRads);
+    qOrient = QString::fromStdString(sOrient);
     return qOrient;
 
 }
@@ -921,12 +935,8 @@ double MainWindow::getBotOrientDouble(bool myTeam, int id) {
     } else {
         team = gamemodel->getOponentTeam();
     }
-
-//    if (team.at(id) != NULL) {
-        o = gamemodel->find(id, team)->getOrientation();
-        o *= (180/M_PI);
-//    }
-    //cout << y << " \n";
+    o = gamemodel->find(id, team)->getOrientation();
+    o *= (180/M_PI);
     return o;
 }
 
@@ -947,7 +957,6 @@ QString MainWindow::getBallCoord() {
 int MainWindow::getBallCoordX() {
     int b;
     b = gamemodel->getBallPoint().x;
-//    cout << "ball X: " << b << "\n";
 
     return b;
 }
@@ -1083,6 +1092,14 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
 //            case Qt::Key_Delete:
 //                cout << "delete \n";
 //                break;
+//            case Qt::Key_0:
+//                selectedBot = 0;
+//                break;
+//            case Qt::Key_1:
+//                robot1->setSelected(true);
+//                break;
+            // Joystick test
+
         }
     }
 }
@@ -1271,11 +1288,9 @@ void MainWindow::updateSelectedBotPanel(int id)
         ui->lcd_coordY_prime->display(getBotCoordY(true,id));
         ui->dial_botOrient_prime->setValue(getBotOrientDouble(true, id));
         ui->box_primeBot->setTitle("Robot " + QString::number(id));
-        if (ui->text_primeBot->toPlainText().contains(botBehavior[id]) == false ) {
-            ui->text_primeBot->setText(botBehavior[id]);
-            QScrollBar *sb = ui->text_primeBot->verticalScrollBar();
-            sb->setValue(sb->maximum());
-        }
+        ui->text_primeBot->setText(botBehavior[id]);
+        QScrollBar *sb = ui->text_primeBot->verticalScrollBar();
+        sb->setValue(sb->maximum());
         ui->gView_robot_prime->setScene(botIconSelScenes[id]);
     }
 
@@ -1418,10 +1433,8 @@ void MainWindow::on_check_botOverride_clicked(bool checked) {
         gamemodel->find(selectedBot, gamemodel->getMyTeam())->setL(0);
         gamemodel->find(selectedBot, gamemodel->getMyTeam())->setR(0);
         gamemodel->find(selectedBot, gamemodel->getMyTeam())->setB(0);
-        guiPrint("Overridden");
     } else {
         overriddenBots[selectedBot] = false;
-        guiPrint("Liberated");
     }
 }
 
@@ -1450,16 +1463,15 @@ void MainWindow::toggleIconVisible()
     if (selectedBot > -1) {
         if (guiTeam[selectedBot]->enabled) {
             guiTeam[selectedBot]->enabled = false;
+            botIcons[selectedBot]->enabled = false;
+            botIcons[selectedBot]->setOpacity(.3);
+            guiTeam[selectedBot]->setOpacity(.3);
         } else {
             guiTeam[selectedBot]->enabled = true;
+            botIcons[selectedBot]->enabled = true;
+            botIcons[selectedBot]->setOpacity(1);
+            guiTeam[selectedBot]->setOpacity(1);
+
         }
-//        if (guiTeam[selectedBot]->isVisible() == false) {
-////            robot0->setVisible(true);
-//            guiTeam[selectedBot]->setVisible(true);
-//            botIcons[selectedBot]->setVisible(true);
-//        } else {
-//            guiTeam[selectedBot]->setVisible(false);
-//            botIcons[selectedBot]->setVisible(false);
-//        }
     }
 }
