@@ -65,6 +65,7 @@ private:
     double kRhoI   = krho/(5.0 * sizeRhoQ);
     double kAlphaI = kalpha/(2.0 * sizeAlphaQ);
     double kBetaI  = kbeta/(1.2 * sizeBetaQ);
+    double rotateOnly = false;
 
     void handleError(double x_goal, double y_goal);
 	

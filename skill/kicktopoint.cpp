@@ -8,7 +8,7 @@
  #define CENTER_TOLERANCE   0.40
  #define POSITION_ANGLE_TOL 10*M_PI/180
 #else
- #define KDIST_TOLERANCE    160
+ #define KDIST_TOLERANCE    140
  #define CENTER_TOLERANCE   0.70
  #define POSITION_ANGLE_TOL ROT_TOLERANCE
 #endif
@@ -40,18 +40,33 @@ KickToPoint::KickToPoint(Point* targetPtr, float targetTolerance, float kickDist
 
 void KickToPoint::doPositioningState(Robot *robot)
 {
-    move_skill.recreate(behindBall, ballTargetAngle, false);
+#if KICK_TO_POINT_DEBUG
+    std::cout << "KTP POSITION" << std::endl;
+#endif
+    move_skill.recreate(behindBall, ballTargetAngle,false);
 
-    if(move_skill.perform(robot))
+    if (robot->type()!=differential)
     {
-        state = Moving;
-        cout << "KTP: MOVE RETURNS TRUE" << endl;
+        if(move_skill.perform(robot,Movement::Type::facePoint))
+        {
+            state = Moving;
+        }
+    }
+    else
+    {
+        if(move_skill.perform(robot))
+        {
+            state = Moving;
+        }
     }
 }
 
 
 void KickToPoint::doMovingState(Robot *robot)
 {
+#if KICK_TO_POINT_DEBUG
+    std::cout << "KTP MOVE" << std::endl;
+#endif
     float robTargetAngle = Measurments::angleBetween(robPoint, *externTargetPtr);
     float robBallAngle = Measurments::angleBetween(robPoint, ballPoint);
     robot->setDrible(true);
@@ -90,16 +105,13 @@ void KickToPoint::doMovingState(Robot *robot)
     if(ballCloseToCenter && robotFacingTarget && robotCloseToBall && robotCanKick)
     {
         state = Kicking;
-        cout << "KTP: KICKING" << endl;
     }
     else if(robotNotFacingBall || robFarFromBall)
     {
         state = Positioning;
-        cout << "KTP: POSITIONING" << endl;
     }
     else
     {
-        cout << "KTP: MOVING" << endl;
         move_skill.recreate(*externTargetPtr, UNUSED_ANGLE_VALUE, false);
         move_skill.perform(robot);
     }
@@ -144,24 +156,18 @@ bool KickToPoint::perform(Robot * robot)
     switch(this->state)
     {
     case Positioning:
-        cout << "positioning" << endl;
+        //cout << "positioning" << endl;
         doPositioningState(robot);
         break;
     case Moving:
-        cout << "moving" << endl;
+        //cout << "moving" << endl;
         doMovingState(robot);
         break;
     case Kicking:
-        cout << "kicking" << endl;
+        //cout << "kicking" << endl;
         doKickingState(robot);
         break;
     }
-//    if (hasKicked)
-//    {
-//        hasKicked = false;
-//        return true;
-//    }
-//    return false;
 
     if (hasKicked)
     {

@@ -14,10 +14,8 @@
 #include "behavior/genericmovementbehavior.h"
 #include "movement/movetype.h"
 #include "model/gamemodel.h"
-#include <fstream>
 #include "behavior/passballsender.h"
 #include "behavior/passballreceiver.h"
-
 
 
 class TestBehavior : public Behavior
@@ -70,17 +68,17 @@ public:
         Point bp = gm->getBallPoint();
         Point target_one = Point(-2000,0);
         Point target_two = Point(2000,0);
-        //double ori = Measurments::angleBetween(rp,bp);
+        double ori = Measurments::angleBetween(rp,bp);
 
         switch(state)
         {
         case pos_one:
-            setMovementTargets(target_one,M_PI,false);
+            setMovementTargets(target_one,ori,false);
             if (Measurments::isClose(rp,target_one,50))
                 state = pos_two;
             break;
         case pos_two:
-            setMovementTargets(target_two,0,false);
+            setMovementTargets(target_two,ori,false);
             if (Measurments::isClose(rp,target_two,50))
                 state = pos_one;
         }
@@ -101,7 +99,7 @@ public:
 
     void perform(Robot *robot) override
     {
-        setMovementTargets(Point(1000,0), M_PI, false);
+        setMovementTargets(Point(2000,0), M_PI, false);
         GenericMovementBehavior::perform(robot);
     }
 };
@@ -122,45 +120,72 @@ public:
     }
 };
 
+
 TestStrategy::TestStrategy()
 {
+
 }
 
 void TestStrategy::assignBeh()
 {
-    GameModel *gm = GameModel::getModel();
-//***************************************************************************************************
-//    //Shamsi Code
+//*************************************************************
+////  Shamsi Code
 //    BehaviorAssignment<ShamsiKickToPoint> assignment(true);
-//    assignment.assignBeh({4});
+//    assignment.assignBeh({5});
 
 
-    //Martin code
-//    cout << "running test strategy!" << endl;
+//************************************************************
+////     Narges code testing DriveBallAndKick
+//    BehaviorAssignment<TestBehavior> assignment(true);
+//    assignment.assignBeh({3});
+
+
+////    Narges code testing defendCloseToBall
+//    BehaviorAssignment<DefendCloseToBall> assignment;
+//    assignment.setSingleAssignment(true);
+//    assignment.assignBeh();
+
+////    Narges code testing defendfarfromball
+//    BehaviorAssignment<DefendFarFromBall> assignment;
+//    assignment.setSingleAssignment(true);
+//    assignment.assignBeh();
+
+////    Narges testing myTestBehavior
+//    BehaviorAssignment<myTestBehavior> assignment;
+//    assignment.setSingleAssignment(true);
+//    assignment.assignBeh(gm->getMyTeam().at(0));
+
+
+////     Narges testing passSender
+//    BehaviorAssignment<PassBallSender> assignment;
+//    assignment.setSingleAssignment(true);
+//    assignment.assignBeh(gm->getMyTeam().at(0));
+
+////     Narges testing passReceiver
+//    BehaviorAssignment<PassBallReceiver> assignment;
+//    assignment.setSingleAssignment(true);
+//    assignment.assignBeh(gm->getMyTeam().at(0));
+
+////    BehaviorAssignment<DriveBallAndKick> assignment;
 //    GameModel * gm = GameModel::getModel();
+//    BehaviorAssignment<TestBehavior> assignment;
+//    assignment.setSingleAssignment(true);
+//    assignment.setBehParam<Point>("targetPoint", gm->getBallPoint());
+//    assignment.assignBeh({0, 1});
 
-//    float ballToOpGoalDist = Measurments::distance(gm->getBallPoint(), gm->getOpponentGoal());
-//    float ballToMyGoalDist = Measurments::distance(gm->getBallPoint(), gm->getMyGoal());
+//    BehaviorAssignment<ShamsiKickToPoint> assignment(true);
+//    assignment.assignBeh({1});
 
-//    if (ballToOpGoalDist > ballToMyGoalDist){
-//        BehaviorAssignment<KickToGoal> assignment;
-//        assignment.setSingleAssignment(true);
-//        assignment.assignBeh();
-//    } else {
-//        BehaviorAssignment<DefendOneOnOne> assignment;
-//        assignment.setSingleAssignment(true);
-//        assignment.assignBeh();
-//    }
-
-
-    //test behavior
-//    GameModel* gm = GameModel::getModel();
-//    Robot* r0 = gm->find(0, gm->getMyTeam());
-//    if(!r0) return;
+//************************************************************
+////    James code
+//    BehaviorAssignment<TestBehavior> assignment;
+//    assignment.setSingleAssignment(true);
+//    Point p = gm->getBallPoint() - Point (200,200);
+//    assignment.setBehParam<Point>("targetPoint",p );
+//    assignment.assignBeh({r0, r1});
 
 
-    //james code
-
+////    james code
 //    GameModel* gm = GameModel::getModel();
 //#if SIMULATED
 //    Robot* r0 = gm->find(0, gm->getMyTeam());
@@ -178,77 +203,8 @@ void TestStrategy::assignBeh()
 //     //   ass.assignBeh(r0);
 //   // }
 
-//    //BehaviorAssignment<DriveBallAndKick> assignment;
-//    GameModel * gm = GameModel::getModel();
-//    BehaviorAssignment<TestBehavior> assignment;
-//    assignment.setSingleAssignment(true);
-//    assignment.setBehParam<Point>("targetPoint", gm->getBallPoint());
-//    assignment.assignBeh({0, 1});
-
-//    BehaviorAssignment<ShamsiKickToPoint> assignment(true);
-//    assignment.assignBeh({1});
-
-
-//     Narges code testing DriveBallAndKick
-    BehaviorAssignment<DriveBallAndKick> assignment;
-    assignment.setSingleAssignment(true);
-    assignment.assignBeh(gm->getMyTeam().at(0));
-
-    // Narges code testing DriveBallAndKick
-//    BehaviorAssignment<TestBehavior> assignment(true);
-//    assignment.assignBeh({3});
-
-
-////    //Narges code testing defendCloseToBall
-//    BehaviorAssignment<DefendCloseToBall> assignment;
-//    assignment.setSingleAssignment(true);
-//    assignment.assignBeh();
-
-////    Narges code testing defendfarfromball
-//    BehaviorAssignment<DefendFarFromBall> assignment;
-//    assignment.setSingleAssignment(true);
-//    assignment.assignBeh();
-
-////    Narges testing myTestBehavior
-//    BehaviorAssignment<myTestBehavior> assignment;
-//    assignment.setSingleAssignment(true);
-//    assignment.assignBeh(gm->getMyTeam().at(0));
-
-    //testing test behavior
-//        BehaviorAssignment<AttackMain> assignment;
-//        assignment.setSingleAssignment(true);
-//        assignment.assignBeh();
-
-//    // Narges testing passSender
-//    BehaviorAssignment<PassBallSender> assignment;
-//    assignment.setSingleAssignment(true);
-//    assignment.assignBeh(gm->getMyTeam().at(0));
-
-//    // Narges testing passReceiver
-//    BehaviorAssignment<PassBallReceiver> assignment;
-//    assignment.setSingleAssignment(true);
-//    assignment.assignBeh(gm->getMyTeam().at(0));
-
-
-
-//    //James code
-//    BehaviorAssignment<TestBehavior> assignment;
-//    assignment.setSingleAssignment(true);
-//    Point p = gm->getBallPoint() - Point (200,200);
-//    assignment.setBehParam<Point>("targetPoint",p );
-//    assignment.assignBeh({r0, r1});
-
-//    //Shamsi's code
-//    BehaviorAssignment<AttackMain> attak;
-//    attak.setSingleAssignment(true);
-//    attak.assignBeh();
-
-//    //Shamsi's code
-//    BehaviorAssignment<AttackSupport> attak;
-//    attak.setSingleAssignment(true);
-//    attak.assignBeh();
-
-
 }
+
+
 
 

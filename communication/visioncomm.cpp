@@ -11,14 +11,13 @@ VisionComm::VisionComm(GameModel *gm)
 #if SIMULATED
 
     //Shamsi Vision Address
-//    client = new RoboCupSSLClient(10020,"224.5.23.21");
+    client = new RoboCupSSLClient(10020,"224.5.23.17");
 
     //James Vision Address
     //client = new RoboCupSSLClient(10020,"224.5.23.2");
 
     //Narges Vision Address
-    client = new RoboCupSSLClient(10020,"224.5.23.8");
-
+    //client = new RoboCupSSLClient(10020,"224.5.23.8");
 #else
     client = new RoboCupSSLClient();
 #endif
