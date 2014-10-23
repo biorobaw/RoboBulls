@@ -9,6 +9,12 @@ float Measurments::distance(const Point& p1, const Point& p2)
 }
 
 
+Point Measurments::midPoint(const Point& a, const Point& b)
+{
+    return Point((a.x + b.x) / 2, (a.y + b.y) / 2);
+}
+
+
 float Measurments::angleBetween(const Point& p1, const Point& p2)
 {
     //Behold a perfect application of arc tangent.
