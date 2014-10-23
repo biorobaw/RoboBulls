@@ -8,7 +8,7 @@
  *   - After a time, Robots hit active non-moving (i.e., "at target") robots
  *     even though they are close to the robots
  */
-#define MOVEMENT_USE_ROB_COLLIDE    0
+#define MOVEMENT_USE_ROB_COLLIDE    1
 /* Defines the number of calls to calcObstacleAvoidance
  * (called any time move->perform() is called on a robot with obstacle avoidance)
  * that must entail to update the robot-robot collision status of each robot.
@@ -265,7 +265,7 @@ void configureRobotMoveStatus()
         /* Ensures at least one of the robots is on myTeam. We don't care if
          * the enemy robots collide with themselves
          */
-        if(not(robotA->isOnMyTeam() and robotB->isOnMyTeam()))
+        if(not(robotA->isOnMyTeam() or robotB->isOnMyTeam()))
             continue;
 
         Point robPosA = robotA->getRobotPosition();
@@ -279,7 +279,7 @@ void configureRobotMoveStatus()
              */
             if(robotA->isOnMyTeam() and robotAShouldStop) {
                 robotDisableMovement(robotA, robotB);
-            } else if(robotBShouldStop) {
+            } else if(robotB->isOnMyTeam() and robotBShouldStop) {
                 robotDisableMovement(robotB, robotA);
             }
         }
