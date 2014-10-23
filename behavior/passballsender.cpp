@@ -31,6 +31,8 @@ Point PassBallSender::findPassPoint(Robot* sender)
     vector<Robot*> myTeam = gm->getMyTeam();
     Point passPoint;
 
+    myTeamInfo.clear(); //Prevents old values from accumulating
+
     for (unsigned it = 0 ; it < myTeam.size(); it++)
     {
         if (sender->getID() != myTeam[it]->getID())

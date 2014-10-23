@@ -1,6 +1,7 @@
 #include "attackmain.h"
 #include "skill/driveball.h"
 #include "skill/kicktopoint.h"
+#include "behavior/attacksupport.h"
 #include "utilities/measurments.h"
 #include "model/gamemodel.h"
 #include "model/robot.h"
@@ -12,7 +13,8 @@ AttackMain::AttackMain(const ParameterList& list)
     , pass_skill(nullptr)
     , score_skill(nullptr)
 {
-    UNUSED_PARAM(list);
+    Robot* recvBot = list.getParam<Robot*>("recvBot");
+    this->support_attacker = recvBot;
     state = initial;
 }
 
@@ -40,21 +42,6 @@ void AttackMain::perform(Robot * robot)
 
     gm = GameModel::getModel();
 
-    //Set either robID(1) or robID(2) as the support_attacker
-    Robot * support_attacker;
-
-    /* Comment: This may not be the correct way to do this.
-     * the team vectors in gameModel are not guaranteed to be
-     * indexed by ID. It would be proper to use GameModel::find,
-     * or later I suggest sorting the team vectors at the beginning
-     * of each game loop
-     */
-    if (robot->getID()==0)
-        support_attacker = gm->getMyTeam().at(1);
-    else
-        support_attacker = gm->getMyTeam().at(0);
-
-
     //Get info from gamemodel
     sp = support_attacker->getRobotPosition();
     rp = robot->getRobotPosition();
@@ -74,10 +61,19 @@ void AttackMain::perform(Robot * robot)
         }
     }
 
+    /* New: We will get the support attacker's target, and use KickToPoint
+     * to kick to that position via  pointer, so if it changes KTP will not
+     * shoot to an old position
+     */
+    AttackSupport* attackSupt = dynamic_cast<AttackSupport*>
+            (support_attacker->getCurrentBeh());
+    stp = attackSupt->getCurrentTarget();
+
     //Create switch logic
     switch (state)
     {
         case initial:
+            done = false;
             state = drive;
             //delete drive_skill;
             //drive_skill = new Skill::DriveBall(gp, goal_direction);
@@ -92,25 +88,25 @@ void AttackMain::perform(Robot * robot)
             if(!Measurments::isClose(drive_start_point, rp, drive_distance)) 
             {
                 delete pass_skill;
-                pass_skill = new Skill::KickToPoint(sp, PASS_ANGLE_TOLERANCE, NO_KICK_DIST);
+                pass_skill = new Skill::KickToPoint(&stp, PASS_ANGLE_TOLERANCE, NO_KICK_DIST);
                 state = pass;
             }
             /***************************************************************
              * Evaluate transition to score state. If the robot is within 1500 units
              * of the enemy goal, this happens.
              */
-            //else if(Measurments::isClose(bp, gp, shot_distance))
-           // {
-              //  delete score_skill;
-              //  score_skill = new Skill::KickToPoint(gp, SCORE_ANGLE_TOLERANCE);
-                //state = score;
-            //}
+            else if(Measurments::isClose(bp, gp, shot_distance))
+            {
+                delete score_skill;
+                score_skill = new Skill::KickToPoint(gp, SCORE_ANGLE_TOLERANCE);
+                state = score;
+            }
             else  
             {
                 drive_skill->perform(robot);
             }
             break;
-        #if 0
+        #if 1
         case score:
             assert(score_skill != nullptr);
 
@@ -119,6 +115,7 @@ void AttackMain::perform(Robot * robot)
              * now I just had them go back to initial
              */
             if(score_skill->perform(robot) == true) {
+                done = true;
                 state = initial;
             }
             else if(!Measurments::isClose(bp, gp, shot_distance)) {
@@ -128,8 +125,15 @@ void AttackMain::perform(Robot * robot)
         #endif
         case pass:
             assert(pass_skill != nullptr);
-            pass_skill->perform(robot);
+            if(pass_skill->perform(robot))
+                done = true;
             break;
         default: break;
     }
+}
+
+
+bool AttackMain::hasKicked()
+{
+    return done;
 }

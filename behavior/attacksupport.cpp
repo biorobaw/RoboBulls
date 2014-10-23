@@ -3,8 +3,9 @@
 
 AttackSupport::AttackSupport(const ParameterList& list)
     : GenericMovementBehavior(list)
+    , wp(0,0)
 {
-    UNUSED_PARAM(list);
+    this->main_attacker = list.getParam<Robot*>("passBot");
     state = initial;
 }
 
@@ -16,14 +17,6 @@ void AttackSupport::perform(Robot * robot)
     #endif
 
     GameModel * gm = GameModel::getModel();
-
-    //Set either robID(1) or robID(2) as the support_attacker
-//    Robot * main_attacker;
-//    if(robot->getID()==0)
-//        main_attacker = gm->getMyTeam().at(1);
-//    else
-//        main_attacker = gm->getMyTeam().at(0);
-
 
     //Get info from gamemodel
     Point rp = robot->getRobotPosition();
@@ -53,7 +46,6 @@ void AttackSupport::perform(Robot * robot)
 
     //Initialize wp which is the point at which to wait for pass
     //wp is set on the side that is least populated - not counting enemy robots in penalty area
-    Point wp;
     if(left_of_main.numOfRobots(ignoreOpponents,ignoreTeammates)< right_of_main.numOfRobots(ignoreOpponents,ignoreTeammates))
         wp = left_of_main.centre();
     else if (left_of_main.numOfRobots(ignoreOpponents,ignoreTeammates) > right_of_main.numOfRobots(ignoreOpponents,ignoreTeammates))
@@ -90,4 +82,9 @@ void AttackSupport::perform(Robot * robot)
         }
         GenericMovementBehavior::perform(robot);
     }
+}
+
+Point AttackSupport::getCurrentTarget()
+{
+    return wp;
 }
