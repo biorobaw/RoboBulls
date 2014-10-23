@@ -103,7 +103,8 @@ SOURCES += main.cpp \
     gui/guisidelines.cpp \
     gui/mainwindow.cpp \
     gui/guidrawline.cpp \
-    gui/guiscene.cpp
+    gui/guiscene.cpp \
+    gui/robotpanel.cpp
 
 HEADERS += \
 	behavior/behavior.h \
@@ -190,7 +191,8 @@ HEADERS += \
     gui/guisidelines.h \
     gui/mainwindow.h \
     gui/guidrawline.h \
-    gui/guiscene.h
+    gui/guiscene.h \
+    gui/robotpanel.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 

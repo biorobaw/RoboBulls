@@ -1,5 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
+
 #include <iostream>
 #include <QFrame>
 #include "model/gamemodel.h"
@@ -10,7 +11,6 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_mainwindow.h"
 
-//Field
 #include <QDialog>
 #include <QtCore>
 #include <QtGui>
@@ -24,6 +24,9 @@
 #include "communication/nxtrobcomm.h"
 #include "movement/move.h"
 #include "guiscene.h"
+//#include "robotpanel.h"
+
+class RobotPanel;   // Forward Declaration prevents future problems from two<-->way references
 
 namespace Ui {
     class MainWindow;
@@ -35,9 +38,6 @@ class MainWindow : public QMainWindow
 
 public:
     ~MainWindow();
-
-    static MainWindow* getWindow();
-
 
 public:
     static MainWindow* getMainWindow();
@@ -55,8 +55,6 @@ public:
     int  getBallCoordX();
     int  getBallCoordY();
     QString getRemTime();
-    void setupBotPanel();
-    void updateBotPanel();
     void scanForSelection();
     int getVelocity(int id);
     // Debug functions
@@ -79,17 +77,19 @@ public:
     void centerViewOnBot();
     void setMyVelocity();
     void setGuiOverride();
+    // 10/23/14
+    Ui::MainWindow *ui;
+    int teamSize = 6;
+    GameModel *gamemodel;
+
 
 protected:
-    GameModel *gamemodel;
     Robot *robot;
     GuiComm *guicomm;
     GuiRobot *guirobot;
     RefComm *refcom;
     GuiDrawLine *guidrawline;
     NXTRobComm *nxtrobcomm;
-//    Movement *move;
-
 
 
 signals:
@@ -99,66 +99,21 @@ signals:
 
 
 private:
+    RobotPanel * robotPanel;
+
     void setupKeyShortcuts();
     // moved from public
     explicit MainWindow(QWidget *parent = 0);
-    Ui::MainWindow *ui;
     // my pointer
     static MainWindow *mw;
     QList<GuiComm*> threads;
     GuiScene *scene;
     QGraphicsEllipseItem *ellipse;
     QGraphicsRectItem *rectangle;
-    int teamSize = 6;
     // Behavior vector
 //    std::vector<QString*> botBehavior[6];
     QString botBehavior[6];
-    // Robot Panel
-    std::vector<QLCDNumber*> botXcoords;
-    std::vector<QLCDNumber*> botYcoords;
-    std::vector<QDial*> botOrients;
-    std::vector<QFrame*> botFrames;
-//    std::vector<QLabel*> botIcons;
-    std::vector<QLabel*> botTitle;
-    std::vector<QDial*> velocityDials;
 
-    // Bot icon graphics views
-    std::vector<QGraphicsView*> botIconFrames;
-    // Bot individual icon scenes
-    QGraphicsScene *scene_botIcon_0;
-    QGraphicsScene *scene_botIcon_1;
-    QGraphicsScene *scene_botIcon_2;
-    QGraphicsScene *scene_botIcon_3;
-    QGraphicsScene *scene_botIcon_4;
-    QGraphicsScene *scene_botIcon_5;
-    std::vector<QGraphicsScene*> botIconScenes;
-    // Bot selected icon scenes
-    QGraphicsScene *scene_botIconSel_0;
-    QGraphicsScene *scene_botIconSel_1;
-    QGraphicsScene *scene_botIconSel_2;
-    QGraphicsScene *scene_botIconSel_3;
-    QGraphicsScene *scene_botIconSel_4;
-    QGraphicsScene *scene_botIconSel_5;
-    std::vector<QGraphicsScene*> botIconSelScenes;
-    // Ball gui icon
-    GuiBall *ballIcon;
-    QGraphicsScene *scene_ballIcon;
-    // Bot icons
-    GuiRobot *robotIcon0;
-    GuiRobot *robotIcon1;
-    GuiRobot *robotIcon2;
-    GuiRobot *robotIcon3;
-    GuiRobot *robotIcon4;
-    GuiRobot *robotIcon5;
-    std::vector<GuiRobot*> botIcons;
-    // Bot icons for the selected bot panel
-    GuiRobot *robotIcon0Sel;
-    GuiRobot *robotIcon1Sel;
-    GuiRobot *robotIcon2Sel;
-    GuiRobot *robotIcon3Sel;
-    GuiRobot *robotIcon4Sel;
-    GuiRobot *robotIcon5Sel;
-    std::vector<GuiRobot*> botIconsSelected;
     QGraphicsScene *selectedBotScene;
     // Field
     GuiRobot *robot0;

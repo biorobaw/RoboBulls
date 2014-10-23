@@ -26,8 +26,6 @@
 #include <time.h>
 #include <math.h>
 #include "include/config/simulated.h"
-// QGraphicsView
-#include <QGraphicsPixmapItem>
 #include <QGraphicsView>
 #include <QShortcut>
 #include <QMenu>
@@ -40,8 +38,9 @@
 #include "communication/nxtrobcomm.h"
 #include "movement/move.h"
 #include <QScrollBar>
+#include "robotpanel.h"
 
-// Global static pointer used to ensure a single isntance of the class.
+// Global static pointer used to ensure only a single instance of the class.
 MainWindow* MainWindow::mw = NULL;
 
 using namespace std;
@@ -61,7 +60,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->btn_connectGui->setEnabled(false);
     setUpScene();
     defaultZoom();
-    setupBotPanel();
+    robotPanel = new RobotPanel();
+    robotPanel->setupBotPanel(this);
     setupKeyShortcuts();
     ui->btn_connectGui->setEnabled(true);
 
@@ -73,12 +73,10 @@ MainWindow::MainWindow(QWidget *parent) :
     // and stop threads
     threads.append(new GuiComm(30, this));
 //    threads.append(new GuiComm(30, this));
-//    cout << "threads.append \n";
 
     // Connect each Widget to correcponding thread
     connect(threads[0], SIGNAL(valueChanged(int))
             , this, SLOT(launch(int)));
-//    cout << "connect(threads[0] \n";
 
 //    connect(threads[1], SIGNAL(valueChanged(int))
 //            , this, SLOT(updateScene()));
@@ -117,9 +115,10 @@ void MainWindow::launch(int value)
     setMyVelocity();
     setGuiOverride();
     updateScene();
-    updateBotPanel();
+    robotPanel->updateBotPanel(this);
     updateBallInfo();
     scanForSelection();
+
 }
 
 void MainWindow::zoomField(int zoom) {
@@ -142,206 +141,6 @@ void MainWindow::defaultZoom() {
     ui->gView_field->centerOn(sidelines);
 }
 
-void MainWindow::setupBotPanel()
-{
-    // Bot Frames
-    botFrames.push_back(ui->frame_robot_0);
-    botFrames.push_back(ui->frame_robot_1);
-    botFrames.push_back(ui->frame_robot_2);
-    botFrames.push_back(ui->frame_robot_3);
-    botFrames.push_back(ui->frame_robot_4);
-    botFrames.push_back(ui->frame_robot_5);
-    // Title label vector
-    botTitle.push_back(ui->title_robPanel_0);
-    botTitle.push_back(ui->title_robPanel_1);
-    botTitle.push_back(ui->title_robPanel_2);
-    botTitle.push_back(ui->title_robPanel_3);
-    botTitle.push_back(ui->title_robPanel_4);
-    botTitle.push_back(ui->title_robPanel_5);
-    // Velocity dials
-    velocityDials.push_back(ui->dial_botSpeed_0);
-    velocityDials.push_back(ui->dial_botSpeed_1);
-    velocityDials.push_back(ui->dial_botSpeed_2);
-    velocityDials.push_back(ui->dial_botSpeed_3);
-    velocityDials.push_back(ui->dial_botSpeed_4);
-    velocityDials.push_back(ui->dial_botSpeed_5);
-    // X Coordinate vector
-    botXcoords.push_back(ui->lcd_coordX_0);
-    botXcoords.push_back(ui->lcd_coordX_1);
-    botXcoords.push_back(ui->lcd_coordX_2);
-    botXcoords.push_back(ui->lcd_coordX_3);
-    botXcoords.push_back(ui->lcd_coordX_4);
-    botXcoords.push_back(ui->lcd_coordX_5);
-    // Y Coordinate vector
-    botYcoords.push_back(ui->lcd_coordY_0);
-    botYcoords.push_back(ui->lcd_coordY_1);
-    botYcoords.push_back(ui->lcd_coordY_2);
-    botYcoords.push_back(ui->lcd_coordY_3);
-    botYcoords.push_back(ui->lcd_coordY_4);
-    botYcoords.push_back(ui->lcd_coordY_5);
-    // Orientation vector
-    botOrients.push_back(ui->dial_botOrient_0);
-    botOrients.push_back(ui->dial_botOrient_1);
-    botOrients.push_back(ui->dial_botOrient_2);
-    botOrients.push_back(ui->dial_botOrient_3);
-    botOrients.push_back(ui->dial_botOrient_4);
-    botOrients.push_back(ui->dial_botOrient_5);
-    // Icons vector
-    robotIcon0 = new GuiRobot;
-    robotIcon1 = new GuiRobot;
-    robotIcon2 = new GuiRobot;
-    robotIcon3 = new GuiRobot;
-    robotIcon4 = new GuiRobot;
-    robotIcon5 = new GuiRobot;
-    botIcons.push_back(robotIcon0);
-    botIcons.push_back(robotIcon1);
-    botIcons.push_back(robotIcon2);
-    botIcons.push_back(robotIcon3);
-    botIcons.push_back(robotIcon4);
-    botIcons.push_back(robotIcon5);
-    // Icon scenes vector
-    scene_botIcon_0 = new QGraphicsScene;
-    scene_botIcon_1 = new QGraphicsScene;
-    scene_botIcon_2 = new QGraphicsScene;
-    scene_botIcon_3 = new QGraphicsScene;
-    scene_botIcon_4 = new QGraphicsScene;
-    scene_botIcon_5 = new QGraphicsScene;
-    botIconScenes.push_back(scene_botIcon_0);
-    botIconScenes.push_back(scene_botIcon_1);
-    botIconScenes.push_back(scene_botIcon_2);
-    botIconScenes.push_back(scene_botIcon_3);
-    botIconScenes.push_back(scene_botIcon_4);
-    botIconScenes.push_back(scene_botIcon_5);
-    // Icon frames vector
-    botIconFrames.push_back(ui->gView_robot_0);
-    botIconFrames.push_back(ui->gView_robot_1);
-    botIconFrames.push_back(ui->gView_robot_2);
-    botIconFrames.push_back(ui->gView_robot_3);
-    botIconFrames.push_back(ui->gView_robot_4);
-    botIconFrames.push_back(ui->gView_robot_5);
-    // Selected bot icons
-    robotIcon0Sel = new GuiRobot;
-    robotIcon1Sel = new GuiRobot;
-    robotIcon2Sel = new GuiRobot;
-    robotIcon3Sel = new GuiRobot;
-    robotIcon4Sel = new GuiRobot;
-    robotIcon5Sel = new GuiRobot;
-    botIconsSelected.push_back(robotIcon0Sel);
-    botIconsSelected.push_back(robotIcon1Sel);
-    botIconsSelected.push_back(robotIcon2Sel);
-    botIconsSelected.push_back(robotIcon3Sel);
-    botIconsSelected.push_back(robotIcon4Sel);
-    botIconsSelected.push_back(robotIcon5Sel);
-    scene_botIconSel_0 = new QGraphicsScene;
-    scene_botIconSel_1 = new QGraphicsScene;
-    scene_botIconSel_2 = new QGraphicsScene;
-    scene_botIconSel_3 = new QGraphicsScene;
-    scene_botIconSel_4 = new QGraphicsScene;
-    scene_botIconSel_5 = new QGraphicsScene;
-    botIconSelScenes.push_back(scene_botIconSel_0);
-    botIconSelScenes.push_back(scene_botIconSel_1);
-    botIconSelScenes.push_back(scene_botIconSel_2);
-    botIconSelScenes.push_back(scene_botIconSel_3);
-    botIconSelScenes.push_back(scene_botIconSel_4);
-    botIconSelScenes.push_back(scene_botIconSel_5);
-    // Ball GUI icon
-    ballIcon = new GuiBall();
-    scene_ballIcon = new QGraphicsScene;
-
-    // relevant vectors filled & connected; initial details added to GUI
-    for (int i=0; i<teamSize; i++) {
-        botIcons[i]->id = i;
-        botIcons[i]->icon = true;
-        botIconsSelected[i]->id = i;
-        botIconsSelected[i]->icon = true;
-        botIconSelScenes[i]->addItem(botIconsSelected[i]);
-        botIconFrames[i]->scale(.2, .2);
-        botIconFrames[i]->scale(1,-1);
-        botIconFrames[i]->rotate(90);
-        botIconScenes[i]->addItem(botIcons[i]);
-        botIconFrames[i]->setScene(botIconScenes[i]);
-        botIconFrames[i]->hide();
-        velocityDials[i]->setValue(0);
-        overriddenBots.push_back(false);    // creating each element, and setting to false
-    }
-    // putting ball icon into GUI
-    scene_ballIcon->addItem(ballIcon);
-    ui->gView_ball->setScene(scene_ballIcon);
-    ui->gView_ball->scale(.2, .2);
-    ui->gView_ball->scale(1, -1);
-    ui->gView_ball->hide();
-
-    // Formatting selected bot panel
-    ui->gView_robot_prime->scale(.4, .4);
-    ui->gView_robot_prime->scale(1,-1);
-    ui->gView_robot_prime->rotate(90);
-
-}//setupBotPanel
-
-void MainWindow::updateBotPanel() {
-    // Printing current bot info to Robot Panels
-    for (int i=0; i<teamSize; i++) {
-        botTitle[i]->setText("Robot " + QString::number(i));
-        // Nullcheck
-        if (gamemodel->find(i,gamemodel->getMyTeam()) != NULL) {
-            botXcoords[i]->display(getBotCoordX(true, i));
-            botYcoords[i]->display(getBotCoordY(true, i));
-            botOrients[i]->setValue(getBotOrientDouble(true, i));
-            botIcons[i]->setX(0);
-            botIcons[i]->setY(0);
-            botIcons[i]->setZValue(2);
-            if (botIconFrames[i]->isVisible() == false) {
-                botIconFrames[i]->show();
-            }
-
-            velocityDials[i]->setValue(getVelocity(i));
-//            printBehavior(i, to_string(getVelocity(i)), true);
-//            cout << to_string(getVelocity(0)) << "\n";
-            // dynamic velocity dial colors
-            if (velocityDials[i]->value() > 0) {            // forward
-                velocityDials[i]->setStyleSheet("background-color: rgb(0, 200, 0);");
-
-            } else if (velocityDials[i]->value() < 0) {     // reverse
-                velocityDials[i]->setStyleSheet("background-color: rgb(200, 0, 0);");
-
-            } else {                                        // motionless
-                velocityDials[i]->setStyleSheet("background-color: rgb(150, 150, 150);");
-            }
-
-            botIconFrames[i]->update();
-        }//nullcheck
-    }
-    // Selected Bot Panel velocity dial
-    if (ui->dial_botSpeed->value() > 0) {
-        ui->dial_botSpeed->setStyleSheet("background-color: rgb(0, 200, 0);");
-        ui->lcd_botSpeed->setStyleSheet("background-color: rgb(0, 100, 0);");
-    } else if (ui->dial_botSpeed->value() < 0 ) {
-        ui->dial_botSpeed->setStyleSheet("background-color: rgb(200, 0, 0);");
-        ui->lcd_botSpeed->setStyleSheet("background-color: rgb(100, 0, 0);");
-    } else {
-        ui->dial_botSpeed->setStyleSheet("background-color: rgb(150, 150, 150);");
-        ui->lcd_botSpeed->setStyleSheet("background-color: rgb(100, 100, 100);");
-    }
-    // Robot override checkbox
-    if (selectedBot > -1) {
-        ui->check_botOverride->setEnabled(true);
-        ui->check_botOverride->show();
-        if (overriddenBots[selectedBot] == true) {
-            ui->check_botOverride->setChecked(true);
-        } else {
-            ui->check_botOverride->setChecked(false);
-        }
-    } else {
-        ui->check_botOverride->setEnabled(false);
-        ui->check_botOverride->hide();
-    }
-
-
-    // Mouse point
-    ui->lcd_coordX_cursor->display(getMouseCoordX());
-    ui->lcd_coordY_cursor->display(getMouseCoordY());
-
-}
 
 void MainWindow::scanForSelection() {
     bool newSelection = true;
@@ -349,8 +148,8 @@ void MainWindow::scanForSelection() {
     // Scanning for double-click selection
     for (int i=0; i<teamSize; i++) {
         if (gamemodel->find(i,gamemodel->getMyTeam()) != NULL) {
-            if (botIcons[i]->doubleClicked || guiTeam[i]->doubleClicked) {
-                botIcons[i]->doubleClicked = false;
+            if (robotPanel->botIcons[i]->doubleClicked || guiTeam[i]->doubleClicked) {
+                robotPanel->botIcons[i]->doubleClicked = false;
                 guiTeam[i]->doubleClicked = false;
                 centeredBotID = i;
                 centerViewOnBot();
@@ -365,7 +164,7 @@ void MainWindow::scanForSelection() {
     if (justScrolled) {
         for (int i=0; i<teamSize; i++) {
             if (gamemodel->find(i,gamemodel->getMyTeam()) != NULL) {
-                botIcons[i]->doubleClicked = false;
+                robotPanel->botIcons[i]->doubleClicked = false;
                 guiTeam[i]->doubleClicked = false;
             }//nullcheck
         }
@@ -385,9 +184,9 @@ void MainWindow::scanForSelection() {
             if (gamemodel->find(i,gamemodel->getMyTeam()) != NULL) {
                 guiTeam[i]->highlighted = false;
                 guiTeam[i]->setSelected(false);
-                botIcons[i]->highlighted = false;
-                botIcons[i]->setSelected(false);
-                botIcons[i]->doubleClicked = false;
+                robotPanel->botIcons[i]->highlighted = false;
+                robotPanel->botIcons[i]->setSelected(false);
+                robotPanel->botIcons[i]->doubleClicked = false;
                 guiTeam[i]->doubleClicked = false;
             }//nullcheck
         }
@@ -401,24 +200,24 @@ void MainWindow::scanForSelection() {
     for (int i=0; i<teamSize; i++) {
         if (gamemodel->find(i,gamemodel->getMyTeam()) != NULL) {
         // Bots on the panel clicked
-            if (botIcons[i]->isSelected()) {
+            if (robotPanel->botIcons[i]->isSelected()) {
                 selectedBot = i;
                 for (int j=0; j<teamSize; j++) {
                     guiTeam[j]->highlighted = false;
                     guiTeam[j]->setSelected(false);
-                    botIcons[j]->highlighted = false;
-                    botIcons[j]->setSelected(false);
+                    robotPanel->botIcons[j]->highlighted = false;
+                    robotPanel->botIcons[j]->setSelected(false);
 //                    botIcons[i]->doubleClicked = false;
 //                    guiTeam[i]->doubleClicked = false;
 
                 }
 //                field->highlighted = false;
-                botIcons[i]->highlighted = true;
+                robotPanel->botIcons[i]->highlighted = true;
                 guiTeam[i]->highlighted = true;
                 refresh = true;
                 // Refresh GUI
                 for (int r=0; r<teamSize; r++) {
-                    botIconFrames[i]->update();
+                    robotPanel->botIconFrames[i]->update();
                 }
                 ui->gView_robot_prime->hide();
                 ui->gView_robot_prime->show();
@@ -430,18 +229,18 @@ void MainWindow::scanForSelection() {
                 for (int j=0; j<teamSize; j++) {
                     guiTeam[j]->highlighted = false;
                     guiTeam[j]->setSelected(false);
-                    botIcons[j]->highlighted = false;
-                    botIcons[j]->setSelected(false);
+                    robotPanel->botIcons[j]->highlighted = false;
+                    robotPanel->botIcons[j]->setSelected(false);
 //                    botIcons[i]->doubleClicked = false;
 //                    guiTeam[i]->doubleClicked = false;
                 }
 //                field->highlighted = false;
-                botIcons[i]->highlighted = true;
+                robotPanel->botIcons[i]->highlighted = true;
                 guiTeam[i]->highlighted = true;
                 refresh = true;
                 // Refresh GUI
                 for (int r=0; r<teamSize; r++) {
-                    botIconFrames[i]->update();
+                    robotPanel->botIconFrames[i]->update();
                 }
                 ui->gView_robot_prime->hide();
                 ui->gView_robot_prime->show();
@@ -981,7 +780,7 @@ void MainWindow::updateBallInfo() {
     ui->lcd_coordX_ball->display(getBallCoordX());
     ui->lcd_coordY_ball->display(getBallCoordY());
 
-    ballIcon->color = ui->combo_ballColor->currentText();
+    robotPanel->ballIcon->color = ui->combo_ballColor->currentText();
     ui->gView_ball->update();
     // Displaying ball icon
     if (ui->gView_ball->isHidden()) {
@@ -1220,14 +1019,6 @@ MainWindow::~MainWindow()
     }
 }
 
-MainWindow *MainWindow::getWindow()
-{
-//    if (window == NULL)
-//        window = new MainWindow();
-
-//    return window;
-
-}
 
 MainWindow *MainWindow::getMainWindow() {
     if (mw == NULL) {
@@ -1291,7 +1082,7 @@ void MainWindow::updateSelectedBotPanel(int id)
         ui->text_primeBot->setText(botBehavior[id]);
         QScrollBar *sb = ui->text_primeBot->verticalScrollBar();
         sb->setValue(sb->maximum());
-        ui->gView_robot_prime->setScene(botIconSelScenes[id]);
+        ui->gView_robot_prime->setScene(robotPanel->botIconSelScenes[id]);
     }
 
 }
@@ -1463,13 +1254,13 @@ void MainWindow::toggleIconVisible()
     if (selectedBot > -1) {
         if (guiTeam[selectedBot]->enabled) {
             guiTeam[selectedBot]->enabled = false;
-            botIcons[selectedBot]->enabled = false;
-            botIcons[selectedBot]->setOpacity(.3);
+            robotPanel->botIcons[selectedBot]->enabled = false;
+            robotPanel->botIcons[selectedBot]->setOpacity(.3);
             guiTeam[selectedBot]->setOpacity(.3);
         } else {
             guiTeam[selectedBot]->enabled = true;
-            botIcons[selectedBot]->enabled = true;
-            botIcons[selectedBot]->setOpacity(1);
+            robotPanel->botIcons[selectedBot]->enabled = true;
+            robotPanel->botIcons[selectedBot]->setOpacity(1);
             guiTeam[selectedBot]->setOpacity(1);
 
         }
