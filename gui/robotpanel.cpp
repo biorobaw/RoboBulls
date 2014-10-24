@@ -1,22 +1,19 @@
 #include "robotpanel.h"
 #include "guirobot.h"
 #include "mainwindow.h"
+#include "objectposition.h"
 //#include <QTextCharFormat>
 //#include <QTextCursor>
 
 // Global static pointer used to ensure a single instance of the class.
-RobotPanel* RobotPanel::robotpanel = NULL;
+//RobotPanel* RobotPanel::robotpanel = NULL;    // delete
 
-RobotPanel::RobotPanel() {}
-
-RobotPanel *RobotPanel::getRobotPanel() {
-    if (robotpanel == NULL) {
-        robotpanel = new RobotPanel();
-    }
-    return robotpanel;
+RobotPanel::RobotPanel(MainWindow *mw) {
+    dash = mw;
 }
 
-void RobotPanel::setupBotPanel(MainWindow * dash) {
+
+void RobotPanel::setupBotPanel() {
 
     // Bot Frames
     botFrames.push_back(dash->ui->frame_robot_0);
@@ -152,15 +149,15 @@ void RobotPanel::setupBotPanel(MainWindow * dash) {
 
 }//setupBotPanel
 
-void RobotPanel::updateBotPanel(MainWindow * dash) {
+void RobotPanel::updateBotPanel() {
     // Printing current bot info to Robot Panels
     for (int i=0; i<dash->teamSize; i++) {
         botTitle[i]->setText("Robot " + QString::number(i));
         // Nullcheck
         if (dash->gamemodel->find(i,dash->gamemodel->getMyTeam()) != NULL) {
-            botXcoords[i]->display(dash->getBotCoordX(true, i));
-            botYcoords[i]->display(dash->getBotCoordY(true, i));
-            botOrients[i]->setValue(dash->getBotOrientDouble(true, i));
+            botXcoords[i]->display(dash->objectPos->getBotCoordX(true, i));
+            botYcoords[i]->display(dash->objectPos->getBotCoordY(true, i));
+            botOrients[i]->setValue(dash->objectPos->getBotOrientDouble(true, i));
             botIcons[i]->setX(0);
             botIcons[i]->setY(0);
             botIcons[i]->setZValue(2);
@@ -168,8 +165,6 @@ void RobotPanel::updateBotPanel(MainWindow * dash) {
                 botIconFrames[i]->show();
             }
             velocityDials[i]->setValue(dash->getVelocity(i));
-//            printBehavior(i, to_string(getVelocity(i)), true);
-//            cout << to_string(getVelocity(0)) << "\n";
             // dynamic velocity dial colors
             if (velocityDials[i]->value() > 0) {            // forward
                 velocityDials[i]->setStyleSheet("background-color: rgb(0, 200, 0);");
@@ -211,8 +206,8 @@ void RobotPanel::updateBotPanel(MainWindow * dash) {
 
 
     // Mouse point
-    dash->ui->lcd_coordX_cursor->display(dash->getMouseCoordX());
-    dash->ui->lcd_coordY_cursor->display(dash->getMouseCoordY());
+    dash->ui->lcd_coordX_cursor->display(dash->objectPos->getMouseCoordX());
+    dash->ui->lcd_coordY_cursor->display(dash->objectPos->getMouseCoordY());
 
 }
 

@@ -12,10 +12,10 @@
 class FieldPanel
 {
 public:
-    FieldPanel();
-
-    void setUpScene(MainWindow * dash);
-    void updateScene(MainWindow * dash);
+    FieldPanel(MainWindow * mw);
+    MainWindow * dash;
+    void setUpScene();
+    void updateScene();
 
 //private:
     GuiScene *scene;

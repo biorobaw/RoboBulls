@@ -210,7 +210,7 @@
             <enum>Qt::NoContextMenu</enum>
            </property>
            <property name="toolTip">
-            <string>Average velocity of all the robot's wheels</string>
+            <string>Average wheel velocity</string>
            </property>
            <property name="styleSheet">
             <string notr="true">background-color: rgb(150, 150, 150);</string>
@@ -591,7 +591,7 @@
             <string>Override</string>
            </property>
           </widget>
-          <widget class="QWidget" name="">
+          <widget class="QWidget" name="layoutWidget">
            <property name="geometry">
             <rect>
              <x>31</x>
@@ -886,7 +886,7 @@
               <enum>Qt::NoFocus</enum>
              </property>
              <property name="toolTip">
-              <string>Average velocity of all the robot's wheels</string>
+              <string>Average wheel velocity</string>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(150, 150, 150);</string>
@@ -1225,7 +1225,7 @@
               <enum>Qt::NoFocus</enum>
              </property>
              <property name="toolTip">
-              <string>Average velocity of all the robot's wheels</string>
+              <string>Average wheel velocity</string>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(150, 150, 150);</string>
@@ -1561,7 +1561,7 @@
               <enum>Qt::NoFocus</enum>
              </property>
              <property name="toolTip">
-              <string>Average velocity of all the robot's wheels</string>
+              <string>Average wheel velocity</string>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(150, 150, 150);</string>
@@ -1897,7 +1897,7 @@
               <enum>Qt::NoFocus</enum>
              </property>
              <property name="toolTip">
-              <string>Average velocity of all the robot's wheels</string>
+              <string>Average wheel velocity</string>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(150, 150, 150);</string>
@@ -2233,7 +2233,7 @@
               <enum>Qt::NoFocus</enum>
              </property>
              <property name="toolTip">
-              <string>Average velocity of all the robot's wheels</string>
+              <string>Average wheel velocity</string>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(150, 150, 150);</string>
@@ -2569,7 +2569,7 @@
               <enum>Qt::NoFocus</enum>
              </property>
              <property name="toolTip">
-              <string>Average velocity of all the robot's wheels</string>
+              <string>Average wheel velocity</string>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(150, 150, 150);</string>

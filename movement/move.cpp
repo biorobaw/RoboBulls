@@ -322,7 +322,7 @@ void Move::setVels(Robot *robot)
     // Ryan has perpetrated this boolean check
     if (MainWindow::getMainWindow()->overriddenBots[robot->id] == false) {
         MainWindow::getMainWindow()->guiPrint("guiOverride OFF");
-        MainWindow::getMainWindow()->guiPrintRobot(robot->id, "guiOverride OFF \n");
+//        MainWindow::getMainWindow()->guiPrintRobot(robot->id, "guiOverride OFF \n");
         switch(robot->type())
         {
             case differential:
@@ -343,7 +343,7 @@ void Move::setVels(Robot *robot)
         }
     } else {
         MainWindow::getMainWindow()->guiPrint("guiOverride ON");
-        MainWindow::getMainWindow()->guiPrintRobot(robot->id, "guiOverride ON \n");
+//        MainWindow::getMainWindow()->guiPrintRobot(robot->id, "guiOverride ON \n");
     }
 }
 

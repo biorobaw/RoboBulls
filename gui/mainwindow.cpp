@@ -39,6 +39,8 @@
 #include "movement/move.h"
 #include <QScrollBar>
 #include "robotpanel.h"
+#include "selrobotpanel.h"
+#include "objectposition.h"
 
 // Global static pointer used to ensure only a single instance of the class.
 MainWindow* MainWindow::mw = NULL;
@@ -58,11 +60,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Setting up GUI; not enabling thread until we're done
     ui->btn_connectGui->setEnabled(false);
-    fieldpanel = new FieldPanel();
-    fieldpanel->setUpScene(this);
+    // Creating helper classes
+    selrobotpanel = new SelRobotPanel(this);
+    robotPanel = new RobotPanel(this);
+    objectPos = new ObjectPosition(this);
+    fieldpanel = new FieldPanel(this);
+    // Generating GUI
+    fieldpanel->setUpScene();
     defaultZoom();
-    robotPanel = new RobotPanel();
-    robotPanel->setupBotPanel(this);
+    robotPanel->setupBotPanel();
     setupKeyShortcuts();
     ui->btn_connectGui->setEnabled(true);
 
@@ -72,7 +78,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // create threads, and append them to the threads list, so that
     // threads can be accessed for making connections, and to start
     // and stop threads
-    threads.append(new GuiComm(30, this));
+    threads.append(new GuiComm(50, this));
 //    threads.append(new GuiComm(30, this));
 
     // Connect each Widget to correcponding thread
@@ -111,15 +117,21 @@ void MainWindow::launch(int value)
             fieldpanel->refresh = true;
         }
     }
+    // TEST
+    for (int i=0; i<teamSize; i++) {
+        botBehavior[i] = "";
+//        botBehaviorNew[i] = false;
+//        botBehaviorTemp[i] = " ";
+    }
+
     // Updating GUI
     setMyVelocity();
-    setGuiOverride();
-    fieldpanel->updateScene(this);
-//    cout << "...scene updated \n";
-    robotPanel->updateBotPanel(this);
-//    cout << "...bot panel updated \n";
+    selrobotpanel->setGuiOverride();
+    fieldpanel->updateScene();
+    robotPanel->updateBotPanel();
     updateBallInfo();
     scanForSelection();
+
 
 }
 
@@ -248,7 +260,7 @@ int MainWindow::getVelocity(int id) {
     int RB = 0;
 
     if ( gamemodel->find(id, gamemodel->getMyTeam())->type() == fourWheelOmni ) {
-        printBehavior(id,"fourWheelOmni",false);
+        guiPrintRobot(id,"fourWheelOmni");
 //        if (SIMULATED) {
             LF = gamemodel->find(id, gamemodel->getMyTeam())->getLF();
             RF = gamemodel->find(id, gamemodel->getMyTeam())->getRF();
@@ -270,7 +282,7 @@ int MainWindow::getVelocity(int id) {
             velocity += RB;
             wheels++;
     } else if ( gamemodel->find(id, gamemodel->getMyTeam())->type() == differential ) {
-        printBehavior(id,"differential",false);
+        guiPrintRobot(id,"differential");
 //        if (SIMULATED) {
             LF = gamemodel->find(id, gamemodel->getMyTeam())->getL();
             RF = gamemodel->find(id, gamemodel->getMyTeam())->getR();
@@ -284,7 +296,7 @@ int MainWindow::getVelocity(int id) {
             velocity += RF;
             wheels++;
     } else if ( gamemodel->find(id, gamemodel->getMyTeam())->type() == threeWheelOmni ) {
-        printBehavior(id,"threeWheelOmni",false);
+        guiPrintRobot(id,"threeWheelOmni");
 //        if (SIMULATED) {
             LF = gamemodel->find(id, gamemodel->getMyTeam())->getLF();
             RF = gamemodel->find(id, gamemodel->getMyTeam())->getRF();
@@ -306,25 +318,8 @@ int MainWindow::getVelocity(int id) {
     if (velocity != 0 && wheels != 0)
         velocity /= wheels;
 
-    printBehavior(id,"Wheels: " + to_string(LF) + " & " + to_string(RF), true);
+    guiPrintRobot(id,"Wheels: " + to_string(LF) + " & " + to_string(RF));
     return velocity;
-}
-
-void MainWindow::printBehavior(int botID, string behavior, bool append)
-{
-//    ui->text_primeBot->setTextColor(Qt::white);
-//    QString b;
-//    if (append == false) {
-//        b = QString::fromStdString(behavior) + "\n";
-//        botBehavior[botID] = b;
-////        cout << botBehavior[botID].toStdString();
-//    } else {
-//        b = QString::fromStdString(behavior) + "\n";
-////        botBehavior[botID] += b;
-//        botBehavior[botID].append(b);
-//    }
-
-
 }
 
 void MainWindow::drawLine(int originX, int originY, int endX, int endY) {
@@ -358,24 +353,6 @@ void MainWindow::guiPrint(string output) {
     }
 }
 
-void MainWindow::guiPrintRobot(int robotID, string output) {
-//    guiOutput.insert(0, QString::fromStdString(output));
-    ui->text_primeBot->setTextColor(Qt::white);
-    if (guiOutputRobot.toStdString() == output) {
-
-    } else {
-        // recording this string
-        guiOutputRobot = QString::fromStdString(output);
-        // converting received string to QString for printing
-        QString msg = QString::fromStdString(output);
-        botBehavior[robotID].append(msg);
-//        QString msg = QString::fromStdString(output);
-//        ui->text_primeBot->append(msg);
-//        // Scrolling to bottom of text box
-//        QScrollBar *sb = ui->text_primeBot->verticalScrollBar();
-//        sb->setValue(sb->maximum());
-    }
-}
 
 
 
@@ -395,96 +372,6 @@ void MainWindow::on_btn_connectGui_clicked()
     }
 }
 
-QString MainWindow::getBotCoord(int id) {
-    QString qPos    = "no connection";
-    std::vector<Robot*> team = gamemodel->getMyTeam();
-
-    if (team.at(0) != NULL){
-        std::string posRob = gamemodel->find(id, team)->getRobotPosition().toString();
-        qPos = QString::fromStdString(posRob);
-    }
-    return qPos;
-
-}
-
-int MainWindow::getBotCoordX(bool myTeam, int id) {
-    int x  = 0.00;
-    std::vector<Robot*> team;
-    if (myTeam) {
-        team = gamemodel->getMyTeam();
-    } else {
-        team = gamemodel->getOponentTeam();
-    }
-    x = gamemodel->find(id, team)->getRobotPosition().x;
-    return x;
-}
-
-int MainWindow::getBotCoordY(bool myTeam, int id) {
-    int y  = 0000;
-    std::vector<Robot*> team;
-    if (myTeam) {
-        team = gamemodel->getMyTeam();
-    } else {
-        team = gamemodel->getOponentTeam();
-    }
-    y = gamemodel->find(id, team)->getRobotPosition().y;
-    return y;
-}
-
-QString MainWindow::getBotOrientString(int id) {
-    QString qOrient = "no connection";
-    std::vector<Robot*> team = gamemodel->getMyTeam();
-    std::string sOrient;
-    double  dRads = 8888;
-    int     iRads = 8888;
-    dRads = gamemodel->find(id, team)->getOrientation(); // angle in radians
-    dRads *= (180/M_PI);
-    iRads = dRads;
-    sOrient = std::to_string(iRads);
-    qOrient = QString::fromStdString(sOrient);
-    return qOrient;
-
-}
-
-double MainWindow::getBotOrientDouble(bool myTeam, int id) {
-    double o  = 8888;
-    std::vector<Robot*> team;
-    if (myTeam) {
-        team = gamemodel->getMyTeam();
-    } else {
-        team = gamemodel->getOponentTeam();
-    }
-    o = gamemodel->find(id, team)->getOrientation();
-    o *= (180/M_PI);
-    return o;
-}
-
-
-int MainWindow::getBotSpeed(std::vector<QLabel*> c, int id) {
-    int s = 0;
-    return s;
-}
-
-QString MainWindow::getBallCoord() {
-    QString b;  // return value
-    std::string posBallXY = gamemodel->getBallPoint().toString();
-    b = QString::fromStdString(posBallXY);
-
-    return b;
-}
-
-int MainWindow::getBallCoordX() {
-    int b;
-    b = gamemodel->getBallPoint().x;
-
-    return b;
-}
-
-int MainWindow::getBallCoordY() {
-    int b;
-    b = gamemodel->getBallPoint().y;
-    return b;
-}
 
 
 QString MainWindow::getRemTime() {
@@ -497,8 +384,8 @@ QString MainWindow::getRemTime() {
 
 
 void MainWindow::updateBallInfo() {
-    ui->lcd_coordX_ball->display(getBallCoordX());
-    ui->lcd_coordY_ball->display(getBallCoordY());
+    ui->lcd_coordX_ball->display(objectPos->getBallCoordX());
+    ui->lcd_coordY_ball->display(objectPos->getBallCoordY());
 
     robotPanel->ballIcon->color = ui->combo_ballColor->currentText();
     ui->gView_ball->update();
@@ -663,15 +550,6 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event) {
     }
 }
 
-int MainWindow::getMouseCoordX() {
-    int x = fieldpanel->scene->mousePoint.x()-100;
-    return x;
-}
-
-int MainWindow::getMouseCoordY() {
-    int y = fieldpanel->scene->mousePoint.y()-100;
-    return y;
-}
 
 void MainWindow::centerViewOnBot() {
     // Centering camera on double-clicked bot
@@ -693,15 +571,39 @@ void MainWindow::setMyVelocity() {
     }
 }
 
-void MainWindow::setGuiOverride() {
-    // Required for Override to work with Vision
-    if (ui->check_botOverride->isChecked()) {
-        guiOverride = true;
-    } else {
-        guiOverride = false;
+void MainWindow::guiPrintRobot(int robotID, string output) {
+////    guiOutput.insert(0, QString::fromStdString(output));
+////    botBehavior[robotID] = " ";
+////    botBehaviorTemp[robotID] = " ";
+////    botBehaviorNew[robotID] = false;
+
+////    if (guiOutputRobot.toStdString() == output) {
+//    if (botBehaviorTemp[robotID] == QString::fromStdString(output)) {
+//        botBehaviorNew[robotID] = false;
+////        cout << "matches \n";
+//    } else {
+////        cout << "does NOT match \n";
+//        botBehaviorNew[robotID] = true;
+//        // recording this string
+////        guiOutputRobot = QString::fromStdString(output);
+//        botBehaviorTemp[robotID] = QString::fromStdString(output);
+//        // converting received string to QString for printing
+//        QString qOutput = QString::fromStdString(output);
+//        QString qBehavior = botBehavior[robotID];
+//        qBehavior.append(qOutput);
+//        botBehavior[robotID] = qBehavior;
+//    }
+    if (botBehavior[robotID] != ("\n" + QString::fromStdString(output)) ) {
+        // if the field is blank, no carriage return
+        if (botBehavior[robotID] == "") {
+            botBehavior[robotID] += (QString::fromStdString(output));
+        } else {
+            botBehavior[robotID] += ("\n" + QString::fromStdString(output));
+        }
     }
 
 }
+
 
 void MainWindow::setupKeyShortcuts() {
     QShortcut *enter = new QShortcut(this);
@@ -754,7 +656,6 @@ MainWindow *MainWindow::getMainWindow() {
 
 void MainWindow::updateSelectedBotPanel(int id)
 {
-//    cout << "updatedSelectedBotPanel; value: " << id << "\n";
     int v = 0;
     if (id == -1) {
         ui->gView_robot_prime->hide();
@@ -766,28 +667,23 @@ void MainWindow::updateSelectedBotPanel(int id)
         ui->dial_botOrient_prime->setValue(0);
         ui->box_primeBot->setTitle(" ");
         ui->text_primeBot->setText(" ");
-//        for (int i=0; i<teamSize; i++) {
-//            if (gamemodel->find(i, gamemodel->getMyTeam()) != NULL) {
-//                if (botFrames[i]->isHidden()) {
-//                    botFrames[i]->show();
-//                }
-//            }
-//        }
-
     } else {
         v = getVelocity(id);
+        ui->gView_robot_prime->setScene(robotPanel->botIconSelScenes[id]);
         ui->gView_robot_prime->show();
         ui->dial_botSpeed->setValue(v);
         ui->lcd_botSpeed->display(v);
-        ui->lcd_orient_prime->display(getBotOrientString(id));
-        ui->lcd_coordX_prime->display(getBotCoordX(true, id));
-        ui->lcd_coordY_prime->display(getBotCoordY(true,id));
-        ui->dial_botOrient_prime->setValue(getBotOrientDouble(true, id));
+        ui->lcd_orient_prime->display(objectPos->getBotOrientString(id));
+        ui->lcd_coordX_prime->display(objectPos->getBotCoordX(true, id));
+        ui->lcd_coordY_prime->display(objectPos->getBotCoordY(true,id));
+        ui->dial_botOrient_prime->setValue(objectPos->getBotOrientDouble(true, id));
         ui->box_primeBot->setTitle("Robot " + QString::number(id));
+
+        // Text field
+        ui->text_primeBot->setTextColor(Qt::white);
         ui->text_primeBot->setText(botBehavior[id]);
         QScrollBar *sb = ui->text_primeBot->verticalScrollBar();
         sb->setValue(sb->maximum());
-        ui->gView_robot_prime->setScene(robotPanel->botIconSelScenes[id]);
     }
 
 }

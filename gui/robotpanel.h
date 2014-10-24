@@ -16,11 +16,11 @@
 class RobotPanel
 {
 public:
-    RobotPanel();
-    static RobotPanel* getRobotPanel(); // delete
+    RobotPanel(MainWindow * mw);
+    MainWindow * dash;
 
-    void setupBotPanel(MainWindow *dash);
-    void updateBotPanel(MainWindow *dash);
+    void setupBotPanel();
+    void updateBotPanel();
 //    void toggleIconVisible(MainWindow *dash);
 
 //private:

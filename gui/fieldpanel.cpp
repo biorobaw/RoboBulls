@@ -1,8 +1,11 @@
 #include "fieldpanel.h"
+#include "objectposition.h"
 
-FieldPanel::FieldPanel() {}
+FieldPanel::FieldPanel(MainWindow * mw) {
+    dash = mw;
+}
 
-void FieldPanel::setUpScene(MainWindow * dash) {
+void FieldPanel::setUpScene() {
 
     scene = new GuiScene();
 
@@ -147,7 +150,7 @@ void FieldPanel::setUpScene(MainWindow * dash) {
 
 }// setupScene
 
-void FieldPanel::updateScene(MainWindow * dash) {
+void FieldPanel::updateScene() {
     if (refresh) {
         dash->ui->gView_field->hide();
         dash->ui->gView_field->show();
@@ -175,8 +178,8 @@ void FieldPanel::updateScene(MainWindow * dash) {
     field->colorScheme = dash->ui->combo_fieldColor->currentText();
 
     // updating the ball
-        ball->setX(dash->getBallCoordX());
-        ball->setY(dash->getBallCoordY());
+        ball->setX(dash->objectPos->getBallCoordX());
+        ball->setY(dash->objectPos->getBallCoordY());
         ball->setZValue(2);
         // Ball Scale
         if (dash->ui->combo_ballScale->currentText() == "100%"){
@@ -196,10 +199,10 @@ void FieldPanel::updateScene(MainWindow * dash) {
         for (int i=0; i<dash->teamSize; i++) {
             // Blue Team
             if (dash->gamemodel->find(i, dash->gamemodel->getMyTeam()) != NULL) {
-                guiTeam[i]->setX(dash->getBotCoordX(true, i));
-                guiTeam[i]->setY(dash->getBotCoordY(true, i));
+                guiTeam[i]->setX(dash->objectPos->getBotCoordX(true, i));
+                guiTeam[i]->setY(dash->objectPos->getBotCoordY(true, i));
                 guiTeam[i]->setZValue(3);
-                double angle = dash->getBotOrientDouble(true, i) ;
+                double angle = dash->objectPos->getBotOrientDouble(true, i) ;
                 guiTeam[i]->setRotation(angle);
                 // Action colors (may be better in the button slots)
                 if (i != selectedBot) {
@@ -222,8 +225,8 @@ void FieldPanel::updateScene(MainWindow * dash) {
                 guiLabels[i]->setTransform(flipLabel, false);
                 guiLabels[i]->setRotation(currentFieldAngle);
                 guiLabels[i]->setZValue(4);
-                guiLabels[i]->setX(dash->getBotCoordX(true,i));
-                guiLabels[i]->setY(dash->getBotCoordY(true,i));
+                guiLabels[i]->setX(dash->objectPos->getBotCoordX(true,i));
+                guiLabels[i]->setY(dash->objectPos->getBotCoordY(true,i));
                 if (dash->ui->check_showIDs->isChecked()) {
                     guiLabels[i]->hidden = false;
                 }else{
@@ -236,10 +239,10 @@ void FieldPanel::updateScene(MainWindow * dash) {
             }
             // Yellow Team
             if (dash->gamemodel->find(i, dash->gamemodel->getOponentTeam()) != NULL) {
-                guiTeamY[i]->setX(dash->getBotCoordX(false, i));
-                guiTeamY[i]->setY(dash->getBotCoordY(false, i));
+                guiTeamY[i]->setX(dash->objectPos->getBotCoordX(false, i));
+                guiTeamY[i]->setY(dash->objectPos->getBotCoordY(false, i));
                 guiTeamY[i]->setZValue(3);
-                double angleY = dash->getBotOrientDouble(false, i) ;
+                double angleY = dash->objectPos->getBotOrientDouble(false, i) ;
                 guiTeamY[i]->setRotation(angleY);
                 // Robot Scale
                 if (dash->ui->combo_botScale->currentText() == "100%") {
@@ -253,8 +256,8 @@ void FieldPanel::updateScene(MainWindow * dash) {
                 guiLabelsY[i]->setTransform(flipLabel,false);
                 guiLabelsY[i]->setRotation(currentFieldAngle);
                 guiLabelsY[i]->setZValue(4);
-                guiLabelsY[i]->setX(dash->getBotCoordX(false,i));
-                guiLabelsY[i]->setY(dash->getBotCoordY(false,i));
+                guiLabelsY[i]->setX(dash->objectPos->getBotCoordX(false,i));
+                guiLabelsY[i]->setY(dash->objectPos->getBotCoordY(false,i));
                 if (dash->ui->check_showIDs->isChecked()) {
                     guiLabelsY[i]->hidden = false;
                 }else{
@@ -265,6 +268,7 @@ void FieldPanel::updateScene(MainWindow * dash) {
 
     // Keeping camera centered
     dash->centerViewOnBot();
+    dash->ui->gView_field->update();
 
 }
 

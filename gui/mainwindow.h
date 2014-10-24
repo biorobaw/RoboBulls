@@ -24,10 +24,11 @@
 #include "communication/nxtrobcomm.h"
 #include "movement/move.h"
 #include "guiscene.h"
-//#include "robotpanel.h"   // delete
 
 class RobotPanel;   // Forward Declaration prevents future problems from two<-->way references
 class FieldPanel;
+class SelRobotPanel;
+class ObjectPosition;
 
 namespace Ui {
     class MainWindow;
@@ -41,27 +42,21 @@ public:
     ~MainWindow();
 
 public:
+    // Class pointers
+    Ui::MainWindow *ui;
+    GameModel *gamemodel;
+    RobotPanel * robotPanel;
+    FieldPanel * fieldpanel;
+    SelRobotPanel * selrobotpanel;
+    ObjectPosition * objectPos;
+
     static MainWindow* getMainWindow();
-    bool guiOverride = false;           // For the purpose of overriding gamemodel's commands with our own
-    int botOverride = -1;               // the id of the currently overridden bot
-    std::vector<bool> overriddenBots;   // keeps track of whether each bot is overridden
-    QString getBotCoord(int id);        // Returns the specified robot's x/y position as a QString
-    QString getBotOrientString(int id);
-    double  getBotOrientDouble(bool myTeam, int id);
-    int getBotCoordX(bool myTeam, int id);
-    int getBotCoordY(bool myTeam,int id);
-    int     getBotSpeed(std::vector<QLabel*> c, int id);
-    QString getBallCoord();
-    int  getBallCoordX();
-    int  getBallCoordY();
     QString getRemTime();
     void scanForSelection();
     int getVelocity(int id);
     // Debug functions
-    void printBehavior(int botID, string behavior, bool append);    // puts the given bot's given string into a vector and prints it when the bot is selected
     void drawLine( int originX, int originY, int endX, int endY );
     void guiPrint(string output);
-    void guiPrintRobot(int robotID, string output);
     void updateBallInfo();
     // For getting milliseconds
     int frequency_of_primes (int n);
@@ -71,18 +66,19 @@ public:
     // Key Bindings
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
-    // Mouse stuff
-    int getMouseCoordX();
-    int getMouseCoordY();
     void centerViewOnBot();
     void setMyVelocity();
-    void setGuiOverride();
     // 10/23/14
-    Ui::MainWindow *ui;
     int teamSize = 6;
-    GameModel *gamemodel;
-    RobotPanel * robotPanel;
-    FieldPanel * fieldpanel;
+    bool guiOverride = false;           // For the purpose of overriding gamemodel's commands with our own
+    int botOverride = -1;               // the id of the currently overridden bot
+    std::vector<bool> overriddenBots;   // keeps track of whether each bot is overridden
+    QString guiOutputRobot = "...";
+    QString botBehavior[6];
+    QString botBehaviorTemp[6];
+    bool    botBehaviorNew[6];
+    void guiPrintRobot(int robotID, std::string output);
+
 
 protected:
     Robot *robot;
@@ -94,8 +90,6 @@ protected:
 
 
 signals:
-    void labelPrinted();
-    void printLabel();
     bool sceneReady();
 
 
@@ -111,12 +105,10 @@ private:
     QGraphicsRectItem *rectangle;
     // Behavior vector
 //    std::vector<QString*> botBehavior[6];
-    QString botBehavior[6];
 
     QGraphicsScene *selectedBotScene;
     // Keeps track of latest string received by guiPrint()
     QString guiOutput = "...";
-    QString guiOutputRobot = "...";
 
     // pointer to MainWindow
     static MainWindow* window;
