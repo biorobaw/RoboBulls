@@ -36,7 +36,8 @@ void DefendFarFromBall::perform(Robot *robot)
             isKickingAwayBall = true;
             wasNotPreviousScoreHazard = false;
         }
-        if(KTPSkill->perform(robot)) {
+        if(KTPSkill->perform(robot) or
+                Measurments::distance(ballPoint, myGoal) > 1200) {
             lastKickCounter = 100;
             wasNotPreviousScoreHazard = true;
             isKickingAwayBall = false;

@@ -29,8 +29,6 @@ void AttackSupport::perform(Robot * robot)
     Region right_of_main = Region(0, goal_dir*3000, 0, -2000);
     Region penalty_area  = Region(gp.x, gp.x-goal_dir*500,-500,500);
 
-
-
     //Vectors of robots to ignore (itself + opponents in penalty area)
     vector<Robot*> ignoreOpponents, ignoreTeammates;
 
@@ -46,12 +44,14 @@ void AttackSupport::perform(Robot * robot)
 
     //Initialize wp which is the point at which to wait for pass
     //wp is set on the side that is least populated - not counting enemy robots in penalty area
-    if(left_of_main.numOfRobots(ignoreOpponents,ignoreTeammates)< right_of_main.numOfRobots(ignoreOpponents,ignoreTeammates))
+    if(left_of_main.numOfRobots(ignoreOpponents,ignoreTeammates) <=
+       right_of_main.numOfRobots(ignoreOpponents,ignoreTeammates) and
+      !left_of_main.contains(main_attacker->getRobotPosition()))
         wp = left_of_main.centre();
-    else if (left_of_main.numOfRobots(ignoreOpponents,ignoreTeammates) > right_of_main.numOfRobots(ignoreOpponents,ignoreTeammates))
+    else if (!right_of_main.contains(main_attacker->getRobotPosition()))
         wp = right_of_main.centre();
     else
-        wp = Point(0,0);
+        wp = Point(goal_dir * 500, 0);
 
     //Initialize skills that are used in switch statement
     float angle_to_ball = Measurments::angleBetween(rp,bp);

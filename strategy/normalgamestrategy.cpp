@@ -93,6 +93,23 @@ private:
 };
 
 
+class StayStill : public GenericMovementBehavior
+{
+public:
+    StayStill(const ParameterList& list)
+    {
+        UNUSED_PARAM(list);
+    }
+
+    void perform(Robot* robot) override
+    {
+        setMovementTargets(robot->getRobotPosition(),
+                           UNUSED_ANGLE_VALUE, false);
+        GenericMovementBehavior::perform(robot);
+    }
+};
+
+
 /*************************************************/
 /** PUBLIC FUNCTIONS **/
 
@@ -114,19 +131,55 @@ void NormalGameStrategy::assignBeh()
 
 bool NormalGameStrategy::update()
 {
+    static int ballNotInGoalCount = 0;
     bool oldAttack = isOnAttack;
     isOnAttack = considerSwitchCreiteria();
 
-    if(oldAttack != isOnAttack) {
-        return true;
+    GameModel* gm = GameModel::getModel();
+    Point ball = gm->getBallPoint();
+    Point opG = gm->getOpponentGoal();
+    Point myG = gm->getMyGoal();
+
+    if(Measurments::isClose(ball, myG, 999) or
+       Measurments::isClose(ball, opG, 999))
+    {
+        ballNotInGoalCount = 0;
+        BehaviorAssignment<StayStill> ss(true);
+        ss.assignBeh([](Robot* r){return r->getID() != 5;});
+
+        //*** Assign goalie to ID 5
+        BehaviorAssignment<DefendFarFromBall> goalie_5(true);
+        goalie_5.assignBeh({5});
+        return false;
     }
-    else if(isOnAttack) {
-        AttackMain* attackMain =
-                dynamic_cast<AttackMain*>(currentMainAttacker->getCurrentBeh());
-        if(attackMain->hasKicked()) {
-            assignAttackBehaviors();
+    else {
+        if(ballNotInGoalCount < 100) {
+            ++ballNotInGoalCount;
+            return false;
         }
+        if(oldAttack != isOnAttack) {
+            return true;
+        }
+        else if(isOnAttack) {
+            if(currentMainAttacker == nullptr) {
+                /*** ??? ***/
+                assignBeh();
+                return false;
+            }
+            AttackMain* attackMain =
+                    dynamic_cast<AttackMain*>(currentMainAttacker->getCurrentBeh());
+            if(attackMain == nullptr) {
+                /*** ??? ***/
+                assignBeh();
+                return false;
+            }
+            if(attackMain->hasKicked()) {
+                assignAttackBehaviors();
+            }
+        }
+        return false;
     }
+
     return false;
 }
 
@@ -147,7 +200,7 @@ bool NormalGameStrategy::considerSwitchCreiteria()
     Robot* ballRobot = gm->getHasBall();
 
     if(ballRobot == NULL) {
-        return NormalGameStrategy::isOnAttack;
+        return true;
     }
     else if(ballRobot->isOnMyTeam() and not(isOnAttack)) {
         --switchCounter;
