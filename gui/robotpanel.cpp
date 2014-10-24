@@ -16,50 +16,50 @@ RobotPanel *RobotPanel::getRobotPanel() {
     return robotpanel;
 }
 
-void RobotPanel::setupBotPanel(MainWindow * win) {
+void RobotPanel::setupBotPanel(MainWindow * dash) {
 
     // Bot Frames
-    botFrames.push_back(win->ui->frame_robot_0);
-    botFrames.push_back(win->ui->frame_robot_1);
-    botFrames.push_back(win->ui->frame_robot_2);
-    botFrames.push_back(win->ui->frame_robot_3);
-    botFrames.push_back(win->ui->frame_robot_4);
-    botFrames.push_back(win->ui->frame_robot_5);
+    botFrames.push_back(dash->ui->frame_robot_0);
+    botFrames.push_back(dash->ui->frame_robot_1);
+    botFrames.push_back(dash->ui->frame_robot_2);
+    botFrames.push_back(dash->ui->frame_robot_3);
+    botFrames.push_back(dash->ui->frame_robot_4);
+    botFrames.push_back(dash->ui->frame_robot_5);
     // Title label vector
-    botTitle.push_back(win->ui->title_robPanel_0);
-    botTitle.push_back(win->ui->title_robPanel_1);
-    botTitle.push_back(win->ui->title_robPanel_2);
-    botTitle.push_back(win->ui->title_robPanel_3);
-    botTitle.push_back(win->ui->title_robPanel_4);
-    botTitle.push_back(win->ui->title_robPanel_5);
+    botTitle.push_back(dash->ui->title_robPanel_0);
+    botTitle.push_back(dash->ui->title_robPanel_1);
+    botTitle.push_back(dash->ui->title_robPanel_2);
+    botTitle.push_back(dash->ui->title_robPanel_3);
+    botTitle.push_back(dash->ui->title_robPanel_4);
+    botTitle.push_back(dash->ui->title_robPanel_5);
     // Velocity dials
-    velocityDials.push_back(win->ui->dial_botSpeed_0);
-    velocityDials.push_back(win->ui->dial_botSpeed_1);
-    velocityDials.push_back(win->ui->dial_botSpeed_2);
-    velocityDials.push_back(win->ui->dial_botSpeed_3);
-    velocityDials.push_back(win->ui->dial_botSpeed_4);
-    velocityDials.push_back(win->ui->dial_botSpeed_5);
+    velocityDials.push_back(dash->ui->dial_botSpeed_0);
+    velocityDials.push_back(dash->ui->dial_botSpeed_1);
+    velocityDials.push_back(dash->ui->dial_botSpeed_2);
+    velocityDials.push_back(dash->ui->dial_botSpeed_3);
+    velocityDials.push_back(dash->ui->dial_botSpeed_4);
+    velocityDials.push_back(dash->ui->dial_botSpeed_5);
     // X Coordinate vector
-    botXcoords.push_back(win->ui->lcd_coordX_0);
-    botXcoords.push_back(win->ui->lcd_coordX_1);
-    botXcoords.push_back(win->ui->lcd_coordX_2);
-    botXcoords.push_back(win->ui->lcd_coordX_3);
-    botXcoords.push_back(win->ui->lcd_coordX_4);
-    botXcoords.push_back(win->ui->lcd_coordX_5);
+    botXcoords.push_back(dash->ui->lcd_coordX_0);
+    botXcoords.push_back(dash->ui->lcd_coordX_1);
+    botXcoords.push_back(dash->ui->lcd_coordX_2);
+    botXcoords.push_back(dash->ui->lcd_coordX_3);
+    botXcoords.push_back(dash->ui->lcd_coordX_4);
+    botXcoords.push_back(dash->ui->lcd_coordX_5);
     // Y Coordinate vector
-    botYcoords.push_back(win->ui->lcd_coordY_0);
-    botYcoords.push_back(win->ui->lcd_coordY_1);
-    botYcoords.push_back(win->ui->lcd_coordY_2);
-    botYcoords.push_back(win->ui->lcd_coordY_3);
-    botYcoords.push_back(win->ui->lcd_coordY_4);
-    botYcoords.push_back(win->ui->lcd_coordY_5);
+    botYcoords.push_back(dash->ui->lcd_coordY_0);
+    botYcoords.push_back(dash->ui->lcd_coordY_1);
+    botYcoords.push_back(dash->ui->lcd_coordY_2);
+    botYcoords.push_back(dash->ui->lcd_coordY_3);
+    botYcoords.push_back(dash->ui->lcd_coordY_4);
+    botYcoords.push_back(dash->ui->lcd_coordY_5);
     // Orientation vector
-    botOrients.push_back(win->ui->dial_botOrient_0);
-    botOrients.push_back(win->ui->dial_botOrient_1);
-    botOrients.push_back(win->ui->dial_botOrient_2);
-    botOrients.push_back(win->ui->dial_botOrient_3);
-    botOrients.push_back(win->ui->dial_botOrient_4);
-    botOrients.push_back(win->ui->dial_botOrient_5);
+    botOrients.push_back(dash->ui->dial_botOrient_0);
+    botOrients.push_back(dash->ui->dial_botOrient_1);
+    botOrients.push_back(dash->ui->dial_botOrient_2);
+    botOrients.push_back(dash->ui->dial_botOrient_3);
+    botOrients.push_back(dash->ui->dial_botOrient_4);
+    botOrients.push_back(dash->ui->dial_botOrient_5);
     // Icons vector
     robotIcon0 = new GuiRobot;
     robotIcon1 = new GuiRobot;
@@ -87,12 +87,12 @@ void RobotPanel::setupBotPanel(MainWindow * win) {
     botIconScenes.push_back(scene_botIcon_4);
     botIconScenes.push_back(scene_botIcon_5);
     // Icon frames vector
-    botIconFrames.push_back(win->ui->gView_robot_0);
-    botIconFrames.push_back(win->ui->gView_robot_1);
-    botIconFrames.push_back(win->ui->gView_robot_2);
-    botIconFrames.push_back(win->ui->gView_robot_3);
-    botIconFrames.push_back(win->ui->gView_robot_4);
-    botIconFrames.push_back(win->ui->gView_robot_5);
+    botIconFrames.push_back(dash->ui->gView_robot_0);
+    botIconFrames.push_back(dash->ui->gView_robot_1);
+    botIconFrames.push_back(dash->ui->gView_robot_2);
+    botIconFrames.push_back(dash->ui->gView_robot_3);
+    botIconFrames.push_back(dash->ui->gView_robot_4);
+    botIconFrames.push_back(dash->ui->gView_robot_5);
     // Selected bot icons
     robotIcon0Sel = new GuiRobot;
     robotIcon1Sel = new GuiRobot;
@@ -123,7 +123,7 @@ void RobotPanel::setupBotPanel(MainWindow * win) {
     scene_ballIcon = new QGraphicsScene;
 
     // relevant vectors filled & connected; initial details added to GUI
-    for (int i=0; i<win->teamSize; i++) {
+    for (int i=0; i<dash->teamSize; i++) {
         botIcons[i]->id = i;
         botIcons[i]->icon = true;
         botIconsSelected[i]->id = i;
@@ -136,38 +136,38 @@ void RobotPanel::setupBotPanel(MainWindow * win) {
         botIconFrames[i]->setScene(botIconScenes[i]);
         botIconFrames[i]->hide();
         velocityDials[i]->setValue(0);
-        win->overriddenBots.push_back(false);    // creating each element, and setting to false
+        dash->overriddenBots.push_back(false);    // creating each element, and setting to false
     }
     // putting ball icon into GUI
     scene_ballIcon->addItem(ballIcon);
-    win->ui->gView_ball->setScene(scene_ballIcon);
-    win->ui->gView_ball->scale(.2, .2);
-    win->ui->gView_ball->scale(1, -1);
-    win->ui->gView_ball->hide();
+    dash->ui->gView_ball->setScene(scene_ballIcon);
+    dash->ui->gView_ball->scale(.2, .2);
+    dash->ui->gView_ball->scale(1, -1);
+    dash->ui->gView_ball->hide();
 
     // Formatting selected bot panel
-    win->ui->gView_robot_prime->scale(.4, .4);
-    win->ui->gView_robot_prime->scale(1,-1);
-    win->ui->gView_robot_prime->rotate(90);
+    dash->ui->gView_robot_prime->scale(.4, .4);
+    dash->ui->gView_robot_prime->scale(1,-1);
+    dash->ui->gView_robot_prime->rotate(90);
 
 }//setupBotPanel
 
-void RobotPanel::updateBotPanel(MainWindow * win) {
+void RobotPanel::updateBotPanel(MainWindow * dash) {
     // Printing current bot info to Robot Panels
-    for (int i=0; i<win->teamSize; i++) {
+    for (int i=0; i<dash->teamSize; i++) {
         botTitle[i]->setText("Robot " + QString::number(i));
         // Nullcheck
-        if (win->gamemodel->find(i,win->gamemodel->getMyTeam()) != NULL) {
-            botXcoords[i]->display(win->getBotCoordX(true, i));
-            botYcoords[i]->display(win->getBotCoordY(true, i));
-            botOrients[i]->setValue(win->getBotOrientDouble(true, i));
+        if (dash->gamemodel->find(i,dash->gamemodel->getMyTeam()) != NULL) {
+            botXcoords[i]->display(dash->getBotCoordX(true, i));
+            botYcoords[i]->display(dash->getBotCoordY(true, i));
+            botOrients[i]->setValue(dash->getBotOrientDouble(true, i));
             botIcons[i]->setX(0);
             botIcons[i]->setY(0);
             botIcons[i]->setZValue(2);
             if (botIconFrames[i]->isVisible() == false) {
                 botIconFrames[i]->show();
             }
-            velocityDials[i]->setValue(win->getVelocity(i));
+            velocityDials[i]->setValue(dash->getVelocity(i));
 //            printBehavior(i, to_string(getVelocity(i)), true);
 //            cout << to_string(getVelocity(0)) << "\n";
             // dynamic velocity dial colors
@@ -185,34 +185,34 @@ void RobotPanel::updateBotPanel(MainWindow * win) {
         }//nullcheck
     }
     // Selected Bot Panel velocity dial
-    if (win->ui->dial_botSpeed->value() > 0) {
-        win->ui->dial_botSpeed->setStyleSheet("background-color: rgb(0, 200, 0);");
-        win->ui->lcd_botSpeed->setStyleSheet("background-color: rgb(0, 100, 0);");
-    } else if (win->ui->dial_botSpeed->value() < 0 ) {
-        win->ui->dial_botSpeed->setStyleSheet("background-color: rgb(200, 0, 0);");
-        win->ui->lcd_botSpeed->setStyleSheet("background-color: rgb(100, 0, 0);");
+    if (dash->ui->dial_botSpeed->value() > 0) {
+        dash->ui->dial_botSpeed->setStyleSheet("background-color: rgb(0, 200, 0);");
+        dash->ui->lcd_botSpeed->setStyleSheet("background-color: rgb(0, 100, 0);");
+    } else if (dash->ui->dial_botSpeed->value() < 0 ) {
+        dash->ui->dial_botSpeed->setStyleSheet("background-color: rgb(200, 0, 0);");
+        dash->ui->lcd_botSpeed->setStyleSheet("background-color: rgb(100, 0, 0);");
     } else {
-        win->ui->dial_botSpeed->setStyleSheet("background-color: rgb(150, 150, 150);");
-        win->ui->lcd_botSpeed->setStyleSheet("background-color: rgb(100, 100, 100);");
+        dash->ui->dial_botSpeed->setStyleSheet("background-color: rgb(150, 150, 150);");
+        dash->ui->lcd_botSpeed->setStyleSheet("background-color: rgb(100, 100, 100);");
     }
     // Robot override checkbox
-    if (win->selectedBot > -1) {
-        win->ui->check_botOverride->setEnabled(true);
-        win->ui->check_botOverride->show();
-        if (win->overriddenBots[win->selectedBot] == true) {
-            win->ui->check_botOverride->setChecked(true);
+    if (dash->fieldpanel->selectedBot > -1) {
+        dash->ui->check_botOverride->setEnabled(true);
+        dash->ui->check_botOverride->show();
+        if (dash->overriddenBots[dash->fieldpanel->selectedBot] == true) {
+            dash->ui->check_botOverride->setChecked(true);
         } else {
-            win->ui->check_botOverride->setChecked(false);
+            dash->ui->check_botOverride->setChecked(false);
         }
     } else {
-        win->ui->check_botOverride->setEnabled(false);
-        win->ui->check_botOverride->hide();
+        dash->ui->check_botOverride->setEnabled(false);
+        dash->ui->check_botOverride->hide();
     }
 
 
     // Mouse point
-    win->ui->lcd_coordX_cursor->display(win->getMouseCoordX());
-    win->ui->lcd_coordY_cursor->display(win->getMouseCoordY());
+    dash->ui->lcd_coordX_cursor->display(dash->getMouseCoordX());
+    dash->ui->lcd_coordY_cursor->display(dash->getMouseCoordY());
 
 }
 

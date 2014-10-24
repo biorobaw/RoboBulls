@@ -17,16 +17,17 @@
 #include "guirobot.h"
 #include "guifield.h"
 #include "guiball.h"
-#include "guisidelines.h"
+//#include "guisidelines.h" // delete?
 #include "guibotlabel.h"
 #include "communication/refcomm.h"
 #include "guidrawline.h"
 #include "communication/nxtrobcomm.h"
 #include "movement/move.h"
 #include "guiscene.h"
-//#include "robotpanel.h"
+//#include "robotpanel.h"   // delete
 
 class RobotPanel;   // Forward Declaration prevents future problems from two<-->way references
+class FieldPanel;
 
 namespace Ui {
     class MainWindow;
@@ -43,7 +44,6 @@ public:
     static MainWindow* getMainWindow();
     bool guiOverride = false;           // For the purpose of overriding gamemodel's commands with our own
     int botOverride = -1;               // the id of the currently overridden bot
-    int selectedBot = -1;               // the ID of the currently selected bot
     std::vector<bool> overriddenBots;   // keeps track of whether each bot is overridden
     QString getBotCoord(int id);        // Returns the specified robot's x/y position as a QString
     QString getBotOrientString(int id);
@@ -81,7 +81,8 @@ public:
     Ui::MainWindow *ui;
     int teamSize = 6;
     GameModel *gamemodel;
-
+    RobotPanel * robotPanel;
+    FieldPanel * fieldpanel;
 
 protected:
     Robot *robot;
@@ -99,7 +100,6 @@ signals:
 
 
 private:
-    RobotPanel * robotPanel;
 
     void setupKeyShortcuts();
     // moved from public
@@ -107,7 +107,6 @@ private:
     // my pointer
     static MainWindow *mw;
     QList<GuiComm*> threads;
-    GuiScene *scene;
     QGraphicsEllipseItem *ellipse;
     QGraphicsRectItem *rectangle;
     // Behavior vector
@@ -115,76 +114,28 @@ private:
     QString botBehavior[6];
 
     QGraphicsScene *selectedBotScene;
-    // Field
-    GuiRobot *robot0;
-    GuiRobot *robot1;
-    GuiRobot *robot2;
-    GuiRobot *robot3;
-    GuiRobot *robot4;
-    GuiRobot *robot5;
-    std::vector<GuiRobot*> guiTeam;
-    GuiRobot *robot0Y;
-    GuiRobot *robot1Y;
-    GuiRobot *robot2Y;
-    GuiRobot *robot3Y;
-    GuiRobot *robot4Y;
-    GuiRobot *robot5Y;
-    std::vector<GuiRobot*> guiTeamY;
-    GuiBotLabel *botLabel0;
-    GuiBotLabel *botLabel1;
-    GuiBotLabel *botLabel2;
-    GuiBotLabel *botLabel3;
-    GuiBotLabel *botLabel4;
-    GuiBotLabel *botLabel5;
-    std::vector<GuiBotLabel*> guiLabels;
-    GuiBotLabel *botLabel0Y;
-    GuiBotLabel *botLabel1Y;
-    GuiBotLabel *botLabel2Y;
-    GuiBotLabel *botLabel3Y;
-    GuiBotLabel *botLabel4Y;
-    GuiBotLabel *botLabel5Y;
-    std::vector<GuiBotLabel*> guiLabelsY;
-    // Camera
-    int centeredBotID = -1;
     // Keeps track of latest string received by guiPrint()
     QString guiOutput = "...";
     QString guiOutputRobot = "...";
 
-    GuiField *field;
-    GuiSidelines *sidelines;
-    GuiBall *ball;
     // pointer to MainWindow
     static MainWindow* window;
 
-    bool refresh = true;   // set this to true whenever a change to the field is made to refresh on next frame.
-    bool justScrolled = false;
     // For controlling bots manually
     int myVelocity;
 
     long double currentTimeMS = 0;
-    double ballOrigin = 0;
-    double bot0Origin = 0;
-    int currentFieldAngle = 0;
-    int currentFieldScrollH;
+    double ballOrigin = 0;  // delete?
+    double bot0Origin = 0;  // delete?
+    int currentFieldScrollH;    // delete?
 
 
 
 private slots:
     void on_btn_connectGui_clicked();
     void launch(int value);
-    void updateScene();
     void on_pushButton_2_clicked();
     void on_pushButton_3_clicked();
-    void zoomField(int scale);
-    void defaultZoom();
-    void setUpScene();
-    void on_check_fieldGrid_clicked();
-    void on_combo_gridScale_currentIndexChanged(int index);
-    void on_check_coloredGoals_clicked();
-    void on_combo_fieldColor_currentIndexChanged(int index);
-    void on_check_showIDs_stateChanged(int arg1);
-    void on_combo_botScale_currentIndexChanged(int index);
-    void field_setDragMode();
     void updateSelectedBotPanel(int id);
     void on_btn_botForward_pressed();
     void on_btn_botForward_released();
@@ -201,7 +152,18 @@ private slots:
     void on_check_botOverride_clicked(bool checked);
     void on_btn_override_all_released();
     void on_btn_override_none_released();
+    // Field
+    void zoomField(int scale);
+    void defaultZoom();
+    void on_check_fieldGrid_clicked();
+    void on_combo_gridScale_currentIndexChanged(int index);
+    void on_check_coloredGoals_clicked();
+    void on_combo_fieldColor_currentIndexChanged(int index);
+    void on_check_showIDs_stateChanged(int arg1);
+    void on_combo_botScale_currentIndexChanged(int index);
+    void field_setDragMode();
     void toggleIconVisible();
+
 
 };
 

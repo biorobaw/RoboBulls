@@ -10,17 +10,18 @@
 #include <QGraphicsView>
 #include <QMainWindow>
 #include "model/gamemodel.h"
+#include "fieldpanel.h"
 
 
 class RobotPanel
 {
 public:
     RobotPanel();
-    static RobotPanel* getRobotPanel();
+    static RobotPanel* getRobotPanel(); // delete
 
-    void setupBotPanel(MainWindow *win);
-    void updateBotPanel(MainWindow *win);
-
+    void setupBotPanel(MainWindow *dash);
+    void updateBotPanel(MainWindow *dash);
+//    void toggleIconVisible(MainWindow *dash);
 
 //private:
     // Robot Panel
@@ -74,6 +75,7 @@ private:
 
 protected:
     GameModel *gamemodel;
+    FieldPanel *fieldpanel;
 
 
 };
