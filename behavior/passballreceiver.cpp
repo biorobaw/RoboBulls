@@ -9,7 +9,7 @@
     #define CLOSE_ENOUGH 110
     #define DIST   50
 #else
-    #define ANGLE   (15 * M_PI/180)
+    #define ANGLE   (10 * M_PI/180)
     #define CLOSE_ENOUGH 280
     #define DIST 220
 #endif
@@ -45,12 +45,12 @@ void PassBallReceiver::perform(Robot *robot)
     {
         ballLastSeen = ballPos;
     }
-    else if (Measurments::distance(ballLastSeen, ballPos) > CLOSE_ENOUGH) //when ball moving after pass
+    else if (Measurments::distance(ballLastSeen, ballPos) >= 10/*CLOSE_ENOUGH/4*/) //when ball moving after pass
     {
         ballLastSeen = ballPos;
     }
     else if (Measurments::distance(ballOrg, ballPos) > CLOSE_ENOUGH &&
-             Measurments::distance(ballLastSeen, ballPos) < CLOSE_ENOUGH ) //after pass and ball stopped
+             Measurments::distance(ballLastSeen, ballPos) < 10/*CLOSE_ENOUGH/4*/ ) //after pass and ball stopped
     {
         ballLastSeen = ballPos;
 

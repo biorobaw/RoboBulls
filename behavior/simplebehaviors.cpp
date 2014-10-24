@@ -26,8 +26,18 @@ void SimpleBehaviors::perform(Robot * r)
     Point robotPosition = r->getRobotPosition();
     Point ballPosition = gm->getBallPoint();
 
+    Point rob1, rob2;
+
     if (gm->getGameState() == 'H')
     {
+        for (Robot* rob: gm->getMyTeam())
+        {
+            if (rob->getID() == 1)
+                rob1 = rob->getRobotPosition();
+            else if (rob->getID() == 2)
+                rob2 = rob->getRobotPosition();
+        }
+        cout << "distance\t" << Measurments::distance(rob1, rob2) << endl;
         s = new Skill::Stop();
         for (int i = 0; i < gm->getMyTeam().size(); i++)
         {
@@ -47,7 +57,7 @@ void SimpleBehaviors::perform(Robot * r)
 
         move.setMovementTolerances(CLOSE_ENOUGH, ANGLE);
         move.setVelocityMultiplier(1);
-        move.recreate(position, direction, false);
+        move.recreate(position, direction, true);
         move.perform(r);
     }
     else if (gm->getGameState() == 'F')

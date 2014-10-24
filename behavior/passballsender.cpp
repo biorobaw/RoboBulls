@@ -11,7 +11,7 @@
     #define R 400
 #else
     #define DIST 350
-    #define ANGLE (15*M_PI/180)
+    #define ANGLE (5*M_PI/180)
     #define CLOSE_ENOUGH 210
     #define R 700
 #endif
@@ -54,22 +54,30 @@ Point PassBallSender::findPassPoint(Robot* sender)
     double distance;
     for (int j = 0; j < myTeamInfo.size(); j++)
     {
-        if (j == 0)
+        if (j == 0 && myTeamInfo[j].ID != 5)
         {
             lessSurroundings = myTeamInfo[j].surroundingAppNum;
             distance = myTeamInfo[j].distanceToRobot;
             i = 0;
         }
+        else if (j == 0 && myTeamInfo[j].ID == 5)
+        {
+            lessSurroundings = myTeamInfo[1].surroundingAppNum;
+            distance = myTeamInfo[1].distanceToRobot;
+            i = 1;
+        }
         else
         {
             if (lessSurroundings == myTeamInfo[j].surroundingAppNum &&
-                    myTeamInfo[j].distanceToRobot < distance)
+                    myTeamInfo[j].distanceToRobot < distance &&
+                    myTeamInfo[j].ID != 5)
             {
                 lessSurroundings = myTeamInfo[j].surroundingAppNum;
                 distance = myTeamInfo[j].distanceToRobot;
                 i = j;
             }
-            else if (lessSurroundings > myTeamInfo[j].surroundingAppNum)
+            else if (lessSurroundings > myTeamInfo[j].surroundingAppNum &&
+                     myTeamInfo[j].ID != 5)
             {
                 lessSurroundings = myTeamInfo[j].surroundingAppNum;
                 distance = myTeamInfo[j].distanceToRobot;
@@ -105,6 +113,9 @@ void PassBallSender::perform(Robot * robot)
     float angleInv = Measurments::angleBetween(passPoint, robot->getRobotPosition());
     Point ballPos = gm->getBallPoint();
     Point behindBall = Point(DIST*cos(angleInv)+ballPos.x, DIST*sin(angleInv)+ballPos.y);
+
+    int lVel, rVel;
+    int distance = Measurments::distance(robot->getRobotPosition(), passPoint);
 
     switch(state)
     {
@@ -142,7 +153,22 @@ void PassBallSender::perform(Robot * robot)
             break;
         case kicking:
         {
-            Skill::Kick kick;
+            if (distance <= 1900)
+            {
+                lVel = 1;
+                rVel = 1;
+            }
+            else if (distance > 1900 && distance <= 3800)
+            {
+                lVel = 10;
+                rVel = 10;
+            }
+            else if (distance > 3800)
+            {
+                lVel = 70;
+                rVel = 70;
+            }
+            Skill::Kick kick(lVel, rVel);
             kick.perform(robot);
            state = idling;
 

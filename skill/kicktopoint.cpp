@@ -104,8 +104,8 @@ void KickToPoint::doKickingState(Robot *robot)
     std::cout << "KTP KICK" << std::endl;
 #endif
     if(!hasKicked) {
-        ::Skill::Kick k;
-        k.perform(robot);
+//        ::Skill::Kick k;
+//        k.perform(robot);
         hasKicked = true;
         state = Positioning;
     }

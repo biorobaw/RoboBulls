@@ -2,6 +2,7 @@
 #define DEFENDFARFROMBALL_H
 
 #include "behavior/genericmovementbehavior.h"
+#include "movement/gotoposition.h"
 
 class DefendFarFromBall : public GenericMovementBehavior
 {

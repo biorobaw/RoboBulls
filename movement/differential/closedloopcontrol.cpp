@@ -14,7 +14,7 @@
  * because it's only used in one file.
  */
 #if SIMULATED
- #define CLC_ROTATONG_VEL 50
+ #define CLC_ROTATONG_VEL 60
 #else
  #define CLC_ROTATONG_VEL 50
 #endif

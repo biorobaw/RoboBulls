@@ -10,7 +10,7 @@ DefendFarFromBall::DefendFarFromBall(const ParameterList& list)
     : GenericMovementBehavior(list)
 {
     UNUSED_PARAM(list);
-    setVelocityMultiplier(0.75);
+//    setVelocityMultiplier(0.75);
 }
 
 void DefendFarFromBall::perform(Robot *robot)
@@ -22,6 +22,6 @@ void DefendFarFromBall::perform(Robot *robot)
 
     Point defensiveWall(cos(direction)*DISTANCE + myGoal.x, sin(direction)*DISTANCE + myGoal.y);
 
-	setMovementTargets(defensiveWall, direction);
-	GenericMovementBehavior::perform(robot);
+    setMovementTargets(defensiveWall, direction, false);
+    GenericMovementBehavior::perform(robot);
 }

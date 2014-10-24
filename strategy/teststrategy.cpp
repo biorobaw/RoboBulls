@@ -189,10 +189,10 @@ void TestStrategy::assignBeh()
 //    assignment.assignBeh({1});
 
 
-//     Narges code testing DriveBallAndKick
-    BehaviorAssignment<DriveBallAndKick> assignment;
-    assignment.setSingleAssignment(true);
-    assignment.assignBeh(gm->getMyTeam().at(0));
+////     Narges code testing DriveBallAndKick
+//    BehaviorAssignment<DriveBallAndKick> assignment;
+//    assignment.setSingleAssignment(true);
+//    assignment.assignBeh(gm->getMyTeam().at(0));
 
     // Narges code testing DriveBallAndKick
 //    BehaviorAssignment<TestBehavior> assignment(true);
@@ -204,10 +204,15 @@ void TestStrategy::assignBeh()
 //    assignment.setSingleAssignment(true);
 //    assignment.assignBeh();
 
-////    Narges code testing defendfarfromball
-//    BehaviorAssignment<DefendFarFromBall> assignment;
-//    assignment.setSingleAssignment(true);
-//    assignment.assignBeh();
+
+//    Narges code testing defendfarfromball
+    BehaviorAssignment<DefendFarFromBall> assignment;
+    assignment.setSingleAssignment(true);
+//    for (Robot* rob: gm->getMyTeam())
+//    {
+//        if (rob->getID() == 5)
+            assignment.assignBeh();
+//    }
 
 ////    Narges testing myTestBehavior
 //    BehaviorAssignment<myTestBehavior> assignment;
