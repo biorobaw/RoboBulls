@@ -156,7 +156,7 @@ private slots:
     void on_combo_fieldColor_currentIndexChanged(int index);
     void on_check_showIDs_stateChanged(int arg1);
     void on_combo_botScale_currentIndexChanged(int index);
-    void field_setDragMode();
+//    void field_setDragMode();   // delete ?
     void toggleIconVisible();
 
 

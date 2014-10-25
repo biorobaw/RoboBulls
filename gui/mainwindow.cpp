@@ -120,8 +120,6 @@ void MainWindow::launch(int value)
     // TEST
     for (int i=0; i<teamSize; i++) {
         botBehavior[i] = "";
-//        botBehaviorNew[i] = false;
-//        botBehaviorTemp[i] = " ";
     }
 
     // Updating GUI
@@ -558,31 +556,22 @@ void MainWindow::setMyVelocity() {
 }
 
 void MainWindow::guiPrintRobot(int robotID, string output) {
-////    if (guiOutputRobot.toStdString() == output) {
-//    if (botBehaviorTemp[robotID] == QString::fromStdString(output)) {
-//        botBehaviorNew[robotID] = false;
-////        cout << "matches \n";
-//    } else {
-////        cout << "does NOT match \n";
-//        botBehaviorNew[robotID] = true;
-//        // recording this string
-////        guiOutputRobot = QString::fromStdString(output);
-//        botBehaviorTemp[robotID] = QString::fromStdString(output);
-//        // converting received string to QString for printing
-//        QString qOutput = QString::fromStdString(output);
-//        QString qBehavior = botBehavior[robotID];
-//        qBehavior.append(qOutput);
-//        botBehavior[robotID] = qBehavior;
-//    }
-    if (botBehavior[robotID] != ("\n" + QString::fromStdString(output)) ) {
-        // if the field is blank, no carriage return
+    /* Converts given string into a QString, ensures it hasn't already been
+     * printed during this cycle, and prints it on the Selected Robot Panel.
+     *
+     * robotID: ID # of the robot to whom this comment applies
+     * output:  comment string to be printed
+     */
+
+    // ensuring we haven't already printed this string during this cycle...
+    if (botBehavior[robotID].indexOf(QString::fromStdString(output)) == -1) {
+        // ensuring we don't lead with a carriage return if the field is currently blank...
         if (botBehavior[robotID] == "") {
             botBehavior[robotID] += (QString::fromStdString(output));
         } else {
             botBehavior[robotID] += ("\n" + QString::fromStdString(output));
         }
     }
-
 }
 
 
@@ -827,13 +816,13 @@ void MainWindow::on_combo_fieldColor_currentIndexChanged(int index){fieldpanel->
 void MainWindow::on_check_showIDs_stateChanged(int arg1){fieldpanel->refresh = true;}
 void MainWindow::on_combo_botScale_currentIndexChanged(int index){fieldpanel->refresh = true;}
 
-void MainWindow::field_setDragMode() {
-//    if (dash->ui->gView_field->dragMode() == QGraphicsView::NoDrag) {
-//        dash->ui->gView_field->setDragMode(QGraphicsView::ScrollHandDrag);
-//    } else {
-//        dash->ui->gView_field->setDragMode(QGraphicsView::NoDrag);
-//    }
-}
+//void MainWindow::field_setDragMode() {  // delete ?
+////    if (dash->ui->gView_field->dragMode() == QGraphicsView::NoDrag) {
+////        dash->ui->gView_field->setDragMode(QGraphicsView::ScrollHandDrag);
+////    } else {
+////        dash->ui->gView_field->setDragMode(QGraphicsView::NoDrag);
+////    }
+//}
 
 void MainWindow::toggleIconVisible() {
     if (fieldpanel->selectedBot > -1) {

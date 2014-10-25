@@ -20,14 +20,15 @@ public:
     ~NXTRobComm();
     void sendVelsLarge(std::vector<Robot*>&);
 
-    int gui_left_front;    //LF wheel velocity
-    int gui_left_back;     //LB wheel velocity
-    int gui_right_front;   //RF wheel velocity
-    int gui_right_back;    //RB wheel velocity
-    int gui_left;
-    int gui_right;
-    int gui_kick;
-    int gui_dribble;
+// DELETE ?
+//    int gui_left_front;    //LF wheel velocity
+//    int gui_left_back;     //LB wheel velocity
+//    int gui_right_front;   //RF wheel velocity
+//    int gui_right_back;    //RB wheel velocity
+//    int gui_left;
+//    int gui_right;
+//    int gui_kick;
+//    int gui_dribble;
 
 private:
     /* The standard communicaiton packet for each
