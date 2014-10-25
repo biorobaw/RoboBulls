@@ -11,7 +11,7 @@
 #include <iostream>
 #include "model/gamemodel.h"
 #include "model/robot.h"
-#include "communication/visioncomm.h"
+//#include "communication/visioncomm.h"
 #include <string>
 #include "utilities/point.h"
 #include "model/robot.h"
