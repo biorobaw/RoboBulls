@@ -9,8 +9,10 @@
 #include "guiscene.h"
 
 
-class FieldPanel
+class FieldPanel : public QObject   // Some kind of Q type required for cross-class signals & slots
 {
+    Q_OBJECT                        // this macro required for cross-class signals & slots
+
 public:
     FieldPanel(MainWindow * mw);
     MainWindow * dash;
@@ -65,6 +67,8 @@ protected:
 
 
 public slots:
+    void zoomField(int scale);
+    void defaultZoom();
 
 };
 

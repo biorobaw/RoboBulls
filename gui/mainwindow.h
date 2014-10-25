@@ -6,7 +6,6 @@
 #include "model/gamemodel.h"
 #include "model/robot.h"
 #include <QLabel>
-#include "guicomm.h"
 
 #include <QtWidgets/QMainWindow>
 #include "ui_mainwindow.h"
@@ -14,21 +13,29 @@
 #include <QDialog>
 #include <QtCore>
 #include <QtGui>
-#include "guirobot.h"
-#include "guifield.h"
-#include "guiball.h"
-//#include "guisidelines.h" // delete?
-#include "guibotlabel.h"
 #include "communication/refcomm.h"
-#include "guidrawline.h"
 #include "communication/nxtrobcomm.h"
 #include "movement/move.h"
+// Helper classes
+//#include "guirobot.h"
+#include "guifield.h"
+#include "guiball.h"
+#include "guibotlabel.h"
+#include "guidrawline.h"
+#include "guicomm.h"
 #include "guiscene.h"
 
 class RobotPanel;   // Forward Declaration prevents future problems from two<-->way references
 class FieldPanel;
 class SelRobotPanel;
 class ObjectPosition;
+class GuiRobot;
+//class GuiField;
+//class GuiBall;
+//class GuiBotLabel;
+//class GuiDrawLine;
+//class GuiScene;
+//class GuiComm;
 
 namespace Ui {
     class MainWindow;
@@ -121,8 +128,6 @@ private:
     double bot0Origin = 0;  // delete?
     int currentFieldScrollH;    // delete?
 
-
-
 private slots:
     void on_btn_connectGui_clicked();
     void launch(int value);
@@ -145,8 +150,6 @@ private slots:
     void on_btn_override_all_released();
     void on_btn_override_none_released();
     // Field
-    void zoomField(int scale);
-    void defaultZoom();
     void on_check_fieldGrid_clicked();
     void on_combo_gridScale_currentIndexChanged(int index);
     void on_check_coloredGoals_clicked();

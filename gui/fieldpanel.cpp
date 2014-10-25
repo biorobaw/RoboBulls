@@ -272,5 +272,24 @@ void FieldPanel::updateScene() {
 
 }
 
+void FieldPanel::zoomField(int zoom) {
+    dash->ui->zoom_slider->setValue(zoom);
+    double zoomScale = zoom *.01;
+    dash->ui->gView_field->setTransform(QTransform::fromScale(zoomScale, zoomScale));
+    dash->ui->gView_field->scale(1, -1);
+    dash->ui->gView_field->rotate(currentFieldAngle);
+}
+
+void FieldPanel::defaultZoom() {
+    // Removing robot focus
+    centeredBotID = -1;
+
+    currentFieldAngle = 0;
+    zoomField(11);
+    dash->ui->zoom_slider->setValue(11);
+//    dash->ui->gView_field->hide();
+    dash->ui->gView_field->centerOn(sidelines);
+}
+
 
 

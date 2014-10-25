@@ -4,28 +4,23 @@
 // different field & robot scales based on SIMULATED
 // make bearing dial gray if robot is NULL
 // communication/nxtrobcomm.cpp - sets velocity to zero
-#include <math.h>
 
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
-#include <iostream>
-#include "model/gamemodel.h"
-#include "model/robot.h"
+// DELETE ?
 //#include "communication/visioncomm.h"
+//#include "utilities/point.h"
+//#include "sys/wait.h"
+//#include <unistd.h>
+//#include <signal.h>
+//#include "communication/refcomm.h"
+// Tool classes
+#include <math.h>
+#include <iostream>
 #include <string>
-#include "utilities/point.h"
-#include "model/robot.h"
-#include "sys/wait.h"
-#include <unistd.h>
-#include <signal.h>
 #include <chrono>
 #include <thread>
-#include "guicomm.h"
 #include <QLCDNumber>
-#include "include/config/simulated.h"
 #include <time.h>
 #include <math.h>
-#include "include/config/simulated.h"
 #include <QGraphicsView>
 #include <QShortcut>
 #include <QMenu>
@@ -33,21 +28,27 @@
 #include <QMouseEvent>
 #include <QMap>
 #include <QCursor>
-#include "communication/refcomm.h"
-#include "guidrawline.h"
-#include "communication/nxtrobcomm.h"
-#include "movement/move.h"
 #include <QScrollBar>
+// Helper classes
 #include "robotpanel.h"
 #include "selrobotpanel.h"
 #include "objectposition.h"
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+//#include "guidrawline.h"
+//#include "guicomm.h"
+// Project classes
+#include "model/gamemodel.h"
+#include "model/robot.h"
+#include "model/robot.h"
+#include "include/config/simulated.h"
+#include "communication/nxtrobcomm.h"
+#include "movement/move.h"
 
 // Global static pointer used to ensure only a single instance of the class.
 MainWindow* MainWindow::mw = NULL;
 
 using namespace std;
-
-
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -67,7 +68,7 @@ MainWindow::MainWindow(QWidget *parent) :
     fieldpanel = new FieldPanel(this);
     // Generating GUI
     fieldpanel->setUpScene();
-    defaultZoom();
+    fieldpanel->defaultZoom();
     robotPanel->setupBotPanel();
     setupKeyShortcuts();
     ui->btn_connectGui->setEnabled(true);
@@ -88,11 +89,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Zoom slider
     connect(ui->zoom_slider, SIGNAL(valueChanged(int))
-            , this, SLOT(zoomField(int)));
+            , fieldpanel, SLOT(zoomField(int)));
 
     // Default zoom button
     connect(ui->zoom_default, SIGNAL(clicked())
-            , this, SLOT(defaultZoom()));
+            , fieldpanel, SLOT(defaultZoom()));
 }
 
 void MainWindow::launch(int value)
@@ -102,7 +103,6 @@ void MainWindow::launch(int value)
     } else {
         ui->menuDashboard->setTitle("Camera");
     }
-
 
 //    ui->label->setText(QString("Current Thread Processing Status : %1").arg(value));
 
@@ -132,12 +132,7 @@ void MainWindow::launch(int value)
     updateBallInfo();
     scanForSelection();
 
-
 }
-
-
-
-
 
 void MainWindow::scanForSelection() {
     bool newSelection = true;
@@ -150,7 +145,7 @@ void MainWindow::scanForSelection() {
                 fieldpanel->guiTeam[i]->doubleClicked = false;
                 fieldpanel->centeredBotID = i;
                 centerViewOnBot();
-                zoomField(20);
+                fieldpanel->zoomField(20);
                 guiPrint("Focused on Robot " + to_string(fieldpanel->centeredBotID));
                 break;
             }
@@ -353,9 +348,6 @@ void MainWindow::guiPrint(string output) {
     }
 }
 
-
-
-
 void MainWindow::on_btn_connectGui_clicked()
 {
     if(ui->btn_connectGui->text() == "Connect")
@@ -372,8 +364,6 @@ void MainWindow::on_btn_connectGui_clicked()
     }
 }
 
-
-
 QString MainWindow::getRemTime() {
     QString t;  // return value
     std::string time = std::to_string(gamemodel->getRemainingTime());
@@ -381,7 +371,6 @@ QString MainWindow::getRemTime() {
 
     return t;
 }
-
 
 void MainWindow::updateBallInfo() {
     ui->lcd_coordX_ball->display(objectPos->getBallCoordX());
@@ -435,8 +424,6 @@ int MainWindow::getClock()
 
      return 0;
 }
-
-
 
 int MainWindow::getSpeed(QGraphicsItem *p, double o)
 {
@@ -550,7 +537,6 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event) {
     }
 }
 
-
 void MainWindow::centerViewOnBot() {
     // Centering camera on double-clicked bot
     if (fieldpanel->centeredBotID > -1) {
@@ -572,11 +558,6 @@ void MainWindow::setMyVelocity() {
 }
 
 void MainWindow::guiPrintRobot(int robotID, string output) {
-////    guiOutput.insert(0, QString::fromStdString(output));
-////    botBehavior[robotID] = " ";
-////    botBehaviorTemp[robotID] = " ";
-////    botBehaviorNew[robotID] = false;
-
 ////    if (guiOutputRobot.toStdString() == output) {
 //    if (botBehaviorTemp[robotID] == QString::fromStdString(output)) {
 //        botBehaviorNew[robotID] = false;
@@ -837,24 +818,6 @@ void MainWindow::on_btn_override_none_released() {
     }
 }
 
-void MainWindow::zoomField(int zoom) {
-    ui->zoom_slider->setValue(zoom);
-    double zoomScale = zoom *.01;
-    ui->gView_field->setTransform(QTransform::fromScale(zoomScale, zoomScale));
-    ui->gView_field->scale(1, -1);
-    ui->gView_field->rotate(fieldpanel->currentFieldAngle);
-}
-
-void MainWindow::defaultZoom() {
-    // Removing robot focus
-    fieldpanel->centeredBotID = -1;
-
-    fieldpanel->currentFieldAngle = 0;
-    zoomField(11);
-    ui->zoom_slider->setValue(11);
-//    dash->ui->gView_field->hide();
-    ui->gView_field->centerOn(fieldpanel->sidelines);
-}
 
 // Field graphical settings which need to be refreshed when changed
 void MainWindow::on_check_fieldGrid_clicked(){fieldpanel->refresh = true;}
