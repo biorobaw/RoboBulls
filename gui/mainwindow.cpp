@@ -63,13 +63,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->btn_connectGui->setEnabled(false);
     // Creating helper classes
     selrobotpanel = new SelRobotPanel(this);
-    robotPanel = new RobotPanel(this);
+    robotpanel = new RobotPanel(this);
     objectPos = new ObjectPosition(this);
     fieldpanel = new FieldPanel(this);
     // Generating GUI
     fieldpanel->setUpScene();
     fieldpanel->defaultZoom();
-    robotPanel->setupBotPanel();
+    robotpanel->setupBotPanel();
     setupKeyShortcuts();
     ui->btn_connectGui->setEnabled(true);
 
@@ -117,16 +117,16 @@ void MainWindow::launch(int value)
             fieldpanel->refresh = true;
         }
     }
-    // TEST
+    // Wiping values at beginning of cycle
     for (int i=0; i<teamSize; i++) {
-        botBehavior[i] = "";
+        botBehavior[i] = "";    // prevents crash
     }
 
     // Updating GUI
     setMyVelocity();
     selrobotpanel->setGuiOverride();
     fieldpanel->updateScene();
-    robotPanel->updateBotPanel();
+    robotpanel->updateBotPanel();
     updateBallInfo();
     scanForSelection();
 
@@ -134,12 +134,11 @@ void MainWindow::launch(int value)
 
 void MainWindow::scanForSelection() {
     bool newSelection = true;
-
     // Scanning for double-click selection
     for (int i=0; i<teamSize; i++) {
         if (gamemodel->find(i,gamemodel->getMyTeam()) != NULL) {
-            if (robotPanel->botIcons[i]->doubleClicked || fieldpanel->guiTeam[i]->doubleClicked) {
-                robotPanel->botIcons[i]->doubleClicked = false;
+            if (robotpanel->botIcons[i]->doubleClicked || fieldpanel->guiTeam[i]->doubleClicked) {
+                robotpanel->botIcons[i]->doubleClicked = false;
                 fieldpanel->guiTeam[i]->doubleClicked = false;
                 fieldpanel->centeredBotID = i;
                 centerViewOnBot();
@@ -154,7 +153,7 @@ void MainWindow::scanForSelection() {
     if (fieldpanel->justScrolled) {
         for (int i=0; i<teamSize; i++) {
             if (gamemodel->find(i,gamemodel->getMyTeam()) != NULL) {
-                robotPanel->botIcons[i]->doubleClicked = false;
+                robotpanel->botIcons[i]->doubleClicked = false;
                 fieldpanel->guiTeam[i]->doubleClicked = false;
             }//nullcheck
         }
@@ -174,9 +173,9 @@ void MainWindow::scanForSelection() {
             if (gamemodel->find(i,gamemodel->getMyTeam()) != NULL) {
                 fieldpanel->guiTeam[i]->highlighted = false;
                 fieldpanel->guiTeam[i]->setSelected(false);
-                robotPanel->botIcons[i]->highlighted = false;
-                robotPanel->botIcons[i]->setSelected(false);
-                robotPanel->botIcons[i]->doubleClicked = false;
+                robotpanel->botIcons[i]->highlighted = false;
+                robotpanel->botIcons[i]->setSelected(false);
+                robotpanel->botIcons[i]->doubleClicked = false;
                 fieldpanel->guiTeam[i]->doubleClicked = false;
             }//nullcheck
         }
@@ -189,25 +188,30 @@ void MainWindow::scanForSelection() {
 
     for (int i=0; i<teamSize; i++) {
         if (gamemodel->find(i,gamemodel->getMyTeam()) != NULL) {
+//            // tab TEST
+//            if (robotpanel->botFrames[i]->hasFocus()) {
+//                robotpanel->botIcons[i]->setSelected(true);
+//            }
+
         // Bots on the panel clicked
-            if (robotPanel->botIcons[i]->isSelected()) {
+            if (robotpanel->botIcons[i]->isSelected()) {
                 fieldpanel->selectedBot = i;
                 for (int j=0; j<teamSize; j++) {
                     fieldpanel->guiTeam[j]->highlighted = false;
                     fieldpanel->guiTeam[j]->setSelected(false);
-                    robotPanel->botIcons[j]->highlighted = false;
-                    robotPanel->botIcons[j]->setSelected(false);
+                    robotpanel->botIcons[j]->highlighted = false;
+                    robotpanel->botIcons[j]->setSelected(false);
 //                    botIcons[i]->doubleClicked = false;
 //                    guiTeam[i]->doubleClicked = false;
 
                 }
 //                field->highlighted = false;
-                robotPanel->botIcons[i]->highlighted = true;
+                robotpanel->botIcons[i]->highlighted = true;
                 fieldpanel->guiTeam[i]->highlighted = true;
                 fieldpanel->refresh = true;
                 // Refresh GUI
                 for (int r=0; r<teamSize; r++) {
-                    robotPanel->botIconFrames[i]->update();
+                    robotpanel->botIconFrames[i]->update();
                 }
                 ui->gView_robot_prime->hide();
                 ui->gView_robot_prime->show();
@@ -219,18 +223,18 @@ void MainWindow::scanForSelection() {
                 for (int j=0; j<teamSize; j++) {
                     fieldpanel->guiTeam[j]->highlighted = false;
                     fieldpanel->guiTeam[j]->setSelected(false);
-                    robotPanel->botIcons[j]->highlighted = false;
-                    robotPanel->botIcons[j]->setSelected(false);
+                    robotpanel->botIcons[j]->highlighted = false;
+                    robotpanel->botIcons[j]->setSelected(false);
 //                    botIcons[i]->doubleClicked = false;
 //                    guiTeam[i]->doubleClicked = false;
                 }
 //                field->highlighted = false;
-                robotPanel->botIcons[i]->highlighted = true;
+                robotpanel->botIcons[i]->highlighted = true;
                 fieldpanel->guiTeam[i]->highlighted = true;
                 fieldpanel->refresh = true;
                 // Refresh GUI
                 for (int r=0; r<teamSize; r++) {
-                    robotPanel->botIconFrames[i]->update();
+                    robotpanel->botIconFrames[i]->update();
                 }
                 ui->gView_robot_prime->hide();
                 ui->gView_robot_prime->show();
@@ -239,7 +243,7 @@ void MainWindow::scanForSelection() {
         }//null check
     }//for loop
     if (newSelection) {
-        updateSelectedBotPanel(fieldpanel->selectedBot);
+        selrobotpanel->updateSelectedBotPanel(fieldpanel->selectedBot);
     } else { return; }
 
 }
@@ -374,7 +378,7 @@ void MainWindow::updateBallInfo() {
     ui->lcd_coordX_ball->display(objectPos->getBallCoordX());
     ui->lcd_coordY_ball->display(objectPos->getBallCoordY());
 
-    robotPanel->ballIcon->color = ui->combo_ballColor->currentText();
+    robotpanel->ballIcon->color = ui->combo_ballColor->currentText();
     ui->gView_ball->update();
     // Displaying ball icon
     if (ui->gView_ball->isHidden()) {
@@ -595,7 +599,7 @@ void MainWindow::setupKeyShortcuts() {
     connect(enter, SIGNAL(activated()), this, SLOT(on_btn_connectGui_clicked()));
     connect(backspace, SIGNAL(activated()), this, SLOT(on_btn_connectGui_clicked()));
     connect(o, SIGNAL(activated()), ui->check_botOverride, SLOT(click()));
-    connect(delKey, SIGNAL(activated()), this, SLOT(toggleIconVisible()));
+    connect(delKey, SIGNAL(activated()), robotpanel, SLOT(toggleIconVisible()));
     //    connect(delKey, SIGNAL(activated()), this, SLOT(on_btn_connectGui_clicked()));
 }
 
@@ -618,44 +622,6 @@ MainWindow *MainWindow::getMainWindow() {
     }
 
     return mw;
-}
-
-
-
-
-
-void MainWindow::updateSelectedBotPanel(int id)
-{
-    int v = 0;
-    if (id == -1) {
-        ui->gView_robot_prime->hide();
-        ui->dial_botSpeed->setValue(0);
-        ui->lcd_botSpeed->display(0);
-        ui->lcd_orient_prime->display("0");
-        ui->lcd_coordX_prime->display("0");
-        ui->lcd_coordY_prime->display("0");
-        ui->dial_botOrient_prime->setValue(0);
-        ui->box_primeBot->setTitle(" ");
-        ui->text_primeBot->setText(" ");
-    } else {
-        v = getVelocity(id);
-        ui->gView_robot_prime->setScene(robotPanel->botIconSelScenes[id]);
-        ui->gView_robot_prime->show();
-        ui->dial_botSpeed->setValue(v);
-        ui->lcd_botSpeed->display(v);
-        ui->lcd_orient_prime->display(objectPos->getBotOrientString(id));
-        ui->lcd_coordX_prime->display(objectPos->getBotCoordX(true, id));
-        ui->lcd_coordY_prime->display(objectPos->getBotCoordY(true,id));
-        ui->dial_botOrient_prime->setValue(objectPos->getBotOrientDouble(true, id));
-        ui->box_primeBot->setTitle("Robot " + QString::number(id));
-
-        // Text field
-        ui->text_primeBot->setTextColor(Qt::white);
-        ui->text_primeBot->setText(botBehavior[id]);
-        QScrollBar *sb = ui->text_primeBot->verticalScrollBar();
-        sb->setValue(sb->maximum());
-    }
-
 }
 
 void MainWindow::on_btn_botForward_pressed() {
@@ -815,30 +781,3 @@ void MainWindow::on_check_coloredGoals_clicked(){fieldpanel->refresh = true;}
 void MainWindow::on_combo_fieldColor_currentIndexChanged(int index){fieldpanel->refresh = true;}
 void MainWindow::on_check_showIDs_stateChanged(int arg1){fieldpanel->refresh = true;}
 void MainWindow::on_combo_botScale_currentIndexChanged(int index){fieldpanel->refresh = true;}
-
-//void MainWindow::field_setDragMode() {  // delete ?
-////    if (dash->ui->gView_field->dragMode() == QGraphicsView::NoDrag) {
-////        dash->ui->gView_field->setDragMode(QGraphicsView::ScrollHandDrag);
-////    } else {
-////        dash->ui->gView_field->setDragMode(QGraphicsView::NoDrag);
-////    }
-//}
-
-void MainWindow::toggleIconVisible() {
-    if (fieldpanel->selectedBot > -1) {
-        if (fieldpanel->guiTeam[fieldpanel->selectedBot]->enabled) {
-            fieldpanel->guiTeam[fieldpanel->selectedBot]->enabled = false;
-            robotPanel->botIcons[fieldpanel->selectedBot]->enabled = false;
-            robotPanel->botIcons[fieldpanel->selectedBot]->setOpacity(.3);
-            fieldpanel->guiTeam[fieldpanel->selectedBot]->setOpacity(.3);
-        } else {
-            fieldpanel->guiTeam[fieldpanel->selectedBot]->enabled = true;
-            robotPanel->botIcons[fieldpanel->selectedBot]->enabled = true;
-            robotPanel->botIcons[fieldpanel->selectedBot]->setOpacity(1);
-            fieldpanel->guiTeam[fieldpanel->selectedBot]->setOpacity(1);
-
-        }
-    }
-}
-
-

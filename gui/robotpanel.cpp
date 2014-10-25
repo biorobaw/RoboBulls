@@ -2,6 +2,7 @@
 #include "guirobot.h"
 #include "mainwindow.h"
 #include "objectposition.h"
+//#include "fieldpanel.h"
 //#include <QTextCharFormat>
 //#include <QTextCursor>
 
@@ -11,7 +12,6 @@
 RobotPanel::RobotPanel(MainWindow *mw) {
     dash = mw;
 }
-
 
 void RobotPanel::setupBotPanel() {
 
@@ -132,6 +132,7 @@ void RobotPanel::setupBotPanel() {
         botIconScenes[i]->addItem(botIcons[i]);
         botIconFrames[i]->setScene(botIconScenes[i]);
         botIconFrames[i]->hide();
+        botIconFrames[i]->setToolTip("Robot " + QString::number(i));
         velocityDials[i]->setValue(0);
         dash->overriddenBots.push_back(false);    // creating each element, and setting to false
     }
@@ -175,7 +176,6 @@ void RobotPanel::updateBotPanel() {
             } else {                                        // motionless
                 velocityDials[i]->setStyleSheet("background-color: rgb(150, 150, 150);");
             }
-
             botIconFrames[i]->update();
         }//nullcheck
     }
@@ -209,5 +209,22 @@ void RobotPanel::updateBotPanel() {
     dash->ui->lcd_coordX_cursor->display(dash->objectPos->getMouseCoordX());
     dash->ui->lcd_coordY_cursor->display(dash->objectPos->getMouseCoordY());
 
+}
+
+void RobotPanel::toggleIconVisible() {
+    if (dash->fieldpanel->selectedBot > -1) {
+        if (dash->fieldpanel->guiTeam[dash->fieldpanel->selectedBot]->enabled) {
+            dash->fieldpanel->guiTeam[dash->fieldpanel->selectedBot]->enabled = false;
+            botIcons[dash->fieldpanel->selectedBot]->enabled = false;
+            botIcons[dash->fieldpanel->selectedBot]->setOpacity(.3);
+            dash->fieldpanel->guiTeam[dash->fieldpanel->selectedBot]->setOpacity(.3);
+        } else {
+            dash->fieldpanel->guiTeam[dash->fieldpanel->selectedBot]->enabled = true;
+            botIcons[dash->fieldpanel->selectedBot]->enabled = true;
+            botIcons[dash->fieldpanel->selectedBot]->setOpacity(1);
+            dash->fieldpanel->guiTeam[dash->fieldpanel->selectedBot]->setOpacity(1);
+
+        }
+    }
 }
 

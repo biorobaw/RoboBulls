@@ -11,6 +11,8 @@ public:
     MainWindow * dash;
 
     void setGuiOverride();
+public slots:
+    void updateSelectedBotPanel(int id);
 
 };
 

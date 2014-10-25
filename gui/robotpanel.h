@@ -13,15 +13,17 @@
 #include "fieldpanel.h"
 
 
-class RobotPanel
+class RobotPanel : public QObject   // Some kind of Q type required for cross-class signals & slots
 {
+    Q_OBJECT                        // this macro required for cross-class signals & slots
+
 public:
     RobotPanel(MainWindow * mw);
     MainWindow * dash;
 
     void setupBotPanel();
     void updateBotPanel();
-//    void toggleIconVisible(MainWindow *dash);
+
 
 //private:
     // Robot Panel
@@ -69,6 +71,9 @@ public:
     // Ball Icon (eventually move to diff class)
     GuiBall *ballIcon;
     QGraphicsScene *scene_ballIcon;
+
+public slots:
+    void toggleIconVisible();
 
 private:
     static RobotPanel* robotpanel;

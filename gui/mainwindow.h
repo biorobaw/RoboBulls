@@ -52,7 +52,7 @@ public:
     // Class pointers
     Ui::MainWindow *ui;
     GameModel *gamemodel;
-    RobotPanel * robotPanel;
+    RobotPanel * robotpanel;
     FieldPanel * fieldpanel;
     SelRobotPanel * selrobotpanel;
     ObjectPosition * objectPos;
@@ -82,8 +82,6 @@ public:
     std::vector<bool> overriddenBots;   // keeps track of whether each bot is overridden
     QString guiOutputRobot = "...";
     QString botBehavior[6];
-    QString botBehaviorTemp[6];
-    bool    botBehaviorNew[6];
     void guiPrintRobot(int robotID, std::string output);
 
 
@@ -110,8 +108,6 @@ private:
     QList<GuiComm*> threads;
     QGraphicsEllipseItem *ellipse;
     QGraphicsRectItem *rectangle;
-    // Behavior vector
-//    std::vector<QString*> botBehavior[6];
 
     QGraphicsScene *selectedBotScene;
     // Keeps track of latest string received by guiPrint()
@@ -129,11 +125,10 @@ private:
     int currentFieldScrollH;    // delete?
 
 private slots:
-    void on_btn_connectGui_clicked();
     void launch(int value);
+    void on_btn_connectGui_clicked();
     void on_pushButton_2_clicked();
     void on_pushButton_3_clicked();
-    void updateSelectedBotPanel(int id);
     void on_btn_botForward_pressed();
     void on_btn_botForward_released();
     void on_btn_botTurnRight_pressed();
@@ -156,8 +151,6 @@ private slots:
     void on_combo_fieldColor_currentIndexChanged(int index);
     void on_check_showIDs_stateChanged(int arg1);
     void on_combo_botScale_currentIndexChanged(int index);
-//    void field_setDragMode();   // delete ?
-    void toggleIconVisible();
 
 
 };

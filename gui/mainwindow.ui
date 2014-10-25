@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>RoboBulls Dashboard</string>
+   <string>Dashboard</string>
   </property>
   <property name="windowIcon">
    <iconset resource="images.qrc">
@@ -344,80 +344,6 @@
             <set>Qt::AlignCenter</set>
            </property>
           </widget>
-          <widget class="QWidget" name="layoutWidget">
-           <property name="geometry">
-            <rect>
-             <x>90</x>
-             <y>20</y>
-             <width>141</width>
-             <height>131</height>
-            </rect>
-           </property>
-           <layout class="QVBoxLayout" name="layout_behavior">
-            <item>
-             <widget class="QLabel" name="label_behavior_prime">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>300</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="baseSize">
-               <size>
-                <width>20</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="font">
-               <font>
-                <pointsize>8</pointsize>
-                <weight>75</weight>
-                <bold>true</bold>
-               </font>
-              </property>
-              <property name="text">
-               <string>Behavior: </string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignBottom|Qt::AlignHCenter</set>
-              </property>
-              <property name="margin">
-               <number>0</number>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QTextBrowser" name="text_primeBot">
-              <property name="font">
-               <font>
-                <family>DejaVu Sans</family>
-                <pointsize>8</pointsize>
-                <weight>75</weight>
-                <bold>true</bold>
-               </font>
-              </property>
-              <property name="toolTip">
-               <string>Prints via printBehavior() function</string>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">background-color: rgb(0, 0, 100);</string>
-              </property>
-              <property name="frameShape">
-               <enum>QFrame::Panel</enum>
-              </property>
-              <property name="lineWidth">
-               <number>2</number>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
           <widget class="QDial" name="dial_botOrient_prime">
            <property name="enabled">
             <bool>false</bool>
@@ -749,6 +675,36 @@
             </item>
            </layout>
           </widget>
+          <widget class="QTextBrowser" name="text_primeBot">
+           <property name="geometry">
+            <rect>
+             <x>91</x>
+             <y>30</y>
+             <width>139</width>
+             <height>121</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>DejaVu Sans</family>
+             <pointsize>8</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="toolTip">
+            <string>MainWindow::getMainWindow()-&gt;guiPrintRobot();</string>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(0, 0, 100);</string>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::Panel</enum>
+           </property>
+           <property name="lineWidth">
+            <number>2</number>
+           </property>
+          </widget>
          </widget>
         </widget>
         <widget class="QWidget" name="layoutWidget">
@@ -780,13 +736,10 @@
              </font>
             </property>
             <property name="mouseTracking">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
             <property name="focusPolicy">
              <enum>Qt::NoFocus</enum>
-            </property>
-            <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is my tool tip&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="accessibleName">
              <string>Robot 0</string>
@@ -1119,13 +1072,10 @@
              </font>
             </property>
             <property name="mouseTracking">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
             <property name="focusPolicy">
              <enum>Qt::NoFocus</enum>
-            </property>
-            <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is my tool tip&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="accessibleName">
              <string>Robot 0</string>
@@ -1455,13 +1405,10 @@
              </font>
             </property>
             <property name="mouseTracking">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
             <property name="focusPolicy">
              <enum>Qt::NoFocus</enum>
-            </property>
-            <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is my tool tip&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="accessibleName">
              <string>Robot 0</string>
@@ -1791,13 +1738,10 @@
              </font>
             </property>
             <property name="mouseTracking">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
             <property name="focusPolicy">
              <enum>Qt::NoFocus</enum>
-            </property>
-            <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is my tool tip&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="accessibleName">
              <string>Robot 0</string>
@@ -2127,13 +2071,10 @@
              </font>
             </property>
             <property name="mouseTracking">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
             <property name="focusPolicy">
              <enum>Qt::NoFocus</enum>
-            </property>
-            <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is my tool tip&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="accessibleName">
              <string>Robot 0</string>
@@ -2463,13 +2404,10 @@
              </font>
             </property>
             <property name="mouseTracking">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
             <property name="focusPolicy">
              <enum>Qt::NoFocus</enum>
-            </property>
-            <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is my tool tip&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="accessibleName">
              <string>Robot 0</string>
@@ -4229,7 +4167,7 @@
              <enum>Qt::NoFocus</enum>
             </property>
             <property name="toolTip">
-             <string>Printed via guiPrint() function</string>
+             <string>MainWindow::getMainWindow()-&gt;guiPrint();</string>
             </property>
             <property name="styleSheet">
              <string notr="true">background-color: rgb(59, 59, 59);</string>
