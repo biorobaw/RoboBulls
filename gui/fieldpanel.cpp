@@ -1,5 +1,7 @@
 #include "fieldpanel.h"
 #include "objectposition.h"
+#include "robotpanel.h"
+#include "selrobotpanel.h"
 
 FieldPanel::FieldPanel(MainWindow * mw) {
     dash = mw;
@@ -269,6 +271,122 @@ void FieldPanel::updateScene() {
     // Keeping camera centered
     dash->centerViewOnBot();
     dash->ui->gView_field->update();
+
+}
+
+void FieldPanel::scanForSelection() {
+    bool newSelection = true;
+    // Scanning for double-click selection
+    for (int i=0; i<dash->teamSize; i++) {
+        if (dash->gamemodel->find(i,dash->gamemodel->getMyTeam()) != NULL) {
+            if (dash->robotpanel->botIcons[i]->doubleClicked || guiTeam[i]->doubleClicked) {
+                dash->robotpanel->botIcons[i]->doubleClicked = false;
+                guiTeam[i]->doubleClicked = false;
+                centeredBotID = i;
+                dash->centerViewOnBot();
+                zoomField(20);
+                dash->guiPrint("Focused on Robot " + to_string(centeredBotID));
+                break;
+            }
+        }//nullcheck
+    }//end for
+
+    // Scrolling the camera removes centeredOn but not selection
+    if (justScrolled) {
+        for (int i=0; i<dash->teamSize; i++) {
+            if (dash->gamemodel->find(i,dash->gamemodel->getMyTeam()) != NULL) {
+                dash->robotpanel->botIcons[i]->doubleClicked = false;
+                guiTeam[i]->doubleClicked = false;
+            }//nullcheck
+        }
+        centeredBotID = -1;
+    }
+    // Field/Sidelines clicked removes centeredOn and selection
+    if (field->Pressed == true) {
+        field->highlighted = true;
+        field->Pressed = false;
+    }
+    if (sidelines->Pressed == true) {
+        sidelines->highlighted = true;
+        sidelines->Pressed = false;
+    }
+    if (field->highlighted || sidelines->highlighted) {
+        for (int i=0; i<dash->teamSize; i++) {
+            if (dash->gamemodel->find(i,dash->gamemodel->getMyTeam()) != NULL) {
+                guiTeam[i]->highlighted = false;
+                guiTeam[i]->setSelected(false);
+                dash->robotpanel->botIcons[i]->highlighted = false;
+                dash->robotpanel->botIcons[i]->setSelected(false);
+                dash->robotpanel->botIcons[i]->doubleClicked = false;
+                guiTeam[i]->doubleClicked = false;
+            }//nullcheck
+        }
+        field->highlighted = false;
+        sidelines->highlighted = false;
+        selectedBot = -1;
+        centeredBotID = -1;
+        newSelection = true;
+    }
+
+    for (int i=0; i<dash->teamSize; i++) {
+        if (dash->gamemodel->find(i,dash->gamemodel->getMyTeam()) != NULL) {
+//            // tab TEST
+//            if (robotpanel->botFrames[i]->hasFocus()) {
+//                robotpanel->botIcons[i]->setSelected(true);
+//            }
+
+        // Bots on the panel clicked
+            if (dash->robotpanel->botIcons[i]->isSelected()) {
+                selectedBot = i;
+                for (int j=0; j<dash->teamSize; j++) {
+                    guiTeam[j]->highlighted = false;
+                    guiTeam[j]->setSelected(false);
+                    dash->robotpanel->botIcons[j]->highlighted = false;
+                    dash->robotpanel->botIcons[j]->setSelected(false);
+//                    botIcons[i]->doubleClicked = false;
+//                    guiTeam[i]->doubleClicked = false;
+
+                }
+//                field->highlighted = false;
+                dash->robotpanel->botIcons[i]->highlighted = true;
+                guiTeam[i]->highlighted = true;
+                refresh = true;
+                // Refresh GUI
+                for (int r=0; r<dash->teamSize; r++) {
+                    dash->robotpanel->botIconFrames[i]->update();
+                }
+                dash->ui->gView_robot_prime->hide();
+                dash->ui->gView_robot_prime->show();
+                newSelection = true;
+            }
+            // Bots on the field clicked
+            if (guiTeam[i]->isSelected()) {
+                selectedBot = i;
+                for (int j=0; j<dash->teamSize; j++) {
+                    guiTeam[j]->highlighted = false;
+                    guiTeam[j]->setSelected(false);
+                    dash->robotpanel->botIcons[j]->highlighted = false;
+                    dash->robotpanel->botIcons[j]->setSelected(false);
+//                    botIcons[i]->doubleClicked = false;
+//                    guiTeam[i]->doubleClicked = false;
+                }
+//                field->highlighted = false;
+                dash->robotpanel->botIcons[i]->highlighted = true;
+                guiTeam[i]->highlighted = true;
+                refresh = true;
+                // Refresh GUI
+                for (int r=0; r<dash->teamSize; r++) {
+                    dash->robotpanel->botIconFrames[i]->update();
+                }
+                dash->ui->gView_robot_prime->hide();
+                dash->ui->gView_robot_prime->show();
+                newSelection = true;
+            }
+        }//null check
+    }//for loop
+    if (newSelection) {
+        dash->selrobotpanel->updateSelectedBotPanel(selectedBot);
+    } else { return; }
 
 }
 

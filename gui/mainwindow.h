@@ -59,7 +59,6 @@ public:
 
     static MainWindow* getMainWindow();
     QString getRemTime();
-    void scanForSelection();
     int getVelocity(int id);
     // Debug functions
     void drawLine( int originX, int originY, int endX, int endY );

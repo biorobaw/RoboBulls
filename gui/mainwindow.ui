@@ -675,6 +675,28 @@
             </item>
            </layout>
           </widget>
+          <widget class="QLabel" name="label_7">
+           <property name="geometry">
+            <rect>
+             <x>168</x>
+             <y>210</y>
+             <width>15</width>
+             <height>28</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="images.qrc">:/images/forward_arrow_0.png</pixmap>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+          </widget>
           <widget class="QTextBrowser" name="text_primeBot">
            <property name="geometry">
             <rect>

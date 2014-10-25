@@ -20,5 +20,6 @@
         <file>images/5.png</file>
         <file>images/mouse_cursor_0.png</file>
         <file>images/gearBW.png</file>
+        <file>images/forward_arrow_0.png</file>
     </qresource>
 </RCC>

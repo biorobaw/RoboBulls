@@ -18,6 +18,7 @@ public:
     MainWindow * dash;
     void setUpScene();
     void updateScene();
+    void scanForSelection();
 
 //private:
     GuiScene *scene;
