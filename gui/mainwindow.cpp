@@ -92,7 +92,7 @@ MainWindow::MainWindow(QWidget *parent) :
             , this, SLOT(coreLoop(int)));
 
     connect(threads[1], SIGNAL(valueChanged(int))
-            , gamepanel, SLOT(guiClock(int)));
+            , this, SLOT(clockLoop(int)));
 
     // Zoom slider
     connect(ui->zoom_slider, SIGNAL(valueChanged(int))
@@ -103,7 +103,7 @@ MainWindow::MainWindow(QWidget *parent) :
             , fieldpanel, SLOT(defaultZoom()));
 }
 
-void MainWindow::coreLoop(int value) {
+void MainWindow::coreLoop(int tick) {
     /* Top function of the GUI's loop
      */
 
@@ -117,16 +117,23 @@ void MainWindow::coreLoop(int value) {
         // prevents crash caused by (I think) the appended strings getting too long
         selrobotpanel->botBehavior[i] = "";
     }
-    // Scanners
+    // Interaction scanners
     fieldpanel->scanForScrollModifier();
     fieldpanel->scanForSelection();
-    // Updating GUI
-//    gamepanel->guiClock(value);
+    // Updating GUI info
     setMyVelocity();
     selrobotpanel->setGuiOverride();
     fieldpanel->updateScene();
     robotpanel->updateBotPanel();
     updateBallInfo();
+}
+
+void MainWindow::clockLoop(int tick) {
+    // Clock-dependent stuff
+    gamepanel->guiClock(tick);
+    objectPos->getThreadTicker(tick);
+    gamepanel->getTickTock(tick);
+    objectPos->getPastBotPoints();
 }//end coreLoop()
 
 int MainWindow::getVelocity(int id) {
@@ -426,7 +433,7 @@ void MainWindow::setMyVelocity() {
 //        cout << "Shift \n";
         myVelocity = 100;
     } else if (QApplication::keyboardModifiers().testFlag(Qt::AltModifier) == true) {
-        cout << "Alt \n";
+//        cout << "Alt \n";
         myVelocity = 25;
     } else {
         myVelocity = 50;

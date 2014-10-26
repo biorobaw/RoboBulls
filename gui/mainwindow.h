@@ -122,6 +122,7 @@ private:
 
 private slots:
     void coreLoop(int value);
+    void clockLoop(int tick);
 // Widget slots
     void on_btn_connectGui_clicked();
     // bot controls

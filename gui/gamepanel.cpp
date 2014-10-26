@@ -5,6 +5,23 @@ GamePanel::GamePanel(MainWindow * mw) {
     dash = mw;
 }
 
+void GamePanel::getTickTock(int ticker) {
+    if (ticker%2 == 0) {
+        if (lastWasTock) {
+            tick = true;
+            tock = false;
+            lastWasTock = false;
+        } else {
+            tick = false;
+            tock = true;
+            lastWasTock = true;
+        }
+    } else {
+        tick = false;
+        tock = false;
+    }
+}
+
 void GamePanel::guiClock(int milliseconds) {
     // seconds
     if (milliseconds%20 == 0) {

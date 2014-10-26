@@ -17,6 +17,11 @@ public:
     QString secondsZero = "0";
     QString minutesZero = "0";
     QString hoursZero = "0";
+    bool tick_tock;
+    bool tick;
+    bool tock;
+    bool lastWasTock = true;
+    void getTickTock(int ticker);
 
 public slots:
     void guiClock(int milliseconds);

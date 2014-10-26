@@ -1,8 +1,27 @@
 #include "objectposition.h"
 #include "fieldpanel.h"
+#include "cmath"
+#include "gamepanel.h"
 
 ObjectPosition::ObjectPosition(MainWindow * mw) {
     dash = mw;
+    teamSize = dash->teamSize;
+}
+
+void ObjectPosition::getPastBotPoints() {
+//    if (dash->gamepanel->tick && dash->gamepanel->seconds%2 == 0) {
+    if (dash->gamepanel->tick) {
+        for (int i=0; i<dash->teamSize; i++) {
+            if (dash->gamemodel->find(i, dash->gamemodel->getMyTeam()) != NULL) {
+                pastBotPoints[i].x = getBotCoordX(true,i);
+                pastBotPoints[i].y = getBotCoordY(true,i);
+            }
+        }
+    }
+}
+
+void ObjectPosition::getThreadTicker(int tick) {
+    threadTicker = tick;
 }
 
 QString ObjectPosition::getBotCoord(int id) {
@@ -70,8 +89,21 @@ double ObjectPosition::getBotOrientDouble(bool myTeam, int id) {
 }
 
 
-int ObjectPosition::getBotSpeed(std::vector<QLabel*> c, int id) {
-    int s = 0;
+float ObjectPosition::getBotSpeed(bool myTeam, int id) {
+    float s = 0;
+    double c;
+    Point currentPos;
+    Point pastPos;
+    currentPos.x = getBotCoordX(myTeam,id);
+    currentPos.y = getBotCoordY(myTeam,id);
+    pastPos.x = pastBotPoints[id].x;
+    pastPos.y = pastBotPoints[id].y;
+
+    c = ( pow((currentPos.x - pastPos.x), 2) + pow((currentPos.y - pastPos.y), 2) );
+
+    s = sqrt(c);
+
+
     return s;
 }
 

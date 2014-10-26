@@ -2,6 +2,7 @@
 #include "guirobot.h"
 #include "mainwindow.h"
 #include "objectposition.h"
+#include "gamepanel.h"
 //#include "fieldpanel.h"
 //#include <QTextCharFormat>
 //#include <QTextCursor>
@@ -30,12 +31,12 @@ void RobotPanel::setupBotPanel() {
     botTitle.push_back(dash->ui->title_robPanel_4);
     botTitle.push_back(dash->ui->title_robPanel_5);
     // Velocity dials
-    velocityDials.push_back(dash->ui->dial_botSpeed_0);
-    velocityDials.push_back(dash->ui->dial_botSpeed_1);
-    velocityDials.push_back(dash->ui->dial_botSpeed_2);
-    velocityDials.push_back(dash->ui->dial_botSpeed_3);
-    velocityDials.push_back(dash->ui->dial_botSpeed_4);
-    velocityDials.push_back(dash->ui->dial_botSpeed_5);
+    velocityDials.push_back(dash->ui->dial_botVel_0);
+    velocityDials.push_back(dash->ui->dial_botVel_1);
+    velocityDials.push_back(dash->ui->dial_botVel_2);
+    velocityDials.push_back(dash->ui->dial_botVel_3);
+    velocityDials.push_back(dash->ui->dial_botVel_4);
+    velocityDials.push_back(dash->ui->dial_botVel_5);
     // X Coordinate vector
     botXcoords.push_back(dash->ui->lcd_coordX_0);
     botXcoords.push_back(dash->ui->lcd_coordX_1);
@@ -178,30 +179,6 @@ void RobotPanel::updateBotPanel() {
             }
             botIconFrames[i]->update();
         }//nullcheck
-    }
-    // Selected Bot Panel velocity dial
-    if (dash->ui->dial_botSpeed->value() > 0) {
-        dash->ui->dial_botSpeed->setStyleSheet("background-color: rgb(0, 200, 0);");
-        dash->ui->lcd_botSpeed->setStyleSheet("background-color: rgb(0, 100, 0);");
-    } else if (dash->ui->dial_botSpeed->value() < 0 ) {
-        dash->ui->dial_botSpeed->setStyleSheet("background-color: rgb(200, 0, 0);");
-        dash->ui->lcd_botSpeed->setStyleSheet("background-color: rgb(100, 0, 0);");
-    } else {
-        dash->ui->dial_botSpeed->setStyleSheet("background-color: rgb(150, 150, 150);");
-        dash->ui->lcd_botSpeed->setStyleSheet("background-color: rgb(100, 100, 100);");
-    }
-    // Robot override checkbox
-    if (dash->fieldpanel->selectedBot > -1) {
-        dash->ui->check_botOverride->setEnabled(true);
-        dash->ui->check_botOverride->show();
-        if (dash->overriddenBots[dash->fieldpanel->selectedBot] == true) {
-            dash->ui->check_botOverride->setChecked(true);
-        } else {
-            dash->ui->check_botOverride->setChecked(false);
-        }
-    } else {
-        dash->ui->check_botOverride->setEnabled(false);
-        dash->ui->check_botOverride->hide();
     }
 
 
