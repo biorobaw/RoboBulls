@@ -30,6 +30,7 @@ class FieldPanel;
 class SelRobotPanel;
 class ObjectPosition;
 class GuiRobot;
+class SelRobotPanel;
 //class GuiField;
 //class GuiBall;
 //class GuiBotLabel;
@@ -80,8 +81,8 @@ public:
     int botOverride = -1;               // the id of the currently overridden bot
     std::vector<bool> overriddenBots;   // keeps track of whether each bot is overridden
     QString guiOutputRobot = "...";
-    QString botBehavior[6];
-    void guiPrintRobot(int robotID, std::string output);
+//    QString botBehavior[6];
+//    void guiPrintRobot(int robotID, std::string output);
 
 
 protected:

@@ -19,6 +19,25 @@ void SelRobotPanel::setGuiOverride() {
 
 }
 
+void SelRobotPanel::guiPrintRobot(int robotID, string output) {
+    /* Converts given string into a QString, ensures it hasn't already been
+     * printed during this cycle, and prints it on the Selected Robot Panel.
+     *
+     * robotID: ID # of the robot to whom this comment applies
+     * output:  comment string to be printed
+     */
+
+    // ensuring we haven't already printed this string during this cycle...
+    if (botBehavior[robotID].indexOf(QString::fromStdString(output)) == -1) {
+        // ensuring we don't lead with a carriage return if the field is currently blank...
+        if (botBehavior[robotID] == "") {
+            botBehavior[robotID] += (QString::fromStdString(output));
+        } else {
+            botBehavior[robotID] += ("\n" + QString::fromStdString(output));
+        }
+    }
+}//end guiPrintRobot()
+
 void SelRobotPanel::updateSelectedBotPanel(int id) {
     int v = 0;
     if (id == -1) {
@@ -45,7 +64,7 @@ void SelRobotPanel::updateSelectedBotPanel(int id) {
 
         // Text field
         dash->ui->text_primeBot->setTextColor(Qt::white);
-        dash->ui->text_primeBot->setText(dash->botBehavior[id]);
+        dash->ui->text_primeBot->setText(botBehavior[id]);
         QScrollBar *sb = dash->ui->text_primeBot->verticalScrollBar();
         sb->setValue(sb->maximum());
     }

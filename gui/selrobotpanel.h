@@ -9,8 +9,12 @@ class SelRobotPanel
 public:
     SelRobotPanel(MainWindow * mw);
     MainWindow * dash;
+    QString botBehavior[6];
 
     void setGuiOverride();
+    void guiPrintRobot(int robotID, std::string output);
+
+
 public slots:
     void updateSelectedBotPanel(int id);
 

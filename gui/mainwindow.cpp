@@ -119,7 +119,8 @@ void MainWindow::launch(int value)
     }
     // Wiping values at beginning of cycle
     for (int i=0; i<teamSize; i++) {
-        botBehavior[i] = "";    // prevents crash
+        // prevents crash caused by (I think) the appended strings getting too long
+        selrobotpanel->botBehavior[i] = "";
     }
 
     // Updating GUI
@@ -141,7 +142,7 @@ int MainWindow::getVelocity(int id) {
     int RB = 0;
 
     if ( gamemodel->find(id, gamemodel->getMyTeam())->type() == fourWheelOmni ) {
-        guiPrintRobot(id,"fourWheelOmni");
+        selrobotpanel->guiPrintRobot(id,"fourWheelOmni");
 //        if (SIMULATED) {
             LF = gamemodel->find(id, gamemodel->getMyTeam())->getLF();
             RF = gamemodel->find(id, gamemodel->getMyTeam())->getRF();
@@ -163,7 +164,7 @@ int MainWindow::getVelocity(int id) {
             velocity += RB;
             wheels++;
     } else if ( gamemodel->find(id, gamemodel->getMyTeam())->type() == differential ) {
-        guiPrintRobot(id,"differential");
+        selrobotpanel->guiPrintRobot(id,"differential");
 //        if (SIMULATED) {
             LF = gamemodel->find(id, gamemodel->getMyTeam())->getL();
             RF = gamemodel->find(id, gamemodel->getMyTeam())->getR();
@@ -177,7 +178,7 @@ int MainWindow::getVelocity(int id) {
             velocity += RF;
             wheels++;
     } else if ( gamemodel->find(id, gamemodel->getMyTeam())->type() == threeWheelOmni ) {
-        guiPrintRobot(id,"threeWheelOmni");
+        selrobotpanel->guiPrintRobot(id,"threeWheelOmni");
 //        if (SIMULATED) {
             LF = gamemodel->find(id, gamemodel->getMyTeam())->getLF();
             RF = gamemodel->find(id, gamemodel->getMyTeam())->getRF();
@@ -199,7 +200,7 @@ int MainWindow::getVelocity(int id) {
     if (velocity != 0 && wheels != 0)
         velocity /= wheels;
 
-    guiPrintRobot(id,"Wheels: " + to_string(LF) + " & " + to_string(RF));
+    selrobotpanel->guiPrintRobot(id,"Wheels: " + to_string(LF) + " & " + to_string(RF));
     return velocity;
 }
 
@@ -443,24 +444,24 @@ void MainWindow::setMyVelocity() {
     }
 }
 
-void MainWindow::guiPrintRobot(int robotID, string output) {
-    /* Converts given string into a QString, ensures it hasn't already been
-     * printed during this cycle, and prints it on the Selected Robot Panel.
-     *
-     * robotID: ID # of the robot to whom this comment applies
-     * output:  comment string to be printed
-     */
+//void MainWindow::guiPrintRobot(int robotID, string output) {
+//    /* Converts given string into a QString, ensures it hasn't already been
+//     * printed during this cycle, and prints it on the Selected Robot Panel.
+//     *
+//     * robotID: ID # of the robot to whom this comment applies
+//     * output:  comment string to be printed
+//     */
 
-    // ensuring we haven't already printed this string during this cycle...
-    if (botBehavior[robotID].indexOf(QString::fromStdString(output)) == -1) {
-        // ensuring we don't lead with a carriage return if the field is currently blank...
-        if (botBehavior[robotID] == "") {
-            botBehavior[robotID] += (QString::fromStdString(output));
-        } else {
-            botBehavior[robotID] += ("\n" + QString::fromStdString(output));
-        }
-    }
-}
+//    // ensuring we haven't already printed this string during this cycle...
+//    if (botBehavior[robotID].indexOf(QString::fromStdString(output)) == -1) {
+//        // ensuring we don't lead with a carriage return if the field is currently blank...
+//        if (botBehavior[robotID] == "") {
+//            botBehavior[robotID] += (QString::fromStdString(output));
+//        } else {
+//            botBehavior[robotID] += ("\n" + QString::fromStdString(output));
+//        }
+//    }
+//}
 
 
 void MainWindow::setupKeyShortcuts() {
