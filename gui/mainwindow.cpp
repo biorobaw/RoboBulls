@@ -44,6 +44,7 @@
 #include "include/config/simulated.h"
 #include "communication/nxtrobcomm.h"
 #include "movement/move.h"
+#include "gamepanel.h"
 
 // Global static pointer used to ensure only a single instance of the class.
 MainWindow* MainWindow::mw = NULL;
@@ -66,6 +67,7 @@ MainWindow::MainWindow(QWidget *parent) :
     robotpanel = new RobotPanel(this);
     objectPos = new ObjectPosition(this);
     fieldpanel = new FieldPanel(this);
+    gamepanel = new GamePanel(this);
     // Generating GUI
     fieldpanel->setUpScene();
     fieldpanel->defaultZoom();
@@ -79,13 +81,18 @@ MainWindow::MainWindow(QWidget *parent) :
     // create threads, and append them to the threads list, so that
     // threads can be accessed for making connections, and to start
     // and stop threads
+
+    // coreLoop thread
     threads.append(new GuiComm(50, this));
-//    threads.append(new GuiComm(30, this));
+    // Clock thread
+    threads.append(new GuiComm(50, this));
 
     // Connect each Widget to correcponding thread
     connect(threads[0], SIGNAL(valueChanged(int))
-            , this, SLOT(launch(int)));
+            , this, SLOT(coreLoop(int)));
 
+    connect(threads[1], SIGNAL(valueChanged(int))
+            , gamepanel, SLOT(guiClock(int)));
 
     // Zoom slider
     connect(ui->zoom_slider, SIGNAL(valueChanged(int))
@@ -96,42 +103,31 @@ MainWindow::MainWindow(QWidget *parent) :
             , fieldpanel, SLOT(defaultZoom()));
 }
 
-void MainWindow::launch(int value)
-{
+void MainWindow::coreLoop(int value) {
+    /* Top function of the GUI's loop
+     */
+
     if (SIMULATED) {
         ui->menuDashboard->setTitle("Simulation");
     } else {
         ui->menuDashboard->setTitle("Camera");
-    }
-
-//    ui->label->setText(QString("Current Thread Processing Status : %1").arg(value));
-
-    // CTRL modifer for field scrolling
-    if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier) == true) {
-        ui->gView_field->setDragMode(QGraphicsView::ScrollHandDrag);
-        fieldpanel->justScrolled = true;
-    } else {
-        ui->gView_field->setDragMode(QGraphicsView::NoDrag);
-        if (fieldpanel->justScrolled) {
-            fieldpanel->justScrolled = false;
-            fieldpanel->refresh = true;
-        }
     }
     // Wiping values at beginning of cycle
     for (int i=0; i<teamSize; i++) {
         // prevents crash caused by (I think) the appended strings getting too long
         selrobotpanel->botBehavior[i] = "";
     }
-
+    // Scanners
+    fieldpanel->scanForScrollModifier();
+    fieldpanel->scanForSelection();
     // Updating GUI
+//    gamepanel->guiClock(value);
     setMyVelocity();
     selrobotpanel->setGuiOverride();
     fieldpanel->updateScene();
     robotpanel->updateBotPanel();
     updateBallInfo();
-    fieldpanel->scanForSelection();
-
-}
+}//end coreLoop()
 
 int MainWindow::getVelocity(int id) {
     int velocity = 0;
@@ -240,14 +236,17 @@ void MainWindow::on_btn_connectGui_clicked()
     if(ui->btn_connectGui->text() == "Connect")
     {
         ui->btn_connectGui->setText("Disconnect");
-        for(int i = 0; i < threads.count(); i++)
-            threads[i]->start();
+//        for(int i = 0; i < threads.count(); i++)
+//            threads[i]->start();
+        threads[0]->start();
+        threads[1]->start();
     }
     else
     {
         ui->btn_connectGui->setText("Connect");
-        for(int i = 0; i < threads.count(); i++)
-            threads[i]->exit(0);
+//        for(int i = 0; i < threads.count(); i++)
+//            threads[i]->exit(0);
+        threads[0]->exit(0);
     }
 }
 
@@ -271,15 +270,13 @@ void MainWindow::updateBallInfo() {
     }
 }
 
-void MainWindow::on_pushButton_2_clicked()
-{
+void MainWindow::on_btn_rotateField_right_clicked() {
     int rAngle = -45;
     ui->gView_field->rotate(rAngle);
     fieldpanel->currentFieldAngle += rAngle;
 }
 
-void MainWindow::on_pushButton_3_clicked()
-{
+void MainWindow::on_btn_rotateField_left_clicked() {
     int lAngle = 45;
     ui->gView_field->rotate(lAngle);
     fieldpanel->currentFieldAngle += lAngle;
@@ -423,14 +420,6 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event) {
         }
     }
 }
-
-//void MainWindow::centerViewOnBot() {
-//    // Centering camera on double-clicked bot
-//    if (fieldpanel->centeredBotID > -1) {
-//        ui->gView_field->centerOn(fieldpanel->guiTeam[fieldpanel->centeredBotID]);
-
-//    }
-//}
 
 void MainWindow::setMyVelocity() {
     if (QApplication::keyboardModifiers().testFlag(Qt::ShiftModifier) == true) {

@@ -20,6 +20,7 @@ public:
     void updateScene();
     void scanForSelection();
     void centerViewOnBot();
+    void scanForScrollModifier();
 
 //private:
     GuiScene *scene;

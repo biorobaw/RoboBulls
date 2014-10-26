@@ -650,6 +650,9 @@
               <property name="styleSheet">
                <string notr="true">background-color: rgb(0, 0, 100);</string>
               </property>
+              <property name="inputMethodHints">
+               <set>Qt::ImhTime</set>
+              </property>
               <property name="frameShape">
                <enum>QFrame::Panel</enum>
               </property>
@@ -2858,7 +2861,7 @@
           <enum>QTabWidget::Rounded</enum>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>3</number>
          </property>
          <property name="elideMode">
           <enum>Qt::ElideNone</enum>
@@ -3529,7 +3532,7 @@
            </property>
            <layout class="QGridLayout" name="gridLayout_30">
             <item row="0" column="0">
-             <widget class="QPushButton" name="pushButton_3">
+             <widget class="QPushButton" name="btn_rotateField_left">
               <property name="minimumSize">
                <size>
                 <width>40</width>
@@ -3551,7 +3554,7 @@
                <enum>Qt::NoFocus</enum>
               </property>
               <property name="toolTip">
-               <string>Rotate camera 45 degrees to the left</string>
+               <string>Rotate field 45 degrees to the left</string>
               </property>
               <property name="text">
                <string>↶</string>
@@ -3559,7 +3562,7 @@
              </widget>
             </item>
             <item row="0" column="2">
-             <widget class="QPushButton" name="pushButton_2">
+             <widget class="QPushButton" name="btn_rotateField_right">
               <property name="minimumSize">
                <size>
                 <width>40</width>
@@ -3581,7 +3584,7 @@
                <enum>Qt::NoFocus</enum>
               </property>
               <property name="toolTip">
-               <string>Rotate camera 45 degrees to the right</string>
+               <string>Rotate field 45 degrees to the right</string>
               </property>
               <property name="text">
                <string>↷</string>
@@ -3838,8 +3841,8 @@
            <widget class="QGraphicsView" name="gView_ball">
             <property name="geometry">
              <rect>
-              <x>44</x>
-              <y>29</y>
+              <x>31</x>
+              <y>40</y>
               <width>45</width>
               <height>45</height>
              </rect>
@@ -3888,9 +3891,9 @@
             </property>
             <property name="geometry">
              <rect>
-              <x>122</x>
+              <x>125</x>
               <y>91</y>
-              <width>291</width>
+              <width>241</width>
               <height>27</height>
              </rect>
             </property>
@@ -3901,8 +3904,8 @@
            <widget class="QLCDNumber" name="lcd_coordY_ball">
             <property name="geometry">
              <rect>
-              <x>160</x>
-              <y>40</y>
+              <x>147</x>
+              <y>55</y>
               <width>57</width>
               <height>29</height>
              </rect>
@@ -3956,8 +3959,8 @@
            <widget class="QLCDNumber" name="lcd_coordX_ball">
             <property name="geometry">
              <rect>
-              <x>98</x>
-              <y>40</y>
+              <x>85</x>
+              <y>55</y>
               <width>56</width>
               <height>29</height>
              </rect>
@@ -4008,10 +4011,10 @@
            <widget class="QLabel" name="label_3">
             <property name="geometry">
              <rect>
-              <x>260</x>
-              <y>33</y>
-              <width>31</width>
-              <height>41</height>
+              <x>257</x>
+              <y>55</y>
+              <width>21</width>
+              <height>31</height>
              </rect>
             </property>
             <property name="text">
@@ -4027,8 +4030,8 @@
            <widget class="QLCDNumber" name="lcd_coordX_cursor">
             <property name="geometry">
              <rect>
-              <x>300</x>
-              <y>40</y>
+              <x>287</x>
+              <y>55</y>
               <width>56</width>
               <height>29</height>
              </rect>
@@ -4080,8 +4083,8 @@
            <widget class="QLCDNumber" name="lcd_coordY_cursor">
             <property name="geometry">
              <rect>
-              <x>360</x>
-              <y>40</y>
+              <x>347</x>
+              <y>55</y>
               <width>57</width>
               <height>29</height>
              </rect>
@@ -4131,6 +4134,54 @@
             </property>
             <property name="value" stdset="0">
              <double>0.000000000000000</double>
+            </property>
+           </widget>
+           <widget class="QLCDNumber" name="lcd_clock">
+            <property name="geometry">
+             <rect>
+              <x>313</x>
+              <y>16</y>
+              <width>91</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(0, 100, 0);
+</string>
+            </property>
+            <property name="smallDecimalPoint">
+             <bool>false</bool>
+            </property>
+            <property name="digitCount">
+             <number>8</number>
+            </property>
+            <property name="mode">
+             <enum>QLCDNumber::Dec</enum>
+            </property>
+            <property name="segmentStyle">
+             <enum>QLCDNumber::Outline</enum>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_9">
+            <property name="geometry">
+             <rect>
+              <x>248</x>
+              <y>6</y>
+              <width>45</width>
+              <height>45</height>
+             </rect>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="pixmap">
+             <pixmap resource="images.qrc">:/images/stopwatch_1.png</pixmap>
+            </property>
+            <property name="scaledContents">
+             <bool>true</bool>
             </property>
            </widget>
           </widget>

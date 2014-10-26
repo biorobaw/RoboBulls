@@ -397,6 +397,20 @@ void FieldPanel::centerViewOnBot() {
     }
 }
 
+void FieldPanel::scanForScrollModifier() {
+    // CTRL modifer for field scrolling
+    if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier) == true) {
+        dash->ui->gView_field->setDragMode(QGraphicsView::ScrollHandDrag);
+        justScrolled = true;
+    } else {
+        dash->ui->gView_field->setDragMode(QGraphicsView::NoDrag);
+        if (justScrolled) {
+            justScrolled = false;
+            refresh = true;
+        }
+    }
+}//end scrollModifier()
+
 void FieldPanel::zoomField(int zoom) {
     dash->ui->zoom_slider->setValue(zoom);
     double zoomScale = zoom *.01;

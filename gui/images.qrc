@@ -21,5 +21,7 @@
         <file>images/mouse_cursor_0.png</file>
         <file>images/gearBW.png</file>
         <file>images/forward_arrow_0.png</file>
+        <file>images/stopwatch_0.png</file>
+        <file>images/stopwatch_1.png</file>
     </qresource>
 </RCC>
