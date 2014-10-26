@@ -69,11 +69,11 @@ public:
     int frequency_of_primes (int n);
     int getClock();
     int getSpeed(QGraphicsItem* p, double o);
-    void moveBot();
+    void moveBot(); // empty function
     // Key Bindings
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
-    void centerViewOnBot();
+//    void centerViewOnBot();
     void setMyVelocity();
     // 10/23/14
     int teamSize = 6;
@@ -82,8 +82,6 @@ public:
     std::vector<bool> overriddenBots;   // keeps track of whether each bot is overridden
     QString guiOutputRobot = "...";
 //    QString botBehavior[6];
-//    void guiPrintRobot(int robotID, std::string output);
-
 
 protected:
     Robot *robot;
@@ -120,9 +118,6 @@ private:
     int myVelocity;
 
     long double currentTimeMS = 0;
-    double ballOrigin = 0;  // delete?
-    double bot0Origin = 0;  // delete?
-    int currentFieldScrollH;    // delete?
 
 private slots:
     void launch(int value);

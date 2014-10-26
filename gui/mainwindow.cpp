@@ -424,13 +424,13 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event) {
     }
 }
 
-void MainWindow::centerViewOnBot() {
-    // Centering camera on double-clicked bot
-    if (fieldpanel->centeredBotID > -1) {
-        ui->gView_field->centerOn(fieldpanel->guiTeam[fieldpanel->centeredBotID]);
+//void MainWindow::centerViewOnBot() {
+//    // Centering camera on double-clicked bot
+//    if (fieldpanel->centeredBotID > -1) {
+//        ui->gView_field->centerOn(fieldpanel->guiTeam[fieldpanel->centeredBotID]);
 
-    }
-}
+//    }
+//}
 
 void MainWindow::setMyVelocity() {
     if (QApplication::keyboardModifiers().testFlag(Qt::ShiftModifier) == true) {
@@ -443,26 +443,6 @@ void MainWindow::setMyVelocity() {
         myVelocity = 50;
     }
 }
-
-//void MainWindow::guiPrintRobot(int robotID, string output) {
-//    /* Converts given string into a QString, ensures it hasn't already been
-//     * printed during this cycle, and prints it on the Selected Robot Panel.
-//     *
-//     * robotID: ID # of the robot to whom this comment applies
-//     * output:  comment string to be printed
-//     */
-
-//    // ensuring we haven't already printed this string during this cycle...
-//    if (botBehavior[robotID].indexOf(QString::fromStdString(output)) == -1) {
-//        // ensuring we don't lead with a carriage return if the field is currently blank...
-//        if (botBehavior[robotID] == "") {
-//            botBehavior[robotID] += (QString::fromStdString(output));
-//        } else {
-//            botBehavior[robotID] += ("\n" + QString::fromStdString(output));
-//        }
-//    }
-//}
-
 
 void MainWindow::setupKeyShortcuts() {
     QShortcut *enter = new QShortcut(this);

@@ -19,6 +19,7 @@ public:
     void setUpScene();
     void updateScene();
     void scanForSelection();
+    void centerViewOnBot();
 
 //private:
     GuiScene *scene;

@@ -269,7 +269,7 @@ void FieldPanel::updateScene() {
         }
 
     // Keeping camera centered
-    dash->centerViewOnBot();
+    centerViewOnBot();
     dash->ui->gView_field->update();
 
 }
@@ -283,7 +283,7 @@ void FieldPanel::scanForSelection() {
                 dash->robotpanel->botIcons[i]->doubleClicked = false;
                 guiTeam[i]->doubleClicked = false;
                 centeredBotID = i;
-                dash->centerViewOnBot();
+                centerViewOnBot();
                 zoomField(20);
                 dash->guiPrint("Focused on Robot " + to_string(centeredBotID));
                 break;
@@ -388,6 +388,13 @@ void FieldPanel::scanForSelection() {
         dash->selrobotpanel->updateSelectedBotPanel(selectedBot);
     } else { return; }
 
+}
+
+void FieldPanel::centerViewOnBot() {
+    // Centering camera on double-clicked bot
+    if (centeredBotID > -1) {
+        dash->ui->gView_field->centerOn(guiTeam[centeredBotID]);
+    }
 }
 
 void FieldPanel::zoomField(int zoom) {
