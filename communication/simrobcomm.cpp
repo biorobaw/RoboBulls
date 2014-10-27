@@ -7,13 +7,13 @@
 SimRobComm::SimRobComm()
 {
     //Shamsi Sim Address
-//    _addr = "131.247.14.101";
+    _addr = "131.247.14.101";
 
     //James Sim Address
 //    _addr = "131.247.14.106";
 
     //Narges Sim Address
-    _addr = "127.0.0.1";
+//    _addr = "127.0.0.1";
 
 //    _addr = "131.247.14.109";
 

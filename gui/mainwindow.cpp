@@ -145,6 +145,7 @@ void MainWindow::clockLoop(int tick) {
     objectPos->getBotSpeeds();
     objectPos->getOldSpeeds();
     objectPos->getPastBotPoints();
+    objectPos->updateBotSpeedsRecord();
 
 }//end coreLoop()
 

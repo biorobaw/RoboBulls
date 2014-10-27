@@ -4,7 +4,9 @@
 #include <QString>
 #include <QLabel>
 #include "mainwindow.h"
-#include "utilities/point.h"
+//#include "utilities/point.h"  delete
+
+class Point;
 
 class ObjectPosition
 {
@@ -13,17 +15,24 @@ public:
     MainWindow * dash;
     int teamSize = 6;
     int threadTicker = 0;
+    // speed stuff
     Point pastPos;
     Point pastBotPoints[6];
     Point newBotPoints[6];
     void setupPastBotPoints();
     void getPastBotPoints();
     void getNewBotPoints();
-    int botSpeeds[6];
+//    int botSpeeds[6];
+    std::deque<int> botSpeeds;
     int oldSpeeds[6];
     void getBotSpeeds();
     void getOldSpeeds();
-//    void getThreadTicker(int tick);
+//    std::vector<int[]> botSpeedsRecord;  // holds the last several botSpeeds[] arrays
+    std::deque<deque<int> > botSpeedsRecord;
+    void updateBotSpeedsRecord(); // holds last several botSpeeds deques
+
+//    void getThreadTicker(int tick);   delete
+    // position stuff
     QString getBotCoord(int id);        // Returns the specified robot's x/y position as a QString
     QString getBotOrientString(int id);
     double  getBotOrientDouble(bool myTeam, int id);
