@@ -37,6 +37,13 @@ void RobotPanel::setupBotPanel() {
     velocityDials.push_back(dash->ui->dial_botVel_3);
     velocityDials.push_back(dash->ui->dial_botVel_4);
     velocityDials.push_back(dash->ui->dial_botVel_5);
+    // Speed dials
+    speedDials.push_back(dash->ui->dial_botSpeed_0);
+    speedDials.push_back(dash->ui->dial_botSpeed_1);
+    speedDials.push_back(dash->ui->dial_botSpeed_2);
+    speedDials.push_back(dash->ui->dial_botSpeed_3);
+    speedDials.push_back(dash->ui->dial_botSpeed_4);
+    speedDials.push_back(dash->ui->dial_botSpeed_5);
     // X Coordinate vector
     botXcoords.push_back(dash->ui->lcd_coordX_0);
     botXcoords.push_back(dash->ui->lcd_coordX_1);
@@ -166,6 +173,7 @@ void RobotPanel::updateBotPanel() {
             if (botIconFrames[i]->isVisible() == false) {
                 botIconFrames[i]->show();
             }
+            // Velocity dials
             velocityDials[i]->setValue(dash->getVelocity(i));
             // dynamic velocity dial colors
             if (velocityDials[i]->value() > 0) {            // forward
@@ -177,6 +185,27 @@ void RobotPanel::updateBotPanel() {
             } else {                                        // motionless
                 velocityDials[i]->setStyleSheet("background-color: rgb(150, 150, 150);");
             }
+            // Speed dials
+            int maxSpeed = speedDials[i]->maximum();
+            speedDials[i]->setValue(dash->objectPos->botSpeeds[i] * 20);
+            if (speedDials[i]->value() > 0) {
+                speedDials[i]->setStyleSheet("background-color: rgb(255, 215, 0);");
+                if (speedDials[i]->value() > maxSpeed*.2) {
+                speedDials[i]->setStyleSheet("background-color: rgb(255, 165, 0);");
+                }
+                if (speedDials[i]->value() > maxSpeed*.4) {
+                speedDials[i]->setStyleSheet("background-color: rgb(255, 140, 0);");
+                }
+                if (speedDials[i]->value() > maxSpeed*.6) {
+                speedDials[i]->setStyleSheet("background-color: rgb(255, 69, 0);");
+                }
+                if (speedDials[i]->value() > maxSpeed*.8) {
+                speedDials[i]->setStyleSheet("background-color: rgb(255, 0, 0);");
+                }
+            } else {
+                speedDials[i]->setStyleSheet("background-color: rgb(150, 150, 150);");
+            }
+
             botIconFrames[i]->update();
         }//nullcheck
     }

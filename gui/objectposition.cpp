@@ -8,16 +8,55 @@ ObjectPosition::ObjectPosition(MainWindow * mw) {
     teamSize = dash->teamSize;
 }
 
+void ObjectPosition::setupPastBotPoints() {
+    for (int i=0; i<dash->teamSize; i++) {
+        if (dash->gamemodel->find(i, dash->gamemodel->getMyTeam()) != NULL) {
+            pastBotPoints[i].x = 0;
+            pastBotPoints[i].y = 0;
+        }
+    }
+}
+
 void ObjectPosition::getPastBotPoints() {
 //    if (dash->gamepanel->tick && dash->gamepanel->seconds%2 == 0) {
-    if (dash->gamepanel->tick) {
+//    if (dash->gamepanel->tick) {
         for (int i=0; i<dash->teamSize; i++) {
             if (dash->gamemodel->find(i, dash->gamemodel->getMyTeam()) != NULL) {
                 pastBotPoints[i].x = getBotCoordX(true,i);
                 pastBotPoints[i].y = getBotCoordY(true,i);
             }
         }
+//    }
+}
+
+void ObjectPosition::getNewBotPoints() {
+    for (int i=0; i<dash->teamSize; i++) {
+        if (dash->gamemodel->find(i, dash->gamemodel->getMyTeam()) != NULL) {
+            newBotPoints[i].x = getBotCoordX(true,i);
+            newBotPoints[i].y = getBotCoordY(true,i);
+        }
     }
+}
+
+void ObjectPosition::getBotSpeeds() {
+    for (int i=0; i<dash->teamSize; i++) {
+        if (dash->gamemodel->find(i, dash->gamemodel->getMyTeam()) != NULL) {
+            float s = 0;
+            double c;
+            Point currentPos;
+            Point pastPos;
+            currentPos.x = newBotPoints[i].x;
+            currentPos.y = newBotPoints[i].y;
+            pastPos.x = pastBotPoints[i].x;
+            pastPos.y = pastBotPoints[i].y;
+
+            c = ( pow((currentPos.x - pastPos.x), 2) + pow((currentPos.y - pastPos.y), 2) );
+
+            s = sqrt(c);
+            botSpeeds[i] = s;
+        }
+    }
+
 }
 
 void ObjectPosition::getThreadTicker(int tick) {
@@ -94,8 +133,8 @@ float ObjectPosition::getBotSpeed(bool myTeam, int id) {
     double c;
     Point currentPos;
     Point pastPos;
-    currentPos.x = getBotCoordX(myTeam,id);
-    currentPos.y = getBotCoordY(myTeam,id);
+    currentPos.x = newBotPoints[id].x;
+    currentPos.y = newBotPoints[id].y;
     pastPos.x = pastBotPoints[id].x;
     pastPos.y = pastBotPoints[id].y;
 

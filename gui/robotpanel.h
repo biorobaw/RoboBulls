@@ -33,6 +33,7 @@ public:
     std::vector<QFrame*> botFrames;
     std::vector<QLabel*> botTitle;
     std::vector<QDial*> velocityDials;
+    std::vector<QDial*> speedDials;
     // Bot icon graphics views
 
     std::vector<QGraphicsView*> botIconFrames;

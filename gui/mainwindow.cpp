@@ -73,6 +73,7 @@ MainWindow::MainWindow(QWidget *parent) :
     fieldpanel->defaultZoom();
     robotpanel->setupBotPanel();
     setupKeyShortcuts();
+    objectPos->setupPastBotPoints();
     ui->btn_connectGui->setEnabled(true);
 
 
@@ -131,9 +132,14 @@ void MainWindow::coreLoop(int tick) {
 void MainWindow::clockLoop(int tick) {
     // Clock-dependent stuff
     gamepanel->guiClock(tick);
-    objectPos->getThreadTicker(tick);
-    gamepanel->getTickTock(tick);
+//    objectPos->getThreadTicker(tick);
+//    gamepanel->getTickTock(tick);
+    objectPos->getNewBotPoints();
+//    cout << "bot 0 newX: " << objectPos->newBotPoints[0].x << "\n";
+    objectPos->getBotSpeeds();
     objectPos->getPastBotPoints();
+//    cout << "bot 0 oldX: " << objectPos->pastBotPoints[0].x << "\n";
+
 }//end coreLoop()
 
 int MainWindow::getVelocity(int id) {

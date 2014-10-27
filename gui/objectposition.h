@@ -15,7 +15,12 @@ public:
     int threadTicker = 0;
     Point pastPos;
     Point pastBotPoints[6];
+    Point newBotPoints[6];
+    void setupPastBotPoints();
     void getPastBotPoints();
+    void getNewBotPoints();
+    int botSpeeds[6];
+    void getBotSpeeds();
     void getThreadTicker(int tick);
     QString getBotCoord(int id);        // Returns the specified robot's x/y position as a QString
     QString getBotOrientString(int id);
