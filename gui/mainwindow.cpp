@@ -72,6 +72,7 @@ MainWindow::MainWindow(QWidget *parent) :
     fieldpanel->setUpScene();
     fieldpanel->defaultZoom();
     robotpanel->setupBotPanel();
+    selrobotpanel->setupSelRobotPanel();
     setupKeyShortcuts();
     objectPos->setupPastBotPoints();
     ui->btn_connectGui->setEnabled(true);
@@ -92,8 +93,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(threads[0], SIGNAL(valueChanged(int))
             , this, SLOT(coreLoop(int)));
 
-    connect(threads[1], SIGNAL(valueChanged(int))
-            , this, SLOT(clockLoop(int)));
+    if (multithreaded) {
+        connect(threads[1], SIGNAL(valueChanged(int))
+                , this, SLOT(clockLoop(int)));
+    }
 
     // Zoom slider
     connect(ui->zoom_slider, SIGNAL(valueChanged(int))
@@ -127,18 +130,21 @@ void MainWindow::coreLoop(int tick) {
     fieldpanel->updateScene();
     robotpanel->updateBotPanel();
     updateBallInfo();
+
+    if (multithreaded == false) {
+        clockLoop(tick);
+    }
 }
 
 void MainWindow::clockLoop(int tick) {
     // Clock-dependent stuff
     gamepanel->guiClock(tick);
-//    objectPos->getThreadTicker(tick);
-//    gamepanel->getTickTock(tick);
+    // These three functions are used for bot speed getting;
+    // ...their order is VERY important
     objectPos->getNewBotPoints();
-//    cout << "bot 0 newX: " << objectPos->newBotPoints[0].x << "\n";
     objectPos->getBotSpeeds();
+    objectPos->getOldSpeeds();
     objectPos->getPastBotPoints();
-//    cout << "bot 0 oldX: " << objectPos->pastBotPoints[0].x << "\n";
 
 }//end coreLoop()
 
@@ -293,6 +299,18 @@ void MainWindow::on_btn_rotateField_left_clicked() {
     int lAngle = 45;
     ui->gView_field->rotate(lAngle);
     fieldpanel->currentFieldAngle += lAngle;
+}
+
+void MainWindow::on_btn_multithread_clicked() {
+    if(ui->btn_multithread->text() == "Enabled") {
+        multithreaded = true;
+        ui->btn_multithread->setText("Disabled");
+//        threads[1]->start();
+    } else {
+        multithreaded = false;
+        ui->btn_multithread->setText("Enabled");
+//        threads[1]->exit(0);
+    }
 }
 
 int MainWindow::frequency_of_primes (int n) {

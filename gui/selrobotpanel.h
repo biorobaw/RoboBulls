@@ -13,6 +13,7 @@ public:
 
     void setGuiOverride();
     void guiPrintRobot(int robotID, std::string output);
+    void setupSelRobotPanel();
 
 
 public slots:

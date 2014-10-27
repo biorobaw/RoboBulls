@@ -189,18 +189,18 @@ void RobotPanel::updateBotPanel() {
             int maxSpeed = speedDials[i]->maximum();
             speedDials[i]->setValue(dash->objectPos->botSpeeds[i] * 20);
             if (speedDials[i]->value() > 0) {
-                speedDials[i]->setStyleSheet("background-color: rgb(255, 215, 0);");
+                speedDials[i]->setStyleSheet("background-color: rgb(0, 191, 255);");
                 if (speedDials[i]->value() > maxSpeed*.2) {
-                speedDials[i]->setStyleSheet("background-color: rgb(255, 165, 0);");
+                speedDials[i]->setStyleSheet("background-color: rgb(0, 0, 255);");
                 }
                 if (speedDials[i]->value() > maxSpeed*.4) {
-                speedDials[i]->setStyleSheet("background-color: rgb(255, 140, 0);");
+                speedDials[i]->setStyleSheet("background-color: rgb(160, 32, 240);");
                 }
                 if (speedDials[i]->value() > maxSpeed*.6) {
-                speedDials[i]->setStyleSheet("background-color: rgb(255, 69, 0);");
+                speedDials[i]->setStyleSheet("background-color: rgb(208, 32, 144);");
                 }
                 if (speedDials[i]->value() > maxSpeed*.8) {
-                speedDials[i]->setStyleSheet("background-color: rgb(255, 0, 0);");
+                speedDials[i]->setStyleSheet("background-color: rgb(255, 20, 147);");
                 }
             } else {
                 speedDials[i]->setStyleSheet("background-color: rgb(150, 150, 150);");

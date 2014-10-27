@@ -13,6 +13,8 @@ void ObjectPosition::setupPastBotPoints() {
         if (dash->gamemodel->find(i, dash->gamemodel->getMyTeam()) != NULL) {
             pastBotPoints[i].x = 0;
             pastBotPoints[i].y = 0;
+            // also, let's fill the oldSpeeds array
+            oldSpeeds[i] = 0;
         }
     }
 }
@@ -59,9 +61,17 @@ void ObjectPosition::getBotSpeeds() {
 
 }
 
-void ObjectPosition::getThreadTicker(int tick) {
-    threadTicker = tick;
+void ObjectPosition::getOldSpeeds() {
+    for (int i=0; i<dash->teamSize; i++) {
+        if (dash->gamemodel->find(i, dash->gamemodel->getMyTeam()) != NULL) {
+            oldSpeeds[i] = botSpeeds[i];
+        }
+    }
 }
+
+//void ObjectPosition::getThreadTicker(int tick) {
+//    threadTicker = tick;
+//}
 
 QString ObjectPosition::getBotCoord(int id) {
     QString qPos    = "no connection";

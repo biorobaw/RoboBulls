@@ -37,10 +37,18 @@ void SelRobotPanel::guiPrintRobot(int robotID, string output) {
             botBehavior[robotID] += ("\n" + QString::fromStdString(output));
         }
     }
+}
+
+void SelRobotPanel::setupSelRobotPanel() {
+    dash->ui->frame_primeBot->hide();
+
+    return;
 }//end guiPrintRobot()
 
 void SelRobotPanel::updateSelectedBotPanel(int id) {
     int v = 0;
+    int s = 0;
+    int o = 0;
     if (id == -1) {
         dash->ui->gView_robot_prime->hide();
         dash->ui->dial_botVel_->setValue(0);
@@ -51,15 +59,25 @@ void SelRobotPanel::updateSelectedBotPanel(int id) {
         dash->ui->dial_botOrient_prime->setValue(0);
         dash->ui->box_primeBot->setTitle(" ");
         dash->ui->text_primeBot->setText(" ");
+        // hiding widgets
+        dash->ui->frame_primeBot->hide();
     } else {
+        // showing widgets
+        dash->ui->frame_primeBot->show();
+
         v = dash->getVelocity(id);
+        s = dash->objectPos->botSpeeds[id] * 20;
+        o = dash->objectPos->oldSpeeds[id] * 20;
+//        guiPrintRobot(id, "Speed: " + to_string(s) );
+//        cout << "Robot " << id << " speed: " << s << "\n";
+//        dash->guiPrint("Robot " + to_string(id) + " speed: " + to_string(s));
         dash->ui->gView_robot_prime->setScene(dash->robotpanel->botIconSelScenes[id]);
         dash->ui->gView_robot_prime->show();
 //        dash->ui->dial_botVel_->setPalette(Qt::darkGreen);
         dash->ui->dial_botVel_->setValue(v);
         dash->ui->lcd_botVel_->display(v);
-        dash->ui->dial_botSpeed_->setValue(dash->objectPos->botSpeeds[id] * 20);
-        dash->ui->lcd_botSpeed_->display(dash->objectPos->botSpeeds[id] * 20);
+        dash->ui->dial_botSpeed_->setValue(s);
+        dash->ui->lcd_botSpeed_->display(s);
         dash->ui->lcd_orient_prime->display(dash->objectPos->getBotOrientString(id));
         dash->ui->lcd_coordX_prime->display(dash->objectPos->getBotCoordX(true, id));
         dash->ui->lcd_coordY_prime->display(dash->objectPos->getBotCoordY(true,id));
@@ -80,23 +98,23 @@ void SelRobotPanel::updateSelectedBotPanel(int id) {
         // Selected Bot Panel speed dial
         int maxSpeed = dash->ui->dial_botSpeed_->maximum();
         if (dash->ui->dial_botSpeed_->value() > 0) {
-            dash->ui->dial_botSpeed_->setStyleSheet("background-color: rgb(255, 215, 0);");
-            dash->ui->lcd_botSpeed_->setStyleSheet("background-color: rgb(150, 100, 0);");
+            dash->ui->dial_botSpeed_->setStyleSheet("background-color: rgb(0, 191, 255);");
+            dash->ui->lcd_botSpeed_->setStyleSheet("background-color: rgb(0, 140, 200);");
             if (dash->ui->dial_botSpeed_->value() > maxSpeed*.2) {
-            dash->ui->dial_botSpeed_->setStyleSheet("background-color: rgb(255, 165, 0);");
-            dash->ui->lcd_botSpeed_->setStyleSheet("background-color: rgb(200, 100, 0);");
+            dash->ui->dial_botSpeed_->setStyleSheet("background-color: rgb(0, 0, 255);");
+            dash->ui->lcd_botSpeed_->setStyleSheet("background-color: rgb(0, 0, 200);");
             }
             if (dash->ui->dial_botSpeed_->value() > maxSpeed*.4) {
-            dash->ui->dial_botSpeed_->setStyleSheet("background-color: rgb(255, 140, 0);");
-            dash->ui->lcd_botSpeed_->setStyleSheet("background-color: rgb(200, 100, 0);");
+            dash->ui->dial_botSpeed_->setStyleSheet("background-color: rgb(160, 32, 240);");
+            dash->ui->lcd_botSpeed_->setStyleSheet("background-color: rgb(100, 0, 190);");
             }
             if (dash->ui->dial_botSpeed_->value() > maxSpeed*.6) {
-            dash->ui->dial_botSpeed_->setStyleSheet("background-color: rgb(255, 69, 0);");
-            dash->ui->lcd_botSpeed_->setStyleSheet("background-color: rgb(200, 10, 0);");
+            dash->ui->dial_botSpeed_->setStyleSheet("background-color: rgb(208, 32, 144);");
+            dash->ui->lcd_botSpeed_->setStyleSheet("background-color: rgb(150, 0, 90);");
             }
             if (dash->ui->dial_botSpeed_->value() > maxSpeed*.8) {
-            dash->ui->dial_botSpeed_->setStyleSheet("background-color: rgb(255, 0, 0);");
-            dash->ui->lcd_botSpeed_->setStyleSheet("background-color: rgb(200, 0, 0);");
+            dash->ui->dial_botSpeed_->setStyleSheet("background-color: rgb(255, 20, 147);");
+            dash->ui->lcd_botSpeed_->setStyleSheet("background-color: rgb(200, 0, 90);");
             }
         } else {
             dash->ui->dial_botSpeed_->setStyleSheet("background-color: rgb(150, 150, 150);");

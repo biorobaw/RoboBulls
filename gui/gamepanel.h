@@ -21,7 +21,7 @@ public:
     bool tick;
     bool tock;
     bool lastWasTock = true;
-    void getTickTock(int ticker);
+//    void getTickTock(int ticker);
 
 public slots:
     void guiClock(int milliseconds);

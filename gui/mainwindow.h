@@ -82,6 +82,7 @@ public:
     int botOverride = -1;               // the id of the currently overridden bot
     std::vector<bool> overriddenBots;   // keeps track of whether each bot is overridden
     QString guiOutputRobot = "...";
+    bool multithreaded = false;
 
 protected:
     Robot *robot;
@@ -90,13 +91,6 @@ protected:
     RefComm *refcom;
     GuiDrawLine *guidrawline;
     NXTRobComm *nxtrobcomm;
-//    // game clock
-//    int seconds = 0;
-//    int minutes = 0;
-//    int hours = 0;
-//    QString secondsZero = "0";
-//    QString minutesZero = "0";
-//    QString hoursZero = "0";
 
 private:
     void setupKeyShortcuts();
@@ -150,9 +144,7 @@ private slots:
     void on_combo_botScale_currentIndexChanged(int index);
     void on_btn_rotateField_right_clicked();
     void on_btn_rotateField_left_clicked();
-
+    void on_btn_multithread_clicked();
 };
 
 #endif // MAINWINDOW_H
-
-

@@ -20,8 +20,10 @@ public:
     void getPastBotPoints();
     void getNewBotPoints();
     int botSpeeds[6];
+    int oldSpeeds[6];
     void getBotSpeeds();
-    void getThreadTicker(int tick);
+    void getOldSpeeds();
+//    void getThreadTicker(int tick);
     QString getBotCoord(int id);        // Returns the specified robot's x/y position as a QString
     QString getBotOrientString(int id);
     double  getBotOrientDouble(bool myTeam, int id);
