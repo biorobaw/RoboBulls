@@ -3,6 +3,7 @@
 #include "mainwindow.h"
 #include "objectposition.h"
 #include "gamepanel.h"
+#include "fieldpanel.h"
 //#include "fieldpanel.h"
 //#include <QTextCharFormat>
 //#include <QTextCursor>

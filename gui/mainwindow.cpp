@@ -35,6 +35,10 @@
 #include "objectposition.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "gamepanel.h"
+#include "fieldpanel.h"
+#include "guirobot.h"
+
 //#include "guidrawline.h"
 //#include "guicomm.h"
 // Project classes
@@ -44,7 +48,6 @@
 #include "include/config/simulated.h"
 #include "communication/nxtrobcomm.h"
 #include "movement/move.h"
-#include "gamepanel.h"
 
 // Global static pointer used to ensure only a single instance of the class.
 MainWindow* MainWindow::mw = NULL;

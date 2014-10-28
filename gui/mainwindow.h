@@ -3,9 +3,8 @@
 
 #include <iostream>
 #include <QFrame>
-#include "model/gamemodel.h"
-#include "model/robot.h"
 #include <QLabel>
+#include <string>
 
 #include <QtWidgets/QMainWindow>
 #include "ui_mainwindow.h"
@@ -13,9 +12,6 @@
 #include <QDialog>
 #include <QtCore>
 #include <QtGui>
-#include "communication/refcomm.h"
-#include "communication/nxtrobcomm.h"
-#include "movement/move.h"
 // Helper classes
 //#include "guirobot.h"
 #include "guifield.h"
@@ -25,13 +21,26 @@
 #include "guicomm.h"
 #include "guiscene.h"
 
-class RobotPanel;   // Forward Declaration prevents future problems from two<-->way references
+//#include "model/gamemodel.h"
+//#include "model/robot.h"
+//#include "communication/refcomm.h"
+//#include "communication/nxtrobcomm.h"
+//#include "movement/move.h"
+
+class RobotPanel;
 class FieldPanel;
 class SelRobotPanel;
 class ObjectPosition;
 class GuiRobot;
 class SelRobotPanel;
 class GamePanel;
+
+class GameModel;
+class Robot;
+class RefComm;
+class NXTRobComm;
+class Move;
+
 //class GuiField;
 //class GuiBall;
 //class GuiBotLabel;
@@ -65,7 +74,7 @@ public:
     int getVelocity(int id);
     // Debug functions
     void drawLine( int originX, int originY, int endX, int endY );
-    void guiPrint(string output);
+    void guiPrint(std::string output);
     void updateBallInfo();
     // For getting milliseconds
     int frequency_of_primes (int n);
@@ -77,6 +86,7 @@ public:
     void keyReleaseEvent(QKeyEvent *event);
     void setMyVelocity();
     // 10/23/14
+//    int teamSize = gamemodel->getMyTeam().size();
     int teamSize = 6;
     bool guiOverride = false;           // For the purpose of overriding gamemodel's commands with our own
     int botOverride = -1;               // the id of the currently overridden bot

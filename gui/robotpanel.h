@@ -2,16 +2,19 @@
 #define ROBOTPANEL_H
 
 #include <iostream>
-#include "guirobot.h"
+//#include "guirobot.h"
 #include "mainwindow.h"
-#include "guiball.h"
+//#include "guiball.h"
 #include <QLCDNumber>
 #include <QDial>
 #include <QGraphicsView>
 #include <QMainWindow>
 #include "model/gamemodel.h"
-#include "fieldpanel.h"
+//#include "fieldpanel.h"
 
+class GuiRobot;
+class GuiBall;
+class FieldPanel;
 
 class RobotPanel : public QObject   // Some kind of Q type required for cross-class signals & slots
 {

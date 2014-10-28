@@ -4,6 +4,7 @@
 #include "objectposition.h"
 #include <QScrollBar>
 #include "gamepanel.h"
+#include "fieldpanel.h"
 
 SelRobotPanel::SelRobotPanel(MainWindow * mw) {
     dash = mw;

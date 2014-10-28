@@ -2,11 +2,21 @@
 #define FIELDPANEL_H
 
 #include <iostream>
-#include "guirobot.h"
 #include "mainwindow.h"
-#include "guiball.h"
+
+//#include "guirobot.h"
+//#include "guiball.h"
 #include "guisidelines.h"
-#include "guiscene.h"
+//#include "guiscene.h"
+
+//class MainWindow;
+
+class GuiRobot;
+class GuiBall;
+class GuiSidelines;
+class GuiScene;
+class GuiBotLabel;
+class GuiField;
 
 
 class FieldPanel : public QObject   // Some kind of Q type required for cross-class signals & slots

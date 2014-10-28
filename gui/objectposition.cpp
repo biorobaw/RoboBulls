@@ -2,6 +2,7 @@
 #include "fieldpanel.h"
 #include "cmath"
 #include "gamepanel.h"
+#include "model/gamemodel.h"
 
 ObjectPosition::ObjectPosition(MainWindow * mw) {
     dash = mw;

@@ -4,9 +4,9 @@
 #include <QString>
 #include <QLabel>
 #include "mainwindow.h"
-//#include "utilities/point.h"  delete
-
-class Point;
+#include "utilities/point.h"
+#include <deque>
+//class Point;
 
 class ObjectPosition
 {
