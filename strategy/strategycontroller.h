@@ -29,15 +29,15 @@ private:
     void frameEnd();
     /* Called when GameModel receives a new command from
      * the RefComm. Makes a new activeStrategy.
-     * Calls end() on the activeStrategy
+     * Calls end() on the activeStrategy 
      */
     void gameModelUpdated();
     /* Called when GameModel receives the same command
-     * as the last frame. Updates current activeStrategy.
+     * as the last frame. Updates current activeStrategy. 
      */
     void gameModelContinued();
     /* Removes the behaviors from each robot, and calls end()
-     * on the activeStrategy.
+     * on the activeStrategy. 
      */
     void clearCurrentStrategy();
     

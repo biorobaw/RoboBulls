@@ -16,6 +16,8 @@
 #include "model/gamemodel.h"
 #include "behavior/passballsender.h"
 #include "behavior/passballreceiver.h"
+#include <fstream>
+
 
 
 class TestBehavior : public Behavior
@@ -133,7 +135,6 @@ void TestStrategy::assignBeh()
 //    BehaviorAssignment<ShamsiKickToPoint> assignment(true);
 //    assignment.assignBeh({5});
 
-
 //************************************************************
 ////     Narges code testing DriveBallAndKick
 //    BehaviorAssignment<TestBehavior> assignment(true);
@@ -204,7 +205,3 @@ void TestStrategy::assignBeh()
 //   // }
 
 }
-
-
-
-

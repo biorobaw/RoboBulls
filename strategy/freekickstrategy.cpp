@@ -4,6 +4,7 @@
 #include "model/gamemodel.h"
 #include "behavior/simplebehaviors.h"
 
+
 FreeKickStrategy::FreeKickStrategy()
 {
 }

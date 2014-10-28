@@ -6,7 +6,6 @@
 
 SimRobComm::SimRobComm()
 {
-
     //Shamsi Sim Address
     _addr = "131.247.14.101";
 
@@ -15,6 +14,7 @@ SimRobComm::SimRobComm()
 
     //Narges Sim Address
     //_addr = "127.0.0.1";
+
 
     _port = 20011;
 }
