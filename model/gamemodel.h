@@ -58,18 +58,26 @@ public:
     Robot*  find(int, std::vector<Robot*>&);    //General-case find
     bool    isNewCommand();
 
+    // Ryan
+    bool    guiOverride = false;
+
     void setStrategyController(StrategyController * sc);
     void onCommandProcessed();
     std::string toString();
+
 private:
     /* Average System.
      * This takes the raw input from the vision system; we need to take
      * the newly-reported points and see if they are outliers (unlikely to be
 <<<<<<< HEAD
+<<<<<<< HEAD
      * the true positions) and if they are not, average them in with previous
 =======
      * the true positions) and if they are not, average them in with previous 
 >>>>>>> 96d7dda63491cba6957b469991c98dec1a88ac64
+=======
+     * the true positions) and if they are not, average them in with previous 
+>>>>>>> 67f6d320b6a48c12f5f11751171467ab5d2d2697
      * readings to get a more accurate reading of the position
      */
 #if MODEL_USE_AVERAGES
@@ -93,6 +101,7 @@ private:
     /* Static GameModel pointer and SC */
     static GameModel* model;
     StrategyController *sc;
+
     /* General Game Information */
     vector <Robot*> opTeam;
     vector <Robot*> myTeam;
@@ -106,11 +115,7 @@ private:
 
     /* Functions to update gamemodel from vision system.
      * Provides *the* link between vision detection and
-<<<<<<< HEAD
-     * referee box with our code.
-=======
      * referee box with our code. 
->>>>>>> 96d7dda63491cba6957b469991c98dec1a88ac64
      */
     friend class VisionComm;
     friend class RefComm;

@@ -8,6 +8,8 @@ QT       += core network
 
 QT       -= gui
 
+QT      += widgets
+
 TARGET = RoboBulls
 CONFIG   += console
 CONFIG   -= app_bundle
@@ -93,9 +95,23 @@ SOURCES += main.cpp \
     behavior/simplebehaviors.cpp \
     strategy/attackstrategy.cpp \
     behavior/attackbehaviors.cpp \
-	strategy/normalgamestrategy.cpp \
+    strategy/normalgamestrategy.cpp \
     behavior/passballsender.cpp \
-    behavior/passballreceiver.cpp
+    behavior/passballreceiver.cpp \
+    gui/guiball.cpp \
+    gui/guibotlabel.cpp \
+    gui/guicomm.cpp \
+    gui/guifield.cpp \
+    gui/guirobot.cpp \
+    gui/guisidelines.cpp \
+    gui/mainwindow.cpp \
+    gui/guidrawline.cpp \
+    gui/guiscene.cpp \
+    gui/robotpanel.cpp \
+    gui/fieldpanel.cpp \
+    gui/selrobotpanel.cpp \
+    gui/objectposition.cpp \
+    gui/gamepanel.cpp
 
 HEADERS += \
 	behavior/behavior.h \
@@ -174,12 +190,70 @@ HEADERS += \
     behavior/simplebehaviors.h \
     strategy/attackstrategy.h \
     behavior/attackbehaviors.h \
-	strategy/normalgamestrategy.h \
+    strategy/normalgamestrategy.h \
     behavior/passballsender.h \
-    behavior/passballreceiver.h
+    behavior/passballreceiver.h \
+    gui/guiball.h \
+    gui/guibotlabel.h \
+    gui/guicomm.h \
+    gui/guifield.h \
+    gui/guirobot.h \
+    gui/guisidelines.h \
+    gui/mainwindow.h \
+    gui/guidrawline.h \
+    gui/guiscene.h \
+    gui/robotpanel.h \
+    gui/fieldpanel.h \
+    gui/selrobotpanel.h \
+    gui/objectposition.h \
+    gui/gamepanel.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 
 unix|win32: LIBS += -lprotobuf
 
-OTHER_FILES +=
+OTHER_FILES += \
+    gui/images/field.jpg \
+    gui/images/0.png \
+    gui/images/1.png \
+    gui/images/2.png \
+    gui/images/3.png \
+    gui/images/4.png \
+    gui/images/5.png \
+    gui/images/ball.png \
+    gui/images/bot0.png \
+    gui/images/bot1.png \
+    gui/images/bot2.png \
+    gui/images/bot3.png \
+    gui/images/bot4.png \
+    gui/images/bot5.png \
+    gui/images/bubble.png \
+    gui/images/button.png \
+    gui/images/button-pressed.png \
+    gui/images/document-open.png \
+    gui/images/document-open@2x.png \
+    gui/images/document-save-as.png \
+    gui/images/document-save-as@2x.png \
+    gui/images/folder_new.png \
+    gui/images/gear.png \
+    gui/images/gear2.png \
+    gui/images/go-next.png \
+    gui/images/go-previous.png \
+    gui/images/preferences-system.png \
+    gui/images/process-stop.png \
+    gui/images/progress-background.png \
+    gui/images/progress-fill.png \
+    gui/images/slider-handle.png \
+    gui/images/tab.png \
+    gui/images/tab_selected.png \
+    gui/images/textfield.png \
+    gui/images/toplevel_window.png \
+    gui/images/view-refresh.png \
+    gui/images/window-new.png \
+    gui/images/window-new@2x.png
+
+RESOURCES += \
+    gui/images.qrc
+
+FORMS += \
+    gui/mainwindow.ui

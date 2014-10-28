@@ -9,6 +9,7 @@
 #include "movement/gotopositionwithorientation.h"
 #include "utilities/point.h"
 
+
 class SimpleBehaviors : public Behavior
 {
 public:
