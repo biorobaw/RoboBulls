@@ -2,6 +2,8 @@
 #include "include/config/tolerances.h"    //ROT/DIST Tolerance
 #include "include/config/globals.h"        //OVERALL_VELOCITY
 #include "movement/move.h"
+#include "gui/guiinterface.h"
+
 
 /* Set this to 1 to use the robot-robot obstacle avoidance routines.
  * Current problems (with known solutions):
@@ -31,7 +33,6 @@
  * "not moving" for the yielding robots to not yield to that robot
  */
 #define ROBOT_COLLIDE_DIST_UPDATE  75
-
 
 namespace Movement
 {
@@ -127,6 +128,7 @@ bool Move::perform(Robot *robot, Movement::Type moveType)
     /* Let's only bother moving if we need to */
     //if(!Measurments::isClose(m_targetPoint, robot->getRobotPosition(), lastDistTolerance) ||
     // !Measurments::isClose(m_targetAngle, robot->getOrientation(), lastAngTolerance))
+
     {
         if(useObstacleAvoid) {
             if(pathEndInfo.hasFoundPathEnd) {
@@ -417,6 +419,7 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
             /*********************************************
              * Velocity Calculating (Important part)
              *********************************************/
+
             float nextAngle = Measurments::angleBetween(robotPoint, nextPoint);
             this->calculateVels(robot, nextPoint, nextAngle, moveType);
             
@@ -475,23 +478,27 @@ void Move::setVels(Robot *robot)
      * to sendVelsLarge. Thus, OVERALL_VELOCITY allows the slowing down
      * of the entire program since all movement comes through here.
      */
-    switch(robot->type())
-    {
-    case differential:
-        robot->setL(left  * velMultiplier * OVERALL_VELOCITY);
-        robot->setR(right * velMultiplier * OVERALL_VELOCITY);
-        break;
-    case threeWheelOmni:
-        robot->setL(left  * velMultiplier * OVERALL_VELOCITY);
-        robot->setR(right * velMultiplier * OVERALL_VELOCITY);
-        robot->setB(back  * velMultiplier * OVERALL_VELOCITY);
-        break;
-    case fourWheelOmni:
-        robot->setLF(lfront * velMultiplier * OVERALL_VELOCITY);
-        robot->setRF(rfront * velMultiplier * OVERALL_VELOCITY);
-        robot->setLB(lback  * velMultiplier * OVERALL_VELOCITY);
-        robot->setRB(rback  * velMultiplier * OVERALL_VELOCITY);
-        break;
+
+    // Ryan has perpetrated this boolean check
+    if (GuiInterface::getGuiInterface()->isOverriddenBot()[robot->id] == false) {
+        switch(robot->type())
+        {
+            case differential:
+                robot->setL(left  * velMultiplier * OVERALL_VELOCITY);
+                robot->setR(right * velMultiplier * OVERALL_VELOCITY);
+                break;
+            case threeWheelOmni:
+                robot->setL(left  * velMultiplier * OVERALL_VELOCITY);
+                robot->setR(right * velMultiplier * OVERALL_VELOCITY);
+                robot->setB(back  * velMultiplier * OVERALL_VELOCITY);
+                break;
+            case fourWheelOmni:
+                robot->setLF(lfront * velMultiplier * OVERALL_VELOCITY);
+                robot->setRF(rfront * velMultiplier * OVERALL_VELOCITY);
+                robot->setLB(lback  * velMultiplier * OVERALL_VELOCITY);
+                robot->setRB(rback  * velMultiplier * OVERALL_VELOCITY);
+                break;
+        }
     }
 }
 

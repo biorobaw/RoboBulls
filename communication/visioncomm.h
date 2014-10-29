@@ -18,7 +18,8 @@ using namespace std;
 /**
  * @brief CONF_THRESHOLD sets the minimum confidence to consider the ball as detected.
 */
-const float CONF_THRESHOLD = 0.91;
+const float CONF_THRESHOLD_BALL = 0.6;
+const float CONF_THRESHOLD_BOTS = 0.9;
 
 /**
  * @brief DISCARD_RATE sets the rate in which packets are discarded. only 1/DISCARD_RATE packages are processed.

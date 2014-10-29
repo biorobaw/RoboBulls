@@ -7,6 +7,9 @@
 #include "model/gamemodel.h"
 #include "movement/pathfinding/fppa_pathfinding.h"
 #include "movement/movetype.h"
+// Ryan
+#include "gui/mainwindow.h"
+#include "model/gamemodel.h"
 
 namespace Movement
 {
@@ -57,7 +60,8 @@ public:
     
     /* Perform movement on the robot */
     bool perform(Robot* robot, Type moveType = Type::Default);
-    
+
+    std::deque<Point>   pathQueue;
 
 protected:
     float lfront, lback, rfront, rback;  //rob->type() == fourWheelOmni
@@ -91,13 +95,14 @@ private:
     float nextDistTolerance  = 250;
     Point lastObsPoint       = Point(9999, 9999);
     FPPA::PathInfo      pathInfo;
-    std::deque<Point>   pathQueue;
+//    std::deque<Point>   pathQueue;
     FPPA::PathDirection lastDirection;
     std::vector<Point>  lastObstacles;
     
     float recrDistTolerance  = 30;
     float recrAngleTolerance = 3*M_PI/180;
     float lastDistTolerance  = 70;      //CLC guarantees this
+
     float lastAngTolerance   = 3*M_PI/180;
 
     bool calcObstacleAvoidance(Robot* rob, Type moveType);
@@ -105,6 +110,8 @@ private:
     void assignNewPath(const Point& robotPoint);
     
     void setVels(Robot* robot);
+
+
 };
 
 

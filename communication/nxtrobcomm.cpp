@@ -1,4 +1,5 @@
 #include "nxtrobcomm.h"
+#include "gui/guiinterface.h"
 
 NXTRobComm::NXTRobComm()
 {
@@ -60,11 +61,14 @@ void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
         packet->dribble_power = rob->getDrible() ? 1 : 0;
         packet->dollar = '$';
 
-        // Clear robot information
-        rob->setL(0);
-        rob->setR(0);
-        rob->setKick(0);
-        rob->setDrible(0);
+        // Ryan overriding the zero-reset in the event of a manual override from the GUI
+        if (GuiInterface::getGuiInterface()->isOverriddenBot()[i]) {
+            // Clear robot information
+            rob->setL(0);
+            rob->setR(0);
+            rob->setKick(0);
+            rob->setDrible(0);
+        }
     }
 
     // Send Array of packets
