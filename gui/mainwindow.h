@@ -27,6 +27,8 @@
 //#include "communication/nxtrobcomm.h"
 //#include "movement/move.h"
 
+#include "guiinterface.h"
+
 class RobotPanel;
 class FieldPanel;
 class SelRobotPanel;
@@ -34,6 +36,7 @@ class ObjectPosition;
 class GuiRobot;
 class SelRobotPanel;
 class GamePanel;
+class GuiInterface;
 
 class GameModel;
 class Robot;
@@ -57,6 +60,8 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+    // moved from public
+    explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
 public:
@@ -69,7 +74,6 @@ public:
     ObjectPosition * objectPos;
     GamePanel *gamepanel;
 
-    static MainWindow* getMainWindow();
     QString getRemTime();
     int getVelocity(int id);
     // Debug functions
@@ -94,6 +98,9 @@ public:
     QString guiOutputRobot = "...";
     bool multithreaded = false;
 
+    bool isOverride();  // delete?
+    std::vector<bool> isRobotOverriden();   // delete?
+
 protected:
     Robot *robot;
     GuiComm *guicomm;
@@ -104,8 +111,7 @@ protected:
 
 private:
     void setupKeyShortcuts();
-    // moved from public
-    explicit MainWindow(QWidget *parent = 0);
+
     // my pointer
     static MainWindow *mw;
     QList<GuiComm*> threads;

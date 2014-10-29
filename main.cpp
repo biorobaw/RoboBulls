@@ -1,4 +1,5 @@
-#include <QCoreApplication>
+//#include <QCoreApplication>
+#include <QApplication>
 #include <stdio.h>
 #include <csignal>
 #include "communication/refcomm.h"
@@ -12,7 +13,8 @@
 #include "include/messages_robocup_ssl_wrapper.pb.h"
 #include "include/robocup_ssl_client.h"
 #include "behavior/behavior.h"
-#include "gui/mainwindow.h"
+//#include "gui/mainwindow.h"
+#include "gui/guiinterface.h"
 
 using namespace std;
 
@@ -42,9 +44,10 @@ int main(int argc, char *argv[])
 
 //    QCoreApplication a(argc, argv);
     QApplication a(argc, argv);
-    MainWindow * w = MainWindow::getMainWindow();
-    w->show();
-//    MainWindow * w = MainWindow::getWindow();
+//    MainWindow * w = MainWindow::getMainWindow();
+//    w->show();
+    GuiInterface * gui = GuiInterface::getGuiInterface();
+    gui->show();
 
     RefComm refCommunicator(myGameModel);
     VisionComm visionCommunicator(myGameModel);

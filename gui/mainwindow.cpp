@@ -38,6 +38,7 @@
 #include "gamepanel.h"
 #include "fieldpanel.h"
 #include "guirobot.h"
+#include "guiinterface.h"
 
 //#include "guidrawline.h"
 //#include "guicomm.h"
@@ -50,7 +51,7 @@
 #include "movement/move.h"
 
 // Global static pointer used to ensure only a single instance of the class.
-MainWindow* MainWindow::mw = NULL;
+//MainWindow* MainWindow::mw = NULL;    // delete?
 
 using namespace std;
 
@@ -71,6 +72,9 @@ MainWindow::MainWindow(QWidget *parent) :
     objectPos = new ObjectPosition(this);
     fieldpanel = new FieldPanel(this);
     gamepanel = new GamePanel(this);
+
+//    guiinterface = new GuiInterface();
+//    guiinterface->guiOverride = false;
     // Generating GUI
     fieldpanel->setUpScene();
     fieldpanel->defaultZoom();
@@ -108,6 +112,14 @@ MainWindow::MainWindow(QWidget *parent) :
     // Default zoom button
     connect(ui->zoom_default, SIGNAL(clicked())
             , fieldpanel, SLOT(defaultZoom()));
+}
+
+bool MainWindow::isOverride(){  // delete?
+    return guiOverride;
+}
+
+vector<bool> MainWindow::isRobotOverriden(){    // delete?
+    return overriddenBots;
 }
 
 void MainWindow::coreLoop(int tick) {
@@ -505,13 +517,13 @@ MainWindow::~MainWindow()
 }
 
 
-MainWindow *MainWindow::getMainWindow() {
-    if (mw == NULL) {
-        mw = new MainWindow();
-    }
+//MainWindow *MainWindow::getMainWindow() {
+//    if (mw == NULL) {
+//        mw = new MainWindow();
+//    }
 
-    return mw;
-}
+//    return mw;
+//}
 
 void MainWindow::on_btn_botForward_pressed() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {

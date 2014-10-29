@@ -111,7 +111,8 @@ SOURCES += main.cpp \
     gui/fieldpanel.cpp \
     gui/selrobotpanel.cpp \
     gui/objectposition.cpp \
-    gui/gamepanel.cpp
+    gui/gamepanel.cpp \
+    gui/guiinterface.cpp
 
 HEADERS += \
 	behavior/behavior.h \
@@ -206,7 +207,8 @@ HEADERS += \
     gui/fieldpanel.h \
     gui/selrobotpanel.h \
     gui/objectposition.h \
-    gui/gamepanel.h
+    gui/gamepanel.h \
+    gui/guiinterface.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 

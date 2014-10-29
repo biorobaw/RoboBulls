@@ -5,6 +5,7 @@
 #include <QScrollBar>
 #include "gamepanel.h"
 #include "fieldpanel.h"
+#include "guiinterface.h"
 
 SelRobotPanel::SelRobotPanel(MainWindow * mw) {
     dash = mw;
@@ -15,8 +16,10 @@ void SelRobotPanel::setGuiOverride() {
     // Required for Override to work with Vision
     if (dash->ui->check_botOverride->isChecked()) {
         dash->guiOverride = true;
+//        dash->guiinterface->guiOverride = true;
     } else {
         dash->guiOverride = false;
+//        dash->guiinterface->guiOverride = false;
     }
 
 }

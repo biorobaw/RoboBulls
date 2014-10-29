@@ -2,7 +2,7 @@
 #include "include/config/tolerances.h"    //ROT/DIST Tolerance
 #include "include/config/globals.h"        //OVERALL_VELOCITY
 #include "movement/move.h"
-#include "gui/mainwindow.h"
+#include "gui/guiinterface.h"
 
 
 /* Set this to 1 to use the robot-robot obstacle avoidance routines.
@@ -480,8 +480,7 @@ void Move::setVels(Robot *robot)
      */
 
     // Ryan has perpetrated this boolean check
-    if (MainWindow::getMainWindow()->overriddenBots[robot->id] == false) {
-        MainWindow::getMainWindow()->guiPrint("guiOverride OFF");
+    if (GuiInterface::getGuiInterface()->isOverriddenBot()[robot->id] == false) {
         switch(robot->type())
         {
             case differential:
@@ -500,8 +499,6 @@ void Move::setVels(Robot *robot)
                 robot->setRB(rback  * velMultiplier * OVERALL_VELOCITY);
                 break;
         }
-    } else {
-        MainWindow::getMainWindow()->guiPrint("guiOverride ON");
     }
 }
 
