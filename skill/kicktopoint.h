@@ -26,7 +26,8 @@ namespace Skill
  */
 #define NO_KICK_DIST -1
 
-#define KICK_TO_POINT_DEBUG 1
+#define KICK_TO_POINT_DEBUG 0
+
 
 class KickToPoint : public Skill
 {
@@ -34,6 +35,10 @@ public:
     KickToPoint(Point target
               , float targetTolerance = 10*M_PI/180
               , float kickDistance = NO_KICK_DIST);
+
+    KickToPoint(Point* targetPtr
+                , float targetTolerance = 10*M_PI/180
+                , float kickDistance = NO_KICK_DIST);
 
     bool perform(Robot *) override;
     bool kicked();
@@ -56,6 +61,8 @@ private:
     float targetBallAngle;
     float robAngle;
     bool  hasKicked = false;
+
+    Point* externTargetPtr;
 };
 
 } //namespace Skill

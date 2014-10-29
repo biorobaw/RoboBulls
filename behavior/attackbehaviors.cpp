@@ -67,7 +67,8 @@
  ************************************************/
 
 AttackDriver::AttackDriver(const ParameterList& list)
-    : current_skill(nullptr)
+    : state(Initial)
+    , current_skill(nullptr)
     , recieveAttackBot(NULL)
     , hasReachedBall(false)
     , hasKicked(false)

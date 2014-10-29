@@ -137,25 +137,18 @@ std::string GameModel::toString()
 /* Called by VisionComm */
 /**************************************************/
 /* Don't overlook this function, it's more important
-<<<<<<< HEAD
  * than you think
-=======
- * than you think 
->>>>>>> 96d7dda63491cba6957b469991c98dec1a88ac64
  */
 void GameModel::notifyObservers()
 {
+    setRobotHasBall();
     sc->run();
 }
 /**************************************************/
 
 /* Called by RefComm */
 /* I don't think both RefComm and VisionComm should both
-<<<<<<< HEAD
  * make the game run. This opens up the possibility for running the
-=======
- * make the game run. This opens up the possibility for running the 
->>>>>>> 96d7dda63491cba6957b469991c98dec1a88ac64
  * loop twice, and possible interference. Before, this function also
  * caused the StrategyController to update if the state was different
  */
@@ -191,17 +184,20 @@ void GameModel::setRobotHasBall()
         float angleBetween = Measurments::angleBetween(robPos, pt);
         return Measurments::isClose(robAngle, angleBetween, M_PI/6);
         };
-
     auto calculateHasBall = [&](Robot* rob) {
         if(rob == NULL)
             return false;
-
-        if(Measurments::distance(rob->getRobotPosition(), ballPoint) > 100.0) 
+        if(Measurments::distance(rob->getRobotPosition(), ballPoint) > 200.0)
             return false;
         if(!ptIsInFrontOfRob(rob, ballPoint))
             return false;
         return true;
         };
+
+    for(Robot* robot : myTeam)
+        robot->hasBall = false;
+    for(Robot* robot : opTeam)
+        robot->hasBall = false;
 
     if(!calculateHasBall(this->robotWithBall))
     {
@@ -215,6 +211,8 @@ void GameModel::setRobotHasBall()
         }
         this->robotWithBall = *ballBot;
     }
+
+    this->robotWithBall->hasBall = true;
 }
 
 void GameModel::setTimeLeft(unsigned short time)
@@ -235,13 +233,8 @@ void GameModel::setYellowGoals(unsigned char goals)
 Robot* GameModel::find(int id, std::vector<Robot*>& team)
 {
     /* Often, the vision system (and also almost always on the simulator)
-<<<<<<< HEAD
      * seems to report robots in order anyway. So first,
      * I think it would be reasonable to check if the team at that `id`
-=======
-     * seems to report robots in order anyway. So first, 
-     * I think it would be reasonable to check if the team at that `id` 
->>>>>>> 96d7dda63491cba6957b469991c98dec1a88ac64
      * is actually that robot first.
      */
     try {
@@ -337,20 +330,12 @@ void GameModel::setRobotUpdated(Robot* robot, int whichTeam)
 
     /* While the myTeam/opTeam vectors are not guaranteed to be stored in order
      * (i.e, ID i is at myTeam[i]), these average arrays are. They are initially
-<<<<<<< HEAD
      * sized to hold MAX_ROBOTS, so no out-of-range errors occur. Also, there is
-=======
-     * sized to hold MAX_ROBOTS, so no out-of-range errors occur. Also, there is 
->>>>>>> 96d7dda63491cba6957b469991c98dec1a88ac64
      * no iteration over these, so invalid entries are just ignored
      */
     newRobPoint = currentAverages->at(robot->getID()).first.update(rawRobPoint);
     newRobAngle = currentAverages->at(robot->getID()).second.update(rawRobAngle);
-<<<<<<< HEAD
 
-=======
-    
->>>>>>> 96d7dda63491cba6957b469991c98dec1a88ac64
     robot->setRobotPosition(newRobPoint);
     robot->setOrientation(newRobAngle);
 #else

@@ -17,6 +17,12 @@ public:
     static float distance(const Point&, const Point&);
 
 
+    /* Returns the midpoint between two points a and b using
+     * the standard 2D midpoint formula
+     */
+    static Point midPoint(const Point&, const Point&);
+
+
     /* Returns the angle between two points as measured
      * from the horizontal.
      */

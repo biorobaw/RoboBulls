@@ -1,4 +1,5 @@
 #include "kick.h"
+#include "include/config/robot_types.h"
 
 namespace Skill
 {
@@ -26,8 +27,11 @@ bool Kick::perform(Robot * robot)
     {
         //nxtbee->sendKick(robot->getID());
         robot->setKick(1);
-        robot->setL(lVel);
-        robot->setR(rVel);
+        if (robot->type() == differential)
+        {
+            robot->setL(lVel);
+            robot->setR(rVel);
+        }
         roboKick = false;
     }
 

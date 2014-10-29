@@ -80,7 +80,12 @@ private:
     bool  isInitialized      = false; 
     bool  useObstacleAvoid   = true;
 
-    bool  hasFoundPathEnd    = false;
+    struct pathEndState
+    {
+        Point endingPoint;
+        bool  hasFoundPathEnd;
+    } pathEndInfo;
+
     bool  currentPathIsClear = false;
     float nextTargetAngle    = UNUSED_ANGLE_VALUE;
     float nextDistTolerance  = 250;
@@ -90,9 +95,9 @@ private:
     FPPA::PathDirection lastDirection;
     std::vector<Point>  lastObstacles;
     
-    float recrDistTolerance  = 40;
+    float recrDistTolerance  = 30;
     float recrAngleTolerance = 3*M_PI/180;
-    float lastDistTolerance  = 30;
+    float lastDistTolerance  = 70;      //CLC guarantees this
     float lastAngTolerance   = 3*M_PI/180;
 
     bool calcObstacleAvoidance(Robot* rob, Type moveType);

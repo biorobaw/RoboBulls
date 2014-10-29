@@ -25,11 +25,13 @@ public:
     PassBallReceiver(const ParameterList& list);
     void perform(Robot *);
     void setBallOrigin();
-    enum states {moving, kicking, idling} state;
+    enum states {initial, moving, approaching, kicking, idling} state;
 private:
     Point ballLastSeen;
     Point ballOrg;
     bool hasKicked;
+    int count;
+    bool detectedBall;
 };
 
 #endif // PASSBALLRECEIVER_H

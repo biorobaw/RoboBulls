@@ -51,7 +51,8 @@ void PenaltyStrategy::assignBeh()
             closestRobot = myTeam.at(0);
         else
             closestRobot = myTeam.at(1);
-        for (int i = 1; i < myTeam.size(); i++)
+
+        for (unsigned i = 1; i < myTeam.size(); i++)
         {
             if (myTeam.at(i)->getID() != 5)
             {
@@ -69,7 +70,7 @@ void PenaltyStrategy::assignBeh()
 
     if (myTeam.size() > 1)  // assigns simple behavior to the rest of robots
     {
-        for (int i = 0; i < myTeam.size(); i++)
+        for (unsigned i = 0; i < myTeam.size(); i++)
         {
             if (myTeam.at(i)->getID() != closestRobotID && myTeam.at(i)->getID() != 5)
                 simpleAssignment.assignBeh(myTeam.at(i));

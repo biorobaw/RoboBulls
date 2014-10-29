@@ -14,15 +14,13 @@
  * because it's only used in one file.
  */
 #if SIMULATED
- #define CLC_ROTATONG_VEL 60
+ #define CLC_ROTATING_VEL 40
 #else
- #define CLC_ROTATONG_VEL 50
+ #define CLC_ROTATING_VEL 50
 #endif
 
 ClosedLoopBase::ClosedLoopBase()
 {
-    //for(auto& pair : errorContainers)
-        //pair.first.reserve(500);
 }
 
 void ClosedLoopBase::handleError(double x_goal, double y_goal)
@@ -123,12 +121,19 @@ wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, double x_goal,
     double newSumErrBeta  = errorContainers[2].second;
 
     //*******************************************************************************************
-    /* Calculate and set left and right motor velocity. This is dependant on rho being > 100 or not. */
+    /* Calculate and set left and right motor velocity. This is dependent on rho being > 100 or not. */
 
-    double robot_xvel = 12 * (krho*newRho + kRhoI*newSumErrRho);
+    double robot_xvel = 15 * (krho*newRho + kRhoI*newSumErrRho);
     double robot_turnrate = 20 * (kalpha*newAlpha + kbeta*newBeta + kAlphaI*newSumErrAlpha + kBetaI*newSumErrBeta);
 
-    if (newRho > 40)        //40 because 40 can be reliably determined by vision
+    /*************************************************************************************************
+    / If distance < 40, turn on flag to rotate only
+    / Once on, this flag does not get turned off until the distance > 70
+    / providing a 40 distance window to compensate for noise and small
+    / translations during rotation. This calculator guarantees that the
+    / robot is within 70 distance of target.*/
+
+    if (newRho > 30) //Below this is too slow, above this is less precise
     {
         float Pi2R = 2*M_PI*wheel_radius;
         left_motor_velocity  = ((robot_xvel / Pi2R) - (wheel_separation * robot_turnrate/Pi2R))/2;
@@ -136,14 +141,23 @@ wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, double x_goal,
     }
     else
     {
-        float angDiff = Measurments::angleDiff(theta_current, theta_goal);
-        left_motor_velocity  = CLC_ROTATONG_VEL * -angDiff;
-        right_motor_velocity = CLC_ROTATONG_VEL * angDiff;
+        rotateOnly = true;
     }
 
+    if (newRho > 70)
+    {
+        rotateOnly = false;
+    }
+
+    if (rotateOnly)
+    {
+        float angDiff = Measurments::angleDiff(theta_current, theta_goal);
+            left_motor_velocity  = -CLC_ROTATING_VEL * angDiff;
+            right_motor_velocity =  CLC_ROTATING_VEL * angDiff;
+    }
 
     //*******************************************************************************************
-    //*******************************************************************************************
+    //Normalize wheel velocities between -100 and 100 *******************************************
 
     if (abs(left_motor_velocity) > 100 || abs(right_motor_velocity) > 100)
     {

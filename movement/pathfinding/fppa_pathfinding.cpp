@@ -8,6 +8,11 @@
 #include "model/gamemodel.h"
 #include "movement/pathfinding/fppa_pathfinding.h"
 
+/* FPPA Pathfinding Constants */
+#define FPPA_DEBUG 0
+#define MAX_RECURSION_DEPTH 3
+#define FRAME_UPDATE_COUNT 10
+
 /* Implementation of the Fast Path Planning Algorithm
  * In a sense, this is a mostly a generalized implementation.
  * But it is currently hardcoded to work with robobulls only.

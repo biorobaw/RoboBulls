@@ -16,7 +16,6 @@ public:
     void perform(Robot*);
 private:
     Point target = Point (-1600, 0);
-    Skill::Skill *s;
     Movement::GoToPosition move;
 };
 

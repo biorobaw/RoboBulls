@@ -10,14 +10,14 @@
     #define CLOSE_ENOUGH 110
     #define R 400
 #else
-    #define DIST 350
-    #define ANGLE (5*M_PI/180)
+    #define DIST 400
+    #define ANGLE (7*M_PI/180)
     #define CLOSE_ENOUGH 210
     #define R 700
 #endif
 
 PassBallSender::PassBallSender(const ParameterList& list) :
-                                kicked(0), GenericMovementBehavior(list)
+                                 GenericMovementBehavior(list), kicked(0)
 {
     UNUSED_PARAM(list);
     state = movingBehind;
@@ -27,23 +27,25 @@ Point PassBallSender::findPassPoint(Robot* sender)
 {
     GameModel *gm = GameModel::getModel();
 
-    Region *PlayerRegion;
+    Region PlayerRegion;
     vector<Robot*> myTeam = gm->getMyTeam();
     Point passPoint;
 
-    for (int it = 0 ; it < myTeam.size(); it++)
+    myTeamInfo.clear(); //Prevents old values from accumulating
+
+    for (unsigned it = 0 ; it < myTeam.size(); it++)
     {
         if (sender->getID() != myTeam[it]->getID())
         {
-            PlayerRegion = new Region(myTeam[it]->getRobotPosition().x + R,
-                                      myTeam[it]->getRobotPosition().x - R,
-                                      myTeam[it]->getRobotPosition().y + R,
-                                      myTeam[it]->getRobotPosition().y - R);
+            PlayerRegion = Region(myTeam[it]->getRobotPosition().x + R,
+                                  myTeam[it]->getRobotPosition().x - R,
+                                  myTeam[it]->getRobotPosition().y + R,
+                                  myTeam[it]->getRobotPosition().y - R);
             playersCharactristics pch;
             pch.position = myTeam[it]->getRobotPosition();
             pch.ID = myTeam[it]->getID();
             pch.distanceToGoal = Measurments::distance(myTeam[it]->getRobotPosition(), gm->getOpponentGoal());
-            pch.surroundingAppNum = PlayerRegion->numOfOpponents();
+            pch.surroundingAppNum = PlayerRegion.numOfOpponents();
             pch.distanceToRobot = Measurments::distance(myTeam[it]->getRobotPosition(), sender->getRobotPosition());
             myTeamInfo.push_back(pch);
         }
@@ -52,7 +54,7 @@ Point PassBallSender::findPassPoint(Robot* sender)
     int i;
     int lessSurroundings = 0;
     double distance;
-    for (int j = 0; j < myTeamInfo.size(); j++)
+    for (unsigned j = 0; j < myTeamInfo.size(); j++)
     {
         if (j == 0 && myTeamInfo[j].ID != 5)
         {
@@ -114,23 +116,26 @@ void PassBallSender::perform(Robot * robot)
     Point ballPos = gm->getBallPoint();
     Point behindBall = Point(DIST*cos(angleInv)+ballPos.x, DIST*sin(angleInv)+ballPos.y);
 
+    bool angleIsRight = abs(Measurments::angleDiff(robot->getOrientation(), angle)) < ANGLE;
+    bool robotCloseToBall = Measurments::distance(robot->getRobotPosition(), ballPos) < CLOSE_ENOUGH;
+    bool robotCloseToBehindBall = Measurments::distance(robot->getRobotPosition(), behindBall) < CLOSE_ENOUGH;
+
     int lVel, rVel;
-    int distance = Measurments::distance(robot->getRobotPosition(), passPoint);
+    int distance = Measurments::distance(ballPos, passPoint);
 
     switch(state)
     {
         case initial:
-        {
+        {cout << "1" << endl;
             target = behindBall;
             state = movingBehind;
         }
             break;
         case movingBehind:
-        {
+        {cout << "2" << endl;
             setMovementTargets(behindBall, angle, false);
             GenericMovementBehavior::perform(robot, Movement::Type::Default);
-            if (Measurments::distance(robot->getRobotPosition(), behindBall) < CLOSE_ENOUGH &&
-                    abs(Measurments::angleDiff(robot->getOrientation(), angle)) < ANGLE)
+            if (robotCloseToBehindBall && angleIsRight)
             {
                 state = approaching;
                 target = ballPos;
@@ -138,11 +143,13 @@ void PassBallSender::perform(Robot * robot)
         }
             break;
         case approaching:
-        {
+        {cout << "3" << endl;
             setMovementTargets(ballPos, angle, false);
             GenericMovementBehavior::perform(robot, Movement::Type::Default);
-            if (Measurments::distance(robot->getRobotPosition(), ballPos) < CLOSE_ENOUGH &&
-                    abs(Measurments::angleDiff(robot->getOrientation(), angle)) < ANGLE)
+            cout << "obotCloseToBall && angleIsRight\t" <<
+                    Measurments::distance(robot->getRobotPosition(), ballPos)
+                    << "\t" << abs(Measurments::angleDiff(robot->getOrientation(), angle))/M_PI*180 << endl;
+            if (robotCloseToBall && angleIsRight)
                 state = kicking;
             else if (Measurments::distance(target, ballPos) > CLOSE_ENOUGH)
             {
@@ -152,7 +159,7 @@ void PassBallSender::perform(Robot * robot)
         }
             break;
         case kicking:
-        {
+        {cout << "4" << endl;
             if (distance <= 1900)
             {
                 lVel = 1;
@@ -165,17 +172,19 @@ void PassBallSender::perform(Robot * robot)
             }
             else if (distance > 3800)
             {
-                lVel = 70;
-                rVel = 70;
+                lVel = 100;
+                rVel = 100;
             }
             Skill::Kick kick(lVel, rVel);
             kick.perform(robot);
-           state = idling;
-
+            kicked = 1;
+//            if (kicked)
+            if (!robotCloseToBall)
+                state = idling;
         }
         break;
         case idling:
-        {
+        {cout << "5" << endl;
             Skill::Stop stop;
             stop.perform(robot);
         }

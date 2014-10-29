@@ -28,20 +28,12 @@ void SimpleBehaviors::perform(Robot * r)
 
     Point rob1, rob2;
 
-    if (gm->getGameState() == 'H')
+    if (gm->getGameState() == 'H' || gm->getGameState() == ' ')
     {
-        for (Robot* rob: gm->getMyTeam())
+        Skill::Stop s;
+        for (unsigned i = 0; i < gm->getMyTeam().size(); i++)
         {
-            if (rob->getID() == 1)
-                rob1 = rob->getRobotPosition();
-            else if (rob->getID() == 2)
-                rob2 = rob->getRobotPosition();
-        }
-        cout << "distance\t" << Measurments::distance(rob1, rob2) << endl;
-        s = new Skill::Stop();
-        for (int i = 0; i < gm->getMyTeam().size(); i++)
-        {
-            s->perform(gm->getMyTeam().at(i));
+            s.perform(gm->getMyTeam().at(i));
         }
     }
     else if (gm->getGameState() == 'P')

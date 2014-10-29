@@ -7,9 +7,16 @@
 #include "model/gamemodel.h"
 #include "model/robot.h"
 
-//Used in the TwoVOne strategy to control the robot that travels with the ball
-//TwoVOne assigns this behavior to the robot closer to the ball
-//The complementary behavior is AttackSupport
+/*** Recycled behavior.
+ * Old description:
+ * Used in the TwoVOne strategy to control the robot that travels with the ball
+ * TwoVOne assigns this behavior to the robot closer to the ball
+ * The complementary behavior is AttackSupport
+ *
+ * New description:
+ * Used with NormalGameStrategy. Modernized to work better with arbitrary-ID
+ * robots, and is able to return more information about itself (hasKicked)
+ */
 
 class AttackMain:public Behavior
 {
@@ -17,15 +24,17 @@ public:
     AttackMain(const ParameterList & list);
    ~AttackMain();
     void perform(Robot *);
+    bool hasKicked();
 private:
     GameModel * gm;
-    Point drive_start_point, rp, sp, gp, bp;
+    Robot* support_attacker;
+    Point drive_start_point, rp, sp, gp, bp, stp;
 
     double goal_direction;
-    const double shot_distance = 1600;
+    const double shot_distance = 2500;
     const double drive_distance = 500;
 
-    bool touched_ball = false;
+    bool touched_ball = false, done = false;
     Skill::Skill* drive_skill;
 	Skill::Skill* pass_skill;
 	Skill::Skill* score_skill;

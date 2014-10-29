@@ -37,7 +37,7 @@ void IndiectKickStrategy::assignBeh()
         sender = myTeam.at(0);
     else if (myTeam.size() > 1)
     {
-        for (int i = 0; i < myTeam.size(); i++)
+        for (unsigned i = 0; i < myTeam.size(); i++)
         {
             if (i == 0 && myTeam.at(0)->getID() != 5)
                 sender = myTeam.at(i);
@@ -73,7 +73,7 @@ void IndiectKickStrategy::assignBeh()
      * sending the ball to. we call this robot
      * the receiver
      * */
-    Region *PlayerRegion;
+    Region PlayerRegion;
     struct playersCharactristics{
         int ID;
         int surroundingAppNum;  //number of opponent players surrounding our team players
@@ -81,38 +81,38 @@ void IndiectKickStrategy::assignBeh()
     };
     vector <playersCharactristics> myTeamInfo;
 
-    for (int it = 0 ; it < myTeam.size(); it++)
+    for (unsigned it = 0 ; it < myTeam.size(); it++)
     {
         if (sender->getID() != myTeam[it]->getID())
         {
-            PlayerRegion = new Region(myTeam[it]->getRobotPosition().x + R,
-                                      myTeam[it]->getRobotPosition().x - R,
-                                      myTeam[it]->getRobotPosition().y + R,
-                                      myTeam[it]->getRobotPosition().y - R);
+            PlayerRegion = Region(myTeam[it]->getRobotPosition().x + R,
+                                   myTeam[it]->getRobotPosition().x - R,
+                                   myTeam[it]->getRobotPosition().y + R,
+                                   myTeam[it]->getRobotPosition().y - R);
             playersCharactristics pch;
             pch.ID = myTeam[it]->getID();
-            pch.surroundingAppNum = PlayerRegion->numOfOpponents();
+            pch.surroundingAppNum = PlayerRegion.numOfOpponents();
             pch.distanceToRobot = Measurments::distance(myTeam[it]->getRobotPosition(), sender->getRobotPosition());
             myTeamInfo.push_back(pch);
         }
     }
 
-    int i;
+    int k = 0;
     int lessSurroundings = 0;
     double distance;
-    for (int j = 0; j < myTeamInfo.size(); j++)
+    for (unsigned j = 0; j < myTeamInfo.size(); j++)
     {
         if (j == 0 && myTeamInfo[j].ID != 5)
         {
             lessSurroundings = myTeamInfo[j].surroundingAppNum;
             distance = myTeamInfo[j].distanceToRobot;
-            i = 0;
+            k = 0;
         }
         else if (j == 0 && myTeamInfo[j].ID == 5)
         {
             lessSurroundings = myTeamInfo[1].surroundingAppNum;
             distance = myTeamInfo[1].distanceToRobot;
-            i = 1;
+            k = 1;
         }
         else
         {
@@ -121,7 +121,7 @@ void IndiectKickStrategy::assignBeh()
             {
                 lessSurroundings = myTeamInfo[j].surroundingAppNum;
                 distance = myTeamInfo[j].distanceToRobot;
-                i = j;
+                k = j;
             }
             else if (lessSurroundings == myTeamInfo[j].surroundingAppNum &&
                              myTeamInfo[j].distanceToRobot < distance &&
@@ -129,18 +129,20 @@ void IndiectKickStrategy::assignBeh()
             {
                 lessSurroundings = myTeamInfo[j].surroundingAppNum;
                 distance = myTeamInfo[j].distanceToRobot;
-                i = j;
+                k = j;
             }
         }
     }
-    int receiverID = myTeamInfo[i].ID;
+    int receiverID = myTeamInfo[k].ID;
 
     for (Robot *rob: myTeam)
     {
+//        if (rob->getID() != senderID)
         if (rob->getID() == receiverID)
             receiver = rob;
     }
 
     //Assigning passBallReceiver behavior to the receiver robot
     receiverAssignment.assignBeh(receiver);
+    cout << "sender\t" << sender->getRobotPosition().toString() << "receiver\t" << receiver->getRobotPosition().toString()<< endl;
 }

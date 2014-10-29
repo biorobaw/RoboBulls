@@ -17,12 +17,12 @@ const robotType robotIDTypes[] = {
  /*3*/	differential,
  /*4*/	differential,
 #if SIMULATED
-  /*5*/	differential,
+  /*5*/	fourWheelOmni,
 #else
  /*5*/	threeWheelOmni,
 #endif
 
- /*6*/	fourWheelOmni,
+ /*6*/	differential,
  /*7*/	differential,
  /*8*/	differential,
  /*9*/	differential

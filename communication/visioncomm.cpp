@@ -10,15 +10,14 @@ VisionComm::VisionComm(GameModel *gm)
 // Use different ports depending on whether it is simulated or the actual vision system
 #if SIMULATED
 
-    //Shamsi Vision Address
-//    client = new RoboCupSSLClient(10020,"224.5.23.21");
+//    //Shamsi Vision Address
+//    client = new RoboCupSSLClient(10020,"224.5.23.17");
 
     //James Vision Address
     //client = new RoboCupSSLClient(10020,"224.5.23.2");
 
     //Narges Vision Address
     client = new RoboCupSSLClient(10020,"224.5.23.8");
-
 #else
     client = new RoboCupSSLClient();
 #endif
@@ -60,6 +59,7 @@ void VisionComm::updateInfo(const SSL_DetectionRobot& robot, int detectedTeamCol
         {
             rob = new Robot();
             rob->setID(id);
+            rob->setTeam(detectedTeamColor == ourTeamColor);
             currentTeam->push_back(rob);
         }
 
@@ -70,6 +70,7 @@ void VisionComm::updateInfo(const SSL_DetectionRobot& robot, int detectedTeamCol
         rob->setOrientation(robot.orientation());
 
         gm->setRobotUpdated(rob, detectedTeamColor);
+//        cout << "robot\t" << rob->getID() << "\tpos\t" << rob->getRobotPosition().toString() << "\torg\t" << rob->getOrientation()*180/M_PI << endl;
     }
 }
 
@@ -150,7 +151,7 @@ bool VisionComm::receive()
     }
 //        cout << "Size at end of detection: " << gamemodel->getMyTeam().size()+gamemodel->getOponentTeam().size() << endl;
 //    cout <<gamemodel->toString();
-
+//    cout << gamemodel->getBallPoint().toString() << endl;
     return true;
 }
 

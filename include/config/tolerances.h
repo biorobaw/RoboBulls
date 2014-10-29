@@ -9,6 +9,7 @@
 #else
  #define ROBOT_RADIUS 200
 #endif
+#define ROBOT_SIZE (ROBOT_RADIUS * 2.5)
 
 /* DIST_TOLERANCE: How close the robot needs to be to the target
  * before it is considered at that position
