@@ -10,6 +10,6 @@
  * define 1 = Simulated; grSim
  */
 
-#define SIMULATED 1
+#define SIMULATED 0
 
 #endif

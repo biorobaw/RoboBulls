@@ -49,6 +49,7 @@ void VisionComm::updateInfo(const SSL_DetectionRobot& robot, int detectedTeamCol
     vector<Robot*>* currentTeam;
     GameModel* gm = GameModel::getModel();
 
+
     if (detectedTeamColor == ourTeamColor) {
         currentTeam = &gamemodel->getMyTeam();
     } else {
@@ -119,12 +120,15 @@ bool VisionComm::receive()
                     {
                         conf = ball.confidence();
 
-                        if(conf > CONF_THRESHOLD)
+                        if(conf > CONF_THRESHOLD_BALL)
                         {
-                            ballPoint.x = ball.x();
-                            ballPoint.y = ball.y();
+                            if ((ball.x() >= 0 && detection.camera_id() == 0) ||
+                                    (ball.x() < 0 && detection.camera_id() == 1)){
+                                ballPoint.x = ball.x();
+                                ballPoint.y = ball.y();
 
-                            gamemodel->setBallPoint(ballPoint);
+                                gamemodel->setBallPoint(ballPoint);
+                            }
                         }
                     }
                 }
@@ -133,9 +137,11 @@ bool VisionComm::receive()
                 for (int i=0; i < robots_blue_n; i++)
                 {
                     float confR = detection.robots_blue(i).confidence();
-                    if (confR > CONF_THRESHOLD)
+                    if (confR > CONF_THRESHOLD_BOTS)
                     {
-                        updateInfo(detection.robots_blue(i), TEAM_BLUE);
+                        if ((detection.robots_blue(i).x() >= 0 && detection.camera_id() == 0)
+                                || (detection.robots_blue(i).x() < 0 && detection.camera_id() == 1) )
+                            updateInfo(detection.robots_blue(i), TEAM_BLUE);
                     }
                 }
 
@@ -144,9 +150,11 @@ bool VisionComm::receive()
                 {
                     float confR = detection.robots_yellow(i).confidence();
 
-                    if (confR > CONF_THRESHOLD)
+                    if (confR > CONF_THRESHOLD_BOTS)
                     {
-                        updateInfo(detection.robots_yellow(i), TEAM_YELLOW);
+                        if ((detection.robots_yellow(i).x() >= 0 && detection.camera_id() == 0)
+                                || (detection.robots_yellow(i).x() < 0 && detection.camera_id() == 1) )
+                            updateInfo(detection.robots_yellow(i), TEAM_YELLOW);
                     }
                 }
             }//if_team
