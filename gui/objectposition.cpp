@@ -41,6 +41,14 @@ void ObjectPosition::getNewBotPoints() {
     }
 }
 
+void ObjectPosition::setupBotSpeeds() {
+    for (int i=0; i<dash->teamSize; i++) {
+        if (dash->gamemodel->find(i, dash->gamemodel->getMyTeam()) != NULL) {
+           botSpeeds.push_back(0);
+        }
+    }
+}
+
 void ObjectPosition::getBotSpeeds() {
     for (int i=0; i<dash->teamSize; i++) {
         if (dash->gamemodel->find(i, dash->gamemodel->getMyTeam()) != NULL) {
@@ -56,10 +64,7 @@ void ObjectPosition::getBotSpeeds() {
             c = ( pow((currentPos.x - pastPos.x), 2) + pow((currentPos.y - pastPos.y), 2) );
 
             s = sqrt(c);
-//            botSpeeds[i] = s;
-            botSpeeds.push_back(s);
-        } else {
-            botSpeeds.push_back(0);
+            botSpeeds[i] = s;
         }
     }
 

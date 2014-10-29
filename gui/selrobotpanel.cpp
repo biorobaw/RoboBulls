@@ -16,10 +16,8 @@ void SelRobotPanel::setGuiOverride() {
     // Required for Override to work with Vision
     if (dash->ui->check_botOverride->isChecked()) {
         dash->guiOverride = true;
-//        dash->guiinterface->guiOverride = true;
     } else {
         dash->guiOverride = false;
-//        dash->guiinterface->guiOverride = false;
     }
 
 }
@@ -70,16 +68,15 @@ void SelRobotPanel::updateSelectedBotPanel(int id) {
         dash->ui->frame_primeBot->show();
 
         v = dash->getVelocity(id);
-        s = dash->objectPos->botSpeeds[id] * 20;
-        o = dash->objectPos->oldSpeeds[id] * 20;
-//        guiPrintRobot(id, "Speed: " + to_string(s) );
+        s = dash->objectPos->botSpeeds[id] * dash->objectPos->speedModifier;
+        o = dash->objectPos->oldSpeeds[id] * dash->objectPos->speedModifier;
 //        cout << "Robot " << id << " speed: " << s << "\n";
-//        dash->guiPrint("Robot " + to_string(id) + " speed: " + to_string(s));
         dash->ui->gView_robot_prime->setScene(dash->robotpanel->botIconSelScenes[id]);
         dash->ui->gView_robot_prime->show();
-//        dash->ui->dial_botVel_->setPalette(Qt::darkGreen);
+        // display velocity
         dash->ui->dial_botVel_->setValue(v);
         dash->ui->lcd_botVel_->display(v);
+        // display
         dash->ui->dial_botSpeed_->setValue(s);
         dash->ui->lcd_botSpeed_->display(s);
         dash->ui->lcd_orient_prime->display(dash->objectPos->getBotOrientString(id));
@@ -101,7 +98,7 @@ void SelRobotPanel::updateSelectedBotPanel(int id) {
 
         // Selected Bot Panel speed dial
         int maxSpeed = dash->ui->dial_botSpeed_->maximum();
-        if (dash->ui->dial_botSpeed_->value() > 0) {
+        if (dash->ui->dial_botSpeed_->value() > dash->objectPos->movementMin) {
             dash->ui->dial_botSpeed_->setStyleSheet("background-color: rgb(0, 191, 255);");
             dash->ui->lcd_botSpeed_->setStyleSheet("background-color: rgb(0, 140, 200);");
             if (dash->ui->dial_botSpeed_->value() > maxSpeed*.2) {

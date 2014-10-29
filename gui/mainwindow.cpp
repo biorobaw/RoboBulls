@@ -82,6 +82,7 @@ MainWindow::MainWindow(QWidget *parent) :
     selrobotpanel->setupSelRobotPanel();
     setupKeyShortcuts();
     objectPos->setupPastBotPoints();
+    objectPos->setupBotSpeeds();
     ui->btn_connectGui->setEnabled(true);
 
 
