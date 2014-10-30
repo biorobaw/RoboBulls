@@ -3,13 +3,14 @@
 
 #include <QString>
 #include "mainwindow.h"
+#include "teamsize.h"
 
 class SelRobotPanel
 {
 public:
     SelRobotPanel(MainWindow * mw);
     MainWindow * dash;
-    QString botBehavior[6];
+    QString botBehavior[10];
 
     void setGuiOverride();
     void guiPrintRobot(int robotID, std::string output);

@@ -45,13 +45,22 @@ public:
     GuiRobot *robot3;
     GuiRobot *robot4;
     GuiRobot *robot5;
+    GuiRobot *robot6;
+    GuiRobot *robot7;
+    GuiRobot *robot8;
+    GuiRobot *robot9;
     std::vector<GuiRobot*> guiTeam;
+    // ID labels
     GuiBotLabel *botLabel0;
     GuiBotLabel *botLabel1;
     GuiBotLabel *botLabel2;
     GuiBotLabel *botLabel3;
     GuiBotLabel *botLabel4;
     GuiBotLabel *botLabel5;
+    GuiBotLabel *botLabel6;
+    GuiBotLabel *botLabel7;
+    GuiBotLabel *botLabel8;
+    GuiBotLabel *botLabel9;
     std::vector<GuiBotLabel*> guiLabels;
     // Opponents' robots
     GuiRobot *robot0Y;
@@ -60,6 +69,10 @@ public:
     GuiRobot *robot3Y;
     GuiRobot *robot4Y;
     GuiRobot *robot5Y;
+    GuiRobot *robot6Y;
+    GuiRobot *robot7Y;
+    GuiRobot *robot8Y;
+    GuiRobot *robot9Y;
     std::vector<GuiRobot*> guiTeamY;
     GuiBotLabel *botLabel0Y;
     GuiBotLabel *botLabel1Y;
@@ -67,6 +80,10 @@ public:
     GuiBotLabel *botLabel3Y;
     GuiBotLabel *botLabel4Y;
     GuiBotLabel *botLabel5Y;
+    GuiBotLabel *botLabel6Y;
+    GuiBotLabel *botLabel7Y;
+    GuiBotLabel *botLabel8Y;
+    GuiBotLabel *botLabel9Y;
     std::vector<GuiBotLabel*> guiLabelsY;
     // "Camera" type functions for manipulating QGraphicsView
     int centeredBotID = -1;

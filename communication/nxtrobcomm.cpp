@@ -62,7 +62,7 @@ void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
         packet->dollar = '$';
 
         // Ryan overriding the zero-reset in the event of a manual override from the GUI
-        if (GuiInterface::getGuiInterface()->isOverriddenBot()[i]) {
+        if (!GuiInterface::getGuiInterface()->isOverride()) {
             // Clear robot information
             rob->setL(0);
             rob->setR(0);
