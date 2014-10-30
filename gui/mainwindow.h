@@ -91,7 +91,8 @@ public:
     void setMyVelocity();
     // 10/23/14
 //    int teamSize = gamemodel->getMyTeam().size();
-    int teamSize = 6;
+    int teamSize_blue;
+    int teamSize_yellow;
     bool guiOverride = false;           // For the purpose of overriding gamemodel's commands with our own
     int botOverride = -1;               // the id of the currently overridden bot
     std::vector<bool> overriddenBots;   // keeps track of whether each bot is overridden

@@ -208,7 +208,8 @@ HEADERS += \
     gui/selrobotpanel.h \
     gui/objectposition.h \
     gui/gamepanel.h \
-    gui/guiinterface.h
+    gui/guiinterface.h \
+    gui/teamsize.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 

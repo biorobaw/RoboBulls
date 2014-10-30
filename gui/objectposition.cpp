@@ -6,11 +6,10 @@
 
 ObjectPosition::ObjectPosition(MainWindow * mw) {
     dash = mw;
-    teamSize = dash->teamSize;
 }
 
 void ObjectPosition::setupPastBotPoints() {
-    for (int i=0; i<dash->teamSize; i++) {
+    for (int i=0; i<dash->teamSize_blue; i++) {
         if (dash->gamemodel->find(i, dash->gamemodel->getMyTeam()) != NULL) {
             pastBotPoints[i].x = 0;
             pastBotPoints[i].y = 0;
@@ -23,7 +22,7 @@ void ObjectPosition::setupPastBotPoints() {
 void ObjectPosition::getPastBotPoints() {
 //    if (dash->gamepanel->tick && dash->gamepanel->seconds%2 == 0) {
 //    if (dash->gamepanel->tick) {
-        for (int i=0; i<dash->teamSize; i++) {
+        for (int i=0; i<dash->teamSize_blue; i++) {
             if (dash->gamemodel->find(i, dash->gamemodel->getMyTeam()) != NULL) {
                 pastBotPoints[i].x = getBotCoordX(true,i);
                 pastBotPoints[i].y = getBotCoordY(true,i);
@@ -33,7 +32,7 @@ void ObjectPosition::getPastBotPoints() {
 }
 
 void ObjectPosition::getNewBotPoints() {
-    for (int i=0; i<dash->teamSize; i++) {
+    for (int i=0; i<dash->teamSize_blue; i++) {
         if (dash->gamemodel->find(i, dash->gamemodel->getMyTeam()) != NULL) {
             newBotPoints[i].x = getBotCoordX(true,i);
             newBotPoints[i].y = getBotCoordY(true,i);
@@ -42,7 +41,7 @@ void ObjectPosition::getNewBotPoints() {
 }
 
 void ObjectPosition::setupBotSpeeds() {
-    for (int i=0; i<dash->teamSize; i++) {
+    for (int i=0; i<dash->teamSize_blue; i++) {
         if (dash->gamemodel->find(i, dash->gamemodel->getMyTeam()) != NULL) {
            botSpeeds.push_back(0);
         }
@@ -50,7 +49,7 @@ void ObjectPosition::setupBotSpeeds() {
 }
 
 void ObjectPosition::getBotSpeeds() {
-    for (int i=0; i<dash->teamSize; i++) {
+    for (int i=0; i<dash->teamSize_blue; i++) {
         if (dash->gamemodel->find(i, dash->gamemodel->getMyTeam()) != NULL) {
             float s = 0;
             double c;
@@ -71,7 +70,7 @@ void ObjectPosition::getBotSpeeds() {
 }
 
 void ObjectPosition::getOldSpeeds() {
-    for (int i=0; i<dash->teamSize; i++) {
+    for (int i=0; i<dash->teamSize_blue; i++) {
         if (dash->gamemodel->find(i, dash->gamemodel->getMyTeam()) != NULL) {
             oldSpeeds[i] = botSpeeds[i];
         }

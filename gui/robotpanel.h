@@ -47,6 +47,11 @@ public:
     QGraphicsScene *scene_botIcon_3;
     QGraphicsScene *scene_botIcon_4;
     QGraphicsScene *scene_botIcon_5;
+    QGraphicsScene *scene_botIcon_6;
+    QGraphicsScene *scene_botIcon_7;
+    QGraphicsScene *scene_botIcon_8;
+    QGraphicsScene *scene_botIcon_9;
+
     std::vector<QGraphicsScene*> botIconScenes;
     // Bot selected icon scenes
     QGraphicsScene *scene_botIconSel_0;
@@ -55,6 +60,11 @@ public:
     QGraphicsScene *scene_botIconSel_3;
     QGraphicsScene *scene_botIconSel_4;
     QGraphicsScene *scene_botIconSel_5;
+    QGraphicsScene *scene_botIconSel_6;
+    QGraphicsScene *scene_botIconSel_7;
+    QGraphicsScene *scene_botIconSel_8;
+    QGraphicsScene *scene_botIconSel_9;
+
     std::vector<QGraphicsScene*> botIconSelScenes;
     // Bot icons
     GuiRobot *robotIcon0;
@@ -63,6 +73,11 @@ public:
     GuiRobot *robotIcon3;
     GuiRobot *robotIcon4;
     GuiRobot *robotIcon5;
+    GuiRobot *robotIcon6;
+    GuiRobot *robotIcon7;
+    GuiRobot *robotIcon8;
+    GuiRobot *robotIcon9;
+
     std::vector<GuiRobot*> botIcons;
     // Bot icons for the selected bot panel
     GuiRobot *robotIcon0Sel;
@@ -71,6 +86,11 @@ public:
     GuiRobot *robotIcon3Sel;
     GuiRobot *robotIcon4Sel;
     GuiRobot *robotIcon5Sel;
+    GuiRobot *robotIcon6Sel;
+    GuiRobot *robotIcon7Sel;
+    GuiRobot *robotIcon8Sel;
+    GuiRobot *robotIcon9Sel;
+
     std::vector<GuiRobot*> botIconsSelected;
     // Ball Icon (eventually move to diff class)
     GuiBall *ballIcon;
