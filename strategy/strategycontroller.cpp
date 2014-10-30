@@ -13,6 +13,7 @@
 #include "strategy/freekickstrategy.h"
 #include "strategy/haltstrategy.h"
 #include "strategy/attackstrategy.h"
+#include "strategy/normalgamestrategy.h"
 #include "strategy/indiectkickstrategy.h"
 
 #include "movement/pathfinding/fppa_pathfinding.h"
@@ -48,7 +49,7 @@ void StrategyController::gameModelUpdated()
 
     cout << model->getGameState() << endl;
 
-//#if 1
+//#if 0
     switch(model->getGameState())
     {
     case 'S':    //stop game
@@ -80,8 +81,10 @@ void StrategyController::gameModelUpdated()
     default:    //Anything Else
         activeStrategy = new TestStrategy();
     };
+//#else
+//    activeStrategy = new PenaltyStrategy();
 //#endif
-//    activeStrategy = new HaltStrategy();
+
     activeStrategy->assignBeh();
 }
 

@@ -26,7 +26,7 @@ public:
     {
         UNUSED_PARAM(list);
         targetPoint = GameModel::getModel()->getPenaltyPoint();
-        db = new Skill::DriveBall(targetPoint, 0);
+        db = new Skill::KickToPoint(targetPoint);
     }
 
     void perform(Robot * robot)
@@ -35,7 +35,7 @@ public:
     }
 
 private:
-    Skill::DriveBall* db;
+    Skill::Skill* db;
     Point targetPoint;
 };
 
@@ -131,9 +131,9 @@ void TestStrategy::assignBeh()
 {
     GameModel *gm = GameModel::getModel();
 //*************************************************************
-////  Shamsi Code
-//    BehaviorAssignment<ShamsiKickToPoint> assignment(true);
-//    assignment.assignBeh({5});
+//////  Shamsi Code
+//    BehaviorAssignment<TestBehavior> assignment(true);
+//    assignment.assignBeh();
 
 
     //Martin code
@@ -197,6 +197,7 @@ void TestStrategy::assignBeh()
 
 //**************************************************************
 //     Narges code testing DriveBallAndKick
+    /*
     Point ballPos = gm->getBallPoint();
     vector<Robot*> myTeam = gm->getMyTeam();
     BehaviorAssignment<TestBehavior> assignment(true);
@@ -250,7 +251,7 @@ void TestStrategy::assignBeh()
                 simpleAssignment.assignBeh(myTeam.at(i));
         }
     }
-
+*/
 //***********************************************************************************
 
 

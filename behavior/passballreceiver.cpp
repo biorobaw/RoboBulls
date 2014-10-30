@@ -65,21 +65,30 @@ void PassBallReceiver::perform(Robot *robot)
                     state = kicking;
                 }
                 else if (robotCloseToball && !angleIsRight && ballInFront)
+                {
                     state = approaching;
+                    target = ballPos;
+                }
                 else
+                {
                     state = moving;
+                    target = behindBall;
+                }
             }
                 break;
             case moving:
             {cout << "moving" << endl;
-                setMovementTargets(behindBall, angle, false);
+                setMovementTargets(behindBall, angle, true);
                 GenericMovementBehavior::perform(robot, Movement::Type::Default);
                 cout << "robotBehindBall && angleIsRight\t" <<
                 Measurments::distance(robotPos, ballPos)
                 << "\t" <<
                 abs(Measurments::angleDiff(robot->getOrientation(), angle))/M_PI*180 << endl;
                 if (robotBehindBall && angleIsRight)
+                {
                     state = approaching;
+                    target = ballPos;
+                }
 
             }
                 break;
@@ -94,8 +103,11 @@ void PassBallReceiver::perform(Robot *robot)
                 {
                     state = kicking;
                 }
-//                else if (!robotBehindBall)
-//                    state = moving;
+                else if (!Measurments::isClose(target, ballPos, CLOSE_ENOUGH))
+                {
+                    state = moving;
+                    target = behindBall;
+                }
             }
                 break;
             case kicking:

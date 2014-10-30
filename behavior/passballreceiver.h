@@ -29,6 +29,7 @@ public:
 private:
     Point ballLastSeen;
     Point ballOrg;
+    Point target;
     bool hasKicked;
     int count;
     bool detectedBall;

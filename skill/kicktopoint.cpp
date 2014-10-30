@@ -8,7 +8,7 @@
  #define CENTER_TOLERANCE   0.40
  #define POSITION_ANGLE_TOL 10*M_PI/180
 #else
- #define KDIST_TOLERANCE    140
+ #define KDIST_TOLERANCE    150
  #define CENTER_TOLERANCE   0.70
  #define POSITION_ANGLE_TOL ROT_TOLERANCE
 #endif
@@ -43,21 +43,11 @@ void KickToPoint::doPositioningState(Robot *robot)
 #if KICK_TO_POINT_DEBUG
     std::cout << "KTP POSITION" << std::endl;
 #endif
-    move_skill.recreate(behindBall, ballTargetAngle,false);
+    //move_skill.setMovementTolerances(70, ROT_TOLERANCE*0.50);
+    move_skill.recreate(behindBall, ballTargetAngle, false);
 
-    if (robot->type()!=differential)
-    {
-        if(move_skill.perform(robot,Movement::Type::facePoint))
-        {
-            state = Moving;
-        }
-    }
-    else
-    {
-        if(move_skill.perform(robot))
-        {
-            state = Moving;
-        }
+    if(move_skill.perform(robot,Movement::Type::facePoint)) {
+        state = Moving;
     }
 }
 
@@ -76,6 +66,7 @@ void KickToPoint::doMovingState(Robot *robot)
             < ROBOT_RADIUS * CENTER_TOLERANCE;
 
     bool robotFacingTarget
+
         = Measurments::isClose(robAngle, robTargetAngle, m_kickAngleTol);
 
     bool robotCloseToBall
@@ -125,8 +116,8 @@ void KickToPoint::doKickingState(Robot *robot)
     std::cout << "KTP KICK" << std::endl;
 #endif
     if(!hasKicked) {
-//        ::Skill::Kick k;
-//        k.perform(robot);
+        ::Skill::Kick k;
+        k.perform(robot);
         hasKicked = true;
         state = Positioning;
     }
