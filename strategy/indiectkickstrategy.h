@@ -30,6 +30,7 @@
  * to find the robot that sender will send the ball to
  * */
 
+
 class IndiectKickStrategy : public Strategy
 {
 public:

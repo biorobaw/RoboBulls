@@ -58,6 +58,7 @@ void KickToPoint::doMovingState(Robot *robot)
     std::cout << "KTP MOVE" << std::endl;
 #endif
     float robTargetAngle = Measurments::angleBetween(robPoint, *externTargetPtr);
+
     float robBallAngle = Measurments::angleBetween(robPoint, ballPoint);
     robot->setDrible(true);
 

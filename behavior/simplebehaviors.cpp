@@ -68,4 +68,5 @@ void SimpleBehaviors::perform(Robot * r)
         move.recreate(position, direction, false);
         move.perform(r);
     }
+
 }

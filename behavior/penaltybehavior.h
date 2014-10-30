@@ -9,7 +9,7 @@
 #include "movement/gotopositionwithorientation.h"
 #include "model/gamemodel.h"
 
-#define PENALTY_BEHAVIOR_DEBUG 0
+#define PENALTY_BEHAVIOR_DEBUG 1
 
 /*
  * Penalty Behavior

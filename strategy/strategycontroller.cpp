@@ -15,8 +15,10 @@
 #include "strategy/attackstrategy.h"
 #include "strategy/normalgamestrategy.h"
 #include "strategy/indiectkickstrategy.h"
-
 #include "movement/pathfinding/fppa_pathfinding.h"
+
+#include <QApplication>
+#include "gui/mainwindow.h"
 
 using namespace std;
 
@@ -85,7 +87,9 @@ void StrategyController::gameModelUpdated()
 //    activeStrategy = new PenaltyStrategy();
 //#endif
 
+
     activeStrategy->assignBeh();
+
 }
 
 void StrategyController::gameModelContinued()
@@ -101,7 +105,7 @@ void StrategyController::clearCurrentStrategy()
 {
     delete activeStrategy;
     activeStrategy = nullptr;
-
+    
     for(Robot* robot : model->getMyTeam())
         robot->clearCurrentBeh();
 }
@@ -122,10 +126,13 @@ void StrategyController::frameEnd()
         if(rob->hasBeh)
             rob->getCurrentBeh()->perform(rob);
     }
+//    QApplication a(argc, argv);
+//    MainWindow w;
+//    w.show();
+
 
     RobComm * robcom = RobComm::getRobComm();
     robcom->sendVelsLarge(model->getMyTeam());
-
     FPPA::pathfindingEnd();
 }
 

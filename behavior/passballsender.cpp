@@ -126,13 +126,13 @@ void PassBallSender::perform(Robot * robot)
     switch(state)
     {
         case initial:
-        {cout << "1" << endl;
+        {
             target = behindBall;
             state = movingBehind;
         }
             break;
         case movingBehind:
-        {cout << "2" << endl;
+        {
             setMovementTargets(behindBall, angle, false);
             GenericMovementBehavior::perform(robot, Movement::Type::Default);
             if (robotCloseToBehindBall && angleIsRight)
@@ -143,12 +143,12 @@ void PassBallSender::perform(Robot * robot)
         }
             break;
         case approaching:
-        {cout << "3" << endl;
+        {
             setMovementTargets(ballPos, angle, false);
             GenericMovementBehavior::perform(robot, Movement::Type::Default);
-            cout << "obotCloseToBall && angleIsRight\t" <<
-                    Measurments::distance(robot->getRobotPosition(), ballPos)
-                    << "\t" << abs(Measurments::angleDiff(robot->getOrientation(), angle))/M_PI*180 << endl;
+//            cout << "obotCloseToBall && angleIsRight\t" <<
+//                    Measurments::distance(robot->getRobotPosition(), ballPos)
+//                    << "\t" << abs(Measurments::angleDiff(robot->getOrientation(), angle))/M_PI*180 << endl;
             if (robotCloseToBall && angleIsRight)
                 state = kicking;
             else if (Measurments::distance(target, ballPos) > CLOSE_ENOUGH)
@@ -159,7 +159,7 @@ void PassBallSender::perform(Robot * robot)
         }
             break;
         case kicking:
-        {cout << "4" << endl;
+        {
             if (distance <= 1900)
             {
                 lVel = 1;
@@ -178,13 +178,12 @@ void PassBallSender::perform(Robot * robot)
             Skill::Kick kick(lVel, rVel);
             kick.perform(robot);
             kicked = 1;
-//            if (kicked)
             if (!robotCloseToBall)
                 state = idling;
         }
         break;
         case idling:
-        {cout << "5" << endl;
+        {
             Skill::Stop stop;
             stop.perform(robot);
         }

@@ -5,6 +5,7 @@
 #include "behavior/simplebehaviors.h"
 #include "behavior/defendfarfromball.h"
 
+
 FreeKickStrategy::FreeKickStrategy()
 {
 }
