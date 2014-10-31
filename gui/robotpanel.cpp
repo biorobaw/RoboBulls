@@ -108,6 +108,10 @@ void RobotPanel::setupBotPanel() {
     robotIcon3 = new GuiRobot;
     robotIcon4 = new GuiRobot;
     robotIcon5 = new GuiRobot;
+    robotIcon6 = new GuiRobot;
+    robotIcon7 = new GuiRobot;
+    robotIcon8 = new GuiRobot;
+    robotIcon9 = new GuiRobot;
     botIcons.push_back(robotIcon0);
     botIcons.push_back(robotIcon1);
     botIcons.push_back(robotIcon2);

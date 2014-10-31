@@ -75,7 +75,7 @@ MainWindow::MainWindow(QWidget *parent) :
     gamepanel = new GamePanel(this);
 
     // Generating GUI
-    teamSize_blue = 6;
+    teamSize_blue = 10;
     teamSize_yellow = 10;
     fieldpanel->setUpScene();
     fieldpanel->defaultZoom();
