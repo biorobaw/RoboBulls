@@ -51,7 +51,10 @@ void StrategyController::gameModelUpdated()
 
     cout << model->getGameState() << endl;
 
-#if 0
+    /* Testing macro: Change this to 0 to ignore refcom commands
+     * to test a single strategy
+     */
+#if 1
     switch(model->getGameState())
     {
     case 'S':    //stop game
@@ -84,9 +87,8 @@ void StrategyController::gameModelUpdated()
         activeStrategy = new TestStrategy();
     };
 #else
-    activeStrategy = new NormalGameStrategy();
+    activeStrategy = new TestStrategy();
 #endif
-
 
     activeStrategy->assignBeh();
 
@@ -126,10 +128,6 @@ void StrategyController::frameEnd()
         if(rob->hasBeh)
             rob->getCurrentBeh()->perform(rob);
     }
-//    QApplication a(argc, argv);
-//    MainWindow w;
-//    w.show();
-
 
     RobComm * robcom = RobComm::getRobComm();
     robcom->sendVelsLarge(model->getMyTeam());
