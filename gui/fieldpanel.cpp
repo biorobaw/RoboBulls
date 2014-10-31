@@ -39,12 +39,21 @@ void FieldPanel::setUpScene() {
     botLabel3 = new GuiBotLabel;
     botLabel4 = new GuiBotLabel;
     botLabel5 = new GuiBotLabel;
+    botLabel6 = new GuiBotLabel;
+    botLabel7 = new GuiBotLabel;
+    botLabel8 = new GuiBotLabel;
+    botLabel9 = new GuiBotLabel;
+
     guiLabels.push_back(botLabel0);
     guiLabels.push_back(botLabel1);
     guiLabels.push_back(botLabel2);
     guiLabels.push_back(botLabel3);
     guiLabels.push_back(botLabel4);
     guiLabels.push_back(botLabel5);
+    guiLabels.push_back(botLabel6);
+    guiLabels.push_back(botLabel7);
+    guiLabels.push_back(botLabel8);
+    guiLabels.push_back(botLabel9);
 
     // Bot Labels - yellow team
     botLabel0Y = new GuiBotLabel;
@@ -53,12 +62,21 @@ void FieldPanel::setUpScene() {
     botLabel3Y = new GuiBotLabel;
     botLabel4Y = new GuiBotLabel;
     botLabel5Y = new GuiBotLabel;
+    botLabel6Y = new GuiBotLabel;
+    botLabel7Y = new GuiBotLabel;
+    botLabel8Y = new GuiBotLabel;
+    botLabel9Y = new GuiBotLabel;
+
     guiLabelsY.push_back(botLabel0Y);
     guiLabelsY.push_back(botLabel1Y);
     guiLabelsY.push_back(botLabel2Y);
     guiLabelsY.push_back(botLabel3Y);
     guiLabelsY.push_back(botLabel4Y);
     guiLabelsY.push_back(botLabel5Y);
+    guiLabelsY.push_back(botLabel6Y);
+    guiLabelsY.push_back(botLabel7Y);
+    guiLabelsY.push_back(botLabel8Y);
+    guiLabelsY.push_back(botLabel9Y);
 
     // Blue Team Robots
     robot0 = new GuiRobot();
@@ -67,12 +85,21 @@ void FieldPanel::setUpScene() {
     robot3 = new GuiRobot();
     robot4 = new GuiRobot();
     robot5 = new GuiRobot();
+    robot6 = new GuiRobot();
+    robot7 = new GuiRobot();
+    robot8 = new GuiRobot();
+    robot9 = new GuiRobot();
+
     guiTeam.push_back(robot0);
     guiTeam.push_back(robot1);
     guiTeam.push_back(robot2);
     guiTeam.push_back(robot3);
     guiTeam.push_back(robot4);
     guiTeam.push_back(robot5);
+    guiTeam.push_back(robot6);
+    guiTeam.push_back(robot7);
+    guiTeam.push_back(robot8);
+    guiTeam.push_back(robot9);
 
     // Yellow Team
     robot0Y = new GuiRobot();
@@ -81,12 +108,21 @@ void FieldPanel::setUpScene() {
     robot3Y = new GuiRobot();
     robot4Y = new GuiRobot();
     robot5Y = new GuiRobot();
+    robot6Y = new GuiRobot();
+    robot7Y = new GuiRobot();
+    robot8Y = new GuiRobot();
+    robot9Y = new GuiRobot();
+
     guiTeamY.push_back(robot0Y);
     guiTeamY.push_back(robot1Y);
     guiTeamY.push_back(robot2Y);
     guiTeamY.push_back(robot3Y);
     guiTeamY.push_back(robot4Y);
     guiTeamY.push_back(robot5Y);
+    guiTeamY.push_back(robot6Y);
+    guiTeamY.push_back(robot7Y);
+    guiTeamY.push_back(robot8Y);
+    guiTeamY.push_back(robot9Y);
 
     // Adding the previous gui items to the scene
     scene->addItem(field);
@@ -96,30 +132,50 @@ void FieldPanel::setUpScene() {
     scene->addItem(botLabel3);
     scene->addItem(botLabel4);
     scene->addItem(botLabel5);
+    scene->addItem(botLabel6);
+    scene->addItem(botLabel7);
+    scene->addItem(botLabel8);
+    scene->addItem(botLabel9);
+
     scene->addItem(botLabel0Y);
     scene->addItem(botLabel1Y);
     scene->addItem(botLabel2Y);
     scene->addItem(botLabel3Y);
     scene->addItem(botLabel4Y);
     scene->addItem(botLabel5Y);
+    scene->addItem(botLabel6Y);
+    scene->addItem(botLabel7Y);
+    scene->addItem(botLabel8Y);
+    scene->addItem(botLabel9Y);
+
     scene->addItem(robot0);
     scene->addItem(robot1);
     scene->addItem(robot2);
     scene->addItem(robot3);
     scene->addItem(robot4);
     scene->addItem(robot5);
+    scene->addItem(robot6);
+    scene->addItem(robot7);
+    scene->addItem(robot8);
+    scene->addItem(robot9);
+
     scene->addItem(robot0Y);
     scene->addItem(robot1Y);
     scene->addItem(robot2Y);
     scene->addItem(robot3Y);
     scene->addItem(robot4Y);
     scene->addItem(robot5Y);
+    scene->addItem(robot6Y);
+    scene->addItem(robot7Y);
+    scene->addItem(robot8Y);
+    scene->addItem(robot9Y);
+
     scene->addItem(sidelines);
     scene->addItem(ball);
 
 
     // Setting static details for robots
-    for (int i=0; i<dash->teamSize; i++) {
+    for (int i=0; i<dash->teamSize_blue; i++) {
         // Blue team
         guiTeam[i]->id = i;
         guiTeam[i]->setToolTip("Robot " + QString::number(i));
@@ -127,7 +183,8 @@ void FieldPanel::setUpScene() {
         guiLabels[i]->id = i;
         guiLabels[i]->myTeam = true;
         guiLabels[i]->setScale(2.5);
-
+    }
+    for (int i=0; i<dash->teamSize_yellow; i++) {
         // Yellow team
         guiTeamY[i]->id = i;
         guiTeamY[i]->setToolTip("Robot " + QString::number(i));
@@ -135,7 +192,7 @@ void FieldPanel::setUpScene() {
         guiLabelsY[i]->id = i;
         guiLabelsY[i]->myTeam = false;
         guiLabelsY[i]->setScale(2.5);
-    }//end for
+    }
 
     // Drawing debug line (optional)
 //    guidrawline = new GuiDrawLine();
@@ -199,9 +256,9 @@ void FieldPanel::updateScene() {
         QTransform flipLabel;
         flipLabel.setMatrix(1,0,0,0,-1,0,0,200,1);
 
-        // Updating objects in scene
-        for (int i=0; i<dash->teamSize; i++) {
-            // Blue Team
+    // Updating objects in scene
+        // Blue Team
+        for (int i=0; i<dash->teamSize_blue; i++) {
             if (dash->gamemodel->find(i, dash->gamemodel->getMyTeam()) != NULL) {
                 guiTeam[i]->setX(dash->objectPos->getBotCoordX(true, i));
                 guiTeam[i]->setY(dash->objectPos->getBotCoordY(true, i));
@@ -241,7 +298,10 @@ void FieldPanel::updateScene() {
 //                dash->ui->gView_field->update();
 
             }
-            // Yellow Team
+        }// blue team for loop
+
+        // Yellow Team
+        for (int i=0; i<dash->teamSize_yellow; i++) {
             if (dash->gamemodel->find(i, dash->gamemodel->getOponentTeam()) != NULL) {
                 guiTeamY[i]->setX(dash->objectPos->getBotCoordX(false, i));
                 guiTeamY[i]->setY(dash->objectPos->getBotCoordY(false, i));
@@ -268,7 +328,7 @@ void FieldPanel::updateScene() {
                     guiLabelsY[i]->hidden = true;
                 }
             }
-        }
+        }// yellow team for loop
 
     // Keeping camera centered
     centerViewOnBot();
@@ -279,7 +339,7 @@ void FieldPanel::updateScene() {
 void FieldPanel::scanForSelection() {
     bool newSelection = true;
     // Scanning for double-click selection
-    for (int i=0; i<dash->teamSize; i++) {
+    for (int i=0; i<dash->teamSize_blue; i++) {
         if (dash->gamemodel->find(i,dash->gamemodel->getMyTeam()) != NULL) {
             if (dash->robotpanel->botIcons[i]->doubleClicked || guiTeam[i]->doubleClicked) {
                 dash->robotpanel->botIcons[i]->doubleClicked = false;
@@ -295,7 +355,7 @@ void FieldPanel::scanForSelection() {
 
     // Scrolling the camera removes centeredOn but not selection
     if (justScrolled) {
-        for (int i=0; i<dash->teamSize; i++) {
+        for (int i=0; i<dash->teamSize_blue; i++) {
             if (dash->gamemodel->find(i,dash->gamemodel->getMyTeam()) != NULL) {
                 dash->robotpanel->botIcons[i]->doubleClicked = false;
                 guiTeam[i]->doubleClicked = false;
@@ -313,7 +373,7 @@ void FieldPanel::scanForSelection() {
         sidelines->Pressed = false;
     }
     if (field->highlighted || sidelines->highlighted) {
-        for (int i=0; i<dash->teamSize; i++) {
+        for (int i=0; i<dash->teamSize_blue; i++) {
             if (dash->gamemodel->find(i,dash->gamemodel->getMyTeam()) != NULL) {
                 guiTeam[i]->highlighted = false;
                 guiTeam[i]->setSelected(false);
@@ -330,7 +390,7 @@ void FieldPanel::scanForSelection() {
         newSelection = true;
     }
 
-    for (int i=0; i<dash->teamSize; i++) {
+    for (int i=0; i<dash->teamSize_blue; i++) {
         if (dash->gamemodel->find(i,dash->gamemodel->getMyTeam()) != NULL) {
 //            // tab TEST
 //            if (robotpanel->botFrames[i]->hasFocus()) {
@@ -340,7 +400,7 @@ void FieldPanel::scanForSelection() {
         // Bots on the panel clicked
             if (dash->robotpanel->botIcons[i]->isSelected()) {
                 selectedBot = i;
-                for (int j=0; j<dash->teamSize; j++) {
+                for (int j=0; j<dash->teamSize_blue; j++) {
                     guiTeam[j]->highlighted = false;
                     guiTeam[j]->setSelected(false);
                     dash->robotpanel->botIcons[j]->highlighted = false;
@@ -354,7 +414,7 @@ void FieldPanel::scanForSelection() {
                 guiTeam[i]->highlighted = true;
                 refresh = true;
                 // Refresh GUI
-                for (int r=0; r<dash->teamSize; r++) {
+                for (int r=0; r<dash->teamSize_blue; r++) {
                     dash->robotpanel->botIconFrames[i]->update();
                 }
                 dash->ui->gView_robot_prime->hide();
@@ -364,7 +424,7 @@ void FieldPanel::scanForSelection() {
             // Bots on the field clicked
             if (guiTeam[i]->isSelected()) {
                 selectedBot = i;
-                for (int j=0; j<dash->teamSize; j++) {
+                for (int j=0; j<dash->teamSize_blue; j++) {
                     guiTeam[j]->highlighted = false;
                     guiTeam[j]->setSelected(false);
                     dash->robotpanel->botIcons[j]->highlighted = false;
@@ -377,7 +437,7 @@ void FieldPanel::scanForSelection() {
                 guiTeam[i]->highlighted = true;
                 refresh = true;
                 // Refresh GUI
-                for (int r=0; r<dash->teamSize; r++) {
+                for (int r=0; r<dash->teamSize_blue; r++) {
                     dash->robotpanel->botIconFrames[i]->update();
                 }
                 dash->ui->gView_robot_prime->hide();

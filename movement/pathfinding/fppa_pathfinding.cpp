@@ -10,7 +10,7 @@
 
 /* FPPA Pathfinding Constants */
 #define FPPA_DEBUG 0
-#define MAX_RECURSION_DEPTH  3
+#define MAX_RECURSION_DEPTH 3
 #define FRAME_UPDATE_COUNT 10
 
 /* Implementation of the Fast Path Planning Algorithm
@@ -53,11 +53,11 @@ namespace impl
             /* With the new architecture, we need to manually exclude points that are
              * close to the start or ending point in this function.
              */
-            if(Measurments::isClose(pt, endPos, ROBOT_SIZE)
-            || Measurments::isClose(pt, beginPos, ROBOT_SIZE/2))
+            if(Measurments::isClose(pt, beginPos, ROBOT_SIZE)
+            || Measurments::isClose(pt, endPos, ROBOT_SIZE))
                 continue;
 
-            obstacle_found = Measurments::lineDistance(pt, beginPos, endPos) < ROBOT_SIZE*1.5 &&
+            obstacle_found = Measurments::lineDistance(pt, beginPos, endPos) < ROBOT_SIZE &&
                 insideRadiusRectangle(pt, beginPos, endPos);
 
             if(obstacle_found) {
@@ -82,7 +82,7 @@ namespace impl
 
         obstacle_found = std::any_of
             (currentFrameObstacles.begin(), currentFrameObstacles.end(),
-            [&](const Point& pt){return Measurments::isClose(pt, toCheck, ROBOT_SIZE*1.5);});
+            [&](const Point& pt){return Measurments::isClose(pt, toCheck, ROBOT_SIZE);});
 
         return obstacle_found;
     }
@@ -97,8 +97,8 @@ namespace impl
          * the jagged edges in the path, but risks cutting corners
          * too close around obstacles.
          */
-        float dx = 3 * ROBOT_RADIUS * cos(theta + M_PI_2);
-        float dy = 3 * ROBOT_RADIUS * sin(theta + M_PI_2);
+        float dx = 2.25 * ROBOT_RADIUS * cos(theta + M_PI_2);
+        float dy = 2.25 * ROBOT_RADIUS * sin(theta + M_PI_2);
 
         return Point(sign * dx, sign * dy);
     }

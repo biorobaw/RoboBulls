@@ -39,14 +39,19 @@ void IndiectKickStrategy::assignBeh()
     {
         for (unsigned i = 0; i < myTeam.size(); i++)
         {
-            if (i == 0)
+            if (i == 0 && myTeam.at(0)->getID() != 5)
                 sender = myTeam.at(i);
+            if (i == 0 && myTeam.at(0)->getID() == 5)
+                sender = myTeam.at(1);
             else
             {
-                Point iPos = myTeam.at(i)->getRobotPosition();
-                Point closestPos = sender->getRobotPosition();
-                if (Measurments::distance(iPos, ballPos) < Measurments::distance(closestPos, ballPos))
-                    sender = myTeam.at(i);
+                if (myTeam.at(i)->getID() != 5)
+                {
+                    Point iPos = myTeam.at(i)->getRobotPosition();
+                    Point closestPos = sender->getRobotPosition();
+                    if (Measurments::distance(iPos, ballPos) < Measurments::distance(closestPos, ballPos))
+                        sender = myTeam.at(i);
+                }
             }
         }
         senderID = sender->getID();
@@ -92,44 +97,52 @@ void IndiectKickStrategy::assignBeh()
         }
     }
 
-    int i;
+    int k = 0;
     int lessSurroundings = 0;
     double distance;
     for (unsigned j = 0; j < myTeamInfo.size(); j++)
     {
-        if (j == 0)
+        if (j == 0 && myTeamInfo[j].ID != 5)
         {
             lessSurroundings = myTeamInfo[j].surroundingAppNum;
             distance = myTeamInfo[j].distanceToRobot;
-            i = 0;
+            k = 0;
+        }
+        else if (j == 0 && myTeamInfo[j].ID == 5)
+        {
+            lessSurroundings = myTeamInfo[1].surroundingAppNum;
+            distance = myTeamInfo[1].distanceToRobot;
+            k = 1;
         }
         else
         {
-            if (lessSurroundings > myTeamInfo[j].surroundingAppNum &&
-                    myTeamInfo[j].ID != sender->getID())
+            if (lessSurroundings > myTeamInfo[j].surroundingAppNum
+                    && myTeamInfo[j].ID != 5)
             {
                 lessSurroundings = myTeamInfo[j].surroundingAppNum;
                 distance = myTeamInfo[j].distanceToRobot;
-                i = j;
+                k = j;
             }
             else if (lessSurroundings == myTeamInfo[j].surroundingAppNum &&
                              myTeamInfo[j].distanceToRobot < distance &&
-                             myTeamInfo[j].ID != sender->getID())
+                             myTeamInfo[j].ID != 5)
             {
                 lessSurroundings = myTeamInfo[j].surroundingAppNum;
                 distance = myTeamInfo[j].distanceToRobot;
-                i = j;
+                k = j;
             }
         }
     }
-    int receiverID = myTeamInfo[i].ID;
+    int receiverID = myTeamInfo[k].ID;
 
     for (Robot *rob: myTeam)
     {
+//        if (rob->getID() != senderID)
         if (rob->getID() == receiverID)
             receiver = rob;
     }
 
     //Assigning passBallReceiver behavior to the receiver robot
     receiverAssignment.assignBeh(receiver);
+    cout << "sender\t" << sender->getRobotPosition().toString() << "receiver\t" << receiver->getRobotPosition().toString()<< endl;
 }

@@ -12,11 +12,15 @@ namespace Skill
 class Kick: public Skill
 {
 public:
+    Kick();
+    Kick(int, int);
     //void kickTheBall();
     bool perform(Robot *);
 
 private:
     bool roboKick;
+    int lVel;
+    int rVel;
 
 };
 

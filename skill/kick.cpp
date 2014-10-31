@@ -3,6 +3,16 @@
 
 namespace Skill
 {
+Kick::Kick():lVel(100), rVel(100)
+{
+
+}
+
+Kick::Kick(int leftVel, int rightVel)
+{
+    lVel = leftVel;
+    rVel = rightVel;
+}
 
 bool Kick::perform(Robot * robot)
 {
@@ -19,8 +29,8 @@ bool Kick::perform(Robot * robot)
         robot->setKick(1);
         if (robot->type() == differential)
         {
-            robot->setL(100);
-            robot->setR(100);
+            robot->setL(lVel);
+            robot->setR(rVel);
         }
         roboKick = false;
     }

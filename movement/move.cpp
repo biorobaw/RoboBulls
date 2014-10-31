@@ -381,7 +381,7 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
         Point robotPoint = robot->getRobotPosition();
 
         /**** Dynamic path updating ****/
-        if(currentPathIsClear) //No known obstacles in path; test for new ones
+        if(currentPathIsClear and !pathQueue.empty()) //No known obstacles in path; test for new ones
         {
             Point nextPoint = this->pathQueue.front();
             Point obsPoint;

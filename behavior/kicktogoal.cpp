@@ -49,7 +49,7 @@ void KickToGoal::perform(Robot * r)
         break;
     case kicking:
         {
-			Skill::Kick k;
+            Skill::Kick k(0, 0);
             k.perform(r);
 		}
         break;

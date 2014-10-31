@@ -39,6 +39,7 @@
 #include "fieldpanel.h"
 #include "guirobot.h"
 #include "guiinterface.h"
+#include "teamsize.h"
 
 //#include "guidrawline.h"
 //#include "guicomm.h"
@@ -73,9 +74,9 @@ MainWindow::MainWindow(QWidget *parent) :
     fieldpanel = new FieldPanel(this);
     gamepanel = new GamePanel(this);
 
-//    guiinterface = new GuiInterface();
-//    guiinterface->guiOverride = false;
     // Generating GUI
+    teamSize_blue = 6;
+    teamSize_yellow = 10;
     fieldpanel->setUpScene();
     fieldpanel->defaultZoom();
     robotpanel->setupBotPanel();
@@ -132,8 +133,9 @@ void MainWindow::coreLoop(int tick) {
     } else {
         ui->menuDashboard->setTitle("Camera");
     }
+
     // Wiping values at beginning of cycle
-    for (int i=0; i<teamSize; i++) {
+    for (int i=0; i<teamSize_blue; i++) {
         // prevents crash caused by (I think) the appended strings getting too long
         selrobotpanel->botBehavior[i] = "";
     }
@@ -141,6 +143,9 @@ void MainWindow::coreLoop(int tick) {
     fieldpanel->scanForScrollModifier();
     fieldpanel->scanForSelection();
     // Updating GUI info
+//    teamSize_blue = gamemodel->getMyTeam().size();
+//    teamSize_yellow = gamemodel->getOponentTeam().size();
+//    cout << "teamSize_blue: " << TEAM_SIZE_BLUE << "\n";
     setMyVelocity();
     selrobotpanel->setGuiOverride();
     fieldpanel->updateScene();
@@ -660,7 +665,7 @@ void MainWindow::on_btn_override_all_released() {
         overriddenBots[i] = true;
     }
     // stopping all bots, so they don't fly off at their current velocities
-    for (int i=0; i<teamSize; i++) {
+    for (int i=0; i<teamSize_blue; i++) {
         if (gamemodel->find(i, gamemodel->getMyTeam()) != NULL) {
             gamemodel->find(i, gamemodel->getMyTeam())->setL(0);
             gamemodel->find(i, gamemodel->getMyTeam())->setR(0);

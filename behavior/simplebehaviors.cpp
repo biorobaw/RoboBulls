@@ -26,7 +26,9 @@ void SimpleBehaviors::perform(Robot * r)
     Point robotPosition = r->getRobotPosition();
     Point ballPosition = gm->getBallPoint();
 
-    if (gm->getGameState() == 'H')
+    Point rob1, rob2;
+
+    if (gm->getGameState() == 'H' || gm->getGameState() == ' ')
     {
         Skill::Stop s;
         for (unsigned i = 0; i < gm->getMyTeam().size(); i++)
@@ -47,7 +49,7 @@ void SimpleBehaviors::perform(Robot * r)
 
         move.setMovementTolerances(CLOSE_ENOUGH, ANGLE);
         move.setVelocityMultiplier(1);
-        move.recreate(position, direction, false);
+        move.recreate(position, direction, true);
         move.perform(r);
     }
     else if (gm->getGameState() == 'F')

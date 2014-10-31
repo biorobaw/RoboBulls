@@ -14,7 +14,7 @@ DefendFarFromBall::DefendFarFromBall(const ParameterList& list)
     , lastKickCounter(0)
 {
     UNUSED_PARAM(list);
-    setVelocityMultiplier(0.75);
+//    setVelocityMultiplier(0.75);
 }
 
 void DefendFarFromBall::perform(Robot *robot)
@@ -29,6 +29,8 @@ void DefendFarFromBall::perform(Robot *robot)
             Measurments::distance(myGoal, ballPoint) < 1200
             and not(Measurments::isClose(robPoint, ballPoint, 200))
             and lastKickCounter <= 0;
+//    setMovementTargets(defensiveWall, direction, false);
+//    GenericMovementBehavior::perform(robot);
 
     if(isScoreHazard or isKickingAwayBall) {
         if(wasNotPreviousScoreHazard) {

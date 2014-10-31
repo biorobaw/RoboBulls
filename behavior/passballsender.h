@@ -13,16 +13,18 @@
 /*
  * PassBallSender class
  * This class finds a point in front of one of
- * the team's players robots that is free and close to
- * the sender. Then, it passes the ball to that robot.
+ * the team's players robots that is free and closer to
+ * the sender compared to other players.
+ * Then, it passes the ball to that robot.
  *
  * What we have now is the simplest form of passing the ball.
  * Many things have been implemented here that have not been
  * used but can be used to improve this behavior
  *
  * suggestions for improvemnets:
- *      ** send the ball to the robot that is also closer
- *      to the goal
+ *      ** send the ball to the robot that is closer
+ *      to the goal, closer to the robot, and has least
+ *      amount of opponents players in its region
  * */
 
 class PassBallSender : public GenericMovementBehavior /*public Behavior*/
@@ -32,7 +34,7 @@ public:
     void perform(Robot*);
 
     /*
-     * finds the passign point based on the
+     * finds the passing point based on the
      * charactrastic we discussed on the
      * description of the class
      * */

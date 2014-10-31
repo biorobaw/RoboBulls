@@ -9,23 +9,19 @@
     #define CLOSE_ENOUGH 110
     #define DIST   50
 #else
-    #define ANGLE   (15 * M_PI/180)
-    #define CLOSE_ENOUGH 280
-    #define DIST 220
+    #define ANGLE   (5 * M_PI/180)
+    #define CLOSE_ENOUGH 210
+    #define DIST 400
 #endif
 
 GameModel *gm = GameModel::getModel();
 PassBallReceiver::PassBallReceiver(const ParameterList& list)
-    : GenericMovementBehavior(list), ballOrg(gm->getBallPoint()), hasKicked(0)
+    : GenericMovementBehavior(list)
 {
     UNUSED_PARAM(list);
-    state = moving;
+    state = initial;
     ballLastSeen = gm->getBallPoint();
-}
-
-void PassBallReceiver::setBallOrigin()
-{
-    GameModel *gm = GameModel::getModel();
+    count = 170;
     ballOrg = gm->getBallPoint();
 }
 
@@ -35,52 +31,90 @@ void PassBallReceiver::perform(Robot *robot)
 
     Point ballPos = gm->getBallPoint();
     Point robotPos = robot->getRobotPosition();
+    float robotOrientation = robot->getOrientation();
     float angle = Measurments::angleBetween(ballPos, gm->getOpponentGoal());
     float angleInv = Measurments::angleBetween(gm->getOpponentGoal(), ballPos);
     bool robotCloseToball = Measurments::isClose(robotPos, ballPos, CLOSE_ENOUGH);
     bool angleIsRight = abs(Measurments::angleDiff(robot->getOrientation(), angle)) < ANGLE;
+    bool ballInFront = abs(Measurments::angleDiff(robotOrientation, Measurments::angleBetween(robotPos, ballPos))) < ANGLE*3;
     Point behindBall = Point(DIST*cos(angleInv)+ballPos.x, DIST*sin(angleInv)+ballPos.y);
+    bool robotBehindBall = Measurments::isClose(robotPos, behindBall, CLOSE_ENOUGH);
 
-    if (Measurments::distance(ballOrg, ballPos) < CLOSE_ENOUGH ) //when ball at original position
+    if (Measurments::isClose(ballPos, robotPos, CLOSE_ENOUGH*2) || count == 0)
     {
-        ballLastSeen = ballPos;
-    }
-    else if (Measurments::distance(ballLastSeen, ballPos) > CLOSE_ENOUGH) //when ball moving after pass
-    {
-        ballLastSeen = ballPos;
-    }
-    else if (Measurments::distance(ballOrg, ballPos) > CLOSE_ENOUGH &&
-             Measurments::distance(ballLastSeen, ballPos) < CLOSE_ENOUGH ) //after pass and ball stopped
-    {
-        ballLastSeen = ballPos;
-
         switch (state)
         {
-            case moving:
+            case initial:
             {
-                setMovementTargets(behindBall, angle, false);
-                GenericMovementBehavior::perform(robot, Movement::Type::Default);
-                if (robotCloseToball && angleIsRight)
+                if (robotCloseToball && angleIsRight && ballInFront)
                 {
                     state = kicking;
+                }
+                else if (robotCloseToball && !angleIsRight && ballInFront)
+                {
+                    state = approaching;
+                    target = ballPos;
+                }
+                else
+                {
+                    state = moving;
+                    target = behindBall;
+                }
+            }
+                break;
+            case moving:
+            {cout << "moving" << endl;
+                setMovementTargets(behindBall, angle, true);
+                GenericMovementBehavior::perform(robot, Movement::Type::Default);
+//                cout << "robotBehindBall && angleIsRight\t" <<
+//                Measurments::distance(robotPos, ballPos)
+//                << "\t" <<
+//                abs(Measurments::angleDiff(robot->getOrientation(), angle))/M_PI*180 << endl;
+                if (robotBehindBall && angleIsRight)
+                {
+                    state = approaching;
+                    target = ballPos;
+                }
+
+            }
+                break;
+            case approaching:
+            {cout << "approaching" << endl;
+                setMovementTargets(ballPos, angle, false);
+                GenericMovementBehavior::perform(robot, Movement::Type::Default);
+//                cout << "robotCloseToball\t" << Measurments::distance(robotPos, ballPos)
+//                    << "\tangleIsRight\t" << abs(Measurments::angleDiff(robot->getOrientation(), angle))/M_PI*180
+//                    << "\tballInFront\t" << abs(Measurments::angleDiff(robotOrientation, Measurments::angleBetween(robotPos, ballPos)))/M_PI*180<< endl;
+                if (robotCloseToball && angleIsRight && ballInFront)
+                {
+                    state = kicking;
+                }
+                else if (!Measurments::isClose(target, ballPos, CLOSE_ENOUGH))
+                {
+                    state = moving;
+                    target = behindBall;
                 }
             }
                 break;
             case kicking:
-            {
-                Skill::Kick kick;
+            {cout << "kicking" << endl;
+                Skill::Kick kick(100, 100);
                 kick.perform(robot);
-                hasKicked = 1;
-                if (hasKicked)
+                if (!robotCloseToball)
                     state = idling;
             }
                 break;
             case idling:
-            {
+            {cout << "idling" << endl;
                 Skill::Stop stop;
                 stop.perform(robot);
             }
                 break;
         }
     }
+    if (Measurments::distance(ballOrg, ballPos) > CLOSE_ENOUGH && count != 0)
+        count--;
+    cout << "count\t" << count << endl;
+//    cout << "distance(ballOrg, ballPos)\t" << Measurments::distance(ballOrg, ballPos) << endl;
+//    cout<< "ballPos\t" << ballPos.toString() << endl;
 }

@@ -19,7 +19,7 @@ private:
     /* Need to keep track of the previous ball point, and rebuild target
      * points on a significant change
      */
-    Point prevBallPoint;
+    static Point prevBallPoint;
 };
 
 #endif // STOPSTRATEGY_H

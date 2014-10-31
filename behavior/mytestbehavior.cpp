@@ -4,7 +4,8 @@
 #include "model/gamemodel.h"
 #include "skill/driveball.h"
 #include "math.h"
-#include "movement/gotopositionwithorientation.h"
+#include "behavior/genericmovementbehavior.h"
+#include "skill/kick.h"
 
 #if SIMULATED
     #define xx 1600
@@ -12,7 +13,7 @@
     #define xx -1600
 #endif
 
-myTestBehavior::myTestBehavior(const ParameterList& list)
+myTestBehavior::myTestBehavior(const ParameterList& list):GenericMovementBehavior(list)
 {
     UNUSED_PARAM(list);
     //GameModel *model = GameModel::getModel();
@@ -21,6 +22,10 @@ myTestBehavior::myTestBehavior(const ParameterList& list)
 //    this->TargetPoint = list.getParam<Point>("targetPoint");
     mySkill = new Skill::DriveBall(kickPoint, 0);
 //    mySkill = new Skill::GoToPositionWithOrientation(kickPoint, 0);
+//    mySkill = new Skill::Kick;
+//    setMovementTargets(kickPoint, 3);
+
+
 }
 
 void myTestBehavior::perform(Robot * myRobot)
@@ -41,16 +46,21 @@ void myTestBehavior::perform(Robot * myRobot)
 
 //    cout << model->getOpponentGoal()
 //    cout << "performing" << endl;
-    cout << "angle\t" << myRobot->getOrientation()/M_PI*180 << endl;
+//    cout << "angle\t" << myRobot->getOrientation()/M_PI*180 << endl;
 //    cout << "position" << myRobot->getRobotPosition().toString() << endl;
-//    Point kickPoint(1600, 0);
-////    Point kick2(-1300, 500);
+    Point kickPoint(1600, 0);
+//    Point kick2(-1300, 500);
 //    move.setMovementTolerances(100, 10*(M_PI)/180);
 //    move.setVelocityMultiplier(1);
 //    move.recreate(kickPoint, 0, false);
-//    move.perform(model->getMyTeam().at(0), Movement::Type::Default);
+//    move.perform(myRobot, Movement::Type::Default);
 //    move.recreate(kick2, 0, false);
 //    move.perform(model->getMyTeam().at(1), Movement::Type::Default);
 
-    mySkill->perform(myRobot);
+//    mySkill->perform(myRobot);
+
+    cout << "angle diff\t" << Measurments::angleDiff(0, myRobot->getOrientation())/M_PI*180 << endl;
+    setMovementTargets(kickPoint, 0, false);
+    GenericMovementBehavior::perform(myRobot);
+
 }

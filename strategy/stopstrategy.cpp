@@ -4,11 +4,13 @@
 #include "utilities/measurments.h"
 #include "behavior/behaviorassignment.h"
 #include "behavior/stopbehavior.h"
+#include "behavior/defendfarfromball.h"
 
 #define RADIUS 1000
 #define STOPSTRAT_DEBUG 1
 
-static Point robTargetPoints[MAX_ROBOTS];
+Point StopStrategy::prevBallPoint = Point(9999,9999);
+Point robTargetPoints[MAX_ROBOTS];
 
 void StopStrategy::assignBeh()
 {
@@ -17,20 +19,27 @@ void StopStrategy::assignBeh()
     rebuildTargetPoints();
 
     for(Robot* robot : model->getMyTeam()) {
-        Point robTarget = robTargetPoints[robot->getID()];
-        float targetAngle = Measurments::angleBetween(robTarget, bp);
-        BehaviorAssignment<StopBehavior> stopAssign(true);
-        stopAssign.setBehParam<Point>("targetPoint", robTarget);
-        stopAssign.setBehParam<float>("targetAngle", targetAngle);
-        stopAssign.setBehParam<bool>("obstacleAvoidance", true);
-        stopAssign.assignBeh(robot);
+        if (robot->getID() != 5){
+            Point robTarget = robTargetPoints[robot->getID()];
+            float targetAngle = Measurments::angleBetween(robTarget, bp);
+            BehaviorAssignment<StopBehavior> stopAssign(true);
+            stopAssign.setBehParam<Point>("targetPoint", robTarget);
+            stopAssign.setBehParam<float>("targetAngle", targetAngle);
+            stopAssign.setBehParam<bool>("obstacleAvoidance", true);
+            stopAssign.assignBeh(robot);
+        }
+        else
+        {
+            BehaviorAssignment<DefendFarFromBall> golieAssign;
+            golieAssign.setSingleAssignment(true);
+            golieAssign.assignBeh(robot);
+        }
     }
 }
 
 #if 1
 bool StopStrategy::update()
 {
-    static Point prevBallPoint = Point(9999, 9999);
     Point nowBallPoint = GameModel::getModel()->getBallPoint();
     if(Measurments::distance(nowBallPoint, prevBallPoint) > 50) {
         prevBallPoint = nowBallPoint;

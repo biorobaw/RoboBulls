@@ -2,6 +2,7 @@
 #define DEFENDFARFROMBALL_H
 #include "skill/kicktopoint.h"
 #include "behavior/genericmovementbehavior.h"
+#include "movement/gotoposition.h"
 
 /* Behavior that goes to the goal and sits between the ball.
  * Improvement: The behavior now kicks the ball away if close
