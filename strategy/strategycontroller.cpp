@@ -51,7 +51,7 @@ void StrategyController::gameModelUpdated()
 
     cout << model->getGameState() << endl;
 
-//#if 0
+#if 0
     switch(model->getGameState())
     {
     case 'S':    //stop game
@@ -83,9 +83,9 @@ void StrategyController::gameModelUpdated()
     default:    //Anything Else
         activeStrategy = new TestStrategy();
     };
-//#else
-//    activeStrategy = new PenaltyStrategy();
-//#endif
+#else
+    activeStrategy = new NormalGameStrategy();
+#endif
 
 
     activeStrategy->assignBeh();

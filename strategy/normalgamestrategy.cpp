@@ -19,13 +19,20 @@ bool NormalGameStrategy::isOnAttack = true;
  * switching condition is true, that must be made until the attack/defend
  * switch is actually made
  */
-#define NORMAL_SWITCH_COUNT 33
+#define NORMAL_SWITCH_COUNT 8
+
+/* Defines the number of times the ball must be seen outside of the goal
+ * to have the robots start moving again. Used to prevent jerkey movement
+ * on the field, and causes a delay when the ball *does* come out of the goal.
+ */
+#define MIN_BALLINGOAL_COUNT 32
 
 
 /*************************************************/
 /** BEHAVIORS **/
 
-/* A behavior that shuold not be nessecery that overrides
+/* MiddleSitter
+ * A behavior that should not be nessecery that overrides
  * GenericMovementBehavior used to go to the middle of the field
  */
 class MiddleSitter : public GenericMovementBehavior
@@ -41,7 +48,8 @@ public:
     }
 };
 
-/* A behavior that should be nessecery that, if applicable, places the robot
+/* OpBallBlocker
+ * A behavior that should be nessecery that, if applicable, places the robot
  * in the middle of the enemy passer/reciever team. Since there are only three
  * robots, this is an easier task. If the passer LOSES the ball, this behavior
  * still keeps track of that robot and still positions itself between it
@@ -50,10 +58,8 @@ class OpBallBlocker : public GenericMovementBehavior
 {
 public:
     OpBallBlocker(const ParameterList& list)
-        : lastBallBot(NULL)
-    {
-        UNUSED_PARAM(list);
-    }
+        : GenericMovementBehavior(list), lastBallBot(NULL)
+        {}
     void perform(Robot *robot)
     {
         auto pred_isRecievingRobot = [&](Robot* robot) {
@@ -73,6 +79,7 @@ public:
         if(ballBot == NULL) {
             ballBot = lastBallBot;  //can still be NULL; but is okay
         }
+
         if(ballBot!=NULL and recvBot!=NULL and not(ballBot->isOnMyTeam())) {
             lastBallBot = ballBot;
             Point ballBotPos = ballBot->getRobotPosition();
@@ -93,18 +100,19 @@ private:
 };
 
 
+/* Behavior StayStill
+ * A simple behavior that sends the robot to its current position.
+ * Used when the ball is close to the goal
+ */
 class StayStill : public GenericMovementBehavior
 {
 public:
     StayStill(const ParameterList& list)
-    {
-        UNUSED_PARAM(list);
-    }
+    { UNUSED_PARAM(list); }
 
     void perform(Robot* robot) override
     {
-        setMovementTargets(robot->getRobotPosition(),
-                           UNUSED_ANGLE_VALUE, false);
+        setMovementTargets(robot->getRobotPosition(), 0, false);
         GenericMovementBehavior::perform(robot);
     }
 };
@@ -120,11 +128,13 @@ NormalGameStrategy::NormalGameStrategy()
 
 void NormalGameStrategy::assignBeh()
 {
-    isOnAttack = considerSwitchCreiteria();
-    if(isOnAttack) {
-        assignAttackBehaviors();
-    } else {
-        assignDefendBehaviors();
+    if(GameModel::getModel()->getMyTeam().size() == 3) {
+        isOnAttack = considerSwitchCreiteria();
+        if(isOnAttack) {
+            assignAttackBehaviors();
+        } else {
+            assignDefendBehaviors();
+        }
     }
 }
 
@@ -133,16 +143,27 @@ bool NormalGameStrategy::update()
 {
     static int ballNotInGoalCount = 0;
     bool oldAttack = isOnAttack;
-    isOnAttack = considerSwitchCreiteria();
-
     GameModel* gm = GameModel::getModel();
     Point ball = gm->getBallPoint();
-    Point opG = gm->getOpponentGoal();
-    Point myG = gm->getMyGoal();
+    Point opGoal = gm->getOpponentGoal();
+    Point myGoal = gm->getMyGoal();
 
-    if(Measurments::isClose(ball, myG, 999) or
-       Measurments::isClose(ball, opG, 999))
+    /* This strategy is designed for the Nov.26 presentation
+     * and must have three robots to function
+     */
+    if(gm->getMyTeam().size() != 3) {
+        return false;
+    }
+
+    isOnAttack = considerSwitchCreiteria();
+
+    if(Measurments::isClose(ball, myGoal, 999) or
+       Measurments::isClose(ball, opGoal, 999))
     {
+        /* If the ball is close to either goal, we want to have
+         * all the robots not go for it. This makes games a lot
+         * better on the field and in the simulator
+         */
         ballNotInGoalCount = 0;
         BehaviorAssignment<StayStill> ss(true);
         ss.assignBeh([](Robot* r){return r->getID() != 5;});
@@ -153,27 +174,36 @@ bool NormalGameStrategy::update()
         return false;
     }
     else {
-        if(ballNotInGoalCount < 100) {
+        if(ballNotInGoalCount < MIN_BALLINGOAL_COUNT) {
+            /* This ensures that the ball must be detected out of the goal
+             * a number of times before the robots move. Otherwise, we sould see
+             * very jerkey movement on the field with the ball being falsely
+             * detected outside of the goal
+             */
             ++ballNotInGoalCount;
             return false;
         }
         if(oldAttack != isOnAttack) {
+            /* If the attack status has switched, we stop and return true so that
+             * StrategyController can assign this strategy again with the new mode/
+             */
             return true;
         }
         else if(isOnAttack) {
             if(currentMainAttacker == nullptr) {
-                /*** ??? ***/
                 assignBeh();
                 return false;
             }
             AttackMain* attackMain =
                     dynamic_cast<AttackMain*>(currentMainAttacker->getCurrentBeh());
             if(attackMain == nullptr) {
-                /*** ??? ***/
                 assignBeh();
                 return false;
             }
             if(attackMain->hasKicked()) {
+                /* If the attacker has kicked, it has made a pass or a goal, so
+                 * we switch attack/defend behaviors. See assignAttackBehaviors
+                 */
                 assignAttackBehaviors();
             }
         }
@@ -205,12 +235,19 @@ bool NormalGameStrategy::considerSwitchCreiteria()
     else if(ballRobot->isOnMyTeam() and not(isOnAttack)) {
         --switchCounter;
         if(switchCounter < 0) {
+            /* We have seen the ball in our hands for long enough,
+             * we will switch to attack. (retrun true)
+             */
             switchCounter = NORMAL_SWITCH_COUNT;
             return true;
         }
-    } else if(not(ballRobot->isOnMyTeam()) and isOnAttack){
+    }
+    else if(not(ballRobot->isOnMyTeam()) and isOnAttack){
         --switchCounter;
         if(switchCounter < 0) {
+            /* We have seen the ball in our hands for long enough,
+             * we will switch to defend. (retrun false)
+             */
             switchCounter = NORMAL_SWITCH_COUNT;
             return false;
         }
@@ -232,8 +269,13 @@ void NormalGameStrategy::assignAttackBehaviors()
     Robot* driverBot = NULL, *recvBot = NULL;
 
     if(currentMainAttacker == NULL or currentSuppAttacker == NULL) {
+        /* First run: We find the most valid robots for the job */
         findMostValidRobots(ballPoint, driverBot, recvBot);
-    } else {
+    }
+    else {
+        /* Otherwise, we are coming from a previous attack, note here
+         * that the driver/receiver are being swapped.
+         */
         driverBot = currentSuppAttacker;
         recvBot = currentMainAttacker;
     }
@@ -253,6 +295,7 @@ void NormalGameStrategy::assignAttackBehaviors()
     BehaviorAssignment<DefendFarFromBall> goalie_5(true);
     goalie_5.assignBeh({5});
 
+    //Store information
     currentMainAttacker = driverBot;
     currentSuppAttacker = recvBot;
 }
@@ -282,10 +325,10 @@ void NormalGameStrategy::assignDefendBehaviors()
 }
 
 
-/* Utility function that:
- * - Removes the goalie from the robot considerations.
- * - a_out is set to the one closest to the `target`
+/* Utility function that finds two robots `a_out` and `b_out` such that:
+ * - a_out is closest to the `target`
  * - b_out is set to the other robot
+ * - both a_out and b_out are not the goalie robot
  */
 void NormalGameStrategy::findMostValidRobots(Point target, Robot*& a_out, Robot*& b_out)
 {
