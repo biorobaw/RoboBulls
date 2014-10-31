@@ -125,13 +125,13 @@ bool VisionComm::receive()
 
                         if(conf > CONF_THRESHOLD_BALL)
                         {
+                            ballPoint.x = ball.x();
+                            ballPoint.y = ball.y();
+                        #if SIMULATED==0
                             if ((ball.x() >= 0 && detection.camera_id() == 0) ||
-                                    (ball.x() < 0 && detection.camera_id() == 1)){
-                                ballPoint.x = ball.x();
-                                ballPoint.y = ball.y();
-
+                                    (ball.x() < 0 && detection.camera_id() == 1))
+                        #endif
                                 gamemodel->setBallPoint(ballPoint);
-                            }
                         }
                     }
                 }
@@ -142,8 +142,10 @@ bool VisionComm::receive()
                     float confR = detection.robots_blue(i).confidence();
                     if (confR > CONF_THRESHOLD_BOTS)
                     {
+                    #if SIMULATED==0
                         if ((detection.robots_blue(i).x() >= 0 && detection.camera_id() == 0)
                                 || (detection.robots_blue(i).x() < 0 && detection.camera_id() == 1) )
+                    #endif
                             updateInfo(detection.robots_blue(i), TEAM_BLUE);
                     }
                 }
@@ -155,8 +157,10 @@ bool VisionComm::receive()
 
                     if (confR > CONF_THRESHOLD_BOTS)
                     {
+                    #if SIMULATED==0
                         if ((detection.robots_yellow(i).x() >= 0 && detection.camera_id() == 0)
                                 || (detection.robots_yellow(i).x() < 0 && detection.camera_id() == 1) )
+                    #endif
                             updateInfo(detection.robots_yellow(i), TEAM_YELLOW);
                     }
                 }
