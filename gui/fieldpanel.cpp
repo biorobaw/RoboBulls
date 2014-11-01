@@ -400,6 +400,7 @@ void FieldPanel::scanForSelection() {
         // Bots on the panel clicked
             if (dash->robotpanel->botIcons[i]->isSelected()) {
                 selectedBot = i;
+//                dash->robotpanel->scrollToSelBot(i);
                 for (int j=0; j<dash->teamSize_blue; j++) {
                     guiTeam[j]->highlighted = false;
                     guiTeam[j]->setSelected(false);
@@ -424,6 +425,7 @@ void FieldPanel::scanForSelection() {
             // Bots on the field clicked
             if (guiTeam[i]->isSelected()) {
                 selectedBot = i;
+                dash->robotpanel->scrollToSelBot(i);
                 for (int j=0; j<dash->teamSize_blue; j++) {
                     guiTeam[j]->highlighted = false;
                     guiTeam[j]->setSelected(false);

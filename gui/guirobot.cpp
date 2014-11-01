@@ -14,7 +14,7 @@ GuiRobot::GuiRobot()
 QRectF GuiRobot::boundingRect() const
 {
     int diameter = 200;
-    int radius = diameter/2;
+//    int radius = diameter/2;
     return QRectF(0,0,diameter,diameter);
 }
 
@@ -23,9 +23,6 @@ void GuiRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     Q_UNUSED(widget);
     Q_UNUSED(option);
 
-    int diameter = boundingRect().width();
-    int radius = diameter/2;
-    int baseDiam = diameter*.8;
 
     QRectF rec = boundingRect();
     QRectF base(30,25,150,150);
@@ -82,6 +79,11 @@ void GuiRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     } else if (id == 5) {
         topLtBrush.setColor(Qt::green);
         lowRtBrush.setColor(Qt::green);
+    } else if (id == 6) {
+        lowLtBrush.setColor(Qt::green);
+        topLtBrush.setColor(Qt::green);
+        topRtBrush.setColor(Qt::green);
+        lowRtBrush.setColor(Qt::green);
     }
     painter->setRenderHint(QPainter::Antialiasing, true);
 
@@ -132,17 +134,6 @@ void GuiRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 
 
 }
-
-void GuiRobot::subCircle(QPainter *painter, QBrush topLft, QBrush topRt, QBrush lowLft, QBrush lowRt)
-{
-
-}
-
-
-void GuiRobot::paintEvent(QPaintEvent *)
-{
-}
-
 
 
 void GuiRobot::mousePressEvent(QGraphicsSceneMouseEvent *event)

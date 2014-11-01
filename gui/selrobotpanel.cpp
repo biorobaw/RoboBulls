@@ -50,7 +50,6 @@ void SelRobotPanel::setupSelRobotPanel() {
 void SelRobotPanel::updateSelectedBotPanel(int id) {
     int v = 0;
     int s = 0;
-    int o = 0;
     if (id == -1) {
         dash->ui->gView_robot_prime->hide();
         dash->ui->dial_botVel_->setValue(0);
@@ -69,7 +68,6 @@ void SelRobotPanel::updateSelectedBotPanel(int id) {
 
         v = dash->getVelocity(id);
         s = dash->objectPos->botSpeeds[id] * dash->objectPos->speedModifier;
-        o = dash->objectPos->oldSpeeds[id] * dash->objectPos->speedModifier;
 //        cout << "Robot " << id << " speed: " << s << "\n";
         dash->ui->gView_robot_prime->setScene(dash->robotpanel->botIconSelScenes[id]);
         dash->ui->gView_robot_prime->show();

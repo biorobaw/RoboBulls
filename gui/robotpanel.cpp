@@ -295,6 +295,10 @@ void RobotPanel::updateBotPanel() {
 
 }
 
+void RobotPanel::scrollToSelBot(int id) {
+    dash->ui->scroll_robots->ensureVisible(0,91*id,50,50);
+}
+
 void RobotPanel::toggleIconVisible() {
     if (dash->fieldpanel->selectedBot > -1) {
         if (dash->fieldpanel->guiTeam[dash->fieldpanel->selectedBot]->enabled) {

@@ -557,7 +557,6 @@ void MainWindow::on_btn_botForward_released() {
 void MainWindow::on_btn_botTurnRight_pressed() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botTurnRight->setDown(true);
-        int currentVel = getVelocity(fieldpanel->selectedBot);
         float currentL = gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->getL();
         float currentR = gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->getR();
         gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setL(currentL+myVelocity/2);
@@ -577,7 +576,6 @@ void MainWindow::on_btn_botTurnRight_released() {
 void MainWindow::on_btn_botTurnLeft_pressed() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botTurnLeft->setDown(true);
-        int currentVel = getVelocity(fieldpanel->selectedBot);
         int currentL = gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->getL();
         int currentR = gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->getR();
         gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setL(currentL-myVelocity/2);
@@ -610,7 +608,6 @@ void MainWindow::on_btn_botReverse_pressed() {
 void MainWindow::on_btn_botReverse_released() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botReverse->setDown(false);
-        int currentVel = getVelocity(fieldpanel->selectedBot);
         gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setL(0);
         gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setR(0);
     }
@@ -661,7 +658,7 @@ void MainWindow::on_check_botOverride_clicked(bool checked) {
 }
 
 void MainWindow::on_btn_override_all_released() {
-    for (int i=0; i<overriddenBots.size(); i++) {
+    for (unsigned int i=0; i<overriddenBots.size()-1; i++) {
         overriddenBots[i] = true;
     }
     // stopping all bots, so they don't fly off at their current velocities
@@ -675,7 +672,7 @@ void MainWindow::on_btn_override_all_released() {
 }
 
 void MainWindow::on_btn_override_none_released() {
-    for (int i=0; i<overriddenBots.size(); i++) {
+    for (unsigned int i=0; i<overriddenBots.size()-1; i++) {
         overriddenBots[i] = false;
     }
 }
@@ -683,8 +680,20 @@ void MainWindow::on_btn_override_none_released() {
 
 // Field graphical settings which need to be refreshed when changed
 void MainWindow::on_check_fieldGrid_clicked(){fieldpanel->refresh = true;}
-void MainWindow::on_combo_gridScale_currentIndexChanged(int index){fieldpanel->refresh = true;}
+void MainWindow::on_combo_gridScale_currentIndexChanged(int index){
+    Q_UNUSED(index);
+    fieldpanel->refresh = true;
+}
 void MainWindow::on_check_coloredGoals_clicked(){fieldpanel->refresh = true;}
-void MainWindow::on_combo_fieldColor_currentIndexChanged(int index){fieldpanel->refresh = true;}
-void MainWindow::on_check_showIDs_stateChanged(int arg1){fieldpanel->refresh = true;}
-void MainWindow::on_combo_botScale_currentIndexChanged(int index){fieldpanel->refresh = true;}
+void MainWindow::on_combo_fieldColor_currentIndexChanged(int index){
+    Q_UNUSED(index);
+    fieldpanel->refresh = true;
+}
+void MainWindow::on_check_showIDs_stateChanged(int arg1){
+    Q_UNUSED(arg1);
+    fieldpanel->refresh = true;
+}
+void MainWindow::on_combo_botScale_currentIndexChanged(int index){
+    Q_UNUSED(index);
+    fieldpanel->refresh = true;
+}
