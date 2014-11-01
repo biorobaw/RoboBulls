@@ -23,6 +23,7 @@ public:
     bool icon = false;
     bool doubleClicked = false;
     bool enabled = true;
+    bool overridden = false;
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);          // we want to know when the mouse is pressed...

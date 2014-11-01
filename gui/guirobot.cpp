@@ -103,13 +103,16 @@ void GuiRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     }
 
     // Robot hat
+    painter->setPen(QPen(Qt::black, 0, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
+    painter->setBrush(QBrush(Qt::black, Qt::SolidPattern));
+    if (overridden){
+        painter->setBrush(QBrush(QColor::fromRgb(240,128,128,255), Qt::SolidPattern));
+    }
     if (highlighted) {
-        painter->setBrush(QBrush(Qt::cyan, Qt::SolidPattern));
-        painter->setPen(QPen(Qt::black, 0, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
-//        painter->drawRect(rec);
-    } else {
-        painter->setPen(QPen(Qt::black, 0, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
-        painter->setBrush(QBrush(Qt::black, Qt::SolidPattern));
+        painter->setBrush(QBrush(QColor::fromRgb(0,225,225,255), Qt::SolidPattern));
+    }
+    if (overridden && highlighted) {
+        painter->setBrush(QBrush(QColor::fromRgb(132,112,255,255), Qt::SolidPattern));
     }
     int startAngle = 50 * 16;
     int spanAngle = 260 * 16;

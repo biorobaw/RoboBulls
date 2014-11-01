@@ -67,6 +67,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Setting up GUI; not enabling thread until we're done
     ui->btn_connectGui->setEnabled(false);
+    multithreaded = false;   // if true, clock functions operate on an independent thread
     // Creating helper classes
     selrobotpanel = new SelRobotPanel(this);
     robotpanel = new RobotPanel(this);
@@ -85,6 +86,8 @@ MainWindow::MainWindow(QWidget *parent) :
     objectPos->setupPastBotPoints();
     objectPos->setupBotSpeeds();
     ui->btn_connectGui->setEnabled(true);
+    // Time, in milliseconds, before GUI autoconnects to project; increase value if needed
+    QTimer::singleShot(1000, this, SLOT(on_btn_connectGui_clicked()));
 
 
     // Create Threads, the parameters are the timer value, and parent.
@@ -95,16 +98,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // coreLoop thread
     threads.append(new GuiComm(50, this));
-    // Clock thread
+    // independent clock thread
     threads.append(new GuiComm(50, this));
 
-    // Connect each Widget to correcponding thread
     connect(threads[0], SIGNAL(valueChanged(int))
             , this, SLOT(coreLoop(int)));
 
     if (multithreaded) {
         connect(threads[1], SIGNAL(valueChanged(int))
                 , this, SLOT(clockLoop(int)));
+        threads[1]->start();
     }
 
     // Zoom slider
@@ -152,7 +155,7 @@ void MainWindow::coreLoop(int tick) {
     robotpanel->updateBotPanel();
     updateBallInfo();
 
-    if (multithreaded == false) {
+    if (!multithreaded) {
         clockLoop(tick);
     }
 }
@@ -168,7 +171,7 @@ void MainWindow::clockLoop(int tick) {
     objectPos->getPastBotPoints();
     objectPos->updateBotSpeedsRecord();
 
-}//end coreLoop()
+}
 
 int MainWindow::getVelocity(int id) {
     int velocity = 0;
@@ -280,7 +283,7 @@ void MainWindow::on_btn_connectGui_clicked()
 //        for(int i = 0; i < threads.count(); i++)
 //            threads[i]->start();
         threads[0]->start();
-        threads[1]->start();
+//        threads[1]->start();
     }
     else
     {
@@ -648,22 +651,33 @@ void MainWindow::on_btn_botDrible_released() {
 
 void MainWindow::on_check_botOverride_clicked(bool checked) {
     if (checked) {
+        // Keeping track of how many bots are overridden
         overriddenBots[fieldpanel->selectedBot] = true;
+        // Telling robot QObjects to change color
+        robotpanel->botIcons[fieldpanel->selectedBot]->overridden = true;
+        fieldpanel->guiTeam[fieldpanel->selectedBot]->overridden = true;
+        // Stopping overridden bots in their tracks
         gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setL(0);
         gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setR(0);
         gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setB(0);
     } else {
         overriddenBots[fieldpanel->selectedBot] = false;
+        robotpanel->botIcons[fieldpanel->selectedBot]->overridden = false;
+        fieldpanel->guiTeam[fieldpanel->selectedBot]->overridden = false;
     }
 }
 
 void MainWindow::on_btn_override_all_released() {
     for (unsigned int i=0; i<overriddenBots.size()-1; i++) {
+        // Keeping track of how many bots are overridden
         overriddenBots[i] = true;
     }
-    // stopping all bots, so they don't fly off at their current velocities
     for (int i=0; i<teamSize_blue; i++) {
         if (gamemodel->find(i, gamemodel->getMyTeam()) != NULL) {
+            // Telling robot QObjects to change color
+            robotpanel->botIcons[i]->overridden = true;
+            fieldpanel->guiTeam[i]->overridden = true;
+            // stopping all bots, so they don't fly off at their current velocities
             gamemodel->find(i, gamemodel->getMyTeam())->setL(0);
             gamemodel->find(i, gamemodel->getMyTeam())->setR(0);
             gamemodel->find(i, gamemodel->getMyTeam())->setB(0);
@@ -674,6 +688,9 @@ void MainWindow::on_btn_override_all_released() {
 void MainWindow::on_btn_override_none_released() {
     for (unsigned int i=0; i<overriddenBots.size()-1; i++) {
         overriddenBots[i] = false;
+        // Telling robot QObjects to change color
+        robotpanel->botIcons[i]->overridden = false;
+        fieldpanel->guiTeam[i]->overridden = false;
     }
 }
 

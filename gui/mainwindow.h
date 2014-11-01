@@ -132,6 +132,7 @@ private:
     long double currentTimeMS = 0;
 
 private slots:
+    // Threads
     void coreLoop(int value);
     void clockLoop(int tick);
 // Widget slots
