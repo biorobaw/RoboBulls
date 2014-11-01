@@ -104,15 +104,20 @@ void GuiRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 
     // Robot hat
     painter->setPen(QPen(Qt::black, 0, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
-    painter->setBrush(QBrush(Qt::black, Qt::SolidPattern));
+    if (mainTeam) {
+        painter->setBrush(QBrush(Qt::black, Qt::SolidPattern));
+    } else {
+//        painter->setBrush(QBrush(QColor::fromRgb(50,50,50,255), Qt::SolidPattern));
+        painter->setBrush(QBrush(Qt::black, Qt::SolidPattern));
+    }
     if (overridden){
-        painter->setBrush(QBrush(QColor::fromRgb(240,128,128,255), Qt::SolidPattern));
+        painter->setBrush(QBrush(Qt::darkRed, Qt::SolidPattern));
     }
     if (highlighted) {
-        painter->setBrush(QBrush(QColor::fromRgb(0,225,225,255), Qt::SolidPattern));
+        painter->setBrush(QBrush(QColor::fromRgb(255,127,80,255), Qt::SolidPattern));
     }
     if (overridden && highlighted) {
-        painter->setBrush(QBrush(QColor::fromRgb(132,112,255,255), Qt::SolidPattern));
+        painter->setBrush(QBrush(Qt::red, Qt::SolidPattern));
     }
     int startAngle = 50 * 16;
     int spanAngle = 260 * 16;
@@ -128,10 +133,18 @@ void GuiRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     painter->setBrush(lowLtBrush);
         painter->drawEllipse(lowLtCircle);
     // Center circle
-    if (myTeam) {
-        painter->setBrush(QBrush(Qt::blue, Qt::SolidPattern));
+    if (mainTeam) {
+        if          (myTeam == "Blue") {
+            painter->setBrush(QBrush(Qt::blue, Qt::SolidPattern));
+        } else if   (myTeam == "Yellow") {
+            painter->setBrush(QBrush(Qt::yellow, Qt::SolidPattern));
+        }
     } else {
-        painter->setBrush(QBrush(Qt::yellow, Qt::SolidPattern));
+        if          (myTeam == "Blue") {
+            painter->setBrush(QBrush(Qt::yellow, Qt::SolidPattern));
+        } else if   (myTeam == "Yellow") {
+            painter->setBrush(QBrush(Qt::blue, Qt::SolidPattern));
+        }
     }
     painter->drawEllipse(centerCircle);
 

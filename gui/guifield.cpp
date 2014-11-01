@@ -1,6 +1,7 @@
 #include "guifield.h"
 #include <iostream>
 #include <QApplication>
+#include "mainwindow.h"
 
 
 GuiField::GuiField()
@@ -17,6 +18,9 @@ QRectF GuiField::boundingRect() const
 
 void GuiField::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
+
     QRectF rec = boundingRect();
 
 //    QRectF sideLines(0,0,8200,6200);
@@ -48,8 +52,8 @@ void GuiField::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     int blueGoalX = goalWidth*-1;
     QPen goalPen(QPen(Qt::darkGray, goalThick, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
     //int yellGoalX = rec.width();
-    QRectF blueGoal(blueGoalX,goalY, goalWidth,goalHeight);
-    QRectF yellGoal(rec.width(),goalY, goalWidth,goalHeight);
+    QRectF ourGoal(blueGoalX,goalY, goalWidth,goalHeight);
+    QRectF oppGoal(rec.width(),goalY, goalWidth,goalHeight);
     // Drawing field
     QBrush brush(Qt::white, Qt::SolidPattern);
     int fieldLineThick = 40;
@@ -126,17 +130,24 @@ void GuiField::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     }
     // Drawing goals
     QBrush goalBrush(Qt::white, Qt::DiagCrossPattern);
-    painter->fillRect(blueGoal,goalBrush);
-    painter->fillRect(yellGoal,goalBrush);
+    painter->fillRect(ourGoal,goalBrush);
+    painter->fillRect(oppGoal,goalBrush);
     if (coloredGoals) {
-        painter->setPen(QPen(QColor::fromRgb(0,0,255,255), goalThick, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
-        painter->drawRect(blueGoal);
-        painter->setPen(QPen(Qt::yellow, goalThick, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
-        painter->drawRect(yellGoal);
+        if (myTeam == "Blue") {
+            painter->setPen(QPen(QColor::fromRgb(0,0,255,255), goalThick, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
+            painter->drawRect(ourGoal);
+            painter->setPen(QPen(Qt::yellow, goalThick, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
+            painter->drawRect(oppGoal);
+        } else {
+            painter->setPen(QPen(Qt::yellow, goalThick, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
+            painter->drawRect(ourGoal);
+            painter->setPen(QPen(QColor::fromRgb(0,0,255,255), goalThick, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
+            painter->drawRect(oppGoal);
+        }
     } else {
         painter->setPen(goalPen);
-        painter->drawRect(blueGoal);
-        painter->drawRect(yellGoal);
+        painter->drawRect(ourGoal);
+        painter->drawRect(oppGoal);
     }
 
     painter->setPen(borderPen);

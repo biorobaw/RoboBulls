@@ -80,7 +80,7 @@ public:
     void drawLine( int originX, int originY, int endX, int endY );
     void guiPrint(std::string output);
     void updateBallInfo();
-    // For getting milliseconds
+    // clock stuff
     int frequency_of_primes (int n);
     int getClock();
     int getSpeed(QGraphicsItem* p, double o);
@@ -89,15 +89,17 @@ public:
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
     void setMyVelocity();
-    // 10/23/14
-//    int teamSize = gamemodel->getMyTeam().size();
+    // team sizes; used all over the place
     int teamSize_blue;
     int teamSize_yellow;
+    // manual override stuff
     bool guiOverride = false;           // For the purpose of overriding gamemodel's commands with our own
     int botOverride = -1;               // the id of the currently overridden bot
     std::vector<bool> overriddenBots;   // keeps track of whether each bot is overridden
+
     QString guiOutputRobot = "...";
     bool multithreaded = false;
+    std::string myTeam = "Blue";
 
     bool isOverride();  // delete?
     std::vector<bool> isRobotOverriden();   // delete?
@@ -163,6 +165,7 @@ private slots:
     void on_btn_rotateField_right_clicked();
     void on_btn_rotateField_left_clicked();
     void on_btn_multithread_clicked();
+    void on_btn_toggleTeamColor_clicked();
 };
 
 #endif // MAINWINDOW_H

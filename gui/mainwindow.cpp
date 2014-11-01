@@ -78,7 +78,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // Generating GUI
     teamSize_blue = 10;
     teamSize_yellow = 10;
-    fieldpanel->setUpScene();
+    fieldpanel->setupScene();
     fieldpanel->defaultZoom();
     robotpanel->setupBotPanel();
     selrobotpanel->setupSelRobotPanel();
@@ -275,25 +275,6 @@ void MainWindow::guiPrint(string output) {
     }
 }
 
-void MainWindow::on_btn_connectGui_clicked()
-{
-    if(ui->btn_connectGui->text() == "Connect")
-    {
-        ui->btn_connectGui->setText("Disconnect");
-//        for(int i = 0; i < threads.count(); i++)
-//            threads[i]->start();
-        threads[0]->start();
-//        threads[1]->start();
-    }
-    else
-    {
-        ui->btn_connectGui->setText("Connect");
-//        for(int i = 0; i < threads.count(); i++)
-//            threads[i]->exit(0);
-        threads[0]->exit(0);
-    }
-}
-
 QString MainWindow::getRemTime() {
     QString t;  // return value
     std::string time = std::to_string(gamemodel->getRemainingTime());
@@ -314,29 +295,6 @@ void MainWindow::updateBallInfo() {
     }
 }
 
-void MainWindow::on_btn_rotateField_right_clicked() {
-    int rAngle = -45;
-    ui->gView_field->rotate(rAngle);
-    fieldpanel->currentFieldAngle += rAngle;
-}
-
-void MainWindow::on_btn_rotateField_left_clicked() {
-    int lAngle = 45;
-    ui->gView_field->rotate(lAngle);
-    fieldpanel->currentFieldAngle += lAngle;
-}
-
-void MainWindow::on_btn_multithread_clicked() {
-    if(ui->btn_multithread->text() == "Enabled") {
-        multithreaded = true;
-        ui->btn_multithread->setText("Disabled");
-//        threads[1]->start();
-    } else {
-        multithreaded = false;
-        ui->btn_multithread->setText("Enabled");
-//        threads[1]->exit(0);
-    }
-}
 
 int MainWindow::frequency_of_primes (int n) {
   int i,j;
@@ -525,14 +483,47 @@ MainWindow::~MainWindow()
     }
 }
 
+void MainWindow::on_btn_connectGui_clicked() {
+    if(ui->btn_connectGui->text() == "Connect")
+    {
+        ui->btn_connectGui->setText("Disconnect");
+//        for(int i = 0; i < threads.count(); i++)
+//            threads[i]->start();
+        threads[0]->start();
+//        threads[1]->start();
+    }
+    else
+    {
+        ui->btn_connectGui->setText("Connect");
+//        for(int i = 0; i < threads.count(); i++)
+//            threads[i]->exit(0);
+        threads[0]->exit(0);
+    }
+}
 
-//MainWindow *MainWindow::getMainWindow() {
-//    if (mw == NULL) {
-//        mw = new MainWindow();
-//    }
+void MainWindow::on_btn_rotateField_right_clicked() {
+    int rAngle = -45;
+    ui->gView_field->rotate(rAngle);
+    fieldpanel->currentFieldAngle += rAngle;
+}
 
-//    return mw;
-//}
+void MainWindow::on_btn_rotateField_left_clicked() {
+    int lAngle = 45;
+    ui->gView_field->rotate(lAngle);
+    fieldpanel->currentFieldAngle += lAngle;
+}
+
+void MainWindow::on_btn_multithread_clicked() {
+    if(ui->btn_multithread->text() == "Enabled") {
+        multithreaded = true;
+        ui->btn_multithread->setText("Disabled");
+//        threads[1]->start();
+    } else {
+        multithreaded = false;
+        ui->btn_multithread->setText("Enabled");
+//        threads[1]->exit(0);
+    }
+}
 
 void MainWindow::on_btn_botForward_pressed() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
@@ -714,3 +705,56 @@ void MainWindow::on_combo_botScale_currentIndexChanged(int index){
     Q_UNUSED(index);
     fieldpanel->refresh = true;
 }
+
+void MainWindow::on_btn_toggleTeamColor_clicked() {
+    if          (myTeam == "Blue") {
+        myTeam = "Yellow";
+        // button color
+        ui->btn_toggleTeamColor->setStyleSheet("background-color: yellow;" "color: black");
+        // robot panel colors
+        ui->frame_robotsPanel->setStyleSheet("background-color: rgb(250, 250, 220);");
+        ui->text_primeBot->setStyleSheet("background-color: rgb(100, 100, 0);");
+        ui->dial_botOrient_prime->setStyleSheet("background-color: rgb(0, 0, 255);");
+        ui->lcd_orient_prime->setStyleSheet("background-color: rgb(0, 0, 150);");
+        ui->lcd_coordX_prime->setStyleSheet("background-color: rgb(100, 100, 0);");
+        ui->lcd_coordY_prime->setStyleSheet("background-color: rgb(100, 100, 0);");
+        for (int i=0; i<teamSize_blue; i++) {
+            robotpanel->botOrients[i]->setStyleSheet("background-color: rgb(0, 0, 150);");
+            robotpanel->botXcoords[i]->setStyleSheet("background-color: rgb(100, 100, 0);");
+            robotpanel->botYcoords[i]->setStyleSheet("background-color: rgb(100, 100, 0);");
+        }
+    } else if   (myTeam == "Yellow"){
+        myTeam = "Blue";
+        // button color
+        ui->btn_toggleTeamColor->setStyleSheet("background-color: blue;" "color: white");
+        // robot panel colors
+        ui->frame_robotsPanel->setStyleSheet("background-color: rgb(225, 225, 255);");
+        ui->text_primeBot->setStyleSheet("background-color: rgb(0, 0, 100);");
+        ui->dial_botOrient_prime->setStyleSheet("background-color: rgb(255, 255, 0);");
+        ui->lcd_orient_prime->setStyleSheet("background-color: rgb(100, 100, 0);");
+        ui->lcd_coordX_prime->setStyleSheet("background-color: rgb(0, 0, 100);");
+        ui->lcd_coordY_prime->setStyleSheet("background-color: rgb(0, 0, 100);");
+        for (int i=0; i<teamSize_blue; i++) {
+            robotpanel->botOrients[i]->setStyleSheet("background-color: rgb(100, 100, 0);");
+            robotpanel->botXcoords[i]->setStyleSheet("background-color: rgb(0, 0, 150);");
+            robotpanel->botYcoords[i]->setStyleSheet("background-color: rgb(0, 0, 150);");
+        }
+
+    }
+    // goal colors
+    fieldpanel->field->myTeam = myTeam;
+    // bot icon colors
+    for (unsigned int i=0; i<fieldpanel->guiTeam.size(); i++) {
+        fieldpanel->guiTeam[i]->myTeam = myTeam;
+        fieldpanel->guiLabels[i]->myTeam = myTeam;
+        fieldpanel->guiTeamY[i]->myTeam = myTeam;
+        fieldpanel->guiLabelsY[i]->myTeam = myTeam;
+        robotpanel->botIcons[i]->myTeam = myTeam;
+        robotpanel->botIconsSelected[i]->myTeam = myTeam;
+    }
+    // rerendering affected objects that aren't regularly updated
+    ui->gView_field->scene()->update();
+    if (fieldpanel->selectedBot > -1) {
+        ui->gView_robot_prime->scene()->update();
+    }
+}//end on_btn_toggleTeamColor_clicked

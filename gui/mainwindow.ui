@@ -60,7 +60,7 @@
          <height>936</height>
         </rect>
        </property>
-       <widget class="QFrame" name="box_robots">
+       <widget class="QFrame" name="frame_robotsPanel">
         <property name="geometry">
          <rect>
           <x>0</x>
@@ -4451,7 +4451,7 @@
             </rect>
            </property>
            <property name="styleSheet">
-            <string notr="true">background-color: rgb(233, 233, 255);</string>
+            <string notr="true"/>
            </property>
            <property name="frameShape">
             <enum>QFrame::Panel</enum>
@@ -4951,27 +4951,37 @@
              <bool>true</bool>
             </property>
            </widget>
-           <zorder>lcd_orient_prime</zorder>
-           <zorder>lcd_botVel_</zorder>
-           <zorder>label_4</zorder>
-           <zorder>dial_botVel_</zorder>
-           <zorder>label_11</zorder>
-           <zorder>dial_botSpeed_</zorder>
-           <zorder>lcd_botSpeed_</zorder>
-           <zorder>dial_botOrient_prime</zorder>
-           <zorder>label_5</zorder>
-           <zorder>lcd_orient_prime</zorder>
-           <zorder>lcd_botVel_</zorder>
-           <zorder>label_4</zorder>
-           <zorder>dial_botVel_</zorder>
-           <zorder>label_11</zorder>
-           <zorder>dial_botSpeed_</zorder>
-           <zorder>lcd_botSpeed_</zorder>
-           <zorder>dial_botOrient_prime</zorder>
-           <zorder>label_5</zorder>
-           <zorder>label_7</zorder>
           </widget>
          </widget>
+        </widget>
+        <widget class="QPushButton" name="btn_toggleTeamColor">
+         <property name="geometry">
+          <rect>
+           <x>196</x>
+           <y>15</y>
+           <width>81</width>
+           <height>27</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>Toggles team colors</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: white;
+background-color: blue;</string>
+         </property>
+         <property name="text">
+          <string>My Team</string>
+         </property>
         </widget>
        </widget>
        <widget class="QFrame" name="frame">
@@ -5932,9 +5942,6 @@
           </widget>
          </widget>
         </widget>
-        <zorder>gView_field</zorder>
-        <zorder>tabs_field</zorder>
-        <zorder>layoutWidget_2</zorder>
        </widget>
        <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
@@ -6117,22 +6124,6 @@
             </property>
             <property name="text">
              <string>Connect</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label">
-            <property name="enabled">
-             <bool>true</bool>
-            </property>
-            <property name="geometry">
-             <rect>
-              <x>125</x>
-              <y>91</y>
-              <width>241</width>
-              <height>27</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>Press BACKSPACE to toggle thread</string>
             </property>
            </widget>
            <widget class="QLCDNumber" name="lcd_coordY_ball">
