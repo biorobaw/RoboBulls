@@ -114,7 +114,11 @@ void GuiRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
         painter->setBrush(QBrush(Qt::darkRed, Qt::SolidPattern));
     }
     if (highlighted) {
-        painter->setBrush(QBrush(QColor::fromRgb(255,127,80,255), Qt::SolidPattern));
+        if (myTeam == "Blue") {
+            painter->setBrush(QBrush(Qt::cyan, Qt::SolidPattern));
+        } else if (myTeam == "Yellow") {
+            painter->setBrush(QBrush(QColor::fromRgb(255,215,0,255), Qt::SolidPattern));
+        }
     }
     if (overridden && highlighted) {
         painter->setBrush(QBrush(Qt::red, Qt::SolidPattern));

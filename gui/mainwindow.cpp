@@ -435,18 +435,6 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event) {
     }
 }
 
-void MainWindow::setMyVelocity() {
-    if (QApplication::keyboardModifiers().testFlag(Qt::ShiftModifier) == true) {
-//        cout << "Shift \n";
-        myVelocity = 100;
-    } else if (QApplication::keyboardModifiers().testFlag(Qt::AltModifier) == true) {
-//        cout << "Alt \n";
-        myVelocity = 25;
-    } else {
-        myVelocity = 50;
-    }
-}
-
 void MainWindow::setupKeyShortcuts() {
     QShortcut *enter = new QShortcut(this);
     enter->setKey(Qt::Key_Enter);
@@ -460,15 +448,34 @@ void MainWindow::setupKeyShortcuts() {
     QShortcut *delKey = new QShortcut(this);
     delKey->setKey(Qt::Key_Delete);
 
-//    QShortcut *spaceBar = new QShortcut(this);
-//    spaceBar->setKey(Qt::Key_Space);
+    QShortcut *teamOverride = new QShortcut(QKeySequence("Ctrl+O"), this);
+    QShortcut *teamLiberate = new QShortcut(QKeySequence("Alt+O"), this);
+
+    QShortcut *i = new QShortcut(this);
+    i->setKey(Qt::Key_I);
 
     // Connecting key signals to their respective slots
     connect(enter, SIGNAL(activated()), this, SLOT(on_btn_connectGui_clicked()));
     connect(backspace, SIGNAL(activated()), this, SLOT(on_btn_connectGui_clicked()));
     connect(o, SIGNAL(activated()), ui->check_botOverride, SLOT(click()));
     connect(delKey, SIGNAL(activated()), robotpanel, SLOT(toggleIconVisible()));
-    //    connect(delKey, SIGNAL(activated()), this, SLOT(on_btn_connectGui_clicked()));
+    // Team override
+    connect(teamOverride, SIGNAL(activated()), this, SLOT(on_btn_override_all_released()));
+    connect(teamLiberate, SIGNAL(activated()), this, SLOT(on_btn_override_none_released()));
+
+    connect(i, SIGNAL(activated()), ui->check_showIDs, SLOT(click()));
+}
+
+void MainWindow::setMyVelocity() {
+    if (QApplication::keyboardModifiers().testFlag(Qt::ShiftModifier) == true) {
+//        cout << "Shift \n";
+        myVelocity = 100;
+    } else if (QApplication::keyboardModifiers().testFlag(Qt::AltModifier) == true) {
+//        cout << "Alt \n";
+        myVelocity = 25;
+    } else {
+        myVelocity = 50;
+    }
 }
 
 
@@ -538,6 +545,7 @@ void MainWindow::on_btn_botForward_pressed() {
             gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setR(currentFwd+myVelocity);
         }
     }
+    ui->gView_field->scene()->update();
 }
 
 void MainWindow::on_btn_botForward_released() {
@@ -597,6 +605,7 @@ void MainWindow::on_btn_botReverse_pressed() {
             gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setR(currentVel-myVelocity);
         }
     }
+    ui->gView_field->scene()->update();
 }
 
 void MainWindow::on_btn_botReverse_released() {
@@ -641,21 +650,23 @@ void MainWindow::on_btn_botDrible_released() {
 
 
 void MainWindow::on_check_botOverride_clicked(bool checked) {
-    if (checked) {
-        // Keeping track of how many bots are overridden
-        overriddenBots[fieldpanel->selectedBot] = true;
-        // Telling robot QObjects to change color
-        robotpanel->botIcons[fieldpanel->selectedBot]->overridden = true;
-        fieldpanel->guiTeam[fieldpanel->selectedBot]->overridden = true;
-        // Stopping overridden bots in their tracks
-        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setL(0);
-        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setR(0);
-        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setB(0);
-    } else {
-        overriddenBots[fieldpanel->selectedBot] = false;
-        robotpanel->botIcons[fieldpanel->selectedBot]->overridden = false;
-        fieldpanel->guiTeam[fieldpanel->selectedBot]->overridden = false;
-    }
+    if (fieldpanel->selectedBot > -1) {
+        if (checked) {
+            // Keeping track of how many bots are overridden
+            overriddenBots[fieldpanel->selectedBot] = true;
+            // Telling robot QObjects to change color
+            robotpanel->botIcons[fieldpanel->selectedBot]->overridden = true;
+            fieldpanel->guiTeam[fieldpanel->selectedBot]->overridden = true;
+            // Stopping overridden bots in their tracks
+            gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setL(0);
+            gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setR(0);
+            gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setB(0);
+        } else {
+            overriddenBots[fieldpanel->selectedBot] = false;
+            robotpanel->botIcons[fieldpanel->selectedBot]->overridden = false;
+            fieldpanel->guiTeam[fieldpanel->selectedBot]->overridden = false;
+        }
+    }// nullcheck
 }
 
 void MainWindow::on_btn_override_all_released() {
@@ -735,7 +746,7 @@ void MainWindow::on_btn_toggleTeamColor_clicked() {
         ui->lcd_coordX_prime->setStyleSheet("background-color: rgb(0, 0, 100);");
         ui->lcd_coordY_prime->setStyleSheet("background-color: rgb(0, 0, 100);");
         for (int i=0; i<teamSize_blue; i++) {
-            robotpanel->botOrients[i]->setStyleSheet("background-color: rgb(100, 100, 0);");
+            robotpanel->botOrients[i]->setStyleSheet("background-color: rgb(255, 255, 0);");
             robotpanel->botXcoords[i]->setStyleSheet("background-color: rgb(0, 0, 150);");
             robotpanel->botYcoords[i]->setStyleSheet("background-color: rgb(0, 0, 150);");
         }

@@ -34,11 +34,11 @@ void GuiBotLabel::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
                 painter->setPen(QPen(QColor::fromRgb(0,255,255,255), 12, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
 //                painter->setPen(QPen(Qt::cyan, 12, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
             } else if   (myTeam == "Yellow") {
-                painter->setPen(QPen(Qt::yellow, 12, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
+                painter->setPen(QPen(QColor::fromRgb(255,215,0,255), 12, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
             }
         } else {
             if          (myTeam == "Blue") {
-                painter->setPen(QPen(Qt::yellow, 12, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
+                painter->setPen(QPen(QColor::fromRgb(255,215,0,255), 12, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
             } else if   (myTeam == "Yellow") {
                 painter->setPen(QPen(QColor::fromRgb(0,255,255,255), 12, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
             }
