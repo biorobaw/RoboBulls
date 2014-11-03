@@ -3,7 +3,7 @@
 #include "selrobotpanel.h"
 
 /* Points of contact with main project:
- *      - nxtrobcomm.cpp: override
+ *      - nxtrobcomm.cpp: override; REQUIRED
  *      - move.cpp: override (currently commented out)
  *      - strategycontroller.cpp: override
  */

@@ -233,6 +233,9 @@ void RobotPanel::setupBotPanel() {
     dash->ui->gView_robot_prime->scale(1,-1);
     dash->ui->gView_robot_prime->rotate(90);
 
+    // Formatting robots panel
+//    dash->ui->layout_robots->setContentsMargins(QMargins(0,0,0,0));
+
 }//setupBotPanel
 
 void RobotPanel::updateBotPanel() {
@@ -241,7 +244,7 @@ void RobotPanel::updateBotPanel() {
         botTitle[i]->setText("Robot " + QString::number(i));
         // Nullcheck
         if (dash->gamemodel->find(i,dash->gamemodel->getMyTeam()) != NULL) {
-            botFrames[i]->show();
+            botFrames[i]->setEnabled(true);
             botXcoords[i]->display(dash->objectPos->getBotCoordX(true, i));
             botYcoords[i]->display(dash->objectPos->getBotCoordY(true, i));
             botOrients[i]->setValue(dash->objectPos->getBotOrientDouble(true, i));
@@ -286,7 +289,10 @@ void RobotPanel::updateBotPanel() {
 
             botIconFrames[i]->update();
         } else {
-            botFrames[i]->hide();
+            botFrames[i]->setEnabled(false);
+//            botFrames[i]->hide();
+//            dash->ui->layout_robots->setSpacing(-91*i);
+
         }
     }
 

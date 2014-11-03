@@ -118,6 +118,7 @@ private:
     // my pointer
     static MainWindow *mw;
     QList<GuiComm*> threads;
+    GuiComm* guimodel;
     QGraphicsEllipseItem *ellipse;
     QGraphicsRectItem *rectangle;
 

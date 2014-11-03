@@ -41,7 +41,7 @@
 #include "teamsize.h"
 
 //#include "guidrawline.h"
-//#include "guicomm.h"
+#include "guicomm.h"
 // Project classes
 #include "model/gamemodel.h"
 #include "model/robot.h"
@@ -96,18 +96,21 @@ MainWindow::MainWindow(QWidget *parent) :
     // and stop threads
 
     // coreLoop thread
-    threads.append(new GuiComm(50, this));
+//    threads.append(new GuiComm(50, this));
+    guimodel = new GuiComm(50,this);
     // independent clock thread
-    threads.append(new GuiComm(50, this));
+//    threads.append(new GuiComm(50, this));
 
-    connect(threads[0], SIGNAL(valueChanged(int))
-            , this, SLOT(coreLoop(int)));
+//    connect(threads[0], SIGNAL(valueChanged(int))
+//            , this, SLOT(coreLoop(int)));
+    connect(guimodel, SIGNAL(valueChanged(int))
+                , this, SLOT(coreLoop(int)));
 
-    if (multithreaded) {
-        connect(threads[1], SIGNAL(valueChanged(int))
-                , this, SLOT(clockLoop(int)));
-        threads[1]->start();
-    }
+//    if (multithreaded) {
+//        connect(threads[1], SIGNAL(valueChanged(int))
+//                , this, SLOT(clockLoop(int)));
+//        threads[1]->start();
+//    }
 
     // Zoom slider
     connect(ui->zoom_slider, SIGNAL(valueChanged(int))
@@ -490,20 +493,19 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::on_btn_connectGui_clicked() {
-    if(ui->btn_connectGui->text() == "Connect")
-    {
+    if(ui->btn_connectGui->text() == "Connect") {
         ui->btn_connectGui->setText("Disconnect");
 //        for(int i = 0; i < threads.count(); i++)
 //            threads[i]->start();
-        threads[0]->start();
+//        threads[0]->start();
+        guimodel->start();
 //        threads[1]->start();
-    }
-    else
-    {
+    } else {
         ui->btn_connectGui->setText("Connect");
 //        for(int i = 0; i < threads.count(); i++)
 //            threads[i]->exit(0);
-        threads[0]->exit(0);
+//        threads[0]->exit(0);
+        guimodel->exit(0);
     }
 }
 
