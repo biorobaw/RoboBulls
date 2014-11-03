@@ -80,6 +80,13 @@ void GuiRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
         topLtBrush.setColor(Qt::green);
         lowRtBrush.setColor(Qt::green);
     } else if (id == 6) {
+        topLtBrush.setColor(Qt::green);
+        lowRtBrush.setColor(Qt::green);
+        topRtBrush.setColor(Qt::green);
+    } else if (id == 7) {
+        lowRtBrush.setColor(Qt::green);
+        topRtBrush.setColor(Qt::green);
+    } else if (id == 8) {
         lowLtBrush.setColor(Qt::green);
         topLtBrush.setColor(Qt::green);
         topRtBrush.setColor(Qt::green);

@@ -9,7 +9,6 @@
 //#include <QTextCursor>
 
 // Global static pointer used to ensure a single instance of the class.
-//RobotPanel* RobotPanel::robotpanel = NULL;    // delete
 
 RobotPanel::RobotPanel(MainWindow *mw) {
     dash = mw;
@@ -242,6 +241,7 @@ void RobotPanel::updateBotPanel() {
         botTitle[i]->setText("Robot " + QString::number(i));
         // Nullcheck
         if (dash->gamemodel->find(i,dash->gamemodel->getMyTeam()) != NULL) {
+            botFrames[i]->show();
             botXcoords[i]->display(dash->objectPos->getBotCoordX(true, i));
             botYcoords[i]->display(dash->objectPos->getBotCoordY(true, i));
             botOrients[i]->setValue(dash->objectPos->getBotOrientDouble(true, i));
@@ -285,7 +285,9 @@ void RobotPanel::updateBotPanel() {
             }
 
             botIconFrames[i]->update();
-        }//nullcheck
+        } else {
+            botFrames[i]->hide();
+        }
     }
 
 

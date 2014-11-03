@@ -2,6 +2,12 @@
 #include "mainwindow.h"
 #include "selrobotpanel.h"
 
+/* Points of contact with main project:
+ *      - nxtrobcomm.cpp: override
+ *      - move.cpp: override (currently commented out)
+ *      - strategycontroller.cpp: override
+ */
+
 GuiInterface * GuiInterface::gi = NULL;
 
 

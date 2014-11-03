@@ -1,8 +1,7 @@
 #define _USE_MATH_DEFINES
 // to not generate gamemodel: comment out contents of strategy/strategycontroller.cpp->gameModelUpdated()
-// colision notification
+// collision notification
 // different field & robot scales based on SIMULATED
-// make bearing dial gray if robot is NULL
 // communication/nxtrobcomm.cpp - sets velocity to zero
 
 // DELETE ?

@@ -140,8 +140,11 @@
             </rect>
            </property>
            <layout class="QGridLayout" name="layout_robotsPanel">
-            <property name="horizontalSpacing">
-             <number>6</number>
+            <property name="sizeConstraint">
+             <enum>QLayout::SetMinimumSize</enum>
+            </property>
+            <property name="spacing">
+             <number>0</number>
             </property>
             <item row="1" column="0">
              <widget class="QFrame" name="frame_robot_0">

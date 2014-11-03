@@ -18,7 +18,7 @@
 #include "movement/pathfinding/fppa_pathfinding.h"
 
 #include <QApplication>
-#include "gui/mainwindow.h"
+#include "gui/guiinterface.h"
 
 using namespace std;
 
@@ -54,7 +54,7 @@ void StrategyController::gameModelUpdated()
     /* Testing macro: Change this to 0 to ignore refcom commands
      * to test a single strategy
      */
-#if 1
+#if 0
     switch(model->getGameState())
     {
     case 'S':    //stop game
@@ -124,9 +124,10 @@ void StrategyController::frameEnd()
     for (unsigned int i=0; i < model->getMyTeam().size(); i++)
     {
         Robot *rob = model->getMyTeam().at(i);
-
-        if(rob->hasBeh)
-            rob->getCurrentBeh()->perform(rob);
+        if (!GuiInterface::getGuiInterface()->isOverriddenBot()[i]) {
+            if(rob->hasBeh)
+                rob->getCurrentBeh()->perform(rob);
+        }
     }
 
     RobComm * robcom = RobComm::getRobComm();
