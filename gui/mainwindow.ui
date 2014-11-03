@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1200</width>
-    <height>979</height>
+    <height>955</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -57,7 +57,7 @@
          <x>0</x>
          <y>0</y>
          <width>1182</width>
-         <height>936</height>
+         <height>912</height>
         </rect>
        </property>
        <widget class="QFrame" name="frame_robotsPanel">
@@ -100,7 +100,7 @@
            <x>7</x>
            <y>378</y>
            <width>281</width>
-           <height>511</height>
+           <height>507</height>
           </rect>
          </property>
          <property name="frameShape">

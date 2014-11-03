@@ -85,6 +85,10 @@ MainWindow::MainWindow(QWidget *parent) :
     objectPos->setupPastBotPoints();
     objectPos->setupBotSpeeds();
     ui->btn_connectGui->setEnabled(true);
+    MainWindow::resize(861,681);
+    ui->scrollArea->ensureWidgetVisible(ui->gView_field,0,0);
+    ui->scrollArea->verticalScrollBar()->setValue(220);
+    ui->scrollArea->horizontalScrollBar()->setValue(300);
     // Time, in milliseconds, before GUI autoconnects to project; increase value if needed
     QTimer::singleShot(1000, this, SLOT(on_btn_connectGui_clicked()));
 
