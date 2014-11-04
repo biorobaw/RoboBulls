@@ -42,19 +42,9 @@ void KickToPoint::doPositioningState(Robot *robot)
 #if KICK_TO_POINT_DEBUG
     std::cout << "KTP POSITION" << std::endl;
 #endif
-<<<<<<< HEAD
     move_skill.recreate(behindBall, ballTargetAngle,false);
     move_skill.setVelocityMultiplier(1);
     if(move_skill.perform(robot)) {
-=======
-    /* Note (10/31): Could possibly be a problem? We are seeing the robots
-     * are not getting to their target behind the ball in some cases...
-     */
-    //move_skill.setMovementTolerances(70, ROT_TOLERANCE*0.50);
-    move_skill.recreate(behindBall, ballTargetAngle, false);
-
-    if(move_skill.perform(robot,Movement::Type::facePoint)) {
->>>>>>> d03d410cadde22d9222bf80fb49112a7b4af920e
         state = Moving;
     }
 }

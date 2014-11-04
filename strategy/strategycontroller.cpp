@@ -53,13 +53,10 @@ void StrategyController::gameModelUpdated()
 
     cout << model->getGameState() << endl;
 
-<<<<<<< HEAD
 
-=======
     /* Testing macro: Change this to 0 to ignore refcom commands
      * to test a single strategy
      */
->>>>>>> d03d410cadde22d9222bf80fb49112a7b4af920e
 #if 1
     switch(model->getGameState())
     {
@@ -135,10 +132,6 @@ void StrategyController::frameEnd()
                 rob->getCurrentBeh()->perform(rob);
 //        }
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> d03d410cadde22d9222bf80fb49112a7b4af920e
 
     RobComm * robcom = RobComm::getRobComm();
     robcom->sendVelsLarge(model->getMyTeam());

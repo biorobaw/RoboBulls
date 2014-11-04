@@ -156,13 +156,11 @@ void TestStrategy::assignBeh()
 {
 //*************************************************************
 //  Shamsi Code
-    //Kicking to a moving point
-    //WORKS ON SIMULATOR//
-    BehaviorAssignment<ShamsiStrafe> assignment1(true);
-    assignment1.assignBeh({1});
+//    BehaviorAssignment<ShamsiStrafe> assignment1(true);
+//    assignment1.assignBeh({1});
 
-    BehaviorAssignment<ShamsiPass> assignment2(true);
-    assignment2.assignBeh({2});
+//    BehaviorAssignment<ShamsiPass> assignment2(true);
+//    assignment2.assignBeh({2});
 
 //    BehaviorAssignment<ShamsiGoToPose> assignment2(true);
 //    assignment2.assignBeh({2});

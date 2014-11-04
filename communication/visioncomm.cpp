@@ -10,31 +10,17 @@ VisionComm::VisionComm(GameModel *gm)
 {
 // Use different ports depending on whether it is simulated or the actual vision system
 #if SIMULATED
-<<<<<<< HEAD
     //Shamsi Vision Address
-    //client = new RoboCupSSLClient(10020,"224.5.23.18");
-=======
-
-
-//    //Shamsi Vision Address
-    client = new RoboCupSSLClient(10020,"224.5.23.17");
->>>>>>> d03d410cadde22d9222bf80fb49112a7b4af920e
+//    client = new RoboCupSSLClient(10020,"224.5.23.18");
 
     //James Vision Address
-    //client = new RoboCupSSLClient(10020,"224.5.23.2");
+//    client = new RoboCupSSLClient(10020,"224.5.23.2");
 
     //Narges Vision Address
-    //client = new RoboCupSSLClient(10020,"224.5.23.8");
-
-<<<<<<< HEAD
-    //Ryan Vision Address
-    //client = new RoboCupSSLClient(10020,"224.5.23.21");
-=======
 //    client = new RoboCupSSLClient(10020,"224.5.23.8");
 
-//    //Ryan Vision Address
+    //Ryan Vision Address
 //    client = new RoboCupSSLClient(10020,"224.5.23.21");
->>>>>>> d03d410cadde22d9222bf80fb49112a7b4af920e
 
 #else
     client = new RoboCupSSLClient();
@@ -136,7 +122,6 @@ bool VisionComm::receive()
 
                         if(conf > CONF_THRESHOLD_BALL)
                         {
-<<<<<<< HEAD
                             #if SIMULATED
                             ballPoint.x = ball.x();
                             ballPoint.y = ball.y();
@@ -152,15 +137,6 @@ bool VisionComm::receive()
                                 gamemodel->setBallPoint(ballPoint);
                             }
                             #endif
-=======
-                            ballPoint.x = ball.x();
-                            ballPoint.y = ball.y();
-                        #if SIMULATED==0
-                            if ((ball.x() >= 0 && detection.camera_id() == 0) ||
-                                    (ball.x() < 0 && detection.camera_id() == 1))
-                        #endif
-                                gamemodel->setBallPoint(ballPoint);
->>>>>>> d03d410cadde22d9222bf80fb49112a7b4af920e
                         }
                     }
                 }
@@ -171,18 +147,13 @@ bool VisionComm::receive()
                     float confR = detection.robots_blue(i).confidence();
                     if (confR > CONF_THRESHOLD_BOTS)
                     {
-<<<<<<< HEAD
 #if SIMULATED
                         updateInfo(detection.robots_blue(i), TEAM_BLUE);
 #else
-=======
-                    #if SIMULATED==0
->>>>>>> d03d410cadde22d9222bf80fb49112a7b4af920e
                         if ((detection.robots_blue(i).x() >= 0 && detection.camera_id() == 0)
                                 || (detection.robots_blue(i).x() < 0 && detection.camera_id() == 1) )
-                    #endif
-                            updateInfo(detection.robots_blue(i), TEAM_BLUE);
 #endif
+                            updateInfo(detection.robots_blue(i), TEAM_BLUE);
                     }
                 }
 
@@ -193,27 +164,22 @@ bool VisionComm::receive()
 
                     if (confR > CONF_THRESHOLD_BOTS)
                     {
-<<<<<<< HEAD
 #if SIMULATED
                         updateInfo(detection.robots_yellow(i), TEAM_YELLOW);
 #else
-=======
-                    #if SIMULATED==0
->>>>>>> d03d410cadde22d9222bf80fb49112a7b4af920e
                         if ((detection.robots_yellow(i).x() >= 0 && detection.camera_id() == 0)
                                 || (detection.robots_yellow(i).x() < 0 && detection.camera_id() == 1) )
-                    #endif
-                            updateInfo(detection.robots_yellow(i), TEAM_YELLOW);
 #endif
+                            updateInfo(detection.robots_yellow(i), TEAM_YELLOW);
                     }
                 }
             }//if_team
             gamemodel->notifyObservers();
         }
     }
-//        cout << "Size at end of detection: " << gamemodel->getMyTeam().size()+gamemodel->getOponentTeam().size() << endl;
-//    cout <<gamemodel->toString();
-//    cout << gamemodel->getBallPoint().toString() << endl;
+//  cout << "Size at end of detection: " << gamemodel->getMyTeam().size()+gamemodel->getOponentTeam().size() << endl;
+//  cout <<gamemodel->toString();
+//  cout << gamemodel->getBallPoint().toString() << endl;
     return true;
 }
 
