@@ -53,11 +53,8 @@ void StrategyController::gameModelUpdated()
 
     cout << model->getGameState() << endl;
 
-<<<<<<< HEAD
+
 #if 1
-=======
-//#if 0
->>>>>>> 593d0bb0e5fb7b76eb0a7edb0f625cc667f8af2f
     switch(model->getGameState())
     {
     case 'S':    //stop game
@@ -89,15 +86,10 @@ void StrategyController::gameModelUpdated()
     default:    //Anything Else
         activeStrategy = new TestStrategy();
     };
-<<<<<<< HEAD
+#else
+    activeStrategy = new TestStrategy();
 #endif
-=======
-//#else
-//    activeStrategy = new PenaltyStrategy();
-//#endif
 
-
->>>>>>> 593d0bb0e5fb7b76eb0a7edb0f625cc667f8af2f
     activeStrategy->assignBeh();
 
 }
@@ -136,9 +128,6 @@ void StrategyController::frameEnd()
         if(rob->hasBeh)
             rob->getCurrentBeh()->perform(rob);
     }
-//    QApplication a(argc, argv);
-//    MainWindow w;
-//    w.show();
 
 
     RobComm * robcom = RobComm::getRobComm();

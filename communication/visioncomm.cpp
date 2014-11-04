@@ -10,20 +10,17 @@ VisionComm::VisionComm(GameModel *gm)
 {
 // Use different ports depending on whether it is simulated or the actual vision system
 #if SIMULATED
-
-
-//    //Shamsi Vision Address
-//    client = new RoboCupSSLClient(10020,"224.5.23.17");
+    //Shamsi Vision Address
+    //client = new RoboCupSSLClient(10020,"224.5.23.18");
 
     //James Vision Address
     //client = new RoboCupSSLClient(10020,"224.5.23.2");
 
     //Narges Vision Address
+    //client = new RoboCupSSLClient(10020,"224.5.23.8");
 
-    client = new RoboCupSSLClient(10020,"224.5.23.8");
-
-//    //Ryan Vision Address
-//    client = new RoboCupSSLClient(10020,"224.5.23.21");
+    //Ryan Vision Address
+    //client = new RoboCupSSLClient(10020,"224.5.23.21");
 
 #else
     client = new RoboCupSSLClient();
@@ -125,13 +122,21 @@ bool VisionComm::receive()
 
                         if(conf > CONF_THRESHOLD_BALL)
                         {
+                            #if SIMULATED
+                            ballPoint.x = ball.x();
+                            ballPoint.y = ball.y();
+
+                            gamemodel->setBallPoint(ballPoint);
+                            #else
                             if ((ball.x() >= 0 && detection.camera_id() == 0) ||
-                                    (ball.x() < 0 && detection.camera_id() == 1)){
+                                (ball.x() < 0 && detection.camera_id() == 1))
+                            {
                                 ballPoint.x = ball.x();
                                 ballPoint.y = ball.y();
 
                                 gamemodel->setBallPoint(ballPoint);
                             }
+                            #endif
                         }
                     }
                 }
@@ -142,9 +147,13 @@ bool VisionComm::receive()
                     float confR = detection.robots_blue(i).confidence();
                     if (confR > CONF_THRESHOLD_BOTS)
                     {
+#if SIMULATED
+                        updateInfo(detection.robots_blue(i), TEAM_BLUE);
+#else
                         if ((detection.robots_blue(i).x() >= 0 && detection.camera_id() == 0)
                                 || (detection.robots_blue(i).x() < 0 && detection.camera_id() == 1) )
                             updateInfo(detection.robots_blue(i), TEAM_BLUE);
+#endif
                     }
                 }
 
@@ -155,9 +164,13 @@ bool VisionComm::receive()
 
                     if (confR > CONF_THRESHOLD_BOTS)
                     {
+#if SIMULATED
+                        updateInfo(detection.robots_yellow(i), TEAM_YELLOW);
+#else
                         if ((detection.robots_yellow(i).x() >= 0 && detection.camera_id() == 0)
                                 || (detection.robots_yellow(i).x() < 0 && detection.camera_id() == 1) )
                             updateInfo(detection.robots_yellow(i), TEAM_YELLOW);
+#endif
                     }
                 }
             }//if_team

@@ -16,7 +16,7 @@
 #if SIMULATED
  #define CLC_ROTATING_VEL 40
 #else
- #define CLC_ROTATING_VEL 50
+ #define CLC_ROTATING_VEL 30
 #endif
 
 ClosedLoopBase::ClosedLoopBase()

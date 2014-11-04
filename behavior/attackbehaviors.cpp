@@ -111,7 +111,8 @@ void AttackDriver::perform(Robot* robot)
             current_skill = new Skill::DriveBall(driveEndPoint, ballGoalAng);
             state = Driving;
         } else {
-            current_skill = new Skill::KickToPoint(goal, SAFE_DRIVE_DIST);
+            //current_skill = new Skill::KickToPoint(goal, SAFE_DRIVE_DIST);
+            current_skill = new Skill::KickToPoint(goal);
             state = KTPing;
         }
         break;
