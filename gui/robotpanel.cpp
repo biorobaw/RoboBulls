@@ -9,7 +9,6 @@
 //#include <QTextCursor>
 
 // Global static pointer used to ensure a single instance of the class.
-//RobotPanel* RobotPanel::robotpanel = NULL;    // delete
 
 RobotPanel::RobotPanel(MainWindow *mw) {
     dash = mw;
@@ -108,6 +107,10 @@ void RobotPanel::setupBotPanel() {
     robotIcon3 = new GuiRobot;
     robotIcon4 = new GuiRobot;
     robotIcon5 = new GuiRobot;
+    robotIcon6 = new GuiRobot;
+    robotIcon7 = new GuiRobot;
+    robotIcon8 = new GuiRobot;
+    robotIcon9 = new GuiRobot;
     botIcons.push_back(robotIcon0);
     botIcons.push_back(robotIcon1);
     botIcons.push_back(robotIcon2);
@@ -230,6 +233,9 @@ void RobotPanel::setupBotPanel() {
     dash->ui->gView_robot_prime->scale(1,-1);
     dash->ui->gView_robot_prime->rotate(90);
 
+    // Formatting robots panel
+//    dash->ui->layout_robots->setContentsMargins(QMargins(0,0,0,0));
+
 }//setupBotPanel
 
 void RobotPanel::updateBotPanel() {
@@ -238,6 +244,7 @@ void RobotPanel::updateBotPanel() {
         botTitle[i]->setText("Robot " + QString::number(i));
         // Nullcheck
         if (dash->gamemodel->find(i,dash->gamemodel->getMyTeam()) != NULL) {
+            botFrames[i]->setEnabled(true);
             botXcoords[i]->display(dash->objectPos->getBotCoordX(true, i));
             botYcoords[i]->display(dash->objectPos->getBotCoordY(true, i));
             botOrients[i]->setValue(dash->objectPos->getBotOrientDouble(true, i));
@@ -281,7 +288,12 @@ void RobotPanel::updateBotPanel() {
             }
 
             botIconFrames[i]->update();
-        }//nullcheck
+        } else {
+            botFrames[i]->setEnabled(false);
+//            botFrames[i]->hide();
+//            dash->ui->layout_robots->setSpacing(-91*i);
+
+        }
     }
 
 
@@ -289,6 +301,10 @@ void RobotPanel::updateBotPanel() {
     dash->ui->lcd_coordX_cursor->display(dash->objectPos->getMouseCoordX());
     dash->ui->lcd_coordY_cursor->display(dash->objectPos->getMouseCoordY());
 
+}
+
+void RobotPanel::scrollToSelBot(int id) {
+    dash->ui->scroll_robots->ensureVisible(0,91*id,50,50);
 }
 
 void RobotPanel::toggleIconVisible() {

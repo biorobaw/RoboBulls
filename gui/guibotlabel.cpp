@@ -29,11 +29,21 @@ void GuiBotLabel::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
     QString label("" + QString::number(id));
     if (hidden == false){
 //        painter->drawEllipse(rec);
-        if (myTeam) {
-            painter->setPen(QPen(Qt::cyan, 12, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
+        if (mainTeam) {
+            if          (myTeam == "Blue") {
+                painter->setPen(QPen(QColor::fromRgb(0,255,255,255), 12, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
+//                painter->setPen(QPen(Qt::cyan, 12, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
+            } else if   (myTeam == "Yellow") {
+                painter->setPen(QPen(QColor::fromRgb(255,215,0,255), 12, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
+            }
         } else {
-            painter->setPen(QPen(Qt::yellow, 12, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
+            if          (myTeam == "Blue") {
+                painter->setPen(QPen(QColor::fromRgb(255,215,0,255), 12, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
+            } else if   (myTeam == "Yellow") {
+                painter->setPen(QPen(QColor::fromRgb(0,255,255,255), 12, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
+            }
         }
+
         QFont sansFont("Courier", rec.width()/4, QFont::Bold);
          painter->setFont(sansFont);
 //         painter->drawRect(rec);

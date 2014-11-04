@@ -15,7 +15,8 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     int id;
     bool hidden = true;
-    bool myTeam = true;
+    bool mainTeam = true;
+    std::string myTeam = "Blue";
 
 
 };

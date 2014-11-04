@@ -14,10 +14,8 @@ public:
 
     QRectF boundingRect() const;    // outermost edges of the object (must be implemented with QGraphicsItem)
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-    void subCircle(QPainter *painter, QBrush topLft, QBrush topRt, QBrush lowLft, QBrush lowRt);
-    void paintEvent(QPaintEvent *);
     int id;
-    bool myTeam = true;
+    bool mainTeam = true;
     bool Pressed = false;
     bool highlighted = false;
     bool kicking = false;
@@ -25,6 +23,8 @@ public:
     bool icon = false;
     bool doubleClicked = false;
     bool enabled = true;
+    bool overridden = false;
+    std::string myTeam = "Blue";
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);          // we want to know when the mouse is pressed...

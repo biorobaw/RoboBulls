@@ -9,7 +9,7 @@ FieldPanel::FieldPanel(MainWindow * mw) {
     dash = mw;
 }
 
-void FieldPanel::setUpScene() {
+void FieldPanel::setupScene() {
 
     scene = new GuiScene();
 
@@ -179,20 +179,23 @@ void FieldPanel::setUpScene() {
         // Blue team
         guiTeam[i]->id = i;
         guiTeam[i]->setToolTip("Robot " + QString::number(i));
-        guiTeam[i]->myTeam = true;
+        guiTeam[i]->mainTeam = true;
         guiLabels[i]->id = i;
-        guiLabels[i]->myTeam = true;
+        guiLabels[i]->mainTeam = true;
         guiLabels[i]->setScale(2.5);
     }
     for (int i=0; i<dash->teamSize_yellow; i++) {
         // Yellow team
         guiTeamY[i]->id = i;
         guiTeamY[i]->setToolTip("Robot " + QString::number(i));
-        guiTeamY[i]->myTeam = false;
+        guiTeamY[i]->mainTeam = false;
         guiLabelsY[i]->id = i;
-        guiLabelsY[i]->myTeam = false;
+        guiLabelsY[i]->mainTeam = false;
         guiLabelsY[i]->setScale(2.5);
     }
+
+    // Turning on Bot IDs by default
+    dash->ui->check_showIDs->setChecked(true);
 
     // Drawing debug line (optional)
 //    guidrawline = new GuiDrawLine();
@@ -400,6 +403,7 @@ void FieldPanel::scanForSelection() {
         // Bots on the panel clicked
             if (dash->robotpanel->botIcons[i]->isSelected()) {
                 selectedBot = i;
+//                dash->robotpanel->scrollToSelBot(i);
                 for (int j=0; j<dash->teamSize_blue; j++) {
                     guiTeam[j]->highlighted = false;
                     guiTeam[j]->setSelected(false);
@@ -424,6 +428,7 @@ void FieldPanel::scanForSelection() {
             // Bots on the field clicked
             if (guiTeam[i]->isSelected()) {
                 selectedBot = i;
+                dash->robotpanel->scrollToSelBot(i);
                 for (int j=0; j<dash->teamSize_blue; j++) {
                     guiTeam[j]->highlighted = false;
                     guiTeam[j]->setSelected(false);

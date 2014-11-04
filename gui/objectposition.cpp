@@ -158,10 +158,12 @@ float ObjectPosition::getBotSpeed(bool myTeam, int id) {
     double c;
     Point currentPos;
     Point pastPos;
-    currentPos.x = newBotPoints[id].x;
-    currentPos.y = newBotPoints[id].y;
-    pastPos.x = pastBotPoints[id].x;
-    pastPos.y = pastBotPoints[id].y;
+    if (myTeam) {
+        currentPos.x = newBotPoints[id].x;
+        currentPos.y = newBotPoints[id].y;
+        pastPos.x = pastBotPoints[id].x;
+        pastPos.y = pastBotPoints[id].y;
+    }
 
     c = ( pow((currentPos.x - pastPos.x), 2) + pow((currentPos.y - pastPos.y), 2) );
 

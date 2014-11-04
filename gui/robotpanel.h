@@ -26,6 +26,7 @@ public:
 
     void setupBotPanel();
     void updateBotPanel();
+    void scrollToSelBot(int id);
 
 
 //private:

@@ -20,7 +20,7 @@
 
 
 #include <QApplication>
-#include "gui/mainwindow.h"
+#include "gui/guiinterface.h"
 
 using namespace std;
 
@@ -53,7 +53,13 @@ void StrategyController::gameModelUpdated()
 
     cout << model->getGameState() << endl;
 
+<<<<<<< HEAD
 
+=======
+    /* Testing macro: Change this to 0 to ignore refcom commands
+     * to test a single strategy
+     */
+>>>>>>> d03d410cadde22d9222bf80fb49112a7b4af920e
 #if 1
     switch(model->getGameState())
     {
@@ -124,11 +130,15 @@ void StrategyController::frameEnd()
     for (unsigned int i=0; i < model->getMyTeam().size(); i++)
     {
         Robot *rob = model->getMyTeam().at(i);
-
-        if(rob->hasBeh)
-            rob->getCurrentBeh()->perform(rob);
+//        if (!GuiInterface::getGuiInterface()->isOverriddenBot()[i]) {
+            if(rob->hasBeh)
+                rob->getCurrentBeh()->perform(rob);
+//        }
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> d03d410cadde22d9222bf80fb49112a7b4af920e
 
     RobComm * robcom = RobComm::getRobComm();
     robcom->sendVelsLarge(model->getMyTeam());

@@ -14,7 +14,7 @@ GuiRobot::GuiRobot()
 QRectF GuiRobot::boundingRect() const
 {
     int diameter = 200;
-    int radius = diameter/2;
+//    int radius = diameter/2;
     return QRectF(0,0,diameter,diameter);
 }
 
@@ -23,9 +23,6 @@ void GuiRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     Q_UNUSED(widget);
     Q_UNUSED(option);
 
-    int diameter = boundingRect().width();
-    int radius = diameter/2;
-    int baseDiam = diameter*.8;
 
     QRectF rec = boundingRect();
     QRectF base(30,25,150,150);
@@ -82,6 +79,18 @@ void GuiRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     } else if (id == 5) {
         topLtBrush.setColor(Qt::green);
         lowRtBrush.setColor(Qt::green);
+    } else if (id == 6) {
+        topLtBrush.setColor(Qt::green);
+        lowRtBrush.setColor(Qt::green);
+        topRtBrush.setColor(Qt::green);
+    } else if (id == 7) {
+        lowRtBrush.setColor(Qt::green);
+        topRtBrush.setColor(Qt::green);
+    } else if (id == 8) {
+        lowLtBrush.setColor(Qt::green);
+        topLtBrush.setColor(Qt::green);
+        topRtBrush.setColor(Qt::green);
+        lowRtBrush.setColor(Qt::green);
     }
     painter->setRenderHint(QPainter::Antialiasing, true);
 
@@ -101,13 +110,25 @@ void GuiRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     }
 
     // Robot hat
-    if (highlighted) {
-        painter->setBrush(QBrush(Qt::cyan, Qt::SolidPattern));
-        painter->setPen(QPen(Qt::black, 0, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
-//        painter->drawRect(rec);
-    } else {
-        painter->setPen(QPen(Qt::black, 0, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
+    painter->setPen(QPen(Qt::black, 0, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
+    if (mainTeam) {
         painter->setBrush(QBrush(Qt::black, Qt::SolidPattern));
+    } else {
+//        painter->setBrush(QBrush(QColor::fromRgb(50,50,50,255), Qt::SolidPattern));
+        painter->setBrush(QBrush(Qt::black, Qt::SolidPattern));
+    }
+    if (overridden){
+        painter->setBrush(QBrush(Qt::darkRed, Qt::SolidPattern));
+    }
+    if (highlighted) {
+        if (myTeam == "Blue") {
+            painter->setBrush(QBrush(Qt::cyan, Qt::SolidPattern));
+        } else if (myTeam == "Yellow") {
+            painter->setBrush(QBrush(QColor::fromRgb(255,215,0,255), Qt::SolidPattern));
+        }
+    }
+    if (overridden && highlighted) {
+        painter->setBrush(QBrush(Qt::red, Qt::SolidPattern));
     }
     int startAngle = 50 * 16;
     int spanAngle = 260 * 16;
@@ -123,26 +144,23 @@ void GuiRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     painter->setBrush(lowLtBrush);
         painter->drawEllipse(lowLtCircle);
     // Center circle
-    if (myTeam) {
-        painter->setBrush(QBrush(Qt::blue, Qt::SolidPattern));
+    if (mainTeam) {
+        if          (myTeam == "Blue") {
+            painter->setBrush(QBrush(Qt::blue, Qt::SolidPattern));
+        } else if   (myTeam == "Yellow") {
+            painter->setBrush(QBrush(Qt::yellow, Qt::SolidPattern));
+        }
     } else {
-        painter->setBrush(QBrush(Qt::yellow, Qt::SolidPattern));
+        if          (myTeam == "Blue") {
+            painter->setBrush(QBrush(Qt::yellow, Qt::SolidPattern));
+        } else if   (myTeam == "Yellow") {
+            painter->setBrush(QBrush(Qt::blue, Qt::SolidPattern));
+        }
     }
     painter->drawEllipse(centerCircle);
 
 
 }
-
-void GuiRobot::subCircle(QPainter *painter, QBrush topLft, QBrush topRt, QBrush lowLft, QBrush lowRt)
-{
-
-}
-
-
-void GuiRobot::paintEvent(QPaintEvent *)
-{
-}
-
 
 
 void GuiRobot::mousePressEvent(QGraphicsSceneMouseEvent *event)

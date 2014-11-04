@@ -18,6 +18,7 @@ public:
     int gridScale = 100;
     bool Pressed = false;
     bool highlighted = false;
+    std::string myTeam = "Blue";
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);          // we want to know when the mouse is pressed...

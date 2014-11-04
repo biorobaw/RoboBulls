@@ -26,7 +26,7 @@ class FieldPanel : public QObject   // Some kind of Q type required for cross-cl
 public:
     FieldPanel(MainWindow * mw);
     MainWindow * dash;
-    void setUpScene();
+    void setupScene();
     void updateScene();
     void scanForSelection();
     void centerViewOnBot();
