@@ -6,12 +6,14 @@
 
 #if SIMULATED
     #define DIST 250
+    #define DIST2 50
     #define ANGLE (9*M_PI/180)
     #define CLOSE_ENOUGH 110
     #define R 400
 #else
     #define DIST 400
-    #define ANGLE (7*M_PI/180)
+    #define DIST2 90
+    #define ANGLE (15*M_PI/180)
     #define CLOSE_ENOUGH 210
     #define R 700
 #endif
@@ -115,6 +117,7 @@ void PassBallSender::perform(Robot * robot)
     float angleInv = Measurments::angleBetween(passPoint, robot->getRobotPosition());
     Point ballPos = gm->getBallPoint();
     Point behindBall = Point(DIST*cos(angleInv)+ballPos.x, DIST*sin(angleInv)+ballPos.y);
+    Point closeToBall = Point(DIST2*cos(angleInv)+ballPos.x, DIST2*sin(angleInv)+ballPos.y);
 
     bool angleIsRight = abs(Measurments::angleDiff(robot->getOrientation(), angle)) < ANGLE;
     bool robotCloseToBall = Measurments::distance(robot->getRobotPosition(), ballPos) < CLOSE_ENOUGH;
@@ -133,7 +136,7 @@ void PassBallSender::perform(Robot * robot)
             break;
         case movingBehind:
         {
-            setMovementTargets(behindBall, angle, false);
+            setMovementTargets(behindBall, angle, true);
             GenericMovementBehavior::perform(robot, Movement::Type::Default);
             if (robotCloseToBehindBall && angleIsRight)
             {
@@ -144,7 +147,7 @@ void PassBallSender::perform(Robot * robot)
             break;
         case approaching:
         {
-            setMovementTargets(ballPos, angle, false);
+            setMovementTargets(closeToBall, angle, true);
             GenericMovementBehavior::perform(robot, Movement::Type::Default);
 //            cout << "obotCloseToBall && angleIsRight\t" <<
 //                    Measurments::distance(robot->getRobotPosition(), ballPos)

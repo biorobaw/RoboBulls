@@ -51,7 +51,7 @@ void DefendFarFromBall::perform(Robot *robot)
             --lastKickCounter;
         Point defensiveWall(cos(direction)*DISTANCE + myGoal.x,
                             sin(direction)*DISTANCE + myGoal.y);
-        setMovementTargets(defensiveWall, direction);
+        setMovementTargets(defensiveWall, direction, true);
         GenericMovementBehavior::perform(robot, Movement::Type::facePoint);
     }
 }

@@ -6,7 +6,7 @@
     #define CLOSE_ENOUGH 110
 #else
     #define DIST 350
-    #define ANGLE (15*M_PI/180)
+    #define ANGLE (7*M_PI/180)
     #define CLOSE_ENOUGH 210
 #endif
 
@@ -43,7 +43,7 @@ void PenaltyBehavior::perform(Robot * myRobot)
         break;
     case moving:
         cout << "moving" << endl;
-        move.recreate(behindBall, ballTargetAngle, false);
+        move.recreate(behindBall, ballTargetAngle, true);
         move.perform(myRobot, Movement::Type::Default);
 //        cout << "1\t" << Measurments::distance(robotPos,behindBall) << endl;
 //        cout << "2\t" << abs(Measurments::angleDiff(robotOrient, ballTargetAngle))/M_PI*180 << endl;
@@ -62,7 +62,7 @@ void PenaltyBehavior::perform(Robot * myRobot)
         cout << "approaching" << endl;
 //        cout << "1\t" << Measurments::distance(robotPos,ballPos) << endl;
 //        cout << "2\t" << abs(Measurments::angleDiff(robotOrient, ballTargetAngle))/M_PI*180 << endl;
-        move.recreate(ballPos, ballTargetAngle, false);
+        move.recreate(ballPos, ballTargetAngle, true);
         move.perform(myRobot, Movement::Type::Default);
         if (Measurments::isClose(robotPos,ballPos,CLOSE_ENOUGH) &&
             abs(Measurments::angleDiff(robotOrient, ballTargetAngle)) < ANGLE )

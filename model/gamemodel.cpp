@@ -234,13 +234,8 @@ void GameModel::setYellowGoals(unsigned char goals)
 Robot* GameModel::find(int id, std::vector<Robot*>& team)
 {
     /* Often, the vision system (and also almost always on the simulator)
-<<<<<<< HEAD
      * seems to report robots in order anyway. So first,
      * I think it would be reasonable to check if the team at that `id`
-=======
-     * seems to report robots in order anyway. So first,
-     * I think it would be reasonable to check if the team at that `id`
->>>>>>> 67f6d320b6a48c12f5f11751171467ab5d2d2697
      * is actually that robot first.
      */
     try {

@@ -54,6 +54,8 @@ protected:
     SSL_WrapperPacket packet;
     RoboCupSSLClient * client;
     int count;
+    int frames = 0;
+    vector <SSL_DetectionRobot> detectedRobot;
 };
 
 #endif // VISIONCOMM_H

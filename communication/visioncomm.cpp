@@ -77,6 +77,7 @@ void VisionComm::updateInfo(const SSL_DetectionRobot& robot, int detectedTeamCol
         gm->setRobotUpdated(rob, detectedTeamColor);
 //        cout << "robot\t" << rob->getID() << "\tpos\t" << rob->getRobotPosition().toString() << "\torg\t" << rob->getOrientation()*180/M_PI << endl;
     }
+
 }
 
 
@@ -94,6 +95,11 @@ bool VisionComm::receive()
         if (packet.has_detection())
         {
             count++;
+            if (frames > 100){
+                detectedRobot.clear();
+                frames = 0;
+            }
+
 
             if (count >= DISCARD_RATE)
             {
@@ -146,14 +152,45 @@ bool VisionComm::receive()
                 {
                     float confR = detection.robots_blue(i).confidence();
                     if (confR > CONF_THRESHOLD_BOTS)
-                    {
+                    {/*detection.robots_blue(i).robot_id()*/
 #if SIMULATED
                         updateInfo(detection.robots_blue(i), TEAM_BLUE);
 #else
-                        if ((detection.robots_blue(i).x() >= 0 && detection.camera_id() == 0)
-                                || (detection.robots_blue(i).x() < 0 && detection.camera_id() == 1) )
+                        if (frames == 0 /*&& detectedRobot.size() <= robots_blue_n*/)
+                            detectedRobot.push_back(detection.robots_blue(i));
+                        else if (frames == 100)
+                        {
+                            for (SSL_DetectionRobot rob: detectedRobot)
+                            {
+                                if (rob.robot_id() == detection.robots_blue(i).robot_id())
+                                {
+                                    if ((detection.robots_blue(i).x() >= 0 && detection.camera_id() == 0)
+                                            || (detection.robots_blue(i).x() < 0 && detection.camera_id() == 1) )
+                                        updateInfo(detection.robots_blue(i), TEAM_BLUE);
+                                    break;
+                                }
+                            }
+                        }
+                        for(Robot* robGM: gamemodel->getMyTeam())
+                        {
+                            for (int j=0; j < robots_blue_n; j++)
+                            {
+                                if(robGM->getID() == detection.robots_blue(j).robot_id())
+                                {
+                                    if ((detection.robots_blue(i).x() >= 0 && detection.camera_id() == 0)
+                                            || (detection.robots_blue(i).x() < 0 && detection.camera_id() == 1) )
+                                    updateInfo(detection.robots_blue(j), TEAM_BLUE);
+                                }
+
+                            }
+                        }
+                                                cout << "size\t" << detectedRobot.size() << endl;
+                                                cout << "frames\t" << frames << endl;
+                                                cout << "number of b bots\t" << robots_blue_n << endl;
+//                        if ((detection.robots_blue(i).x() >= 0 && detection.camera_id() == 0)
+//                                || (detection.robots_blue(i).x() < 0 && detection.camera_id() == 1) )
+//                            updateInfo(detection.robots_blue(i), TEAM_BLUE);
 #endif
-                            updateInfo(detection.robots_blue(i), TEAM_BLUE);
                     }
                 }
 
@@ -180,6 +217,7 @@ bool VisionComm::receive()
 //  cout << "Size at end of detection: " << gamemodel->getMyTeam().size()+gamemodel->getOponentTeam().size() << endl;
 //  cout <<gamemodel->toString();
 //  cout << gamemodel->getBallPoint().toString() << endl;
+    frames++;
     return true;
 }
 
