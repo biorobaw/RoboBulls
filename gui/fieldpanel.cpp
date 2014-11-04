@@ -265,7 +265,11 @@ void FieldPanel::updateScene() {
             if (dash->gamemodel->find(i, dash->gamemodel->getMyTeam()) != NULL) {
                 guiTeam[i]->setX(dash->objectPos->getBotCoordX(true, i));
                 guiTeam[i]->setY(dash->objectPos->getBotCoordY(true, i));
-                guiTeam[i]->setZValue(3);
+                if (guiTeam[i]->enabled) {
+                    guiTeam[i]->setZValue(3);
+                } else {
+                    guiTeam[i]->setZValue(2);
+                }
                 double angle = dash->objectPos->getBotOrientDouble(true, i) ;
                 guiTeam[i]->setRotation(angle);
                 // Action colors (may be better in the button slots)
@@ -344,7 +348,7 @@ void FieldPanel::scanForSelection() {
     // Scanning for double-click selection
     for (int i=0; i<dash->teamSize_blue; i++) {
         if (dash->gamemodel->find(i,dash->gamemodel->getMyTeam()) != NULL) {
-            if (dash->robotpanel->botIcons[i]->doubleClicked || guiTeam[i]->doubleClicked) {
+            if (dash->robotpanel->botIcons[i]->doubleClicked || guiTeam[i]->doubleClicked)  {
                 dash->robotpanel->botIcons[i]->doubleClicked = false;
                 guiTeam[i]->doubleClicked = false;
                 centeredBotID = i;

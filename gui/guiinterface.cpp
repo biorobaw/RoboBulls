@@ -6,6 +6,8 @@
  *      - nxtrobcomm.cpp: override;         REQUIRED
  *      - move.cpp: override;               REQUIRED
  *      - strategycontroller.cpp: override  NOT REQUIRED
+ * Overriding override:
+ *      - HALT command from refbox
  */
 
 GuiInterface * GuiInterface::gi = NULL;

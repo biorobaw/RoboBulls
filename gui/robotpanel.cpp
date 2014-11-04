@@ -308,18 +308,21 @@ void RobotPanel::scrollToSelBot(int id) {
 }
 
 void RobotPanel::toggleIconVisible() {
-    if (dash->fieldpanel->selectedBot > -1) {
-        if (dash->fieldpanel->guiTeam[dash->fieldpanel->selectedBot]->enabled) {
-            dash->fieldpanel->guiTeam[dash->fieldpanel->selectedBot]->enabled = false;
-            botIcons[dash->fieldpanel->selectedBot]->enabled = false;
-            botIcons[dash->fieldpanel->selectedBot]->setOpacity(.3);
-            dash->fieldpanel->guiTeam[dash->fieldpanel->selectedBot]->setOpacity(.3);
-        } else {
-            dash->fieldpanel->guiTeam[dash->fieldpanel->selectedBot]->enabled = true;
-            botIcons[dash->fieldpanel->selectedBot]->enabled = true;
-            botIcons[dash->fieldpanel->selectedBot]->setOpacity(1);
-            dash->fieldpanel->guiTeam[dash->fieldpanel->selectedBot]->setOpacity(1);
+    int id = dash->fieldpanel->selectedBot;
+    GuiRobot *thisBot = dash->fieldpanel->guiTeam[id];
+    GuiRobot *thisIcon = botIcons[id];
 
+    if (dash->fieldpanel->selectedBot > -1) {
+        if (thisBot->enabled) {
+            thisBot->enabled = false;
+            thisIcon->enabled = false;
+            thisIcon->setOpacity(.3);
+            thisBot->setOpacity(.3);
+        } else {
+            thisBot->enabled = true;
+            thisIcon->enabled = true;
+            thisIcon->setOpacity(1);
+            thisBot->setOpacity(1);
         }
     }
 }
