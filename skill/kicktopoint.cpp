@@ -33,6 +33,7 @@ KickToPoint::KickToPoint(Point* targetPtr, float targetTolerance, float kickDist
    , m_kickDistance(kickDistance)
    , externTargetPtr(targetPtr)
 {
+    UNUSED_PARAM(targetTolerance);
 }
 
 
