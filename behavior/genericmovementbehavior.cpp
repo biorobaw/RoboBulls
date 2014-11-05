@@ -15,6 +15,8 @@ GenericMovementBehavior::GenericMovementBehavior(const ParameterList& list)
     float targetAngle;
     bool  useObstacleAvoid;
     bool  gotTargetPoint = true, gotTargetAngle = true, gotObsAvoid = true;
+
+    /* This should avoid being used where possible. */
     
     try {
         targetPoint = list.getParam<Point>("targetPoint");
@@ -63,15 +65,16 @@ void GenericMovementBehavior::perform(Robot* robot, Movement::Type type)
 
 void GenericMovementBehavior::setMovementTargets(Point targetPoint, float targetAngle)
 {
-    setMovementTargets(targetPoint, targetAngle, this->useObstacleAvoid);
+    setMovementTargets(targetPoint, targetAngle,
+                       this->useObstacleAvoid, this->useAvoidBall);
 }
 
 
 void GenericMovementBehavior::setMovementTargets
-    (Point targetPoint, float targetAngle, bool withObstacleAvoid)
+    (Point targetPoint, float targetAngle, bool withObstacleAvoid, bool useAvoidBall)
 {
     if(movement != nullptr) {
-        movement->recreate(targetPoint, targetAngle, withObstacleAvoid);
+        movement->recreate(targetPoint, targetAngle, withObstacleAvoid, useAvoidBall);
     } else {
         /* Here, movement is a nullptr, so there is no need to delete it
          * before creating a new one

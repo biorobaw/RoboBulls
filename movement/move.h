@@ -33,14 +33,16 @@ class Move
 {
 public:
     Move();
-    Move(Point targetPoint, float targetAngle = UNUSED_ANGLE_VALUE, bool withObstacleAvoid = true);
+    Move(Point targetPoint, float targetAngle = UNUSED_ANGLE_VALUE,
+         bool withObstacleAvoid = true, bool avoidBall = true);
     virtual ~Move();
     
     /* "Recreates" the Movement object, reposition the target point to a new 
      * point, and a target angle to a new angle. Also has to option to toggle
      * obstacle avoidance or not
      */
-    void recreate(Point targetPoint, float targetAngle = UNUSED_ANGLE_VALUE, bool withObstacleAvoid = true);
+    void recreate(Point targetPoint, float targetAngle = UNUSED_ANGLE_VALUE,
+                  bool withObstacleAvoid = true, bool avoidBall = true);
     
     /* A scalar applied to the calculated velocity when set to the robot. 
      * 1.0 is default, 0.0 means no velocity. Setting this over 2 isn't very good
@@ -61,14 +63,12 @@ public:
     /* Perform movement on the robot */
     bool perform(Robot* robot, Type moveType = Type::Default);
 
-    std::deque<Point>   pathQueue;
-
 protected:
     float lfront, lback, rfront, rback;  //rob->type() == fourWheelOmni
     float left, right;                   //rob->type() == differential;
     float back;                          //rob->type() == threeWheelOmni;
 
-    /* Override this function is a derived class to provide the calculated
+    /* Override this function in a derived class to provide the calculated
      * velocities to a general point targetPoint, and general angle targetAngle.
      * Store the results in *this (lfront, lback... etc); but in this function
      * do not set the velocities on the robot.
@@ -83,6 +83,7 @@ private:
     float velMultiplier      = 1.0;
     bool  isInitialized      = false; 
     bool  useObstacleAvoid   = true;
+    bool  useAvoidBall       = true;
 
     struct pathEndState
     {
@@ -95,7 +96,7 @@ private:
     float nextDistTolerance  = 250;
     Point lastObsPoint       = Point(9999, 9999);
     FPPA::PathInfo      pathInfo;
-//    std::deque<Point>   pathQueue;
+    std::deque<Point>   pathQueue;
     FPPA::PathDirection lastDirection;
     std::vector<Point>  lastObstacles;
     
@@ -112,7 +113,6 @@ private:
 
 
 };
-
 
 }
 

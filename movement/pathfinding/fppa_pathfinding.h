@@ -42,16 +42,19 @@ namespace FPPA
      * bottom path, whatever is specified. Otherwise, finds shortest.
      * The returned PathDirection (PathInfo.second) indicates whether this path 
      * is a top path, or bottom path.
+     * Pass in `avoidBall` to count the ball as an obstacle or not (true by default).
      */
-    PathInfo findShortestPath(const Point& start, const Point& end,
+    PathInfo findShortestPath(const Point& start, const Point& end, bool avoidBall,
                               PathDirection pathHint = PathDirection::None);
 
 
     /* Check if there is an obstacle (robot or ball) in the
      * line defined from start to end. if obsPosOut is not a nullptr, it will be filled
      * with the found obstacle position if this function returns true.
+     * Pass in `avoidBall` to count the ball as an obstacle or not (true by default).
      */
-    bool isObstacleInLine(const Point& start, const Point& end, Point *obsPosOut = nullptr);
+    bool isObstacleInLine(const Point& start, const Point& end, Point *obsPosOut = nullptr,
+                          bool avoidBall = true);
 
 
     /* Test if a given single point in question
@@ -64,12 +67,6 @@ namespace FPPA
      * all obstacles for this frame 
      */
     const std::vector<Point>& getCurrentObstacles();
-
-
-    /* Returns a vector of the current obstacles (returned by getCurrentObstacles)
-     * sorted by distance to robot with the id specified. 
-     */
-    //std::vector<Point> getObstaclesForRobot(int id);
 }
 
 #endif // FPPA_PATHFINDING_H
