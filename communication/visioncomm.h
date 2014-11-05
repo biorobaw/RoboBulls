@@ -55,7 +55,8 @@ protected:
     RoboCupSSLClient * client;
     int count;
     int frames = 0;
-    vector <SSL_DetectionRobot> detectedRobot;
+    int blue_rob[10]={0};
+    int yellow_rob[10]={0};
 };
 
 #endif // VISIONCOMM_H

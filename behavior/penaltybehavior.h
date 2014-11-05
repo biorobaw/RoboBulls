@@ -27,7 +27,6 @@ public:
     void perform(Robot *);
 private:
     enum penaltyBehavior_t {initial, moving, approching, kicking, idling} pb;
-    Movement::GoToPosition move;
     Point target;
 };
 

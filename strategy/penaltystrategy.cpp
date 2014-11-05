@@ -45,7 +45,9 @@ void PenaltyStrategy::assignBeh()
     int closestRobotID;
 
     //Finds the closest robot to the penalty point and its ID
-    if (myTeam.size() > 1)
+    if (myTeam.size() == 1)
+        closestRobot = myTeam.at(0);
+    else if (myTeam.size() > 1)
     {
         if (myTeam.at(0)->getID() != 5)
             closestRobot = myTeam.at(0);
