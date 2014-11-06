@@ -4,6 +4,7 @@
 #include "objectposition.h"
 #include "gamepanel.h"
 #include "fieldpanel.h"
+#include "selrobotpanel.h"
 //#include "fieldpanel.h"
 //#include <QTextCharFormat>
 //#include <QTextCursor>
@@ -288,6 +289,12 @@ void RobotPanel::updateBotPanel() {
             }
 
             botIconFrames[i]->update();
+
+            // TEST
+//            cout << "Robot " << i << " behavior: " <<
+//                    dash->gamemodel->find(i, dash->gamemodel->getMyTeam())->getCurrentBeh()->toString() << "\n";
+//            dash->selrobotpanel->guiPrintRobot(i, dash->gamemodel->find(i, dash->gamemodel->getMyTeam())->getCurrentBeh()->toString());
+
         } else {
             botFrames[i]->setEnabled(false);
 //            botFrames[i]->hide();
@@ -300,6 +307,7 @@ void RobotPanel::updateBotPanel() {
     // Mouse point
     dash->ui->lcd_coordX_cursor->display(dash->objectPos->getMouseCoordX());
     dash->ui->lcd_coordY_cursor->display(dash->objectPos->getMouseCoordY());
+
 
 }
 
