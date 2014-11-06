@@ -19,8 +19,6 @@
 #include "behavior/simplebehaviors.h"
 
 
-
-
 class TestBehavior : public Behavior
 {
 public:
@@ -58,16 +56,20 @@ public:
 
 class ShamsiStrafe : public GenericMovementBehavior
 {
-public:
+    public:
+    //The robot moves between (-2000,0) and (2000,0)
+    //While constantly facing the ball
     ShamsiStrafe(const ParameterList& list)
     {
         UNUSED_PARAM(list);
     }
 
+    enum {pos_one,pos_two} state = pos_one;
+
     void perform(Robot *robot) override
     {
         GameModel * gm = GameModel::getModel();
-        Point rp = gm->getMyTeam().at(0)->getRobotPosition();
+        Point rp = robot->getRobotPosition();
         Point bp = gm->getBallPoint();
         Point target_one = Point(-2000,0);
         Point target_two = Point(2000,0);
@@ -76,25 +78,25 @@ public:
         switch(state)
         {
         case pos_one:
-            setMovementTargets(target_one,ori,false);
-            if (Measurments::isClose(rp,target_one,50))
+            setMovementTargets(target_one,ori);
+            if (Measurments::isClose(rp,target_one,100))
                 state = pos_two;
             break;
         case pos_two:
-            setMovementTargets(target_two,ori,false);
-            if (Measurments::isClose(rp,target_two,50))
+            setMovementTargets(target_two,ori);
+            if (Measurments::isClose(rp,target_two,100))
                 state = pos_one;
         }
 
-        GenericMovementBehavior::perform(robot);
+        GenericMovementBehavior::perform(robot, Movement::Type::facePoint);
     }
-private:
-    enum {pos_one,pos_two} state = pos_one;
+
 };
 
 class ShamsiGoToPose : public GenericMovementBehavior
 {
 public:
+    //Convenient to test motion. Just goes to the point specified
     ShamsiGoToPose(const ParameterList& list)
     {
         UNUSED_PARAM(list);
@@ -102,16 +104,16 @@ public:
 
     void perform(Robot *robot) override
     {
-        setMovementTargets(Point(2000,0), M_PI, false);
+        setMovementTargets(Point(1000,0), 0);
         GenericMovementBehavior::perform(robot);
     }
 };
 
-class ShamsiKickToPoint : public GenericMovementBehavior
+class ShamsiKickToCenter : public GenericMovementBehavior
 {
-public:
+    //Continuously kicks the ball to the center
     Skill::KickToPoint * kkkk;
-    ShamsiKickToPoint(const ParameterList& list)
+    ShamsiKickToCenter(const ParameterList& list)
     {
         kkkk = new Skill::KickToPoint(Point(0,0));
         UNUSED_PARAM(list);
@@ -123,6 +125,27 @@ public:
     }
 };
 
+class ShamsiPass : public GenericMovementBehavior
+{
+    public:
+    // Pass the ball to the other robot
+    Skill::KickToPoint * pass;
+    GameModel *gm;
+    Point target;
+
+    ShamsiPass(const ParameterList& list)
+    {
+        pass = new Skill::KickToPoint(&target);
+        UNUSED_PARAM(list);
+    }
+
+    void perform(Robot *robot) override
+    {
+        gm = GameModel::getModel();
+        target = gm->getMyTeam().at(1)->getRobotPosition();
+        pass->perform(robot);
+    }
+};
 
 TestStrategy::TestStrategy()
 {
@@ -131,39 +154,19 @@ TestStrategy::TestStrategy()
 
 void TestStrategy::assignBeh()
 {
-    GameModel *gm = GameModel::getModel();
 //*************************************************************
-//////  Shamsi Code
-//    BehaviorAssignment<TestBehavior> assignment(true);
-//    assignment.assignBeh();
+//  Shamsi Code
+//    BehaviorAssignment<ShamsiStrafe> assignment1(true);
+//    assignment1.assignBeh({1});
 
+//    BehaviorAssignment<ShamsiPass> assignment2(true);
+//    assignment2.assignBeh({2});
 
-    //Martin code
-//    cout << "running test strategy!" << endl;
-//    GameModel * gm = GameModel::getModel();
-
-//    float ballToOpGoalDist = Measurments::distance(gm->getBallPoint(), gm->getOpponentGoal());
-//    float ballToMyGoalDist = Measurments::distance(gm->getBallPoint(), gm->getMyGoal());
-
-//    if (ballToOpGoalDist > ballToMyGoalDist){
-//        BehaviorAssignment<KickToGoal> assignment;
-//        assignment.setSingleAssignment(true);
-//        assignment.assignBeh();
-//    } else {
-//        BehaviorAssignment<DefendOneOnOne> assignment;
-//        assignment.setSingleAssignment(true);
-//        assignment.assignBeh();
-//    }
-
-
-    //test behavior
-//    GameModel* gm = GameModel::getModel();
-//    Robot* r0 = gm->find(0, gm->getMyTeam());
-//    if(!r0) return;
+//    BehaviorAssignment<ShamsiGoToPose> assignment2(true);
+//    assignment2.assignBeh({2});
 
 
     //james code
-
 //    GameModel* gm = GameModel::getModel();
 //#if SIMULATED
 //    Robot* r0 = gm->find(0, gm->getMyTeam());

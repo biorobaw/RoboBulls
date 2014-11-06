@@ -25,7 +25,7 @@ void IndiectKickStrategy::assignBeh()
 
     Robot *sender;
     Robot *receiver;
-    int senderID;
+    //int senderID;     //Removed to stop warnings
     Point ballPos = gm->getBallPoint();
 
     /*
@@ -54,7 +54,7 @@ void IndiectKickStrategy::assignBeh()
                 }
             }
         }
-        senderID = sender->getID();
+        //senderID = sender->getID();
     }
 
 
@@ -77,7 +77,7 @@ void IndiectKickStrategy::assignBeh()
     struct playersCharactristics{
         int ID;
         int surroundingAppNum;  //number of opponent players surrounding our team players
-        double distanceToRobot; // how far away is the recieve player from sender player
+        double distanceToRobot; // how far away is the reciever player from sender player
     };
     vector <playersCharactristics> myTeamInfo;
 

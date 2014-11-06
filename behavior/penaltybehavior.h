@@ -9,7 +9,7 @@
 #include "movement/gotopositionwithorientation.h"
 #include "model/gamemodel.h"
 
-#define PENALTY_BEHAVIOR_DEBUG 1
+#define PENALTY_BEHAVIOR_DEBUG 0
 
 /*
  * Penalty Behavior
@@ -27,7 +27,6 @@ public:
     void perform(Robot *);
 private:
     enum penaltyBehavior_t {initial, moving, approching, kicking, idling} pb;
-    Movement::GoToPosition move;
     Point target;
 };
 

@@ -33,7 +33,7 @@ void myTestBehavior::perform(Robot * myRobot)
 //    Point robotPoint = myRobot->getRobotPosition();
     //Testing closed loop control by using GoToPositionWithOrientation
 
-    GameModel *model = GameModel::getModel();
+    //GameModel *model = GameModel::getModel();
 
 //    Point target = model->getBallPoint();
 

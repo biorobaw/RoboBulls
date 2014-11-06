@@ -54,6 +54,9 @@ protected:
     SSL_WrapperPacket packet;
     RoboCupSSLClient * client;
     int count;
+    int frames = 0;
+    int blue_rob[10]={0};
+    int yellow_rob[10]={0};
 };
 
 #endif // VISIONCOMM_H

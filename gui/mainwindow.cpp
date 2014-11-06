@@ -675,7 +675,7 @@ void MainWindow::on_check_botOverride_clicked(bool checked) {
 }
 
 void MainWindow::on_btn_override_all_released() {
-    for (unsigned int i=0; i<overriddenBots.size()-1; i++) {
+    for (unsigned int i=0; i<overriddenBots.size(); i++) {
         // Keeping track of how many bots are overridden
         overriddenBots[i] = true;
     }
@@ -693,7 +693,7 @@ void MainWindow::on_btn_override_all_released() {
 }
 
 void MainWindow::on_btn_override_none_released() {
-    for (unsigned int i=0; i<overriddenBots.size()-1; i++) {
+    for (unsigned int i=0; i<overriddenBots.size(); i++) {
         overriddenBots[i] = false;
         // Telling robot QObjects to change color
         robotpanel->botIcons[i]->overridden = false;

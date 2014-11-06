@@ -15,7 +15,9 @@
 #include "strategy/attackstrategy.h"
 #include "strategy/normalgamestrategy.h"
 #include "strategy/indiectkickstrategy.h"
+#include "strategy/normalgamestrategy.h"
 #include "movement/pathfinding/fppa_pathfinding.h"
+
 
 #include <QApplication>
 #include "gui/guiinterface.h"
@@ -51,6 +53,7 @@ void StrategyController::gameModelUpdated()
 
     cout << model->getGameState() << endl;
 
+
     /* Testing macro: Change this to 0 to ignore refcom commands
      * to test a single strategy
      */
@@ -78,7 +81,7 @@ void StrategyController::gameModelUpdated()
         activeStrategy = new HaltStrategy();
         break;
     case ' ':    //Normal game play
-        activeStrategy = new TestStrategy();
+        activeStrategy = new NormalGameStrategy();
         break;
     case 's':    //Force Start
         activeStrategy = new FreeKickStrategy();
@@ -124,10 +127,10 @@ void StrategyController::frameEnd()
     for (unsigned int i=0; i < model->getMyTeam().size(); i++)
     {
         Robot *rob = model->getMyTeam().at(i);
-//        if (!GuiInterface::getGuiInterface()->isOverriddenBot()[i]) {
+        if (!GuiInterface::getGuiInterface()->isOverriddenBot()[i]) {
             if(rob->hasBeh)
                 rob->getCurrentBeh()->perform(rob);
-//        }
+         }
     }
 
     RobComm * robcom = RobComm::getRobComm();

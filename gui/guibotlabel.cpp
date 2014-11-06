@@ -13,13 +13,16 @@ QRectF GuiBotLabel::boundingRect() const
 //    int radius = diameter / -2;
 ////    return QRectF(5,-120,diameter,diameter);   // wonky, unpatterned values due to matrix transformations and font size
 //    return QRectF(40,-200,diameter,diameter);
+
+    //int radius = diameter/2;
     int diameter = 200;
-    int radius = diameter/2;
     return QRectF(0,0,diameter,diameter);
 }
 
 void GuiBotLabel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    (void)option;
+    (void)widget;
     QRectF rec = boundingRect();
     QGraphicsTextItem name;
     painter->setRenderHint(QPainter::Antialiasing, true);

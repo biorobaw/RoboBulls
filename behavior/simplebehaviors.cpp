@@ -26,8 +26,6 @@ void SimpleBehaviors::perform(Robot * r)
     Point robotPosition = r->getRobotPosition();
     Point ballPosition = gm->getBallPoint();
 
-    Point rob1, rob2;
-
     if (gm->getGameState() == 'H' || gm->getGameState() == ' ')
     {
         Skill::Stop s;
@@ -65,7 +63,7 @@ void SimpleBehaviors::perform(Robot * r)
 
         move.setMovementTolerances(CLOSE_ENOUGH, ANGLE);
         move.setVelocityMultiplier(1);
-        move.recreate(position, direction, false);
+        move.recreate(position, direction, true);
         move.perform(r);
     }
 

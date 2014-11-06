@@ -70,7 +70,6 @@ private:
     Point passingPoint;
     int receiverID;
     Point target;
-    Skill::Skill *s;
     enum states {initial, movingBehind, approaching, kicking, idling} state;
 
 };

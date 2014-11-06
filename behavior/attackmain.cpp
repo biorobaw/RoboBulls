@@ -55,9 +55,7 @@ void AttackMain::perform(Robot * robot)
         drive_start_point = rp;
         if(Measurments::isClose(rp,bp,150))
         {
-            #if SIMULATED
-                touched_ball = true;    /* Why is this only done when simulated? */
-            #endif
+            touched_ball = true;
         }
     }
 
@@ -75,9 +73,7 @@ void AttackMain::perform(Robot * robot)
         case initial:
             done = false;
             state = drive;
-            //delete drive_skill;
-            //drive_skill = new Skill::DriveBall(gp, goal_direction);
-            drive_skill = new Skill::KickToPoint(gp, ROT_TOLERANCE*3, shot_distance);
+            drive_skill = new Skill::KickToPoint(gp, ROT_TOLERANCE, shot_distance);
             break;
 
         case drive:
@@ -88,7 +84,7 @@ void AttackMain::perform(Robot * robot)
             if(!Measurments::isClose(drive_start_point, rp, drive_distance)) 
             {
                 delete pass_skill;
-                pass_skill = new Skill::KickToPoint(&stp, PASS_ANGLE_TOLERANCE, NO_KICK_DIST);
+                pass_skill = new Skill::KickToPoint(&stp);
                 state = pass;
             }
             /***************************************************************
@@ -110,10 +106,6 @@ void AttackMain::perform(Robot * robot)
         case score:
             assert(score_skill != nullptr);
 
-            /* Shamsi change this later; what happens after
-             * the robot kicks the ball in the score state? Right
-             * now I just had them go back to initial
-             */
             if(score_skill->perform(robot) == true) {
                 done = true;
                 state = initial;

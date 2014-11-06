@@ -16,13 +16,15 @@ GuiBall::GuiBall()
 QRectF GuiBall::boundingRect() const
 {
     int diameter = 200;
-    int radius = diameter / 2;
+    //int radius = diameter / 2;
 //    return QRectF(radius,radius,diameter,diameter);
     return QRectF(0,0,diameter,diameter);
 }
 
 void GuiBall::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    (void)option;
+    (void)widget;
     QRectF rec = boundingRect();
     painter->setBrush(QBrush(QColor::fromRgb(255,20,147,255), Qt::SolidPattern));
     painter->setPen(QPen(Qt::white, 10, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
@@ -61,10 +63,10 @@ void GuiBall::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 
 void GuiBall::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-
+    (void)event;
 }
 
 void GuiBall::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-
+    (void)event;
 }

@@ -26,7 +26,7 @@ namespace Skill
  */
 #define NO_KICK_DIST -1
 
-#define KICK_TO_POINT_DEBUG 1
+#define KICK_TO_POINT_DEBUG 0
 
 
 class KickToPoint : public Skill

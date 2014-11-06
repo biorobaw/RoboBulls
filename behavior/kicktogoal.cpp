@@ -40,11 +40,11 @@ void KickToGoal::perform(Robot * r)
     switch (state) {
     case goingBehind:
         target = behindBall;
-        setMovementTargets(behindBall, ballToGoal, false);
+        setMovementTargets(behindBall, ballToGoal, true);
         GenericMovementBehavior::perform(r, Movement::Type::Default);
         break;
     case approaching:
-        setMovementTargets(ball, ballToGoal, false);
+        setMovementTargets(ball, ballToGoal, true);
 		GenericMovementBehavior::perform(r, Movement::Type::SharpTurns);
         break;
     case kicking:

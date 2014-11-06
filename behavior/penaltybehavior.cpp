@@ -5,9 +5,9 @@
     #define ANGLE (7*M_PI/180)
     #define CLOSE_ENOUGH 110
 #else
-    #define DIST 350
-    #define ANGLE (15*M_PI/180)
-    #define CLOSE_ENOUGH 210
+    #define DIST 270
+    #define ANGLE (7*M_PI/180)
+    #define CLOSE_ENOUGH 170
 #endif
 
 PenaltyBehavior::PenaltyBehavior(const ParameterList& list)
@@ -30,9 +30,7 @@ void PenaltyBehavior::perform(Robot * myRobot)
     float targetBallAngle = Measurments::angleBetween(model->getOpponentGoal(), ballPos);
     float ballTargetAngle = Measurments::angleBetween(ballPos, model->getOpponentGoal());
     Point behindBall = Point(DIST*cos(targetBallAngle)+ballPos.x, DIST*sin(targetBallAngle)+ballPos.y);
-
-    move.setMovementTolerances(CLOSE_ENOUGH, ANGLE);
-    move.setVelocityMultiplier(1);
+    bool ballInFront = abs(Measurments::angleDiff(robotOrient, Measurments::angleBetween(robotPos, ballPos))) < ANGLE*3;
 
     switch(pb)
     {
@@ -43,8 +41,8 @@ void PenaltyBehavior::perform(Robot * myRobot)
         break;
     case moving:
         cout << "moving" << endl;
-        move.recreate(behindBall, ballTargetAngle, false);
-        move.perform(myRobot, Movement::Type::Default);
+        setMovementTargets(behindBall, ballTargetAngle, true);
+        GenericMovementBehavior::perform(myRobot, Movement::Type::Default);
 //        cout << "1\t" << Measurments::distance(robotPos,behindBall) << endl;
 //        cout << "2\t" << abs(Measurments::angleDiff(robotOrient, ballTargetAngle))/M_PI*180 << endl;
         if (Measurments::isClose(robotPos,behindBall,CLOSE_ENOUGH) &&
@@ -62,10 +60,12 @@ void PenaltyBehavior::perform(Robot * myRobot)
         cout << "approaching" << endl;
 //        cout << "1\t" << Measurments::distance(robotPos,ballPos) << endl;
 //        cout << "2\t" << abs(Measurments::angleDiff(robotOrient, ballTargetAngle))/M_PI*180 << endl;
-        move.recreate(ballPos, ballTargetAngle, false);
-        move.perform(myRobot, Movement::Type::Default);
+//        cout << "3\t" << abs(Measurments::angleDiff(robotOrient, Measurments::angleBetween(robotPos, ballPos)))/M_PI*180 << endl;
+        setMovementTargets(ballPos, ballTargetAngle, true);
+        GenericMovementBehavior::perform(myRobot, Movement::Type::Default);
         if (Measurments::isClose(robotPos,ballPos,CLOSE_ENOUGH) &&
-            abs(Measurments::angleDiff(robotOrient, ballTargetAngle)) < ANGLE )
+            abs(Measurments::angleDiff(robotOrient, ballTargetAngle)) < ANGLE &&
+                ballInFront)
         {
             pb = kicking;
         }
