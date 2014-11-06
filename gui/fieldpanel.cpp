@@ -4,6 +4,7 @@
 #include "selrobotpanel.h"
 #include "guirobot.h"
 #include "guiscene.h"
+#include "guidrawline.h"
 
 FieldPanel::FieldPanel(MainWindow * mw) {
     dash = mw;
@@ -300,10 +301,6 @@ void FieldPanel::updateScene() {
                 }else{
                     guiLabels[i]->hidden = true;
                 }
-                // drawLine TEST
-//                drawLine(dash->getBotCoordX(true, 0),dash->getBotCoordY(true, 0), Movement::Move.pathQueue[i].x, Movement::Move.pathQueue[i].y );
-//                dash->ui->gView_field->update();
-
             }
         }// blue team for loop
 
@@ -339,6 +336,10 @@ void FieldPanel::updateScene() {
 
     // Keeping camera centered
     centerViewOnBot();
+    // Printing debug lines
+    printLines();
+
+
     dash->ui->gView_field->update();
 
 }
@@ -480,7 +481,60 @@ void FieldPanel::scanForScrollModifier() {
             refresh = true;
         }
     }
-}//end scrollModifier()
+}
+
+void FieldPanel::drawLine(Point origin, Point end) {
+    //    guidrawline = new GuiDrawLine();
+    //    guidrawline->setZValue(3);
+    //    guidrawline->setX(100);
+    //    guidrawline->setY(100);
+    //    scene->addItem(guidrawline);
+
+//            dash->guidrawline->x1 = originX;
+//            dash->guidrawline->y1 = originY;
+//            dash->guidrawline->x2 = endX;
+//            dash->guidrawline->y2 = endY;
+//            dash->ui->gView_field->update();
+
+    GuiDrawLine * newLine = new GuiDrawLine();
+    newLine->x1 = origin.x;
+    newLine->y1 = origin.y;
+    newLine->x2 = end.x;
+    newLine->y2 = end.y;
+    newLine->setZValue(4);
+    newLine->setX(100);
+    newLine->setY(100);
+    newLine->ageLine();
+//    dash->ui->gView_field->update();
+
+    scene->addItem(newLine);
+    lineQueue.push_front(newLine);
+//    printLines();
+}
+
+void FieldPanel::printLines() {
+//    cout << "lineQueue.size: " << lineQueue.size() << " \n";
+    if (lineQueue.size() > 0) {
+        for (unsigned int i=0; i<lineQueue.size(); i++) {
+            if (lineQueue[i] != NULL) {
+//                lineQueue[i]->setX(100);
+//                lineQueue[i]->setY(100);
+//                lineQueue[i]->setZValue(3);
+                refresh = true;
+                lineQueue[i]->ageLine();
+                dash->ui->gView_field->update();
+                if (lineQueue[i]->age == 0) {
+//                    scene->removeItem(lineQueue[i]);
+    //                lineQueue.pop_back();
+                    lineQueue[i]->hide();
+                }
+                if (lineQueue.size() > 30) {
+                    lineQueue.pop_back();
+                }
+            }
+        }
+    }
+}
 
 void FieldPanel::zoomField(int zoom) {
     dash->ui->zoom_slider->setValue(zoom);
