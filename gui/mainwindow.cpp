@@ -385,6 +385,15 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
             case Qt::Key_J:
                 on_btn_botDrible_pressed();
                 break;
+
+            case Qt::Key_L:
+                if (fieldpanel->selectedBot > -1) {
+                    // drawLine TEST
+                    fieldpanel->drawLine(gamemodel->getBallPoint(),
+                             gamemodel->find(fieldpanel->selectedBot,gamemodel->getMyTeam())->getRobotPosition());
+                }
+                break;
+
             // Hide/show bot icon
 //            case Qt::Key_Delete:
 //                cout << "delete \n";
