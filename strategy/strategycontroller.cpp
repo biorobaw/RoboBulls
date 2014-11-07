@@ -31,20 +31,30 @@ StrategyController::StrategyController()
 
 void StrategyController::run()
 {
-    static int count = 0;
-    if(count < 25) { ++count; return; }
+    /* Adjustment: The new vision system (11/7/14) requirements
+     * (Seeing a robot X amounts of times before it is added) behaves
+     * poorly with strategies with assignBeh only. assignBeh is only called once,
+     * and that is _before_ 50 frames have passed, and so no robots will be
+     * on the team. Then, assignBeh will never be called again.
+     * Here we're only going to run if there are robots on the team.
+     * Also, this is a non-bad way of "not doing anything" until the game
+     * is in a valid state.
+     * And, this means nothing will work if there are no robots.
+     */
+    if(!model->getMyTeam().empty())
+    {
+        frameBegin();
 
-    frameBegin();
-    
-    if(model->isNewCommand() || activeStrategy==nullptr) {
-        gameModelUpdated();
-    } else {
-        gameModelContinued();
+        if(model->isNewCommand() || activeStrategy==nullptr) {
+            gameModelUpdated();
+        } else {
+            gameModelContinued();
+        }
+
+        model->onCommandProcessed();
+
+        frameEnd();
     }
-
-    model->onCommandProcessed();
-    
-    frameEnd();
 }
 
 void StrategyController::gameModelUpdated()
@@ -53,11 +63,10 @@ void StrategyController::gameModelUpdated()
 
     cout << model->getGameState() << endl;
 
-
     /* Testing macro: Change this to 0 to ignore refcom commands
      * to test a single strategy
      */
-#if 1
+#if 0
     switch(model->getGameState())
     {
     case 'S':    //stop game
