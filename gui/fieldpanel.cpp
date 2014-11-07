@@ -484,24 +484,13 @@ void FieldPanel::scanForScrollModifier() {
 }
 
 void FieldPanel::drawLine(Point origin, Point end) {
-    //    guidrawline = new GuiDrawLine();
-    //    guidrawline->setZValue(3);
-    //    guidrawline->setX(100);
-    //    guidrawline->setY(100);
-    //    scene->addItem(guidrawline);
-
-//            dash->guidrawline->x1 = originX;
-//            dash->guidrawline->y1 = originY;
-//            dash->guidrawline->x2 = endX;
-//            dash->guidrawline->y2 = endY;
-//            dash->ui->gView_field->update();
 
     GuiDrawLine * newLine = new GuiDrawLine();
     newLine->x1 = origin.x;
     newLine->y1 = origin.y;
     newLine->x2 = end.x;
     newLine->y2 = end.y;
-    newLine->setZValue(4);
+    newLine->setZValue(2);
     newLine->setX(100);
     newLine->setY(100);
     newLine->ageLine();
@@ -509,7 +498,6 @@ void FieldPanel::drawLine(Point origin, Point end) {
 
     scene->addItem(newLine);
     lineQueue.push_front(newLine);
-//    printLines();
 }
 
 void FieldPanel::printLines() {
@@ -517,19 +505,13 @@ void FieldPanel::printLines() {
     if (lineQueue.size() > 0) {
         for (unsigned int i=0; i<lineQueue.size(); i++) {
             if (lineQueue[i] != NULL) {
-//                lineQueue[i]->setX(100);
-//                lineQueue[i]->setY(100);
-//                lineQueue[i]->setZValue(3);
                 refresh = true;
                 lineQueue[i]->ageLine();
+
                 dash->ui->gView_field->update();
                 if (lineQueue[i]->age == 0) {
-//                    scene->removeItem(lineQueue[i]);
-    //                lineQueue.pop_back();
                     lineQueue[i]->hide();
-                }
-                if (lineQueue.size() > 30) {
-                    lineQueue.pop_back();
+                    lineQueue.erase(lineQueue.begin()+i);
                 }
             }
         }

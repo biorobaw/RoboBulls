@@ -5,6 +5,7 @@
 #include <iostream>
 
 class MainWindow;
+class Point;
 
 class GuiInterface
 {
@@ -14,6 +15,7 @@ public:
     bool isOverride();
     std::vector<bool> isOverriddenBot();
     void show();
+    void drawPath(Point A, Point B);
 
 private:
     static GuiInterface * gi;
