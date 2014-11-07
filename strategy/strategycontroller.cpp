@@ -66,7 +66,7 @@ void StrategyController::gameModelUpdated()
     /* Testing macro: Change this to 0 to ignore refcom commands
      * to test a single strategy
      */
-#if 0
+#if 1
     switch(model->getGameState())
     {
     case 'S':    //stop game
