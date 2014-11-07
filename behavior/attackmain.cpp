@@ -78,7 +78,7 @@ void AttackMain::perform(Robot * robot)
 
         case drive:
             /***************************************************************
-             * Evaluate transition to pass state. If the robot if 500 units away
+             * Evaluate transition to pass state. If the robot if 1000 units away
              * from drive start (check RoboCup rules, this might need to change) this happens.
              */
             if(!Measurments::isClose(drive_start_point, rp, drive_distance)) 

@@ -4,7 +4,7 @@
 #include "behavior/kicktogoal.h"
 #include "strategy/attackstrategy.h"
 
-#define ATTACK_STRAT_DEBUG 1
+#define ATTACK_STRAT_DEBUG 0
 
 Robot* AttackStrategy::lastDriver = nullptr;
 Robot* AttackStrategy::lastReciever = nullptr;

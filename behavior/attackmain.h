@@ -31,8 +31,8 @@ private:
     Point drive_start_point, rp, sp, gp, bp, stp;
 
     double goal_direction;
-    const double shot_distance = 2150;
-    const double drive_distance = 500;
+    const double shot_distance = 1500;
+    const double drive_distance = 1000;
 
     bool touched_ball = false, done = false;
     Skill::Skill* drive_skill;
