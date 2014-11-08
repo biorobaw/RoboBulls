@@ -142,6 +142,10 @@ void StrategyController::frameEnd()
 //         }
     }
 
+//    int r = std::rand() % 100;
+//    if (r < 25)
+//        GuiInterface::getGuiInterface()->drawPath(model->find(1,model->getMyTeam())->getRobotPosition(), Point(0,0), 1);
+
     RobComm * robcom = RobComm::getRobComm();
     robcom->sendVelsLarge(model->getMyTeam());
     FPPA::pathfindingEnd();

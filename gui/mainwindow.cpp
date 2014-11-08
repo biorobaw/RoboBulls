@@ -49,6 +49,8 @@
 #include "include/config/simulated.h"
 #include "communication/nxtrobcomm.h"
 #include "movement/move.h"
+// TEST
+#include "guiinterface.h"
 
 // Global static pointer used to ensure only a single instance of the class.
 //MainWindow* MainWindow::mw = NULL;    // delete?
@@ -389,8 +391,10 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
             case Qt::Key_L:
                 if (fieldpanel->selectedBot > -1) {
                     // drawLine TEST
-                    fieldpanel->drawLine(Point(objectPos->getMouseCoordX(), objectPos->getMouseCoordY()),
-                             gamemodel->find(fieldpanel->selectedBot,gamemodel->getMyTeam())->getRobotPosition());
+//                    fieldpanel->drawLine(Point(objectPos->getMouseCoordX(), objectPos->getMouseCoordY()),
+//                             gamemodel->find(fieldpanel->selectedBot,gamemodel->getMyTeam())->getRobotPosition());
+                    GuiInterface::getGuiInterface()->drawPath(Point(objectPos->getMouseCoordX(), objectPos->getMouseCoordY()),
+                                                   gamemodel->find(fieldpanel->selectedBot,gamemodel->getMyTeam())->getRobotPosition());
                 }
                 break;
 

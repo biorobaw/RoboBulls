@@ -513,6 +513,11 @@ void FieldPanel::updateLineQueue() {
                     lineQueue[i]->hide();
                     lineQueue.erase(lineQueue.begin()+i);
                 }
+                // temporary fix for aging not working from master thread :(
+                if (lineQueue.size() > 10) {
+                    scene->removeItem(lineQueue[lineQueue.size()-1]);
+                    lineQueue.pop_back();
+                }
             }
         }
     }
