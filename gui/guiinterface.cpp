@@ -40,6 +40,6 @@ void GuiInterface::show() {
     dash->show();
 }
 
-void GuiInterface::drawPath(Point A, Point B) {
-    dash->fieldpanel->drawLine(A,B);
+void GuiInterface::drawPath(Point A, Point B, int seconds) {
+    dash->fieldpanel->drawLine(A, B, seconds);
 }

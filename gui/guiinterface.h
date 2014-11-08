@@ -15,7 +15,7 @@ public:
     bool isOverride();
     std::vector<bool> isOverriddenBot();
     void show();
-    void drawPath(Point A, Point B);
+    void drawPath(Point A, Point B, int seconds);
 
 private:
     static GuiInterface * gi;

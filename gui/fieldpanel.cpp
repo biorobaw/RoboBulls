@@ -337,7 +337,7 @@ void FieldPanel::updateScene() {
     // Keeping camera centered
     centerViewOnBot();
     // Printing debug lines
-    printLines();
+    updateLineQueue();
 
 
     dash->ui->gView_field->update();
@@ -483,32 +483,32 @@ void FieldPanel::scanForScrollModifier() {
     }
 }
 
-void FieldPanel::drawLine(Point origin, Point end) {
-
+void FieldPanel::drawLine(Point A, Point B, int seconds) {
+    // Creating a new line based on received specs
     GuiDrawLine * newLine = new GuiDrawLine();
-    newLine->x1 = origin.x;
-    newLine->y1 = origin.y;
-    newLine->x2 = end.x;
-    newLine->y2 = end.y;
+    newLine->x1 = A.x;
+    newLine->y1 = A.y;
+    newLine->x2 = B.x;
+    newLine->y2 = B.y;
     newLine->setZValue(2);
     newLine->setX(100);
     newLine->setY(100);
+    newLine->lifeSpan = seconds;
     newLine->ageLine();
-//    dash->ui->gView_field->update();
-
+    // adding our line to the scene and to the aging queue
     scene->addItem(newLine);
     lineQueue.push_front(newLine);
+
 }
 
-void FieldPanel::printLines() {
+void FieldPanel::updateLineQueue() {
 //    cout << "lineQueue.size: " << lineQueue.size() << " \n";
+    // Refreshing the field if there are lines to draw
     if (lineQueue.size() > 0) {
         for (unsigned int i=0; i<lineQueue.size(); i++) {
             if (lineQueue[i] != NULL) {
                 refresh = true;
-                lineQueue[i]->ageLine();
-
-                dash->ui->gView_field->update();
+                // Deleting old lines
                 if (lineQueue[i]->age == 0) {
                     lineQueue[i]->hide();
                     lineQueue.erase(lineQueue.begin()+i);

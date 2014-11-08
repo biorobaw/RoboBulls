@@ -25,7 +25,7 @@ public:
     int x2;
     int y2;
     int age = 5;
-    int lifeSpan = 6000;
+    int lifeSpan = 1;
 
 public slots:
     void decay();

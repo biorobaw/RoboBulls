@@ -389,7 +389,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
             case Qt::Key_L:
                 if (fieldpanel->selectedBot > -1) {
                     // drawLine TEST
-                    fieldpanel->drawLine(gamemodel->getBallPoint(),
+                    fieldpanel->drawLine(Point(objectPos->getMouseCoordX(), objectPos->getMouseCoordY()),
                              gamemodel->find(fieldpanel->selectedBot,gamemodel->getMyTeam())->getRobotPosition());
                 }
                 break;

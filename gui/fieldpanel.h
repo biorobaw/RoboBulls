@@ -27,7 +27,7 @@ public:
     void scanForSelection();
     void centerViewOnBot();
     void scanForScrollModifier();
-    void printLines();
+    void updateLineQueue();
 
 //private:
     GuiScene *scene;
@@ -97,7 +97,7 @@ private:
 public slots:
     void zoomField(int scale);
     void defaultZoom();
-    void drawLine(Point origin, Point end);
+    void drawLine(Point A, Point B, int seconds = 1);
 
 
 };
