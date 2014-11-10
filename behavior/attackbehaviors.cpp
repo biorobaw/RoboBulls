@@ -195,7 +195,7 @@ void AttackReceiver::perform(Robot* robot)
         Region* best = findMostStrategicRegion(robot);
         setMovementTargets(best->centre(), robDriverAng, true);
     } else {
-        setMovementTargets(robPos, robDriverAng, false);
+        setMovementTargets(robPos, robDriverAng, true);
     }
     GenericMovementBehavior::perform(robot, Movement::Type::SharpTurns);
 }
@@ -396,7 +396,7 @@ void AttackDefendGoal::perform(Robot* robot)
     if(!Measurments::isClose(robot->getRobotPosition(), myTargetPoint)) {
         setMovementTargets(myTargetPoint, goalBallAng, true);
     } else {
-        setMovementTargets(myTargetPoint, goalBallAng, false);
+        setMovementTargets(myTargetPoint, goalBallAng, true);
     }
 
     GenericMovementBehavior::perform(robot, Movement::Type::SharpTurns);

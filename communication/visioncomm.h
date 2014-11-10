@@ -20,7 +20,7 @@ using namespace std;
 */
 
 const float CONF_THRESHOLD_BALL = 0.6;
-const float CONF_THRESHOLD_BOTS = 0.9;
+const float CONF_THRESHOLD_BOTS = 0.8;
 
 /**
  * @brief DISCARD_RATE sets the rate in which packets are discarded. only 1/DISCARD_RATE packages are processed.

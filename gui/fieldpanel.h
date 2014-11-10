@@ -27,7 +27,7 @@ public:
     void scanForSelection();
     void centerViewOnBot();
     void scanForScrollModifier();
-    void printLines();
+    void updateLineQueue();
 
 //private:
     GuiScene *scene;
@@ -90,6 +90,12 @@ public:
     // User interaction
     int selectedBot = -1;               // the ID of the currently selected bot
 
+    // for drawLine
+    Point linePointA = Point(0,0);
+    Point linePointB = Point(0,0);
+    double lineLifeSpan = 0;
+    bool needLine = false;
+
 private:
     deque<GuiDrawLine*> lineQueue;
 
@@ -97,7 +103,8 @@ private:
 public slots:
     void zoomField(int scale);
     void defaultZoom();
-    void drawLine(Point origin, Point end);
+    void drawLine();
+    void setupLine(Point start, Point stop, double seconds);
 
 
 };

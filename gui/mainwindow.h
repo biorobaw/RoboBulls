@@ -37,6 +37,7 @@ class GuiRobot;
 class SelRobotPanel;
 class GamePanel;
 class GuiInterface;
+class GuiDrawLine;
 
 class GameModel;
 class Robot;
@@ -73,6 +74,7 @@ public:
     SelRobotPanel * selrobotpanel;
     ObjectPosition * objectPos;
     GamePanel *gamepanel;
+    GuiDrawLine *guidrawline;
 
     QString getRemTime();
     int getVelocity(int id);
@@ -109,7 +111,6 @@ protected:
     GuiComm *guicomm;
     GuiRobot *guirobot;
     RefComm *refcom;
-    GuiDrawLine *guidrawline;
     NXTRobComm *nxtrobcomm;
 
 private:

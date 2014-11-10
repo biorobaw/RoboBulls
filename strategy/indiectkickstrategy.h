@@ -24,6 +24,11 @@
  * still far from the receiver. Then, the receiver robot
  *  moves toward the ball.
  *
+ * We need atleast two robots on the field to perform
+ * indirectkick since indirectkick requires passing
+ * skill. There would be segmentation fault if we have less
+ * that two robots on the field
+ *
  * Ideally, we should use the same robot that has been
  * found by PassBallSender. For now, I used the same
  * mechanism that PassBallSender uses in this strategy

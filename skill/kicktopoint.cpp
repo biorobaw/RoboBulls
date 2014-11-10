@@ -139,7 +139,7 @@ bool KickToPoint::perform(Robot * robot)
     ballTargetAngle
         = Measurments::angleBetween(ballPoint, *externTargetPtr);
     behindBall
-        = Point(350*cos(targetBallAngle), 350*sin(targetBallAngle))
+        = Point(300*cos(targetBallAngle), 300*sin(targetBallAngle))
           + ballPoint;
 
     switch(this->state)

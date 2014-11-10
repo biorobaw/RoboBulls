@@ -12,8 +12,10 @@
 
 /*
  * PassBallReceiver class:
- * This class can be used with passBallSender
- * The receiver robot waits for the ball untill
+ * This class can be used with passBallSender.
+ * Once the sender passes the ball, an int count = 170
+ * would start to count down.
+ * The receiver robot waits for the ball until
  * the ball gets close to it or after the count becomes 0.
  * With differential robots, the kicking is not very
  * powerful. Hence, we use a counter. The counter starts

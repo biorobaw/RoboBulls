@@ -246,8 +246,11 @@ Robot* GameModel::find(int id, std::vector<Robot*>& team)
     }
 
     for(Robot* rob : team)
+    {
         if(rob->getID() == id)
             return rob;
+    }
+
     return NULL;
 }
 

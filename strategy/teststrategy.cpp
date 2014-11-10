@@ -189,8 +189,8 @@ void TestStrategy::assignBeh()
 //    BehaviorAssignment<ShamsiKickToCenter> assignment2(true);
 //    assignment2.assignBeh({2});
 
-      BehaviorAssignment<ShamsiKickToCenter> assignment2(true);
-      assignment2.assignBeh({2});
+//      BehaviorAssignment<ShamsiKickToCenter> assignment2(true);
+//      assignment2.assignBeh({2});
 
 
 

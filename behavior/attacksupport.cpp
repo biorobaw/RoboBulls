@@ -67,7 +67,7 @@ void AttackSupport::perform(Robot * robot)
 		setMovementTargets(wp, angle_to_ball);
         previousBP = bp;
     #else
-        setMovementTargets(wp, angle_to_ball);
+        setMovementTargets(wp, angle_to_ball,true);
         previousBP = bp;
     #endif
         state = final;
@@ -80,6 +80,7 @@ void AttackSupport::perform(Robot * robot)
             state = initial;
             break;
         }
+
         GenericMovementBehavior::perform(robot);
     }
 }

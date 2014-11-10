@@ -34,37 +34,26 @@ void SimpleBehaviors::perform(Robot * r)
             s.perform(gm->getMyTeam().at(i));
         }
     }
-    else if (gm->getGameState() == 'P')
+    else if (gm->getGameState() == 'P' || gm->getGameState() == 'p'
+             || gm->getGameState() == 'F' || gm->getGameState() == 'f'
+             || gm->getGameState() == 'I' || gm->getGameState() == 'i')
     {
         #if SIMULATED
-            #define DISTANCE 250
+            #define DISTANCE 350
         #else
             #define DISTANCE 500
         #endif
-
-        Point position(gm->getPenaltyPoint().x-DISTANCE, robotPosition.y);
+        Point goal;
+        if (gm->getGameState() == 'P' || gm->getGameState() == 'F' || gm->getGameState() == 'I' )
+            goal = gm->getOpponentGoal();
+        else if (gm->getGameState() == 'p' || gm->getGameState() == 'f' || gm->getGameState() == 'i')
+                 goal = gm->getMyGoal();
+        float targetBallAngle = Measurments::angleBetween(goal, ballPosition);
+        Point behindBall = ballPosition + Point(DISTANCE*cos(targetBallAngle), DISTANCE*sin(targetBallAngle));
+        Point position(behindBall.x, robotPosition.y);
         float direction = Measurments::angleBetween(robotPosition, ballPosition);
 
-        move.setMovementTolerances(CLOSE_ENOUGH, ANGLE);
-        move.setVelocityMultiplier(1);
         move.recreate(position, direction, true);
         move.perform(r);
     }
-    else if (gm->getGameState() == 'F')
-    {
-        #if SIMULATED
-            #define DISTANCE 250
-        #else
-            #define DISTANCE 500
-        #endif
-
-        Point position(gm->getBallPoint().x-DISTANCE, robotPosition.y);
-        float direction = Measurments::angleBetween(robotPosition, ballPosition);
-
-        move.setMovementTolerances(CLOSE_ENOUGH, ANGLE);
-        move.setVelocityMultiplier(1);
-        move.recreate(position, direction, true);
-        move.perform(r);
-    }
-
 }

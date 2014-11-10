@@ -513,6 +513,9 @@ void Move::setVels(Robot *robot)
                 break;
         }
     }
+//    int r = std::rand() % 100;
+//    if (r == 1)
+//        GuiInterface::getGuiInterface()->drawPath(robot->getRobotPosition(), Point(0,0), 1);
 }
 
 

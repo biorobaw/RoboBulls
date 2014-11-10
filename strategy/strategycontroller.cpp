@@ -31,12 +31,16 @@ StrategyController::StrategyController()
 
 void StrategyController::run()
 {
-    /* Adjustment: The new vision system requirements
+
+    /* Adjustment: The new vision system (11/7/14) requirements
      * (Seeing a robot X amounts of times before it is added) behaves
-     * poorly with strategies with assignBeh only. assignBehis only called once,
-     * and that is _before_ 50 frames have passed, andso no robots will be
+     * poorly with strategies with assignBeh only. assignBeh is only called once,
+     * and that is _before_ 50 frames have passed, and so no robots will be
      * on the team. Then, assignBeh will never be called again.
      * Here we're only going to run if there are robots on the team.
+     * Also, this is a non-bad way of "not doing anything" until the game
+     * is in a valid state.
+     * And, this means nothing will work if there are no robots.
      */
     if(!model->getMyTeam().empty())
     {
@@ -71,16 +75,20 @@ void StrategyController::gameModelUpdated()
     case 'g':    //Yellow Goal
         activeStrategy = new StopStrategy();
         break;
-    case 'P':    //Penalty Kick
+    case 'p':   //Yellow Penalty Kick
+    case 'P':   //Blue Penalty Kick
         activeStrategy = new PenaltyStrategy();
         break;
-    case 'K':    //Kickoff
+    case 'k':   //Yellow Kickoff
+    case 'K':   //Blue Kickoff
         activeStrategy = new KickOffStrategy();
         break;
-    case 'F':    //Free Kick
+    case 'f':   //Yellow Free Kick
+    case 'F':   //Blue Free Kick
         activeStrategy = new FreeKickStrategy();
         break;
-    case 'I':   //Indirect kick
+    case 'i':   //Yellow Indirect Kick
+    case 'I':   //Blue Indirect kick
         activeStrategy = new IndiectKickStrategy();
         break;
     case 'H':    //Halt
@@ -138,6 +146,10 @@ void StrategyController::frameEnd()
                 rob->getCurrentBeh()->perform(rob);
 //         }
     }
+
+//    int r = std::rand() % 100;
+//    if (r < 25)
+//        GuiInterface::getGuiInterface()->drawPath(model->find(1,model->getMyTeam())->getRobotPosition(), Point(0,0), 1);
 
     RobComm * robcom = RobComm::getRobComm();
     robcom->sendVelsLarge(model->getMyTeam());
