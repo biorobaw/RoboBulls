@@ -50,9 +50,6 @@ void GuiDrawLine::ageLine() {
     } else {
         timer->stop();
     }
-//    QTimer::singleShot(milliseconds/stages, this, SLOT(decay()));
-
-
 }
 
 void GuiDrawLine::decay() {

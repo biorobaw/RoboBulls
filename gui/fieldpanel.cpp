@@ -198,12 +198,6 @@ void FieldPanel::setupScene() {
     // Turning on Bot IDs by default
     dash->ui->check_showIDs->setChecked(true);
 
-    // Drawing debug line (optional)
-//    guidrawline = new GuiDrawLine();
-//    guidrawline->setZValue(4);
-//    guidrawline->setX(100);
-//    guidrawline->setY(100);
-//    scene->addItem(guidrawline);
 
     // Raising the curtains...
     dash->ui->gView_field->setScene(scene);
@@ -483,23 +477,37 @@ void FieldPanel::scanForScrollModifier() {
     }
 }
 
-void FieldPanel::drawLine(Point A, Point B, int seconds) {
+void FieldPanel::setupLine(Point start, Point stop, double seconds) {
+    linePointA = start;
+    linePointB = stop;
+    lineLifeSpan = seconds;
+    needLine = true;
+}
+
+void FieldPanel::drawLine() {
     // Creating a new line based on received specs
-    GuiDrawLine * newLine = new GuiDrawLine();
-    newLine->x1 = A.x;
-    newLine->y1 = A.y;
-    newLine->x2 = B.x;
-    newLine->y2 = B.y;
-    newLine->setZValue(2);
-    newLine->setX(100);
-    newLine->setY(100);
-    newLine->lifeSpan = seconds;
-    newLine->ageLine();
-    // adding our line to the scene and to the aging queue
-    scene->addItem(newLine);
-    lineQueue.push_front(newLine);
+    if (needLine && lineLifeSpan > 0) {
+//        cout << "needLine \n";
+        GuiDrawLine * newLine = new GuiDrawLine();
+        newLine->x1 = linePointA.x;
+        newLine->y1 = linePointA.y;
+        newLine->x2 = linePointB.x;
+        newLine->y2 = linePointB.y;
+        newLine->lifeSpan = lineLifeSpan;
+        newLine->setZValue(2);
+        newLine->setX(100);
+        newLine->setY(100);
+        newLine->ageLine();
+        // adding our line to the scene and to the aging queue
+        scene->addItem(newLine);
+        lineQueue.push_front(newLine);
+        needLine = false;
+//        cout << "newLine A.x: " << newLine->x1 << " \n";
+//        cout << "newLine B.x: " << newLine->x2 << " \n";
+    }
 
 }
+
 
 void FieldPanel::updateLineQueue() {
 //    cout << "lineQueue.size: " << lineQueue.size() << " \n";
@@ -514,10 +522,10 @@ void FieldPanel::updateLineQueue() {
                     lineQueue.erase(lineQueue.begin()+i);
                 }
                 // temporary fix for aging not working from master thread :(
-                if (lineQueue.size() > 10) {
-                    scene->removeItem(lineQueue[lineQueue.size()-1]);
-                    lineQueue.pop_back();
-                }
+//                if (lineQueue.size() > 10) {
+//                    scene->removeItem(lineQueue[lineQueue.size()-1]);
+//                    lineQueue.pop_back();
+//                }
             }
         }
     }

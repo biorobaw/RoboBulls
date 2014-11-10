@@ -154,9 +154,7 @@ void MainWindow::coreLoop(int tick) {
     fieldpanel->scanForScrollModifier();
     fieldpanel->scanForSelection();
     // Updating GUI info
-//    teamSize_blue = gamemodel->getMyTeam().size();
-//    teamSize_yellow = gamemodel->getOponentTeam().size();
-//    cout << "teamSize_blue: " << TEAM_SIZE_BLUE << "\n";
+    fieldpanel->drawLine();
     setMyVelocity();
     selrobotpanel->setGuiOverride();
     fieldpanel->updateScene();

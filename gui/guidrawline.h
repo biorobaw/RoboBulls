@@ -19,13 +19,13 @@ public:
     QRectF boundingRect() const;    // outermost edges of the object
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     void ageLine();
-
-    int x1;
-    int y1;
-    int x2;
-    int y2;
+//    bool newLine = false;
+    int x1 = 0;
+    int y1 = 0;
+    int x2 = 0;
+    int y2 = 0;
     int age = 5;
-    int lifeSpan = 1;
+    double lifeSpan = 1;
 
 public slots:
     void decay();
