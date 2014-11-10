@@ -65,7 +65,7 @@ void DriveBallAndKick::perform(Robot* robot)
         {
             move.setMovementTolerances(CLOSE_ENOUGH, ANGLE);
             move.setVelocityMultiplier(0.1);
-            move.recreate(gm->getBallPoint(), direction, false);
+            move.recreate(gm->getBallPoint(), direction, true);
             move.perform(robot, Movement::Type::Default);
             if (Measurments::isClose(robot->getRobotPosition(), gm->getBallPoint(), CLOSE_ENOUGH) &&
                 Measurments::angleDiff(robot->getOrientation(), direction) < ANGLE)

@@ -65,16 +65,20 @@ void StrategyController::gameModelUpdated()
     case 'g':    //Yellow Goal
         activeStrategy = new StopStrategy();
         break;
-    case 'P':    //Penalty Kick
+    case 'p':   //Yellow Penalty Kick
+    case 'P':   //Blue Penalty Kick
         activeStrategy = new PenaltyStrategy();
         break;
-    case 'K':    //Kickoff
+    case 'k':   //Yellow Kickoff
+    case 'K':   //Blue Kickoff
         activeStrategy = new KickOffStrategy();
         break;
-    case 'F':    //Free Kick
+    case 'f':   //Yellow Free Kick
+    case 'F':   //Blue Free Kick
         activeStrategy = new FreeKickStrategy();
         break;
-    case 'I':   //Indirect kick
+    case 'i':   //Yellow Indirect Kick
+    case 'I':   //Blue Indirect kick
         activeStrategy = new IndiectKickStrategy();
         break;
     case 'H':    //Halt

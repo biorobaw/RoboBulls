@@ -48,7 +48,7 @@ bool DriveBall::perform(Robot* robot)
     case moveBehindBall:
         cout << "moving behind ball" << endl;
         move_skill.setVelocityMultiplier(VEL_MULT*2);
-        move_skill.recreate(behindBall, ballTargetAngle, false);
+        move_skill.recreate(behindBall, ballTargetAngle, true);
         if(move_skill.perform(robot)) {
             state = driveBall;
         }
@@ -64,7 +64,7 @@ bool DriveBall::perform(Robot* robot)
         }
         robot->setDrible(true);
         move_skill.setVelocityMultiplier(VEL_MULT);
-        move_skill.recreate(this->targetPosition, this->direction, false);
+        move_skill.recreate(this->targetPosition, this->direction, true);
         move_skill.perform(robot, Movement::Type::Default);
         break;
     }

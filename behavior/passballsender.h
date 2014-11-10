@@ -21,7 +21,7 @@
  * Many things have been implemented here that have not been
  * used but can be used to improve this behavior
  *
- * suggestions for improvemnets:
+ * Squggestions for improvements:
  *      ** send the ball to the robot that is closer
  *      to the goal, closer to the robot, and has least
  *      amount of opponents players in its region
