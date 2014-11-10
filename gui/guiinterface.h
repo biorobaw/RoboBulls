@@ -6,6 +6,8 @@
 
 class MainWindow;
 class Point;
+class SelRobotPanel;
+class FieldPanel;
 
 class GuiInterface
 {
@@ -16,6 +18,7 @@ public:
     std::vector<bool> isOverriddenBot();
     void show();
     void drawPath(Point A, Point B, double seconds = 1);
+    void setHidePaths(bool hide);
 
 private:
     static GuiInterface * gi;

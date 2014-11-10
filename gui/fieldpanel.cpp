@@ -480,7 +480,7 @@ void FieldPanel::scanForScrollModifier() {
 
 void FieldPanel::setupLine(Point start, Point stop, double seconds) {
     // Adding data from game's thread to deques for future reference by our thread
-    if (seconds > 0) {
+    if (seconds > 0 && !hidePaths) {
         lineAPoints.push_front(start);
         lineBPoints.push_front(stop);
         lineLifeSpans.push_front(seconds);
@@ -495,7 +495,7 @@ void FieldPanel::drawLine() {
         if (newLines > 0) {
             startIter = lineAPoints.size() - newLines;
         }
-        for (int i=startIter; i<lineAPoints.size(); i++) {
+        for (unsigned int i=startIter; i<lineAPoints.size(); i++) {
             GuiDrawLine * newLine = new GuiDrawLine();
             newLine->x1 = lineAPoints[i].x;
             newLine->y1 = lineAPoints[i].y;

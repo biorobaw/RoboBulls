@@ -98,8 +98,7 @@ public:
     deque<Point> lineAPoints;
     deque<Point> lineBPoints;
     deque<double> lineLifeSpans;
-//    deque<bool> lineAdded;
-
+    bool hidePaths = false;
 
 private:
     deque<GuiDrawLine*> lineQueue;
