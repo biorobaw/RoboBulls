@@ -43,7 +43,7 @@ public:
         {}
     void perform(Robot* robot)
     {
-        setMovementTargets(Point(0, 0), 0, false);
+        setMovementTargets(Point(0, 0), 0, true,true);
         GenericMovementBehavior::perform(robot, Movement::Type::SharpTurns);
     }
 };

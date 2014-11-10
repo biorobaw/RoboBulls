@@ -80,7 +80,7 @@ void PassBallReceiver::perform(Robot *robot)
                 break;
             case approaching:
             {cout << "approaching" << endl;
-                setMovementTargets(ballPos, angle, false);
+                setMovementTargets(ballPos, angle, true);
                 GenericMovementBehavior::perform(robot, Movement::Type::Default);
 //                cout << "robotCloseToball\t" << Measurments::distance(robotPos, ballPos)
 //                    << "\tangleIsRight\t" << abs(Measurments::angleDiff(robot->getOrientation(), angle))/M_PI*180

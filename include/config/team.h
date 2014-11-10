@@ -8,6 +8,7 @@
 #define TEAM_BLUE   0
 #define TEAM_YELLOW 1
 
+//Make Switch Here:
 #define TEAM TEAM_BLUE
 
 #endif

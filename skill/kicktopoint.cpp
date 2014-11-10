@@ -40,7 +40,7 @@ void KickToPoint::doPositioningState(Robot *robot)
 #if KICK_TO_POINT_DEBUG
     std::cout << "KTP POSITION" << std::endl;
 #endif
-    move_skill.recreate(behindBall, ballTargetAngle,true, true);
+    move_skill.recreate(behindBall, ballTargetAngle, true, true);
     move_skill.setVelocityMultiplier(1);
     if(move_skill.perform(robot)) {
         state = Moving;

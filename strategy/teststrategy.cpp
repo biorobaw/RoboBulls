@@ -104,13 +104,14 @@ public:
 
     void perform(Robot *robot) override
     {
-        setMovementTargets(Point(1000,0), 0);
+        setMovementTargets(Point(0,0), 0);
         GenericMovementBehavior::perform(robot);
     }
 };
 
-class ShamsiKickToCenter : public GenericMovementBehavior
+class ShamsiKickToCenter : public Behavior
 {
+public:
     //Continuously kicks the ball to the center
     Skill::KickToPoint * kkkk;
     ShamsiKickToCenter(const ParameterList& list)
@@ -147,6 +148,29 @@ class ShamsiPass : public GenericMovementBehavior
     }
 };
 
+class ShamsiPas1s : public GenericMovementBehavior
+{
+public:
+    ShamsiPas1s(const ParameterList& list) {
+        UNUSED_PARAM(list);
+    }
+
+    void perform(Robot *robot) override
+    {
+        Point ballPoint = GameModel::getModel()->getBallPoint();
+        float targetBallAngle
+            = Measurments::angleBetween(Point(0,0), ballPoint);
+        float ballTargetAngle
+            = Measurments::angleBetween(ballPoint, Point(0,0));
+        Point behindBall
+            = Point(300*cos(targetBallAngle), 300*sin(targetBallAngle))
+              + ballPoint;
+
+        setMovementTargets(behindBall, ballTargetAngle, true, true);
+        GenericMovementBehavior::perform(robot);
+    }
+};
+
 TestStrategy::TestStrategy()
 {
 
@@ -156,14 +180,18 @@ void TestStrategy::assignBeh()
 {
 //*************************************************************
 //  Shamsi Code
-//    BehaviorAssignment<ShamsiStrafe> assignment1(true);
+//    BehaviorAssignment<ShamsiPas1s> assignment1(true);
 //    assignment1.assignBeh({1});
 
 //    BehaviorAssignment<ShamsiPass> assignment2(true);
 //    assignment2.assignBeh({2});
 
-//    BehaviorAssignment<ShamsiGoToPose> assignment2(true);
+//    BehaviorAssignment<ShamsiKickToCenter> assignment2(true);
 //    assignment2.assignBeh({2});
+
+//      BehaviorAssignment<ShamsiKickToCenter> assignment2(true);
+//      assignment2.assignBeh({2});
+
 
 
     //james code

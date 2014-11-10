@@ -31,6 +31,7 @@ StrategyController::StrategyController()
 
 void StrategyController::run()
 {
+
     /* Adjustment: The new vision system (11/7/14) requirements
      * (Seeing a robot X amounts of times before it is added) behaves
      * poorly with strategies with assignBeh only. assignBeh is only called once,

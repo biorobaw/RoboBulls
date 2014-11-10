@@ -11,13 +11,13 @@ VisionComm::VisionComm(GameModel *gm)
 // Use different ports depending on whether it is simulated or the actual vision system
 #if SIMULATED
     //Shamsi Vision Address
-//    client = new RoboCupSSLClient(10020,"224.5.23.18");
+    client = new RoboCupSSLClient(10020,"224.5.23.18");
 
     //James Vision Address
 //    client = new RoboCupSSLClient(10020,"224.5.23.2");
 
     //Narges Vision Address
-    client = new RoboCupSSLClient(10020,"224.5.23.8");
+//    client = new RoboCupSSLClient(10020,"224.5.23.8");
 
 
     //Ryan Vision Address
@@ -155,10 +155,17 @@ bool VisionComm::receive()
                             || (detection.robots_blue(i).x() < 0 && detection.camera_id() == 1))
                         {
                             int robotID = detection.robots_blue(i).robot_id();
+                            #if !TEAM
                             if(gamemodel->findMyTeam(robotID)) {
                                 /* If the robot is already in the GameModel update it immediately */
                                 updateInfo(detection.robots_blue(i), TEAM_BLUE);
                             }
+                            #else
+                            if(gamemodel->findOpTeam(robotID)) {
+                                /* If the robot is already in the GameModel update it immediately */
+                                updateInfo(detection.robots_blue(i), TEAM_BLUE);
+                            }
+                            #endif
                             else {
                                 /* Otherwise we look at the frame counts, if the robot has been seen
                                  * 25 times in 50 frames, it is added to the gameModel.
@@ -191,9 +198,17 @@ bool VisionComm::receive()
                             || (detection.robots_yellow(i).x() < 0 && detection.camera_id() == 1))
                         {
                             int robotID = detection.robots_yellow(i).robot_id();
-                            if(gamemodel->findOpTeam(robotID)) {
-                                updateInfo(detection.robots_yellow(i), TEAM_YELLOW);
+                            #if TEAM
+                            if(gamemodel->findMyTeam(robotID)) {
+                                /* If the robot is already in the GameModel update it immediately */
+                                updateInfo(detection.robots_blue(i), TEAM_BLUE);
                             }
+                            #else
+                            if(gamemodel->findOpTeam(robotID)) {
+                                /* If the robot is already in the GameModel update it immediately */
+                                updateInfo(detection.robots_blue(i), TEAM_BLUE);
+                            }
+                            #endif
                             else {
                                 if(yellow_rob[robotID] >= 25) {
                                     updateInfo(detection.robots_yellow(i), TEAM_YELLOW);

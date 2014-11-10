@@ -33,11 +33,11 @@ class KickToPoint : public Skill
 {
 public:
     KickToPoint(Point target
-              , float targetTolerance = 10*M_PI/180
+              , float targetTolerance = 5*M_PI/180
               , float kickDistance = NO_KICK_DIST);
 
     KickToPoint(Point* targetPtr
-                , float targetTolerance = 10*M_PI/180
+                , float targetTolerance = 5*M_PI/180
                 , float kickDistance = NO_KICK_DIST);
 
     bool perform(Robot *) override;
