@@ -19,8 +19,9 @@ VisionComm::VisionComm(GameModel *gm)
     //Narges Vision Address
     client = new RoboCupSSLClient(10020,"224.5.23.8");
 
+
     //Ryan Vision Address
-//    client = new RoboCupSSLClient(10020,"224.5.23.21");
+//    client = new RoboCupSSLClient(10020,"224.5.23.17");
 
 #else
     client = new RoboCupSSLClient();
@@ -229,10 +230,12 @@ bool VisionComm::receive()
             i = 0;
     }
 
+    /* Debug Robot/Hit information
     for (int i =0; i<10;i++)
     {
         cout << "id\t" << i << "\thits\t" << blue_rob[i] << endl;
     }
+    */
 
     return true;
 }

@@ -13,6 +13,7 @@ threeWheelVels ThreeWheelCalculator::calculateVels
 threeWheelVels ThreeWheelCalculator::calculateVels
     (Robot* rob, float x_goal, float y_goal, float theta_goal, Type moveType)
 {
+    // Use a different calculation method depending on the moveType
     switch (moveType)
     {
     case Type::facePoint:
@@ -167,11 +168,22 @@ threeWheelVels ThreeWheelCalculator::facePointCalc
 
 std::vector<double> ThreeWheelCalculator::calcBias(double x, double y)
 {
+    /* To approximate the bias values, the motion of the 3 wheeled robot was
+     * restricted to forward motion. Thus, rear wheel was set to zero and the left
+     * and right wheels were set to max by the calculator. The approproate wheel
+     * was then given a bias based on the direction the robot moved and this was
+     * adjusted until the robot moved relatively straight. Further adjustments were
+     * done for forward motion at lower velocities.
+     *
+     * This process was repeated with motion restricted to sideways motion to
+     * determine the bias for the rear wheel.
+     */
     std::vector<double> bias_result;
     bias_result.push_back(1);
     bias_result.push_back(2);
     bias_result.push_back(3);
 
+    //Forward Motion Bias
     if (abs(x)>90)
     {
         bias_result[0] = 1;
@@ -185,6 +197,7 @@ std::vector<double> ThreeWheelCalculator::calcBias(double x, double y)
         bias_result[2] = 1;
     }
 
+    //Horizontal Motion Bias
     if (abs(y)>90)
     {
         bias_result[0] = 1;
@@ -203,7 +216,6 @@ std::vector<double> ThreeWheelCalculator::calcBias(double x, double y)
         bias_result[1] = 1;
         bias_result[2] = 1.33;
     }
-
 
     return bias_result;
 }

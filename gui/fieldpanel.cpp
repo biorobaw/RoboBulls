@@ -4,6 +4,7 @@
 #include "selrobotpanel.h"
 #include "guirobot.h"
 #include "guiscene.h"
+#include "guidrawline.h"
 
 FieldPanel::FieldPanel(MainWindow * mw) {
     dash = mw;
@@ -197,12 +198,6 @@ void FieldPanel::setupScene() {
     // Turning on Bot IDs by default
     dash->ui->check_showIDs->setChecked(true);
 
-    // Drawing debug line (optional)
-//    guidrawline = new GuiDrawLine();
-//    guidrawline->setZValue(4);
-//    guidrawline->setX(100);
-//    guidrawline->setY(100);
-//    scene->addItem(guidrawline);
 
     // Raising the curtains...
     dash->ui->gView_field->setScene(scene);
@@ -265,7 +260,11 @@ void FieldPanel::updateScene() {
             if (dash->gamemodel->find(i, dash->gamemodel->getMyTeam()) != NULL) {
                 guiTeam[i]->setX(dash->objectPos->getBotCoordX(true, i));
                 guiTeam[i]->setY(dash->objectPos->getBotCoordY(true, i));
-                guiTeam[i]->setZValue(3);
+                if (guiTeam[i]->enabled) {
+                    guiTeam[i]->setZValue(3);
+                } else {
+                    guiTeam[i]->setZValue(2);
+                }
                 double angle = dash->objectPos->getBotOrientDouble(true, i) ;
                 guiTeam[i]->setRotation(angle);
                 // Action colors (may be better in the button slots)
@@ -296,10 +295,6 @@ void FieldPanel::updateScene() {
                 }else{
                     guiLabels[i]->hidden = true;
                 }
-                // drawLine TEST
-//                drawLine(dash->getBotCoordX(true, 0),dash->getBotCoordY(true, 0), Movement::Move.pathQueue[i].x, Movement::Move.pathQueue[i].y );
-//                dash->ui->gView_field->update();
-
             }
         }// blue team for loop
 
@@ -335,6 +330,10 @@ void FieldPanel::updateScene() {
 
     // Keeping camera centered
     centerViewOnBot();
+    // Printing debug lines
+    updateLineQueue();
+
+
     dash->ui->gView_field->update();
 
 }
@@ -344,7 +343,7 @@ void FieldPanel::scanForSelection() {
     // Scanning for double-click selection
     for (int i=0; i<dash->teamSize_blue; i++) {
         if (dash->gamemodel->find(i,dash->gamemodel->getMyTeam()) != NULL) {
-            if (dash->robotpanel->botIcons[i]->doubleClicked || guiTeam[i]->doubleClicked) {
+            if (dash->robotpanel->botIcons[i]->doubleClicked || guiTeam[i]->doubleClicked)  {
                 dash->robotpanel->botIcons[i]->doubleClicked = false;
                 guiTeam[i]->doubleClicked = false;
                 centeredBotID = i;
@@ -476,7 +475,61 @@ void FieldPanel::scanForScrollModifier() {
             refresh = true;
         }
     }
-}//end scrollModifier()
+}
+
+void FieldPanel::setupLine(Point start, Point stop, double seconds) {
+    linePointA = start;
+    linePointB = stop;
+    lineLifeSpan = seconds;
+    needLine = true;
+}
+
+void FieldPanel::drawLine() {
+    // Creating a new line based on received specs
+    if (needLine && lineLifeSpan > 0) {
+//        cout << "needLine \n";
+        GuiDrawLine * newLine = new GuiDrawLine();
+        newLine->x1 = linePointA.x;
+        newLine->y1 = linePointA.y;
+        newLine->x2 = linePointB.x;
+        newLine->y2 = linePointB.y;
+        newLine->lifeSpan = lineLifeSpan;
+        newLine->setZValue(2);
+        newLine->setX(100);
+        newLine->setY(100);
+        newLine->ageLine();
+        // adding our line to the scene and to the aging queue
+        scene->addItem(newLine);
+        lineQueue.push_front(newLine);
+        needLine = false;
+//        cout << "newLine A.x: " << newLine->x1 << " \n";
+//        cout << "newLine B.x: " << newLine->x2 << " \n";
+    }
+
+}
+
+
+void FieldPanel::updateLineQueue() {
+//    cout << "lineQueue.size: " << lineQueue.size() << " \n";
+    // Refreshing the field if there are lines to draw
+    if (lineQueue.size() > 0) {
+        for (unsigned int i=0; i<lineQueue.size(); i++) {
+            if (lineQueue[i] != NULL) {
+                refresh = true;
+                // Deleting old lines
+                if (lineQueue[i]->age == 0) {
+                    lineQueue[i]->hide();
+                    lineQueue.erase(lineQueue.begin()+i);
+                }
+                // temporary fix for aging not working from master thread :(
+//                if (lineQueue.size() > 10) {
+//                    scene->removeItem(lineQueue[lineQueue.size()-1]);
+//                    lineQueue.pop_back();
+//                }
+            }
+        }
+    }
+}
 
 void FieldPanel::zoomField(int zoom) {
     dash->ui->zoom_slider->setValue(zoom);

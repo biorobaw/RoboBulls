@@ -1,11 +1,16 @@
 #include "guiinterface.h"
 #include "mainwindow.h"
 #include "selrobotpanel.h"
+#include "fieldpanel.h"
+#include "utilities/point.h"
+#include "guidrawline.h"
 
 /* Points of contact with main project:
  *      - nxtrobcomm.cpp: override;         REQUIRED
  *      - move.cpp: override;               REQUIRED
  *      - strategycontroller.cpp: override  NOT REQUIRED
+ * Overriding override:
+ *      - HALT command from refbox
  */
 
 GuiInterface * GuiInterface::gi = NULL;
@@ -34,4 +39,8 @@ std::vector<bool> GuiInterface::isOverriddenBot() {
 
 void GuiInterface::show() {
     dash->show();
+}
+
+void GuiInterface::drawPath(Point A, Point B, double seconds) {
+    dash->fieldpanel->setupLine(A, B, seconds);
 }

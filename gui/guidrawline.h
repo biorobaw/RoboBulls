@@ -5,18 +5,30 @@
 #include <QDebug>
 #include <QPixmap>
 #include <QLabel>
+#include "utilities/point.h"
+#include <deque>
+#include <QObject>
 
-class GuiDrawLine : public QGraphicsItem
+
+class GuiDrawLine : public QGraphicsObject
 {
+    Q_OBJECT
+
 public:
     GuiDrawLine();
     QRectF boundingRect() const;    // outermost edges of the object
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-    int x1;
-    int y1;
-    int x2;
-    int y2;
-//    std::string color;
+    void ageLine();
+//    bool newLine = false;
+    int x1 = 0;
+    int y1 = 0;
+    int x2 = 0;
+    int y2 = 0;
+    int age = 5;
+    double lifeSpan = 1;
+
+public slots:
+    void decay();
 
 };
 

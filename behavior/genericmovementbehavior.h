@@ -46,7 +46,8 @@ protected:
      * parameters: point, angle, and use obstacle avoidance or not.
      */
     void setMovementTargets(Point targetPoint, float targetAngle = UNUSED_ANGLE_VALUE);
-    void setMovementTargets(Point targetPoint, float targetAngle, bool useObstacleAvoid);
+    void setMovementTargets(Point targetPoint, float targetAngle,
+                            bool useObstacleAvoid, bool useAvoidBall = true);
         
     /* Set the velocity multiplier on the Movement object.
      * Like old times, except now 1.0 is the normal multiplier, and 0 means no velocity.
@@ -60,6 +61,7 @@ private:
     float newDistTolerance;
     float newRotTolerance;
     bool  useObstacleAvoid;
+    bool  useAvoidBall;
 };
 
 #endif

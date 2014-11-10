@@ -27,7 +27,7 @@ void IndiectKickStrategy::assignBeh()
 
     Robot *sender;
     Robot *receiver;
-    int senderID;
+    //int senderID;     //Removed to stop warnings
     Point ballPos = gm->getBallPoint();
 
     /*
@@ -59,7 +59,6 @@ void IndiectKickStrategy::assignBeh()
                     }
                 }
             }
-            senderID = sender->getID();
         }
 
 

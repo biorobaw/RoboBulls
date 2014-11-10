@@ -12,6 +12,8 @@ QRectF GuiSidelines::boundingRect() const
 
 void GuiSidelines::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    (void)option;
+    (void)widget;
     QRectF rec = boundingRect();
     QBrush plainBrush(QColor::fromRgb(0,100,0,255), Qt::SolidPattern);
     QBrush crossBrush(QColor::fromRgb(32,178,170,255), Qt::SolidPattern);

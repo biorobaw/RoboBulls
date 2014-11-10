@@ -46,14 +46,14 @@ Move::~Move()
 {
 }
 
-Move::Move(Point targetPoint, float targetAngle, bool withObstacleAvoid)
+Move::Move(Point targetPoint, float targetAngle, bool withObstacleAvoid, bool avoidBall)
     : velMultiplier(1.0)
 {
-    recreate(targetPoint, targetAngle, withObstacleAvoid);
+    recreate(targetPoint, targetAngle, withObstacleAvoid, avoidBall);
 }
 
 
-void Move::recreate(Point targetPoint, float targetAngle, bool withObstacleAvoid)
+void Move::recreate(Point targetPoint, float targetAngle, bool withObstacleAvoid, bool avoidBall)
 {
     if(Measurments::distance(m_targetPoint, targetPoint) > recrDistTolerance) {
         /* In most cases, this is called each loop to track a possibly moving point.
@@ -65,6 +65,7 @@ void Move::recreate(Point targetPoint, float targetAngle, bool withObstacleAvoid
         m_targetAngle      = targetAngle;
         isInitialized      = false;
         useObstacleAvoid   = withObstacleAvoid;
+        useAvoidBall       = avoidBall;
         pathEndInfo.hasFoundPathEnd = false;
         pathEndInfo.endingPoint = Point(9999,9999);
         currentPathIsClear = false;
@@ -397,7 +398,7 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
             {
                 const Point& nextNextPoint = pathQueue[1];
                 isNewObstacleInPath 
-                    = FPPA::isObstacleInLine(nextPoint, nextNextPoint, &obsPoint);
+                    = FPPA::isObstacleInLine(nextPoint, nextNextPoint, &obsPoint, useAvoidBall);
             }
             
             if(isNewObstacleInPath && !Measurments::isClose(obsPoint, lastObsPoint, 100)) 
@@ -450,11 +451,22 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
          * Dropped into by default, if there is a desired
          * optional end orientation, that rotation is done here
          */
+        /*
         if(Measurments::isClose(robot->getOrientation(), m_targetAngle, lastAngTolerance)) {
             lfront=lback=rfront=rback=left=right=back=0;
             return true;
         } else {
             this->calculateVels(robot, robot->getRobotPosition(), m_targetAngle, moveType);
+        }
+        */
+        Point robotPoint = robot->getRobotPosition();
+        double robotAngle = robot->getOrientation();
+        this->calculateVels(robot, m_targetPoint, m_targetAngle, moveType);
+        if (Measurments::isClose(m_targetPoint, robotPoint, lastDistTolerance) &&
+                Measurments::isClose(m_targetAngle, robotAngle, lastAngTolerance))
+        {
+            lfront=lback=rfront=rback=left=right=back=0;
+            return true;
         }
     }
 
@@ -464,7 +476,8 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
 
 void Move::assignNewPath(const Point& robotPoint)
 { 
-    FPPA::PathInfo p = FPPA::findShortestPath(robotPoint, m_targetPoint, lastDirection);
+    FPPA::PathInfo p = FPPA::findShortestPath
+            (robotPoint, m_targetPoint, useAvoidBall, lastDirection);
     this->pathQueue.assign(p.first.begin(), p.first.end());
     this->lastDirection = p.second;
     this->lastObstacles = FPPA::getCurrentObstacles();    //Copies
@@ -500,6 +513,9 @@ void Move::setVels(Robot *robot)
                 break;
         }
     }
+//    int r = std::rand() % 100;
+//    if (r == 1)
+//        GuiInterface::getGuiInterface()->drawPath(robot->getRobotPosition(), Point(0,0), 1);
 }
 
 

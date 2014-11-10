@@ -105,14 +105,14 @@ SOURCES += main.cpp \
     gui/guirobot.cpp \
     gui/guisidelines.cpp \
     gui/mainwindow.cpp \
-    gui/guidrawline.cpp \
     gui/guiscene.cpp \
     gui/robotpanel.cpp \
     gui/fieldpanel.cpp \
     gui/selrobotpanel.cpp \
     gui/objectposition.cpp \
     gui/gamepanel.cpp \
-    gui/guiinterface.cpp
+    gui/guiinterface.cpp \
+    gui/guidrawline.cpp
 
 HEADERS += \
 	behavior/behavior.h \

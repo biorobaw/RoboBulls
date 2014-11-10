@@ -49,6 +49,8 @@
 #include "include/config/simulated.h"
 #include "communication/nxtrobcomm.h"
 #include "movement/move.h"
+// TEST
+#include "guiinterface.h"
 
 // Global static pointer used to ensure only a single instance of the class.
 //MainWindow* MainWindow::mw = NULL;    // delete?
@@ -152,9 +154,7 @@ void MainWindow::coreLoop(int tick) {
     fieldpanel->scanForScrollModifier();
     fieldpanel->scanForSelection();
     // Updating GUI info
-//    teamSize_blue = gamemodel->getMyTeam().size();
-//    teamSize_yellow = gamemodel->getOponentTeam().size();
-//    cout << "teamSize_blue: " << TEAM_SIZE_BLUE << "\n";
+    fieldpanel->drawLine();
     setMyVelocity();
     selrobotpanel->setGuiOverride();
     fieldpanel->updateScene();
@@ -385,6 +385,17 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
             case Qt::Key_J:
                 on_btn_botDrible_pressed();
                 break;
+
+            case Qt::Key_L:
+                if (fieldpanel->selectedBot > -1) {
+                    // drawLine TEST
+//                    fieldpanel->drawLine(Point(objectPos->getMouseCoordX(), objectPos->getMouseCoordY()),
+//                             gamemodel->find(fieldpanel->selectedBot,gamemodel->getMyTeam())->getRobotPosition());
+                    GuiInterface::getGuiInterface()->drawPath(Point(objectPos->getMouseCoordX(), objectPos->getMouseCoordY()),
+                                                   gamemodel->find(fieldpanel->selectedBot,gamemodel->getMyTeam())->getRobotPosition());
+                }
+                break;
+
             // Hide/show bot icon
 //            case Qt::Key_Delete:
 //                cout << "delete \n";

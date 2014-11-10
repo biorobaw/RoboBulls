@@ -39,6 +39,8 @@ void SelRobotPanel::guiPrintRobot(int robotID, string output) {
             botBehavior[robotID] += ("\n" + QString::fromStdString(output));
         }
     }
+    // test
+//    botBehavior[robotID] = ("\n" + QString::fromStdString(output));
 }
 
 void SelRobotPanel::setupSelRobotPanel() {

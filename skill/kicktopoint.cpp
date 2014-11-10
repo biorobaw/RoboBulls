@@ -29,20 +29,18 @@ KickToPoint::KickToPoint(Point target, float targetTolerance, float kickDistance
 KickToPoint::KickToPoint(Point* targetPtr, float targetTolerance, float kickDistance)
    : state(Moving)
    , m_kickTarget(Point(999,999))
-   , m_kickAngleTol(10*M_PI/180)
+   , m_kickAngleTol(targetTolerance)
    , m_kickDistance(kickDistance)
    , externTargetPtr(targetPtr)
 {
 }
-
-
 
 void KickToPoint::doPositioningState(Robot *robot)
 {
 #if KICK_TO_POINT_DEBUG
     std::cout << "KTP POSITION" << std::endl;
 #endif
-    move_skill.recreate(behindBall, ballTargetAngle,false);
+    move_skill.recreate(behindBall, ballTargetAngle,true, true);
     move_skill.setVelocityMultiplier(1);
     if(move_skill.perform(robot)) {
         state = Moving;
@@ -101,7 +99,7 @@ void KickToPoint::doMovingState(Robot *robot)
     }
     else
     {
-        move_skill.recreate(*externTargetPtr, UNUSED_ANGLE_VALUE, false);
+        move_skill.recreate(*externTargetPtr, UNUSED_ANGLE_VALUE, false, false);
         move_skill.setVelocityMultiplier(0.5);
         move_skill.perform(robot);
     }
@@ -114,13 +112,13 @@ void KickToPoint::doKickingState(Robot *robot)
 #if KICK_TO_POINT_DEBUG
     std::cout << "KTP KICK" << std::endl;
 #endif
-    if(!hasKicked) {
+    if(!hasKicked)
+    {
         ::Skill::Kick k;
         k.perform(robot);
         hasKicked = true;
         state = Positioning;
     }
-
 }
 
 bool KickToPoint::kicked()
@@ -141,7 +139,7 @@ bool KickToPoint::perform(Robot * robot)
     ballTargetAngle
         = Measurments::angleBetween(ballPoint, *externTargetPtr);
     behindBall
-        = Point(350*cos(targetBallAngle), 350*sin(targetBallAngle))
+        = Point(300*cos(targetBallAngle), 300*sin(targetBallAngle))
           + ballPoint;
 
     switch(this->state)

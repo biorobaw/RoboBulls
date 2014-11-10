@@ -3,13 +3,8 @@
 
 #include <iostream>
 #include "mainwindow.h"
-
-//#include "guirobot.h"
-//#include "guiball.h"
 #include "guisidelines.h"
-//#include "guiscene.h"
-
-//class MainWindow;
+//#include "guidrawline.h"
 
 class GuiRobot;
 class GuiBall;
@@ -17,6 +12,7 @@ class GuiSidelines;
 class GuiScene;
 class GuiBotLabel;
 class GuiField;
+class GuiDrawLine;
 
 
 class FieldPanel : public QObject   // Some kind of Q type required for cross-class signals & slots
@@ -31,6 +27,7 @@ public:
     void scanForSelection();
     void centerViewOnBot();
     void scanForScrollModifier();
+    void updateLineQueue();
 
 //private:
     GuiScene *scene;
@@ -93,12 +90,22 @@ public:
     // User interaction
     int selectedBot = -1;               // the ID of the currently selected bot
 
-protected:
+    // for drawLine
+    Point linePointA = Point(0,0);
+    Point linePointB = Point(0,0);
+    double lineLifeSpan = 0;
+    bool needLine = false;
+
+private:
+    deque<GuiDrawLine*> lineQueue;
 
 
 public slots:
     void zoomField(int scale);
     void defaultZoom();
+    void drawLine();
+    void setupLine(Point start, Point stop, double seconds);
+
 
 };
 

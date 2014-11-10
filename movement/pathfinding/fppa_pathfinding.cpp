@@ -159,8 +159,6 @@ namespace impl
         for(Robot* rob : opTeam)
             currentFrameObstacles.push_back(rob->getRobotPosition());
 
-        currentFrameObstacles.push_back(mod->getBallPoint());
-
     #if FPPA_DEBUG
            // std::cout << "[FPPA] All Obstacles: " << std::endl;
             //for(Point pt : *obstacles) std::cout << pt.toString() << std::endl;
@@ -213,9 +211,16 @@ namespace impl
     }
 
 
-    PathInfo findShortestPath(const Point& start, const Point& end, PathDirection pathHint)
+    PathInfo findShortestPath(const Point& start, const Point& end, bool avoidBall,
+                              PathDirection pathHint)
     {
+        if(avoidBall)
+            impl::currentFrameObstacles.push_back(GameModel::getModel()->getBallPoint());
+
         std::pair<Path, Path> foundPaths = impl::findBothPaths(start, end);
+
+        if(avoidBall)
+            impl::currentFrameObstacles.pop_back();
 
     #if FPPA_DEBUG
         std::cout << "Finding Path" << std::endl;
@@ -268,9 +273,15 @@ namespace impl
     }
 
 
-    bool isObstacleInLine(const Point& start, const Point& end, Point* obsPosOut)
+    bool isObstacleInLine(const Point& start, const Point& end, Point* obsPosOut, bool avoidBall)
     {
+        if(avoidBall)
+            impl::currentFrameObstacles.push_back(GameModel::getModel()->getBallPoint());
+
         auto obstacle_info = impl::isObstacleinLine(start, end);
+
+        if(avoidBall)
+            impl::currentFrameObstacles.pop_back();
 
         if(obstacle_info.first) {
             if(obsPosOut != nullptr) *obsPosOut = obstacle_info.second;
@@ -292,11 +303,5 @@ namespace impl
     {
         return impl::currentFrameObstacles;
     }
-
-
-    //std::vector<Point> getObstaclesForRobot(int id)
-    //{
-    //    UNUSED_PARAM(id);
-    //}
 
 } //namespace FPPA

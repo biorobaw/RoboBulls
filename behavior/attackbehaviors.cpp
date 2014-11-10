@@ -284,8 +284,6 @@ void AttackReceiver::findStrategicValue(Region& r, Robot* receiver)
 }
 
 
-
-
 /************************************************
  * AttackBlocker Behavior
  ************************************************/
