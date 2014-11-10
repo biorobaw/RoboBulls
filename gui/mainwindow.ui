@@ -130,7 +130,7 @@
             <height>869</height>
            </rect>
           </property>
-          <widget class="QWidget" name="">
+          <widget class="QWidget" name="layoutWidget">
            <property name="geometry">
             <rect>
              <x>6</x>
@@ -520,7 +520,7 @@
                 <number>0</number>
                </property>
                <property name="maximum">
-                <number>2000</number>
+                <number>1000</number>
                </property>
                <property name="singleStep">
                 <number>1</number>
@@ -920,7 +920,7 @@
                 <number>0</number>
                </property>
                <property name="maximum">
-                <number>2000</number>
+                <number>1000</number>
                </property>
                <property name="singleStep">
                 <number>1</number>
@@ -1320,7 +1320,7 @@
                 <number>0</number>
                </property>
                <property name="maximum">
-                <number>2000</number>
+                <number>1000</number>
                </property>
                <property name="singleStep">
                 <number>1</number>
@@ -1720,7 +1720,7 @@
                 <number>0</number>
                </property>
                <property name="maximum">
-                <number>2000</number>
+                <number>1000</number>
                </property>
                <property name="singleStep">
                 <number>1</number>
@@ -2120,7 +2120,7 @@
                 <number>0</number>
                </property>
                <property name="maximum">
-                <number>2000</number>
+                <number>1000</number>
                </property>
                <property name="singleStep">
                 <number>1</number>
@@ -2520,7 +2520,7 @@
                 <number>0</number>
                </property>
                <property name="maximum">
-                <number>2000</number>
+                <number>1000</number>
                </property>
                <property name="singleStep">
                 <number>1</number>
@@ -4753,7 +4753,7 @@ color: rgb(175, 0, 0);</string>
              <number>0</number>
             </property>
             <property name="maximum">
-             <number>2000</number>
+             <number>1000</number>
             </property>
             <property name="singleStep">
              <number>1</number>

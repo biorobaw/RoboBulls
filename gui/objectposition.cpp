@@ -3,6 +3,7 @@
 #include "cmath"
 #include "gamepanel.h"
 #include "model/gamemodel.h"
+#include "utilities/measurments.h"
 
 ObjectPosition::ObjectPosition(MainWindow * mw) {
     dash = mw;
@@ -52,7 +53,7 @@ void ObjectPosition::getBotSpeeds() {
     for (int i=0; i<dash->teamSize_blue; i++) {
         if (dash->gamemodel->find(i, dash->gamemodel->getMyTeam()) != NULL) {
             float s = 0;
-            double c;
+            float c;
             Point currentPos;
             Point pastPos;
             currentPos.x = newBotPoints[i].x;
@@ -60,7 +61,8 @@ void ObjectPosition::getBotSpeeds() {
             pastPos.x = pastBotPoints[i].x;
             pastPos.y = pastBotPoints[i].y;
 
-            c = ( pow((currentPos.x - pastPos.x), 2) + pow((currentPos.y - pastPos.y), 2) );
+//            c = ( pow((currentPos.x - pastPos.x), 2) + pow((currentPos.y - pastPos.y), 2) );
+            c = Measurments::distance(currentPos,pastPos);
 
             s = sqrt(c);
             botSpeeds[i] = s;

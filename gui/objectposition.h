@@ -15,7 +15,7 @@ public:
     MainWindow * dash;
     int threadTicker = 0;
     // speed stuff
-    int speedModifier = 20; // multiplied with units/cycle to get units/second
+    int speedModifier = 100; // multiplied with units/cycle to get units/second
     int movementMin = 2;    // minimum (unmodified) speed detected that we can consider actual movement
     Point pastPos;
     Point pastBotPoints[10];
