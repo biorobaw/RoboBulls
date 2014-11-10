@@ -1,4 +1,5 @@
 #include "guicomm.h"
+#include <iostream>
 
 GuiComm::GuiComm(int interval, QObject* parent)
     : QThread(parent)
@@ -20,7 +21,7 @@ void GuiComm::run(void)
 {
     if(timer == 0)
     {
-        timer = new QTimer(this);
+        timer = new QTimer();
         connect(timer, SIGNAL(timeout()), this, SLOT(count()));
     }
     timer->start(intvl);
