@@ -95,6 +95,11 @@ public:
     Point linePointB = Point(0,0);
     double lineLifeSpan = 0;
     bool needLine = false;
+    deque<Point> lineAPoints;
+    deque<Point> lineBPoints;
+    deque<double> lineLifeSpans;
+//    deque<bool> lineAdded;
+
 
 private:
     deque<GuiDrawLine*> lineQueue;
@@ -105,6 +110,7 @@ public slots:
     void defaultZoom();
     void drawLine();
     void setupLine(Point start, Point stop, double seconds);
+
 
 
 };

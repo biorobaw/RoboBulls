@@ -154,7 +154,7 @@ void MainWindow::coreLoop(int tick) {
     fieldpanel->scanForScrollModifier();
     fieldpanel->scanForSelection();
     // Updating GUI info
-    fieldpanel->drawLine();
+//    fieldpanel->drawLine();
     setMyVelocity();
     selrobotpanel->setGuiOverride();
     fieldpanel->updateScene();
@@ -391,8 +391,8 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
                     // drawLine TEST
 //                    fieldpanel->drawLine(Point(objectPos->getMouseCoordX(), objectPos->getMouseCoordY()),
 //                             gamemodel->find(fieldpanel->selectedBot,gamemodel->getMyTeam())->getRobotPosition());
-                    GuiInterface::getGuiInterface()->drawPath(Point(objectPos->getMouseCoordX(), objectPos->getMouseCoordY()),
-                                                   gamemodel->find(fieldpanel->selectedBot,gamemodel->getMyTeam())->getRobotPosition());
+                    GuiInterface::getGuiInterface()->drawPath(gamemodel->find(fieldpanel->selectedBot,gamemodel->getMyTeam())->getRobotPosition(),
+                                                    Point(objectPos->getMouseCoordX(), objectPos->getMouseCoordY()), 1);
                 }
                 break;
 

@@ -26,6 +26,7 @@ public:
     int y2 = 0;
     int age = 5;
     double lifeSpan = 1;
+    bool draw = false;
 
 public slots:
     void decay();
