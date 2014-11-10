@@ -13,8 +13,6 @@
 #include "include/config/globals.h"
 #include "model/robot.h"
 
-#define CLOOP_CONTROL_DEBUG 0
-
 namespace ClosedLoopConstants
 {
     const double defaultConstants[3] = {3, 12, -1.3};

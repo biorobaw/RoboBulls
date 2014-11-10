@@ -19,6 +19,8 @@
  #define CLC_ROTATING_VEL 30
 #endif
 
+#define CLOOP_CONTROL_DEBUG 0
+
 ClosedLoopBase::ClosedLoopBase()
 {
 }
@@ -88,7 +90,7 @@ wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, double x_goal,
     double left_motor_velocity, right_motor_velocity;
 
     //*******************************************************************************************
-    /* Get initial information about the robot. Were previously parameters for this function.*/
+    /* Get initial information about the robot. */
     Point robotPos       = robot->getRobotPosition();
     double x_current     = robotPos.x;
     double y_current     = robotPos.y;
@@ -162,7 +164,7 @@ wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, double x_goal,
 
     /* If the robot is on its way outside the field but it's destination is inside
      * the field, the robot is stoppped and rotated so that a new path is calculated.
-     * If the robot is > 200 distance from field edge and its destination is outside the
+     * If the robot is > 100 distance outside field edge and its destination is outside the
      * boundary, all translation is stopped and the robot stops and faces its destination.
      */
     bool goal_outside_field    = abs(x_goal) > 3100 || abs(y_goal) > 2100;
