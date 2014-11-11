@@ -482,7 +482,6 @@ void Move::assignNewPath(const Point& robotPoint)
     this->lastDirection = p.second;
     this->lastObstacles = FPPA::getCurrentObstacles();    //Copies
     // TEST of drawPath functions
-    GuiInterface::getGuiInterface()->setHidePaths(false);   // not necessary; is false by default
     for (unsigned int i=1; i<pathQueue.size(); i++){
         GuiInterface::getGuiInterface()->drawPath(pathQueue[i-1], pathQueue[i], i*2);
     }
@@ -518,9 +517,6 @@ void Move::setVels(Robot *robot)
                 break;
         }
     }
-//    int r = std::rand() % 100;
-//    if (r == 1)
-//        GuiInterface::getGuiInterface()->drawPath(robot->getRobotPosition(), Point(0,0), 1);
 }
 
 

@@ -64,7 +64,7 @@ void GuiField::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 //    }
     if (colorScheme == "Default") {
         brush = (QBrush(Qt::darkGreen, Qt::SolidPattern));
-        painter->setPen(QPen(Qt::white, fieldLineThick, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
+        painter->setPen(QPen(QColor::fromRgb(245,245,245,255), fieldLineThick, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
         borderPen = (QPen(Qt::white, 50, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
         goalPen = (QPen(Qt::lightGray, goalThick, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
         painter->fillRect(rec, brush);
@@ -105,7 +105,6 @@ void GuiField::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 
     }
     // Drawing field lines
-    //painter->setPen(QPen(Qt::white, 30, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
     painter->drawLine(centerLine);
     painter->drawEllipse(centerCircle);
     painter->drawRect(blueBox);
