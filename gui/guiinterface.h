@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <iostream>
+#include <string.h>
 
 class MainWindow;
 class Point;
@@ -19,6 +20,8 @@ public:
     void show();
     void drawPath(Point A, Point B, double seconds = 1);
     void setHidePaths(bool hide);
+    void guiPrintRobot(int robotID, std::string output);
+    void guiPrintTerminal(std::string output);
 
 private:
     static GuiInterface * gi;

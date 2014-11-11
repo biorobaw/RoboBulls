@@ -481,6 +481,11 @@ void Move::assignNewPath(const Point& robotPoint)
     this->pathQueue.assign(p.first.begin(), p.first.end());
     this->lastDirection = p.second;
     this->lastObstacles = FPPA::getCurrentObstacles();    //Copies
+    // TEST of drawPath functions
+    GuiInterface::getGuiInterface()->setHidePaths(false);   // not necessary; is false by default
+    for (unsigned int i=1; i<pathQueue.size(); i++){
+        GuiInterface::getGuiInterface()->drawPath(pathQueue[i-1], pathQueue[i], i*2);
+    }
 }
 
 

@@ -194,7 +194,7 @@
               <widget class="QLabel" name="title_robPanel_0">
                <property name="geometry">
                 <rect>
-                 <x>5</x>
+                 <x>8</x>
                  <y>5</y>
                  <width>55</width>
                  <height>21</height>
@@ -359,9 +359,9 @@
               <widget class="QFrame" name="frame_2">
                <property name="geometry">
                 <rect>
-                 <x>170</x>
+                 <x>178</x>
                  <y>5</y>
-                 <width>81</width>
+                 <width>60</width>
                  <height>71</height>
                 </rect>
                </property>
@@ -378,6 +378,18 @@
                 <number>0</number>
                </property>
                <layout class="QGridLayout" name="gridLayout_5">
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
                 <item row="1" column="1">
                  <widget class="QLCDNumber" name="lcd_coordY_0">
                   <property name="maximumSize">
@@ -594,7 +606,7 @@
               <widget class="QLabel" name="title_robPanel_1">
                <property name="geometry">
                 <rect>
-                 <x>5</x>
+                 <x>8</x>
                  <y>5</y>
                  <width>55</width>
                  <height>21</height>
@@ -759,9 +771,9 @@
               <widget class="QFrame" name="frame_3">
                <property name="geometry">
                 <rect>
-                 <x>170</x>
+                 <x>178</x>
                  <y>5</y>
-                 <width>81</width>
+                 <width>60</width>
                  <height>71</height>
                 </rect>
                </property>
@@ -778,6 +790,18 @@
                 <number>0</number>
                </property>
                <layout class="QGridLayout" name="gridLayout_6">
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
                 <item row="1" column="1">
                  <widget class="QLCDNumber" name="lcd_coordY_1">
                   <property name="maximumSize">
@@ -994,7 +1018,7 @@
               <widget class="QLabel" name="title_robPanel_2">
                <property name="geometry">
                 <rect>
-                 <x>5</x>
+                 <x>8</x>
                  <y>5</y>
                  <width>55</width>
                  <height>21</height>
@@ -1159,9 +1183,9 @@
               <widget class="QFrame" name="frame_4">
                <property name="geometry">
                 <rect>
-                 <x>170</x>
+                 <x>178</x>
                  <y>5</y>
-                 <width>81</width>
+                 <width>60</width>
                  <height>71</height>
                 </rect>
                </property>
@@ -1178,6 +1202,18 @@
                 <number>0</number>
                </property>
                <layout class="QGridLayout" name="gridLayout_8">
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
                 <item row="1" column="1">
                  <widget class="QLCDNumber" name="lcd_coordY_2">
                   <property name="maximumSize">
@@ -1394,7 +1430,7 @@
               <widget class="QLabel" name="title_robPanel_3">
                <property name="geometry">
                 <rect>
-                 <x>5</x>
+                 <x>8</x>
                  <y>5</y>
                  <width>55</width>
                  <height>21</height>
@@ -1559,9 +1595,9 @@
               <widget class="QFrame" name="frame_5">
                <property name="geometry">
                 <rect>
-                 <x>170</x>
+                 <x>178</x>
                  <y>5</y>
-                 <width>81</width>
+                 <width>60</width>
                  <height>71</height>
                 </rect>
                </property>
@@ -1578,6 +1614,18 @@
                 <number>0</number>
                </property>
                <layout class="QGridLayout" name="gridLayout_9">
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
                 <item row="1" column="1">
                  <widget class="QLCDNumber" name="lcd_coordY_3">
                   <property name="maximumSize">
@@ -1794,7 +1842,7 @@
               <widget class="QLabel" name="title_robPanel_4">
                <property name="geometry">
                 <rect>
-                 <x>5</x>
+                 <x>8</x>
                  <y>5</y>
                  <width>55</width>
                  <height>21</height>
@@ -1959,9 +2007,9 @@
               <widget class="QFrame" name="frame_6">
                <property name="geometry">
                 <rect>
-                 <x>170</x>
+                 <x>178</x>
                  <y>5</y>
-                 <width>81</width>
+                 <width>60</width>
                  <height>71</height>
                 </rect>
                </property>
@@ -1978,6 +2026,18 @@
                 <number>0</number>
                </property>
                <layout class="QGridLayout" name="gridLayout_10">
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
                 <item row="1" column="1">
                  <widget class="QLCDNumber" name="lcd_coordY_4">
                   <property name="maximumSize">
@@ -2194,7 +2254,7 @@
               <widget class="QLabel" name="title_robPanel_5">
                <property name="geometry">
                 <rect>
-                 <x>5</x>
+                 <x>8</x>
                  <y>5</y>
                  <width>55</width>
                  <height>21</height>
@@ -2359,9 +2419,9 @@
               <widget class="QFrame" name="frame_7">
                <property name="geometry">
                 <rect>
-                 <x>170</x>
+                 <x>178</x>
                  <y>5</y>
-                 <width>81</width>
+                 <width>60</width>
                  <height>71</height>
                 </rect>
                </property>
@@ -2378,6 +2438,18 @@
                 <number>0</number>
                </property>
                <layout class="QGridLayout" name="gridLayout_11">
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
                 <item row="1" column="1">
                  <widget class="QLCDNumber" name="lcd_coordY_5">
                   <property name="maximumSize">

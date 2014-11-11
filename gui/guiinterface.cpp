@@ -1,6 +1,6 @@
 #include "guiinterface.h"
 #include "mainwindow.h"
-//#include "selrobotpanel.h"
+#include "selrobotpanel.h"
 #include "fieldpanel.h"
 #include "utilities/point.h"
 #include "guidrawline.h"
@@ -47,4 +47,12 @@ void GuiInterface::drawPath(Point A, Point B, double seconds) {
 
 void GuiInterface::setHidePaths(bool hide) {
     dash->fieldpanel->hidePaths = hide;
+}
+
+void GuiInterface::guiPrintRobot(int robotID, string output) {
+    dash->selrobotpanel->guiPrintRobot(robotID, output);
+}
+
+void GuiInterface::guiPrintTerminal(string output) {
+    dash->guiPrint(output);
 }
