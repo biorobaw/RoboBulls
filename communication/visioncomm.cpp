@@ -201,12 +201,12 @@ bool VisionComm::receive()
                             #if TEAM
                             if(gamemodel->findMyTeam(robotID)) {
                                 /* If the robot is already in the GameModel update it immediately */
-                                updateInfo(detection.robots_blue(i), TEAM_BLUE);
+                                updateInfo(detection.robots_yellow(i), TEAM_YELLOW);
                             }
                             #else
                             if(gamemodel->findOpTeam(robotID)) {
                                 /* If the robot is already in the GameModel update it immediately */
-                                updateInfo(detection.robots_blue(i), TEAM_BLUE);
+                                updateInfo(detection.robots_yellow(i), TEAM_YELLOW);
                             }
                             #endif
                             else {

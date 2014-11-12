@@ -40,7 +40,9 @@ void FreeKickStrategy::assignBeh()
         int closestRobotID;
         Point ballPoint = gm->getBallPoint();
 
-        /*Finds the closest robot to the penalty point and its ID
+        /*Finds the closest robot to the ball point (assuming the
+         * ball is where the robots should perform free kick)
+         * and its ID
          * If there is only one robot on the field, that one robot
          * will perform the free kick
          * */
