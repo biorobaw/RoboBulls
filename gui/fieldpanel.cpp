@@ -12,6 +12,8 @@ FieldPanel::FieldPanel(MainWindow * mw) {
 
 void FieldPanel::setupScene() {
 
+    dash->ui->gView_field->setBackgroundBrush(QColor::fromRgb(30,30,30,255));
+
     scene = new GuiScene();
 
     // Creating the sidelines

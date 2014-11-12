@@ -77,13 +77,13 @@ void SelRobotPanel::updateSelectedBotPanel(int id) {
         dash->ui->dial_botVel_->setValue(v);
         dash->ui->lcd_botVel_->display(v);
         // display
+        dash->ui->box_primeBot->setTitle("Robot " + QString::number(id) + " selected");
         dash->ui->dial_botSpeed_->setValue(s);
         dash->ui->lcd_botSpeed_->display(s);
         dash->ui->lcd_orient_prime->display(dash->objectPos->getBotOrientString(id));
         dash->ui->lcd_coordX_prime->display(dash->objectPos->getBotCoordX(true, id));
         dash->ui->lcd_coordY_prime->display(dash->objectPos->getBotCoordY(true,id));
         dash->ui->dial_botOrient_prime->setValue(dash->objectPos->getBotOrientDouble(true, id));
-        dash->ui->box_primeBot->setTitle("Robot " + QString::number(id));
         // Selected Bot Panel velocity dial
         if (dash->ui->dial_botVel_->value() > 0) {
             dash->ui->dial_botVel_->setStyleSheet("background-color: rgb(0, 200, 0);");
