@@ -29,7 +29,7 @@
 /* Defines the amount of counts to update, while a robot is backing up,
  * until it is free to move forward again
  */
-#define ROBOT_MOVE_BACKUP_COUNT		50
+#define ROBOT_MOVE_BACKUP_COUNT		75
 /* Defines the distance the robot must move back from its collision point before
  * it is allowed to move forward again. Beware, if this is too small, the robot
  * will never find a path around the collision object due to the close-to-start
