@@ -19,7 +19,7 @@ bool NormalGameStrategy::isOnAttack = true;
  * switching condition is true, that must be made until the attack/defend
  * switch is actually made
  */
-#define NORMAL_SWITCH_COUNT 8
+#define NORMAL_SWITCH_COUNT 16
 
 /* Defines the number of times the ball must be seen outside of the goal
  * to have the robots start moving again. Used to prevent jerkey movement
@@ -206,6 +206,13 @@ bool NormalGameStrategy::update()
                  */
                 assignAttackBehaviors();
             }
+        }
+        else {
+            /* Bug fix: This is entered if the ball comes out from the goal,
+             * and the robots shoulddirectly go into defend. This allows swithcing
+             * between modes to always work.
+             */
+            assignDefendBehaviors();
         }
         return false;
     }
