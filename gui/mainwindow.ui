@@ -17,6 +17,9 @@
    <iconset resource="images.qrc">
     <normaloff>:/images/gearBW.png</normaloff>:/images/gearBW.png</iconset>
   </property>
+  <property name="tabShape">
+   <enum>QTabWidget::Rounded</enum>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
     <property name="leftMargin">
@@ -641,60 +644,85 @@
           <property name="lineWidth">
            <number>3</number>
           </property>
-          <layout class="QGridLayout" name="gridLayout_4">
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_10">
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>15</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <family>Courier 10 Pitch</family>
-               <pointsize>11</pointsize>
-               <weight>75</weight>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="text">
-              <string>Program Output</string>
-             </property>
-             <property name="indent">
-              <number>1</number>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QTextBrowser" name="text_guiPrint">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>84</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <family>DejaVu Sans</family>
-               <pointsize>10</pointsize>
-              </font>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="toolTip">
-              <string>GuiInterface::getGuiInterface()-&gt;guiPrintTerminal()</string>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(59, 59, 59);</string>
-             </property>
-             <property name="lineWidth">
-              <number>3</number>
-             </property>
-            </widget>
-           </item>
-          </layout>
+          <widget class="QLabel" name="label_10">
+           <property name="geometry">
+            <rect>
+             <x>12</x>
+             <y>12</y>
+             <width>141</width>
+             <height>15</height>
+            </rect>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>15</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Courier 10 Pitch</family>
+             <pointsize>11</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Program Output</string>
+           </property>
+           <property name="indent">
+            <number>1</number>
+           </property>
+          </widget>
+          <widget class="QTextBrowser" name="text_guiPrint">
+           <property name="geometry">
+            <rect>
+             <x>12</x>
+             <y>33</y>
+             <width>454</width>
+             <height>84</height>
+            </rect>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>84</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>800</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>DejaVu Sans</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
+           <property name="toolTip">
+            <string>GuiInterface::getGuiInterface()-&gt;guiPrintTerminal()</string>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(59, 59, 59);</string>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::Panel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Sunken</enum>
+           </property>
+           <property name="lineWidth">
+            <number>3</number>
+           </property>
+           <property name="midLineWidth">
+            <number>0</number>
+           </property>
+          </widget>
          </widget>
         </item>
         <item row="1" column="1" colspan="2">
@@ -2628,7 +2656,7 @@ color: rgb(175, 0, 0);</string>
               <property name="geometry">
                <rect>
                 <x>0</x>
-                <y>-182</y>
+                <y>0</y>
                 <width>269</width>
                 <height>869</height>
                </rect>

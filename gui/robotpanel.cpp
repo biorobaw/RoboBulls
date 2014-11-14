@@ -315,6 +315,57 @@ void RobotPanel::scrollToSelBot(int id) {
     dash->ui->scroll_robots->ensureVisible(0,91*id,50,50);
 }
 
+void RobotPanel::updateTeamColors() {
+    if  (dash->myTeam == "Yellow") {
+        // button color
+        dash->ui->btn_toggleTeamColor->setStyleSheet("background-color: yellow;" "color: black");
+        // robot panel colors
+        dash->ui->frame_robotsPanel->setStyleSheet("background-color: rgb(250, 250, 220);");
+        dash->ui->text_primeBot->setStyleSheet("background-color: rgb(100, 100, 0);");
+        dash->ui->dial_botOrient_prime->setStyleSheet("background-color: rgb(0, 0, 255);");
+        dash->ui->lcd_orient_prime->setStyleSheet("background-color: rgb(0, 0, 150);");
+        dash->ui->lcd_coordX_prime->setStyleSheet("background-color: rgb(100, 100, 0);");
+        dash->ui->lcd_coordY_prime->setStyleSheet("background-color: rgb(100, 100, 0);");
+        for (int i=0; i<dash->teamSize_blue; i++) {
+            botOrients[i]->setStyleSheet("background-color: rgb(0, 0, 150);");
+            botXcoords[i]->setStyleSheet("background-color: rgb(100, 100, 0);");
+            botYcoords[i]->setStyleSheet("background-color: rgb(100, 100, 0);");
+        }
+    } else if (dash->myTeam == "Blue"){
+        // button color
+        dash->ui->btn_toggleTeamColor->setStyleSheet("background-color: blue;" "color: white");
+        // robot panel colors
+        dash->ui->frame_robotsPanel->setStyleSheet("background-color: rgb(225, 225, 255);");
+        dash->ui->text_primeBot->setStyleSheet("background-color: rgb(0, 0, 100);");
+        dash->ui->dial_botOrient_prime->setStyleSheet("background-color: rgb(255, 255, 0);");
+        dash->ui->lcd_orient_prime->setStyleSheet("background-color: rgb(100, 100, 0);");
+        dash->ui->lcd_coordX_prime->setStyleSheet("background-color: rgb(0, 0, 100);");
+        dash->ui->lcd_coordY_prime->setStyleSheet("background-color: rgb(0, 0, 100);");
+        for (int i=0; i<dash->teamSize_blue; i++) {
+            botOrients[i]->setStyleSheet("background-color: rgb(255, 255, 0);");
+            botXcoords[i]->setStyleSheet("background-color: rgb(0, 0, 150);");
+            botYcoords[i]->setStyleSheet("background-color: rgb(0, 0, 150);");
+        }
+
+    }
+    // goal colors
+//    fieldpanel->field->myTeam = myTeam;
+    // bot icon colors
+    for (unsigned int i=0; i<dash->fieldpanel->guiTeam.size(); i++) {
+        dash->fieldpanel->guiTeam[i]->myTeam = dash->myTeam;
+        dash->fieldpanel->guiLabels[i]->myTeam = dash->myTeam;
+        dash->fieldpanel->guiTeamY[i]->myTeam = dash->myTeam;
+        dash->fieldpanel->guiLabelsY[i]->myTeam = dash->myTeam;
+        botIcons[i]->myTeam = dash->myTeam;
+        botIconsSelected[i]->myTeam = dash->myTeam;
+    }
+    // rerendering affected objects that aren't regularly updated
+    dash->ui->gView_field->scene()->update();
+    if (dash->fieldpanel->selectedBot > -1) {
+        dash->ui->gView_robot_prime->scene()->update();
+    }
+}
+
 void RobotPanel::toggleIconVisible() {
     int id = dash->fieldpanel->selectedBot;
     GuiRobot *thisBot = dash->fieldpanel->guiTeam[id];

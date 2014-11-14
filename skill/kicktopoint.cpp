@@ -42,7 +42,7 @@ void KickToPoint::doPositioningState(Robot *robot)
 #endif
     move_skill.recreate(behindBall, ballTargetAngle, true, true);
     move_skill.setVelocityMultiplier(1);
-    if(move_skill.perform(robot)) {
+    if(move_skill.perform(robot, Movement::Type::SharpTurns)) {
         state = Moving;
     }
 }
@@ -101,7 +101,7 @@ void KickToPoint::doMovingState(Robot *robot)
     {
         move_skill.recreate(*externTargetPtr, UNUSED_ANGLE_VALUE, false, false);
         move_skill.setVelocityMultiplier(0.5);
-        move_skill.perform(robot);
+        move_skill.perform(robot, Movement::Type::SharpTurns);
     }
 }
 
@@ -139,7 +139,7 @@ bool KickToPoint::perform(Robot * robot)
     ballTargetAngle
         = Measurments::angleBetween(ballPoint, *externTargetPtr);
     behindBall
-        = Point(300*cos(targetBallAngle), 300*sin(targetBallAngle))
+        = Point(324*cos(targetBallAngle), 324*sin(targetBallAngle))
           + ballPoint;
 
     switch(this->state)

@@ -27,6 +27,7 @@ public:
     void setupBotPanel();
     void updateBotPanel();
     void scrollToSelBot(int id);
+    void updateTeamColors();
 
 
 //private:

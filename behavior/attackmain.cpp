@@ -73,7 +73,7 @@ void AttackMain::perform(Robot * robot)
         case initial:
             done = false;
             state = drive;
-            drive_skill = new Skill::KickToPoint(gp, ROT_TOLERANCE, shot_distance);
+            drive_skill = new Skill::KickToPoint(gp, ROT_TOLERANCE, shot_distance*1.25);
             break;
 
         case drive:
@@ -84,11 +84,13 @@ void AttackMain::perform(Robot * robot)
             if(!Measurments::isClose(drive_start_point, rp, drive_distance)) 
             {
                 delete pass_skill;
+                delete drive_skill;
+                drive_skill = nullptr;
                 pass_skill = new Skill::KickToPoint(&stp);
                 state = pass;
             }
             /***************************************************************
-             * Evaluate transition to score state. If the robot is within 1500 units
+             * Evaluate transition to score state. If the robot is within 2250 units
              * of the enemy goal, this happens.
              */
             else if(Measurments::isClose(bp, gp, shot_distance))

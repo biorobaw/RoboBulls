@@ -7,7 +7,6 @@
 #include "matrixcalculator.h"
 #include "model/robot.h"
 #include "movement/movetype.h"
-#include "include/config/tolerances.h"
 #include "utilities/measurments.h"
 
 #define THREE_WHEEL_DEBUG 0

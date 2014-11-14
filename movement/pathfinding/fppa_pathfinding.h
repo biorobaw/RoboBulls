@@ -13,7 +13,6 @@
  */
 #include <vector>
 #include "utilities/point.h"
-#include "include/config/tolerances.h"
 
 namespace FPPA
 {
