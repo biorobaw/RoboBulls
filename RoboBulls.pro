@@ -58,7 +58,6 @@ SOURCES += main.cpp \
 	model/robot.cpp \
 	skill/driveball.cpp \
 	skill/kick.cpp \
-	skill/waitforball.cpp \
 	strategy/penaltystrategy.cpp \
 	strategy/stopstrategy.cpp \
 	strategy/strategy.cpp \
@@ -67,14 +66,12 @@ SOURCES += main.cpp \
 	utilities/measurments.cpp \
 	utilities/paramlist.cpp \
 	utilities/point.cpp \
-    utilities/skillsequence.cpp \
     behavior/mytestbehavior.cpp \
     behavior/defendclosetoball.cpp \
     behavior/defendfarfromball.cpp \
     behavior/attackmain.cpp \
     behavior/attacksupport.cpp \
     behavior/sendballtoregion.cpp \
-    strategy/twovone.cpp \
     skill/kicktopoint.cpp \
     utilities/region.cpp \
     movement/basic_movement.cpp \
@@ -93,8 +90,6 @@ SOURCES += main.cpp \
     strategy/indiectkickstrategy.cpp \
     strategy/kickoffstrategy.cpp \
     behavior/simplebehaviors.cpp \
-    strategy/attackstrategy.cpp \
-    behavior/attackbehaviors.cpp \
     strategy/normalgamestrategy.cpp \
     behavior/passballsender.cpp \
     behavior/passballreceiver.cpp \
@@ -112,7 +107,8 @@ SOURCES += main.cpp \
     gui/objectposition.cpp \
     gui/gamepanel.cpp \
     gui/guiinterface.cpp \
-    gui/guidrawline.cpp
+    gui/guidrawline.cpp \
+    movement/move_collisions.cpp
 
 HEADERS += \
 	behavior/behavior.h \
@@ -143,9 +139,7 @@ HEADERS += \
 	model/robot.h \
 	skill/driveball.h \
 	skill/kick.h \
-	utilities/skillsequence.h \
 	skill/skill.h \
-	skill/waitforball.h \
 	strategy/penaltystrategy.h \
 	strategy/stopstrategy.h \
 	strategy/strategy.h \
@@ -154,14 +148,12 @@ HEADERS += \
 	utilities/measurments.h \
 	utilities/paramlist.h \
 	utilities/point.h \
-    utilities/skillsequence.h \
     behavior/mytestbehavior.h \
     behavior/defendclosetoball.h \
     behavior/defendfarfromball.h \
     behavior/attackmain.h \
     behavior/attacksupport.h \
     behavior/sendballtoregion.h \
-    strategy/twovone.h \
     skill/kicktopoint.h \
     utilities/region.h \
     movement/basic_movement.h \
@@ -189,8 +181,6 @@ HEADERS += \
     strategy/indiectkickstrategy.h \
     strategy/kickoffstrategy.h \
     behavior/simplebehaviors.h \
-    strategy/attackstrategy.h \
-    behavior/attackbehaviors.h \
     strategy/normalgamestrategy.h \
     behavior/passballsender.h \
     behavior/passballreceiver.h \
@@ -209,7 +199,8 @@ HEADERS += \
     gui/objectposition.h \
     gui/gamepanel.h \
     gui/guiinterface.h \
-    gui/teamsize.h
+    gui/teamsize.h \
+    movement/move_collisions.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 
