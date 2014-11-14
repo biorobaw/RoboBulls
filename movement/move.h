@@ -3,13 +3,10 @@
 
 #include <deque>
 #include "include/config/globals.h"
-#include "model/robot.h"
-#include "model/gamemodel.h"
 #include "movement/pathfinding/fppa_pathfinding.h"
 #include "movement/movetype.h"
-// Ryan
-#include "gui/mainwindow.h"
-#include "model/gamemodel.h"
+
+class Robot;
 
 namespace Movement
 {
@@ -37,8 +34,8 @@ public:
          bool withObstacleAvoid = true, bool avoidBall = true);
     virtual ~Move();
     
-    /* "Recreates" the Movement object, reposition the target point to a new 
-     * point, and a target angle to a new angle. Also has to option to toggle
+    /* "Recreates" the Movement object; repositioning the target point to a new
+     * point, and the target angle to a new angle. Also has to option to toggle
      * obstacle avoidance or not
      */
     void recreate(Point targetPoint, float targetAngle = UNUSED_ANGLE_VALUE,
@@ -50,8 +47,8 @@ public:
     void setVelocityMultiplier(float newMultiplier);
     
     /* This function is used to set the "recreation" tolerances. This object will not
-     * recompute pathfinding and angle adjustments if the new parameters passed to
-     * recreate are less than these values
+     * recompute pathfinding and angle adjustments if the difference between current
+     * and new parameters passed to `recreate` are less than these values
      */
     void setRecreateTolerances(float distTolerance, float angleTolerance);
 
@@ -110,8 +107,6 @@ private:
     void assignNewPath(const Point& robotPoint);
     
     void setVels(Robot* robot);
-
-
 };
 
 }

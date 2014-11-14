@@ -43,21 +43,32 @@ namespace impl
     /*********************************************************/
 
     std::pair<bool, Point>
-    isObstacleinLine(const Point& beginPos, const Point& endPos)
+    isObstacleinLine(const Point& beginPos, const Point& endPos, bool avoidBall)
     {
         bool  obstacle_found = false;
         Point obstacle_position;
+        /* As much as I'd hate doing this, it's needed for now. */
+        GameModel* gm = GameModel::getModel();
 
         for(const Point& pt : currentFrameObstacles)
         {
             /* With the new architecture, we need to manually exclude points that are
              * close to the start or ending point in this function.
+             * Also... now it _always_ avoids the ball, even if it is close to the start/end
+             * when avoidBall is on
              */
-            if(Measurments::isClose(pt, beginPos, ROBOT_SIZE)
-            || Measurments::isClose(pt, endPos, ROBOT_SIZE))
-                continue;
+            if(Measurments::isClose(pt, beginPos, ROBOT_SIZE) or
+               Measurments::isClose(pt, endPos, ROBOT_SIZE))
+            {
+                if(Measurments::isClose(gm->getBallPoint(), pt, 80)) {
+                    if(not(avoidBall))
+                        continue;
+                } else {
+                    continue;
+                }
+            }
 
-            obstacle_found = Measurments::lineDistance(pt, beginPos, endPos) < ROBOT_SIZE &&
+            obstacle_found = Measurments::lineDistance(pt, beginPos, endPos) < ROBOT_SIZE*1.2 &&
                 insideRadiusRectangle(pt, beginPos, endPos);
 
             if(obstacle_found) {
@@ -97,8 +108,8 @@ namespace impl
          * the jagged edges in the path, but risks cutting corners
          * too close around obstacles.
          */
-        float dx = 2.25 * ROBOT_RADIUS * cos(theta + M_PI_2);
-        float dy = 2.25 * ROBOT_RADIUS * sin(theta + M_PI_2);
+        float dx = 1.0 * ROBOT_RADIUS * cos(theta + M_PI_2);
+        float dy = 1.0 * ROBOT_RADIUS * sin(theta + M_PI_2);
 
         return Point(sign * dx, sign * dy);
     }
@@ -106,12 +117,12 @@ namespace impl
     /*********************************************************/
 
     void buildPathimpl(Path* results, const Point& beginPos, const Point& endPos,
-                        int sign, int depth)
+                        int sign, int depth, bool avoidBall)
     {
         if(depth >= MAX_RECURSION_DEPTH)
             return;
 
-        auto obstacle_info = isObstacleinLine(beginPos, endPos);
+        auto obstacle_info = isObstacleinLine(beginPos, endPos, avoidBall);
 
         if(obstacle_info.first == true)  //Obstacle was found
         {
@@ -134,8 +145,8 @@ namespace impl
             /* Recursively test the paths from the beginning to the subGoal and from
              * the subGoal to the end
              */
-            buildPathimpl(results, beginPos, subGoal, sign, depth + 1);
-            buildPathimpl(results, subGoal,  endPos, sign, depth + 1);
+            buildPathimpl(results, beginPos, subGoal, sign, depth + 1, avoidBall);
+            buildPathimpl(results, subGoal,  endPos, sign, depth + 1, avoidBall);
         }
     }
 
@@ -167,7 +178,7 @@ namespace impl
 
     /*********************************************************/
 
-    std::pair<Path, Path> findBothPaths(const Point& start, const Point& end)
+    std::pair<Path, Path> findBothPaths(const Point& start, const Point& end, bool avoidBall)
     {
         Path topPath, bottomPath;
 
@@ -176,8 +187,8 @@ namespace impl
         bottomPath.push_back(start);
         bottomPath.push_back(end);
 
-        impl::buildPathimpl(&topPath, start, end, -1, 0);
-        impl::buildPathimpl(&bottomPath, start, end,  1, 0);
+        impl::buildPathimpl(&topPath, start, end, -1, 0, avoidBall);
+        impl::buildPathimpl(&bottomPath, start, end,  1, 0, avoidBall);
 
         return std::make_pair(topPath, bottomPath);
     }
@@ -217,7 +228,7 @@ namespace impl
         if(avoidBall)
             impl::currentFrameObstacles.push_back(GameModel::getModel()->getBallPoint());
 
-        std::pair<Path, Path> foundPaths = impl::findBothPaths(start, end);
+        std::pair<Path, Path> foundPaths = impl::findBothPaths(start, end, avoidBall);
 
         if(avoidBall)
             impl::currentFrameObstacles.pop_back();
@@ -278,7 +289,7 @@ namespace impl
         if(avoidBall)
             impl::currentFrameObstacles.push_back(GameModel::getModel()->getBallPoint());
 
-        auto obstacle_info = impl::isObstacleinLine(start, end);
+        auto obstacle_info = impl::isObstacleinLine(start, end, avoidBall);
 
         if(avoidBall)
             impl::currentFrameObstacles.pop_back();

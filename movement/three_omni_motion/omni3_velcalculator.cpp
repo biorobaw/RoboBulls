@@ -1,3 +1,4 @@
+#include "include/config/tolerances.h"
 #include "movement/three_omni_motion/omni3_velcalculator.h"
 
 namespace Movement
