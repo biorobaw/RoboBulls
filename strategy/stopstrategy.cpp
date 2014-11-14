@@ -21,7 +21,8 @@ void StopStrategy::assignBeh()
     for(Robot* robot : model->getMyTeam()) {
         if (robot->getID() != 5){
             float dist = Measurments::distance(robot->getRobotPosition(), bp);
-            if (dist < RADIUS){
+            if (dist < RADIUS)
+            {
                 Point robTarget = robTargetPoints[robot->getID()];
                 float targetAngle = Measurments::angleBetween(robTarget, bp);
                 BehaviorAssignment<StopBehavior> stopAssign(true);
