@@ -46,11 +46,11 @@
 #include "model/gamemodel.h"
 #include "model/robot.h"
 #include "model/robot.h"
-#include "include/config/simulated.h"
+//#include "include/config/simulated.h"
 #include "communication/nxtrobcomm.h"
 #include "movement/move.h"
-// TEST
 #include "guiinterface.h"
+#include "include/config/team.h"
 
 // Global static pointer used to ensure only a single instance of the class.
 //MainWindow* MainWindow::mw = NULL;    // delete?
@@ -79,10 +79,12 @@ MainWindow::MainWindow(QWidget *parent) :
     // Generating GUI
     teamSize_blue = 10;
     teamSize_yellow = 10;
+    checkTeamColors();
     fieldpanel->setupScene();
     fieldpanel->defaultZoom();
     robotpanel->setupBotPanel();
     selrobotpanel->setupSelRobotPanel();
+    robotpanel->updateTeamColors();
     setupKeyShortcuts();
     objectPos->setupPastBotPoints();
     objectPos->setupBotSpeeds();
@@ -138,12 +140,12 @@ vector<bool> MainWindow::isRobotOverriden(){    // delete?
 void MainWindow::coreLoop(int tick) {
     /* Top function of the GUI's loop
      */
-
-    if (SIMULATED) {
-        ui->menuDashboard->setTitle("Simulation");
-    } else {
-        ui->menuDashboard->setTitle("Camera");
-    }
+    // Formatting main window
+//    if (SIMULATED) {
+//        ui->menuDashboard->setTitle("Simulation");
+//    } else {
+//        ui->menuDashboard->setTitle("Camera");
+//    }
 
     // Wiping values at beginning of cycle
     for (int i=0; i<teamSize_blue; i++) {
@@ -153,8 +155,6 @@ void MainWindow::coreLoop(int tick) {
     // Interaction scanners
     fieldpanel->scanForScrollModifier();
     fieldpanel->scanForSelection();
-    // Updating GUI info
-//    fieldpanel->drawLine();
     setMyVelocity();
     selrobotpanel->setGuiOverride();
     fieldpanel->updateScene();
@@ -483,6 +483,66 @@ void MainWindow::setupKeyShortcuts() {
     connect(i, SIGNAL(activated()), ui->check_showIDs, SLOT(click()));
 }
 
+void MainWindow::checkTeamColors() {
+    if (TEAM == TEAM_BLUE) {
+        myTeam = "Blue";
+    } else if (TEAM == TEAM_YELLOW) {
+        myTeam = "Yellow";
+    }
+//    robotpanel->updateTeamColors();
+}
+
+//void MainWindow::updateTeamColors() {
+//    if  (myTeam == "Yellow") {
+//        // button color
+//        ui->btn_toggleTeamColor->setStyleSheet("background-color: yellow;" "color: black");
+//        // robot panel colors
+//        ui->frame_robotsPanel->setStyleSheet("background-color: rgb(250, 250, 220);");
+//        ui->text_primeBot->setStyleSheet("background-color: rgb(100, 100, 0);");
+//        ui->dial_botOrient_prime->setStyleSheet("background-color: rgb(0, 0, 255);");
+//        ui->lcd_orient_prime->setStyleSheet("background-color: rgb(0, 0, 150);");
+//        ui->lcd_coordX_prime->setStyleSheet("background-color: rgb(100, 100, 0);");
+//        ui->lcd_coordY_prime->setStyleSheet("background-color: rgb(100, 100, 0);");
+//        for (int i=0; i<teamSize_blue; i++) {
+//            robotpanel->botOrients[i]->setStyleSheet("background-color: rgb(0, 0, 150);");
+//            robotpanel->botXcoords[i]->setStyleSheet("background-color: rgb(100, 100, 0);");
+//            robotpanel->botYcoords[i]->setStyleSheet("background-color: rgb(100, 100, 0);");
+//        }
+//    } else if (myTeam == "Blue"){
+//        // button color
+//        ui->btn_toggleTeamColor->setStyleSheet("background-color: blue;" "color: white");
+//        // robot panel colors
+//        ui->frame_robotsPanel->setStyleSheet("background-color: rgb(225, 225, 255);");
+//        ui->text_primeBot->setStyleSheet("background-color: rgb(0, 0, 100);");
+//        ui->dial_botOrient_prime->setStyleSheet("background-color: rgb(255, 255, 0);");
+//        ui->lcd_orient_prime->setStyleSheet("background-color: rgb(100, 100, 0);");
+//        ui->lcd_coordX_prime->setStyleSheet("background-color: rgb(0, 0, 100);");
+//        ui->lcd_coordY_prime->setStyleSheet("background-color: rgb(0, 0, 100);");
+//        for (int i=0; i<teamSize_blue; i++) {
+//            robotpanel->botOrients[i]->setStyleSheet("background-color: rgb(255, 255, 0);");
+//            robotpanel->botXcoords[i]->setStyleSheet("background-color: rgb(0, 0, 150);");
+//            robotpanel->botYcoords[i]->setStyleSheet("background-color: rgb(0, 0, 150);");
+//        }
+
+//    }
+//    // goal colors
+////    fieldpanel->field->myTeam = myTeam;
+//    // bot icon colors
+//    for (unsigned int i=0; i<fieldpanel->guiTeam.size(); i++) {
+//        fieldpanel->guiTeam[i]->myTeam = myTeam;
+//        fieldpanel->guiLabels[i]->myTeam = myTeam;
+//        fieldpanel->guiTeamY[i]->myTeam = myTeam;
+//        fieldpanel->guiLabelsY[i]->myTeam = myTeam;
+//        robotpanel->botIcons[i]->myTeam = myTeam;
+//        robotpanel->botIconsSelected[i]->myTeam = myTeam;
+//    }
+//    // rerendering affected objects that aren't regularly updated
+//    ui->gView_field->scene()->update();
+//    if (fieldpanel->selectedBot > -1) {
+//        ui->gView_robot_prime->scene()->update();
+//    }
+//}
+
 void MainWindow::setMyVelocity() {
     if (QApplication::keyboardModifiers().testFlag(Qt::ShiftModifier) == true) {
 //        cout << "Shift \n";
@@ -549,8 +609,14 @@ void MainWindow::on_btn_multithread_clicked() {
 }
 
 void MainWindow::on_btn_botForward_pressed() {
-    if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
+//    // TEST
+//    cout << "Overrides: \n";
+//    for (int i=0; i<overriddenBots.size(); i++) {
+//        cout << "Override for Bot " << i << ": " << overriddenBots[i] << "\n";
+//    }
+//    cout << "Selected bot: " << fieldpanel->selectedBot << "\n";
 
+    if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botForward->setDown(true);
         setMyVelocity();
         int currentFwd = getVelocity(fieldpanel->selectedBot);
@@ -690,7 +756,7 @@ void MainWindow::on_btn_override_all_released() {
         // Keeping track of how many bots are overridden
         overriddenBots[i] = true;
     }
-    for (int i=0; i<teamSize_blue; i++) {
+    for (unsigned int i=0; i<teamSize_blue; i++) {
         if (gamemodel->find(i, gamemodel->getMyTeam()) != NULL) {
             // Telling robot QObjects to change color
             robotpanel->botIcons[i]->overridden = true;
@@ -734,54 +800,10 @@ void MainWindow::on_combo_botScale_currentIndexChanged(int index){
 }
 
 void MainWindow::on_btn_toggleTeamColor_clicked() {
-    if          (myTeam == "Blue") {
+    if (myTeam == "Blue") {
         myTeam = "Yellow";
-        // button color
-        ui->btn_toggleTeamColor->setStyleSheet("background-color: yellow;" "color: black");
-        // robot panel colors
-        ui->frame_robotsPanel->setStyleSheet("background-color: rgb(250, 250, 220);");
-        ui->text_primeBot->setStyleSheet("background-color: rgb(100, 100, 0);");
-        ui->dial_botOrient_prime->setStyleSheet("background-color: rgb(0, 0, 255);");
-        ui->lcd_orient_prime->setStyleSheet("background-color: rgb(0, 0, 150);");
-        ui->lcd_coordX_prime->setStyleSheet("background-color: rgb(100, 100, 0);");
-        ui->lcd_coordY_prime->setStyleSheet("background-color: rgb(100, 100, 0);");
-        for (int i=0; i<teamSize_blue; i++) {
-            robotpanel->botOrients[i]->setStyleSheet("background-color: rgb(0, 0, 150);");
-            robotpanel->botXcoords[i]->setStyleSheet("background-color: rgb(100, 100, 0);");
-            robotpanel->botYcoords[i]->setStyleSheet("background-color: rgb(100, 100, 0);");
-        }
-    } else if   (myTeam == "Yellow"){
+    } else if (myTeam == "Yellow") {
         myTeam = "Blue";
-        // button color
-        ui->btn_toggleTeamColor->setStyleSheet("background-color: blue;" "color: white");
-        // robot panel colors
-        ui->frame_robotsPanel->setStyleSheet("background-color: rgb(225, 225, 255);");
-        ui->text_primeBot->setStyleSheet("background-color: rgb(0, 0, 100);");
-        ui->dial_botOrient_prime->setStyleSheet("background-color: rgb(255, 255, 0);");
-        ui->lcd_orient_prime->setStyleSheet("background-color: rgb(100, 100, 0);");
-        ui->lcd_coordX_prime->setStyleSheet("background-color: rgb(0, 0, 100);");
-        ui->lcd_coordY_prime->setStyleSheet("background-color: rgb(0, 0, 100);");
-        for (int i=0; i<teamSize_blue; i++) {
-            robotpanel->botOrients[i]->setStyleSheet("background-color: rgb(255, 255, 0);");
-            robotpanel->botXcoords[i]->setStyleSheet("background-color: rgb(0, 0, 150);");
-            robotpanel->botYcoords[i]->setStyleSheet("background-color: rgb(0, 0, 150);");
-        }
-
     }
-    // goal colors
-    fieldpanel->field->myTeam = myTeam;
-    // bot icon colors
-    for (unsigned int i=0; i<fieldpanel->guiTeam.size(); i++) {
-        fieldpanel->guiTeam[i]->myTeam = myTeam;
-        fieldpanel->guiLabels[i]->myTeam = myTeam;
-        fieldpanel->guiTeamY[i]->myTeam = myTeam;
-        fieldpanel->guiLabelsY[i]->myTeam = myTeam;
-        robotpanel->botIcons[i]->myTeam = myTeam;
-        robotpanel->botIconsSelected[i]->myTeam = myTeam;
-    }
-    // rerendering affected objects that aren't regularly updated
-    ui->gView_field->scene()->update();
-    if (fieldpanel->selectedBot > -1) {
-        ui->gView_robot_prime->scene()->update();
-    }
+    robotpanel->updateTeamColors();
 }//end on_btn_toggleTeamColor_clicked

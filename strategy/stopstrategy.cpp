@@ -20,13 +20,17 @@ void StopStrategy::assignBeh()
 
     for(Robot* robot : model->getMyTeam()) {
         if (robot->getID() != 5){
-            Point robTarget = robTargetPoints[robot->getID()];
-            float targetAngle = Measurments::angleBetween(robTarget, bp);
-            BehaviorAssignment<StopBehavior> stopAssign(true);
-            stopAssign.setBehParam<Point>("targetPoint", robTarget);
-            stopAssign.setBehParam<float>("targetAngle", targetAngle);
-            stopAssign.setBehParam<bool>("obstacleAvoidance", true);
-            stopAssign.assignBeh(robot);
+            float dist = Measurments::distance(robot->getRobotPosition(), bp);
+            if (dist < RADIUS)
+            {
+                Point robTarget = robTargetPoints[robot->getID()];
+                float targetAngle = Measurments::angleBetween(robTarget, bp);
+                BehaviorAssignment<StopBehavior> stopAssign(true);
+                stopAssign.setBehParam<Point>("targetPoint", robTarget);
+                stopAssign.setBehParam<float>("targetAngle", targetAngle);
+                stopAssign.setBehParam<bool>("obstacleAvoidance", true);
+                stopAssign.assignBeh(robot);
+            }
         }
         else
         {
