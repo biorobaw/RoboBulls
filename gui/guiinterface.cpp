@@ -9,6 +9,7 @@
  *      - nxtrobcomm.cpp: override;         REQUIRED
  *      - move.cpp: override;               REQUIRED
  *      - strategycontroller.cpp: override  NOT REQUIRED
+ *      - stop.cpp                          NOT REQUIRED
  * Overriding override:
  *      - HALT command from refbox
  */
