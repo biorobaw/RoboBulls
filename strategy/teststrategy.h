@@ -13,7 +13,8 @@ class TestStrategy : public Strategy
 public:
     TestStrategy();
 
-    void assignBeh();
+    void assignBeh() override;
+    bool update() override;
 };
 
 #endif // TESTSTRATEGY_H

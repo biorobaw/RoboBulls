@@ -6,13 +6,11 @@
 #include "behavior/behavior.h"
 
 #include "strategy/stopstrategy.h"
-#include "strategy/twovone.h"
 #include "strategy/teststrategy.h"
 #include "strategy/penaltystrategy.h"
 #include "strategy/kickoffstrategy.h"
 #include "strategy/freekickstrategy.h"
 #include "strategy/haltstrategy.h"
-#include "strategy/attackstrategy.h"
 #include "strategy/normalgamestrategy.h"
 #include "strategy/indiectkickstrategy.h"
 #include "strategy/normalgamestrategy.h"

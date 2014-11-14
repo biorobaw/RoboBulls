@@ -49,8 +49,9 @@ public:
 
     void perform(Robot *robot) override
     {
-        setMovementTargets(GameModel::getModel()->getBallPoint(), 0, true);
-        GenericMovementBehavior::perform(robot);
+        setMovementTargets(GameModel::getModel()->getBallPoint(),
+                           UNUSED_ANGLE_VALUE, true, false);
+        GenericMovementBehavior::perform(robot, Movement::Type::SharpTurns);
     }
 };
 
@@ -176,12 +177,18 @@ TestStrategy::TestStrategy()
 
 }
 
+bool TestStrategy::update()
+{
+    assignBeh();
+    return false;
+}
+
 void TestStrategy::assignBeh()
 {
 //*************************************************************
 //  Shamsi Code
-//    BehaviorAssignment<ShamsiPas1s> assignment1(true);
-//    assignment1.assignBeh({1});
+    BehaviorAssignment<TestBehavior2> assignment1(true);
+    assignment1.assignBeh();
 
 //    BehaviorAssignment<ShamsiPass> assignment2(true);
 //    assignment2.assignBeh({2});
