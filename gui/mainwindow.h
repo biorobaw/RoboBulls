@@ -101,7 +101,7 @@ public:
 
     QString guiOutputRobot = "...";
     bool multithreaded = false;
-    std::string myTeam = "Blue";
+    std::string myTeam;
 
     bool isOverride();  // delete?
     std::vector<bool> isRobotOverriden();   // delete?
@@ -115,6 +115,8 @@ protected:
 
 private:
     void setupKeyShortcuts();
+    void checkTeamColors();
+//    void updateTeamColors();
 
     // my pointer
     static MainWindow *mw;
