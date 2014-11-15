@@ -477,6 +477,11 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
             fieldpanel->defaultZoom();
             break;
 
+        case Qt::Key_Escape:
+            if (fieldpanel->selectedBot > -1)
+                fieldpanel->sidelines->Pressed = true;
+            break;
+
     }
 }
 

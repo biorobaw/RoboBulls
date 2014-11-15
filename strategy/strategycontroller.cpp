@@ -139,10 +139,10 @@ void StrategyController::frameEnd()
     for (unsigned int i=0; i < model->getMyTeam().size(); i++)
     {
         Robot *rob = model->getMyTeam().at(i);
-//        if (!GuiInterface::getGuiInterface()->isOverriddenBot()[i]) {
+        if (!GuiInterface::getGuiInterface()->isOverriddenBot()[i]) {
             if(rob->hasBeh)
                 rob->getCurrentBeh()->perform(rob);
-//         }
+         }
     }
 
     RobComm * robcom = RobComm::getRobComm();
