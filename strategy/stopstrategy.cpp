@@ -1,6 +1,7 @@
 #include <iostream>
 #include <list>
 #include "stopstrategy.h"
+#include "include/config/team.h"
 #include "utilities/measurments.h"
 #include "behavior/behaviorassignment.h"
 #include "behavior/stopbehavior.h"
@@ -56,10 +57,19 @@ void StopStrategy::rebuildTargetPoints()
     GameModel* mod  = GameModel::getModel();
     Point ballPoint = mod->getBallPoint();
 
-    /* Remove all old points; safe for now */
     int teamSize = mod->getMyTeam().size();
-    float theta = 0;
+
+    /* Interesting thing:
+     * If we're yellow team, then we we do is add an offset to the initial
+     * theta, to allow the yellow robots to move to different points than
+     * the blue robots. They both follow the same increment.
+     */
     float theta_inc = (2*M_PI) / teamSize;
+#if TEAM==TEAM_BLUE
+    float theta = 0;
+#else
+    float theta = theta_inc/2;
+#endif
 
     /* First create an evenly distributed number of points around the ball.
      * Later, I want to make this so all robots are placed on one side.

@@ -182,12 +182,12 @@ void GameModel::setRobotHasBall()
         Point robPos = rob->getRobotPosition();
         float robAngle = rob->getOrientation();
         float angleBetween = Measurments::angleBetween(robPos, pt);
-        return Measurments::isClose(robAngle, angleBetween, M_PI/6);
+        return Measurments::isClose(robAngle, angleBetween, 5*M_PI/12);
         };
     auto calculateHasBall = [&](Robot* rob) {
         if(rob == NULL)
             return false;
-        if(Measurments::distance(rob->getRobotPosition(), ballPoint) > 200.0)
+        if(Measurments::distance(rob->getRobotPosition(), ballPoint) > 220.0)
             return false;
         if(!ptIsInFrontOfRob(rob, ballPoint))
             return false;

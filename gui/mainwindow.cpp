@@ -685,8 +685,14 @@ void MainWindow::on_btn_multithread_clicked() {
 }
 
 void MainWindow::on_btn_botForward_pressed() {
-    if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
+//    // TEST
+//    cout << "Overrides: \n";
+//    for (int i=0; i<overriddenBots.size(); i++) {
+//        cout << "Override for Bot " << i << ": " << overriddenBots[i] << "\n";
+//    }
+//    cout << "Selected bot: " << fieldpanel->selectedBot << "\n";
 
+    if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botForward->setDown(true);
         setMyVelocity();
         int currentFwd = getVelocity(fieldpanel->selectedBot);
@@ -826,7 +832,7 @@ void MainWindow::on_btn_override_all_released() {
         // Keeping track of how many bots are overridden
         overriddenBots[i] = true;
     }
-    for (int i=0; i<teamSize_blue; i++) {
+    for (unsigned int i=0; i<teamSize_blue; i++) {
         if (gamemodel->find(i, gamemodel->getMyTeam()) != NULL) {
             // Telling robot QObjects to change color
             robotpanel->botIcons[i]->overridden = true;
