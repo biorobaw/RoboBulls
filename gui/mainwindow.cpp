@@ -351,104 +351,180 @@ void MainWindow::moveBot() {
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {
     // Robot binds
-    if (fieldpanel->selectedBot > -1) {
         switch(event->key()) {
-            case Qt::Key_W:
-                on_btn_botForward_pressed();
-                break;
-            case Qt::Key_A:
-                on_btn_botTurnLeft_pressed();
-                break;
-            case Qt::Key_S:
-                on_btn_botReverse_pressed();
-                break;
-            case Qt::Key_D:
-                on_btn_botTurnRight_pressed();
-                break;
-            // Alternate arrow bindings. Don't seem to work :(
-            case Qt::UpArrow:
-                on_btn_botForward_pressed();
-                break;
-            case Qt::LeftArrow:
-                on_btn_botTurnLeft_pressed();
-                break;
-            case Qt::DownArrow:
-                on_btn_botReverse_pressed();
-                break;
-            case Qt::RightArrow:
-                on_btn_botTurnRight_pressed();
-                break;
+            if (fieldpanel->selectedBot > -1) {
+                case Qt::Key_W:
+                    on_btn_botForward_pressed();
+                    break;
+                case Qt::Key_A:
+                    on_btn_botTurnLeft_pressed();
+                    break;
+                case Qt::Key_S:
+                    on_btn_botReverse_pressed();
+                    break;
+                case Qt::Key_D:
+                    on_btn_botTurnRight_pressed();
+                    break;
+                // Alternate arrow bindings. Don't seem to work :(
+                case Qt::UpArrow:
+                    on_btn_botForward_pressed();
+                    break;
+                case Qt::LeftArrow:
+                    on_btn_botTurnLeft_pressed();
+                    break;
+                case Qt::DownArrow:
+                    on_btn_botReverse_pressed();
+                    break;
+                case Qt::RightArrow:
+                    on_btn_botTurnRight_pressed();
+                    break;
 
-            case Qt::Key_Space:
-                on_btn_botKick_pressed();
-                break;
-            case Qt::Key_J:
-                on_btn_botDrible_pressed();
-                break;
+                case Qt::Key_Space:
+                    on_btn_botKick_pressed();
+                    break;
+                case Qt::Key_J:
+                    on_btn_botDrible_pressed();
+                    break;
 
-            case Qt::Key_L:
-                if (fieldpanel->selectedBot > -1) {
-                    // drawLine TEST
-//                    fieldpanel->drawLine(Point(objectPos->getMouseCoordX(), objectPos->getMouseCoordY()),
-//                             gamemodel->find(fieldpanel->selectedBot,gamemodel->getMyTeam())->getRobotPosition());
-                    GuiInterface::getGuiInterface()->drawPath(gamemodel->find(fieldpanel->selectedBot,gamemodel->getMyTeam())->getRobotPosition(),
-                                                    Point(objectPos->getMouseCoordX(), objectPos->getMouseCoordY()), 1);
-                }
-                break;
+                case Qt::Key_L:
+                    if (fieldpanel->selectedBot > -1) {
+                        // drawLine TEST
+                        GuiInterface::getGuiInterface()->drawPath(gamemodel->find(fieldpanel->selectedBot,gamemodel->getMyTeam())->getRobotPosition(),
+                                                        Point(objectPos->getMouseCoordX(), objectPos->getMouseCoordY()), 1);
+                    }
+                    break;
+            }
+        // Number bindings
+        case Qt::Key_QuoteLeft:
+            fieldpanel->robot0->setSelected(true);
+            robotpanel->robotIcon0->setSelected(true);
+            if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
+                fieldpanel->robot0->doubleClicked = true; }
+            break;
 
-            // Hide/show bot icon
-//            case Qt::Key_Delete:
-//                cout << "delete \n";
-//                break;
-//            case Qt::Key_0:
-//                selectedBot = 0;
-//                break;
-//            case Qt::Key_1:
-//                robot1->setSelected(true);
-//                break;
-            // Joystick test
+        case Qt::Key_1:
+            fieldpanel->robot1->setSelected(true);
+            robotpanel->robotIcon1->setSelected(true);
+            if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
+                fieldpanel->robot1->doubleClicked = true; }
+            break;
 
-        }
+        case Qt::Key_2:
+            fieldpanel->robot2->setSelected(true);
+            robotpanel->robotIcon2->setSelected(true);
+            if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
+                fieldpanel->robot2->doubleClicked = true; }
+            break;
+
+        case Qt::Key_3:
+            fieldpanel->robot3->setSelected(true);
+            robotpanel->robotIcon3->setSelected(true);
+            if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
+                fieldpanel->robot3->doubleClicked = true; }
+            break;
+
+        case Qt::Key_4:
+            fieldpanel->robot4->setSelected(true);
+            robotpanel->robotIcon4->setSelected(true);
+            if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
+                fieldpanel->robot4->doubleClicked = true; }
+            break;
+
+        case Qt::Key_5:
+            fieldpanel->robot5->setSelected(true);
+            robotpanel->robotIcon5->setSelected(true);
+            if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
+                fieldpanel->robot5->doubleClicked = true; }
+            break;
+
+        case Qt::Key_6:
+            fieldpanel->robot6->setSelected(true);
+            robotpanel->robotIcon6->setSelected(true);
+            if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
+                fieldpanel->robot6->doubleClicked = true; }
+            break;
+
+        case Qt::Key_7:
+            fieldpanel->robot7->setSelected(true);
+            robotpanel->robotIcon7->setSelected(true);
+            if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
+                fieldpanel->robot7->doubleClicked = true; }
+            break;
+
+        case Qt::Key_8:
+            fieldpanel->robot8->setSelected(true);
+            robotpanel->robotIcon8->setSelected(true);
+            if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
+                fieldpanel->robot8->doubleClicked = true; }
+            break;
+
+        case Qt::Key_9:
+            fieldpanel->robot9->setSelected(true);
+            robotpanel->robotIcon9->setSelected(true);
+            if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
+                fieldpanel->robot9->doubleClicked = true; }
+            break;
+
+        case Qt::Key_0:
+            fieldpanel->robot0->setSelected(true);
+            robotpanel->robotIcon0->setSelected(true);
+            if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
+                fieldpanel->robot0->doubleClicked = true; }
+            break;
+
+        // Camera bindings
+        case Qt::Key_C:
+            fieldpanel->defaultZoom();
+            break;
+
     }
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent *event) {
     // Robot binds
-    if (fieldpanel->selectedBot > -1) {
         switch(event->key()) {
-            case Qt::Key_W:
-                on_btn_botForward_released();
-                break;
-            case Qt::Key_A:
-                on_btn_botTurnLeft_released();
-                break;
-            case Qt::Key_S:
-                on_btn_botReverse_released();
-                break;
-            case Qt::Key_D:
-                on_btn_botTurnRight_released();
-                break;
+            if (fieldpanel->selectedBot > -1) {
+                case Qt::Key_W:
+                    on_btn_botForward_released();
+                    break;
+                case Qt::Key_A:
+                    on_btn_botTurnLeft_released();
+                    break;
+                case Qt::Key_S:
+                    on_btn_botReverse_released();
+                    break;
+                case Qt::Key_D:
+                    on_btn_botTurnRight_released();
+                    break;
 
-            case Qt::Key_Up:
-                on_btn_botForward_released();
-                break;
-            case Qt::Key_Left:
-                on_btn_botTurnLeft_released();
-                break;
-            case Qt::Key_Down:
-                on_btn_botReverse_released();
-                break;
-            case Qt::Key_Right:
-                on_btn_botTurnRight_released();
-                break;
+                case Qt::Key_Up:
+                    on_btn_botForward_released();
+                    break;
+                case Qt::Key_Left:
+                    on_btn_botTurnLeft_released();
+                    break;
+                case Qt::Key_Down:
+                    on_btn_botReverse_released();
+                    break;
+                case Qt::Key_Right:
+                    on_btn_botTurnRight_released();
+                    break;
 
-            case Qt::Key_Space:
-                on_btn_botKick_released();
-                break;
-            case Qt::Key_J:
-                on_btn_botDrible_released();
-                break;
+                case Qt::Key_Space:
+                    on_btn_botKick_released();
+                    break;
+                case Qt::Key_J:
+                    on_btn_botDrible_released();
+                    break;
         }
+        // center window on field
+        case Qt::Key_F:
+//            MainWindow::resize(850,630);
+            ui->scrollArea->ensureWidgetVisible(ui->gView_field,0,0);
+            ui->scrollArea->verticalScrollBar()->setValue(220);
+            ui->scrollArea->horizontalScrollBar()->setValue(315);
+            break;
+
     }
 }
 

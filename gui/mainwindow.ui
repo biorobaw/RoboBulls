@@ -782,7 +782,7 @@
               <enum>QTabWidget::Rounded</enum>
              </property>
              <property name="currentIndex">
-              <number>1</number>
+              <number>3</number>
              </property>
              <property name="elideMode">
               <enum>Qt::ElideNone</enum>
@@ -1625,7 +1625,7 @@
                     <enum>Qt::NoFocus</enum>
                    </property>
                    <property name="toolTip">
-                    <string>Return camera to default zoom and rotation</string>
+                    <string>(Hotkey: C) Return camera to default zoom and rotation</string>
                    </property>
                    <property name="text">
                     <string>Default</string>

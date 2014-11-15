@@ -102,6 +102,11 @@ public:
 
 private:
     deque<GuiDrawLine*> lineQueue;
+    void doubleClickScan();
+    void cameraMoveScan();
+    bool fieldClickScan();
+    bool panelBotClickScan();
+    bool fieldBotClickScan();
 
 
 public slots:

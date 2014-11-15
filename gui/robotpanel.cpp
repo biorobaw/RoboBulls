@@ -350,12 +350,16 @@ void RobotPanel::updateTeamColors() {
     }
     // goal colors
 //    fieldpanel->field->myTeam = myTeam;
+
     // bot icon colors
+    if  (dash->myTeam == "Yellow") {
+
+    }
     for (unsigned int i=0; i<dash->fieldpanel->guiTeam.size(); i++) {
-        dash->fieldpanel->guiTeam[i]->myTeam = dash->myTeam;
-        dash->fieldpanel->guiLabels[i]->myTeam = dash->myTeam;
-        dash->fieldpanel->guiTeamY[i]->myTeam = dash->myTeam;
-        dash->fieldpanel->guiLabelsY[i]->myTeam = dash->myTeam;
+//        dash->fieldpanel->guiTeam[i]->myTeam = dash->myTeam;
+//        dash->fieldpanel->guiLabels[i]->myTeam = dash->myTeam;
+//        dash->fieldpanel->guiTeamY[i]->myTeam = dash->myTeam;
+//        dash->fieldpanel->guiLabelsY[i]->myTeam = dash->myTeam;
         botIcons[i]->myTeam = dash->myTeam;
         botIconsSelected[i]->myTeam = dash->myTeam;
     }

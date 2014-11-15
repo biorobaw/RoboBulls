@@ -1,6 +1,7 @@
 #include "guirobot.h"
 #include <QLabel>
 #include "mainwindow.h"
+#include <QString>
 
 GuiRobot::GuiRobot()
 {
