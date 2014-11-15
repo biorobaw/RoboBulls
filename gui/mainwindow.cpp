@@ -398,6 +398,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
         case Qt::Key_QuoteLeft:
             fieldpanel->robot0->setSelected(true);
             robotpanel->robotIcon0->setSelected(true);
+            robotpanel->scrollToSelBot(0);
             if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
                 fieldpanel->robot0->doubleClicked = true; }
             break;
@@ -405,6 +406,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
         case Qt::Key_1:
             fieldpanel->robot1->setSelected(true);
             robotpanel->robotIcon1->setSelected(true);
+            robotpanel->scrollToSelBot(1);
             if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
                 fieldpanel->robot1->doubleClicked = true; }
             break;
@@ -412,6 +414,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
         case Qt::Key_2:
             fieldpanel->robot2->setSelected(true);
             robotpanel->robotIcon2->setSelected(true);
+            robotpanel->scrollToSelBot(2);
             if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
                 fieldpanel->robot2->doubleClicked = true; }
             break;
@@ -419,6 +422,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
         case Qt::Key_3:
             fieldpanel->robot3->setSelected(true);
             robotpanel->robotIcon3->setSelected(true);
+            robotpanel->scrollToSelBot(3);
             if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
                 fieldpanel->robot3->doubleClicked = true; }
             break;
@@ -426,6 +430,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
         case Qt::Key_4:
             fieldpanel->robot4->setSelected(true);
             robotpanel->robotIcon4->setSelected(true);
+            robotpanel->scrollToSelBot(4);
             if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
                 fieldpanel->robot4->doubleClicked = true; }
             break;
@@ -433,6 +438,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
         case Qt::Key_5:
             fieldpanel->robot5->setSelected(true);
             robotpanel->robotIcon5->setSelected(true);
+            robotpanel->scrollToSelBot(5);
             if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
                 fieldpanel->robot5->doubleClicked = true; }
             break;
@@ -440,6 +446,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
         case Qt::Key_6:
             fieldpanel->robot6->setSelected(true);
             robotpanel->robotIcon6->setSelected(true);
+            robotpanel->scrollToSelBot(6);
             if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
                 fieldpanel->robot6->doubleClicked = true; }
             break;
@@ -447,6 +454,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
         case Qt::Key_7:
             fieldpanel->robot7->setSelected(true);
             robotpanel->robotIcon7->setSelected(true);
+            robotpanel->scrollToSelBot(7);
             if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
                 fieldpanel->robot7->doubleClicked = true; }
             break;
@@ -454,6 +462,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
         case Qt::Key_8:
             fieldpanel->robot8->setSelected(true);
             robotpanel->robotIcon8->setSelected(true);
+            robotpanel->scrollToSelBot(8);
             if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
                 fieldpanel->robot8->doubleClicked = true; }
             break;
@@ -461,6 +470,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
         case Qt::Key_9:
             fieldpanel->robot9->setSelected(true);
             robotpanel->robotIcon9->setSelected(true);
+            robotpanel->scrollToSelBot(9);
             if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
                 fieldpanel->robot9->doubleClicked = true; }
             break;
@@ -468,20 +478,17 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
         case Qt::Key_0:
             fieldpanel->robot0->setSelected(true);
             robotpanel->robotIcon0->setSelected(true);
+            robotpanel->scrollToSelBot(0);
             if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
                 fieldpanel->robot0->doubleClicked = true; }
             break;
 
         // Camera bindings
-        case Qt::Key_C:
-            fieldpanel->defaultZoom();
-            break;
-
         case Qt::Key_Z:
             if (QApplication::keyboardModifiers().testFlag(Qt::AltModifier)) {
-                ui->zoom_slider->setValue(ui->zoom_slider->value()-10);
+                ui->zoom_slider->setValue(ui->zoom_slider->value()-5);
             } else {
-                ui->zoom_slider->setValue(ui->zoom_slider->value()+10);
+                ui->zoom_slider->setValue(ui->zoom_slider->value()+5);
             }
             if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
                 fieldpanel->defaultZoom();

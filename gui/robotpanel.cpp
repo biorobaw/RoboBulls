@@ -327,9 +327,9 @@ void RobotPanel::updateTeamColors() {
         dash->ui->lcd_coordX_prime->setStyleSheet("background-color: rgb(100, 100, 0);");
         dash->ui->lcd_coordY_prime->setStyleSheet("background-color: rgb(100, 100, 0);");
         for (int i=0; i<dash->teamSize_blue; i++) {
-            botOrients[i]->setStyleSheet("background-color: rgb(0, 0, 150);");
-            botXcoords[i]->setStyleSheet("background-color: rgb(100, 100, 0);");
-            botYcoords[i]->setStyleSheet("background-color: rgb(100, 100, 0);");
+//            botOrients[i]->setStyleSheet("background-color: rgb(0, 0, 150);");
+//            botXcoords[i]->setStyleSheet("background-color: rgb(100, 100, 0);");
+//            botYcoords[i]->setStyleSheet("background-color: rgb(100, 100, 0);");
         }
     } else if (dash->myTeam == "Blue"){
         // button color
@@ -345,6 +345,7 @@ void RobotPanel::updateTeamColors() {
             botOrients[i]->setStyleSheet("background-color: rgb(255, 255, 0);");
             botXcoords[i]->setStyleSheet("background-color: rgb(0, 0, 150);");
             botYcoords[i]->setStyleSheet("background-color: rgb(0, 0, 150);");
+
         }
 
     }

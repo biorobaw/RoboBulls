@@ -75,7 +75,7 @@
          <x>0</x>
          <y>0</y>
          <width>1200</width>
-         <height>926</height>
+         <height>951</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_2">
@@ -6827,24 +6827,6 @@ color: rgb(255, 255, 255);</string>
      </widget>
     </item>
    </layout>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1200</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="menuDashboard">
-    <property name="title">
-     <string>Input</string>
-    </property>
-    <addaction name="separator"/>
-    <addaction name="actionQuit"/>
-   </widget>
-   <addaction name="menuDashboard"/>
   </widget>
   <action name="actionQuit">
    <property name="text">
