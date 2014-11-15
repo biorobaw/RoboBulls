@@ -477,6 +477,18 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
             fieldpanel->defaultZoom();
             break;
 
+        case Qt::Key_Z:
+            if (QApplication::keyboardModifiers().testFlag(Qt::AltModifier)) {
+                ui->zoom_slider->setValue(ui->zoom_slider->value()-10);
+            } else {
+                ui->zoom_slider->setValue(ui->zoom_slider->value()+10);
+            }
+            if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
+                fieldpanel->defaultZoom();
+            }
+            break;
+
+        // Remove selection from bot
         case Qt::Key_Escape:
             if (fieldpanel->selectedBot > -1)
                 fieldpanel->sidelines->Pressed = true;
