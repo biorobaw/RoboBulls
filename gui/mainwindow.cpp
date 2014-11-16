@@ -140,12 +140,11 @@ vector<bool> MainWindow::isRobotOverriden(){    // delete?
 void MainWindow::coreLoop(int tick) {
     /* Top function of the GUI's loop
      */
-    // Formatting main window
-//    if (SIMULATED) {
-//        ui->menuDashboard->setTitle("Simulation");
-//    } else {
-//        ui->menuDashboard->setTitle("Camera");
-//    }
+    // Ctrl override
+    if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
+        ui->scrollArea->verticalScrollBar()->setEnabled(false);
+        ui->gView_field->verticalScrollBar()->setEnabled(false);
+    }
 
     // Wiping values at beginning of cycle
     for (int i=0; i<teamSize_blue; i++) {
@@ -394,6 +393,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
                     }
                     break;
             }
+
         // Number bindings
         case Qt::Key_QuoteLeft:
             fieldpanel->robot0->setSelected(true);
@@ -495,10 +495,30 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
             }
             break;
 
+        case Qt::Key_Plus:
+            ui->zoom_slider->setValue(ui->zoom_slider->value()+5);
+            break;
+        case Qt::Key_Minus:
+            ui->zoom_slider->setValue(ui->zoom_slider->value()-5);
+            break;
+
+        case Qt::Key_R:
+            if (QApplication::keyboardModifiers().testFlag(Qt::AltModifier)) {
+                on_btn_rotateField_left_clicked();
+            } else {
+                on_btn_rotateField_right_clicked();
+            }
+            break;
+
         // Remove selection from bot
         case Qt::Key_Escape:
             if (fieldpanel->selectedBot > -1)
                 fieldpanel->sidelines->Pressed = true;
+            break;
+
+        // Field bindings
+        case Qt::Key_G:
+            ui->check_fieldGrid->click();
             break;
 
     }
@@ -549,6 +569,22 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event) {
             ui->scrollArea->horizontalScrollBar()->setValue(315);
             break;
 
+        }
+}
+
+void MainWindow::wheelEvent(QWheelEvent *event) {
+    if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
+//        ui->gView_field->centerOn(objectPos->getMouseCoordX(), objectPos->getMouseCoordY());
+
+        if (event->delta() > 0) {
+            ui->zoom_slider->setValue(ui->zoom_slider->value()+2);
+        } else {
+            ui->zoom_slider->setValue(ui->zoom_slider->value()-2);
+        }
+
+    } else {
+        ui->scrollArea->verticalScrollBar()->setDisabled(false);
+        ui->gView_field->verticalScrollBar()->setDisabled(false);
     }
 }
 
@@ -856,7 +892,7 @@ void MainWindow::on_btn_override_all_released() {
         // Keeping track of how many bots are overridden
         overriddenBots[i] = true;
     }
-    for (unsigned int i=0; i<teamSize_blue; i++) {
+    for (int i=0; i<teamSize_blue; i++) {
         if (gamemodel->find(i, gamemodel->getMyTeam()) != NULL) {
             // Telling robot QObjects to change color
             robotpanel->botIcons[i]->overridden = true;
@@ -906,4 +942,8 @@ void MainWindow::on_btn_toggleTeamColor_clicked() {
         myTeam = "Blue";
     }
     robotpanel->updateTeamColors();
-}//end on_btn_toggleTeamColor_clicked
+}
+
+void MainWindow::moveSlider() {
+    cout << "moveSlider() \n";
+}

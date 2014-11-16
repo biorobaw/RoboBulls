@@ -23,6 +23,9 @@ public:
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);          // we want to know when the mouse is pressed...
     void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);       // ..and released
+
+signals:
+    void wheelEvent(QGraphicsSceneWheelEvent *event);
 };
 
 #endif // GUIFIELD_H

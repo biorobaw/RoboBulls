@@ -825,7 +825,7 @@
                  <enum>Qt::NoFocus</enum>
                 </property>
                 <property name="toolTip">
-                 <string>Toggle display of grid</string>
+                 <string>(Hotkey: G) Toggle display of grid</string>
                 </property>
                 <property name="text">
                  <string>Grid</string>
@@ -995,9 +995,12 @@
                 <rect>
                  <x>400</x>
                  <y>0</y>
-                 <width>228</width>
+                 <width>271</width>
                  <height>38</height>
                 </rect>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgba(255, 0, 0, 21);</string>
                </property>
                <property name="frameShape">
                 <enum>QFrame::Panel</enum>
@@ -1011,7 +1014,7 @@
                <widget class="QPushButton" name="btn_override_none">
                 <property name="geometry">
                  <rect>
-                  <x>145</x>
+                  <x>190</x>
                   <y>6</y>
                   <width>75</width>
                   <height>27</height>
@@ -1023,14 +1026,108 @@
                   <height>16777215</height>
                  </size>
                 </property>
+                <property name="palette">
+                 <palette>
+                  <active>
+                   <colorrole role="Button">
+                    <brush brushstyle="SolidPattern">
+                     <color alpha="255">
+                      <red>255</red>
+                      <green>255</green>
+                      <blue>255</blue>
+                     </color>
+                    </brush>
+                   </colorrole>
+                   <colorrole role="Base">
+                    <brush brushstyle="SolidPattern">
+                     <color alpha="255">
+                      <red>255</red>
+                      <green>255</green>
+                      <blue>255</blue>
+                     </color>
+                    </brush>
+                   </colorrole>
+                   <colorrole role="Window">
+                    <brush brushstyle="SolidPattern">
+                     <color alpha="255">
+                      <red>255</red>
+                      <green>255</green>
+                      <blue>255</blue>
+                     </color>
+                    </brush>
+                   </colorrole>
+                  </active>
+                  <inactive>
+                   <colorrole role="Button">
+                    <brush brushstyle="SolidPattern">
+                     <color alpha="255">
+                      <red>255</red>
+                      <green>255</green>
+                      <blue>255</blue>
+                     </color>
+                    </brush>
+                   </colorrole>
+                   <colorrole role="Base">
+                    <brush brushstyle="SolidPattern">
+                     <color alpha="255">
+                      <red>255</red>
+                      <green>255</green>
+                      <blue>255</blue>
+                     </color>
+                    </brush>
+                   </colorrole>
+                   <colorrole role="Window">
+                    <brush brushstyle="SolidPattern">
+                     <color alpha="255">
+                      <red>255</red>
+                      <green>255</green>
+                      <blue>255</blue>
+                     </color>
+                    </brush>
+                   </colorrole>
+                  </inactive>
+                  <disabled>
+                   <colorrole role="Button">
+                    <brush brushstyle="SolidPattern">
+                     <color alpha="255">
+                      <red>255</red>
+                      <green>255</green>
+                      <blue>255</blue>
+                     </color>
+                    </brush>
+                   </colorrole>
+                   <colorrole role="Base">
+                    <brush brushstyle="SolidPattern">
+                     <color alpha="255">
+                      <red>255</red>
+                      <green>255</green>
+                      <blue>255</blue>
+                     </color>
+                    </brush>
+                   </colorrole>
+                   <colorrole role="Window">
+                    <brush brushstyle="SolidPattern">
+                     <color alpha="255">
+                      <red>255</red>
+                      <green>255</green>
+                      <blue>255</blue>
+                     </color>
+                    </brush>
+                   </colorrole>
+                  </disabled>
+                 </palette>
+                </property>
                 <property name="focusPolicy">
                  <enum>Qt::NoFocus</enum>
                 </property>
                 <property name="toolTip">
-                 <string>(Hotkey: Alt+O)  Disables manual control override on entire team</string>
+                 <string>(Hotkey: Alt+O)  Disables manual override on entire team</string>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color: rgb(255, 255, 255);</string>
                 </property>
                 <property name="text">
-                 <string>Liberate</string>
+                 <string>Disable</string>
                 </property>
                </widget>
                <widget class="QPushButton" name="btn_override_all">
@@ -1048,14 +1145,108 @@
                   <height>16777215</height>
                  </size>
                 </property>
+                <property name="palette">
+                 <palette>
+                  <active>
+                   <colorrole role="Button">
+                    <brush brushstyle="SolidPattern">
+                     <color alpha="255">
+                      <red>255</red>
+                      <green>255</green>
+                      <blue>255</blue>
+                     </color>
+                    </brush>
+                   </colorrole>
+                   <colorrole role="Base">
+                    <brush brushstyle="SolidPattern">
+                     <color alpha="255">
+                      <red>255</red>
+                      <green>255</green>
+                      <blue>255</blue>
+                     </color>
+                    </brush>
+                   </colorrole>
+                   <colorrole role="Window">
+                    <brush brushstyle="SolidPattern">
+                     <color alpha="255">
+                      <red>255</red>
+                      <green>255</green>
+                      <blue>255</blue>
+                     </color>
+                    </brush>
+                   </colorrole>
+                  </active>
+                  <inactive>
+                   <colorrole role="Button">
+                    <brush brushstyle="SolidPattern">
+                     <color alpha="255">
+                      <red>255</red>
+                      <green>255</green>
+                      <blue>255</blue>
+                     </color>
+                    </brush>
+                   </colorrole>
+                   <colorrole role="Base">
+                    <brush brushstyle="SolidPattern">
+                     <color alpha="255">
+                      <red>255</red>
+                      <green>255</green>
+                      <blue>255</blue>
+                     </color>
+                    </brush>
+                   </colorrole>
+                   <colorrole role="Window">
+                    <brush brushstyle="SolidPattern">
+                     <color alpha="255">
+                      <red>255</red>
+                      <green>255</green>
+                      <blue>255</blue>
+                     </color>
+                    </brush>
+                   </colorrole>
+                  </inactive>
+                  <disabled>
+                   <colorrole role="Button">
+                    <brush brushstyle="SolidPattern">
+                     <color alpha="255">
+                      <red>255</red>
+                      <green>255</green>
+                      <blue>255</blue>
+                     </color>
+                    </brush>
+                   </colorrole>
+                   <colorrole role="Base">
+                    <brush brushstyle="SolidPattern">
+                     <color alpha="255">
+                      <red>255</red>
+                      <green>255</green>
+                      <blue>255</blue>
+                     </color>
+                    </brush>
+                   </colorrole>
+                   <colorrole role="Window">
+                    <brush brushstyle="SolidPattern">
+                     <color alpha="255">
+                      <red>255</red>
+                      <green>255</green>
+                      <blue>255</blue>
+                     </color>
+                    </brush>
+                   </colorrole>
+                  </disabled>
+                 </palette>
+                </property>
                 <property name="focusPolicy">
                  <enum>Qt::NoFocus</enum>
                 </property>
                 <property name="toolTip">
-                 <string>(Hotkey: Ctrl+O)  Enables manual control override on entire team</string>
+                 <string>(Hotkey: Ctrl+O)  Enables manual override on entire team</string>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color: rgb(255, 255, 255);</string>
                 </property>
                 <property name="text">
-                 <string>Override</string>
+                 <string>Enable</string>
                 </property>
                </widget>
                <widget class="QLabel" name="label_6">
@@ -1063,18 +1254,22 @@
                  <rect>
                   <x>86</x>
                   <y>11</y>
-                  <width>55</width>
+                  <width>101</width>
                   <height>17</height>
                  </rect>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>56</width>
+                  <width>200</width>
                   <height>500</height>
                  </size>
                 </property>
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(175, 0, 0);
+background-color: rgba(255, 255, 255, 0);</string>
+                </property>
                 <property name="text">
-                 <string>Team AI</string>
+                 <string>Team Override</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>
@@ -1257,7 +1452,7 @@
                  <enum>Qt::NoFocus</enum>
                 </property>
                 <property name="toolTip">
-                 <string>Show Robot Identification Numbers</string>
+                 <string>(Hotkey: I) Show Robot Identification Numbers</string>
                 </property>
                 <property name="text">
                  <string>Show IDs</string>
@@ -1521,7 +1716,7 @@
                     <enum>Qt::NoFocus</enum>
                    </property>
                    <property name="toolTip">
-                    <string>Rotate field 45 degrees to the left</string>
+                    <string>(Hotkey: Alt+R) Rotate field 45 degrees to the left</string>
                    </property>
                    <property name="text">
                     <string>↶</string>
@@ -1551,7 +1746,7 @@
                     <enum>Qt::NoFocus</enum>
                    </property>
                    <property name="toolTip">
-                    <string>Rotate field 45 degrees to the right</string>
+                    <string>(Hotkey: R) Rotate field 45 degrees to the right</string>
                    </property>
                    <property name="text">
                     <string>↷</string>
@@ -1582,7 +1777,7 @@
                     <enum>Qt::WheelFocus</enum>
                    </property>
                    <property name="toolTip">
-                    <string>Zoom Camera</string>
+                    <string>(Hotkey: Z, Alt+Z) Zoom Camera</string>
                    </property>
                    <property name="minimum">
                     <number>6</number>
@@ -1625,7 +1820,7 @@
                     <enum>Qt::NoFocus</enum>
                    </property>
                    <property name="toolTip">
-                    <string>(Hotkey: C) Return camera to default zoom and rotation</string>
+                    <string>(Hotkey: Ctrl+Z) Return camera to default zoom and rotation</string>
                    </property>
                    <property name="text">
                     <string>Default</string>
@@ -1891,9 +2086,9 @@
                <property name="geometry">
                 <rect>
                  <x>0</x>
-                 <y>107</y>
-                 <width>91</width>
-                 <height>22</height>
+                 <y>110</y>
+                 <width>84</width>
+                 <height>20</height>
                 </rect>
                </property>
                <property name="font">
@@ -1908,11 +2103,14 @@
                 <enum>Qt::NoFocus</enum>
                </property>
                <property name="toolTip">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Hotkey: O) Toggles manual control override on selected robot&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                <string>(Hotkey: O) Toggles manual override on selected robot</string>
+               </property>
+               <property name="layoutDirection">
+                <enum>Qt::RightToLeft</enum>
                </property>
                <property name="styleSheet">
-                <string notr="true">background-color: rgba(255, 255, 255, 0);
-color: rgb(175, 0, 0);</string>
+                <string notr="true">color: rgb(255, 255, 255);
+background-color: rgba(255, 0, 0, 100);</string>
                </property>
                <property name="text">
                 <string>Override</string>

@@ -211,14 +211,13 @@ void FieldPanel::setupScene() {
     // Turning on Bot IDs by default
     dash->ui->check_showIDs->setChecked(true);
 
-
     // Raising the curtains...
     dash->ui->gView_field->setScene(scene);
-
 
     // Refreshes graphics view to eliminate glitchiness
     dash->ui->gView_field->hide();
     dash->ui->gView_field->show();
+
 
 }// setupScene
 
@@ -509,6 +508,7 @@ bool FieldPanel::fieldClickScan() {
 //        newSelection = true;
         return true;
     }
+     return true;
 }
 
 bool FieldPanel::panelBotClickScan() {
@@ -538,6 +538,7 @@ bool FieldPanel::panelBotClickScan() {
             }
         }
     }
+     return true;
 }
 
 bool FieldPanel::fieldBotClickScan() {
@@ -567,6 +568,7 @@ bool FieldPanel::fieldBotClickScan() {
             }
         }
     }
+     return true;
 }
 
 void FieldPanel::zoomField(int zoom) {

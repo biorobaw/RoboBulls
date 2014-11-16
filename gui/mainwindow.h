@@ -65,7 +65,6 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-public:
     // Class pointers
     Ui::MainWindow *ui;
     GameModel *gamemodel;
@@ -90,6 +89,7 @@ public:
     // Key Bindings
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
+    void wheelEvent(QWheelEvent *event);
     void setMyVelocity();
     // team sizes; used all over the place
     int teamSize_blue;
@@ -170,6 +170,9 @@ private slots:
     void on_btn_rotateField_left_clicked();
     void on_btn_multithread_clicked();
     void on_btn_toggleTeamColor_clicked();
+
+public slots:
+    void moveSlider();
 };
 
 #endif // MAINWINDOW_H
