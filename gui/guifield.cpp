@@ -171,7 +171,3 @@ void GuiField::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     QGraphicsItem::mouseReleaseEvent(event);
 }
 
-void GuiField::wheelEvent(QGraphicsSceneWheelEvent *event) {
-    update();
-    QGraphicsItem::wheelEvent(event);
-}

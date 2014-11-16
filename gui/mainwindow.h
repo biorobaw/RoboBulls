@@ -116,6 +116,7 @@ protected:
 private:
     void setupKeyShortcuts();
     void checkTeamColors();
+    void setFocusOnField();
 //    void updateTeamColors();
 
     // my pointer
@@ -170,6 +171,7 @@ private slots:
     void on_btn_rotateField_left_clicked();
     void on_btn_multithread_clicked();
     void on_btn_toggleTeamColor_clicked();
+
 
 public slots:
     void moveSlider();

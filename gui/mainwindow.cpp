@@ -90,9 +90,7 @@ MainWindow::MainWindow(QWidget *parent) :
     objectPos->setupBotSpeeds();
     ui->btn_connectGui->setEnabled(true);
     MainWindow::resize(850,630);
-    ui->scrollArea->ensureWidgetVisible(ui->gView_field,0,0);
-    ui->scrollArea->verticalScrollBar()->setValue(220);
-    ui->scrollArea->horizontalScrollBar()->setValue(315);
+    setFocusOnField();
     // Time, in milliseconds, before GUI autoconnects to project; increase value if needed
     QTimer::singleShot(1000, this, SLOT(on_btn_connectGui_clicked()));
 
@@ -521,6 +519,14 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
             ui->check_fieldGrid->click();
             break;
 
+        // center window on field
+        case Qt::Key_F:
+//            MainWindow::setWindowState(Qt::WindowMaximized);
+//            MainWindow::resize(850,630);
+            setFocusOnField();
+            break;
+
+
     }
 }
 
@@ -560,15 +566,7 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event) {
                 case Qt::Key_J:
                     on_btn_botDrible_released();
                     break;
-        }
-        // center window on field
-        case Qt::Key_F:
-//            MainWindow::resize(850,630);
-            ui->scrollArea->ensureWidgetVisible(ui->gView_field,0,0);
-            ui->scrollArea->verticalScrollBar()->setValue(220);
-            ui->scrollArea->horizontalScrollBar()->setValue(315);
-            break;
-
+            }
         }
 }
 
@@ -625,7 +623,13 @@ void MainWindow::checkTeamColors() {
     } else if (TEAM == TEAM_YELLOW) {
         myTeam = "Yellow";
     }
-//    robotpanel->updateTeamColors();
+    //    robotpanel->updateTeamColors();
+}
+
+void MainWindow::setFocusOnField() {
+    ui->scrollArea->ensureWidgetVisible(ui->gView_field,0,0);
+    ui->scrollArea->verticalScrollBar()->setValue(205);
+    ui->scrollArea->horizontalScrollBar()->setValue(315);
 }
 
 //void MainWindow::updateTeamColors() {
