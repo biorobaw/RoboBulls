@@ -3,6 +3,7 @@
 #include "skill/stop.h"
 #include "skill/kicktopoint.h"
 #include "utilities/point.h"
+#include "include/config/team.h"
 #include <stdlib.h>     //for using the function sleep
 
 #if SIMULATED
@@ -41,12 +42,14 @@ void SimpleBehaviors::perform(Robot * r)
         #if SIMULATED
             #define DISTANCE 350
         #else
-            #define DISTANCE 500
+            #define DISTANCE 800
         #endif
         Point goal;
-        if (gm->getGameState() == 'P' || gm->getGameState() == 'F' || gm->getGameState() == 'I' )
+        if (((gm->getGameState() == 'P' || gm->getGameState() == 'F' || gm->getGameState() == 'I') && TEAM == TEAM_BLUE)
+                || ((gm->getGameState() == 'p' || gm->getGameState() == 'f' || gm->getGameState() == 'i') && TEAM == TEAM_YELLOW))
             goal = gm->getOpponentGoal();
-        else if (gm->getGameState() == 'p' || gm->getGameState() == 'f' || gm->getGameState() == 'i')
+        else if (((gm->getGameState() == 'p' || gm->getGameState() == 'f' || gm->getGameState() == 'i') && TEAM == TEAM_BLUE)
+                 || ((gm->getGameState() == 'P' || gm->getGameState() == 'F' || gm->getGameState() == 'I') && TEAM == TEAM_YELLOW))
                  goal = gm->getMyGoal();
         float targetBallAngle = Measurments::angleBetween(goal, ballPosition);
         Point behindBall = ballPosition + Point(DISTANCE*cos(targetBallAngle), DISTANCE*sin(targetBallAngle));
