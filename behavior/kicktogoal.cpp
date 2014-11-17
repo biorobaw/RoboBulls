@@ -3,6 +3,7 @@
 #include "model/gamemodel.h"
 #include "skill/skill.h"
 #include "skill/kick.h"
+#include "skill/stop.h"
 
 #if SIMULATED
     #define ANGLE   (10 * M_PI/180)
@@ -38,21 +39,27 @@ void KickToGoal::perform(Robot * r)
 
     // Create a different skill depending on the state
     switch (state) {
-    case goingBehind:
-        target = behindBall;
-        setMovementTargets(behindBall, ballToGoal, true);
-        GenericMovementBehavior::perform(r, Movement::Type::Default);
-        break;
-    case approaching:
-        setMovementTargets(ball, ballToGoal, false);
-		GenericMovementBehavior::perform(r, Movement::Type::SharpTurns);
-        break;
-    case kicking:
+        case goingBehind:
+            target = behindBall;
+            setMovementTargets(behindBall, ballToGoal, true);
+            GenericMovementBehavior::perform(r, Movement::Type::Default);
+            break;
+        case approaching:
+            setMovementTargets(ball, ballToGoal, false);
+            GenericMovementBehavior::perform(r, Movement::Type::SharpTurns);
+            break;
+        case kicking:
+            {
+                Skill::Kick k(0, 0);
+                k.perform(r);
+            }
+            break;
+        case stopping:
         {
-            Skill::Kick k(0, 0);
-            k.perform(r);
-		}
-        break;
+            Skill::Stop stop;
+            stop.perform(r);
+        }
+            break;
     }
 
     // Evaluate possible transitions
@@ -90,5 +97,8 @@ void KickToGoal::perform(Robot * r)
         cout << "kicking" << endl;
         state = goingBehind;
         break;
+    case stopping:
+        cout << "stopping" << endl;
+       break;
     }
 }

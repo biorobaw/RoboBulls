@@ -11,7 +11,7 @@ public:
 
     void perform(Robot * r);
 
-    enum StateEnum {goingBehind, approaching, kicking};
+    enum StateEnum {goingBehind, approaching, kicking, stopping};
     StateEnum state;
 private:
     Point target;
