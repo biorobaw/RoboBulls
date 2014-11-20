@@ -57,7 +57,7 @@ void FreeKickStrategy::assignBeh()
 
             for (unsigned i = 1; i < myTeam.size(); i++)
             {
-                if (myTeam.at(0)->getID() != 5)
+                if (myTeam.at(i)->getID() != 5)
                 {
                     Point iPos = myTeam.at(i)->getRobotPosition();
                     Point closestPos = closestRobot->getRobotPosition();
