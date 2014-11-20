@@ -95,7 +95,7 @@ void KickToGoal::perform(Robot * r)
         break;
     case kicking:
         cout << "kicking" << endl;
-        state = goingBehind;
+        state = stopping;
         break;
     case stopping:
         cout << "stopping" << endl;
