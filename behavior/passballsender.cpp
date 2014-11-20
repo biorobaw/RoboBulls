@@ -147,7 +147,7 @@ void PassBallSender::perform(Robot * robot)
             break;
         case approaching:
         {
-            setMovementTargets(closeToBall, angle, true);
+            setMovementTargets(closeToBall, angle, false);
             GenericMovementBehavior::perform(robot, Movement::Type::Default);
 //            cout << "obotCloseToBall && angleIsRight\t" <<
 //                    Measurments::distance(robot->getRobotPosition(), ballPos)

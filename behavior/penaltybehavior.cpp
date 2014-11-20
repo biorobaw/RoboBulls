@@ -61,7 +61,7 @@ void PenaltyBehavior::perform(Robot * myRobot)
 //        cout << "1\t" << Measurments::distance(robotPos,ballPos) << endl;
 //        cout << "2\t" << abs(Measurments::angleDiff(robotOrient, ballTargetAngle))/M_PI*180 << endl;
 //        cout << "3\t" << abs(Measurments::angleDiff(robotOrient, Measurments::angleBetween(robotPos, ballPos)))/M_PI*180 << endl;
-        setMovementTargets(ballPos, ballTargetAngle, true);
+        setMovementTargets(ballPos, ballTargetAngle, false);
         GenericMovementBehavior::perform(myRobot, Movement::Type::Default);
         if (Measurments::isClose(robotPos,ballPos,CLOSE_ENOUGH) &&
             abs(Measurments::angleDiff(robotOrient, ballTargetAngle)) < ANGLE &&

@@ -44,7 +44,7 @@ void KickToGoal::perform(Robot * r)
         GenericMovementBehavior::perform(r, Movement::Type::Default);
         break;
     case approaching:
-        setMovementTargets(ball, ballToGoal, true);
+        setMovementTargets(ball, ballToGoal, false);
 		GenericMovementBehavior::perform(r, Movement::Type::SharpTurns);
         break;
     case kicking:

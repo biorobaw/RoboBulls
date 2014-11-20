@@ -35,9 +35,23 @@ void SimpleBehaviors::perform(Robot * r)
             s.perform(gm->getMyTeam().at(i));
         }
     }
-    else if (gm->getGameState() == 'P' || gm->getGameState() == 'p'
+    else if ((gm->getGameState() == 'P' || gm->getGameState() == 'p'
+              || gm->getGameState() == 'F' || gm->getGameState() == 'f'
+              || gm->getGameState() == 'I' || gm->getGameState() == 'i')
+             && ((Measurments::distance(ballPosition, gm->getMyGoal()) < 1200)
+                 || (Measurments::distance(ballPosition, gm->getOpponentGoal()) < 1200)))
+    {
+        Skill::Stop s;
+        for (unsigned i = 0; i < gm->getMyTeam().size(); i++)
+        {
+            s.perform(gm->getMyTeam().at(i));
+        }
+    }
+    else if ((gm->getGameState() == 'P' || gm->getGameState() == 'p'
              || gm->getGameState() == 'F' || gm->getGameState() == 'f'
              || gm->getGameState() == 'I' || gm->getGameState() == 'i')
+        && ((Measurments::distance(ballPosition, gm->getMyGoal()) >= 1200)
+            || (Measurments::distance(ballPosition, gm->getOpponentGoal()) >= 1200)))
     {
         #if SIMULATED
             #define DISTANCE 350
@@ -46,11 +60,11 @@ void SimpleBehaviors::perform(Robot * r)
         #endif
         Point goal;
         if (((gm->getGameState() == 'P' || gm->getGameState() == 'F' || gm->getGameState() == 'I') && TEAM == TEAM_BLUE)
-                || ((gm->getGameState() == 'p' || gm->getGameState() == 'f' || gm->getGameState() == 'i') && TEAM == TEAM_YELLOW))
+                ||((gm->getGameState() == 'p' || gm->getGameState() == 'f' || gm->getGameState() == 'i') && TEAM == TEAM_YELLOW))
             goal = gm->getOpponentGoal();
         else if (((gm->getGameState() == 'p' || gm->getGameState() == 'f' || gm->getGameState() == 'i') && TEAM == TEAM_BLUE)
                  || ((gm->getGameState() == 'P' || gm->getGameState() == 'F' || gm->getGameState() == 'I') && TEAM == TEAM_YELLOW))
-                 goal = gm->getMyGoal();
+            goal = gm->getMyGoal();
         float targetBallAngle = Measurments::angleBetween(goal, ballPosition);
         Point behindBall = ballPosition + Point(DISTANCE*cos(targetBallAngle), DISTANCE*sin(targetBallAngle));
         Point position(behindBall.x, robotPosition.y);
