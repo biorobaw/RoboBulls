@@ -122,11 +122,26 @@ void GuiRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
         painter->setBrush(QBrush(Qt::darkRed, Qt::SolidPattern));
     }
     if (highlighted) {
-        if (myTeam == "Blue") {
-            painter->setBrush(QBrush(Qt::cyan, Qt::SolidPattern));
-        } else if (myTeam == "Yellow") {
-            painter->setBrush(QBrush(QColor::fromRgb(255,215,0,255), Qt::SolidPattern));
+
+        if (mainTeam) {
+            if          (myTeam == "Blue") {
+                painter->setBrush(QBrush(Qt::cyan, Qt::SolidPattern));
+            } else if   (myTeam == "Yellow") {
+                painter->setBrush(QBrush(QColor::fromRgb(255,215,0,255), Qt::SolidPattern));
+            }
+        } else {
+            if          (myTeam == "Blue") {
+                painter->setBrush(QBrush(QColor::fromRgb(255,215,0,255), Qt::SolidPattern));
+            } else if   (myTeam == "Yellow") {
+                painter->setBrush(QBrush(Qt::cyan, Qt::SolidPattern));
+            }
         }
+
+//        if (myTeam == "Blue") {
+//            painter->setBrush(QBrush(Qt::cyan, Qt::SolidPattern));
+//        } else if (myTeam == "Yellow") {
+//            painter->setBrush(QBrush(QColor::fromRgb(255,215,0,255), Qt::SolidPattern));
+//        }
     }
     if (overridden && highlighted) {
         painter->setBrush(QBrush(Qt::red, Qt::SolidPattern));
