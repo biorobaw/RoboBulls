@@ -57,10 +57,13 @@ void FreeKickStrategy::assignBeh()
 
             for (unsigned i = 1; i < myTeam.size(); i++)
             {
-                Point iPos = myTeam.at(i)->getRobotPosition();
-                Point closestPos = closestRobot->getRobotPosition();
-                if (Measurments::distance(iPos, ballPoint) < Measurments::distance(closestPos, ballPoint))
-                    closestRobot = myTeam.at(i);
+                if (myTeam.at(i)->getID() != 5)
+                {
+                    Point iPos = myTeam.at(i)->getRobotPosition();
+                    Point closestPos = closestRobot->getRobotPosition();
+                    if (Measurments::distance(iPos, ballPoint) < Measurments::distance(closestPos, ballPoint))
+                        closestRobot = myTeam.at(i);
+                }
             }
             closestRobotID = closestRobot->getID();
         }

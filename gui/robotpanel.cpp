@@ -322,7 +322,7 @@ void RobotPanel::updateTeamColors() {
         // robot panel colors
         dash->ui->frame_robotsPanel->setStyleSheet("background-color: rgb(250, 250, 220);");
         dash->ui->text_primeBot->setStyleSheet("background-color: rgb(100, 100, 0);");
-        dash->ui->dial_botOrient_prime->setStyleSheet("background-color: rgb(0, 0, 255);");
+        dash->ui->dial_botOrient_prime->setStyleSheet("background-color: rgb(255, 255, 0);");
         dash->ui->lcd_orient_prime->setStyleSheet("background-color: rgb(0, 0, 150);");
         dash->ui->lcd_coordX_prime->setStyleSheet("background-color: rgb(100, 100, 0);");
         dash->ui->lcd_coordY_prime->setStyleSheet("background-color: rgb(100, 100, 0);");
