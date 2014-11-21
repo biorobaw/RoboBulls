@@ -24,13 +24,32 @@ void DefendFarFromBall::perform(Robot *robot)
     Point ballPoint = gm->getBallPoint();
     Point myGoal = gm->getMyGoal();
     double direction = Measurments::angleBetween(myGoal, ballPoint);
+    Point defensiveWall(cos(direction)*DISTANCE + myGoal.x,
+                        sin(direction)*DISTANCE + myGoal.y);
+
+    // Calculate the distances to the nearest teammate
+    // and the nearest opponent
+    double nearest_teammate=9001;
+    double nearest_opponent=9000;
+    double distance;
+    for(Robot* myRob:gm->getMyTeam())
+    {
+        distance = Measurments::distance(myRob->getRobotPosition(),ballPoint);
+        if (distance < nearest_teammate && myRob->getID() != 5)
+            nearest_teammate = distance;
+    }
+    for(Robot* opRob:gm->getOponentTeam())
+    {
+        distance = Measurments::distance(opRob->getRobotPosition(),ballPoint);
+        if (distance < nearest_opponent && opRob->getID() != 5)
+            nearest_opponent = distance;
+    }
 
     bool isScoreHazard =
             Measurments::distance(myGoal, ballPoint) < 1200
             and not(Measurments::isClose(robPoint, ballPoint, 200))
-            and lastKickCounter <= 0;
-//    setMovementTargets(defensiveWall, direction, false);
-//    GenericMovementBehavior::perform(robot);
+            and lastKickCounter <= 0
+            and nearest_teammate < nearest_opponent;
 
     if(isScoreHazard or isKickingAwayBall) {
         if(wasNotPreviousScoreHazard) {
@@ -39,7 +58,7 @@ void DefendFarFromBall::perform(Robot *robot)
             wasNotPreviousScoreHazard = false;
         }
         if(KTPSkill->perform(robot) or
-                Measurments::distance(ballPoint, myGoal) > 1200) {
+                Measurments::distance(ballPoint, myGoal) > 1200){
             lastKickCounter = 100;
             wasNotPreviousScoreHazard = true;
             isKickingAwayBall = false;
@@ -55,3 +74,4 @@ void DefendFarFromBall::perform(Robot *robot)
         GenericMovementBehavior::perform(robot, Movement::Type::facePoint);
     }
 }
+

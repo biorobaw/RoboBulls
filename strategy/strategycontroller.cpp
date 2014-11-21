@@ -102,7 +102,7 @@ void StrategyController::gameModelUpdated()
         activeStrategy = new TestStrategy();
     };
 #else
-    activeStrategy = new TestStrategy();
+    activeStrategy = new NormalGameStrategy();
 #endif
 
     activeStrategy->assignBeh();
