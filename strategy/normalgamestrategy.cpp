@@ -118,6 +118,27 @@ public:
 };
 
 
+/* Behavior GoalKickReceiver
+ * Sends the robot to a point where it can receive the ball from
+ * the goalkeeper.
+ */
+class GoalKickReciever : public GenericMovementBehavior
+{
+public:
+    GoalKickReciever(const ParameterList& list)
+    { UNUSED_PARAM(list); }
+
+    void perform(Robot* robot) override
+    {
+        GameModel * gm = GameModel::getModel();
+        Point wait_point = Point(gm->getMyGoal().x*0.7, 700);
+        double wait_orientation = Measurments::angleBetween(robot->getRobotPosition(),gm->getBallPoint());
+
+        setMovementTargets(wait_point, wait_orientation);
+        GenericMovementBehavior::perform(robot);
+    }
+};
+
 /*************************************************/
 /** PUBLIC FUNCTIONS **/
 
@@ -157,22 +178,35 @@ bool NormalGameStrategy::update()
 
     isOnAttack = considerSwitchCreiteria();
 
-    if(Measurments::isClose(ball, myGoal, 999) or
-       Measurments::isClose(ball, opGoal, 999))
+    if(Measurments::isClose(ball, opGoal, 999))
     {
-        /* If the ball is close to either goal, we want to have
+        /* If the ball is close to opponent goal, we want to have
          * all the robots not go for it. This makes games a lot
          * better on the field and in the simulator
+         *
+         * It's better to send the Robots away from the
+         * keeper than to just stop them where they stand.
+         * - Shamsi
          */
-        ballNotInGoalCount = 0;
-        BehaviorAssignment<StayStill> ss(true);
-        ss.assignBeh([](Robot* r){return r->getID() != 5;});
+//        ballNotInGoalCount = 0;
+//        BehaviorAssignment<StayStill> ss(true);
+//        ss.assignBeh([](Robot* r){return r->getID() != 5;});
 
-        //*** Assign goalie to ID 5
-        BehaviorAssignment<DefendFarFromBall> goalie_5(true);
-        goalie_5.assignBeh({5});
+//        //*** Assign goalie to ID 5
+//        BehaviorAssignment<DefendFarFromBall> goalie_5(true);
+//        goalie_5.assignBeh({5});
+        assignDefendBehaviors();
         return false;
     }
+    else if(Measurments::isClose(ball, myGoal, 999))
+    {
+        /* If the ball is close to team goal, one robot
+         * moves to receive it from the goalie and the
+         * other positions itself mid-field
+         */
+        assignGoalKickBehaviors();
+    }
+
     else {
         if(ballNotInGoalCount < MIN_BALLINGOAL_COUNT) {
             /* This ensures that the ball must be detected out of the goal
@@ -325,6 +359,30 @@ void NormalGameStrategy::assignDefendBehaviors()
 
     BehaviorAssignment<OpBallBlocker> blockerAssign(true);
     blockerAssign.assignBeh(OpBlocker);
+
+    //*** Assign goalie to ID 5
+    BehaviorAssignment<DefendFarFromBall> goalie_5(true);
+    goalie_5.assignBeh({5});
+}
+
+/* Goalie tries to pass to teammate. One robot sits at the mid line
+ * ready to change to attack. One other one goes to a point at which
+ * it can receive a pass from a goalie
+ */
+void NormalGameStrategy::assignGoalKickBehaviors()
+{
+    GameModel* gm = GameModel::getModel();
+    Robot* receiver = NULL, *middleSitter = NULL;
+    Point wait_point = Point(gm->getMyGoal().x*0.7, 700);
+    findMostValidRobots(wait_point, receiver, middleSitter);
+    /**************/
+
+    BehaviorAssignment<MiddleSitter> middleAssign(true);
+    middleAssign.setBehParam("targetPoint", Point(0, -1500+3000*TEAM));
+    middleAssign.assignBeh(middleSitter);
+
+    BehaviorAssignment<GoalKickReciever> receiverAssign(true);
+    receiverAssign.assignBeh(receiver);
 
     //*** Assign goalie to ID 5
     BehaviorAssignment<DefendFarFromBall> goalie_5(true);
