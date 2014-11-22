@@ -29,13 +29,15 @@
 /* Defines the amount of counts to update, while a robot is backing up,
  * until it is free to move forward again
  */
-#define ROBOT_MOVE_BACKUP_COUNT		75
+#define ROBOT_MOVE_BACKUP_COUNT		95
 /* Defines the distance the robot must move back from its collision point before
  * it is allowed to move forward again. Beware, if this is too small, the robot
  * will never find a path around the collision object due to the close-to-start
  * FPPA exclusion rule.
  */
-#define ROBOT_MOVE_BACKUP_DIST      (ROBOT_SIZE*2)
+#define ROBOT_MOVE_BACKUP_DIST      (ROBOT_SIZE*1.5)
+
+#define ROBOT_MOVE_NOMOVE_COUNT     50
 
 /************************************************************************/
 /* Implementation */
@@ -99,9 +101,20 @@ namespace detail
 
     bool needsNewPath(Robot *robot)
     {
-        return Measurments::distance
-                (robot->getRobotPosition(),currentMoveStatuses[robot->getID()].m_collidePoint)
+        RobotMoveStatus& status = currentMoveStatuses[robot->getID()];
+        int   backupCount  = status.m_collideCounter;
+        Point collidePoint = status.m_collidePoint;
+
+        if(status.m_collideBot != NULL) {
+            collidePoint = status.m_collideBot->getRobotPosition();
+        }
+
+        bool farFromHit = Measurments::distance(robot->getRobotPosition(),collidePoint)
                 >= ROBOT_MOVE_BACKUP_DIST*0.80;
+        bool collideCounterClose = abs(backupCount - ROBOT_MOVE_BACKUP_COUNT)
+                <= ROBOT_MOVE_BACKUP_COUNT*0.30;
+
+        return (farFromHit or collideCounterClose);
     }
 	
 	void moveUpdateStart()
@@ -127,7 +140,7 @@ namespace detail
     void robotDisableMovement(Robot* a, Robot* b)
 	{
 		if(currentMoveStatuses[b->getID()].moving()) {
-			currentMoveStatuses[a->getID()].set(MOVE_NOTOK);
+            currentMoveStatuses[a->getID()].set(MOVE_NOTOK);
 			currentMoveStops[a->getID()] = true;
 		}
 	}
@@ -225,7 +238,7 @@ namespace detail
         for(Robot* other : currentAllRobots)
 		{
 			bool hazardExists   = robotCollideHazard(robot, other);
-			bool otherIsStopped = (currentMoveStops[other->getID()] == true);
+            bool otherIsStopped = (currentMoveStops[other->getID()] == true);
 			if((robot == other) or otherIsStopped or not(hazardExists)) {
 				continue;
 			}
@@ -238,10 +251,11 @@ namespace detail
             bool robFacingOther = robotFacingRobot(robot, other);
 
             if(robOtherTooClose and robFacingOther) {
-				set(MOVE_COLLIDED);
+                set(MOVE_COLLIDED);
                 currentMoveStops[robot->getID()] = true;
                 this->m_collidePoint = othPos;
-				continue;
+                this->m_collideBot = other;
+                continue;
 			}
 			
 			if(robotFacingRobot(robot, other) and robotFacingRobot(other, robot)) {
@@ -282,15 +296,20 @@ namespace detail
 	
 	void RobotMoveStatus::updateMoveCollided(Robot* robot)
 	{
-        bool farAwayFromHit = Measurments::distance(robot->getRobotPosition(), m_collidePoint)
-                >= ROBOT_MOVE_BACKUP_DIST;
         bool backupCountHit = ++m_collideCounter
                 >= ROBOT_MOVE_BACKUP_COUNT;
+        bool farAwayFromHit = false;
+
+        if(m_collideBot != NULL) {
+            farAwayFromHit = Measurments::distance
+                (robot->getRobotPosition(), m_collideBot->getRobotPosition())
+                >= ROBOT_MOVE_BACKUP_DIST;
+        }
 
         if(farAwayFromHit or backupCountHit) {
             m_collideCounter = 0;
             m_collidePoint = Point(9999,9999);
-            set(MOVE_NOTOK);
+            set(MOVE_OK);
         }
 	}
 }
