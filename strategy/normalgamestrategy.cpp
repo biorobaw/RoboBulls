@@ -126,6 +126,47 @@ public:
     }
 };
 
+/* Behavior Retreat Left
+ * Sends the robot to a point at which to wait for the
+ * opponent goalie to kick the ball out
+ */
+class RetreatLeft : public GenericMovementBehavior
+{
+public:
+    RetreatLeft(const ParameterList& list)
+    { UNUSED_PARAM(list); }
+
+    void perform(Robot* robot) override
+    {
+        GameModel * gm = GameModel::getModel();
+        Point wait_point = Point(gm->getMyGoal().x*0.5, 1000);
+        double wait_orientation = Measurments::angleBetween(robot->getRobotPosition(),gm->getBallPoint());
+
+        setMovementTargets(wait_point, wait_orientation);
+        GenericMovementBehavior::perform(robot);
+    }
+};
+
+/* Behavior Retreat Right
+ * Sends the robot to a point at which to wait for the
+ * opponent goalie to kick the ball out
+ */
+class RetreatRight : public GenericMovementBehavior
+{
+public:
+    RetreatRight(const ParameterList& list)
+    { UNUSED_PARAM(list); }
+
+    void perform(Robot* robot) override
+    {
+        GameModel * gm = GameModel::getModel();
+        Point wait_point = Point(gm->getMyGoal().x*0.5, -1000);
+        double wait_orientation = Measurments::angleBetween(robot->getRobotPosition(),gm->getBallPoint());
+
+        setMovementTargets(wait_point, wait_orientation);
+        GenericMovementBehavior::perform(robot);
+    }
+};
 /*************************************************/
 /** PUBLIC FUNCTIONS **/
 
@@ -182,7 +223,7 @@ bool NormalGameStrategy::update()
 //        //*** Assign goalie to ID 5
 //        BehaviorAssignment<DefendFarFromBall> goalie_5(true);
 //        goalie_5.assignBeh({5});
-        assignDefendBehaviors();
+        assignRetreatBehaviors();
     }
     else if(Measurments::isClose(ball, myGoal, 999))
     {
@@ -353,9 +394,10 @@ void NormalGameStrategy::assignDefendBehaviors()
     goalie_5.assignBeh({5});
 }
 
-/* Goalie tries to pass to teammate. One robot sits at the mid line
+/* This runs when the ball is near in friendly penalty area.
+ * Goalie tries to pass to teammate. One robot sits at the mid line
  * ready to change to attack. One other one goes to a point at which
- * it can receive a pass from a goalie
+ * it can receive a pass from a goalie.
  */
 void NormalGameStrategy::assignGoalKickBehaviors()
 {
@@ -371,6 +413,30 @@ void NormalGameStrategy::assignGoalKickBehaviors()
 
     BehaviorAssignment<GoalKickReciever> receiverAssign(true);
     receiverAssign.assignBeh(receiver);
+
+    //*** Assign goalie to ID 5
+    BehaviorAssignment<DefendFarFromBall> goalie_5(true);
+    goalie_5.assignBeh({5});
+}
+
+/* This runs when the ball is in the opponent penalty area
+ * Goalie tries to pass to teammate. One robot sits at the mid line
+ * ready to change to attack. One other one goes to a point at which
+ * it can receive a pass from a goalie.
+ */
+void NormalGameStrategy::assignRetreatBehaviors()
+{
+    GameModel* gm = GameModel::getModel();
+    Robot* right_rob = NULL, *left_rob = NULL;
+    Point right_point = Point(gm->getMyGoal().x*0.5, 1000);
+    findMostValidRobots(right_point, right_rob, left_rob);
+    /**************/
+
+    BehaviorAssignment<RetreatRight> rightRetreat(true);
+    rightRetreat.assignBeh(right_rob);
+
+    BehaviorAssignment<GoalKickReciever> leftRetreat(true);
+    leftRetreat.assignBeh(left_rob);
 
     //*** Assign goalie to ID 5
     BehaviorAssignment<DefendFarFromBall> goalie_5(true);

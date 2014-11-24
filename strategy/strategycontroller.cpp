@@ -4,7 +4,6 @@
 #include "model/gamemodel.h"
 #include "model/robot.h"
 #include "behavior/behavior.h"
-
 #include "strategy/stopstrategy.h"
 #include "strategy/teststrategy.h"
 #include "strategy/penaltystrategy.h"
