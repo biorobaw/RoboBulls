@@ -314,7 +314,7 @@ bool NormalGameStrategy::considerSwitchCreiteria()
     else if(not(ballRobot->isOnMyTeam()) and isOnAttack){
         --switchCounter;
         if(switchCounter < 0) {
-            /* We have seen the ball in our hands for long enough,
+            /* We have not seen the ball in our hands for long enough,
              * we will switch to defend. (retrun false)
              */
             switchCounter = NORMAL_SWITCH_COUNT;

@@ -27,29 +27,22 @@ void DefendFarFromBall::perform(Robot *robot)
     Point defensiveWall(cos(direction)*DISTANCE + myGoal.x,
                         sin(direction)*DISTANCE + myGoal.y);
 
-    // Calculate the distances to the nearest teammate
-    // and the nearest opponent
-    double nearest_teammate=9001;
-    double nearest_opponent=9000;
-    double distance;
-    for(Robot* myRob:gm->getMyTeam())
-    {
-        distance = Measurments::distance(myRob->getRobotPosition(),ballPoint);
-        if (distance < nearest_teammate && myRob->getID() != 5)
-            nearest_teammate = distance;
-    }
+    // Check if there are any opp robots within 2000 distance of the ball
+    // This boolean is used to determine if the goalie should wait
+    // before kicking the ball to a teammate in case an opp robot intersepts
+    // the ball
+    bool safeToKick = 1;
     for(Robot* opRob:gm->getOponentTeam())
     {
-        distance = Measurments::distance(opRob->getRobotPosition(),ballPoint);
-        if (distance < nearest_opponent && opRob->getID() != 5)
-            nearest_opponent = distance;
+        if (Measurments::distance(opRob->getRobotPosition(),ballPoint) < 2000)
+            safeToKick = 0;
     }
 
     bool isScoreHazard =
             Measurments::distance(myGoal, ballPoint) < 1200
             and not(Measurments::isClose(robPoint, ballPoint, 200))
             and lastKickCounter <= 0
-            and nearest_teammate < nearest_opponent;
+            and safeToKick;
 
     if(isScoreHazard or isKickingAwayBall) {
         if(wasNotPreviousScoreHazard) {
