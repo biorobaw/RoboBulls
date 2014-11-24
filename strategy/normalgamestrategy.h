@@ -41,6 +41,8 @@ private:
     bool considerSwitchCreiteria();
     void assignAttackBehaviors();
     void assignDefendBehaviors();
+    void assignGoalKickBehaviors();
+    void assignRetreatBehaviors();
 
 private:
     static bool isOnAttack;

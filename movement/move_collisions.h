@@ -54,6 +54,7 @@ namespace detail
         bool	m_isMoving;
         Point 	m_lastDiffPoint;
         Point   m_collidePoint;
+        Robot*  m_collideBot;
         int  	m_observeCount;
         int 	m_collideCounter;
         int     m_moveDisableCount;
