@@ -27,14 +27,15 @@ void DefendFarFromBall::perform(Robot *robot)
     Point defensiveWall(cos(direction)*DISTANCE + myGoal.x,
                         sin(direction)*DISTANCE + myGoal.y);
 
-    // Check if there are any opp robots within 2000 distance of the ball
-    // This boolean is used to determine if the goalie should wait
-    // before kicking the ball to a teammate in case an opp robot intersepts
-    // the ball
+    /* Check if there are any opp robots within 3000 distance of the ball
+    *  This boolean is used to determine if the goalie should wait
+    *  before kicking the ball to a teammate in case an opp robot intersepts
+    *  the ball
+    */
     bool safeToKick = 1;
     for(Robot* opRob:gm->getOponentTeam())
     {
-        if (Measurments::distance(opRob->getRobotPosition(),ballPoint) < 2000)
+        if (Measurments::distance(opRob->getRobotPosition(),ballPoint) < 3000)
             safeToKick = 0;
     }
 

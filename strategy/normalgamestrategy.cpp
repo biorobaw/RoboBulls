@@ -118,7 +118,7 @@ public:
     void perform(Robot* robot) override
     {
         GameModel * gm = GameModel::getModel();
-        Point wait_point = Point(gm->getMyGoal().x*0.7, 700);
+        Point wait_point = Point(gm->getMyGoal().x*0.5, 1000);
         double wait_orientation = Measurments::angleBetween(robot->getRobotPosition(),gm->getBallPoint());
 
         setMovementTargets(wait_point, wait_orientation);
@@ -208,21 +208,10 @@ bool NormalGameStrategy::update()
 
     if(Measurments::isClose(ball, opGoal, 999))
     {
-        /* If the ball is close to opponent goal, we want to have
-         * all the robots not go for it. This makes games a lot
-         * better on the field and in the simulator
-         *
-         * It's better to send the Robots away from the
-         * keeper than to just stop them where they stand.
-         * - Shamsi
+        /* If the ball is close to opponent goal, the robots
+         * retreate back to their half
          */
         ballNotInGoalCount = 0;
-//        BehaviorAssignment<StayStill> ss(true);
-//        ss.assignBeh([](Robot* r){return r->getID() != 5;});
-
-//        //*** Assign goalie to ID 5
-//        BehaviorAssignment<DefendFarFromBall> goalie_5(true);
-//        goalie_5.assignBeh({5});
         assignRetreatBehaviors();
     }
     else if(Measurments::isClose(ball, myGoal, 999))
@@ -345,8 +334,8 @@ void NormalGameStrategy::assignAttackBehaviors()
         /* Otherwise, we are coming from a previous attack, note here
          * that the driver/receiver are being swapped.
          */
-        driverBot = currentSuppAttacker;
-        recvBot = currentMainAttacker;
+        recvBot = currentSuppAttacker;
+        driverBot = currentMainAttacker;
     }
     /**************/
 
@@ -403,7 +392,7 @@ void NormalGameStrategy::assignGoalKickBehaviors()
 {
     GameModel* gm = GameModel::getModel();
     Robot* receiver = NULL, *middleSitter = NULL;
-    Point wait_point = Point(gm->getMyGoal().x*0.7, 700);
+    Point wait_point = Point(gm->getMyGoal().x*0.5, 1000);
     findMostValidRobots(wait_point, receiver, middleSitter);
     /**************/
 
@@ -428,7 +417,7 @@ void NormalGameStrategy::assignRetreatBehaviors()
 {
     GameModel* gm = GameModel::getModel();
     Robot* right_rob = NULL, *left_rob = NULL;
-    Point right_point = Point(gm->getMyGoal().x*0.5, 1000);
+    Point right_point = Point(gm->getMyGoal().x*0.5, -1000);
     findMostValidRobots(right_point, right_rob, left_rob);
     /**************/
 
