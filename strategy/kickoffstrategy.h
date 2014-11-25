@@ -16,6 +16,8 @@ private:
     Movement::GoToPosition move_skill0,move_skill1,move_skill2,move_skill3,move_skill4,move_skill5;
     GameModel * gm;
     Point bp;
+
+    int counters[10];
 };
 
 #endif // KICKOFFSTRATEGY_H

@@ -18,6 +18,7 @@
 
 SimpleBehaviors::SimpleBehaviors(const ParameterList& list)
 {
+    hasTargetPos = false;
     UNUSED_PARAM(list);
 }
 
@@ -73,11 +74,15 @@ void SimpleBehaviors::perform(Robot * r)
         else
             px = 1500;
 
-//        Point behindBall = ballPosition + Point(DISTANCE*cos(targetBallAngle), DISTANCE*sin(targetBallAngle));
-        Point position(px, robotPosition.y);
+        if(!hasTargetPos) {
+            hasTargetPos = true;
+            target.y = robotPosition.y;
+        }
+        target.x = px;
+
         float direction = Measurments::angleBetween(robotPosition, ballPosition);
 
-        move.recreate(position, direction, true);
+        move.recreate(target, direction, true);
         move.perform(r);
     }
 }

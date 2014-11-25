@@ -5,6 +5,7 @@
 
 //The distance from the goal where the defend robot stays
 #define DISTANCE 300
+#define VEL_CHANGE_COUNT 3500
 
 DefendFarFromBall::DefendFarFromBall(const ParameterList& list)
     : GenericMovementBehavior(list)
@@ -12,6 +13,8 @@ DefendFarFromBall::DefendFarFromBall(const ParameterList& list)
     , wasNotPreviousScoreHazard(true)
     , isKickingAwayBall(false)
     , lastKickCounter(0)
+    , velChangeCounter(0)
+    , isOnSlowVelMode(false)
 {
     UNUSED_PARAM(list);
     setVelocityMultiplier(0.65);
@@ -32,6 +35,7 @@ void DefendFarFromBall::perform(Robot *robot)
     *  before kicking the ball to a teammate in case an opp robot intersepts
     *  the ball
     */
+
     bool safeToKick = 1;
     for(Robot* opRob:gm->getOponentTeam())
     {
@@ -60,8 +64,19 @@ void DefendFarFromBall::perform(Robot *robot)
             KTPSkill = nullptr;
         }
     } else {
-        if(lastKickCounter > 0)
+        if(lastKickCounter > 0) {
             --lastKickCounter;
+        }
+        if(++velChangeCounter >= VEL_CHANGE_COUNT) {
+            velChangeCounter = 0;
+            isOnSlowVelMode = !isOnSlowVelMode;
+        }
+        if(isOnSlowVelMode) {
+            setVelocityMultiplier(0.60);
+        } else {
+            setVelocityMultiplier(0.75);
+        }
+
         Point defensiveWall(cos(direction)*DISTANCE + myGoal.x,
                             sin(direction)*DISTANCE + myGoal.y);
         setMovementTargets(defensiveWall, direction, false, false);

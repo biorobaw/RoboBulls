@@ -88,7 +88,8 @@ void AttackMain::perform(Robot * robot)
             else if(Measurments::isClose(bp, gp, shot_distance))
             {
                 delete score_skill;
-                score_skill = new Skill::KickToPoint(gp, SCORE_ANGLE_TOLERANCE);
+                Point offset(0, -500 + rand() % 1000);
+                score_skill = new Skill::KickToPoint(gp + offset, SCORE_ANGLE_TOLERANCE);
                 state = score;
             }
             else
