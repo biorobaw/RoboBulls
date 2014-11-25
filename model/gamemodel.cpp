@@ -205,7 +205,7 @@ void GameModel::setRobotHasBall()
     if(!calculateHasBall(this->robotWithBall))
     {
         ++lastSeenWithoutBallCount;
-        if(lastSeenWithoutBallCount > 240) {
+        if(lastSeenWithoutBallCount > 10) {
             lastSeenWithoutBallCount = 0;
             auto ballBot = std::find_if(myTeam.begin(), myTeam.end(), calculateHasBall);
             if(ballBot == myTeam.end()) {            //Not found in myTeam

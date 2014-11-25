@@ -20,7 +20,7 @@ bool NormalGameStrategy::isOnAttack = true;
  * switch is actually made
  */
 #define ATT_TO_DEF_SWITCH_COUNT 16
-#define DEF_TO_ATT_SWITCH_COUNT 1024
+#define DEF_TO_ATT_SWITCH_COUNT 16
 
 /* Defines the number of times the ball must be seen outside of the goal
  * to have the robots start moving again. Used to prevent jerkey movement
