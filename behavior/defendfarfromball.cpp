@@ -24,13 +24,26 @@ void DefendFarFromBall::perform(Robot *robot)
     Point ballPoint = gm->getBallPoint();
     Point myGoal = gm->getMyGoal();
     double direction = Measurments::angleBetween(myGoal, ballPoint);
+    Point defensiveWall(cos(direction)*DISTANCE + myGoal.x,
+                        sin(direction)*DISTANCE + myGoal.y);
+
+    /* Check if there are any opp robots within 3000 distance of the ball
+    *  This boolean is used to determine if the goalie should wait
+    *  before kicking the ball to a teammate in case an opp robot intersepts
+    *  the ball
+    */
+    bool safeToKick = 1;
+    for(Robot* opRob:gm->getOponentTeam())
+    {
+        if (Measurments::distance(opRob->getRobotPosition(),ballPoint) < 3000)
+            safeToKick = 0;
+    }
 
     bool isScoreHazard =
             Measurments::distance(myGoal, ballPoint) < 1200
-            and not(Measurments::isClose(robPoint, ballPoint, 200))
-            and lastKickCounter <= 0;
-//    setMovementTargets(defensiveWall, direction, false);
-//    GenericMovementBehavior::perform(robot);
+            and not(Measurments::isClose(robPoint, ballPoint, 100))
+            and lastKickCounter <= 0
+            and safeToKick;
 
     if(isScoreHazard or isKickingAwayBall) {
         if(wasNotPreviousScoreHazard) {
@@ -39,7 +52,7 @@ void DefendFarFromBall::perform(Robot *robot)
             wasNotPreviousScoreHazard = false;
         }
         if(KTPSkill->perform(robot) or
-                Measurments::distance(ballPoint, myGoal) > 1200) {
+                Measurments::distance(ballPoint, myGoal) > 1200){
             lastKickCounter = 100;
             wasNotPreviousScoreHazard = true;
             isKickingAwayBall = false;
@@ -51,7 +64,8 @@ void DefendFarFromBall::perform(Robot *robot)
             --lastKickCounter;
         Point defensiveWall(cos(direction)*DISTANCE + myGoal.x,
                             sin(direction)*DISTANCE + myGoal.y);
-        setMovementTargets(defensiveWall, direction, true);
+        setMovementTargets(defensiveWall, direction, false, false);
         GenericMovementBehavior::perform(robot, Movement::Type::facePoint);
     }
 }
+

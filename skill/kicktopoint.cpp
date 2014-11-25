@@ -9,7 +9,7 @@
  #define POSITION_ANGLE_TOL 10*M_PI/180
 #else
  //These constants work. Do not change.
- #define KDIST_TOLERANCE    150
+ #define KDIST_TOLERANCE    200
  #define CENTER_TOLERANCE   0.70
  #define POSITION_ANGLE_TOL ROT_TOLERANCE
 #endif
