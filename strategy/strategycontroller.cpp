@@ -88,6 +88,8 @@ void StrategyController::gameModelUpdated()
     case 'I':   //Blue Indirect kick
         activeStrategy = new IndiectKickStrategy();
         break;
+    case 'T':
+    case 't':
     case 'H':    //Halt
         activeStrategy = new HaltStrategy();
         break;

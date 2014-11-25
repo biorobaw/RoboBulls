@@ -27,7 +27,8 @@ void SimpleBehaviors::perform(Robot * r)
     Point robotPosition = r->getRobotPosition();
     Point ballPosition = gm->getBallPoint();
 
-    if (gm->getGameState() == 'H' || gm->getGameState() == ' ')
+    if (gm->getGameState() == 'H' || gm->getGameState() == ' '
+            || gm->getGameState() == 'T' || gm->getGameState() == 't')
     {
         Skill::Stop s;
         for (unsigned i = 0; i < gm->getMyTeam().size(); i++)

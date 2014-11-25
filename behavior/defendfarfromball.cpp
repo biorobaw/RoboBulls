@@ -4,7 +4,7 @@
 #include "defendfarfromball.h"
 
 //The distance from the goal where the defend robot stays
-#define DISTANCE 500
+#define DISTANCE 300
 
 DefendFarFromBall::DefendFarFromBall(const ParameterList& list)
     : GenericMovementBehavior(list)
@@ -14,7 +14,7 @@ DefendFarFromBall::DefendFarFromBall(const ParameterList& list)
     , lastKickCounter(0)
 {
     UNUSED_PARAM(list);
-//    setVelocityMultiplier(0.75);
+    setVelocityMultiplier(0.65);
 }
 
 void DefendFarFromBall::perform(Robot *robot)
