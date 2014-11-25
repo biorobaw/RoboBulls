@@ -97,7 +97,7 @@ void StrategyController::gameModelUpdated()
         activeStrategy = new NormalGameStrategy();
         break;
     case 's':    //Force Start
-        activeStrategy = new FreeKickStrategy();
+        activeStrategy = new NormalGameStrategy();
         break;
     default:    //Anything Else
         activeStrategy = new TestStrategy();

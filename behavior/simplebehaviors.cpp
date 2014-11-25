@@ -66,9 +66,15 @@ void SimpleBehaviors::perform(Robot * r)
         else if (((gm->getGameState() == 'p' || gm->getGameState() == 'f' || gm->getGameState() == 'i') && TEAM == TEAM_BLUE)
                  || ((gm->getGameState() == 'P' || gm->getGameState() == 'F' || gm->getGameState() == 'I') && TEAM == TEAM_YELLOW))
             goal = gm->getMyGoal();
-        float targetBallAngle = Measurments::angleBetween(goal, ballPosition);
-        Point behindBall = ballPosition + Point(DISTANCE*cos(targetBallAngle), DISTANCE*sin(targetBallAngle));
-        Point position(behindBall.x, robotPosition.y);
+//        float targetBallAngle = Measurments::angleBetween(goal, ballPosition);
+        float px;
+        if (ballPosition.x > 0)
+            px = -1500;
+        else
+            px = 1500;
+
+//        Point behindBall = ballPosition + Point(DISTANCE*cos(targetBallAngle), DISTANCE*sin(targetBallAngle));
+        Point position(px, robotPosition.y);
         float direction = Measurments::angleBetween(robotPosition, ballPosition);
 
         move.recreate(position, direction, true);

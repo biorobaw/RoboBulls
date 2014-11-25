@@ -35,7 +35,7 @@ bool KickOffStrategy::update()
             else if ((gm->getGameState() == 'k' && TEAM == TEAM_BLUE) ||
                      (gm->getGameState() == 'K' && TEAM == TEAM_YELLOW))
             {
-                move_skill0.recreate(Point(goal_x*0.2,500), ball_direction, true);
+                move_skill0.recreate(Point(-goal_x*0.7,-500), ball_direction, true);
                 move_skill0.perform(robot);
             }
                 break;
@@ -43,13 +43,13 @@ bool KickOffStrategy::update()
             if ((gm->getGameState() == 'K' && TEAM == TEAM_BLUE) ||
                     (gm->getGameState() == 'k' && TEAM == TEAM_YELLOW))
             {
-                move_skill1.recreate(Point(goal_x*0.1,-500), M_PI/2, true);
+                move_skill1.recreate(Point(goal_x*0.2,0), ball_direction, true);
                 move_skill1.perform(robot);
             }
             else if ((gm->getGameState() == 'k' && TEAM == TEAM_BLUE) ||
                      (gm->getGameState() == 'K' && TEAM == TEAM_YELLOW))
             {
-                move_skill1.recreate(Point(goal_x*0.5,-500), ball_direction, true);
+                move_skill1.recreate(Point(goal_x*0.7,500), ball_direction, true);
                 move_skill1.perform(robot);
             }
                 break;
@@ -63,7 +63,7 @@ bool KickOffStrategy::update()
             else if ((gm->getGameState() == 'k' && TEAM == TEAM_BLUE) ||
                      (gm->getGameState() == 'K' && TEAM == TEAM_YELLOW))
             {
-                move_skill2.recreate(Point(goal_x*0.9,800), ball_direction, true);
+                move_skill2.recreate(Point(goal_x*0.7,800), ball_direction, true);
                 move_skill2.perform(robot);
             }
                 break;
@@ -77,7 +77,7 @@ bool KickOffStrategy::update()
             else if ((gm->getGameState() == 'k' && TEAM == TEAM_BLUE) ||
                      (gm->getGameState() == 'K' && TEAM == TEAM_YELLOW))
             {
-                move_skill3.recreate(Point(goal_x*0.9,0), ball_direction, true);
+                move_skill3.recreate(Point(goal_x*0.8,1200), ball_direction, true);
                 move_skill3.perform(robot);
             }
 
