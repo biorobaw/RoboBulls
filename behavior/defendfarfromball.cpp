@@ -41,7 +41,7 @@ void DefendFarFromBall::perform(Robot *robot)
 
     bool isScoreHazard =
             Measurments::distance(myGoal, ballPoint) < 1200
-            and not(Measurments::isClose(robPoint, ballPoint, 195))
+            and not(Measurments::isClose(robPoint, ballPoint, 100))
             and lastKickCounter <= 0
             and safeToKick;
 
@@ -64,7 +64,7 @@ void DefendFarFromBall::perform(Robot *robot)
             --lastKickCounter;
         Point defensiveWall(cos(direction)*DISTANCE + myGoal.x,
                             sin(direction)*DISTANCE + myGoal.y);
-        setMovementTargets(defensiveWall, direction, true);
+        setMovementTargets(defensiveWall, direction, false, false);
         GenericMovementBehavior::perform(robot, Movement::Type::facePoint);
     }
 }

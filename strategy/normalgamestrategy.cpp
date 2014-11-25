@@ -331,17 +331,19 @@ void NormalGameStrategy::assignAttackBehaviors()
     Point ballPoint = gm->getBallPoint();
     Robot* driverBot = NULL, *recvBot = NULL;
 
-    if(currentMainAttacker == NULL or currentSuppAttacker == NULL) {
-        /* First run: We find the most valid robots for the job */
-        findMostValidRobots(ballPoint, driverBot, recvBot);
-    }
-    else {
-        /* Otherwise, we are coming from a previous attack, note here
-         * that the driver/receiver are being swapped.
-         */
-        recvBot = currentMainAttacker;
-        driverBot = currentSuppAttacker;
-    }
+    findMostValidRobots(ballPoint, driverBot, recvBot);
+
+//    if(currentMainAttacker == NULL or currentSuppAttacker == NULL) {
+//        /* First run: We find the most valid robots for the job */
+
+//    }
+//    else {
+//        /* Otherwise, we are coming from a previous attack, note here
+//         * that the driver/receiver are being swapped.
+//         */
+//        recvBot = currentMainAttacker;
+//        driverBot = currentSuppAttacker;
+//    }
     /**************/
 
     //*** Assign AttackMain (Passer) behavior
@@ -359,8 +361,8 @@ void NormalGameStrategy::assignAttackBehaviors()
     goalie_5.assignBeh({5});
 
     //Store information
-    currentMainAttacker = driverBot;
-    currentSuppAttacker = recvBot;
+    //currentMainAttacker = driverBot;
+    //currentSuppAttacker = recvBot;
 }
 
 
