@@ -17,6 +17,7 @@ DefendFarFromBall::DefendFarFromBall(const ParameterList& list)
     , isOnSlowVelMode(false)
 {
     UNUSED_PARAM(list);
+    setVelocityMultiplier(0.65);
 }
 
 void DefendFarFromBall::perform(Robot *robot)

@@ -88,6 +88,8 @@ void StrategyController::gameModelUpdated()
     case 'I':   //Blue Indirect kick
         activeStrategy = new IndiectKickStrategy();
         break;
+    case 'T':
+    case 't':
     case 'H':    //Halt
         activeStrategy = new HaltStrategy();
         break;
@@ -95,7 +97,7 @@ void StrategyController::gameModelUpdated()
         activeStrategy = new NormalGameStrategy();
         break;
     case 's':    //Force Start
-        activeStrategy = new FreeKickStrategy();
+        activeStrategy = new NormalGameStrategy();
         break;
     default:    //Anything Else
         activeStrategy = new TestStrategy();
