@@ -18,6 +18,8 @@ public:
     bool wasNotPreviousScoreHazard;
     bool isKickingAwayBall;
     int  lastKickCounter;
+    int  velChangeCounter;
+    bool isOnSlowVelMode;
 };
 
 #endif // DEFENDFARFROMBALL_H
