@@ -1,3 +1,4 @@
+#include <stdexcept>
 #include "movement/movetype.h"
 #include "movement/differential/differential_velcalculator.h"
 

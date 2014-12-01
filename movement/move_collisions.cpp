@@ -260,9 +260,15 @@ namespace detail
 			
 			if(robotFacingRobot(robot, other) and robotFacingRobot(other, robot)) {
 				if(other->isOnMyTeam()) {
-                    if(robot->hasBeh and other->hasBeh and
+                    if(robot->hasBeh and other->hasBeh
+                    #if 0
+                       and
                        robot->getCurrentBeh()->getPriority() >=
-					   other->getCurrentBeh()->getPriority()){
+                       other->getCurrentBeh()->getPriority()
+                    #else
+
+                    #endif
+                    ){
 						robotDisableMovement(other, robot);
 					} else {
 						robotDisableMovement(robot, other);

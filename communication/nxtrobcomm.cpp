@@ -1,3 +1,4 @@
+#include "assert.h"
 #include "nxtrobcomm.h"
 #include "gui/guiinterface.h"
 

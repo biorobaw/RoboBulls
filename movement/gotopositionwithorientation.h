@@ -24,10 +24,10 @@ public:
    ~GoToPosition();
 
     GoToPosition(Point targetPoint,  float targetAngle = UNUSED_ANGLE_VALUE, 
-        bool withObstacleAvoid = true);
+        bool withObstacleAvoid = true, bool avoidBall = true);
         
     GoToPosition(float tx, float ty, float targetAngle = UNUSED_ANGLE_VALUE, 
-        bool withObstacleAvoid = true);
+        bool withObstacleAvoid = true, bool avoidBall = true);
 
 protected:
     void calculateVels
