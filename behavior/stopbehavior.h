@@ -12,7 +12,7 @@
 class StopBehavior : public GenericMovementBehavior
 {
 public:
-    StopBehavior(const ParameterList &list);
+    StopBehavior(Point, float, bool);
     void perform(Robot *);
 };
 

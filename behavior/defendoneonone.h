@@ -7,7 +7,7 @@
 class DefendOneOnOne : public GenericMovementBehavior
 {
 public:
-    DefendOneOnOne(const ParameterList& list);
+    DefendOneOnOne();
 
     void perform(Robot * r);
 };

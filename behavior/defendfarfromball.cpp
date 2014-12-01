@@ -7,8 +7,8 @@
 #define DISTANCE 300
 #define VEL_CHANGE_COUNT 3500
 
-DefendFarFromBall::DefendFarFromBall(const ParameterList& list)
-    : GenericMovementBehavior(list)
+DefendFarFromBall::DefendFarFromBall()
+    : GenericMovementBehavior()
     , KTPSkill(nullptr)
     , wasNotPreviousScoreHazard(true)
     , isKickingAwayBall(false)
@@ -16,7 +16,6 @@ DefendFarFromBall::DefendFarFromBall(const ParameterList& list)
     , velChangeCounter(0)
     , isOnSlowVelMode(false)
 {
-    UNUSED_PARAM(list);
     setVelocityMultiplier(0.65);
 }
 

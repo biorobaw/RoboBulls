@@ -16,10 +16,9 @@
     #define CLOSE_ENOUGH 200
 #endif
 
-SimpleBehaviors::SimpleBehaviors(const ParameterList& list)
+SimpleBehaviors::SimpleBehaviors()
 {
     hasTargetPos = false;
-    UNUSED_PARAM(list);
 }
 
 void SimpleBehaviors::perform(Robot * r)

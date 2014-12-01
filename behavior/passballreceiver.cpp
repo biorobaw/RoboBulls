@@ -15,10 +15,10 @@
 #endif
 
 GameModel *gm = GameModel::getModel();
-PassBallReceiver::PassBallReceiver(const ParameterList& list)
-    : GenericMovementBehavior(list)
+
+PassBallReceiver::PassBallReceiver()
+    : GenericMovementBehavior()
 {
-    UNUSED_PARAM(list);
     state = initial;
     ballLastSeen = gm->getBallPoint();
     count = 170;

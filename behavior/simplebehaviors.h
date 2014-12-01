@@ -5,7 +5,6 @@
 #include "model/robot.h"
 #include "skill/skill.h"
 #include "skill/kicktopoint.h"
-#include "utilities/paramlist.h"
 #include "movement/gotopositionwithorientation.h"
 #include "utilities/point.h"
 
@@ -13,7 +12,7 @@
 class SimpleBehaviors : public Behavior
 {
 public:
-    SimpleBehaviors(const ParameterList& list);
+    SimpleBehaviors();
     void perform(Robot*);
 private:
     Point target = Point (0, 0);

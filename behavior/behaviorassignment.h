@@ -10,51 +10,27 @@
  *
  * James W
  */
-
-#include <string>
-#include <typeinfo>
+#include <type_traits>
 #include <functional>
 #include <initializer_list>
 #include "model/gamemodel.h"
-#include "behavior/behavior.h"
-#include "utilities/paramlist.h"
 
 template <typename BehaviorType>
 class BehaviorAssignment
 {
 public:
-	/* Constructor; Set single assignment on construction.
-	 * This is a large convenience to calling setSingleAssignment after
-	 * construction.
-	 */
-	BehaviorAssignment(bool assignment = false);
-
-	
-    /* setBehParam(name, value)
-     * The setBehParam function is used to define parameters to
-     * be passed to the underlying behavior when assignBeh is called.
-     *
-     * Enter a string to refer to the variable by name. If we wanted to
-     * set an integer identified by "myValue" to 100:
-     *
-     *  BehaviorAssignment<MyRobotBehavior> myAssignment;
-     *  myAssignment.setBehParam("myValue", 100);
-     *  myAssignment.assignBeh();
-     *
-     * In MyRobotBehavior's constructor (One that takes a ParameterList called list)
-     * you would do this the value of "myValue":
-     *
-     * int value = list.getBehParam<int>("myValue");
+    /* Constructor; Set single assignment on construction.
+     * This is a large convenience to calling setSingleAssignment after
+     * construction.
      */
-    template<typename T>
-    void setBehParam(std::string name, T value);
-
+    BehaviorAssignment(bool assignment = false);
 
     /* assignBeh(void)
      * Assigns the current behavior configuration to
      * all robots on myTeam via a loop.
      */
-    void assignBeh(void) const;
+    template<typename... Args>
+    void assignBeh(Args&&... args) const;
 
 
     /* assignBeh(predicate)
@@ -62,14 +38,16 @@ public:
      * predicate returns true. The function passes all robots
      * in myTeam to predicate to determine this.
      */
-    void assignBeh(std::function<bool(Robot*)> predicate) const;
+    template<typename... Args>
+    void assignBeh(std::function<bool(Robot*)> predicate, Args&&... args) const;
 
 
     /* assignBeh(robot)
      * Assigns the behavior to only one robot. This could be:
      * assignBeh(model->getMyTeam().at(0));
      */
-    void assignBeh(Robot* robot) const;
+    template<typename... Args>
+    void assignBeh(Robot* robot, Args&&... args) const;
 
 
     /* assignBeh(robotList)
@@ -82,8 +60,16 @@ public:
      * Robot* r2 = model->getMyTeam().at(1);
      * myBehaviorAssignment.assignBeh( {r1, r2} );
      */
-    void assignBeh(std::initializer_list<Robot*> robotList) const;
+    template<typename... Args>
+    void assignBeh(std::initializer_list<Robot*> robotList, Args&&... args) const;
 
+    
+    /* assignBeh(robotID)
+     * Can be used to assign a behavior to a robot by ID, abstracting the 
+     * need to use gameModel->find or whatever.
+     */    
+    template<typename... Args>
+    void assignBeh(int robotID, Args&&... args) const;
 
     /* assignBeh(robotIDList)
      * This version is similar to the above assignBeh, except
@@ -91,7 +77,8 @@ public:
      * then the GameModel is utilized to find those robots and
      * if found, assigns the behavior
      */
-    void assignBeh(std::initializer_list<int> robotIDList) const;
+    template<typename... Args>
+    void assignBeh(std::initializer_list<int> robotIDList, Args&&... args) const;
 
 
     /* setSingleAssignment(bool)
@@ -110,8 +97,10 @@ public:
     std::string toString() const;
 
 private:
+    template<typename... Args>
+    void doAssignment(Robot* robot, Args&&... args) const;
+
     bool singleAssignment;
-    ParameterList params;
 };
 
 
@@ -122,8 +111,7 @@ private:
 template <typename BehaviorType>
 BehaviorAssignment<BehaviorType>::BehaviorAssignment(bool assignment)
     : singleAssignment(assignment)
-{
-}
+    { }
 
 
 template <typename BehaviorType>
@@ -134,92 +122,95 @@ void BehaviorAssignment<BehaviorType>::setSingleAssignment(bool assignment)
 
 
 template <typename BehaviorType>
-template <typename T>
-void BehaviorAssignment<BehaviorType>::setBehParam(std::string name, T value)
-{
-    params.setParam(name, value);
-}
-
-
-template <typename BehaviorType>
-void BehaviorAssignment<BehaviorType>::assignBeh(void) const
+template <typename... Args>
+void BehaviorAssignment<BehaviorType>::assignBeh(Args&&... args) const
 {
     GameModel* mod = GameModel::getModel();
     for(Robot* rob : mod->getMyTeam())
-       this->assignBeh(rob);
+       this->assignBeh(rob, args...);
 }
 
 
 template <typename BehaviorType>
-void BehaviorAssignment<BehaviorType>::assignBeh(std::function<bool(Robot*)> predicate) const
+template <typename... Args>
+void BehaviorAssignment<BehaviorType>::assignBeh
+    (std::function<bool(Robot*)> predicate, Args&&... args) const
 {
     GameModel* mod = GameModel::getModel();
 
     for(Robot* rob : mod->getMyTeam()) {
         if(predicate(rob))
-            this->assignBeh(rob);
+            this->assignBeh(rob, args...);
     }
 }
 
 
 template <typename BehaviorType>
-void BehaviorAssignment<BehaviorType>::assignBeh(Robot* robot) const
-{
-    /* Lambda solely because this is used thrice below.
-     */
-    auto doAssignment = [&](Robot* rob) {
-        rob->clearCurrentBeh();
-        rob->setCurrentBeh(new BehaviorType(params));
-        };
-
-    if(!this->singleAssignment) {
-        doAssignment(robot);
-    } else {
-        if(!robot->hasBeh) {
-            doAssignment(robot);
-        } else if(typeid(*robot->getCurrentBeh()) != typeid(BehaviorType)) {
-            doAssignment(robot);
-        } else {
-            robot->setCurrentBeh(robot->getCurrentBeh());
-        }
-    }
-}
-
-
-template <typename BehaviorType>
-void BehaviorAssignment<BehaviorType>::assignBeh(std::initializer_list<Robot*> robotList) const
+template <typename... Args>
+void BehaviorAssignment<BehaviorType>::assignBeh
+    (std::initializer_list<Robot*> robotList,  Args&&... args) const
 {
     for(Robot* rob : robotList)
-        this->assignBeh(rob);
+        this->assignBeh(rob, args...);
 }
 
 
-template<typename BehaviorType>
-void BehaviorAssignment<BehaviorType>::assignBeh(std::initializer_list<int> robotIDList) const
+template <typename BehaviorType>
+template<typename... Args>
+void BehaviorAssignment<BehaviorType>::assignBeh(int robotID, Args&&... args) const
+{
+    assignBeh({robotID}, args...);
+}    
+
+
+template <typename BehaviorType>
+template <typename... Args>
+void BehaviorAssignment<BehaviorType>::assignBeh
+    (std::initializer_list<int> robotIDList, Args&&... args) const
 {
     GameModel* gm = GameModel::getModel();
 
     for(int robID : robotIDList) {
         Robot* rob = gm->findMyTeam(robID);
         if(rob != NULL)
-            this->assignBeh(rob);
+            this->assignBeh(rob, args...);
     }
+}
+
+
+template <typename BehaviorType>
+template <typename... Args>
+void BehaviorAssignment<BehaviorType>::assignBeh(Robot* robot, Args&&... args) const
+{
+    if(!this->singleAssignment) {
+        doAssignment(robot, args...);
+    } else {
+        if(!robot->hasBeh) {
+            doAssignment(robot, args...);
+        } else if(typeid(*robot->getCurrentBeh()) != typeid(BehaviorType)) {
+            doAssignment(robot, args...);
+        } 
+    }
+}
+
+
+template <typename BehaviorType>
+template <typename... Args>
+void BehaviorAssignment<BehaviorType>::doAssignment(Robot* robot, Args&&... args) const
+{
+    static_assert(std::is_constructible<BehaviorType, Args...>::value,
+        "Behavior must be constructible with these arguments");
+
+    robot->clearCurrentBeh();
+    robot->setCurrentBeh(new BehaviorType(args...));
 }
 
 
 template <typename BehaviorType>
 std::string BehaviorAssignment<BehaviorType>::toString() const
 {
-    std::stringstream ss;
-
-    ss << "Single Assignment: " << std::boolalpha
-       << singleAssignment << std::noboolalpha
-       << '\n' << std::endl;
-
-    ss << "Parameters:" << std::endl;
-    ss << params.toString() << std::endl;
-
-    return ss.str();
+    return "BehaviorAssignment";
 }
+
 
 #endif // BEH_ASSIGNMENT_H

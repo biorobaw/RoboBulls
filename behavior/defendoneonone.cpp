@@ -2,18 +2,17 @@
 #include "model/gamemodel.h"
 #include "utilities/measurments.h"
 
-DefendOneOnOne::DefendOneOnOne(const ParameterList& list)
-	: GenericMovementBehavior(list)
+DefendOneOnOne::DefendOneOnOne()
+    : GenericMovementBehavior()
 {
-    UNUSED_PARAM(list);
 }
 
 void DefendOneOnOne::perform(Robot *r)
 {
     GameModel * gm = GameModel::getModel();
-	
-	setMovementTargets(gm->getPenaltyPoint(), 
-		Measurments::angleBetween(gm->getPenaltyPoint(), gm->getOpponentGoal()));
-		
-	GenericMovementBehavior::perform(r);
+    
+    setMovementTargets(gm->getPenaltyPoint(), 
+        Measurments::angleBetween(gm->getPenaltyPoint(), gm->getOpponentGoal()));
+        
+    GenericMovementBehavior::perform(r);
 }

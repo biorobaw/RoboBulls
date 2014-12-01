@@ -23,7 +23,7 @@
 class PenaltyBehavior : public GenericMovementBehavior
 {
 public:
-    PenaltyBehavior(const ParameterList& list);
+    PenaltyBehavior();
     void perform(Robot *);
 private:
     enum penaltyBehavior_t {initial, moving, approching, kicking, idling} pb;

@@ -28,8 +28,8 @@
 
 
 
-/* Use this on unused parameters to disables "unused parameter" warnings.
-   e.g, in Behavior constructors with the ParameterList params */
+/* Use this on unused parameters to a function to disable 
+ * "unused parameter" warnings. */
 #define UNUSED_PARAM(x) (void)(x)
 
 /* This is a constant used to identify, in movement and skill code, an unused

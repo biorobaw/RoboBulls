@@ -6,7 +6,7 @@
 class DefendCloseToBall: public GenericMovementBehavior
 {
 public:
-	DefendCloseToBall(const ParameterList& list);
+    DefendCloseToBall();
     void perform(Robot*) override;
 };
 

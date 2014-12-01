@@ -1,11 +1,11 @@
 #include "attacksupport.h"
 
 
-AttackSupport::AttackSupport(const ParameterList& list)
-    : GenericMovementBehavior(list)
+AttackSupport::AttackSupport(Robot* passer)
+    : GenericMovementBehavior()
     , wp(0,0)
 {
-    this->main_attacker = list.getParam<Robot*>("passBot");
+    this->main_attacker = passer;
     state = initial;
 }
 
@@ -55,16 +55,16 @@ void AttackSupport::perform(Robot * robot)
 
     //Initialize skills that are used in switch statement
     float angle_to_ball = Measurments::angleBetween(rp,bp);
-	
-	//It's best to have the dribbler on when waiting for a pass
-	robot->setDrible(true);
+    
+    //It's best to have the dribbler on when waiting for a pass
+    robot->setDrible(true);
 
     switch (state)
     {
     case initial:
     {
     #if SIMULATED
-		setMovementTargets(wp, angle_to_ball);
+        setMovementTargets(wp, angle_to_ball);
         previousBP = bp;
     #else
         setMovementTargets(wp, angle_to_ball,true);

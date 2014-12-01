@@ -3,7 +3,6 @@
 
 #include "behavior/behavior.h"
 #include "skill/skill.h"
-#include "utilities/paramlist.h"
 #include "utilities/point.h"
 #include "behavior/genericmovementbehavior.h"
 #include "movement/gotopositionwithorientation.h"
@@ -13,7 +12,7 @@ using namespace std;
 class DriveBallAndKick : public Behavior
 {
 public:
-    DriveBallAndKick(const ParameterList& list);
+    DriveBallAndKick();
     void perform(Robot *);
 
 private:

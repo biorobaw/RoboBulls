@@ -5,7 +5,6 @@
 #include "skill/skill.h"
 #include "movement/gotoposition.h"
 #include "utilities/point.h"
-#include "utilities/paramlist.h"
 #include "model/robot.h"
 #include "model/gamemodel.h"
 #include "behavior/genericmovementbehavior.h"
@@ -31,7 +30,7 @@
 class PassBallReceiver : public GenericMovementBehavior
 {
 public:
-    PassBallReceiver(const ParameterList& list);
+    PassBallReceiver();
     void perform(Robot *);
     enum states {initial, moving, approaching, kicking, idling} state;
 private:

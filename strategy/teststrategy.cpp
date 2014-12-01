@@ -22,9 +22,8 @@
 class TestBehavior : public Behavior
 {
 public:
-    TestBehavior(const ParameterList& list)
+    TestBehavior()
     {
-        UNUSED_PARAM(list);
         targetPoint = GameModel::getModel()->getPenaltyPoint();
         db = new Skill::KickToPoint(targetPoint);
     }
@@ -42,9 +41,8 @@ private:
 class TestBehavior2 : public GenericMovementBehavior
 {
 public:
-    TestBehavior2(const ParameterList& list)
+    TestBehavior2()
     {
-        UNUSED_PARAM(list);
     }
 
     void perform(Robot *robot) override
@@ -60,10 +58,6 @@ class ShamsiStrafe : public GenericMovementBehavior
     public:
     //The robot moves between (-2000,0) and (2000,0)
     //While constantly facing the ball
-    ShamsiStrafe(const ParameterList& list)
-    {
-        UNUSED_PARAM(list);
-    }
 
     enum {pos_one,pos_two} state = pos_one;
 
@@ -98,11 +92,6 @@ class ShamsiGoToPose : public GenericMovementBehavior
 {
 public:
     //Convenient to test motion. Just goes to the point specified
-    ShamsiGoToPose(const ParameterList& list)
-    {
-        UNUSED_PARAM(list);
-    }
-
     void perform(Robot *robot) override
     {
         setMovementTargets(Point(0,0), 0);
@@ -115,10 +104,9 @@ class ShamsiKickToCenter : public Behavior
 public:
     //Continuously kicks the ball to the center
     Skill::KickToPoint * kkkk;
-    ShamsiKickToCenter(const ParameterList& list)
+    ShamsiKickToCenter()
     {
         kkkk = new Skill::KickToPoint(Point(0,0));
-        UNUSED_PARAM(list);
     }
 
     void perform(Robot *robot) override
@@ -135,10 +123,9 @@ class ShamsiPass : public GenericMovementBehavior
     GameModel *gm;
     Point target;
 
-    ShamsiPass(const ParameterList& list)
+    ShamsiPass()
     {
         pass = new Skill::KickToPoint(&target);
-        UNUSED_PARAM(list);
     }
 
     void perform(Robot *robot) override
@@ -152,10 +139,6 @@ class ShamsiPass : public GenericMovementBehavior
 class ShamsiPas1s : public GenericMovementBehavior
 {
 public:
-    ShamsiPas1s(const ParameterList& list) {
-        UNUSED_PARAM(list);
-    }
-
     void perform(Robot *robot) override
     {
         Point ballPoint = GameModel::getModel()->getBallPoint();
@@ -215,7 +198,6 @@ void TestStrategy::assignBeh()
 
 //    //if(r0 != NULL) {
 //     //   BehaviorAssignment<TestBehavior> ass;
-//        //ass.setBehParam<Point>("targetPoint", point())
 //     //   ass.assignBeh(r0);
 //   // }
 
@@ -223,7 +205,6 @@ void TestStrategy::assignBeh()
 //    GameModel * gm = GameModel::getModel();
 //    BehaviorAssignment<TestBehavior> assignment;
 //    assignment.setSingleAssignment(true);
-//    assignment.setBehParam<Point>("targetPoint", gm->getBallPoint());
 //    assignment.assignBeh({0, 1});
 
 //    BehaviorAssignment<ShamsiKickToPoint> assignment(true);
@@ -330,37 +311,10 @@ void TestStrategy::assignBeh()
 //    GameModel * gm = GameModel::getModel();
 //    BehaviorAssignment<TestBehavior> assignment;
 //    assignment.setSingleAssignment(true);
-//    assignment.setBehParam<Point>("targetPoint", gm->getBallPoint());
 //    assignment.assignBeh({0, 1});
 
 //    BehaviorAssignment<ShamsiKickToPoint> assignment(true);
 //    assignment.assignBeh({1});
 
 //************************************************************
-////    James code
-//    BehaviorAssignment<TestBehavior> assignment;
-//    assignment.setSingleAssignment(true);
-//    Point p = gm->getBallPoint() - Point (200,200);
-//    assignment.setBehParam<Point>("targetPoint",p );
-//    assignment.assignBeh({r0, r1});
-
-
-////    james code
-//    GameModel* gm = GameModel::getModel();
-//#if SIMULATED
-//    Robot* r0 = gm->find(0, gm->getMyTeam());
-//    Robot* r1 = gm->find(1, gm->getMyTeam());
-//#else
-//    Robot* r0 = gm->find(3, gm->getMyTeam());
-//    Robot* r1 = gm->find(8, gm->getMyTeam());
-//#endif
-//    if(!r0 || !r1) return;
-
-
-//    //if(r0 != NULL) {
-//     //   BehaviorAssignment<TestBehavior> ass;
-//        //ass.setBehParam<Point>("targetPoint", point())
-//     //   ass.assignBeh(r0);
-//   // }
-
 }

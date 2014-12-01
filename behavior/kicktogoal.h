@@ -7,7 +7,7 @@
 class KickToGoal : public GenericMovementBehavior
 {
 public:
-    KickToGoal(const ParameterList& list);
+    KickToGoal();
 
     void perform(Robot * r);
 

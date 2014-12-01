@@ -21,7 +21,7 @@
 class AttackMain:public Behavior
 {
 public:
-    AttackMain(const ParameterList & list);
+    AttackMain(Robot* attacker = nullptr);
    ~AttackMain();
     void perform(Robot *);
     bool hasKicked();

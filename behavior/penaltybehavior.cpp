@@ -10,10 +10,9 @@
     #define CLOSE_ENOUGH 170
 #endif
 
-PenaltyBehavior::PenaltyBehavior(const ParameterList& list)
-	: GenericMovementBehavior(list)
+PenaltyBehavior::PenaltyBehavior()
+    : GenericMovementBehavior()
 {
-    UNUSED_PARAM(list);
     pb = initial;
 }
 

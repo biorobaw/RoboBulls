@@ -4,7 +4,6 @@
 #include "behavior/behavior.h"
 #include "movement/gotoposition.h"
 #include "movement/movetype.h"
-#include "utilities/paramlist.h"
 
 /* GenericMovementBehavior
  * This purpose of this Behavior is to provide an interface to the 
@@ -19,18 +18,23 @@
 class GenericMovementBehavior : public Behavior
 {
 public:
-    /* This ParameterList constructor is also an interface to constructing the
-     * GoToPosition object. It can take three parameters to construct the GoToPosition,
-     * on construction of the behavior itself.
-     * - "targetPoint" : (Point) : target point
-     * - "targetAngle" : (float) : target angle
-     * - "obstacleAvoidance" : (bool) : Use obstacle avoidance?
-     * Keep in mind this is an alternative to setMovementTargets; it allows the 
-     * movement target parameters to be set on construction.
-     */
-    GenericMovementBehavior();
-    GenericMovementBehavior(const ParameterList& list);
+    /* This constructor is also an interface to constructing the
+     * GoToPosition object. It can set up the movement object on construction
+     * instead of being defaulted to 0,0
+     */    
+    GenericMovementBehavior(
+        Point target    = Point(0,0), 
+        float angTarget = UNUSED_ANGLE_VALUE, 
+        bool  obsAvoid  = true, 
+        bool  ballAvoid = true);
+        
    ~GenericMovementBehavior();
+   
+   /* New: Post-26th:
+    * Default perform function that goes to the target points.
+    * Should have been here a long time ago
+    */
+   void perform(Robot* robot) override;
 
 protected:
 
@@ -39,7 +43,7 @@ protected:
      * (and set them with setMovementTargets), call this to calculate wheelvels 
      * and set them on the robot; use  GenericMovementBehavior::perform(robot);
      */
-    void perform(Robot* robot, Movement::Type type = Movement::Type::Default);
+    void perform(Robot* robot, Movement::Type type);
 
     /* This is the most important function; after a derived class has calculated the points
      * to move to, use setMovementTargets to recreate the GoToPosition object to those

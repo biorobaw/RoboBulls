@@ -25,7 +25,7 @@
 class AttackSupport : public GenericMovementBehavior
 {
 public:
-    AttackSupport(const ParameterList& list);
+    AttackSupport(Robot* passer);
     void perform(Robot *);
     Point getCurrentTarget();
 private:

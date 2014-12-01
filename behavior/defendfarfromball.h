@@ -11,7 +11,7 @@
 class DefendFarFromBall : public GenericMovementBehavior
 {
 public:
-    DefendFarFromBall(const ParameterList& list);
+    DefendFarFromBall();
     void perform(Robot*);
 public:
     Skill::KickToPoint* KTPSkill = nullptr;

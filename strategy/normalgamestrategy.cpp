@@ -32,23 +32,6 @@ bool NormalGameStrategy::isOnAttack = true;
 /*************************************************/
 /** BEHAVIORS **/
 
-/* MiddleSitter
- * A behavior that should not be nessecery that overrides
- * GenericMovementBehavior used to go to the middle of the field
- * The targetPoint is set via setBehParam
- */
-class MiddleSitter : public GenericMovementBehavior
-{
-public:
-    MiddleSitter(const ParameterList& list)
-        : GenericMovementBehavior(list)
-        {}
-    void perform(Robot* robot)
-    {
-        GenericMovementBehavior::perform(robot, Movement::Type::SharpTurns);
-    }
-};
-
 /* OpBallBlocker
  * A behavior that should be nessecery that, if applicable, places the robot
  * in the middle of the enemy passer/reciever team. Since there are only three
@@ -57,8 +40,8 @@ public:
 class OpBallBlocker : public GenericMovementBehavior
 {
 public:
-    OpBallBlocker(const ParameterList& list)
-        : GenericMovementBehavior(list)
+    OpBallBlocker()
+        : GenericMovementBehavior()
         , one(NULL), two(NULL)
     {
         GameModel* gm = GameModel::getModel();
@@ -88,24 +71,6 @@ private:
 };
 
 
-/* Behavior StayStill
- * A simple behavior that sends the robot to its current position.
- * Used when the ball is close to the goal
- */
-class StayStill : public GenericMovementBehavior
-{
-public:
-    StayStill(const ParameterList& list)
-    { UNUSED_PARAM(list); }
-
-    void perform(Robot* robot) override
-    {
-        setMovementTargets(robot->getRobotPosition(), 0, false);
-        GenericMovementBehavior::perform(robot);
-    }
-};
-
-
 /* Behavior GoalKickReceiver
  * Sends the robot to a point where it can receive the ball from
  * the goalkeeper.
@@ -113,9 +78,6 @@ public:
 class GoalKickReciever : public GenericMovementBehavior
 {
 public:
-    GoalKickReciever(const ParameterList& list)
-    { UNUSED_PARAM(list); }
-
     void perform(Robot* robot) override
     {
         GameModel * gm = GameModel::getModel();
@@ -134,15 +96,12 @@ public:
 class RetreatLeft : public GenericMovementBehavior
 {
 public:
-    RetreatLeft(const ParameterList& list)
-    { UNUSED_PARAM(list); }
-
     void perform(Robot* robot) override
     {
         GameModel * gm = GameModel::getModel();
         Point wait_point = Point(gm->getMyGoal().x*0.5, 1000);
         double wait_orientation = Measurments::angleBetween(robot->getRobotPosition(),gm->getBallPoint());
-
+		
         setMovementTargets(wait_point, wait_orientation);
         GenericMovementBehavior::perform(robot);
     }
@@ -155,9 +114,6 @@ public:
 class RetreatRight : public GenericMovementBehavior
 {
 public:
-    RetreatRight(const ParameterList& list)
-    { UNUSED_PARAM(list); }
-
     void perform(Robot* robot) override
     {
         GameModel * gm = GameModel::getModel();
@@ -348,13 +304,11 @@ void NormalGameStrategy::assignAttackBehaviors()
 
     //*** Assign AttackMain (Passer) behavior
     BehaviorAssignment<AttackMain> mainAttacker(true);
-    mainAttacker.setBehParam("recvBot", recvBot);
-    mainAttacker.assignBeh(driverBot);
+    mainAttacker.assignBeh(driverBot, recvBot);
 
     //*** Assign AttackSupport (Reciever) behavior
     BehaviorAssignment<AttackSupport> suppAttacker(true);
-    suppAttacker.setBehParam("passBot", driverBot);
-    suppAttacker.assignBeh(recvBot);
+    suppAttacker.assignBeh(recvBot, driverBot);
 
     //*** Assign goalie to ID 5
     BehaviorAssignment<DefendFarFromBall> goalie_5(true);
@@ -378,9 +332,8 @@ void NormalGameStrategy::assignDefendBehaviors()
     findMostValidRobots(wait_point, middleSitter, receiver);
     /**************/
 
-    BehaviorAssignment<MiddleSitter> middleAssign(true);
-    middleAssign.setBehParam("targetPoint", wait_point);
-    middleAssign.assignBeh(middleSitter);
+    BehaviorAssignment<GenericMovementBehavior> middleAssign(true);
+    middleAssign.assignBeh(middleSitter, wait_point);
 
     BehaviorAssignment<OpBallBlocker> blockerAssign(true);
     blockerAssign.assignBeh(receiver);
@@ -403,9 +356,8 @@ void NormalGameStrategy::assignGoalKickBehaviors()
     findMostValidRobots(wait_point, receiver, middleSitter);
     /**************/
 
-    BehaviorAssignment<MiddleSitter> middleAssign(true);
-    middleAssign.setBehParam("targetPoint", Point(0, -1500+3000*TEAM));
-    middleAssign.assignBeh(middleSitter);
+    BehaviorAssignment<GenericMovementBehavior> middleAssign(true);
+    middleAssign.assignBeh(middleSitter, Point(0, -1500+3000*TEAM));
 
     BehaviorAssignment<GoalKickReciever> receiverAssign(true);
     receiverAssign.assignBeh(receiver);

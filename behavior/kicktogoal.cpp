@@ -17,10 +17,9 @@
     #define CLOSE_ENOUGH 220
 #endif
 
-KickToGoal::KickToGoal(const ParameterList& list)
-	: GenericMovementBehavior(list)
+KickToGoal::KickToGoal()
+    : GenericMovementBehavior()
 {
-    UNUSED_PARAM(list);
     state = goingBehind;
 }
 
@@ -29,8 +28,8 @@ void KickToGoal::perform(Robot * r)
     GameModel* gm = GameModel::getModel();
     Point ball = gm->getBallPoint();
     Point goal = gm->getOpponentGoal();
-	Point rob  = r->getRobotPosition();
-	float robAng = r->getOrientation();
+    Point rob  = r->getRobotPosition();
+    float robAng = r->getOrientation();
     float goalToBall = Measurments::angleBetween(goal,ball);
     float ballToGoal = Measurments::angleBetween(ball, goal);
 

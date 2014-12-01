@@ -1,3 +1,4 @@
+#include "assert.h"
 #include "attackmain.h"
 #include "skill/driveball.h"
 #include "skill/kicktopoint.h"
@@ -8,13 +9,12 @@
 #include "skill/kick.h"
 
 
-AttackMain::AttackMain(const ParameterList& list)
+AttackMain::AttackMain(Robot* attacker)
     : drive_skill(nullptr)
     , pass_skill(nullptr)
     , score_skill(nullptr)
 {
-    Robot* recvBot = list.getParam<Robot*>("recvBot");
-    this->support_attacker = recvBot;
+    this->support_attacker = attacker;
     state = initial;
 }
 

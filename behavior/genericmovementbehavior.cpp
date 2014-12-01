@@ -1,53 +1,29 @@
 #include "behavior/genericmovementbehavior.h"
 
-GenericMovementBehavior::GenericMovementBehavior()
-    : movement(nullptr)
-    , velocityMultipier(1.0)
-    , useObstacleAvoid(true)
-	{}
 
-GenericMovementBehavior::GenericMovementBehavior(const ParameterList& list)
+GenericMovementBehavior::GenericMovementBehavior
+    (Point target, float angTarget, bool obsAvoid, bool ballAvoid)
     : movement(nullptr)
     , velocityMultipier(1.0)    //Elusive bug solved
     , useObstacleAvoid(true)
-{
-    Point targetPoint;
-    float targetAngle;
-    bool  useObstacleAvoid;
-    bool  gotTargetPoint = true, gotTargetAngle = true, gotObsAvoid = true;
-
-    /* This should avoid being used where possible. */
-    
-    try {
-        targetPoint = list.getParam<Point>("targetPoint");
-    } catch(...) {
-        gotTargetPoint = false;
-    }
-    try {
-        targetAngle = list.getParam<float>("targetAngle");
-    } catch(...) {
-        gotTargetAngle = false;
-    }
-    try {
-        useObstacleAvoid = list.getParam<bool>("obstacleAvoidance");
-    } catch(...) {
-        gotObsAvoid = false;
-    }
-    
-    if(gotTargetPoint && gotTargetAngle && gotObsAvoid) {
-        movement = new Movement::GoToPosition(targetPoint, targetAngle, useObstacleAvoid);
-    } else if(gotTargetPoint && gotTargetAngle) {
-        movement = new Movement::GoToPosition(targetPoint, targetAngle);
-    } else if(gotTargetPoint) {
-        movement = new Movement::GoToPosition(targetPoint);
-    }
+{  
+    movement = new Movement::GoToPosition(target, angTarget, obsAvoid, ballAvoid);
 }
 
 
 GenericMovementBehavior::~GenericMovementBehavior()
 {
     delete movement;
-	movement = nullptr;
+    movement = nullptr;
+}
+
+/* New: Post-26th:
+ * Default perform function that goes to the target points.
+ * Should have been here a long time ago
+ */
+void GenericMovementBehavior::perform(Robot* robot)
+{
+    perform(robot, Movement::Type::SharpTurns);
 }
 
 
