@@ -197,10 +197,13 @@ namespace impl
 
     bool isValidPath(const Path& p)
     {
-        /* Bound function to determine if a point is inside the field or not */
-        auto isPointInsideField =
-            std::bind(insideRadiusRectangle, _1, fieldBotRight, fieldTopLeft);
-        return std::all_of(p.begin(), p.end(), isPointInsideField);
+        for(const Point& pt : p) {
+            if(pt.x > 2900 or pt.x < -2900)
+                return false;
+            if(pt.y > 1900 or pt.y < -1900)
+                return false;
+        }
+        return true;
     }
 
 

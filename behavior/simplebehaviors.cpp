@@ -18,6 +18,7 @@
 
 SimpleBehaviors::SimpleBehaviors(const ParameterList& list)
 {
+    hasTargetPos = false;
     UNUSED_PARAM(list);
 }
 
@@ -27,7 +28,8 @@ void SimpleBehaviors::perform(Robot * r)
     Point robotPosition = r->getRobotPosition();
     Point ballPosition = gm->getBallPoint();
 
-    if (gm->getGameState() == 'H' || gm->getGameState() == ' ')
+    if (gm->getGameState() == 'H' || gm->getGameState() == ' '
+            || gm->getGameState() == 'T' || gm->getGameState() == 't')
     {
         Skill::Stop s;
         for (unsigned i = 0; i < gm->getMyTeam().size(); i++)
@@ -65,12 +67,22 @@ void SimpleBehaviors::perform(Robot * r)
         else if (((gm->getGameState() == 'p' || gm->getGameState() == 'f' || gm->getGameState() == 'i') && TEAM == TEAM_BLUE)
                  || ((gm->getGameState() == 'P' || gm->getGameState() == 'F' || gm->getGameState() == 'I') && TEAM == TEAM_YELLOW))
             goal = gm->getMyGoal();
-        float targetBallAngle = Measurments::angleBetween(goal, ballPosition);
-        Point behindBall = ballPosition + Point(DISTANCE*cos(targetBallAngle), DISTANCE*sin(targetBallAngle));
-        Point position(behindBall.x, robotPosition.y);
+//        float targetBallAngle = Measurments::angleBetween(goal, ballPosition);
+        float px;
+        if (ballPosition.x > 0)
+            px = -1500;
+        else
+            px = 1500;
+
+        if(!hasTargetPos) {
+            hasTargetPos = true;
+            target.y = robotPosition.y;
+        }
+        target.x = px;
+
         float direction = Measurments::angleBetween(robotPosition, ballPosition);
 
-        move.recreate(position, direction, true);
+        move.recreate(target, direction, true);
         move.perform(r);
     }
 }

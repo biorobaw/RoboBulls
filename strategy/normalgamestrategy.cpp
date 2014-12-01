@@ -19,7 +19,8 @@ bool NormalGameStrategy::isOnAttack = true;
  * switching condition is true, that must be made until the attack/defend
  * switch is actually made
  */
-#define NORMAL_SWITCH_COUNT 16
+#define ATT_TO_DEF_SWITCH_COUNT 16
+#define DEF_TO_ATT_SWITCH_COUNT 16
 
 /* Defines the number of times the ball must be seen outside of the goal
  * to have the robots start moving again. Used to prevent jerkey movement
@@ -282,31 +283,35 @@ bool NormalGameStrategy::update()
  */
 bool NormalGameStrategy::considerSwitchCreiteria()
 {
-    static int switchCounter = NORMAL_SWITCH_COUNT;
+    static int switchCounter = 0;
 
     GameModel* gm = GameModel::getModel();
     Robot* ballRobot = gm->getHasBall();
 
     if(ballRobot == NULL) {
+        if(not(isOnAttack)) {
+            ++switchCounter;
+            return (switchCounter > DEF_TO_ATT_SWITCH_COUNT);
+        }
         return true;
     }
     else if(ballRobot->isOnMyTeam() and not(isOnAttack)) {
-        --switchCounter;
-        if(switchCounter < 0) {
+        ++switchCounter;
+        if(switchCounter > ATT_TO_DEF_SWITCH_COUNT) {
             /* We have seen the ball in our hands for long enough,
              * we will switch to attack. (retrun true)
              */
-            switchCounter = NORMAL_SWITCH_COUNT;
+            switchCounter = 0;
             return true;
         }
     }
     else if(not(ballRobot->isOnMyTeam()) and isOnAttack){
-        --switchCounter;
-        if(switchCounter < 0) {
+        ++switchCounter;
+        if(switchCounter > DEF_TO_ATT_SWITCH_COUNT) {
             /* We have not seen the ball in our hands for long enough,
              * we will switch to defend. (retrun false)
              */
-            switchCounter = NORMAL_SWITCH_COUNT;
+            switchCounter = 0;
             return false;
         }
     }
@@ -326,17 +331,19 @@ void NormalGameStrategy::assignAttackBehaviors()
     Point ballPoint = gm->getBallPoint();
     Robot* driverBot = NULL, *recvBot = NULL;
 
-    if(currentMainAttacker == NULL or currentSuppAttacker == NULL) {
-        /* First run: We find the most valid robots for the job */
-        findMostValidRobots(ballPoint, driverBot, recvBot);
-    }
-    else {
-        /* Otherwise, we are coming from a previous attack, note here
-         * that the driver/receiver are being swapped.
-         */
-        recvBot = currentSuppAttacker;
-        driverBot = currentMainAttacker;
-    }
+    findMostValidRobots(ballPoint, driverBot, recvBot);
+
+//    if(currentMainAttacker == NULL or currentSuppAttacker == NULL) {
+//        /* First run: We find the most valid robots for the job */
+
+//    }
+//    else {
+//        /* Otherwise, we are coming from a previous attack, note here
+//         * that the driver/receiver are being swapped.
+//         */
+//        recvBot = currentMainAttacker;
+//        driverBot = currentSuppAttacker;
+//    }
     /**************/
 
     //*** Assign AttackMain (Passer) behavior
@@ -354,8 +361,8 @@ void NormalGameStrategy::assignAttackBehaviors()
     goalie_5.assignBeh({5});
 
     //Store information
-    currentMainAttacker = driverBot;
-    currentSuppAttacker = recvBot;
+    //currentMainAttacker = driverBot;
+    //currentSuppAttacker = recvBot;
 }
 
 

@@ -64,7 +64,7 @@ bool DriveBall::perform(Robot* robot)
         }
         robot->setDrible(true);
         move_skill.setVelocityMultiplier(VEL_MULT);
-        move_skill.recreate(this->targetPosition, this->direction, true);
+        move_skill.recreate(this->targetPosition, this->direction, true,false);
         move_skill.perform(robot, Movement::Type::Default);
         break;
     }

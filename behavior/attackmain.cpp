@@ -53,19 +53,11 @@ void AttackMain::perform(Robot * robot)
     if(touched_ball == false)
     {
         drive_start_point = rp;
-        if(Measurments::isClose(rp,bp,150))
+        if(Measurments::isClose(rp,bp,250))
         {
             touched_ball = true;
         }
     }
-
-    /* New: We will get the support attacker's target, and use KickToPoint
-     * to kick to that position via  pointer, so if it changes KTP will not
-     * shoot to an old position
-     */
-    AttackSupport* attackSupt = dynamic_cast<AttackSupport*>
-            (support_attacker->getCurrentBeh());
-    stp = attackSupt->getCurrentTarget();
 
     //Create switch logic
     switch (state)
@@ -81,12 +73,12 @@ void AttackMain::perform(Robot * robot)
              * Evaluate transition to pass state. If the robot if 1000 units away
              * from drive start (check RoboCup rules, this might need to change) this happens.
              */
-            if(!Measurments::isClose(drive_start_point, rp, drive_distance)) 
+            if(!Measurments::isClose(drive_start_point, rp, drive_distance))
             {
                 delete pass_skill;
                 delete drive_skill;
                 drive_skill = nullptr;
-                pass_skill = new Skill::KickToPoint(&stp);
+                pass_skill = new Skill::KickToPoint(&sp);
                 state = pass;
             }
             /***************************************************************
@@ -96,10 +88,11 @@ void AttackMain::perform(Robot * robot)
             else if(Measurments::isClose(bp, gp, shot_distance))
             {
                 delete score_skill;
-                score_skill = new Skill::KickToPoint(gp, SCORE_ANGLE_TOLERANCE);
+                Point offset(0, -500 + rand() % 1000);
+                score_skill = new Skill::KickToPoint(gp + offset, SCORE_ANGLE_TOLERANCE);
                 state = score;
             }
-            else  
+            else
             {
                 drive_skill->perform(robot);
             }

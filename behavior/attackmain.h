@@ -28,7 +28,7 @@ public:
 private:
     GameModel * gm;
     Robot* support_attacker;
-    Point drive_start_point, rp, sp, gp, bp, stp;
+    Point drive_start_point, rp, sp, gp, bp;
 
     double goal_direction;
     const double shot_distance = 2250;
@@ -36,8 +36,8 @@ private:
 
     bool touched_ball = false, done = false;
     Skill::Skill* drive_skill;
-	Skill::Skill* pass_skill;
-	Skill::Skill* score_skill;
+    Skill::Skill* pass_skill;
+    Skill::Skill* score_skill;
 
     enum states { drive, pass, score, initial } state;
 

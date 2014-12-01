@@ -16,7 +16,8 @@ public:
     SimpleBehaviors(const ParameterList& list);
     void perform(Robot*);
 private:
-    Point target = Point (-1600, 0);
+    Point target = Point (0, 0);
+    bool hasTargetPos;
     Movement::GoToPosition move;
 };
 
