@@ -14,11 +14,11 @@
 class SendBallToRegion:public Behavior
 {
 public:
-    SendBallToRegion(const ParameterList & list);
+    SendBallToRegion(Region region);
    ~SendBallToRegion();
     void perform(Robot *);
 private:
-    Region * region;
+    Region region;
     Skill::KickToPoint * kickball;
     enum {initial,kick} state;
 };

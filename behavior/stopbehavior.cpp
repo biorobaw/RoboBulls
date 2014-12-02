@@ -1,18 +1,15 @@
 
 #include "behavior/stopbehavior.h"
 
-StopBehavior::StopBehavior(const ParameterList& list)
-	: GenericMovementBehavior(list)
+StopBehavior::StopBehavior
+    (Point targetPoint, float targetAngle, bool obsAvoid)
+    : GenericMovementBehavior(targetPoint, targetAngle, obsAvoid)
 {
-	/* Here, the GenericMovementBehavior takes care
-	 * of the "targetPoint" entry on the ParameterList.
-	 */
 }
 
 
 /* StopBehavior is simply a wrapper for
- * GoToPositionWithOrientation It expects a point named targetPoint
- * on the ParameterList on construction.
+ * GenericMovementBehavior 
  * Movement type is set to SharpTurns because it works
  * Much better with pathfinding.
  */

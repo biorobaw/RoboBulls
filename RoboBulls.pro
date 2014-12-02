@@ -64,7 +64,6 @@ SOURCES += main.cpp \
 	strategy/strategycontroller.cpp \
 	strategy/teststrategy.cpp \
 	utilities/measurments.cpp \
-	utilities/paramlist.cpp \
 	utilities/point.cpp \
     behavior/mytestbehavior.cpp \
     behavior/defendclosetoball.cpp \
@@ -146,7 +145,6 @@ HEADERS += \
 	strategy/strategycontroller.h \
 	strategy/teststrategy.h \
 	utilities/measurments.h \
-	utilities/paramlist.h \
 	utilities/point.h \
     behavior/mytestbehavior.h \
     behavior/defendclosetoball.h \

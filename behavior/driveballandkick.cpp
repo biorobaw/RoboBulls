@@ -19,13 +19,11 @@
     #define DIST 20
 #endif
 
-DriveBallAndKick::DriveBallAndKick(const ParameterList& list)
-	: skill(nullptr)
+DriveBallAndKick::DriveBallAndKick()
+    : skill(nullptr)
 {
-    UNUSED_PARAM(list);
     state = initial;
     cout<<"initial driving!"<<endl;
-
 }
 
 void DriveBallAndKick::perform(Robot* robot)
@@ -42,7 +40,7 @@ void DriveBallAndKick::perform(Robot* robot)
     case initial:
         cout<<"drive ball and kick initial state"<<endl;
         state = driving;
-		delete skill;
+        delete skill;
         skill = new Skill::DriveBall(kickPoint, direction);
         break;
     case driving:
@@ -55,7 +53,7 @@ void DriveBallAndKick::perform(Robot* robot)
         {
             cout<<"first kick try"<<endl;
             state = kicking;
-			delete skill;
+            delete skill;
             skill = new Skill::Kick();
         }
         else if (Measurments::isClose(robot->getRobotPosition(), gm->getBallPoint(), CLOSE_ENOUGH)
@@ -88,7 +86,7 @@ void DriveBallAndKick::perform(Robot* robot)
                 state = kicking;
                 delete skill;
                 skill = new Skill::Kick();
-        }\
+        }
         else
         {
             state = idling;
@@ -101,7 +99,7 @@ void DriveBallAndKick::perform(Robot* robot)
         if (kickPoint.x > gm->getBallPoint().x)
         {
             state = driving;
-			delete skill;
+            delete skill;
             skill = new Skill::DriveBall(kickPoint, direction);
         }
         else if (Measurments::isClose(robot->getRobotPosition(), gm->getBallPoint(), CLOSE_ENOUGH/2)
@@ -109,7 +107,7 @@ void DriveBallAndKick::perform(Robot* robot)
                  && Measurments::angleDiff(robot->getOrientation(), abs(Measurments::angleBetween(robot->getRobotPosition(), gm->getBallPoint()))) <= ANGLE/4*5)
         {
             state = kicking;
-			delete skill;
+            delete skill;
             skill = new Skill::Kick();
         }
 //        else if (Measurments::isClose(robot->getRobotPosition(), gm->getBallPoint(), CLOSE_ENOUGH/2)

@@ -18,10 +18,9 @@
     #define R 700
 #endif
 
-PassBallSender::PassBallSender(const ParameterList& list) :
-                                 GenericMovementBehavior(list), kicked(0)
+PassBallSender::PassBallSender() :
+    GenericMovementBehavior(), kicked(0)
 {
-    UNUSED_PARAM(list);
     state = movingBehind;
 }
 

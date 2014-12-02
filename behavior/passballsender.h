@@ -30,7 +30,7 @@
 class PassBallSender : public GenericMovementBehavior /*public Behavior*/
 {
 public:
-    PassBallSender(const ParameterList& list);
+    PassBallSender();
     void perform(Robot*);
 
     /*

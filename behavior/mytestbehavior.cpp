@@ -13,9 +13,9 @@
     #define xx -1600
 #endif
 
-myTestBehavior::myTestBehavior(const ParameterList& list):GenericMovementBehavior(list)
+myTestBehavior::myTestBehavior()
+    : GenericMovementBehavior()
 {
-    UNUSED_PARAM(list);
     //GameModel *model = GameModel::getModel();
     Point kickPoint(1600, 0);
     //Point target = model->getPenaltyPoint();

@@ -22,13 +22,13 @@ GoToPosition::~GoToPosition()
 }
 
 GoToPosition::GoToPosition
-    (Point targetPoint, float targetAngle, bool withObstacleAvoid)
-    : Move(targetPoint, targetAngle, withObstacleAvoid)
+    (Point targetPoint, float targetAngle, bool withObstacleAvoid, bool avoidBall)
+    : Move(targetPoint, targetAngle, withObstacleAvoid, avoidBall)
     {}
 
 GoToPosition::GoToPosition
-    (float tx, float ty, float targetAngle, bool withObstacleAvoid)
-    : Move(Point(tx,ty), targetAngle, withObstacleAvoid)
+    (float tx, float ty, float targetAngle, bool withObstacleAvoid, bool avoidBall)
+    : Move(Point(tx,ty), targetAngle, withObstacleAvoid, avoidBall)
     {}
 
 /***********************************************************/

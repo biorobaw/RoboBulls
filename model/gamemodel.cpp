@@ -178,6 +178,8 @@ void GameModel::setBallPoint(Point bp)
 
 void GameModel::setRobotHasBall()
 {
+    static int lastSeenWithoutBallCount = 0;
+
     static auto ptIsInFrontOfRob = [](Robot* rob, const Point& pt) {
         Point robPos = rob->getRobotPosition();
         float robAngle = rob->getOrientation();
@@ -187,7 +189,7 @@ void GameModel::setRobotHasBall()
     auto calculateHasBall = [&](Robot* rob) {
         if(rob == NULL)
             return false;
-        if(Measurments::distance(rob->getRobotPosition(), ballPoint) > 220.0)
+        if(Measurments::distance(rob->getRobotPosition(), ballPoint) > 300.0)
             return false;
         if(!ptIsInFrontOfRob(rob, ballPoint))
             return false;
@@ -202,18 +204,26 @@ void GameModel::setRobotHasBall()
 
     if(!calculateHasBall(this->robotWithBall))
     {
-        auto ballBot = std::find_if(myTeam.begin(), myTeam.end(), calculateHasBall);
-        if(ballBot == myTeam.end()) {            //Not found in myTeam
-            ballBot = std::find_if(opTeam.begin(), opTeam.end(), calculateHasBall);
-            if(ballBot == opTeam.end()) {        //Not found in opTeam
-                this->robotWithBall = NULL;
-                return;
+        ++lastSeenWithoutBallCount;
+        if(lastSeenWithoutBallCount > 10) {
+            lastSeenWithoutBallCount = 0;
+            auto ballBot = std::find_if(myTeam.begin(), myTeam.end(), calculateHasBall);
+            if(ballBot == myTeam.end()) {            //Not found in myTeam
+                ballBot = std::find_if(opTeam.begin(), opTeam.end(), calculateHasBall);
+                if(ballBot == opTeam.end()) {        //Not found in opTeam
+                    this->robotWithBall = NULL;
+                    return;
+                }
+            }
+            this->robotWithBall = *ballBot;
+        } else {
+            if(robotWithBall != NULL) {
+                this->robotWithBall->hasBall = true;
             }
         }
-        this->robotWithBall = *ballBot;
+    } else {
+        this->robotWithBall->hasBall = true;
     }
-
-    this->robotWithBall->hasBall = true;
 }
 
 void GameModel::setTimeLeft(unsigned short time)

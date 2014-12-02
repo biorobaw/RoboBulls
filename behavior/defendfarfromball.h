@@ -11,13 +11,15 @@
 class DefendFarFromBall : public GenericMovementBehavior
 {
 public:
-    DefendFarFromBall(const ParameterList& list);
+    DefendFarFromBall();
     void perform(Robot*);
 public:
     Skill::KickToPoint* KTPSkill = nullptr;
     bool wasNotPreviousScoreHazard;
     bool isKickingAwayBall;
     int  lastKickCounter;
+    int  velChangeCounter;
+    bool isOnSlowVelMode;
 };
 
 #endif // DEFENDFARFROMBALL_H

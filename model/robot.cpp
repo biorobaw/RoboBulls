@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <sstream>
 #include "robot.h"
 
 Robot::Robot()

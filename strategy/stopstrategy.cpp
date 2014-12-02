@@ -23,11 +23,8 @@ void StopStrategy::assignBeh()
         if (robot->getID() != 5){
             Point robTarget = robTargetPoints[robot->getID()];
             float targetAngle = Measurments::angleBetween(robTarget, bp);
-            BehaviorAssignment<StopBehavior> stopAssign(true);
-            stopAssign.setBehParam<Point>("targetPoint", robTarget);
-            stopAssign.setBehParam<float>("targetAngle", targetAngle);
-            stopAssign.setBehParam<bool>("obstacleAvoidance", true);
-            stopAssign.assignBeh(robot);
+            BehaviorAssignment<GenericMovementBehavior> stopAssign(true);
+            stopAssign.assignBeh(robot, robTarget, targetAngle, true, true);
         }
         else
         {

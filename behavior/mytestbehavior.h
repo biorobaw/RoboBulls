@@ -6,7 +6,6 @@
 #include "utilities/measurments.h"
 #include "model/gamemodel.h"
 #include "model/robot.h"
-#include "utilities/paramlist.h"
 #include "movement/gotopositionwithorientation.h"
 #include "behavior/genericmovementbehavior.h"
 #include "movement/gotoposition.h"
@@ -14,7 +13,7 @@
 class myTestBehavior: public GenericMovementBehavior/*public Behavior*/
 {
 public:
-    myTestBehavior(const ParameterList &list);
+    myTestBehavior();
     void perform(Robot *);
 private:
 //    Point TargetPoint;
