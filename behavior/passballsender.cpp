@@ -36,9 +36,7 @@ Point PassBallSender::findPassPoint(Robot* sender)
     Region PlayerRegion;
     vector<Robot*> myTeam = gm->getMyTeam();
     Point passPoint;
-    Point myGoal = gm->getMyGoal();
     Point oppGoal = gm->getOpponentGoal();
-    Region goalRegion;
 
     struct sides {  Region up;
                     Region down;
@@ -57,22 +55,6 @@ Point PassBallSender::findPassPoint(Robot* sender)
     else
         riskRegion = Region (0, 3000, -2000, 2000);
 
-
-    if (myGoal.x > 0)
-    {
-        goalRegion = Region(myGoal.x,
-                          myGoal.x - goalRX,
-                          myGoal.y + goalRY,
-                          myGoal.y - goalRY);
-    }
-    else
-    {
-        goalRegion = Region(myGoal.x + goalRX,
-                          myGoal.x,
-                          myGoal.y + goalRY,
-                          myGoal.y - goalRY);
-    }
-
     myTeamInfo.clear(); //Prevents old values from accumulating
 
     for (unsigned it = 0 ; it < myTeam.size(); it++)
@@ -90,8 +72,7 @@ Point PassBallSender::findPassPoint(Robot* sender)
             pch.surroundingAppNum = PlayerRegion.numOfOpponents();
             pch.distanceToRobot = Measurments::distance(myTeam[it]->getRobotPosition(), sender->getRobotPosition());
 
-            if (goalRegion.contains(myTeam[it]->getRobotPosition()) ||
-                fieldSides.up.contains(myTeam[it]->getRobotPosition()) ||
+            if (fieldSides.up.contains(myTeam[it]->getRobotPosition()) ||
                 fieldSides.down.contains(myTeam[it]->getRobotPosition()) ||
                 fieldSides.left.contains(myTeam[it]->getRobotPosition()) ||
                 fieldSides.right.contains(myTeam[it]->getRobotPosition()) ||
