@@ -19,9 +19,9 @@
  *      2. It is closer to sender compared to others
  *      (other charactristics can be added)
  * However, if the receiver is in our field or
- * it is standing near the boarders, the sender
+ * it is standing near the borders, the sender
  * will pass the ball to the center of opponent's
- * field.
+ * field for the receiver.
  *
  * What we have now is the simplest form of passing the ball.
  * Many things have been implemented here that have not been
