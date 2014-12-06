@@ -62,6 +62,7 @@ public:
         double distanceToGoal;  // how far away is the reciver player from the goal
         int surroundingAppNum;  //number of opponent players surrounding our team players
         double distanceToRobot; // how far away is the recieve player from sender player
+        bool inBadArea;         // Is robot in an area that is dengrous to make a pass?
     };
 
     vector <playersCharactristics> myTeamInfo; //stores all the robots charactristics

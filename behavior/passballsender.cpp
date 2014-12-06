@@ -3,6 +3,7 @@
 #include "utilities/measurments.h"
 #include "skill/kick.h"
 #include "skill/stop.h"
+#include "include/config/team.h"
 
 #if SIMULATED
     #define DIST 250
@@ -10,12 +11,16 @@
     #define ANGLE (9*M_PI/180)
     #define CLOSE_ENOUGH 110
     #define R 400
+    #define goalRX 400
+    #define goalRY 200
 #else
     #define DIST 400
     #define DIST2 90
     #define ANGLE (15*M_PI/180)
     #define CLOSE_ENOUGH 210
     #define R 700
+    #define goalRX 400
+    #define goalRY 300
 #endif
 
 PassBallSender::PassBallSender() :
@@ -31,6 +36,42 @@ Point PassBallSender::findPassPoint(Robot* sender)
     Region PlayerRegion;
     vector<Robot*> myTeam = gm->getMyTeam();
     Point passPoint;
+    Point myGoal = gm->getMyGoal();
+    Point oppGoal = gm->getOpponentGoal();
+    Region goalRegion;
+
+    struct sides {  Region up;
+                    Region down;
+                    Region left;
+                    Region right;
+                 };
+    sides fieldSides;
+    fieldSides.up = Region(-2500, -3000, 2000, -2000);
+    fieldSides.down = Region(2500, 3000, 2000, -2000);
+    fieldSides.left = Region(-3000, 3000, 2000, 1500);
+    fieldSides.right = Region(-3000, 3000, -2000, -1500);
+
+    Region riskRegion;
+    if (TEAM == TEAM_BLUE)
+        riskRegion = Region (0, -3000, -2000, 2000);
+    else
+        riskRegion = Region (0, 3000, -2000, 2000);
+
+
+    if (myGoal.x > 0)
+    {
+        goalRegion = Region(myGoal.x,
+                          myGoal.x - goalRX,
+                          myGoal.y + goalRY,
+                          myGoal.y - goalRY);
+    }
+    else
+    {
+        goalRegion = Region(myGoal.x + goalRX,
+                          myGoal.x,
+                          myGoal.y + goalRY,
+                          myGoal.y - goalRY);
+    }
 
     myTeamInfo.clear(); //Prevents old values from accumulating
 
@@ -48,26 +89,42 @@ Point PassBallSender::findPassPoint(Robot* sender)
             pch.distanceToGoal = Measurments::distance(myTeam[it]->getRobotPosition(), gm->getOpponentGoal());
             pch.surroundingAppNum = PlayerRegion.numOfOpponents();
             pch.distanceToRobot = Measurments::distance(myTeam[it]->getRobotPosition(), sender->getRobotPosition());
+
+            if (goalRegion.contains(myTeam[it]->getRobotPosition()) ||
+                fieldSides.up.contains(myTeam[it]->getRobotPosition()) ||
+                fieldSides.down.contains(myTeam[it]->getRobotPosition()) ||
+                fieldSides.left.contains(myTeam[it]->getRobotPosition()) ||
+                fieldSides.right.contains(myTeam[it]->getRobotPosition()) ||
+                riskRegion.contains(myTeam[it]->getRobotPosition()))
+                pch.inBadArea = true;
+            else
+                pch.inBadArea = false;
             myTeamInfo.push_back(pch);
         }
     }
 
     int i;
-    int lessSurroundings = 0;
+    int lessSurroundings = -1;
     double distance;
     for (unsigned j = 0; j < myTeamInfo.size(); j++)
     {
         if (j == 0 && myTeamInfo[j].ID != 5)
         {
-            lessSurroundings = myTeamInfo[j].surroundingAppNum;
-            distance = myTeamInfo[j].distanceToRobot;
-            i = 0;
+            if (!myTeamInfo[j].inBadArea)
+            {
+                lessSurroundings = myTeamInfo[j].surroundingAppNum;
+                distance = myTeamInfo[j].distanceToRobot;
+                i = 0;
+            }
         }
         else if (j == 0 && myTeamInfo[j].ID == 5)
         {
-            lessSurroundings = myTeamInfo[1].surroundingAppNum;
-            distance = myTeamInfo[1].distanceToRobot;
-            i = 1;
+            if (!myTeamInfo[j].inBadArea)
+            {
+                lessSurroundings = myTeamInfo[1].surroundingAppNum;
+                distance = myTeamInfo[1].distanceToRobot;
+                i = 1;
+            }
         }
         else
         {
@@ -75,24 +132,35 @@ Point PassBallSender::findPassPoint(Robot* sender)
                     myTeamInfo[j].distanceToRobot < distance &&
                     myTeamInfo[j].ID != 5)
             {
-                lessSurroundings = myTeamInfo[j].surroundingAppNum;
-                distance = myTeamInfo[j].distanceToRobot;
-                i = j;
+                if (!myTeamInfo[j].inBadArea)
+                {
+                    lessSurroundings = myTeamInfo[j].surroundingAppNum;
+                    distance = myTeamInfo[j].distanceToRobot;
+                    i = j;
+                }
             }
             else if (lessSurroundings > myTeamInfo[j].surroundingAppNum &&
                      myTeamInfo[j].ID != 5)
             {
-                lessSurroundings = myTeamInfo[j].surroundingAppNum;
-                distance = myTeamInfo[j].distanceToRobot;
-                i = j;
+                if (!myTeamInfo[j].inBadArea)
+                {
+                    lessSurroundings = myTeamInfo[j].surroundingAppNum;
+                    distance = myTeamInfo[j].distanceToRobot;
+                    i = j;
+                }
             }
         }
     }
-    float angle = Measurments::angleBetween(sender->getRobotPosition(), myTeamInfo[i].position);
-    passPoint = Point(50*cos(angle)+myTeamInfo[i].position.x, 50*sin(angle)+myTeamInfo[i].position.y);
+    if (lessSurroundings >= 0)
+    {
+        float angle = Measurments::angleBetween(sender->getRobotPosition(), myTeamInfo[i].position);
+        passPoint = Point(50*cos(angle)+myTeamInfo[i].position.x, 50*sin(angle)+myTeamInfo[i].position.y);
+    }
+    else
+        passPoint = Point(oppGoal.x*0.5, 0);
+
 
     passingPoint = passPoint;
-    receiverID = myTeamInfo[i].ID;
 
     return passPoint;
 }
@@ -148,9 +216,6 @@ void PassBallSender::perform(Robot * robot)
         {
             setMovementTargets(closeToBall, angle, false);
             GenericMovementBehavior::perform(robot, Movement::Type::Default);
-//            cout << "obotCloseToBall && angleIsRight\t" <<
-//                    Measurments::distance(robot->getRobotPosition(), ballPos)
-//                    << "\t" << abs(Measurments::angleDiff(robot->getOrientation(), angle))/M_PI*180 << endl;
             if (robotCloseToBall && angleIsRight)
                 state = kicking;
             else if (Measurments::distance(target, ballPos) > CLOSE_ENOUGH)
