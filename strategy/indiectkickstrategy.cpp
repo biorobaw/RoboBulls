@@ -67,6 +67,11 @@ void IndiectKickStrategy::assignBeh()
         senderAssignment.setSingleAssignment(true);
         senderAssignment.assignBeh(sender);
 
+        //Assigns golie behavior ro robot with ID 5
+        BehaviorAssignment<DefendFarFromBall> golieAssignment;
+        golieAssignment.setSingleAssignment(true);
+        golieAssignment.assignBeh({5});
+
         // creates the passBallRecever behaviorAssignment
         BehaviorAssignment<PassBallReceiver> receiverAssignment;
         receiverAssignment.setSingleAssignment(true);

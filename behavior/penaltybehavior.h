@@ -8,6 +8,7 @@
 #include "skill/kick.h"
 #include "movement/gotopositionwithorientation.h"
 #include "model/gamemodel.h"
+#include "skill/kicktopoint.h"
 
 #define PENALTY_BEHAVIOR_DEBUG 0
 
@@ -26,8 +27,11 @@ public:
     PenaltyBehavior();
     void perform(Robot *);
 private:
-    enum penaltyBehavior_t {initial, moving, approching, kicking, idling} pb;
+    enum penaltyBehavior_t {initial, changeSign, kicking, idling} pb;
     Point target;
+    Skill::KickToPoint *kickToPoint;
+    bool sign;  //0 is positive and 1 is negative
+    bool targetSign;
 };
 
 #endif // PENALTYBEHAVIOR_H
