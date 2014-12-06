@@ -27,7 +27,7 @@ public:
     PenaltyBehavior();
     void perform(Robot *);
 private:
-    enum penaltyBehavior_t {initial, changeSign, kicking, idling} pb;
+    enum penaltyBehavior_t {initial, kicking, idling} pb;
     Point target;
     Skill::KickToPoint *kickToPoint;
     bool sign;  //0 is positive and 1 is negative
