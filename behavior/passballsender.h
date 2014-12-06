@@ -12,10 +12,16 @@
 
 /*
  * PassBallSender class
- * This class finds a point in front of one of
- * the team's players robots that is free and closer to
- * the sender compared to other players.
- * Then, it passes the ball to that robot.
+ * This class finds a good receiver robot and
+ * sends the ball in front of it.
+ * The receiver robot has the following charactristics:
+ *      1. It has less number of opp. players compared to others
+ *      2. It is closer to sender compared to others
+ *      (other charactristics can be added)
+ * However, if the receiver is in our field or
+ * it is standing near the boarders, the sender
+ * will pass the ball to the center of opponent's
+ * field.
  *
  * What we have now is the simplest form of passing the ball.
  * Many things have been implemented here that have not been
@@ -23,7 +29,7 @@
  *
  * Squggestions for improvements:
  *      ** send the ball to the robot that is closer
- *      to the goal, closer to the robot, and has least
+ *      to the opp. goal, closer to the robot, and has least
  *      amount of opponents players in its region
  * */
 
