@@ -49,6 +49,7 @@ private:
     Robot* currentMainAttacker = NULL;
     Robot* currentSuppAttacker = NULL;
     void findMostValidRobots(Point, Robot*&, Robot*&);
+    Point ballOriginalPos;
 };
 
 #endif // NORMALGAMESTRATEGY_H
