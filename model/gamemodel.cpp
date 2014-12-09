@@ -107,6 +107,11 @@ Point GameModel::getMyGoal()
 #endif
 }
 
+char GameModel::getPreviousGameState()
+{
+    return previousGameState;
+}
+
 std::string GameModel::toString()
 {
     stringstream myString;
@@ -156,8 +161,16 @@ void GameModel::setGameState(char gameState)
 {
     char lastGameState = this->gameState;
     if(lastGameState != gameState)
+    {
         hasNewCommand = true;
+        setPreviousGameState(lastGameState);
+    }
     this->gameState = gameState;
+}
+
+void GameModel::setPreviousGameState(char lastGameState)
+{
+    previousGameState = lastGameState;
 }
 
 void GameModel::onCommandProcessed()
