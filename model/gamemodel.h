@@ -57,6 +57,7 @@ public:
     Robot*  findOpTeam(int);    //Looks for a robot with specified id in opTeam
     Robot*  find(int, std::vector<Robot*>&);    //General-case find
     bool    isNewCommand();
+    char getPreviousGameState();
 
     // Ryan
     bool    guiOverride = false;
@@ -104,6 +105,7 @@ private:
     unsigned char  blueGoals     = 0;
     unsigned char  yellowGoals   = 0;
     unsigned short remainingTime = 0;
+    char previousGameState = '\0';
 
     /* Functions to update gamemodel from vision system.
      * Provides *the* link between vision detection and
@@ -119,6 +121,7 @@ private:
     void setBlueGoals(unsigned char);
     void setYellowGoals(unsigned char);
     void notifyObservers();
+    void setPreviousGameState(char);
 };
 
 

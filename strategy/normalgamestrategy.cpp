@@ -10,6 +10,7 @@
 #include "behavior/attacksupport.h"
 #include "model/gamemodel.h"
 #include "strategy/normalgamestrategy.h"
+#include "behavior/simplebehaviors.h"
 
 bool NormalGameStrategy::isOnAttack = true;
 
@@ -130,6 +131,7 @@ public:
 NormalGameStrategy::NormalGameStrategy()
     : currentMainAttacker(NULL)
     , currentSuppAttacker(NULL)
+    , ballOriginalPos(GameModel::getModel()->getBallPoint())
     {}
 
 void NormalGameStrategy::assignBeh()
@@ -153,6 +155,7 @@ bool NormalGameStrategy::update()
     Point ball = gm->getBallPoint();
     Point opGoal = gm->getOpponentGoal();
     Point myGoal = gm->getMyGoal();
+    bool ballMoved = !Measurments::isClose(ballOriginalPos, ball);
 
     /* This strategy is designed for the Nov.26 presentation
      * and must have three robots to function
@@ -182,45 +185,70 @@ bool NormalGameStrategy::update()
     }
 
     else {
-        if(ballNotInGoalCount < MIN_BALLINGOAL_COUNT) {
-            /* This ensures that the ball must be detected out of the goal
-             * a number of times before the robots move. Otherwise, we sould see
-             * very jerkey movement on the field with the ball being falsely
-             * detected outside of the goal
-             */
-            ++ballNotInGoalCount;
-            return false;
+        /*
+         * If we go to normal strategy after our kickoff
+         *      we have attack behavior
+         * if we go to normal stratgey after opponent kickoff
+         *      we wait until opponent players move the ball
+         * else
+         *      we follow the general normal game strategy
+         * */
+        if(((gm->getPreviousGameState() == 'K' && TEAM == TEAM_BLUE) ||
+            (gm->getPreviousGameState() == 'k' && TEAM == TEAM_YELLOW)) &&
+            !ballMoved)
+        {
+            assignAttackBehaviors();
         }
-        if(oldAttack != isOnAttack) {
-            /* If the attack status has switched, we stop and return true so that
-             * StrategyController can assign this strategy again with the new mode/
-             */
-            return true;
+        else if(((gm->getPreviousGameState() == 'k' && TEAM == TEAM_BLUE) ||
+                 (gm->getPreviousGameState() == 'K' && TEAM == TEAM_YELLOW)) &&
+                 !ballMoved)
+        {
+            BehaviorAssignment<SimpleBehaviors> haltAssignment;
+            haltAssignment.setSingleAssignment(true);
+            haltAssignment.assignBeh();
         }
-        else if(isOnAttack) {
-            if(currentMainAttacker == nullptr) {
-                assignBeh();
-                return false;
-            }
-            AttackMain* attackMain =
-                    dynamic_cast<AttackMain*>(currentMainAttacker->getCurrentBeh());
-            if(attackMain == nullptr) {
-                assignBeh();
-                return false;
-            }
-            if(attackMain->hasKicked()) {
-                /* If the attacker has kicked, it has made a pass or a goal, so
-                 * we switch attack/defend behaviors. See assignAttackBehaviors
+        else
+        {
+            if(ballNotInGoalCount < MIN_BALLINGOAL_COUNT) {
+                /* This ensures that the ball must be detected out of the goal
+                 * a number of times before the robots move. Otherwise, we sould see
+                 * very jerkey movement on the field with the ball being falsely
+                 * detected outside of the goal
                  */
-                assignAttackBehaviors();
+                ++ballNotInGoalCount;
+                return false;
             }
-        }
-        else {
-            /* Bug fix: This is entered if the ball comes out from the goal,
-             * and the robots shoulddirectly go into defend. This allows swithcing
-             * between modes to always work.
-             */
-            assignDefendBehaviors();
+            if(oldAttack != isOnAttack) {
+                /* If the attack status has switched, we stop and return true so that
+                 * StrategyController can assign this strategy again with the new mode/
+                 */
+                return true;
+            }
+            else if(isOnAttack) {
+                if(currentMainAttacker == nullptr) {
+                    assignBeh();
+                    return false;
+                }
+                AttackMain* attackMain =
+                        dynamic_cast<AttackMain*>(currentMainAttacker->getCurrentBeh());
+                if(attackMain == nullptr) {
+                    assignBeh();
+                    return false;
+                }
+                if(attackMain->hasKicked()) {
+                    /* If the attacker has kicked, it has made a pass or a goal, so
+                     * we switch attack/defend behaviors. See assignAttackBehaviors
+                     */
+                    assignAttackBehaviors();
+                }
+            }
+            else {
+                /* Bug fix: This is entered if the ball comes out from the goal,
+                 * and the robots shoulddirectly go into defend. This allows swithcing
+                 * between modes to always work.
+                 */
+                assignDefendBehaviors();
+            }
         }
         return false;
     }
