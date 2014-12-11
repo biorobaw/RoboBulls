@@ -6,6 +6,7 @@
 #include "guiscene.h"
 #include "guidrawline.h"
 #include "include/config/team.h"
+#include "ui_mainwindow.h"
 
 FieldPanel::FieldPanel(MainWindow * mw) {
     dash = mw;

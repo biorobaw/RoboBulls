@@ -107,7 +107,8 @@ SOURCES += main.cpp \
     gui/gamepanel.cpp \
     gui/guiinterface.cpp \
     gui/guidrawline.cpp \
-    movement/move_collisions.cpp
+    movement/move_collisions.cpp \
+    include/config/tolerances.cpp
 
 HEADERS += \
 	behavior/behavior.h \

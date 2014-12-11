@@ -4,30 +4,16 @@
 // different field & robot scales based on SIMULATED
 // communication/nxtrobcomm.cpp - sets velocity to zero
 
-// DELETE ?
-//#include "communication/visioncomm.h"
-//#include "utilities/point.h"
-//#include "sys/wait.h"
-//#include <unistd.h>
-//#include <signal.h>
-//#include "communication/refcomm.h"
 // Tool classes
 #include <math.h>
-#include <iostream>
-#include <string>
-#include <chrono>
-#include <thread>
-#include <QLCDNumber>
 #include <time.h>
 #include <math.h>
 #include <QGraphicsView>
 #include <QShortcut>
-#include <QMenu>
 #include <QKeyEvent>
 #include <QMouseEvent>
-#include <QMap>
-#include <QCursor>
 #include <QScrollBar>
+#include <QtWidgets/QMainWindow>
 // Helper classes
 #include "robotpanel.h"
 #include "selrobotpanel.h"
@@ -44,7 +30,6 @@
 #include "guicomm.h"
 // Project classes
 #include "model/gamemodel.h"
-#include "model/robot.h"
 #include "model/robot.h"
 //#include "include/config/simulated.h"
 #include "communication/nxtrobcomm.h"

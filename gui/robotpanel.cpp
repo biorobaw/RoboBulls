@@ -5,9 +5,8 @@
 #include "gamepanel.h"
 #include "fieldpanel.h"
 #include "selrobotpanel.h"
+#include "ui_mainwindow.h"
 //#include "fieldpanel.h"
-//#include <QTextCharFormat>
-//#include <QTextCursor>
 
 // Global static pointer used to ensure a single instance of the class.
 

@@ -1,11 +1,12 @@
+#include <QtWidgets/QScrollBar>
 #include "selrobotpanel.h"
 #include "mainwindow.h"
 #include "robotpanel.h"
 #include "objectposition.h"
-#include <QScrollBar>
 #include "gamepanel.h"
 #include "fieldpanel.h"
 #include "guiinterface.h"
+#include "ui_mainwindow.h"
 
 SelRobotPanel::SelRobotPanel(MainWindow * mw) {
     dash = mw;
@@ -19,7 +20,6 @@ void SelRobotPanel::setGuiOverride() {
     } else {
         dash->guiOverride = false;
     }
-
 }
 
 void SelRobotPanel::guiPrintRobot(int robotID, string output) {
