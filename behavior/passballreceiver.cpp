@@ -104,8 +104,13 @@ void PassBallReceiver::perform(Robot *robot)
             }
                 break;
         }
+    } else {
+        Skill::Stop s;
+        s.perform(robot);
     }
-    if (Measurments::distance(ballOrg, ballPos) > CLOSE_ENOUGH && count != 0)
+
+    if (Measurments::distance(ballOrg, ballPos) > CLOSE_ENOUGH && count != 0) {
+        cout << "count\t" << count << endl;
         count--;
-    cout << "count\t" << count << endl;
+    }
 }
