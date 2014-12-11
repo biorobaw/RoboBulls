@@ -12,13 +12,20 @@ public:
     virtual void assignBeh() = 0;
 
     /* update
-     * Function (optional) that updates this object
+     * Function (optional) that updates this object.
      * This function is called when StrategyController is ran with
-     * a non-new command from GameModel. Return true to erase the
-     * current Strategy in StrategyController, false to keep on this
-     * strategy
+     * a non-new command from GameModel. Return a `char` for the next
+     * strategy to execute, or the GameModel's current
      */
     virtual bool update();
+
+    /* getNextStrategy
+     * Function used to control strategy flow.
+     * Return an ASCII character corrisponding to a game state to switch
+     * the StrategyController to. return '\0' or the current gate state
+     * (via GameModel) to keep the current state.
+     */
+    virtual char getNextStrategy();
 
     /* Destructor
      * Implement a distructor for a "ending routine" when this object

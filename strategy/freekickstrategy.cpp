@@ -6,8 +6,8 @@
 #include "behavior/defendfarfromball.h"
 #include "include/config/team.h"
 
-
 FreeKickStrategy::FreeKickStrategy()
+    : kickerRobot(NULL)
 {
 }
 
@@ -36,7 +36,7 @@ void FreeKickStrategy::assignBeh()
                 golieAssignment.assignBeh(rob);
         }
 
-        Robot *closestRobot;
+
         int closestRobotID;
         Point ballPoint = gm->getBallPoint();
 
@@ -47,28 +47,28 @@ void FreeKickStrategy::assignBeh()
          * will perform the free kick
          * */
         if (myTeam.size() == 1)
-            closestRobot = myTeam.at(0);
+            kickerRobot = myTeam.at(0);
         else if (myTeam.size() > 1)
         {
             if (myTeam.at(0)->getID() != 5)
-                closestRobot = myTeam.at(0);
+                kickerRobot = myTeam.at(0);
             else
-                closestRobot = myTeam.at(1);
+                kickerRobot = myTeam.at(1);
 
             for (unsigned i = 1; i < myTeam.size(); i++)
             {
                 if (myTeam.at(i)->getID() != 5)
                 {
                     Point iPos = myTeam.at(i)->getRobotPosition();
-                    Point closestPos = closestRobot->getRobotPosition();
+                    Point closestPos = kickerRobot->getRobotPosition();
                     if (Measurments::distance(iPos, ballPoint) < Measurments::distance(closestPos, ballPoint))
-                        closestRobot = myTeam.at(i);
+                        kickerRobot = myTeam.at(i);
                 }
             }
-            closestRobotID = closestRobot->getID();
+            closestRobotID = kickerRobot->getID();
         }
 
-        kickToGoalAssignment.assignBeh(closestRobot);  //lets the closest robot to the ball to perform the free kick
+        kickToGoalAssignment.assignBeh(kickerRobot);  //lets the closest robot to the ball to perform the free kick
 
         if (myTeam.size() > 1)  // assigns simple behavior to the rest of robots
         {
@@ -97,4 +97,19 @@ void FreeKickStrategy::assignBeh()
                 simpleAssignment.assignBeh(myTeam.at(i));
         }
     }
+}
+
+
+char FreeKickStrategy::getNextStrategy()
+{
+    /* Here we check to see if the robot has kicked (KickToGoal
+     * is in "stopping" state) and proceed to NormalGameStrategy
+     */
+    if(kickerRobot != NULL) {
+        KickToGoal* KTG = dynamic_cast<KickToGoal*>(kickerRobot->getCurrentBeh());
+        if(KTG != nullptr) {
+            return (KTG->state == KTG->stopping) ? ' ' : '\0';
+        }
+    }
+    return '\0';
 }

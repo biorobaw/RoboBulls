@@ -41,6 +41,10 @@ class IndiectKickStrategy : public Strategy
 public:
     IndiectKickStrategy();
     void assignBeh();
+    char getNextStrategy() override;
+
+private:
+    Robot* receiverBot; //Robot recieving pass to kick ball
 };
 
 #endif // INDIECTKICKSTRATEGY_H
