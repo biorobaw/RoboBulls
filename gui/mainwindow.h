@@ -7,14 +7,14 @@
 #include <QtWidgets/QMainWindow>
 #include <QtCore/QThread>
 
-// Helper classes
-#include "guifield.h"
-#include "guiball.h"
-#include "guibotlabel.h"
-#include "guidrawline.h"
-#include "guicomm.h"
-#include "guiscene.h"
-#include "guiinterface.h"
+// Helper classes forward declarations
+class GuiField;
+class GuiBall;
+class GuiBotLabel;
+class GuiDrawLine;
+class GuiComm;
+class GuiScene;
+class GuiInterface;
 
 //Project Forward declarations
 class RobotPanel;
@@ -27,6 +27,10 @@ class GamePanel;
 class GuiInterface;
 class GuiDrawLine;
 class QMainWindow;
+class QGraphicsItem;
+class QGraphicsEllipseItem;
+class QGraphicsRectItem;
+class QGraphicsScene;
 
 //Main Project forwards
 class GameModel;

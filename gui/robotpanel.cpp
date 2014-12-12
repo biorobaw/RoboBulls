@@ -1,12 +1,14 @@
 #include "robotpanel.h"
-#include "guirobot.h"
 #include "mainwindow.h"
 #include "objectposition.h"
 #include "gamepanel.h"
 #include "fieldpanel.h"
 #include "selrobotpanel.h"
 #include "ui_mainwindow.h"
-//#include "fieldpanel.h"
+
+//Help er classes
+#include "guirobot.h"
+#include "guiball.h"
 
 // Global static pointer used to ensure a single instance of the class.
 

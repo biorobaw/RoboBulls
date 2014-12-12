@@ -1,9 +1,11 @@
 #include "objectposition.h"
 #include "fieldpanel.h"
-#include "cmath"
 #include "gamepanel.h"
 #include "model/gamemodel.h"
-#include "utilities/measurments.h"
+#include "mainwindow.h"
+
+//Helper Classes
+#include "guiscene.h"
 
 ObjectPosition::ObjectPosition(MainWindow * mw) {
     dash = mw;

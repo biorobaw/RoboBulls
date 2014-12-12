@@ -1,6 +1,6 @@
-#include "gamepanel.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "gamepanel.h"
 
 GamePanel::GamePanel(MainWindow * mw) {
     dash = mw;

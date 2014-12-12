@@ -1,4 +1,3 @@
-//#include <QCoreApplication>
 #include <QApplication>
 #include <stdio.h>
 #include <csignal>
@@ -13,7 +12,6 @@
 #include "include/messages_robocup_ssl_wrapper.pb.h"
 #include "include/robocup_ssl_client.h"
 #include "behavior/behavior.h"
-//#include "gui/mainwindow.h"
 #include "gui/guiinterface.h"
 
 using namespace std;

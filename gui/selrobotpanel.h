@@ -2,8 +2,9 @@
 #define SELROBOTPANEL_H
 
 #include <QString>
-#include "mainwindow.h"
 #include "teamsize.h"
+
+class MainWindow;
 
 class SelRobotPanel
 {

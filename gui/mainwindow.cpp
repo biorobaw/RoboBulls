@@ -7,13 +7,13 @@
 // Tool classes
 #include <math.h>
 #include <time.h>
-#include <math.h>
 #include <QGraphicsView>
 #include <QShortcut>
 #include <QKeyEvent>
 #include <QMouseEvent>
 #include <QScrollBar>
 #include <QtWidgets/QMainWindow>
+
 // Helper classes
 #include "robotpanel.h"
 #include "selrobotpanel.h"
@@ -22,20 +22,23 @@
 #include "ui_mainwindow.h"
 #include "gamepanel.h"
 #include "fieldpanel.h"
-#include "guirobot.h"
-#include "guiinterface.h"
 #include "teamsize.h"
-
-//#include "guidrawline.h"
+#include "guifield.h"
+#include "guiball.h"
+#include "guibotlabel.h"
+#include "guidrawline.h"
 #include "guicomm.h"
+#include "guiscene.h"
+#include "guiinterface.h"
+#include "guirobot.h"
+
 // Project classes
 #include "model/gamemodel.h"
 #include "model/robot.h"
-//#include "include/config/simulated.h"
 #include "communication/nxtrobcomm.h"
 #include "movement/move.h"
-#include "guiinterface.h"
 #include "include/config/team.h"
+
 
 // Global static pointer used to ensure only a single instance of the class.
 //MainWindow* MainWindow::mw = NULL;    // delete?

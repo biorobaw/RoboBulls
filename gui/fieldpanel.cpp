@@ -2,11 +2,17 @@
 #include "objectposition.h"
 #include "robotpanel.h"
 #include "selrobotpanel.h"
-#include "guirobot.h"
-#include "guiscene.h"
-#include "guidrawline.h"
+#include "mainwindow.h"
 #include "include/config/team.h"
 #include "ui_mainwindow.h"
+
+//Helper classes
+#include "guirobot.h"
+#include "guiscene.h"
+#include "guiball.h"
+#include "guibotlabel.h"
+#include "guidrawline.h"
+#include "guifield.h"
 
 FieldPanel::FieldPanel(MainWindow * mw) {
     dash = mw;
