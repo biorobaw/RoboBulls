@@ -80,7 +80,7 @@ void SelRobotPanel::updateSelectedBotPanel(int id) {
         // showing widgets
         dash->ui->frame_primeBot->show();
 
-        v = dash->getVelocity(id);
+        v = dash->objectPos->getVelocity(id);
         s = dash->objectPos->botSpeeds[id] * dash->objectPos->speedModifier;
 //        cout << "Robot " << id << " speed: " << s << "\n";
         dash->ui->gView_robot_prime->setScene(dash->robotpanel->botIconSelScenes[id]);

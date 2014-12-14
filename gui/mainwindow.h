@@ -65,7 +65,6 @@ public:
     GetBehavior *getbehavior;
 
     QString getRemTime();
-    int getVelocity(int id);
     // Debug functions
     void drawLine( int originX, int originY, int endX, int endY );
     void guiPrint(std::string output);

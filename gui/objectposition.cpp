@@ -88,6 +88,78 @@ void ObjectPosition::updateBotSpeedsRecord() {
     }
 }
 
+int ObjectPosition::getVelocity(int id) {
+    int velocity = 0;
+    int wheels = 0;
+    int LF = 0;
+    int RF = 0;
+    int LB = 0;
+    int RB = 0;
+
+    if ( dash->gamemodel->find(id, dash->gamemodel->getMyTeam())->type() == fourWheelOmni ) {
+//        selrobotpanel->guiPrintRobot(id,"fourWheelOmni");
+//        if (SIMULATED) {
+            LF = dash->gamemodel->find(id, dash->gamemodel->getMyTeam())->getLF();
+            RF = dash->gamemodel->find(id, dash->gamemodel->getMyTeam())->getRF();
+            LB = dash->gamemodel->find(id, dash->gamemodel->getMyTeam())->getLB();
+            RB = dash->gamemodel->find(id, dash->gamemodel->getMyTeam())->getRB();
+//        } else {
+//            LF = nxtrobcomm->gui_left_front;
+//            RF = nxtrobcomm->gui_right_front;
+//            LB = nxtrobcomm->gui_left_back;
+//            RB = nxtrobcomm->gui_right_back;
+//        }
+//        cout << "4wheel Robot " << id << ": " << LF << ", " << RF << "\n";
+            velocity += LF;
+            wheels++;
+            velocity += RF;
+            wheels++;
+            velocity += LB;
+            wheels++;
+            velocity += RB;
+            wheels++;
+    } else if ( dash->gamemodel->find(id, dash->gamemodel->getMyTeam())->type() == differential ) {
+//        selrobotpanel->guiPrintRobot(id,"differential");
+//        if (SIMULATED) {
+            LF = dash->gamemodel->find(id, dash->gamemodel->getMyTeam())->getL();
+            RF = dash->gamemodel->find(id, dash->gamemodel->getMyTeam())->getR();
+//        } else {
+//            LF = nxtrobcomm->gui_left;
+//            RF = nxtrobcomm->gui_right;
+//        }
+//        cout << "diff Robot " << id << ": " << LF << ", " << RF << "\n";
+            velocity += LF;
+            wheels++;
+            velocity += RF;
+            wheels++;
+    } else if ( dash->gamemodel->find(id, dash->gamemodel->getMyTeam())->type() == threeWheelOmni ) {
+//        selrobotpanel->guiPrintRobot(id,"threeWheelOmni");
+//        if (SIMULATED) {
+            LF = dash->gamemodel->find(id, dash->gamemodel->getMyTeam())->getLF();
+            RF = dash->gamemodel->find(id, dash->gamemodel->getMyTeam())->getRF();
+//        } else {
+//            LF = nxtrobcomm->gui_left_front;
+//            RF = nxtrobcomm->gui_right_front;
+//        }
+        int b = dash->gamemodel->find(id, dash->gamemodel->getMyTeam())->getB();
+//        cout << "3wheel Robot " << id << ": " << LF << ", " << RF << "\n";
+
+            velocity += LF;
+            wheels++;
+            velocity += RF;
+            wheels++;
+            velocity += b;
+            wheels++;
+    }
+
+    if (velocity != 0 && wheels != 0)
+        velocity /= wheels;
+
+//    selrobotpanel->guiPrintRobot(id,"Wheels: " + to_string(LF) + " & " + to_string(RF));
+    return velocity;
+
+}
+
 //void ObjectPosition::getThreadTicker(int tick) {
 //    threadTicker = tick;
 //}

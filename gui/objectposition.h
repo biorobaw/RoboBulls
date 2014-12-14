@@ -21,6 +21,7 @@ public:
     void getBotSpeeds();
     void getOldSpeeds();
     void updateBotSpeedsRecord();   // holds last several botSpeeds deques
+    int getVelocity(int id);
     int   threadTicker = 0;
     int   speedModifier = 100;      // multiplied with units/cycle to get units/second
     int   movementMin = 2;          // minimum (unmodified) speed detected that we can consider actual movement

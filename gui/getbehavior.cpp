@@ -39,6 +39,4 @@ const std::string& GetBehavior::getBehaviorName(Robot* robot)
 }
 
 void GetBehavior::printBehavior() {
-
-
 }

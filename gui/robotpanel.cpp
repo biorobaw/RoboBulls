@@ -257,7 +257,7 @@ void RobotPanel::updateBotPanel() {
                 botIconFrames[i]->show();
             }
             // Velocity dials
-            velocityDials[i]->setValue(dash->getVelocity(i));
+            velocityDials[i]->setValue(dash->objectPos->getVelocity(i));
             // dynamic velocity dial colors
             if (velocityDials[i]->value() > 0) {            // forward
                 velocityDials[i]->setStyleSheet("background-color: rgb(0, 200, 0);");
