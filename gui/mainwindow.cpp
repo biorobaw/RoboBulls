@@ -173,7 +173,7 @@ int MainWindow::getVelocity(int id) {
     int RB = 0;
 
     if ( gamemodel->find(id, gamemodel->getMyTeam())->type() == fourWheelOmni ) {
-        selrobotpanel->guiPrintRobot(id,"fourWheelOmni");
+//        selrobotpanel->guiPrintRobot(id,"fourWheelOmni");
 //        if (SIMULATED) {
             LF = gamemodel->find(id, gamemodel->getMyTeam())->getLF();
             RF = gamemodel->find(id, gamemodel->getMyTeam())->getRF();
@@ -195,7 +195,7 @@ int MainWindow::getVelocity(int id) {
             velocity += RB;
             wheels++;
     } else if ( gamemodel->find(id, gamemodel->getMyTeam())->type() == differential ) {
-        selrobotpanel->guiPrintRobot(id,"differential");
+//        selrobotpanel->guiPrintRobot(id,"differential");
 //        if (SIMULATED) {
             LF = gamemodel->find(id, gamemodel->getMyTeam())->getL();
             RF = gamemodel->find(id, gamemodel->getMyTeam())->getR();
@@ -209,7 +209,7 @@ int MainWindow::getVelocity(int id) {
             velocity += RF;
             wheels++;
     } else if ( gamemodel->find(id, gamemodel->getMyTeam())->type() == threeWheelOmni ) {
-        selrobotpanel->guiPrintRobot(id,"threeWheelOmni");
+//        selrobotpanel->guiPrintRobot(id,"threeWheelOmni");
 //        if (SIMULATED) {
             LF = gamemodel->find(id, gamemodel->getMyTeam())->getLF();
             RF = gamemodel->find(id, gamemodel->getMyTeam())->getRF();
@@ -231,7 +231,7 @@ int MainWindow::getVelocity(int id) {
     if (velocity != 0 && wheels != 0)
         velocity /= wheels;
 
-    selrobotpanel->guiPrintRobot(id,"Wheels: " + to_string(LF) + " & " + to_string(RF));
+//    selrobotpanel->guiPrintRobot(id,"Wheels: " + to_string(LF) + " & " + to_string(RF));
     return velocity;
 }
 

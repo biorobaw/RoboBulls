@@ -3,6 +3,8 @@
 
 #include <QString>
 #include "teamsize.h"
+#include "getbehavior.h"
+
 
 class MainWindow;
 
@@ -15,11 +17,15 @@ public:
 
     void setGuiOverride();
     void guiPrintRobot(int robotID, std::string output);
+    void printBehavior(int id);
     void setupSelRobotPanel();
 
 
 public slots:
     void updateSelectedBotPanel(int id);
+
+private:
+    GetBehavior * getbehavior;
 
 };
 

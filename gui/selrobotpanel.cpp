@@ -7,6 +7,7 @@
 #include "fieldpanel.h"
 #include "guiinterface.h"
 #include "ui_mainwindow.h"
+#include "getbehavior.h"
 
 SelRobotPanel::SelRobotPanel(MainWindow * mw) {
     dash = mw;
@@ -40,7 +41,18 @@ void SelRobotPanel::guiPrintRobot(int robotID, string output) {
         }
     }
     // test
-//    botBehavior[robotID] = ("\n" + QString::fromStdString(output));
+    //    botBehavior[robotID] = ("\n" + QString::fromStdString(output));
+}
+
+void SelRobotPanel::printBehavior(int id) {
+    if (dash->gamemodel->find(id,dash->gamemodel->getMyTeam()) != NULL) {
+        // TEST
+        Robot * bot = dash->gamemodel->find(id, dash->gamemodel->getMyTeam());
+       std::string s = getbehavior->getBehaviorName(bot);
+        guiPrintRobot(id, getbehavior->getBehaviorName(bot));
+        dash->guiPrint(getbehavior->getBehaviorName(bot));
+        cout << s << "\n";
+    }
 }
 
 void SelRobotPanel::setupSelRobotPanel() {
@@ -136,11 +148,15 @@ void SelRobotPanel::updateSelectedBotPanel(int id) {
             dash->ui->check_botOverride->hide();
         }
 
+        printBehavior(id);
+
         // Text field
         dash->ui->text_primeBot->setTextColor(Qt::white);
         dash->ui->text_primeBot->setText(botBehavior[id]);
         QScrollBar *sb = dash->ui->text_primeBot->verticalScrollBar();
         sb->setValue(sb->maximum());
+
+
 
     }
 }

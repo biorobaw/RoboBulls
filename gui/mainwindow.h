@@ -16,7 +16,7 @@ class GuiComm;
 class GuiScene;
 class GuiInterface;
 
-//Project Forward declarations
+//Dashboard Forward declarations
 class RobotPanel;
 class FieldPanel;
 class SelRobotPanel;
@@ -31,6 +31,7 @@ class QGraphicsItem;
 class QGraphicsEllipseItem;
 class QGraphicsRectItem;
 class QGraphicsScene;
+class GetBehavior;
 
 //Main Project forwards
 class GameModel;
@@ -61,6 +62,7 @@ public:
     ObjectPosition * objectPos;
     GamePanel *gamepanel;
     GuiDrawLine *guidrawline;
+    GetBehavior *getbehavior;
 
     QString getRemTime();
     int getVelocity(int id);
