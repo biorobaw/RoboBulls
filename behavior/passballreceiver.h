@@ -3,6 +3,7 @@
 
 #include "behavior/behavior.h"
 #include "skill/skill.h"
+#include "skill/kicktopoint.h"
 #include "movement/gotoposition.h"
 #include "utilities/point.h"
 #include "model/robot.h"
@@ -31,13 +32,17 @@ class PassBallReceiver : public GenericMovementBehavior
 {
 public:
     PassBallReceiver();
+    bool playerInBadArea(Robot*);
     void perform(Robot *);
-    enum states {initial, moving, approaching, kicking, idling} state;
+    enum states {initial, kicking, idling} state;
 private:
     Point ballLastSeen;
     Point ballOrg;
     Point target;
     int count;
+    Skill::KickToPoint *kickToPoint;
+    bool sign;  //0 is positive and 1 is negative
+    bool targetSign;
 };
 
 #endif // PASSBALLRECEIVER_H

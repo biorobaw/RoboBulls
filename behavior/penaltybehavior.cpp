@@ -70,12 +70,13 @@ void PenaltyBehavior::perform(Robot * myRobot)
             cout<<"kicking performed!"<<endl;
         #endif
 //            pb = idling;
-        }
         if (sign != targetSign)
         {
             pb = initial;
             targetSign = sign;
         }
+        }
+
         break;
     case idling:
         cout << "idling" << endl;
