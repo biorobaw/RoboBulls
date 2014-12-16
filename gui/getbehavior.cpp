@@ -1,5 +1,8 @@
 #include "getbehavior.h"
 #include "mainwindow.h"
+#include "model/robot.h"
+#include "ui_mainwindow.h"
+
 #ifdef __GNUC__
  #include <cxxabi.h>
  #include <unordered_map>
@@ -8,14 +11,25 @@
 #include <typeindex>
 
 
-GetBehavior::GetBehavior() {
+GetBehavior::GetBehavior(MainWindow * mw) {
+    dash = mw;
+
 }
 
 void GetBehavior::setupBehaviors() {
+
 }
 
 const std::string& GetBehavior::getBehaviorName(Robot* robot)
 {
+    static std::string noBehavior = "No Behavior";
+
+    if(robot == NULL or not(robot->hasBeh)) {
+        return noBehavior;
+    }
+
+    try
+    {
 #ifdef __GNUC__
     //https://gcc.gnu.org/onlinedocs/libstdc++/manual/ext_demangling.html
     //Map to hold names, because demangle mallocs a string, inefficient.
@@ -36,7 +50,12 @@ const std::string& GetBehavior::getBehaviorName(Robot* robot)
 #else
     return typeid(*(robot->getCurrentBeh())).name();
 #endif
+    }
+    catch(...) {
+        return noBehavior;
+    }
 }
 
 void GetBehavior::printBehavior() {
+
 }

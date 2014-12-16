@@ -31,6 +31,7 @@
 #include "guiscene.h"
 #include "guiinterface.h"
 #include "guirobot.h"
+#include "getbehavior.h"
 
 // Project classes
 #include "model/gamemodel.h"
@@ -58,11 +59,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->btn_connectGui->setEnabled(false);
     multithreaded = false;   // if true, clock functions operate on an independent thread
     // Creating helper classes (order is important)
-    objectPos = new ObjectPosition(this);
-    selrobotpanel = new SelRobotPanel(this);
-    robotpanel = new RobotPanel(this);
-    fieldpanel = new FieldPanel(this);
-    gamepanel = new GamePanel(this);
+    objectPos       = new ObjectPosition(this);
+    selrobotpanel   = new SelRobotPanel(this);
+    robotpanel      = new RobotPanel(this);
+    fieldpanel      = new FieldPanel(this);
+    gamepanel       = new GamePanel(this);
+    getbehavior     = new GetBehavior(this);
 
     // Generating GUI
     teamSize_blue = 10;

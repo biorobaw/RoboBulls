@@ -148,10 +148,15 @@ void SelRobotPanel::updateSelectedBotPanel(int id) {
             dash->ui->check_botOverride->hide();
         }
         // TEST
-        if (!dash->robotpanel->botIcons[id]->enabled) {
-            printBehavior(id);
+        if (dash->robotpanel->botIcons[id]->enabled) {
+//            printBehavior(id);
         }
-
+        dash->guiPrint(getbehavior->getBehaviorName(dash->gamemodel->find(id, dash->gamemodel->getMyTeam())));
+        guiPrintRobot(id, "Behavior Keywords:");
+        QStringList keywords = dash->objectPos->getKeyWords(getbehavior->getBehaviorName(dash->gamemodel->find(id, dash->gamemodel->getMyTeam())));
+        foreach (QString word, keywords) {
+            guiPrintRobot(id, word.toStdString());
+        }
 
         // Text field
         dash->ui->text_primeBot->setTextColor(Qt::white);

@@ -1,4 +1,4 @@
-#include "objectposition.h"
+﻿#include "objectposition.h"
 #include "fieldpanel.h"
 #include "gamepanel.h"
 #include "model/gamemodel.h"
@@ -278,4 +278,53 @@ int ObjectPosition::getMouseCoordX() {
 int ObjectPosition::getMouseCoordY() {
     int y = dash->fieldpanel->scene->mousePoint.y()-100;
     return y;
+}
+
+QStringList ObjectPosition::getKeyWords(std::string behavior) {
+/** Takes a behavior title, parses it for keywords, and returns a list of them
+ * */
+
+    QStringList keywords;
+    QString title = QString::fromStdString(behavior);
+
+    if (title.contains("no behavior", Qt::CaseInsensitive)) {
+        keywords.push_back("no behavior");
+    }
+    if (title.contains("ball", Qt::CaseInsensitive)) {
+        keywords.push_back("ball");
+    }
+    if (title.contains("mov", Qt::CaseInsensitive)) {
+        keywords.push_back("moving");
+    }
+    if (title.contains("pass", Qt::CaseInsensitive)) {
+        keywords.push_back("passing");
+    }
+    if (title.contains("send", Qt::CaseInsensitive)) {
+        keywords.push_back("sending");
+    }
+    if (title.contains("receiv", Qt::CaseInsensitive)) {
+        keywords.push_back("receiving");
+    }
+    if (title.contains("defend", Qt::CaseInsensitive)) {
+        keywords.push_back("defending");
+    }
+    if (title.contains("attack", Qt::CaseInsensitive)) {
+        keywords.push_back("attacking");
+    }
+    if (title.contains("farfrom", Qt::CaseInsensitive)) {
+        keywords.push_back("far from");
+    }
+    if (title.contains("nearto", Qt::CaseInsensitive)) {
+        keywords.push_back("near to");
+    }
+    if (title.contains("penalty", Qt::CaseInsensitive)) {
+        keywords.push_back("penalty");
+    }
+    if (title.contains("simple", Qt::CaseInsensitive)) {
+        keywords.push_back("simple");
+    }
+
+
+
+    return keywords;
 }

@@ -46,6 +46,9 @@ public:
     // Mouse stuff
     int getMouseCoordX();
     int getMouseCoordY();
+
+    // Behavior parsing
+    QStringList getKeyWords(string behavior);
 };
 
 #endif // OBJECTPOSITION_H

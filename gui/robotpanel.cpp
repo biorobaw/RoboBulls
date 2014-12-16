@@ -6,7 +6,7 @@
 #include "selrobotpanel.h"
 #include "ui_mainwindow.h"
 
-//Help er classes
+//Helper classes
 #include "guirobot.h"
 #include "guiball.h"
 

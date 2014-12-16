@@ -29,6 +29,7 @@ public:
     void scanForScrollModifier();
     void updateLineQueue();
 
+
 //private:
     GuiScene *scene;
 // Objects in scene
