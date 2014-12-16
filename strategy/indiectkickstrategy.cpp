@@ -153,7 +153,10 @@ void IndiectKickStrategy::assignBeh()
 
         //Assigning passBallReceiver behavior to the receiver robot
         receiverAssignment.assignBeh(receiver);
-        cout << "sender\t" << sender->getRobotPosition().toString() << "receiver\t" << receiver->getRobotPosition().toString()<< endl;
+        cout << "sender\t"   << sender->getRobotPosition().toString()
+             << "receiver\t" << receiver->getRobotPosition().toString()
+             << endl;
+        receiverBot = receiver; //Store reciever in class
     }
     else if ((gm->getGameState() == 'i' && TEAM == TEAM_BLUE)
             || (gm->getGameState() == 'I' && TEAM == TEAM_YELLOW))
@@ -173,4 +176,20 @@ void IndiectKickStrategy::assignBeh()
                 simpleAssignment.assignBeh(myTeam.at(i));
         }
     }
+}
+
+
+char IndiectKickStrategy::getNextStrategy()
+{
+    /* Here we check to see if the robot has kicked (PassBallReceiver
+     * is in "idle" state)
+     */
+    if(receiverBot != NULL) {
+        PassBallReceiver* PBR =
+                dynamic_cast<PassBallReceiver*>(receiverBot->getCurrentBeh());
+        if(PBR != nullptr) {
+            return PBR->state == PBR->idling ? ' ' : '\0';
+        }
+    }
+    return '\0';
 }

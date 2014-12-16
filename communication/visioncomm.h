@@ -3,9 +3,7 @@
 #define VISIONCOMM_H
 
 #include <string>
-#include <iostream>
-#include <QtCore>
-#include <string>
+#include <QtCore/QThread>
 #include "include/netraw.h"
 #include "include/messages_robocup_ssl_detection.pb.h"
 #include "include/messages_robocup_ssl_geometry.pb.h"

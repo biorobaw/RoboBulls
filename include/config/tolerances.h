@@ -1,35 +1,22 @@
 #ifndef CONFIG_TOLERANCES_H
 #define CONFIG_TOLERANCES_H
 
-#include "include/config/simulated.h"
-
-/* The robot's radius in program points */
-#if SIMULATED
- #define ROBOT_RADIUS 100
-#else
- #define ROBOT_RADIUS 200
-#endif
-#define ROBOT_SIZE (ROBOT_RADIUS * 2.5)
+/* The robot's radius in program points.
+ * ROBOT_SIZE is the diameter plus a small overshoot
+ */
+extern const int ROBOT_RADIUS;
+extern const int ROBOT_SIZE;
 
 /* DIST_TOLERANCE: How close the robot needs to be to the target
  * before it is considered at that position
  */
-#if SIMULATED
- #define DIST_TOLERANCE 80
-#else
- #define DIST_TOLERANCE 100
-#endif
-
+extern const int DIST_TOLERANCE;
 
 /* ROT_TOLERANCE: The max difference in angle for two angles to be 
  * considered equal. Test this with Measurements::angleDiff
  * This is also the default tolerance for the angle version
  * of Measurements::isClose
  */
-#if SIMULATED
- #define ROT_TOLERANCE 5*(M_PI/180)
-#else
- #define ROT_TOLERANCE 10*(M_PI/180)
-#endif
+extern const int ROT_TOLERANCE;
 
 #endif

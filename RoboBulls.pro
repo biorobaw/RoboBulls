@@ -107,7 +107,9 @@ SOURCES += main.cpp \
     gui/gamepanel.cpp \
     gui/guiinterface.cpp \
     gui/guidrawline.cpp \
-    movement/move_collisions.cpp
+    movement/move_collisions.cpp \
+    include/config/tolerances.cpp \
+    gui/getbehavior.cpp
 
 HEADERS += \
 	behavior/behavior.h \
@@ -198,7 +200,8 @@ HEADERS += \
     gui/gamepanel.h \
     gui/guiinterface.h \
     gui/teamsize.h \
-    movement/move_collisions.h
+    movement/move_collisions.h \
+    gui/getbehavior.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 

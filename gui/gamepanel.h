@@ -1,7 +1,8 @@
 #ifndef GAMEPANEL_H
 #define GAMEPANEL_H
+#include <QObject>
 
-#include "mainwindow.h"
+class MainWindow;
 
 class GamePanel : public QObject
 {

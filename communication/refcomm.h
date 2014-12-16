@@ -1,8 +1,7 @@
 #ifndef REFCOMM_H
 #define REFCOMM_H
 
-#include <string>
-#include <QtCore>
+#include <QtCore/QThread>
 #include "include/netraw.h"
 #include "model/gamemodel.h"
 

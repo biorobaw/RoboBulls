@@ -1,4 +1,3 @@
-#include <string.h>
 #include "include/config/tolerances.h"     //ROT/DIST Tolerance
 #include "include/config/globals.h"        //OVERALL_VELOCITY
 #include "movement/move.h"
@@ -6,8 +5,6 @@
 #include "model/gamemodel.h"
 // Ryan
 #include "gui/guiinterface.h"
-#include "gui/mainwindow.h"
-
 
 /* Set this to 1 to use the robot-robot obstacle avoidance routines.
  * Without this there's little point in trying an actual game

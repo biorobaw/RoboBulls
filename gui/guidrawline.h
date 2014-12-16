@@ -1,14 +1,12 @@
 #ifndef GUIDRAWLINE_H
 #define GUIDRAWLINE_H
-#include <QPainter>
-#include <QGraphicsItem>
-#include <QDebug>
-#include <QPixmap>
-#include <QLabel>
-#include "utilities/point.h"
-#include <deque>
-#include <QObject>
 
+#include <QGraphicsItem>
+#include "utilities/point.h"
+
+class QPainter;
+class QStyleOptionGraphicsItem;
+class QWidget;
 
 class GuiDrawLine : public QGraphicsObject
 {

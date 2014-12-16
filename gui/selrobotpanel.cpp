@@ -1,11 +1,14 @@
+#include <QtWidgets/QScrollBar>
 #include "selrobotpanel.h"
 #include "mainwindow.h"
 #include "robotpanel.h"
 #include "objectposition.h"
-#include <QScrollBar>
 #include "gamepanel.h"
 #include "fieldpanel.h"
 #include "guiinterface.h"
+#include "ui_mainwindow.h"
+#include "getbehavior.h"
+#include "guirobot.h"
 
 SelRobotPanel::SelRobotPanel(MainWindow * mw) {
     dash = mw;
@@ -19,7 +22,6 @@ void SelRobotPanel::setGuiOverride() {
     } else {
         dash->guiOverride = false;
     }
-
 }
 
 void SelRobotPanel::guiPrintRobot(int robotID, string output) {
@@ -40,7 +42,17 @@ void SelRobotPanel::guiPrintRobot(int robotID, string output) {
         }
     }
     // test
-//    botBehavior[robotID] = ("\n" + QString::fromStdString(output));
+    //    botBehavior[robotID] = ("\n" + QString::fromStdString(output));
+}
+
+void SelRobotPanel::printBehavior(int id) {
+    if (dash->gamemodel->find(id,dash->gamemodel->getMyTeam()) != NULL) {
+       Robot * bot = dash->gamemodel->find(id, dash->gamemodel->getMyTeam());
+       std::string s = getbehavior->getBehaviorName(bot);
+        guiPrintRobot(id, s);
+//        dash->guiPrint(getbehavior->getBehaviorName(bot));
+        cout << s << "\n";
+    }
 }
 
 void SelRobotPanel::setupSelRobotPanel() {
@@ -68,7 +80,7 @@ void SelRobotPanel::updateSelectedBotPanel(int id) {
         // showing widgets
         dash->ui->frame_primeBot->show();
 
-        v = dash->getVelocity(id);
+        v = dash->objectPos->getVelocity(id);
         s = dash->objectPos->botSpeeds[id] * dash->objectPos->speedModifier;
 //        cout << "Robot " << id << " speed: " << s << "\n";
         dash->ui->gView_robot_prime->setScene(dash->robotpanel->botIconSelScenes[id]);
@@ -135,12 +147,24 @@ void SelRobotPanel::updateSelectedBotPanel(int id) {
             dash->ui->check_botOverride->setEnabled(false);
             dash->ui->check_botOverride->hide();
         }
+        // TEST
+        if (dash->robotpanel->botIcons[id]->enabled) {
+//            printBehavior(id);
+        }
+        dash->guiPrint(getbehavior->getBehaviorName(dash->gamemodel->find(id, dash->gamemodel->getMyTeam())));
+        guiPrintRobot(id, "Behavior Keywords:");
+        QStringList keywords = dash->objectPos->getKeyWords(getbehavior->getBehaviorName(dash->gamemodel->find(id, dash->gamemodel->getMyTeam())));
+        foreach (QString word, keywords) {
+            guiPrintRobot(id, word.toStdString());
+        }
 
         // Text field
         dash->ui->text_primeBot->setTextColor(Qt::white);
         dash->ui->text_primeBot->setText(botBehavior[id]);
         QScrollBar *sb = dash->ui->text_primeBot->verticalScrollBar();
         sb->setValue(sb->maximum());
+
+
 
     }
 }

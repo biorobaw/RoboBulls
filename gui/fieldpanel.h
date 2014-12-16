@@ -1,10 +1,9 @@
 #ifndef FIELDPANEL_H
 #define FIELDPANEL_H
 
-#include <iostream>
-#include "mainwindow.h"
+#include <deque>
 #include "guisidelines.h"
-//#include "guidrawline.h"
+#include "utilities/point.h"
 
 class GuiRobot;
 class GuiBall;
@@ -13,6 +12,7 @@ class GuiScene;
 class GuiBotLabel;
 class GuiField;
 class GuiDrawLine;
+class MainWindow;
 
 
 class FieldPanel : public QObject   // Some kind of Q type required for cross-class signals & slots
@@ -28,6 +28,7 @@ public:
     void centerViewOnBot();
     void scanForScrollModifier();
     void updateLineQueue();
+
 
 //private:
     GuiScene *scene;

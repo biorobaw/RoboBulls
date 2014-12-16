@@ -1,34 +1,22 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <iostream>
-#include <QFrame>
-#include <QLabel>
+#include <iosfwd>
 #include <string>
 
 #include <QtWidgets/QMainWindow>
-#include "ui_mainwindow.h"
+#include <QtCore/QThread>
 
-#include <QDialog>
-#include <QtCore>
-#include <QtGui>
-// Helper classes
-//#include "guirobot.h"
-#include "guifield.h"
-#include "guiball.h"
-#include "guibotlabel.h"
-#include "guidrawline.h"
-#include "guicomm.h"
-#include "guiscene.h"
+// Helper classes forward declarations
+class GuiField;
+class GuiBall;
+class GuiBotLabel;
+class GuiDrawLine;
+class GuiComm;
+class GuiScene;
+class GuiInterface;
 
-//#include "model/gamemodel.h"
-//#include "model/robot.h"
-//#include "communication/refcomm.h"
-//#include "communication/nxtrobcomm.h"
-//#include "movement/move.h"
-
-#include "guiinterface.h"
-
+//Dashboard Forward declarations
 class RobotPanel;
 class FieldPanel;
 class SelRobotPanel;
@@ -38,19 +26,19 @@ class SelRobotPanel;
 class GamePanel;
 class GuiInterface;
 class GuiDrawLine;
+class QMainWindow;
+class QGraphicsItem;
+class QGraphicsEllipseItem;
+class QGraphicsRectItem;
+class QGraphicsScene;
+class GetBehavior;
 
+//Main Project forwards
 class GameModel;
 class Robot;
 class RefComm;
 class NXTRobComm;
 class Move;
-
-//class GuiField;
-//class GuiBall;
-//class GuiBotLabel;
-//class GuiDrawLine;
-//class GuiScene;
-//class GuiComm;
 
 namespace Ui {
     class MainWindow;
@@ -74,9 +62,9 @@ public:
     ObjectPosition * objectPos;
     GamePanel *gamepanel;
     GuiDrawLine *guidrawline;
+    GetBehavior *getbehavior;
 
     QString getRemTime();
-    int getVelocity(int id);
     // Debug functions
     void drawLine( int originX, int originY, int endX, int endY );
     void guiPrint(std::string output);

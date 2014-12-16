@@ -1,5 +1,6 @@
 #include "guidrawline.h"
 #include <QTimer>
+#include <QPainter>
 #include <iostream>
 
 GuiDrawLine::GuiDrawLine() {

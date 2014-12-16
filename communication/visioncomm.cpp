@@ -2,7 +2,6 @@
 #include "include/config/simulated.h"
 #include "include/config/team.h"
 #include "visioncomm.h"
-#include "gui/mainwindow.h"
 using namespace std;
 
 
@@ -14,10 +13,10 @@ VisionComm::VisionComm(GameModel *gm)
 //    client = new RoboCupSSLClient(10020,"224.5.23.5");
 
     //James Vision Address
-//    client = new RoboCupSSLClient(10020,"224.5.23.2");
+    client = new RoboCupSSLClient(10020,"224.5.23.2");
 
     //Narges Vision Address
-    client = new RoboCupSSLClient(10020,"224.5.23.8");
+    //client = new RoboCupSSLClient(10020,"224.5.23.8");
 
 
     //Ryan Vision Address

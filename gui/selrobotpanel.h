@@ -2,8 +2,11 @@
 #define SELROBOTPANEL_H
 
 #include <QString>
-#include "mainwindow.h"
 #include "teamsize.h"
+#include "getbehavior.h"
+
+
+class MainWindow;
 
 class SelRobotPanel
 {
@@ -14,11 +17,15 @@ public:
 
     void setGuiOverride();
     void guiPrintRobot(int robotID, std::string output);
+    void printBehavior(int id);
     void setupSelRobotPanel();
 
 
 public slots:
     void updateSelectedBotPanel(int id);
+
+private:
+    GetBehavior * getbehavior;
 
 };
 

@@ -14,9 +14,6 @@
 #include "strategy/indiectkickstrategy.h"
 #include "strategy/normalgamestrategy.h"
 #include "movement/pathfinding/fppa_pathfinding.h"
-
-
-#include <QApplication>
 #include "gui/guiinterface.h"
 
 using namespace std;
@@ -55,17 +52,17 @@ void StrategyController::run()
     }
 }
 
-void StrategyController::gameModelUpdated()
+void StrategyController::assignNewStrategy(char gameState)
 {
     clearCurrentStrategy();
 
-    cout << model->getGameState() << endl;
-
-    /* Testing macro: Change this to 0 to ignore refcom commands
-     * to test a single strategy
+    /* Testing macro: Change this to 0 to ignore game sate
+     * commands; use to test a single strategy
      */
+    std::cout << "New Strategy: " << gameState << std::endl;
+
 #if 1
-    switch(model->getGameState())
+    switch(gameState)
     {
     case 'S':    //stop game
     case 'G':    //Blue Goal
@@ -105,25 +102,41 @@ void StrategyController::gameModelUpdated()
 #else
     activeStrategy = new NormalGameStrategy();
 #endif
-
-    activeStrategy->assignBeh();
-
 }
+
+
+void StrategyController::gameModelUpdated()
+{
+    clearCurrentStrategy();
+    char newState = model->getGameState();
+
+    this->assignNewStrategy(newState); //Updates activeStrategy
+    activeStrategy->assignBeh();
+}
+
 
 void StrategyController::gameModelContinued()
 {
-    if(activeStrategy != nullptr) {
-        bool clearStratFlag = activeStrategy->update();
-        if(clearStratFlag)
+    if(activeStrategy != nullptr)
+    {
+        bool clearStrategyFlag = activeStrategy->update() == true;
+        char nextStrategyState = activeStrategy->getNextStrategy();
+        char currentGameState  = model->getGameState();
+        //Recreate current strategy if requested
+        if(clearStrategyFlag)
             clearCurrentStrategy();
+        //Change the current strategy arbitrarily if requested
+        else if(nextStrategyState != '\0' and
+                nextStrategyState != currentGameState)
+            assignNewStrategy(nextStrategyState);
     }
 }
+
 
 void StrategyController::clearCurrentStrategy()
 {
     delete activeStrategy;
     activeStrategy = nullptr;
-    
     for(Robot* robot : model->getMyTeam())
         robot->clearCurrentBeh();
 }
@@ -140,7 +153,7 @@ void StrategyController::frameEnd()
     for (unsigned int i=0; i < model->getMyTeam().size(); i++)
     {
         Robot *rob = model->getMyTeam().at(i);
-        if (!GuiInterface::getGuiInterface()->isOverriddenBot()[i]) {
+        if (!GuiInterface::getGuiInterface()->isOverriddenBot()[rob->getID()]) {
             if(rob->hasBeh)
                 rob->getCurrentBeh()->perform(rob);
          }

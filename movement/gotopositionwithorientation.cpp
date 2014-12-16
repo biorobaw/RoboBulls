@@ -4,9 +4,6 @@
 #include "utilities/measurments.h"
 #include "model/gamemodel.h"
 #include "movement/movetype.h"
-#include "movement/differential/differential_velcalculator.h"
-#include "movement/three_omni_motion/omni3_velcalculator.h"
-#include "movement/four_omni_motion/omni4_velcalculator.h"
 #include "movement/gotopositionwithorientation.h"
 
 namespace Movement

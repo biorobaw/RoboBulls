@@ -4,30 +4,16 @@
 // different field & robot scales based on SIMULATED
 // communication/nxtrobcomm.cpp - sets velocity to zero
 
-// DELETE ?
-//#include "communication/visioncomm.h"
-//#include "utilities/point.h"
-//#include "sys/wait.h"
-//#include <unistd.h>
-//#include <signal.h>
-//#include "communication/refcomm.h"
 // Tool classes
 #include <math.h>
-#include <iostream>
-#include <string>
-#include <chrono>
-#include <thread>
-#include <QLCDNumber>
 #include <time.h>
-#include <math.h>
 #include <QGraphicsView>
 #include <QShortcut>
-#include <QMenu>
 #include <QKeyEvent>
 #include <QMouseEvent>
-#include <QMap>
-#include <QCursor>
 #include <QScrollBar>
+#include <QtWidgets/QMainWindow>
+
 // Helper classes
 #include "robotpanel.h"
 #include "selrobotpanel.h"
@@ -36,21 +22,24 @@
 #include "ui_mainwindow.h"
 #include "gamepanel.h"
 #include "fieldpanel.h"
-#include "guirobot.h"
-#include "guiinterface.h"
 #include "teamsize.h"
-
-//#include "guidrawline.h"
+#include "guifield.h"
+#include "guiball.h"
+#include "guibotlabel.h"
+#include "guidrawline.h"
 #include "guicomm.h"
+#include "guiscene.h"
+#include "guiinterface.h"
+#include "guirobot.h"
+#include "getbehavior.h"
+
 // Project classes
 #include "model/gamemodel.h"
 #include "model/robot.h"
-#include "model/robot.h"
-//#include "include/config/simulated.h"
 #include "communication/nxtrobcomm.h"
 #include "movement/move.h"
-#include "guiinterface.h"
 #include "include/config/team.h"
+
 
 // Global static pointer used to ensure only a single instance of the class.
 //MainWindow* MainWindow::mw = NULL;    // delete?
@@ -69,12 +58,13 @@ MainWindow::MainWindow(QWidget *parent) :
     // Setting up GUI; not enabling thread until we're done
     ui->btn_connectGui->setEnabled(false);
     multithreaded = false;   // if true, clock functions operate on an independent thread
-    // Creating helper classes
-    selrobotpanel = new SelRobotPanel(this);
-    robotpanel = new RobotPanel(this);
-    objectPos = new ObjectPosition(this);
-    fieldpanel = new FieldPanel(this);
-    gamepanel = new GamePanel(this);
+    // Creating helper classes (order is important)
+    objectPos       = new ObjectPosition(this);
+    selrobotpanel   = new SelRobotPanel(this);
+    robotpanel      = new RobotPanel(this);
+    fieldpanel      = new FieldPanel(this);
+    gamepanel       = new GamePanel(this);
+    getbehavior     = new GetBehavior(this);
 
     // Generating GUI
     teamSize_blue = 10;
@@ -176,76 +166,6 @@ void MainWindow::clockLoop(int tick) {
 
 }
 
-int MainWindow::getVelocity(int id) {
-    int velocity = 0;
-    int wheels = 0;
-    int LF = 0;
-    int RF = 0;
-    int LB = 0;
-    int RB = 0;
-
-    if ( gamemodel->find(id, gamemodel->getMyTeam())->type() == fourWheelOmni ) {
-        selrobotpanel->guiPrintRobot(id,"fourWheelOmni");
-//        if (SIMULATED) {
-            LF = gamemodel->find(id, gamemodel->getMyTeam())->getLF();
-            RF = gamemodel->find(id, gamemodel->getMyTeam())->getRF();
-            LB = gamemodel->find(id, gamemodel->getMyTeam())->getLB();
-            RB = gamemodel->find(id, gamemodel->getMyTeam())->getRB();
-//        } else {
-//            LF = nxtrobcomm->gui_left_front;
-//            RF = nxtrobcomm->gui_right_front;
-//            LB = nxtrobcomm->gui_left_back;
-//            RB = nxtrobcomm->gui_right_back;
-//        }
-//        cout << "4wheel Robot " << id << ": " << LF << ", " << RF << "\n";
-            velocity += LF;
-            wheels++;
-            velocity += RF;
-            wheels++;
-            velocity += LB;
-            wheels++;
-            velocity += RB;
-            wheels++;
-    } else if ( gamemodel->find(id, gamemodel->getMyTeam())->type() == differential ) {
-        selrobotpanel->guiPrintRobot(id,"differential");
-//        if (SIMULATED) {
-            LF = gamemodel->find(id, gamemodel->getMyTeam())->getL();
-            RF = gamemodel->find(id, gamemodel->getMyTeam())->getR();
-//        } else {
-//            LF = nxtrobcomm->gui_left;
-//            RF = nxtrobcomm->gui_right;
-//        }
-//        cout << "diff Robot " << id << ": " << LF << ", " << RF << "\n";
-            velocity += LF;
-            wheels++;
-            velocity += RF;
-            wheels++;
-    } else if ( gamemodel->find(id, gamemodel->getMyTeam())->type() == threeWheelOmni ) {
-        selrobotpanel->guiPrintRobot(id,"threeWheelOmni");
-//        if (SIMULATED) {
-            LF = gamemodel->find(id, gamemodel->getMyTeam())->getLF();
-            RF = gamemodel->find(id, gamemodel->getMyTeam())->getRF();
-//        } else {
-//            LF = nxtrobcomm->gui_left_front;
-//            RF = nxtrobcomm->gui_right_front;
-//        }
-        int b = gamemodel->find(id, gamemodel->getMyTeam())->getB();
-//        cout << "3wheel Robot " << id << ": " << LF << ", " << RF << "\n";
-
-            velocity += LF;
-            wheels++;
-            velocity += RF;
-            wheels++;
-            velocity += b;
-            wheels++;
-    }
-
-    if (velocity != 0 && wheels != 0)
-        velocity /= wheels;
-
-    selrobotpanel->guiPrintRobot(id,"Wheels: " + to_string(LF) + " & " + to_string(RF));
-    return velocity;
-}
 
 void MainWindow::drawLine(int originX, int originY, int endX, int endY) {
 //    guidrawline = new GuiDrawLine();
@@ -759,7 +679,7 @@ void MainWindow::on_btn_botForward_pressed() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botForward->setDown(true);
         setMyVelocity();
-        int currentFwd = getVelocity(fieldpanel->selectedBot);
+        int currentFwd = objectPos->getVelocity(fieldpanel->selectedBot);
         gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setL(currentFwd);
         gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setR(currentFwd);
         if (currentFwd <= 0) {
@@ -791,7 +711,7 @@ void MainWindow::on_btn_botTurnRight_pressed() {
 void MainWindow::on_btn_botTurnRight_released() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botTurnRight->setDown(false);
-        float currentFwd = getVelocity(fieldpanel->selectedBot);
+        float currentFwd = objectPos->getVelocity(fieldpanel->selectedBot);
         gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setL(currentFwd);
         gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setR(currentFwd);
     }
@@ -810,7 +730,7 @@ void MainWindow::on_btn_botTurnLeft_pressed() {
 void MainWindow::on_btn_botTurnLeft_released() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botTurnLeft->setDown(false);
-        float currentVel = getVelocity(fieldpanel->selectedBot);
+        float currentVel = objectPos->getVelocity(fieldpanel->selectedBot);
         gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setL(currentVel);
         gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setR(currentVel);
     }
@@ -819,7 +739,7 @@ void MainWindow::on_btn_botTurnLeft_released() {
 void MainWindow::on_btn_botReverse_pressed() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botReverse->setDown(true);
-        int currentVel = getVelocity(fieldpanel->selectedBot);
+        int currentVel = objectPos->getVelocity(fieldpanel->selectedBot);
         gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setL(currentVel);
         gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setR(currentVel);
         if (currentVel >= 0) {
