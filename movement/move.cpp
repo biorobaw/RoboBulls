@@ -115,7 +115,7 @@ bool Move::perform(Robot *robot, Movement::Type moveType)
                  * has moved from the path's end. If so, hasFoundPathEnd is false
                  */
                 Point robPos = robot->getRobotPosition();
-                if(Measurments::distance(robPos, pathEndInfo.endingPoint) > 150) {
+                if(Measurments::distance(robPos, pathEndInfo.endingPoint) > ROBOT_SIZE) {
                     pathEndInfo.hasFoundPathEnd = false;
                 }
             }
@@ -198,8 +198,12 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
         /**** Dynamic path updating ****/
         if(currentPathIsClear) //No known obstacles in path; test for new ones
         {
-            if(pathQueue.empty())
+            if(pathQueue.empty()) {
+                pathEndInfo.hasFoundPathEnd = true;
+                pathEndInfo.endingPoint = robotPoint;
                 return false;
+            }
+
             Point nextPoint = this->pathQueue.front();
             Point obsPoint;
             bool isNewObstacleInPath
@@ -267,15 +271,20 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
          * Dropped into by default, if there is a desired
          * optional end orientation, that rotation is done here
          */
+    #if 1
         Point robotPoint = robot->getRobotPosition();
         double robotAngle = robot->getOrientation();
-        this->calculateVels(robot, m_targetPoint, m_targetAngle, moveType);
-        if (Measurments::isClose(m_targetPoint, robotPoint, lastDistTolerance) &&
+        this->calculateVels(robot, pathEndInfo.endingPoint, m_targetAngle, moveType);
+        if (Measurments::isClose(pathEndInfo.endingPoint, robotPoint, lastDistTolerance) &&
                 Measurments::isClose(m_targetAngle, robotAngle, lastAngTolerance))
         {
             lfront=lback=rfront=rback=left=right=back=0;
             return true;
         }
+    #else
+        lfront=lback=rfront=rback=left=right=back=0;
+        return true;
+    #endif
     }
 
     return false;   //Skill not finished
