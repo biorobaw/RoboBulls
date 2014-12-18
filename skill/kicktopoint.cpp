@@ -9,7 +9,7 @@
  #define POSITION_ANGLE_TOL 10*M_PI/180
 #else
  //These constants work. Do not change.
- #define KDIST_TOLERANCE    200
+ #define KDIST_TOLERANCE    150
  #define CENTER_TOLERANCE   0.70
  #define POSITION_ANGLE_TOL ROT_TOLERANCE
 #endif
@@ -73,7 +73,7 @@ void KickToPoint::doMovingState(Robot *robot)
 
     bool robotNotFacingBall
         = abs(Measurments::angleDiff(robAngle, robBallAngle))
-            > 60*M_PI/180;
+            > 65*M_PI/180;
 
     bool robotCanKick
         = m_kickDistance == NO_KICK_DIST ||

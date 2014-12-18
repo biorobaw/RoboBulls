@@ -9,6 +9,7 @@
 #include "movement/gotopositionwithorientation.h"
 #include "model/gamemodel.h"
 #include "skill/kicktopoint.h"
+#include "utilities/point.h"
 
 #define PENALTY_BEHAVIOR_DEBUG 0
 
@@ -35,6 +36,7 @@ private:
     Skill::KickToPoint *kickToPoint;
     bool sign;  //0 is positive and 1 is negative
     bool targetSign;
+    Point ballOrig;
 };
 
 #endif // PENALTYBEHAVIOR_H

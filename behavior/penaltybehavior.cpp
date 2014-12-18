@@ -18,6 +18,7 @@ PenaltyBehavior::PenaltyBehavior()
     pb = initial;
     sign = 0;
     targetSign = 0;
+    ballOrig = GameModel::getModel()->getBallPoint();
 }
 
 /**
@@ -29,7 +30,14 @@ void PenaltyBehavior::perform(Robot * myRobot)
     GameModel *model = GameModel::getModel();
 
     Point appGoal = model->getOpponentGoal();
+    Point robotPos = myRobot->getRobotPosition();
+    float robotOrientation = myRobot->getOrientation();
     Robot* oppGolie = model->findOpTeam(5);
+    Point ballPos = model->getBallPoint();
+    bool ballInFront =
+            abs(Measurments::angleDiff(robotOrientation, Measurments::angleBetween(robotPos, ballPos))) < 35;
+    bool kicked = !Measurments::isClose(ballPos, ballOrig) && !ballInFront;
+
     Point goliePos = oppGolie->getRobotPosition();
     float min_y = appGoal.y - R;
     float max_y = appGoal.y + R;
@@ -75,6 +83,8 @@ void PenaltyBehavior::perform(Robot * myRobot)
             pb = initial;
             targetSign = sign;
         }
+        else if (kicked)
+            pb = idling;
         }
 
         break;
