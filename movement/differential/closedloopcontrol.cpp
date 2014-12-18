@@ -159,9 +159,9 @@ wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, double x_goal,
     }
 
     /*******************************************************************************************
-    * OVERRIDE if going out of the field.
+    * OVERRIDE if going out of the field.   //Disabled, possibly to be removed
     */
-
+#if 0
     /* If the robot is on its way outside the field but it's destination is inside
      * the field, the robot is stoppped and rotated so that a new path is calculated.
      * If the robot is > 100 distance outside field edge and its destination is outside the
@@ -177,6 +177,7 @@ wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, double x_goal,
         left_motor_velocity  = -CLC_ROTATING_VEL * newAlpha;
         right_motor_velocity =  CLC_ROTATING_VEL * newAlpha;
     }
+#endif
 
     //*******************************************************************************************
     //Normalize wheel velocities between -100 and 100 *******************************************

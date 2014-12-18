@@ -18,7 +18,6 @@
  * But it is currently hardcoded to work with robobulls only.
  * JamesW.
  */
-using namespace std::placeholders;
 
 namespace FPPA
 {
@@ -29,7 +28,7 @@ namespace impl
     int framesUntilUpdate = 0;
     std::vector<Point> currentFrameObstacles;
 
-    bool insideRadiusRectangle(const Point& p0, const Point& p1, const Point& p2)
+    static bool insideRadiusRectangle(const Point& p0, const Point& p1, const Point& p2)
     {
         float rectTop = std::min(p1.y, p2.y) - ROBOT_RADIUS;
         float rectBottom = std::max(p1.y, p2.y) + ROBOT_RADIUS;
@@ -42,7 +41,7 @@ namespace impl
 
     /*********************************************************/
 
-    std::pair<bool, Point>
+    static std::pair<bool, Point>
     isObstacleinLine(const Point& beginPos, const Point& endPos, bool avoidBall)
     {
         bool  obstacle_found = false;
@@ -87,7 +86,7 @@ namespace impl
     }
 
 
-    bool isObstacleAtPoint(const Point& toCheck)
+    static bool isObstacleAtPoint(const Point& toCheck)
     {
         bool obstacle_found = false;
 
@@ -100,7 +99,7 @@ namespace impl
 
     /*********************************************************/
 
-    Point findSearchDirection(const Point& initialPos, const Point& endPos, int sign)
+    static Point findSearchDirection(const Point& initialPos, const Point& endPos, int sign)
     {
         float theta = Measurments::angleBetween(initialPos, endPos);
 
@@ -116,8 +115,8 @@ namespace impl
 
     /*********************************************************/
 
-    void buildPathimpl(Path* results, const Point& beginPos, const Point& endPos,
-                        int sign, int depth, bool avoidBall)
+    static void buildPathimpl(Path* results, const Point& beginPos,
+                              const Point& endPos,int sign, int depth, bool avoidBall)
     {
         if(depth >= MAX_RECURSION_DEPTH)
             return;
@@ -156,7 +155,7 @@ namespace impl
      * obstacle information. In our case, that is getting the GameModel and all the robots
      * from that. However, I would like to have this more generalized in the future.
      */
-    void buildObstacleCollection()
+    static void buildObstacleCollection()
     {
         GameModel* mod = GameModel::getModel();
         const auto& myTeam = mod->getMyTeam();
@@ -178,7 +177,8 @@ namespace impl
 
     /*********************************************************/
 
-    std::pair<Path, Path> findBothPaths(const Point& start, const Point& end, bool avoidBall)
+    static std::pair<Path, Path>
+    findBothPaths(const Point& start, const Point& end, bool avoidBall)
     {
         Path topPath, bottomPath;
 
@@ -190,22 +190,39 @@ namespace impl
         impl::buildPathimpl(&topPath, start, end, -1, 0, avoidBall);
         impl::buildPathimpl(&bottomPath, start, end,  1, 0, avoidBall);
 
-        return std::make_pair(topPath, bottomPath);
+        return std::move(std::make_pair(std::move(topPath), std::move(bottomPath)));
     }
 
     /*********************************************************/
 
-    bool isValidPath(const Path& p)
+    static bool isPointOutsideField(const Point& pt)
     {
-        for(const Point& pt : p) {
-            if(pt.x > 2900 or pt.x < -2900)
-                return false;
-            if(pt.y > 1900 or pt.y < -1900)
-                return false;
-        }
-        return true;
+        if(pt.x > 2900 or pt.x < -2900)
+            return true;
+        if(pt.y > 1900 or pt.y < -1900)
+            return true;
+        return false;
     }
 
+    static bool isValidPath(const Path& p)
+    {
+        return std::none_of(p.begin(), p.end(), isPointOutsideField);
+    }
+
+
+    static void sanitizePoint(Point& pt)
+    {
+        pt.x = Measurments::clamp(pt.x, -2900.0f, 2900.0f);
+        pt.y = Measurments::clamp(pt.y, -1900.0f, 1900.0f);
+    }
+
+    static float getPathLength(const Path& p)
+    {
+        float totalDist = 0;
+        for(auto it = p.begin(); it != p.end()-1; ++it)
+            totalDist += Measurments::distance(*it, *(it+1));
+        return totalDist;
+    }
 
 } //namespace impl
 
@@ -236,52 +253,60 @@ namespace impl
         if(avoidBall)
             impl::currentFrameObstacles.pop_back();
 
-    #if FPPA_DEBUG
-        std::cout << "Finding Path" << std::endl;
-    #endif
-
-        PathInfo topPath
+        //Create PathInfo: pair[points vector, direction top/bottom]
+        PathInfo topPathInfo
             = std::make_pair(foundPaths.first, PathDirection::Top);
-        PathInfo botPath
+        PathInfo botPathInfo
             = std::make_pair(foundPaths.second, PathDirection::Bottom);
 
         /* If one of the paths is invalid (contains points outside the field),
-         * return the other path. Otherwise determine shortest. If both paths
-         * are invalid, it still returns an invalid path,
-         * but I am certain this never happens.
+         * return the other path. If both are invalid, the shortest one is selected
+         * and each point is "sanitized" clamping all values within the field.
          */
-        if(!impl::isValidPath(topPath.first)) {
-            return botPath;
-        } else if(!impl::isValidPath(botPath.first)) {
-            return topPath;
+        bool topValidStatus = impl::isValidPath(topPathInfo.first);
+        bool botValidStatus = impl::isValidPath(botPathInfo.first);
+
+        if(topValidStatus and not(botValidStatus)) {
+            return topPathInfo;
+        }
+        else if(botValidStatus and not(topValidStatus)) {
+            return botPathInfo;
+        }
+        else if (not(topValidStatus) and not(botValidStatus)) {
+            float totalDistTop = impl::getPathLength(topPathInfo.first);
+            float totalDistBot = impl::getPathLength(botPathInfo.first);
+
+            //Select PathInfo top or bottom based on best distance
+            PathInfo& chosenPathInfo = topPathInfo;
+            if(totalDistBot < totalDistTop)
+                chosenPathInfo = botPathInfo;
+            Path& chosenPath = chosenPathInfo.first;
+
+            //Limit all points in the selected path to being inside the field
+            std::for_each(chosenPath.begin(), chosenPath.end(), impl::sanitizePoint);
+
+            return chosenPathInfo;
         }
 
         if(pathHint != PathDirection::None) {
             /* The user has requested a certain direction of path
              * be chosen.
+             * TODO: "UnlessThan" values here
              */
             if(pathHint == PathDirection::Top)
-               return topPath;
+               return topPathInfo;
             else
-               return botPath;
+               return botPathInfo;
          } else {
             /* Add up all the distances from each path and determine which
              * path is shorter. This shorter path is deemed the "better" path.
              */
-            float totalDistTop = 0, totalDistBottom = 0;
-
-            for(auto it = topPath.first.begin();
-                     it != topPath.first.end()-1; ++it)
-                totalDistTop += Measurments::distance(*it, *(it+1));
-
-            for(auto it = botPath.first.begin();
-                     it != botPath.first.end()-1; ++it)
-                totalDistBottom += Measurments::distance(*it, *(it+1));
-
-            if(totalDistTop < totalDistBottom) {
-                return topPath;
+            float totalDistTop = impl::getPathLength(topPathInfo.first);
+            float totalDistBot = impl::getPathLength(botPathInfo.first);
+            if(totalDistTop < totalDistBot) {
+                return topPathInfo;
             } else {
-                return botPath;
+                return botPathInfo;
             }
         }
     }
