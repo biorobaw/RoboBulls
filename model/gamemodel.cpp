@@ -1,10 +1,12 @@
 #include <stddef.h>  // defines NULL
+#include <sstream>
 #include "include/config/team.h"
-#include "include/config/model_averages.h"
 #include "gamemodel.h"
+#include "strategy/strategycontroller.h"
+#include "utilities/comparisons.h"
 
 // Global static pointer used to ensure a single instance of the class.
-GameModel* GameModel::model = NULL;
+GameModel* gameModel = new GameModel();
 
 
 GameModel::GameModel()
@@ -69,10 +71,7 @@ char GameModel::getGameState()
 
 GameModel * GameModel::getModel()
 {
-    if (model == NULL)
-        model = new GameModel();
-
-    return model;
+    return gameModel;
 }
 
 bool GameModel::isNewCommand()
@@ -181,11 +180,7 @@ void GameModel::onCommandProcessed()
 
 void GameModel::setBallPoint(Point bp)
 {
-#if MODEL_USE_AVERAGES
-    ballPoint  = ballAverage.update(bp);
-#else
     ballPoint = bp;
-#endif
 }
 
 
@@ -193,32 +188,26 @@ void GameModel::setRobotHasBall()
 {
     static int lastSeenWithoutBallCount = 0;
 
-    static auto ptIsInFrontOfRob = [](Robot* rob, const Point& pt) {
-        Point robPos = rob->getRobotPosition();
-        float robAngle = rob->getOrientation();
-        float angleBetween = Measurments::angleBetween(robPos, pt);
-        return Measurments::isClose(robAngle, angleBetween, 5*M_PI/12);
-        };
     auto calculateHasBall = [&](Robot* rob) {
         if(rob == NULL)
             return false;
-        if(Measurments::distance(rob->getRobotPosition(), ballPoint) > 300.0)
+        if(Comparisons::isDistanceToGreater(ballPoint, rob, 300))
             return false;
-        if(!ptIsInFrontOfRob(rob, ballPoint))
+        if(Comparisons::isNotFacingPoint(rob, ballPoint))
             return false;
         return true;
         };
 
+    //Assume no robot has the ball first
     for(Robot* robot : myTeam)
         robot->hasBall = false;
     for(Robot* robot : opTeam)
         robot->hasBall = false;
 
 
-    if(!calculateHasBall(this->robotWithBall))
-    {
-        ++lastSeenWithoutBallCount;
-        if(lastSeenWithoutBallCount > 10) {
+    if(!calculateHasBall(this->robotWithBall)) {
+        if(++lastSeenWithoutBallCount > 10)
+        {
             lastSeenWithoutBallCount = 0;
             auto ballBot = std::find_if(myTeam.begin(), myTeam.end(), calculateHasBall);
             if(ballBot == myTeam.end()) {            //Not found in myTeam
@@ -228,15 +217,12 @@ void GameModel::setRobotHasBall()
                     return;
                 }
             }
-            this->robotWithBall = *ballBot;
-        } else {
-            if(robotWithBall != NULL) {
-                this->robotWithBall->hasBall = true;
-            }
+            this->robotWithBall = *ballBot;             //Robot with ball found, store in gm
         }
-    } else {
-        this->robotWithBall->hasBall = true;
     }
+
+    if(robotWithBall)
+        this->robotWithBall->hasBall = true;
 }
 
 void GameModel::setTimeLeft(unsigned short time)
@@ -277,94 +263,11 @@ Robot* GameModel::find(int id, std::vector<Robot*>& team)
     return NULL;
 }
 
-/* Start of Averaging functions
- * The function setRobotUpdated is in place of the setMyTeam / setOponentTeam functions
- * due to how the vision system interacts with the GameModel--one robot is updated
- * at a time. The previous system copied the entire team vectors three times
- * to update one entry in it--for EACH robot on BOTH teams. This function
- * instead allows one robot to be updated at a time, and now their averages
- * can be efficiently computed individually as well.
- *
- * Because of the inefficient updating before, the averaging system would not function:
- * Consider the fact that the entire team vector was re-set each time one robot
- * was updated, for all robots. This means the average for each robot would erroneously
- * be made up of the same position multiple times. 2*MAX_ROBOTS times to be exact.
- *
- * The averaged positions for the robots and ball are then transparently available
- * from getRobotPosition()s and getBallPoint
- *
- * See VisionComm::updateInfo
- */
-#if MODEL_USE_AVERAGES
-static bool shouldAddAverageValue(const Point& averageValue, const Point& newValue) {
-    return Measurments::distance(averageValue, newValue) < OUTLIER_POINT_TOLERANCE;
-}
-static bool shouldAddAverageValue(const float& averageValue, const float& newValue) {
-    return Measurments::isClose(averageValue, newValue, OUTLIER_ANGLE_TOLERANCE);
-}
-
-
-template<typename T>
-GameModel::AverageContainer<T>::AverageContainer()
-    : numOutliers(MAX_OUTLIERS) //Important
-    {
-        values.resize(MAX_AVERAGES+1);
-    }
-
-template<typename T>
-const T& GameModel::AverageContainer<T>::update(const T& newValue)
-{
-    if(shouldAddAverageValue(averageValue, newValue)) {
-        /* A continuing average can be computed by first multiplying
-         * the current average by the size, then adding the new element,
-         * and finally dividing by the new size
-         */
-        numOutliers = 0;
-        averageValue *= values.size();
-        if(values.size() == MAX_AVERAGES) {
-            averageValue -= values.front();
-            values.pop_front();
-        }
-        values.push_back(newValue);
-        averageValue += newValue;
-        averageValue /= values.size();
-    } else {
-        if(++numOutliers >= MAX_OUTLIERS) {
-            /* We've seen enough outliers in a row to
-             * change our confidence on where the value is.
-             */
-            numOutliers = 0;
-            values.clear();
-            values.emplace_back(newValue);
-            averageValue = newValue;
-        }
-    }
-    return averageValue;    //Returns new average value
-}
-#endif
 
 void GameModel::setRobotUpdated(Robot* robot, int whichTeam)
 {
 #if MODEL_USE_AVERAGES
-    auto* currentAverages = &myTeamAverages;
-    if(whichTeam != TEAM)
-        currentAverages = &opTeamAverages;
-
-    Point rawRobPoint = robot->getRobotPosition();
-    float rawRobAngle = robot->getOrientation();
-    Point newRobPoint;
-    float newRobAngle;
-
-    /* While the myTeam/opTeam vectors are not guaranteed to be stored in order
-     * (i.e, ID i is at myTeam[i]), these average arrays are. They are initially
-     * sized to hold MAX_ROBOTS, so no out-of-range errors occur. Also, there is
-     * no iteration over these, so invalid entries are just ignored
-     */
-    newRobPoint = currentAverages->at(robot->getID()).first.update(rawRobPoint);
-    newRobAngle = currentAverages->at(robot->getID()).second.update(rawRobAngle);
-
-    robot->setRobotPosition(newRobPoint);
-    robot->setOrientation(newRobAngle);
+    #warning Model Averages is deprecated
 #else
     UNUSED_PARAM(robot);
     UNUSED_PARAM(whichTeam);

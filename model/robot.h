@@ -1,10 +1,11 @@
 #ifndef ROBOT_H
 #define ROBOT_H
 
+#include <typeinfo>
+#include <type_traits>
 #include "utilities/point.h"
 #include "behavior/behavior.h"
 #include "include/config/robot_types.h"
-class Behavior;
 
 /**
  * @brief The Robot class
@@ -31,8 +32,10 @@ public:
     void setKick(bool);
     void setDrible(bool);
     void setTeam(bool);
-    void setCurrentBeh(Behavior *);
-
+    
+	//Used to assign a behavior to the robot
+    template<typename BehaviorType, typename... Args>
+    bool assignBeh(Args&&... args);
 
     //gets
     Point getRobotPosition();
@@ -47,7 +50,7 @@ public:
     int   getRB();
     int   getKick();
     bool  getDrible();
-	bool  isOnMyTeam();
+    bool  isOnMyTeam();
     Behavior* getCurrentBeh();
     robotType type();
 
@@ -59,14 +62,35 @@ public:
     int id;     // moved here by Ryan from private
 
 private:
+    void setCurrentBeh(Behavior *);
+    
     Point robotPosition;
     float orientation; //orientation of the robot
-//    int id;
     float LF, RF, LB, RB; // used for robot's movements
     Behavior * currentBehavior;
     bool kick;
     bool drible;
-	bool team;		//On myTeam? 1/0
+    bool team;        //On myTeam? 1/0
 };
+
+
+/*********************************************/
+
+
+template<typename BehaviorType, typename... Args>
+bool Robot::assignBeh(Args&&... args)
+{
+    static_assert(std::is_constructible<BehaviorType, Args...>::value,
+        "Behavior must be constructible with these arguments");
+    static_assert(std::is_base_of<Behavior, BehaviorType>::value,
+        "This Behavior must derive from the Behavior base class");
+
+    if(not(hasBeh) or typeid(*getCurrentBeh()) != typeid(BehaviorType)) {
+        clearCurrentBeh();
+        setCurrentBeh(new BehaviorType(args...));
+        return true;
+    }
+    return false;
+}
 
 #endif // ROBOT_H

@@ -202,7 +202,7 @@ void BehaviorAssignment<BehaviorType>::doAssignment(Robot* robot, Args&&... args
         "Behavior must be constructible with these arguments");
 
     robot->clearCurrentBeh();
-    robot->setCurrentBeh(new BehaviorType(args...));
+    robot->assignBeh<BehaviorType>(args...);
 }
 
 

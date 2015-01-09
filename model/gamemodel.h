@@ -2,14 +2,10 @@
 #define GAMEMODEL_H
 
 #include <vector>
-#include <tuple>
 #include <deque>
-#include <iostream>
-#include <sstream>
-#include "utilities/measurments.h"
 #include "utilities/point.h"
+#include "utilities/measurments.h"
 #include "model/robot.h"
-#include "strategy/strategycontroller.h"
 
 /**
  * @brief MAX_ROBOTS
@@ -44,7 +40,7 @@ public:
      */
     vector<Robot*>& getOponentTeam();
     vector<Robot*>& getMyTeam();
-    Point      getBallPoint();
+    Point           getBallPoint();
     unsigned char getBlueGoals();
     unsigned char getYellowGoals();
     unsigned char getRemainingTime();
@@ -57,7 +53,7 @@ public:
     Robot*  findOpTeam(int);    //Looks for a robot with specified id in opTeam
     Robot*  find(int, std::vector<Robot*>&);    //General-case find
     bool    isNewCommand();
-    char getPreviousGameState();
+    char    getPreviousGameState();
 
     // Ryan
     bool    guiOverride = false;
@@ -67,49 +63,24 @@ public:
     std::string toString();
 
 private:
-    /* Average System.
-     * This takes the raw input from the vision system; we need to take
-     * the newly-reported points and see if they are outliers (unlikely to be
-     * the true positions) and if they are not, average them in with previous 
-     * readings to get a more accurate reading of the position
-     */
-#if MODEL_USE_AVERAGES
-    template<typename T>
-    struct AverageContainer
-    {
-        AverageContainer();
-        const T& update(const T&);
-        std::deque<T> values;
-          T averageValue;
-        int numOutliers;
-    };
-    typedef AverageContainer<Point> PointAverage;
-    typedef AverageContainer<float> AngleAverage;
-    typedef std::pair<PointAverage, AngleAverage> RobotAverage;
-    PointAverage ballAverage;
-    std::array<RobotAverage, MAX_ROBOTS> myTeamAverages;
-    std::array<RobotAverage, MAX_ROBOTS> opTeamAverages;
-#endif
-
-    /* Static GameModel pointer and SC */
-    static GameModel* model;
+    /* StrategyController link */
     StrategyController *sc;
 
     /* General Game Information */
     vector <Robot*> opTeam;
     vector <Robot*> myTeam;
-    Robot* robotWithBall = NULL;
-    Point ballPoint      = Point(0,0);
-    char  gameState      = '\0';
-    bool  hasNewCommand  = false;
+    Robot* robotWithBall         = NULL;
+    Point ballPoint              = Point(0,0);
+    char  gameState              = '\0';
+    bool  hasNewCommand          = false;
     unsigned char  blueGoals     = 0;
     unsigned char  yellowGoals   = 0;
     unsigned short remainingTime = 0;
-    char previousGameState = '\0';
+    char previousGameState       = '\0';
 
     /* Functions to update gamemodel from vision system.
      * Provides *the* link between vision detection and
-     * referee box with our code. 
+     * referee box with our code.
      */
     friend class VisionComm;
     friend class RefComm;
@@ -124,5 +95,7 @@ private:
     void setPreviousGameState(char);
 };
 
+//Global singleton pointer to access GameModel
+extern GameModel* gameModel;
 
 #endif // GAMEMODEL_H
