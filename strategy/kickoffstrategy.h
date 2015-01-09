@@ -2,22 +2,14 @@
 #define KICKOFFSTRATEGY_H
 
 #include "strategy/strategy.h"
-#include "movement/gotoposition.h"
-#include "model/gamemodel.h"
 
-
-class KickOffStrategy:public Strategy
+class KickOffStrategy : public Strategy
 {
 public:
-    KickOffStrategy();
     void assignBeh();
-    bool update() override;
 private:
-    Movement::GoToPosition move_skill0,move_skill1,move_skill2,move_skill3,move_skill4,move_skill5;
-    GameModel * gm;
-    Point bp;
-
-    int counters[10];
+    static Point myKickoffPoints[10];
+    static Point opKickoffPoints[10];
 };
 
 #endif // KICKOFFSTRATEGY_H

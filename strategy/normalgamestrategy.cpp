@@ -4,13 +4,13 @@
 #include "behavior/genericmovementbehavior.h"
 #include "behavior/behaviorassignment.h"
 #include "behavior/kicktogoal.h"
-#include "behavior/stopbehavior.h"
 #include "behavior/defendfarfromball.h"
 #include "behavior/attackmain.h"
 #include "behavior/attacksupport.h"
 #include "model/gamemodel.h"
-#include "strategy/normalgamestrategy.h"
 #include "behavior/simplebehaviors.h"
+#include "utilities/comparisons.h"
+#include "strategy/normalgamestrategy.h"
 
 bool NormalGameStrategy::isOnAttack = true;
 
@@ -42,28 +42,20 @@ class OpBallBlocker : public GenericMovementBehavior
 {
 public:
     OpBallBlocker()
-        : GenericMovementBehavior()
-        , one(NULL), two(NULL)
+        : one(NULL), two(NULL)
     {
-        GameModel* gm = GameModel::getModel();
-        std::vector<Robot*> opTeam = gm->getOponentTeam();
-        //Remove 5 from the team
-        opTeam.erase(std::find_if(opTeam.begin(), opTeam.end(),
-                     [](Robot* r){return r->getID()==5;}));
-        //Get Robot 1 and 2 from above and store
-        one = opTeam[0];
-        two = opTeam[1];
+		//Get the two robots that are not ID 5 on OpTeam
+        one = Comparisons::idNot(5).anyMyTeam();
+        two = Comparisons::idNot(5).ignoreID(one->getID()).anyMyTeam();
+		if(!one or !two)
+			throw std::runtime_error("OpBallBlocker: Could not find two robots!");
     }
+	
     void perform(Robot *robot)
     {
         //Midpoint between 1 and 2 and angle to ball
-        Point midPoint = Measurments::midPoint(
-                    one->getRobotPosition(),
-                    two->getRobotPosition());
-        float myAngle = Measurments::angleBetween(
-                    robot->getRobotPosition(),
-                    GameModel::getModel()->getBallPoint());
-
+        Point midPoint = Measurments::midPoint(one, two);
+        float myAngle  = Measurments::angleBetween(robot, gameModel->getBallPoint());
         setMovementTargets(midPoint, myAngle, true, true);
         GenericMovementBehavior::perform(robot, Movement::Type::SharpTurns);
     }
@@ -82,7 +74,7 @@ public:
     void perform(Robot* robot) override
     {
         GameModel * gm = GameModel::getModel();
-        Point wait_point = Point(gm->getMyGoal().x*0.5, 1000);
+        Point wait_point = Point(gameModel->getMyGoal().x*0.5, 1000);
         double wait_orientation = Measurments::angleBetween(robot->getRobotPosition(),gm->getBallPoint());
 
         setMovementTargets(wait_point, wait_orientation);
@@ -99,9 +91,9 @@ class RetreatLeft : public GenericMovementBehavior
 public:
     void perform(Robot* robot) override
     {
-        GameModel * gm = GameModel::getModel();
-        Point wait_point = Point(gm->getMyGoal().x*0.5, 1000);
-        double wait_orientation = Measurments::angleBetween(robot->getRobotPosition(),gm->getBallPoint());
+        Point wait_point = Point(gameModel->getMyGoal().x*0.5, 1000);
+        double wait_orientation = Measurments::angleBetween(robot->getRobotPosition(),
+                                                            gameModel->getBallPoint());
 		
         setMovementTargets(wait_point, wait_orientation);
         GenericMovementBehavior::perform(robot);
@@ -427,24 +419,14 @@ void NormalGameStrategy::assignRetreatBehaviors()
  */
 void NormalGameStrategy::findMostValidRobots(Point target, Robot*& a_out, Robot*& b_out)
 {
-    std::vector<Robot*> myTeam = GameModel::getModel()->getMyTeam(); //Copies
+    std::vector<Robot*>& myTeam = gameModel->getMyTeam();
     Robot* a_found = NULL, *b_found = NULL;
+	
+	//Find robot closest to `target`
+    a_found = *Comparisons::distance(target).ignoreID(5).min(myTeam);
 
-    static auto id_equals_5 = [](Robot* rob) {
-        return rob->getID() == 5;
-    };
-    auto closestToTarget = [&](Robot* rob1, Robot* rob2) {
-        return Measurments::distance(rob1->getRobotPosition(), target) <
-               Measurments::distance(rob2->getRobotPosition(), target);
-    };
-
-    myTeam.erase(std::find_if(myTeam.begin(), myTeam.end(), id_equals_5));
-
-    a_found = *std::min_element(myTeam.begin(), myTeam.end(), closestToTarget);
-
-    myTeam.erase(std::find(myTeam.begin(), myTeam.end(), a_found));
-
-    b_found = myTeam.front();
+	//b_found is now the remaining robot (3-robot teams)
+    b_found = Comparisons::idNot(5).ignoreID(a_found->getID()).anyMyTeam();
 
     if((a_found == NULL) or (b_found == NULL))
         throw std::runtime_error("ERROR: Valid robots not found!");
