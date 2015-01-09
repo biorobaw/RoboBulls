@@ -1,3 +1,5 @@
+#include <sstream>
+#include <cmath>
 #include "region.h"
 
 Region::Region()

@@ -13,6 +13,7 @@
 #include "include/robocup_ssl_client.h"
 #include "behavior/behavior.h"
 #include "gui/guiinterface.h"
+#include "strategy/strategycontroller.h"
 
 using namespace std;
 
