@@ -5,6 +5,7 @@
 #include <functional>
 #include "include/config/tolerances.h"
 #include "utilities/measurments.h"
+#include "utilities/comparisons.h"
 #include "model/gamemodel.h"
 #include "movement/pathfinding/fppa_pathfinding.h"
 
@@ -88,13 +89,7 @@ namespace impl
 
     static bool isObstacleAtPoint(const Point& toCheck)
     {
-        bool obstacle_found = false;
-
-        obstacle_found = std::any_of
-            (currentFrameObstacles.begin(), currentFrameObstacles.end(),
-            [&](const Point& pt){return Measurments::isClose(pt, toCheck, ROBOT_SIZE);});
-
-        return obstacle_found;
+        return Comparisons::isDistanceToLess(toCheck, ROBOT_SIZE).any_of(currentFrameObstacles);
     }
 
     /*********************************************************/
@@ -195,20 +190,10 @@ namespace impl
 
     /*********************************************************/
 
-    static bool isPointOutsideField(const Point& pt)
-    {
-        if(pt.x > 2900 or pt.x < -2900)
-            return true;
-        if(pt.y > 1900 or pt.y < -1900)
-            return true;
-        return false;
-    }
-
     static bool isValidPath(const Path& p)
     {
-        return std::none_of(p.begin(), p.end(), isPointOutsideField);
+        return std::none_of(p.begin(), p.end(), Comparisons::isPointOutsideField());
     }
-
 
     static void sanitizePoint(Point& pt)
     {
@@ -253,7 +238,7 @@ namespace impl
         if(avoidBall)
             impl::currentFrameObstacles.pop_back();
 
-        //Create PathInfo: pair[points vector, direction top/bottom]
+        //Create PathInfos: pair  of {points vector, direction top/bottom}
         PathInfo topPathInfo
             = std::make_pair(foundPaths.first, PathDirection::Top);
         PathInfo botPathInfo

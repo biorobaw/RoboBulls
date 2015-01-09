@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <cmath>
+#include <vector>
 
 #include "matrixcalculator.h"
 #include "model/robot.h"

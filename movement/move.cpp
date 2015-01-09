@@ -2,14 +2,26 @@
 #include "include/config/globals.h"        //OVERALL_VELOCITY
 #include "movement/move.h"
 #include "movement/move_collisions.h"
+#include "movement/move_randomization.h"
 #include "model/gamemodel.h"
-// Ryan
-#include "gui/guiinterface.h"
+#include "utilities/comparisons.h"
+#include "gui/guiinterface.h"              //Ryan
+
+/************************************************************************/
+/* USER CONFIGURATION */
 
 /* Set this to 1 to use the robot-robot obstacle avoidance routines.
  * Without this there's little point in trying an actual game
+ * [See movement/move_collisions.h]
  */
 #define MOVEMENT_USE_ROB_COLLIDE    1
+/* Set this to 1 to use target-point randomization to avoid
+ * robots going to the same point. Experimental.
+ * [See movement/move_randomization.h]
+ */
+#define MOVEMENT_USE_RANDOMIZATION  1
+
+/************************************************************************/
 
 
 namespace Movement
@@ -187,6 +199,14 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
     }
 #endif
 
+#if MOVEMENT_USE_RANDOMIZATION
+    Randomization::addTargetPoint(robot, m_targetPoint);
+    Randomization::update();
+    Point newTarget = Randomization::getUpdatedTargetPoint(robot);
+    if(newTarget != m_targetPoint)
+        this->recreate(newTarget, m_targetAngle, useObstacleAvoid, useAvoidBall);
+#endif
+
     if(!pathEndInfo.hasFoundPathEnd)
     {
         /* Primary: Obstacle avoidance
@@ -227,11 +247,7 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
                  * If it is NOT close any of the obstacles used to generate
                  * the current path, it is a new obstacle
                  */
-                if(std::none_of(lastObstacles.begin(), lastObstacles.end(),
-                    [&](const Point& pt) {
-                        return Measurments::isClose(obsPoint, pt, 100);
-                    }))
-                {
+                if(Comparisons::isDistanceToLess(lastObsPoint, 100).none_of(lastObstacles)) {
                     lastObsPoint = obsPoint;
                     currentPathIsClear = false;
                 }
@@ -276,7 +292,7 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
         double robotAngle = robot->getOrientation();
         this->calculateVels(robot, pathEndInfo.endingPoint, m_targetAngle, moveType);
         if (Measurments::isClose(pathEndInfo.endingPoint, robotPoint, lastDistTolerance) &&
-                Measurments::isClose(m_targetAngle, robotAngle, lastAngTolerance))
+            Measurments::isClose(m_targetAngle, robotAngle, lastAngTolerance))
         {
             lfront=lback=rfront=rback=left=right=back=0;
             return true;

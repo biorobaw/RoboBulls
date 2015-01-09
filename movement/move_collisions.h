@@ -5,7 +5,8 @@
  * Contains structures and routines for detecting and avoiding collisions
  * between multiple robots. the movement of a robot is defined as one of three
  * states; MOVE_OK, MOVE_NOTOK, and MOVE_COLLIDED. When detected as collided, one
- * or both robots will back up
+ * or both robots will back up.
+ * This is an internal file and should not be included directly.
  *  ______________________________________________________
  * [    ______  ___  _   _    ___  _  _  _    _    ___    ]
  * [   |_    _||  _|| | | |  | _ || || || \__| |  /   |   ]
@@ -26,43 +27,19 @@ namespace Movement
 {
 namespace Collisions 
 {
-	void update();
-    int  getMoveStatus(Robot* robot);
-    bool needsNewPath(Robot* robot);
-	
-namespace detail
-{
+    /*Updates all "moving" statuses of each robot and sets each to
+     * MOVE_OK/MOVE_NOTOK/MOVE_COLLIDED based on some factors
+     */
     void update();
-    int  getMoveStatus(Robot *robot);
-    bool needsNewPath(Robot *robot);
-    void moveUpdateStart();
-    void moveUpdateEnd();
-
-    struct RobotMoveStatus
-    {
-        RobotMoveStatus();
-        int  status();
-        bool moving();
-        void update(Robot* robot);
-        void updateMovingStatusOnly(Robot* robot);
-        void set(int newStatus);
-    private:
-        void 	updateMoveOk(Robot* robot);
-        void 	updateMoveNotOK(Robot* robot);
-        void 	updateMoveCollided(Robot* robot);
-        int 	m_status;
-        bool	m_isMoving;
-        Point 	m_lastDiffPoint;
-        Point   m_collidePoint;
-        Robot*  m_collideBot;
-        int  	m_observeCount;
-        int 	m_collideCounter;
-        int     m_moveDisableCount;
-        friend bool detail::needsNewPath(Robot *robot);
-    };
+    
+    /* Returns the MOVE_OK...MOVE_COLLIDED for a given robot. */
+    int  getMoveStatus(Robot* robot);
+    
+    /* Returns a bool representing if the robot needs new path. Happens
+     * when the robot has backed up after MOVE_COLLIDED has been set
+     */
+    bool needsNewPath(Robot* robot);
 }
-
-}	//namespace Collisions
-}	//namespace Movement
+}
 
 #endif
