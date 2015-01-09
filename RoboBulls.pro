@@ -73,7 +73,6 @@ SOURCES += main.cpp \
     behavior/sendballtoregion.cpp \
     skill/kicktopoint.cpp \
     utilities/region.cpp \
-    movement/basic_movement.cpp \
     movement/gotopositionwithorientation.cpp \
     movement/pathfinding/fppa_pathfinding.cpp \
     movement/move.cpp \
@@ -109,7 +108,9 @@ SOURCES += main.cpp \
     gui/guidrawline.cpp \
     movement/move_collisions.cpp \
     include/config/tolerances.cpp \
-    gui/getbehavior.cpp
+    gui/getbehavior.cpp \
+    utilities/comparisons.cpp \
+    movement/move_randomization.cpp
 
 HEADERS += \
 	behavior/behavior.h \
@@ -156,7 +157,6 @@ HEADERS += \
     behavior/sendballtoregion.h \
     skill/kicktopoint.h \
     utilities/region.h \
-    movement/basic_movement.h \
     movement/gotopositionwithorientation.h \
     movement/pathfinding/fppa_pathfinding.h \
     movement/three_omni_motion/matrixcalculator.h \
@@ -175,7 +175,6 @@ HEADERS += \
     movement/three_omni_motion/omni3_velcalculator.h \
     movement/differential/differential_velcalculator.h \
     movement/four_omni_motion/omni4_velcalculator.h \
-    include/config/model_averages.h \
     strategy/freekickstrategy.h \
     strategy/haltstrategy.h \
     strategy/indiectkickstrategy.h \
@@ -201,7 +200,9 @@ HEADERS += \
     gui/guiinterface.h \
     gui/teamsize.h \
     movement/move_collisions.h \
-    gui/getbehavior.h
+    gui/getbehavior.h \
+    utilities/comparisons.h \
+    movement/move_randomization.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 
