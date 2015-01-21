@@ -32,13 +32,16 @@ public:
     void setKick(bool);
     void setDrible(bool);
     void setTeam(bool);
+    void setVelocity(Point);
     
-	//Used to assign a behavior to the robot
+    //Used to assign a behavior to the robot
     template<typename BehaviorType, typename... Args>
     bool assignBeh(Args&&... args);
 
     //gets
     Point getRobotPosition();
+    Point getVelocity();
+    float getSpeed();
     float getOrientation();
     int   getID();
     int   getR();
@@ -64,13 +67,14 @@ public:
 private:
     void setCurrentBeh(Behavior *);
     
-    Point robotPosition;
-    float orientation; //orientation of the robot
-    float LF, RF, LB, RB; // used for robot's movements
-    Behavior * currentBehavior;
-    bool kick;
-    bool drible;
-    bool team;        //On myTeam? 1/0
+    Point robotPosition;        // X/Y Position in points
+    Point velocity;             // Velocity in m/s
+    float orientation;          // orientation of the robot
+    float LF, RF, LB, RB;       // used for robot's movements
+    Behavior * currentBehavior; // Pointer to current behavior
+    bool kick;                  // Robot is kicking
+    bool drible;                // Roboty is dribbling
+    bool team;                  // On myTeam? 1/0
 };
 
 

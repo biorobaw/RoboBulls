@@ -2,7 +2,6 @@
 #define GAMEMODEL_H
 
 #include <vector>
-#include <deque>
 #include "utilities/point.h"
 #include "utilities/measurments.h"
 #include "model/robot.h"
@@ -41,10 +40,12 @@ public:
     vector<Robot*>& getOponentTeam();
     vector<Robot*>& getMyTeam();
     Point           getBallPoint();
+    Point           getBallVelocity();
     unsigned char getBlueGoals();
     unsigned char getYellowGoals();
     unsigned char getRemainingTime();
     char    getGameState();
+    char    getPreviousGameState();
     Point   getPenaltyPoint();
     Point   getOpponentGoal();
     Point   getMyGoal();
@@ -53,7 +54,7 @@ public:
     Robot*  findOpTeam(int);    //Looks for a robot with specified id in opTeam
     Robot*  find(int, std::vector<Robot*>&);    //General-case find
     bool    isNewCommand();
-    char    getPreviousGameState();
+
 
     // Ryan
     bool    guiOverride = false;
@@ -71,6 +72,7 @@ private:
     vector <Robot*> myTeam;
     Robot* robotWithBall         = NULL;
     Point ballPoint              = Point(0,0);
+    Point ballVelocity           = Point(0,0);
     char  gameState              = '\0';
     bool  hasNewCommand          = false;
     unsigned char  blueGoals     = 0;
@@ -84,7 +86,7 @@ private:
      */
     friend class VisionComm;
     friend class RefComm;
-    void setRobotUpdated(Robot*, int);
+    void onRobotUpdated(Robot*);
     void setBallPoint(Point);
     void setRobotHasBall();
     void setGameState(char);

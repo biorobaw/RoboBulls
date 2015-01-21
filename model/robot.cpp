@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <sstream>
+#include <cmath>
 #include "robot.h"
 
 Robot::Robot()
@@ -56,6 +57,8 @@ void Robot::clearCurrentBeh()
     }
 }
 
+void Robot::setVelocity(Point vel) { velocity = vel; }
+
 Point Robot::getRobotPosition(){return robotPosition;}
 
 float Robot::getOrientation(){return orientation;}
@@ -66,7 +69,7 @@ int Robot::getL(){return LF;}
 
 int Robot::getR(){return RF;}
 
-int Robot::getB(){return RB;}	//RB and RL are the same for three-wheel
+int Robot::getB(){return RB;}    //RB and RL are the same for three-wheel
 
 int Robot::getLF(){ return LF; }
 
@@ -82,10 +85,18 @@ bool Robot::isOnMyTeam() { return team; }
 
 Behavior * Robot::getCurrentBeh(){return currentBehavior;}
 
+Point Robot::getVelocity() { return velocity; }
+
+float Robot::getSpeed()
+{
+    Point vel = getVelocity();
+    return sqrt((vel.x * vel.x) + (vel.y * vel.y));
+}
+
 robotType Robot::type()
 {
-	assert(id >= 0 && id < 10);
-	return robotIDTypes[id];
+    assert(id >= 0 && id < 10);
+    return robotIDTypes[id];
 }
 
 std::string Robot::toString()

@@ -1,12 +1,21 @@
 #include <stddef.h>  // defines NULL
 #include <sstream>
+#include <array>
+#include <time.h>
+#include <iostream>
 #include "include/config/team.h"
 #include "gamemodel.h"
 #include "strategy/strategycontroller.h"
 #include "utilities/comparisons.h"
+#include "utilities/velocitycalculator.h"
 
 // Global static pointer used to ensure a single instance of the class.
 GameModel* gameModel = new GameModel();
+
+
+/*******************************************************************/
+/************************ Public Methods ***************************/
+/*******************************************************************/
 
 
 GameModel::GameModel()
@@ -139,23 +148,15 @@ std::string GameModel::toString()
 
 
 /* Called by VisionComm */
-/**************************************************/
-/* Don't overlook this function, it's more important
- * than you think
+/* Don't overlook this function, it's more important than you think
  */
 void GameModel::notifyObservers()
 {
     setRobotHasBall();
     sc->run();
 }
-/**************************************************/
 
 /* Called by RefComm */
-/* I don't think both RefComm and VisionComm should both
- * make the game run. This opens up the possibility for running the
- * loop twice, and possible interference. Before, this function also
- * caused the StrategyController to update if the state was different
- */
 void GameModel::setGameState(char gameState)
 {
     char lastGameState = this->gameState;
@@ -180,23 +181,25 @@ void GameModel::onCommandProcessed()
 
 void GameModel::setBallPoint(Point bp)
 {
+    static VelocityCalculator ballCalculator;
     ballPoint = bp;
+    ballVelocity = ballCalculator.update(bp);
 }
 
 
+static bool calculateHasBall(Robot* robot) 
+{
+    Point bp = gameModel->getBallPoint();
+    if(!robot) 
+        return false;
+    return Comparisons::isDistanceToLess(robot, bp, 300) and
+           Comparisons::isFacingPoint(robot, bp);
+}
+
 void GameModel::setRobotHasBall()
 {
+    //Count of how many times `robotWithBall` has been seen without ball
     static int lastSeenWithoutBallCount = 0;
-
-    auto calculateHasBall = [&](Robot* rob) {
-        if(rob == NULL)
-            return false;
-        if(Comparisons::isDistanceToGreater(ballPoint, rob, 300))
-            return false;
-        if(Comparisons::isNotFacingPoint(rob, ballPoint))
-            return false;
-        return true;
-        };
 
     //Assume no robot has the ball first
     for(Robot* robot : myTeam)
@@ -204,21 +207,18 @@ void GameModel::setRobotHasBall()
     for(Robot* robot : opTeam)
         robot->hasBall = false;
 
-
-    if(!calculateHasBall(this->robotWithBall)) {
-        if(++lastSeenWithoutBallCount > 10)
-        {
-            lastSeenWithoutBallCount = 0;
-            auto ballBot = std::find_if(myTeam.begin(), myTeam.end(), calculateHasBall);
-            if(ballBot == myTeam.end()) {            //Not found in myTeam
-                ballBot = std::find_if(opTeam.begin(), opTeam.end(), calculateHasBall);
-                if(ballBot == opTeam.end()) {        //Not found in opTeam
-                    this->robotWithBall = NULL;
-                    return;
-                }
+    if(!calculateHasBall(this->robotWithBall) and ++lastSeenWithoutBallCount > 10) 
+    {
+        lastSeenWithoutBallCount = 0;
+        auto ballBot = std::find_if(myTeam.begin(), myTeam.end(), calculateHasBall);
+        if(ballBot == myTeam.end()) {            //Not found in myTeam
+            ballBot = std::find_if(opTeam.begin(), opTeam.end(), calculateHasBall);
+            if(ballBot == opTeam.end()) {        //Not found in opTeam
+                this->robotWithBall = NULL;
+                return;
             }
-            this->robotWithBall = *ballBot;             //Robot with ball found, store in gm
         }
+        this->robotWithBall = *ballBot;          //Robot with ball found, store in gm
     }
 
     if(robotWithBall)
@@ -264,12 +264,15 @@ Robot* GameModel::find(int id, std::vector<Robot*>& team)
 }
 
 
-void GameModel::setRobotUpdated(Robot* robot, int whichTeam)
+void calculateRobotVelocity(Robot* robot) 
 {
-#if MODEL_USE_AVERAGES
-    #warning Model Averages is deprecated
-#else
-    UNUSED_PARAM(robot);
-    UNUSED_PARAM(whichTeam);
-#endif
+    static VelocityCalculator robotVelCalcs[20];
+    int   index  = (10 * robot->isOnMyTeam()) + robot->getID();
+    Point newVel = robotVelCalcs[index].update(robot->getRobotPosition());
+    robot->setVelocity(newVel);
+}
+
+void GameModel::onRobotUpdated(Robot* robot)
+{
+    calculateRobotVelocity(robot);
 }
