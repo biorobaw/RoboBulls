@@ -16,7 +16,6 @@ using namespace std;
 /**
  * @brief CONF_THRESHOLD sets the minimum confidence to consider the ball as detected.
 */
-
 const float CONF_THRESHOLD_BALL = 0.6;
 const float CONF_THRESHOLD_BOTS = 0.8;
 
@@ -29,7 +28,7 @@ const int DISCARD_RATE = 1;
  * @brief The VisionComm class
  * Detects the robots and ball and puts each robot in the corresponding team
  * based on robot's color (Blue team/ Yellow team)
- * Narges Ghaedi
+ * Narges Ghaedi... ``et al``
  */
 class VisionComm: public QThread
 {
@@ -37,21 +36,21 @@ public:
     VisionComm(GameModel *gm);
     ~VisionComm();
 
-    Robot detection();
-
     //communicating with reciver
     bool receive();
-
-    //void VisionThread();
+    
+    //QThread run method
     void run();
 
-    void updateInfo(const SSL_DetectionRobot& robot, int detectedTeamColor);
-
 protected:
+    void recieveRobotTeam(const SSL_DetectionFrame& frame, int whichTeam);
+    void recieveBall(const SSL_DetectionFrame& frame);
+    void updateInfo(const SSL_DetectionRobot& robot, int detectedTeamColor);
+    
     GameModel *gamemodel;
     SSL_WrapperPacket packet;
     RoboCupSSLClient * client;
-    int count;
+    int packetCount;
     int frames = 0;
     int blue_rob[10]={0};
     int yellow_rob[10]={0};

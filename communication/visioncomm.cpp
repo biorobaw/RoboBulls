@@ -1,4 +1,3 @@
-#include <iostream>
 #include "include/config/simulated.h"
 #include "include/config/team.h"
 #include "visioncomm.h"
@@ -10,7 +9,7 @@ VisionComm::VisionComm(GameModel *gm)
 // Use different ports depending on whether it is simulated or the actual vision system
 #if SIMULATED
     //Shamsi Vision Address
-//    client = new RoboCupSSLClient(10020,"224.5.23.5");
+    //client = new RoboCupSSLClient(10020,"224.5.23.5");
 
     //James Vision Address
     client = new RoboCupSSLClient(10020,"224.5.23.2");
@@ -18,22 +17,19 @@ VisionComm::VisionComm(GameModel *gm)
     //Narges Vision Address
     //client = new RoboCupSSLClient(10020,"224.5.23.8");
 
-
     //Ryan Vision Address
-//    client = new RoboCupSSLClient(10020,"224.5.23.17");
-
+    //client = new RoboCupSSLClient(10020,"224.5.23.17");
 #else
     client = new RoboCupSSLClient();
 #endif
     client->open(true);
     gamemodel = gm;
-    count=0;
+    packetCount=0;
 }
 
 VisionComm::~VisionComm(void)
 {
     client->close();
-    //CloseHandle(hThread); //stop thread
 }
 
 /* This function processes a DetectionRobot from the vision system and fills
@@ -41,196 +37,122 @@ VisionComm::~VisionComm(void)
  */
 void VisionComm::updateInfo(const SSL_DetectionRobot& robot, int detectedTeamColor)
 {
-    Robot *rob;
-    int   ourTeamColor = TEAM;     //if 0, then it's blue. If 1, then it's yellow team.
-    float id = 0;
-    Point robPoint;
-    vector<Robot*>* currentTeam;
-    GameModel* gm = GameModel::getModel();
+    vector<Robot*>* currentTeam = &gamemodel->getMyTeam();
 
-
-    if (detectedTeamColor == ourTeamColor) {
-        currentTeam = &gamemodel->getMyTeam();
-    } else {
+    if (detectedTeamColor != TEAM)
         currentTeam = &gamemodel->getOponentTeam();
-    }
 
     if (robot.has_robot_id())
     {
-        id  = robot.robot_id();
-        rob = gm->find(id, *currentTeam);
+        int id = robot.robot_id();
+        Robot* rob = gamemodel->find(id, *currentTeam);
 
         if (rob == NULL)
         {
             rob = new Robot();
             rob->setID(id);
-            rob->setTeam(detectedTeamColor == ourTeamColor);
+            rob->setTeam(detectedTeamColor == TEAM);
             currentTeam->push_back(rob);
         }
 
         // Assumption: rob contains the robot with id == detected_id
-        robPoint.x = robot.x();
-        robPoint.y = robot.y();
-        rob->setRobotPosition(robPoint);
+        rob->setRobotPosition( Point(robot.x(), robot.y()) );
         rob->setOrientation(robot.orientation());
 
-        gm->setRobotUpdated(rob, detectedTeamColor);
+        gamemodel->onRobotUpdated(rob);
     }
+}
 
+
+/* Looks at all detected balls in the frame detection, and chooses
+ * the best one. Sets the GameModel's ballpoint as this best one.
+ * We use max_element with the compare function below. `bind` is used
+ * to turn the three-param function to a two-param function. We need this because
+ * the compare function needs the `frame` to verify the correct camera.
+ */
+static bool ballCompareFn(const SSL_DetectionBall&  a, 
+                          const SSL_DetectionBall&  b, 
+                          const SSL_DetectionFrame& frame) {
+    if(a.confidence() < b.confidence())
+        return true;
+    if((a.x()  < 0 && frame.camera_id() == 0) ||
+       (a.x() >= 0 && frame.camera_id() == 1))
+        return true;
+    return false;
+}
+
+void VisionComm::recieveBall(const SSL_DetectionFrame& frame) 
+{
+    using namespace std::placeholders;
+    auto bestBall = std::max_element(frame.balls().begin(), frame.balls().end(),
+                        std::bind(ballCompareFn, _1, _2, frame));
+    gamemodel->setBallPoint( Point(bestBall->x(), bestBall->y()) );
+}
+
+
+/* Used to parse and recieve a generic Robot team and update GameModel with
+ * the information, if we're confident on the Robot detection
+ * Initialized to updating blue, but changes to yellow if not updating blue
+ */
+void VisionComm::recieveRobotTeam(const SSL_DetectionFrame& frame, int whichTeam)
+{
+    auto* currentTeamDetection   = &frame.robots_blue();
+    auto* currentTeamVector      = &gamemodel->getMyTeam();
+    int*  currentTeamFrameCounts = blue_rob;
+
+    if(whichTeam == TEAM_YELLOW) {
+        currentTeamDetection   = &frame.robots_yellow();
+        currentTeamFrameCounts = yellow_rob;
+    }
+    if(whichTeam != TEAM)
+        currentTeamVector = &gamemodel->getOponentTeam();
+    
+    for(const SSL_DetectionRobot& robot : *currentTeamDetection)
+    {
+        if(robot.confidence() < CONF_THRESHOLD_BOTS)
+            continue;
+    #if SIMULATED == 0
+        if((robot.x() >= 0 && frame.camera_id() == 0) ||
+           (robot.x()  < 0 && frame.camera_id() == 1))
+    #endif
+        {
+            /* If the robot is already in the game, Or if the robot has been seen 
+             * for at least 25 of the past 50 frames, update/add the robot. Otherwise, 
+             * the robot has not been added, so we increment its count of appearances 
+             * in this set of 50 frames.
+             */
+            int robotID = robot.robot_id();
+            if(gamemodel->find(robotID, *currentTeamVector) or currentTeamFrameCounts[robotID] >= 25) {
+                updateInfo(robot, whichTeam);
+            } else {
+                ++currentTeamFrameCounts[robotID];
+            }
+        }
+    }
 }
 
 
 bool VisionComm::receive()
 {
-//    client.open(true);
-
-    if (client->receive(packet))
+    if (client->receive(packet) and packet.has_detection()) 
     {
-
-        //Rcv packet
-        //use the client to recieve the package and check if it's recieved... look at Wiliam's code
-        //take a look at refcommSIMULATED
-
-        if (packet.has_detection())
+        if (++packetCount >= DISCARD_RATE)
         {
-            count++;
-
-            if (count >= DISCARD_RATE)
-            {
-                count = 0;
-
-                SSL_DetectionFrame detection = packet.detection();
-
-                int balls_n = detection.balls_size();
-                int robots_blue_n =  detection.robots_blue_size();
-                int robots_yellow_n = detection.robots_yellow_size();
-
-
-                Point ballPoint;
-
-                float conf = 0.0;
-
-                //Ball info:
-                for (int i = 0; i < balls_n; i++)
-                {
-                    SSL_DetectionBall ball;
-                    ball = detection.balls(i);
-
-                    if (ball.confidence()>conf)
-                    {
-                        conf = ball.confidence();
-
-                        if(conf > CONF_THRESHOLD_BALL)
-                        {
-                        #if SIMULATED
-                            ballPoint.x = ball.x();
-                            ballPoint.y = ball.y();
-
-                            gamemodel->setBallPoint(ballPoint);
-                        #else
-                            if ((ball.x() >= 0 && detection.camera_id() == 0) ||
-                                (ball.x() < 0 && detection.camera_id() == 1))
-                            {
-                                ballPoint.x = ball.x();
-                                ballPoint.y = ball.y();
-
-                                gamemodel->setBallPoint(ballPoint);
-                            }
-                        #endif
-                        }
-                    }
-                }
-
-                for (int i=0; i < robots_blue_n; i++)
-                {
-                    float confR = detection.robots_blue(i).confidence();
-
-                    if (confR > CONF_THRESHOLD_BOTS)
-                    {
-                    #if SIMULATED
-                        updateInfo(detection.robots_blue(i), TEAM_BLUE);
-                    #else
-                        if ((detection.robots_blue(i).x() >= 0 && detection.camera_id() == 0)
-                            || (detection.robots_blue(i).x() < 0 && detection.camera_id() == 1))
-                        {
-                            int robotID = detection.robots_blue(i).robot_id();
-                            #if TEAM==TEAM_BLUE
-                                if(gamemodel->findMyTeam(robotID)) {
-                            #else
-                                if(gamemodel->findOpTeam(robotID)) {
-                            #endif
-                                    /* If the robot is already in the GameModel update it immediately */
-                                    updateInfo(detection.robots_blue(i), TEAM_BLUE);
-                                }
-                            else {
-                                /* Otherwise we look at the frame counts, if the robot has been seen
-                                 * 25 times in 50 frames, it is added to the gameModel.
-                                 */
-                                if(blue_rob[robotID] >= 25) {
-                                    updateInfo(detection.robots_blue(i), TEAM_BLUE);
-                                } else {
-                                    if(frames > 50) {
-                                        blue_rob[robotID] = 0;
-                                    } else {
-                                        ++blue_rob[robotID];
-                                    }
-                                }
-                            }
-                        }
-                    #endif
-                    }
-                }
-
-                for (int i=0; i < robots_yellow_n; i++)
-                {
-                    float confR = detection.robots_yellow(i).confidence();
-
-                    if (confR > CONF_THRESHOLD_BOTS)
-                    {
-                    #if SIMULATED
-                        updateInfo(detection.robots_yellow(i), TEAM_YELLOW);
-                    #else
-                        if ((detection.robots_yellow(i).x() >= 0 && detection.camera_id() == 0)
-                            || (detection.robots_yellow(i).x() < 0 && detection.camera_id() == 1))
-                        {
-                            int robotID = detection.robots_yellow(i).robot_id();
-                        #if TEAM==TEAM_BLUE
-                            if(gamemodel->findOpTeam(robotID)) {
-                        #else
-                            if(gamemodel->findMyTeam(robotID)) {
-                        #endif
-                                /* If the robot is already in the GameModel update it immediately */
-                                updateInfo(detection.robots_yellow(i), TEAM_YELLOW);
-                            }
-                            else {
-                                if(yellow_rob[robotID] >= 25) {
-                                    updateInfo(detection.robots_yellow(i), TEAM_YELLOW);
-                                } else {
-                                    if(frames > 50) {
-                                        yellow_rob[robotID] = 0;
-                                    } else {
-                                        ++yellow_rob[robotID];
-                                    }
-                                }
-                            }
-                        }
-                    #endif
-                    }
-                }
-            }//if_team
-
-            gamemodel->notifyObservers();
-
+            packetCount = 0;
+            const SSL_DetectionFrame& detection = packet.detection();
+            recieveBall(detection);
+            recieveRobotTeam(detection, TEAM_BLUE);
+            recieveRobotTeam(detection, TEAM_YELLOW);
         }
+        
+        //Runs the Robobulls game once
+        gamemodel->notifyObservers();
     }
-//  cout << "Size at end of detection: " << gamemodel->getMyTeam().size()+gamemodel->getOponentTeam().size() << endl;
-//  cout <<gamemodel->toString();
-//  cout << gamemodel->getBallPoint().toString() << endl;
-
+    
+    /* After 50 frames the "seen counts" of each team are set to 0. This prevents
+     * ghost robots from appearing over time
+     */
     if(++frames > 50) {
-        /* After 50 frames the seen counts of each team are set to 0. This prevents
-         * ghost robots from appearing over time
-         */
         frames = 0;
         for(int& i : blue_rob)
             i = 0;
@@ -238,16 +160,8 @@ bool VisionComm::receive()
             i = 0;
     }
 
-    /* Debug Robot/Hit information
-    for (int i =0; i<10;i++)
-    {
-        cout << "id\t" << i << "\thits\t" << blue_rob[i] << endl;
-    }
-    */
-
     return true;
 }
-
 
 
 void VisionComm::run()
@@ -256,5 +170,3 @@ void VisionComm::run()
         receive();
     }
 }
-
-
