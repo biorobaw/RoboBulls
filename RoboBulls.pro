@@ -34,11 +34,9 @@ QMAKE_CXX = g++-4.8
 
 SOURCES += main.cpp \
 	behavior/behavior.cpp \
-	behavior/defendoneonone.cpp \
 	behavior/driveballandkick.cpp \
 	behavior/kicktogoal.cpp \
 	behavior/penaltybehavior.cpp \
-	behavior/stopbehavior.cpp \
 	communication/nxtrobcomm.cpp \
 	communication/refcomm.cpp \
 	communication/robcomm.cpp \
@@ -110,16 +108,15 @@ SOURCES += main.cpp \
     include/config/tolerances.cpp \
     gui/getbehavior.cpp \
     utilities/comparisons.cpp \
-    movement/move_randomization.cpp
+    movement/move_randomization.cpp \
+    utilities/velocitycalculator.cpp
 
 HEADERS += \
 	behavior/behavior.h \
 	behavior/behaviorassignment.h \
-	behavior/defendoneonone.h \
 	behavior/driveballandkick.h \
 	behavior/kicktogoal.h \
 	behavior/penaltybehavior.h \
-	behavior/stopbehavior.h \
 	communication/nxtrobcomm.h \
 	communication/refcomm.h \
 	communication/robcomm.h \
@@ -169,7 +166,6 @@ HEADERS += \
     include/config/simulated.h \
     include/config/team.h \
     include/config/tolerances.h \
-    include/config/trace.h \
     behavior/genericmovementbehavior.h \
     skill/stop.h \
     movement/three_omni_motion/omni3_velcalculator.h \
@@ -202,7 +198,8 @@ HEADERS += \
     movement/move_collisions.h \
     gui/getbehavior.h \
     utilities/comparisons.h \
-    movement/move_randomization.h
+    movement/move_randomization.h \
+    utilities/velocitycalculator.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 

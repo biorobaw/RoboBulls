@@ -1,5 +1,4 @@
 #include "sendballtoregion.h"
-#include "include/config/trace.h"
 
 SendBallToRegion::SendBallToRegion(Region region)
 	: kickball(nullptr)
@@ -15,11 +14,6 @@ SendBallToRegion::~SendBallToRegion()
 
 void SendBallToRegion::perform(Robot * robot)
 {
-    #if TRACE
-        cout <<"Performing Behavior::SendBallToRegion " <<
-                 robot->getID() << endl;
-    #endif
-
     switch (state)
     {
     case initial:

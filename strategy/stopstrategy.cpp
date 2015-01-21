@@ -5,7 +5,6 @@
 #include "utilities/measurments.h"
 #include "utilities/comparisons.h"
 #include "behavior/behaviorassignment.h"
-#include "behavior/stopbehavior.h"
 #include "behavior/defendfarfromball.h"
 
 #define RADIUS 1000

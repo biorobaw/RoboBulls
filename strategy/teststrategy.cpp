@@ -1,7 +1,6 @@
 #include "teststrategy.h"
 #include "behavior/behaviorassignment.h"
 #include "behavior/kicktogoal.h"
-#include "behavior/defendoneonone.h"
 #include "behavior/driveballandkick.h"
 #include "behavior/mytestbehavior.h"
 #include "behavior/defendclosetoball.h"
