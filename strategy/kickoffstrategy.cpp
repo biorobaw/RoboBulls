@@ -20,12 +20,12 @@
  *             *
  ******************/
 Point KickOffStrategy::myKickoffPoints[10] = {
-    /*0*/ Point( 200,    0),
-    /*1*/ Point( 800, -600),
-    /*2*/ Point( 800,  600),
-    /*3*/ Point(1300, -900),
-    /*4*/ Point(1300,  900),
-    /*5*/ Point(2900,    0)
+    /*0*/ Point( -200,    0),
+    /*1*/ Point( -800, -600),
+    /*2*/ Point( -800,  600),
+    /*3*/ Point(-1300, -900),
+    /*4*/ Point(-1300,  900),
+    /*5*/ Point(-2900,    0)
 };
 
 /******************
@@ -38,12 +38,12 @@ Point KickOffStrategy::myKickoffPoints[10] = {
  *             *
  ******************/
 Point KickOffStrategy::opKickoffPoints[10] = {
-    /*0*/ Point(2200,    0),
-    /*1*/ Point(2500,  800),
-    /*2*/ Point(2500, -800),
-    /*3*/ Point(2000,  800),
-    /*4*/ Point(2000, -800),
-    /*5*/ Point(2900,    0)
+    /*0*/ Point(-2200,    0),
+    /*1*/ Point(-2500,  800),
+    /*2*/ Point(-2500, -800),
+    /*3*/ Point(-2000,  800),
+    /*4*/ Point(-2000, -800),
+    /*5*/ Point(-2900,    0)
 };
 
 
@@ -62,8 +62,9 @@ void KickOffStrategy::assignBeh()
         if(rob->getID() == 5)
             continue;
         Point nextPoint = whichKickoffPointList[i++];
-        if(TEAM == TEAM_YELLOW)
+     #if TEAM == TEAM_YELLOW
             nextPoint.x *= 1;
+    #endif
         float angleToBall
                 = Measurments::angleBetween(nextPoint, gameModel->getBallPoint());
         rob->assignBeh<GenericMovementBehavior>(nextPoint, angleToBall);

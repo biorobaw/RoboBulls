@@ -19,7 +19,7 @@
  * robots going to the same point. Experimental.
  * [See movement/move_randomization.h]
  */
-#define MOVEMENT_USE_RANDOMIZATION  1
+#define MOVEMENT_USE_RANDOMIZATION  0
 
 /************************************************************************/
 

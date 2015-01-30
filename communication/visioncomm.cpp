@@ -64,29 +64,31 @@ void VisionComm::updateInfo(const SSL_DetectionRobot& robot, int detectedTeamCol
 }
 
 
-/* Looks at all detected balls in the frame detection, and chooses
- * the best one. Sets the GameModel's ballpoint as this best one.
- * We use max_element with the compare function below. `bind` is used
- * to turn the three-param function to a two-param function. We need this because
- * the compare function needs the `frame` to verify the correct camera.
- */
-static bool ballCompareFn(const SSL_DetectionBall&  a, 
-                          const SSL_DetectionBall&  b, 
-                          const SSL_DetectionFrame& frame) {
-    if(a.confidence() < b.confidence())
-        return true;
-    if((a.x()  < 0 && frame.camera_id() == 0) ||
-       (a.x() >= 0 && frame.camera_id() == 1))
-        return true;
-    return false;
+template<typename Detection>
+static bool isGoodDetection
+    (const Detection& detection, const SSL_DetectionFrame& frame, float confidence)
+{
+    bool isGoodConf = detection.confidence() > confidence;
+    bool isGoodSide = (detection.x() >= 0 && frame.camera_id() == 0) ||
+                      (detection.x()  < 0 && frame.camera_id() == 1) || SIMULATED;
+    return isGoodConf && isGoodSide;
 }
 
-void VisionComm::recieveBall(const SSL_DetectionFrame& frame) 
+
+/* Looks at all detected balls in the frame detection, and chooses
+ * the best one based on confidence. Sets the GameModel's ballpoint
+ * as this best one if the confidence is > CONF_THRESHOLD_BALL
+ * and it is detected on the correct side.
+ */
+static bool ballCompareFn(const SSL_DetectionBall&  a, const SSL_DetectionBall&  b) {
+    return a.confidence() < b.confidence();
+}
+
+void VisionComm::recieveBall(const SSL_DetectionFrame& frame)
 {
-    using namespace std::placeholders;
-    auto bestBall = std::max_element(frame.balls().begin(), frame.balls().end(),
-                        std::bind(ballCompareFn, _1, _2, frame));
-    gamemodel->setBallPoint( Point(bestBall->x(), bestBall->y()) );
+    auto bestDetect = std::max_element(frame.balls().begin(), frame.balls().end(), ballCompareFn);
+    if(isGoodDetection(*bestDetect, frame, CONF_THRESHOLD_BALL))
+        gameModel->setBallPoint( Point(bestDetect->x(), bestDetect->y()) );
 }
 
 
@@ -96,36 +98,25 @@ void VisionComm::recieveBall(const SSL_DetectionFrame& frame)
  */
 void VisionComm::recieveRobotTeam(const SSL_DetectionFrame& frame, int whichTeam)
 {
-    auto* currentTeamDetection   = &frame.robots_blue();
-    auto* currentTeamVector      = &gamemodel->getMyTeam();
-    int*  currentTeamFrameCounts = blue_rob;
+    auto* currentTeamDetection = &frame.robots_blue();
+    auto* currentTeamVector    = &gamemodel->getMyTeam();
+    int*  currentTeamCounts    = blue_rob;
 
     if(whichTeam == TEAM_YELLOW) {
-        currentTeamDetection   = &frame.robots_yellow();
-        currentTeamFrameCounts = yellow_rob;
+        currentTeamDetection = &frame.robots_yellow();
+        currentTeamCounts    = yellow_rob;
     }
     if(whichTeam != TEAM)
         currentTeamVector = &gamemodel->getOponentTeam();
     
     for(const SSL_DetectionRobot& robot : *currentTeamDetection)
     {
-        if(robot.confidence() < CONF_THRESHOLD_BOTS)
-            continue;
-    #if SIMULATED == 0
-        if((robot.x() >= 0 && frame.camera_id() == 0) ||
-           (robot.x()  < 0 && frame.camera_id() == 1))
-    #endif
-        {
-            /* If the robot is already in the game, Or if the robot has been seen 
-             * for at least 25 of the past 50 frames, update/add the robot. Otherwise, 
-             * the robot has not been added, so we increment its count of appearances 
-             * in this set of 50 frames.
-             */
+        if(isGoodDetection(robot, frame, CONF_THRESHOLD_BOTS)) {
             int robotID = robot.robot_id();
-            if(gamemodel->find(robotID, *currentTeamVector) or currentTeamFrameCounts[robotID] >= 25) {
+            if(gamemodel->find(robotID, *currentTeamVector) or currentTeamCounts[robotID] >= 25) {
                 updateInfo(robot, whichTeam);
             } else {
-                ++currentTeamFrameCounts[robotID];
+                ++currentTeamCounts[robotID];
             }
         }
     }
@@ -134,16 +125,13 @@ void VisionComm::recieveRobotTeam(const SSL_DetectionFrame& frame, int whichTeam
 
 bool VisionComm::receive()
 {
-    if (client->receive(packet) and packet.has_detection()) 
+    if (client->receive(packet) and packet.has_detection() and ++packetCount>=DISCARD_RATE)
     {
-        if (++packetCount >= DISCARD_RATE)
-        {
-            packetCount = 0;
-            const SSL_DetectionFrame& detection = packet.detection();
-            recieveBall(detection);
-            recieveRobotTeam(detection, TEAM_BLUE);
-            recieveRobotTeam(detection, TEAM_YELLOW);
-        }
+        packetCount = 0;
+        const SSL_DetectionFrame& frame = packet.detection();
+        recieveBall(frame);
+        recieveRobotTeam(frame, TEAM_BLUE);
+        recieveRobotTeam(frame, TEAM_YELLOW);
         
         //Runs the Robobulls game once
         gamemodel->notifyObservers();

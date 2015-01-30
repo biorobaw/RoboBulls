@@ -39,7 +39,11 @@ bool IgnorablePredicate::operator()(const Point& point) {
 
 //Binary operators
 bool IgnorablePredicate::operator()(Robot* a, Robot* b) {
-    return isNotIgnored(a) and isNotIgnored(b) and robotCompareFn(a, b);
+    try {
+        return isNotIgnored(a) and isNotIgnored(b) and robotCompareFn(a, b);
+    } catch( ... ) {
+        return isNotIgnored(a);
+    }
 }
 bool IgnorablePredicate::operator()(const Point& a, const Point& b) {
     return pointCompareFn(a, b);
