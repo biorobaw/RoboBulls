@@ -1,4 +1,5 @@
 #include "behavior/genericmovementbehavior.h"
+#include "behavior/defendfarfromball.h"
 #include "include/config/team.h"
 #include "model/gamemodel.h"
 #include "kickoffstrategy.h"
@@ -61,17 +62,18 @@ void KickOffStrategy::assignBeh()
 	{
         if(rob->getID() == 5)
             continue;
+
         Point nextPoint = whichKickoffPointList[i++];
-     #if TEAM == TEAM_YELLOW
-            nextPoint.x *= 1;
+    #if TEAM == TEAM_YELLOW
+            nextPoint.x = abs(nextPoint.x);
     #endif
         float angleToBall
                 = Measurments::angleBetween(nextPoint, gameModel->getBallPoint());
         rob->assignBeh<GenericMovementBehavior>(nextPoint, angleToBall);
     }
-    
+
     //Goalie is a special case
     Robot* goalie = gameModel->findMyTeam(5);
     if(goalie)
-        goalie->assignBeh<GenericMovementBehavior>(whichKickoffPointList[5]);
+        goalie->assignBeh<DefendFarFromBall>();
 }

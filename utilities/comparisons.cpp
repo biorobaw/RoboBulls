@@ -31,7 +31,11 @@ struct idNotEqual : public idFilter {
 
 //Unary operators
 bool IgnorablePredicate::operator()(Robot* robot) {
-    return isNotIgnored(robot) and robotCompareFn(robot, nullptr);
+    try {
+        return isNotIgnored(robot) and robotCompareFn(robot, nullptr);
+    } catch( ... ) {
+        return isNotIgnored(robot);
+    }
 }
 bool IgnorablePredicate::operator()(const Point& point) {
     return pointCompareFn(point, Point(0,0));
@@ -134,17 +138,17 @@ bool IgnorablePredicate::isNotIgnored(Robot* robot) {
 
 
 pred_id::pred_id(int whichId) {
-    ignoreID(whichId);
+    ignoreIDNot(whichId);
 }
 pred_id::pred_id(std::initializer_list<int> ids) {
     ignoreIDs(ids);
 }
 
 pred_idNot::pred_idNot(int whichId) {
-    ignoreIDNot(whichId);
+    ignoreID(whichId);
 }
 pred_idNot::pred_idNot(std::initializer_list<int> ids) {
-    ignoreIDsNot(ids);
+    ignoreIDs(ids);
 }
 
 
