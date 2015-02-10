@@ -48,7 +48,7 @@ private:
     static bool isOnAttack;
     Robot* currentMainAttacker = NULL;
     Robot* currentSuppAttacker = NULL;
-    void findMostValidRobots(Point, Robot*&, Robot*&);
+    void findMostValidRobots(Point, Robot*&, Robot*&, Robot *&c_out);
     Point ballOriginalPos;
 };
 
