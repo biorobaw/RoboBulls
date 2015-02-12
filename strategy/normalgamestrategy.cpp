@@ -101,7 +101,7 @@ NormalGameStrategy::NormalGameStrategy()
 
 void NormalGameStrategy::assignBeh()
 {
-    if(GameModel::getModel()->getMyTeam().size() == 4) {
+    if(gameModel->getMyTeam().size() <= 4) {
         isOnAttack = considerSwitchCreiteria();
         if(isOnAttack) {
             assignAttackBehaviors();
@@ -124,9 +124,9 @@ bool NormalGameStrategy::update()
 
     /* This strategy is designed for the Nov.26 presentation /
      * Feb 13-14 Engineering Expo
-     * and must have four robots to function
+     * and must have <= four robots to function
      */
-    if(gm->getMyTeam().size() != 4) {
+    if(gm->getMyTeam().size() > 4) {
         return false;
     }
 
@@ -285,6 +285,7 @@ void NormalGameStrategy::assignAttackBehaviors()
     /**************/
     driverBot->assignBeh<AttackMain>(recvBot);
       recvBot->assignBeh<AttackSupport>(driverBot);
+    if(otherBot)
      otherBot->assignBeh<OpBallBlocker>();
     gameModel->findMyTeam(5)->assignBeh<DefendFarFromBall>();
 }
@@ -303,7 +304,8 @@ void NormalGameStrategy::assignDefendBehaviors()
 
      receiver->assignBeh<GenericMovementBehavior>(wait_point);
       blocker->assignBeh<OpBallBlocker>();
-        other->assignBeh<AttackMain>(blocker);
+    if(other)
+        other->assignBeh<AttackMain>(receiver);
     gameModel->findMyTeam(5)->assignBeh<DefendFarFromBall>();
 }
 
@@ -321,6 +323,7 @@ void NormalGameStrategy::assignGoalKickBehaviors()
 
      middler->assignBeh<GenericMovementBehavior>( Point(0, -1500+3000*TEAM) );
     receiver->assignBeh<RetreatAfterGoal>(1000);
+    if(other)
        other->assignBeh<RetreatAfterGoal>(-1000);
     gameModel->findMyTeam(5)->assignBeh<DefendFarFromBall>();
 }
@@ -339,7 +342,8 @@ void NormalGameStrategy::assignRetreatBehaviors()
 
     right_rob->assignBeh<RetreatAfterGoal>(-1000);
      left_rob->assignBeh<RetreatAfterGoal>( 1000);
-     othr_rob->assignBeh<GenericMovementBehavior>(Point(gameModel->getMyGoal().x*0.7, 0));
+     if(othr_rob)
+        othr_rob->assignBeh<GenericMovementBehavior>(Point(gameModel->getMyGoal().x*0.7, 0));
     gameModel->findMyTeam(5)->assignBeh<DefendFarFromBall>();
 }
 
@@ -357,13 +361,13 @@ void NormalGameStrategy::findMostValidRobots(Point target, Robot*& a_out, Robot*
 	//Find robot closest to `target`
     a_found = *Comparisons::distance(target).ignoreID(5).min(myTeam);
 
-    //b_found is the remaining robot (3-robot teams)
+    //b_found is the otherBotremaining robot (3-robot teams)
     b_found = Comparisons::idNot(5).ignoreID(a_found->getID()).anyMyTeam();
 
     //c_found is also the remaining robot
     c_found = Comparisons::idNot(5).ignoreIDs({a_found, b_found}).anyMyTeam();
 
-    if(!a_found || !b_found || !c_found)
+    if(!a_found || !b_found)
         throw std::runtime_error("ERROR: Valid robots not found!");
 
     a_out = a_found;
