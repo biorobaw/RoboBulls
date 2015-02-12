@@ -93,11 +93,25 @@ public:
 /*************************************************/
 /** PUBLIC FUNCTIONS **/
 
+bool NormalGameStrategy::hasStoppedForThisKickoff = false;
+
 NormalGameStrategy::NormalGameStrategy()
     : currentMainAttacker(NULL)
     , currentSuppAttacker(NULL)
     , ballOriginalPos(GameModel::getModel()->getBallPoint())
-    {}
+    { }
+
+/* So, here, the only way to get back into NGS is through a kickoff.
+ * If StrategyController is deleting this because of a new gameModel
+ * state, we make sure the NEXT kickoff is stopped for. This is needed
+ * because StrategyController does delete this upon switching from attack
+ * and defend, so this seperates those two deletion cases
+ */
+NormalGameStrategy::~NormalGameStrategy()
+{
+    if(gameModel->isNewCommand())
+        hasStoppedForThisKickoff = false;
+}
 
 void NormalGameStrategy::assignBeh()
 {
@@ -159,22 +173,29 @@ bool NormalGameStrategy::update()
          * else
          *      we follow the general normal game strategy
          * */
-        if(((gm->getPreviousGameState() == 'K' && TEAM == TEAM_BLUE) ||
-            (gm->getPreviousGameState() == 'k' && TEAM == TEAM_YELLOW)) &&
+        char prevGs = gm->getPreviousGameState();
+
+        if(((prevGs == 'K' && TEAM == TEAM_BLUE) ||
+            (prevGs == 'k' && TEAM == TEAM_YELLOW)) &&
             !ballMoved)
         {
             assignAttackBehaviors();
         }
-        else if(((gm->getPreviousGameState() == 'k' && TEAM == TEAM_BLUE) ||
-                 (gm->getPreviousGameState() == 'K' && TEAM == TEAM_YELLOW)) &&
-                 !ballMoved)
+        else if(((prevGs == 'k' && TEAM == TEAM_BLUE) ||
+                 (prevGs == 'K' && TEAM == TEAM_YELLOW)) &&
+                 !ballMoved &&
+                 !hasStoppedForThisKickoff)
         {
             BehaviorAssignment<SimpleBehaviors> haltAssignment;
             haltAssignment.setSingleAssignment(true);
             haltAssignment.assignBeh();
+
         }
         else
         {
+            //The ball has moved and we have stopped for *this* kickoff.
+            hasStoppedForThisKickoff = true;
+
             if(ballNotInGoalCount < MIN_BALLINGOAL_COUNT) {
                 /* This ensures that the ball must be detected out of the goal
                  * a number of times before the robots move. Otherwise, we sould see
@@ -281,8 +302,8 @@ void NormalGameStrategy::assignAttackBehaviors()
 {
     Robot* driverBot, *recvBot, *otherBot;
     findMostValidRobots(gameModel->getBallPoint(), driverBot, recvBot, otherBot);
-
     /**************/
+
     driverBot->assignBeh<AttackMain>(recvBot);
       recvBot->assignBeh<AttackSupport>(driverBot);
     if(otherBot)
