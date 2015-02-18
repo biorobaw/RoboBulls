@@ -69,6 +69,11 @@ IgnorablePredicate& IgnorablePredicate::ignoreIDs(std::initializer_list<int> ids
         ignore_if(idEqual(id));
     return *this;
 }
+IgnorablePredicate& IgnorablePredicate::ignoreIDs(std::initializer_list<Robot*> robs) {
+    for(Robot* rob : robs)
+        ignore_if(idEqual(rob->getID()));
+    return *this;
+}
 IgnorablePredicate& IgnorablePredicate::ignoreIDsNot(std::initializer_list<int> ids) {
     for(int id : ids)
         ignore_if(idNotEqual(id));
@@ -194,7 +199,7 @@ bool isFacingPointCompareFn(Robot* robot, Robot* null, const Point& pred_Point, 
     Point robPos     = robot->getRobotPosition();
     float robAngle   = robot->getOrientation();
     float angleTween = Measurments::angleBetween(robPos, pred_Point);
-    float angleDiff  = Measurments::angleDiff(angleTween, robAngle);
+    float angleDiff  = abs( Measurments::angleDiff(angleTween, robAngle) );
     return compare_function(angleDiff, pred_tolerance);
 }
 
