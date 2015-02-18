@@ -86,9 +86,11 @@ static bool ballCompareFn(const SSL_DetectionBall&  a, const SSL_DetectionBall& 
 
 void VisionComm::recieveBall(const SSL_DetectionFrame& frame)
 {
-    auto bestDetect = std::max_element(frame.balls().begin(), frame.balls().end(), ballCompareFn);
-    if(isGoodDetection(*bestDetect, frame, CONF_THRESHOLD_BALL))
-        gameModel->setBallPoint( Point(bestDetect->x(), bestDetect->y()) );
+    if(frame.balls_size() > 0) {
+        auto bestDetect = std::max_element(frame.balls().begin(), frame.balls().end(), ballCompareFn);
+        if(isGoodDetection(*bestDetect, frame, CONF_THRESHOLD_BALL))
+            gameModel->setBallPoint( Point(bestDetect->x(), bestDetect->y()) );
+    }
 }
 
 

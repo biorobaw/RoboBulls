@@ -33,7 +33,8 @@
 class NormalGameStrategy : public Strategy
 {
 public:
-    NormalGameStrategy();
+     NormalGameStrategy();
+    ~NormalGameStrategy();
     void assignBeh() override;
     bool update() override;
 
@@ -46,10 +47,12 @@ private:
 
 private:
     static bool isOnAttack;
+    static bool hasStoppedForThisKickoff;
     Robot* currentMainAttacker = NULL;
     Robot* currentSuppAttacker = NULL;
-    void findMostValidRobots(Point, Robot*&, Robot*&);
+    void findMostValidRobots(Point, Robot*&, Robot*&, Robot *&c_out);
     Point ballOriginalPos;
+
 };
 
 #endif // NORMALGAMESTRATEGY_H

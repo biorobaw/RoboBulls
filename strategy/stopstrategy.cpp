@@ -55,13 +55,14 @@ void StopStrategy::rebuildTargetPoints()
     Point ballPoint = mod->getBallPoint();
 
     int teamSize = mod->getMyTeam().size();
+    int maxSize  = std::max(teamSize, (int)mod->getOponentTeam().size());
 
     /* Interesting thing:
      * If we're yellow team, then we add an offset to the initial
      * theta, to allow the yellow robots to move to different points than
      * the blue robots. They both follow the same increment.
      */
-    float theta_inc = (2*M_PI) / teamSize;
+    float theta_inc = (2*M_PI) / maxSize;
 #if TEAM==TEAM_BLUE
     float theta = 0;
 #else
