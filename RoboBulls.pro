@@ -109,7 +109,8 @@ SOURCES += main.cpp \
     gui/getbehavior.cpp \
     utilities/comparisons.cpp \
     movement/move_randomization.cpp \
-    utilities/velocitycalculator.cpp
+    utilities/velocitycalculator.cpp \
+    skill/kicktopointomni.cpp
 
 HEADERS += \
 	behavior/behavior.h \
@@ -199,7 +200,8 @@ HEADERS += \
     gui/getbehavior.h \
     utilities/comparisons.h \
     movement/move_randomization.h \
-    utilities/velocitycalculator.h
+    utilities/velocitycalculator.h \
+    skill/kicktopointomni.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 
