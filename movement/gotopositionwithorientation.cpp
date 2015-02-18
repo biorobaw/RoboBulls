@@ -1,39 +1,17 @@
 #ifndef GOTOPOSITIONWITHORIENTATION_CPP
 #define GOTOPOSITIONWITHORIENTATION_CPP
 
-#include "utilities/measurments.h"
-#include "model/gamemodel.h"
 #include "movement/movetype.h"
 #include "movement/gotopositionwithorientation.h"
 
 namespace Movement
 {
 
-GoToPosition::GoToPosition()
-    : Move()
-    {}
-
-GoToPosition::~GoToPosition()
-{
-
-}
-
-GoToPosition::GoToPosition
-    (Point targetPoint, float targetAngle, bool withObstacleAvoid, bool avoidBall)
-    : Move(targetPoint, targetAngle, withObstacleAvoid, avoidBall)
-    {}
-
-GoToPosition::GoToPosition
-    (float tx, float ty, float targetAngle, bool withObstacleAvoid, bool avoidBall)
-    : Move(Point(tx,ty), targetAngle, withObstacleAvoid, avoidBall)
-    {}
-
 /***********************************************************/
 /******************** Protected Methods ********************/
 /***********************************************************/
 
-void GoToPosition::calculateVels
-    (Robot *rob, Point targetPoint, float targetAngle, Type moveType)
+void GoToPosition::calculateVels(Robot *rob, Point targetPoint, float targetAngle, Type moveType)
 {
     switch(rob->type())
     {
@@ -41,8 +19,7 @@ void GoToPosition::calculateVels
         {
             if(!IS_DIFFERENTIAL(moveType))
                 moveType = ::Movement::Type::Default;
-            wheelvelocities vels 
-                = dc.calculateVels(rob, targetPoint, targetAngle, moveType);
+            wheelvelocities vels  = dc.calculateVels(rob, targetPoint, targetAngle, moveType);
             this->left  = vels.left;
             this->right = vels.right;
         }
@@ -51,8 +28,7 @@ void GoToPosition::calculateVels
         {
             if(!IS_OMNI(moveType))
                 moveType = ::Movement::Type::Default;
-            threeWheelVels vels 
-                = twc.calculateVels(rob, targetPoint, targetAngle, moveType);
+            threeWheelVels vels = twc.calculateVels(rob, targetPoint, targetAngle, moveType);
             this->left  = vels.L;
             this->right = vels.R;
             this->back  = vels.B;
@@ -62,8 +38,7 @@ void GoToPosition::calculateVels
         {
             if(!IS_OMNI(moveType))
                 moveType = ::Movement::Type::Default;
-            fourWheelVels vels 
-                = fwc.calculateVels(rob, targetPoint, targetAngle, moveType);
+            fourWheelVels vels = fwc.calculateVels(rob, targetPoint, targetAngle, moveType);
             this->lfront = vels.LF;
             this->lback  = vels.LB;
             this->rfront = vels.RF;

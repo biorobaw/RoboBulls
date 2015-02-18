@@ -48,7 +48,7 @@ fourWheelVels FourWheelCalculator::defaultCalc
     //Inertial Frame Velocities
     double x_vel = (distance_to_goal+dist_error_integral)*cos(angle_to_goal);
     double y_vel = (distance_to_goal+dist_error_integral)*sin(angle_to_goal);
-    double theta_vel = Measurments::angleDiff(theta_current,theta_goal);
+    double theta_vel = Measurments::angleDiff(theta_current,theta_goal)*0.5;
     if (abs(Measurments::angleDiff(theta_goal,theta_current))<abs(Measurments::angleDiff(theta_goal,theta_current+theta_vel)))
         theta_vel=-theta_vel;
 
@@ -67,8 +67,8 @@ fourWheelVels FourWheelCalculator::defaultCalc
 
     //Wheel Velocity Calculations
     double RF = (sin(frnt_axl_offset) * y_vel_robot + cos(frnt_axl_offset)*x_vel_robot + wheel_radius*theta_vel);
-    double LF = -(sin(frnt_axl_offset) * y_vel_robot - cos(frnt_axl_offset)*x_vel_robot + wheel_radius*theta_vel);
-    double LB = -(-sin(rear_axl_offset) * y_vel_robot - cos(rear_axl_offset)*x_vel_robot + wheel_radius*theta_vel);
+    double LF = (sin(frnt_axl_offset) * y_vel_robot - cos(frnt_axl_offset)*x_vel_robot + wheel_radius*theta_vel);
+    double LB = (-sin(rear_axl_offset) * y_vel_robot - cos(rear_axl_offset)*x_vel_robot + wheel_radius*theta_vel);
     double RB = (-sin(rear_axl_offset) * y_vel_robot + cos(rear_axl_offset)*x_vel_robot + wheel_radius*theta_vel);
 
     //Normalize wheel velocities
@@ -158,8 +158,8 @@ fourWheelVels FourWheelCalculator::facePointCalc
 
     //Wheel Velocity Calculations
     double RF =  (sin(frnt_axl_offset) * y_vel_robot + cos(frnt_axl_offset)*x_vel_robot + wheel_radius*theta_vel);
-    double LF = -(sin(frnt_axl_offset) * y_vel_robot - cos(frnt_axl_offset)*x_vel_robot + wheel_radius*theta_vel);
-    double LB = -(-sin(rear_axl_offset) * y_vel_robot - cos(rear_axl_offset)*x_vel_robot + wheel_radius*theta_vel);
+    double LF = (sin(frnt_axl_offset) * y_vel_robot - cos(frnt_axl_offset)*x_vel_robot + wheel_radius*theta_vel);
+    double LB = (-sin(rear_axl_offset) * y_vel_robot - cos(rear_axl_offset)*x_vel_robot + wheel_radius*theta_vel);
     double RB =  (-sin(rear_axl_offset) * y_vel_robot + cos(rear_axl_offset)*x_vel_robot + wheel_radius*theta_vel);
 
     //Normalize wheel velocities
