@@ -22,7 +22,7 @@ namespace Skill
  * and is to prevent the robot from instantly going back to the initial state
  * when the kick was ineffective.
  */
-#define KICK_COUNT_MAX 1
+#define KICK_COUNT_MAX 2
 
 /************************************************************************/
 
@@ -47,10 +47,11 @@ bool KickToPointOmni::perform(Robot* robot)
             float dx = BEHIND_RADIUS * cos(targetBallAng);
             float dy = BEHIND_RADIUS * sin(targetBallAng);
             Point moveTarget = bp + Point(dx, dy);
+
             move_skill.recreate(moveTarget, UNUSED_ANGLE_VALUE, true, true);
-            //move_skill.setRecreateTolerances(200, M_PI);
+            move_skill.setRecreateTolerances(25, M_PI);
             move_skill.setVelocityMultiplier(1.0);
-            move_skill.setMovementTolerances(120, M_PI);
+            move_skill.setMovementTolerances(110, M_PI);
             
             if(move_skill.perform(robot)) {
                 state = ADJUST_ANGLE;
@@ -59,15 +60,16 @@ bool KickToPointOmni::perform(Robot* robot)
         break;
     case ADJUST_ANGLE:
         {
-            float ballTargAng = Measurments::angleBetween(bp, *m_targetPointer);
+            float robBallAng = Measurments::angleBetween(robot, bp);
             float ballRobAng = Measurments::angleBetween(bp, robot);
-            Point target = bp + Point(KICK_DISTANCE*1.2*cos(ballRobAng),
-                                      KICK_DISTANCE*1.2*sin(ballRobAng));
-            move_skill.recreate(target, ballTargAng, false, false);
+            Point target = bp + Point(KICK_DISTANCE*1.7*cos(ballRobAng),
+                                      KICK_DISTANCE*1.7*sin(ballRobAng));
+
+            move_skill.recreate(target, robBallAng, false, false);
             move_skill.setVelocityMultiplier(1.0);
             move_skill.perform(robot);
             
-            if(Comparisons::isFacingPoint(robot, *m_targetPointer, M_PI_4)) {
+            if(Comparisons::isFacingPoint(robot, bp, M_PI_4*0.75)) {
                 state = MOVE_FORWARD;
             }
         }
