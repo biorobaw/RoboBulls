@@ -9,9 +9,8 @@
 #include "gui/guiinterface.h"
 #include "strategy/strategycontroller.h"
 
-void exitStopRobot(int param)
+void exitStopRobot(int)
 {
-    UNUSED_PARAM(param);
     for(Robot* rob : gameModel->getMyTeam()) {
         rob->setL(0);
         rob->setR(0);
@@ -19,6 +18,21 @@ void exitStopRobot(int param)
     RobComm::getRobComm()->sendVelsLarge(gameModel->getMyTeam());
     exit(1);
 }
+
+void exitStopRobot()
+{
+    exitStopRobot(-1);
+}
+
+void registerExitSignals()
+{
+    static const int bad_signals[] = {SIGSEGV, SIGKILL, SIGHUP, SIGABRT, SIGTERM, SIGQUIT};
+    for(int i : bad_signals)
+        std::signal(i, exitStopRobot);
+    std::atexit(exitStopRobot);
+    std::set_terminate(exitStopRobot);
+}
+
 
 
 int main(int argc, char *argv[])
@@ -35,13 +49,9 @@ int main(int argc, char *argv[])
     RefComm refCommunicator(myGameModel);
     VisionComm visionCommunicator(myGameModel);
 
-    std::signal(SIGSEGV, exitStopRobot);
-    std::signal(SIGABRT, exitStopRobot);
-    std::signal(SIGTERM, exitStopRobot);
-    std::signal(SIGHUP, exitStopRobot);
+    registerExitSignals();
     
     visionCommunicator.start();
     refCommunicator.start();
-
     return a.exec();
 }
