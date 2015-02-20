@@ -63,7 +63,6 @@ SOURCES += main.cpp \
 	strategy/teststrategy.cpp \
 	utilities/measurments.cpp \
 	utilities/point.cpp \
-    behavior/mytestbehavior.cpp \
     behavior/defendclosetoball.cpp \
     behavior/defendfarfromball.cpp \
     behavior/attackmain.cpp \
@@ -110,7 +109,9 @@ SOURCES += main.cpp \
     utilities/comparisons.cpp \
     movement/move_randomization.cpp \
     utilities/velocitycalculator.cpp \
-    skill/kicktopointomni.cpp
+    skill/kicktopointomni.cpp \
+    strategy/videostrategies.cpp \
+    behavior/ballreceiver.cpp
 
 HEADERS += \
 	behavior/behavior.h \
@@ -201,7 +202,10 @@ HEADERS += \
     utilities/comparisons.h \
     movement/move_randomization.h \
     utilities/velocitycalculator.h \
-    skill/kicktopointomni.h
+    skill/kicktopointomni.h \
+    strategy/videostrategies.h \
+    behavior/genericskillbehavior.h \
+    behavior/ballreceiver.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 
