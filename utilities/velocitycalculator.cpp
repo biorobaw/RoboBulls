@@ -2,23 +2,15 @@
 #include "utilities/measurments.h"
 #include "utilities/velocitycalculator.h"
 
-/* Defines the minimum distance a point must move
- * To be considered having velocity.
- */
-#define NOISE_DIST_THRESHOLD 10
-
-/* The conversion factor for game "Points" to meters.
- * In the lab field there are about 1250 points / meter.
- * NOTE: This may not be true on the competition-size field.
- */
-#define POINTS_PER_METER 1250
-
+VelocityCalculator::VelocityCalculator(float dist_threshold)
+    : threshold(dist_threshold)
+    { }
 
 Point VelocityCalculator::update(const Point& movedPoint)
 {
     static time_t now = clock(), prev = 0;
 
-    if(Measurments::distance(oldPoint, movedPoint) > NOISE_DIST_THRESHOLD)
+    if(Measurments::distance(oldPoint, movedPoint) > threshold)
     {
         prev = now;
         now = clock();
@@ -27,6 +19,10 @@ Point VelocityCalculator::update(const Point& movedPoint)
         float velocityY = ((movedPoint.y - oldPoint.y) / POINTS_PER_METER) / changeInSec;
         oldPoint = movedPoint;
         velocity = Point(velocityX, velocityY);
+
+        //Reasonable velocity check
+        if(velocity.x > 8.0 || velocity.y > 8.0)
+            velocity = Point(0,0);
     }
 
     return velocity;

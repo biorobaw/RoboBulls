@@ -41,6 +41,8 @@ public:
     vector<Robot*>& getMyTeam();
     Point           getBallPoint();
     Point           getBallVelocity();
+    Point           getBallAcceleration();
+    float           getBallSpeed();
     unsigned char getBlueGoals();
     unsigned char getYellowGoals();
     unsigned char getRemainingTime();
@@ -73,6 +75,7 @@ private:
     Robot* robotWithBall         = NULL;
     Point ballPoint              = Point(0,0);
     Point ballVelocity           = Point(0,0);
+    Point ballAcceleration       = Point(0,0);
     char  gameState              = '\0';
     bool  hasNewCommand          = false;
     unsigned char  blueGoals     = 0;

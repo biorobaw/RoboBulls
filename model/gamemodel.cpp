@@ -58,6 +58,21 @@ Point GameModel::getBallPoint()
     return ballPoint;
 }
 
+Point GameModel::getBallVelocity()
+{
+    return ballVelocity;
+}
+
+Point GameModel::getBallAcceleration()
+{
+    return ballAcceleration;
+}
+
+float GameModel::getBallSpeed()
+{
+    return std::hypot(ballVelocity.x, ballVelocity.y);
+}
+
 unsigned char GameModel::getBlueGoals()
 {
     return blueGoals;
@@ -181,9 +196,11 @@ void GameModel::onCommandProcessed()
 
 void GameModel::setBallPoint(Point bp)
 {
-    static VelocityCalculator ballCalculator;
+    static VelocityCalculator ballVelCalculator;
+    static VelocityCalculator ballAclCalculator;
     ballPoint = bp;
-    ballVelocity = ballCalculator.update(bp);
+    ballVelocity = ballVelCalculator.update(bp);
+    ballAcceleration = ballAclCalculator.update(ballVelocity);
 }
 
 
