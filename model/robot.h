@@ -5,6 +5,8 @@
 #include <type_traits>
 #include "utilities/point.h"
 #include "behavior/behavior.h"
+#include "skill/skill.h"
+#include "behavior/genericskillbehavior.h"
 #include "include/config/robot_types.h"
 
 /**
@@ -37,6 +39,10 @@ public:
     //Used to assign a behavior to the robot
     template<typename BehaviorType, typename... Args>
     bool assignBeh(Args&&... args);
+
+    //Used to assign a single skill to a robot
+    template<typename SkillType, typename... Args>
+    bool assignSkill(Args&&... args);
 
     //gets
     Point getRobotPosition();
@@ -86,6 +92,7 @@ bool Robot::assignBeh(Args&&... args)
 {
     static_assert(std::is_constructible<BehaviorType, Args...>::value,
         "Behavior must be constructible with these arguments");
+
     static_assert(std::is_base_of<Behavior, BehaviorType>::value,
         "This Behavior must derive from the Behavior base class");
 
@@ -94,7 +101,14 @@ bool Robot::assignBeh(Args&&... args)
         setCurrentBeh(new BehaviorType(args...));
         return true;
     }
+	
     return false;
+}
+
+template<typename SkillType, typename... Args>
+bool Robot::assignSkill(Args&&... args)
+{
+    return assignBeh<GenericSkillBehavior<SkillType>>(args...);
 }
 
 #endif // ROBOT_H
