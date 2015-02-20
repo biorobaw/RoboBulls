@@ -56,11 +56,11 @@ void StrategyController::assignNewStrategy(char gameState)
 {
     clearCurrentStrategy();
 
+    std::cout << "New Strategy: " << gameState << std::endl;
+
     /* Testing macro: Change this to 0 to ignore game sate
      * commands; use to test a single strategy
      */
-    std::cout << "New Strategy: " << gameState << std::endl;
-
 #if 1
     switch(gameState)
     {
@@ -100,7 +100,7 @@ void StrategyController::assignNewStrategy(char gameState)
         activeStrategy = new TestStrategy();
     };
 #else
-    activeStrategy = new NormalGameStrategy();
+    activeStrategy = new TestStrategy();
 #endif
 }
 
