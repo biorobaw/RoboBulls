@@ -9,7 +9,7 @@
  * Or change the #if option on one of the blocks below
  */
 
-#if 1
+#if 0
 const robotType robotIDTypes[] = {
  /*0*/	differential,
  /*1*/	differential,
@@ -23,12 +23,12 @@ const robotType robotIDTypes[] = {
 #endif
  /*6*/	differential,
  /*7*/	differential,
- /*8*/	differential,
+ /*8*/	fourWheelOmni,
  /*9*/	differential
 };
 #endif
 
-#if 0
+#if 1
 const robotType robotIDTypes[] = {
  /*0*/	fourWheelOmni,
  /*1*/	fourWheelOmni,

@@ -60,8 +60,8 @@ void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
         packet->right_front = Measurments::clamp(rob->getRF(), -127, 127)/k + 100;
         packet->right_back  = Measurments::clamp(rob->getRB(), -127, 127)/k + 100;
         packet->kick = rob->getKick() ? 1 : 0;
-        packet->chip_power = 20;
-        packet->dribble_power = 0;
+        packet->chip_power = 30;
+        packet->dribble_power = 10;
         packet->dollar = char(255);
 
         // Ryan overriding the zero-reset in the event of a manual override from the GUI
