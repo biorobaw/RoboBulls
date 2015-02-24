@@ -57,7 +57,7 @@ fourWheelVels FourWheelCalculator::defaultCalc
     {
         x_vel *= 0.7;
         y_vel *= 0.7;
-        theta_vel *= 2;
+        theta_vel *= 0.7;
     }
 
     // Robot Frame Velocities
@@ -145,9 +145,9 @@ fourWheelVels FourWheelCalculator::facePointCalc
     double vel = sqrt(x_vel*x_vel+y_vel*y_vel);
     if (abs(Measurments::angleDiff(theta_goal,theta_current))>ROT_TOLERANCE*0.5 && vel > 40)
     {
-        x_vel = 40*cos(angle_to_goal);
-        y_vel = 40*sin(angle_to_goal);
-        theta_vel*=1.337;
+        x_vel = 90*cos(angle_to_goal);
+        y_vel = 90*sin(angle_to_goal);
+        theta_vel *= 0.8;
     }
 
     //cout << dist_error_integral << endl;

@@ -244,8 +244,9 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
              * Velocity Calculating (Important part)
              *********************************************/
 
-            float nextAngle = Measurments::angleBetween(robotPoint, nextPoint);
-            this->calculateVels(robot, nextPoint, nextAngle, moveType);
+            //Omni robots can move while facing the final orientation directly
+            //float nextAngle = Measurments::angleBetween(robotPoint, nextPoint);
+            this->calculateVels(robot, nextPoint, m_targetAngle, moveType);
             
             /**********///Path Queue Updating
             if(Measurments::isClose(robotPoint, nextPoint, nextDistTolerance)) {
