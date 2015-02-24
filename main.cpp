@@ -7,6 +7,7 @@
 #include "model/gamemodel.h"
 #include "model/robot.h"
 #include "gui/guiinterface.h"
+#include "utilities/debug.h"
 #include "strategy/strategycontroller.h"
 
 void exitStopRobot(int)
@@ -51,6 +52,7 @@ int main(int argc, char *argv[])
 
     registerExitSignals();
     
+    debug::listenStart();
     visionCommunicator.start();
     refCommunicator.start();
     return a.exec();

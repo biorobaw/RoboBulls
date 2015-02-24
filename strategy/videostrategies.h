@@ -32,7 +32,7 @@ public:
 private:
 	Robot* receiver;
 	bool   bhasKicked;
-    Skill::KickToPoint* ktp = nullptr;
+    Skill::KickToPointOmni* ktp = nullptr;
 };
 
 /************************************************************************/

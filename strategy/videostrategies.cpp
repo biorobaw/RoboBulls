@@ -3,14 +3,26 @@
 #include "skill/stop.h"
 #include "model/gamemodel.h"
 #include "strategy/videostrategies.h"
+#include "utilities/debug.h"
+#include "utilities/comparisons.h"
 
 /************************************************************************/
 /* BEHAVIORS */
 
+static int X_DEV = 500;
+static int Y_DEV = 1000;
+static int RECV_DIST = 1500;
+static int RECV_TIME = 1000;
+
 OmniRandomKicker::OmniRandomKicker(Robot* whoIsRecever)
 	: receiver(whoIsRecever)
     , bhasKicked(false)
-	{ }
+{
+    debug::registerVariable("x_dev", &X_DEV);
+    debug::registerVariable("y_dev", &Y_DEV);
+    debug::registerVariable("recv_d", &RECV_DIST);
+    debug::registerVariable("recv_t", &RECV_TIME);
+}
 	
 OmniRandomKicker::~OmniRandomKicker()
 {
@@ -25,9 +37,11 @@ bool OmniRandomKicker::hasKicked()
 void OmniRandomKicker::perform(Robot* robot)
 {
 	if(ktp == nullptr) {
-        Point offset = Point(-500+rand()%1000, -1000+rand()%2000);
-		Point recvr  = receiver->getRobotPosition();
-        ktp = new Skill::KickToPoint(recvr + offset);
+        Point offset = Point(-X_DEV+rand()%(2*X_DEV), -Y_DEV+rand()%(2*Y_DEV));
+        Point myGoal = gameModel->getMyGoal();
+        Point opgoal = gameModel->getOpponentGoal();
+        Point less = std::min(myGoal, opgoal, Comparisons::distance(receiver));
+        ktp = new Skill::KickToPointOmni(less + offset);
 	} else {
 		if(ktp->perform(robot)) {
 			bhasKicked = true;
@@ -37,8 +51,6 @@ void OmniRandomKicker::perform(Robot* robot)
 
 /************************************************************************/
 /* VIDEO STRATEGY 1 */
-
-#define TIME_PASS_MAX 1000
 
 VideoStrategy1::VideoStrategy1(int r1, int r2)
 	: r1ID(r1)
@@ -86,8 +98,8 @@ bool VideoStrategy1::update()
 		//Stop the passer from moving and make the receiver start moving to recieve
         updateBehaviors(currentPasser, currentRecver, true);
 		
-        if( Measurments::distance(gameModel->getBallPoint(), currentRecver) < 1500 or
-            ++timePassed > TIME_PASS_MAX)
+        if( Measurments::distance(gameModel->getBallPoint(), currentRecver) < RECV_DIST or
+            ++timePassed > RECV_TIME)
 		{
 			//Swap roles and assign the passer (the previous receiver) to kick the ball
 			std::swap(currentPasser, currentRecver);

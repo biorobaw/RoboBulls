@@ -1,22 +1,25 @@
-#include "assert.h"
 #include "nxtrobcomm.h"
 #include "gui/guiinterface.h"
+#include "utilities/debug.h"
+
+//Used to control Omni's PID Controller
+static int k = 4;
+static int p = 30;
+static int i = 10;
+
 
 NXTRobComm::NXTRobComm()
 {
-    int Ret; //used for return values
-
-    // open serial port
-    Ret=Xbee.Open("/dev/xbee",57600);
-
-    if (Ret!=1) { // If an error occured...
-        printf ("Error while opening port. Permission problem ?\n"); // ... display a message ...
+    if (Xbee.Open("/dev/xbee",57600) != 1) {
+        printf ("Error while opening port. Permission problem ?\n");
         exit(1);
-        //return Ret;// ... quit the application
-    }
-    else{
+    } else {
         printf ("Serial port opened successfully !\n");
     }
+
+    debug::registerVariable("Kk", &k);
+    debug::registerVariable("Kp", &p);
+    debug::registerVariable("Ki", &i);
 }
 
 NXTRobComm::~NXTRobComm()
@@ -34,15 +37,10 @@ void NXTRobComm::send(char* commptr, int size)
     Xbee.Write(commptr, size);
 }
 
-static int k = 4;
-
 void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
 {
     // Create array of packets
     packet_t teamPacketBuf[5];
-    //char testOmni[10] = {'~',6,0,0,0,0,0,0,0,'$'};
-
-    assert(sizeof(int8_t) == 1);
 
     // Initialize packet to zeros
     memset(&teamPacketBuf, 0, sizeof(packet_t)*5);
@@ -60,13 +58,13 @@ void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
         packet->right_front = Measurments::clamp(rob->getRF(), -127, 127)/k + 100;
         packet->right_back  = Measurments::clamp(rob->getRB(), -127, 127)/k + 100;
         packet->kick = rob->getKick() ? 1 : 0;
-        packet->chip_power = 30;
-        packet->dribble_power = 10;
+        packet->chip_power = p;
+        packet->dribble_power = i;
         packet->dollar = char(255);
 
         // Ryan overriding the zero-reset in the event of a manual override from the GUI
         if (!GuiInterface::getGuiInterface()->isOverriddenBot()[robots[i]->id]) {
-            // Clear robot i/4nformation
+            // Clear robot information
             rob->setL(0);
             rob->setR(0);
             rob->setKick(0);
@@ -76,6 +74,4 @@ void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
 
     // Send Array of packets
     send((char*)&teamPacketBuf, sizeof(packet_t)*5);
-    //cout << "test send" << endl;
-    //send(&testOmni[0], 10);
 }
