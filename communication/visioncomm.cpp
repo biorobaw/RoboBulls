@@ -12,7 +12,7 @@ VisionComm::VisionComm(GameModel *gm)
     //client = new RoboCupSSLClient(10020,"224.5.23.5");
 
     //James Vision Address
-    client = new RoboCupSSLClient(10020,"224.5.23.2");
+    client = new RoboCupSSLClient(10020,"224.5.23.3");
 
     //Narges Vision Address
     //client = new RoboCupSSLClient(10020,"224.5.23.8");
