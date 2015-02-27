@@ -36,6 +36,9 @@ static void debugListenFn()
 {
     std::string input;
 
+    //Makes sure any initial printing is done first
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+
     while(1)
     {
         std::cout << "> ";
@@ -43,7 +46,7 @@ static void debugListenFn()
 
         std::vector<std::string> arguments = stringSplit(input, " ");
 
-        if(arguments.size() == 0)
+        if(arguments.size() == 0 || arguments[0].length() <= 1)
             continue;
 
         if(arguments[0] == "set") //Set a variable

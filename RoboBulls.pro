@@ -111,8 +111,8 @@ SOURCES += main.cpp \
     utilities/velocitycalculator.cpp \
     skill/kicktopointomni.cpp \
     strategy/videostrategies.cpp \
-    behavior/ballreceiver.cpp \
-    utilities/debug.cpp
+    utilities/debug.cpp \
+    utilities/edges.cpp
 
 HEADERS += \
 	behavior/behavior.h \
@@ -205,8 +205,8 @@ HEADERS += \
     skill/kicktopointomni.h \
     strategy/videostrategies.h \
     behavior/genericskillbehavior.h \
-    behavior/ballreceiver.h \
-    utilities/debug.h
+    utilities/debug.h \
+    utilities/edges.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 

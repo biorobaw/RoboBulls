@@ -1,6 +1,7 @@
 #ifndef VEL_CALCULATOR_H
 #define VEL_CALCULATOR_H
 
+#include <deque>
 #include "utilities/point.h"
 
 /* Generic reusable struct to calculate a point's moving velocity over time.
@@ -30,8 +31,10 @@ struct VelocityCalculator
     
     Point update(const Point& movedPoint);
 private:
+    std::deque<Point> velCollection;
     float threshold;
-    Point velocity, oldPoint;
+    int   sampleTimer;
+    Point avgVelocity, oldPoint;
 };
 
 
