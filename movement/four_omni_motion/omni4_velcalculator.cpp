@@ -1,12 +1,23 @@
 #include "movement/four_omni_motion/omni4_velcalculator.h"
+#include "utilities/debug.h"
 
 namespace Movement
 {
+
+//Multiplier for theta_vel in defaultCalc (set 10x actual)
+int THETA_MULT = 7;
+
+//Multiplier for x_vel and y_vel in defaultCalc (set 10x actual)
+int XY_MULT = 7;
+
 
 FourWheelCalculator::FourWheelCalculator()
 {
     this->angle_error_deque.push_back(0);
     this->dist_error_deque.push_back(0);
+
+    debug::registerVariable("fwc_xy", &THETA_MULT);
+    debug::registerVariable("fwc_theta", &XY_MULT);
 }
 
 fourWheelVels FourWheelCalculator::calculateVels
@@ -55,9 +66,9 @@ fourWheelVels FourWheelCalculator::defaultCalc
     // Reduce speed near target
     if (distance_to_goal < 300)
     {
-        x_vel *= 0.7;
-        y_vel *= 0.7;
-        theta_vel *= 0.7;
+        x_vel *= ((float)XY_MULT / 10);
+        y_vel *= ((float)XY_MULT / 10);
+        theta_vel *= ((float)THETA_MULT / 10);
     }
 
     // Robot Frame Velocities

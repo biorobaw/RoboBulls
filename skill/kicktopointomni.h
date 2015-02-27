@@ -17,8 +17,9 @@ namespace Skill
  * KickToPointOmni makes some assumptions about movement of the robot
  * that apply only to omnis. The robot is asked to move to behind the 
  * ball at any angle, then rotated to the ball. In the "moving to ball"
- * state, no checks are made for "not facing the ball" because the omni
- * doesn't need to stop and rotate to adjust.
+ * state (MOVE_FORWARD), no checks are made for "not facing the ball" because
+ * the omni doesn't need to stop and rotate to adjust--only position is checked
+ * against
  */
  
 class KickToPointOmni : public Skill
