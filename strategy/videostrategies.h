@@ -3,8 +3,8 @@
 
 #include "strategy/strategy.h"
 #include "behavior/behavior.h"
+#include "behavior/genericmovementbehavior.h"
 #include "skill/kicktopointomni.h"
-#include "skill/kicktopoint.h"
 
 /*
  * OMNI-ROBOT TEST GIT BRANCH --- TEMPORARY FILE 
@@ -26,13 +26,27 @@ class OmniRandomKicker : public Behavior
 {
 public:
      OmniRandomKicker(Robot* whoIsRecever);
-	~OmniRandomKicker();
-	void perform(Robot* robot);
-	bool hasKicked();
+    ~OmniRandomKicker();
+    void perform(Robot* robot);
+    bool isFinished();
 private:
-	Robot* receiver;
-	bool   bhasKicked;
+    Robot* receiver;
+    bool   bhasKicked;
     Skill::KickToPointOmni* ktp = nullptr;
+};
+
+/* BallReceiver
+ * A behavior that waits around at `waitPoint` until the gm's prediction of the ball
+ * is near the `waitPoint`, then moves to that point
+ */
+class BallReceiver : public GenericMovementBehavior
+{
+public:
+    BallReceiver(Point pointToWaitAt);
+    void perform(Robot* robot);
+private:
+    Point waitPoint;
+    Point target;
 };
 
 /************************************************************************/
@@ -42,21 +56,51 @@ private:
  * A strategy that coordinates two robots to continually pass and recieve 
  * the ball with each other
  */
-
 class VideoStrategy1 : public Strategy
 {
 public:
-	VideoStrategy1(int r1, int r2);
-	void assignBeh();
-	bool update();
+     VideoStrategy1(int r1, int r2);
+    ~VideoStrategy1();
+    void assignBeh();
+    bool update();
 private:
-    void updateBehaviors(Robot*, Robot*, bool);
-	int r1ID, r2ID;
-    int timePassed;
-    bool passerKicked = false;
-	Robot* currentPasser, *currentRecver;
+    Point getSideFor(int);
+    int r1ID, r2ID;
+    Robot* currentPasser, *currentRecver;
 };
 
-/************************************************************************/
+
+/* VideoStrategy2
+ * A single robot stays at a "waiting point" and, if the gameModel predicts the ball
+ * point will be on the same side, moves to kick it back.
+ */
+class VideoStrategy2 : public Strategy
+{
+public:
+    VideoStrategy2(int r0, Point pointToWaitAt);
+    void assignBeh();
+    bool update();
+private:
+    Robot* robot;
+    int   waitTimer;
+    Point waitPoint;
+    enum { NONE, WAITING, KICKING} state;
+};
+
+
+/* VideoStrategy3
+ * A simplified version of VideoStrategy2 in which a robot sits at the penalty point
+ * and kicks the ball back if it comes on the side of it. Works with blue team.
+ */
+class VideoStrategy3 : public Strategy
+{
+public:
+    VideoStrategy3(int who);
+    void assignBeh();
+    bool update();
+private:
+    Robot* guy;
+    enum {NONE, KICKING} state = NONE;
+};
 
 #endif

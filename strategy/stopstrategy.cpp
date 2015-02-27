@@ -11,7 +11,7 @@
 #define STOPSTRAT_DEBUG 0
 
 Point StopStrategy::prevBallPoint = Point(9999,9999);
-Point robTargetPoints[MAX_ROBOTS];
+Point robTargetPoints[10];
 
 void StopStrategy::assignBeh()
 {
