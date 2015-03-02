@@ -35,6 +35,14 @@ class RotBeh : public GenericMovementBehavior
     }
 };
 
+class GoToBeh : public GenericMovementBehavior
+{
+    void perform(Robot * robot) override
+    {
+        setMovementTargets(Point(0,0), 0);
+        GenericMovementBehavior::perform(robot);
+    }
+};
 class ShamsiStrafe : public GenericMovementBehavior
 {
 public:
@@ -73,5 +81,5 @@ bool TestStrategy::update()
 
 void TestStrategy::assignBeh()
 {
-    gameModel->findMyTeam(8)->assignBeh<KickBeh>();
+    gameModel->findMyTeam(8)->assignBeh<GoToBeh>();
 }
