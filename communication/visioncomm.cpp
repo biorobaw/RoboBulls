@@ -136,7 +136,8 @@ bool VisionComm::receive()
         recieveRobotTeam(frame, TEAM_YELLOW);
         
         //Runs the Robobulls game once
-        gamemodel->notifyObservers();
+        if (++totalframes > 50)
+            gamemodel->notifyObservers();
     }
     
     /* After 50 frames the "seen counts" of each team are set to 0. This prevents

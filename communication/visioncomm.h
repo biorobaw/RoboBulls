@@ -52,6 +52,7 @@ protected:
     RoboCupSSLClient * client;
     int packetCount;
     int frames = 0;
+    int totalframes = 0;
     int blue_rob[10]={0};
     int yellow_rob[10]={0};
 };

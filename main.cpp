@@ -40,6 +40,12 @@ int main(int argc, char *argv[])
 {
     StrategyController *sc = new StrategyController();
     GameModel * myGameModel = GameModel::getModel();
+
+    RefComm refCommunicator(myGameModel);
+    VisionComm visionCommunicator(myGameModel);
+
+
+
     sc->setGameModel(myGameModel);
     myGameModel->setStrategyController(sc);
 
@@ -47,8 +53,7 @@ int main(int argc, char *argv[])
 
     GuiInterface::getGuiInterface()->show();
 
-    RefComm refCommunicator(myGameModel);
-    VisionComm visionCommunicator(myGameModel);
+
 
     registerExitSignals();
     

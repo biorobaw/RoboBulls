@@ -49,7 +49,7 @@ public:
 
 private:
     /* StrategyController link */
-    StrategyController *sc;
+    StrategyController *sc = NULL;
 
     /* General Game Information */
     vector <Robot*> opTeam;

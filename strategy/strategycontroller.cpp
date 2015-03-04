@@ -13,6 +13,7 @@
 #include "strategy/normalgamestrategy.h"
 #include "strategy/indiectkickstrategy.h"
 #include "strategy/normalgamestrategy.h"
+#include "strategy/videostrategies.h"
 #include "movement/pathfinding/fppa_pathfinding.h"
 #include "gui/guiinterface.h"
 
@@ -100,7 +101,7 @@ void StrategyController::assignNewStrategy(char gameState)
         activeStrategy = new TestStrategy();
     };
 #else
-    activeStrategy = new TestStrategy();
+    activeStrategy = new VideoStrategy3(8);
 #endif
 }
 
