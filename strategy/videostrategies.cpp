@@ -245,3 +245,40 @@ bool VideoStrategy3::update()
     }
     return false;
 }
+
+/************************************************************************/
+/* VIDEO STRATEGY 4 */
+
+VideoStrategy4::VideoStrategy4(int who)
+    : guy(gameModel->findMyTeam(who))
+    { }
+
+void VideoStrategy4::assignBeh()
+{
+    //Go to an default wait position
+    guy->assignBeh<GenericMovementBehavior>(Point(-2000,0), 0, true, true);
+}
+
+bool VideoStrategy4::update()
+{
+    bp = gameModel->getBallPoint();
+    ball_near_goal = bp.x>1500 and bp.y <1000 and bp.y>-1000;
+
+    // Check if the ball is near the opponent goal
+    // and if we have already kicked;
+    if(ball_near_goal and !done_kicking)
+    {
+        guy->assignSkill<Skill::KickToPointOmni>(Point(3000,0));
+        done_kicking = guy->getCurrentBeh()->isFinished();
+    }
+    else
+    {
+        guy->assignBeh<GenericMovementBehavior>(Point(-2000,0), 0, true, true);
+        done_kicking = !guy->getCurrentBeh()->isFinished();
+    }
+
+    return false;
+}
+
+
+

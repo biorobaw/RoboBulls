@@ -103,4 +103,21 @@ private:
     enum {NONE, KICKING} state = NONE;
 };
 
+/* VideoStrategy4
+ * The robot kicks the ball into the goal if it near the opponent goal post.
+ * Hard-coded for RoboCup Qualification video
+ */
+class VideoStrategy4 : public Strategy
+{
+public:
+    VideoStrategy4(int who);
+    void assignBeh();
+    bool update();
+private:
+    Robot* guy;
+    Point bp;
+    bool done_kicking = 0;
+    bool ball_near_goal = 0;
+};
+
 #endif

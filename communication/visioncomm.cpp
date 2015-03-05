@@ -134,9 +134,9 @@ bool VisionComm::receive()
         recieveBall(frame);
         recieveRobotTeam(frame, TEAM_BLUE);
         recieveRobotTeam(frame, TEAM_YELLOW);
-        
-        //Runs the Robobulls game once
-        if (++totalframes > 50)
+
+        if (++totalframes > 200)
+            //Runs the Robobulls game once
             gamemodel->notifyObservers();
     }
     

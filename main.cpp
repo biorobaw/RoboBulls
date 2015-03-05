@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
 
     registerExitSignals();
     
-    debug::listenStart();
+    //debug::listenStart();
     visionCommunicator.start();
     refCommunicator.start();
     return a.exec();

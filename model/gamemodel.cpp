@@ -213,7 +213,9 @@ static Point calcBallPrediction()
         Point bv = gameModel->getBallVelocity() * POINTS_PER_METER;
         Point ba = gameModel->getBallAcceleration() * METERS_PER_POINT;
         prediction = bp + (bv * 2.3) + (ba * 2.3 * 2.3 * 0.5);
-        GuiInterface::getGuiInterface()->drawPath(gameModel->getBallPoint(), prediction);
+        // Takin this out for video - too noisy
+        // Also: this should be in gui main loop, not game model. martin
+//        GuiInterface::getGuiInterface()->drawPath(gameModel->getBallPoint(), prediction);
     }
 
     return prediction;

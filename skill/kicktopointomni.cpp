@@ -34,8 +34,8 @@ int KICK_DISTANCE  = 110;
 int KICK_COUNT_MAX = 1;
 float FACING_ANGLE_TOL  = 60 * (M_PI / 180);
 #else
-int BEHIND_RADIUS  = 300;
-int KICK_DISTANCE  = 135;
+int BEHIND_RADIUS  = 220;
+int KICK_DISTANCE  = 140;
 int KICK_COUNT_MAX = 1;
 float FACING_ANGLE_TOL  = 20 * (M_PI / 180);
 #endif
@@ -63,79 +63,67 @@ bool KickToPointOmni::perform(Robot* robot)
 {
     Point bp = gameModel->getBallPoint();
 
-    //Check used to skip to final state
-    bool canKick = Comparisons::isFacingPoint(robot, *m_targetPointer, FACING_ANGLE_TOL)
-               and Measurments::distance(robot, bp) < KICK_DISTANCE;
-
-    //Angle between the ball and the kick target
+    // Angle between the ball and the kick target
     float ballTargetAng = Measurments::angleBetween(bp, *m_targetPointer);
-
 
     switch(state)
     {
     case MOVE_BEHIND:
         {
+            // Kick if feasable
+            if(Measurments::distance(robot, bp) < KICK_DISTANCE
+            and Comparisons::isFacingPoint(robot,bp,15*M_PI/180))
+            {
+                state = KICK;
+                break;
+            }
+
             //Calculate and set move targets to the BehindTheBall point
             float targetBallAng = Measurments::angleBetween(*m_targetPointer, bp);
             float dx = BEHIND_RADIUS * cos(targetBallAng);
             float dy = BEHIND_RADIUS * sin(targetBallAng);
             Point behindBall = bp + Point(dx, dy);
 
-            move_skill.recreate(behindBall, ballTargetAng, false, false);
-            move_skill.setRecreateTolerances(RECREATE_DIST_TOL, M_PI);
-            move_skill.setVelocityMultiplier(1.0);
-            
-            //Check to skip to the last state if we manage to be able to kick in this state
-            if(canKick) {
+            move_skill.recreate(behindBall, ballTargetAng, true, true);
+
+            //Make sure move_skill keeps the robot at the correct pose
+            //This is done by waiting for confirmation from the movement class
+            if(move_skill.perform(robot))
+                ++move_comp_counter;
+            else
+                move_comp_counter = 0;
+
+            if( move_comp_counter >25)
+            {
                 state = MOVE_FORWARD;
-            }
-            else if(move_skill.perform(robot)) {
-                state = ADJUST_ANGLE;
+                move_comp_counter = 0;
             }
         }
         break;
-    case ADJUST_ANGLE:
-        {
-            //We move the robot to itself with a different angle, getting rotation only
-            move_skill.recreate(robot->getRobotPosition(), ballTargetAng, false, false);
-        #if !SIMULATED
-            move_skill.setVelocityMultiplier(0.6);
-        #endif
-            move_skill.perform(robot);
-            
-            //Advance when robot is facing the kick target
-            if(Comparisons::isFacingPoint(robot, *m_targetPointer, FACING_ANGLE_TOL)) {
-                state = MOVE_FORWARD;
-            }
-        }
-        break;
+
     case MOVE_FORWARD:
         {
-            //If we end up far away from that ball, set to go behind it again
-            if(Measurments::distance(robot, bp) > BEHIND_RADIUS * 1.5) {
-                state = MOVE_BEHIND;
+            // Slowly move towards the ball
+            move_skill.recreate(bp, ballTargetAng, false, false);
+            move_skill.setVelocityMultiplier(0.7);
+            move_skill.perform(robot);
+
+            // Kick when in range
+            if(Measurments::distance(robot, bp) < KICK_DISTANCE)
+            {
+                state = KICK;
             }
-            //Otherwise if we are just not in kick range, move torwards it slowly
-            else if(Measurments::distance(robot, bp) > KICK_DISTANCE) {
-                move_skill.recreate(bp, ballTargetAng, false, false);
-                move_skill.setVelocityMultiplier(0.8);
-                move_skill.perform(robot);
-            } else {
-                /* Otherwise if we are in kick range, kick the ball
-                 *There's another check of "canKick" here for ensuring vality of
-                 * facing angle
-                 */
-                if(canKick) {
-                    ::Skill::Kick k;
-                    k.perform(robot);
-                    state = MOVE_BEHIND;
-                    return true;
-                }
-            }
+        }
+        break;
+    case KICK:
+        {
+            ::Skill::Kick k;
+            k.perform(robot);
+            state = MOVE_BEHIND;
+            return true;
         }
         break;
     }
-    
     return false;
 }
 
