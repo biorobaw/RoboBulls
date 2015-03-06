@@ -125,6 +125,7 @@ void VideoStrategy1::assignBeh()
     Robot* r2 = gameModel->findMyTeam(r2ID);
 
     if(r1 and r2)  {
+        //This bool is swapped on destruction, which happens when the passer kicks.
         if(vs1_oppositeRobots) {
             this->currentPasser = r1;
             this->currentRecver = r2;
@@ -132,10 +133,14 @@ void VideoStrategy1::assignBeh()
             this->currentPasser = r2;
             this->currentRecver = r1;
         }
+        
+        //Behavior assign for receiver: move to side
         Point recvrTarget = getSideFor(currentRecver->getID());
         float ang = Measurments::angleBetween(recvrTarget, Point(0,0));
-        currentPasser->assignBeh<OmniRandomKicker>(currentRecver);
         currentRecver->assignBeh<GenericMovementBehavior>(recvrTarget, ang);
+        
+        //Assignment for passer: Kick to receiver.
+        currentPasser->assignBeh<OmniRandomKicker>(currentRecver);
     }
 }
 

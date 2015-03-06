@@ -216,6 +216,8 @@ static Point calcBallPrediction()
         // Takin this out for video - too noisy
         // Also: this should be in gui main loop, not game model. martin
 //        GuiInterface::getGuiInterface()->drawPath(gameModel->getBallPoint(), prediction);
+
+        //BUT MARTIN: The "drawPath" function was explicitly added by Ryan to draw arbitrary lines from our code.
     }
 
     return prediction;
@@ -229,7 +231,7 @@ void GameModel::setBallPoint(Point bp)
     ballPoint = bp;
     ballVelocity = ballVelCalculator.update(bp);
     ballAcceleration = ballAclCalculator.update(ballVelocity * POINTS_PER_METER);
-    calcBallPrediction();
+    ballPrediction = calcBallPrediction();
 }
 
 

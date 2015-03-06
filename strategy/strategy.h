@@ -14,8 +14,8 @@ public:
     /* update
      * Function (optional) that updates this object.
      * This function is called when StrategyController is ran with
-     * a non-new command from GameModel. Return a `char` for the next
-     * strategy to execute, or the GameModel's current
+     * a non-new command from GameModel. Return true to notify the strategy
+     * is finished and have a new one assigned, false otherwise.
      */
     virtual bool update();
 
