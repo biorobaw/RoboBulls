@@ -99,7 +99,7 @@ void StrategyController::assignNewStrategy(char gameState)
         activeStrategy = new TestStrategy();
     };
 #else
-    activeStrategy = new VideoStrategy4(2);
+    activeStrategy = new VideoStrategy5(8,2);
 #endif
 }
 

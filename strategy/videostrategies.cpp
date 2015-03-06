@@ -7,6 +7,8 @@
 #include "utilities/comparisons.h"
 #include "utilities/edges.h"
 #include "gui/guiinterface.h"
+#include "behavior/defendfarfromball.h"
+#include "behavior/kicktogoal.h"
 
 /************************************************************************/
 /* USER CONFIGURATION */
@@ -34,6 +36,20 @@ static int WAIT_COUNT_MAX = 2000;
 
 /************************************************************************/
 /* BEHAVIORS */
+
+/* KICKBEH */
+class KickBeh : public Behavior
+{
+    Skill::KickToPointOmni* ktpo;
+public:
+    KickBeh(Point target) {
+        ktpo = new Skill::KickToPointOmni(target);
+    }
+    void perform(Robot * robot) override
+    {
+        ktpo->perform(robot);
+    }
+};
 
 /* OMNI RANDOM KICKER */
 OmniRandomKicker::OmniRandomKicker(Robot* whoIsRecever)
@@ -249,33 +265,79 @@ bool VideoStrategy3::update()
 /************************************************************************/
 /* VIDEO STRATEGY 4 */
 
-VideoStrategy4::VideoStrategy4(int who)
-    : guy(gameModel->findMyTeam(who))
+VideoStrategy4::VideoStrategy4(int r1, int r2)
+    : r1ID(r1)
+    , r2ID(r2)
     { }
 
 void VideoStrategy4::assignBeh()
 {
-    //Go to an default wait position
-    guy->assignBeh<GenericMovementBehavior>(Point(-2000,0), 0, true, true);
+
 }
 
 bool VideoStrategy4::update()
 {
-    bp = gameModel->getBallPoint();
-    ball_near_goal = bp.x>1500 and bp.y <1000 and bp.y>-1000;
+    r1 = gameModel->findMyTeam(r2ID);
+    r2 = gameModel->findMyTeam(r1ID);
 
-    // Check if the ball is near the opponent goal
-    // and if we have already kicked;
-    if(ball_near_goal and !done_kicking)
-    {
-        guy->assignSkill<Skill::KickToPointOmni>(Point(3000,0));
-        done_kicking = guy->getCurrentBeh()->isFinished();
-    }
+    bp = gameModel->getBallPoint();
+    bpPredict = gameModel->getBallPrediction();
+
+    // For r1:
+    if (bp.x>200)
+        r1->assignBeh<KickBeh>(Point (-2500,0));
+    else if (bpPredict.x>200)
+        r1->assignBeh<GenericMovementBehavior>(Point(2500,bpPredict.y), M_PI, false, false);
     else
-    {
-        guy->assignBeh<GenericMovementBehavior>(Point(-2000,0), 0, true, true);
-        done_kicking = !guy->getCurrentBeh()->isFinished();
-    }
+        r1->assignBeh<GenericMovementBehavior>(Point(2500,0), M_PI, false, false);
+
+    // For r2:
+    if (bp.x<-200)
+        r2->assignBeh<KickBeh>(Point (2500,0));
+    else if (bpPredict.x<-200)
+        r2->assignBeh<GenericMovementBehavior>(Point(-2500,bpPredict.y), 0, false, false);
+    else
+        r2->assignBeh<GenericMovementBehavior>(Point(-2500,0), 0, false, false);
+
+    return false;
+}
+
+/************************************************************************/
+/* VIDEO STRATEGY 5 */
+
+VideoStrategy5::VideoStrategy5(int keeper, int kicker)
+    : keeperID(keeper)
+    , kickerID(kicker)
+    { }
+
+void VideoStrategy5::assignBeh()
+{
+
+}
+
+bool VideoStrategy5::update()
+{
+    keeper = gameModel->findMyTeam(keeperID);
+    kicker = gameModel->findMyTeam(kickerID);
+
+    bp = gameModel->getBallPoint();
+
+    // GK assignments
+    bp.x >-2800?
+        keeper->assignBeh<DefendFarFromBall>():
+        keeper->assignBeh<GenericMovementBehavior>(Point(-2700,0),0,false,false);
+
+    // Decide where the target for ATK should be based on GK position
+    keeper->getRobotPosition().y>0?
+        target = Point(-3000,-350):
+        target = Point(-3000,350);
+
+    bp.x>-1800? ++kick_timer : kick_timer = 0;
+
+    // ATK assignments
+    kick_timer >100?
+        kicker->assignSkill<Skill::KickToPointOmni>(target):
+        kicker->assignBeh<GenericMovementBehavior>(Point(-1200,0),M_PI,false,false);
 
     return false;
 }

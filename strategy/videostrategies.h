@@ -104,20 +104,39 @@ private:
 };
 
 /* VideoStrategy4
- * The robot kicks the ball into the goal if it near the opponent goal post.
+ * Robots on each side of the field kick the ball to the other side if
+ * the ball is on their side.
  * Hard-coded for RoboCup Qualification video
  */
 class VideoStrategy4 : public Strategy
 {
 public:
-    VideoStrategy4(int who);
+    VideoStrategy4(int r1, int r2);
     void assignBeh();
     bool update();
 private:
-    Robot* guy;
-    Point bp;
-    bool done_kicking = 0;
-    bool ball_near_goal = 0;
+    int r1ID, r2ID;
+    Robot* r1;
+    Robot* r2;
+    Point bp, bpPredict = Point(0,0);
 };
+
+/* VideoStrategy5
+ * Goal Keeper vs Attacker Scenario
+ */
+class VideoStrategy5 : public Strategy
+{
+public:
+    VideoStrategy5(int keeper, int kicker);
+    void assignBeh();
+    bool update();
+private:
+    int keeperID, kickerID;
+    int kick_timer = 0;
+    Robot* keeper;
+    Robot* kicker;
+    Point bp, target;
+};
+
 
 #endif
