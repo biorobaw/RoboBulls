@@ -5,10 +5,10 @@ namespace Movement
 {
 
 //Multiplier for theta_vel in defaultCalc (set 10x actual)
-int THETA_MULT = 7;
+int THETA_MULT = 4;
 
 //Multiplier for x_vel and y_vel in defaultCalc (set 10x actual)
-int XY_MULT = 7;
+int XY_MULT = 4;
 
 
 FourWheelCalculator::FourWheelCalculator()
@@ -64,7 +64,7 @@ fourWheelVels FourWheelCalculator::defaultCalc
         theta_vel=-theta_vel;
 
     // Reduce speed near target
-    if (distance_to_goal < 300)
+    if (distance_to_goal < 700)
     {
         x_vel *= ((float)XY_MULT / 10);
         y_vel *= ((float)XY_MULT / 10);

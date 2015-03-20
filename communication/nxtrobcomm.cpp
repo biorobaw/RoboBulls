@@ -3,7 +3,7 @@
 #include "utilities/debug.h"
 
 //Used to control Omni's PID Controller
-static float k = 0.26;
+static float k = 0.4;
 static int p = 30;
 static int i = 10;
 

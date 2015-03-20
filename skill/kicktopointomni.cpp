@@ -29,12 +29,12 @@ namespace Skill
  * target to be able to kick.
  */
 #if SIMULATED
-int BEHIND_RADIUS  = 600;
+int BEHIND_RADIUS  = 100;
 int KICK_DISTANCE  = 110;
 int KICK_COUNT_MAX = 1;
 float FACING_ANGLE_TOL  = 60 * (M_PI / 180);
 #else
-int BEHIND_RADIUS  = 220;
+int BEHIND_RADIUS  = ROBOT_SIZE;
 int KICK_DISTANCE  = 140;
 int KICK_COUNT_MAX = 1;
 float FACING_ANGLE_TOL  = 20 * (M_PI / 180);
@@ -65,6 +65,8 @@ bool KickToPointOmni::perform(Robot* robot)
 
     // Angle between the ball and the kick target
     float ballTargetAng = Measurments::angleBetween(bp, *m_targetPointer);
+
+    move_skill.setRecreateTolerances(RECREATE_DIST_TOL, ROT_TOLERANCE);
 
     switch(state)
     {
