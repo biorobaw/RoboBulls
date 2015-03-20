@@ -1,5 +1,5 @@
 #include "guibotlabel.h"
-
+#include "model/gamemodel.h"
 GuiBotLabel::GuiBotLabel()
 {
 //    setFlag(ItemIsMovable); // makes it movable
@@ -51,5 +51,14 @@ void GuiBotLabel::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
          painter->setFont(sansFont);
 //         painter->drawRect(rec);
         painter->drawText(rec,label);
+        Robot* r = gameModel->getHasBall();
+        if(r != NULL && r->getID() == this->id)
+        {
+            painter->setBrush(QBrush(QColor::fromRgb(255,69,0,255), Qt::SolidPattern));
+            if(r->isOnMyTeam() == mainTeam) {
+                QRectF b(100, 50, -50, -50);
+                painter->drawEllipse(b);
+            }
+        }
     }
 }
