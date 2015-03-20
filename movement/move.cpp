@@ -292,12 +292,12 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
 void Move::assignNewPath(const Point& robotPoint)
 { 
     FPPA::PathInfo p = FPPA::findShortestPath
-            (robotPoint, m_targetPoint, useAvoidBall, lastDirection);
+            (robotPoint, m_targetPoint, useAvoidBall, lastDirection, 0.50);
     this->pathQueue.assign(p.first.begin(), p.first.end());
     this->lastDirection = p.second;
     this->lastObstacles = FPPA::getCurrentObstacles();    //Copies
 
-    // TEST of drawPath functions
+    //Draws path lines on iterface
     for (unsigned int i=1; i<pathQueue.size(); i++){
         GuiInterface::getGuiInterface()->drawPath(pathQueue[i-1], pathQueue[i], i*2);
     }

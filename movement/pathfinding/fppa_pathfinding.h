@@ -36,15 +36,20 @@ namespace FPPA
 
     /****************************************************************/
 
-    /* Use FPPA to find a path from start to end. If a path hint is provided,
-     * The algorithm will prioritize returning the path as either the top or
-     * bottom path, whatever is specified. Otherwise, finds shortest.
-     * The returned PathDirection (PathInfo.second) indicates whether this path 
-     * is a top path, or bottom path.
-     * Pass in `avoidBall` to count the ball as an obstacle or not (true by default).
+    /* Use FPPA to find a path from `start` to `end`.
+     * Returns a std::pair of a Point vector and a PathDirection indicating
+     * which direction was chosen.
+     * `avoidBall`
+     *      Controls counting the ball as an obstacle or not
+     * `pathHint`
+     *      Prioritizes selecting top or bottom path regardless of distance.
+     * `unlessValue`
+     *      An `unless-than value` speificies: Choose the pathHint path UNLESS the shorter path
+     *      is "unlessValue" percent better than the requested top/bottom path.
      */
     PathInfo findShortestPath(const Point& start, const Point& end, bool avoidBall,
-                              PathDirection pathHint = PathDirection::None);
+                              PathDirection pathHint = PathDirection::None,
+                              float unlessValue = -1.0);
 
 
     /* Check if there is an obstacle (robot or ball) in the
