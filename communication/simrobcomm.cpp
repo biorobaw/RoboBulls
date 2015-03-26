@@ -10,10 +10,10 @@ SimRobComm::SimRobComm()
 //    _addr = "131.247.14.101";
 
     //James Sim Address
-//    _addr = "131.247.14.106";
+    _addr = "131.247.14.106";
 
     //Narges Sim Address
-    _addr = "127.0.0.1";
+    //_addr = "127.0.0.1";
 
 
     _port = 20011;
@@ -39,10 +39,10 @@ void SimRobComm::sendVelsLarge(std::vector<Robot *>& robots)
 
 void SimRobComm::sendVelsThreeOmni(int left,int right, int back, int ID)
 {
-    UNUSED_PARAM(left);
-    UNUSED_PARAM(right);
-    UNUSED_PARAM(back);
-    UNUSED_PARAM(ID);
+    (void)(left);
+    (void)(right);
+    (void)(back);
+    (void)(ID);
 }
 
 void SimRobComm::sendKick(int robotId)

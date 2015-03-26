@@ -1,63 +1,64 @@
 #include <QApplication>
 #include <stdio.h>
 #include <csignal>
-#include "communication/refcomm.h"
 #include "communication/visioncomm.h"
 #include "communication/robcomm.h"
-#include "communication/simrobcomm.h"
+#include "communication/refcomm.h"
 #include "model/gamemodel.h"
 #include "model/robot.h"
-#include "include/messages_robocup_ssl_detection.pb.h"
-#include "include/messages_robocup_ssl_geometry.pb.h"
-#include "include/messages_robocup_ssl_wrapper.pb.h"
-#include "include/robocup_ssl_client.h"
-#include "behavior/behavior.h"
 #include "gui/guiinterface.h"
+#include "utilities/debug.h"
 #include "strategy/strategycontroller.h"
 
-using namespace std;
-
-void exitStopRobot(int param)
+void exitStopRobot(int)
 {
-    UNUSED_PARAM(param);
-    GameModel* gm = GameModel::getModel();
-    RobComm* rc = RobComm::getRobComm();
-
-    for(Robot* rob : gm->getMyTeam()) {
+    for(Robot* rob : gameModel->getMyTeam()) {
         rob->setL(0);
         rob->setR(0);
     }
-    
-    rc->sendVelsLarge(gm->getMyTeam());
-    
+    RobComm::getRobComm()->sendVelsLarge(gameModel->getMyTeam());
     exit(1);
 }
 
-// RefComm Test
+void exitStopRobot()
+{
+    exitStopRobot(-1);
+}
+
+void registerExitSignals()
+{
+    static const int bad_signals[] = {SIGSEGV, SIGKILL, SIGHUP, SIGABRT, SIGTERM, SIGQUIT};
+    for(int i : bad_signals)
+        std::signal(i, exitStopRobot);
+    std::atexit(exitStopRobot);
+    std::set_terminate(exitStopRobot);
+}
+
+
+
 int main(int argc, char *argv[])
 {
     StrategyController *sc = new StrategyController();
     GameModel * myGameModel = GameModel::getModel();
-    sc->setGameModel(myGameModel);
-    myGameModel->setStrategyController(sc);
-
-//    QCoreApplication a(argc, argv);
-    QApplication a(argc, argv);
-//    MainWindow * w = MainWindow::getMainWindow();
-//    w->show();
-    GuiInterface * gui = GuiInterface::getGuiInterface();
-    gui->show();
 
     RefComm refCommunicator(myGameModel);
     VisionComm visionCommunicator(myGameModel);
 
-    std::signal(SIGSEGV, exitStopRobot);
-    std::signal(SIGABRT, exitStopRobot);
-    std::signal(SIGTERM, exitStopRobot);
-    std::signal(SIGHUP, exitStopRobot);
+
+
+    sc->setGameModel(myGameModel);
+    myGameModel->setStrategyController(sc);
+
+    QApplication a(argc, argv);
+
+    GuiInterface::getGuiInterface()->show();
+
+
+
+    registerExitSignals();
     
+    //debug::listenStart();
     visionCommunicator.start();
     refCommunicator.start();
-
     return a.exec();
 }

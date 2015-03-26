@@ -1,13 +1,14 @@
-#include <stddef.h>  // defines NULL
 #include <sstream>
-#include <array>
-#include <time.h>
 #include <iostream>
 #include "include/config/team.h"
-#include "gamemodel.h"
+#include "include/config/simulated.h"
 #include "strategy/strategycontroller.h"
 #include "utilities/comparisons.h"
 #include "utilities/velocitycalculator.h"
+#include "utilities/edges.h"
+#include "utilities/debug.h"
+#include "gui/guiinterface.h"
+#include "model/gamemodel.h"
 
 // Global static pointer used to ensure a single instance of the class.
 GameModel* gameModel = new GameModel();
@@ -58,17 +59,37 @@ Point GameModel::getBallPoint()
     return ballPoint;
 }
 
-unsigned char GameModel::getBlueGoals()
+Point GameModel::getBallVelocity()
+{
+    return ballVelocity;
+}
+
+Point GameModel::getBallAcceleration()
+{
+    return ballAcceleration;
+}
+
+float GameModel::getBallSpeed()
+{
+    return std::hypot(ballVelocity.x, ballVelocity.y);
+}
+
+Point GameModel::getBallPrediction()
+{
+    return ballPrediction;
+}
+
+char GameModel::getBlueGoals()
 {
     return blueGoals;
 }
 
-unsigned char GameModel::getYellowGoals()
+char GameModel::getYellowGoals()
 {
     return yellowGoals;
 }
 
-unsigned char GameModel::getRemainingTime()
+short GameModel::getRemainingTime()
 {
     return remainingTime;
 }
@@ -178,12 +199,40 @@ void GameModel::onCommandProcessed()
     this->hasNewCommand = false;
 }
 
+static Point calcBallPrediction()
+{
+    static float bs;
+    bs = gameModel->getBallSpeed();
+
+    Point prediction = gameModel->getBallPoint();
+
+    //Calculate once, if the ball is starting to move
+    if( posedge(bs > 1.5) )
+    {
+        Point bp = gameModel->getBallPoint();
+        Point bv = gameModel->getBallVelocity() * POINTS_PER_METER;
+        Point ba = gameModel->getBallAcceleration() * METERS_PER_POINT;
+        prediction = bp + (bv * 2.3) + (ba * 2.3 * 2.3 * 0.5);
+        // Takin this out for video - too noisy
+
+        // Also: this should be in gui main loop, not game model. martin
+//        GuiInterface::getGuiInterface()->drawPath(gameModel->getBallPoint(), prediction);
+
+        //BUT MARTIN: The "drawPath" function was explicitly added by Ryan to draw arbitrary lines from our code.
+    }
+
+    return prediction;
+}
 
 void GameModel::setBallPoint(Point bp)
 {
-    static VelocityCalculator ballCalculator;
+    //Sets ball point, and calculates velocity, acceleration, and the prediction.
+    static VelocityCalculator ballVelCalculator(0);
+    static VelocityCalculator ballAclCalculator(0);
     ballPoint = bp;
-    ballVelocity = ballCalculator.update(bp);
+    ballVelocity = ballVelCalculator.update(bp);
+    ballAcceleration = ballAclCalculator.update(ballVelocity * POINTS_PER_METER);
+    ballPrediction = calcBallPrediction();
 }
 
 
@@ -225,17 +274,17 @@ void GameModel::setRobotHasBall()
         this->robotWithBall->hasBall = true;
 }
 
-void GameModel::setTimeLeft(unsigned short time)
+void GameModel::setTimeLeft(short time)
 {
     remainingTime = time;
 }
 
-void GameModel::setBlueGoals(unsigned char goals)
+void GameModel::setBlueGoals(char goals)
 {
     blueGoals = goals;
 }
 
-void GameModel::setYellowGoals(unsigned char goals)
+void GameModel::setYellowGoals(char goals)
 {
     yellowGoals = goals;
 }
@@ -264,7 +313,7 @@ Robot* GameModel::find(int id, std::vector<Robot*>& team)
 }
 
 
-void calculateRobotVelocity(Robot* robot) 
+static void calculateRobotVelocity(Robot* robot) 
 {
     static VelocityCalculator robotVelCalcs[20];
     int   index  = (10 * robot->isOnMyTeam()) + robot->getID();

@@ -6,6 +6,7 @@ GenericMovementBehavior::GenericMovementBehavior
     : movement(nullptr)
     , velocityMultipier(1.0)    //Elusive bug solved
     , useObstacleAvoid(true)
+    , movementFinished(false)
 {  
     movement = new Movement::GoToPosition(target, angTarget, obsAvoid, ballAvoid);
 }
@@ -35,9 +36,13 @@ void GenericMovementBehavior::perform(Robot* robot)
 void GenericMovementBehavior::perform(Robot* robot, Movement::Type type)
 {
     if(movement != nullptr)
-        movement->perform(robot, type);
+        movementFinished = movement->perform(robot, type);
 }
 
+bool GenericMovementBehavior::isFinished()
+{
+    return movementFinished;
+}
 
 void GenericMovementBehavior::setMovementTargets(Point targetPoint, float targetAngle)
 {

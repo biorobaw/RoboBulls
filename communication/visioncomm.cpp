@@ -12,7 +12,7 @@ VisionComm::VisionComm(GameModel *gm)
     //client = new RoboCupSSLClient(10020,"224.5.23.5");
 
     //James Vision Address
-    client = new RoboCupSSLClient(10020,"224.5.23.2");
+    client = new RoboCupSSLClient(10020,"224.5.23.3");
 
     //Narges Vision Address
     //client = new RoboCupSSLClient(10020,"224.5.23.8");
@@ -134,9 +134,10 @@ bool VisionComm::receive()
         recieveBall(frame);
         recieveRobotTeam(frame, TEAM_BLUE);
         recieveRobotTeam(frame, TEAM_YELLOW);
-        
-        //Runs the Robobulls game once
-        gamemodel->notifyObservers();
+
+        if (++totalframes > 200)
+            //Runs the Robobulls game once
+            gamemodel->notifyObservers();
     }
     
     /* After 50 frames the "seen counts" of each team are set to 0. This prevents

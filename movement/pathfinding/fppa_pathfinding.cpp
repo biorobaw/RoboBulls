@@ -2,7 +2,6 @@
 #include <algorithm>
 #include <utility>
 #include <iostream>
-#include <functional>
 #include "include/config/tolerances.h"
 #include "utilities/measurments.h"
 #include "utilities/comparisons.h"
@@ -57,8 +56,9 @@ namespace impl
              * Also... now it _always_ avoids the ball, even if it is close to the start/end
              * when avoidBall is on
              */
-            if(Measurments::isClose(pt, beginPos, ROBOT_SIZE) or
-               Measurments::isClose(pt, endPos, ROBOT_SIZE))
+            if(Measurments::isClose(pt, beginPos, ROBOT_RADIUS)
+               //Measurments::isClose(pt, endPos, ROBOT_RADIUS)
+                    )
             {
                 if(Measurments::isClose(gm->getBallPoint(), pt, 80)) {
                     if(not(avoidBall))
@@ -68,7 +68,7 @@ namespace impl
                 }
             }
 
-            obstacle_found = Measurments::lineDistance(pt, beginPos, endPos) < ROBOT_SIZE*1.2 &&
+            obstacle_found = Measurments::lineDistance(pt, beginPos, endPos) < ROBOT_SIZE*0.75 &&
                 insideRadiusRectangle(pt, beginPos, endPos);
 
             if(obstacle_found) {
@@ -102,8 +102,8 @@ namespace impl
          * the jagged edges in the path, but risks cutting corners
          * too close around obstacles.
          */
-        float dx = 1.0 * ROBOT_RADIUS * cos(theta + M_PI_2);
-        float dy = 1.0 * ROBOT_RADIUS * sin(theta + M_PI_2);
+        float dx = 0.25 * ROBOT_RADIUS * cos(theta + M_PI_2);
+        float dy = 0.25 * ROBOT_RADIUS * sin(theta + M_PI_2);
 
         return Point(sign * dx, sign * dy);
     }
@@ -228,7 +228,7 @@ namespace impl
 
 
     PathInfo findShortestPath(const Point& start, const Point& end, bool avoidBall,
-                              PathDirection pathHint)
+                              PathDirection pathHint, float unlessValue)
     {
         if(avoidBall)
             impl::currentFrameObstacles.push_back(GameModel::getModel()->getBallPoint());
@@ -239,61 +239,57 @@ namespace impl
             impl::currentFrameObstacles.pop_back();
 
         //Create PathInfos: pair  of {points vector, direction top/bottom}
-        PathInfo topPathInfo
-            = std::make_pair(foundPaths.first, PathDirection::Top);
-        PathInfo botPathInfo
-            = std::make_pair(foundPaths.second, PathDirection::Bottom);
+        //Get distance and valid status of each
+        PathInfo topPathInfo = std::make_pair(foundPaths.first, PathDirection::Top);
+        PathInfo botPathInfo = std::make_pair(foundPaths.second, PathDirection::Bottom);
+        bool topValidStatus  = impl::isValidPath(topPathInfo.first);
+        bool botValidStatus  = impl::isValidPath(botPathInfo.first);
+        float topTotalDist   = impl::getPathLength(topPathInfo.first);
+        float botTotalDist   = impl::getPathLength(botPathInfo.first);
 
-        /* If one of the paths is invalid (contains points outside the field),
-         * return the other path. If both are invalid, the shortest one is selected
-         * and each point is "sanitized" clamping all values within the field.
-         */
-        bool topValidStatus = impl::isValidPath(topPathInfo.first);
-        bool botValidStatus = impl::isValidPath(botPathInfo.first);
-
+        //Top path is valid and bottom isn't; defaut top
         if(topValidStatus and not(botValidStatus)) {
             return topPathInfo;
         }
-        else if(botValidStatus and not(topValidStatus)) {
+
+        //Bottom path is valid and top isn't
+        if(botValidStatus and not(topValidStatus)) {
             return botPathInfo;
         }
-        else if (not(topValidStatus) and not(botValidStatus)) {
-            float totalDistTop = impl::getPathLength(topPathInfo.first);
-            float totalDistBot = impl::getPathLength(botPathInfo.first);
 
-            //Select PathInfo top or bottom based on best distance
-            PathInfo& chosenPathInfo = topPathInfo;
-            if(totalDistBot < totalDistTop)
-                chosenPathInfo = botPathInfo;
-            Path& chosenPath = chosenPathInfo.first;
-
-            //Limit all points in the selected path to being inside the field
-            std::for_each(chosenPath.begin(), chosenPath.end(), impl::sanitizePoint);
-
-            return chosenPathInfo;
-        }
-
+        //User requested top or bottom path explicitly
         if(pathHint != PathDirection::None) {
-            /* The user has requested a certain direction of path
-             * be chosen.
-             * TODO: "UnlessThan" values here
-             */
-            if(pathHint == PathDirection::Top)
-               return topPathInfo;
-            else
-               return botPathInfo;
-         } else {
-            /* Add up all the distances from each path and determine which
-             * path is shorter. This shorter path is deemed the "better" path.
-             */
-            float totalDistTop = impl::getPathLength(topPathInfo.first);
-            float totalDistBot = impl::getPathLength(botPathInfo.first);
-            if(totalDistTop < totalDistBot) {
-                return topPathInfo;
-            } else {
-                return botPathInfo;
+            PathInfo* chosenPathInfo = &topPathInfo;
+            PathInfo* otherPathInfo  = &botPathInfo;
+            float selectedDist = topTotalDist;
+            float otherDist = botTotalDist;
+
+            if(pathHint == PathDirection::Bottom) {
+                chosenPathInfo = &botPathInfo;
+                otherPathInfo  = &topPathInfo;
+                selectedDist = botTotalDist;
+                otherDist = topTotalDist;
             }
-        }
+
+            if(unlessValue != -1.0) {
+                //The other path is at least "unlessValue" percent shorter
+                if(selectedDist - (selectedDist * unlessValue) > otherDist)
+                    return *otherPathInfo;
+            }
+            return *chosenPathInfo;
+         }
+
+        //Otherwise, selects PathInfo top or bottom strictly based on best distance.
+        //Sanitizes Points in case both are invalid.
+        PathInfo& chosenPathInfo = topPathInfo;
+        if(botTotalDist < topTotalDist)
+            chosenPathInfo = botPathInfo;
+        Path& chosenPath = chosenPathInfo.first;
+
+        //Limit all points in the "chosen" path to being inside the field
+        std::for_each(chosenPath.begin(), chosenPath.end(), impl::sanitizePoint);
+
+        return chosenPathInfo;
     }
 
 

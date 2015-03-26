@@ -8,11 +8,10 @@
 **/
 
 class Robot;
+
 class TestStrategy : public Strategy
 {
 public:
-    TestStrategy();
-
     void assignBeh() override;
     bool update() override;
 };

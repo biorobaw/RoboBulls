@@ -1,3 +1,11 @@
 #include "behavior.h"
 
-//There's nothing here!
+Behavior::~Behavior()
+{
+
+}
+
+bool Behavior::isFinished()
+{
+    return true;
+}

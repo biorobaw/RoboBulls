@@ -28,16 +28,12 @@ namespace Movement
 {
 
 Move::Move()
-    : velMultiplier(1.0)
-{
-}
+{ }
 
 Move::~Move()
-{
-}
+{ }
 
 Move::Move(Point targetPoint, float targetAngle, bool withObstacleAvoid, bool avoidBall)
-    : velMultiplier(1.0)
 {
     recreate(targetPoint, targetAngle, withObstacleAvoid, avoidBall);
 }
@@ -45,27 +41,26 @@ Move::Move(Point targetPoint, float targetAngle, bool withObstacleAvoid, bool av
 
 void Move::recreate(Point targetPoint, float targetAngle, bool withObstacleAvoid, bool avoidBall)
 {
+    /* In most cases, this is called each loop to track a possibly moving point.
+     * But that is very inefficient in that basically the pathfinding is 
+     * remade each time, and other expensive things are done. So if the new point
+     * is close enough to the last, let's not do anything
+     */
     if(Measurments::distance(m_targetPoint, targetPoint) > recrDistTolerance) {
-        /* In most cases, this is called each loop to track a possibly moving point.
-         * But that is very inefficient in that basically the pathfinding is 
-         * remade each time, and other expensive things are done. So if the new point
-         * is close enough to the other, let's not do anything
-         */
         m_targetPoint      = targetPoint;
         m_targetAngle      = targetAngle;
         isInitialized      = false;
         useObstacleAvoid   = withObstacleAvoid;
         useAvoidBall       = avoidBall;
-        pathEndInfo.hasFoundPathEnd = false;
-        pathEndInfo.endingPoint = Point(9999,9999);
+        pathEndInfo        = {Point(9999,9999), false};
         currentPathIsClear = false;
         nextTargetAngle    = UNUSED_ANGLE_VALUE;
         nextDistTolerance  = 250;
         lastObsPoint       = Point(9999, 9999);
         pathInfo.first.clear();
         pathQueue.clear();
-        lastDirection = FPPA::PathDirection::None;
         lastObstacles.clear();
+        lastDirection = FPPA::PathDirection::None;
         isInitialized = true;
     } 
     else if(!Measurments::isClose(m_targetAngle, targetAngle, recrAngleTolerance)) {
@@ -114,27 +109,19 @@ bool Move::perform(Robot *robot, Movement::Type moveType)
      * GoToPositon. The lower levels don't see this.
      */
     if(m_targetAngle == UNUSED_ANGLE_VALUE)
-        m_targetAngle = Measurments::angleBetween(robot->getRobotPosition(), m_targetPoint);
+        m_targetAngle = Measurments::angleBetween(robot, m_targetPoint);
 
-    /* Let's only bother moving if we need to */
-    //if(!Measurments::isClose(m_targetPoint, robot->getRobotPosition(), lastDistTolerance) ||
-    // !Measurments::isClose(m_targetAngle, robot->getOrientation(), lastAngTolerance))
-
-    {
-        if(useObstacleAvoid) {
-            if(pathEndInfo.hasFoundPathEnd) {
-                /* Here we have a failsafe mechanism that checks if the robot
-                 * has moved from the path's end. If so, hasFoundPathEnd is false
-                 */
-                Point robPos = robot->getRobotPosition();
-                if(Measurments::distance(robPos, pathEndInfo.endingPoint) > ROBOT_SIZE) {
-                    pathEndInfo.hasFoundPathEnd = false;
-                }
-            }
-            finished = this->calcObstacleAvoidance(robot, moveType);
-        } else {
-            finished = this->calcRegularMovement(robot, moveType);
+    if(useObstacleAvoid) {
+        /* Here we have a failsafe mechanism that checks if the robot
+         * has moved from the path's end. If so, hasFoundPathEnd is false
+         */
+        if(pathEndInfo.hasFoundPathEnd) {
+            if(Measurments::distance(robot, pathEndInfo.endingPoint) > ROBOT_SIZE)
+                pathEndInfo.hasFoundPathEnd = false;
         }
+        finished = this->calcObstacleAvoidance(robot, moveType);
+    } else {
+        finished = this->calcRegularMovement(robot, moveType);
     }
 
 #if MOVEMENT_MOVE_DEBUG
@@ -257,8 +244,9 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
              * Velocity Calculating (Important part)
              *********************************************/
 
-            float nextAngle = Measurments::angleBetween(robotPoint, nextPoint);
-            this->calculateVels(robot, nextPoint, nextAngle, moveType);
+            //Omni robots can move while facing the final orientation directly
+            //float nextAngle = Measurments::angleBetween(robotPoint, nextPoint);
+            this->calculateVels(robot, nextPoint, m_targetAngle, moveType);
             
             /**********///Path Queue Updating
             if(Measurments::isClose(robotPoint, nextPoint, nextDistTolerance)) {
@@ -287,20 +275,14 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
          * Dropped into by default, if there is a desired
          * optional end orientation, that rotation is done here
          */
-    #if 1
-        Point robotPoint = robot->getRobotPosition();
         double robotAngle = robot->getOrientation();
         this->calculateVels(robot, pathEndInfo.endingPoint, m_targetAngle, moveType);
-        if (Measurments::isClose(pathEndInfo.endingPoint, robotPoint, lastDistTolerance) &&
+        if (Measurments::isClose(pathEndInfo.endingPoint, robot, lastDistTolerance) &&
             Measurments::isClose(m_targetAngle, robotAngle, lastAngTolerance))
         {
             lfront=lback=rfront=rback=left=right=back=0;
             return true;
         }
-    #else
-        lfront=lback=rfront=rback=left=right=back=0;
-        return true;
-    #endif
     }
 
     return false;   //Skill not finished
@@ -310,12 +292,12 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
 void Move::assignNewPath(const Point& robotPoint)
 { 
     FPPA::PathInfo p = FPPA::findShortestPath
-            (robotPoint, m_targetPoint, useAvoidBall, lastDirection);
+            (robotPoint, m_targetPoint, useAvoidBall, lastDirection, 0.50);
     this->pathQueue.assign(p.first.begin(), p.first.end());
     this->lastDirection = p.second;
     this->lastObstacles = FPPA::getCurrentObstacles();    //Copies
 
-    // TEST of drawPath functions
+    //Draws path lines on iterface
     for (unsigned int i=1; i<pathQueue.size(); i++){
         GuiInterface::getGuiInterface()->drawPath(pathQueue[i-1], pathQueue[i], i*2);
     }

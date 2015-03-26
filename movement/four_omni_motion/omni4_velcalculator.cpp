@@ -1,12 +1,23 @@
 #include "movement/four_omni_motion/omni4_velcalculator.h"
+#include "utilities/debug.h"
 
 namespace Movement
 {
+
+//Multiplier for theta_vel in defaultCalc (set 10x actual)
+int THETA_MULT = 4;
+
+//Multiplier for x_vel and y_vel in defaultCalc (set 10x actual)
+int XY_MULT = 4;
+
 
 FourWheelCalculator::FourWheelCalculator()
 {
     this->angle_error_deque.push_back(0);
     this->dist_error_deque.push_back(0);
+
+    debug::registerVariable("fwc_xy", &THETA_MULT);
+    debug::registerVariable("fwc_theta", &XY_MULT);
 }
 
 fourWheelVels FourWheelCalculator::calculateVels
@@ -53,23 +64,22 @@ fourWheelVels FourWheelCalculator::defaultCalc
         theta_vel=-theta_vel;
 
     // Reduce speed near target
-    if (distance_to_goal < 300)
+    if (distance_to_goal < 700)
     {
-        x_vel *= 0.5;
-        y_vel *= 0.5;
+        x_vel *= ((float)XY_MULT / 10);
+        y_vel *= ((float)XY_MULT / 10);
+        theta_vel *= ((float)THETA_MULT / 10);
     }
 
-    //cout << dist_error_integral << endl;
-
     // Robot Frame Velocities
-    double x_vel_robot = cos(theta_current)*x_vel+sin(theta_current)*y_vel;
-    double y_vel_robot = -sin(theta_current)*x_vel+cos(theta_current)*y_vel;
+    double y_vel_robot = cos(theta_current)*x_vel+sin(theta_current)*y_vel;
+    double x_vel_robot = sin(theta_current)*x_vel-cos(theta_current)*y_vel;
 
     //Wheel Velocity Calculations
-    double RF = (sin(frnt_axl_offset) * y_vel_robot + cos(frnt_axl_offset)*x_vel_robot + wheel_radius*theta_vel);
-    double LF = -(sin(frnt_axl_offset) * y_vel_robot - cos(frnt_axl_offset)*x_vel_robot + wheel_radius*theta_vel);
-    double LB = -(-sin(rear_axl_offset) * y_vel_robot - cos(rear_axl_offset)*x_vel_robot + wheel_radius*theta_vel);
-    double RB = (-sin(rear_axl_offset) * y_vel_robot + cos(rear_axl_offset)*x_vel_robot + wheel_radius*theta_vel);
+    double RF =  (-sin(RF_offset) * x_vel_robot + cos(RF_offset)*y_vel_robot + wheel_radius*theta_vel);
+    double LF = -(-sin(LF_offset) * x_vel_robot + cos(LF_offset)*y_vel_robot + wheel_radius*theta_vel);
+    double LB = -(-sin(LB_offset) * x_vel_robot + cos(LB_offset)*y_vel_robot + wheel_radius*theta_vel);
+    double RB =  (-sin(RB_offset) * x_vel_robot + cos(RB_offset)*y_vel_robot + wheel_radius*theta_vel);
 
     //Normalize wheel velocities
     unsigned int max_mtr_spd = 100;
@@ -130,37 +140,38 @@ fourWheelVels FourWheelCalculator::facePointCalc
     //Interial Frame Velocities
     double x_vel = (distance_to_goal+dist_error_integral)*cos(angle_to_goal);
     double y_vel = (distance_to_goal+dist_error_integral)*sin(angle_to_goal);
-    double theta_vel = 1.5*Measurments::angleDiff(theta_current,theta_goal);
+    double theta_vel = Measurments::angleDiff(theta_current,theta_goal);
     if (abs(Measurments::angleDiff(theta_goal,theta_current))<abs(Measurments::angleDiff(theta_goal,theta_current+theta_vel)))
         theta_vel=-theta_vel;
 
     // Reduce speed near target
     if (distance_to_goal < 300)
     {
-        x_vel *= 0.5;
-        y_vel *= 0.5;
+        x_vel *= 0.7;
+        y_vel *= 0.7;
+
     }
 
     // Focus on rotation
     double vel = sqrt(x_vel*x_vel+y_vel*y_vel);
     if (abs(Measurments::angleDiff(theta_goal,theta_current))>ROT_TOLERANCE*0.5 && vel > 40)
     {
-        x_vel = 40*cos(angle_to_goal);
-        y_vel = 40*sin(angle_to_goal);
-        theta_vel*=2.5;
+        x_vel = 90*cos(angle_to_goal);
+        y_vel = 90*sin(angle_to_goal);
+        theta_vel *= 0.8;
     }
 
     //cout << dist_error_integral << endl;
 
     // Robot Frame Velocities
-    double x_vel_robot = cos(theta_current)*x_vel+sin(theta_current)*y_vel;
-    double y_vel_robot = -sin(theta_current)*x_vel+cos(theta_current)*y_vel;
+    double y_vel_robot = cos(theta_current)*x_vel+sin(theta_current)*y_vel;
+    double x_vel_robot = sin(theta_current)*x_vel-cos(theta_current)*y_vel;
 
     //Wheel Velocity Calculations
-    double RF =  (sin(frnt_axl_offset) * y_vel_robot + cos(frnt_axl_offset)*x_vel_robot + wheel_radius*theta_vel);
-    double LF = -(sin(frnt_axl_offset) * y_vel_robot - cos(frnt_axl_offset)*x_vel_robot + wheel_radius*theta_vel);
-    double LB = -(-sin(rear_axl_offset) * y_vel_robot - cos(rear_axl_offset)*x_vel_robot + wheel_radius*theta_vel);
-    double RB =  (-sin(rear_axl_offset) * y_vel_robot + cos(rear_axl_offset)*x_vel_robot + wheel_radius*theta_vel);
+    double RF =  (-sin(RF_offset) * x_vel_robot + cos(RF_offset)*y_vel_robot + wheel_radius*theta_vel);
+    double LF = -(-sin(LF_offset) * x_vel_robot + cos(LF_offset)*y_vel_robot + wheel_radius*theta_vel);
+    double LB = -(-sin(LB_offset) * x_vel_robot + cos(LB_offset)*y_vel_robot + wheel_radius*theta_vel);
+    double RB =  (-sin(RB_offset) * x_vel_robot + cos(RB_offset)*y_vel_robot + wheel_radius*theta_vel);
 
     //Normalize wheel velocities
     unsigned int max_mtr_spd = 100;
@@ -234,3 +245,4 @@ void FourWheelCalculator::calc_error()
 }
 
 }
+

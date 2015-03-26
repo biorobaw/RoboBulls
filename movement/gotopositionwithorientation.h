@@ -20,18 +20,10 @@ namespace Movement
 class GoToPosition : public Move
 {
 public:
-    GoToPosition();
-   ~GoToPosition();
-
-    GoToPosition(Point targetPoint,  float targetAngle = UNUSED_ANGLE_VALUE, 
-        bool withObstacleAvoid = true, bool avoidBall = true);
-        
-    GoToPosition(float tx, float ty, float targetAngle = UNUSED_ANGLE_VALUE, 
-        bool withObstacleAvoid = true, bool avoidBall = true);
+    using Move::Move;
 
 protected:
-    void calculateVels
-        (Robot *rob, Point targetPoint, float targetAngle, Type moveType) override;
+    void calculateVels(Robot *rob, Point targetPoint, float targetAngle, Type moveType) override;
 
 private:
     DifferentialCalculator dc;
@@ -39,10 +31,8 @@ private:
     FourWheelCalculator    fwc;
 };
 
-
 /* Legacy name typedef */
 typedef GoToPosition GoToPositionWithOrientation;
-
 
 }
 

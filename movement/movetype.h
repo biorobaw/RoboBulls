@@ -19,12 +19,12 @@ enum class Type : MovementType
 {
     Default = -1,
 
-    /*** Differential Movement Types ***/
+    /* Differential Movement Types */
     SharpTurns,
 	NoSlowdown,
-    Count,			//Always leave last; do not use
+    Count,  //Leave last and do not use
 
-    /*** Omni Movement Types ***/
+    /* Omni Movement Types */
     facePoint
 };
 

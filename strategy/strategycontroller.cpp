@@ -13,6 +13,7 @@
 #include "strategy/normalgamestrategy.h"
 #include "strategy/indiectkickstrategy.h"
 #include "strategy/normalgamestrategy.h"
+#include "strategy/videostrategies.h"
 #include "movement/pathfinding/fppa_pathfinding.h"
 #include "gui/guiinterface.h"
 
@@ -59,9 +60,7 @@ void StrategyController::assignNewStrategy(char gameState)
     /* Testing macro: Change this to 0 to ignore game sate
      * commands; use to test a single strategy
      */
-    std::cout << "New Strategy: " << gameState << std::endl;
-
-#if 1
+#if 0
     switch(gameState)
     {
     case 'S':    //stop game
@@ -100,7 +99,7 @@ void StrategyController::assignNewStrategy(char gameState)
         activeStrategy = new TestStrategy();
     };
 #else
-    activeStrategy = new NormalGameStrategy();
+    activeStrategy = new TestStrategy();
 #endif
 }
 

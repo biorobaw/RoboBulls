@@ -35,6 +35,12 @@ public:
     * Should have been here a long time ago
     */
    void perform(Robot* robot) override;
+   
+   /* isFinished override
+    * return true when the movement object has reached the movement
+    * targets
+    */
+   bool isFinished() override;
 
 protected:
 
@@ -66,6 +72,7 @@ private:
     float newRotTolerance;
     bool  useObstacleAvoid;
     bool  useAvoidBall;
+    bool  movementFinished;
 };
 
 #endif

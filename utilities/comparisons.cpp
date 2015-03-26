@@ -199,7 +199,7 @@ bool isFacingPointCompareFn(Robot* robot, Robot* null, const Point& pred_Point, 
     Point robPos     = robot->getRobotPosition();
     float robAngle   = robot->getOrientation();
     float angleTween = Measurments::angleBetween(robPos, pred_Point);
-    float angleDiff  = Measurments::angleDiff(angleTween, robAngle);
+    float angleDiff  = abs( Measurments::angleDiff(angleTween, robAngle) );
     return compare_function(angleDiff, pred_tolerance);
 }
 
