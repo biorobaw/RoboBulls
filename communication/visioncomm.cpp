@@ -1,3 +1,5 @@
+#include <cmath>
+#include <deque>
 #include "include/config/simulated.h"
 #include "include/config/team.h"
 #include "visioncomm.h"
@@ -84,12 +86,58 @@ static bool ballCompareFn(const SSL_DetectionBall&  a, const SSL_DetectionBall& 
     return a.confidence() < b.confidence();
 }
 
+#define NOISE_RADIUS   20
+#define NOISE_READINGS 10
+
 void VisionComm::recieveBall(const SSL_DetectionFrame& frame)
 {
-    if(frame.balls_size() > 0) {
+    static bool ballStopped = true;
+    static Point noiseCenterPoint;
+    static int seenOutSideRadiusCount = 0;
+    static std::vector<Point> lastBallReadings;
+
+    if(frame.balls_size() > 0)
+    {
         auto bestDetect = std::max_element(frame.balls().begin(), frame.balls().end(), ballCompareFn);
+
         if(isGoodDetection(*bestDetect, frame, CONF_THRESHOLD_BALL))
-            gameModel->setBallPoint( Point(bestDetect->x(), bestDetect->y()) );
+        {
+            Point newDetection = Point(bestDetect->x(), bestDetect->y());
+
+            if(ballStopped) {
+                if(Measurments::distance(newDetection, noiseCenterPoint) > NOISE_RADIUS) {
+                    ++seenOutSideRadiusCount;
+                }
+                if(seenOutSideRadiusCount > 5) {
+                    ballStopped = false;
+                    seenOutSideRadiusCount = 0;
+                }
+            }
+            else {
+                float maxDistance = 0;
+                gameModel->setBallPoint(newDetection);
+
+                if(lastBallReadings.size() == NOISE_READINGS) {
+                    for(int i =  0;  i != NOISE_READINGS; ++i) {
+                    for(int j = i+1; j != NOISE_READINGS; ++j) {
+                        float dist = Measurments::distance(lastBallReadings[i], lastBallReadings[j]);
+                        if(dist > maxDistance) {
+                           maxDistance = dist;
+                        }
+                    }
+                    }
+                    lastBallReadings.clear();
+                    lastBallReadings.reserve(NOISE_READINGS);
+                } else {
+                    lastBallReadings.push_back(newDetection);
+                }
+
+                if(maxDistance < NOISE_RADIUS*0.5) {
+                    ballStopped = true;
+                    noiseCenterPoint = newDetection;
+                }
+            }
+        }
     }
 }
 

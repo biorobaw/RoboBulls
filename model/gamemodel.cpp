@@ -1,5 +1,6 @@
 #include <sstream>
 #include <iostream>
+#include <fstream>
 #include "include/config/team.h"
 #include "include/config/simulated.h"
 #include "strategy/strategycontroller.h"
@@ -12,6 +13,8 @@
 
 // Global static pointer used to ensure a single instance of the class.
 GameModel* gameModel = new GameModel();
+
+static std::fstream file("/home/jameswaugh/data.txt", ios_base::out);
 
 
 /*******************************************************************/
@@ -167,12 +170,28 @@ std::string GameModel::toString()
 /************************ Private Methods **************************/
 /*******************************************************************/
 
+#define MEASURE(x) if(posedge(bs > x)) { std::cout << #x << std::endl; }
 
 /* Called by VisionComm */
 /* Don't overlook this function, it's more important than you think
  */
 void GameModel::notifyObservers()
 {
+    static float bs = 0;
+    static float max = 0;
+
+     bs = gameModel->getBallSpeed();
+
+    if(bs > 0.5) {
+        max = std::max(max, bs);
+        std::cout << max << " " << bs << std::endl;
+    }
+
+    if(posedge(bs < 1)) {
+        file << max << " " << getBallPoint().toString() << std::endl;
+        max = 0;
+    }
+
     setRobotHasBall();
     sc->run();
 }
@@ -211,12 +230,19 @@ static Point calcBallPrediction()
     {
         Point bp = gameModel->getBallPoint();
         Point bv = gameModel->getBallVelocity() * POINTS_PER_METER;
-        Point ba = gameModel->getBallAcceleration() * METERS_PER_POINT;
-        prediction = bp + (bv * 2.3) + (ba * 2.3 * 2.3 * 0.5);
+        //Point ba = gameModel->getBallAcceleration() * METERS_PER_POINT;
+        float ba = -0.1;
+        float t = 3;
+
+        float px = bp.x + bv.x*t + ba*t*t*0.5;
+        float py = bp.y + bv.y*t + ba*t*t*0.5;
+
+        prediction = Point(px, py);
+
         // Takin this out for video - too noisy
 
         // Also: this should be in gui main loop, not game model. martin
-//        GuiInterface::getGuiInterface()->drawPath(gameModel->getBallPoint(), prediction);
+        GuiInterface::getGuiInterface()->drawPath(gameModel->getBallPoint(), prediction);
 
         //BUT MARTIN: The "drawPath" function was explicitly added by Ryan to draw arbitrary lines from our code.
     }
