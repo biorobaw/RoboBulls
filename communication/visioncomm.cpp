@@ -86,15 +86,15 @@ static bool ballCompareFn(const SSL_DetectionBall&  a, const SSL_DetectionBall& 
     return a.confidence() < b.confidence();
 }
 
-#define NOISE_RADIUS   20
-#define NOISE_READINGS 10
+#define NOISE_RADIUS   15
 
 void VisionComm::recieveBall(const SSL_DetectionFrame& frame)
 {
     static bool ballStopped = true;
     static Point noiseCenterPoint;
-    static int seenOutSideRadiusCount = 0;
-    static std::vector<Point> lastBallReadings;
+    static int seenOutsideRadiusCount = 0;
+    static int seenStoppedCount = 0;
+    static Point lastDetection;
 
     if(frame.balls_size() > 0)
     {
@@ -104,43 +104,38 @@ void VisionComm::recieveBall(const SSL_DetectionFrame& frame)
         {
             Point newDetection = Point(bestDetect->x(), bestDetect->y());
 
-            if(ballStopped) {
-                if(Measurments::distance(newDetection, noiseCenterPoint) > NOISE_RADIUS) {
-                    ++seenOutSideRadiusCount;
-                }
-                if(seenOutSideRadiusCount > 5) {
+            // If the ball is detected outside the noise radius more than 5 times
+            // it is considered to be moving and its position will be updated
+            if(ballStopped)
+            {
+                if(Measurments::distance(newDetection, noiseCenterPoint) > NOISE_RADIUS)
+                    ++seenOutsideRadiusCount;
+                if(seenOutsideRadiusCount > 5)
+                {
                     ballStopped = false;
-                    seenOutSideRadiusCount = 0;
+                    seenOutsideRadiusCount = 0;
                 }
             }
-            else {
-                float maxDistance = 0;
+            // If the ball is detected close (distance < 1) to its last point
+            // 4 times it is considered stopped it's position will not be updated
+            else
+            {
                 gameModel->setBallPoint(newDetection);
 
-                if(lastBallReadings.size() == NOISE_READINGS) {
-                    for(int i =  0;  i != NOISE_READINGS; ++i) {
-                    for(int j = i+1; j != NOISE_READINGS; ++j) {
-                        float dist = Measurments::distance(lastBallReadings[i], lastBallReadings[j]);
-                        if(dist > maxDistance) {
-                           maxDistance = dist;
-                        }
-                    }
-                    }
-                    lastBallReadings.clear();
-                    lastBallReadings.reserve(NOISE_READINGS);
-                } else {
-                    lastBallReadings.push_back(newDetection);
-                }
-
-                if(maxDistance < NOISE_RADIUS*0.5) {
+                if(Measurments::distance(newDetection,lastDetection) < 1)
+                    ++seenStoppedCount;
+                if(seenStoppedCount >= 4)
+                {
                     ballStopped = true;
                     noiseCenterPoint = newDetection;
+                    seenStoppedCount = 0;
                 }
+
+                lastDetection = newDetection;
             }
         }
     }
 }
-
 
 /* Used to parse and recieve a generic Robot team and update GameModel with
  * the information, if we're confident on the Robot detection
