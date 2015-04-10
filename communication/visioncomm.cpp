@@ -1,3 +1,5 @@
+#include <cmath>
+#include <deque>
 #include "include/config/simulated.h"
 #include "include/config/team.h"
 #include "visioncomm.h"
@@ -84,15 +86,61 @@ static bool ballCompareFn(const SSL_DetectionBall&  a, const SSL_DetectionBall& 
     return a.confidence() < b.confidence();
 }
 
+#define NOISE_RADIUS   15
+
 void VisionComm::recieveBall(const SSL_DetectionFrame& frame)
 {
-    if(frame.balls_size() > 0) {
+    static Point noiseCenterPoint;
+    static int seenOutsideRadiusCount = 0;
+    static int seenStoppedCount = 0;
+    static int velocityNoReadCounter = 0;
+    static Point lastDetection;
+
+    if(frame.balls_size() > 0)
+    {
         auto bestDetect = std::max_element(frame.balls().begin(), frame.balls().end(), ballCompareFn);
+
         if(isGoodDetection(*bestDetect, frame, CONF_THRESHOLD_BALL))
-            gameModel->setBallPoint( Point(bestDetect->x(), bestDetect->y()) );
+        {
+            Point newDetection = Point(bestDetect->x(), bestDetect->y());
+
+            // If the ball is detected outside the noise radius more than 5 times
+            // it is considered to be moving and its position will be updated
+            if(gameModel->ballStopped)
+            {
+                gameModel->setBallPoint(gameModel->getBallPoint());
+
+                if(Measurments::distance(newDetection, noiseCenterPoint) > NOISE_RADIUS)
+                    ++seenOutsideRadiusCount;
+                if(seenOutsideRadiusCount > 2)
+                {
+                    gameModel->ballStopped = false;
+                    seenOutsideRadiusCount = 0;
+                }
+            }
+            // If the ball is detected close (distance < 1) to its last point
+            // 4 times it is considered stopped it's position will not be updated
+            else
+            {
+                if(++velocityNoReadCounter >= 0) {
+                    gameModel->setBallPoint(newDetection);
+                    velocityNoReadCounter = 0;
+                }
+
+                if(Measurments::distance(newDetection,lastDetection) < 1)
+                    ++seenStoppedCount;
+                if(seenStoppedCount >= 4)
+                {
+                    gameModel->ballStopped = true;
+                    noiseCenterPoint = newDetection;
+                    seenStoppedCount = 0;
+                }
+
+                lastDetection = newDetection;
+            }
+        }
     }
 }
-
 
 /* Used to parse and recieve a generic Robot team and update GameModel with
  * the information, if we're confident on the Robot detection

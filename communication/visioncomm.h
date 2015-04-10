@@ -16,7 +16,7 @@ using namespace std;
 /**
  * @brief CONF_THRESHOLD sets the minimum confidence to consider the ball as detected.
 */
-const float CONF_THRESHOLD_BALL = 0.6;
+const float CONF_THRESHOLD_BALL = 0.75;
 const float CONF_THRESHOLD_BOTS = 0.8;
 
 /**
