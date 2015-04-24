@@ -74,6 +74,11 @@ float GameModel::getBallSpeed()
     return std::hypot(ballVelocity.x, ballVelocity.y);
 }
 
+bool GameModel::getBallIsStopped()
+{
+    return ballStopped;
+}
+
 Point GameModel::getBallPrediction()
 {
     return ballPrediction;

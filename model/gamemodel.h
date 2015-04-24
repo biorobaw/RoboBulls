@@ -32,6 +32,7 @@ public:
     Point  getBallVelocity();
     Point  getBallAcceleration();
     Point  getBallPrediction();
+    bool   getBallIsStopped();
     float  getBallSpeed();
     char   getBlueGoals();
     char   getYellowGoals();
@@ -65,6 +66,7 @@ private:
     char   yellowGoals       = 0;
     short  remainingTime     = 0;
     char   previousGameState = '\0';
+    bool   ballStopped = false;
 
     /* Functions to update gamemodel from vision system.
      * Provides *the* link between vision detection and
