@@ -3,38 +3,31 @@
 #include "utilities/velocitycalculator.h"
 #include "utilities/debug.h"
 
-//The number of velocities that the calculator will hold
-#define VEL_COLLECTIONS_MAX 10
-
-//Calculates new average velocity every SAMPLE_TIME_MAX+1 runs.
-#define SAMPLE_TIME_MAX     0
-
-
-VelocityCalculator::VelocityCalculator(float dist_threshold)
-    : threshold(dist_threshold)
+VelocityCalculator::VelocityCalculator(unsigned deque_size)
+    : maxSize(deque_size)
     { }
 
 Point VelocityCalculator::update(const Point& movedPoint)
 {
-    static time_t now = clock(), prev = 0;
+    addNewVelocityPoint(movedPoint);
 
-    //Measures changes in time since last call and calculates velocity.
-    prev = now;
-    now = clock();
-    float changeInSec = (float)(now - prev) / CLOCKS_PER_SEC;
-    float velocityX = ((movedPoint.x - oldPoint.x) / POINTS_PER_METER) / changeInSec;
-    float velocityY = ((movedPoint.y - oldPoint.y) / POINTS_PER_METER) / changeInSec;
-    oldPoint = movedPoint;
+    //Difference of most recent reading and oldest
+    Point displacement = velCalculations.back().first - velCalculations.front().first;
+    clock_t time = velCalculations.back().second - velCalculations.front().second;
 
-    float magOld = std::hypot(oldVelocity.x, oldVelocity.y);
-    Point newVelocity = Point(velocityX, velocityY);
-    float magNew = std::hypot(newVelocity.x, newVelocity.y);
+    //Calculate change displacement over seconds taken from above
+    float changeInSec = (float)(time) / CLOCKS_PER_SEC;
+    float velocityX = (displacement.x / POINTS_PER_METER) / changeInSec;
+    float velocityY = (displacement.y / POINTS_PER_METER) / changeInSec;
 
-    //Disregard changes in velocity that look too big
-    if(abs(magNew - magOld) > 2 || magNew > 6) {
-        newVelocity = oldVelocity;
+    return Point(velocityX, velocityY);
+}
+
+void VelocityCalculator::addNewVelocityPoint(const Point& movedPoint)
+{
+    //Push back new point and remove oldest if size hit
+    if(velCalculations.size() == maxSize) {
+        velCalculations.pop_front();
     }
-
-    oldVelocity = newVelocity;
-    return newVelocity;
+    velCalculations.emplace_back(movedPoint, clock());
 }

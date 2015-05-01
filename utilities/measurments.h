@@ -75,6 +75,12 @@ public:
 	 * LStart and LEnd touching p0.
 	 */
 	static float lineDistance(const Point& p0, const Point& LStart, const Point& LEnd);
+
+    /* Given a line A befined by LStart and LEnd, returns the point on A that is
+     * closet to p0. Similar to above, this is across the perpendicular distance
+     * from p0 to A.
+     */
+    static Point linePoint(const Point& p0, const Point& LStart, const Point& LEnd);
 };
 
 

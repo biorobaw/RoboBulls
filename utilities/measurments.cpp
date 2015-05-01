@@ -113,3 +113,17 @@ float Measurments::lineDistance(const Point& p0, const Point& LStart, const Poin
 			/ Measurments::distance(LStart, LEnd);
 }
 
+
+Point Measurments::linePoint(const Point& p0, const Point& LStart, const Point& LEnd)
+{
+    //See https://pantherfile.uwm.edu/ericskey/www/231material/hws19.pdf
+    float m = Measurments::angleBetween(LEnd, LStart);
+    float y2 = LEnd.y;
+    float y1 = LStart.y;
+    float x2 = LEnd.x;
+    float x1 = LStart.x;
+    float b = ((y2 - y1)/(x2 - x1))*(-x1) + y1;
+    float x = (p0.x + m*p0.y - b*m) / (m*m + 1);
+    float y = (m*p0.x + m*m*p0.y + b) / (m*m + 1);
+    return Point(x, y);
+}

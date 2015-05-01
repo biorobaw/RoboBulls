@@ -64,6 +64,12 @@ IgnorablePredicate& IgnorablePredicate::ignoreID(int id) {
 IgnorablePredicate& IgnorablePredicate::ignoreIDNot(int id) {
     return ignore_if(idNotEqual(id));
 }
+IgnorablePredicate& IgnorablePredicate::ignoreID(Robot* r) {
+    return ignoreID(r->getID());
+}
+IgnorablePredicate& IgnorablePredicate::ignoreIDNot(Robot* r) {
+    return ignoreIDNot(r->getID());
+}
 IgnorablePredicate& IgnorablePredicate::ignoreIDs(std::initializer_list<int> ids) {
     for(int id : ids)
         ignore_if(idEqual(id));

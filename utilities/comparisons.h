@@ -30,6 +30,8 @@ struct IgnorablePredicate
     IgnorablePredicate& ignore_if(std::function<bool(Robot*)> function);
     IgnorablePredicate& ignoreID(int id);
     IgnorablePredicate& ignoreIDNot(int id);
+    IgnorablePredicate& ignoreID(Robot* r);
+    IgnorablePredicate& ignoreIDNot(Robot* r);
     IgnorablePredicate& ignoreIDs(std::initializer_list<int> ids);
     IgnorablePredicate& ignoreIDs(std::initializer_list<Robot*> robs);
     IgnorablePredicate& ignoreIDsNot(std::initializer_list<int> ids);

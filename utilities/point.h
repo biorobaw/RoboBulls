@@ -22,7 +22,7 @@ public:
     Point	operator-(const Point& rhs);
     Point   operator*(float rhs);
 	
-    std::string toString();
+    std::string toString() const;
 public:
     float x, y;
 };

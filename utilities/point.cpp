@@ -67,7 +67,7 @@ Point Point::operator*(float rhs)
     return ret;
 }
 
-std::string Point::toString()
+std::string Point::toString() const
 {
     stringstream ss;
     ss << "(x, y)= " << "("<<x<<", "<<y<<")";
