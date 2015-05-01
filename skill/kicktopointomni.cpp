@@ -29,15 +29,17 @@ namespace Skill
  * target to be able to kick.
  */
 #if SIMULATED
-int BEHIND_RADIUS  = 100;
+int BEHIND_RADIUS  = 200;
 int KICK_DISTANCE  = 110;
 int KICK_COUNT_MAX = 1;
 float FACING_ANGLE_TOL  = 60 * (M_PI / 180);
+int FORWARD_WAIT_COUNT = 5;
 #else
 int BEHIND_RADIUS  = ROBOT_SIZE;
 int KICK_DISTANCE  = 140;
 int KICK_COUNT_MAX = 1;
 float FACING_ANGLE_TOL  = 20 * (M_PI / 180);
+int FORWARD_WAIT_COUNT = 15;
 #endif
 
 int   RECREATE_DIST_TOL = 25;
@@ -95,7 +97,7 @@ bool KickToPointOmni::perform(Robot* robot)
             else
                 move_comp_counter = 0;
 
-            if( move_comp_counter >25)
+            if( move_comp_counter > FORWARD_WAIT_COUNT)
             {
                 state = MOVE_FORWARD;
                 move_comp_counter = 0;

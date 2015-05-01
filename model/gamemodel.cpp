@@ -206,34 +206,18 @@ void GameModel::onCommandProcessed()
 
 static Point calcBallPrediction()
 {
-    static float bs;
-    bs = gameModel->getBallSpeed();
-
-    Point prediction = gameModel->getBallPoint();
-
-    //Calculate once, if the ball is starting to move
-    if( posedge(bs > 1.5) )
-    {
-        Point bp = gameModel->getBallPoint();
-        Point bv = gameModel->getBallVelocity() * POINTS_PER_METER;
-        Point ba = gameModel->getBallAcceleration() * METERS_PER_POINT;
-        prediction = bp + (bv * 2.3) + (ba * 2.3 * 2.3 * 0.5);
-        // Takin this out for video - too noisy
-
-        // Also: this should be in gui main loop, not game model. martin
-//        GuiInterface::getGuiInterface()->drawPath(gameModel->getBallPoint(), prediction);
-
-        //BUT MARTIN: The "drawPath" function was explicitly added by Ryan to draw arbitrary lines from our code.
-    }
-
-    return prediction;
+    //p = p0 + vt, with t = 2
+    Point bp = gameModel->getBallPoint();
+    Point predict = bp + gameModel->getBallVelocity() * POINTS_PER_METER * 2.0;
+    //GuiInterface::getGuiInterface()->drawPath(bp, predict);
+    return predict;
 }
 
 void GameModel::setBallPoint(Point bp)
 {
     //Sets ball point, and calculates velocity, acceleration, and the prediction.
-    static VelocityCalculator ballVelCalculator(0);
-    static VelocityCalculator ballAclCalculator(0);
+    static VelocityCalculator ballVelCalculator;
+    static VelocityCalculator ballAclCalculator;
     ballPoint = bp;
     ballVelocity = ballVelCalculator.update(bp);
     ballAcceleration = ballAclCalculator.update(ballVelocity * POINTS_PER_METER);
