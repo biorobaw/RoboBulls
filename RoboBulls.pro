@@ -112,7 +112,8 @@ SOURCES += main.cpp \
     skill/kicktopointomni.cpp \
     strategy/videostrategies.cpp \
     utilities/debug.cpp \
-    utilities/edges.cpp
+    utilities/edges.cpp \
+    behavior/defendbehavior.cpp
 
 HEADERS += \
 	behavior/behavior.h \
@@ -206,7 +207,8 @@ HEADERS += \
     strategy/videostrategies.h \
     behavior/genericskillbehavior.h \
     utilities/debug.h \
-    utilities/edges.h
+    utilities/edges.h \
+    behavior/defendbehavior.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 
