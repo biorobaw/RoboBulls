@@ -21,6 +21,8 @@ class GameModel
 public:
     GameModel();
     static GameModel* getModel();
+    static int mySide; //-1 or 1 representing side of field
+    static int opSide; //Opposite of mySide
 
     /* Game access functions
      * These should be utilized by normal code to retrieve the state

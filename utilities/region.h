@@ -36,6 +36,14 @@ public:
 
     int getStrategicValue();
 
+public:
+    /* Standard region values
+     * Represents common regions of interest on the field
+     */
+    static Region goalBox0; //Goalie box (Negative X)
+    static Region goalBox1; //Goalie box (Positive X)
+    static Region field;    //Entire Field within a gray zone
+
 private:
     float minX, maxX, minY, maxY;
     int strategic_value;

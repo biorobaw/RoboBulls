@@ -13,6 +13,14 @@
 // Global static pointer used to ensure a single instance of the class.
 GameModel* gameModel = new GameModel();
 
+#if TEAM==TEAM_BLUE
+int GameModel::mySide = -1;
+int GameModel::opSide =  1;
+#else
+int GameModel::mySide =  1;
+int GameModel::opSide = -1;
+#endif
+
 
 /*******************************************************************/
 /************************ Public Methods ***************************/

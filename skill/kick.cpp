@@ -3,6 +3,7 @@
 
 namespace Skill
 {
+
 Kick::Kick():lVel(100), rVel(100)
 {
 
@@ -16,23 +17,11 @@ Kick::Kick(int leftVel, int rightVel)
 
 bool Kick::perform(Robot * robot)
 {
-//    #if TRACE
-//        cout << "Performing Skill::Kick" << endl;
-//    #endif
-
-    //RobComm *nxtbee = RobComm::getRobComm();
-    roboKick = true;
-
-    while (roboKick)
+    robot->setKick(1);
+    if (robot->type() == differential)
     {
-        //nxtbee->sendKick(robot->getID());
-        robot->setKick(1);
-        if (robot->type() == differential)
-        {
-            robot->setL(lVel);
-            robot->setR(rVel);
-        }
-        roboKick = false;
+        robot->setL(lVel);
+        robot->setR(rVel);
     }
 
 	return true;

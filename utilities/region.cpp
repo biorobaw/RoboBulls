@@ -1,6 +1,29 @@
 #include <sstream>
 #include <cmath>
 #include "region.h"
+#include "include/config/globals.h"
+
+/**************************************************/
+
+Region Region::goalBox0
+    (-FIELD_LENGTH,
+     -FIELD_LENGTH+GOAL_LENGTH,
+      GOAL_WIDTH,
+     -GOAL_WIDTH);
+
+Region Region::goalBox1
+    ( FIELD_LENGTH,
+      FIELD_LENGTH-GOAL_LENGTH,
+      GOAL_WIDTH,
+     -GOAL_WIDTH);
+
+Region Region::field
+    (-FIELD_LENGTH + 250,
+      FIELD_LENGTH,
+     -FIELD_WIDTH + 250,
+      FIELD_WIDTH);
+
+/**************************************************/
 
 Region::Region()
 {
