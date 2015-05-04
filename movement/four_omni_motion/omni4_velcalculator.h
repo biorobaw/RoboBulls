@@ -7,7 +7,6 @@
 
 #include "model/robot.h"
 #include "movement/movetype.h"
-#include "include/config/globals.h"
 #include "utilities/measurments.h"
 #define FOUR_WHEEL_DEBUG 0
 
