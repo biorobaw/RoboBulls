@@ -1,6 +1,6 @@
 #ifndef DEFENDFARFROMBALL_H
 #define DEFENDFARFROMBALL_H
-#include "skill/kicktopoint.h"
+#include "skill/kicktopointomni.h"
 #include "behavior/genericmovementbehavior.h"
 #include "movement/gotoposition.h"
 
@@ -14,7 +14,7 @@ public:
     DefendFarFromBall();
     void perform(Robot*);
 public:
-    Skill::KickToPoint* KTPSkill = nullptr;
+    Skill::KickToPointOmni* KTPSkill = nullptr;
     bool wasNotPreviousScoreHazard;
     bool isKickingAwayBall;
     int  lastKickCounter;

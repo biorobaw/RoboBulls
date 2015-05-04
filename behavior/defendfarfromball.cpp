@@ -25,16 +25,13 @@ void DefendFarFromBall::perform(Robot *robot)
     Point robPoint = robot->getRobotPosition();
     Point ballPoint = gm->getBallPoint();
     Point myGoal = gm->getMyGoal();
-    double direction = Measurments::angleBetween(myGoal, ballPoint);
-    Point defensiveWall(cos(direction)*DISTANCE + myGoal.x,
-                        sin(direction)*DISTANCE + myGoal.y);
 
     /* Check if there are any opp robots within 3000 distance of the ball
     *  This boolean is used to determine if the goalie should wait
     *  before kicking the ball to a teammate in case an opp robot intersepts
     *  the ball
+    *  * TODO: Probably remove this
     */
-
     bool safeToKick = 1;
     for(Robot* opRob:gm->getOponentTeam())
     {
@@ -44,16 +41,19 @@ void DefendFarFromBall::perform(Robot *robot)
 
     bool isScoreHazard =
             Measurments::distance(myGoal, ballPoint) < 1200
+            and Measurments::distance(myGoal, ballPoint) > 500
             and not(Measurments::isClose(robPoint, ballPoint, 100))
             and lastKickCounter <= 0
             and safeToKick;
 
     if(isScoreHazard or isKickingAwayBall) {
+        //Initially this goes here
         if(wasNotPreviousScoreHazard) {
-            KTPSkill = new Skill::KickToPoint(Point(0,0), 50*M_PI/180);
+            KTPSkill = new Skill::KickToPointOmni(Point(0,0));
             isKickingAwayBall = true;
             wasNotPreviousScoreHazard = false;
         }
+        //Performing the kick and stopping if finished
         if(KTPSkill->perform(robot) or
                 Measurments::distance(ballPoint, myGoal) > 1200){
             lastKickCounter = 100;
@@ -63,6 +63,7 @@ void DefendFarFromBall::perform(Robot *robot)
             KTPSkill = nullptr;
         }
     } else {
+        //Logic to be able to kick again
         if(lastKickCounter > 0) {
             --lastKickCounter;
         }
@@ -76,6 +77,16 @@ void DefendFarFromBall::perform(Robot *robot)
             setVelocityMultiplier(0.75);
         }
 
+        //Logic to not be dumb following out-of-view balls
+        Point  cmpPoint(myGoal.x + 500*GameModel::opSide, 0);
+        double    cmpAng = Measurments::angleBetween(cmpPoint, ballPoint);
+        double   realAng = Measurments::angleBetween(myGoal, ballPoint);
+        double centerAng = Measurments::angleBetween(cmpPoint, Point(0,0));
+        double direction = realAng;
+        if(abs(cmpAng) > 90*(M_PI/180))
+            direction = centerAng;
+
+        //Just sitting and facing the ball
         Point defensiveWall(cos(direction)*DISTANCE + myGoal.x,
                             sin(direction)*DISTANCE + myGoal.y);
         setMovementTargets(defensiveWall, direction, false, false);
