@@ -75,12 +75,13 @@ protected:
 
         
 private:
-    Point m_targetPoint      = Point(9999, 9999);
-    float m_targetAngle      = UNUSED_ANGLE_VALUE;
-    float velMultiplier      = 1.0;
-    bool  isInitialized      = false; 
-    bool  useObstacleAvoid   = true;
-    bool  useAvoidBall       = true;
+    Point m_targetPoint    = Point(9999, 9999);
+    float m_targetAngle    = UNUSED_ANGLE_VALUE;
+    float velMultiplier    = 1.0;
+    bool  isInitialized    = false;
+    bool  useObstacleAvoid = true;
+    bool  useAvoidBall     = true;
+    bool  useAvoidGoal     = true;
 
     struct pathEndState
     {

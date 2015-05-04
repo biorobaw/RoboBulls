@@ -102,6 +102,9 @@ bool Move::perform(Robot *robot, Movement::Type moveType)
     #endif
         return false;
     }
+
+    //useAvoidGoal: 0 if we are moving on the goalie, 1 otherwise. Always.
+    useAvoidGoal = (robot->getID() != 5);
     
     /* This is a correction  factor; since all movement classes derive from
      * this class, the angle is corrected if the special flag is used. Likewise,
@@ -173,8 +176,7 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
         return false;
         break;
     case MOVE_COLLIDED:
-        left = right = -75;
-        back = 0;
+        lfront = lback = rfront = rback = -40;
         if(Collisions::needsNewPath(robot)) {
             this->assignNewPath(robot->getRobotPosition());
         }
@@ -292,7 +294,7 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
 void Move::assignNewPath(const Point& robotPoint)
 { 
     FPPA::PathInfo p = FPPA::findShortestPath
-            (robotPoint, m_targetPoint, useAvoidBall, lastDirection, 0.50);
+            (robotPoint, m_targetPoint, useAvoidBall, useAvoidGoal, lastDirection, 0.50);
     this->pathQueue.assign(p.first.begin(), p.first.end());
     this->lastDirection = p.second;
     this->lastObstacles = FPPA::getCurrentObstacles();    //Copies

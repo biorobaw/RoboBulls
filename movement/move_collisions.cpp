@@ -4,6 +4,7 @@
 #include "include/config/team.h"
 #include "utilities/measurments.h"
 #include "utilities/comparisons.h"
+#include "utilities/region.h"
 #include "model/gamemodel.h"
 #include "model/robot.h"
 #include "movement/move_collisions.h"
@@ -22,11 +23,11 @@
  * for the robot to be considered moving. This is used to have the robots
  * not yield to a robot that is not moving.
  */
-#define ROBOT_MOVING_DIST_TOL       110
+#define ROBOT_MOVING_DIST_TOL       60
 /* Defines the amount of times each robot's distance has to be considered
  * "not moving" for the yielding robots to not yield to that robot
  */
-#define ROBOT_MOVE_DIST_COUNT       4
+#define ROBOT_MOVE_DIST_COUNT       20
 /* Defines the amount of counts to update, while a robot is backing up,
  * until it is free to move forward again
  */
@@ -169,13 +170,20 @@ namespace detail
 
     bool robotFacingRobot(Robot* a, Robot* b)
     {
-        int tolerance = M_PI/3;
-        return Comparisons::isFacingPoint(a, b, tolerance);
+        /* For the omni robots, they don't face each other. So we look at their
+         * velocity direction to determine "facing"
+         */
+        float tolerance = 33 * (M_PI / 180);
+        Point rv = a->getVelocity();
+        float ra = atan2(rv.y, rv.x);
+        float bad = Measurments::angleBetween(a, b);
+        return Measurments::isClose(ra, bad, tolerance);
+        //return Comparisons::isFacingPoint(a, b, tolerance);
     }
 
     bool robotCollideHazard(Robot* a, Robot* b)
     {
-        int tolerance = 300;
+        int tolerance = 400;
         return Comparisons::isDistanceToLess(a, b, tolerance);
     }
     
@@ -260,7 +268,7 @@ namespace detail
             
             Point robPos = robot->getRobotPosition();
             Point othPos = other->getRobotPosition();
-            int closeTol = ROBOT_RADIUS * 2.5;
+            int closeTol = ROBOT_RADIUS * 5;
             bool robOtherTooClose = Measurments::distance(robPos, othPos)
                     <= closeTol;
             bool robFacingOther = robotFacingRobot(robot, other);
@@ -275,14 +283,7 @@ namespace detail
             
             if(robotFacingRobot(robot, other) and robotFacingRobot(other, robot)) {
                 if(other->isOnMyTeam()) {
-                    if(robot->hasBeh and other->hasBeh) {
-                        /* TODO: Add Behavior Priorities. For now this if-statement
-                         * doesn't really matter
-                         */
-                        robotDisableMovement(other, robot);
-                    } else {
-                        robotDisableMovement(robot, other);
-                    }
+                    robotDisableMovement(other, robot);
                 }
                 else {
                     /* For now I'm just doing this. If this is compiled for the yellow team,

@@ -27,7 +27,7 @@ namespace Movement
 {
 namespace Collisions 
 {
-    /*Updates all "moving" statuses of each robot and sets each to
+    /* Updates all "moving" statuses of each robot and sets each to
      * MOVE_OK/MOVE_NOTOK/MOVE_COLLIDED based on some factors
      */
     void update();

@@ -41,13 +41,17 @@ namespace FPPA
      * which direction was chosen.
      * `avoidBall`
      *      Controls counting the ball as an obstacle or not
+     * `avoidGoal`
+     *      Will keep generated points outside the goalie box
      * `pathHint`
      *      Prioritizes selecting top or bottom path regardless of distance.
      * `unlessValue`
      *      An `unless-than value` speificies: Choose the pathHint path UNLESS the shorter path
      *      is "unlessValue" percent better than the requested top/bottom path.
      */
-    PathInfo findShortestPath(const Point& start, const Point& end, bool avoidBall,
+    PathInfo findShortestPath(const Point& start, const Point& end,
+                              bool avoidBall = true,
+                              bool avoidGoal = true,
                               PathDirection pathHint = PathDirection::None,
                               float unlessValue = -1.0);
 

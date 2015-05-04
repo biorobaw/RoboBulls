@@ -5,6 +5,7 @@
 #include "include/config/tolerances.h"
 #include "utilities/measurments.h"
 #include "utilities/comparisons.h"
+#include "utilities/region.h"
 #include "model/gamemodel.h"
 #include "movement/pathfinding/fppa_pathfinding.h"
 
@@ -180,9 +181,18 @@ namespace impl
 
     /*********************************************************/
 
-    static void sanitizePoint(Point& pt)
+    static void sanitizePoint(Point& pt, bool avoidGoal)
     {
-        pt.x = Measurments::clamp(pt.x, -FIELD_LENGTH+100.f, FIELD_LENGTH-100.f);
+        //Ensure point does not pass in any goalie box
+        if(avoidGoal) {
+            if(Region::goalBox0.contains(pt))
+                pt.x = -2000;
+            if(Region::goalBox1.contains(pt))
+                pt.x =  2000;
+        }
+
+        //Clamp point to inside field
+        pt.x = Measurments::clamp(pt.x,-FIELD_LENGTH+100.f, FIELD_LENGTH-100.f);
         pt.y = Measurments::clamp(pt.y, -FIELD_WIDTH+100.f,  FIELD_WIDTH-100.f);
     }
 
@@ -213,19 +223,19 @@ namespace impl
 
 
     PathInfo findShortestPath(const Point& start, const Point& end, bool avoidBall,
-                              PathDirection pathHint, float unlessValue)
+                              bool avoidGoal, PathDirection pathHint, float unlessValue)
     {
         if(avoidBall)
-            impl::currentFrameObstacles.push_back(GameModel::getModel()->getBallPoint());
+            impl::currentFrameObstacles.push_back(gameModel->getBallPoint());
 
         std::pair<Path,Path> foundPaths = impl::findBothPaths(start, end, avoidBall);
 
         if(avoidBall)
             impl::currentFrameObstacles.pop_back();
 
-        //Limit all points in both paths paths to being inside the field
-        std::for_each(foundPaths.first.begin(), foundPaths.first.end(), impl::sanitizePoint);
-        std::for_each(foundPaths.second.begin(), foundPaths.second.end(), impl::sanitizePoint);
+        //Limit all points in both paths paths to being inside the field and not in goalie box
+        for(Point& p : foundPaths.first)  impl::sanitizePoint(p, avoidGoal);
+        for(Point& p : foundPaths.second) impl::sanitizePoint(p, avoidGoal);
 
         //Create PathInfos: pair  of {points vector, direction top/bottom}
         //Get distance and valid status of each
