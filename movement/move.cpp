@@ -14,7 +14,7 @@
  * Without this there's little point in trying an actual game
  * [See movement/move_collisions.h]
  */
-#define MOVEMENT_USE_ROB_COLLIDE    1
+#define MOVEMENT_USE_ROB_COLLIDE    0
 /* Set this to 1 to use target-point randomization to avoid
  * robots going to the same point. Experimental.
  * [See movement/move_randomization.h]

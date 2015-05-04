@@ -60,10 +60,13 @@ DefendState* DefendStateIdle::action(Robot* robot)
         Point bv  = gameModel->getBallVelocity();
         Point bpr = gameModel->getBallPrediction();
         Point gl  = gameModel->getMyGoal();
+        float bs  = gameModel->getBallSpeed();
         float velang = atan2(bv.y, bv.x);
+
 
         if( ( abs(bpr.x - gl.x) < 2900 ) &&
             ( Measurments::lineDistance(chosenPoint, bp, bpr) < 400 ) &&
+            ( bs > 1.0 ) &&
             ( Measurments::isClose(velang, Measurments::angleBetween(bp, gl), 45*(M_PI/180))))
         {
            if(++ballComingCounter > 0) {
@@ -137,8 +140,11 @@ DefendState* DefendStateKick::action(Robot* robot)
         }
         else {
             //Here we are actually kicking the ball away.
-            //Go back to idle after kicking
-            ktpo->perform(robot);
+            //If kick performed, reset timer--we are probably close.
+            //We go back to idle if it is moving away
+            if(ktpo->perform(robot))
+                kickBallTimeout = 0;
+
             if(ballMovingAway() || Measurments::distance(robot, bp) > 600)
                 return new DefendStateIdle();
         }
