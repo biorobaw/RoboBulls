@@ -13,6 +13,8 @@ DefendState::~DefendState() {
 
 /************************************************************/
 
+std::array<Point,10> DefendStateIdle::claimed;
+
 DefendStateIdle::DefendStateIdle()
     : hasChosenPoint(false)
     , ballComingCounter(0)
@@ -31,10 +33,10 @@ DefendState* DefendStateIdle::action(Robot* robot)
     };
 
     if(not hasChosenPoint) {
-        for(const Point& p : defendPoints)
-        {
-            Point test(copysign(p.x, gameModel->getMyGoal().x), p.y);
-            if(not robotsCloseToPoint(robot, test)) {
+        for(const Point& p : defendPoints) {
+            Point test( copysign(p.x, gameModel->getMyGoal().x), p.y );
+            if(std::find(claimed.begin(), claimed.end(), test) == claimed.end()) {
+                claimed[robot->getID()] = test;
                 hasChosenPoint = true;
                 chosenPoint = test;
                 std::cout << "ID " << robot->getID() << "Point " << test.toString() << std::endl;
@@ -43,35 +45,38 @@ DefendState* DefendStateIdle::action(Robot* robot)
         }
     }
     else {
-        //If any robots are close to my point (besides me) panic.
-        if(robotsCloseToPoint(robot, chosenPoint)) {
-            hasChosenPoint = false;
-        }
-
         //Idle at the point, facing the ball
         float ballRobAng = Measurments::angleBetween(robot, gameModel->getBallPoint());
         setMovementTargets(chosenPoint, ballRobAng);
         GenericMovementBehavior::perform(robot);
 
-        //If the ball is coming to us, and we are certain, we want to kick the ball.
+        /* If the ball is coming to us, and we are certain, we want to kick the ball.
+         * Conditions checked are:
+         * 1) The ball's predicted X is on our side of the field
+         * 2) The ball-predicion line distance to robot is small
+         * 3) the ball is heading forwards the goal
+         */
         Point bp  = gameModel->getBallPoint();
+        Point bv  = gameModel->getBallVelocity();
         Point bpr = gameModel->getBallPrediction();
         Point gl  = gameModel->getMyGoal();
-        if(abs(bpr.x - gl.x) < 2700 && Measurments::lineDistance(chosenPoint, bp, bpr) < 300) {
-           if(++ballComingCounter > 0)
+        float velang = atan2(bv.y, bv.x);
+
+        if( ( abs(bpr.x - gl.x) < 2900 ) &&
+            ( Measurments::lineDistance(chosenPoint, bp, bpr) < 400 ) &&
+            ( Measurments::isClose(velang, Measurments::angleBetween(bp, gl), 45*(M_PI/180))))
+        {
+           if(++ballComingCounter > 0) {
+               //We are going to kick, so un-claim the current sitting point
+               claimed[robot->getID()] = Point(0,0);
                return new DefendStateKick();
+           }
         } else {
             ballComingCounter = 0;
         }
     }
 
     return this;
-}
-
-bool DefendStateIdle::robotsCloseToPoint(Robot* me, const Point &p)
-{
-    //Returns true if any robots besides me are < ROBOT_SIZE points to p
-    return Comparisons::isDistanceToLess(p, ROBOT_SIZE).ignoreID(me).anyMyTeam();
 }
 
 /************************************************************/
@@ -133,20 +138,34 @@ DefendState* DefendStateKick::action(Robot* robot)
         else {
             //Here we are actually kicking the ball away.
             //Go back to idle after kicking
-            if(ktpo->perform(robot) || Measurments::distance(robot, bp) > 600)
+            ktpo->perform(robot);
+            if(ballMovingAway() || Measurments::distance(robot, bp) > 600)
                 return new DefendStateIdle();
         }
 
         //If true, we have waited for a long time and the ball is not arriving.
         //We will go back to idling.
-
-        if(++kickBallTimeout > 200) {
+        if(++kickBallTimeout > 400) {
             std::cout << "DefendStateKick Timeout1 " << robot->getID() << std::endl;
             return new DefendStateIdle();
         }
     }
 
     return this;
+}
+
+/* Check to see if kicking is done or not.
+ * It happens when the ball has high velocity that is not facing
+ * our goal. This means one of us kicked.
+ */
+bool DefendStateKick::ballMovingAway()
+{
+    Point bp = gameModel->getBallPoint();
+    Point bv = gameModel->getBallVelocity();
+    float bs = gameModel->getBallSpeed();
+    float ba = atan2(bv.y, bv.x);
+    float ballGoalAng = Measurments::angleBetween(bp, gameModel->getMyGoal());
+    return (bs > 1) && !(Measurments::isClose(ba, ballGoalAng, 200*(M_PI/180)));
 }
 
 /************************************************************/

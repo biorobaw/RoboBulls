@@ -8,6 +8,8 @@
 #include "movement/movetype.h"
 #include "model/gamemodel.h"
 #include "utilities/comparisons.h"
+#include "behavior/defendbehavior.h"
+#include "behavior/defendfarfromball.h"
 
 /************************************************************************/
 
@@ -81,5 +83,9 @@ bool TestStrategy::update()
 
 void TestStrategy::assignBeh()
 {
-    gameModel->findMyTeam(8)->assignBeh<GoToBeh>();
+    gameModel->findMyTeam(0)->assignBeh<DefendBehavior>();
+    gameModel->findMyTeam(1)->assignBeh<DefendBehavior>();
+    gameModel->findMyTeam(2)->assignBeh<DefendBehavior>();
+    gameModel->findMyTeam(3)->assignBeh<DefendBehavior>();
+    gameModel->findMyTeam(5)->assignBeh<DefendFarFromBall>();
 }

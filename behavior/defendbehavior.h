@@ -1,10 +1,20 @@
 #ifndef DEFENDBEHAVIOR_H
 #define DEFENDBEHAVIOR_H
 
+#include <array>
 #include "utilities/point.h"
 #include "behavior/genericmovementbehavior.h"
 #include "behavior/behavior.h"
 #include "skill/kicktopointomni.h"
+
+/* DEFEND BAHVIOR
+ * DefendBehavior is the next iteration of a defense mode (circa May 2015).
+ * It sets robots to sit at points around the goal, and get in the line of motion
+ * of the ball and kick it back if it is coming torwards the goal.
+ * This also serves as a first iteration of an "intelligent agents" type of behavior,
+ * where each robot independently runs the same behavior to without the need for a
+ * strategy. This is made up of `DefendStates` which link to one another.
+ */
 
 class DefendState
 {
@@ -28,10 +38,11 @@ public:
      DefendStateIdle();
      DefendState* action(Robot* robot) override;
 private:
-    bool  robotsCloseToPoint(Robot*, const Point&);
-    Point chosenPoint;
-    bool  hasChosenPoint;
-    int   ballComingCounter;
+    bool   robotsCloseToPoint(Robot*, const Point&);
+    Point  chosenPoint;
+    bool   hasChosenPoint;
+    int    ballComingCounter;
+    static std::array<Point, 10> claimed;
 };
 
 /************************************************************/
@@ -50,6 +61,7 @@ private:
     bool  kickingBall;
     int   kickBallTimeout;
     Point linePoint;
+    bool  ballMovingAway();
 };
 
 /************************************************************/
