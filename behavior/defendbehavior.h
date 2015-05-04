@@ -41,7 +41,6 @@ private:
     bool   robotsCloseToPoint(Robot*, const Point&);
     Point  chosenPoint;
     bool   hasChosenPoint;
-    int    ballComingCounter;
     static std::array<Point, 10> claimed;
 };
 
@@ -62,6 +61,7 @@ private:
     int   kickBallTimeout;
     Point linePoint;
     bool  ballMovingAway();
+    static int whoIsKicking;
 };
 
 /************************************************************/

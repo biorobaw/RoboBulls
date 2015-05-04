@@ -40,7 +40,7 @@ void DefendFarFromBall::perform(Robot *robot)
     }
 
     bool isScoreHazard =
-            Measurments::distance(myGoal, ballPoint) < 1200
+            Measurments::distance(myGoal, ballPoint) < 800
             and Measurments::distance(myGoal, ballPoint) > 500
             and not(Measurments::isClose(robPoint, ballPoint, 100))
             and lastKickCounter <= 0
