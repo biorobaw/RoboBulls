@@ -1,3 +1,4 @@
+#include "include/config/simulated.h"
 #include "utilities/point.h"
 #include "utilities/comparisons.h"
 #include "behavior/defendbehavior.h"
@@ -10,6 +11,14 @@ DefendState::DefendState() {
 DefendState::~DefendState() {
 
 }
+
+#if SIMULATED
+ #define LINE_DISTANCE 400
+ #define GOALIE_DIST   800
+#else
+ #define LINE_DISTANCE 1200
+ #define GOALIE_DIST   300
+#endif
 
 /************************************************************/
 
@@ -53,7 +62,7 @@ DefendState* DefendStateIdle::action(Robot* robot)
          * Conditions checked are:
          * 1) The ball's predicted X is on our side of the field
          * 2) The ball-to-predicion line distance to robot is small
-         * 3) The balls speed is significant (1 m/s)
+         * 3) The balls speed is significant
          * 4) the ball is heading forwards the goal
          */
         Point bp  = gameModel->getBallPoint();
@@ -64,9 +73,9 @@ DefendState* DefendStateIdle::action(Robot* robot)
         float velang = atan2(bv.y, bv.x);
 
         if( ( abs(bpr.x - gl.x) < 2900 ) &&
-            ( Measurments::lineDistance(chosenPoint, bp, bpr) < 400 ) &&
-            ( bs > 1.0 ) &&
-            ( Measurments::isClose(velang, Measurments::angleBetween(bp, gl), 45*(M_PI/180))))
+            ( Measurments::lineDistance(chosenPoint, bp, bpr) < LINE_DISTANCE ) &&
+            ( bs > 0.2 ) &&
+            ( Measurments::isClose(velang, Measurments::angleBetween(bp, gl), 90*(M_PI/180))))
         {
            //We are going to kick, so un-claim the current sitting point
            claimed[robot->getID()] = Point(0,0);
@@ -106,7 +115,7 @@ DefendState* DefendStateKick::action(Robot* robot)
         //The conditions to go to this state validate the ball is RIGHT NOW
         //Heading to us. We go to the closet point on the ball's path.
         linePoint = Measurments::linePoint(robot->getRobotPosition(), bp, bpp);
-        if(abs(goal.x - linePoint.x) < 2000)
+        if(abs(goal.x - linePoint.x) < 2500)
             chosenLinePoint = true;
     }
     else {
@@ -133,7 +142,7 @@ DefendState* DefendStateKick::action(Robot* robot)
 
             //Second condition to return to idle. if we kicked, return.
             //Also stop if it moves too far awaytoo fara way, or
-            if(ballMovingAway() || Measurments::distance(robot, bp) > 600) {
+            if(ballMovingAway() || Measurments::distance(robot, bp) > LINE_DISTANCE*1.5) {
                 whoIsKicking = -1;
                 return new DefendStateIdle();
             }
@@ -142,7 +151,7 @@ DefendState* DefendStateKick::action(Robot* robot)
         //Tiemout conditions. If we have waited too long, or the ball is
         //is too close to the goal, we go back to idle.
         if(++kickBallTimeout > 400
-                || Measurments::distance(goal, bp) < 800    //Goalie action distance
+                || Measurments::distance(goal, bp) < GOALIE_DIST //Goalie action distance
                 || ballMovingAway()) {
             std::cout << "DefendStateKick Timeout1 " << robot->getID() << std::endl;
             whoIsKicking = -1;
@@ -164,7 +173,7 @@ bool DefendStateKick::ballMovingAway()
     float bs = gameModel->getBallSpeed();
     float ba = atan2(bv.y, bv.x);
     float ballGoalAng = Measurments::angleBetween(bp, gameModel->getMyGoal());
-    return (bs > 1) && !(Measurments::isClose(ba, ballGoalAng, 90*(M_PI/180)));
+    return (bs > 0.25) && !(Measurments::isClose(ba, ballGoalAng, 90*(M_PI/180)));
 }
 
 /************************************************************/
