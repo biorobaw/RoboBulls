@@ -14,12 +14,10 @@ int XY_MULT = 4;
 
 FourWheelCalculator::FourWheelCalculator()
 {
-    this->angle_error_deque.push_back(0);
-    this->dist_error_deque.push_back(0);
-
     debug::registerVariable("fwc_xy", &THETA_MULT);
     debug::registerVariable("fwc_theta", &XY_MULT);
 }
+
 
 fourWheelVels FourWheelCalculator::calculateVels
     (Robot* rob, Point goalPoint, float theta_goal, Type moveType)
@@ -30,36 +28,37 @@ fourWheelVels FourWheelCalculator::calculateVels
 fourWheelVels FourWheelCalculator::calculateVels
     (Robot* rob, float x_goal, float y_goal, float theta_goal, Type moveType)
 {
+    Point p = rob->getRobotPosition();
     switch (moveType)
     {
-        case Type::facePoint:
-            return facePointCalc(rob,x_goal,y_goal,theta_goal);
-            break;
-        default:
-            return defaultCalc(rob,x_goal,y_goal,theta_goal);
+    case Type::facePoint:
+        return facePointCalc(rob,x_goal,y_goal,theta_goal);
+    default:
+        return defaultCalc(p.x,p.y,rob->getOrientation(),x_goal,y_goal,theta_goal);
     }
 }
 
-
-fourWheelVels FourWheelCalculator::defaultCalc
-    (Robot* rob, float x_goal, float y_goal, float theta_goal)
+fourWheelVels FourWheelCalculator::calculateVels
+    (float x, float y, float theta, float x_goal, float y_goal, float theta_goal)
 {
-    //Current Position
-    double x_current = rob->getRobotPosition().x;
-    double y_current = rob->getRobotPosition().y;
-    double theta_current = rob->getOrientation();
+    return defaultCalc(x, y, theta, x_goal, y_goal, theta_goal);
+}
 
+
+//defaultCalc base: seperate x, y, theta, x_goal, y_goal, and theta_goal
+fourWheelVels FourWheelCalculator::defaultCalc
+    (float x, float y, float theta_current, float x_goal, float y_goal, float theta_goal)
+{
+    float x_current = x;
+    float y_current = y;
     Point rp = Point(x_current,y_current);
     Point gp = Point(x_goal,y_goal);
     distance_to_goal = Measurments::distance(rp,gp);
     angle_to_goal = Measurments::angleBetween(rp,gp);
 
-    //PID
-    //calc_error();
-
     //Inertial Frame Velocities
-    double x_vel = (distance_to_goal+dist_error_integral)*cos(angle_to_goal);
-    double y_vel = (distance_to_goal+dist_error_integral)*sin(angle_to_goal);
+    double x_vel = (distance_to_goal)*cos(angle_to_goal);
+    double y_vel = (distance_to_goal)*sin(angle_to_goal);
     double theta_vel = Measurments::angleDiff(theta_current,theta_goal);
     if (abs(Measurments::angleDiff(theta_goal,theta_current))<abs(Measurments::angleDiff(theta_goal,theta_current+theta_vel)))
         theta_vel=-theta_vel;
@@ -135,12 +134,9 @@ fourWheelVels FourWheelCalculator::facePointCalc
     distance_to_goal = Measurments::distance(rp,gp);
     angle_to_goal = Measurments::angleBetween(rp,gp);
 
-    //PID
-    //calc_error();
-
     //Interial Frame Velocities
-    double x_vel = (distance_to_goal+dist_error_integral)*cos(angle_to_goal);
-    double y_vel = (distance_to_goal+dist_error_integral)*sin(angle_to_goal);
+    double x_vel = (distance_to_goal) * cos(angle_to_goal);
+    double y_vel = (distance_to_goal) * sin(angle_to_goal);
     double theta_vel = Measurments::angleDiff(theta_current,theta_goal);
     if (abs(Measurments::angleDiff(theta_goal,theta_current))<abs(Measurments::angleDiff(theta_goal,theta_current+theta_vel)))
         theta_vel=-theta_vel;
@@ -212,37 +208,6 @@ fourWheelVels FourWheelCalculator::facePointCalc
     vels.RB = RB;
     vels.RF = RF;
     return vels;
-}
-
-void FourWheelCalculator::calc_error()
-{
-    //Integral Error for distance
-    if (dist_error_deque.size() <= dist_error_maxsize)
-    {
-        dist_error_integral += distance_to_goal;
-        dist_error_deque.push_back(distance_to_goal);
-    }
-    else
-    {
-        dist_error_integral -= dist_error_deque.front();
-        dist_error_integral += distance_to_goal;
-        dist_error_deque.pop_front();
-        dist_error_deque.push_back(distance_to_goal);
-    }
-
-    //Integral Error for orientation
-    if (angle_error_deque.size() <= angle_error_maxsize)
-    {
-        angle_error_integral += angle_to_goal;
-        angle_error_deque.push_back(angle_to_goal);
-    }
-    else
-    {
-        angle_error_integral -= angle_error_deque.front();
-        angle_error_integral += angle_to_goal;
-        angle_error_deque.pop_front();
-        angle_error_deque.push_back(distance_to_goal);
-    }
 }
 
 }

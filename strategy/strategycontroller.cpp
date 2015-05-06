@@ -19,9 +19,10 @@
 
 using namespace std;
 
-StrategyController::StrategyController()
+StrategyController::StrategyController(GameModel* gm)
 {
     activeStrategy = nullptr;
+    model = gm;
 }
 
 void StrategyController::run()
@@ -162,10 +163,4 @@ void StrategyController::frameEnd()
     RobComm * robcom = RobComm::getRobComm();
     robcom->sendVelsLarge(model->getMyTeam());
     FPPA::pathfindingEnd();
-}
-
-
-void StrategyController::setGameModel(GameModel *myGameModel)
-{
-    model = myGameModel;
 }

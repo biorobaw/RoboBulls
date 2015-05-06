@@ -2,9 +2,6 @@
 #define FOURWHEEL_VELCALCULATOR_H
 
 #include <math.h>
-#include <deque>
-#include <iostream>
-
 #include "model/robot.h"
 #include "movement/movetype.h"
 #include "utilities/measurments.h"
@@ -26,11 +23,15 @@ public:
 
 	fourWheelVels calculateVels
         (Robot* rob, Point goalPoint, float theta_goal, Type moveType);
+
 	fourWheelVels calculateVels
         (Robot* rob, float x_goal, float y_goal, float theta_goal, Type moveType);
 
+    fourWheelVels calculateVels
+        (float x, float y, float theta, float x_goal, float y_goal, float theta_goal);
+
 private:
-    fourWheelVels defaultCalc(Robot* rob, float x_goal, float y_goal, float theta_goal);
+    fourWheelVels defaultCalc(float x, float y, float theta, float x_goal, float y_goal, float theta_goal);
     fourWheelVels facePointCalc(Robot* rob, float x_goal, float y_goal, float angle_to_point);
 
     //Robot Physical Properties
@@ -40,15 +41,6 @@ private:
     const double RB_offset = 315*M_PI/180; //315
     const double wheel_radius = 27;
     double distance_to_goal, angle_to_goal;
-
-    //PID
-    void calc_error();
-    unsigned int dist_error_maxsize=20;
-    unsigned int angle_error_maxsize=20;
-    double dist_error_integral=0;
-    double angle_error_integral=0;
-    std::deque<double> dist_error_deque;
-    std::deque<double> angle_error_deque;
 };
 
 }

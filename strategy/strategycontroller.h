@@ -8,9 +8,8 @@ class Strategy;
 class StrategyController
 {
 public:
-    StrategyController();
-    void setGameModel(GameModel *);
-    
+    StrategyController(GameModel*);
+
     /* Performs one iteration of the RoboCup Game.
      * Called by GameModel, which is called by VisionComm. 
      */

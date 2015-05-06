@@ -113,7 +113,8 @@ SOURCES += main.cpp \
     strategy/videostrategies.cpp \
     utilities/debug.cpp \
     utilities/edges.cpp \
-    behavior/defendbehavior.cpp
+    behavior/defendbehavior.cpp \
+    utilities/joystick.cpp
 
 HEADERS += \
 	behavior/behavior.h \
@@ -208,11 +209,12 @@ HEADERS += \
     behavior/genericskillbehavior.h \
     utilities/debug.h \
     utilities/edges.h \
-    behavior/defendbehavior.h
+    behavior/defendbehavior.h \
+    utilities/joystick.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 
-unix|win32: LIBS += -lprotobuf
+unix|win32: LIBS += -lprotobuf -lSDL2
 
 OTHER_FILES += \
     gui/images/field.jpg \

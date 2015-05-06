@@ -13,6 +13,7 @@
 // Global static pointer used to ensure a single instance of the class.
 GameModel* gameModel = new GameModel();
 
+//Multiplier indicating which side of the field we/they are on
 #if TEAM==TEAM_BLUE
 int GameModel::mySide = -1;
 int GameModel::opSide =  1;
@@ -20,7 +21,6 @@ int GameModel::opSide =  1;
 int GameModel::mySide =  1;
 int GameModel::opSide = -1;
 #endif
-
 
 /*******************************************************************/
 /************************ Public Methods ***************************/
@@ -217,7 +217,6 @@ static Point calcBallPrediction()
     //p = p0 + vt, with t = 2
     Point bp = gameModel->getBallPoint();
     Point predict = bp + gameModel->getBallVelocity() * POINTS_PER_METER * 2.0;
-    //GuiInterface::getGuiInterface()->drawPath(bp, predict);
     return predict;
 }
 

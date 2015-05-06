@@ -8,6 +8,7 @@
 #include "model/robot.h"
 #include "gui/guiinterface.h"
 #include "utilities/debug.h"
+#include "utilities/joystick.h"
 #include "strategy/strategycontroller.h"
 
 void exitStopRobot(int)
@@ -27,7 +28,8 @@ void exitStopRobot()
 
 void registerExitSignals()
 {
-    static const int bad_signals[] = {SIGSEGV, SIGKILL, SIGHUP, SIGABRT, SIGTERM, SIGQUIT};
+    static const int bad_signals[] =
+        {SIGSEGV, SIGKILL, SIGHUP, SIGABRT, SIGTERM, SIGQUIT};
     for(int i : bad_signals)
         std::signal(i, exitStopRobot);
     std::atexit(exitStopRobot);
@@ -38,26 +40,25 @@ void registerExitSignals()
 
 int main(int argc, char *argv[])
 {
-    StrategyController *sc = new StrategyController();
-    GameModel * myGameModel = GameModel::getModel();
+    //Initialize GameModel, StrategyController, Vision, and Ref
+    GameModel* gm = GameModel::getModel();
+       RefComm refCommunicator(gm);
+    VisionComm visionCommunicator(gm);
+    StrategyController sc(gm);
+    gm->setStrategyController(&sc);
+    registerExitSignals();
 
-    RefComm refCommunicator(myGameModel);
-    VisionComm visionCommunicator(myGameModel);
-
-
-
-    sc->setGameModel(myGameModel);
-    myGameModel->setStrategyController(sc);
-
+    //Create the GUI and show it
     QApplication a(argc, argv);
-
     GuiInterface::getGuiInterface()->show();
 
+    //Check for joysticks and begin listening
+    joystick::init();
+    if(joystick::checkForJoystick()) {
+        std::cout << "Joystick Support Enabled" << std::endl;
+    }
 
-
-    registerExitSignals();
-    
-    //debug::listenStart();
+    //Start Vision and Refcomm and run the application
     visionCommunicator.start();
     refCommunicator.start();
     return a.exec();
