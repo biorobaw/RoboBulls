@@ -173,4 +173,11 @@ int Region::getStrategicValue()
     return strategic_value;
 }
 
+Region Region::lowerLeftRegion = Region(-3000,0,-2000,0);
+Region Region::topLeftRegion = Region(-3000,0,2000,0);
+Region Region::topRightRegion = Region(0,3000,0,2000);
+Region Region::lowerRightRegion = Region(0,3000,0,-2000);
+Region Region::goalLeftRegion = Region(-3000,2500,-700,700);
+Region Region::goalRightRegion = Region(2500, 3000, -700, 700);
+
 
