@@ -16,7 +16,7 @@ namespace joystick
 //Wheel velocities and Kick calculated from Joystick movement.
 //Read these and send them to a robot.
 extern float LB, LF, RB, RF;
-extern bool  Kick;
+extern bool  Kick, Dribble;
 
 /********************************/
 

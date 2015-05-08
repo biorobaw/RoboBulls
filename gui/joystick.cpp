@@ -16,7 +16,7 @@ bool areDetectedJoysticks;
 
 //Calculated from Joystick movements
 float LB, LF, RB, RF;
-bool  Kick;
+bool  Kick, Dribble;
 
 
 void listener()
@@ -55,6 +55,7 @@ void listener()
             }
         }
         
+        //The vels calculated are for the selected overridden robot.
         Robot* r = gameModel->findMyTeam(GuiInterface::getGuiInterface()->getSelOverBot());
         if(r != NULL)
         {
@@ -64,6 +65,7 @@ void listener()
             //This is for the Saitek P990.
             //TODO: Make seperate functions for different controllers.
             Kick = buttons[1];
+            Dribble = buttons[0];
             float tPos =   o + 4 * -(M_PI/180)*axes[3];
             float xPos = p.x + 4 *  axes[0];
             float yPos = p.y + 4 * -axes[1];
@@ -84,7 +86,7 @@ void init()
     //Check out `https://github.com/Grumbel/sdl-jstest`
     //   would have never figured out this hint otherwise
     //Worth noting this is a different thread than listen function
-    SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_JOYSTICK);
+    SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_JOYSTICK | SDL_INIT_NOPARACHUTE);
     SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
     areDetectedJoysticks = false;
 }

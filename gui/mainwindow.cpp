@@ -50,7 +50,6 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-
     ui->setupUi(this);
 
     gamemodel = GameModel::getModel();
@@ -141,11 +140,14 @@ void MainWindow::coreLoop(int tick) {
             r->setRB(joystick::RB);
             r->setRF(joystick::RF);
             r->setLF(joystick::LF);
-            if(joystick::Kick) {
-                on_btn_botKick_pressed();
-            } else {
-                on_btn_botKick_released();
-            }
+
+            if(joystick::Kick)
+                  on_btn_botKick_pressed();
+             else on_btn_botKick_released();
+
+            if(joystick::Dribble)
+                 on_btn_botDrible_pressed();
+            else on_btn_botDrible_released();
         }
     }
     else {
@@ -163,7 +165,6 @@ void MainWindow::clockLoop(int tick) {
     objectPos->getOldSpeeds();
     objectPos->getPastBotPoints();
     objectPos->updateBotSpeedsRecord();
-
 }
 
 
