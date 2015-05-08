@@ -52,6 +52,7 @@ int main(int argc, char *argv[])
     GuiInterface::getGuiInterface()->show();
 
     //Start Vision and Refcomm and run the application
+    debug::listenStart();
     visionCommunicator.start();
     refCommunicator.start();
     return a.exec();

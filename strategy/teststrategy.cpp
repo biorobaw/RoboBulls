@@ -83,9 +83,9 @@ bool TestStrategy::update()
 
 void TestStrategy::assignBeh()
 {
-    gameModel->findMyTeam(0)->assignBeh<DefendBehavior>();
-    gameModel->findMyTeam(1)->assignBeh<DefendBehavior>();
-    gameModel->findMyTeam(2)->assignBeh<DefendBehavior>();
-    gameModel->findMyTeam(3)->assignBeh<DefendBehavior>();
-    gameModel->findMyTeam(5)->assignBeh<DefendFarFromBall>();
+//    gameModel->findMyTeam(2)->assignBeh<KickBeh>();
+//    gameModel->findMyTeam(1)->assignBeh<DefendBehavior>();
+//    gameModel->findMyTeam(2)->assignBeh<DefendBehavior>();
+//    gameModel->findMyTeam(3)->assignBeh<DefendBehavior>();
+//    gameModel->findMyTeam(5)->assignBeh<DefendFarFromBall>();
 }
