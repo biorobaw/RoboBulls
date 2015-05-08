@@ -20,7 +20,7 @@
 
 /* The "short-ways" i,e, side-to-side length of the standard
  * RoboCup field */
-#define FIELD_WIDTH     1500
+#define FIELD_WIDTH     2000
 #define FIELD_WIDTH_2   (FIELD_WIDTH/2)
 
 /* X length (long ways) width of goalie box */
