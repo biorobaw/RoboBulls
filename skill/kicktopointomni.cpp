@@ -17,32 +17,29 @@ namespace Skill
  * KICK_DISTANCE Defines the minimum distance the robot must be near to the ball to
  * kick it.
  *
- * KICK_COUNT_MAX Defines the number of times the skill has the robot send a
- * "Kick" skill. This gives us greater insurance that the robot's kick will
- * not miss the ball, and is to prevent the robot from instantly going back to
- * the initial state when the kick was ineffective.
- *
  * RECREATE_DIST_TOL Defines the distance tolerance that the ball must move to be
  * recreated in the MOVE_BEHIND state. Helps make on-field motion less jittery.
  *
- * FACING_ANGLE_TOL Defines the angle tolerance that the robot must be facing the kick
- * target to be able to kick.
+ * FACING_ANGLE_TOL Defines the angle tolerance in degrees (an integer) that
+ * the robot must be facing the kick target with to be able to kick.
+ *
+ * FORWARD_WAIT_COUNT Defines the number of times the movement skill must finish
+ * (return true) until the robot starts to move forward. On the field, this ensures
+ * the robot is actually facing the ball somewhat.
  */
 #if SIMULATED
 int BEHIND_RADIUS  = 200;
 int KICK_DISTANCE  = 110;
-int KICK_COUNT_MAX = 1;
-float FACING_ANGLE_TOL  = 60 * (M_PI / 180);
-int FORWARD_WAIT_COUNT = 5;
+int FACING_ANGLE_TOL  = 30;
+int FORWARD_WAIT_COUNT = 0;
 #else
 int BEHIND_RADIUS  = ROBOT_SIZE;
 int KICK_DISTANCE  = 140;
-int KICK_COUNT_MAX = 1;
-float FACING_ANGLE_TOL  = 20 * (M_PI / 180);
+int FACING_ANGLE_TOL  = 20;
 int FORWARD_WAIT_COUNT = 15;
 #endif
 
-int   RECREATE_DIST_TOL = 25;
+int RECREATE_DIST_TOL = 25;
 
 /************************************************************************/
 
@@ -57,8 +54,8 @@ KickToPointOmni::KickToPointOmni(Point* targetPtr)
 {
     debug::registerVariable("ktpo_kd", &KICK_DISTANCE);
     debug::registerVariable("ktpo_br", &BEHIND_RADIUS);
-    debug::registerVariable("ktpo_kc", &KICK_COUNT_MAX);
     debug::registerVariable("ktpo_rc", &RECREATE_DIST_TOL);
+    debug::registerVariable("ktpo_fa", &FACING_ANGLE_TOL);
 }
 
 bool KickToPointOmni::perform(Robot* robot)
@@ -74,9 +71,9 @@ bool KickToPointOmni::perform(Robot* robot)
     {
     case MOVE_BEHIND:
         {
-            // Kick if feasable
+            // Skip to Kick if feasable
             if(Measurments::distance(robot, bp) < KICK_DISTANCE
-            and Comparisons::isFacingPoint(robot,bp,15*M_PI/180))
+            and Comparisons::isFacingPoint(robot,bp,FACING_ANGLE_TOL*(M_PI/180)))
             {
                 state = KICK;
                 break;
@@ -88,6 +85,8 @@ bool KickToPointOmni::perform(Robot* robot)
             float dy = BEHIND_RADIUS * sin(targetBallAng);
             Point behindBall = bp + Point(dx, dy);
 
+            move_skill.setVelocityMultiplier(1);
+            move_skill.setMovementTolerances(DIST_TOLERANCE/2, FACING_ANGLE_TOL*(M_PI/180));
             move_skill.recreate(behindBall, ballTargetAng, true, true);
 
             //Make sure move_skill keeps the robot at the correct pose
@@ -109,7 +108,9 @@ bool KickToPointOmni::perform(Robot* robot)
         {
             // Slowly move towards the ball
             move_skill.recreate(bp, ballTargetAng, false, false);
+        #if SIMULATED == 0
             move_skill.setVelocityMultiplier(0.7);
+        #endif
             move_skill.perform(robot);
 
             // Kick when in range

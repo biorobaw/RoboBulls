@@ -98,6 +98,7 @@ DefendStateKick::DefendStateKick()
     , kickBallTimeout(0)
 {
     std::cout << "DefendStateKick Created" << std::endl;
+    setMovementTolerances(DIST_TOLERANCE/10, ROT_TOLERANCE);
 }
 
 DefendStateKick::~DefendStateKick()
