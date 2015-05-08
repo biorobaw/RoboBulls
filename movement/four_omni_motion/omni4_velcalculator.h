@@ -2,6 +2,9 @@
 #define FOURWHEEL_VELCALCULATOR_H
 
 #include <math.h>
+#include <deque>
+#include <iostream>
+
 #include "model/robot.h"
 #include "movement/movetype.h"
 #include "utilities/measurments.h"
@@ -23,15 +26,11 @@ public:
 
 	fourWheelVels calculateVels
         (Robot* rob, Point goalPoint, float theta_goal, Type moveType);
-
 	fourWheelVels calculateVels
         (Robot* rob, float x_goal, float y_goal, float theta_goal, Type moveType);
 
-    fourWheelVels calculateVels
-        (float x, float y, float theta, float x_goal, float y_goal, float theta_goal);
-
 private:
-    fourWheelVels defaultCalc(float x, float y, float theta, float x_goal, float y_goal, float theta_goal);
+    fourWheelVels defaultCalc(Robot* rob, float x_goal, float y_goal, float theta_goal);
     fourWheelVels facePointCalc(Robot* rob, float x_goal, float y_goal, float angle_to_point);
 
     //Robot Physical Properties
