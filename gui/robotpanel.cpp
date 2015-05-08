@@ -1,3 +1,8 @@
+#include <QGraphicsView>
+#include <QLCDNumber>
+#include <QDial>
+#include <QLabel>
+
 #include "robotpanel.h"
 #include "mainwindow.h"
 #include "objectposition.h"
@@ -5,12 +10,11 @@
 #include "fieldpanel.h"
 #include "selrobotpanel.h"
 #include "ui_mainwindow.h"
+#include "model/gamemodel.h"
 
 //Helper classes
 #include "guirobot.h"
 #include "guiball.h"
-
-// Global static pointer used to ensure a single instance of the class.
 
 RobotPanel::RobotPanel(MainWindow *mw) {
     dash = mw;

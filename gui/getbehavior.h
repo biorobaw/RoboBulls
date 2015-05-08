@@ -1,8 +1,8 @@
 #ifndef GETBEHAVIOR_H
 #define GETBEHAVIOR_H
-#include <QObject>
-#include "model/robot.h"
+#include <string>
 
+class Robot;
 class MainWindow;
 
 class GetBehavior
@@ -14,10 +14,8 @@ public:
     void setupBehaviors();
 
 
-    const string& getBehaviorName(Robot* robot);
+    const std::string& getBehaviorName(Robot* robot);
     void printBehavior();
-
-
 };
 
 #endif // GETBEHAVIOR_H

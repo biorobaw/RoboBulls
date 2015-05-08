@@ -2,9 +2,7 @@
 #define SELROBOTPANEL_H
 
 #include <QString>
-#include "teamsize.h"
 #include "getbehavior.h"
-
 
 class MainWindow;
 

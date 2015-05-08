@@ -78,18 +78,3 @@ void GuiDrawLine::decay() {
 
 }
 
-//void GuiDrawLine::drawLine(Point origin, Point end) {
-//    //    guidrawline = new GuiDrawLine();
-//    //    guidrawline->setZValue(3);
-//    //    guidrawline->setX(100);
-//    //    guidrawline->setY(100);
-//    //    scene->addItem(guidrawline);
-
-//            x1 = originX;
-//            y1 = originY;
-//            x2 = endX;
-//            y2 = endY;
-////            dash->ui->gView_field->update();
-//}
-
-

@@ -9,6 +9,7 @@
 #include "ui_mainwindow.h"
 #include "getbehavior.h"
 #include "guirobot.h"
+#include "model/gamemodel.h"
 
 SelRobotPanel::SelRobotPanel(MainWindow * mw) {
     dash = mw;
@@ -17,11 +18,6 @@ SelRobotPanel::SelRobotPanel(MainWindow * mw) {
 
 void SelRobotPanel::setGuiOverride() {
     // Required for Override to work with Vision
-    if (dash->ui->check_botOverride->isChecked()) {
-        dash->guiOverride = true;
-    } else {
-        dash->guiOverride = false;
-    }
 }
 
 void SelRobotPanel::guiPrintRobot(int robotID, string output) {

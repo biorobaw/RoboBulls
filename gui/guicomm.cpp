@@ -1,5 +1,4 @@
 #include "guicomm.h"
-#include <iostream>
 
 GuiComm::GuiComm(int interval, QObject* parent)
     : QThread(parent)

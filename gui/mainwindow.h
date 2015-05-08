@@ -3,9 +3,7 @@
 
 #include <iosfwd>
 #include <string>
-
 #include <QtWidgets/QMainWindow>
-#include <QtCore/QThread>
 
 // Helper classes forward declarations
 class GuiField;
@@ -36,9 +34,6 @@ class GetBehavior;
 //Main Project forwards
 class GameModel;
 class Robot;
-class RefComm;
-class NXTRobComm;
-class Move;
 
 namespace Ui {
     class MainWindow;
@@ -70,10 +65,7 @@ public:
     void guiPrint(std::string output);
     void updateBallInfo();
     // clock stuff
-    int frequency_of_primes (int n);
-    int getClock();
     int getSpeed(QGraphicsItem* p, double o);
-    void moveBot(); // empty function
     // Key Bindings
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
@@ -82,37 +74,23 @@ public:
     // team sizes; used all over the place
     int teamSize_blue;
     int teamSize_yellow;
-    // manual override stuff
-    bool guiOverride = false;           // For the purpose of overriding gamemodel's commands with our own
-    int botOverride = -1;               // the id of the currently overridden bot
+    // manual override thing
     std::vector<bool> overriddenBots;   // keeps track of whether each bot is overridden
 
-    QString guiOutputRobot = "...";
-    bool multithreaded = false;
     std::string myTeam;
 
-    bool isOverride();  // delete?
-    std::vector<bool> isRobotOverriden();   // delete?
-
-protected:
-    Robot *robot;
-    GuiComm *guicomm;
-    GuiRobot *guirobot;
-    RefComm *refcom;
-    NXTRobComm *nxtrobcomm;
+    //Inputs from Joystick
+    static float LB, LF, RB, RF;
+    static bool  Kick;
 
 private:
     void setupKeyShortcuts();
     void checkTeamColors();
     void setFocusOnField();
-//    void updateTeamColors();
 
     // my pointer
     static MainWindow *mw;
-    QList<GuiComm*> threads;
     GuiComm* guimodel;
-    QGraphicsEllipseItem *ellipse;
-    QGraphicsRectItem *rectangle;
 
     QGraphicsScene *selectedBotScene;
     // Keeps track of latest string received by guiPrint()
@@ -123,8 +101,6 @@ private:
 
     // For controlling bots manually
     int myVelocity;
-
-    long double currentTimeMS = 0;
 
 private slots:
     // Threads

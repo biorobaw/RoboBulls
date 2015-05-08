@@ -13,6 +13,7 @@
 #include "guibotlabel.h"
 #include "guidrawline.h"
 #include "guifield.h"
+#include "model/gamemodel.h"
 
 FieldPanel::FieldPanel(MainWindow * mw) {
     dash = mw;

@@ -6,17 +6,13 @@
 #include "guidrawline.h"
 
 /* Points of contact with main project:
- *      - nxtrobcomm.cpp: override;         REQUIRED
- *      - move.cpp: override;               REQUIRED
- *      - strategycontroller.cpp: override  NOT REQUIRED
- *      - stop.cpp                          NOT REQUIRED
+ *      - move.cpp
+ *      - strategycontroller.cpp:
  * Overriding override:
  *      - HALT command from refbox
  */
 
 GuiInterface * GuiInterface::gi = NULL;
-
-
 
 GuiInterface::GuiInterface() {
     dash = new MainWindow();
@@ -27,15 +23,21 @@ GuiInterface* GuiInterface::getGuiInterface() {
         gi = new GuiInterface();
     }
     return gi;
-
 }
 
-bool GuiInterface::isOverride() {
-    return dash->guiOverride;
-}
-
-std::vector<bool> GuiInterface::isOverriddenBot() {
+const std::vector<bool>& GuiInterface::isOverriddenBot() {
     return dash->overriddenBots;
+}
+
+//Returns the robot that is overridden and selected, or -1 if none.
+int  GuiInterface::getSelOverBot()
+{
+    return selOverBot;
+}
+
+void GuiInterface::setSelOverBot(int id)
+{
+    selOverBot = id;
 }
 
 void GuiInterface::show() {

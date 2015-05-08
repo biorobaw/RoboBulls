@@ -8,7 +8,6 @@
 #include "model/robot.h"
 #include "gui/guiinterface.h"
 #include "utilities/debug.h"
-#include "utilities/joystick.h"
 #include "strategy/strategycontroller.h"
 
 void exitStopRobot(int)
@@ -51,12 +50,6 @@ int main(int argc, char *argv[])
     //Create the GUI and show it
     QApplication a(argc, argv);
     GuiInterface::getGuiInterface()->show();
-
-    //Check for joysticks and begin listening
-    joystick::init();
-    if(joystick::checkForJoystick()) {
-        std::cout << "Joystick Support Enabled" << std::endl;
-    }
 
     //Start Vision and Refcomm and run the application
     visionCommunicator.start();

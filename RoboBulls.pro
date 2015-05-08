@@ -114,7 +114,7 @@ SOURCES += main.cpp \
     utilities/debug.cpp \
     utilities/edges.cpp \
     behavior/defendbehavior.cpp \
-    utilities/joystick.cpp
+    gui/joystick.cpp
 
 HEADERS += \
 	behavior/behavior.h \
@@ -198,7 +198,6 @@ HEADERS += \
     gui/objectposition.h \
     gui/gamepanel.h \
     gui/guiinterface.h \
-    gui/teamsize.h \
     movement/move_collisions.h \
     gui/getbehavior.h \
     utilities/comparisons.h \
@@ -210,7 +209,7 @@ HEADERS += \
     utilities/debug.h \
     utilities/edges.h \
     behavior/defendbehavior.h \
-    utilities/joystick.h
+    gui/joystick.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 

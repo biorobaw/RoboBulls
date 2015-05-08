@@ -2,7 +2,6 @@
 // to not generate gamemodel: comment out contents of strategy/strategycontroller.cpp->gameModelUpdated()
 // collision notification
 // different field & robot scales based on SIMULATED
-// communication/nxtrobcomm.cpp - sets velocity to zero
 
 // Tool classes
 #include <math.h>
@@ -22,7 +21,6 @@
 #include "ui_mainwindow.h"
 #include "gamepanel.h"
 #include "fieldpanel.h"
-#include "teamsize.h"
 #include "guifield.h"
 #include "guiball.h"
 #include "guibotlabel.h"
@@ -32,19 +30,21 @@
 #include "guiinterface.h"
 #include "guirobot.h"
 #include "getbehavior.h"
+#include "joystick.h"
 
 // Project classes
 #include "model/gamemodel.h"
 #include "model/robot.h"
-#include "communication/nxtrobcomm.h"
-#include "movement/move.h"
 #include "include/config/team.h"
 
-
-// Global static pointer used to ensure only a single instance of the class.
-//MainWindow* MainWindow::mw = NULL;    // delete?
-
 using namespace std;
+
+//Inputs from joystick; connection to GUI
+float MainWindow::LB;
+float MainWindow::LF;
+float MainWindow::RB;
+float MainWindow::RF;
+bool  MainWindow::Kick;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -57,7 +57,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Setting up GUI; not enabling thread until we're done
     ui->btn_connectGui->setEnabled(false);
-    multithreaded = false;   // if true, clock functions operate on an independent thread
     // Creating helper classes (order is important)
     objectPos       = new ObjectPosition(this);
     selrobotpanel   = new SelRobotPanel(this);
@@ -84,45 +83,23 @@ MainWindow::MainWindow(QWidget *parent) :
     // Time, in milliseconds, before GUI autoconnects to project; increase value if needed
     QTimer::singleShot(1000, this, SLOT(on_btn_connectGui_clicked()));
 
-
-    // Create Threads, the parameters are the timer value, and parent.
-    // threads is declated as QList<GuiComm*> threads;
-    // create threads, and append them to the threads list, so that
-    // threads can be accessed for making connections, and to start
-    // and stop threads
-
-    // coreLoop thread
-//    threads.append(new GuiComm(50, this));
     guimodel = new GuiComm(50,this);
-    // independent clock thread
-//    threads.append(new GuiComm(50, this));
 
-//    connect(threads[0], SIGNAL(valueChanged(int))
-//            , this, SLOT(coreLoop(int)));
-    connect(guimodel, SIGNAL(valueChanged(int))
-                , this, SLOT(coreLoop(int)));
-
-//    if (multithreaded) {
-//        connect(threads[1], SIGNAL(valueChanged(int))
-//                , this, SLOT(clockLoop(int)));
-//        threads[1]->start();
-//    }
+    // coreLoop
+    connect(guimodel, SIGNAL(valueChanged(int)), this, SLOT(coreLoop(int)));
 
     // Zoom slider
-    connect(ui->zoom_slider, SIGNAL(valueChanged(int))
-            , fieldpanel, SLOT(zoomField(int)));
+    connect(ui->zoom_slider, SIGNAL(valueChanged(int)), fieldpanel, SLOT(zoomField(int)));
 
     // Default zoom button
-    connect(ui->zoom_default, SIGNAL(clicked())
-            , fieldpanel, SLOT(defaultZoom()));
-}
+    connect(ui->zoom_default, SIGNAL(clicked()), fieldpanel, SLOT(defaultZoom()));
 
-bool MainWindow::isOverride(){  // delete?
-    return guiOverride;
-}
-
-vector<bool> MainWindow::isRobotOverriden(){    // delete?
-    return overriddenBots;
+    //Joystick initialization
+    joystick::init();
+    if(joystick::checkForJoystick()) {
+        std::cout << "**Joystick Control Enabled**" << std::endl;
+        joystick::listen();
+    }
 }
 
 void MainWindow::coreLoop(int tick) {
@@ -135,10 +112,11 @@ void MainWindow::coreLoop(int tick) {
     }
 
     // Wiping values at beginning of cycle
+    // prevents crash caused by (I think) the appended strings getting too long
     for (int i=0; i<teamSize_blue; i++) {
-        // prevents crash caused by (I think) the appended strings getting too long
         selrobotpanel->botBehavior[i] = "";
     }
+
     // Interaction scanners
     fieldpanel->scanForScrollModifier();
     fieldpanel->scanForSelection();
@@ -147,9 +125,31 @@ void MainWindow::coreLoop(int tick) {
     fieldpanel->updateScene();
     robotpanel->updateBotPanel();
     updateBallInfo();
+    clockLoop(tick);
 
-    if (!multithreaded) {
-        clockLoop(tick);
+    //If there is a selected bot that is overriden....
+    if(fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked())
+    {
+        //Inform the outside world of its overridding and selection
+        GuiInterface::getGuiInterface()->setSelOverBot(fieldpanel->selectedBot);
+
+        //Joystick updating is a bit different than keyboard. The joy axises can always
+        //Be sent to the robot, so it is done here in the main loop
+        if(joystick::hasSupport()) {
+            Robot* r = gameModel->findMyTeam(fieldpanel->selectedBot);
+            r->setLB(joystick::LB);
+            r->setRB(joystick::RB);
+            r->setRF(joystick::RF);
+            r->setLF(joystick::LF);
+            if(joystick::Kick) {
+                on_btn_botKick_pressed();
+            } else {
+                on_btn_botKick_released();
+            }
+        }
+    }
+    else {
+        GuiInterface::getGuiInterface()->setSelOverBot(-1);
     }
 }
 
@@ -168,17 +168,11 @@ void MainWindow::clockLoop(int tick) {
 
 
 void MainWindow::drawLine(int originX, int originY, int endX, int endY) {
-//    guidrawline = new GuiDrawLine();
-//    guidrawline->setZValue(3);
-//    guidrawline->setX(100);
-//    guidrawline->setY(100);
-//    scene->addItem(guidrawline);
-
-        guidrawline->x1 = originX;
-        guidrawline->y1 = originY;
-        guidrawline->x2 = endX;
-        guidrawline->y2 = endY;
-        ui->gView_field->update();
+    guidrawline->x1 = originX;
+    guidrawline->y1 = originY;
+    guidrawline->x2 = endX;
+    guidrawline->y2 = endY;
+    ui->gView_field->update();
 }
 
 void MainWindow::guiPrint(string output) {
@@ -218,34 +212,6 @@ void MainWindow::updateBallInfo() {
     }
 }
 
-
-int MainWindow::frequency_of_primes (int n) {
-  int i,j;
-  int freq=n-1;
-  for (i=2; i<=n; ++i) for (j=sqrt(i);j>1;--j) if (i%j==0) {--freq; break;}
-  return freq;
-}
-
-int MainWindow::getClock()
-{
-    time_t now;
-     struct tm newyear;
-     double seconds;
-
-     time(&now);  /* get current time; same as: now = time(NULL)  */
-
-     newyear = *localtime(&now);
-
-     newyear.tm_hour = 0; newyear.tm_min = 0; newyear.tm_sec = 0;
-     newyear.tm_mon = 0;  newyear.tm_mday = 1;
-
-     seconds = difftime(now,mktime(&newyear));
-
-     printf ("%.f seconds since new year in the current timezone.\n", seconds);
-
-     return 0;
-}
-
 int MainWindow::getSpeed(QGraphicsItem *p, double o)
 {
     // Worked, then mysteriously started crashing at the second line (p reference)
@@ -259,10 +225,6 @@ int MainWindow::getSpeed(QGraphicsItem *p, double o)
     }
 //    cout << "ball speed: " << speed << "\n";
     return speed;
-
-}
-
-void MainWindow::moveBot() {
 
 }
 
@@ -301,14 +263,6 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
                     break;
                 case Qt::Key_J:
                     on_btn_botDrible_pressed();
-                    break;
-
-                case Qt::Key_L:
-                    if (fieldpanel->selectedBot > -1) {
-                        // drawLine TEST
-                        GuiInterface::getGuiInterface()->drawPath(gamemodel->find(fieldpanel->selectedBot,gamemodel->getMyTeam())->getRobotPosition(),
-                                                        Point(objectPos->getMouseCoordX(), objectPos->getMouseCoordY()), 1);
-                    }
                     break;
             }
 
@@ -441,8 +395,6 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
 
         // center window on field
         case Qt::Key_F:
-//            MainWindow::setWindowState(Qt::WindowMaximized);
-//            MainWindow::resize(850,630);
             setFocusOnField();
             break;
 
@@ -543,7 +495,6 @@ void MainWindow::checkTeamColors() {
     } else if (TEAM == TEAM_YELLOW) {
         myTeam = "Yellow";
     }
-    //    robotpanel->updateTeamColors();
 }
 
 void MainWindow::setFocusOnField() {
@@ -551,57 +502,6 @@ void MainWindow::setFocusOnField() {
     ui->scrollArea->verticalScrollBar()->setValue(205);
     ui->scrollArea->horizontalScrollBar()->setValue(315);
 }
-
-//void MainWindow::updateTeamColors() {
-//    if  (myTeam == "Yellow") {
-//        // button color
-//        ui->btn_toggleTeamColor->setStyleSheet("background-color: yellow;" "color: black");
-//        // robot panel colors
-//        ui->frame_robotsPanel->setStyleSheet("background-color: rgb(250, 250, 220);");
-//        ui->text_primeBot->setStyleSheet("background-color: rgb(100, 100, 0);");
-//        ui->dial_botOrient_prime->setStyleSheet("background-color: rgb(0, 0, 255);");
-//        ui->lcd_orient_prime->setStyleSheet("background-color: rgb(0, 0, 150);");
-//        ui->lcd_coordX_prime->setStyleSheet("background-color: rgb(100, 100, 0);");
-//        ui->lcd_coordY_prime->setStyleSheet("background-color: rgb(100, 100, 0);");
-//        for (int i=0; i<teamSize_blue; i++) {
-//            robotpanel->botOrients[i]->setStyleSheet("background-color: rgb(0, 0, 150);");
-//            robotpanel->botXcoords[i]->setStyleSheet("background-color: rgb(100, 100, 0);");
-//            robotpanel->botYcoords[i]->setStyleSheet("background-color: rgb(100, 100, 0);");
-//        }
-//    } else if (myTeam == "Blue"){
-//        // button color
-//        ui->btn_toggleTeamColor->setStyleSheet("background-color: blue;" "color: white");
-//        // robot panel colors
-//        ui->frame_robotsPanel->setStyleSheet("background-color: rgb(225, 225, 255);");
-//        ui->text_primeBot->setStyleSheet("background-color: rgb(0, 0, 100);");
-//        ui->dial_botOrient_prime->setStyleSheet("background-color: rgb(255, 255, 0);");
-//        ui->lcd_orient_prime->setStyleSheet("background-color: rgb(100, 100, 0);");
-//        ui->lcd_coordX_prime->setStyleSheet("background-color: rgb(0, 0, 100);");
-//        ui->lcd_coordY_prime->setStyleSheet("background-color: rgb(0, 0, 100);");
-//        for (int i=0; i<teamSize_blue; i++) {
-//            robotpanel->botOrients[i]->setStyleSheet("background-color: rgb(255, 255, 0);");
-//            robotpanel->botXcoords[i]->setStyleSheet("background-color: rgb(0, 0, 150);");
-//            robotpanel->botYcoords[i]->setStyleSheet("background-color: rgb(0, 0, 150);");
-//        }
-
-//    }
-//    // goal colors
-////    fieldpanel->field->myTeam = myTeam;
-//    // bot icon colors
-//    for (unsigned int i=0; i<fieldpanel->guiTeam.size(); i++) {
-//        fieldpanel->guiTeam[i]->myTeam = myTeam;
-//        fieldpanel->guiLabels[i]->myTeam = myTeam;
-//        fieldpanel->guiTeamY[i]->myTeam = myTeam;
-//        fieldpanel->guiLabelsY[i]->myTeam = myTeam;
-//        robotpanel->botIcons[i]->myTeam = myTeam;
-//        robotpanel->botIconsSelected[i]->myTeam = myTeam;
-//    }
-//    // rerendering affected objects that aren't regularly updated
-//    ui->gView_field->scene()->update();
-//    if (fieldpanel->selectedBot > -1) {
-//        ui->gView_robot_prime->scene()->update();
-//    }
-//}
 
 void MainWindow::setMyVelocity() {
     if (QApplication::keyboardModifiers().testFlag(Qt::ShiftModifier) == true) {
@@ -618,28 +518,15 @@ void MainWindow::setMyVelocity() {
 
 MainWindow::~MainWindow()
 {
-    //delete ui;
-    while(threads.count() > 0)
-    {
-        QThread* thread = threads.takeFirst();
-        if(thread->isRunning())
-            thread->exit(0);
-    }
+    //TODO: Actually cleanup things.
 }
 
 void MainWindow::on_btn_connectGui_clicked() {
     if(ui->btn_connectGui->text() == "Connect") {
         ui->btn_connectGui->setText("Disconnect");
-//        for(int i = 0; i < threads.count(); i++)
-//            threads[i]->start();
-//        threads[0]->start();
         guimodel->start();
-//        threads[1]->start();
     } else {
         ui->btn_connectGui->setText("Connect");
-//        for(int i = 0; i < threads.count(); i++)
-//            threads[i]->exit(0);
-//        threads[0]->exit(0);
         guimodel->exit(0);
     }
 }
@@ -658,24 +545,13 @@ void MainWindow::on_btn_rotateField_left_clicked() {
 
 void MainWindow::on_btn_multithread_clicked() {
     if(ui->btn_multithread->text() == "Enabled") {
-        multithreaded = true;
         ui->btn_multithread->setText("Disabled");
-//        threads[1]->start();
     } else {
-        multithreaded = false;
         ui->btn_multithread->setText("Enabled");
-//        threads[1]->exit(0);
     }
 }
 
 void MainWindow::on_btn_botForward_pressed() {
-//    // TEST
-//    cout << "Overrides: \n";
-//    for (int i=0; i<overriddenBots.size(); i++) {
-//        cout << "Override for Bot " << i << ": " << overriddenBots[i] << "\n";
-//    }
-//    cout << "Selected bot: " << fieldpanel->selectedBot << "\n";
-
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botForward->setDown(true);
         setMyVelocity();
@@ -692,19 +568,19 @@ void MainWindow::on_btn_botForward_pressed() {
 
 void MainWindow::on_btn_botForward_released() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
+        Robot* r = gamemodel->findMyTeam(fieldpanel->selectedBot);
         ui->btn_botForward->setDown(false);
-        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setL(0);
-        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setR(0);
+        r->setL(0);
+        r->setR(0);
     }
 }
 
 void MainWindow::on_btn_botTurnRight_pressed() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
+        Robot* r = gamemodel->findMyTeam(fieldpanel->selectedBot);
         ui->btn_botTurnRight->setDown(true);
-        float currentL = gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->getL();
-        float currentR = gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->getR();
-        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setL(currentL+myVelocity/2);
-        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setR(currentR-myVelocity/2);
+        r->setL(r->getL() + myVelocity/2);
+        r->setR(r->getR() - myVelocity/2);
     }
 }
 
@@ -719,11 +595,10 @@ void MainWindow::on_btn_botTurnRight_released() {
 
 void MainWindow::on_btn_botTurnLeft_pressed() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
+        Robot* r = gamemodel->findMyTeam(fieldpanel->selectedBot);
         ui->btn_botTurnLeft->setDown(true);
-        int currentL = gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->getL();
-        int currentR = gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->getR();
-        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setL(currentL-myVelocity/2);
-        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setR(currentR+myVelocity/2);
+        r->setL(r->getL() - myVelocity/2);
+        r->setR(r->getR() + myVelocity/2);
     }
 }
 
