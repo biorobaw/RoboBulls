@@ -62,13 +62,9 @@ void KickOffStrategy::assignBeh()
 	{
         if(rob->getID() == 5)
             continue;
-
         Point nextPoint = whichKickoffPointList[i++];
-    #if TEAM == TEAM_YELLOW
-            nextPoint.x = abs(nextPoint.x);
-    #endif
-        float angleToBall
-                = Measurments::angleBetween(nextPoint, gameModel->getBallPoint());
+        nextPoint.x *= GameModel::mySide;   //Keeps X values on correct side
+        float angleToBall = Measurments::angleBetween(nextPoint, gameModel->getBallPoint());
         rob->assignBeh<GenericMovementBehavior>(nextPoint, angleToBall);
     }
 

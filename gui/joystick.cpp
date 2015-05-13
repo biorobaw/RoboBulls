@@ -93,6 +93,9 @@ void init()
 
 void listen()
 {
+    std::cout << "********************************" << '\n'
+              << "Joystick Control Enabled"         << '\n'
+              << "********************************" << std::endl;
     joystickThread = std::thread(listener);
 }
 

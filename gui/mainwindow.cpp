@@ -96,7 +96,6 @@ MainWindow::MainWindow(QWidget *parent) :
     //Joystick initialization
     joystick::init();
     if(joystick::checkForJoystick()) {
-        std::cout << "**Joystick Control Enabled**" << std::endl;
         joystick::listen();
     }
 }
