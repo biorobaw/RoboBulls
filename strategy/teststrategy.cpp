@@ -8,6 +8,7 @@
 #include "movement/movetype.h"
 #include "model/gamemodel.h"
 #include "utilities/comparisons.h"
+#include "utilities/edges.h"
 
 /************************************************************************/
 
@@ -16,13 +17,32 @@ class KickBeh : public Behavior
     Skill::KickToPointOmni* ktpo;
 public:
     KickBeh() {
-        ktpo = new Skill::KickToPointOmni(Point(0,0));
+        ktpo = new Skill::KickToPointOmni(Point(-1000 + rand()%2000,
+                                                -1000 + rand()%2000));
     }
 
     void perform(Robot * robot) override
     {
+        static float bs = 0.0;
         ktpo->perform(robot);
+
+        bs = gameModel->getBallSpeed();
+        if(posedge(bs > 1.5)) {
+            prediction = gameModel->getBallPrediction();
+        }
+        if(posedge(bs < 0.5)) {
+            Point bp = gameModel->getBallPoint();
+
+            float dist = Measurments::distance(prediction, bp);
+
+            std::cout << prediction.toString() << " " << bp.toString() << " "
+                      << dist << std::endl;
+
+            robot->clearCurrentBeh();
+        }
     }
+
+    Point prediction;
 };
 
 class RotBeh : public GenericMovementBehavior
@@ -76,10 +96,12 @@ public:
 
 bool TestStrategy::update()
 {
+//    gameModel->findMyTeam(0)->assignBeh<KickBeh>();
+
     return false;
 }
 
 void TestStrategy::assignBeh()
 {
-    gameModel->findMyTeam(8)->assignBeh<GoToBeh>();
+    //gameModel->findMyTeam(0)->assignBeh<KickBeh>();
 }

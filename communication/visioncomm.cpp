@@ -93,7 +93,6 @@ void VisionComm::recieveBall(const SSL_DetectionFrame& frame)
     static Point noiseCenterPoint;
     static int seenOutsideRadiusCount = 0;
     static int seenStoppedCount = 0;
-    static int velocityNoReadCounter = 0;
     static Point lastDetection;
 
     if(frame.balls_size() > 0)
@@ -122,10 +121,7 @@ void VisionComm::recieveBall(const SSL_DetectionFrame& frame)
             // 4 times it is considered stopped it's position will not be updated
             else
             {
-                if(++velocityNoReadCounter >= 0) {
-                    gameModel->setBallPoint(newDetection);
-                    velocityNoReadCounter = 0;
-                }
+                gameModel->setBallPoint(newDetection);
 
                 if(Measurments::distance(newDetection,lastDetection) < 1)
                     ++seenStoppedCount;
