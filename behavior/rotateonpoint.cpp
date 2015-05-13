@@ -16,6 +16,7 @@ void RotateOnPoint::perform(Robot *robot)
     switch(state)
     {
     case init: {
+            setMovementTargets(center_point, to_center);
             float a = center_ang + M_PI;
             offset_point  = center_point + Point(cos(to_robot), sin(to_robot)) * center_dist;
               final_point = center_point + Point(cos(a), sin(a)) * center_dist;
@@ -36,7 +37,7 @@ void RotateOnPoint::perform(Robot *robot)
                 float next = Measurments::angleSum(to_robot, sign * 45*(M_PI/180));
                 Point offset = center_point + Point(cos(next), sin(next)) * center_dist;
                 setMovementTargets(offset, to_center);
-                if(Measurments::isClose(robot->getRobotPosition(), final_point)) {
+                if(Measurments::isClose(robot->getRobotPosition(), final_point, DIST_TOLERANCE*1.2)) {
                     finished = true;
                     setMovementTargets(robot->getRobotPosition(), to_center);
                 }
@@ -45,7 +46,8 @@ void RotateOnPoint::perform(Robot *robot)
         break;
     }
 
-    GenericMovementBehavior::perform(robot, Movement::Type::facePoint);
+    if(state != init)
+        GenericMovementBehavior::perform(robot, Movement::Type::facePoint);
 }
 
 bool RotateOnPoint::isFinished()
