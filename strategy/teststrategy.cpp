@@ -1,4 +1,4 @@
-#include "teststrategy.h"
+﻿#include "teststrategy.h"
 #include "behavior/behaviorassignment.h"
 #include "skill/stop.h"
 #include "skill/kicktopoint.h"
@@ -9,6 +9,7 @@
 #include "model/gamemodel.h"
 #include "utilities/comparisons.h"
 #include "utilities/edges.h"
+#include "utilities/region.h"
 
 /************************************************************************/
 
@@ -97,11 +98,18 @@ public:
 bool TestStrategy::update()
 {
 //    gameModel->findMyTeam(0)->assignBeh<KickBeh>();
+//    Region lowerLeftRegion = Region(-3000,0,-2000,0);
+//    Region topLeftRegion = Region(-3000,0,2000,0);
+//    Region topRightRegion = Region(0,3000,0,2000);
+//    Region lowerRightRegion = Region(0,3000,0,-2000);
+//    Region goalLeftRegion = Region(-3000,2500,-700,700);
+//    Region goalRightRegion = Region(2500, 3000, -700, 700);
 
-    return false;
+
+    //return false;
 }
 
 void TestStrategy::assignBeh()
 {
-    //gameModel->findMyTeam(0)->assignBeh<KickBeh>();
+    gameModel->findMyTeam(8)->assignBeh<GoToBeh>();
 }
