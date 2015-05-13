@@ -68,11 +68,11 @@ public:
 
     bool hasBall;
     bool hasBeh;
-    int id;     // moved here by Ryan from private
 
 private:
     void setCurrentBeh(Behavior *);
     
+    int id;                     //Robot numerical ID
     Point robotPosition;        // X/Y Position in points
     Point velocity;             // Velocity in m/s
     float orientation;          // orientation of the robot

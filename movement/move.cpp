@@ -315,7 +315,7 @@ void Move::setVels(Robot *robot)
      */
 
     // Ryan has perpetrated this boolean check
-    if (!GuiInterface::getGuiInterface()->isOverriddenBot()[robot->id]) {
+    if (!GuiInterface::getGuiInterface()->isOverriddenBot()[robot->getID()]) {
         switch(robot->type())
         {
         case differential:

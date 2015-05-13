@@ -88,7 +88,6 @@ private:
     
 public:
     //Old legacy functions
-    bool guiOverride = false; // Ryan
     void setStrategyController(StrategyController * sc);
     void onCommandProcessed();
     std::string toString();
