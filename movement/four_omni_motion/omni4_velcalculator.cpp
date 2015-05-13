@@ -8,14 +8,18 @@ namespace Movement
 //Multiplier for theta_vel in defaultCalc (set 10x actual)
 int THETA_MULT = 4;
 
+//Multiplier for theta_vel in facePointCalc (set 10x actual)
+int THETA_MULT2 = 20;
+
 //Multiplier for x_vel and y_vel in defaultCalc (set 10x actual)
 int XY_MULT = 4;
 
 
 FourWheelCalculator::FourWheelCalculator()
 {
-    debug::registerVariable("fwc_xy", &THETA_MULT);
-    debug::registerVariable("fwc_theta", &XY_MULT);
+    debug::registerVariable("fwc_xy", &XY_MULT);
+    debug::registerVariable("fwc_theta", &THETA_MULT);
+    debug::registerVariable("fwc_theta2", &THETA_MULT2);
 }
 
 fourWheelVels FourWheelCalculator::calculateVels
@@ -153,7 +157,7 @@ fourWheelVels FourWheelCalculator::facePointCalc
     {
         x_vel = 90*cos(angle_to_goal);
         y_vel = 90*sin(angle_to_goal);
-        theta_vel *= 0.8;
+        theta_vel *= ((float)THETA_MULT2 / 10);
     }
 
     //cout << dist_error_integral << endl;

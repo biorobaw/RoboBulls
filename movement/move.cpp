@@ -230,13 +230,13 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
                     = FPPA::isObstacleInLine(nextPoint, nextNextPoint, &obsPoint, useAvoidBall);
             }
             
-            if(isNewObstacleInPath && !Measurments::isClose(obsPoint, lastObsPoint, 100)) 
+            if(isNewObstacleInPath && !Measurments::isClose(obsPoint, lastObsPoint, 100))
             {
                 /* We have a possible obstacle..
                  * If it is NOT close any of the obstacles used to generate
                  * the current path, it is a new obstacle
                  */
-                if(Comparisons::isDistanceToLess(lastObsPoint, 100).none_of(lastObstacles)) {
+                if(Comparisons::isDistanceToLess(obsPoint, 100).none_of(lastObstacles)) {
                     lastObsPoint = obsPoint;
                     currentPathIsClear = false;
                 }
