@@ -63,7 +63,6 @@ SOURCES += main.cpp \
 	strategy/teststrategy.cpp \
 	utilities/measurments.cpp \
 	utilities/point.cpp \
-    behavior/defendclosetoball.cpp \
     behavior/defendfarfromball.cpp \
     behavior/attackmain.cpp \
     behavior/attacksupport.cpp \
@@ -114,7 +113,8 @@ SOURCES += main.cpp \
     utilities/debug.cpp \
     utilities/edges.cpp \
     behavior/defendbehavior.cpp \
-    gui/joystick.cpp
+    gui/joystick.cpp \
+    behavior/rotateonpoint.cpp
 
 HEADERS += \
 	behavior/behavior.h \
@@ -151,7 +151,6 @@ HEADERS += \
 	strategy/teststrategy.h \
 	utilities/measurments.h \
 	utilities/point.h \
-    behavior/defendclosetoball.h \
     behavior/defendfarfromball.h \
     behavior/attackmain.h \
     behavior/attacksupport.h \
@@ -209,7 +208,8 @@ HEADERS += \
     utilities/debug.h \
     utilities/edges.h \
     behavior/defendbehavior.h \
-    gui/joystick.h
+    gui/joystick.h \
+    behavior/rotateonpoint.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 

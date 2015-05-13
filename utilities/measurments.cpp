@@ -87,12 +87,11 @@ float Measurments::angleDiff(float angle1, float angle2){
 
 float Measurments::angleSum(float angle1, float angle2)
 {
-    float sAlpha = sin(angle1);
-    float cBeta = cos(angle2);
-    float cAlpha = cos(angle1);
-    float sBeta = sin(angle2);
-    float result = sAlpha*cBeta + cAlpha*sBeta;
-    return asin(result);
+    float sinA = sin(angle1);
+    float cosA = cos(angle1);
+    float sinB = sin(angle2);
+    float cosB = cos(angle2);
+    return atan2(sinA*cosB+sinB*cosA, cosA*cosB-sinA*sinB);
 }
 
 
