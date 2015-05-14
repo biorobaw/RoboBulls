@@ -5,26 +5,6 @@
 
 /**************************************************/
 
-Region Region::goalBox0
-    (-FIELD_LENGTH,
-     -FIELD_LENGTH+GOAL_LENGTH,
-      GOAL_WIDTH,
-     -GOAL_WIDTH);
-
-Region Region::goalBox1
-    ( FIELD_LENGTH,
-      FIELD_LENGTH-GOAL_LENGTH,
-      GOAL_WIDTH,
-     -GOAL_WIDTH);
-
-Region Region::field
-    (-FIELD_LENGTH + 250,
-      FIELD_LENGTH,
-     -FIELD_WIDTH + 250,
-      FIELD_WIDTH);
-
-/**************************************************/
-
 Region::Region()
 {
     minX = maxX = minY = maxY = 0;
@@ -195,5 +175,12 @@ int Region::getStrategicValue()
 {
     return strategic_value;
 }
+
+Region Region::lowerLeftRegion = Region(-FIELD_LENGTH,0,-FIELD_WIDTH,0);
+Region Region::topLeftRegion = Region(-FIELD_LENGTH,0,FIELD_WIDTH,0);
+Region Region::topRightRegion = Region(0,FIELD_LENGTH,0,FIELD_WIDTH);
+Region Region::lowerRightRegion = Region(0,FIELD_LENGTH,0,-FIELD_WIDTH);
+Region Region::goalLeftRegion = Region(-FIELD_LENGTH,-FIELD_LENGTH+GOAL_LENGTH,-GOAL_WIDTH,GOAL_WIDTH);
+Region Region::goalRightRegion = Region(FIELD_LENGTH-GOAL_LENGTH, FIELD_LENGTH, -GOAL_WIDTH, GOAL_WIDTH);
 
 

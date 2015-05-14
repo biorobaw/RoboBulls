@@ -185,9 +185,9 @@ namespace impl
     {
         //Ensure point does not pass in any goalie box
         if(avoidGoal) {
-            if(Region::goalBox0.contains(pt))
+            if(Region::goalLeftRegion.contains(pt))
                 pt.x = -2000;
-            if(Region::goalBox1.contains(pt))
+            if(Region::goalRightRegion.contains(pt))
                 pt.x =  2000;
         }
 

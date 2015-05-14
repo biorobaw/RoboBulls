@@ -33,15 +33,43 @@ TEMPLATE = app
 QMAKE_CXX = g++-4.8
 
 SOURCES += main.cpp \
+	behavior/attackmain.cpp \
+	behavior/attacksupport.cpp \
 	behavior/behavior.cpp \
+	behavior/defendbehavior.cpp \
+	behavior/defendfarfromball.cpp \
 	behavior/driveballandkick.cpp \
+	behavior/genericmovementbehavior.cpp \
 	behavior/kicktogoal.cpp \
+	behavior/passballreceiver.cpp \
+	behavior/passballsender.cpp \
 	behavior/penaltybehavior.cpp \
+	behavior/sendballtoregion.cpp \
+	behavior/simplebehaviors.cpp \
 	communication/nxtrobcomm.cpp \
 	communication/refcomm.cpp \
 	communication/robcomm.cpp \
 	communication/simrobcomm.cpp \
 	communication/visioncomm.cpp \
+	gui/fieldpanel.cpp \
+	gui/gamepanel.cpp \
+	gui/getbehavior.cpp \
+	gui/guiball.cpp \
+	gui/guibotlabel.cpp \
+	gui/guicomm.cpp \
+	gui/guidrawline.cpp \
+	gui/guifield.cpp \
+	gui/guiinterface.cpp \
+	gui/guirobot.cpp \
+	gui/guiscene.cpp \
+	gui/guisidelines.cpp \
+	gui/joystick.cpp \
+	gui/mainwindow.cpp \
+	gui/objectposition.cpp \
+	gui/robotpanel.cpp \
+	gui/selrobotpanel.cpp \
+	include/config/robot_types.cpp \
+	include/config/tolerances.cpp \
 	include/grSim_Commands.pb.cc \
 	include/grSim_Packet.pb.cc \
 	include/grSim_Replacement.pb.cc \
@@ -54,79 +82,83 @@ SOURCES += main.cpp \
 	include/serialib.cpp \
 	model/gamemodel.cpp \
 	model/robot.cpp \
+	movement/differential/closedloopcontrol.cpp \
+	movement/differential/differential_velcalculator.cpp \
+	movement/four_omni_motion/omni4_velcalculator.cpp \
+	movement/gotopositionwithorientation.cpp \
+	movement/move_collisions.cpp \
+	movement/move.cpp \
+	movement/move_randomization.cpp \
+	movement/pathfinding/fppa_pathfinding.cpp \
+	movement/three_omni_motion/omni3_velcalculator.cpp \
 	skill/driveball.cpp \
 	skill/kick.cpp \
+	skill/kicktopoint.cpp \
+	skill/kicktopointomni.cpp \
+	skill/stop.cpp \
+	strategy/freekickstrategy.cpp \
+	strategy/haltstrategy.cpp \
+	strategy/indiectkickstrategy.cpp \
+	strategy/kickoffstrategy.cpp \
+	strategy/normalgamestrategy.cpp \
 	strategy/penaltystrategy.cpp \
 	strategy/stopstrategy.cpp \
-	strategy/strategy.cpp \
 	strategy/strategycontroller.cpp \
+	strategy/strategy.cpp \
 	strategy/teststrategy.cpp \
+	strategy/videostrategies.cpp \
+	utilities/comparisons.cpp \
+	utilities/debug.cpp \
+	utilities/edges.cpp \
 	utilities/measurments.cpp \
 	utilities/point.cpp \
-    behavior/defendfarfromball.cpp \
-    behavior/attackmain.cpp \
-    behavior/attacksupport.cpp \
-    behavior/sendballtoregion.cpp \
-    skill/kicktopoint.cpp \
-    utilities/region.cpp \
-    movement/gotopositionwithorientation.cpp \
-    movement/pathfinding/fppa_pathfinding.cpp \
-    movement/move.cpp \
-    movement/differential/closedloopcontrol.cpp \
-    include/config/robot_types.cpp \
-    behavior/genericmovementbehavior.cpp \
-    skill/stop.cpp \
-    movement/four_omni_motion/omni4_velcalculator.cpp \
-    movement/three_omni_motion/omni3_velcalculator.cpp \
-    movement/differential/differential_velcalculator.cpp \
-    strategy/freekickstrategy.cpp \
-    strategy/haltstrategy.cpp \
-    strategy/indiectkickstrategy.cpp \
-    strategy/kickoffstrategy.cpp \
-    behavior/simplebehaviors.cpp \
-    strategy/normalgamestrategy.cpp \
-    behavior/passballsender.cpp \
-    behavior/passballreceiver.cpp \
-    gui/guiball.cpp \
-    gui/guibotlabel.cpp \
-    gui/guicomm.cpp \
-    gui/guifield.cpp \
-    gui/guirobot.cpp \
-    gui/guisidelines.cpp \
-    gui/mainwindow.cpp \
-    gui/guiscene.cpp \
-    gui/robotpanel.cpp \
-    gui/fieldpanel.cpp \
-    gui/selrobotpanel.cpp \
-    gui/objectposition.cpp \
-    gui/gamepanel.cpp \
-    gui/guiinterface.cpp \
-    gui/guidrawline.cpp \
-    movement/move_collisions.cpp \
-    include/config/tolerances.cpp \
-    gui/getbehavior.cpp \
-    utilities/comparisons.cpp \
-    movement/move_randomization.cpp \
-    utilities/velocitycalculator.cpp \
-    skill/kicktopointomni.cpp \
-    strategy/videostrategies.cpp \
-    utilities/debug.cpp \
-    utilities/edges.cpp \
-    behavior/defendbehavior.cpp \
-    gui/joystick.cpp \
-    behavior/rotateonpoint.cpp
+	utilities/region.cpp \
+	utilities/velocitycalculator.cpp
 
 HEADERS += \
-	behavior/behavior.h \
+	behavior/attackmain.h \
+	behavior/attacksupport.h \
 	behavior/behaviorassignment.h \
+	behavior/behavior.h \
+	behavior/defendbehavior.h \
+	behavior/defendfarfromball.h \
 	behavior/driveballandkick.h \
+	behavior/genericmovementbehavior.h \
+	behavior/genericskillbehavior.h \
 	behavior/kicktogoal.h \
+	behavior/passballreceiver.h \
+	behavior/passballsender.h \
 	behavior/penaltybehavior.h \
+	behavior/rotateonpoint.h \
+	behavior/sendballtoregion.h \
+	behavior/simplebehaviors.h \
 	communication/nxtrobcomm.h \
 	communication/refcomm.h \
 	communication/robcomm.h \
 	communication/simrobcomm.h \
 	communication/visioncomm.h \
+	gui/fieldpanel.h \
+	gui/gamepanel.h \
+	gui/getbehavior.h \
+	gui/guiball.h \
+	gui/guibotlabel.h \
+	gui/guicomm.h \
+	gui/guidrawline.h \
+	gui/guifield.h \
+	gui/guiinterface.h \
+	gui/guirobot.h \
+	gui/guiscene.h \
+	gui/guisidelines.h \
+	gui/joystick.h \
+	gui/mainwindow.h \
+	gui/objectposition.h \
+	gui/robotpanel.h \
+	gui/selrobotpanel.h \
+	include/config/globals.h \
+	include/config/robot_types.h \
+	include/config/simulated.h \
+	include/config/team.h \
+	include/config/tolerances.h \
 	include/grSim_Commands.pb.h \
 	include/grSim_Packet.pb.h \
 	include/grSim_Replacement.pb.h \
@@ -141,75 +173,42 @@ HEADERS += \
 	include/util.h \
 	model/gamemodel.h \
 	model/robot.h \
+	movement/differential/closedloopcontrol.h \
+	movement/differential/differential_velcalculator.h \
+	movement/four_omni_motion/omni4_velcalculator.h \
+	movement/gotoposition.h \
+	movement/gotopositionwithorientation.h \
+	movement/move_collisions.h \
+	movement/move.h \
+	movement/move_randomization.h \
+	movement/movetype.h \
+	movement/pathfinding/fppa_pathfinding.h \
+	movement/three_omni_motion/matrixcalculator.h \
+	movement/three_omni_motion/omni3_velcalculator.h \
 	skill/driveball.h \
 	skill/kick.h \
+	skill/kicktopoint.h \
+	skill/kicktopointomni.h \
 	skill/skill.h \
+	skill/stop.h \
+	strategy/freekickstrategy.h \
+	strategy/haltstrategy.h \
+	strategy/indiectkickstrategy.h \
+	strategy/kickoffstrategy.h \
+	strategy/normalgamestrategy.h \
 	strategy/penaltystrategy.h \
 	strategy/stopstrategy.h \
-	strategy/strategy.h \
 	strategy/strategycontroller.h \
+	strategy/strategy.h \
 	strategy/teststrategy.h \
+	strategy/videostrategies.h \
+	utilities/comparisons.h \
+	utilities/debug.h \
+	utilities/edges.h \
 	utilities/measurments.h \
 	utilities/point.h \
-    behavior/defendfarfromball.h \
-    behavior/attackmain.h \
-    behavior/attacksupport.h \
-    behavior/sendballtoregion.h \
-    skill/kicktopoint.h \
-    utilities/region.h \
-    movement/gotopositionwithorientation.h \
-    movement/pathfinding/fppa_pathfinding.h \
-    movement/three_omni_motion/matrixcalculator.h \
-	movement/move.h \
-    movement/differential/closedloopcontrol.h \
-    movement/gotoposition.h \
-    movement/movetype.h \
-    include/config/globals.h \
-    include/config/robot_types.h \
-    include/config/simulated.h \
-    include/config/team.h \
-    include/config/tolerances.h \
-    behavior/genericmovementbehavior.h \
-    skill/stop.h \
-    movement/three_omni_motion/omni3_velcalculator.h \
-    movement/differential/differential_velcalculator.h \
-    movement/four_omni_motion/omni4_velcalculator.h \
-    strategy/freekickstrategy.h \
-    strategy/haltstrategy.h \
-    strategy/indiectkickstrategy.h \
-    strategy/kickoffstrategy.h \
-    behavior/simplebehaviors.h \
-    strategy/normalgamestrategy.h \
-    behavior/passballsender.h \
-    behavior/passballreceiver.h \
-    gui/guiball.h \
-    gui/guibotlabel.h \
-    gui/guicomm.h \
-    gui/guifield.h \
-    gui/guirobot.h \
-    gui/guisidelines.h \
-    gui/mainwindow.h \
-    gui/guidrawline.h \
-    gui/guiscene.h \
-    gui/robotpanel.h \
-    gui/fieldpanel.h \
-    gui/selrobotpanel.h \
-    gui/objectposition.h \
-    gui/gamepanel.h \
-    gui/guiinterface.h \
-    movement/move_collisions.h \
-    gui/getbehavior.h \
-    utilities/comparisons.h \
-    movement/move_randomization.h \
-    utilities/velocitycalculator.h \
-    skill/kicktopointomni.h \
-    strategy/videostrategies.h \
-    behavior/genericskillbehavior.h \
-    utilities/debug.h \
-    utilities/edges.h \
-    behavior/defendbehavior.h \
-    gui/joystick.h \
-    behavior/rotateonpoint.h
+	utilities/region.h \
+	utilities/velocitycalculator.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 

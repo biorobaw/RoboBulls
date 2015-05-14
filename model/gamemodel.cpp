@@ -1,5 +1,6 @@
 #include <sstream>
 #include <iostream>
+#include <fstream>
 #include "include/config/team.h"
 #include "include/config/simulated.h"
 #include "strategy/strategycontroller.h"
@@ -21,6 +22,7 @@ int GameModel::opSide =  1;
 int GameModel::mySide =  1;
 int GameModel::opSide = -1;
 #endif
+
 
 /*******************************************************************/
 /************************ Public Methods ***************************/
@@ -179,7 +181,6 @@ std::string GameModel::toString()
 /*******************************************************************/
 /************************ Private Methods **************************/
 /*******************************************************************/
-
 
 /* Called by VisionComm */
 /* Don't overlook this function, it's more important than you think

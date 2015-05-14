@@ -96,7 +96,7 @@ bool KickToPointOmni::perform(Robot* robot)
             else
                 move_comp_counter = 0;
 
-            if( move_comp_counter > FORWARD_WAIT_COUNT)
+            if(move_comp_counter > FORWARD_WAIT_COUNT)
             {
                 state = MOVE_FORWARD;
                 move_comp_counter = 0;
