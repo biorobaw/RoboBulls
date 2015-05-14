@@ -88,7 +88,6 @@ SOURCES += main.cpp \
 	movement/gotopositionwithorientation.cpp \
 	movement/move_collisions.cpp \
 	movement/move.cpp \
-	movement/move_randomization.cpp \
 	movement/pathfinding/fppa_pathfinding.cpp \
 	movement/three_omni_motion/omni3_velcalculator.cpp \
 	skill/driveball.cpp \
@@ -170,7 +169,6 @@ HEADERS += \
 	include/robocup_ssl_client.h \
 	include/serialib.h \
 	include/timer.h \
-	include/util.h \
 	model/gamemodel.h \
 	model/robot.h \
 	movement/differential/closedloopcontrol.h \
@@ -180,7 +178,6 @@ HEADERS += \
 	movement/gotopositionwithorientation.h \
 	movement/move_collisions.h \
 	movement/move.h \
-	movement/move_randomization.h \
 	movement/movetype.h \
 	movement/pathfinding/fppa_pathfinding.h \
 	movement/three_omni_motion/matrixcalculator.h \
@@ -215,7 +212,6 @@ QMAKE_CXXFLAGS += -std=c++0x
 unix|win32: LIBS += -lprotobuf -lSDL2
 
 OTHER_FILES += \
-    gui/images/field.jpg \
     gui/images/0.png \
     gui/images/1.png \
     gui/images/2.png \

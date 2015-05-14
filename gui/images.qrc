@@ -1,11 +1,9 @@
 <RCC>
     <qresource prefix="/">
         <file>images/process-stop.png</file>
-        <file>images/field.jpg</file>
         <file>images/go-next.png</file>
         <file>images/gear.png</file>
         <file>images/gear2.png</file>
-        <file>images/ball.png</file>
         <file>images/bot0.png</file>
         <file>images/bot1.png</file>
         <file>images/bot2.png</file>

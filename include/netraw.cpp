@@ -6,9 +6,6 @@
 #include <netdb.h>
 #include <unistd.h>
 #include <fcntl.h>
-
-#include "util.h"
-
 #include "netraw.h"
 
 namespace Net{
@@ -25,7 +22,7 @@ bool Address::setHost(const char *hostname,int port)
   getaddrinfo(hostname,NULL,NULL,&res);
   if(!res) return(false);
 
-  mzero(addr);
+  memset(&addr, 0, sizeof(addr));
   addr_len = res->ai_addrlen;
   memcpy(&addr,res->ai_addr,addr_len);
 
@@ -43,7 +40,7 @@ bool Address::setHost(const char *hostname,int port)
 
 void Address::setAny(int port)
 {
-  mzero(addr);
+  memset(&addr, 0, sizeof(addr));
   sockaddr_in *s = (sockaddr_in*)(&addr);
   s->sin_addr.s_addr = htonl(INADDR_ANY);
   s->sin_port = htons(port);

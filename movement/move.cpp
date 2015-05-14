@@ -2,7 +2,6 @@
 #include "include/config/globals.h"        //OVERALL_VELOCITY
 #include "movement/move.h"
 #include "movement/move_collisions.h"
-#include "movement/move_randomization.h"
 #include "model/gamemodel.h"
 #include "utilities/comparisons.h"
 #include "gui/guiinterface.h"              //Ryan
