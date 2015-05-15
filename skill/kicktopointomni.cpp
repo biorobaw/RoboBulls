@@ -26,20 +26,24 @@ namespace Skill
  * FORWARD_WAIT_COUNT Defines the number of times the movement skill must finish
  * (return true) until the robot starts to move forward. On the field, this ensures
  * the robot is actually facing the ball somewhat.
+ *
+ * MOVE_TOLERANCE is the tolerance to setMovementTolerances in the first state
  */
 #if SIMULATED
 int BEHIND_RADIUS  = 200;
 int KICK_DISTANCE  = 110;
 int FACING_ANGLE_TOL  = 30;
 int FORWARD_WAIT_COUNT = 0;
+int MOVE_TOLERANCE = DIST_TOLERANCE/2;
 #else
-int BEHIND_RADIUS  = ROBOT_RADIUS*2;
+int BEHIND_RADIUS  = ROBOT_SIZE;
 int KICK_DISTANCE  = 140;
-int FACING_ANGLE_TOL  = 25;
-int FORWARD_WAIT_COUNT = 2;
+int FACING_ANGLE_TOL  = 20;
+int FORWARD_WAIT_COUNT = 15;
+int MOVE_TOLERANCE = DIST_TOLERANCE*1.2;
 #endif
 
-int RECREATE_DIST_TOL = 200;
+int RECREATE_DIST_TOL = 25;
 
 /************************************************************************/
 
@@ -86,7 +90,7 @@ bool KickToPointOmni::perform(Robot* robot)
             Point behindBall = bp + Point(dx, dy);
 
             move_skill.setVelocityMultiplier(1);
-            move_skill.setMovementTolerances(DIST_TOLERANCE*1.2, FACING_ANGLE_TOL*(M_PI/180));
+            move_skill.setMovementTolerances(MOVE_TOLERANCE, FACING_ANGLE_TOL*(M_PI/180));
             move_skill.recreate(behindBall, ballTargetAng, true, true);
 
             //Make sure move_skill keeps the robot at the correct pose
@@ -96,7 +100,7 @@ bool KickToPointOmni::perform(Robot* robot)
             else
                 move_comp_counter = 0;
 
-            if(move_comp_counter > FORWARD_WAIT_COUNT)
+            if( move_comp_counter > FORWARD_WAIT_COUNT)
             {
                 state = MOVE_FORWARD;
                 move_comp_counter = 0;
@@ -108,8 +112,10 @@ bool KickToPointOmni::perform(Robot* robot)
         {
             // Slowly move towards the ball
             move_skill.recreate(bp, ballTargetAng, false, false);
-            move_skill.setMovementTolerances(DIST_TOLERANCE, ROT_TOLERANCE);
-            move_skill.perform(robot, Movement::Type::facePoint);
+        #if SIMULATED == 0
+            move_skill.setVelocityMultiplier(0.7);
+        #endif
+            move_skill.perform(robot);
 
             // Kick when in range
             if(Measurments::distance(robot, bp) < KICK_DISTANCE)
