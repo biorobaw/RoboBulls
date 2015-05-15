@@ -10,6 +10,7 @@
 #include "utilities/comparisons.h"
 #include "behavior/defendbehavior.h"
 #include "behavior/defendfarfromball.h"
+#include "behavior/rotateonpoint.h"
 
 /************************************************************************/
 
@@ -83,7 +84,10 @@ bool TestStrategy::update()
 
 void TestStrategy::assignBeh()
 {
-//    gameModel->findMyTeam(2)->assignBeh<KickBeh>();
+    //Point bp = gameModel->getBallPoint();
+    //gameModel->findMyTeam(8)->assignBeh<RotateOnPoint>(bp, Measurments::angleBetween(bp, gameModel->getOpponentGoal()),400);
+    gameModel->findMyTeam(8)->assignBeh<KickBeh>();
+
 //    gameModel->findMyTeam(1)->assignBeh<DefendBehavior>();
 //    gameModel->findMyTeam(2)->assignBeh<DefendBehavior>();
 //    gameModel->findMyTeam(3)->assignBeh<DefendBehavior>();

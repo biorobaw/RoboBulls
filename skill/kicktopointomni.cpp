@@ -33,13 +33,13 @@ int KICK_DISTANCE  = 110;
 int FACING_ANGLE_TOL  = 30;
 int FORWARD_WAIT_COUNT = 0;
 #else
-int BEHIND_RADIUS  = ROBOT_SIZE;
+int BEHIND_RADIUS  = ROBOT_RADIUS*2;
 int KICK_DISTANCE  = 140;
-int FACING_ANGLE_TOL  = 20;
-int FORWARD_WAIT_COUNT = 15;
+int FACING_ANGLE_TOL  = 25;
+int FORWARD_WAIT_COUNT = 2;
 #endif
 
-int RECREATE_DIST_TOL = 25;
+int RECREATE_DIST_TOL = 200;
 
 /************************************************************************/
 
@@ -86,7 +86,7 @@ bool KickToPointOmni::perform(Robot* robot)
             Point behindBall = bp + Point(dx, dy);
 
             move_skill.setVelocityMultiplier(1);
-            move_skill.setMovementTolerances(DIST_TOLERANCE/2, FACING_ANGLE_TOL*(M_PI/180));
+            move_skill.setMovementTolerances(DIST_TOLERANCE*1.2, FACING_ANGLE_TOL*(M_PI/180));
             move_skill.recreate(behindBall, ballTargetAng, true, true);
 
             //Make sure move_skill keeps the robot at the correct pose
@@ -108,10 +108,8 @@ bool KickToPointOmni::perform(Robot* robot)
         {
             // Slowly move towards the ball
             move_skill.recreate(bp, ballTargetAng, false, false);
-        #if SIMULATED == 0
-            move_skill.setVelocityMultiplier(0.7);
-        #endif
-            move_skill.perform(robot);
+            move_skill.setMovementTolerances(DIST_TOLERANCE, ROT_TOLERANCE);
+            move_skill.perform(robot, Movement::Type::facePoint);
 
             // Kick when in range
             if(Measurments::distance(robot, bp) < KICK_DISTANCE)
