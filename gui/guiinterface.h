@@ -24,10 +24,8 @@ public:
 
     //Returns the robot that is overriden and selected, or -1 if none.
     int  getSelOverBot();
-    void setSelOverBot(int);
 
 private:
-    int selOverBot;
     static GuiInterface * gi;
     MainWindow * dash;
 };

@@ -7,7 +7,7 @@
  *
  * Currently supported joysticks:
  * - Saitek P990 Dual Analog Pad
- * -
+ * - Logitech Logitech Dual Action
  */
 
 namespace joystick

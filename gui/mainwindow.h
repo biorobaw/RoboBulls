@@ -64,8 +64,6 @@ public:
     void drawLine( int originX, int originY, int endX, int endY );
     void guiPrint(std::string output);
     void updateBallInfo();
-    // clock stuff
-    int getSpeed(QGraphicsItem* p, double o);
     // Key Bindings
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
@@ -79,10 +77,6 @@ public:
 
     std::string myTeam;
 
-    //Inputs from Joystick
-    static float LB, LF, RB, RF;
-    static bool  Kick;
-
 private:
     void setupKeyShortcuts();
     void checkTeamColors();
@@ -92,7 +86,6 @@ private:
     static MainWindow *mw;
     GuiComm* guimodel;
 
-    QGraphicsScene *selectedBotScene;
     // Keeps track of latest string received by guiPrint()
     QString guiOutput = "...";
 
@@ -106,6 +99,7 @@ private slots:
     // Threads
     void coreLoop(int value);
     void clockLoop(int tick);
+    void handleJoystickInput();
 // Widget slots
     void on_btn_connectGui_clicked();
     // bot controls
@@ -135,10 +129,6 @@ private slots:
     void on_btn_rotateField_left_clicked();
     void on_btn_multithread_clicked();
     void on_btn_toggleTeamColor_clicked();
-
-
-public slots:
-    void moveSlider();
 };
 
 #endif // MAINWINDOW_H

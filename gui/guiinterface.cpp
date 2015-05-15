@@ -32,12 +32,7 @@ const std::vector<bool>& GuiInterface::isOverriddenBot() {
 //Returns the robot that is overridden and selected, or -1 if none.
 int  GuiInterface::getSelOverBot()
 {
-    return selOverBot;
-}
-
-void GuiInterface::setSelOverBot(int id)
-{
-    selOverBot = id;
+    return dash->fieldpanel->selectedBot;
 }
 
 void GuiInterface::show() {

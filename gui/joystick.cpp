@@ -23,9 +23,22 @@ void listener()
 {
     int quit = 0;
     LB = LF = RB = RF = Kick = 0;
+    int jAxisMoveUp, jAxisMoveSide, jAxisRotate;
     
     //Open joystick 0. Assumed to be aviliable.
     SDL_JoystickOpen(0);
+
+    //Get correct axes numbers for joystick movement
+    std::string name = SDL_JoystickNameForIndex(0);
+    if(name == "Saitek P990 Dual Analog Pad") {
+        jAxisMoveUp = 1;
+        jAxisMoveSide = 0;
+        jAxisRotate = 3;
+    } else if(name == "Logitech Logitech Dual Action") {
+        jAxisMoveUp = 1;
+        jAxisMoveSide = 0;
+        jAxisRotate = 2;
+    }
 
     /********************************************************/
     
@@ -62,13 +75,11 @@ void listener()
             Point p = r->getRobotPosition();
             float o = r->getOrientation();
 
-            //This is for the Saitek P990.
-            //TODO: Make seperate functions for different controllers.
             Kick = buttons[1];
             Dribble = buttons[0];
-            float tPos =   o + 4 * -(M_PI/180)*axes[3];
-            float xPos = p.x + 4 *  axes[0];
-            float yPos = p.y + 4 * -axes[1];
+            float tPos =   o +     -(M_PI/180)*axes[jAxisRotate];
+            float xPos = p.x + 3 *  axes[jAxisMoveSide];
+            float yPos = p.y + 3 * -axes[jAxisMoveUp];
             auto v = fwc.calculateVels(r, xPos, yPos, tPos, Movement::Type::Default);
             LB = v.LB;
             LF = v.LF;

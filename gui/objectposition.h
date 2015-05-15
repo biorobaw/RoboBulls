@@ -39,7 +39,6 @@ public:
     int     getBotCoordX(bool myTeam, int id);
     int     getBotCoordY(bool myTeam,int id);
     float   getBotSpeed(bool myTeam, int id);
-    QString getBallCoord();
     int     getBallCoordX();
     int     getBallCoordY();
 

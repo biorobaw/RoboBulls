@@ -39,13 +39,6 @@
 
 using namespace std;
 
-//Inputs from joystick; connection to GUI
-float MainWindow::LB;
-float MainWindow::LF;
-float MainWindow::RB;
-float MainWindow::RF;
-bool  MainWindow::Kick;
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -100,6 +93,31 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 }
 
+void MainWindow::handleJoystickInput()
+{
+    //If there is a selected bot that is overriden....
+    if(fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked())
+    {
+        //Joystick updating is a bit different than keyboard. The joy axises can always
+        //Be sent to the robot, so it is done here in the main loop
+        if(joystick::hasSupport()) {
+            Robot* r = gameModel->findMyTeam(fieldpanel->selectedBot);
+            r->setLB(joystick::LB);
+            r->setRB(joystick::RB);
+            r->setRF(joystick::RF);
+            r->setLF(joystick::LF);
+
+            if(joystick::Kick)
+                  on_btn_botKick_pressed();
+             else on_btn_botKick_released();
+
+            if(joystick::Dribble)
+                 on_btn_botDrible_pressed();
+            else on_btn_botDrible_released();
+        }
+    }
+}
+
 void MainWindow::coreLoop(int tick) {
     /* Top function of the GUI's loop
      */
@@ -125,33 +143,8 @@ void MainWindow::coreLoop(int tick) {
     updateBallInfo();
     clockLoop(tick);
 
-    //If there is a selected bot that is overriden....
-    if(fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked())
-    {
-        //Inform the outside world of its overridding and selection
-        GuiInterface::getGuiInterface()->setSelOverBot(fieldpanel->selectedBot);
-
-        //Joystick updating is a bit different than keyboard. The joy axises can always
-        //Be sent to the robot, so it is done here in the main loop
-        if(joystick::hasSupport()) {
-            Robot* r = gameModel->findMyTeam(fieldpanel->selectedBot);
-            r->setLB(joystick::LB);
-            r->setRB(joystick::RB);
-            r->setRF(joystick::RF);
-            r->setLF(joystick::LF);
-
-            if(joystick::Kick)
-                  on_btn_botKick_pressed();
-             else on_btn_botKick_released();
-
-            if(joystick::Dribble)
-                 on_btn_botDrible_pressed();
-            else on_btn_botDrible_released();
-        }
-    }
-    else {
-        GuiInterface::getGuiInterface()->setSelOverBot(-1);
-    }
+    //Joystick support here
+    handleJoystickInput();
 }
 
 void MainWindow::clockLoop(int tick) {
@@ -210,22 +203,6 @@ void MainWindow::updateBallInfo() {
     if (ui->gView_ball->isHidden()) {
         ui->gView_ball->show();
     }
-}
-
-int MainWindow::getSpeed(QGraphicsItem *p, double o)
-{
-    // Worked, then mysteriously started crashing at the second line (p reference)
-    int speed = 0;
-    double currentPos = p->y() / p->x();
-    speed = currentPos - o;
-    o = currentPos;
-    speed *= 10;
-    if (speed < 0) {
-        speed *= -1;
-    }
-//    cout << "ball speed: " << speed << "\n";
-    return speed;
-
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {
@@ -741,8 +718,4 @@ void MainWindow::on_btn_toggleTeamColor_clicked() {
         myTeam = "Blue";
     }
     robotpanel->updateTeamColors();
-}
-
-void MainWindow::moveSlider() {
-    cout << "moveSlider() \n";
 }

@@ -201,29 +201,20 @@ int ObjectPosition::getBotCoordY(bool myTeam, int id) {
 }
 
 QString ObjectPosition::getBotOrientString(int id) {
-    QString qOrient = "no connection";
-    std::vector<Robot*> team = dash->gamemodel->getMyTeam();
-    std::string sOrient;
-    double  dRads = 0;
-    int     iRads = 0;
-    dRads = dash->gamemodel->find(id, team)->getOrientation(); // angle in radians
-    dRads *= (180/M_PI);
-    iRads = dRads;
-    sOrient = std::to_string(iRads);
-    qOrient = QString::fromStdString(sOrient);
+    std::string sOrient = std::to_string(int(getBotOrientDouble(true, id)));
+    QString qOrient = QString::fromStdString(sOrient);
     return qOrient;
-
 }
 
 double ObjectPosition::getBotOrientDouble(bool myTeam, int id) {
     double o  = 0;
-    std::vector<Robot*> team;
+    std::vector<Robot*>* team;
     if (myTeam) {
-        team = dash->gamemodel->getMyTeam();
+        team = &dash->gamemodel->getMyTeam();
     } else {
-        team = dash->gamemodel->getOponentTeam();
+        team = &dash->gamemodel->getOponentTeam();
     }
-    o = dash->gamemodel->find(id, team)->getOrientation();
+    o = dash->gamemodel->find(id, *team)->getOrientation();
     o *= (180/M_PI);
     return o;
 }
@@ -247,14 +238,6 @@ float ObjectPosition::getBotSpeed(bool myTeam, int id) {
 
 
     return s;
-}
-
-QString ObjectPosition::getBallCoord() {
-    QString b;  // return value
-    std::string posBallXY = dash->gamemodel->getBallPoint().toString();
-    b = QString::fromStdString(posBallXY);
-
-    return b;
 }
 
 int ObjectPosition::getBallCoordX() {
