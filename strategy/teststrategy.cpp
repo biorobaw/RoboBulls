@@ -1,16 +1,13 @@
 #include "teststrategy.h"
-#include "behavior/behaviorassignment.h"
-#include "skill/stop.h"
 #include "skill/kicktopoint.h"
 #include "skill/kicktopointomni.h"
-#include "skill/kick.h"
 #include "behavior/genericmovementbehavior.h"
-#include "movement/movetype.h"
 #include "model/gamemodel.h"
 #include "utilities/comparisons.h"
 #include "behavior/defendbehavior.h"
 #include "behavior/defendfarfromball.h"
 #include "behavior/rotateonpoint.h"
+#include "include/config/simulated.h"
 
 /************************************************************************/
 
@@ -82,13 +79,22 @@ bool TestStrategy::update()
     return false;
 }
 
+//IDs of field robots
+#if SIMULATED
+ #define HALL_ROBOT_ID  0
+#else
+ #define HALL_ROBOT_ID  8
+#endif
+#define CASTLE_ROBOT_ID 4
+#define SCON_ROBOT_ID   2
+
 void TestStrategy::assignBeh()
 {
     //Point bp = gameModel->getBallPoint();
     //gameModel->findMyTeam(8)->assignBeh<RotateOnPoint>(bp, Measurments::angleBetween(bp, gameModel->getOpponentGoal()),400);
-    gameModel->findMyTeam(8)->assignBeh<KickBeh>();
+    //gameModel->findMyTeam(8)->assignBeh<KickBeh>();
 
-//    gameModel->findMyTeam(1)->assignBeh<DefendBehavior>();
+    gameModel->findMyTeam(HALL_ROBOT_ID)->assignBeh<DefendBehavior>();
 //    gameModel->findMyTeam(2)->assignBeh<DefendBehavior>();
 //    gameModel->findMyTeam(3)->assignBeh<DefendBehavior>();
 //    gameModel->findMyTeam(5)->assignBeh<DefendFarFromBall>();

@@ -18,7 +18,6 @@ NXTRobComm::NXTRobComm()
         printf ("Serial port opened successfully !\n");
     }
     a = b = c = d = 0;
-
     debug::registerVariable("Kp", &p);
     debug::registerVariable("Ki", &i);
     debug::registerVariable("lf", &a);
@@ -42,6 +41,8 @@ void NXTRobComm::send(char* commptr, int size)
     Xbee.Write(commptr, size);
 }
 
+//Config to change sending individual wheels or program velocities
+#define ROBOT_WHEEL_TEST 0
 
 void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
 {
@@ -59,14 +60,17 @@ void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
         Robot* rob =  robots[i];
         packet->tilde = char(250);
         packet->id = rob->getID();
+    #if ROBOT_WHEEL_TEST
         packet->left_front  = a + 100;
         packet->left_back   = b + 100;
         packet->right_front = c + 100;
         packet->right_back  = d + 100;
-//        packet->left_front  = Measurments::clamp(rob->getLF(), -127, 127)*k + 100;
-//        packet->left_back   = Measurments::clamp(rob->getLB(), -127, 127)*k + 100;
-//        packet->right_front = Measurments::clamp(rob->getRF(), -127, 127)*k + 100;
-//        packet->right_back  = Measurments::clamp(rob->getRB(), -127, 127)*k + 100;
+    #else
+        packet->left_front  = Measurments::clamp(rob->getLF(), -127, 127)*k + 100;
+        packet->left_back   = Measurments::clamp(rob->getLB(), -127, 127)*k + 100;
+        packet->right_front = Measurments::clamp(rob->getRF(), -127, 127)*k + 100;
+        packet->right_back  = Measurments::clamp(rob->getRB(), -127, 127)*k + 100;
+    #endif
         packet->kick = rob->getKick() ? 1 : 0;
         packet->chip_power = p;
         packet->dribble_power = i;
