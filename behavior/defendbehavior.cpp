@@ -4,6 +4,29 @@
 #include "behavior/defendbehavior.h"
 #include "skill/kicktopointomni.h"
 
+/* Check to see if kicking is done or not.
+ * It happens when the ball has high velocity that is not facing
+ * our goal. This means one of us kicked.
+ */
+static bool ballIsMovingAway()
+{
+    Point bp = gameModel->getBallPoint();
+    Point bv = gameModel->getBallVelocity();
+    float bs = gameModel->getBallSpeed();
+    float ba = atan2(bv.y, bv.x);
+    float ballGoalAng = Measurments::angleBetween(bp, gameModel->getMyGoal());
+    return (bs > 0.25) && !(Measurments::isClose(ba, ballGoalAng, 90*(M_PI/180)));
+}
+
+/* Return true when we think the ball is stopped.
+ */
+static bool ballIsStopped()
+{
+    return gameModel->getBallSpeed() < 0.25;
+}
+
+/************************************************************/
+
 DefendState::DefendState() {
 
 }
@@ -41,10 +64,17 @@ DefendState* DefendStateIdle::action(Robot* robot)
         Point(2500,-1000)
     };
 
-    if(not hasChosenPoint) {
+    if(claimed[robot->getID()] == Point(0,0)) {
         for(const Point& p : defendPoints) {
             Point test(p.x*GameModel::mySide, p.y );
-            if(std::find(claimed.begin(), claimed.end(), test) == claimed.end()) {
+            if(std::find(claimed.begin(), claimed.end(), test) == claimed.end())
+            {
+                //Here we ensure there is no other robot there
+                Robot* close = Comparisons::distance(test).minMyTeam();
+                if(close->getID() != robot->getID() && Measurments::distance(test, close) < ROBOT_RADIUS) {
+                    continue;
+                }
+
                 claimed[robot->getID()] = test;
                 hasChosenPoint = true;
                 chosenPoint = test;
@@ -53,6 +83,7 @@ DefendState* DefendStateIdle::action(Robot* robot)
         }
     }
     else {
+        chosenPoint = claimed[robot->getID()];
         //Idle at the point, facing the ball
         float ballRobAng = Measurments::angleBetween(robot, gameModel->getBallPoint());
         setMovementTargets(chosenPoint, ballRobAng);
@@ -77,9 +108,22 @@ DefendState* DefendStateIdle::action(Robot* robot)
             ( bs > 0.2 ) &&
             ( Measurments::isClose(velang, Measurments::angleBetween(bp, gl), 90*(M_PI/180))))
         {
-           //We are going to kick, so un-claim the current sitting point
-           claimed[robot->getID()] = Point(0,0);
            return new DefendStateKick();
+        }
+
+        /* And here, we check if the ball is sitting near us. If it is, kick it back.
+         * I'm tired of this not being here.
+         * \"If the ball is close AND nobody is kicking AND I'm closest to ball...
+         * \"AND the ball near the goal AND the ball is not moving away...\" Kick it.
+         */
+        if(Measurments::distance(bp, robot) < 4*LINE_DISTANCE
+            && Measurments::distance(bp, gl) < 2500
+            && DefendStateKick::whoIsKicking == -1
+            && not(ballIsMovingAway())
+            && Comparisons::distanceBall().minMyTeam() == robot)
+        {
+            DefendStateKick::whoIsKicking = robot->getID();
+            return new DefendStateIdleKick();
         }
     }
 
@@ -88,8 +132,30 @@ DefendState* DefendStateIdle::action(Robot* robot)
 
 /************************************************************/
 
+DefendStateIdleKick::DefendStateIdleKick()
+{
+    std::cout << "DefendStateIdleKick Created" << std::endl;
+    ktpo = new Skill::KickToPointOmni(gameModel->getOpponentGoal());
+}
+
+DefendStateIdleKick::~DefendStateIdleKick()
+{
+    delete ktpo;
+}
+
+DefendState* DefendStateIdleKick::action(Robot* robot)
+{
+    if(ktpo->perform(robot) || ballIsMovingAway()) {
+        DefendStateKick::whoIsKicking = -1;
+        return new DefendStateIdle();
+    }
+    return this;
+}
+
+/************************************************************/
+
 //Current ID of who is kicking to ball, to only keep one robot going after it
-int DefendStateKick::whoIsKicking = 0;
+int DefendStateKick::whoIsKicking = -1;
 
 DefendStateKick::DefendStateKick()
     : ktpo(nullptr)
@@ -104,24 +170,25 @@ DefendStateKick::DefendStateKick()
 DefendStateKick::~DefendStateKick()
 {
     delete ktpo;
+    whoIsKicking = -1;
 }
 
 DefendState* DefendStateKick::action(Robot* robot)
 {
     Point bp = gameModel->getBallPoint();
-    Point bpp= gameModel->getBallPrediction();
     Point goal = gameModel->getMyGoal();
 
     if(not(chosenLinePoint)) {
         //The conditions to go to this state validate the ball is RIGHT NOW
         //Heading to us. We go to the closet point on the ball's path.
-        linePoint = Measurments::linePoint(robot->getRobotPosition(), bp, bpp);
-        if(abs(goal.x - linePoint.x) < 2500)
-            chosenLinePoint = true;
+        if(!tryGetValidLinePoint(robot)) {
+            return new DefendStateIdle();
+        }
     }
     else {
         //Inside here we are just in the line of the ball and are waiting
         if(not(kickingBall)) {
+            tryGetValidLinePoint(robot);
             float ballRobAng = Measurments::angleBetween(robot, bp);
             setMovementTargets(linePoint, ballRobAng);
             GenericMovementBehavior::perform(robot);
@@ -134,6 +201,11 @@ DefendState* DefendStateKick::action(Robot* robot)
                 ktpo = new Skill::KickToPointOmni(gameModel->getOpponentGoal());
                 kickingBall = true;
             }
+
+            //If the ball is coming and it stops, go back to idle.
+            if(ballIsStopped()) {
+                return new DefendStateIdle();
+            }
         }
         else {
             //Here we are actually kicking the ball away.
@@ -143,7 +215,7 @@ DefendState* DefendStateKick::action(Robot* robot)
 
             //Second condition to return to idle. if we kicked, return.
             //Also stop if it moves too far awaytoo fara way, or
-            if(ballMovingAway() || Measurments::distance(robot, bp) > LINE_DISTANCE*1.5) {
+            if(ballIsMovingAway() || Measurments::distance(robot, bp) > LINE_DISTANCE*3) {
                 whoIsKicking = -1;
                 return new DefendStateIdle();
             }
@@ -153,7 +225,7 @@ DefendState* DefendStateKick::action(Robot* robot)
         //is too close to the goal, we go back to idle.
         if(++kickBallTimeout > 400
                 || Measurments::distance(goal, bp) < GOALIE_DIST //Goalie action distance
-                || ballMovingAway()) {
+                || ballIsMovingAway()) {
             std::cout << "DefendStateKick Timeout1 " << robot->getID() << std::endl;
             whoIsKicking = -1;
             return new DefendStateIdle();
@@ -163,18 +235,22 @@ DefendState* DefendStateKick::action(Robot* robot)
     return this;
 }
 
-/* Check to see if kicking is done or not.
- * It happens when the ball has high velocity that is not facing
- * our goal. This means one of us kicked.
+/* Tries to get a valid line point along the ball's projected path.
+ * If it does find one, sets this->chosenLinePoint to it and
+ * returns true.
  */
-bool DefendStateKick::ballMovingAway()
+bool DefendStateKick::tryGetValidLinePoint(Robot* r)
 {
     Point bp = gameModel->getBallPoint();
-    Point bv = gameModel->getBallVelocity();
-    float bs = gameModel->getBallSpeed();
-    float ba = atan2(bv.y, bv.x);
-    float ballGoalAng = Measurments::angleBetween(bp, gameModel->getMyGoal());
-    return (bs > 0.25) && !(Measurments::isClose(ba, ballGoalAng, 90*(M_PI/180)));
+    Point bpp= gameModel->getBallPrediction();
+    Point goal = gameModel->getMyGoal();
+    Point p = Measurments::linePoint(r->getRobotPosition(), bp, bpp);
+    if(abs(goal.x - p.x) < 2500 && Measurments::distance(r, p) < LINE_DISTANCE*2) {
+        linePoint = p;
+        chosenLinePoint = true;
+        return true;
+    }
+    return false;
 }
 
 /************************************************************/

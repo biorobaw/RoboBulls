@@ -45,6 +45,19 @@ private:
 };
 
 /************************************************************/
+/* DefendState that merely does KickToPointOmni to kick the ball away
+ */
+class DefendStateIdleKick: public DefendState
+{
+public:
+    DefendStateIdleKick();
+   ~DefendStateIdleKick();
+    DefendState* action(Robot* robot) override;
+private:
+    Skill::KickToPointOmni* ktpo;
+};
+
+/************************************************************/
 /* DefendState to kick the ball away and return to idle
  * if finished
  */
@@ -60,8 +73,10 @@ private:
     bool  kickingBall;
     int   kickBallTimeout;
     Point linePoint;
-    bool  ballMovingAway();
+    bool  tryGetValidLinePoint(Robot*);
     static int whoIsKicking;
+    friend class DefendStateIdle;   //For sharing `whoIsKicking`
+    friend class DefendStateIdleKick; //Same as above
 };
 
 /************************************************************/
