@@ -1,3 +1,4 @@
+#include <array>
 #include "include/config/simulated.h"
 #include "utilities/comparisons.h"
 #include "behavior/defendbehavior.h"
@@ -26,13 +27,129 @@ static bool ballIsStopped()
 
 /************************************************************/
 
-Point DefendState::claimed[10];
-int   DefendState::whoIsKicking = -1;
+//Points claimed for robots to sit at (can move with ball being near)
+Point DefendState::defendPoints[10];
+
+//Index into `defendPoints` indexed by robot ID for bots to move to.
+int DefendState::claimed[10];
+
+//ID of who is currently moving to kick the ball or -1 if none.
+int DefendState::whoIsKicking = -1;
+
+//Used to not have DefendState's base `action` run too often
+int DefendState::updateCount = 0;
+
+//Points to sit at at ball angle of 0 (and when not on our side)
+const Point DefendState::defPoints[] = {
+    Point(1500,    0),
+    Point(2000,  500),
+    Point(2000, -500),
+    Point(2500, 1000),
+    Point(2500,-1000)
+};
 
 void DefendState::clearClaimedPoints()
 {
-    for(Point& p : claimed)
+    for(Point& p : defendPoints)
         p = Point(0,0);
+    for(int& i : claimed)
+        i = -1;
+}
+
+DefendState* DefendState::action(Robot* robot)
+{
+    (void)(robot);
+
+    //Because every robot is going to call this; but it only
+    //needs to happen once per game loop.
+    if(++updateCount < 5)
+        return nullptr;
+    updateCount = 0;
+
+    Point bp = gameModel->getBallPoint();
+    Point gl = gameModel->getMyGoal();
+
+    if(whoIsKicking==-1 && abs(bp.x - gl.x) < FIELD_LENGTH)
+    {
+        /* If the ball is on our side, we make the robots sway, while
+         * still information, to face the ball.These are the coefficients
+         * for multiplying cos and sin by for changing from goal.
+         * o_coeffs are the angle offsets, for sideways formation.
+         *
+         * Multiplying X by `opSide` makes the addition to the goal point
+         * always point torwards the middle.
+         */
+        static const float o = 0.2617993;
+        static int   coeffs[] = {1500, 1300, 1300, 1100, 1100};
+        static int o_coeffs[] = {   0,    1,   -1,    2,   -2};
+        float a = Measurments::angleBetween(gl, bp);
+
+        for(int i = 0; i != 5; ++i)
+        {
+            Point offset;
+            offset.x = coeffs[i] * cos(a + o * o_coeffs[i]);
+            offset.x *= GameModel::opSide;
+            offset.y = coeffs[i] * sin(a + o * o_coeffs[i]);
+            defendPoints[i] = gl +  offset;
+            defendPoints[i].x *= GameModel::mySide;
+        }
+    }
+    else {
+        for(int i = 0; i != 5; ++i) {
+             defendPoints[i]   = defPoints[i];
+        }
+    }
+
+    return nullptr;
+}
+
+Point* DefendState::getClaimedPoint(Robot* robot)
+{
+    int index = claimed[robot->getID()];
+    if(index != -1)
+        return &defendPoints[index];
+    return nullptr;
+}
+
+void DefendState::setupClaimedPoints()
+{
+    updateCount = 0;
+    clearClaimedPoints();
+    for(int i = 0; i != 5; ++i) {
+        defendPoints[i] = defPoints[i];
+    }
+}
+
+Point* DefendState::findClaimPoint(Robot* robot)
+{
+    for(int i = 0; i != 10; ++i)
+    {
+        Point& p = defendPoints[i];
+        bool alreadyClaimed = false;
+        for(int k : claimed) {
+            if(k == -1)
+                continue;
+            if(defendPoints[k] == p) {
+                alreadyClaimed = true;
+                break;
+            }
+        }
+        if(alreadyClaimed) {
+            continue;
+        }
+
+        //Here we ensure there is no other robot there
+        Point test(p.x * GameModel::mySide, p.y);
+        Robot* closest = Comparisons::distance(test).minMyTeam();
+        if(closest->getID() != robot->getID()
+            && Measurments::distance(test, closest) < ROBOT_RADIUS) {
+            continue;
+        }
+        claimed[robot->getID()] = i;
+        break;
+    }
+
+    return getClaimedPoint(robot);
 }
 
 DefendState::~DefendState() {
@@ -56,33 +173,22 @@ DefendStateIdle::DefendStateIdle()
 
 DefendState* DefendStateIdle::action(Robot* robot)
 {
-    //Static points to position robots at
-    static const Point defendPoints[] = {
-        Point(1500,    0),
-        Point(2000,  500),
-        Point(2000, -500),
-        Point(2500, 1000),
-        Point(2500,-1000)
-    };
+    //Base class's `action` updates claimed points to rotate the formation
+    //to face the ball (does not return anything)
+    DefendState::action(robot);
 
-    if(claimed[robot->getID()] == Point(0,0)) {
-        for(const Point& p : defendPoints) {
-            Point test(p.x * GameModel::mySide, p.y);
-            if(std::find(claimed, claimed+10, test) == claimed+10) {
-                //Here we ensure there is no other robot there
-                Robot* closest = Comparisons::distance(test).minMyTeam();
-                if(closest->getID() != robot->getID() 
-                    && Measurments::distance(test, closest) < ROBOT_RADIUS) {
-                    continue;
-                }
-                claimed[robot->getID()] = test;
-                break;
-            }
-        }
+    if(getClaimedPoint(robot) == nullptr) {
+        findClaimPoint(robot);
     }
     else {
         //Idle at the point, facing the ball
-        Point& chosenPoint = claimed[robot->getID()];
+        Point* chosenPointPtr = getClaimedPoint(robot);
+        if(chosenPointPtr == nullptr) {
+            abort();
+        }
+        Point chosenPoint = *chosenPointPtr;
+        chosenPoint.x *= GameModel::mySide;
+
         float ballRobAng = Measurments::angleBetween(robot, gameModel->getBallPoint());
         setMovementTargets(chosenPoint, ballRobAng);
         GenericMovementBehavior::perform(robot);
@@ -256,7 +362,10 @@ int DefendBehavior::currentUsers = 0;
 DefendBehavior::DefendBehavior() 
     : state(new DefendStateIdle())
 { 
-        currentUsers += 1;
+    if(currentUsers == 0) {
+        DefendState::setupClaimedPoints();
+    }
+    currentUsers += 1;
 }
 
 DefendBehavior::~DefendBehavior()

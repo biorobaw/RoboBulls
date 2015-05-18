@@ -28,13 +28,29 @@ public:
 
     /* Perform a state and return a new one
      * Returns `this` if no transition is made */
-    virtual DefendState* action(Robot* robot) = 0;
+    virtual DefendState* action(Robot* robot);
 
-    //Clears all robot's claimed points.
+    //Initializes all claimed points to initial positions
+    static void setupClaimedPoints();
+
+    //Clears all robot's claimed points, by setting `defendPoints`
+    //back to the default positions and filling `claimed` with -1
     static void clearClaimedPoints();
+
+    //Returns the point pointer this robot should go to
+    static Point* getClaimedPoint(Robot*);
+
+    //Loops through and looks for the point for this robot to claim
+    static Point* findClaimPoint(Robot*);
+
 protected:
-    static int whoIsKicking;    //Who is moving to kick the ball?
-    static Point claimed[10];   //Points claimed to idle at
+    static int   whoIsKicking;     //Who is moving to kick the ball?
+
+private:
+    static int   claimed[10];      //Index of Points in `defendPoints` to idle at
+    static Point defendPoints[];   //Points to sit robots at.
+    static const Point defPoints[];//Default points to sit at
+    static int   updateCount;      //Count to delay `action` updating of points
 };
 
 /************************************************************/
