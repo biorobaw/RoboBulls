@@ -15,17 +15,26 @@
  * where each robot independently runs the same behavior to without the need for a
  * strategy. This is made up of `DefendStates` which link to one another.
  */
-
+ 
+/************************************************************/
+/* DefendState -- A base class, represents a state in the 
+ * DefendBehavior state machine. States are changed by return a new
+ * instance of one from `action`. Similar to the `perform` function
+ */
 class DefendState
 {
 public:
-    DefendState();
     virtual ~DefendState();
 
     /* Perform a state and return a new one
-     * Returns `this` if no change is made
-     */
+     * Returns `this` if no transition is made */
     virtual DefendState* action(Robot* robot) = 0;
+
+    //Clears all robot's claimed points.
+    static void clearClaimedPoints();
+protected:
+    static int whoIsKicking;    //Who is moving to kick the ball?
+    static Point claimed[10];   //Points claimed to idle at
 };
 
 /************************************************************/
@@ -37,11 +46,6 @@ class DefendStateIdle : public DefendState, public GenericMovementBehavior
 public:
      DefendStateIdle();
      DefendState* action(Robot* robot) override;
-private:
-    bool   robotsCloseToPoint(Robot*, const Point&);
-    Point  chosenPoint;
-    bool   hasChosenPoint;
-    static std::array<Point, 10> claimed;
 };
 
 /************************************************************/
@@ -74,9 +78,6 @@ private:
     int   kickBallTimeout;
     Point linePoint;
     bool  tryGetValidLinePoint(Robot*);
-    static int whoIsKicking;
-    friend class DefendStateIdle;   //For sharing `whoIsKicking`
-    friend class DefendStateIdleKick; //Same as above
 };
 
 /************************************************************/
@@ -89,7 +90,8 @@ public:
     ~DefendBehavior();
     void perform(Robot *) override;
 private:
-    DefendState* state;
+    static int currentUsers;    //# Robots currently using this Behavior
+    DefendState* state;         //Current state
 };
 
 #endif // DEFENDBEHAVIOR_H
