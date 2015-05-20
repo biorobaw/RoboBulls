@@ -1,7 +1,6 @@
 #include <vector>
 #include <stdlib.h>
 #include <string.h>
-#include "include/config/team.h"
 #include "utilities/measurments.h"
 #include "utilities/comparisons.h"
 #include "utilities/region.h"
@@ -284,14 +283,8 @@ namespace detail
             if(robotFacingRobot(robot, other) and robotFacingRobot(other, robot)) {
                 if(other->isOnMyTeam()) {
                     robotDisableMovement(other, robot);
-                }
-                else {
-                    /* For now I'm just doing this. If this is compiled for the yellow team,
-                     * we just give precedence to the blues. It's fancy to show.
-                     */
-                #if TEAM == TEAM_YELLOW
+                } else {
                     robotDisableMovement(robot, other);
-                #endif
                 }
             }
             else if(robotFacingRobot(robot, other)) {

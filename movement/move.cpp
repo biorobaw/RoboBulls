@@ -115,11 +115,14 @@ bool Move::perform(Robot *robot, Movement::Type moveType)
 
     if(useObstacleAvoid) {
         /* Here we have a failsafe mechanism that checks if the robot
-         * has moved from the path's end. If so, hasFoundPathEnd is false
+         * has moved from the path's end. If so, hasFoundPathEnd is false,
+         * and we look for a path back to where we are supposed to be
          */
         if(pathEndInfo.hasFoundPathEnd) {
-            if(Measurments::distance(robot, pathEndInfo.endingPoint) > ROBOT_SIZE)
+            if(Measurments::distance(robot, pathEndInfo.endingPoint) > ROBOT_SIZE) {
                 pathEndInfo.hasFoundPathEnd = false;
+                assignNewPath(robot->getRobotPosition());
+            }
         }
         finished = this->calcObstacleAvoidance(robot, moveType);
     } else {
@@ -204,8 +207,11 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
         Point robotPoint = robot->getRobotPosition();
 
         /**** Dynamic path updating ****/
+        //The point here is to avoid obstacles that come into the path that were not
+        //initially anticipated
         if(currentPathIsClear) //No known obstacles in path; test for new ones
         {
+            //If the queue is empty, and we have not "found" the end, say we have.
             if(pathQueue.empty()) {
                 pathEndInfo.hasFoundPathEnd = true;
                 pathEndInfo.endingPoint = robotPoint;
@@ -255,7 +261,7 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
                 if(pathQueue.empty()) {
                     pathEndInfo.hasFoundPathEnd = true;  //Finished path
                     pathEndInfo.endingPoint = robotPoint;
-                } 
+                }
                 else if(pathQueue.size() == 1) {
                     nextDistTolerance = lastDistTolerance;
                     nextTargetAngle   = m_targetAngle;

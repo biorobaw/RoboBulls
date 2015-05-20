@@ -196,6 +196,15 @@ namespace impl
         pt.y = Measurments::clamp(pt.y, -FIELD_WIDTH+100.f,  FIELD_WIDTH-100.f);
     }
 
+    //Will ensure no line in the path passes though either goalie box
+    static void sanitizeLinePath(Path& p)
+    {
+        for(auto it = p.begin(); it < p.end()-1; ++it) {
+            Point& p0 = *it;
+            Point& p1 = *(it+1);
+        }
+    }
+
     static float getPathLength(const Path& p)
     {
         float totalDist = 0;
@@ -236,6 +245,12 @@ namespace impl
         //Limit all points in both paths paths to being inside the field and not in goalie box
         for(Point& p : foundPaths.first)  impl::sanitizePoint(p, avoidGoal);
         for(Point& p : foundPaths.second) impl::sanitizePoint(p, avoidGoal);
+
+        //Also if avoiding goal: name sure no lines go through them
+        if(avoidGoal) {
+            impl::sanitizeLinePath(foundPaths.first);
+            impl::sanitizeLinePath(foundPaths.second);
+        }
 
         //Create PathInfos: pair  of {points vector, direction top/bottom}
         //Get distance and valid status of each
