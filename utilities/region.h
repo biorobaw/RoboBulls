@@ -16,6 +16,8 @@ public:
 
     bool contains(const Point&);
 
+    bool containsLine(const Point& p0, const Point& p1);
+
     int numOfRobots();
 
     int numOfOpponents();

@@ -27,6 +27,38 @@ bool Region::contains(const Point& point)
         return false;
 }
 
+//See http://stackoverflow.com/questions/1585525/
+bool Region::containsLine(const Point& p0, const Point& p1)
+{
+    float x1 = p0.x;
+    float x2 = p1.x;
+    float y1 = p0.y;
+    float y2 = p1.y;
+
+    //Completely outside
+    if ((x1 <= minX && x2 <= minX) ||
+        (y1 <= minY && y2 <= minY) ||
+        (x1 >= maxX && x2 >= maxX) ||
+        (y1 >= maxY && y2 >= maxY))
+        return false;
+
+    float m = (y2 - y1) / (x2 - x1);
+
+    float y = m * (minX - x1) + y1;
+    if (y > minY && y < maxY) return true;
+
+    y = m * (maxX - x1) + y1;
+    if (y > minY && y < maxY) return true;
+
+    float x = (minY - y1) / m + x1;
+    if (x > minX && x < maxX) return true;
+
+    x = (maxY - y1) / m + x1;
+    if (x > minX && x < maxX) return true;
+
+    return false;
+}
+
 int Region::numOfRobots()
 {
     GameModel* gm = GameModel::getModel();
