@@ -1,16 +1,16 @@
 #ifndef DEFENDBEHAVIOR_H
 #define DEFENDBEHAVIOR_H
 
-#include <array>
-#include "utilities/point.h"
 #include "behavior/genericmovementbehavior.h"
-#include "behavior/behavior.h"
 #include "skill/kicktopointomni.h"
 
-/* DEFEND BAHVIOR
+/* DEFEND BEHAVIOR
  * DefendBehavior is the next iteration of a defense mode (circa May 2015).
  * It sets robots to sit at points around the goal, and get in the line of motion
- * of the ball and kick it back if it is coming torwards the goal.
+ * of the ball and kick it back if it is coming torwards the goal. In addition,
+ * if the ball is stopped on our side a robot will break to kick it, and also
+ * the robots sway formation to face the ball if it on our side.
+ *
  * This also serves as a first iteration of an "intelligent agents" type of behavior,
  * where each robot independently runs the same behavior to without the need for a
  * strategy. This is made up of `DefendStates` which link to one another.
@@ -37,11 +37,13 @@ public:
     //back to the default positions and filling `claimed` with -1
     static void clearClaimedPoints();
 
-    //Returns the point pointer this robot should go to
+protected:
+    //Returns the point pointer this robot should go to, or nullptr if the
+    //robot has none. Use searchClaimPoint to claim a point first.
     static Point* getClaimedPoint(Robot*);
 
-    //Loops through and looks for the point for this robot to claim
-    static Point* findClaimPoint(Robot*);
+    //Loops through, looks, and sets the point internally for this robot to claim
+    static Point* searchClaimPoint(Robot*);
 
 protected:
     static int   whoIsKicking;     //Who is moving to kick the ball?
@@ -52,6 +54,7 @@ private:
     static const Point defPoints[];//Default points to sit at
     static int   updateCount;      //Count to delay `action` updating of points
 };
+
 
 /************************************************************/
 /* DefendState To choose a point to idle at and
@@ -64,8 +67,10 @@ public:
      DefendState* action(Robot* robot) override;
 };
 
+
 /************************************************************/
-/* DefendState that merely does KickToPointOmni to kick the ball away
+/* DefendState that merely does KickToPointOmni to kick the ball away. Happens
+ * when the ball stops close to a robot on our side
  */
 class DefendStateIdleKick: public DefendState
 {
@@ -77,9 +82,10 @@ private:
     Skill::KickToPointOmni* ktpo;
 };
 
+
 /************************************************************/
-/* DefendState to kick the ball away and return to idle
- * if finished
+/* DefendState to sit in the ball's incoming path, then
+ * kick the ball away and return to idle when finished
  */
 class DefendStateKick : public DefendState, public GenericMovementBehavior
 {
@@ -96,8 +102,8 @@ private:
     bool  tryGetValidLinePoint(Robot*);
 };
 
-/************************************************************/
 
+/************************************************************/
 
 class DefendBehavior : public Behavior
 {
@@ -106,8 +112,8 @@ public:
     ~DefendBehavior();
     void perform(Robot *) override;
 private:
-    static int currentUsers;    //# Robots currently using this Behavior
-    DefendState* state;         //Current state
+    static int currentUsers;    //Number of robots currently using this behavior
+    DefendState* state;         //Current state (one of the above)
 };
 
 #endif // DEFENDBEHAVIOR_H

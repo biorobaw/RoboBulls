@@ -225,30 +225,10 @@ OTHER_FILES += \
     gui/images/bot3.png \
     gui/images/bot4.png \
     gui/images/bot5.png \
-    gui/images/bubble.png \
-    gui/images/button.png \
-    gui/images/button-pressed.png \
-    gui/images/document-open.png \
-    gui/images/document-open@2x.png \
-    gui/images/document-save-as.png \
-    gui/images/document-save-as@2x.png \
-    gui/images/folder_new.png \
     gui/images/gear.png \
     gui/images/gear2.png \
     gui/images/go-next.png \
-    gui/images/go-previous.png \
-    gui/images/preferences-system.png \
-    gui/images/process-stop.png \
-    gui/images/progress-background.png \
-    gui/images/progress-fill.png \
     gui/images/slider-handle.png \
-    gui/images/tab.png \
-    gui/images/tab_selected.png \
-    gui/images/textfield.png \
-    gui/images/toplevel_window.png \
-    gui/images/view-refresh.png \
-    gui/images/window-new.png \
-    gui/images/window-new@2x.png
 
 RESOURCES += \
     gui/images.qrc

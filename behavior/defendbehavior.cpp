@@ -1,8 +1,9 @@
-#include <array>
 #include "include/config/simulated.h"
+#include "include/config/team.h"
 #include "utilities/comparisons.h"
 #include "behavior/defendbehavior.h"
-#include "skill/kicktopointomni.h"
+
+#define DEFENDBEHAVIOR_DEBUG 0
 
 /* Check to see if kicking is done or not.
  * It happens when the ball has high velocity that is not facing
@@ -18,7 +19,7 @@ static bool ballIsMovingAway()
     return (bs > 0.25) && !(Measurments::isClose(ba, ballGoalAng, 90*(M_PI/180)));
 }
 
-/* Return true when we think the ball is stopped.
+/* Return true when we think the ball is stopped or moving slow
  */
 static bool ballIsStopped()
 {
@@ -69,7 +70,7 @@ DefendState* DefendState::action(Robot* robot)
     Point bp = gameModel->getBallPoint();
     Point gl = gameModel->getMyGoal();
 
-    if(whoIsKicking==-1 && abs(bp.x - gl.x) < FIELD_LENGTH)
+    if(whoIsKicking==-1 && !ballIsMovingAway() && abs(bp.x - gl.x) < FIELD_LENGTH)
     {
         /* If the ball is on our side, we make the robots sway, while
          * still information, to face the ball.These are the coefficients
@@ -77,18 +78,24 @@ DefendState* DefendState::action(Robot* robot)
          * o_coeffs are the angle offsets, for sideways formation.
          *
          * Multiplying X by `opSide` makes the addition to the goal point
-         * always point torwards the middle.
+         * always point torwards the middle. (Not really though)
          */
         static const float o = 0.2617993;
         static int   coeffs[] = {1500, 1300, 1300, 1100, 1100};
+     #if TEAM == TEAM_BLUE
         static int o_coeffs[] = {   0,    1,   -1,    2,   -2};
+     #else
+        static int o_coeffs[] = {   0,   -1,    1,   -2,    2};
+    #endif
         float a = Measurments::angleBetween(gl, bp);
 
         for(int i = 0; i != 5; ++i)
         {
             Point offset;
             offset.x = coeffs[i] * cos(a + o * o_coeffs[i]);
+        #if TEAM == TEAM_BLUE
             offset.x *= GameModel::opSide;
+        #endif
             offset.y = coeffs[i] * sin(a + o * o_coeffs[i]);
             defendPoints[i] = gl +  offset;
             defendPoints[i].x *= GameModel::mySide;
@@ -96,7 +103,7 @@ DefendState* DefendState::action(Robot* robot)
     }
     else {
         for(int i = 0; i != 5; ++i) {
-             defendPoints[i]   = defPoints[i];
+             defendPoints[i] = defPoints[i];
         }
     }
 
@@ -120,10 +127,13 @@ void DefendState::setupClaimedPoints()
     }
 }
 
-Point* DefendState::findClaimPoint(Robot* robot)
+Point* DefendState::searchClaimPoint(Robot* robot)
 {
     for(int i = 0; i != 10; ++i)
     {
+        //Here, we check the `claimed` array to check if any
+        //slots contin the point we want to claim. If nobody is
+        //pointing there, we claim it.
         Point& p = defendPoints[i];
         bool alreadyClaimed = false;
         for(int k : claimed) {
@@ -138,7 +148,7 @@ Point* DefendState::findClaimPoint(Robot* robot)
             continue;
         }
 
-        //Here we ensure there is no other robot there
+        //Here we ensure there is no other robot there physically
         Point test(p.x * GameModel::mySide, p.y);
         Robot* closest = Comparisons::distance(test).minMyTeam();
         if(closest->getID() != robot->getID()
@@ -159,8 +169,8 @@ DefendState::~DefendState() {
 /************************************************************/
 
 #if SIMULATED
- #define LINE_DISTANCE 400
- #define GOALIE_DIST   800
+ #define LINE_DISTANCE 400  //Distance ball must be to robot to move to kick
+ #define GOALIE_DIST   800  //Distance blal must be away from goal to invervene
 #else
  #define LINE_DISTANCE 1200
  #define GOALIE_DIST   300
@@ -168,7 +178,9 @@ DefendState::~DefendState() {
 
 DefendStateIdle::DefendStateIdle()
 {
+#if DEFENDBEHAVIOR_DEBUG
     std::cout << "DefendStateIdle Created" << std::endl;
+#endif
 }
 
 DefendState* DefendStateIdle::action(Robot* robot)
@@ -178,7 +190,7 @@ DefendState* DefendStateIdle::action(Robot* robot)
     DefendState::action(robot);
 
     if(getClaimedPoint(robot) == nullptr) {
-        findClaimPoint(robot);
+        searchClaimPoint(robot);
     }
     else {
         //Idle at the point, facing the ball
@@ -234,11 +246,15 @@ DefendState* DefendStateIdle::action(Robot* robot)
     return this;
 }
 
+
 /************************************************************/
+
 
 DefendStateIdleKick::DefendStateIdleKick()
 {
+#if DEFENDBEHAVIOR_DEBUG
     std::cout << "DefendStateIdleKick Created" << std::endl;
+#endif
     ktpo = new Skill::KickToPointOmni(gameModel->getOpponentGoal());
 }
 
@@ -256,8 +272,8 @@ DefendState* DefendStateIdleKick::action(Robot* robot)
     return this;
 }
 
-/************************************************************/
 
+/************************************************************/
 
 
 DefendStateKick::DefendStateKick()
@@ -266,7 +282,9 @@ DefendStateKick::DefendStateKick()
     , kickingBall(false)
     , kickBallTimeout(0)
 {
+#if DEFENDBEHAVIOR_DEBUG
     std::cout << "DefendStateKick Created" << std::endl;
+#endif
     setMovementTolerances(DIST_TOLERANCE/10, ROT_TOLERANCE);
 }
 
@@ -327,9 +345,12 @@ DefendState* DefendStateKick::action(Robot* robot)
         //Tiemout conditions. If we have waited too long, or the ball is
         //is too close to the goal, we go back to idle.
         if(++kickBallTimeout > 400
-                || Measurments::distance(goal, bp) < GOALIE_DIST //Goalie action distance
-                || ballIsMovingAway()) {
+            || Measurments::distance(goal, bp) < GOALIE_DIST //Goalie action distance
+            || ballIsMovingAway())
+        {
+        #if DEFENDBEHAVIOR_DEBUG
             std::cout << "DefendStateKick Timeout " << robot->getID() << std::endl;
+        #endif
             return new DefendStateIdle();
         }
     }
