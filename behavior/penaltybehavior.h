@@ -1,14 +1,9 @@
 #ifndef PENALTYBEHAVIOR_H
 #define PENALTYBEHAVIOR_H
 
-#include <iostream>
 #include "behavior/genericmovementbehavior.h"
 #include "skill/skill.h"
-#include "skill/stop.h"
-#include "skill/kick.h"
-#include "movement/gotopositionwithorientation.h"
 #include "model/gamemodel.h"
-#include "skill/kicktopoint.h"
 #include "utilities/point.h"
 
 #define PENALTY_BEHAVIOR_DEBUG 0
@@ -29,11 +24,12 @@ class PenaltyBehavior : public GenericMovementBehavior
 {
 public:
     PenaltyBehavior();
+    ~PenaltyBehavior();
     void perform(Robot *);
 private:
     enum penaltyBehavior_t {initial, kicking, idling} pb;
     Point target;
-    Skill::KickToPoint *kickToPoint;
+    Skill::Skill *kickToPoint = nullptr;
     bool sign;  //0 is positive and 1 is negative
     bool targetSign;
     Point ballOrig;

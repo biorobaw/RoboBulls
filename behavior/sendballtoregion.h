@@ -2,7 +2,6 @@
 #define SENDBALLTOREGION_H
 
 #include "behavior.h"
-#include "skill/kicktopoint.h"
 #include "utilities/region.h"
 #include "model/robot.h"
 
@@ -19,7 +18,7 @@ public:
     void perform(Robot *);
 private:
     Region region;
-    Skill::KickToPoint * kickball;
+    Skill::Skill* kickball = nullptr;
     enum {initial,kick} state;
 };
 

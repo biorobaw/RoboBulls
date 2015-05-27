@@ -1,10 +1,11 @@
-#include "passballreceiver.h"
 #include "utilities/measurments.h"
 #include "behavior/passballsender.h"
 #include "skill/stop.h"
+#include "skill/kicktopointomni.h"
 #include "skill/kick.h"
 #include "utilities/region.h"
 #include "include/config/team.h"
+#include "passballreceiver.h"
 
 #if SIMULATED
     #define ANGLE   (10 * M_PI/180)
@@ -21,7 +22,6 @@
 GameModel *gm = GameModel::getModel();
 
 PassBallReceiver::PassBallReceiver()
-    : GenericMovementBehavior()
 {
     state = initial;
     ballLastSeen = gm->getBallPoint();
@@ -29,6 +29,11 @@ PassBallReceiver::PassBallReceiver()
     ballOrg = gm->getBallPoint();
     sign = 0;
     targetSign = 0;
+}
+
+PassBallReceiver::~PassBallReceiver()
+{
+    delete kickToPoint;
 }
 
 bool PassBallReceiver::playerInBadArea(Robot *robot)
@@ -91,7 +96,7 @@ void PassBallReceiver::perform(Robot *robot)
         {
         case initial:
             cout << "initial" << endl;
-            kickToPoint = new Skill::KickToPoint(goalArea);
+            kickToPoint = new Skill::KickToPointOmni(goalArea);
             state = kicking;
             if (goliePos.y >= 0)
                 sign = 0;

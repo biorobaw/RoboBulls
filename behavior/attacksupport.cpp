@@ -2,8 +2,7 @@
 
 
 AttackSupport::AttackSupport(Robot* passer)
-    : GenericMovementBehavior()
-    , wp(0,0)
+    : wp(0,0)
 {
     this->main_attacker = passer;
     state = initial;

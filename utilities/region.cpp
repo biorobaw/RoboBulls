@@ -21,10 +21,7 @@ Region::Region(float X1,float X2,float Y1,float Y2)
 
 bool Region::contains(const Point& point)
 {
-    if (point.x >= minX && point.x < maxX && point.y >= minY && point.y < maxY)
-        return true;
-    else
-        return false;
+    return (point.x >= minX && point.x < maxX && point.y >= minY && point.y < maxY);
 }
 
 //See http://stackoverflow.com/questions/1585525/

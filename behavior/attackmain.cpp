@@ -1,7 +1,6 @@
-#include "assert.h"
+#include <assert.h>
 #include "attackmain.h"
-#include "skill/driveball.h"
-#include "skill/kicktopoint.h"
+#include "skill/kicktopointomni.h"
 #include "behavior/attacksupport.h"
 #include "utilities/measurments.h"
 #include "model/gamemodel.h"
@@ -65,7 +64,7 @@ void AttackMain::perform(Robot * robot)
         case initial:
             done = false;
             state = drive;
-            drive_skill = new Skill::KickToPoint(gp, ROT_TOLERANCE, shot_distance*1.25);
+            drive_skill = new Skill::KickToPointOmni(gp, -1, shot_distance*1.25);
             break;
 
         case drive:
@@ -78,7 +77,7 @@ void AttackMain::perform(Robot * robot)
                 delete pass_skill;
                 delete drive_skill;
                 drive_skill = nullptr;
-                pass_skill = new Skill::KickToPoint(&sp);
+                pass_skill = new Skill::KickToPointOmni(&sp);
                 state = pass;
             }
             /***************************************************************
@@ -89,7 +88,7 @@ void AttackMain::perform(Robot * robot)
             {
                 delete score_skill;
                 Point offset(0, -500 + rand() % 1000);
-                score_skill = new Skill::KickToPoint(gp + offset, SCORE_ANGLE_TOLERANCE);
+                score_skill = new Skill::KickToPointOmni(gp + offset, SCORE_ANGLE_TOLERANCE);
                 state = score;
             }
             else

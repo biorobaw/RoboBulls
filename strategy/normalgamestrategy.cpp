@@ -1,13 +1,11 @@
 #include <vector>
 #include "include/config/team.h"
-#include "behavior/behavior.h"
-#include "behavior/genericmovementbehavior.h"
 #include "behavior/behaviorassignment.h"
-#include "behavior/kicktogoal.h"
+#include "behavior/genericmovementbehavior.h"
 #include "behavior/defendfarfromball.h"
 #include "behavior/attackmain.h"
 #include "behavior/attacksupport.h"
-#include "model/gamemodel.h"
+#include "behavior/defendbehavior.h"
 #include "behavior/simplebehaviors.h"
 #include "utilities/comparisons.h"
 #include "strategy/normalgamestrategy.h"
@@ -47,7 +45,7 @@ public:
         /* Get the two robots on OpTeam; One is the one with the ball, the other
          * is closest to our goal. We plan to block inbetween them.
          */
-        one = Comparisons::distanceBall().ignoreID(5).minOpTeam();\
+        one = Comparisons::distanceBall().ignoreID(5).minOpTeam();
         two = Comparisons::distanceMyGoal().ignoreIDs({5, one->getID()}).minOpTeam();
 
 		if(!one or !two)
@@ -115,7 +113,7 @@ NormalGameStrategy::~NormalGameStrategy()
 
 void NormalGameStrategy::assignBeh()
 {
-    if(gameModel->getMyTeam().size() <= 4) {
+    if(gameModel->getMyTeam().size() >= 3) {
         isOnAttack = considerSwitchCreiteria();
         if(isOnAttack) {
             assignAttackBehaviors();
@@ -140,7 +138,7 @@ bool NormalGameStrategy::update()
      * Feb 13-14 Engineering Expo
      * and must have <= four robots to function
      */
-    if(gm->getMyTeam().size() > 4) {
+    if(gm->getMyTeam().size() < 3) {
         return false;
     }
 
@@ -163,8 +161,8 @@ bool NormalGameStrategy::update()
         ballNotInGoalCount = 0;
         assignGoalKickBehaviors();
     }
-
-    else {
+    else
+    {
         /*
          * If we go to normal strategy after our kickoff
          *      we have attack behavior
@@ -231,10 +229,10 @@ bool NormalGameStrategy::update()
             }
             else {
                 /* Bug fix: This is entered if the ball comes out from the goal,
-                 * and the robots shoulddirectly go into defend. This allows swithcing
+                 * and the robots should directly go into defend. This allows swithcing
                  * between modes to always work.
                  */
-                assignDefendBehaviors();
+                //assignDefendBehaviors();
             }
         }
         return false;
@@ -318,15 +316,17 @@ void NormalGameStrategy::assignAttackBehaviors()
  */
 void NormalGameStrategy::assignDefendBehaviors()
 {
-    Robot* blocker, *receiver, *other;
-    Point wait_point = Point(gameModel->getOpponentGoal().x * 0.15, 250+500*TEAM);
-    findMostValidRobots(gameModel->getBallPoint(), blocker, receiver, other);
+//    Robot* blocker, *receiver, *other;
+//    Point wait_point = Point(gameModel->getOpponentGoal().x * 0.15, 250+500*TEAM);
+//    findMostValidRobots(gameModel->getBallPoint(), blocker, receiver, other);
     /**************/
 
-     receiver->assignBeh<GenericMovementBehavior>(wait_point);
-      blocker->assignBeh<OpBallBlocker>();
-    if(other)
-        other->assignBeh<AttackMain>(receiver);
+    for(Robot* rob : gameModel->getMyTeam()) {
+        if(rob->getID() == 5)
+            continue;
+        rob->assignBeh<DefendBehavior>();
+    }
+
     gameModel->findMyTeam(5)->assignBeh<DefendFarFromBall>();
 }
 
@@ -383,7 +383,7 @@ void NormalGameStrategy::findMostValidRobots(Point target, Robot*& a_out, Robot*
     a_found = *Comparisons::distance(target).ignoreID(5).min(myTeam);
 
     //b_found is the otherBotremaining robot (3-robot teams)
-    b_found = Comparisons::idNot(5).ignoreID(a_found->getID()).anyMyTeam();
+    b_found = Comparisons::idNot(5).ignoreID(a_found).anyMyTeam();
 
     //c_found is also the remaining robot
     c_found = Comparisons::idNot(5).ignoreIDs({a_found, b_found}).anyMyTeam();

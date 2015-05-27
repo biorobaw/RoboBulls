@@ -1,9 +1,8 @@
 #include "kicktogoal.h"
-
+#include "include/config/simulated.h"
 #include "model/gamemodel.h"
-#include "skill/skill.h"
-#include "skill/kick.h"
 #include "skill/stop.h"
+#include "skill/kicktopointomni.h"
 
 #if SIMULATED
     #define ANGLE   (10 * M_PI/180)
@@ -20,12 +19,16 @@
 #endif
 
 KickToGoal::KickToGoal()
-    : GenericMovementBehavior()
 {
     ballOrig = GameModel::getModel()->getBallPoint();
     state = initial;
     sign = 0;
     targetSign = 0;
+}
+
+KickToGoal::~KickToGoal()
+{
+    delete kickToPoint;
 }
 
 void KickToGoal::perform(Robot * r)
@@ -57,7 +60,7 @@ void KickToGoal::perform(Robot * r)
     {
     case initial:
         cout << "initial" << endl;
-        kickToPoint = new Skill::KickToPoint(goalArea, ANGLE);
+        kickToPoint = new Skill::KickToPointOmni(goalArea, ANGLE);
         state = kicking;
         if (goaliePos.y >= 0)
             sign = 0;

@@ -1,3 +1,6 @@
+#include <iostream>
+#include "skill/stop.h"
+#include "skill/kicktopointomni.h"
 #include "penaltybehavior.h"
 
 #if SIMULATED
@@ -13,12 +16,16 @@
 #endif
 
 PenaltyBehavior::PenaltyBehavior()
-    : GenericMovementBehavior()
 {
     pb = initial;
     sign = 0;
     targetSign = 0;
     ballOrig = GameModel::getModel()->getBallPoint();
+}
+
+PenaltyBehavior::~PenaltyBehavior()
+{
+    delete kickToPoint;
 }
 
 /**
@@ -57,7 +64,7 @@ void PenaltyBehavior::perform(Robot * myRobot)
     {
     case initial:
         cout << "initial" << endl;
-        kickToPoint = new Skill::KickToPoint(goalArea);
+        kickToPoint = new Skill::KickToPointOmni(goalArea);
         pb = kicking;
         if (goliePos.y >= 0)
             sign = 0;
