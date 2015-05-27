@@ -202,6 +202,12 @@ namespace impl
         for(auto it = p.begin(); it < p.end()-1; ++it) {
             Point& p0 = *it;
             Point& p1 = *(it+1);
+            if(Region::goalLeftRegion.containsLine(p0, p1)) {
+                it = p.insert(it+1, Point(-2000, p1.y));
+            }
+            if(Region::goalRightRegion.containsLine(p0, p1)) {
+                it = p.insert(it+1, Point(2000, p1.y));
+            }
         }
     }
 
