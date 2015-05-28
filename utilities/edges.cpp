@@ -13,7 +13,7 @@ static std::unordered_map<boolFunctionPtr, bool> lastResultMap;
 bool edge_detect_impl(boolFunctionPtr function, bool lastResultVal, bool thisResultVal)
 {
     if( lastResultMap.find(function) == lastResultMap.end() ) {
-        lastResultMap[function] = function();
+        lastResultMap[function] = false;
     }
     bool& lastResult = lastResultMap[function];
     bool  thisResult = function();
