@@ -32,8 +32,10 @@ public:
     ~PassBallReceiver();
     bool playerInBadArea(Robot*);
     void perform(Robot *);
-    enum states {initial, kicking, idling} state;
+    bool isFinished() override;
+
 private:
+    enum states {initial, kicking, idling} state;
     Point ballLastSeen;
     Point ballOrg;
     Point target;

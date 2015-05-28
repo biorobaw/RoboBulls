@@ -34,7 +34,6 @@ KickToGoal::~KickToGoal()
 void KickToGoal::perform(Robot * r)
 {
     GameModel* gm = GameModel::getModel();
-    Point ballPos = gm->getBallPoint();
     Point appGoal = gm->getOpponentGoal();
     Robot* oppGolie = gm->findOpTeam(5);
     Point goaliePos = oppGolie->getRobotPosition();
@@ -42,9 +41,6 @@ void KickToGoal::perform(Robot * r)
     float max_y = appGoal.y + R;
     Point goalArea;
     goalArea.x = appGoal.x;
-    bool ballInFront =
-            abs(Measurments::angleDiff(r->getOrientation(), Measurments::angleBetween(r->getRobotPosition(), ballPos))) < ANGLE*3;
-    bool kicked = !Measurments::isClose(ballPos, ballOrig) && !ballInFront;
 
     if (goaliePos.y >= 0)
     {
@@ -54,7 +50,7 @@ void KickToGoal::perform(Robot * r)
     {
         goalArea.y = max_y;
     }
-    cout << "goali at\t" << goaliePos.toString() << "\tkick to\t" << goalArea.toString()<< endl;
+
     // Evaluate possible transitions
     switch(state)
     {
@@ -76,7 +72,7 @@ void KickToGoal::perform(Robot * r)
             sign = 0;
         else
             sign = 1;
-           kickToPoint->perform(r);
+           bool kicked = kickToPoint->perform(r);
         #if PENALTY_BEHAVIOR_DEBUG
             cout<<"kicking performed!"<<endl;
         #endif
@@ -87,7 +83,6 @@ void KickToGoal::perform(Robot * r)
         }
         else if (kicked)
             state = stopping;
-
         }
 
         break;
@@ -102,4 +97,9 @@ void KickToGoal::perform(Robot * r)
         }
         break;
     }
+}
+
+bool KickToGoal::isFinished()
+{
+    return state == stopping;
 }

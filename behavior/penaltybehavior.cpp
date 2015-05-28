@@ -35,15 +35,8 @@ PenaltyBehavior::~PenaltyBehavior()
 void PenaltyBehavior::perform(Robot * myRobot)
 {
     GameModel *model = GameModel::getModel();
-
     Point appGoal = model->getOpponentGoal();
-    Point robotPos = myRobot->getRobotPosition();
-    float robotOrientation = myRobot->getOrientation();
     Robot* oppGolie = model->findOpTeam(5);
-    Point ballPos = model->getBallPoint();
-    bool ballInFront =
-            abs(Measurments::angleDiff(robotOrientation, Measurments::angleBetween(robotPos, ballPos))) < 35;
-    bool kicked = !Measurments::isClose(ballPos, ballOrig) && !ballInFront;
 
     Point goliePos = oppGolie->getRobotPosition();
     float min_y = appGoal.y - R;
@@ -80,7 +73,7 @@ void PenaltyBehavior::perform(Robot * myRobot)
             sign = 0;
         else
             sign = 1;
-           kickToPoint->perform(myRobot);
+           bool kicked = kickToPoint->perform(myRobot);
         #if PENALTY_BEHAVIOR_DEBUG
             cout<<"kicking performed!"<<endl;
         #endif

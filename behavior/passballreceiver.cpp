@@ -150,3 +150,8 @@ void PassBallReceiver::perform(Robot *robot)
     }
     cout << "count\t" << count << endl;
 }
+
+bool PassBallReceiver::isFinished()
+{
+    return state == idling;
+}

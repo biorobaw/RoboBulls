@@ -11,9 +11,10 @@ public:
     KickToGoal();
     ~KickToGoal();
     void perform(Robot * r);
+    bool isFinished() override;
+private:
     enum StateEnum {initial, kicking, stopping};
     StateEnum state;
-private:
     Point target;
     bool sign;  //0 is positive and 1 is negative
     bool targetSign;

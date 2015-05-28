@@ -2,10 +2,7 @@
 #define ATTACK_MAIN_H
 
 #include "behavior.h"
-#include "skill/driveball.h"
-#include "utilities/measurments.h"
 #include "model/gamemodel.h"
-#include "model/robot.h"
 
 /*** Recycled behavior.
  * Old description:
@@ -15,7 +12,7 @@
  *
  * New description:
  * Used with NormalGameStrategy. Modernized to work better with arbitrary-ID
- * robots, and is able to return more information about itself (hasKicked)
+ * robots, and is able to return more information about itself (isFinished)
  */
 
 class AttackMain:public Behavior
@@ -24,7 +21,7 @@ public:
     AttackMain(Robot* attacker = nullptr);
    ~AttackMain();
     void perform(Robot *);
-    bool hasKicked();
+    bool isFinished() override;
 private:
     GameModel * gm;
     Robot* support_attacker;

@@ -1,19 +1,14 @@
 #include <assert.h>
-#include "attackmain.h"
+#include "include/config/simulated.h"
 #include "skill/kicktopointomni.h"
-#include "behavior/attacksupport.h"
-#include "utilities/measurments.h"
-#include "model/gamemodel.h"
-#include "model/robot.h"
-#include "skill/kick.h"
-
+#include "attackmain.h"
 
 AttackMain::AttackMain(Robot* attacker)
     : drive_skill(nullptr)
     , pass_skill(nullptr)
     , score_skill(nullptr)
 {
-    this->support_attacker = attacker;
+    support_attacker = attacker;
     state = initial;
 }
 
@@ -35,14 +30,11 @@ AttackMain::~AttackMain()
 
 void AttackMain::perform(Robot * robot)
 {
-#if TRACE
-    cout << endl << "Performing Behavior::AttackMain" << endl;
-#endif
-
     gm = GameModel::getModel();
 
     //Get info from gamemodel
-    sp = support_attacker->getRobotPosition();
+    if(support_attacker != nullptr)
+        sp = support_attacker->getRobotPosition();
     rp = robot->getRobotPosition();
     gp = gm->getOpponentGoal();
     bp = gm->getBallPoint();
@@ -74,11 +66,19 @@ void AttackMain::perform(Robot * robot)
              */
             if(!Measurments::isClose(drive_start_point, rp, drive_distance))
             {
-                delete pass_skill;
-                delete drive_skill;
-                drive_skill = nullptr;
-                pass_skill = new Skill::KickToPointOmni(&sp);
-                state = pass;
+                //If we have our passer, kick to it. Else kick to goal
+                if(support_attacker != nullptr) {
+                    delete pass_skill;
+                    delete drive_skill;
+                    drive_skill = nullptr;
+                    pass_skill = new Skill::KickToPointOmni(&sp);
+                    state = pass;
+                } else {
+                    delete score_skill;
+                    Point offset(0, -500 + rand() % 1000);
+                    score_skill = new Skill::KickToPointOmni(gp + offset, SCORE_ANGLE_TOLERANCE);
+                    state = score;
+                }
             }
             /***************************************************************
              * Evaluate transition to score state. If the robot is within 2250 units
@@ -119,7 +119,7 @@ void AttackMain::perform(Robot * robot)
 }
 
 
-bool AttackMain::hasKicked()
+bool AttackMain::isFinished()
 {
     return done;
 }

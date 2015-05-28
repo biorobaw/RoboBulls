@@ -2,22 +2,21 @@
 #define SIMPLEBEHAVIORS_H
 
 #include "behavior/behavior.h"
-#include "model/robot.h"
-#include "skill/skill.h"
-#include "skill/kicktopoint.h"
-#include "movement/gotopositionwithorientation.h"
-#include "utilities/point.h"
 
+/* SimpleBehaviors
+ * SimpleBehaviors is a class to handle three gamestates
+ * that would be inefficient to make their own files.
+ * This is used for robots that have no role in these behaviors.
+ * 'F' 'f' : Freekicks
+ * 'T' 't' : Timeouts
+ * 'H' 'h' : Halt
+ * 'P' 'p' : Penalty kicks
+ */
 
 class SimpleBehaviors : public Behavior
 {
 public:
-    SimpleBehaviors();
     void perform(Robot*);
-private:
-    Point target = Point (0, 0);
-    bool hasTargetPos;
-    Movement::GoToPosition move;
 };
 
 #endif // SIMPLEBEHAVIORS_H

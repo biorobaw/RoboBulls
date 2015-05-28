@@ -33,11 +33,13 @@ void DefendFarFromBall::perform(Robot *robot)
     *  * TODO: Probably remove this
     */
     bool safeToKick = 1;
+    /*
     for(Robot* opRob:gm->getOponentTeam())
     {
         if (Measurments::distance(opRob->getRobotPosition(),ballPoint) < 3000)
             safeToKick = 0;
     }
+    */
 
     bool isScoreHazard =
             Measurments::distance(myGoal, ballPoint) < 800
