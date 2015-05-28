@@ -181,15 +181,11 @@ void IndiectKickStrategy::assignBeh()
 
 char IndiectKickStrategy::getNextStrategy()
 {
-    /* Here we check to see if the robot has kicked (PassBallReceiver
-     * is in "idle" state)
+    /* Here we check to see if the robot has kicked (PassBallReceiver's
+     * "isFinished" ans return to NGS if so
      */
     if(receiverBot != NULL) {
-        PassBallReceiver* PBR =
-                dynamic_cast<PassBallReceiver*>(receiverBot->getCurrentBeh());
-        if(PBR != nullptr) {
-            return PBR->state == PBR->idling ? ' ' : '\0';
-        }
+        return receiverBot->getCurrentBeh()->isFinished() ? ' ' : '\0';
     }
     return '\0';
 }

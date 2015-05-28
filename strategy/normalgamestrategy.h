@@ -1,7 +1,6 @@
 #ifndef NORMALGAMESTRATEGY_H
 #define NORMALGAMESTRATEGY_H
 
-#include <utility>
 #include "model/robot.h"
 #include "strategy/strategy.h"
 
@@ -28,6 +27,10 @@
  *  - Robot #5 still defend the goal
  *  - The remaining robot is sent to block the enemy passer/receiver team
  *    by placing itself between them (Measurments::midPoint).
+ *
+ * This strategy was designed for the Nov.26 presentation..
+ * then Feb 13-14 Engineering Expo...
+ * then Summer '15 revival...
  */
 
 class NormalGameStrategy : public Strategy
@@ -38,9 +41,17 @@ public:
     void assignBeh() override;
     bool update() override;
 
+    /* Static function: Moves robots to an idle line,
+     * a line near the goal and spaced by ID. */
+    static void moveRobotToIdleLine(Robot *robot);
+
+    /* Static functon: Assigns DefendFarFromBall to ID 5
+     * if it is on the team */
+    static void assignGoalieIfOk();
+
 private:
     bool considerSwitchCreiteria();
-    void assignAttackBehaviors();
+    void assignAttackBehaviors(bool switchSides = false);
     void assignDefendBehaviors();
     void assignGoalKickBehaviors();
     void assignRetreatBehaviors();
@@ -48,11 +59,10 @@ private:
 private:
     static bool isOnAttack;
     static bool hasStoppedForThisKickoff;
-    Robot* currentMainAttacker = NULL;
-    Robot* currentSuppAttacker = NULL;
+    Robot* currentMainAttacker;
+    Robot* currentSuppAttacker;
     void findMostValidRobots(Point, Robot*&, Robot*&, Robot *&c_out);
     Point ballOriginalPos;
-
 };
 
 #endif // NORMALGAMESTRATEGY_H

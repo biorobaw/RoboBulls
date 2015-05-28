@@ -1,4 +1,3 @@
-#include <vector>
 #include "include/config/team.h"
 #include "behavior/behaviorassignment.h"
 #include "behavior/genericmovementbehavior.h"
@@ -8,6 +7,7 @@
 #include "behavior/defendbehavior.h"
 #include "behavior/simplebehaviors.h"
 #include "utilities/comparisons.h"
+#include "utilities/edges.h"
 #include "strategy/normalgamestrategy.h"
 
 bool NormalGameStrategy::isOnAttack = true;
@@ -19,7 +19,7 @@ bool NormalGameStrategy::isOnAttack = true;
  * switch is actually made
  */
 #define ATT_TO_DEF_SWITCH_COUNT 16
-#define DEF_TO_ATT_SWITCH_COUNT 16
+#define DEF_TO_ATT_SWITCH_COUNT 128
 
 /* Defines the number of times the ball must be seen outside of the goal
  * to have the robots start moving again. Used to prevent jerkey movement
@@ -32,43 +32,35 @@ bool NormalGameStrategy::isOnAttack = true;
 /** BEHAVIORS **/
 
 /* OpBallBlocker
- * A behavior that should be nessecery that, if applicable, places the robot
- * in the middle of the enemy passer/reciever team. Since there are only three
- * robots, this is an easier task.
+ * A behavior similar to the late DefendCloseToBall that gets in front
+ * of the enemy robot with the ball.
  */
 class OpBallBlocker : public GenericMovementBehavior
 {
 public:
-    OpBallBlocker()
-        : one(NULL), two(NULL)
-    {
-        /* Get the two robots on OpTeam; One is the one with the ball, the other
-         * is closest to our goal. We plan to block inbetween them.
-         */
-        one = Comparisons::distanceBall().ignoreID(5).minOpTeam();
-        two = Comparisons::distanceMyGoal().ignoreIDs({5, one->getID()}).minOpTeam();
-
-		if(!one or !two)
-			throw std::runtime_error("OpBallBlocker: Could not find two robots!");
-    }
-	
     void perform(Robot *robot)
     {
-        //Midpoint between 1 and 2 and angle to ball
-        Point midPoint = Measurments::midPoint(one, two);
-        float myAngle  = Measurments::angleBetween(robot, gameModel->getBallPoint());
-        setMovementTargets(midPoint, myAngle);
-        GenericMovementBehavior::perform(robot, Movement::Type::SharpTurns);
+        Robot* ballBot = gameModel->getHasBall();
+        if(ballBot && !ballBot->isOnMyTeam())
+        {
+            Point bp = gameModel->getBallPoint();
+            float Opang = Measurments::angleBetween(ballBot, bp);
+            float myAng = Measurments::angleBetween(robot, ballBot);
+            Point offset = Point(cos(Opang), sin(Opang)) * 500;
+            Point target = bp + offset;
+            setMovementTargets(target, myAng);
+        } else {
+            //Case to stop robot from floating
+            setMovementTargets(robot->getRobotPosition());
+        }
+        GenericMovementBehavior::perform(robot);
     }
-private:
-    Robot* one, *two;   //Robots to get inbetween
 };
 
 
 /* Behavior RetreatAfterGoal
- * Sends the robot to a point at which to wait for the
- * opponent goalie to kick the ball out, or to recieve the ball from the
- * friendly goalkeeper.
+ * Sends the robot to a point at a fixed x and a given y (in constructor)
+ * Used to sit still when the ball is in either goal
  */
 class RetreatAfterGoal : public GenericMovementBehavior
 {
@@ -134,32 +126,27 @@ bool NormalGameStrategy::update()
     Point myGoal = gm->getMyGoal();
     bool ballMoved = !Measurments::isClose(ballOriginalPos, ball);
 
-    /* This strategy is designed for the Nov.26 presentation /
-     * Feb 13-14 Engineering Expo
-     * and must have <= four robots to function
-     */
-    if(gm->getMyTeam().size() < 3) {
-        return false;
-    }
+    //Ball near goals, used as checks to not do anything first
+    static bool ballInOpGoal = false;
+    static bool ballinMyGoal = false;
+    ballInOpGoal = Measurments::isClose(ball, opGoal, 999);
+    ballinMyGoal = Measurments::isClose(ball, myGoal, 999);
 
     isOnAttack = considerSwitchCreiteria();
 
-    if(Measurments::isClose(ball, opGoal, 999))
-    {
-        /* If the ball is close to opponent goal, the robots
-         * retreate back to their half
-         */
-        ballNotInGoalCount = 0;
-        assignRetreatBehaviors();
-    }
-    else if(Measurments::isClose(ball, myGoal, 999))
-    {
-        /* If the ball is close to team goal, one robot
-         * moves to receive it from the goalie and the
-         * other positions itself mid-field
-         */
-        ballNotInGoalCount = 0;
+    /* If the ball is close to opponent goal or the opponent goal,
+     * the robots retreat back to their half, and no attack/defend
+     * is run. ASSUMPTION: Ball never starts out near goal.
+     */
+    if(posedge(ballInOpGoal or ballinMyGoal))
         assignGoalKickBehaviors();
+
+    if(ballInOpGoal or ballinMyGoal)
+    {
+        /* A count is kept to ensure robots don't move until the ball is
+         * surely out of the goal
+         */
+        ballNotInGoalCount = 0;
     }
     else
     {
@@ -181,13 +168,11 @@ bool NormalGameStrategy::update()
         }
         else if(((prevGs == 'k' && TEAM == TEAM_BLUE) ||
                  (prevGs == 'K' && TEAM == TEAM_YELLOW)) &&
-                 !ballMoved &&
-                 !hasStoppedForThisKickoff)
+                 !ballMoved)
         {
             BehaviorAssignment<SimpleBehaviors> haltAssignment;
             haltAssignment.setSingleAssignment(true);
             haltAssignment.assignBeh();
-
         }
         else
         {
@@ -205,26 +190,20 @@ bool NormalGameStrategy::update()
             }
             if(oldAttack != isOnAttack) {
                 /* If the attack status has switched, we stop and return true so that
-                 * StrategyController can assign this strategy again with the new mode/
+                 * StrategyController can assign this strategy again with the new mode
                  */
                 return true;
             }
             else if(isOnAttack) {
-                if(currentMainAttacker == nullptr) {
+                if(currentMainAttacker == NULL) {
                     assignBeh();
                     return false;
                 }
-                AttackMain* attackMain =
-                        dynamic_cast<AttackMain*>(currentMainAttacker->getCurrentBeh());
-                if(attackMain == nullptr) {
-                    assignBeh();
-                    return false;
-                }
-                if(attackMain->hasKicked()) {
-                    /* If the attacker has kicked, it has made a pass or a goal, so
-                     * we switch attack/defend behaviors. See assignAttackBehaviors
-                     */
-                    assignAttackBehaviors();
+                /* If the attacker has kicked (isFinished), it has made a pass or a goal,
+                 * so we switch attack/defend behaviors. See assignAttackBehaviors
+                 */
+                if(currentMainAttacker->getCurrentBeh()->isFinished()) {
+                    assignAttackBehaviors(true);
                 }
             }
             else {
@@ -232,13 +211,40 @@ bool NormalGameStrategy::update()
                  * and the robots should directly go into defend. This allows swithcing
                  * between modes to always work.
                  */
-                //assignDefendBehaviors();
+                //if(negedge(ballInOpGoal))
+                    //assignDefendBehaviors();
             }
         }
         return false;
     }
 
     return false;
+}
+
+//Utility function to not duplicate this code
+void NormalGameStrategy::assignGoalieIfOk()
+{
+    Robot* goalie = gameModel->findMyTeam(5);
+    if(goalie)
+        goalie->assignBeh<DefendFarFromBall>();
+}
+
+//Static function to be used in other places.
+//Was added here to deal with simplebehaviors.cpp
+void NormalGameStrategy::moveRobotToIdleLine(Robot* robot)
+{
+    Point wait_point = Point(0, -1500+3000*TEAM);
+
+    if(Comparisons::distance(wait_point).minMyTeam() == robot) {
+        //Closest guy to the wait point sits there instead
+        robot->assignBeh<GenericMovementBehavior>( wait_point );
+    }
+    else {
+        //Assigns the robot to sit along a line across the field
+        int incSize = FIELD_WIDTH / (gameModel->getMyTeam().size() - 1);
+        int y = -FIELD_WIDTH/2 + incSize * robot->getID();
+        robot->assignBeh<RetreatAfterGoal>(y);
+    }
 }
 
 
@@ -288,25 +294,33 @@ bool NormalGameStrategy::considerSwitchCreiteria()
     return NormalGameStrategy::isOnAttack;
 }
 
-
 /* What TwoVOne did, where two robots are on the other side of the
  * field and drive as far as possible, and at the end of that drive,
  * pass the ball to the other and repeat until halfway to the goal and
  * then kick to the goal.
- *
  * EXPO: The third robot does "OpBallBlocker"
  */
-void NormalGameStrategy::assignAttackBehaviors()
+void NormalGameStrategy::assignAttackBehaviors(bool switchSides)
 {
     Robot* driverBot, *recvBot, *otherBot;
     findMostValidRobots(gameModel->getBallPoint(), driverBot, recvBot, otherBot);
-    /**************/
 
-    driverBot->assignBeh<AttackMain>(recvBot);
-      recvBot->assignBeh<AttackSupport>(driverBot);
+    //First, makes all robots sit still (for now)
+    assignGoalKickBehaviors();
+
+    //Here we get a new attacker, because we are attacking
+    currentMainAttacker = driverBot;
+
+    if(switchSides) {
+        driverBot->assignBeh<AttackSupport>(recvBot);
+          recvBot->assignBeh<AttackMain>(driverBot);
+    } else {
+        driverBot->assignBeh<AttackMain>(recvBot);
+          recvBot->assignBeh<AttackSupport>(driverBot);
+    }
     if(otherBot)
      otherBot->assignBeh<OpBallBlocker>();
-    gameModel->findMyTeam(5)->assignBeh<DefendFarFromBall>();
+    assignGoalieIfOk();
 }
 
 
@@ -316,63 +330,34 @@ void NormalGameStrategy::assignAttackBehaviors()
  */
 void NormalGameStrategy::assignDefendBehaviors()
 {
-//    Robot* blocker, *receiver, *other;
-//    Point wait_point = Point(gameModel->getOpponentGoal().x * 0.15, 250+500*TEAM);
-//    findMostValidRobots(gameModel->getBallPoint(), blocker, receiver, other);
-    /**************/
-
-    for(Robot* rob : gameModel->getMyTeam()) {
-        if(rob->getID() == 5)
-            continue;
+    //We're using the new and amazing DefendBehavior instead of other stuff
+    for(Robot* rob : gameModel->getMyTeam())
         rob->assignBeh<DefendBehavior>();
-    }
 
-    gameModel->findMyTeam(5)->assignBeh<DefendFarFromBall>();
+    //Here we remove the current attacker, because we are defending
+    currentMainAttacker = NULL;
+
+    //Usual special case for 5
+    assignGoalieIfOk();
 }
 
-/* This runs when the ball is near in friendly penalty area.
- * Goalie tries to pass to teammate. One robot sits at the mid line
- * ready to change to attack. One other one goes to a point at which
- * it can receive a pass from a goalie.
+
+/* This runs when the ball is near in either penalty area.
+ * Goalie is normal, and all robots are made to go to the idle line.
+ * And attacker is removed because we are not attacking.
  */
 void NormalGameStrategy::assignGoalKickBehaviors()
 {
-    Robot* receiver, *middler, *other;
-    Point wait_point = Point(gameModel->getMyGoal().x*0.5, 1000);
-    findMostValidRobots(wait_point, receiver, middler, other);
-    /**************/
-
-     middler->assignBeh<GenericMovementBehavior>( Point(0, -1500+3000*TEAM) );
-    receiver->assignBeh<RetreatAfterGoal>(1000);
-    if(other)
-       other->assignBeh<RetreatAfterGoal>(-1000);
-    gameModel->findMyTeam(5)->assignBeh<DefendFarFromBall>();
-}
-
-/* This runs when the ball is in the opponent penalty area
- * Goalie tries to pass to teammate. One robot sits at the mid line
- * ready to change to attack. One other one goes to a point at which
- * it can receive a pass from a goalie.
- */
-void NormalGameStrategy::assignRetreatBehaviors()
-{
-    Robot* right_rob, *left_rob, *othr_rob;
-    Point right_point = Point(gameModel->getMyGoal().x*0.5, -1000);
-    findMostValidRobots(right_point, right_rob, left_rob, othr_rob);
-    /**************/
-
-    right_rob->assignBeh<RetreatAfterGoal>(-1000);
-     left_rob->assignBeh<RetreatAfterGoal>( 1000);
-     if(othr_rob)
-        othr_rob->assignBeh<GenericMovementBehavior>(Point(gameModel->getMyGoal().x*0.7, 0));
-    gameModel->findMyTeam(5)->assignBeh<DefendFarFromBall>();
+    for(Robot* robot : gameModel->getMyTeam())
+        NormalGameStrategy::moveRobotToIdleLine(robot);
+    assignGoalieIfOk();
+    currentMainAttacker = NULL;
 }
 
 
-/* Utility function that finds two robots `a_out` and `b_out` such that:
- * - a_out is closest to the `target`
- * - b_out is set to the other robot
- * - both a_out and b_out are not the goalie robot
+/* Utility function that finds three robots `a_out` `b_out` and `c_out` such that:
+ * - a_out is closest to the `target`, and b_out and c_out are other unique robots.
+ * - None are not the goalie robot
  */
 void NormalGameStrategy::findMostValidRobots(Point target, Robot*& a_out, Robot*& b_out, Robot*& c_out)
 {
@@ -382,10 +367,10 @@ void NormalGameStrategy::findMostValidRobots(Point target, Robot*& a_out, Robot*
 	//Find robot closest to `target`
     a_found = *Comparisons::distance(target).ignoreID(5).min(myTeam);
 
-    //b_found is the otherBotremaining robot (3-robot teams)
+    //b_found is another robot
     b_found = Comparisons::idNot(5).ignoreID(a_found).anyMyTeam();
 
-    //c_found is also the remaining robot
+    //c_found is also another robot
     c_found = Comparisons::idNot(5).ignoreIDs({a_found, b_found}).anyMyTeam();
 
     if(!a_found || !b_found)

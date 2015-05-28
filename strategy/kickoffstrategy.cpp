@@ -4,11 +4,11 @@
 #include "model/gamemodel.h"
 #include "kickoffstrategy.h"
 
-/* For this, we define a list of points for blue team representing
+/* For this, we define a list of points with absolute Xs representing
  * where the robots should go on Blue Kickoff / Yellow Kickoff;
- * there's diagrams commented out below. If we are on team yellow,
- * we follow Blue's points, but with x *= -1. Points are not assigned
- * based on ID, but in the order robots appear in the team vector.
+ * there's diagrams commented out below. These are multiplied by
+ * GameModel::mySide to keep them on the right side. Points are not
+ * assigned based on ID, but in the order robots appear in the team vector.
  */
 
 /******************

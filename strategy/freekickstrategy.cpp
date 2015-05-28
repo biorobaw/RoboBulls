@@ -102,14 +102,14 @@ void FreeKickStrategy::assignBeh()
 
 char FreeKickStrategy::getNextStrategy()
 {
-    /* Here we check to see if the robot has kicked (KickToGoal
-     * is in "stopping" state) and proceed to NormalGameStrategy
+    /* Here we check to see if the robot has kicked (KickToGoal's
+     * "isFinished") and go to NormalGame if so
      */
     if(kickerRobot != NULL) {
-        KickToGoal* KTG = dynamic_cast<KickToGoal*>(kickerRobot->getCurrentBeh());
-        if(KTG != nullptr) {
-            return (KTG->state == KTG->stopping) ? ' ' : '\0';
-        }
+        return kickerRobot->getCurrentBeh()->isFinished() ? ' ' : '\0';
+    } else {
+        //method to stop on opponent free kicks
     }
+
     return '\0';
 }

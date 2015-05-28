@@ -1,11 +1,10 @@
 #include <iostream>
 #include <list>
-#include "stopstrategy.h"
 #include "include/config/team.h"
 #include "utilities/measurments.h"
 #include "utilities/comparisons.h"
-#include "behavior/behaviorassignment.h"
 #include "behavior/defendfarfromball.h"
+#include "stopstrategy.h"
 
 #define RADIUS 1000
 #define STOPSTRAT_DEBUG 0
@@ -15,47 +14,37 @@ Point robTargetPoints[10];
 
 void StopStrategy::assignBeh()
 {
-    GameModel* model = GameModel::getModel();
-    Point bp = model->getBallPoint();
+    Point bp = gameModel->getBallPoint();
     rebuildTargetPoints();
 
-    for(Robot* robot : model->getMyTeam()) {
-        if (robot->getID() != 5){
-            Point robTarget = robTargetPoints[robot->getID()];
-            float targetAngle = Measurments::angleBetween(robTarget, bp);
-            BehaviorAssignment<GenericMovementBehavior> stopAssign(true);
-            stopAssign.assignBeh(robot, robTarget, targetAngle, true, true);
-        }
-        else
-        {
-            BehaviorAssignment<DefendFarFromBall> golieAssign;
-            golieAssign.setSingleAssignment(true);
-            golieAssign.assignBeh(robot);
-        }
+    for(Robot* robot : gameModel->getMyTeam()) {
+        if(robot->getID() == 5)
+            continue;
+        Point robTarget = robTargetPoints[robot->getID()];
+        float targetAngle = Measurments::angleBetween(robTarget, bp);
+        robot->assignBeh<GenericMovementBehavior>(robTarget, targetAngle);
     }
+
+    gameModel->findMyTeam(5)->assignBeh<DefendFarFromBall>();
 }
 
-#if 1
 bool StopStrategy::update()
 {
-    Point nowBallPoint = GameModel::getModel()->getBallPoint();
+    Point nowBallPoint = gameModel->getBallPoint();
     if(Measurments::distance(nowBallPoint, prevBallPoint) > 50) {
         prevBallPoint = nowBallPoint;
         return true;
     }
     return false;
 }
-#endif
 
 void StopStrategy::rebuildTargetPoints()
 {
     std::list<Point> newPoints;
+    Point ballPoint = gameModel->getBallPoint();
 
-    GameModel* mod  = GameModel::getModel();
-    Point ballPoint = mod->getBallPoint();
-
-    int teamSize = mod->getMyTeam().size();
-    int maxSize  = std::max(teamSize, (int)mod->getOponentTeam().size());
+    int teamSize = gameModel->getMyTeam().size();
+    int maxSize  = std::max(teamSize, (int)gameModel->getOponentTeam().size());
 
     /* Interesting thing:
      * If we're yellow team, then we add an offset to the initial
@@ -82,8 +71,7 @@ void StopStrategy::rebuildTargetPoints()
     /* Then for each robot, find the closest point around the ball to the robot. This
      * will be the robot's new target point stored in robTargetPoints
      */
-     
-    for(Robot* rob : mod->getMyTeam())
+    for(Robot* rob : gameModel->getMyTeam())
     {
         auto min_pos = Comparisons::distance(rob).min(newPoints);
         robTargetPoints[rob->getID()] = *min_pos;    //Set a new target point for rob
