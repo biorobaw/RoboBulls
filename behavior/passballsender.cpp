@@ -11,20 +11,18 @@
     #define ANGLE (9*M_PI/180)
     #define CLOSE_ENOUGH 110
     #define R 400
-    #define goalRX 400
-    #define goalRY 200
 #else
     #define DIST 400
     #define DIST2 90
     #define ANGLE (15*M_PI/180)
     #define CLOSE_ENOUGH 210
     #define R 700
-    #define goalRX 400
-    #define goalRY 300
 #endif
 
-PassBallSender::PassBallSender() :
-    GenericMovementBehavior(), kicked(0)
+PassBallSender::PassBallSender(Robot* waiter)
+    : kicked(0)
+    , waitingRobot(waiter)
+    , state(movingBehind)
 {
     state = movingBehind;
 }
@@ -176,17 +174,14 @@ void PassBallSender::perform(Robot * robot)
 
     switch(state)
     {
-        case initial:
-        {
-            target = behindBall;
-            state = movingBehind;
-        }
-            break;
         case movingBehind:
         {
             setMovementTargets(behindBall, angle, true);
             GenericMovementBehavior::perform(robot, Movement::Type::Default);
-            if (robotCloseToBehindBall && angleIsRight)
+
+            //Here we don't move until robots have gotten out of the way
+            bool waiterDone = waitingRobot->getCurrentBeh()->isFinished();
+            if (waiterDone && robotCloseToBehindBall && angleIsRight)
             {
                 state = approaching;
                 target = ballPos;
@@ -225,16 +220,21 @@ void PassBallSender::perform(Robot * robot)
             }
             Skill::Kick kick(lVel, rVel);
             kick.perform(robot);
-            kicked = 1;
             if (!robotCloseToBall)
                 state = idling;
         }
         break;
         case idling:
         {
+            kicked = 1;
             Skill::Stop stop;
             stop.perform(robot);
         }
             break;
     }
+}
+
+bool PassBallSender::isFinished()
+{
+    return kicked;
 }

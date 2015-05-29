@@ -15,9 +15,6 @@ public:
 private:
     enum StateEnum {initial, kicking, stopping};
     StateEnum state;
-    Point target;
-    bool sign;  //0 is positive and 1 is negative
-    bool targetSign;
     Skill::Skill* kickToPoint = nullptr;
     Point ballOrig;
 };

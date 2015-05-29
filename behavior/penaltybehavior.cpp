@@ -18,8 +18,6 @@
 PenaltyBehavior::PenaltyBehavior()
 {
     pb = initial;
-    sign = 0;
-    targetSign = 0;
     ballOrig = GameModel::getModel()->getBallPoint();
 }
 
@@ -56,46 +54,26 @@ void PenaltyBehavior::perform(Robot * myRobot)
     switch(pb)
     {
     case initial:
-        cout << "initial" << endl;
         kickToPoint = new Skill::KickToPointOmni(goalArea);
         pb = kicking;
-        if (goliePos.y >= 0)
-            sign = 0;
-        else
-            sign = 1;
 
-        targetSign = sign;
         break;
     case kicking:
-        cout << "kicking" << endl;
         {
-        if (goliePos.y >= 0)
-            sign = 0;
-        else
-            sign = 1;
-           bool kicked = kickToPoint->perform(myRobot);
         #if PENALTY_BEHAVIOR_DEBUG
             cout<<"kicking performed!"<<endl;
         #endif
-//            pb = idling;
-        if (sign != targetSign)
-        {
-            pb = initial;
-            targetSign = sign;
+           bool kicked = kickToPoint->perform(myRobot);
+           if (kicked) {
+                pb = idling;
+           }
         }
-        else if (kicked)
-            pb = idling;
-        }
-
         break;
+
     case idling:
-        cout << "idling" << endl;
         {
             Skill::Stop stop;
             stop.perform(myRobot);
-        #if PENALTY_BEHAVIOR_DEBUG
-            cout<<"idling performed!"<<endl;
-        #endif
         }
         break;
     }

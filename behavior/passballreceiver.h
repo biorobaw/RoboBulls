@@ -28,21 +28,19 @@
 class PassBallReceiver : public GenericMovementBehavior
 {
 public:
-    PassBallReceiver();
+    PassBallReceiver(Robot *theSender);
     ~PassBallReceiver();
-    bool playerInBadArea(Robot*);
     void perform(Robot *);
     bool isFinished() override;
 
+    bool playerInBadArea(Robot*);
+    Point getPasserPassPoint();
+
 private:
+    Robot* passer;  //Pointer to passer robot
     enum states {initial, kicking, idling} state;
-    Point ballLastSeen;
-    Point ballOrg;
-    Point target;
-    int count;
+    Point goalArea;    //Dynamic goal point to kick to
     Skill::Skill *kickToPoint;
-    bool sign;  //0 is positive and 1 is negative
-    bool targetSign;
 };
 
 #endif // PASSBALLRECEIVER_H

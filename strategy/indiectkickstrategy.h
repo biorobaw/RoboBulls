@@ -39,7 +39,6 @@
 class IndiectKickStrategy : public Strategy
 {
 public:
-    IndiectKickStrategy();
     void assignBeh();
     char getNextStrategy() override;
 

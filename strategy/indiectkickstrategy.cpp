@@ -5,6 +5,7 @@
 #include "behavior/passballreceiver.h"
 #include "behavior/passballsender.h"
 #include "utilities/region.h"
+#include "utilities/comparisons.h"
 #include "include/config/team.h"
 #include "behavior/defendfarfromball.h"
 
@@ -14,74 +15,29 @@
     #define R 700
 #endif
 
-IndiectKickStrategy::IndiectKickStrategy()
-{
-}
-
 void IndiectKickStrategy::assignBeh()
 {
     GameModel *gm = GameModel::getModel();
-    vector <Robot*> myTeam;
-
-    myTeam = gm->getMyTeam();
+    vector<Robot*>& myTeam = gm->getMyTeam();
 
     Robot *sender;
     Robot *receiver;
-    //int senderID;     //Removed to stop warnings
-    Point ballPos = gm->getBallPoint();
 
     /*
      * finds the closest robot to the ball
      * and makes it the sender.
      * we use the sender in PassBallSender behavior
      * */
-    if ((gm->getGameState() == 'I' && TEAM == TEAM_BLUE)
-            || (gm->getGameState() == 'i' && TEAM == TEAM_YELLOW))
+    if ((gm->getGameState() == 'I' && TEAM == TEAM_BLUE) ||
+        (gm->getGameState() == 'i' && TEAM == TEAM_YELLOW))
     {
-        if (myTeam.size() == 1)
-            sender = myTeam.at(0);
-        else if (myTeam.size() > 1)
-        {
-            for (unsigned i = 0; i < myTeam.size(); i++)
-            {
-                if (i == 0 && myTeam.at(0)->getID() != 5)
-                    sender = myTeam.at(i);
-                if (i == 0 && myTeam.at(0)->getID() == 5)
-                    sender = myTeam.at(1);
-                else
-                {
-                    if (myTeam.at(i)->getID() != 5)
-                    {
-                        Point iPos = myTeam.at(i)->getRobotPosition();
-                        Point closestPos = sender->getRobotPosition();
-                        if (Measurments::distance(iPos, ballPos) < Measurments::distance(closestPos, ballPos))
-                            sender = myTeam.at(i);
-                    }
-                }
-            }
-        }
+        //First we have all other robots do whatever
+        for(Robot* robot : gameModel->getMyTeam())
+            robot->assignBeh<SimpleBehaviors>();
 
+        //Sender is always closet to ball (this used to be 20 lines of code)
+        sender = Comparisons::distanceBall().ignoreID(5).minMyTeam();
 
-        //assigns the sender behavior to closest robot to the ball
-        BehaviorAssignment<PassBallSender> senderAssignment;
-        senderAssignment.setSingleAssignment(true);
-        senderAssignment.assignBeh(sender);
-
-        //Assigns golie behavior ro robot with ID 5
-        BehaviorAssignment<DefendFarFromBall> golieAssignment;
-        golieAssignment.setSingleAssignment(true);
-        golieAssignment.assignBeh({5});
-
-        // creates the passBallRecever behaviorAssignment
-        BehaviorAssignment<PassBallReceiver> receiverAssignment;
-        receiverAssignment.setSingleAssignment(true);
-
-
-        /*
-         * determining which robot the sender is
-         * sending the ball to. we call this robot
-         * the receiver
-         * */
         Region PlayerRegion;
         struct playersCharactristics{
             int ID;
@@ -142,24 +98,27 @@ void IndiectKickStrategy::assignBeh()
                 }
             }
         }
-        int receiverID = myTeamInfo[k].ID;
-
-        for (Robot *rob: myTeam)
-        {
-    //        if (rob->getID() != senderID)
-            if (rob->getID() == receiverID)
-                receiver = rob;
-        }
 
         //Assigning passBallReceiver behavior to the receiver robot
-        receiverAssignment.assignBeh(receiver);
-        cout << "sender\t"   << sender->getRobotPosition().toString()
-             << "receiver\t" << receiver->getRobotPosition().toString()
-             << endl;
-        receiverBot = receiver; //Store reciever in class
+        int receiverID = myTeamInfo[k].ID;
+        receiver = gameModel->findMyTeam(receiverID);
+        receiver->assignBeh<PassBallReceiver>(sender);
+        receiverBot = receiver; //Store reciever in class for getNextStrategy
+
+        /* Figuring out a waiter: Robot that is not 5, sender, or reciever that
+         * is farthest from this point. This point is about where NGS will send a robot
+         * going to the waiting line. It finishes a lot quicker usually, breaking this idea.
+         */
+        Robot* waiter = Comparisons::idNot(5).ignoreIDs({sender, receiver}).anyMyTeam();
+        sender->assignBeh<PassBallSender>(waiter);
+
+        //Goalie is always goalie
+        Robot* goalie = gameModel->findMyTeam(5);
+        if(goalie)
+            goalie->assignBeh<DefendFarFromBall>();
     }
-    else if ((gm->getGameState() == 'i' && TEAM == TEAM_BLUE)
-            || (gm->getGameState() == 'I' && TEAM == TEAM_YELLOW))
+    else if ((gm->getGameState() == 'i' && TEAM == TEAM_BLUE) ||
+             (gm->getGameState() == 'I' && TEAM == TEAM_YELLOW))
     {
         BehaviorAssignment<DefendFarFromBall> golieAssignment;
         golieAssignment.setSingleAssignment(true);

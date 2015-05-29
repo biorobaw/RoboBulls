@@ -18,12 +18,12 @@
     #define R   200
 #endif
 
+#define KTGOAL_DEBUG 0
+
 KickToGoal::KickToGoal()
 {
     ballOrig = GameModel::getModel()->getBallPoint();
     state = initial;
-    sign = 0;
-    targetSign = 0;
 }
 
 KickToGoal::~KickToGoal()
@@ -55,45 +55,29 @@ void KickToGoal::perform(Robot * r)
     switch(state)
     {
     case initial:
-        cout << "initial" << endl;
         kickToPoint = new Skill::KickToPointOmni(goalArea, ANGLE);
         state = kicking;
-        if (goaliePos.y >= 0)
-            sign = 0;
-        else
-            sign = 1;
-
-        targetSign = sign;
         break;
+
     case kicking:
-        cout << "kicking" << endl;
         {
-        if (goaliePos.y >= 0)
-            sign = 0;
-        else
-            sign = 1;
-           bool kicked = kickToPoint->perform(r);
-        #if PENALTY_BEHAVIOR_DEBUG
+        #if KTGOAL_DEBUG
             cout<<"kicking performed!"<<endl;
         #endif
-        if (sign != targetSign)
-        {
-            state = initial;
-            targetSign = sign;
+            bool kicked = kickToPoint->perform(r);
+            if (kicked) {
+                state = stopping;
+            }
         }
-        else if (kicked)
-            state = stopping;
-        }
-
         break;
+
     case stopping:
-        cout << "idling" << endl;
         {
-            Skill::Stop stop;
-            stop.perform(r);
-        #if PENALTY_BEHAVIOR_DEBUG
+        #if KTGOAL_DEBUG
             cout<<"idling performed!"<<endl;
         #endif
+            Skill::Stop stop;
+            stop.perform(r);
         }
         break;
     }

@@ -30,8 +30,6 @@ private:
     enum penaltyBehavior_t {initial, kicking, idling} pb;
     Point target;
     Skill::Skill *kickToPoint = nullptr;
-    bool sign;  //0 is positive and 1 is negative
-    bool targetSign;
     Point ballOrig;
 };
 

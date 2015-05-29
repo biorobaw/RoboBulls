@@ -38,7 +38,7 @@ bool NormalGameStrategy::isOnAttack = true;
 class OpBallBlocker : public GenericMovementBehavior
 {
 public:
-    void perform(Robot *robot)
+    void perform(Robot *robot) override
     {
         Robot* ballBot = gameModel->getHasBall();
         if(ballBot && !ballBot->isOnMyTeam())
@@ -48,12 +48,12 @@ public:
             float myAng = Measurments::angleBetween(robot, ballBot);
             Point offset = Point(cos(Opang), sin(Opang)) * 500;
             Point target = bp + offset;
-            setMovementTargets(target, myAng);
+            setMovementTargets(target);
+            GenericMovementBehavior::perform(robot);
         } else {
             //Case to stop robot from floating
-            setMovementTargets(robot->getRobotPosition());
+            //setMovementTargets(robot->getRobotPosition());
         }
-        GenericMovementBehavior::perform(robot);
     }
 };
 
@@ -195,8 +195,9 @@ bool NormalGameStrategy::update()
                 return true;
             }
             else if(isOnAttack) {
+                //If there is no attacker, find one.
                 if(currentMainAttacker == NULL) {
-                    assignBeh();
+                    assignAttackBehaviors();
                     return false;
                 }
                 /* If the attacker has kicked (isFinished), it has made a pass or a goal,
@@ -211,8 +212,7 @@ bool NormalGameStrategy::update()
                  * and the robots should directly go into defend. This allows swithcing
                  * between modes to always work.
                  */
-                //if(negedge(ballInOpGoal))
-                    //assignDefendBehaviors();
+                assignDefendBehaviors();
             }
         }
         return false;
@@ -231,16 +231,15 @@ void NormalGameStrategy::assignGoalieIfOk()
 
 //Static function to be used in other places.
 //Was added here to deal with simplebehaviors.cpp
-void NormalGameStrategy::moveRobotToIdleLine(Robot* robot)
+void NormalGameStrategy::moveRobotToIdleLine(Robot* robot, bool waiter)
 {
-    Point wait_point = Point(0, -1500+3000*TEAM);
+    Point wait_point(0, -1500+3000*TEAM);
 
-    if(Comparisons::distance(wait_point).minMyTeam() == robot) {
-        //Closest guy to the wait point sits there instead
+    //Closest guy to the wait point sits there instead, if requested
+    if(waiter && Comparisons::distance(wait_point).minMyTeam() == robot) {
         robot->assignBeh<GenericMovementBehavior>( wait_point );
-    }
-    else {
-        //Assigns the robot to sit along a line across the field
+    } else {
+        //Otherwise assigns the robot to sit along a line across the field
         int incSize = FIELD_WIDTH / (gameModel->getMyTeam().size() - 1);
         int y = -FIELD_WIDTH/2 + incSize * robot->getID();
         robot->assignBeh<RetreatAfterGoal>(y);
@@ -318,8 +317,7 @@ void NormalGameStrategy::assignAttackBehaviors(bool switchSides)
         driverBot->assignBeh<AttackMain>(recvBot);
           recvBot->assignBeh<AttackSupport>(driverBot);
     }
-    if(otherBot)
-     otherBot->assignBeh<OpBallBlocker>();
+
     assignGoalieIfOk();
 }
 
@@ -337,6 +335,10 @@ void NormalGameStrategy::assignDefendBehaviors()
     //Here we remove the current attacker, because we are defending
     currentMainAttacker = NULL;
 
+    //Robot that would be on the edge of the formation goes to block
+    Robot* edger = Comparisons::idNot(5).maxMyTeam();
+    if(edger) edger->assignBeh<OpBallBlocker>();
+
     //Usual special case for 5
     assignGoalieIfOk();
 }
@@ -349,7 +351,7 @@ void NormalGameStrategy::assignDefendBehaviors()
 void NormalGameStrategy::assignGoalKickBehaviors()
 {
     for(Robot* robot : gameModel->getMyTeam())
-        NormalGameStrategy::moveRobotToIdleLine(robot);
+        NormalGameStrategy::moveRobotToIdleLine(robot, true);
     assignGoalieIfOk();
     currentMainAttacker = NULL;
 }

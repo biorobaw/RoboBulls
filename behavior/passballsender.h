@@ -33,11 +33,12 @@
  *      amount of opponents players in its region
  * */
 
-class PassBallSender : public GenericMovementBehavior /*public Behavior*/
+class PassBallSender : public GenericMovementBehavior
 {
 public:
-    PassBallSender();
+    PassBallSender(Robot* waiter);
     void perform(Robot*);
+    bool isFinished() override;
 
     /*
      * finds the passing point based on the
@@ -74,11 +75,11 @@ public:
     vector <playersCharactristics> myTeamInfo; //stores all the robots charactristics
 
 private:
+    Robot* waitingRobot;    //A robot that is waiting at the line, used to start
     Point passingPoint;
     int receiverID;
     Point target;
-    enum states {initial, movingBehind, approaching, kicking, idling} state;
-
+    enum states {movingBehind, approaching, kicking, idling} state;
 };
 
 #endif // PASSBALLSENDER_H

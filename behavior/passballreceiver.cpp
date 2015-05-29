@@ -19,16 +19,13 @@
     #define R   200
 #endif
 
-GameModel *gm = GameModel::getModel();
+#define PASSBALRECV_DEBUG 0
 
-PassBallReceiver::PassBallReceiver()
+PassBallReceiver::PassBallReceiver(Robot* theSender)
 {
+    passer = theSender;
     state = initial;
-    ballLastSeen = gm->getBallPoint();
-    count = 170;
-    ballOrg = gm->getBallPoint();
-    sign = 0;
-    targetSign = 0;
+    kickToPoint = nullptr;
 }
 
 PassBallReceiver::~PassBallReceiver()
@@ -66,89 +63,60 @@ bool PassBallReceiver::playerInBadArea(Robot *robot)
 
 }
 
+Point PassBallReceiver::getPasserPassPoint()
+{
+    /* Here we downcast the generic Behavior pointer to use a method specific
+     * to PassBallSender
+     */
+    PassBallSender* s = dynamic_cast<PassBallSender*>(passer->getCurrentBeh());
+    return s->getPassingPoint();
+}
+
 void PassBallReceiver::perform(Robot *robot)
 {
     GameModel *gm = GameModel::getModel();
-
-    Point ballPos = gm->getBallPoint();
-    Point robotPos = robot->getRobotPosition();
-
     Point appGoal = gm->getOpponentGoal();
     Robot* oppGolie = gm->findOpTeam(5);
     Point goliePos = oppGolie->getRobotPosition();
     float min_y = appGoal.y - R;
     float max_y = appGoal.y + R;
-    Point goalArea;
+
     goalArea.x = appGoal.x;
 
-    if (goliePos.y >= 0)
-    {
+    if (goliePos.y >= 0) {
         goalArea.y = min_y;
-    }
-    else
-    {
+    } else {
         goalArea.y = max_y;
     }
 
-    if (Measurments::isClose(ballPos, robotPos, CLOSE_ENOUGH*2) || count == 0)
+    switch(state)
     {
-        switch(state)
-        {
-        case initial:
-            cout << "initial" << endl;
-            kickToPoint = new Skill::KickToPointOmni(goalArea);
+    case initial:
+        if(passer->getCurrentBeh()->isFinished()) {
+            //If the passer kicked, we move to kick the ball to the goal
+            kickToPoint = new Skill::KickToPointOmni(&goalArea);
             state = kicking;
-            if (goliePos.y >= 0)
-                sign = 0;
-            else
-                sign = 1;
-
-            targetSign = sign;
-            break;
-        case kicking:
-            cout << "kicking" << endl;
-            {
-            if (goliePos.y >= 0)
-                sign = 0;
-            else
-                sign = 1;
-               kickToPoint->perform(robot);
-            #if PENALTY_BEHAVIOR_DEBUG
-                cout<<"kicking performed!"<<endl;
-            #endif
-    //            pb = idling;
-            if (sign != targetSign)
-            {
-                state = initial;
-                targetSign = sign;
-            }
-            }
-
-            break;
-        case idling:
-            cout << "idling" << endl;
-            {
-                Skill::Stop stop;
-                stop.perform(robot);
-            #if PENALTY_BEHAVIOR_DEBUG
-                cout<<"idling performed!"<<endl;
-            #endif
-            }
-            break;
+        } else {
+            //Otherwise,we move to where the passer is going to kick.
+            float a = Measurments::angleBetween(robot, passer);
+            setMovementTargets(getPasserPassPoint(), a);
+            GenericMovementBehavior::perform(robot);
         }
-    } else {
-        Skill::Stop s;
-        s.perform(robot);
-    }
+        break;
 
-    if (Measurments::distance(ballOrg, ballPos) > CLOSE_ENOUGH && count != 0)
-    {
-        if (playerInBadArea(robot))
-            count = 0;
-        else
-            count--;
+    case kicking:
+        if(kickToPoint->perform(robot)) {
+            state = idling;
+        }
+        break;
+
+    case idling:
+        {
+            Skill::Stop stop;
+            stop.perform(robot);
+        }
+        break;
     }
-    cout << "count\t" << count << endl;
 }
 
 bool PassBallReceiver::isFinished()

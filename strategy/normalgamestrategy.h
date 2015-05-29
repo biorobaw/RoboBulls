@@ -41,9 +41,10 @@ public:
     void assignBeh() override;
     bool update() override;
 
+public:
     /* Static function: Moves robots to an idle line,
      * a line near the goal and spaced by ID. */
-    static void moveRobotToIdleLine(Robot *robot);
+    static void moveRobotToIdleLine(Robot* robot, bool waiter = false);
 
     /* Static functon: Assigns DefendFarFromBall to ID 5
      * if it is on the team */
