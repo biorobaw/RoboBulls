@@ -285,7 +285,7 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
         double robotAngle = robot->getOrientation();
         this->calculateVels(robot, pathEndInfo.endingPoint, m_targetAngle, moveType);
         if (Measurments::isClose(pathEndInfo.endingPoint, robot, lastDistTolerance) &&
-            Measurments::isClose(m_targetAngle, robotAngle, lastAngTolerance))
+            Measurments::isClose(m_targetAngle, robotAngle, lastAngTolerance*1.5))
         {
             lfront=lback=rfront=rback=left=right=back=0;
             return true;
