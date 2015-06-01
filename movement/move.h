@@ -97,6 +97,7 @@ private:
     std::deque<Point>   pathQueue;
     FPPA::PathDirection lastDirection;
     std::vector<Point>  lastObstacles;
+    long  lastLineDrawn = 0;
     
     float recrDistTolerance  = 30;
     float recrAngleTolerance = 3*M_PI/180;

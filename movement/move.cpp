@@ -1,3 +1,4 @@
+#include <time.h>
 #include "include/config/tolerances.h"     //ROT/DIST Tolerance
 #include "include/config/globals.h"        //OVERALL_VELOCITY
 #include "movement/move.h"
@@ -305,8 +306,13 @@ void Move::assignNewPath(const Point& robotPoint)
     this->lastObstacles = FPPA::getCurrentObstacles();    //Copies
 
     //Draws path lines on iterface
-    for (unsigned int i=1; i<pathQueue.size(); i++){
-        GuiInterface::getGuiInterface()->drawPath(pathQueue[i-1], pathQueue[i], i*2);
+    //Uses clock() to avoid line spam
+    long now = clock();
+    if((float)(now - lastLineDrawn) / CLOCKS_PER_SEC > 0.5)
+    {
+        lastLineDrawn = now;
+        for (unsigned int i=1; i<pathQueue.size(); i++)
+            GuiInterface::getGuiInterface()->drawPath(pathQueue[i-1], pathQueue[i], i*2);
     }
 }
 
