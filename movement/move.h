@@ -81,7 +81,6 @@ private:
     bool  isInitialized    = false;
     bool  useObstacleAvoid = true;
     bool  useAvoidBall     = true;
-    bool  useAvoidGoal     = true;
 
     struct pathEndState
     {

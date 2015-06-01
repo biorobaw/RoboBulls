@@ -26,6 +26,10 @@ protected:
     void calculateVels(Robot *rob, Point targetPoint, float targetAngle, Type moveType) override;
 
 private:
+    /* Used to calculate a potential field to "push" robots away from
+     * the goal areas if they are too close */
+    fourWheelVels calculateGoalField(Robot *robot, Type moveType);
+
     DifferentialCalculator dc;
     ThreeWheelCalculator   twc;
     FourWheelCalculator    fwc;

@@ -11,7 +11,7 @@
 
 /* FPPA Pathfinding Constants */
 #define FPPA_DEBUG 0
-#define MAX_RECURSION_DEPTH 3
+#define MAX_RECURSION_DEPTH 5
 #define FRAME_UPDATE_COUNT 10
 
 /* Implementation of the Fast Path Planning Algorithm
@@ -81,6 +81,8 @@ namespace impl
 
     static bool isObstacleAtPoint(const Point& toCheck)
     {
+        if(Region::goalLeftRegion.contains(toCheck) || Region::goalRightRegion.contains(toCheck))
+            return true;
         return Comparisons::isDistanceToLess(toCheck, ROBOT_SIZE).any_of(currentFrameObstacles);
     }
 
@@ -181,34 +183,11 @@ namespace impl
 
     /*********************************************************/
 
-    static void sanitizePoint(Point& pt, bool avoidGoal)
+    static void sanitizePoint(Point& pt)
     {
-        //Ensure point does not pass in any goalie box
-        if(avoidGoal) {
-            if(Region::goalLeftRegion.contains(pt))
-                pt.x = -2000;
-            if(Region::goalRightRegion.contains(pt))
-                pt.x =  2000;
-        }
-
         //Clamp point to inside field
         pt.x = Measurments::clamp(pt.x,-FIELD_LENGTH+100.f, FIELD_LENGTH-100.f);
         pt.y = Measurments::clamp(pt.y, -FIELD_WIDTH+100.f,  FIELD_WIDTH-100.f);
-    }
-
-    //Will ensure no line in the path passes though either goalie box
-    static void sanitizeLinePath(Path& p)
-    {
-        for(auto it = p.begin(); it < p.end()-1; ++it) {
-            Point& p0 = *it;
-            Point& p1 = *(it+1);
-            if(Region::goalLeftRegion.containsLine(p0, p1)) {
-                it = p.insert(it+1, Point(-2000, p1.y));
-            }
-            if(Region::goalRightRegion.containsLine(p0, p1)) {
-                it = p.insert(it+1, Point(2000, p1.y));
-            }
-        }
     }
 
     static float getPathLength(const Path& p)
@@ -238,7 +217,7 @@ namespace impl
 
 
     PathInfo findShortestPath(const Point& start, const Point& end, bool avoidBall,
-                              bool avoidGoal, PathDirection pathHint, float unlessValue)
+                              PathDirection pathHint, float unlessValue)
     {
         if(avoidBall)
             impl::currentFrameObstacles.push_back(gameModel->getBallPoint());
@@ -249,14 +228,8 @@ namespace impl
             impl::currentFrameObstacles.pop_back();
 
         //Limit all points in both paths paths to being inside the field and not in goalie box
-        for(Point& p : foundPaths.first)  impl::sanitizePoint(p, avoidGoal);
-        for(Point& p : foundPaths.second) impl::sanitizePoint(p, avoidGoal);
-
-        //Also if avoiding goal: name sure no lines go through them
-        if(avoidGoal) {
-            impl::sanitizeLinePath(foundPaths.first);
-            impl::sanitizeLinePath(foundPaths.second);
-        }
+        for(Point& p : foundPaths.first)  impl::sanitizePoint(p);
+        for(Point& p : foundPaths.second) impl::sanitizePoint(p);
 
         //Create PathInfos: pair  of {points vector, direction top/bottom}
         //Get distance and valid status of each

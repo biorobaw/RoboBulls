@@ -170,7 +170,8 @@ bool NormalGameStrategy::update()
         }
         else if(((prevGs == 'k' && TEAM == TEAM_BLUE) ||
                  (prevGs == 'K' && TEAM == TEAM_YELLOW)) &&
-                 !ballMoved)
+                 !ballMoved &&
+                 !hasStoppedForThisKickoff)
         {
             BehaviorAssignment<SimpleBehaviors> haltAssignment;
             haltAssignment.setSingleAssignment(true);

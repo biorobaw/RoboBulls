@@ -14,7 +14,7 @@
  * Without this there's little point in trying an actual game
  * [See movement/move_collisions.h]
  */
-#define MOVEMENT_USE_ROB_COLLIDE    0
+#define MOVEMENT_USE_ROB_COLLIDE    1
 /* Set this to 1 to use target-point randomization to avoid
  * robots going to the same point. Experimental.
  * [See movement/move_randomization.h]
@@ -102,9 +102,6 @@ bool Move::perform(Robot *robot, Movement::Type moveType)
     #endif
         return false;
     }
-
-    //useAvoidGoal: 0 if we are moving on the goalie, 1 otherwise. Always.
-    useAvoidGoal = (robot->getID() != 5);
     
     /* This is a correction  factor; since all movement classes derive from
      * this class, the angle is corrected if the special flag is used. Likewise,
@@ -300,7 +297,7 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
 void Move::assignNewPath(const Point& robotPoint)
 { 
     FPPA::PathInfo p = FPPA::findShortestPath
-            (robotPoint, m_targetPoint, useAvoidBall, useAvoidGoal, lastDirection, 0.50);
+            (robotPoint, m_targetPoint, useAvoidBall, lastDirection, 0.50);
     this->pathQueue.assign(p.first.begin(), p.first.end());
     this->lastDirection = p.second;
     this->lastObstacles = FPPA::getCurrentObstacles();    //Copies
