@@ -64,6 +64,8 @@ private:
     Robot* currentSuppAttacker;
     void findMostValidRobots(Point, Robot*&, Robot*&, Robot *&c_out);
     Point ballOriginalPos;
+    bool  needsAttackAssign;
+    bool  needsDefenceAssign;
 };
 
 #endif // NORMALGAMESTRATEGY_H

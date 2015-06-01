@@ -18,8 +18,8 @@ bool NormalGameStrategy::isOnAttack = true;
  * switching condition is true, that must be made until the attack/defend
  * switch is actually made
  */
-#define ATT_TO_DEF_SWITCH_COUNT 16
-#define DEF_TO_ATT_SWITCH_COUNT 128
+#define ATT_TO_DEF_SWITCH_COUNT 128
+#define DEF_TO_ATT_SWITCH_COUNT 16
 
 /* Defines the number of times the ball must be seen outside of the goal
  * to have the robots start moving again. Used to prevent jerkey movement
@@ -46,13 +46,13 @@ public:
             Point bp = gameModel->getBallPoint();
             float Opang = Measurments::angleBetween(ballBot, bp);
             float myAng = Measurments::angleBetween(robot, ballBot);
-            Point offset = Point(cos(Opang), sin(Opang)) * 500;
+            Point offset = Point(cos(Opang), sin(Opang)) * 1000;
             Point target = bp + offset;
-            setMovementTargets(target);
+            setMovementTargets(target, myAng);
             GenericMovementBehavior::perform(robot);
         } else {
             //Case to stop robot from floating
-            //setMovementTargets(robot->getRobotPosition());
+            setMovementTargets(robot->getRobotPosition());
         }
     }
 };
@@ -89,6 +89,8 @@ NormalGameStrategy::NormalGameStrategy()
     : currentMainAttacker(NULL)
     , currentSuppAttacker(NULL)
     , ballOriginalPos(GameModel::getModel()->getBallPoint())
+    , needsAttackAssign(true)
+    , needsDefenceAssign(true)
     { }
 
 /* So, here, the only way to get back into NGS is through a kickoff.
@@ -129,22 +131,22 @@ bool NormalGameStrategy::update()
     //Ball near goals, used as checks to not do anything first
     static bool ballInOpGoal = false;
     static bool ballinMyGoal = false;
-    ballInOpGoal = Measurments::isClose(ball, opGoal, 999);
-    ballinMyGoal = Measurments::isClose(ball, myGoal, 999);
+    ballInOpGoal = Measurments::isClose(ball, opGoal, 700);
+    ballinMyGoal = Measurments::isClose(ball, myGoal, 700);
 
     isOnAttack = considerSwitchCreiteria();
 
     /* If the ball is close to opponent goal or the opponent goal,
      * the robots retreat back to their half, and no attack/defend
-     * is run. ASSUMPTION: Ball never starts out near goal.
+     * is run. Changes to defence mode.
      */
     if(posedge(ballInOpGoal or ballinMyGoal))
         assignGoalKickBehaviors();
 
     if(ballInOpGoal or ballinMyGoal)
     {
-        /* A count is kept to ensure robots don't move until the ball is
-         * surely out of the goal
+        /* A count is kept to ensure robots don't move
+         * until the ball is surely out of the goal
          */
         ballNotInGoalCount = 0;
     }
@@ -197,6 +199,7 @@ bool NormalGameStrategy::update()
             else if(isOnAttack) {
                 //If there is no attacker, find one.
                 if(currentMainAttacker == NULL) {
+                    needsAttackAssign = true;
                     assignAttackBehaviors();
                     return false;
                 }
@@ -204,6 +207,7 @@ bool NormalGameStrategy::update()
                  * so we switch attack/defend behaviors. See assignAttackBehaviors
                  */
                 if(currentMainAttacker->getCurrentBeh()->isFinished()) {
+                    needsAttackAssign = true;
                     assignAttackBehaviors(true);
                 }
             }
@@ -258,38 +262,44 @@ void NormalGameStrategy::moveRobotToIdleLine(Robot* robot, bool waiter)
 bool NormalGameStrategy::considerSwitchCreiteria()
 {
     static int switchCounter = 0;
+    Robot* ballRobot = gameModel->getHasBall();
 
-    GameModel* gm = GameModel::getModel();
-    Robot* ballRobot = gm->getHasBall();
 
-    if(ballRobot == NULL) {
-        if(not(isOnAttack)) {
-            ++switchCounter;
-            return (switchCounter > DEF_TO_ATT_SWITCH_COUNT);
-        }
-        return true;
-    }
-    else if(ballRobot->isOnMyTeam() and not(isOnAttack)) {
+    if(ballRobot == NULL || (ballRobot->isOnMyTeam() and not(isOnAttack))) {
         ++switchCounter;
-        if(switchCounter > ATT_TO_DEF_SWITCH_COUNT) {
+        if(switchCounter > DEF_TO_ATT_SWITCH_COUNT) {
             /* We have seen the ball in our hands for long enough,
-             * we will switch to attack. (retrun true)
+             * we will switch to attack. (return true)
              */
+            needsDefenceAssign = true;
             switchCounter = 0;
             return true;
         }
     }
-    else if(not(ballRobot->isOnMyTeam()) and isOnAttack){
+    else if(ballRobot and not(ballRobot->isOnMyTeam()) and isOnAttack){
         ++switchCounter;
-        if(switchCounter > DEF_TO_ATT_SWITCH_COUNT) {
+        if(switchCounter > ATT_TO_DEF_SWITCH_COUNT) {
             /* We have not seen the ball in our hands for long enough,
-             * we will switch to defend. (retrun false)
+             * we will switch to defend. (return false)
              */
+            needsAttackAssign = true;
             switchCounter = 0;
             return false;
         }
     }
+    else {
+        //We default to defence if ball is in either goal
+        Point opGoal = gameModel->getOpponentGoal();
+        Point myGoal = gameModel->getMyGoal();
+        Point ball = gameModel->getBallPoint();
+        bool ballInOpGoal = Measurments::isClose(ball, opGoal, 700);
+        bool ballinMyGoal = Measurments::isClose(ball, myGoal, 700);
+        if(ballInOpGoal || ballinMyGoal) {
+            return false;
+        }
+    }
 
+    //No change in attack
     return NormalGameStrategy::isOnAttack;
 }
 
@@ -301,24 +311,33 @@ bool NormalGameStrategy::considerSwitchCreiteria()
  */
 void NormalGameStrategy::assignAttackBehaviors(bool switchSides)
 {
-    Robot* driverBot, *recvBot, *otherBot;
-    findMostValidRobots(gameModel->getBallPoint(), driverBot, recvBot, otherBot);
+    if(needsAttackAssign) {
+        needsAttackAssign = false;
+        needsDefenceAssign = true;
 
-    //First, makes all robots sit still (for now)
-    assignGoalKickBehaviors();
+        Robot* driverBot, *recvBot, *otherBot;
+        findMostValidRobots(gameModel->getBallPoint(), driverBot, recvBot, otherBot);
 
-    //Here we get a new attacker, because we are attacking
-    currentMainAttacker = driverBot;
+        //Here we get a new attacker, because we are attacking
+        currentMainAttacker = driverBot;
 
-    if(switchSides) {
-        driverBot->assignBeh<AttackSupport>(recvBot);
-          recvBot->assignBeh<AttackMain>(driverBot);
-    } else {
-        driverBot->assignBeh<AttackMain>(recvBot);
-          recvBot->assignBeh<AttackSupport>(driverBot);
+        //First, makes all robots sit still (for now)
+        for(Robot* robot : gameModel->getMyTeam()) {
+            if(robot != currentMainAttacker)
+                NormalGameStrategy::moveRobotToIdleLine(robot, true);
+        }
+        assignGoalieIfOk();
+
+        if(switchSides) {
+            driverBot->assignBeh<AttackSupport>(recvBot);
+              recvBot->assignBeh<AttackMain>(driverBot);
+        } else {
+            driverBot->assignBeh<AttackMain>(recvBot);
+              recvBot->assignBeh<AttackSupport>(driverBot);
+        }
+
+        assignGoalieIfOk();
     }
-
-    assignGoalieIfOk();
 }
 
 
@@ -328,19 +347,24 @@ void NormalGameStrategy::assignAttackBehaviors(bool switchSides)
  */
 void NormalGameStrategy::assignDefendBehaviors()
 {
-    //We're using the new and amazing DefendBehavior instead of other stuff
-    for(Robot* rob : gameModel->getMyTeam())
-        rob->assignBeh<DefendBehavior>();
+    if(needsDefenceAssign) {
+        needsDefenceAssign = false;
+        needsAttackAssign = true;
 
-    //Here we remove the current attacker, because we are defending
-    currentMainAttacker = NULL;
+        //We're using the new and amazing DefendBehavior instead of other stuff
+        for(Robot* rob : gameModel->getMyTeam())
+            rob->assignBeh<DefendBehavior>();
 
-    //Robot that would be on the edge of the formation goes to block
-    Robot* edger = Comparisons::idNot(5).maxMyTeam();
-    if(edger) edger->assignBeh<OpBallBlocker>();
+        //Here we remove the current attacker, because we are defending
+        currentMainAttacker = NULL;
 
-    //Usual special case for 5
-    assignGoalieIfOk();
+        //Robot closest to the ball moves to block
+        Robot* blocker = Comparisons::distanceBall().minMyTeam();
+        if(blocker) blocker->assignBeh<OpBallBlocker>();
+
+        //Usual special case for 5
+        assignGoalieIfOk();
+    }
 }
 
 
@@ -350,8 +374,9 @@ void NormalGameStrategy::assignDefendBehaviors()
  */
 void NormalGameStrategy::assignGoalKickBehaviors()
 {
-    for(Robot* robot : gameModel->getMyTeam())
+    for(Robot* robot : gameModel->getMyTeam()) {
         NormalGameStrategy::moveRobotToIdleLine(robot, true);
+    }
     assignGoalieIfOk();
     currentMainAttacker = NULL;
 }

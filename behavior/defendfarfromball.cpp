@@ -42,8 +42,8 @@ void DefendFarFromBall::perform(Robot *robot)
     */
 
     bool isScoreHazard =
-            Measurments::distance(myGoal, ballPoint) < 800
-            and Measurments::distance(myGoal, ballPoint) > 500
+            Measurments::distance(myGoal, ballPoint) < 1000
+            and Measurments::distance(myGoal, ballPoint) > 300
             and not(Measurments::isClose(robPoint, ballPoint, 100))
             and lastKickCounter <= 0
             and safeToKick;
@@ -85,7 +85,7 @@ void DefendFarFromBall::perform(Robot *robot)
         double   realAng = Measurments::angleBetween(myGoal, ballPoint);
         double centerAng = Measurments::angleBetween(cmpPoint, Point(0,0));
         double direction = realAng;
-        if(abs(cmpAng) > 90*(M_PI/180))
+        if(abs(cmpAng) > 120*(M_PI/180))
             direction = centerAng;
 
         //Just sitting and facing the ball

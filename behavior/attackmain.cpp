@@ -54,7 +54,6 @@ void AttackMain::perform(Robot * robot)
     switch (state)
     {
         case initial:
-            done = false;
             state = drive;
             drive_skill = new Skill::KickToPointOmni(gp, -1, shot_distance*1.25);
             break;
@@ -104,9 +103,9 @@ void AttackMain::perform(Robot * robot)
                 done = true;
                 state = initial;
             }
-            else if(!Measurments::isClose(bp, gp, shot_distance)) {
-                state = initial;
-            }
+            //else if(!Measurments::isClose(bp, gp, shot_distance)) {
+            //    state = initial;
+            //}
             break;
         #endif
         case pass:
