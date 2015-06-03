@@ -90,11 +90,6 @@ bool TestStrategy::update()
 
 void TestStrategy::assignBeh()
 {
-    //Point bp  = gameModel->getBallPoint();
-    //float ang = Measurments::angleBetween(bp, gameModel->getOpponentGoal())
-    //gameModel->findMyTeam(8)->assignBeh<RotateOnPoint>(bp, ang, 400);
-    //gameModel->findMyTeam(8)->assignBeh<KickBeh>();
-
     while(gameModel->findMyTeam(HALL_ROBOT_ID) == NULL);
 
     gameModel->findMyTeam(HALL_ROBOT_ID)->assignBeh<DefendBehavior>();
