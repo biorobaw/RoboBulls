@@ -31,11 +31,11 @@ const robotType robotIDTypes[] = {
 #if 1
 const robotType robotIDTypes[] = {
  /*0*/	fourWheelOmni,
- /*1*/	fourWheelOmni,
+ /*1*/	differential,
  /*2*/	fourWheelOmni,
  /*3*/	fourWheelOmni,
  /*4*/	fourWheelOmni,
- /*5*/	fourWheelOmni,
+ /*5*/	threeWheelOmni,
  /*6*/	fourWheelOmni,
  /*7*/	fourWheelOmni,
  /*8*/	fourWheelOmni,
