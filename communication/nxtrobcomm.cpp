@@ -88,6 +88,10 @@ void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
     #endif
         packet->chip_power = p;     //Unused; p and i are hacks for the Encoder Arduino robot
         packet->dribble_power = i;
+
+        //Reset kick and dribble statuses in robot
+        rob->setKick(0);
+        rob->setDrible(0);
     }
 
     // Send Array of packets
