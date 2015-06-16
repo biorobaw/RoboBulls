@@ -111,7 +111,7 @@ bool KickToPointOmni::perform(Robot* robot)
             // Slowly move towards the ball
             move_skill.recreate(bp, ballTargetAng, false, false);
         #if SIMULATED == 0
-            move_skill.setVelocityMultiplier(0.7);
+            //move_skill.setVelocityMultiplier(0.7);
         #endif
             move_skill.perform(robot);
 

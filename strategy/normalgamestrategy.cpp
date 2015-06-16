@@ -131,8 +131,8 @@ bool NormalGameStrategy::update()
     //Ball near goals, used as checks to not do anything first
     static bool ballInOpGoal = false;
     static bool ballinMyGoal = false;
-    ballInOpGoal = Measurments::isClose(ball, opGoal, 700);
-    ballinMyGoal = Measurments::isClose(ball, myGoal, 700);
+    ballInOpGoal = Measurments::isClose(ball, opGoal, 999);
+    ballinMyGoal = Measurments::isClose(ball, myGoal, 999);
 
     isOnAttack = considerSwitchCreiteria();
 
