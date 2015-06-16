@@ -33,15 +33,15 @@ Point KickOffStrategy::myKickoffPoints[10] = {
  *             *
  *   1  3      *
  *            |-|
- | 5  0       |o|
+ | 5    0     |o|
  *            |-|
  *   2  4      *
  *             *
  ******************/
 Point KickOffStrategy::opKickoffPoints[10] = {
-    /*0*/ Point(2200,    0),
-    /*1*/ Point(2500,  800),
-    /*2*/ Point(2500, -800),
+    /*0*/ Point(2000,    0),
+    /*1*/ Point(2200,  800),
+    /*2*/ Point(2200, -800),
     /*3*/ Point(2000,  800),
     /*4*/ Point(2000, -800),
     /*5*/ Point(2900,    0)

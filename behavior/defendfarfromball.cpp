@@ -7,6 +7,8 @@
 #define DISTANCE 300
 #define VEL_CHANGE_COUNT 3500
 
+int DefendFarFromBall::goalieDist = 900;
+
 DefendFarFromBall::DefendFarFromBall()
     : GenericMovementBehavior()
     , KTPSkill(nullptr)
@@ -42,7 +44,7 @@ void DefendFarFromBall::perform(Robot *robot)
     */
 
     bool isScoreHazard =
-            Measurments::distance(myGoal, ballPoint) < 1000
+            Measurments::distance(myGoal, ballPoint) < goalieDist
             and Measurments::distance(myGoal, ballPoint) > 300
             and not(Measurments::isClose(robPoint, ballPoint, 100))
             and lastKickCounter <= 0

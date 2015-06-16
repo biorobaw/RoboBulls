@@ -1,6 +1,7 @@
 #include <assert.h>
 #include "include/config/simulated.h"
 #include "skill/kicktopointomni.h"
+#include "skill/kicktopoint.h"
 #include "attackmain.h"
 
 AttackMain::AttackMain(Robot* attacker)
@@ -43,9 +44,9 @@ void AttackMain::perform(Robot * robot)
     //When the robot reaches the ball for the first time, drive_start_point is set to current position
     if(touched_ball == false)
     {
-        drive_start_point = rp;
         if(Measurments::isClose(rp,bp,250))
         {
+            drive_start_point = rp;
             touched_ball = true;
         }
     }
@@ -55,7 +56,7 @@ void AttackMain::perform(Robot * robot)
     {
         case initial:
             state = drive;
-            drive_skill = new Skill::KickToPointOmni(gp, -1, shot_distance*1.25);
+            drive_skill = new Skill::KickToPoint(gp, -1, shot_distance*1.25);
             break;
 
         case drive:
@@ -70,12 +71,12 @@ void AttackMain::perform(Robot * robot)
                     delete pass_skill;
                     delete drive_skill;
                     drive_skill = nullptr;
-                    pass_skill = new Skill::KickToPointOmni(&sp);
+                    pass_skill = new Skill::KickToPoint(&sp);
                     state = pass;
                 } else {
                     delete score_skill;
                     Point offset(0, -500 + rand() % 1000);
-                    score_skill = new Skill::KickToPointOmni(gp + offset, SCORE_ANGLE_TOLERANCE);
+                    score_skill = new Skill::KickToPoint(gp + offset, SCORE_ANGLE_TOLERANCE);
                     state = score;
                 }
             }

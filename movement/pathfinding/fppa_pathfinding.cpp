@@ -185,13 +185,22 @@ namespace impl
 
     static void sanitizePoint(Point& pt)
     {
-        //Clamp point to inside field
+        //Used to clamp point to inside field
         pt.x = Measurments::clamp(pt.x,-FIELD_LENGTH+100.f, FIELD_LENGTH-100.f);
         pt.y = Measurments::clamp(pt.y, -FIELD_WIDTH+100.f,  FIELD_WIDTH-100.f);
     }
 
+    static bool isValidPath(const Path& p)
+    {
+        //Returns true if no point in the path is within 20% of the edge of the field
+        //Exclude the first point becasue it is the robot
+        return std::none_of(p.begin()+1, p.end(),[](const Point& t) {
+            return abs(t.x) >= 0.80*FIELD_LENGTH || abs(t.y) >= 0.80*FIELD_WIDTH;});
+    }
+
     static float getPathLength(const Path& p)
     {
+        //Generic loop summing the distance between nodes in the path
         float totalDist = 0;
         for(auto it = p.begin(); it != p.end()-1; ++it)
             totalDist += Measurments::distance(*it, *(it+1));
@@ -219,22 +228,24 @@ namespace impl
     PathInfo findShortestPath(const Point& start, const Point& end, bool avoidBall,
                               PathDirection pathHint, float unlessValue)
     {
-        if(avoidBall)
-            impl::currentFrameObstacles.push_back(gameModel->getBallPoint());
+        if(avoidBall) impl::currentFrameObstacles.push_back(gameModel->getBallPoint());
 
         std::pair<Path,Path> foundPaths = impl::findBothPaths(start, end, avoidBall);
 
-        if(avoidBall)
-            impl::currentFrameObstacles.pop_back();
-
-        //Limit all points in both paths paths to being inside the field and not in goalie box
-        for(Point& p : foundPaths.first)  impl::sanitizePoint(p);
-        for(Point& p : foundPaths.second) impl::sanitizePoint(p);
+        if(avoidBall) impl::currentFrameObstacles.pop_back();
 
         //Create PathInfos: pair  of {points vector, direction top/bottom}
+        PathInfo topPathInfo = std::make_pair(std::move(foundPaths.first),  PathDirection::Top);
+        PathInfo botPathInfo = std::make_pair(std::move(foundPaths.second), PathDirection::Bottom);
+
+        //Invalidate any path going along edge of field, and
+        //Limit all points in both paths paths to being inside the field
+        for(Point& p : topPathInfo.first) impl::sanitizePoint(p);
+        for(Point& p : botPathInfo.first) impl::sanitizePoint(p);
+        if(!impl::isValidPath(topPathInfo.first)) return botPathInfo;
+        if(!impl::isValidPath(botPathInfo.first)) return topPathInfo;
+
         //Get distance and valid status of each
-        PathInfo topPathInfo = std::make_pair(foundPaths.first, PathDirection::Top);
-        PathInfo botPathInfo = std::make_pair(foundPaths.second, PathDirection::Bottom);
         float topTotalDist   = impl::getPathLength(topPathInfo.first);
         float botTotalDist   = impl::getPathLength(botPathInfo.first);
 

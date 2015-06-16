@@ -11,15 +11,18 @@
     #define BEHIND_RADIUS (ROBOT_RADIUS*2.25)
     #define CLOSE_ENOUGH 110
     #define R   200
+    #define SPEED_TOL 0.15
 #else
     #define ANGLE   (5 * M_PI/180)
     #define CLOSE_TO_BALL 110
     #define BEHIND_RADIUS (ROBOT_RADIUS*2.25)
     #define CLOSE_ENOUGH 220
     #define R   100
+    #define SPEED_TOL 0.8
 #endif
 
 #define KTGOAL_DEBUG 0
+
 
 KickToGoal::KickToGoal()
 {
@@ -39,7 +42,7 @@ bool KickToGoal::checkifOkay()
     if(++delayCount < 100)
         return false;
     const auto& myT = gameModel->getMyTeam();
-    return std::all_of(myT.begin(),myT.end(),[](Robot* r){return r->getSpeed() < 0.15;});
+    return std::all_of(myT.begin(),myT.end(),[](Robot* r){return r->getSpeed() < 0.08;});
 }
 
 void KickToGoal::perform(Robot * r)

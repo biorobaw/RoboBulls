@@ -13,6 +13,10 @@ class DefendFarFromBall : public GenericMovementBehavior
 public:
     DefendFarFromBall();
     void perform(Robot*);
+
+    //Distance to goal needed for goalie to react
+    static int goalieDist;
+
 public:
     Skill::KickToPointOmni* KTPSkill = nullptr;
     bool wasNotPreviousScoreHazard;
