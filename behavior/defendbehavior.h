@@ -57,14 +57,16 @@ private:
 
 
 /************************************************************/
-/* DefendState To choose a point to idle at and
- * go to kick the ball away if it is coming close
+/* DefendState To choose a point to idle at.
+ * If activeKick is true, goes to kick the ball away if it is coming close.
  */
 class DefendStateIdle : public DefendState, public GenericMovementBehavior
 {
 public:
-     DefendStateIdle();
+     DefendStateIdle(bool activeKick = true);
      DefendState* action(Robot* robot) override;
+private:
+    bool activeKicking;
 };
 
 
@@ -108,10 +110,11 @@ private:
 class DefendBehavior : public Behavior
 {
 public:
-     DefendBehavior();
+     DefendBehavior(bool activeKick = true);
     ~DefendBehavior();
     void perform(Robot *) override;
 private:
+    bool activeKicking;         //Do we move from the defence to kick away ball?
     static int currentUsers;    //Number of robots currently using this behavior
     DefendState* state;         //Current state (one of the above)
 };

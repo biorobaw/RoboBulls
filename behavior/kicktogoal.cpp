@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "kicktogoal.h"
 #include "include/config/simulated.h"
 #include "model/gamemodel.h"
@@ -15,7 +16,7 @@
     #define CLOSE_TO_BALL 110
     #define BEHIND_RADIUS (ROBOT_RADIUS*2.25)
     #define CLOSE_ENOUGH 220
-    #define R   200
+    #define R   100
 #endif
 
 #define KTGOAL_DEBUG 0
@@ -24,11 +25,21 @@ KickToGoal::KickToGoal()
 {
     ballOrig = GameModel::getModel()->getBallPoint();
     state = initial;
+    okay = false;
+    delayCount = 0;
 }
 
 KickToGoal::~KickToGoal()
 {
     delete kickToPoint;
+}
+
+bool KickToGoal::checkifOkay()
+{
+    if(++delayCount < 100)
+        return false;
+    const auto& myT = gameModel->getMyTeam();
+    return std::all_of(myT.begin(),myT.end(),[](Robot* r){return r->getSpeed() < 0.15;});
 }
 
 void KickToGoal::perform(Robot * r)
@@ -42,14 +53,13 @@ void KickToGoal::perform(Robot * r)
     Point goalArea;
     goalArea.x = appGoal.x;
 
-    if (goaliePos.y >= 0)
-    {
-        goalArea.y = min_y;
+    //Waits until all robots have moved away before doings things
+    if(!okay) {
+        okay = checkifOkay();
+        if(!okay) return;
     }
-    else
-    {
-        goalArea.y = max_y;
-    }
+
+    goalArea.y = (goaliePos.y >= 0) ? min_y : max_y;
 
     // Evaluate possible transitions
     switch(state)
