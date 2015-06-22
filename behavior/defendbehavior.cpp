@@ -73,18 +73,19 @@ DefendState* DefendState::action(Robot* robot)
     if(whoIsKicking==-1 && !ballIsMovingAway() && abs(bp.x - gl.x) < FIELD_LENGTH)
     {
         /* If the ball is on our side, we make the robots sway, while
-         * still information, to face the ball.These are the coefficients
+         * still in formation, to face the ball. These are the coefficients
          * for multiplying cos and sin by for changing from goal.
          * o_coeffs are the angle offsets, for sideways formation.
+         * o is the angle difference betwween two adjacent robots.
          *
          * Multiplying X by `opSide` makes the addition to the goal point
          * always point torwards the middle. (Not really though)
          */
-        static const float o = 0.2617993;
+        static const float o = 0.2617993 + (15 + 10*SIMULATED) * (M_PI/180);
         static int   coeffs[] = {1500, 1300, 1300, 1100, 1100};
-     #if TEAM == TEAM_BLUE
+    #if TEAM == TEAM_BLUE
         static int o_coeffs[] = {   0,    1,   -1,    2,   -2};
-     #else
+    #else
         static int o_coeffs[] = {   0,   -1,    1,   -2,    2};
     #endif
         float a = Measurments::angleBetween(gl, bp);
@@ -176,7 +177,8 @@ DefendState::~DefendState() {
  #define GOALIE_DIST   300
 #endif
 
-DefendStateIdle::DefendStateIdle()
+DefendStateIdle::DefendStateIdle(bool activeKick)
+    : activeKicking(activeKick)
 {
 #if DEFENDBEHAVIOR_DEBUG
     std::cout << "DefendStateIdle Created" << std::endl;
@@ -219,7 +221,8 @@ DefendState* DefendStateIdle::action(Robot* robot)
         float bs  = gameModel->getBallSpeed();
         float velang = atan2(bv.y, bv.x);
 
-        if( ( abs(bpr.x - gl.x) < 2900 ) &&
+        if( ( activeKicking) &&
+            ( abs(bpr.x - gl.x) < 2900 ) &&
             ( Measurments::lineDistance(chosenPoint, bp, bpr) < LINE_DISTANCE ) &&
             ( bs > 0.2 ) &&
             ( Measurments::isClose(velang, Measurments::angleBetween(bp, gl), 90*(M_PI/180))))
@@ -232,7 +235,8 @@ DefendState* DefendStateIdle::action(Robot* robot)
          * \"If the ball is close AND nobody is kicking AND I'm closest to ball...
          * \"AND the ball near the goal AND the ball is not moving away...\" Kick it.
          */
-        if(Measurments::distance(bp, robot) < 4*LINE_DISTANCE
+        if(    activeKicking
+            && Measurments::distance(bp, robot) < 4*LINE_DISTANCE
             && Measurments::distance(bp, gl) < 2500
             && whoIsKicking == -1
             && not(ballIsMovingAway())
@@ -380,8 +384,9 @@ bool DefendStateKick::tryGetValidLinePoint(Robot* r)
 
 int DefendBehavior::currentUsers = 0;
 
-DefendBehavior::DefendBehavior() 
-    : state(new DefendStateIdle())
+DefendBehavior::DefendBehavior(bool activeKick)
+    : activeKicking(activeKick)
+    , state(new DefendStateIdle(activeKick))
 { 
     if(currentUsers == 0) {
         DefendState::setupClaimedPoints();

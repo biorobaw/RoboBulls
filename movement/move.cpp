@@ -176,7 +176,7 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
         return false;
         break;
     case MOVE_COLLIDED:
-        lfront = lback = rfront = rback = -40;
+        left = right = lfront = lback = rfront = rback = -40;
         if(Collisions::needsNewPath(robot)) {
             this->assignNewPath(robot->getRobotPosition());
         }

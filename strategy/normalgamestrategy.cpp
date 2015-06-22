@@ -131,8 +131,8 @@ bool NormalGameStrategy::update()
     //Ball near goals, used as checks to not do anything first
     static bool ballInOpGoal = false;
     static bool ballinMyGoal = false;
-    ballInOpGoal = Measurments::isClose(ball, opGoal, 700);
-    ballinMyGoal = Measurments::isClose(ball, myGoal, 700);
+    ballInOpGoal = Measurments::isClose(ball, opGoal, DefendFarFromBall::goalieDist);
+    ballinMyGoal = Measurments::isClose(ball, myGoal, DefendFarFromBall::goalieDist);
 
     isOnAttack = considerSwitchCreiteria();
 
@@ -293,8 +293,8 @@ bool NormalGameStrategy::considerSwitchCreiteria()
         Point opGoal = gameModel->getOpponentGoal();
         Point myGoal = gameModel->getMyGoal();
         Point ball = gameModel->getBallPoint();
-        bool ballInOpGoal = Measurments::isClose(ball, opGoal, 700);
-        bool ballinMyGoal = Measurments::isClose(ball, myGoal, 700);
+        bool ballInOpGoal = Measurments::isClose(ball, opGoal, DefendFarFromBall::goalieDist);
+        bool ballinMyGoal = Measurments::isClose(ball, myGoal, DefendFarFromBall::goalieDist);
         if(ballInOpGoal || ballinMyGoal) {
             return false;
         }
@@ -352,16 +352,17 @@ void NormalGameStrategy::assignDefendBehaviors()
         needsDefenceAssign = false;
         needsAttackAssign = true;
 
-        //We're using the new and amazing DefendBehavior instead of other stuff
-        for(Robot* rob : gameModel->getMyTeam())
-            rob->assignBeh<DefendBehavior>();
-
-        //Here we remove the current attacker, because we are defending
-        currentMainAttacker = NULL;
-
         //Robot closest to the ball moves to block
         Robot* blocker = Comparisons::distanceBall().minMyTeam();
         if(blocker) blocker->assignBeh<OpBallBlocker>();
+
+        //We're using the new and amazing DefendBehavior instead of other stuff
+        for(Robot* rob : gameModel->getMyTeam())
+            if(rob->getID() != blocker->getID())
+                rob->assignBeh<DefendBehavior>();
+
+        //Here we remove the current attacker, because we are defending
+        currentMainAttacker = NULL;
 
         //Usual special case for 5
         assignGoalieIfOk();

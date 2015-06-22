@@ -25,7 +25,9 @@ void StopStrategy::assignBeh()
         robot->assignBeh<GenericMovementBehavior>(robTarget, targetAngle);
     }
 
-    gameModel->findMyTeam(5)->assignBeh<DefendFarFromBall>();
+    Robot* goalie = gameModel->findMyTeam(5);
+    if(goalie)
+        goalie->assignBeh<DefendFarFromBall>();
 }
 
 bool StopStrategy::update()

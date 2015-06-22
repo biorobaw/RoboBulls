@@ -22,7 +22,7 @@
  * for the robot to be considered moving. This is used to have the robots
  * not yield to a robot that is not moving.
  */
-#define ROBOT_MOVING_DIST_TOL       60
+#define ROBOT_MOVING_DIST_TOL       100
 /* Defines the amount of times each robot's distance has to be considered
  * "not moving" for the yielding robots to not yield to that robot
  */
@@ -36,7 +36,7 @@
  * will never find a path around the collision object due to the close-to-start
  * FPPA exclusion rule.
  */
-#define ROBOT_MOVE_BACKUP_DIST      (ROBOT_SIZE*1.5)
+#define ROBOT_MOVE_BACKUP_DIST      (ROBOT_SIZE*1.2)
 
 /************************************************************************/
 /* Implementation */
@@ -169,15 +169,17 @@ namespace detail
 
     bool robotFacingRobot(Robot* a, Robot* b)
     {
-        /* For the omni robots, they don't face each other. So we look at their
-         * velocity direction to determine "facing"
-         */
         float tolerance = 33 * (M_PI / 180);
-        Point rv = a->getVelocity();
-        float ra = atan2(rv.y, rv.x);
-        float bad = Measurments::angleBetween(a, b);
-        return Measurments::isClose(ra, bad, tolerance);
-        //return Comparisons::isFacingPoint(a, b, tolerance);
+        if(a->type() != differential) {
+            /* For the omni robots, they don't face each other. So we look at their
+             * velocity direction to determine "facing" */
+            Point rv = a->getVelocity();
+            float ra = atan2(rv.y, rv.x);
+            float bad = Measurments::angleBetween(a, b);
+            return Measurments::isClose(ra, bad, tolerance);
+        } else {
+            return Comparisons::isFacingPoint(a, b, tolerance);
+        }
     }
 
     bool robotCollideHazard(Robot* a, Robot* b)

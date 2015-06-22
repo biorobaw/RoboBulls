@@ -141,10 +141,11 @@ void IndiectKickStrategy::assignBeh()
 char IndiectKickStrategy::getNextStrategy()
 {
     /* Here we check to see if the robot has kicked (PassBallReceiver's
-     * "isFinished" ans return to NGS if so
-     */
+     * "isFinished" ans return to NGS if so */
+#if 0
     if(receiverBot != NULL) {
         return receiverBot->getCurrentBeh()->isFinished() ? ' ' : '\0';
     }
+#endif
     return '\0';
 }

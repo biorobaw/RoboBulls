@@ -37,7 +37,7 @@ int FORWARD_WAIT_COUNT = 0;
 int MOVE_TOLERANCE = DIST_TOLERANCE/2;
 #else
 int BEHIND_RADIUS  = ROBOT_SIZE;
-int KICK_DISTANCE  = 140;
+int KICK_DISTANCE  = 200;
 int FACING_ANGLE_TOL  = 20;
 int FORWARD_WAIT_COUNT = 15;
 int MOVE_TOLERANCE = DIST_TOLERANCE*1.2;
@@ -111,7 +111,7 @@ bool KickToPointOmni::perform(Robot* robot)
             // Slowly move towards the ball
             move_skill.recreate(bp, ballTargetAng, false, false);
         #if SIMULATED == 0
-            move_skill.setVelocityMultiplier(0.7);
+            //move_skill.setVelocityMultiplier(0.7);
         #endif
             move_skill.perform(robot);
 

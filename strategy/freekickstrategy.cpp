@@ -19,8 +19,8 @@ void FreeKickStrategy::assignBeh()
 
     myTeam = gm->getMyTeam();
 
-    if ((gm->getGameState() == 'F' && TEAM == TEAM_BLUE)
-            || (gm->getGameState() == 'f' && TEAM == TEAM_YELLOW))
+    if ((gm->getGameState() == 'F' && TEAM == TEAM_BLUE) ||
+        (gm->getGameState() == 'f' && TEAM == TEAM_YELLOW))
     {
         BehaviorAssignment<KickToGoal> kickToGoalAssignment;
         kickToGoalAssignment.setSingleAssignment(true);
@@ -82,13 +82,8 @@ void FreeKickStrategy::assignBeh()
     else if ((gm->getGameState() == 'f' && TEAM == TEAM_BLUE)
             || (gm->getGameState() == 'F' && TEAM == TEAM_YELLOW))
     {
-        BehaviorAssignment<DefendFarFromBall> golieAssignment;
-        golieAssignment.setSingleAssignment(true);
-        for (Robot* rob: myTeam)
-        {
-            if (rob->getID() == 5)
-                golieAssignment.assignBeh(rob);
-        }
+        gameModel->findMyTeam(5)->assignBeh<DefendFarFromBall>();
+
         BehaviorAssignment<SimpleBehaviors> simpleAssignment;
         simpleAssignment.setSingleAssignment(true);
         for (unsigned i = 0; i < myTeam.size(); i++)
@@ -103,13 +98,14 @@ void FreeKickStrategy::assignBeh()
 char FreeKickStrategy::getNextStrategy()
 {
     /* Here we check to see if the robot has kicked (KickToGoal's
-     * "isFinished") and go to NormalGame if so
-     */
+     * "isFinished") and go to NormalGame if so */
+#if 0
     if(kickerRobot != NULL) {
         return kickerRobot->getCurrentBeh()->isFinished() ? ' ' : '\0';
     } else {
-        //method to stop on opponent free kicks
+        method to stop on opponent free kicks
     }
+#endif
 
     return '\0';
 }
