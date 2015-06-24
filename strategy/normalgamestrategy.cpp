@@ -319,9 +319,6 @@ void NormalGameStrategy::assignAttackBehaviors(bool switchSides)
         Robot* driverBot, *recvBot, *otherBot;
         findMostValidRobots(gameModel->getBallPoint(), driverBot, recvBot, otherBot);
 
-        //Here we get a new attacker, because we are attacking
-        currentMainAttacker = driverBot;
-
         //First, makes all robots sit still (for now)
         for(Robot* robot : gameModel->getMyTeam()) {
             if(robot != currentMainAttacker)
@@ -329,12 +326,15 @@ void NormalGameStrategy::assignAttackBehaviors(bool switchSides)
         }
         assignGoalieIfOk();
 
+        //Behaviors are assigned and assign the new attacker, because we are attacking
         if(switchSides) {
             driverBot->assignBeh<AttackSupport>(recvBot);
               recvBot->assignBeh<AttackMain>(driverBot);
+            currentMainAttacker = recvBot;
         } else {
             driverBot->assignBeh<AttackMain>(recvBot);
               recvBot->assignBeh<AttackSupport>(driverBot);
+            currentMainAttacker = driverBot;
         }
 
         assignGoalieIfOk();

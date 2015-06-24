@@ -88,7 +88,7 @@ void AttackMain::perform(Robot * robot)
             {
                 delete score_skill;
                 Point offset(0, -500 + rand() % 1000);
-                score_skill = new Skill::KickToPointOmni(gp + offset, SCORE_ANGLE_TOLERANCE);
+                score_skill = new Skill::KickToPoint(gp + offset, SCORE_ANGLE_TOLERANCE);
                 state = score;
             }
             else
