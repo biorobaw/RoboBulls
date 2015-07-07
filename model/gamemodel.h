@@ -49,6 +49,7 @@ public:
     Robot* findOpTeam(int);                 //Looks for a robot with specified id in opTeam
     Robot* find(int, std::vector<Robot*>&); //General-case find
     bool   isNewCommand();
+    void   removeRobot(int id, int team);   //Removes a robot ID from a team
 
 private:
     /* StrategyController link */
@@ -84,7 +85,7 @@ private:
     void setBlueGoals(char);
     void setYellowGoals(char);
     void notifyObservers();
-    void setPreviousGameState(char);
+    void setPreviousGameState(char);   
     
 public:
     //Old legacy functions

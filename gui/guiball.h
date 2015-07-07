@@ -6,6 +6,8 @@
 #include <QPixmap>
 #include <QLabel>
 
+//GuiBall isthe ball on the field (FieldPanel)
+
 class GuiBall : public QGraphicsItem
 {
 public:

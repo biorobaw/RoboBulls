@@ -14,6 +14,7 @@ class GuiField;
 class GuiDrawLine;
 class MainWindow;
 
+//FieldPanel is the view container of the field objects on the right
 
 class FieldPanel : public QObject   // Some kind of Q type required for cross-class signals & slots
 {
@@ -28,6 +29,7 @@ public:
     void centerViewOnBot();
     void scanForScrollModifier();
     void updateLineQueue();
+    void hidePrimeBotPanel();
 
 
 //private:

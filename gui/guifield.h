@@ -5,6 +5,8 @@
 #include <QGraphicsItem>
 #include <QDebug>
 
+//GuiField is the background of the field itself, behind the FieldPanel
+
 class GuiField : public QGraphicsItem
 {
 public:

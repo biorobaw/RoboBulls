@@ -278,13 +278,15 @@ void FieldPanel::updateScene() {
         // Blue Team
         for (int i=0; i<dash->teamSize_blue; i++) {
             if (dash->gamemodel->find(i, dash->gamemodel->getMyTeam()) != NULL) {
+                guiTeam[i]->show();
+                guiLabels[i]->show();
                 guiTeam[i]->setX(dash->objectPos->getBotCoordX(true, i));
                 guiTeam[i]->setY(dash->objectPos->getBotCoordY(true, i));
-                if (guiTeam[i]->enabled) {
-                    guiTeam[i]->setZValue(3);
-                } else {
-                    guiTeam[i]->setZValue(2);
-                }
+                //if (guiTeam[i]->enabled) {
+                 //   guiTeam[i]->setZValue(3);
+                //} else {
+                    guiTeam[i]->setZValue(1);
+                //}
                 double angle = dash->objectPos->getBotOrientDouble(true, i) ;
                 guiTeam[i]->setRotation(angle);
                 // Action colors (may be better in the button slots)
@@ -315,12 +317,18 @@ void FieldPanel::updateScene() {
                 }else{
                     guiLabels[i]->hidden = true;
                 }
+            } else {
+                //If there is no robot, we need to hide it.
+                guiTeam[i]->hide();
+                guiLabels[i]->hide();
             }
         }// blue team for loop
 
         // Yellow Team
         for (int i=0; i<dash->teamSize_yellow; i++) {
             if (dash->gamemodel->find(i, dash->gamemodel->getOponentTeam()) != NULL) {
+                guiTeamY[i]->show();
+                guiLabelsY[i]->show();
                 guiTeamY[i]->setX(dash->objectPos->getBotCoordX(false, i));
                 guiTeamY[i]->setY(dash->objectPos->getBotCoordY(false, i));
                 guiTeamY[i]->setZValue(3);
@@ -345,6 +353,9 @@ void FieldPanel::updateScene() {
                 }else{
                     guiLabelsY[i]->hidden = true;
                 }
+            } else {
+                guiTeamY[i]->hide();
+                guiLabelsY[i]->hide();
             }
         }// yellow team for loop
 
@@ -598,5 +609,10 @@ void FieldPanel::defaultZoom() {
     dash->ui->gView_field->centerOn(sidelines);
 }
 
+void FieldPanel::hidePrimeBotPanel()
+{
+    dash->ui->frame_primeBot->hide();
+    selectedBot = -1;
+}
 
 

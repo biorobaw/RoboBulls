@@ -295,16 +295,9 @@ void RobotPanel::updateBotPanel() {
 
             botIconFrames[i]->update();
 
-            // TEST
-//            cout << "Robot " << i << " behavior: " <<
-//                    dash->gamemodel->find(i, dash->gamemodel->getMyTeam())->getCurrentBeh()->toString() << "\n";
-//            dash->selrobotpanel->guiPrintRobot(i, dash->gamemodel->find(i, dash->gamemodel->getMyTeam())->getCurrentBeh()->toString());
-
         } else {
             botFrames[i]->setEnabled(false);
-//            botFrames[i]->hide();
-//            dash->ui->layout_robots->setSpacing(-91*i);
-
+            botIconFrames[i]->setVisible(false);
         }
     }
 

@@ -6,6 +6,8 @@
 
 class MainWindow;
 
+//The panel at the top left when a robot is selected
+
 class SelRobotPanel
 {
 public:
@@ -17,6 +19,7 @@ public:
     void guiPrintRobot(int robotID, std::string output);
     void printBehavior(int id);
     void setupSelRobotPanel();
+    void hide();    //Hides the selected bot panel and resets selected/overridden bot
 
 
 public slots:

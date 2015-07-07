@@ -7,6 +7,8 @@
 #include <QLabel>
 #include <QPaintEvent>
 
+//A GuiRobot is a robot on the field (FieldPanel)
+
 class GuiRobot : public QGraphicsItem   // inheriting QGraphicsItem
 {
 public:

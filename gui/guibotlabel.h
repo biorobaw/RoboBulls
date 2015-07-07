@@ -6,6 +6,9 @@
 #include <QPixmap>
 #include <QLabel>
 
+//GuiBotLabel is the ID and ball indication label on the robot on the field.
+//(GuiRobot on the FieldPanel)
+
 class GuiBotLabel : public QGraphicsItem
 {
 public:

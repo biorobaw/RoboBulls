@@ -16,6 +16,8 @@ class FieldPanel;
 class MainWindow;
 class GameModel;
 
+//RobotPanel is the sidebar of robot display slots
+
 class RobotPanel : public QObject   // Some kind of Q type required for cross-class signals & slots
 {
     Q_OBJECT                        // this macro required for cross-class signals & slots

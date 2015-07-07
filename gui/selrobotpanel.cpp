@@ -53,7 +53,7 @@ void SelRobotPanel::printBehavior(int id) {
 }
 
 void SelRobotPanel::setupSelRobotPanel() {
-    dash->ui->frame_primeBot->hide();
+    hide();
 
     return;
 }//end guiPrintRobot()
@@ -72,8 +72,14 @@ void SelRobotPanel::updateSelectedBotPanel(int id) {
         dash->ui->box_primeBot->setTitle(" ");
         dash->ui->text_primeBot->setText(" ");
         // hiding widgets
-        dash->ui->frame_primeBot->hide();
+        hide();
     } else {
+        //Check for removal when selected; we hide the panel and do nothing
+        if(!dash->gamemodel->findMyTeam(id)) {
+            hide();
+            return;
+        }
+
         // showing widgets
         dash->ui->frame_primeBot->show();
 
@@ -144,10 +150,7 @@ void SelRobotPanel::updateSelectedBotPanel(int id) {
             dash->ui->check_botOverride->setEnabled(false);
             dash->ui->check_botOverride->hide();
         }
-        // TEST
-        if (dash->robotpanel->botIcons[id]->enabled) {
-//            printBehavior(id);
-        }
+
         dash->guiPrint(getbehavior->getBehaviorName(dash->gamemodel->find(id, dash->gamemodel->getMyTeam())));
         guiPrintRobot(id, "Behavior Keywords:");
         QStringList keywords = dash->objectPos->getKeyWords(getbehavior->getBehaviorName(dash->gamemodel->find(id, dash->gamemodel->getMyTeam())));
@@ -166,3 +169,9 @@ void SelRobotPanel::updateSelectedBotPanel(int id) {
     }
 }
 
+void SelRobotPanel::hide()
+{
+    dash->ui->frame_primeBot->hide();
+    dash->fieldpanel->selectedBot = -1;
+    dash->ui->check_botOverride->setChecked(false);
+}

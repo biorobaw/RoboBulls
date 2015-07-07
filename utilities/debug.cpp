@@ -3,10 +3,17 @@
 #include <vector>
 #include <iostream>
 #include <thread>
+#include <functional>
 #include <cstdlib>
+#include "model/gamemodel.h"
+#include "include/config/team.h"
+#include "utilities/debug.h"
 
 namespace debug
 {
+
+//Map of registered functions to their functions
+static std::unordered_map<std::string, debug_fn> funcMap;
 
 //Map of registered variable names to integer pointers
 static std::unordered_map<std::string, int*> commandMap;
@@ -54,7 +61,7 @@ static void debugListenFn()
             if(arguments.size() == 3) {
                 auto it = commandMap.find(arguments[1]);
                 if( it != commandMap.end() ) {
-                    *(it->second) = std::atoi(arguments[2].c_str());    
+                    *(it->second) = std::atoi(arguments[2].c_str()); //pointer is set here
                 } else {
                     std::cout << "No entry \"" << arguments[1] << "\" exists" << std::endl;
                 }
@@ -71,13 +78,30 @@ static void debugListenFn()
                     std::cout << "No entry \"" << arguments[1] << "\" exists" << std::endl;
                 }
             }
-            //Print all registered variables
+            //Print all registered variables and functions
             else if(arguments.size() == 1) {
                 for(const auto& entry : commandMap) {
-                    std::cout << entry.first << " " << *(entry.second) << std::endl;
+                    std::cout << "i  " << entry.first << " " << *(entry.second) << std::endl;
+                }
+                for(const auto& entry : funcMap) {
+                    std::cout << "f  " << entry.first << std::endl;
                 }
             }
-        } 
+        }
+        else if(arguments[0] == "call")
+        {
+            if(arguments.size() > 1) {
+                const std::string& funcName = arguments[1];
+                if(funcMap.find(funcName) != funcMap.end()) {
+                    std::vector<std::string> args(arguments.begin()+2, arguments.end());
+                    funcMap[funcName](args);    //Function is called here
+                } else {
+                    std::cout << "No registed function \"" << funcName << "\"" << std::endl;
+                }
+            } else {
+                std::cout << "Enter a function name to call" << std::endl;
+            }
+        }
         else {
             std::cout << "Unrecognized command \"" << arguments[0] << "\"" << std::endl;
         }
@@ -92,13 +116,36 @@ void registerVariable(const std::string& variable, int* pointer)
     commandMap[variable] = pointer;
 }
 
+void registerFunction(const std::string& name, debug_fn function)
+{
+    funcMap[name] = function;
+}
+
+/**********************************************************************/
+//Built-in functions are put and registered here
+/**********************************************************************/
+
+//utilities/debug function to remove a robot from GameModel
+void builtin_remove_robot(const std::vector<std::string>& args)
+{
+    if(args.size() == 2 && (args[1] == "b" || args[1] == "y")) {
+        int  id  = args[0][0] - '0';
+        char tm  = args[1][0];
+        int team = (tm == 'b') ? TEAM_BLUE : TEAM_YELLOW;
+        gameModel->removeRobot(id, team);
+        std::cout << "Removed robot " << id << " from team " << tm << std::endl;
+    } else {
+        std::cout << "Usage: <id> <team=b|y>" << std::endl;
+    }
+}
 
 void listenStart()
 {
+    registerFunction("remove_robot", builtin_remove_robot);
+
     std::cout << "********************************" << '\n'
               << "Utility Runtime Debugger Enabled" << '\n'
               << "********************************" << std::endl;
-
     debug_thread = std::thread(debugListenFn);  //Starts new thread
 }
 

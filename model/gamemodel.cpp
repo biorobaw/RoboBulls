@@ -23,7 +23,6 @@ int GameModel::mySide =  1;
 int GameModel::opSide = -1;
 #endif
 
-
 /*******************************************************************/
 /************************ Public Methods ***************************/
 /*******************************************************************/
@@ -321,4 +320,15 @@ static void calculateRobotVelocity(Robot* robot)
 void GameModel::onRobotUpdated(Robot* robot)
 {
     calculateRobotVelocity(robot);
+}
+
+void GameModel::removeRobot(int id, int team)
+{
+    auto* vector = &getMyTeam();
+    if(team != TEAM)
+        vector = &getOponentTeam();
+    auto it = std::find_if(vector->begin(), vector->end(),
+                           [=](Robot* r){return r->getID()==id;});
+    if(it != vector->end())
+        vector->erase(it);
 }

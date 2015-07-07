@@ -4,6 +4,8 @@
 
 class MainWindow;
 
+//GamePanel is the time and ball position indicator across the top
+
 class GamePanel : public QObject
 {
     Q_OBJECT

@@ -96,20 +96,15 @@ int ObjectPosition::getVelocity(int id) {
     int LB = 0;
     int RB = 0;
 
-    if ( dash->gamemodel->find(id, dash->gamemodel->getMyTeam())->type() == fourWheelOmni ) {
-//        selrobotpanel->guiPrintRobot(id,"fourWheelOmni");
-//        if (SIMULATED) {
-            LF = dash->gamemodel->find(id, dash->gamemodel->getMyTeam())->getLF();
-            RF = dash->gamemodel->find(id, dash->gamemodel->getMyTeam())->getRF();
-            LB = dash->gamemodel->find(id, dash->gamemodel->getMyTeam())->getLB();
-            RB = dash->gamemodel->find(id, dash->gamemodel->getMyTeam())->getRB();
-//        } else {
-//            LF = nxtrobcomm->gui_left_front;
-//            RF = nxtrobcomm->gui_right_front;
-//            LB = nxtrobcomm->gui_left_back;
-//            RB = nxtrobcomm->gui_right_back;
-//        }
-//        cout << "4wheel Robot " << id << ": " << LF << ", " << RF << "\n";
+    Robot* robot = dash->gamemodel->find(id, dash->gamemodel->getMyTeam());
+    if(robot == NULL)
+        return 0;
+
+    if (robot->type() == fourWheelOmni ) {
+            LF = robot->getLF();
+            RF = robot->getRF();
+            LB = robot->getLB();
+            RB = robot->getRB();
             velocity += LF;
             wheels++;
             velocity += RF;
@@ -118,32 +113,17 @@ int ObjectPosition::getVelocity(int id) {
             wheels++;
             velocity += RB;
             wheels++;
-    } else if ( dash->gamemodel->find(id, dash->gamemodel->getMyTeam())->type() == differential ) {
-//        selrobotpanel->guiPrintRobot(id,"differential");
-//        if (SIMULATED) {
-            LF = dash->gamemodel->find(id, dash->gamemodel->getMyTeam())->getL();
-            RF = dash->gamemodel->find(id, dash->gamemodel->getMyTeam())->getR();
-//        } else {
-//            LF = nxtrobcomm->gui_left;
-//            RF = nxtrobcomm->gui_right;
-//        }
-//        cout << "diff Robot " << id << ": " << LF << ", " << RF << "\n";
+    } else if ( robot->type() == differential ) {
+            LF = robot->getL();
+            RF = robot->getR();
             velocity += LF;
             wheels++;
             velocity += RF;
             wheels++;
-    } else if ( dash->gamemodel->find(id, dash->gamemodel->getMyTeam())->type() == threeWheelOmni ) {
-//        selrobotpanel->guiPrintRobot(id,"threeWheelOmni");
-//        if (SIMULATED) {
-            LF = dash->gamemodel->find(id, dash->gamemodel->getMyTeam())->getLF();
-            RF = dash->gamemodel->find(id, dash->gamemodel->getMyTeam())->getRF();
-//        } else {
-//            LF = nxtrobcomm->gui_left_front;
-//            RF = nxtrobcomm->gui_right_front;
-//        }
-        int b = dash->gamemodel->find(id, dash->gamemodel->getMyTeam())->getB();
-//        cout << "3wheel Robot " << id << ": " << LF << ", " << RF << "\n";
-
+    } else if ( robot->type() == threeWheelOmni ) {
+            LF = robot->getLF();
+            RF = robot->getRF();
+        int b = robot->getB();
             velocity += LF;
             wheels++;
             velocity += RF;
@@ -155,14 +135,8 @@ int ObjectPosition::getVelocity(int id) {
     if (velocity != 0 && wheels != 0)
         velocity /= wheels;
 
-//    selrobotpanel->guiPrintRobot(id,"Wheels: " + to_string(LF) + " & " + to_string(RF));
     return velocity;
-
 }
-
-//void ObjectPosition::getThreadTicker(int tick) {
-//    threadTicker = tick;
-//}
 
 QString ObjectPosition::getBotCoord(int id) {
     QString qPos    = "no connection";
@@ -178,25 +152,25 @@ QString ObjectPosition::getBotCoord(int id) {
 
 int ObjectPosition::getBotCoordX(bool myTeam, int id) {
     int x  = 0;
-    std::vector<Robot*> team;
+    std::vector<Robot*>* team;
     if (myTeam) {
-        team = dash->gamemodel->getMyTeam();
+        team = &dash->gamemodel->getMyTeam();
     } else {
-        team = dash->gamemodel->getOponentTeam();
+        team = &dash->gamemodel->getOponentTeam();
     }
-    x = dash->gamemodel->find(id, team)->getRobotPosition().x;
+    x = dash->gamemodel->find(id, *team)->getRobotPosition().x;
     return x;
 }
 
 int ObjectPosition::getBotCoordY(bool myTeam, int id) {
     int y  = 0;
-    std::vector<Robot*> team;
+    std::vector<Robot*>* team;
     if (myTeam) {
-        team = dash->gamemodel->getMyTeam();
+        team = &dash->gamemodel->getMyTeam();
     } else {
-        team = dash->gamemodel->getOponentTeam();
+        team = &dash->gamemodel->getOponentTeam();
     }
-    y = dash->gamemodel->find(id, team)->getRobotPosition().y;
+    y = dash->gamemodel->find(id, *team)->getRobotPosition().y;
     return y;
 }
 
