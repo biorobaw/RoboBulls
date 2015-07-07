@@ -60,36 +60,40 @@ void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
         packet_t* packet = &teamPacketBuf[i];
         Robot* rob =  robots[i];
         packet->id = rob->getID();
-    #if ROBOT_WHEEL_TEST
-        packet->left_front  = a + 100;
-        packet->left_back   = b + 100;
-        packet->right_front = c + 100;
-        packet->right_back  = d + 100;
-    #else
+
         if(rob->type() == fourWheelOmni) {
-            //Packet format with Arduino, 250 and 255 with k+100, Kick is 1/0
+            //Packet format with Arduino: 250 and 255 with k+100, Kick is 1/0
             packet->tilde = char(250);
             packet->dollar = char(255);
+        #if ROBOT_WHEEL_TEST
+            packet->left_front  = a + 100;
+            packet->left_back   = b + 100;
+            packet->right_front = c + 100;
+            packet->right_back  = d + 100;
+        #else
             packet->left_front  = Measurments::clamp(rob->getLF(), -127, 127)*k + 100;
             packet->left_back   = Measurments::clamp(rob->getLB(), -127, 127)*k + 100;
             packet->right_front = Measurments::clamp(rob->getRF(), -127, 127)*k + 100;
             packet->right_back  = Measurments::clamp(rob->getRB(), -127, 127)*k + 100;
+        #endif
             packet->kick = rob->getKick() ? 1 : 0;
-        } else {
-            //Packet format with lego NXTs, use ~ and $ with no K or +100, Kick is 'k'
-            packet->tilde = char('~');
-            packet->dollar = char('$');
+        }
+        else {
+            //Packet format with lego NXTs, use ~ and $ with no K nor +100, Kick is 'k'
+            packet->tilde = '~';
+            packet->dollar = '$';
             packet->left_front  = Measurments::clamp(rob->getLF(), -127, 127);
             packet->left_back   = Measurments::clamp(rob->getLB(), -127, 127);
             packet->right_front = Measurments::clamp(rob->getRF(), -127, 127);
             packet->right_back  = Measurments::clamp(rob->getRB(), -127, 127);
             packet->kick = rob->getKick() ? 'k' : 0;
         }
-    #endif
-        packet->chip_power = p;     //Unused; p and i are hacks for the Encoder Arduino robot
+
+        //Unused; p and i are hacks for the Encoder Arduino robot
+        packet->chip_power = p;
         packet->dribble_power = i;
 
-        //Reset kick and dribble statuses in robot
+        //Reset kick and dribble status in robot
         rob->setKick(0);
         rob->setDrible(0);
     }
