@@ -90,10 +90,5 @@ bool TestStrategy::update()
 
 void TestStrategy::assignBeh()
 {
-    while(gameModel->findMyTeam(HALL_ROBOT_ID) == NULL);
 
-    gameModel->findMyTeam(HALL_ROBOT_ID)->assignBeh<DefendBehavior>();
-    gameModel->findMyTeam(0)->assignBeh<DefendBehavior>();
-    gameModel->findMyTeam(1)->assignBeh<DefendBehavior>();
-    gameModel->findMyTeam(2)->assignBeh<DefendBehavior>();
 }
