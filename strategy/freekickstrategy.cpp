@@ -32,7 +32,7 @@ void FreeKickStrategy::assignBeh()
         golieAssignment.setSingleAssignment(true);
         for (Robot* rob: myTeam)
         {
-            if (rob->getID() == 5)
+            if (rob->getID() == GOALIE_ID)
                 golieAssignment.assignBeh(rob);
         }
 
@@ -50,14 +50,14 @@ void FreeKickStrategy::assignBeh()
             kickerRobot = myTeam.at(0);
         else if (myTeam.size() > 1)
         {
-            if (myTeam.at(0)->getID() != 5)
+            if (myTeam.at(0)->getID() != GOALIE_ID)
                 kickerRobot = myTeam.at(0);
             else
                 kickerRobot = myTeam.at(1);
 
             for (unsigned i = 1; i < myTeam.size(); i++)
             {
-                if (myTeam.at(i)->getID() != 5)
+                if (myTeam.at(i)->getID() != GOALIE_ID)
                 {
                     Point iPos = myTeam.at(i)->getRobotPosition();
                     Point closestPos = kickerRobot->getRobotPosition();
@@ -74,7 +74,7 @@ void FreeKickStrategy::assignBeh()
         {
             for (unsigned i = 0; i < myTeam.size(); i++)
             {
-                if (myTeam.at(i)->getID() != closestRobotID && myTeam.at(i)->getID() != 5)
+                if (myTeam.at(i)->getID() != closestRobotID && myTeam.at(i)->getID() != GOALIE_ID)
                     simpleAssignment.assignBeh(myTeam.at(i));
             }
         }
@@ -82,13 +82,13 @@ void FreeKickStrategy::assignBeh()
     else if ((gm->getGameState() == 'f' && TEAM == TEAM_BLUE)
             || (gm->getGameState() == 'F' && TEAM == TEAM_YELLOW))
     {
-        gameModel->findMyTeam(5)->assignBeh<DefendFarFromBall>();
+        gameModel->findMyTeam(GOALIE_ID)->assignBeh<DefendFarFromBall>();
 
         BehaviorAssignment<SimpleBehaviors> simpleAssignment;
         simpleAssignment.setSingleAssignment(true);
         for (unsigned i = 0; i < myTeam.size(); i++)
         {
-            if (myTeam.at(i)->getID() != 5)
+            if (myTeam.at(i)->getID() != GOALIE_ID)
                 simpleAssignment.assignBeh(myTeam.at(i));
         }
     }

@@ -1,3 +1,4 @@
+#include <iostream>
 #include <QtWidgets/QScrollBar>
 #include "selrobotpanel.h"
 #include "mainwindow.h"

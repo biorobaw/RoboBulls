@@ -4,6 +4,7 @@
 #include "model/gamemodel.h"
 #include "skill/stop.h"
 #include "skill/kicktopointomni.h"
+#include "utilities/comparisons.h"
 
 #if SIMULATED
     #define ANGLE   (10 * M_PI/180)
@@ -49,7 +50,7 @@ void KickToGoal::perform(Robot * r)
 {
     GameModel* gm = GameModel::getModel();
     Point appGoal = gm->getOpponentGoal();
-    Robot* oppGolie = gm->findOpTeam(5);
+    Robot* oppGolie = Comparisons::distanceOpGoal().minOpTeam(); //Assume goalie is closest bot
     Point goaliePos = oppGolie->getRobotPosition();
     float min_y = appGoal.y - R;
     float max_y = appGoal.y + R;

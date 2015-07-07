@@ -195,7 +195,7 @@ pred_distanceOpGoal::pred_distanceOpGoal()
 /****************************************************************/
 
 //Robot on My Team, not ID 5, closest to the robot farthest from the ball
-//Robot* r = Comparisons::distance(*Comparisons::distanceBall().maxMyTeam()).ignoreID(5).minMyTeam();
+//Robot* r = Comparisons::distance(*Comparisons::distanceBall().maxMyTeam()).ignoreID(GOALIE_ID).minMyTeam();
 
 /****************************************************************/
 

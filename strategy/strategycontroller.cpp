@@ -61,7 +61,7 @@ void StrategyController::assignNewStrategy(char gameState)
     /* Testing macro: Change this to 0 to ignore game sate
      * commands; use to test a single strategy
      */
-#if 1
+#if 0
     switch(gameState)
     {
     case 'S':    //stop game

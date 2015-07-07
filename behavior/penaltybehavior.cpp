@@ -34,7 +34,7 @@ void PenaltyBehavior::perform(Robot * myRobot)
 {
     GameModel *model = GameModel::getModel();
     Point appGoal = model->getOpponentGoal();
-    Robot* oppGolie = model->findOpTeam(5);
+    Robot* oppGolie = model->findOpTeam(GOALIE_ID);
 
     Point goliePos = oppGolie->getRobotPosition();
     float min_y = appGoal.y - R;

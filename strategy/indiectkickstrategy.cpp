@@ -36,7 +36,7 @@ void IndiectKickStrategy::assignBeh()
             robot->assignBeh<SimpleBehaviors>();
 
         //Sender is always closet to ball (this used to be 20 lines of code)
-        sender = Comparisons::distanceBall().ignoreID(5).minMyTeam();
+        sender = Comparisons::distanceBall().ignoreID(GOALIE_ID).minMyTeam();
 
         Region PlayerRegion;
         struct playersCharactristics{
@@ -67,13 +67,13 @@ void IndiectKickStrategy::assignBeh()
         double distance;
         for (unsigned j = 0; j < myTeamInfo.size(); j++)
         {
-            if (j == 0 && myTeamInfo[j].ID != 5)
+            if (j == 0 && myTeamInfo[j].ID != GOALIE_ID)
             {
                 lessSurroundings = myTeamInfo[j].surroundingAppNum;
                 distance = myTeamInfo[j].distanceToRobot;
                 k = 0;
             }
-            else if (j == 0 && myTeamInfo[j].ID == 5)
+            else if (j == 0 && myTeamInfo[j].ID == GOALIE_ID)
             {
                 lessSurroundings = myTeamInfo[1].surroundingAppNum;
                 distance = myTeamInfo[1].distanceToRobot;
@@ -82,7 +82,7 @@ void IndiectKickStrategy::assignBeh()
             else
             {
                 if (lessSurroundings > myTeamInfo[j].surroundingAppNum
-                        && myTeamInfo[j].ID != 5)
+                        && myTeamInfo[j].ID != GOALIE_ID)
                 {
                     lessSurroundings = myTeamInfo[j].surroundingAppNum;
                     distance = myTeamInfo[j].distanceToRobot;
@@ -90,7 +90,7 @@ void IndiectKickStrategy::assignBeh()
                 }
                 else if (lessSurroundings == myTeamInfo[j].surroundingAppNum &&
                                  myTeamInfo[j].distanceToRobot < distance &&
-                                 myTeamInfo[j].ID != 5)
+                                 myTeamInfo[j].ID != GOALIE_ID)
                 {
                     lessSurroundings = myTeamInfo[j].surroundingAppNum;
                     distance = myTeamInfo[j].distanceToRobot;
@@ -109,11 +109,11 @@ void IndiectKickStrategy::assignBeh()
          * is farthest from this point. This point is about where NGS will send a robot
          * going to the waiting line. It finishes a lot quicker usually, breaking this idea.
          */
-        Robot* waiter = Comparisons::idNot(5).ignoreIDs({sender, receiver}).anyMyTeam();
+        Robot* waiter = Comparisons::idNot(GOALIE_ID).ignoreIDs({sender, receiver}).anyMyTeam();
         sender->assignBeh<PassBallSender>(waiter);
 
         //Goalie is always goalie
-        Robot* goalie = gameModel->findMyTeam(5);
+        Robot* goalie = gameModel->findMyTeam(GOALIE_ID);
         if(goalie)
             goalie->assignBeh<DefendFarFromBall>();
     }
@@ -124,14 +124,14 @@ void IndiectKickStrategy::assignBeh()
         golieAssignment.setSingleAssignment(true);
         for (Robot* rob: myTeam)
         {
-            if (rob->getID() == 5)
+            if (rob->getID() == GOALIE_ID)
                 golieAssignment.assignBeh(rob);
         }
         BehaviorAssignment<SimpleBehaviors> simpleAssignment;
         simpleAssignment.setSingleAssignment(true);
         for (unsigned i = 0; i < myTeam.size(); i++)
         {
-            if (myTeam.at(i)->getID() != 5)
+            if (myTeam.at(i)->getID() != GOALIE_ID)
                 simpleAssignment.assignBeh(myTeam.at(i));
         }
     }

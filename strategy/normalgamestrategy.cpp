@@ -229,7 +229,7 @@ bool NormalGameStrategy::update()
 //Utility function to not duplicate this code
 void NormalGameStrategy::assignGoalieIfOk()
 {
-    Robot* goalie = gameModel->findMyTeam(5);
+    Robot* goalie = gameModel->findMyTeam(GOALIE_ID);
     if(goalie)
         goalie->assignBeh<DefendFarFromBall>();
 }
@@ -394,13 +394,13 @@ void NormalGameStrategy::findMostValidRobots(Point target, Robot*& a_out, Robot*
     Robot* a_found = NULL, *b_found = NULL, *c_found = NULL;
 	
 	//Find robot closest to `target`
-    a_found = *Comparisons::distance(target).ignoreID(5).min(myTeam);
+    a_found = *Comparisons::distance(target).ignoreID(GOALIE_ID).min(myTeam);
 
     //b_found is another robot
-    b_found = Comparisons::idNot(5).ignoreID(a_found).anyMyTeam();
+    b_found = Comparisons::idNot(GOALIE_ID).ignoreID(a_found).anyMyTeam();
 
     //c_found is also another robot
-    c_found = Comparisons::idNot(5).ignoreIDs({a_found, b_found}).anyMyTeam();
+    c_found = Comparisons::idNot(GOALIE_ID).ignoreIDs({a_found, b_found}).anyMyTeam();
 
     if(!a_found || !b_found)
         throw std::runtime_error("ERROR: Valid robots not found!");

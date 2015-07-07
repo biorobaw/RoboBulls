@@ -60,7 +60,7 @@ void KickOffStrategy::assignBeh()
     int i = 0;
     for(Robot* rob : gameModel->getMyTeam()) 
 	{
-        if(rob->getID() == 5)
+        if(rob->getID() == GOALIE_ID)
             continue;
         Point nextPoint = whichKickoffPointList[i++];
         nextPoint.x *= GameModel::mySide;   //Keeps X values on correct side
@@ -69,7 +69,7 @@ void KickOffStrategy::assignBeh()
     }
 
     //Goalie is a special case
-    Robot* goalie = gameModel->findMyTeam(5);
+    Robot* goalie = gameModel->findMyTeam(GOALIE_ID);
     if(goalie)
         goalie->assignBeh<DefendFarFromBall>();
 }

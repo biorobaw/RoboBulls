@@ -16,7 +16,7 @@ void GoToPosition::calculateVels(Robot *rob, Point targetPoint, float targetAngl
 {
     //Pushes the robot away from a goalie box if it is close, for non-goalies
     fourWheelVels fieldVels = {0,0,0,0};
-    if(rob->getID() != 5)
+    if(rob->getID() != GOALIE_ID)
         fieldVels = calculateGoalField(rob, moveType);
 
     switch(rob->type())

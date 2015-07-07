@@ -39,7 +39,7 @@ void PenaltyStrategy::assignBeh()
         golieAssignment.setSingleAssignment(true);
         for (Robot* rob: myTeam)
         {
-            if (rob->getID() == 5)
+            if (rob->getID() == GOALIE_ID)
                 golieAssignment.assignBeh(rob);
         }
 
@@ -52,14 +52,14 @@ void PenaltyStrategy::assignBeh()
             closestRobot = myTeam.at(0);
         else if (myTeam.size() > 1)
         {
-            if (myTeam.at(0)->getID() != 5)
+            if (myTeam.at(0)->getID() != GOALIE_ID)
                 closestRobot = myTeam.at(0);
             else
                 closestRobot = myTeam.at(1);
 
             for (unsigned i = 1; i < myTeam.size(); i++)
             {
-                if (myTeam.at(i)->getID() != 5)
+                if (myTeam.at(i)->getID() != GOALIE_ID)
                 {
                     Point iPos = myTeam.at(i)->getRobotPosition();
                     Point closestPos = closestRobot->getRobotPosition();
@@ -77,7 +77,7 @@ void PenaltyStrategy::assignBeh()
         {
             for (unsigned i = 0; i < myTeam.size(); i++)
             {
-                if (myTeam.at(i)->getID() != closestRobotID && myTeam.at(i)->getID() != 5)
+                if (myTeam.at(i)->getID() != closestRobotID && myTeam.at(i)->getID() != GOALIE_ID)
                     simpleAssignment.assignBeh(myTeam.at(i));
             }
         }
@@ -89,14 +89,14 @@ void PenaltyStrategy::assignBeh()
         golieAssignment.setSingleAssignment(true);
         for (Robot* rob: myTeam)
         {
-            if (rob->getID() == 5)
+            if (rob->getID() == GOALIE_ID)
                 golieAssignment.assignBeh(rob);
         }
         BehaviorAssignment<SimpleBehaviors> simpleAssignment;
         simpleAssignment.setSingleAssignment(true);
         for (unsigned i = 0; i < myTeam.size(); i++)
         {
-            if (myTeam.at(i)->getID() != 5)
+            if (myTeam.at(i)->getID() != GOALIE_ID)
                 simpleAssignment.assignBeh(myTeam.at(i));
         }
     }

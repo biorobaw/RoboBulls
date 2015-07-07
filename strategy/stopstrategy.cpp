@@ -18,14 +18,14 @@ void StopStrategy::assignBeh()
     rebuildTargetPoints();
 
     for(Robot* robot : gameModel->getMyTeam()) {
-        if(robot->getID() == 5)
+        if(robot->getID() == GOALIE_ID)
             continue;
         Point robTarget = robTargetPoints[robot->getID()];
         float targetAngle = Measurments::angleBetween(robTarget, bp);
         robot->assignBeh<GenericMovementBehavior>(robTarget, targetAngle);
     }
 
-    Robot* goalie = gameModel->findMyTeam(5);
+    Robot* goalie = gameModel->findMyTeam(GOALIE_ID);
     if(goalie)
         goalie->assignBeh<DefendFarFromBall>();
 }

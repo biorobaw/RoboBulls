@@ -133,8 +133,9 @@ struct pred_distanceOpGoal : public pred_distance {
 /****************************************************************/
 
 
-//Robot on My Team, not ID 5, closest to the robot farthest from the ball
-//Robot* r = Comparisons::distance(*Comparisons::distanceBall().maxMyTeam()).ignoreID(5).minMyTeam();
+//Robot on My Team, not the goalie, closest to the robot farthest from the ball
+//Robot* r = Comparisons::distance(*Comparisons::distanceBall().maxMyTeam())
+//              .ignoreID(GOALIE_ID).minMyTeam();
 
 /****************************************************************/
 

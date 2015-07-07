@@ -87,7 +87,7 @@ Point PassBallSender::findPassPoint(Robot* sender)
     double distance;
     for (unsigned j = 0; j < myTeamInfo.size(); j++)
     {
-        if (j == 0 && myTeamInfo[j].ID != 5)
+        if (j == 0 && myTeamInfo[j].ID != GOALIE_ID)
         {
             if (!myTeamInfo[j].inBadArea)
             {
@@ -96,7 +96,7 @@ Point PassBallSender::findPassPoint(Robot* sender)
                 i = 0;
             }
         }
-        else if (j == 0 && myTeamInfo[j].ID == 5)
+        else if (j == 0 && myTeamInfo[j].ID == GOALIE_ID)
         {
             if (!myTeamInfo[j].inBadArea)
             {
@@ -109,7 +109,7 @@ Point PassBallSender::findPassPoint(Robot* sender)
         {
             if (lessSurroundings == myTeamInfo[j].surroundingAppNum &&
                     myTeamInfo[j].distanceToRobot < distance &&
-                    myTeamInfo[j].ID != 5)
+                    myTeamInfo[j].ID != GOALIE_ID)
             {
                 if (!myTeamInfo[j].inBadArea)
                 {
@@ -119,7 +119,7 @@ Point PassBallSender::findPassPoint(Robot* sender)
                 }
             }
             else if (lessSurroundings > myTeamInfo[j].surroundingAppNum &&
-                     myTeamInfo[j].ID != 5)
+                     myTeamInfo[j].ID != GOALIE_ID)
             {
                 if (!myTeamInfo[j].inBadArea)
                 {
