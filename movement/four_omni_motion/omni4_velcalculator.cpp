@@ -6,13 +6,13 @@ namespace Movement
 {
 
 //Multiplier for theta_vel in defaultCalc (set 10x actual)
-int THETA_MULT = 4;
+int THETA_MULT = 3;
 
 //Multiplier for theta_vel in facePointCalc (set 10x actual)
-int THETA_MULT2 = 20;
+int THETA_MULT2 = 10;
 
 //Multiplier for x_vel and y_vel in defaultCalc (set 10x actual)
-int XY_MULT = 4;
+int XY_MULT = 3;
 
 
 FourWheelCalculator::FourWheelCalculator()

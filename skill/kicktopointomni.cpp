@@ -115,9 +115,11 @@ bool KickToPointOmni::perform(Robot* robot)
         #endif
             move_skill.perform(robot);
 
-            // Kick when in range
+            // Kick when in range, or go back to moving behind it if it moves too far away
             if(canKick(robot)) {
                 state = KICK;
+            } else if(Measurments::distance(robot, bp) > KICK_DISTANCE*3) {
+                state = MOVE_BEHIND;
             }
         }
         break;
