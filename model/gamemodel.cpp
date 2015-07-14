@@ -31,6 +31,11 @@ int GameModel::opSide = -1;
 GameModel::GameModel()
 {
     gameState  = '\0';
+
+//    Robot * rob = new Robot();
+//    rob->setID(2);
+//    rob->setTeam(TEAM_YELLOW);
+//    myTeam.push_back(rob);
 }
 
 void GameModel::setStrategyController(StrategyController *sc)
