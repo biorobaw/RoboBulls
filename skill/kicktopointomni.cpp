@@ -140,7 +140,7 @@ bool KickToPointOmni::canKick(Robot* robot)
 {
     Point bp = gameModel->getBallPoint();
     bool kickDistOK = m_kickDistance == -1 || Measurments::distance(robot, *m_targetPointer) < m_kickDistance;
-    return  Measurments::distance(robot, bp) < KICK_DISTANCE &&
+    return  Measurments::distance(robot, bp) <= KICK_DISTANCE*1.10 &&
             Comparisons::isFacingPoint(robot,bp,m_targetTolerance*(M_PI/180)) &&
             kickDistOK;
 }
