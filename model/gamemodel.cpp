@@ -63,6 +63,24 @@ vector<Robot *>& GameModel::getMyTeam()
     return myTeam;
 }
 
+vector<Robot*>& GameModel::getBlueTeam()
+{
+#if TEAM == TEAM_BLUE
+    return getMyTeam();
+#else
+    return getOponentTeam();
+#endif
+}
+
+vector<Robot*>& GameModel::getYellowTeam()
+{
+#if TEAM == TEAM_BLUE
+    return getOponentTeam();
+#else
+    return getMyTeam();
+#endif
+}
+
 Point GameModel::getBallPoint()
 {
     return ballPoint;
@@ -329,6 +347,8 @@ void GameModel::removeRobot(int id, int team)
         vector = &getOponentTeam();
     auto it = std::find_if(vector->begin(), vector->end(),
                            [=](Robot* r){return r->getID()==id;});
-    if(it != vector->end())
+    if(it != vector->end()) {
+        delete *it; //Free the Robot* pointer first
         vector->erase(it);
+    }
 }

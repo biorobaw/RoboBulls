@@ -53,10 +53,18 @@ static void debugListenFn()
 
         std::vector<std::string> arguments = stringSplit(input, " ");
 
-        if(arguments.size() == 0 || arguments[0].length() <= 1)
+        if(arguments.empty() || arguments[0].length() <= 1)
             continue;
 
-        if(arguments[0] == "set") //Set a variable
+        if(arguments[0] == "help")
+        {
+            std::cout << "set <i>         \tSet an integer\n"
+                      << "get <i>         \tRetrieve integer value\n"
+                      << "get             \tRetrieve all registered values\n"
+                      << "call <fn> [args]\tCall a registerd function\n"
+                      << "help            \tShow this help text" << std::endl;
+        }
+        else if(arguments[0] == "set") //Set a variable
         {
             if(arguments.size() == 3) {
                 auto it = commandMap.find(arguments[1]);
@@ -125,27 +133,51 @@ void registerFunction(const std::string& name, debug_fn function)
 //Built-in functions are put and registered here
 /**********************************************************************/
 
-//utilities/debug function to remove a robot from GameModel
-void builtin_remove_robot(const std::vector<std::string>& args)
+/* Generic template function that looks for a robot and a team, and calls a function
+ * with the parsed information as a callback */
+template<typename Function>
+void buildin_robot_action(const std::vector<std::string>& args, Function callback)
 {
     if(args.size() == 2 && (args[1] == "b" || args[1] == "y")) {
         int  id  = args[0][0] - '0';
         char tm  = args[1][0];
         int team = (tm == 'b') ? TEAM_BLUE : TEAM_YELLOW;
-        gameModel->removeRobot(id, team);
-        std::cout << "Removed robot " << id << " from team " << tm << std::endl;
+        callback(id, team);
     } else {
         std::cout << "Usage: <id> <team=b|y>" << std::endl;
     }
 }
 
+//utilities/debug function to remove a robot from GameModel
+void builtin_remove_robot(const std::vector<std::string>& args)
+{
+    buildin_robot_action(args, [&](int id, int team){
+        gameModel->removeRobot(id, team);
+        std::cout << "Removed robot " << id << " from team " << team << std::endl;
+    });
+}
+
+//Add a robot to GameModel
+void builtin_add_robot(const std::vector<std::string>& args)
+{
+    buildin_robot_action(args, [&](int id, int team){
+        Robot* robot = new Robot();
+        robot->setID(id);
+        robot->setTeam(team);
+        ((team == TEAM_BLUE) ? gameModel->getBlueTeam() : gameModel->getYellowTeam()).push_back(robot);
+        std::cout << "Added robot " << id << " to team " << team << std::endl;
+    });
+}
+
 void listenStart()
 {
     registerFunction("remove_robot", builtin_remove_robot);
+    registerFunction("add_robot", builtin_add_robot);
 
     std::cout << "********************************" << '\n'
-              << "Utility Runtime Debugger Enabled" << '\n'
+              << "Utility Command Line Enabled    " << '\n'
               << "********************************" << std::endl;
+
     debug_thread = std::thread(debugListenFn);  //Starts new thread
 }
 

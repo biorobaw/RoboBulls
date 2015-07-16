@@ -19,8 +19,6 @@ NXTRobComm::NXTRobComm()
         printf ("Serial port opened successfully !\n");
     }
     a = b = c = d = 0;
-    debug::registerVariable("Kp", &p);
-    debug::registerVariable("Ki", &i);
     debug::registerVariable("lf", &a);
     debug::registerVariable("lb", &b);
     debug::registerVariable("rf", &c);

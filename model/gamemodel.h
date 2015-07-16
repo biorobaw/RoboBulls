@@ -30,6 +30,8 @@ public:
      */
     vector<Robot*>& getOponentTeam();
     vector<Robot*>& getMyTeam();
+    vector<Robot*>& getBlueTeam();
+    vector<Robot*>& getYellowTeam();
     Point  getBallPoint();
     Point  getBallVelocity();
     Point  getBallAcceleration();

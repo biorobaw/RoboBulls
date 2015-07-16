@@ -87,7 +87,7 @@ void DefendFarFromBall::perform(Robot *robot)
         double   realAng = Measurments::angleBetween(myGoal, ballPoint);
         double centerAng = Measurments::angleBetween(cmpPoint, Point(0,0));
         double direction = realAng;
-        if(abs(cmpAng) > 120*(M_PI/180))
+        if(abs(cmpAng) > 100*(M_PI/180))
             direction = centerAng;
 
         //Just sitting and facing the ball

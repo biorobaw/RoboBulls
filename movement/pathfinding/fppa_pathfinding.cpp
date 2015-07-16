@@ -96,8 +96,8 @@ namespace impl
          * the jagged edges in the path, but risks cutting corners
          * too close around obstacles.
          */
-        float dx = 0.25 * ROBOT_RADIUS * cos(theta + M_PI_2);
-        float dy = 0.25 * ROBOT_RADIUS * sin(theta + M_PI_2);
+        float dx = 0.5 * ROBOT_RADIUS * cos(theta + M_PI_2);
+        float dy = 0.5 * ROBOT_RADIUS * sin(theta + M_PI_2);
 
         return Point(sign * dx, sign * dy);
     }
