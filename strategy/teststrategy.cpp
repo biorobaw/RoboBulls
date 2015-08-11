@@ -80,11 +80,7 @@ bool TestStrategy::update()
 }
 
 //IDs of field robots
-#if SIMULATED
- #define HALL_ROBOT_ID  0
-#else
- #define HALL_ROBOT_ID  8
-#endif
+#define HALL_ROBOT_ID   8
 #define CASTLE_ROBOT_ID 4
 #define SCON_ROBOT_ID   2
 

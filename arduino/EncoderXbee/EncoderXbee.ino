@@ -5,6 +5,9 @@
  * www.psurobotics.org
  * Modified for Robobulls by Muhaimen Shamsi
  \****************************************/
+/* CHANGELOG 
+ * 8/11/15 : Changed Id from 4 to 2
+ */
 
 #include <Encoder.h>
 #include <Servo.h>
@@ -12,7 +15,7 @@
 #define ENCODER_OPTIMIZE_INTERRUPTS
 
 int id;
-int myid = 8;    // This Robot's ID
+int myid = 2;    // This Robot's ID
 
 // Define pin locations for wheel encoding
 #define LFEncPinA 2
@@ -24,7 +27,7 @@ int myid = 8;    // This Robot's ID
 #define RBEncPinA 21
 #define RBEncPinB A3
 
-// Define pin locations for kicker and chipper
+// Define pin locations for kicker
 #define kickPin 8
 
 // Define an approximate constant for conversion between encoder ticks and speed
@@ -288,6 +291,7 @@ void CalibrateESC()
 }
 //***********************************************************************************
 
+//***********************************************************************************
 void printVels()
 {
   Serial.print(LFvel);
@@ -299,6 +303,8 @@ void printVels()
   Serial.print(RBvel);
   Serial.print('\n');
 }
+//***********************************************************************************
+
 //***********************************************************************************
 char state = 't';
 
@@ -354,8 +360,8 @@ void runComm()
           targetRFvel = targetRFvelSerial;
           targetRBvel = targetRBvelSerial;
           kick = kickSerial;
-          Kp = chipSerial;
-          Ki = dribbleSerial;          
+          chip = chipSerial;
+          dribble = dribbleSerial;          
           //Serial.println("Packet Complete"); 
         }
         else

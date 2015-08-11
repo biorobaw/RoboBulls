@@ -8,6 +8,9 @@
 #include "utilities/measurments.h"
 #include "robcomm.h"
 
+/* The NXTRobComm is a communication module for sending commands over
+ * an Xbee to robots on the field. This is contrast to SimRobComm which
+ * sends grSim packets. */
 
 class NXTRobComm : public RobComm
 {

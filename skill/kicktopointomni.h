@@ -45,23 +45,33 @@ public:
 
     //Variable point constructor
     KickToPointOmni(Point* targetPtr,
-                    float targetTolerance = -1,
-                    float kickDistance = -1);
+                    float  targetTolerance = -1,
+                    float  kickDistance = -1);
 
     bool perform(Robot* robot) override;
 
 private:
     Movement::GoToPosition move_skill;
-    Point  m_targetPoint    = Point(0, 0);
-    Point* m_targetPointer  = nullptr;
-    float  m_hasKickedCount = 0;
-    int move_comp_counter = 0;
-    enum { MOVE_BEHIND, MOVE_FORWARD, KICK } state = MOVE_BEHIND;
+    Point  m_targetPoint;           //Local (static) target stored only by first ctor
+    Point* m_targetPointer;         //Pointer to point we are kicking to
+      int  m_moveCompletionCount;   //Number of times move_skill says we are behind ball
+    float  m_targetTolerance;       //Mininum angle threshold we must be facing the target to kick
+      int  m_kickDistance;          //Mininim distance we must be to *m_targetPointer to kick (or -1)
+      int  m_kickLockCount;         //Count of times we are seen in "kick lock"
 
-private:
-    bool  canKick(Robot *robot);
-    float m_targetTolerance;
-      int m_kickDistance;
+    //Current skill state
+    enum { MOVE_BEHIND,  //We are far from the ball and are moving behind it to face target
+           MOVE_FORWARD, //We are behind the ball facing target, and are moving forward to kick
+           KICK          //We are kicking the ball
+         } state;
+
+    //Querying information to help switch states
+    bool isFacingBall(Robot* robot);
+    bool isCloseToBall(Robot* robot);
+    bool isVeryFarFromBall(Robot* robot);
+    bool isWithinKickDistnace(Robot* robot);
+    bool isInKickLock(Robot* robot);
+    bool canKick(Robot *robot);
 };
 
 }

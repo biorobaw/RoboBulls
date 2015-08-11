@@ -1,14 +1,13 @@
 #include "nxtrobcomm.h"
-#include "gui/guiinterface.h"
 #include "utilities/debug.h"
 #include "include/config/robot_types.h"
 
 //Used to control Omni's PID Controller
 static float k = 0.4;
 static int p = 30;
-static int i = 10;
 
-int a, b, c, d;
+//Used for testing wheels; see ROBOT_WHEEL_TEST
+int lf, lb, rf, rb;
 
 NXTRobComm::NXTRobComm()
 {
@@ -18,11 +17,13 @@ NXTRobComm::NXTRobComm()
     } else {
         printf ("Serial port opened successfully !\n");
     }
-    a = b = c = d = 0;
-    debug::registerVariable("lf", &a);
-    debug::registerVariable("lb", &b);
-    debug::registerVariable("rf", &c);
-    debug::registerVariable("rb", &d);
+
+    //Register variables for wheel tests
+    lf = lb = rf = rb = 0;
+    debug::registerVariable("lf", &lf);
+    debug::registerVariable("lb", &lb);
+    debug::registerVariable("rf", &rf);
+    debug::registerVariable("rb", &rb);
 }
 
 NXTRobComm::~NXTRobComm()
@@ -51,7 +52,7 @@ void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
     // Initialize packet to zeros
     memset(&teamPacketBuf, 0, sizeof(packet_t)*5);
 
-    // For each robot
+    // For each robot...
     for(unsigned i = 0; i != robots.size(); ++i)
     {
         // Load information into the packet
@@ -64,10 +65,10 @@ void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
             packet->tilde = char(250);
             packet->dollar = char(255);
         #if ROBOT_WHEEL_TEST
-            packet->left_front  = a + 100;
-            packet->left_back   = b + 100;
-            packet->right_front = c + 100;
-            packet->right_back  = d + 100;
+            packet->left_front  = lf + 100;
+            packet->left_back   = lb + 100;
+            packet->right_front = rf + 100;
+            packet->right_back  = rb + 100;
         #else
             packet->left_front  = Measurments::clamp(rob->getLF(), -127, 127)*k + 100;
             packet->left_back   = Measurments::clamp(rob->getLB(), -127, 127)*k + 100;
