@@ -80,9 +80,9 @@ bool TestStrategy::update()
 }
 
 //IDs of field robots
-#define HALL_ROBOT_ID   8
-#define CASTLE_ROBOT_ID 4
-#define SCON_ROBOT_ID   2
+#define HALL_ROBOT_ID   3
+#define CASTLE_ROBOT_ID 2
+#define SCON_ROBOT_ID   4
 
 void TestStrategy::assignBeh()
 {
