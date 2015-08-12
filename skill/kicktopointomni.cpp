@@ -28,6 +28,10 @@ namespace Skill
  * the robot is actually facing the ball somewhat.
  *
  * MOVE_TOLERANCE is the tolerance to setMovementTolerances in the first state
+ *
+ * KICKLOCK_COUNT is the number of times isInKickLock must see the robot in "kick lock"
+ * before it take action. Kicklock occurs when the robot is close to the ball but not facing it,
+ * resulting in the robot continually in a lock pushing the ball in a line.
  */
 #if SIMULATED
 int BEHIND_RADIUS  = 200;
@@ -43,6 +47,7 @@ int FORWARD_WAIT_COUNT = 15;
 int MOVE_TOLERANCE = DIST_TOLERANCE*1.2;
 #endif
 
+int KICKLOCK_COUNT = 80;
 int RECREATE_DIST_TOL = 25;
 
 /************************************************************************/
@@ -73,7 +78,7 @@ bool KickToPointOmni::perform(Robot* robot)
 
     // Angle between the ball and the kick target
     float ballTargetAng = Measurments::angleBetween(bp, *m_targetPointer);
-    move_skill.setRecreateTolerances(RECREATE_DIST_TOL, ROT_TOLERANCE);
+    //move_skill.setRecreateTolerances(RECREATE_DIST_TOL, ROT_TOLERANCE);
 
     switch(state)
     {
@@ -131,14 +136,15 @@ bool KickToPointOmni::perform(Robot* robot)
     return false;
 }
 
-//canKick: True of the robot is okay to kick the ball
-//isWithinKickDistnace: "Within kick distance" means we are close to the target to kick to it
-//isCloseToBall: We are close to the ball if we are within kicking distance
-//isVeryFarFromBall: True if we are pretty far away from the ball
-//isFacingBall: True if facing the ball. The tolerance angle is the user-given m_targetTolerance
-/* isInKickLock: "Kick-lock" is a side-effect of robots.
- * Sometimes the robot gets too close to the ball while not facing it, and keeps
- * pushing the ball along in which it cannot get behind it. This helps to detect that */
+//The following are utility functions to help switch state.
+//- canKick: All conditions okay to kick the ball
+//- isWithinKickDistnace: "Within kick distance" means we are close to the target to kick to it
+//- isCloseToBall: We are close to the ball if we are within kicking distance
+//- isVeryFarFromBall: True if we are pretty far away from the ball
+//- isFacingBall: True if facing the ball. The tolerance angle is the user-given m_targetTolerance
+/*- isInKickLock: "Kick-lock" is a side-effect of robots.
+    * Sometimes the robot gets too close to the ball while not facing it, and keeps
+    * pushing the ball along in which it cannot get behind it. This helps to detect that */
 
 bool KickToPointOmni::canKick(Robot* robot) {
     return isCloseToBall(robot) && isFacingBall(robot) && isWithinKickDistnace(robot);
@@ -157,14 +163,14 @@ bool KickToPointOmni::isVeryFarFromBall(Robot *robot) {
 }
 
 bool KickToPointOmni::isFacingBall(Robot* robot) {
-    return Comparisons::isFacingPoint(robot, gameModel->getBallPoint(), m_targetTolerance*(M_PI/180));
+    return Comparisons::isFacingPoint(robot, gameModel->getBallPoint(), m_targetTolerance);
 }
 
 bool KickToPointOmni::isInKickLock(Robot* robot)
 {
     if(isCloseToBall(robot) && !isFacingBall(robot))
         ++m_kickLockCount;
-    if(m_kickLockCount > 50)
+    if(m_kickLockCount > KICKLOCK_COUNT)
         return (m_kickLockCount = 0, true);
     return false;
 }

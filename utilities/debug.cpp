@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include <thread>
+#include <future>
 #include <functional>
 #include <cstdlib>
 #include "model/gamemodel.h"
@@ -18,23 +18,19 @@ static std::unordered_map<std::string, debug_fn> funcMap;
 //Map of registered variable names to integer pointers
 static std::unordered_map<std::string, int*> commandMap;
 
-//Thread for debug module
-static std::thread debug_thread;
+static std::thread debugThread;
 
-
-//Function to split a string based on a delimiter
+//Generic string split function
 static std::vector<std::string> stringSplit(const std::string& target, const std::string& delim)
 {
     std::vector<std::string> result;
     size_t startPos = 0, it = 0;
-
     do {
         it = target.find(delim, startPos);
         result.push_back(target.substr(startPos, it - startPos));
         startPos = it + delim.length();
     }
     while(it != std::string::npos);
-
     return result;
 }
 
@@ -52,7 +48,6 @@ static void debugListenFn()
         std::getline(std::cin, input); //Blocking
 
         std::vector<std::string> arguments = stringSplit(input, " ");
-
         if(arguments.empty() || arguments[0].length() <= 1)
             continue;
 
@@ -118,7 +113,6 @@ static void debugListenFn()
     }
 }
 
-
 void registerVariable(const std::string& variable, int* pointer)
 {
     commandMap[variable] = pointer;
@@ -134,7 +128,7 @@ void registerFunction(const std::string& name, debug_fn function)
 /**********************************************************************/
 
 /* Generic template function that looks for a robot and a team, and calls a function
- * with the parsed information as a callback */
+ * with parsed information (<id> <team>) as a callback */
 template<typename Function>
 void buildin_robot_action(const std::vector<std::string>& args, Function callback)
 {
@@ -148,7 +142,7 @@ void buildin_robot_action(const std::vector<std::string>& args, Function callbac
     }
 }
 
-//utilities/debug function to remove a robot from GameModel
+//builtin to remove a robot from GameModel
 void builtin_remove_robot(const std::vector<std::string>& args)
 {
     buildin_robot_action(args, [&](int id, int team){
@@ -157,7 +151,7 @@ void builtin_remove_robot(const std::vector<std::string>& args)
     });
 }
 
-//Add a robot to GameModel
+//builtin to a robot to GameModel
 void builtin_add_robot(const std::vector<std::string>& args)
 {
     buildin_robot_action(args, [&](int id, int team){
@@ -171,6 +165,7 @@ void builtin_add_robot(const std::vector<std::string>& args)
 
 void listenStart()
 {
+    //The default builtin functions are registed here
     registerFunction("remove_robot", builtin_remove_robot);
     registerFunction("add_robot", builtin_add_robot);
 
@@ -178,7 +173,8 @@ void listenStart()
               << "Utility Command Line Enabled    " << '\n'
               << "********************************" << std::endl;
 
-    debug_thread = std::thread(debugListenFn);  //Starts new thread
+    //Starts the new thread and returns
+    debugThread = std::thread(debugListenFn);
 }
 
 
