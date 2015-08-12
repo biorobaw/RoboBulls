@@ -48,7 +48,6 @@ void AttackMain::perform(Robot * robot)
     {
         if(Measurments::isClose(rp,bp,250))
         {
-            std::cout << "AttackMain touched ball" << std::endl;
             drive_start_point = rp;
             touched_ball = true;
         }
@@ -71,7 +70,6 @@ void AttackMain::perform(Robot * robot)
             {
                 //If we have our passer, kick to it. Else kick to goal
                 if(support_attacker != nullptr) {
-                    std::cout << "AttackMain swithcing to pass" << std::endl;
                     delete pass_skill;
                     delete drive_skill;
                     drive_skill = nullptr;
