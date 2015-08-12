@@ -12,20 +12,20 @@
  * In order to change the type, change the type next to the commented ID.
  * These values are then returned by robot->type() to get the robot type.
  */
-typedef char robotType;
-
-enum robotTypes : robotType {
+enum RobotType
+{
 	differential,
 	threeWheelOmni,
 	fourWheelOmni
 };
 
-extern const robotType robotIDTypes[];
+extern const RobotType robotIDTypes[];
 
 /* (2)
- * The goalie robot's ID is given as a constant. This file is used because
- * it is included by gamemodel, which is included everywhere.
+ * The goalie robot's ID is given as an integer.
+ * This ID can be changed with the `goalie_id` integer on
+ * the utility command line. It is 5 by default (see .cpp)
  */
-#define GOALIE_ID 5
+extern int GOALIE_ID;
 
 #endif

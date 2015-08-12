@@ -10,11 +10,11 @@
  */
 
 #if 1
-const robotType robotIDTypes[] = {
+const RobotType robotIDTypes[] = {
  /*0*/	fourWheelOmni,
- /*1*/	differential,
+ /*1*/	fourWheelOmni,
  /*2*/	fourWheelOmni,
- /*3*/	differential,
+ /*3*/	fourWheelOmni,
  /*4*/	fourWheelOmni,
 #if SIMULATED
  /*5*/	fourWheelOmni,
@@ -27,7 +27,6 @@ const robotType robotIDTypes[] = {
  /*9*/	fourWheelOmni
 };
 #endif
-
 
 #if 0
 const robotType robotIDTypes[] = {
@@ -48,3 +47,5 @@ const robotType robotIDTypes[] = {
 };
 #endif
 
+//Goalie ID integer
+int GOALIE_ID = 5;
