@@ -14,12 +14,12 @@ int THETA_MULT2 = 10;
 //Multiplier for x_vel and y_vel in defaultCalc (set 10x actual)
 int XY_MULT = 3;
 
-
 FourWheelCalculator::FourWheelCalculator()
 {
-    debug::registerVariable("fwc_xy", &XY_MULT);
-    debug::registerVariable("fwc_theta", &THETA_MULT);
-    debug::registerVariable("fwc_theta2", &THETA_MULT2);
+    //These seem okay; taking out of registration for now
+    //debug::registerVariable("fwc_xy", &XY_MULT);
+    //debug::registerVariable("fwc_theta", &THETA_MULT);
+    //debug::registerVariable("fwc_theta2", &THETA_MULT2);
 }
 
 fourWheelVels FourWheelCalculator::calculateVels

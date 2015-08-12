@@ -79,11 +79,12 @@ fourWheelVels GoToPosition::calculateGoalField(Robot* robot, Type moveType)
      */
     if(closest != Point(-1, -1))
     {
-        float robAng = robot->getOrientation();
         float fromGoal = Measurments::angleBetween(closest, robot);
         Point unit(cos(fromGoal), sin(fromGoal));
-        Point target = robot->getRobotPosition() + unit * min(mygoalDist, opGoalDist);
-        result = fwc.calculateVels(robot, target, robAng, moveType);
+
+        //The `target` is the robot's point plus a vector away from the goal
+        Point target = robot->getRobotPosition() + (unit * 1000);
+        result = fwc.calculateVels(robot, target, robot->getOrientation(), moveType);
     }
 
     return std::move(result);

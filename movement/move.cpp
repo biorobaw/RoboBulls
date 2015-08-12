@@ -15,11 +15,6 @@
  * [See movement/move_collisions.h]
  */
 #define MOVEMENT_USE_ROB_COLLIDE    1
-/* Set this to 1 to use target-point randomization to avoid
- * robots going to the same point. Experimental.
- * [See movement/move_randomization.h]
- */
-#define MOVEMENT_USE_RANDOMIZATION  0
 
 /************************************************************************/
 
@@ -186,14 +181,6 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
         throw "This never happens.";
         break;
     }
-#endif
-
-#if MOVEMENT_USE_RANDOMIZATION
-    Randomization::addTargetPoint(robot, m_targetPoint);
-    Randomization::update();
-    Point newTarget = Randomization::getUpdatedTargetPoint(robot);
-    if(newTarget != m_targetPoint)
-        this->recreate(newTarget, m_targetAngle, useObstacleAvoid, useAvoidBall);
 #endif
 
     if(!pathEndInfo.hasFoundPathEnd)
