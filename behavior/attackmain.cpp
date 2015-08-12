@@ -21,12 +21,14 @@ AttackMain::~AttackMain()
     delete score_skill;
 }
 
+/* Angle tolerances for kicking in degrees (then converted to radians).
+ * Passing is lower because it needs to be more precise */
 #if SIMULATED
- #define SCORE_ANGLE_TOLERANCE  10*M_PI/180
- #define PASS_ANGLE_TOLERANCE   6*M_PI/180
+ #define SCORE_ANGLE_TOLERANCE  (30*M_PI/180)
+ #define PASS_ANGLE_TOLERANCE   (20*M_PI/180)
 #else
- #define SCORE_ANGLE_TOLERANCE  7*M_PI/180
- #define PASS_ANGLE_TOLERANCE   7*M_PI/180
+ #define SCORE_ANGLE_TOLERANCE  (7*M_PI/180)
+ #define PASS_ANGLE_TOLERANCE   (7*M_PI/180)
 #endif
 
 void AttackMain::perform(Robot * robot)
@@ -46,6 +48,7 @@ void AttackMain::perform(Robot * robot)
     {
         if(Measurments::isClose(rp,bp,250))
         {
+            std::cout << "AttackMain touched ball" << std::endl;
             drive_start_point = rp;
             touched_ball = true;
         }
@@ -56,39 +59,40 @@ void AttackMain::perform(Robot * robot)
     {
         case initial:
             state = drive;
-            drive_skill = new Skill::KickToPoint(gp, -1, shot_distance*1.25);
+            drive_skill = new Skill::KickToPointOmni(gp, -1, shot_distance*1.25);
             break;
 
         case drive:
             /***************************************************************
-             * Evaluate transition to pass state. If the robot if 1000 units away
+             * Evaluate transition to pass state. If the robot if `drive_distance` units away
              * from drive start (check RoboCup rules, this might need to change) this happens.
              */
-            if(!Measurments::isClose(drive_start_point, rp, drive_distance))
+            if(touched_ball && !Measurments::isClose(drive_start_point, rp, drive_distance))
             {
                 //If we have our passer, kick to it. Else kick to goal
                 if(support_attacker != nullptr) {
+                    std::cout << "AttackMain swithcing to pass" << std::endl;
                     delete pass_skill;
                     delete drive_skill;
                     drive_skill = nullptr;
-                    pass_skill = new Skill::KickToPoint(&sp);
+                    pass_skill = new Skill::KickToPointOmni(&sp, PASS_ANGLE_TOLERANCE);
                     state = pass;
                 } else {
                     delete score_skill;
                     Point offset(0, -500 + rand() % 1000);
-                    score_skill = new Skill::KickToPoint(gp + offset, SCORE_ANGLE_TOLERANCE);
+                    score_skill = new Skill::KickToPointOmni(gp + offset, SCORE_ANGLE_TOLERANCE);
                     state = score;
                 }
             }
             /***************************************************************
-             * Evaluate transition to score state. If the robot is within 2250 units
+             * Evaluate transition to score state. If the robot is within `shot_distance` units
              * of the enemy goal, this happens.
              */
-            else if(Measurments::isClose(bp, gp, shot_distance))
+            else if(touched_ball && Measurments::isClose(bp, gp, shot_distance))
             {
                 delete score_skill;
                 Point offset(0, -500 + rand() % 1000);
-                score_skill = new Skill::KickToPoint(gp + offset, SCORE_ANGLE_TOLERANCE);
+                score_skill = new Skill::KickToPointOmni(gp + offset, SCORE_ANGLE_TOLERANCE);
                 state = score;
             }
             else

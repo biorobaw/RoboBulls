@@ -1,7 +1,6 @@
 #ifndef ATTACK_SUPPORT_H
 #define ATTACK_SUPPORT_H
 
-#include <stdlib.h>
 #include "behavior/genericmovementbehavior.h"
 #include "skill/kicktopoint.h"
 #include "utilities/measurments.h"
@@ -28,11 +27,12 @@ public:
     AttackSupport(Robot* passer);
     void perform(Robot *);
     Point getCurrentTarget();
+
 private:
-    Robot* main_attacker;
-    enum {initial, final} state;
-    Point previousBP;
-    Point wp;
+    Robot* main_attacker;       //Pointer to robot passing to us
+    void recalculateWp(Robot*); //Re-calculates wp be to the least populated area
+    Point wp;                   //Point to wait at for a pass
+    Point previousBP;           //Previous ball point, used to not reclaculate so often
 };
 
 #endif // ATTACK_SUPPORT_H
