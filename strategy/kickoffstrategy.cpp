@@ -39,11 +39,11 @@ Point KickOffStrategy::myKickoffPoints[10] = {
  *             *
  ******************/
 Point KickOffStrategy::opKickoffPoints[10] = {
-    /*0*/ Point(2000,    0),
-    /*1*/ Point(2200,  800),
-    /*2*/ Point(2200, -800),
-    /*3*/ Point(2000,  800),
-    /*4*/ Point(2000, -800),
+    /*0*/ Point(1200,    0),
+    /*1*/ Point(1900,  800),
+    /*2*/ Point(1900, -800),
+    /*3*/ Point(1200,  800),
+    /*4*/ Point(1200, -800),
     /*5*/ Point(2900,    0)
 };
 
@@ -58,14 +58,18 @@ void KickOffStrategy::assignBeh()
         whichKickoffPointList = opKickoffPoints;
     
     int i = 0;
-    for(Robot* rob : gameModel->getMyTeam()) 
+    for(Robot* robot : gameModel->getMyTeam())
 	{
-        if(rob->getID() == GOALIE_ID)
+        if(robot->getID() == GOALIE_ID)
             continue;
+
+        //We just iterate through the point list as the robots come
         Point nextPoint = whichKickoffPointList[i++];
         nextPoint.x *= GameModel::mySide;   //Keeps X values on correct side
-        float angleToBall = Measurments::angleBetween(nextPoint, gameModel->getBallPoint());
-        rob->assignBeh<GenericMovementBehavior>(nextPoint, angleToBall);
+
+        //Assign to move to that point, and they all face to the center
+        float angleToCenter = Measurments::angleBetween(nextPoint, Point(0,0));
+        robot->assignBeh<GenericMovementBehavior>(nextPoint, angleToCenter);
     }
 
     //Goalie is a special case
