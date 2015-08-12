@@ -1,11 +1,7 @@
 #ifndef THREEWHEEL_VELCALCULATOR_H
 #define THREEWHEEL_VELCALCULATOR_H
-
-#include <iostream>
 #include <cmath>
 #include <vector>
-
-#include "matrixcalculator.h"
 #include "model/robot.h"
 #include "movement/movetype.h"
 #include "utilities/measurments.h"

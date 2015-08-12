@@ -168,7 +168,6 @@ HEADERS += \
 	include/netraw.h \
 	include/robocup_ssl_client.h \
 	include/serialib.h \
-	include/timer.h \
 	model/gamemodel.h \
 	model/robot.h \
 	movement/differential/closedloopcontrol.h \
@@ -180,7 +179,6 @@ HEADERS += \
 	movement/move.h \
 	movement/movetype.h \
 	movement/pathfinding/fppa_pathfinding.h \
-	movement/three_omni_motion/matrixcalculator.h \
 	movement/three_omni_motion/omni3_velcalculator.h \
 	skill/driveball.h \
 	skill/kick.h \
