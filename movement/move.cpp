@@ -1,4 +1,5 @@
 #include <time.h>
+#include <assert.h>
 #include "include/config/tolerances.h"     //ROT/DIST Tolerance
 #include "include/config/globals.h"        //OVERALL_VELOCITY
 #include "movement/move.h"
@@ -15,6 +16,9 @@
  * [See movement/move_collisions.h]
  */
 #define MOVEMENT_USE_ROB_COLLIDE    1
+
+//Debug enable constant
+#define MOVEMENT_MOVE_DEBUG 0
 
 /************************************************************************/
 
@@ -44,14 +48,11 @@ void Move::recreate(Point targetPoint, float targetAngle, bool withObstacleAvoid
     if(Measurments::distance(m_targetPoint, targetPoint) > recrDistTolerance) {
         m_targetPoint      = targetPoint;
         m_targetAngle      = targetAngle;
-        isInitialized      = false;
         useObstacleAvoid   = withObstacleAvoid;
         useAvoidBall       = avoidBall;
-        pathEndInfo        = {Point(9999,9999), false};
         currentPathIsClear = false;
         nextTargetAngle    = UNUSED_ANGLE_VALUE;
         nextDistTolerance  = 250;
-        lastObsPoint       = Point(9999, 9999);
         pathInfo.first.clear();
         pathQueue.clear();
         lastObstacles.clear();
@@ -90,13 +91,9 @@ void Move::setMovementTolerances(float distTolerance, float angleTolerance)
 bool Move::perform(Robot *robot, Movement::Type moveType)
 {
     bool finished = true;
-    
-    if(!isInitialized) {
-    #if MOVEMENT_MOVE_DEBUG
-        std::cout << "Warning: Move called without initialization" << std::endl;
-    #endif
+
+    if(!isInitialized)
         return false;
-    }
     
     /* This is a correction  factor; since all movement classes derive from
      * this class, the angle is corrected if the special flag is used. Likewise,
@@ -107,24 +104,16 @@ bool Move::perform(Robot *robot, Movement::Type moveType)
         m_targetAngle = Measurments::angleBetween(robot, m_targetPoint);
 
     if(useObstacleAvoid) {
-        /* Here we have a failsafe mechanism that checks if the robot
-         * has moved from the path's end. If so, hasFoundPathEnd is false,
-         * and we look for a path back to where we are supposed to be
-         */
-        if(pathEndInfo.hasFoundPathEnd) {
-            if(Measurments::distance(robot, pathEndInfo.endingPoint) > ROBOT_SIZE) {
-                pathEndInfo.hasFoundPathEnd = false;
-                assignNewPath(robot->getRobotPosition());
-            }
+        /* Check to see if we've found the end of the path. If we have and we're not close
+         * to the ending point, assign a path to get back to it */
+        if(hasFoundPathEnd && Measurments::distance(robot, m_targetPoint) > ROBOT_SIZE) {
+            hasFoundPathEnd = false;
+            assignNewPath(robot->getRobotPosition());
         }
         finished = this->calcObstacleAvoidance(robot, moveType);
     } else {
         finished = this->calcRegularMovement(robot, moveType);
     }
-
-#if MOVEMENT_MOVE_DEBUG
-    std::cout << "Move perform on " << robot->getID() << std::endl;
-#endif
 
     this->setVels(robot);
     return finished;
@@ -140,138 +129,99 @@ bool Move::calcRegularMovement(Robot* robot, Type moveType)
     Point robotPos = robot->getRobotPosition();
     float robotAng = robot->getOrientation();
 
-    // Check to see if movement is necessary
+    //Check to see if movement is not necessary; close in position and angle
     if (Measurments::isClose(m_targetPoint, robotPos, lastDistTolerance) &&
-        Measurments::isClose(m_targetAngle, robotAng, lastAngTolerance))
-    {
+        Measurments::isClose(m_targetAngle, robotAng, lastAngTolerance)) {
         lfront=lback=rfront=rback=left=right=back=0;
         return true;
-    }
-    else
-    {
-        /* Using regular movement, we calculate the velocities to move
-         * directly to the target point and angle.
-         */
-        this->calculateVels(robot, m_targetPoint, m_targetAngle, moveType);
+    } else {
+        //In regular movement we go directly to the target point as seen here
+        calculateVels(robot, m_targetPoint, m_targetAngle, moveType);
         return false;
     }
 }
 
+bool Move::determinePathClear(Robot* robot) const
+{
+    //Check to see if there is an obstalce in current path
+    Point robotPoint = robot->getRobotPosition();
+    Point obsPoint;
+    bool isNewObstacleInPath = FPPA::isObstacleInLine(robotPoint, nextPoint, &obsPoint, useAvoidBall);
+
+    //Checking the next line as well for an obstacle
+    if(!isNewObstacleInPath && pathQueue.size() > 2) {
+        const Point& nextNextPoint = pathQueue[1];
+        isNewObstacleInPath = FPPA::isObstacleInLine(nextPoint, nextNextPoint, &obsPoint, useAvoidBall);
+    }
+
+    //If there's an obstcle and it isn't near any recorded onces, the path is no longer clear
+    if(isNewObstacleInPath && Comparisons::isDistanceToLess(obsPoint, 100).none_of(lastObstacles)) {
+        return false;
+    }
+
+    return true;
+}
+
+Point Move::updatePathQueue(Robot* robot)
+{
+    //Pops path queue if close to next point
+    if(Measurments::isClose(robot, nextPoint, nextDistTolerance)) {
+        pathQueue.pop_front();
+        if(pathQueue.size() == 1) {
+            nextDistTolerance = lastDistTolerance;
+            nextTargetAngle = m_targetAngle;
+        }
+    }
+
+    //If the queue is empty, we've finished the path. Otherwise return next waypoint
+    if(pathQueue.empty()) {
+        hasFoundPathEnd = true;
+        return m_targetPoint;
+    } else {
+        return pathQueue.front();
+    }
+}
+
+void Move::getCollisionState(Robot* robot, bool& collided, bool& yielding) const
+{
+    collided = yielding = false;
+#if MOVEMENT_USE_ROB_COLLIDE
+    Collisions::update();
+    auto status = Collisions::getMoveStatus(robot);
+    collided = (status == MOVE_COLLIDED);   //When the robot has collided with another
+    yielding = (status == MOVE_YIELDING);   //When the robot is yielding to another
+#endif
+}
 
 bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
 {
-#if MOVEMENT_USE_ROB_COLLIDE
-    Collisions::update();
-    switch(Collisions::getMoveStatus(robot))
-    {
-    case MOVE_OK:
-        break;
-    case MOVE_NOTOK:
-        left = right = back = lfront = lback = rfront = rback = 0;
-        return false;
-        break;
-    case MOVE_COLLIDED:
-        left = right = lfront = lback = rfront = rback = -40;
-        if(Collisions::needsNewPath(robot)) {
-            this->assignNewPath(robot->getRobotPosition());
-        }
-        return false;
-        break;
-    default:
-        throw "This never happens.";
-        break;
-    }
-#endif
+    bool isCollided, isYielding;
+    getCollisionState(robot, isCollided, isYielding);
 
-    if(!pathEndInfo.hasFoundPathEnd)
-    {
-        /* Primary: Obstacle avoidance
-         * Robot is currently in pathfinding mode
-         * and has not travelled to the end of the path
-         */
-        Point robotPoint = robot->getRobotPosition();
-
-        /**** Dynamic path updating ****/
-        //The point here is to avoid obstacles that come into the path that were not
-        //initially anticipated
-        if(currentPathIsClear) //No known obstacles in path; test for new ones
-        {
-            //If the queue is empty, and we have not "found" the end, say we have.
-            if(pathQueue.empty()) {
-                pathEndInfo.hasFoundPathEnd = true;
-                pathEndInfo.endingPoint = robotPoint;
-                return false;
+    if(!hasFoundPathEnd) {
+        //Pathfinding waypoint mode.
+        if(currentPathIsClear) {
+            /* If path clear, nextPoint is decided on if the robot is collided,
+             * yielding, or in the clear. see getCollisionState function */
+            if(isYielding) {
+                nextPoint = robot->getRobotPosition();
+            } else if(isCollided) {
+                nextPoint = robot->getRobotPosition() + Collisions::getBackupDirection(robot) * 600;
+            } else {
+                nextPoint = updatePathQueue(robot);
+                currentPathIsClear = determinePathClear(robot);
             }
-
-            Point nextPoint = this->pathQueue.front();
-            Point obsPoint;
-            bool isNewObstacleInPath
-                = FPPA::isObstacleInLine(robotPoint, nextPoint, &obsPoint);
-
-            /* An interesting problem is that if the ending point for the
-             * current line is right before an obstacle, then that obstacle 
-             * will not be detected and it will be hit. So, if there are enough
-             * points, this also checks the NEXT line
-             */
-            if(!isNewObstacleInPath && pathQueue.size() > 2) 
-            {
-                const Point& nextNextPoint = pathQueue[1];
-                isNewObstacleInPath 
-                    = FPPA::isObstacleInLine(nextPoint, nextNextPoint, &obsPoint, useAvoidBall);
-            }
-            
-            if(isNewObstacleInPath && !Measurments::isClose(obsPoint, lastObsPoint, 100))
-            {
-                /* We have a possible obstacle..
-                 * If it is NOT close any of the obstacles used to generate
-                 * the current path, it is a new obstacle
-                 */
-                if(Comparisons::isDistanceToLess(obsPoint, 100).none_of(lastObstacles)) {
-                    lastObsPoint = obsPoint;
-                    currentPathIsClear = false;
-                }
-            }
-            
-            /*********************************************
-             * Velocity Calculating (Important part)
-             *********************************************/
-
-            //Omni robots can move while facing the final orientation directly
-            //float nextAngle = Measurments::angleBetween(robotPoint, nextPoint);
-            this->calculateVels(robot, nextPoint, m_targetAngle, moveType);
-            
-            /**********///Path Queue Updating
-            if(Measurments::isClose(robotPoint, nextPoint, nextDistTolerance)) {
-                pathQueue.pop_front();
-                if(pathQueue.empty()) {
-                    pathEndInfo.hasFoundPathEnd = true;  //Finished path
-                    pathEndInfo.endingPoint = robotPoint;
-                }
-                else if(pathQueue.size() == 1) {
-                    nextDistTolerance = lastDistTolerance;
-                    nextTargetAngle   = m_targetAngle;
-                }
-            }
+            calculateVels(robot, nextPoint, m_targetAngle, moveType);
         } else {
-            /* There is a known obstacle in the current path
-             * We want to rebuild the path and set the (new)
-             * path to be clear again. This also happens on the 
-             * initial condition that the robot has no path after
-             * construction
-             */
-            this->assignNewPath(robotPoint);
+            //A new path needs to be assigned. Do no movement
+            assignNewPath(robot->getRobotPosition());
             currentPathIsClear = true;
         }
     } else {
-        /* Secondary: Rotating mode
-         * Dropped into by default, if there is a desired
-         * optional end orientation, that rotation is done here
-         */
-        double robotAngle = robot->getOrientation();
-        this->calculateVels(robot, pathEndInfo.endingPoint, m_targetAngle, moveType);
-        if (Measurments::isClose(pathEndInfo.endingPoint, robot, lastDistTolerance) &&
-            Measurments::isClose(m_targetAngle, robotAngle, lastAngTolerance*1.5))
-        {
+        //Rotating mode. If robot did not reach target angle, rotate only
+        calculateVels(robot, m_targetPoint, m_targetAngle, moveType);
+        if (Measurments::isClose(m_targetPoint, robot, lastDistTolerance) &&
+            Measurments::isClose(m_targetAngle, robot->getOrientation(), lastAngTolerance*1.5)) {
             lfront=lback=rfront=rback=left=right=back=0;
             return true;
         }
@@ -282,19 +232,17 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
 
 
 void Move::assignNewPath(const Point& robotPoint)
-{ 
-    FPPA::PathInfo p = FPPA::findShortestPath
-            (robotPoint, m_targetPoint, useAvoidBall, lastDirection, 0.50);
-    this->pathQueue.assign(p.first.begin(), p.first.end());
-    this->lastDirection = p.second;
-    this->lastObstacles = FPPA::getCurrentObstacles();    //Copies
+{
+    FPPA::PathInfo p = FPPA::findShortestPath(robotPoint, m_targetPoint, useAvoidBall, lastDirection, 0.50);
+    pathQueue.assign(p.first.begin(), p.first.end());
+    lastDirection = p.second;
+    lastObstacles = FPPA::getCurrentObstacles(); //Copies
 
     //Draws path lines on iterface
     //Uses clock() to avoid line spam
     long now = clock();
-    if((float)(now - lastLineDrawn) / CLOCKS_PER_SEC > 0.5)
-    {
-        lastLineDrawn = now;
+    if((float)(now - lastLineDrawnTime) / CLOCKS_PER_SEC > 0.5) {
+        lastLineDrawnTime = now;
         for (unsigned int i=1; i<pathQueue.size(); i++)
             GuiInterface::getGuiInterface()->drawPath(pathQueue[i-1], pathQueue[i], i*2);
     }
@@ -309,10 +257,9 @@ void Move::setVels(Robot *robot)
      * of the entire program since all movement comes through here.
      */
 
-    // Ryan has perpetrated this boolean check
+    /* Ryan has perpetrated this boolean check; if overrided, ignore movement signals */
     if (!GuiInterface::getGuiInterface()->isOverriddenBot()[robot->getID()]) {
-        switch(robot->type())
-        {
+        switch(robot->type()) {
         case differential:
             robot->setL(left  * velMultiplier * OVERALL_VELOCITY);
             robot->setR(right * velMultiplier * OVERALL_VELOCITY);

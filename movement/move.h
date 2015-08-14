@@ -24,8 +24,6 @@ namespace Movement
  *   However, this is abstracted from the velocity calculators; it only
  *   asks the calculators to compute velocity to the next points.
  */
-#define MOVEMENT_MOVE_DEBUG 0
-
 class Move
 {
 public:
@@ -38,7 +36,8 @@ public:
      * point, and the target angle to a new angle. Also has to option to toggle
      * obstacle avoidance or not
      */
-    void recreate(Point targetPoint, float targetAngle = UNUSED_ANGLE_VALUE,
+    void recreate(Point targetPoint,
+                  float targetAngle = UNUSED_ANGLE_VALUE,
                   bool withObstacleAvoid = true, bool avoidBall = true);
     
     /* A scalar applied to the calculated velocity when set to the robot. 
@@ -72,41 +71,46 @@ protected:
      */
     virtual void calculateVels
         (Robot* rob, Point targetPoint, float targetAngle, Type moveType) = 0;
-
         
 private:
-    Point m_targetPoint    = Point(9999, 9999);
-    float m_targetAngle    = UNUSED_ANGLE_VALUE;
-    float velMultiplier    = 1.0;
-    bool  isInitialized    = false;
-    bool  useObstacleAvoid = true;
-    bool  useAvoidBall     = true;
+    Point m_targetPoint;        //The requested final target point
+    float m_targetAngle;        //The requested final target angle
+    float velMultiplier;        //Velocity multipler added to calculated vels
 
-    struct pathEndState
-    {
-        Point endingPoint;
-        bool  hasFoundPathEnd;
-    } pathEndInfo;
+    //States
+    bool  isInitialized;        //If recreate() has been called once (or ctor)
+    bool  useObstacleAvoid;     //Do we use obstacle avoidance?
+    bool  useAvoidBall;         //Do we avoid the ball?
+    bool  hasFoundPathEnd;      //Have we found the end of the path?
+    bool  currentPathIsClear;   //Is the current path clear?
 
-    bool  currentPathIsClear = false;
-    float nextTargetAngle    = UNUSED_ANGLE_VALUE;
-    float nextDistTolerance  = 250;
-    Point lastObsPoint       = Point(9999, 9999);
+    //FPPA info
+    float nextTargetAngle;
+    float nextDistTolerance;
+    Point nextPoint;
     FPPA::PathInfo      pathInfo;
     std::deque<Point>   pathQueue;
     FPPA::PathDirection lastDirection;
     std::vector<Point>  lastObstacles;
-    long  lastLineDrawn = 0;
+    long  lastLineDrawnTime;
     
+    //Default and user-set recreation (see recreate()) tolerances
     float recrDistTolerance  = 30;
     float recrAngleTolerance = 3*M_PI/180;
-    float lastDistTolerance  = 50;      //CLC guarantees this
+    float lastDistTolerance  = 50; //CLC guarantees this
     float lastAngTolerance   = 5*M_PI/180;
 
-    bool calcObstacleAvoidance(Robot* rob, Type moveType);
+    //Obstacle avoidance functions
+    Point updatePathQueue(Robot *robot);
+    bool  determinePathClear(Robot *robot) const;
+    bool  calcObstacleAvoidance(Robot* rob, Type moveType);
+    void  assignNewPath(const Point& robotPoint);
+    void  getCollisionState(Robot* robot, bool& collided, bool& yielding) const;
+
+    //Regular movement
     bool calcRegularMovement(Robot* rob, Type moveType);
-    void assignNewPath(const Point& robotPoint);
-    
+
+    //Utility to switch over Robot::Type and set actual velocities
     void setVels(Robot* robot);
 };
 

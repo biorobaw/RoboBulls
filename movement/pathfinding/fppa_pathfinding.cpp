@@ -1,6 +1,5 @@
 #include <math.h>
 #include <algorithm>
-#include <utility>
 #include <iostream>
 #include "include/config/tolerances.h"
 #include "utilities/measurments.h"
@@ -9,16 +8,37 @@
 #include "model/gamemodel.h"
 #include "movement/pathfinding/fppa_pathfinding.h"
 
-/* FPPA Pathfinding Constants */
-#define FPPA_DEBUG 0
-#define MAX_RECURSION_DEPTH 5
-#define FRAME_UPDATE_COUNT 10
-
 /* Implementation of the Fast Path Planning Algorithm
  * In a sense, this is a mostly a generalized implementation.
  * But it is currently hardcoded to work with robobulls only.
  * JamesW.
  */
+
+/************************************************************************/
+/* USER CONFIGURATION */
+
+//Print some extra debug output
+#define FPPA_DEBUG 0
+/* Defines the maximum recursions buildPathimpl makes(the number of segments in a path)
+ * before no more serch is made
+ */
+#define MAX_RECURSION_DEPTH 5
+/* Defines the number of calls to pathfindingBegin (to update FPPA) must be made before
+ * the state of all obstacles is updated. This is for efficiency reaons
+ */
+#define FRAME_UPDATE_COUNT 10
+/* Defines the minimum distance an obstacle must be from a line segment in the path
+ * before it is considered an obstacle. Using multiples of ROBOT_SIZE is ideal.
+ */
+#define OBSTACLE_LINE_DIST  (2 * ROBOT_SIZE)
+/* Defines, when sub-divding a path to avoid an obstalce, the perpendicular distance
+ * it travels from the segment to avoid it. Reducing the search size by a factor can
+ * help eliminate the jagged edges in the path, but risks cutting corners too close around
+ * obstacles. Multiples of ROBOT_RADIUS are ideal
+ */
+#define SEARCH_DIRECTION_DIST (2*ROBOT_RADIUS)
+
+/************************************************************************/
 
 namespace FPPA
 {
@@ -48,23 +68,20 @@ namespace impl
         bool  obstacle_found = false;
         Point obstacle_position;
 
-        for(const Point& pt : currentFrameObstacles)
+        for(const Point& obstacle : currentFrameObstacles)
         {
             /* Here we exclude obstacle points that are too close to the starting point,
-             * or exclude the ball if avoidBall is not on.
-             */
-            if(Measurments::isClose(pt, beginPos, ROBOT_RADIUS)) {
+             * or exclude the ball if avoidBall is not on. */
+            if(Measurments::isClose(obstacle, beginPos, ROBOT_RADIUS))
                 continue;
-            }
-            if(Measurments::isClose(gameModel->getBallPoint(), pt, 80) and not(avoidBall)) {
+            if(Measurments::isClose(gameModel->getBallPoint(), obstacle, 80) and not(avoidBall))
                 continue;
-            }
 
-            obstacle_found = Measurments::lineDistance(pt, beginPos, endPos) < ROBOT_SIZE*0.75 &&
-                insideRadiusRectangle(pt, beginPos, endPos);
+            obstacle_found = Measurments::lineDistance(obstacle, beginPos, endPos) < OBSTACLE_LINE_DIST &&
+                insideRadiusRectangle(obstacle, beginPos, endPos);
 
             if(obstacle_found) {
-                obstacle_position = pt;
+                obstacle_position = obstacle;
                 break;
             }
         }
@@ -90,15 +107,11 @@ namespace impl
 
     static Point findSearchDirection(const Point& initialPos, const Point& endPos, int sign)
     {
+        /* The search point is `SEARCH_DIRECTION_DIST` points perpendicularly from
+         * the line between initialPos and endPos, with sign determining the direction */
         float theta = Measurments::angleBetween(initialPos, endPos);
-
-        /* Reducing the search size by a factor can help eliminate
-         * the jagged edges in the path, but risks cutting corners
-         * too close around obstacles.
-         */
-        float dx = 0.5 * ROBOT_RADIUS * cos(theta + M_PI_2);
-        float dy = 0.5 * ROBOT_RADIUS * sin(theta + M_PI_2);
-
+        float dx = SEARCH_DIRECTION_DIST * cos(theta + M_PI_2);
+        float dy = SEARCH_DIRECTION_DIST * sin(theta + M_PI_2);
         return Point(sign * dx, sign * dy);
     }
 

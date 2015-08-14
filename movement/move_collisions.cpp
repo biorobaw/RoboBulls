@@ -1,9 +1,11 @@
 #include <vector>
+#include <iostream>
 #include <stdlib.h>
 #include <string.h>
 #include "utilities/measurments.h"
 #include "utilities/comparisons.h"
 #include "utilities/region.h"
+#include "utilities/velocitycalculator.h"
 #include "model/gamemodel.h"
 #include "model/robot.h"
 #include "movement/move_collisions.h"
@@ -17,331 +19,319 @@
  * This actually serves two purposes:
  * 1) Efficiency, and 2) Reduce amount of false-positives
  */
-#define ROBOT_MOVE_UPDATE_COUNT     3
+#define ROBOT_MOVE_UPDATE_COUNT     5
 /* Defines the distance that the robot's position must change
  * for the robot to be considered moving. This is used to have the robots
  * not yield to a robot that is not moving.
  */
-#define ROBOT_MOVING_DIST_TOL       100
+#define ROBOT_MOVING_DIST_TOL       60
 /* Defines the amount of times each robot's distance has to be considered
  * "not moving" for the yielding robots to not yield to that robot
  */
-#define ROBOT_MOVE_DIST_COUNT       20
+#define ROBOT_MOVE_DIST_COUNT       10
 /* Defines the amount of counts to update, while a robot is backing up,
  * until it is free to move forward again
  */
-#define ROBOT_MOVE_BACKUP_COUNT     95
+#define ROBOT_MOVE_BACKUP_COUNT     120
 /* Defines the distance the robot must move back from its collision point before
  * it is allowed to move forward again. Beware, if this is too small, the robot
  * will never find a path around the collision object due to the close-to-start
  * FPPA exclusion rule.
  */
-#define ROBOT_MOVE_BACKUP_DIST      (ROBOT_SIZE*1.2)
+#define ROBOT_MOVE_BACKUP_DIST      (ROBOT_SIZE*1.5)
+/* Defines a distance such that if two robots are within this distance, and one is
+ * facing the other, it will yield to the other robot. This is to avoid a collison
+ * when in a "collizion hazard"
+ */
+#define ROBOT_COLLIDE_HAZARD_DIST   550
+/* Defines a "very close" distance such that if two robots are within this distance
+ * to each other, they can be considered for being collided with each other
+ * collided. **Beware** This needs to be less than ROBOT_COLLIDE_HAZARD_DIST
+ */
+#define ROBOT_COLLIDED_DIST         (ROBOT_SIZE*1.5)
 
 /************************************************************************/
 /* Implementation */
 
-namespace Movement
+namespace Movement {
+namespace Collisions {
+namespace detail {
+
+/* Internal structure to keep track of all
+ * move/collide statuses of each robot */
+struct RobotMoveStatus
 {
-namespace Collisions
+    RobotMoveStatus();
+    int   status() const;          //Returns MOVE_* status
+    bool  moving() const;          //Returns true if seen moiving
+    void  update(Robot* robot);    //Updates the status and moving status
+    Point backupDirection() const; //Gets the unit direction the robot should backup in
+
+private:
+    //Querying and helper functions
+    bool robotFacingRobot(Robot* a, Robot* b);
+    bool robotCollideHazard(Robot* a, Robot* b);
+    bool areCollided(Robot* a, Robot* b);
+    bool shouldYieldFor(Robot* robot, Robot* other);
+
+private:
+    //Stat and functions to update state
+    void   set(int newStatus);
+    void   updateIsMovingStatus(Robot* robot);
+    void   updateMoveOk(Robot* robot);
+    void   updateMoveYielding(Robot* robot);
+    void   updateMoveCollided(Robot* robot);
+    int    m_status;          //MOVE_* status
+    bool   m_isMoving;        //Is robot moving?
+    int    m_observeCount;    //Count of times observed non-moving
+    Point  m_lastDiffPoint;   //Last point observed moving at
+    Robot* m_collideBot;      //for YIELDING/COLLIDED, what robot did it collide with
+    int    m_collideCounter;  //If COLLIDED, Counter to how long robot is backing up
+    Point  m_collideDirection;//If COLLIDED, unit direction robot should backup in
+};
+
+/****************************************************/
+/* State Variables */
+
+/* "Move statuses" of all robots. This container contains both Blue/Yellow statuses,
+ * and is needed to differentiate same IDs with different teams
+ */
+struct RobotMoveStatusContainer
 {
-namespace detail
+    RobotMoveStatus& operator[](Robot* robot) {
+        int id = robot->getID();
+        return robot->isOnMyTeam() ? moveStatusesMine[id] : moveStatusesOpponent[id];
+    }
+    RobotMoveStatus moveStatusesMine[10];
+    RobotMoveStatus moveStatusesOpponent[10];
+}
+currentMoveStatuses;
+
+/* A vector of all robots on the field. Placed here for convience. Populated
+ * on a call to moveUpdateStart() and emptied on moveUpdateEnd()
+ */
+static std::vector<Robot*> currentAllRobots;
+
+/****************************************************/
+//detail interface functions
+
+void moveUpdateStart()
 {
-    /* Internal structure to keep track of all move/collide statuses
-     * of each robot
+    //Obtains all robots on both teams in one vector; ease of updating
+    currentAllRobots = gameModel->getMyTeam();
+    for(Robot* rob : gameModel->getOponentTeam())
+        currentAllRobots.push_back(rob);
+}
+
+void moveUpdateEnd()
+{
+    currentAllRobots.clear();    //Gets rid of knowledge of all robots
+}
+
+void update()
+{
+    moveUpdateStart();
+    for(Robot* robot : currentAllRobots)
+        currentMoveStatuses[robot].update(robot);
+    moveUpdateEnd();
+}
+
+int getMoveStatus(Robot* robot)
+{
+    return currentMoveStatuses[robot].status();
+}
+
+/****************************************************/
+/* RobotMoveStatus Implementation */
+
+RobotMoveStatus::RobotMoveStatus()
+    : m_status(MOVE_OK)
+    , m_isMoving(true)
+    , m_observeCount(0)
+    , m_lastDiffPoint(Point(9999,9999))
+    , m_collideCounter(0)
+    { }
+
+int RobotMoveStatus::status() const
+{
+    return m_status;
+}
+
+bool RobotMoveStatus::moving() const
+{
+    return m_isMoving;
+}
+
+Point RobotMoveStatus::backupDirection() const
+{
+    return m_collideDirection;
+}
+
+void RobotMoveStatus::set(int newStatus)
+{
+    switch(newStatus)
+    {
+    case MOVE_OK:
+        break;
+    case MOVE_YIELDING:
+        break;
+    case MOVE_COLLIDED:
+        m_collideCounter = 0;
+        break;
+    }
+    m_status = newStatus;
+}
+
+bool RobotMoveStatus::robotFacingRobot(Robot* a, Robot* b)
+{
+    float tolerance = 100 * (M_PI / 180);
+
+    /* For the omni robots, they don't face each other. So we look at their
+     * velocity direction to determine "facing" (TODO: Fix this) */
+    if(a->type() != differential) {
+        Point vel = a->getVelocity();
+        float ang = atan2(vel.y, vel.x);
+        float bad = Measurments::angleBetween(a, b);
+        return Measurments::isClose(ang, bad, tolerance);
+    } else {
+        return Comparisons::isFacingPoint(a, b, tolerance);
+    }
+}
+
+bool RobotMoveStatus::robotCollideHazard(Robot* a, Robot* b)
+{
+    return Measurments::distance(a,b) < ROBOT_COLLIDE_HAZARD_DIST;
+}
+
+bool RobotMoveStatus::areCollided(Robot *a, Robot *b)
+{
+    //If the other guy is stopped, we don't consider them collided
+    if(!currentMoveStatuses[b].moving())
+        return false;
+    bool robotsTooClose = Measurments::distance(a, b) <= ROBOT_COLLIDED_DIST;
+    bool robFacingOther = robotFacingRobot(a, b);
+    return robotCollideHazard(a,b) && robotsTooClose && robFacingOther;
+}
+
+bool RobotMoveStatus::shouldYieldFor(Robot* robot, Robot* other)
+{
+    /* `robot` should yield to `other` if robot is facing other,
+     * they are in close proximity, and other is in motion */
+    return robotFacingRobot(robot, other) &&
+           robotCollideHazard(robot,other) &&
+           currentMoveStatuses[other].moving();
+}
+
+void RobotMoveStatus::update(Robot* robot)
+{
+    //Updates m_isMoving before we act on it (ncluding enemy team)
+    updateIsMovingStatus(robot);
+
+    //We don't keep tabs on if the opponents are yielded or collided
+    if(!robot->isOnMyTeam())
+        return;
+
+    switch(m_status)
+    {
+    case MOVE_OK:
+        updateMoveOk(robot);
+        break;
+    case MOVE_YIELDING:
+        updateMoveYielding(robot);
+        break;
+    case MOVE_COLLIDED:
+        updateMoveCollided(robot);
+        break;
+    }
+}
+
+void RobotMoveStatus::updateIsMovingStatus(Robot* robot)
+{
+    /* The robot *is* moving if it is ROBOT_MOVING_DIST_TOL away from its last
+     * recorded moved position */
+    if(Measurments::distance(robot, m_lastDiffPoint) > ROBOT_MOVING_DIST_TOL) {
+        m_isMoving      = true;
+        m_lastDiffPoint = robot->getRobotPosition();
+        m_observeCount  = 0;
+    } else {
+        /* The robot is *not* moving after we've seen it's distance close enough
+         * for ROBOT_MOVE_DIST_COUNT times */
+        if(++m_observeCount >= ROBOT_MOVE_DIST_COUNT) {
+            m_isMoving = false;
+        }
+    }
+}
+
+void RobotMoveStatus::updateMoveOk(Robot* robot)
+{
+    for(Robot* other : currentAllRobots)
+    {
+        if(robot == other)
+            continue;
+
+        /* If we are collided or should yield, update state
+         * and store the robot collided/yielded with */
+        if(areCollided(robot, other)) {
+            set(MOVE_COLLIDED);
+            m_collideBot = other;
+        }
+        else if(shouldYieldFor(robot, other)) {
+            set(MOVE_YIELDING);
+            m_collideBot = other;
+        }
+    }
+}
+
+void RobotMoveStatus::updateMoveYielding(Robot* robot)
+{
+    //We can go back to moving if the collidebot has stopped, or it is far away
+    bool farAway = Measurments::distance(robot, m_collideBot) > ROBOT_COLLIDE_HAZARD_DIST;
+    if(farAway || !currentMoveStatuses[m_collideBot].moving())
+        set(MOVE_OK);
+}
+
+void RobotMoveStatus::updateMoveCollided(Robot* robot)
+{
+    /* We can go back to moving if we are far enough from the
+     * collision bot, or the backup count times out.
+     * Otherwise update the backup direciton. This is directly away from the collidebot.
      */
-    struct RobotMoveStatus
-    {
-        RobotMoveStatus();
-        int  status();
-        bool moving();
-        void update(Robot* robot);
-        void updateMovingStatusOnly(Robot* robot);
-        void set(int newStatus);
-    private:
-        void    updateMoveOk(Robot* robot);
-        void    updateMoveNotOK(Robot* robot);
-        void    updateMoveCollided(Robot* robot);
-        int     m_status;          //MOVE_ status
-        bool    m_isMoving;        //Is robot moving?
-        Point   m_lastDiffPoint;   //Last point observed moving at
-        Point   m_collidePoint;    //If COLLIDED, where did it collide
-        Robot*  m_collideBot;      //If COLLIDED, what robot did it collide with
-        int     m_observeCount;    //Count of times observed non-moving
-        int     m_collideCounter;  //If COLLIDED, Counter to how long robot is backing up
-        friend bool detail::needsNewPath(Robot *robot);
-    };
-    
-    /****************************************************/
-    /* State Variables */
+    bool maxBackupCountHit = ++m_collideCounter >= ROBOT_MOVE_BACKUP_COUNT;
+    bool isFarAwayFromHit  = Comparisons::isDistanceToGreater(robot, m_collideBot, ROBOT_MOVE_BACKUP_DIST);
 
-    /* "Move statuses" of all robots. Contains MOVE_OK/MOVE_COLLIDED status 
-     * as well as variables to keep track of when to switch states on each. This
-     * array is updated with a call to update()
-     */
-    static RobotMoveStatus currentMoveStatuses[10];
-    
-    /* Bool for each robot representing if that robot is yielding to another robot */
-    static bool currentMoveStops[10];
-    
-    /* A vector of all robots on the field. Placed here for convience. Populated
-     * on a call to moveUpdateStart() and emptied on moveUpdateEnd()
-     */
-    static std::vector<Robot*> currentAllRobots;
-    
-    /****************************************************/
-
-    int getMoveStatus(Robot* robot) 
-    {
-        return currentMoveStatuses[robot->getID()].status();
+    if(isFarAwayFromHit or maxBackupCountHit) {
+        m_collideCounter = 0;
+        m_collideDirection = Point(0,0);
+        set(MOVE_OK);
+    } else {
+        float angle = Measurments::angleBetween(m_collideBot, robot);
+        m_collideDirection = Point(cos(angle), sin(angle));
     }
+}
 
-    void moveUpdateStart()
-    {
-        //Obtains all robots on both teams
-        GameModel* gm = GameModel::getModel();
-        currentAllRobots = gm->getMyTeam();
-        for(Robot* rob : gm->getOponentTeam())
-            currentAllRobots.push_back(rob);
+}   //namespace detail
 
-        //Assumes all robots can move at the start of a move-collide update
-        memset(currentMoveStops, false, 10*sizeof(bool));
-    }
+/************************************************/
+//Movement::Collisions top-level interface methods
 
-    void moveUpdateEnd()
-    {
-        currentAllRobots.clear();    //Gets rid of knowledge of all robots
-    }
-
-    void update() 
-    {
-        /* One of the best ways to do this might be to automatically assume
-         * they can move each iteration, and let the code find an exception again
-         * that makes them not able to move. Then we can just tighten the code
-         * that finds the movement exception
-         */
-        GameModel* gm = GameModel::getModel();
-        moveUpdateStart();
-        
-        for(Robot* robot : gm->getMyTeam()) {
-		    currentMoveStatuses[robot->getID()].updateMovingStatusOnly(robot);
-        }
-        
-        for(Robot* robot : gm->getMyTeam()) {
-            RobotMoveStatus& stat = currentMoveStatuses[robot->getID()];
-            if(stat.status() != MOVE_COLLIDED) {
-                stat.set(MOVE_OK);
-            }
-            currentMoveStatuses[robot->getID()].update(robot);
-        }
-        moveUpdateEnd();
-    }
-
-    bool needsNewPath(Robot *robot)
-    {
-        RobotMoveStatus& status = currentMoveStatuses[robot->getID()];
-        int   backupCount  = status.m_collideCounter;
-        Point collidePoint = status.m_collidePoint;
-
-        if(status.m_collideBot != NULL) {
-            collidePoint = status.m_collideBot->getRobotPosition();
-        }
-
-        bool farFromHit = Measurments::distance(robot->getRobotPosition(),collidePoint)
-                >= ROBOT_MOVE_BACKUP_DIST*0.80;
-        bool collideCounterClose = abs(backupCount - ROBOT_MOVE_BACKUP_COUNT)
-                <= ROBOT_MOVE_BACKUP_COUNT*0.30;
-
-        return (farFromHit or collideCounterClose);
-    }
-
-    
-    /****************************************************/
-    /* Static Utility Functions */
-    
-    void robotDisableMovement(Robot* a, Robot* b)
-    {
-        if(currentMoveStatuses[b->getID()].moving()) {
-            currentMoveStatuses[a->getID()].set(MOVE_NOTOK);
-            currentMoveStops[a->getID()] = true;
-        }
-    }
-
-    bool robotFacingRobot(Robot* a, Robot* b)
-    {
-        float tolerance = 33 * (M_PI / 180);
-        if(a->type() != differential) {
-            /* For the omni robots, they don't face each other. So we look at their
-             * velocity direction to determine "facing" */
-            Point rv = a->getVelocity();
-            float ra = atan2(rv.y, rv.x);
-            float bad = Measurments::angleBetween(a, b);
-            return Measurments::isClose(ra, bad, tolerance);
-        } else {
-            return Comparisons::isFacingPoint(a, b, tolerance);
-        }
-    }
-
-    bool robotCollideHazard(Robot* a, Robot* b)
-    {
-        int tolerance = 400;
-        return Comparisons::isDistanceToLess(a, b, tolerance);
-    }
-    
-    /****************************************************/
-    /* RobotMoveStatus Implementation */
-    
-    RobotMoveStatus::RobotMoveStatus()
-        : m_status(MOVE_OK)
-        , m_isMoving(true)
-        , m_lastDiffPoint(Point(9999,9999))
-        , m_collidePoint(Point(9999,9999))
-        , m_observeCount(0)
-        , m_collideCounter(0)
-        {}
-        
-    int RobotMoveStatus::status()
-    {
-        return this->m_status;
-    }
-    
-    bool RobotMoveStatus::moving()
-    {
-        return this->m_isMoving;
-    }
-    
-    void RobotMoveStatus::set(int newStatus)
-    {
-        switch(newStatus) 
-        {
-        case MOVE_OK:
-            break;
-        case MOVE_NOTOK:
-            break;
-        case MOVE_COLLIDED:
-            m_collideCounter = 0;
-            break;
-        }
-        m_status = newStatus;
-    }
-    
-    void RobotMoveStatus::update(Robot* robot)
-    {
-        switch(m_status) 
-        {
-        case MOVE_OK:
-            updateMoveOk(robot);
-            break;
-        case MOVE_NOTOK:
-            updateMoveNotOK(robot);
-            break;
-        case MOVE_COLLIDED:
-            updateMoveCollided(robot);
-            break;
-        }
-    }
-    
-    void RobotMoveStatus::updateMovingStatusOnly(Robot* robot)
-    {
-        Point currentPos = robot->getRobotPosition();
-        if(Measurments::distance(currentPos, m_lastDiffPoint) > ROBOT_MOVING_DIST_TOL) {
-            m_isMoving      = true;
-            m_lastDiffPoint = currentPos;
-            m_observeCount  = 0;
-        } else {
-            if(m_observeCount >= ROBOT_MOVE_DIST_COUNT) {
-                m_isMoving = false;
-            } else {
-                ++m_observeCount;
-            }
-        }
-    }
-    
-    void RobotMoveStatus::updateMoveOk(Robot* robot)
-    {
-        for(Robot* other : currentAllRobots)
-        {
-            bool hazardExists   = robotCollideHazard(robot, other);
-            bool otherIsStopped = (currentMoveStops[other->getID()] == true);
-            if((robot == other) or otherIsStopped or not(hazardExists)) {
-                continue;
-            }
-            
-            Point robPos = robot->getRobotPosition();
-            Point othPos = other->getRobotPosition();
-            int closeTol = ROBOT_RADIUS * 5;
-            bool robOtherTooClose = Measurments::distance(robPos, othPos)
-                    <= closeTol;
-            bool robFacingOther = robotFacingRobot(robot, other);
-
-            if(robOtherTooClose and robFacingOther) {
-                set(MOVE_COLLIDED);
-                currentMoveStops[robot->getID()] = true;
-                this->m_collidePoint = othPos;
-                this->m_collideBot = other;
-                continue;
-            }
-            
-            if(robotFacingRobot(robot, other) and robotFacingRobot(other, robot)) {
-                if(other->isOnMyTeam()) {
-                    robotDisableMovement(other, robot);
-                } else {
-                    robotDisableMovement(robot, other);
-                }
-            }
-            else if(robotFacingRobot(robot, other)) {
-                robotDisableMovement(robot, other);
-            }
-            else if(robotFacingRobot(other, robot)) {
-                robotDisableMovement(other, robot);
-            }
-            else {
-                //No robots are facing each other
-            }
-        }
-    }
-    
-    void RobotMoveStatus::updateMoveNotOK(Robot* robot)
-    {
-        UNUSED_PARAM(robot);
-    }
-    
-    void RobotMoveStatus::updateMoveCollided(Robot* robot)
-    {
-        bool maxBackupCountHit = ++m_collideCounter >= ROBOT_MOVE_BACKUP_COUNT;
-        bool isFarAwayFromHit  = false;
-
-        if(m_collideBot != NULL) {
-            isFarAwayFromHit = Comparisons::isDistanceToGreater
-                (robot, m_collideBot, ROBOT_MOVE_BACKUP_DIST);
-        }
-
-        if(isFarAwayFromHit or maxBackupCountHit) {
-            m_collideCounter = 0;
-            m_collidePoint = Point(9999,9999);
-            set(MOVE_OK);    //Robot can now move
-        }
-    }
-}    //namespace detail
-
+void update()
+{
     static int moveUpdateCounter;
-
-    void update() 
-    {
-        if(++moveUpdateCounter >= ROBOT_MOVE_UPDATE_COUNT) {
-            moveUpdateCounter = 0;
-            detail::update();
-        }
-    }
-    
-    int getMoveStatus(Robot* robot) 
-    {
-        return detail::getMoveStatus(robot);
-    }
-
-    bool needsNewPath(Robot* robot)
-    {
-        return detail::needsNewPath(robot);
+    if(++moveUpdateCounter > ROBOT_MOVE_UPDATE_COUNT) {
+        moveUpdateCounter = 0;
+        detail::update();
     }
 }
+
+int getMoveStatus(Robot* robot)
+{
+    return detail::getMoveStatus(robot);
 }
+
+Point getBackupDirection(Robot* robot)
+{
+    return detail::currentMoveStatuses[robot].backupDirection();
+}
+
+}   //namespace Collisions
+}   //namespace Movement

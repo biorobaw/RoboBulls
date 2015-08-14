@@ -36,8 +36,8 @@ namespace FPPA
 
     /****************************************************************/
 
-    /* Use FPPA to find a path from `start` to `end`.
-     * Returns a std::pair of a Point vector and a PathDirection indicating
+    /* Use FPPA to find a path from Point `start` to Point `end`.
+     * Returns a std::pair of a the path waypoint vector and a PathDirection indicating
      * which direction was chosen.
      * `avoidBall`
      *      Controls counting the ball as an obstacle or not
@@ -58,8 +58,7 @@ namespace FPPA
      * with the found obstacle position if this function returns true.
      * Pass in `avoidBall` to count the ball as an obstacle or not (true by default).
      */
-    bool isObstacleInLine(const Point& start, const Point& end, Point *obsPosOut = nullptr,
-                          bool avoidBall = true);
+    bool isObstacleInLine(const Point& start, const Point& end, Point *obsPosOut = nullptr, bool avoidBall = true);
 
 
     /* Test if a given single point in question
