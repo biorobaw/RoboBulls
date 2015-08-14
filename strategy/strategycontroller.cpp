@@ -27,17 +27,8 @@ StrategyController::StrategyController(GameModel* gm)
 
 void StrategyController::run()
 {
-
-    /* Adjustment: The new vision system (11/7/14) requirements
-     * (Seeing a robot X amounts of times before it is added) behaves
-     * poorly with strategies with assignBeh only. assignBeh is only called once,
-     * and that is _before_ 50 frames have passed, and so no robots will be
-     * on the team. Then, assignBeh will never be called again.
-     * Here we're only going to run if there are robots on the team.
-     * Also, this is a non-bad way of "not doing anything" until the game
-     * is in a valid state.
-     * And, this means nothing will work if there are no robots.
-     */
+    //StrategyController runs only if at least one robot is on the team.
+    //This is for the initial reading at which robots may not be detected yet
     if(!model->getMyTeam().empty())
     {
         frameBegin();

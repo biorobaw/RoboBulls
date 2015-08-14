@@ -38,6 +38,8 @@ void listener()
         jAxisMoveUp = 1;
         jAxisMoveSide = 0;
         jAxisRotate = 2;
+    } else {
+        throw std::runtime_error("Joystick \"" + name + "\" is not supported.");
     }
 
     /********************************************************/

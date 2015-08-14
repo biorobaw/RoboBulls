@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include "model/gamemodel.h"
 #include "include/config/team.h"
+#include "include/config/robot_types.h"
 #include "utilities/debug.h"
 
 namespace debug
@@ -168,6 +169,7 @@ void listenStart()
     //The default builtin functions are registed here
     registerFunction("remove_robot", builtin_remove_robot);
     registerFunction("add_robot", builtin_add_robot);
+    registerVariable("goalie_id", &GOALIE_ID);
 
     std::cout << "********************************" << '\n'
               << "Utility Command Line Enabled    " << '\n'

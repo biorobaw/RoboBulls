@@ -93,7 +93,7 @@ float Robot::getSpeed()
     return sqrt((vel.x * vel.x) + (vel.y * vel.y));
 }
 
-robotType Robot::type()
+RobotType Robot::type()
 {
     assert(id >= 0 && id < 10);
     return robotIDTypes[id];

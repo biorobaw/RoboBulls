@@ -61,7 +61,7 @@ public:
     bool  getDrible();
     bool  isOnMyTeam();
     Behavior* getCurrentBeh();
-    robotType type();
+    RobotType type();
 
     void clearCurrentBeh();
     std::string toString();

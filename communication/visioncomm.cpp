@@ -179,20 +179,18 @@ bool VisionComm::receive()
         recieveRobotTeam(frame, TEAM_BLUE);
         recieveRobotTeam(frame, TEAM_YELLOW);
 
+        /* After we have had a chance to initially recieve all robots,
+         * the RoboBulls game is run with the new information here. */
         if (++totalframes > 80)
-            //Runs the Robobulls game once
             gamemodel->notifyObservers();
     }
     
     /* After 50 frames the "seen counts" of each team are set to 0. This prevents
-     * ghost robots from appearing over time
-     */
+     * ghost robots from appearing over time */
     if(++frames > 50) {
         frames = 0;
-        for(int& i : blue_rob)
-            i = 0;
-        for(int& i : yellow_rob)
-            i = 0;
+        for(int& i : blue_rob) i = 0;
+        for(int& i : yellow_rob) i = 0;
     }
 
     return true;
