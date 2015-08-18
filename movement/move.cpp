@@ -15,7 +15,7 @@
  * Without this there's little point in trying an actual game
  * [See movement/move_collisions.h]
  */
-#define MOVEMENT_USE_ROB_COLLIDE    1
+#define MOVEMENT_USE_ROB_COLLIDE 1
 
 //Debug enable constant
 #define MOVEMENT_MOVE_DEBUG 0
@@ -52,7 +52,7 @@ void Move::recreate(Point targetPoint, float targetAngle, bool withObstacleAvoid
         useAvoidBall       = avoidBall;
         currentPathIsClear = false;
         nextTargetAngle    = UNUSED_ANGLE_VALUE;
-        nextDistTolerance  = 250;
+        nextDistTolerance  = ROBOT_SIZE;
         pathInfo.first.clear();
         pathQueue.clear();
         lastObstacles.clear();

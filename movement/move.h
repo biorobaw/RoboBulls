@@ -75,7 +75,7 @@ protected:
 private:
     Point m_targetPoint;        //The requested final target point
     float m_targetAngle;        //The requested final target angle
-    float velMultiplier;        //Velocity multipler added to calculated vels
+    float velMultiplier = 1;    //Velocity multipler added to calculated vels
 
     //States
     bool  isInitialized;        //If recreate() has been called once (or ctor)
@@ -97,7 +97,7 @@ private:
     //Default and user-set recreation (see recreate()) tolerances
     float recrDistTolerance  = 30;
     float recrAngleTolerance = 3*M_PI/180;
-    float lastDistTolerance  = 50; //CLC guarantees this
+    float lastDistTolerance  = 100; //CLC guarantees this
     float lastAngTolerance   = 5*M_PI/180;
 
     //Obstacle avoidance functions
