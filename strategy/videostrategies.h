@@ -1,18 +1,19 @@
 #ifndef VIDEO_STRATEGIES_H
 #define VIDEO_STRATEGIES_H
-
 #include "strategy/strategy.h"
 #include "behavior/behavior.h"
 #include "behavior/genericmovementbehavior.h"
 #include "skill/kicktopointomni.h"
-
-/*
- * OMNI-ROBOT TEST GIT BRANCH --- TEMPORARY FILE 
- * This is a temporary file meant to provide functionality for the Robocup
- * Qulification 2015 video.
- */
-
 class Robot;
+
+/*! @brief Strategies used in the RoboCup 2015 qualification Video
+ *  @deprecated */
+namespace Video
+{
+
+/* OMNI-ROBOT TEST GIT BRANCH --- TEMPORARY FILE
+ * This is a temporary file meant to provide functionality for the Robocup
+ * Qulification 2015 video. */
 
 /************************************************************************/
 /* BEHAVIORS */
@@ -137,6 +138,8 @@ private:
     Robot* kicker;
     Point bp, target;
 };
+
+}
 
 
 #endif

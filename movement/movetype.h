@@ -4,7 +4,12 @@
 namespace Movement
 {
 
-/* The purpose of this file is for movement *modifiers*; for instance,
+//! @file
+
+/*! @brief Defines Movement Type modifiers
+ * @author JamesW
+ *
+ * The purpose of this file is for movement <i>modifiers</i>; for instance,
  * differential robots have sharp turns, no slowdown, and others; the omni
  * robots have max velocity and speed versions of their default movement 
  * calculators. These enums recognize all modifier types, and are passed to 
@@ -12,28 +17,25 @@ namespace Movement
  * robot type GoToPosition has been passed, the default movement calculation
  * is used.
  */
-typedef char MovementType;
-
-
-enum class Type : MovementType
+enum Type
 {
     Default = -1,
 
-    /* Differential Movement Types */
+    //Differential Movement Types
     SharpTurns,
 	NoSlowdown,
-    Count,  //Leave last and do not use
+    DiffCount,  //Leave last and do not use
 
-    /* Omni Movement Types */
+    //Omni Movement Types
     facePoint
 };
 
 
-#define IS_DIFFERENTIAL(type) \
-    ((MovementType)(type) >= 0 && (MovementType)(type) < (MovementType)Type::Count)
-	
-#define IS_OMNI(type) \
-    ((MovementType)(type) > (MovementType)Type::Count)
+//!< @brief Determines if a given Movement::Type is Differenetial
+#define IS_DIFFERENTIAL(type) (((type) >= 0) && ((type) < Type::DiffCount))
+
+//!< @brief Determines if a given Movement::Type is Omni
+#define IS_OMNI(type) ((type) > Type::DiffCount)
 	
 }
 

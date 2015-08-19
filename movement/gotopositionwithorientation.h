@@ -1,6 +1,5 @@
 #ifndef GOTOPOSITIONWITHORIENTATION_H
 #define GOTOPOSITIONWITHORIENTATION_H
-
 #include "model/robot.h"
 #include "movement/move.h"
 #include "movement/differential/differential_velcalculator.h"
@@ -10,12 +9,11 @@
 namespace Movement 
 {
 
-/* GoToPosition
- * This is a generic movement layer, fit for direct use by skills.
- * It takes into account all three types of robots, and calls their 
- * corresponding Velocity Calculators. This is a specialization of the Move
- * class... defining a calculateVels function.
- */
+/*! @brief Interface over movement calculators implementing Move::calculateVels.
+ *  @author JamesW
+ *  @details This class it fit for use by Skills directly for generic movement on a robot.
+ *  @see Move
+ *  @see FourWheelCalculator */
 
 class GoToPosition : public Move
 {

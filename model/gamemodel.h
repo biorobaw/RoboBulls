@@ -1,6 +1,5 @@
 #ifndef GAMEMODEL_H
 #define GAMEMODEL_H
-
 #include <vector>
 #include "utilities/point.h"
 #include "utilities/measurments.h"
@@ -26,8 +25,7 @@ public:
 
     /* Game access functions
      * These should be utilized by normal code to retrieve the state
-     * of the game from anywhere in the code
-     */
+     * of the game from anywhere in the code */
     vector<Robot*>& getOponentTeam();
     vector<Robot*>& getMyTeam();
     vector<Robot*>& getBlueTeam();
@@ -46,37 +44,36 @@ public:
     Point  getPenaltyPoint();
     Point  getOpponentGoal();
     Point  getMyGoal();
-    Robot* getHasBall();                    //returns the robot which has the ball
-    Robot* findMyTeam(int);                 //Looks for a robot with specified id in myTeam
-    Robot* findOpTeam(int);                 //Looks for a robot with specified id in opTeam
-    Robot* find(int, std::vector<Robot*>&); //General-case find
+    Robot* getHasBall();
+    Robot* findMyTeam(int);
+    Robot* findOpTeam(int);
+    Robot* find(int, std::vector<Robot*>&);
     bool   isNewCommand();
-    void   removeRobot(int id, int team);   //Removes a robot ID from a team
+    void   removeRobot(int id, int team);
 
 private:
     /* StrategyController link */
-    StrategyController *sc = NULL;
+    StrategyController *sc = NULL;          //!< Link to strategy controller
 
     /* General Game Information */
-    vector <Robot*> opTeam;
-    vector <Robot*> myTeam;
-    Robot* robotWithBall     = NULL;
-    Point  ballPoint         = Point(0,0);
-    Point  ballVelocity      = Point(0,0);
-    Point  ballAcceleration  = Point(0,0);
-    Point  ballPrediction    = Point(0,0);
-    char   gameState         = '\0';
-    bool   hasNewCommand     = false;
-    char   blueGoals         = 0;
-    char   yellowGoals       = 0;
-    short  remainingTime     = 0;
-    char   previousGameState = '\0';
-    bool   ballStopped = false;
+    vector <Robot*> opTeam;               //!< The team of Robot on my team
+    vector <Robot*> myTeam;               //!< The team of Robot on the opponent team
+    Robot* robotWithBall   = NULL;        //!< Robot currently holding the ball
+    Point  ballPoint       = Point(0,0);  //!< The current point fo the ball on the field
+    Point  ballVelocity    = Point(0,0);  //!< The current velocity of the ball on the field
+    Point  ballAcceleration= Point(0,0);  //!< The current acceleration of the ball on the field
+    Point  ballPrediction  = Point(0,0);  //!< Prediciton point of the ball
+    char   gameState       = '\0';        //!< The current state of the game from RefComm
+    bool   hasNewCommand   = false;       //!< True on tje iteration that gameState has changed
+    char   blueGoals       = 0;           //!< Number of scores yellow goals
+    char   yellowGoals     = 0;           //!< Number of scores yellow goals
+    short  remainingTime   = 0;           //!< Remaining time in seconds
+    char   previousGameState = '\0';      //!< The previous gamestate
+    bool   ballStopped = false;           //!< Is the ball stationary?
 
     /* Functions to update gamemodel from vision system.
      * Provides *the* link between vision detection and
-     * referee box with our code.
-     */
+     * referee box with our code. */
     friend class VisionComm;
     friend class RefComm;
     void onRobotUpdated(Robot*);
@@ -87,7 +84,6 @@ private:
     void setBlueGoals(char);
     void setYellowGoals(char);
     void notifyObservers();
-    void setPreviousGameState(char);   
     
 public:
     //Old legacy functions

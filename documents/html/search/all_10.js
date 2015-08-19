@@ -1,0 +1,24 @@
+var searchData=
+[
+  ['read',['Read',['../classserialib.html#ad36272576f4bc10c5cfa1ed1f37887f5',1,'serialib']]],
+  ['readchar',['ReadChar',['../classserialib.html#acf7289cac411dbcf38a9d069be25bc8d',1,'serialib']]],
+  ['readstring',['ReadString',['../classserialib.html#a616669a303259d00487f0835613ac9b7',1,'serialib']]],
+  ['recreate',['recreate',['../classMovement_1_1Move.html#a70eaa9f4713240f59be3867af60d38df',1,'Movement::Move']]],
+  ['refbox_5flog',['Refbox_Log',['../classRefbox__Log.html',1,'']]],
+  ['refcomm',['RefComm',['../classRefComm.html',1,'']]],
+  ['region',['Region',['../classRegion.html',1,'Region'],['../classRegion.html#a02c9d40904747b87895e8ec4c8628629',1,'Region::Region()']]],
+  ['removerobot',['removeRobot',['../classGameModel.html#a847b75fcd2259b0aff69dff7558076de',1,'GameModel']]],
+  ['results',['results',['../structresults.html',1,'']]],
+  ['retreataftergoal',['RetreatAfterGoal',['../classRetreatAfterGoal.html',1,'']]],
+  ['robcomm',['RobComm',['../classRobComm.html',1,'']]],
+  ['robocup_5fssl_5fclient_2ecpp',['robocup_ssl_client.cpp',['../robocup__ssl__client_8cpp.html',1,'']]],
+  ['robocup_5fssl_5fclient_2eh',['robocup_ssl_client.h',['../robocup__ssl__client_8h.html',1,'']]],
+  ['robocupsslclient',['RoboCupSSLClient',['../classRoboCupSSLClient.html',1,'']]],
+  ['robot',['Robot',['../classRobot.html',1,'Robot'],['../classRobot.html#a4fc7c70ae20623f05e06f2ecb388b6c4',1,'Robot::Robot()']]],
+  ['robotmovestatus',['RobotMoveStatus',['../structMovement_1_1Collisions_1_1detail_1_1RobotMoveStatus.html',1,'Movement::Collisions::detail']]],
+  ['robotmovestatuscontainer',['RobotMoveStatusContainer',['../structMovement_1_1Collisions_1_1detail_1_1RobotMoveStatusContainer.html',1,'Movement::Collisions::detail']]],
+  ['robotpanel',['RobotPanel',['../classRobotPanel.html',1,'']]],
+  ['rotateonpoint',['RotateOnPoint',['../classRotateOnPoint.html',1,'']]],
+  ['rotbeh',['RotBeh',['../classRotBeh.html',1,'']]],
+  ['run',['run',['../classStrategyController.html#a4878e0fa27bf965462d7d53d9b4c0cc7',1,'StrategyController']]]
+];

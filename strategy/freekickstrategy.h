@@ -1,9 +1,10 @@
 #ifndef FREEKICKSTRATEGY_H
 #define FREEKICKSTRATEGY_H
-
 #include "strategy/strategy.h"
-
 class Robot;
+
+/*! @brief Strategy to implement a free kick game state 'F' and 'f'
+ *  @author Narges G */
 
 class FreeKickStrategy: public Strategy
 {

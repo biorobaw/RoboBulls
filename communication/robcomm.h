@@ -1,25 +1,26 @@
 #ifndef ROBCOMM_H
 #define ROBCOMM_H
 #include <vector>
-
 class Robot;
 
-/*
- * RobComm
- * It is used to send signals to robots.
- * Base class. NxtRobcomm is used for field robots, SimRobcomm for simulator.
- * Narges Ghaedi ``et al"
+ /*! @brief RobComm is a base class used to send signals to robots.
+ * @details RobComm requires one virtual function be imeplemented which
+ * actually sends out packets given a vector of robots.
+ * NxtRobcomm is used for field robots, SimRobcomm for simulator.
+ * @author Narges Ghaedi
  */
+
 class RobComm
 {
 public:
+    //! @brief Get singleton instance of the RobComm
     static RobComm * getRobComm();
 
-    //Required; send velocities to the entire team at once
+    //! @brief Required; send velocities to the entire team at once
     virtual void sendVelsLarge(std::vector<Robot*>&) = 0;
 
 private:
-    static RobComm * robcomm;
+    static RobComm* robcomm;     //!<Singleton instance pointer
 };
 
 #endif // ROBCOMM_H

@@ -4,15 +4,11 @@
 #include "model/robot.h"
 #include "strategy/strategy.h"
 
-/* NormalGameStrategy
- * This strategy is meant for the ' ' gamestate (space) which means
- * normal play. The key difference is that this strategy switches between
- * both attack and defend behaviors, and assigns them accordingly.
- * This strategy also exists to provide an improvement to TwoVOne and a
- * not-as-complex alternative to AttackStrategy; both of which are broken.
+/*! @brief This strategy is meant for the ' ' gamestate (space) which means
+ * normal play.
+ * @author JamesW
  *
- * **This is a Normal Game strategy which assumes a 3-robot team, which
- *   robot number 5 is the goalie, and two other robots exist.
+ * This strategy switches between both attack and defend behaviors.
  *
  * Attack/Defend switch criteria: (considerSwitchCreiteria)
  *  - If the enemy/our team has been seen with the ball NORMAL_SWITCH_COUNT
@@ -42,12 +38,10 @@ public:
     bool update() override;
 
 public:
-    /* Static function: Moves robots to an idle line,
-     * a line near the goal and spaced by ID. */
+    //! Moves robots to an idle line, a line near the goal and spaced by ID.
     static void moveRobotToIdleLine(Robot* robot, bool waiter = false);
 
-    /* Static functon: Assigns DefendFarFromBall to ID 5
-     * if it is on the team */
+    //! Assigns DefendFarFromBall to ID GOALIE_ID if it is on the team
     static void assignGoalieIfOk();
 
 private:

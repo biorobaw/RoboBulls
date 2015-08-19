@@ -1,87 +1,73 @@
 #ifndef BEH_ASSIGNMENT_H
 #define BEH_ASSIGNMENT_H
-
-/**********************************************/
-/*********** Behavior Assignment **************/
-/**********************************************/
-/* This class is meant to steamline specific behavior assigning
- * to an arbitrary amount of robots. It is created with a template
- * argument of a Behavior
- *
- * James W
- */
 #include <type_traits>
 #include <functional>
 #include <initializer_list>
 #include "model/gamemodel.h"
 
+ /*! @brief Assign behavior to robots
+  *
+  * This class is meant to steamline specific behavior assigning
+  * to an arbitrary amount of robots. It is created with a template
+  * argument of a Behavior
+  * @author James W
+  * @deprecated Use robot->assignBen<> instead. */
+
 template <typename BehaviorType>
 class BehaviorAssignment
 {
 public:
-    /* Constructor; Set single assignment on construction.
+     /*! @brief Constructor; Set single assignment on construction.
      * This is a large convenience to calling setSingleAssignment after
-     * construction.
-     */
+     * construction. */
     BehaviorAssignment(bool assignment = false);
 
-    /* assignBeh(void)
-     * Assigns the current behavior configuration to
-     * all robots on myTeam via a loop.
-     */
+    /*! @brief Assigns the current behavior configuration to all robots on myTeam via a loop. */
     template<typename... Args>
     void assignBeh(Args&&... args) const;
 
-
-    /* assignBeh(predicate)
-     * Assigns the current behavior config only to robots which
-     * predicate returns true. The function passes all robots
-     * in myTeam to predicate to determine this.
-     */
+    /*! @brief Assigns the current behavior config only to robots which  predicate returns true.
+     * The function passes all robots in myTeam to predicate to determine this. */
     template<typename... Args>
     void assignBeh(std::function<bool(Robot*)> predicate, Args&&... args) const;
 
 
-    /* assignBeh(robot)
-     * Assigns the behavior to only one robot. This could be:
-     * assignBeh(model->getMyTeam().at(0));
-     */
+    /*! @brief Assigns the behavior to only one robot.
+     * This could be: assignBeh(model->getMyTeam().at(0)); */
     template<typename... Args>
     void assignBeh(Robot* robot, Args&&... args) const;
 
 
-    /* assignBeh(robotList)
+    /*! @brief Assigns a behavior to all robots in a list
+     *
      * Given a brace-enclosed list of Robot*, assigns the behavior
      * to all of them. This is a shortcut of assigning to single
      * robots one-by-one.
      * Example:
-     *
      * Robot* r1 = model->getMyTeam().at(0);
      * Robot* r2 = model->getMyTeam().at(1);
-     * myBehaviorAssignment.assignBeh( {r1, r2} );
-     */
+     * myBehaviorAssignment.assignBeh( {r1, r2} ); */
     template<typename... Args>
     void assignBeh(std::initializer_list<Robot*> robotList, Args&&... args) const;
 
     
-    /* assignBeh(robotID)
-     * Can be used to assign a behavior to a robot by ID, abstracting the 
-     * need to use gameModel->find or whatever.
-     */    
+    /*! @brief Can be used to assign a behavior to a robot by ID, abstracting the
+     * need to use gameModel->find or whatever. */
     template<typename... Args>
     void assignBeh(int robotID, Args&&... args) const;
 
-    /* assignBeh(robotIDList)
+    /*! @brief Assign a beahvior to robots in a list
+     *
      * This version is similar to the above assignBeh, except
      * that this version takes a brace-enclosed list of IDs,
      * then the GameModel is utilized to find those robots and
-     * if found, assigns the behavior
-     */
+     * if found, assigns the behavior */
     template<typename... Args>
     void assignBeh(std::initializer_list<int> robotIDList, Args&&... args) const;
 
 
-    /* setSingleAssignment(bool)
+     /*! @brief Prevents multiple behavior assignment
+      *
      * Set this true if you want the robot to retain its behavior each
      * iteration. For example, PenaltyBehavior uses this to retain its
      * Behavior state (moving, kicking, stopping) each update instead
@@ -90,7 +76,8 @@ public:
     void setSingleAssignment(bool assignment);
 
 
-    /* toString()
+    /*! @brief toString()
+     *
      * Returns a string representation of the BehaviorAssignment.
      * Includes Behavior Params and singleAssignment's status
      */

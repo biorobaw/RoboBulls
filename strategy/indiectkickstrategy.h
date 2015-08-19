@@ -5,10 +5,8 @@
 #include "model/gamemodel.h"
 #include "model/robot.h"
 
-/*Indirect Kick
- * This strategy is used when the player
- * is not allowed to score a goal directly
- * and has to pass it to another team player.
+/*! @brief Strategy used to perform indirect kicks with passes.
+ *  @author Narges Ghaedi; JamesW
  *
  * This is a simple form of indirect kick which
  * uses PassBallSender and PassBallReceiver.
@@ -33,9 +31,7 @@
  * found by PassBallSender. For now, I used the same
  * mechanism that PassBallSender uses in this strategy
  * to find the robot that sender will send the ball to
- * */
-
-
+ */
 class IndiectKickStrategy : public Strategy
 {
 public:

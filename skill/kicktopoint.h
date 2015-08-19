@@ -25,10 +25,9 @@ namespace Skill
  * instead of only driving the ball until a certain distance away
  */
 #define NO_KICK_DIST -1
-
 #define KICK_TO_POINT_DEBUG 0
 
-
+//! @deprecated Use KickToPointOmni instead
 class KickToPoint : public Skill
 {
 public:

@@ -223,20 +223,13 @@ namespace impl
 } //namespace impl
 
 
-    void pathfindingBegin()
+    void update()
     {
-        if(impl::framesUntilUpdate == 0) {
+        if(impl::framesUntilUpdate-- == 0) {
             impl::buildObstacleCollection();
             impl::framesUntilUpdate = FRAME_UPDATE_COUNT;
         }
     }
-
-
-    void pathfindingEnd()
-    {
-        --impl::framesUntilUpdate;
-    }
-
 
     PathInfo findShortestPath(const Point& start, const Point& end, bool avoidBall,
                               PathDirection pathHint, float unlessValue)

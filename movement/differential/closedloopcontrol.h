@@ -1,18 +1,21 @@
 #ifndef CLOSEDLOOPCONTROL_H
 #define CLOSEDLOOPCONTROL_H
-
-/*************************************************************/
-/* CLOSEDLOOPCONTROL.h **/
-/* Velocity calculation base for differential-type robots */
-/* Adapted from "Introduction to Autonomous Mobile Robots" by */
-/* R.SIEGWART and I. NOURBAKHSH P.50-62 */
-/*************************************************************/
-
 #include <math.h>
 #include <deque>
 #include "include/config/globals.h"
 #include "model/robot.h"
 
+/* Code in this file is adapted from
+ * "Introduction to Autonomous Mobile Robots"
+ * by R.SIEGWART and I. NOURBAKHSH P.50-62 */
+
+/*! @brief Constants for then Closed-loop control algorithm
+ * @details Frequently used constant sets for closed loop control motion can be defined here.
+ * Refer to the motion control folder on Robobulls Google Drive for papers on what
+ * exactly the constants do. The diagram below shows how modifying the constants can
+ * change the robots’ paths. The constants actually used focus on reducing the
+ * distance/rho error more than the orientation error because straighter paths make
+ * obstacle avoidance calculations easier. */
 namespace ClosedLoopConstants
 {
     const double defaultConstants[3] = {3, 12, -1.3};
@@ -20,18 +23,18 @@ namespace ClosedLoopConstants
     const double sharpTurnConstants[3] = {3, 25, 0};
 }
 
-//results container
+//! @brief results container from CLC Algorithm
 struct wheelvelocities
 {
     int left, right;
 };
 
-/**************************************************************/
-/* ClosedLoopBase
+/*! @brief Velocity calculation base for differential-type robots
+ * @author Muhaimen Shamsi
+ *
  * Closed-Loop control in our case is defined by three constants:
  * krho, kalpha, and kbeta. Each of these have a specific effect on
- * the wheelvelocities returned.
- */
+ * the wheelvelocities returned. ClosedLoopBase implements the movement algorithm. */
 class ClosedLoopBase
 {
 public:

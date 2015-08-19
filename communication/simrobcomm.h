@@ -18,7 +18,7 @@ private:
     QHostAddress _addr;
     quint16 _port;
 
-    //Sends a packet to the simulator
+    //! @brief Sends a packet to the simulator
     void sendPacket(int id, int LF, int RF, int LB, int RB, bool kick, bool drible);
 };
 

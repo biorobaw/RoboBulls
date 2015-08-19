@@ -1,6 +1,5 @@
 #ifndef MOVEMENT_MOVE_H
 #define MOVEMENT_MOVE_H
-
 #include <deque>
 #include "include/config/globals.h"
 #include "movement/pathfinding/fppa_pathfinding.h"
@@ -8,16 +7,18 @@
 
 class Robot;
 
+//! @brief Namespace containing all Movement functions and classes
 namespace Movement
 {
 
-/* Separate from a skill, Movement::Move represents
- * a layer lower than those in Skill. Movement contains
- * routines for robot movement, including pathfinding,
- * GotoPosition, three/four wheel omni movement, and the differential
+/*! @brief An interface to movement calculation algorithms and obstacle avoidance
+ *  @author JamesW
+ *
+ * Movement::Move contains routines for controlling robot movement,
+ * including pathfinding, three/four wheel omni movement, and the differential
  * control modules "closed loop control (CLC)."
  *
- * This is the Movement's core base class, it has some standardized features now:
+ * This is the Movement's core base class, it has some standardized features.
  * - Velocity multiplier via setVelocityMultiplier
  *   1.0 is normal velocity, 0.0 is no velocity. This is different from before.
  * - Obstacle avoidance or standard movement via withObstacleAvoid bool;
@@ -28,35 +29,58 @@ class Move
 {
 public:
     Move();
+    virtual ~Move();
+
+    /*! @brief Initialize the Movement object
+     * @details Provde an initial target, angle, and obstalce avoidance specifications
+     * @see recreate */
+
     Move(Point targetPoint, float targetAngle = UNUSED_ANGLE_VALUE,
          bool withObstacleAvoid = true, bool avoidBall = true);
-    virtual ~Move();
-    
-    /* "Recreates" the Movement object; repositioning the target point to a new
-     * point, and the target angle to a new angle. Also has to option to toggle
-     * obstacle avoidance or not
-     */
+
+    /*! @brief "Recreates" the Movement object;
+     *
+     * Recreating the movement object each iteration allows the Robot to
+     * effectively move from Point A to any Point B. The purpose of this
+     * function is to be called lazilly each iteration to move to a
+     * possibly moving target. The object is not recreated unless the new
+     * targetPoint is sufficiently away from the previous targetPoint.
+     * @param targetPoint New point to move a robot to
+     * @param targetAngle New angle for the robot to stop at targetPoint at
+     * @param withObstacle Avoid Use obstacle avoidance?
+     * @param avoidBall Do we count the ball as an obstacle? */
+
     void recreate(Point targetPoint,
                   float targetAngle = UNUSED_ANGLE_VALUE,
-                  bool withObstacleAvoid = true, bool avoidBall = true);
+                  bool withObstacleAvoid = true,
+                  bool avoidBall = true);
     
-    /* A scalar applied to the calculated velocity when set to the robot. 
-     * 1.0 is default, 0.0 means no velocity. Setting this over 2 isn't very good
-     */
+    /*! @brief Set a scalar applied to the calculated velocity when set to the robot.
+     *  @details 1.0 is default, 0.0 means no velocity. Setting this over 2 isn't very good */
+
     void setVelocityMultiplier(float newMultiplier);
     
-    /* This function is used to set the "recreation" tolerances. This object will not
+    /*! @brief Sets the creation distance and angle tolerances
+     *
+     * This function is used to set the "recreation" tolerances. This object will not
      * recompute pathfinding and angle adjustments if the difference between current
      * and new parameters passed to `recreate` are less than these values
-     */
+     * @param distTolerance Required point target distance difference
+     * @param angleTolerance Required angle target difference (radians)
+     * @see recreate */
     void setRecreateTolerances(float distTolerance, float angleTolerance);
 
-    /* Sets the distance and angle tolerance that are compared against when
-     * determining if a robot is close to the target or not
-     */
+    /*! @brief Set final distance and angle movement tolerances
+     *
+     * This function set tolerances as to how close a robot needs to tbe to the
+     * target to be considered at thet point.*/
     void setMovementTolerances(float distTolerance, float angleTolerance);
     
-    /* Perform movement on the robot */
+    /*! @brief Performs the conigured movement on the robot
+     * @param robot The robot to be moved
+     * @param Type the type of movement; see Type for information
+     * @see movetype.h
+     * @see Type */
     bool perform(Robot* robot, Type moveType = Type::Default);
 
 protected:
