@@ -97,16 +97,133 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">Movement::ThreeWheelCalculator Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Wheel velocity calculator for three-wheel robots.  
+ <a href="classMovement_1_1ThreeWheelCalculator.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="omni3__velcalculator_8h_source.html">omni3_velcalculator.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:afa6374f878dbc274998a8d5b3cb795c4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afa6374f878dbc274998a8d5b3cb795c4"></a>
-<a class="el" href="structMovement_1_1threeWheelVels.html">threeWheelVels</a>&#160;</td><td class="memItemRight" valign="bottom"><b>calculateVels</b> (<a class="el" href="classRobot.html">Robot</a> *rob, <a class="el" href="classPoint.html">Point</a> goalPoint, float theta_goal, <a class="el" href="namespaceMovement.html#a74b28fda28211060df3b66c2ce160bd6">Type</a> moveType)</td></tr>
+<tr class="memitem:afa6374f878dbc274998a8d5b3cb795c4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structMovement_1_1threeWheelVels.html">threeWheelVels</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMovement_1_1ThreeWheelCalculator.html#afa6374f878dbc274998a8d5b3cb795c4">calculateVels</a> (<a class="el" href="classRobot.html">Robot</a> *rob, <a class="el" href="classPoint.html">Point</a> goalPoint, float theta_goal, <a class="el" href="namespaceMovement.html#a74b28fda28211060df3b66c2ce160bd6">Type</a> moveType)</td></tr>
+<tr class="memdesc:afa6374f878dbc274998a8d5b3cb795c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Velocity calculation with a <a class="el" href="classPoint.html" title="2D Point Class A Point is a 2D vector in space. Typically used to represent positions on the Robot Fi...">Point</a> target overload.  <a href="#afa6374f878dbc274998a8d5b3cb795c4">More...</a><br/></td></tr>
 <tr class="separator:afa6374f878dbc274998a8d5b3cb795c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9fce53282173088af9d065ce193b7006"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9fce53282173088af9d065ce193b7006"></a>
-<a class="el" href="structMovement_1_1threeWheelVels.html">threeWheelVels</a>&#160;</td><td class="memItemRight" valign="bottom"><b>calculateVels</b> (<a class="el" href="classRobot.html">Robot</a> *rob, float x_goal, float y_goal, float theta_goal, <a class="el" href="namespaceMovement.html#a74b28fda28211060df3b66c2ce160bd6">Type</a> moveType)</td></tr>
+<tr class="memitem:a9fce53282173088af9d065ce193b7006"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structMovement_1_1threeWheelVels.html">threeWheelVels</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMovement_1_1ThreeWheelCalculator.html#a9fce53282173088af9d065ce193b7006">calculateVels</a> (<a class="el" href="classRobot.html">Robot</a> *rob, float x_goal, float y_goal, float theta_goal, <a class="el" href="namespaceMovement.html#a74b28fda28211060df3b66c2ce160bd6">Type</a> moveType)</td></tr>
+<tr class="memdesc:a9fce53282173088af9d065ce193b7006"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate an instantanious <a class="el" href="structMovement_1_1threeWheelVels.html" title="Return value from ThreeWheelCalculator. ">threeWheelVels</a> to move torwards a point.  <a href="#a9fce53282173088af9d065ce193b7006">More...</a><br/></td></tr>
 <tr class="separator:a9fce53282173088af9d065ce193b7006"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Wheel velocity calculator for three-wheel robots. </p>
+<dl class="section author"><dt>Author</dt><dd>Muhaimen Shamsi</dd></dl>
+<p>This class exists to provide wheel velocities for a three-wheeled robot, where each wheel is approximately 33 degrees apart. Currently, this is used for thre three-wheeled lego goalie Robots at RoboBulls. </p>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classMovement_1_1FourWheelCalculator.html" title="Wheel velocity calculator for four-wheel (Ardino) robots. ">FourWheelCalculator</a> </dd>
+<dd>
+<a class="el" href="classMovement_1_1DifferentialCalculator.html" title="Wheel velocity calculator for two-wheel (Differential) robots. ">DifferentialCalculator</a> </dd></dl>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="afa6374f878dbc274998a8d5b3cb795c4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structMovement_1_1threeWheelVels.html">threeWheelVels</a> Movement::ThreeWheelCalculator::calculateVels </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classRobot.html">Robot</a> *&#160;</td>
+          <td class="paramname"><em>rob</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classPoint.html">Point</a>&#160;</td>
+          <td class="paramname"><em>goalPoint</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>theta_goal</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceMovement.html#a74b28fda28211060df3b66c2ce160bd6">Type</a>&#160;</td>
+          <td class="paramname"><em>moveType</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Velocity calculation with a <a class="el" href="classPoint.html" title="2D Point Class A Point is a 2D vector in space. Typically used to represent positions on the Robot Fi...">Point</a> target overload. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">goalPoint</td><td>The target point </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classMovement_1_1ThreeWheelCalculator.html#afa6374f878dbc274998a8d5b3cb795c4" title="Velocity calculation with a Point target overload. ">calculateVels</a> </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a9fce53282173088af9d065ce193b7006"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structMovement_1_1threeWheelVels.html">threeWheelVels</a> Movement::ThreeWheelCalculator::calculateVels </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classRobot.html">Robot</a> *&#160;</td>
+          <td class="paramname"><em>rob</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>x_goal</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>y_goal</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>theta_goal</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceMovement.html#a74b28fda28211060df3b66c2ce160bd6">Type</a>&#160;</td>
+          <td class="paramname"><em>moveType</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calculate an instantanious <a class="el" href="structMovement_1_1threeWheelVels.html" title="Return value from ThreeWheelCalculator. ">threeWheelVels</a> to move torwards a point. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rob</td><td><a class="el" href="classRobot.html" title="The Robot class The robot class includes the required information about robot such position...">Robot</a> to calculate for </td></tr>
+    <tr><td class="paramname">x_goal</td><td>The X posiiton of the final target </td></tr>
+    <tr><td class="paramname">y_goal</td><td>the Y position of the final taget </td></tr>
+    <tr><td class="paramname">theta_goal</td><td>The desired ending facing angle angle </td></tr>
+    <tr><td class="paramname">moveType</td><td>The <a class="el" href="namespaceMovement.html" title="Namespace containing all Movement functions and classes. ">Movement</a> Type. See Type </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="structMovement_1_1threeWheelVels.html" title="Return value from ThreeWheelCalculator. ">threeWheelVels</a> to be sent to the robot's left, right, and back wheels </dd></dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>movement/three_omni_motion/<a class="el" href="omni3__velcalculator_8h_source.html">omni3_velcalculator.h</a></li>
 <li>movement/three_omni_motion/omni3_velcalculator.cpp</li>
@@ -114,7 +231,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Aug 19 2015 17:19:11 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Aug 19 2015 20:59:31 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

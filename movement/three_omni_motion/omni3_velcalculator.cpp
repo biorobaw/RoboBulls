@@ -4,6 +4,8 @@
 namespace Movement
 {
 
+#define THREE_WHEEL_DEBUG 0
+
 threeWheelVels ThreeWheelCalculator::calculateVels
     (Robot* rob, Point goalPoint, float theta_goal, Type moveType)
 {
@@ -167,18 +169,17 @@ threeWheelVels ThreeWheelCalculator::facePointCalc
     return vels;
 }
 
+/*! @details To approximate the bias values, the motion of the 3 wheeled robot was
+ * restricted to forward motion. Thus, rear wheel was set to zero and the left
+ * and right wheels were set to max by the calculator. The approproate wheel
+ * was then given a bias based on the direction the robot moved and this was
+ * adjusted until the robot moved relatively straight. Further adjustments were
+ * done for forward motion at lower velocities.
+ * This process was repeated with motion restricted to sideways motion to
+ * determine the bias for the rear wheel.
+ */
 std::vector<double> ThreeWheelCalculator::calcBias(double x, double y)
 {
-    /* To approximate the bias values, the motion of the 3 wheeled robot was
-     * restricted to forward motion. Thus, rear wheel was set to zero and the left
-     * and right wheels were set to max by the calculator. The approproate wheel
-     * was then given a bias based on the direction the robot moved and this was
-     * adjusted until the robot moved relatively straight. Further adjustments were
-     * done for forward motion at lower velocities.
-     *
-     * This process was repeated with motion restricted to sideways motion to
-     * determine the bias for the rear wheel.
-     */
     std::vector<double> bias_result;
     bias_result.push_back(1);
     bias_result.push_back(2);

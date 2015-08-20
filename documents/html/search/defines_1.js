@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['meters_5fper_5fpoint',['METERS_PER_POINT',['../velocitycalculator_8h.html#ae9851dee98edaed777207dc56faef78c',1,'velocitycalculator.h']]]
+  ['points_5fper_5fmeter',['POINTS_PER_METER',['../velocitycalculator_8h.html#a4da22e6ae08148cfa9fb1717a900810b',1,'velocitycalculator.h']]]
 ];

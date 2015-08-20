@@ -94,14 +94,50 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef GOTOPOSITON_H</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define GOTOPOSITON_H</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;movement/gotopositionwithorientation.h&quot;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &quot;model/robot.h&quot;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;movement/move.h&quot;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;movement/differential/differential_velcalculator.h&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;movement/four_omni_motion/omni4_velcalculator.h&quot;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;movement/three_omni_motion/omni3_velcalculator.h&quot;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">namespace </span>Movement</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;{</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
+<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="classMovement_1_1GoToPosition.html">   18</a></span>&#160;<span class="keyword">class </span><a class="code" href="classMovement_1_1GoToPosition.html">GoToPosition</a> : <span class="keyword">public</span> <a class="code" href="classMovement_1_1Move.html">Move</a></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;{</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keyword">using</span> Move::Move;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classMovement_1_1GoToPosition.html#a45efed76bb011577446ed3a232d01df8">calculateVels</a>(<a class="code" href="classRobot.html">Robot</a> *rob, <a class="code" href="classPoint.html">Point</a> targetPoint, <span class="keywordtype">float</span> targetAngle, <a class="code" href="namespaceMovement.html#a74b28fda28211060df3b66c2ce160bd6">Type</a> moveType) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="comment">/* Used to calculate a potential field to &quot;push&quot; robots away from</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">     * the goal areas if they are too close */</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <a class="code" href="structMovement_1_1fourWheelVels.html">fourWheelVels</a> calculateGoalField(<a class="code" href="classRobot.html">Robot</a> *robot, <a class="code" href="namespaceMovement.html#a74b28fda28211060df3b66c2ce160bd6">Type</a> moveType);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <a class="code" href="classMovement_1_1DifferentialCalculator.html">DifferentialCalculator</a> dc;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <a class="code" href="classMovement_1_1ThreeWheelCalculator.html">ThreeWheelCalculator</a>   twc;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <a class="code" href="classMovement_1_1FourWheelCalculator.html">FourWheelCalculator</a>    fwc;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;};</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;}</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="classRobot_html"><div class="ttname"><a href="classRobot.html">Robot</a></div><div class="ttdoc">The Robot class The robot class includes the required information about robot such position...</div><div class="ttdef"><b>Definition:</b> robot.h:18</div></div>
+<div class="ttc" id="classMovement_1_1GoToPosition_html"><div class="ttname"><a href="classMovement_1_1GoToPosition.html">Movement::GoToPosition</a></div><div class="ttdoc">Top-level Interface to provide robot movement. </div><div class="ttdef"><b>Definition:</b> gotoposition.h:18</div></div>
+<div class="ttc" id="classMovement_1_1Move_html"><div class="ttname"><a href="classMovement_1_1Move.html">Movement::Move</a></div><div class="ttdoc">An interface to movement calculation algorithms and obstacle avoidance. </div><div class="ttdef"><b>Definition:</b> move.h:28</div></div>
+<div class="ttc" id="classMovement_1_1DifferentialCalculator_html"><div class="ttname"><a href="classMovement_1_1DifferentialCalculator.html">Movement::DifferentialCalculator</a></div><div class="ttdoc">Wheel velocity calculator for two-wheel (Differential) robots. </div><div class="ttdef"><b>Definition:</b> differential_velcalculator.h:14</div></div>
+<div class="ttc" id="classPoint_html"><div class="ttname"><a href="classPoint.html">Point</a></div><div class="ttdoc">2D Point Class A Point is a 2D vector in space. Typically used to represent positions on the Robot Fi...</div><div class="ttdef"><b>Definition:</b> point.h:11</div></div>
+<div class="ttc" id="structMovement_1_1fourWheelVels_html"><div class="ttname"><a href="structMovement_1_1fourWheelVels.html">Movement::fourWheelVels</a></div><div class="ttdoc">Return value from FourWheelCalculator. </div><div class="ttdef"><b>Definition:</b> omni4_velcalculator.h:14</div></div>
+<div class="ttc" id="classMovement_1_1ThreeWheelCalculator_html"><div class="ttname"><a href="classMovement_1_1ThreeWheelCalculator.html">Movement::ThreeWheelCalculator</a></div><div class="ttdoc">Wheel velocity calculator for three-wheel robots. </div><div class="ttdef"><b>Definition:</b> omni3_velcalculator.h:25</div></div>
+<div class="ttc" id="namespaceMovement_html_a74b28fda28211060df3b66c2ce160bd6"><div class="ttname"><a href="namespaceMovement.html#a74b28fda28211060df3b66c2ce160bd6">Movement::Type</a></div><div class="ttdeci">Type</div><div class="ttdoc">Defines Movement Type modifiers. </div><div class="ttdef"><b>Definition:</b> movetype.h:19</div></div>
+<div class="ttc" id="classMovement_1_1FourWheelCalculator_html"><div class="ttname"><a href="classMovement_1_1FourWheelCalculator.html">Movement::FourWheelCalculator</a></div><div class="ttdoc">Wheel velocity calculator for four-wheel (Ardino) robots. </div><div class="ttdef"><b>Definition:</b> omni4_velcalculator.h:25</div></div>
+<div class="ttc" id="classMovement_1_1GoToPosition_html_a45efed76bb011577446ed3a232d01df8"><div class="ttname"><a href="classMovement_1_1GoToPosition.html#a45efed76bb011577446ed3a232d01df8">Movement::GoToPosition::calculateVels</a></div><div class="ttdeci">void calculateVels(Robot *rob, Point targetPoint, float targetAngle, Type moveType) override</div><div class="ttdoc">Uses one of the three type calculators to calculate velocities for the robot. </div><div class="ttdef"><b>Definition:</b> gotoposition.cpp:12</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Aug 19 2015 17:19:10 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Aug 19 2015 20:59:30 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

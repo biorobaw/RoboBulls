@@ -8,6 +8,5 @@ var searchData=
   ['move',['Move',['../classMovement_1_1Move.html#a42af2f8372aa093ce8dc51ca10480487',1,'Movement::Move']]],
   ['move',['Move',['../classMovement_1_1Move.html',1,'Movement']]],
   ['movement',['Movement',['../namespaceMovement.html',1,'']]],
-  ['moverobottoidleline',['moveRobotToIdleLine',['../classNormalGameStrategy.html#a40ee0e321c9a420d859384196f8b64d0',1,'NormalGameStrategy']]],
-  ['movetype_2eh',['movetype.h',['../movetype_8h.html',1,'']]]
+  ['moverobottoidleline',['moveRobotToIdleLine',['../classNormalGameStrategy.html#a40ee0e321c9a420d859384196f8b64d0',1,'NormalGameStrategy']]]
 ];

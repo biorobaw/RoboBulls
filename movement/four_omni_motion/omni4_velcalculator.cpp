@@ -5,6 +5,8 @@
 namespace Movement
 {
 
+#define FOUR_WHEEL_DEBUG 0
+
 //Multiplier for theta_vel in defaultCalc (set 10x actual)
 int THETA_MULT = 3;
 

@@ -1,9 +1,6 @@
-#ifndef GOTOPOSITIONWITHORIENTATION_CPP
-#define GOTOPOSITIONWITHORIENTATION_CPP
-
 #include "model/gamemodel.h"
 #include "movement/movetype.h"
-#include "movement/gotopositionwithorientation.h"
+#include "movement/gotoposition.h"
 
 namespace Movement
 {
@@ -91,5 +88,3 @@ fourWheelVels GoToPosition::calculateGoalField(Robot* robot, Type moveType)
 }
 
 }
-
-#endif

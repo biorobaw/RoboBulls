@@ -98,10 +98,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
-<p>Interface over movement calculators implementing Move::calculateVels.  
+<p>Top-level Interface to provide robot movement.  
  <a href="classMovement_1_1GoToPosition.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="gotopositionwithorientation_8h_source.html">gotopositionwithorientation.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="gotoposition_8h_source.html">gotoposition.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for Movement::GoToPosition:</div>
 <div class="dyncontent">
@@ -114,8 +114,8 @@ Inheritance diagram for Movement::GoToPosition:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a45efed76bb011577446ed3a232d01df8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a45efed76bb011577446ed3a232d01df8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>calculateVels</b> (<a class="el" href="classRobot.html">Robot</a> *rob, <a class="el" href="classPoint.html">Point</a> targetPoint, float targetAngle, <a class="el" href="namespaceMovement.html#a74b28fda28211060df3b66c2ce160bd6">Type</a> moveType) override</td></tr>
+<tr class="memitem:a45efed76bb011577446ed3a232d01df8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMovement_1_1GoToPosition.html#a45efed76bb011577446ed3a232d01df8">calculateVels</a> (<a class="el" href="classRobot.html">Robot</a> *rob, <a class="el" href="classPoint.html">Point</a> targetPoint, float targetAngle, <a class="el" href="namespaceMovement.html#a74b28fda28211060df3b66c2ce160bd6">Type</a> moveType) override</td></tr>
+<tr class="memdesc:a45efed76bb011577446ed3a232d01df8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uses one of the three type calculators to calculate velocities for the robot.  <a href="#a45efed76bb011577446ed3a232d01df8">More...</a><br/></td></tr>
 <tr class="separator:a45efed76bb011577446ed3a232d01df8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
@@ -163,20 +163,86 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>back</b></td></tr>
 <tr class="separator:a83184034fbf4960017f5a5a43085dddf inherit pro_attribs_classMovement_1_1Move"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Interface over movement calculators implementing Move::calculateVels. </p>
+<div class="textblock"><p>Top-level Interface to provide robot movement. </p>
 <dl class="section author"><dt>Author</dt><dd>JamesW</dd></dl>
 <p>This class it fit for use by Skills directly for generic movement on a robot. </p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classMovement_1_1Move.html" title="An interface to movement calculation algorithms and obstacle avoidance. ">Move</a> </dd>
 <dd>
-<a class="el" href="classMovement_1_1FourWheelCalculator.html">FourWheelCalculator</a> </dd></dl>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
-<li>movement/<a class="el" href="gotopositionwithorientation_8h_source.html">gotopositionwithorientation.h</a></li>
-<li>movement/gotopositionwithorientation.cpp</li>
+<a class="el" href="classMovement_1_1FourWheelCalculator.html" title="Wheel velocity calculator for four-wheel (Ardino) robots. ">FourWheelCalculator</a> </dd></dl>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a45efed76bb011577446ed3a232d01df8"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Movement::GoToPosition::calculateVels </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classRobot.html">Robot</a> *&#160;</td>
+          <td class="paramname"><em>rob</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classPoint.html">Point</a>&#160;</td>
+          <td class="paramname"><em>targetPoint</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>targetAngle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceMovement.html#a74b28fda28211060df3b66c2ce160bd6">Type</a>&#160;</td>
+          <td class="paramname"><em>moveType</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Uses one of the three type calculators to calculate velocities for the robot. </p>
+<p>The calculated velocities are stored in *this, inheiting from move. setVels is then called so update the number in <a class="el" href="classRobot.html" title="The Robot class The robot class includes the required information about robot such position...">Robot</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rob</td><td><a class="el" href="classRobot.html" title="The Robot class The robot class includes the required information about robot such position...">Robot</a> to calculate for </td></tr>
+    <tr><td class="paramname">targetPoint</td><td>The final target point to move to </td></tr>
+    <tr><td class="paramname">targetAngle</td><td>The final target angle to be facing </td></tr>
+    <tr><td class="paramname">moveType</td><td>The <a class="el" href="namespaceMovement.html" title="Namespace containing all Movement functions and classes. ">Movement</a> Type. See Type </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classMovement_1_1DifferentialCalculator.html" title="Wheel velocity calculator for two-wheel (Differential) robots. ">DifferentialCalculator</a> </dd>
+<dd>
+<a class="el" href="classMovement_1_1ThreeWheelCalculator.html" title="Wheel velocity calculator for three-wheel robots. ">ThreeWheelCalculator</a> </dd>
+<dd>
+<a class="el" href="classMovement_1_1FourWheelCalculator.html" title="Wheel velocity calculator for four-wheel (Ardino) robots. ">FourWheelCalculator</a> </dd></dl>
+
+<p>Implements <a class="el" href="classMovement_1_1Move.html">Movement::Move</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li>movement/<a class="el" href="gotoposition_8h_source.html">gotoposition.h</a></li>
+<li>movement/gotoposition.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Aug 19 2015 17:19:11 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Aug 19 2015 20:59:31 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

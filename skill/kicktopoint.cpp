@@ -1,7 +1,7 @@
 #include "kicktopoint.h"
 #include "kick.h"
 #include "include/config/simulated.h"
-#include "movement/gotopositionwithorientation.h"
+#include "movement/gotoposition.h"
 
 #if SIMULATED
  #define KDIST_TOLERANCE    110

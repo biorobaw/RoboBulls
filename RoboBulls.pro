@@ -85,7 +85,6 @@ SOURCES += main.cpp \
 	movement/differential/closedloopcontrol.cpp \
 	movement/differential/differential_velcalculator.cpp \
 	movement/four_omni_motion/omni4_velcalculator.cpp \
-	movement/gotopositionwithorientation.cpp \
 	movement/move_collisions.cpp \
 	movement/move.cpp \
 	movement/pathfinding/fppa_pathfinding.cpp \
@@ -112,7 +111,8 @@ SOURCES += main.cpp \
 	utilities/measurments.cpp \
 	utilities/point.cpp \
 	utilities/region.cpp \
-	utilities/velocitycalculator.cpp
+	utilities/velocitycalculator.cpp \
+    movement/gotoposition.cpp
 
 HEADERS += \
 	behavior/attackmain.h \
@@ -174,7 +174,6 @@ HEADERS += \
 	movement/differential/differential_velcalculator.h \
 	movement/four_omni_motion/omni4_velcalculator.h \
 	movement/gotoposition.h \
-	movement/gotopositionwithorientation.h \
 	movement/move_collisions.h \
 	movement/move.h \
 	movement/movetype.h \

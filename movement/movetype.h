@@ -4,16 +4,15 @@
 namespace Movement
 {
 
-//! @file
+//! @file Movement Type modifiers used in calculations and perform() parameters
 
 /*! @brief Defines Movement Type modifiers
  * @author JamesW
  *
- * The purpose of this file is for movement <i>modifiers</i>; for instance,
+ * The purpose of this enum is for movement <i>modifiers</i>; for instance,
  * differential robots have sharp turns, no slowdown, and others; the omni
  * robots have max velocity and speed versions of their default movement 
- * calculators. These enums recognize all modifier types, and are passed to 
- * GoToPosition. In the case that the modifier is not supported by the 
+ * calculators. In the case that the modifier is not supported by the
  * robot type GoToPosition has been passed, the default movement calculation
  * is used.
  */

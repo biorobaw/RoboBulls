@@ -28,7 +28,7 @@ namespace FPPA
 
     /*! @brief Updates currently-considered obstacles
      * @details If FRAME_UPDATE_COUNT calls are made, re-builds the currently
-     * considered obstacles. and updates the state of the field */
+     * considered obstacles and updates the state of the field */
     void update();
 
     /****************************************************************/
@@ -67,7 +67,6 @@ namespace FPPA
      *  @param end The line ending point
      *  @param question The point to test */
     bool isPointInLine(const Point& start, const Point& end, const Point& question);
-
 
     /*! @brief Get all current considered obstacles
      *  @details Returns a reference to the vector consisting of the positions of all

@@ -5,7 +5,7 @@
 #include "skill/skill.h"
 #include "utilities/point.h"
 #include "behavior/genericmovementbehavior.h"
-#include "movement/gotopositionwithorientation.h"
+#include "movement/gotoposition.h"
 
 using namespace std;
 
