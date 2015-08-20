@@ -1,21 +1,10 @@
 var searchData=
 [
-  ['selrobotpanel',['SelRobotPanel',['../classSelRobotPanel.html',1,'']]],
-  ['sendballtoregion',['SendBallToRegion',['../classSendBallToRegion.html',1,'']]],
-  ['serialib',['serialib',['../classserialib.html',1,'']]],
-  ['shamsistrafe',['ShamsiStrafe',['../classShamsiStrafe.html',1,'']]],
-  ['simplebehaviors',['SimpleBehaviors',['../classSimpleBehaviors.html',1,'']]],
-  ['simrobcomm',['SimRobComm',['../classSimRobComm.html',1,'']]],
-  ['skill',['Skill',['../classSkill_1_1Skill.html',1,'Skill']]],
-  ['ssl_5fdetectionball',['SSL_DetectionBall',['../classSSL__DetectionBall.html',1,'']]],
-  ['ssl_5fdetectionframe',['SSL_DetectionFrame',['../classSSL__DetectionFrame.html',1,'']]],
-  ['ssl_5fdetectionrobot',['SSL_DetectionRobot',['../classSSL__DetectionRobot.html',1,'']]],
-  ['ssl_5fgeometrycameracalibration',['SSL_GeometryCameraCalibration',['../classSSL__GeometryCameraCalibration.html',1,'']]],
-  ['ssl_5fgeometrydata',['SSL_GeometryData',['../classSSL__GeometryData.html',1,'']]],
-  ['ssl_5fgeometryfieldsize',['SSL_GeometryFieldSize',['../classSSL__GeometryFieldSize.html',1,'']]],
-  ['ssl_5fwrapperpacket',['SSL_WrapperPacket',['../classSSL__WrapperPacket.html',1,'']]],
-  ['stop',['Stop',['../classSkill_1_1Stop.html',1,'Skill']]],
-  ['stopstrategy',['StopStrategy',['../classStopStrategy.html',1,'']]],
-  ['strategy',['Strategy',['../classStrategy.html',1,'']]],
-  ['strategycontroller',['StrategyController',['../classStrategyController.html',1,'']]]
+  ['velocitycalculator',['VelocityCalculator',['../classVelocityCalculator.html',1,'']]],
+  ['videostrategy1',['VideoStrategy1',['../classVideo_1_1VideoStrategy1.html',1,'Video']]],
+  ['videostrategy2',['VideoStrategy2',['../classVideo_1_1VideoStrategy2.html',1,'Video']]],
+  ['videostrategy3',['VideoStrategy3',['../classVideo_1_1VideoStrategy3.html',1,'Video']]],
+  ['videostrategy4',['VideoStrategy4',['../classVideo_1_1VideoStrategy4.html',1,'Video']]],
+  ['videostrategy5',['VideoStrategy5',['../classVideo_1_1VideoStrategy5.html',1,'Video']]],
+  ['visioncomm',['VisionComm',['../classVisionComm.html',1,'']]]
 ];

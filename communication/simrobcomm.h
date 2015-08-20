@@ -4,13 +4,18 @@
 #include "model/robot.h"
 #include "robcomm.h"
 
-//Percentage of stored robot velocity sent to simulator
+//!< @brief Percentage of stored robot velocity sent to simulator
 const float mappingRatio = 0.333;
+
+/*! @brief RobComm to send to the grSim simulator
+ * @details uses ProtoBuf and QT to send to a computer running a grSim simulator */
 
 class SimRobComm : public RobComm
 {
 public:
+    //! @brief Constructor sets the IP and port to send to **see .cpp**
     SimRobComm();
+
     virtual void sendVelsLarge(std::vector<Robot*>&);
 
 private:

@@ -24,7 +24,7 @@ const std::string& GetBehavior::getBehaviorName(Robot* robot)
 {
     static std::string noBehavior = "No Behavior";
 
-    if(robot == NULL or not(robot->hasBeh)) {
+    if(robot == NULL or not(robot->hasBehavior())) {
         return noBehavior;
     }
 

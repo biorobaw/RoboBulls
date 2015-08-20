@@ -1,5 +1,4 @@
 #include "teststrategy.h"
-#include "skill/kicktopoint.h"
 #include "skill/kicktopointomni.h"
 #include "behavior/genericmovementbehavior.h"
 #include "model/gamemodel.h"

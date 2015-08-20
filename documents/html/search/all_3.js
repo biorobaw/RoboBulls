@@ -1,15 +1,16 @@
 var searchData=
 [
-  ['calculatevels',['calculateVels',['../classMovement_1_1DifferentialCalculator.html#adf2010c50765dd1889fac8fa1b032629',1,'Movement::DifferentialCalculator::calculateVels(Robot *rob, Point goalPoint, float theta_goal, Type moveType)'],['../classMovement_1_1DifferentialCalculator.html#a51e89b02cd2aa779ef04d3fc45216408',1,'Movement::DifferentialCalculator::calculateVels(Robot *rob, float x_goal, float y_goal, float theta_goal, Type moveType)'],['../classMovement_1_1FourWheelCalculator.html#a2f9b2954ab7bf28a534368fe369e9942',1,'Movement::FourWheelCalculator::calculateVels(Robot *rob, Point goalPoint, float theta_goal, Type moveType)'],['../classMovement_1_1FourWheelCalculator.html#a130c9f89bc7754e7103c5557058589f4',1,'Movement::FourWheelCalculator::calculateVels(Robot *rob, float x_goal, float y_goal, float theta_goal, Type moveType)'],['../classMovement_1_1GoToPosition.html#a45efed76bb011577446ed3a232d01df8',1,'Movement::GoToPosition::calculateVels()'],['../classMovement_1_1ThreeWheelCalculator.html#afa6374f878dbc274998a8d5b3cb795c4',1,'Movement::ThreeWheelCalculator::calculateVels(Robot *rob, Point goalPoint, float theta_goal, Type moveType)'],['../classMovement_1_1ThreeWheelCalculator.html#a9fce53282173088af9d065ce193b7006',1,'Movement::ThreeWheelCalculator::calculateVels(Robot *rob, float x_goal, float y_goal, float theta_goal, Type moveType)']]],
-  ['centre',['centre',['../classRegion.html#adbcc4b06f6ae59e5969f3485e817e3bc',1,'Region']]],
-  ['clamp',['clamp',['../classMeasurments.html#a355e1ca1f10e3711d186673d850917f9',1,'Measurments']]],
-  ['clearcurrentbeh',['clearCurrentBeh',['../classRobot.html#adc1e4f03913636155a89304b493c9e10',1,'Robot']]],
-  ['close',['Close',['../classserialib.html#a26ebe7608d2e4c190a54abd5b350ae0d',1,'serialib']]],
-  ['closedloopbase',['ClosedLoopBase',['../classClosedLoopBase.html',1,'']]],
-  ['closedloopconstants',['ClosedLoopConstants',['../namespaceClosedLoopConstants.html',1,'']]],
-  ['closedloopcontrol',['ClosedLoopControl',['../classClosedLoopControl.html',1,'']]],
-  ['closedloopnoslowdown',['ClosedLoopNoSlowdown',['../classClosedLoopNoSlowdown.html',1,'']]],
-  ['closedloopsharpturns',['ClosedLoopSharpTurns',['../classClosedLoopSharpTurns.html',1,'']]],
-  ['contains',['contains',['../classRegion.html#aa18426596e8e3b9e08c1560c38d4afb6',1,'Region']]],
-  ['containsline',['containsLine',['../classRegion.html#a9cbdf8777d57e05840de6429f4cf40e3',1,'Region']]]
+  ['defendbehavior',['DefendBehavior',['../classDefendBehavior.html',1,'']]],
+  ['defendfarfromball',['DefendFarFromBall',['../classDefendFarFromBall.html',1,'']]],
+  ['defendstate',['DefendState',['../classDefendState.html',1,'']]],
+  ['defendstateidle',['DefendStateIdle',['../classDefendStateIdle.html',1,'']]],
+  ['defendstateidlekick',['DefendStateIdleKick',['../classDefendStateIdleKick.html',1,'']]],
+  ['defendstatekick',['DefendStateKick',['../classDefendStateKick.html',1,'']]],
+  ['deprecated_20list',['Deprecated List',['../deprecated.html',1,'']]],
+  ['differentialcalculator',['DifferentialCalculator',['../classMovement_1_1DifferentialCalculator.html',1,'Movement']]],
+  ['distance',['distance',['../classMeasurments.html#a8d4961b5033cbabccdfd531610adb57b',1,'Measurments::distance(const Point &amp;, const Point &amp;)'],['../classMeasurments.html#a62d78231a0f1c852100dfe85fdd193fd',1,'Measurments::distance(const Point &amp;, Robot *)'],['../classMeasurments.html#aa52b2b38952c0c725c46fee4f2535dcc',1,'Measurments::distance(Robot *, const Point &amp;)'],['../classMeasurments.html#a77e44bcbb40d4c244c7cb40f8c6aad7e',1,'Measurments::distance(Robot *, Robot *)']]],
+  ['distancetogoal',['distanceToGoal',['../structPassBallSender_1_1playersCharactristics.html#aed0d6e5c5ba0a30938686a39b00c1d76',1,'PassBallSender::playersCharactristics']]],
+  ['distancetorobot',['distanceToRobot',['../structPassBallSender_1_1playersCharactristics.html#a2f052cbd8ffed388a0ddae6c3e24bbc1',1,'PassBallSender::playersCharactristics']]],
+  ['driveball',['DriveBall',['../classSkill_1_1DriveBall.html',1,'Skill']]],
+  ['driveballandkick',['DriveBallAndKick',['../classDriveBallAndKick.html',1,'']]]
 ];

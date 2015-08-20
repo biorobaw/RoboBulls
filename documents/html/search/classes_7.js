@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['haltstrategy',['HaltStrategy',['../classHaltStrategy.html',1,'']]]
+  ['indiectkickstrategy',['IndiectKickStrategy',['../classIndiectKickStrategy.html',1,'']]]
 ];

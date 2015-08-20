@@ -7,9 +7,9 @@
 #include "model/gamemodel.h"
 #include "behavior/genericmovementbehavior.h"
 
-/*
- * PassBallReceiver class:
- * This class can be used with passBallSender.
+/*! @brief Skill to recieve a ball pass from PassBallSender
+ * @author Narges Ghaedi
+ * @details This class can be used with passBallSender.
  * Once the sender passes the ball, an int count = 170
  * would start to count down.
  * The receiver robot waits for the ball until
@@ -20,10 +20,9 @@
  * If the ball does not get close to receiver before count
  * become 0, the receiver moves toward the ball since
  * it assumes that the ball has stopped somewhere far from it.
- *
  * The receiver gets behind the ball and
  * shoots toward the goal
- * */
+ * @see PassBallSender */
 
 class PassBallReceiver : public GenericMovementBehavior
 {

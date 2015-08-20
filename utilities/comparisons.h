@@ -1,14 +1,29 @@
 #ifndef COMPARISONS_H
 #define COMPARISONS_H
-
 #include <functional>
 #include <algorithm>
 #include <math.h>
-
 #include "model/gamemodel.h"
 #include "model/robot.h"
 #include "utilities/point.h"
 #include "include/config/globals.h"
+
+/*! @brief Defines comparison predicates and information querying functions.
+ * @details `Comparisons` is a framework for extendable, flexible
+ * predicate logic functionality.
+ * Comparisons defines a set of commonly-used predicates and
+ * comparison functions to query information on <i>containers</i> of Robot* or
+ * Point. These functions are meant to be used with the max_element
+ * and min_element STL algorithms, or standalone. <br><br>
+ * A commonly-used query we need, for example, is to find the robot closest to the ball.
+ * Using Comparisons: <br>
+ * <i>Robot* best = Comparisons::distanceBall().minMyTeam();</i><br><br>
+ * It can also be chained to provide complex queries easily:<br>
+ * //Robot on My Team, not the goalie, closest to the robot farthest from the ball<br>
+ * <i>Robot* r = Comparisons::distance(*Comparisons::distanceBall().maxMyTeam()).ignoreID(GOALIE_ID).minMyTeam();</i>
+ * <br><br>Comparisons defines many object functors like these for various
+ * min/max comparisons on containers, along with ignore functions to
+ * not consider certain IDs in these comparisons. */
 
 namespace Comparisons
 {
@@ -16,56 +31,83 @@ namespace Comparisons
 typedef std::function<bool(float,float)> compareFunction;
 
 //Generic predicate that includes some "ignore" criteria
-struct IgnorablePredicate
+class Predicate
 {
-    //Unary operators
+public:
+    //! @name Unary operators
+    //! @{
+    //! @brief Invoked on function need unary predicates, such as find_if
     bool operator()(Robot* robot);
     bool operator()(const Point& point);
+    //! @}
 
-    //Binary operators
+    //! @name Binary operators
+    //! @{
+    //! @brief Invoked on function need binary predicates, such as max_element
     bool operator()(Robot* a, Robot* b);
     bool operator()(const Point& a, const Point& b);
+    //! @}
 
-    //Ignore Functions
-    IgnorablePredicate& ignore_if(std::function<bool(Robot*)> function);
-    IgnorablePredicate& ignoreID(int id);
-    IgnorablePredicate& ignoreIDNot(int id);
-    IgnorablePredicate& ignoreID(Robot* r);
-    IgnorablePredicate& ignoreIDNot(Robot* r);
-    IgnorablePredicate& ignoreIDs(std::initializer_list<int> ids);
-    IgnorablePredicate& ignoreIDs(std::initializer_list<Robot*> robs);
-    IgnorablePredicate& ignoreIDsNot(std::initializer_list<int> ids);
+    /*! @name Ignore Functions
+     * @{
+     * @brief Used to ignore robots matching an ID or a predicate. Are chainable.
+     * Use these functions to not consider a robot when querying a predicate. */
+    Predicate& ignore_if(std::function<bool(Robot*)> function);
+    Predicate& ignoreID(int id);
+    Predicate& ignoreIDNot(int id);
+    Predicate& ignoreID(Robot* r);
+    Predicate& ignoreIDNot(Robot* r);
+    Predicate& ignoreIDs(std::initializer_list<int> ids);
+    Predicate& ignoreIDs(std::initializer_list<Robot*> robs);
+    Predicate& ignoreIDsNot(std::initializer_list<int> ids);
+    //! @}
 
-    //Helper Query Functions
-    //Helpers to query the predicate on a Container of Robot* or Point
+    //! @name Boolean Container Queries
+    //! @{
+    //! @details Helpers to query the predicate on a Container of Robot* or Point
+
+    //! @brief Returns true if *this holds on <i>any of</i> the elements of the container c
     template<typename Container>
     bool any_of(Container& c) {
         return std::any_of(std::begin(c), std::end(c), *this);
     }
+    //! @brief Returns true if *this holds on <i>all of</i> the elements of the container c
     template<typename Container>
     bool all_of(Container& c) {
         return std::all_of(std::begin(c), std::end(c), *this);
     }
+    //! @brief Returns true if *this holds on <i>none of</i> the elements of the container c
     template<typename Container>
     bool none_of(Container& c) {
         return std::none_of(std::begin(c), std::end(c), *this);
     }
+    //! @}
 
-    //Helpers to query the min/max/any value (iterator) on a Container
+
+    //! @name Iterator Container Queries
+    //! @{
+    //! @details Helpers to query an element by predicate on a Container of Robot* or Point
+
+    //! @brief Returns the maximum element in container C based on the predicate
     template<typename Container>
     typename Container::iterator max(Container& c) {
         return std::max_element(std::begin(c), std::end(c), *this);
     }
+    //! @brief Returns the minimum element in container C based on the predicate
     template<typename Container>
     typename Container::iterator min(Container& c) {
         return std::min_element(std::begin(c), std::end(c), *this);
     }
+    //! @brief Returns the first element element in container C for which the predicate returns true
     template<typename Container>
     typename Container::iterator any(Container& c) {
         return std::find_if(std::begin(c), std::end(c), *this);
     }
+    //! @}
 
-    //MyTeam/OpTeam/AnyTeam helper functions
+    /*! @name GameModel helper functions
+     * @{
+     * @brief Helper functions to query the container queries on GameModel teams */
     Robot* maxMyTeam();
     Robot* maxOpTeam();
     Robot* maxAnyTeam();
@@ -75,8 +117,8 @@ struct IgnorablePredicate
     Robot* anyMyTeam();
     Robot* anyOpTeam();
     Robot* anyAnyTeam();
+    //! @}
 
-public:
     virtual void setCompareFunction();
 
 protected:
@@ -87,13 +129,14 @@ protected:
 private:
     std::array<std::function<bool(Robot*)>, 10> ignoreFunctions;
     int nextIgnoreSpot = 0;
-
     bool isNotIgnored(Robot* robot);
 };
 
+//! @cond
+
 /****************************************************************/
 
-struct pred_id : public IgnorablePredicate
+struct pred_id : public Predicate
 {
     pred_id(int);
     pred_id(std::initializer_list<int>);
@@ -109,9 +152,7 @@ struct pred_idNot : public pred_id
 
 /****************************************************************/
 
-/****************************************************************/
-
-struct pred_distance : public IgnorablePredicate
+struct pred_distance : public Predicate
 {
     pred_distance(const Point& testPoint);
     pred_distance(Robot* robot);
@@ -142,7 +183,7 @@ struct pred_distanceOpGoal : public pred_distance {
 //Default "is facing" tolerance (a 75 degree cone)
 #define _IFP_TOL (5*M_PI/12)
 
-struct _isFacingPoint : public IgnorablePredicate
+struct _isFacingPoint : public Predicate
 {
     _isFacingPoint(const Point&, float tol = _IFP_TOL);
     _isFacingPoint(Robot*,       float tol = _IFP_TOL);
@@ -165,7 +206,7 @@ struct pred_isNotFacingPoint : public _isFacingPoint {
 /****************************************************************/
 
 
-struct pred_isPointOutsideField : public IgnorablePredicate
+struct pred_isPointOutsideField : public Predicate
 {
     pred_isPointOutsideField();
     void setCompareFunction() override;
@@ -180,11 +221,7 @@ struct pred_isPointInsideField : public pred_isPointOutsideField
 
 /****************************************************************/
 
-
-bool isDistGreaterCompareFnPt(const Point&, const Point&, const Point&, float, compareFunction f);
-bool isDistGreaterCompareFnRb(Robot*, Robot*, const Point&, float, compareFunction f);
-
-struct pred_isDistanceToGreater : public IgnorablePredicate
+struct pred_isDistanceToGreater : public Predicate
 {
     pred_isDistanceToGreater(Robot*, float);
     pred_isDistanceToGreater(const Point&, float);
@@ -200,6 +237,7 @@ struct pred_isDistanceToLess : public pred_isDistanceToGreater
     void setCompareFunction() override;
 };
 
+//! @endcond
 
 /****************************************************************/
 
@@ -228,6 +266,9 @@ PREDICATE_FUNCTION(pred_distanceOpGoal,      distanceOpGoal)
 PREDICATE_FUNCTION(pred_id,                  id)
 PREDICATE_FUNCTION(pred_idNot,               idNot)
 
+/*! @{
+ * @name In addition to functions, Comparisons provides Measurments-style \
+ * standalone math querying functions<br> */
 bool isFacingPoint(Robot*, Robot*, float tol = _IFP_TOL);
 bool isFacingPoint(Robot*, const Point&, float tol = _IFP_TOL);
 bool isNotFacingPoint(Robot*, Robot*, float = _IFP_TOL);
@@ -244,6 +285,7 @@ bool isDistanceToLess(Robot*, Robot*, float);
 bool isDistanceToLess(const Point&, const Point&, float);
 bool isDistanceToLess(Robot*, const Point&, float);
 bool isDistanceToLess(const Point&, Robot*, float);
+//!@}
 
 #undef _IFP_TOL
 

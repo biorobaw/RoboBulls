@@ -43,7 +43,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
-      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -94,37 +93,37 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">GenericMovementBehavior Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>A Behavior-level interface to <a class="el" href="namespaceMovement.html" title="Namespace containing all Movement functions and classes. ">Movement</a>.  
+ <a href="classGenericMovementBehavior.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="genericmovementbehavior_8h_source.html">genericmovementbehavior.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for GenericMovementBehavior:</div>
 <div class="dyncontent">
  <div class="center">
   <img src="classGenericMovementBehavior.png" usemap="#GenericMovementBehavior_map" alt=""/>
   <map id="GenericMovementBehavior_map" name="GenericMovementBehavior_map">
-<area href="classBehavior.html" alt="Behavior" shape="rect" coords="0,0,166,24"/>
-<area href="classAttackSupport.html" alt="AttackSupport" shape="rect" coords="176,112,342,136"/>
-<area href="classDefendFarFromBall.html" alt="DefendFarFromBall" shape="rect" coords="176,168,342,192"/>
-<area href="classDefendStateIdle.html" alt="DefendStateIdle" shape="rect" coords="176,224,342,248"/>
-<area href="classDefendStateKick.html" alt="DefendStateKick" shape="rect" coords="176,280,342,304"/>
-<area href="classGoToBeh.html" alt="GoToBeh" shape="rect" coords="176,336,342,360"/>
-<area href="classOpBallBlocker.html" alt="OpBallBlocker" shape="rect" coords="176,392,342,416"/>
-<area href="classPassBallReceiver.html" alt="PassBallReceiver" shape="rect" coords="176,448,342,472"/>
-<area href="classPassBallSender.html" alt="PassBallSender" shape="rect" coords="176,504,342,528"/>
-<area href="classPenaltyBehavior.html" alt="PenaltyBehavior" shape="rect" coords="176,560,342,584"/>
-<area href="classRetreatAfterGoal.html" alt="RetreatAfterGoal" shape="rect" coords="176,616,342,640"/>
-<area href="classRotateOnPoint.html" alt="RotateOnPoint" shape="rect" coords="176,672,342,696"/>
-<area href="classRotBeh.html" alt="RotBeh" shape="rect" coords="176,728,342,752"/>
-<area href="classShamsiStrafe.html" alt="ShamsiStrafe" shape="rect" coords="176,784,342,808"/>
-<area href="classVideo_1_1BallReceiver.html" alt="Video::BallReceiver" shape="rect" coords="176,840,342,864"/>
+<area href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. " alt="Behavior" shape="rect" coords="0,0,166,24"/>
+<area href="classAttackSupport.html" title="AttackSupport is a complement to Attackmain, used in NormalGameStrategy. " alt="AttackSupport" shape="rect" coords="176,112,342,136"/>
+<area href="classDefendFarFromBall.html" title="The “goalie” behavior of the game. " alt="DefendFarFromBall" shape="rect" coords="176,168,342,192"/>
+<area href="classDefendStateIdle.html" title="DefendState To choose a point to idle at. " alt="DefendStateIdle" shape="rect" coords="176,224,342,248"/>
+<area href="classDefendStateKick.html" title="DefendState to sit in the ball&#39;s incoming path. " alt="DefendStateKick" shape="rect" coords="176,280,342,304"/>
+<area href="classPassBallReceiver.html" title="Skill to recieve a ball pass from PassBallSender. " alt="PassBallReceiver" shape="rect" coords="176,336,342,360"/>
+<area href="classPassBallSender.html" title="Behavior to pass the ball to a robot with PassBallReceiver. " alt="PassBallSender" shape="rect" coords="176,392,342,416"/>
+<area href="classPenaltyBehavior.html" title="Behavior to perform a penalty kick. " alt="PenaltyBehavior" shape="rect" coords="176,448,342,472"/>
+<area href="classRotateOnPoint.html" title="Behavior to rotate around a stationary point. " alt="RotateOnPoint" shape="rect" coords="176,504,342,528"/>
+<area href="classVideo_1_1BallReceiver.html" alt="Video::BallReceiver" shape="rect" coords="176,560,342,584"/>
 </map>
  </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a3d8bf66bd36e028bad427b211d901708"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3d8bf66bd36e028bad427b211d901708"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>GenericMovementBehavior</b> (<a class="el" href="classPoint.html">Point</a> target=<a class="el" href="classPoint.html">Point</a>(0, 0), float angTarget=UNUSED_ANGLE_VALUE, bool obsAvoid=true, bool ballAvoid=true)</td></tr>
+<tr class="memitem:a3d8bf66bd36e028bad427b211d901708"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGenericMovementBehavior.html#a3d8bf66bd36e028bad427b211d901708">GenericMovementBehavior</a> (<a class="el" href="classPoint.html">Point</a> target=<a class="el" href="classPoint.html">Point</a>(0, 0), float angTarget=UNUSED_ANGLE_VALUE, bool obsAvoid=true, bool ballAvoid=true)</td></tr>
+<tr class="memdesc:a3d8bf66bd36e028bad427b211d901708"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor is also an interface to a GoToPosition object.  <a href="#a3d8bf66bd36e028bad427b211d901708">More...</a><br/></td></tr>
 <tr class="separator:a3d8bf66bd36e028bad427b211d901708"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acae60b4ca7d2fdbaf7a3c9dce69c2bb2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGenericMovementBehavior.html#acae60b4ca7d2fdbaf7a3c9dce69c2bb2">perform</a> (<a class="el" href="classRobot.html">Robot</a> *robot) override</td></tr>
-<tr class="memdesc:acae60b4ca7d2fdbaf7a3c9dce69c2bb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform this behavior's action on a robot Given an arbitrary roobot, The <em>perform</em> function of a <a class="el" href="classBehavior.html">Behavior</a> defines how to run the behavior on a robot.  <a href="#acae60b4ca7d2fdbaf7a3c9dce69c2bb2">More...</a><br/></td></tr>
+<tr class="memdesc:acae60b4ca7d2fdbaf7a3c9dce69c2bb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform this behavior's action on a robot Given an arbitrary roobot, The <em>perform</em> function of a <a class="el" href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. ">Behavior</a> defines how to run the behavior on a robot.  <a href="#acae60b4ca7d2fdbaf7a3c9dce69c2bb2">More...</a><br/></td></tr>
 <tr class="separator:acae60b4ca7d2fdbaf7a3c9dce69c2bb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acdd16af72d03bab5727a465de853ebc0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGenericMovementBehavior.html#acdd16af72d03bab5727a465de853ebc0">isFinished</a> () override</td></tr>
 <tr class="memdesc:acdd16af72d03bab5727a465de853ebc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return if behavior is "finished" Return true when the behavior is "finished," false otherwise. This could be reaching a target, or whenever a derived behavior is considered finished. Can be used in Stratigies to effectively assign behaviors one after another.  <a href="#acdd16af72d03bab5727a465de853ebc0">More...</a><br/></td></tr>
@@ -132,22 +131,72 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a9ef9c427431b9f34e0197f9f17f33135"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9ef9c427431b9f34e0197f9f17f33135"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>perform</b> (<a class="el" href="classRobot.html">Robot</a> *robot, <a class="el" href="namespaceMovement.html#a74b28fda28211060df3b66c2ce160bd6">Movement::Type</a> type)</td></tr>
+<tr class="memitem:a9ef9c427431b9f34e0197f9f17f33135"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGenericMovementBehavior.html#a9ef9c427431b9f34e0197f9f17f33135">perform</a> (<a class="el" href="classRobot.html">Robot</a> *robot, <a class="el" href="namespaceMovement.html#a74b28fda28211060df3b66c2ce160bd6">Movement::Type</a> type)</td></tr>
+<tr class="memdesc:a9ef9c427431b9f34e0197f9f17f33135"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls the GoToPosition object.  <a href="#a9ef9c427431b9f34e0197f9f17f33135">More...</a><br/></td></tr>
 <tr class="separator:a9ef9c427431b9f34e0197f9f17f33135"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ac45d3889afbb70d75c871caf0d8c5c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8ac45d3889afbb70d75c871caf0d8c5c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setMovementTargets</b> (<a class="el" href="classPoint.html">Point</a> targetPoint, float targetAngle=UNUSED_ANGLE_VALUE)</td></tr>
-<tr class="separator:a8ac45d3889afbb70d75c871caf0d8c5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada69562e2cb0372b8bb0348ec876db1e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ada69562e2cb0372b8bb0348ec876db1e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setMovementTargets</b> (<a class="el" href="classPoint.html">Point</a> targetPoint, float targetAngle, bool useObstacleAvoid, bool useAvoidBall=true)</td></tr>
-<tr class="separator:ada69562e2cb0372b8bb0348ec876db1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adcda63186c2bec56e194f1db916de974"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adcda63186c2bec56e194f1db916de974"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setVelocityMultiplier</b> (float newMultiplier)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGenericMovementBehavior.html#adcda63186c2bec56e194f1db916de974">setVelocityMultiplier</a> (float newMultiplier)</td></tr>
+<tr class="memdesc:adcda63186c2bec56e194f1db916de974"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the velocity multiplier on the <a class="el" href="namespaceMovement.html" title="Namespace containing all Movement functions and classes. ">Movement</a> object. <br/></td></tr>
 <tr class="separator:adcda63186c2bec56e194f1db916de974"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a04892083f5218c466e616bbf7b732972"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a04892083f5218c466e616bbf7b732972"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setMovementTolerances</b> (float newDistolerance, float newRotTolerance)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGenericMovementBehavior.html#a04892083f5218c466e616bbf7b732972">setMovementTolerances</a> (float newDistolerance, float newRotTolerance)</td></tr>
+<tr class="memdesc:a04892083f5218c466e616bbf7b732972"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the movement tolerances on the <a class="el" href="namespaceMovement.html" title="Namespace containing all Movement functions and classes. ">Movement</a> object. <br/></td></tr>
 <tr class="separator:a04892083f5218c466e616bbf7b732972"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:a8ac45d3889afbb70d75c871caf0d8c5c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGenericMovementBehavior.html#a8ac45d3889afbb70d75c871caf0d8c5c">setMovementTargets</a> (<a class="el" href="classPoint.html">Point</a> targetPoint, float targetAngle=UNUSED_ANGLE_VALUE)</td></tr>
+<tr class="memdesc:a8ac45d3889afbb70d75c871caf0d8c5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the next movement targets (<a class="el" href="classPoint.html" title="2D Point Class A Point is a 2D vector in space. Typically used to represent positions on the Robot Fi...">Point</a> target and angle) to move to.  <a href="#a8ac45d3889afbb70d75c871caf0d8c5c">More...</a><br/></td></tr>
+<tr class="separator:a8ac45d3889afbb70d75c871caf0d8c5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada69562e2cb0372b8bb0348ec876db1e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGenericMovementBehavior.html#ada69562e2cb0372b8bb0348ec876db1e">setMovementTargets</a> (<a class="el" href="classPoint.html">Point</a> targetPoint, float targetAngle, bool useObstacleAvoid, bool useAvoidBall=true)</td></tr>
+<tr class="memdesc:ada69562e2cb0372b8bb0348ec876db1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the next movement targets (<a class="el" href="classPoint.html" title="2D Point Class A Point is a 2D vector in space. Typically used to represent positions on the Robot Fi...">Point</a> target and angle) to move to.  <a href="#ada69562e2cb0372b8bb0348ec876db1e">More...</a><br/></td></tr>
+<tr class="separator:ada69562e2cb0372b8bb0348ec876db1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>A Behavior-level interface to <a class="el" href="namespaceMovement.html" title="Namespace containing all Movement functions and classes. ">Movement</a>. </p>
+<dl class="section author"><dt>Author</dt><dd>JamesW</dd></dl>
+<p>This purpose of this <a class="el" href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. ">Behavior</a> is to provide an interface to the <a class="el" href="namespaceMovement.html" title="Namespace containing all Movement functions and classes. ">Movement</a> layer of the "velocity sending" hierarchy. The reason is that many behaviors directly used deprecated things like CLC, and also because there exists a lot of boilerplate in managing a pointer to a GoToPosition object. This class simply manages internally a GoToPositon object and provides an interface to it. The basic usage idea&ndash;in a <a class="el" href="classGenericMovementBehavior.html#acae60b4ca7d2fdbaf7a3c9dce69c2bb2" title="Perform this behavior&#39;s action on a robot Given an arbitrary roobot, The perform function of a Behavi...">perform()</a> function of a derived class&ndash; is to call setMovementTargets, and then call <a class="el" href="classGenericMovementBehavior.html#acae60b4ca7d2fdbaf7a3c9dce69c2bb2" title="Perform this behavior&#39;s action on a robot Given an arbitrary roobot, The perform function of a Behavi...">GenericMovementBehavior::perform</a>. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a3d8bf66bd36e028bad427b211d901708"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">GenericMovementBehavior::GenericMovementBehavior </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classPoint.html">Point</a>&#160;</td>
+          <td class="paramname"><em>target</em> = <code><a class="el" href="classPoint.html">Point</a>(0,0)</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>angTarget</em> = <code>UNUSED_ANGLE_VALUE</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>obsAvoid</em> = <code>true</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>ballAvoid</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructor is also an interface to a GoToPosition object. </p>
+<p>It can set up the movement object on construction instead of being defaulted to 0,0 </p>
+<dl class="section see"><dt>See Also</dt><dd>GoToPosition </dd></dl>
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="acdd16af72d03bab5727a465de853ebc0"></a>
 <div class="memitem">
@@ -201,7 +250,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setMovementTolerances
 </table>
 </div><div class="memdoc">
 
-<p>Perform this behavior's action on a robot Given an arbitrary roobot, The <em>perform</em> function of a <a class="el" href="classBehavior.html">Behavior</a> defines how to run the behavior on a robot. </p>
+<p>Perform this behavior's action on a robot Given an arbitrary roobot, The <em>perform</em> function of a <a class="el" href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. ">Behavior</a> defines how to run the behavior on a robot. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">Robot*</td><td>the robot to perform on. </td></tr>
@@ -211,7 +260,130 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setMovementTolerances
 
 <p>Implements <a class="el" href="classBehavior.html#ae9cd383ce108e38784a62896b4395169">Behavior</a>.</p>
 
-<p>Reimplemented in <a class="el" href="classRetreatAfterGoal.html#a6233dddb92892e222a69ea822de400fc">RetreatAfterGoal</a>, <a class="el" href="classShamsiStrafe.html#a84730c6716e210c5e45d58a2afde827d">ShamsiStrafe</a>, <a class="el" href="classVideo_1_1BallReceiver.html#aa26cac5516da39f7b85699624075645d">Video::BallReceiver</a>, <a class="el" href="classOpBallBlocker.html#a37825ba0e80823eac2650de380a1f269">OpBallBlocker</a>, <a class="el" href="classPassBallSender.html#a86e1b65c4ff43511fd79228844bed1f0">PassBallSender</a>, <a class="el" href="classPassBallReceiver.html#a3efcc67d0daad0174e95e3ef2c514039">PassBallReceiver</a>, <a class="el" href="classPenaltyBehavior.html#a056de4ccedc06a289afdf3ccb7c0a7a4">PenaltyBehavior</a>, and <a class="el" href="classRotateOnPoint.html#a1d0198673564aec892d52cda1e88e443">RotateOnPoint</a>.</p>
+<p>Reimplemented in <a class="el" href="classVideo_1_1BallReceiver.html#aa26cac5516da39f7b85699624075645d">Video::BallReceiver</a>, <a class="el" href="classPassBallSender.html#a86e1b65c4ff43511fd79228844bed1f0">PassBallSender</a>, <a class="el" href="classPassBallReceiver.html#a3efcc67d0daad0174e95e3ef2c514039">PassBallReceiver</a>, <a class="el" href="classPenaltyBehavior.html#a056de4ccedc06a289afdf3ccb7c0a7a4">PenaltyBehavior</a>, and <a class="el" href="classRotateOnPoint.html#a1d0198673564aec892d52cda1e88e443">RotateOnPoint</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a9ef9c427431b9f34e0197f9f17f33135"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void GenericMovementBehavior::perform </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classRobot.html">Robot</a> *&#160;</td>
+          <td class="paramname"><em>robot</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceMovement.html#a74b28fda28211060df3b66c2ce160bd6">Movement::Type</a>&#160;</td>
+          <td class="paramname"><em>type</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Calls the GoToPosition object. </p>
+<p>This actually calculates and sets the velocities on the robot via . GoToPosition. After a derived class has obtained a point and angle (and set them with setMovementTargets), call this to calculate wheelvels and set them on the robot; use GenericMovementBehavior::perform(robot); </p>
+
+</div>
+</div>
+<a class="anchor" id="a8ac45d3889afbb70d75c871caf0d8c5c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void GenericMovementBehavior::setMovementTargets </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classPoint.html">Point</a>&#160;</td>
+          <td class="paramname"><em>targetPoint</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>targetAngle</em> = <code>UNUSED_ANGLE_VALUE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets the next movement targets (<a class="el" href="classPoint.html" title="2D Point Class A Point is a 2D vector in space. Typically used to represent positions on the Robot Fi...">Point</a> target and angle) to move to. </p>
+<p>This is the most important function; after a derived class has calculated the points to move to, use setMovementTargets to recreate the GoToPosition object to those parameters: point, angle, and use obstacle avoidance or not </p>
+
+</div>
+</div>
+<a class="anchor" id="ada69562e2cb0372b8bb0348ec876db1e"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void GenericMovementBehavior::setMovementTargets </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classPoint.html">Point</a>&#160;</td>
+          <td class="paramname"><em>targetPoint</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>targetAngle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>useObstacleAvoid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>useAvoidBall</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets the next movement targets (<a class="el" href="classPoint.html" title="2D Point Class A Point is a 2D vector in space. Typically used to represent positions on the Robot Fi...">Point</a> target and angle) to move to. </p>
+<p>This is the most important function; after a derived class has calculated the points to move to, use setMovementTargets to recreate the GoToPosition object to those parameters: point, angle, and use obstacle avoidance or not </p>
 
 </div>
 </div>
@@ -222,7 +394,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setMovementTolerances
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Aug 19 2015 20:59:30 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Aug 20 2015 16:54:01 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

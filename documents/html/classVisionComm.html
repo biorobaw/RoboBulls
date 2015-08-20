@@ -43,7 +43,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
-      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -96,7 +95,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
-<p>The <a class="el" href="classVisionComm.html" title="The VisionComm class Detects the robots and ball and puts each robot in the corresponding team based ...">VisionComm</a> class Detects the robots and ball and puts each robot in the corresponding team based on robot's color (Blue team/ Yellow team) Narges Ghaedi... <code>et al</code>  
+<p>The <a class="el" href="classVisionComm.html" title="The VisionComm class recieves information from the vision cameras. ">VisionComm</a> class recieves information from the vision cameras.  
  <a href="classVisionComm.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="visioncomm_8h_source.html">visioncomm.h</a>&gt;</code></p>
@@ -124,13 +123,16 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>run</b> ()</td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:adc2d53f051d797123173215d921a1d30"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adc2d53f051d797123173215d921a1d30"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>recieveRobotTeam</b> (const <a class="el" href="classSSL__DetectionFrame.html">SSL_DetectionFrame</a> &amp;frame, int whichTeam)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVisionComm.html#adc2d53f051d797123173215d921a1d30">recieveRobotTeam</a> (const SSL_DetectionFrame &amp;frame, int whichTeam)</td></tr>
+<tr class="memdesc:adc2d53f051d797123173215d921a1d30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses an SSL_DetectionFrame and fills out <a class="el" href="classGameModel.html" title="The GameModel class Game model class can be considered as the heart of robobulls project all the info...">GameModel</a>. <br/></td></tr>
 <tr class="separator:adc2d53f051d797123173215d921a1d30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae101f4d19b5321fff364cede9fe32dfb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae101f4d19b5321fff364cede9fe32dfb"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>recieveBall</b> (const <a class="el" href="classSSL__DetectionFrame.html">SSL_DetectionFrame</a> &amp;frame)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVisionComm.html#ae101f4d19b5321fff364cede9fe32dfb">recieveBall</a> (const SSL_DetectionFrame &amp;frame)</td></tr>
+<tr class="memdesc:ae101f4d19b5321fff364cede9fe32dfb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses an SSL_DetectionFrame and fills out <a class="el" href="classGameModel.html" title="The GameModel class Game model class can be considered as the heart of robobulls project all the info...">GameModel</a>. <br/></td></tr>
 <tr class="separator:ae101f4d19b5321fff364cede9fe32dfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc3047bc688a15c1216eec0e6b257d1b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acc3047bc688a15c1216eec0e6b257d1b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>updateInfo</b> (const <a class="el" href="classSSL__DetectionRobot.html">SSL_DetectionRobot</a> &amp;robot, int detectedTeamColor)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVisionComm.html#acc3047bc688a15c1216eec0e6b257d1b">updateInfo</a> (const SSL_DetectionRobot &amp;robot, int detectedTeamColor)</td></tr>
+<tr class="memdesc:acc3047bc688a15c1216eec0e6b257d1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates <a class="el" href="classGameModel.html" title="The GameModel class Game model class can be considered as the heart of robobulls project all the info...">GameModel</a> information to fill out a robot. <br/></td></tr>
 <tr class="separator:acc3047bc688a15c1216eec0e6b257d1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
@@ -139,10 +141,10 @@ Protected Attributes</h2></td></tr>
 <a class="el" href="classGameModel.html">GameModel</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>gamemodel</b></td></tr>
 <tr class="separator:a97036f74facd6f54551c6339863864a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c4825f611ab97a5f775e0a6493d40e3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8c4825f611ab97a5f775e0a6493d40e3"></a>
-<a class="el" href="classSSL__WrapperPacket.html">SSL_WrapperPacket</a>&#160;</td><td class="memItemRight" valign="bottom"><b>packet</b></td></tr>
+SSL_WrapperPacket&#160;</td><td class="memItemRight" valign="bottom"><b>packet</b></td></tr>
 <tr class="separator:a8c4825f611ab97a5f775e0a6493d40e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43fad3e1acc8cf309171979bddc94788"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a43fad3e1acc8cf309171979bddc94788"></a>
-<a class="el" href="classRoboCupSSLClient.html">RoboCupSSLClient</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>client</b></td></tr>
+RoboCupSSLClient *&#160;</td><td class="memItemRight" valign="bottom"><b>client</b></td></tr>
 <tr class="separator:a43fad3e1acc8cf309171979bddc94788"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8bb62d17ef54028aa46698252bd8379"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac8bb62d17ef54028aa46698252bd8379"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>packetCount</b></td></tr>
@@ -161,7 +163,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>yellow_rob</b> [10] ={
 <tr class="separator:a62d6f904cfe51fb83e145597374f2292"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The <a class="el" href="classVisionComm.html" title="The VisionComm class Detects the robots and ball and puts each robot in the corresponding team based ...">VisionComm</a> class Detects the robots and ball and puts each robot in the corresponding team based on robot's color (Blue team/ Yellow team) Narges Ghaedi... <code>et al</code> </p>
+<div class="textblock"><p>The <a class="el" href="classVisionComm.html" title="The VisionComm class recieves information from the vision cameras. ">VisionComm</a> class recieves information from the vision cameras. </p>
+<dl class="section author"><dt>Author</dt><dd>Origin. Narges Ghaedi, JamesW</dd></dl>
+<p>Detects the robots and ball and puts each robot in the corresponding team based on robot's color (Blue team/ Yellow team) </p>
 </div><hr/>The documentation for this class was generated from the following files:<ul>
 <li>communication/<a class="el" href="visioncomm_8h_source.html">visioncomm.h</a></li>
 <li>communication/visioncomm.cpp</li>
@@ -169,7 +173,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>yellow_rob</b> [10] ={
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Aug 19 2015 20:59:30 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Aug 20 2015 16:54:01 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

@@ -3,14 +3,17 @@
 #include <vector>
 #include "utilities/point.h"
 
+namespace Movement
+{
+
 /*! @brief Fast Path Planning Algorithm
  * @author JamesW
- *
- * This namespace implements the Fast Path Planning Algorithm (FPPA)
+ * @details This namespace implements the Fast Path Planning Algorithm (FPPA)
  * as described in the paper "Fast Path Planning Algorithm for the RoboCub Small Size League"
  * by Rodriguez S., Rojas E., Calderon J. et al.
  * The algorithm is meant to provide reliable path-finding in real time, such as in
  * the case of the RoboCup league. */
+
 namespace FPPA
 {
     //! @brief Represents weather the chosen path was the top or the bottom one
@@ -72,6 +75,8 @@ namespace FPPA
      *  @details Returns a reference to the vector consisting of the positions of all
      *  obstacles for this frame */
     const std::vector<Point>& getCurrentObstacles();
+}
+
 }
 
 #endif // FPPA_PATHFINDING_H

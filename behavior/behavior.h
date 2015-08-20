@@ -3,7 +3,7 @@
 
 class Robot;
 
-/*! @breif Abstract Behavior class which all other behaviors inherit.
+/*! @brief Abstract Behavior class which all other behaviors inherit.
  * @author Orign. Narges Ghaedi; JamesW
  * @ingroup Base Classes
  *

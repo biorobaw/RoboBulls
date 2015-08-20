@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['topleftregion',['topLeftRegion',['../classRegion.html#ab338dce81f5a4b49916104004e2b723c',1,'Region']]],
-  ['toprightregion',['topRightRegion',['../classRegion.html#ab2a90a0cc7b9540e8ef447c2f7bb2c66',1,'Region']]]
+  ['id',['ID',['../structPassBallSender_1_1playersCharactristics.html#a050e403027145c12140a057714030de3',1,'PassBallSender::playersCharactristics']]],
+  ['inbadarea',['inBadArea',['../structPassBallSender_1_1playersCharactristics.html#a38b016a4bbf82d408b247ef595d949b6',1,'PassBallSender::playersCharactristics']]]
 ];

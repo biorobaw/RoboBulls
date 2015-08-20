@@ -1,13 +1,15 @@
 #ifndef DRIVEBALLANDKICK_H
 #define DRIVEBALLANDKICK_H
-
 #include "behavior/behavior.h"
 #include "skill/skill.h"
 #include "utilities/point.h"
 #include "behavior/genericmovementbehavior.h"
 #include "movement/gotoposition.h"
 
-using namespace std;
+/*! @brief Uses the DriveBall, Kick, and Stop skills. to drive then kick the ball
+ * @author Narges Ghaedi
+ * @details The robot drives the ball to a kickPoint ( Point(1600, 0) ),
+ * and kicks the ball into the goal. */
 
 class DriveBallAndKick : public Behavior
 {

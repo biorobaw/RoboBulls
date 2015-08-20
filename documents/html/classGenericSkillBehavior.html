@@ -43,7 +43,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
-      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -93,13 +92,18 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">GenericSkillBehavior&lt; SkillType &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>A wrapper convience behavior for a single skill.  
+ <a href="classGenericSkillBehavior.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="genericskillbehavior_8h_source.html">genericskillbehavior.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for GenericSkillBehavior&lt; SkillType &gt;:</div>
 <div class="dyncontent">
  <div class="center">
   <img src="classGenericSkillBehavior.png" usemap="#GenericSkillBehavior&lt; SkillType &gt;_map" alt=""/>
   <map id="GenericSkillBehavior&lt; SkillType &gt;_map" name="GenericSkillBehavior&lt; SkillType &gt;_map">
-<area href="classBehavior.html" alt="Behavior" shape="rect" coords="0,0,206,24"/>
+<area href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. " alt="Behavior" shape="rect" coords="0,0,206,24"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -109,14 +113,25 @@ Public Member Functions</h2></td></tr>
 template&lt;typename... Args&gt; </td></tr>
 <tr class="memitem:acea08997b4ab1c9696f25ac3b0d2bbd2"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><b>GenericSkillBehavior</b> (Args &amp;&amp;...args)</td></tr>
 <tr class="separator:acea08997b4ab1c9696f25ac3b0d2bbd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e12becd53d522c314d15450e8f29191"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGenericSkillBehavior.html#a7e12becd53d522c314d15450e8f29191">perform</a> (<a class="el" href="classRobot.html">Robot</a> *robot)</td></tr>
-<tr class="memdesc:a7e12becd53d522c314d15450e8f29191"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform this behavior's action on a robot Given an arbitrary roobot, The <em>perform</em> function of a <a class="el" href="classBehavior.html">Behavior</a> defines how to run the behavior on a robot.  <a href="#a7e12becd53d522c314d15450e8f29191">More...</a><br/></td></tr>
+<tr class="memitem:aa7b2c0dc84224d95762345fccaad4775"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa7b2c0dc84224d95762345fccaad4775"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGenericSkillBehavior.html#aa7b2c0dc84224d95762345fccaad4775">~GenericSkillBehavior</a> ()</td></tr>
+<tr class="memdesc:aa7b2c0dc84224d95762345fccaad4775"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform the skill. <br/></td></tr>
+<tr class="separator:aa7b2c0dc84224d95762345fccaad4775"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e12becd53d522c314d15450e8f29191"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7e12becd53d522c314d15450e8f29191"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGenericSkillBehavior.html#a7e12becd53d522c314d15450e8f29191">perform</a> (<a class="el" href="classRobot.html">Robot</a> *robot)</td></tr>
+<tr class="memdesc:a7e12becd53d522c314d15450e8f29191"><td class="mdescLeft">&#160;</td><td class="mdescRight">The isFinished returns the result from <em>perform</em> of the <a class="el" href="namespaceSkill.html" title="Namespace containing all Skills. ">Skill</a>. <br/></td></tr>
 <tr class="separator:a7e12becd53d522c314d15450e8f29191"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a926961a37f5932c2009812b94fd52902"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGenericSkillBehavior.html#a926961a37f5932c2009812b94fd52902">isFinished</a> () override</td></tr>
 <tr class="memdesc:a926961a37f5932c2009812b94fd52902"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return if behavior is "finished" Return true when the behavior is "finished," false otherwise. This could be reaching a target, or whenever a derived behavior is considered finished. Can be used in Stratigies to effectively assign behaviors one after another.  <a href="#a926961a37f5932c2009812b94fd52902">More...</a><br/></td></tr>
 <tr class="separator:a926961a37f5932c2009812b94fd52902"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;typename SkillType&gt;<br/>
+class GenericSkillBehavior&lt; SkillType &gt;</h3>
+
+<p>A wrapper convience behavior for a single skill. </p>
+<p>Used in the robot's assignSkill function, this behavior simply performs a single skill indefinately, and "isFinished" is determined directly from that skill. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a926961a37f5932c2009812b94fd52902"></a>
 <div class="memitem">
 <div class="memproto">
@@ -147,49 +162,13 @@ template&lt;typename SkillType &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a7e12becd53d522c314d15450e8f29191"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename SkillType &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="classGenericSkillBehavior.html">GenericSkillBehavior</a>&lt; SkillType &gt;::perform </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classRobot.html">Robot</a> *&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Perform this behavior's action on a robot Given an arbitrary roobot, The <em>perform</em> function of a <a class="el" href="classBehavior.html">Behavior</a> defines how to run the behavior on a robot. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">Robot*</td><td>the robot to perform on. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Implements <a class="el" href="classBehavior.html#ae9cd383ce108e38784a62896b4395169">Behavior</a>.</p>
-
-</div>
-</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>behavior/<a class="el" href="genericskillbehavior_8h_source.html">genericskillbehavior.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Aug 19 2015 20:59:30 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Aug 20 2015 16:54:01 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

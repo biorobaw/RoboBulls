@@ -3,8 +3,8 @@
 
 #include "behavior/behavior.h"
 
-/* SimpleBehaviors
- * SimpleBehaviors is a class to handle three gamestates
+/*! @brief Behavior to handle simple Strategy cases
+ * @details SimpleBehaviors is a class to handle three gamestates
  * that would be inefficient to make their own files.
  * This is used for robots that have no role in these behaviors.
  * 'F' 'f' : Freekicks

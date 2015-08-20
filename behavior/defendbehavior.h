@@ -1,24 +1,15 @@
 #ifndef DEFENDBEHAVIOR_H
 #define DEFENDBEHAVIOR_H
-
 #include "behavior/genericmovementbehavior.h"
 #include "skill/kicktopointomni.h"
 
-/* DEFEND BEHAVIOR
- * DefendBehavior is the next iteration of a defense mode (circa May 2015).
- * It sets robots to sit at points around the goal, and get in the line of motion
- * of the ball and kick it back if it is coming torwards the goal. In addition,
- * if the ball is stopped on our side a robot will break to kick it, and also
- * the robots sway formation to face the ball if it on our side.
- *
- * This also serves as a first iteration of an "intelligent agents" type of behavior,
- * where each robot independently runs the same behavior to without the need for a
- * strategy. This is made up of `DefendStates` which link to one another.
- */
+/* DEFEND BEHAVIOR -- See documentation on DefendBehavior below */
+//! @file A general-purpose defence behavior for the game.
  
 /************************************************************/
-/* DefendState -- A base class, represents a state in the 
- * DefendBehavior state machine. States are changed by return a new
+/*! @brief A base class, a state in the DefendBehavior state machine.
+ * @author JamesW
+ * @details States are changed by returning a new
  * instance of one from `action`. Similar to the `perform` function
  */
 class DefendState
@@ -26,15 +17,15 @@ class DefendState
 public:
     virtual ~DefendState();
 
-    /* Perform a state and return a new one
-     * Returns `this` if no transition is made */
+    //! @brief Perform a state and return a new one Returns `this` if no transition is made */
     virtual DefendState* action(Robot* robot);
 
-    //Initializes all claimed points to initial positions
+    //! @brief Initializes all claimed points to initial positions
     static void setupClaimedPoints();
 
-    //Clears all robot's claimed points, by setting `defendPoints`
-    //back to the default positions and filling `claimed` with -1
+    //! @brief Clears all robot's claimed points.
+    //! @details by setting `defendPoints` back to the default
+    //! positions and filling `claimed` with -1
     static void clearClaimedPoints();
 
 protected:
@@ -55,10 +46,10 @@ private:
     static int   updateCount;      //Count to delay `action` updating of points
 };
 
-
 /************************************************************/
-/* DefendState To choose a point to idle at.
- * If activeKick is true, goes to kick the ball away if it is coming close.
+
+/*! @brief DefendState To choose a point to idle at.
+ * @details If activeKick is true, goes to kick the ball away if it is coming close.
  */
 class DefendStateIdle : public DefendState, public GenericMovementBehavior
 {
@@ -71,8 +62,9 @@ private:
 
 
 /************************************************************/
-/* DefendState that merely does KickToPointOmni to kick the ball away. Happens
- * when the ball stops close to a robot on our side
+
+/*! @brief DefendState that merely does KickToPointOmni to kick the ball away.
+ * @dtails Happens when the ball stops close to a robot on our side
  */
 class DefendStateIdleKick: public DefendState
 {
@@ -86,9 +78,9 @@ private:
 
 
 /************************************************************/
-/* DefendState to sit in the ball's incoming path, then
- * kick the ball away and return to idle when finished
- */
+
+/*! @brief DefendState to sit in the ball's incoming path.
+ * @details Then, kick the ball away and return to idle when finished */
 class DefendStateKick : public DefendState, public GenericMovementBehavior
 {
 public:
@@ -106,6 +98,16 @@ private:
 
 
 /************************************************************/
+
+/*! @brief DefendBehavior is the next iteration of a defense mode (circa May 2015).
+ * @author JamesW
+ * @details DefendBehavior sets robots to sit at points around the goal, and get in the
+ * line of motion of the ball and kick it back if it is coming torwards the goal. In addition,
+ * if the ball is stopped on our side a robot will break to kick it, and also
+ * the robots sway formation to face the ball if it on our side.
+ * This also serves as a first iteration of an "intelligent agents" type of behavior,
+ * where each robot independently runs the same behavior to without the need for a
+ * strategy. This is made up of `DefendStates` which link to one another. */
 
 class DefendBehavior : public Behavior
 {

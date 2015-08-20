@@ -43,7 +43,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
-      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -94,67 +93,62 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef GENERIC_SKILL_BEHAVIOR_H</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define GENERIC_SKILL_BEHAVIOR_H</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;behavior/behavior.h&quot;</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &quot;behavior/behavior.h&quot;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">class </span><a class="code" href="classRobot.html">Robot</a>;</div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">/* GenericSkillBehavior</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> * GenericSkillBehavior is a wrapper convience behavior for a single skill.</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment"> * Used in the robot&#39;s assignSkill function, this behavior simply performs</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment"> * a single skill indefinately, and &quot;isFinished&quot; is determined directly</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment"> * from that skill.</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">class </span><a class="code" href="classRobot.html">Robot</a>;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> SkillType&gt;</div>
-<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="classGenericSkillBehavior.html">   16</a></span>&#160;<span class="keyword">class </span><a class="code" href="classGenericSkillBehavior.html">GenericSkillBehavior</a> : <span class="keyword">public</span> <a class="code" href="classBehavior.html">Behavior</a></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;{</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Args&gt;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;     <a class="code" href="classGenericSkillBehavior.html">GenericSkillBehavior</a>(Args&amp;&amp;... args);</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    ~GenericSkillBehavior();</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classGenericSkillBehavior.html#a7e12becd53d522c314d15450e8f29191">perform</a>(<a class="code" href="classRobot.html">Robot</a>* robot);</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classGenericSkillBehavior.html#a926961a37f5932c2009812b94fd52902">isFinished</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    SkillType* skill;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keywordtype">bool</span> skillFinished;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;};</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> SkillType&gt;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Args&gt;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<a class="code" href="classGenericSkillBehavior.html">GenericSkillBehavior&lt;SkillType&gt;::GenericSkillBehavior</a>(Args&amp;&amp;... args)</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    : skill(new SkillType(args...))</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    , skillFinished(false)</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    { }</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> SkillType&gt;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<a class="code" href="classGenericSkillBehavior.html">GenericSkillBehavior&lt;SkillType&gt;::~GenericSkillBehavior</a>()</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;{</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keyword">delete</span> skill;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;}</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> SkillType&gt;</div>
-<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="classGenericSkillBehavior.html#a926961a37f5932c2009812b94fd52902">   43</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="classGenericSkillBehavior.html#a926961a37f5932c2009812b94fd52902">GenericSkillBehavior&lt;SkillType&gt;::isFinished</a>()</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;{</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordflow">return</span> skillFinished;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;}</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> SkillType&gt;</div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="classGenericSkillBehavior.html#a7e12becd53d522c314d15450e8f29191">   49</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classGenericSkillBehavior.html#a7e12becd53d522c314d15450e8f29191">GenericSkillBehavior&lt;SkillType&gt;::perform</a>(<a class="code" href="classRobot.html">Robot</a>* robot)</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;{</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    skillFinished = skill-&gt;perform(robot);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;}</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="classRobot_html"><div class="ttname"><a href="classRobot.html">Robot</a></div><div class="ttdoc">The Robot class The robot class includes the required information about robot such position...</div><div class="ttdef"><b>Definition:</b> robot.h:18</div></div>
-<div class="ttc" id="classGenericSkillBehavior_html_a7e12becd53d522c314d15450e8f29191"><div class="ttname"><a href="classGenericSkillBehavior.html#a7e12becd53d522c314d15450e8f29191">GenericSkillBehavior::perform</a></div><div class="ttdeci">void perform(Robot *robot)</div><div class="ttdoc">Perform this behavior&#39;s action on a robot Given an arbitrary roobot, The perform function of a Behavi...</div><div class="ttdef"><b>Definition:</b> genericskillbehavior.h:49</div></div>
-<div class="ttc" id="classGenericSkillBehavior_html"><div class="ttname"><a href="classGenericSkillBehavior.html">GenericSkillBehavior</a></div><div class="ttdef"><b>Definition:</b> genericskillbehavior.h:16</div></div>
-<div class="ttc" id="classBehavior_html"><div class="ttname"><a href="classBehavior.html">Behavior</a></div><div class="ttdef"><b>Definition:</b> behavior.h:18</div></div>
-<div class="ttc" id="classGenericSkillBehavior_html_a926961a37f5932c2009812b94fd52902"><div class="ttname"><a href="classGenericSkillBehavior.html#a926961a37f5932c2009812b94fd52902">GenericSkillBehavior::isFinished</a></div><div class="ttdeci">bool isFinished() override</div><div class="ttdoc">Return if behavior is &quot;finished&quot; Return true when the behavior is &quot;finished,&quot; false otherwise...</div><div class="ttdef"><b>Definition:</b> genericskillbehavior.h:43</div></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> SkillType&gt;</div>
+<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="classGenericSkillBehavior.html">   12</a></span>&#160;<span class="keyword">class </span><a class="code" href="classGenericSkillBehavior.html">GenericSkillBehavior</a> : <span class="keyword">public</span> <a class="code" href="classBehavior.html">Behavior</a></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;{</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Args&gt;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <a class="code" href="classGenericSkillBehavior.html">GenericSkillBehavior</a>(Args&amp;&amp;... args);</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <a class="code" href="classGenericSkillBehavior.html#aa7b2c0dc84224d95762345fccaad4775">~GenericSkillBehavior</a>();</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classGenericSkillBehavior.html#a7e12becd53d522c314d15450e8f29191">perform</a>(<a class="code" href="classRobot.html">Robot</a>* robot);</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classGenericSkillBehavior.html#a926961a37f5932c2009812b94fd52902">isFinished</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    SkillType* skill;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keywordtype">bool</span> skillFinished;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;};</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> SkillType&gt;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Args&gt;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<a class="code" href="classGenericSkillBehavior.html">GenericSkillBehavior&lt;SkillType&gt;::GenericSkillBehavior</a>(Args&amp;&amp;... args)</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    : skill(new SkillType(args...))</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    , skillFinished(false)</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    { }</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> SkillType&gt;</div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="classGenericSkillBehavior.html#aa7b2c0dc84224d95762345fccaad4775">   38</a></span>&#160;<a class="code" href="classGenericSkillBehavior.html#aa7b2c0dc84224d95762345fccaad4775">GenericSkillBehavior&lt;SkillType&gt;::~GenericSkillBehavior</a>()</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;{</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keyword">delete</span> skill;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;}</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> SkillType&gt;</div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="classGenericSkillBehavior.html#a926961a37f5932c2009812b94fd52902">   44</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="classGenericSkillBehavior.html#a926961a37f5932c2009812b94fd52902">GenericSkillBehavior&lt;SkillType&gt;::isFinished</a>()</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;{</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordflow">return</span> skillFinished;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;}</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> SkillType&gt;</div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="classGenericSkillBehavior.html#a7e12becd53d522c314d15450e8f29191">   50</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classGenericSkillBehavior.html#a7e12becd53d522c314d15450e8f29191">GenericSkillBehavior&lt;SkillType&gt;::perform</a>(<a class="code" href="classRobot.html">Robot</a>* robot)</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;{</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    skillFinished = skill-&gt;perform(robot);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;}</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="classRobot_html"><div class="ttname"><a href="classRobot.html">Robot</a></div><div class="ttdoc">The Robot class representing Robots on the field. </div><div class="ttdef"><b>Definition:</b> robot.h:16</div></div>
+<div class="ttc" id="classGenericSkillBehavior_html_a7e12becd53d522c314d15450e8f29191"><div class="ttname"><a href="classGenericSkillBehavior.html#a7e12becd53d522c314d15450e8f29191">GenericSkillBehavior::perform</a></div><div class="ttdeci">void perform(Robot *robot)</div><div class="ttdoc">The isFinished returns the result from perform of the Skill. </div><div class="ttdef"><b>Definition:</b> genericskillbehavior.h:50</div></div>
+<div class="ttc" id="classGenericSkillBehavior_html"><div class="ttname"><a href="classGenericSkillBehavior.html">GenericSkillBehavior</a></div><div class="ttdoc">A wrapper convience behavior for a single skill. </div><div class="ttdef"><b>Definition:</b> genericskillbehavior.h:12</div></div>
+<div class="ttc" id="classBehavior_html"><div class="ttname"><a href="classBehavior.html">Behavior</a></div><div class="ttdoc">Abstract Behavior class which all other behaviors inherit. </div><div class="ttdef"><b>Definition:</b> behavior.h:18</div></div>
+<div class="ttc" id="classGenericSkillBehavior_html_aa7b2c0dc84224d95762345fccaad4775"><div class="ttname"><a href="classGenericSkillBehavior.html#aa7b2c0dc84224d95762345fccaad4775">GenericSkillBehavior::~GenericSkillBehavior</a></div><div class="ttdeci">~GenericSkillBehavior()</div><div class="ttdoc">Perform the skill. </div><div class="ttdef"><b>Definition:</b> genericskillbehavior.h:38</div></div>
+<div class="ttc" id="classGenericSkillBehavior_html_a926961a37f5932c2009812b94fd52902"><div class="ttname"><a href="classGenericSkillBehavior.html#a926961a37f5932c2009812b94fd52902">GenericSkillBehavior::isFinished</a></div><div class="ttdeci">bool isFinished() override</div><div class="ttdoc">Return if behavior is &quot;finished&quot; Return true when the behavior is &quot;finished,&quot; false otherwise...</div><div class="ttdef"><b>Definition:</b> genericskillbehavior.h:44</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Aug 19 2015 20:59:29 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Aug 20 2015 16:54:00 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

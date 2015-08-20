@@ -43,7 +43,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
-      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -93,30 +92,37 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">DefendStateIdleKick Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><a class="el" href="classDefendState.html" title="A base class, a state in the DefendBehavior state machine. ">DefendState</a> that merely does KickToPointOmni to kick the ball away.  Happens when the ball stops close to a robot on our side.  
+ <a href="classDefendStateIdleKick.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="defendbehavior_8h_source.html">defendbehavior.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for DefendStateIdleKick:</div>
 <div class="dyncontent">
  <div class="center">
   <img src="classDefendStateIdleKick.png" usemap="#DefendStateIdleKick_map" alt=""/>
   <map id="DefendStateIdleKick_map" name="DefendStateIdleKick_map">
-<area href="classDefendState.html" alt="DefendState" shape="rect" coords="0,0,125,24"/>
+<area href="classDefendState.html" title="A base class, a state in the DefendBehavior state machine. " alt="DefendState" shape="rect" coords="0,0,125,24"/>
 </map>
  </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:acecd55d895b79724f60adf3b7776df66"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acecd55d895b79724f60adf3b7776df66"></a>
-<a class="el" href="classDefendState.html">DefendState</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>action</b> (<a class="el" href="classRobot.html">Robot</a> *robot) override</td></tr>
+<a class="el" href="classDefendState.html">DefendState</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDefendStateIdleKick.html#acecd55d895b79724f60adf3b7776df66">action</a> (<a class="el" href="classRobot.html">Robot</a> *robot) override</td></tr>
+<tr class="memdesc:acecd55d895b79724f60adf3b7776df66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a state and return a new one Returns <code>this</code> if no transition is made */. <br/></td></tr>
 <tr class="separator:acecd55d895b79724f60adf3b7776df66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_static_methods_classDefendState"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classDefendState')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classDefendState.html">DefendState</a></td></tr>
 <tr class="memitem:aaa5c1aa15cc90d9571f72f2f0764fdf5 inherit pub_static_methods_classDefendState"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaa5c1aa15cc90d9571f72f2f0764fdf5"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>setupClaimedPoints</b> ()</td></tr>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDefendState.html#aaa5c1aa15cc90d9571f72f2f0764fdf5">setupClaimedPoints</a> ()</td></tr>
+<tr class="memdesc:aaa5c1aa15cc90d9571f72f2f0764fdf5 inherit pub_static_methods_classDefendState"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes all claimed points to initial positions. <br/></td></tr>
 <tr class="separator:aaa5c1aa15cc90d9571f72f2f0764fdf5 inherit pub_static_methods_classDefendState"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad04a8bd20142a4e4e4bebadf3de8acc6 inherit pub_static_methods_classDefendState"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad04a8bd20142a4e4e4bebadf3de8acc6"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>clearClaimedPoints</b> ()</td></tr>
+<tr class="memitem:ad04a8bd20142a4e4e4bebadf3de8acc6 inherit pub_static_methods_classDefendState"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDefendState.html#ad04a8bd20142a4e4e4bebadf3de8acc6">clearClaimedPoints</a> ()</td></tr>
+<tr class="memdesc:ad04a8bd20142a4e4e4bebadf3de8acc6 inherit pub_static_methods_classDefendState"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears all robot's claimed points.  <a href="#ad04a8bd20142a4e4e4bebadf3de8acc6">More...</a><br/></td></tr>
 <tr class="separator:ad04a8bd20142a4e4e4bebadf3de8acc6 inherit pub_static_methods_classDefendState"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_static_methods_classDefendState"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_classDefendState')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="classDefendState.html">DefendState</a></td></tr>
 <tr class="memitem:a8b50bdfe5a8a2d04a23f7f644368488a inherit pro_static_methods_classDefendState"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8b50bdfe5a8a2d04a23f7f644368488a"></a>
@@ -130,14 +136,16 @@ static <a class="el" href="classPoint.html">Point</a> *&#160;</td><td class="mem
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>whoIsKicking</b> = -1</td></tr>
 <tr class="separator:a35bdaa31e3a0862c293ecf719010e4c7 inherit pro_static_attribs_classDefendState"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this class was generated from the following files:<ul>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p><a class="el" href="classDefendState.html" title="A base class, a state in the DefendBehavior state machine. ">DefendState</a> that merely does KickToPointOmni to kick the ball away.  Happens when the ball stops close to a robot on our side. </p>
+</div><hr/>The documentation for this class was generated from the following files:<ul>
 <li>behavior/<a class="el" href="defendbehavior_8h_source.html">defendbehavior.h</a></li>
 <li>behavior/defendbehavior.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Aug 19 2015 20:59:30 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Aug 20 2015 16:54:01 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

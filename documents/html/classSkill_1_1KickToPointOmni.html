@@ -43,7 +43,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
-      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -115,10 +114,10 @@ Inheritance diagram for Skill::KickToPointOmni:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aa68e37f846a09b3051303ac2e421f9b4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSkill_1_1KickToPointOmni.html#aa68e37f846a09b3051303ac2e421f9b4">KickToPointOmni</a> (const <a class="el" href="classPoint.html">Point</a> &amp;target, float targetTolerance=-1, float kickDistance=-1)</td></tr>
-<tr class="memdesc:aa68e37f846a09b3051303ac2e421f9b4"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>Static-point</b> constructor It takes the same arguments as the original <a class="el" href="classSkill_1_1KickToPoint.html">KickToPoint</a>.  <a href="#aa68e37f846a09b3051303ac2e421f9b4">More...</a><br/></td></tr>
+<tr class="memdesc:aa68e37f846a09b3051303ac2e421f9b4"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>Static-point</b> constructor, for kicking to a static point  <a href="#aa68e37f846a09b3051303ac2e421f9b4">More...</a><br/></td></tr>
 <tr class="separator:aa68e37f846a09b3051303ac2e421f9b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4143d495a2f8358f6edfa93c6d903267"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSkill_1_1KickToPointOmni.html#a4143d495a2f8358f6edfa93c6d903267">KickToPointOmni</a> (<a class="el" href="classPoint.html">Point</a> *targetPtr, float targetTolerance=-1, float kickDistance=-1)</td></tr>
-<tr class="memdesc:a4143d495a2f8358f6edfa93c6d903267"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>variable-point</b> constructor  <a href="#a4143d495a2f8358f6edfa93c6d903267">More...</a><br/></td></tr>
+<tr class="memdesc:a4143d495a2f8358f6edfa93c6d903267"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>variable-point</b> constructor, for kicking to a changing point  <a href="#a4143d495a2f8358f6edfa93c6d903267">More...</a><br/></td></tr>
 <tr class="separator:a4143d495a2f8358f6edfa93c6d903267"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39deb156f8a5f12d1bfaed1ea03a0318"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSkill_1_1KickToPointOmni.html#a39deb156f8a5f12d1bfaed1ea03a0318">perform</a> (<a class="el" href="classRobot.html">Robot</a> *robot) override</td></tr>
 <tr class="memdesc:a39deb156f8a5f12d1bfaed1ea03a0318"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform the <a class="el" href="classSkill_1_1Skill.html" title="The Skill Base Class. ">Skill</a>'s code on a robot.  <a href="#a39deb156f8a5f12d1bfaed1ea03a0318">More...</a><br/></td></tr>
@@ -127,7 +126,7 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>General-purpose skill to kick the ball to a point. </p>
 <dl class="section author"><dt>Author</dt><dd>JamesW</dd></dl>
-<p>A simplified, optimized version of KTP for Omni robots. The ability the track a moving target is preserved with the pointer constructor. The robot is asked to fist move to behind the ball at any angle while rotating to face the ball. Then the <a class="el" href="classRobot.html" title="The Robot class The robot class includes the required information about robot such position...">Robot</a> moves forwards, and finally kicks the ball when close enough. KTPO supports both a <b>static point</b> and <b>variable point</b> constructors. </p>
+<p>A simplified, optimized version of KTP for Omni robots. The ability the track a moving target is preserved with the pointer constructor. The robot is asked to fist move to behind the ball at any angle while rotating to face the ball. Then the <a class="el" href="classRobot.html" title="The Robot class representing Robots on the field. ">Robot</a> moves forwards, and finally kicks the ball when close enough. KTPO supports both a <b>static point</b> and <b>variable point</b> constructors. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="aa68e37f846a09b3051303ac2e421f9b4"></a>
 <div class="memitem">
@@ -159,7 +158,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p><b>Static-point</b> constructor It takes the same arguments as the original <a class="el" href="classSkill_1_1KickToPoint.html">KickToPoint</a>. </p>
+<p><b>Static-point</b> constructor, for kicking to a static point </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>Target point to kick toarwards </td></tr>
@@ -201,7 +200,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p><b>variable-point</b> constructor </p>
+<p><b>variable-point</b> constructor, for kicking to a changing point </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">targetPtr</td><td>Pointer to a point to kick to. Can change while skill is created </td></tr>
@@ -249,7 +248,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Aug 19 2015 20:59:31 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Aug 20 2015 16:54:01 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

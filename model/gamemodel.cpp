@@ -33,6 +33,7 @@ GameModel::GameModel()
     gameState  = '\0';
 }
 
+//! @brief Sets a StrategyController to run the game with
 void GameModel::setStrategyController(StrategyController *sc)
 {
     this->sc = sc;
@@ -139,28 +140,32 @@ bool GameModel::getBallIsStopped()
  * The Ball Prediciton is a rudimentary kinematics calculation that takes into
  * account the position and velocity.
  * \see getBallPoint
- * \see getBallVelocitiy
+ * \see getBallVelocity
  * \return The ball's expected location in about two seconds. */
 Point GameModel::getBallPrediction()
 {
     return ballPrediction;
 }
 
+//! @brief From the RefComm, Returns the number of Blue goals
 char GameModel::getBlueGoals()
 {
     return blueGoals;
 }
 
+//! @brief From the RefComm, Returns the number of Yellow goals
 char GameModel::getYellowGoals()
 {
     return yellowGoals;
 }
 
+//! @brief Returns the remaining time in seconds
 short GameModel::getRemainingTime()
 {
     return remainingTime;
 }
 
+//! @brief Returns the current game state, used by StrategyController
 char GameModel::getGameState()
 {
     return gameState;
@@ -209,6 +214,7 @@ Point GameModel::getMyGoal()
 #endif
 }
 
+//! @brief Returns the last different game state before this one
 char GameModel::getPreviousGameState()
 {
     return previousGameState;
@@ -383,18 +389,18 @@ Robot* GameModel::find(int id, std::vector<Robot*>& team)
 
 /*! @brief Stores a VelocityCalculator for each robot, and updates each robot's velocitiy.
  * This is called when the VisionComm says a robot has been updated */
-static void calculateRobotVelocity(Robot* robot) 
+static Point calculateRobotVelocity(Robot* robot)
 {
     static VelocityCalculator robotVelCalcs[20];
     int   index  = (10 * robot->isOnMyTeam()) + robot->getID();
     Point newVel = robotVelCalcs[index].update(robot->getRobotPosition());
-    robot->setVelocity(newVel);
+    return newVel;
 }
 
 //! @brief Used by VisiomComm; Update the information in the specified robot on the specified team
 void GameModel::onRobotUpdated(Robot* robot)
 {
-    calculateRobotVelocity(robot);
+    robot->setVelocity(calculateRobotVelocity(robot));
 }
 
 /*! @brief Removes a robot from a team

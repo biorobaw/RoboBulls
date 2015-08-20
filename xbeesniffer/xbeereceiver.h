@@ -3,6 +3,7 @@
 
 #include "serialib.h"
 
+//! @brief Utility class to read bytes sent over an Xbee
 class XbeeReceiver
 {
 public:

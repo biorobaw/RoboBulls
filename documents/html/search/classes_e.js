@@ -1,21 +1,12 @@
 var searchData=
 [
-  ['passballreceiver',['PassBallReceiver',['../classPassBallReceiver.html',1,'']]],
-  ['passballsender',['PassBallSender',['../classPassBallSender.html',1,'']]],
-  ['penaltybehavior',['PenaltyBehavior',['../classPenaltyBehavior.html',1,'']]],
-  ['penaltystrategy',['PenaltyStrategy',['../classPenaltyStrategy.html',1,'']]],
-  ['playerscharactristics',['playersCharactristics',['../structPassBallSender_1_1playersCharactristics.html',1,'PassBallSender']]],
-  ['point',['Point',['../classPoint.html',1,'']]],
-  ['pred_5fdistance',['pred_distance',['../structComparisons_1_1pred__distance.html',1,'Comparisons']]],
-  ['pred_5fdistanceball',['pred_distanceBall',['../structComparisons_1_1pred__distanceBall.html',1,'Comparisons']]],
-  ['pred_5fdistancemygoal',['pred_distanceMyGoal',['../structComparisons_1_1pred__distanceMyGoal.html',1,'Comparisons']]],
-  ['pred_5fdistanceopgoal',['pred_distanceOpGoal',['../structComparisons_1_1pred__distanceOpGoal.html',1,'Comparisons']]],
-  ['pred_5fid',['pred_id',['../structComparisons_1_1pred__id.html',1,'Comparisons']]],
-  ['pred_5fidnot',['pred_idNot',['../structComparisons_1_1pred__idNot.html',1,'Comparisons']]],
-  ['pred_5fisdistancetogreater',['pred_isDistanceToGreater',['../structComparisons_1_1pred__isDistanceToGreater.html',1,'Comparisons']]],
-  ['pred_5fisdistancetoless',['pred_isDistanceToLess',['../structComparisons_1_1pred__isDistanceToLess.html',1,'Comparisons']]],
-  ['pred_5fisfacingpoint',['pred_isFacingPoint',['../structComparisons_1_1pred__isFacingPoint.html',1,'Comparisons']]],
-  ['pred_5fisnotfacingpoint',['pred_isNotFacingPoint',['../structComparisons_1_1pred__isNotFacingPoint.html',1,'Comparisons']]],
-  ['pred_5fispointinsidefield',['pred_isPointInsideField',['../structComparisons_1_1pred__isPointInsideField.html',1,'Comparisons']]],
-  ['pred_5fispointoutsidefield',['pred_isPointOutsideField',['../structComparisons_1_1pred__isPointOutsideField.html',1,'Comparisons']]]
+  ['sendballtoregion',['SendBallToRegion',['../classSendBallToRegion.html',1,'']]],
+  ['serialib',['serialib',['../classserialib.html',1,'']]],
+  ['simplebehaviors',['SimpleBehaviors',['../classSimpleBehaviors.html',1,'']]],
+  ['simrobcomm',['SimRobComm',['../classSimRobComm.html',1,'']]],
+  ['skill',['Skill',['../classSkill_1_1Skill.html',1,'Skill']]],
+  ['stop',['Stop',['../classSkill_1_1Stop.html',1,'Skill']]],
+  ['stopstrategy',['StopStrategy',['../classStopStrategy.html',1,'']]],
+  ['strategy',['Strategy',['../classStrategy.html',1,'']]],
+  ['strategycontroller',['StrategyController',['../classStrategyController.html',1,'']]]
 ];

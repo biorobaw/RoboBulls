@@ -43,7 +43,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
-      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -113,13 +112,17 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>VideoStrategy5</b> (int keeper, int kicker)</td></tr>
 <tr class="separator:ace5e71a2f97517c6c83bef8029b4e5c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad91cd2b64eb1d4dd4cc4b361bf581b31"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVideo_1_1VideoStrategy5.html#ad91cd2b64eb1d4dd4cc4b361bf581b31">assignBeh</a> ()</td></tr>
+<tr class="memdesc:ad91cd2b64eb1d4dd4cc4b361bf581b31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decides How to assign behaviors to each robot on the team.  <a href="#ad91cd2b64eb1d4dd4cc4b361bf581b31">More...</a><br/></td></tr>
 <tr class="separator:ad91cd2b64eb1d4dd4cc4b361bf581b31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac37c78560d396769099832f36bb7e7af"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVideo_1_1VideoStrategy5.html#ac37c78560d396769099832f36bb7e7af">update</a> ()</td></tr>
+<tr class="memdesc:ac37c78560d396769099832f36bb7e7af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function (optional) that updates the <a class="el" href="classStrategy.html" title="Strategy is the abstract base class for other strategy classes. ">Strategy</a> object.  <a href="#ac37c78560d396769099832f36bb7e7af">More...</a><br/></td></tr>
 <tr class="separator:ac37c78560d396769099832f36bb7e7af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classStrategy"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classStrategy')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classStrategy.html">Strategy</a></td></tr>
 <tr class="memitem:a8513b3a9660bfb58e9d9adc283135130 inherit pub_methods_classStrategy"><td class="memItemLeft" align="right" valign="top">virtual char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStrategy.html#a8513b3a9660bfb58e9d9adc283135130">getNextStrategy</a> ()</td></tr>
+<tr class="memdesc:a8513b3a9660bfb58e9d9adc283135130 inherit pub_methods_classStrategy"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function used to control strategy flow.  <a href="#a8513b3a9660bfb58e9d9adc283135130">More...</a><br/></td></tr>
 <tr class="separator:a8513b3a9660bfb58e9d9adc283135130 inherit pub_methods_classStrategy"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37c0bbdd64fd7dfcdd91578784a64775 inherit pub_methods_classStrategy"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStrategy.html#a37c0bbdd64fd7dfcdd91578784a64775">~Strategy</a> ()</td></tr>
+<tr class="memdesc:a37c0bbdd64fd7dfcdd91578784a64775 inherit pub_methods_classStrategy"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a37c0bbdd64fd7dfcdd91578784a64775">More...</a><br/></td></tr>
 <tr class="separator:a37c0bbdd64fd7dfcdd91578784a64775 inherit pub_methods_classStrategy"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -143,7 +146,9 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>How to assign behaviors to each robot on the team. This function is called when <a class="el" href="classStrategyController.html" title="Controls selection of an active strategy (play) based on the game state. ">StrategyController</a> is ran with a new command recieved from <a class="el" href="classGameModel.html" title="The GameModel class Game model class can be considered as the heart of robobulls project all the info...">GameModel</a> </p>
+
+<p>Decides How to assign behaviors to each robot on the team. </p>
+<p>This function is called when <a class="el" href="classStrategyController.html" title="Controls selection of an active strategy (play) based on the game state. ">StrategyController</a> is ran with a new command recieved from <a class="el" href="classGameModel.html" title="The GameModel class Game model class can be considered as the heart of robobulls project all the info...">GameModel</a> </p>
 
 <p>Implements <a class="el" href="classStrategy.html#a1d5e51d3d031c10c446e18f056ff7d7f">Strategy</a>.</p>
 
@@ -169,7 +174,9 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Function (optional) that updates the <a class="el" href="classStrategy.html" title="Strategy is the abstract base class for other strategy classes. ">Strategy</a> object. This function is called when <a class="el" href="classStrategyController.html" title="Controls selection of an active strategy (play) based on the game state. ">StrategyController</a> is ran with a non-new command from <a class="el" href="classGameModel.html" title="The GameModel class Game model class can be considered as the heart of robobulls project all the info...">GameModel</a>. Return true to notify the strategy is finished and have a new one assigned, false otherwise. </p>
+
+<p>Function (optional) that updates the <a class="el" href="classStrategy.html" title="Strategy is the abstract base class for other strategy classes. ">Strategy</a> object. </p>
+<p>This function is called when <a class="el" href="classStrategyController.html" title="Controls selection of an active strategy (play) based on the game state. ">StrategyController</a> is ran with a non-new command from <a class="el" href="classGameModel.html" title="The GameModel class Game model class can be considered as the heart of robobulls project all the info...">GameModel</a>. Return true to notify the strategy is finished and have a new one assigned, false otherwise. </p>
 
 <p>Reimplemented from <a class="el" href="classStrategy.html#addd5ae07531160ed360f697f98308e5b">Strategy</a>.</p>
 
@@ -182,7 +189,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Aug 19 2015 20:59:31 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Aug 20 2015 16:54:01 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

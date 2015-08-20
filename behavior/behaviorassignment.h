@@ -172,7 +172,7 @@ void BehaviorAssignment<BehaviorType>::assignBeh(Robot* robot, Args&&... args) c
     if(!this->singleAssignment) {
         doAssignment(robot, args...);
     } else {
-        if(!robot->hasBeh) {
+        if(!robot->hasBehavior()) {
             doAssignment(robot, args...);
         } else if(typeid(*robot->getCurrentBeh()) != typeid(BehaviorType)) {
             doAssignment(robot, args...);

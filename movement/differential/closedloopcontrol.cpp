@@ -1,23 +1,14 @@
-/*******************************************************************/
-/*** CLOSEDLOOPCONTROL.cpp ***/
-/*******************************************************************/
 #include <cmath>
 #include <stdlib.h>
 #include <iostream>
-#include <utility>
 #include "movement/differential/closedloopcontrol.h"
-#include "include/config/simulated.h"
 #include "utilities/measurments.h"
 
-/* Multiplier for rotational velocity on CLC calculation.
- * It's probably better to put this here than in a include/config/tolerances.h
- * because it's only used in one file.
- */
-#if SIMULATED
- #define CLC_ROTATING_VEL 40
-#else
- #define CLC_ROTATING_VEL 30
-#endif
+namespace Movement
+{
+
+/* Multiplier for rotational velocity on CLC calculation. */
+#define CLC_ROTATING_VEL 30
 
 #define CLOOP_CONTROL_DEBUG 0
 
@@ -98,17 +89,12 @@ wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, double x_goal,
     double angleToGoal   = atan2 ((y_goal-y_current) , (x_goal-x_current));
     float angDiff        = Measurments::angleDiff(theta_current, theta_goal);
 
-    //If the theta_goal is the defult argument, use it as a signal for no specific angle
-    //theta_goal = (theta_goal == UNUSED_ANGLE_VALUE ?
-      //  Measurments::angleBetween(robotPos, Point(x_goal, y_goal)) : theta_goal);
-
     //Rho, Alpha, Beta
     newRho   = (sqrt(pow((y_current - y_goal),2) + pow((x_current-x_goal),2)))/1;
     newAlpha = Measurments::angleDiff(theta_current, angleToGoal);
     newBeta  = Measurments::angleDiff(angleToGoal, theta_goal);
 
 #if CLOOP_CONTROL_DEBUG
-
     std::cout << "rho "   		  << newRho   				  << std::endl;
     std::cout << "alpha " 		  << 180/M_PI * newAlpha	  << std::endl;
     std::cout << "current theta " << 180/M_PI * theta_current << std::endl;
@@ -158,27 +144,6 @@ wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, double x_goal,
         right_motor_velocity =  CLC_ROTATING_VEL * angDiff;
     }
 
-    /*******************************************************************************************
-    * OVERRIDE if going out of the field.   //Disabled, possibly to be removed
-    */
-#if 0
-    /* If the robot is on its way outside the field but it's destination is inside
-     * the field, the robot is stoppped and rotated so that a new path is calculated.
-     * If the robot is > 100 distance outside field edge and its destination is outside the
-     * boundary, all translation is stopped and the robot stops and faces its destination.
-     */
-    bool goal_outside_field    = abs(x_goal) > 3100 || abs(y_goal) > 2100;
-    bool robot_outside_field   = abs(x_current) > 3100 || abs(y_current) > 2100;
-    bool robot_facing_dest     = abs(newAlpha ) < 3 * M_PI/180;
-
-    if ((robot_outside_field && !robot_facing_dest)
-    ||  (goal_outside_field && robot_outside_field) )
-    {
-        left_motor_velocity  = -CLC_ROTATING_VEL * newAlpha;
-        right_motor_velocity =  CLC_ROTATING_VEL * newAlpha;
-    }
-#endif
-
     //*******************************************************************************************
     //Normalize wheel velocities between -100 and 100 *******************************************
 
@@ -193,4 +158,6 @@ wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, double x_goal,
 
     wheelvelocities result {(int)left_motor_velocity, (int)right_motor_velocity};
     return result;
+}
+
 }

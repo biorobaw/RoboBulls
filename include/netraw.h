@@ -9,7 +9,8 @@
 #include <stdio.h>
 #include <string.h>
 
-namespace Net{
+//! @brief Misc Network sending functions
+namespace Net {
 
 //====================================================================//
 //  Net::Address: Network address class

@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['ballreceiver',['BallReceiver',['../classVideo_1_1BallReceiver.html',1,'Video']]],
-  ['behavior',['Behavior',['../classBehavior.html',1,'']]],
-  ['behaviorassignment',['BehaviorAssignment',['../classBehaviorAssignment.html',1,'']]]
+  ['closedloopbase',['ClosedLoopBase',['../classMovement_1_1ClosedLoopBase.html',1,'Movement']]],
+  ['closedloopcontrol',['ClosedLoopControl',['../classMovement_1_1ClosedLoopControl.html',1,'Movement']]],
+  ['closedloopnoslowdown',['ClosedLoopNoSlowdown',['../classMovement_1_1ClosedLoopNoSlowdown.html',1,'Movement']]],
+  ['closedloopsharpturns',['ClosedLoopSharpTurns',['../classMovement_1_1ClosedLoopSharpTurns.html',1,'Movement']]]
 ];

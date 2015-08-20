@@ -43,7 +43,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
-      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -155,9 +154,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keywordtype">float</span> nextTargetAngle;</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keywordtype">float</span> nextDistTolerance;</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    <a class="code" href="classPoint.html">Point</a> nextPoint;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <a class="code" href="namespaceFPPA.html#a8dba03f2f283b71659ff7ca98b186cde">FPPA::PathInfo</a>      pathInfo;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <a class="code" href="namespaceMovement_1_1FPPA.html#acc879a958fed51cb1faeb2585a0e3417">FPPA::PathInfo</a>      pathInfo;</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    std::deque&lt;Point&gt;   pathQueue;</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <a class="code" href="namespaceFPPA.html#a60dcb798721b254c0f537350765e261e">FPPA::PathDirection</a> lastDirection;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <a class="code" href="namespaceMovement_1_1FPPA.html#a10ed50e26d7748c2d5e69ff3b3e3be10">FPPA::PathDirection</a> lastDirection;</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    std::vector&lt;Point&gt;  lastObstacles;</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="keywordtype">long</span>  lastLineDrawnTime;</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    </div>
@@ -194,21 +193,21 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="comment">*/</span></div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;</div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="classRobot_html"><div class="ttname"><a href="classRobot.html">Robot</a></div><div class="ttdoc">The Robot class The robot class includes the required information about robot such position...</div><div class="ttdef"><b>Definition:</b> robot.h:18</div></div>
+<div class="ttc" id="classRobot_html"><div class="ttname"><a href="classRobot.html">Robot</a></div><div class="ttdoc">The Robot class representing Robots on the field. </div><div class="ttdef"><b>Definition:</b> robot.h:16</div></div>
 <div class="ttc" id="classMovement_1_1Move_html_a13f7b489aaa44cbda515e6633d522003"><div class="ttname"><a href="classMovement_1_1Move.html#a13f7b489aaa44cbda515e6633d522003">Movement::Move::setRecreateTolerances</a></div><div class="ttdeci">void setRecreateTolerances(float distTolerance, float angleTolerance)</div><div class="ttdoc">Sets the creation distance and angle tolerances. </div><div class="ttdef"><b>Definition:</b> move.cpp:77</div></div>
 <div class="ttc" id="classMovement_1_1Move_html"><div class="ttname"><a href="classMovement_1_1Move.html">Movement::Move</a></div><div class="ttdoc">An interface to movement calculation algorithms and obstacle avoidance. </div><div class="ttdef"><b>Definition:</b> move.h:28</div></div>
 <div class="ttc" id="classMovement_1_1Move_html_a1f6579781ad7738799ee4ba50962ba01"><div class="ttname"><a href="classMovement_1_1Move.html#a1f6579781ad7738799ee4ba50962ba01">Movement::Move::setVelocityMultiplier</a></div><div class="ttdeci">void setVelocityMultiplier(float newMultiplier)</div><div class="ttdoc">Set a scalar applied to the calculated velocity when set to the robot. </div><div class="ttdef"><b>Definition:</b> move.cpp:71</div></div>
+<div class="ttc" id="namespaceMovement_1_1FPPA_html_a10ed50e26d7748c2d5e69ff3b3e3be10"><div class="ttname"><a href="namespaceMovement_1_1FPPA.html#a10ed50e26d7748c2d5e69ff3b3e3be10">Movement::FPPA::PathDirection</a></div><div class="ttdeci">PathDirection</div><div class="ttdoc">Represents weather the chosen path was the top or the bottom one. </div><div class="ttdef"><b>Definition:</b> fppa_pathfinding.h:20</div></div>
 <div class="ttc" id="classMovement_1_1Move_html_a9ab32fe47cbc45e983253fba9dcadfff"><div class="ttname"><a href="classMovement_1_1Move.html#a9ab32fe47cbc45e983253fba9dcadfff">Movement::Move::perform</a></div><div class="ttdeci">bool perform(Robot *robot, Type moveType=Type::Default)</div><div class="ttdoc">Performs the conigured movement on the robot. </div><div class="ttdef"><b>Definition:</b> move.cpp:91</div></div>
 <div class="ttc" id="classMovement_1_1Move_html_a48d6534aa04cd1d486c57f67d445b326"><div class="ttname"><a href="classMovement_1_1Move.html#a48d6534aa04cd1d486c57f67d445b326">Movement::Move::setMovementTolerances</a></div><div class="ttdeci">void setMovementTolerances(float distTolerance, float angleTolerance)</div><div class="ttdoc">Set final distance and angle movement tolerances. </div><div class="ttdef"><b>Definition:</b> move.cpp:84</div></div>
-<div class="ttc" id="namespaceFPPA_html_a8dba03f2f283b71659ff7ca98b186cde"><div class="ttname"><a href="namespaceFPPA.html#a8dba03f2f283b71659ff7ca98b186cde">FPPA::PathInfo</a></div><div class="ttdeci">std::pair&lt; Path, PathDirection &gt; PathInfo</div><div class="ttdoc">Path information returned by findShortestPath. </div><div class="ttdef"><b>Definition:</b> fppa_pathfinding.h:25</div></div>
 <div class="ttc" id="classPoint_html"><div class="ttname"><a href="classPoint.html">Point</a></div><div class="ttdoc">2D Point Class A Point is a 2D vector in space. Typically used to represent positions on the Robot Fi...</div><div class="ttdef"><b>Definition:</b> point.h:11</div></div>
+<div class="ttc" id="namespaceMovement_1_1FPPA_html_acc879a958fed51cb1faeb2585a0e3417"><div class="ttname"><a href="namespaceMovement_1_1FPPA.html#acc879a958fed51cb1faeb2585a0e3417">Movement::FPPA::PathInfo</a></div><div class="ttdeci">std::pair&lt; Path, PathDirection &gt; PathInfo</div><div class="ttdoc">Path information returned by findShortestPath. </div><div class="ttdef"><b>Definition:</b> fppa_pathfinding.h:28</div></div>
 <div class="ttc" id="classMovement_1_1Move_html_a70eaa9f4713240f59be3867af60d38df"><div class="ttname"><a href="classMovement_1_1Move.html#a70eaa9f4713240f59be3867af60d38df">Movement::Move::recreate</a></div><div class="ttdeci">void recreate(Point targetPoint, float targetAngle=UNUSED_ANGLE_VALUE, bool withObstacleAvoid=true, bool avoidBall=true)</div><div class="ttdoc">&quot;Recreates&quot; the Movement object; </div><div class="ttdef"><b>Definition:</b> move.cpp:41</div></div>
 <div class="ttc" id="namespaceMovement_html_a74b28fda28211060df3b66c2ce160bd6"><div class="ttname"><a href="namespaceMovement.html#a74b28fda28211060df3b66c2ce160bd6">Movement::Type</a></div><div class="ttdeci">Type</div><div class="ttdoc">Defines Movement Type modifiers. </div><div class="ttdef"><b>Definition:</b> movetype.h:19</div></div>
-<div class="ttc" id="namespaceFPPA_html_a60dcb798721b254c0f537350765e261e"><div class="ttname"><a href="namespaceFPPA.html#a60dcb798721b254c0f537350765e261e">FPPA::PathDirection</a></div><div class="ttdeci">PathDirection</div><div class="ttdoc">Represents weather the chosen path was the top or the bottom one. </div><div class="ttdef"><b>Definition:</b> fppa_pathfinding.h:17</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Aug 19 2015 20:59:30 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Aug 20 2015 16:54:00 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

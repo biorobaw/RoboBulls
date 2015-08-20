@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['idequal',['idEqual',['../structComparisons_1_1idEqual.html',1,'Comparisons']]],
-  ['idfilter',['idFilter',['../structComparisons_1_1idFilter.html',1,'Comparisons']]],
-  ['idnotequal',['idNotEqual',['../structComparisons_1_1idNotEqual.html',1,'Comparisons']]],
-  ['ignorablepredicate',['IgnorablePredicate',['../structComparisons_1_1IgnorablePredicate.html',1,'Comparisons']]],
-  ['indiectkickstrategy',['IndiectKickStrategy',['../classIndiectKickStrategy.html',1,'']]]
+  ['kick',['Kick',['../classSkill_1_1Kick.html',1,'Skill']]],
+  ['kickbeh',['KickBeh',['../classVideo_1_1KickBeh.html',1,'Video']]],
+  ['kickoffstrategy',['KickOffStrategy',['../classKickOffStrategy.html',1,'']]],
+  ['kicktogoal',['KickToGoal',['../classKickToGoal.html',1,'']]],
+  ['kicktopointomni',['KickToPointOmni',['../classSkill_1_1KickToPointOmni.html',1,'Skill']]]
 ];

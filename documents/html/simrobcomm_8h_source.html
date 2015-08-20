@@ -43,7 +43,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
-      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -98,31 +97,32 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;model/robot.h&quot;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;robcomm.h&quot;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">//Percentage of stored robot velocity sent to simulator</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">const</span> <span class="keywordtype">float</span> mappingRatio = 0.333;</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
-<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="classSimRobComm.html">   10</a></span>&#160;<span class="keyword">class </span><a class="code" href="classSimRobComm.html">SimRobComm</a> : <span class="keyword">public</span> <a class="code" href="classRobComm.html">RobComm</a></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;{</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <a class="code" href="classSimRobComm.html">SimRobComm</a>();</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classSimRobComm.html#ad0ee6a013cc2e9cea7f7b7d19bf54a11">sendVelsLarge</a>(std::vector&lt;Robot*&gt;&amp;);</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    QUdpSocket udpsocket;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    QHostAddress _addr;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    quint16 _port;</div>
+<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="classSimRobComm.html">   13</a></span>&#160;<span class="keyword">class </span><a class="code" href="classSimRobComm.html">SimRobComm</a> : <span class="keyword">public</span> <a class="code" href="classRobComm.html">RobComm</a></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;{</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <a class="code" href="classSimRobComm.html#a8bd58f2c912ff9f3df054503f47b4d6f">SimRobComm</a>();</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classSimRobComm.html#ad0ee6a013cc2e9cea7f7b7d19bf54a11">sendVelsLarge</a>(std::vector&lt;Robot*&gt;&amp;);</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keywordtype">void</span> sendPacket(<span class="keywordtype">int</span> <span class="keywordtype">id</span>, <span class="keywordtype">int</span> LF, <span class="keywordtype">int</span> RF, <span class="keywordtype">int</span> LB, <span class="keywordtype">int</span> RB, <span class="keywordtype">bool</span> kick, <span class="keywordtype">bool</span> drible);</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;};</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#endif // SIMROBCOMM_H</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    QUdpSocket udpsocket;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    QHostAddress _addr;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    quint16 _port;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keywordtype">void</span> sendPacket(<span class="keywordtype">int</span> <span class="keywordtype">id</span>, <span class="keywordtype">int</span> LF, <span class="keywordtype">int</span> RF, <span class="keywordtype">int</span> LB, <span class="keywordtype">int</span> RB, <span class="keywordtype">bool</span> kick, <span class="keywordtype">bool</span> drible);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;};</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#endif // SIMROBCOMM_H</span></div>
 <div class="ttc" id="classSimRobComm_html_ad0ee6a013cc2e9cea7f7b7d19bf54a11"><div class="ttname"><a href="classSimRobComm.html#ad0ee6a013cc2e9cea7f7b7d19bf54a11">SimRobComm::sendVelsLarge</a></div><div class="ttdeci">virtual void sendVelsLarge(std::vector&lt; Robot * &gt; &amp;)</div><div class="ttdoc">Required; send velocities to the entire team at once. </div><div class="ttdef"><b>Definition:</b> simrobcomm.cpp:24</div></div>
-<div class="ttc" id="classSimRobComm_html"><div class="ttname"><a href="classSimRobComm.html">SimRobComm</a></div><div class="ttdef"><b>Definition:</b> simrobcomm.h:10</div></div>
+<div class="ttc" id="classSimRobComm_html"><div class="ttname"><a href="classSimRobComm.html">SimRobComm</a></div><div class="ttdoc">RobComm to send to the grSim simulator. </div><div class="ttdef"><b>Definition:</b> simrobcomm.h:13</div></div>
+<div class="ttc" id="classSimRobComm_html_a8bd58f2c912ff9f3df054503f47b4d6f"><div class="ttname"><a href="classSimRobComm.html#a8bd58f2c912ff9f3df054503f47b4d6f">SimRobComm::SimRobComm</a></div><div class="ttdeci">SimRobComm()</div><div class="ttdoc">Constructor sets the IP and port to send to see .cpp </div><div class="ttdef"><b>Definition:</b> simrobcomm.cpp:9</div></div>
 <div class="ttc" id="classRobComm_html"><div class="ttname"><a href="classRobComm.html">RobComm</a></div><div class="ttdoc">RobComm is a base class used to send signals to robots. </div><div class="ttdef"><b>Definition:</b> robcomm.h:13</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Aug 19 2015 20:59:29 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Aug 20 2015 16:54:00 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

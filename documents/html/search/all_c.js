@@ -1,12 +1,8 @@
 var searchData=
 [
-  ['collisions',['Collisions',['../namespaceMovement_1_1Collisions.html',1,'Movement']]],
-  ['mainwindow',['MainWindow',['../classMainWindow.html',1,'']]],
-  ['measurments',['Measurments',['../classMeasurments.html',1,'']]],
-  ['meters_5fper_5fpoint',['METERS_PER_POINT',['../velocitycalculator_8h.html#ae9851dee98edaed777207dc56faef78c',1,'velocitycalculator.h']]],
-  ['midpoint',['midPoint',['../classMeasurments.html#af5dd8dbbd3de8fcd75a96f938746cf53',1,'Measurments::midPoint(const Point &amp;, const Point &amp;)'],['../classMeasurments.html#acbbef04d682104692a4ffa875895eade',1,'Measurments::midPoint(const Point &amp;, Robot *)'],['../classMeasurments.html#abc00cc5f6c62b2663c3e4ae0e1d95d73',1,'Measurments::midPoint(Robot *, const Point &amp;)'],['../classMeasurments.html#a78dca22ec83e9eca7eb29bc100b37956',1,'Measurments::midPoint(Robot *, Robot *)']]],
-  ['move',['Move',['../classMovement_1_1Move.html#a42af2f8372aa093ce8dc51ca10480487',1,'Movement::Move']]],
-  ['move',['Move',['../classMovement_1_1Move.html',1,'Movement']]],
-  ['movement',['Movement',['../namespaceMovement.html',1,'']]],
-  ['moverobottoidleline',['moveRobotToIdleLine',['../classNormalGameStrategy.html#a40ee0e321c9a420d859384196f8b64d0',1,'NormalGameStrategy']]]
+  ['none_5fof',['none_of',['../classComparisons_1_1Predicate.html#ab1d7e7df655e63eefd2d089a09f100cf',1,'Comparisons::Predicate']]],
+  ['numofopponents',['numOfOpponents',['../classRegion.html#af2844ef4b6771bbc417160a1d7925af2',1,'Region']]],
+  ['numofrobots',['numOfRobots',['../classRegion.html#af2ecceddf5247ca4c30d4756bac1615d',1,'Region::numOfRobots()'],['../classRegion.html#a6d51d7cebe0aa2f637afb9a780d00758',1,'Region::numOfRobots(vector&lt; Robot * &gt; ignoreOpponents, vector&lt; Robot * &gt;ignoreTeammates)']]],
+  ['numofteammates',['numOfTeammates',['../classRegion.html#a2f41053db2b1c9e7016eb889a3a9a270',1,'Region']]],
+  ['nxtrobcomm',['NXTRobComm',['../classNXTRobComm.html',1,'']]]
 ];

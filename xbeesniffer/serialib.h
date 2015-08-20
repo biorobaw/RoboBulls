@@ -46,7 +46,6 @@ This is a licence-free software, it can be used by anyone who try to build a bet
 
 /*!  \class serialib
      \brief     This class can manage a serial port. The class allows basic operations (opening the connection, reading, writing data and closing the connection).
-     \example   Example1.cpp
    */
 
 

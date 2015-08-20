@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['closedloopconstants',['ClosedLoopConstants',['../namespaceClosedLoopConstants.html',1,'']]]
+  ['comparisons',['Comparisons',['../namespaceComparisons.html',1,'']]]
 ];

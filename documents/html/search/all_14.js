@@ -1,12 +1,7 @@
 var searchData=
 [
-  ['velocitycalculator',['VelocityCalculator',['../classVelocityCalculator.html',1,'VelocityCalculator'],['../classVelocityCalculator.html#a193eeab2ee6b41d4d9508b9879f10194',1,'VelocityCalculator::VelocityCalculator()']]],
-  ['velocitycalculator_2eh',['velocitycalculator.h',['../velocitycalculator_8h.html',1,'']]],
-  ['video',['Video',['../namespaceVideo.html',1,'']]],
-  ['videostrategy1',['VideoStrategy1',['../classVideo_1_1VideoStrategy1.html',1,'Video']]],
-  ['videostrategy2',['VideoStrategy2',['../classVideo_1_1VideoStrategy2.html',1,'Video']]],
-  ['videostrategy3',['VideoStrategy3',['../classVideo_1_1VideoStrategy3.html',1,'Video']]],
-  ['videostrategy4',['VideoStrategy4',['../classVideo_1_1VideoStrategy4.html',1,'Video']]],
-  ['videostrategy5',['VideoStrategy5',['../classVideo_1_1VideoStrategy5.html',1,'Video']]],
-  ['visioncomm',['VisionComm',['../classVisionComm.html',1,'']]]
+  ['wheelvelocities',['wheelvelocities',['../structMovement_1_1wheelvelocities.html',1,'Movement']]],
+  ['write',['Write',['../classserialib.html#accae34fe47967119415ca06c1ea5a9cc',1,'serialib']]],
+  ['writechar',['WriteChar',['../classserialib.html#ac8988727fef8e5d86c9eced17876f609',1,'serialib']]],
+  ['writestring',['WriteString',['../classserialib.html#a546ca619282607ff22f01e066bade374',1,'serialib']]]
 ];

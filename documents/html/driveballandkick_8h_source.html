@@ -43,7 +43,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
-      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -94,40 +93,38 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef DRIVEBALLANDKICK_H</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define DRIVEBALLANDKICK_H</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;behavior/behavior.h&quot;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;skill/skill.h&quot;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;utilities/point.h&quot;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;behavior/genericmovementbehavior.h&quot;</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;movement/gotoposition.h&quot;</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">using namespace </span>std;</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
-<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="classDriveBallAndKick.html">   12</a></span>&#160;<span class="keyword">class </span><a class="code" href="classDriveBallAndKick.html">DriveBallAndKick</a> : <span class="keyword">public</span> <a class="code" href="classBehavior.html">Behavior</a></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;{</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <a class="code" href="classDriveBallAndKick.html">DriveBallAndKick</a>();</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keywordtype">void</span> perform(<a class="code" href="classRobot.html">Robot</a> *);</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keyword">enum</span> states {initial, driving, kicking, idling} state;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <a class="code" href="classSkill_1_1Skill.html">Skill::Skill</a> * skill;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <a class="code" href="classPoint.html">Point</a> *behindBall;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <a class="code" href="classPoint.html">Point</a> *ballPoint;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <a class="code" href="classMovement_1_1GoToPosition.html">Movement::GoToPosition</a> move;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;};</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#endif // DRIVEBALLANDKICK_H</span></div>
-<div class="ttc" id="classRobot_html"><div class="ttname"><a href="classRobot.html">Robot</a></div><div class="ttdoc">The Robot class The robot class includes the required information about robot such position...</div><div class="ttdef"><b>Definition:</b> robot.h:18</div></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &quot;behavior/behavior.h&quot;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;skill/skill.h&quot;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;utilities/point.h&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;behavior/genericmovementbehavior.h&quot;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;movement/gotoposition.h&quot;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div>
+<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="classDriveBallAndKick.html">   14</a></span>&#160;<span class="keyword">class </span><a class="code" href="classDriveBallAndKick.html">DriveBallAndKick</a> : <span class="keyword">public</span> <a class="code" href="classBehavior.html">Behavior</a></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;{</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <a class="code" href="classDriveBallAndKick.html">DriveBallAndKick</a>();</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classDriveBallAndKick.html#a13ff01f6c681f04e5afac1b92f1e1478">perform</a>(<a class="code" href="classRobot.html">Robot</a> *);</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keyword">enum</span> states {initial, driving, kicking, idling} state;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <a class="code" href="classSkill_1_1Skill.html">Skill::Skill</a> * skill;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <a class="code" href="classPoint.html">Point</a> *behindBall;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <a class="code" href="classPoint.html">Point</a> *ballPoint;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <a class="code" href="classMovement_1_1GoToPosition.html">Movement::GoToPosition</a> move;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;};</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#endif // DRIVEBALLANDKICK_H</span></div>
+<div class="ttc" id="classRobot_html"><div class="ttname"><a href="classRobot.html">Robot</a></div><div class="ttdoc">The Robot class representing Robots on the field. </div><div class="ttdef"><b>Definition:</b> robot.h:16</div></div>
 <div class="ttc" id="classMovement_1_1GoToPosition_html"><div class="ttname"><a href="classMovement_1_1GoToPosition.html">Movement::GoToPosition</a></div><div class="ttdoc">Top-level Interface to provide robot movement. </div><div class="ttdef"><b>Definition:</b> gotoposition.h:18</div></div>
 <div class="ttc" id="classPoint_html"><div class="ttname"><a href="classPoint.html">Point</a></div><div class="ttdoc">2D Point Class A Point is a 2D vector in space. Typically used to represent positions on the Robot Fi...</div><div class="ttdef"><b>Definition:</b> point.h:11</div></div>
-<div class="ttc" id="classBehavior_html"><div class="ttname"><a href="classBehavior.html">Behavior</a></div><div class="ttdef"><b>Definition:</b> behavior.h:18</div></div>
-<div class="ttc" id="classDriveBallAndKick_html"><div class="ttname"><a href="classDriveBallAndKick.html">DriveBallAndKick</a></div><div class="ttdef"><b>Definition:</b> driveballandkick.h:12</div></div>
+<div class="ttc" id="classBehavior_html"><div class="ttname"><a href="classBehavior.html">Behavior</a></div><div class="ttdoc">Abstract Behavior class which all other behaviors inherit. </div><div class="ttdef"><b>Definition:</b> behavior.h:18</div></div>
+<div class="ttc" id="classDriveBallAndKick_html"><div class="ttname"><a href="classDriveBallAndKick.html">DriveBallAndKick</a></div><div class="ttdoc">Uses the DriveBall, Kick, and Stop skills. to drive then kick the ball. </div><div class="ttdef"><b>Definition:</b> driveballandkick.h:14</div></div>
 <div class="ttc" id="classSkill_1_1Skill_html"><div class="ttname"><a href="classSkill_1_1Skill.html">Skill::Skill</a></div><div class="ttdoc">The Skill Base Class. </div><div class="ttdef"><b>Definition:</b> skill.h:15</div></div>
+<div class="ttc" id="classDriveBallAndKick_html_a13ff01f6c681f04e5afac1b92f1e1478"><div class="ttname"><a href="classDriveBallAndKick.html#a13ff01f6c681f04e5afac1b92f1e1478">DriveBallAndKick::perform</a></div><div class="ttdeci">void perform(Robot *)</div><div class="ttdoc">Perform this behavior&#39;s action on a robot Given an arbitrary roobot, The perform function of a Behavi...</div><div class="ttdef"><b>Definition:</b> driveballandkick.cpp:29</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Aug 19 2015 20:59:29 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Aug 20 2015 16:54:00 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['goalleftregion',['goalLeftRegion',['../classRegion.html#ab7846c37795136f4cc10cbf5a7150ef4',1,'Region']]],
-  ['goalrightregion',['goalRightRegion',['../classRegion.html#ad8afe0213636fe2071f853bf01c30a9f',1,'Region']]]
+  ['distancetogoal',['distanceToGoal',['../structPassBallSender_1_1playersCharactristics.html#aed0d6e5c5ba0a30938686a39b00c1d76',1,'PassBallSender::playersCharactristics']]],
+  ['distancetorobot',['distanceToRobot',['../structPassBallSender_1_1playersCharactristics.html#a2f052cbd8ffed388a0ddae6c3e24bbc1',1,'PassBallSender::playersCharactristics']]]
 ];

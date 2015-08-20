@@ -9,6 +9,9 @@
  * "Introduction to Autonomous Mobile Robots"
  * by R.SIEGWART and I. NOURBAKHSH P.50-62 */
 
+namespace Movement
+{
+
 /*! @brief Constants for then Closed-loop control algorithm
  * @details Frequently used constant sets for closed loop control motion can be defined here.
  * Refer to the motion control folder on Robobulls Google Drive for papers on what
@@ -31,8 +34,7 @@ struct wheelvelocities
 
 /*! @brief Velocity calculation base for differential-type robots
  * @author Muhaimen Shamsi
- *
- * Closed-Loop control in our case is defined by three constants:
+ * @details Closed-Loop control in our case is defined by three constants:
  * krho, kalpha, and kbeta. Each of these have a specific effect on
  * the wheelvelocities returned. ClosedLoopBase implements the movement algorithm. */
 class ClosedLoopBase
@@ -48,9 +50,17 @@ public:
         : krho(constants[0]), kalpha(constants[1]), kbeta(constants[2])
         { ClosedLoopBase(); }
 		
+    /*! @brief Calculate an instantanious threeWheelVels to move torwards a point
+     * @param rob robot to calculate for
+     * @param x_goal The X posiiton of the final target
+     * @param y_goal the Y position of the final taget
+     * @param theta_goal The desired ending facing angle angle
+     * @return a wheelvelocities to be sent to the robot's L and R wheels */
     wheelvelocities closed_loop_control
         (Robot* robot, double x_goal, double y_goal, double theta_goal = UNUSED_ANGLE_VALUE);
 		
+    /*! @brief closed_loop_control overload with a Point target
+     * @param goal The target point */
 	wheelvelocities closed_loop_control
         (Robot* robot, Point goal, double theta_goal = UNUSED_ANGLE_VALUE);
 
@@ -78,18 +88,21 @@ private:
 
 /*************************************************************/
 
+//! @brief Instance of ClosedLoopBase with default constants
 class ClosedLoopControl : public ClosedLoopBase {
 public:
     ClosedLoopControl()
     : ClosedLoopBase(ClosedLoopConstants::defaultConstants){}
 };
 
+//! @brief Instance of ClosedLoopBase with noSlowdownConstants
 class ClosedLoopNoSlowdown : public ClosedLoopBase {
 public:
     ClosedLoopNoSlowdown()
     : ClosedLoopBase(ClosedLoopConstants::noSlowdownConstants){}
 };
 
+//! @brief Instance of ClosedLoopBase with sharpTurnConstants
 class ClosedLoopSharpTurns : public ClosedLoopBase {
 public:
     ClosedLoopSharpTurns()
@@ -98,5 +111,6 @@ public:
 
 /*************************************************************/
 
+}
 
 #endif // CLOSEDLOOPCONTROL_H

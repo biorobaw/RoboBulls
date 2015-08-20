@@ -43,7 +43,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
-      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -93,13 +92,18 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">AttackMain Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><a class="el" href="classAttackMain.html" title="AttackMain is the main driver behavior for the NormalGameStrategy. ">AttackMain</a> is the main driver behavior for the NormalGameStrategy.  
+ <a href="classAttackMain.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="attackmain_8h_source.html">attackmain.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for AttackMain:</div>
 <div class="dyncontent">
  <div class="center">
   <img src="classAttackMain.png" usemap="#AttackMain_map" alt=""/>
   <map id="AttackMain_map" name="AttackMain_map">
-<area href="classBehavior.html" alt="Behavior" shape="rect" coords="0,0,75,24"/>
+<area href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. " alt="Behavior" shape="rect" coords="0,0,75,24"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -109,13 +113,18 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>AttackMain</b> (<a class="el" href="classRobot.html">Robot</a> *attacker=nullptr)</td></tr>
 <tr class="separator:a32454af1fa04aa000bb5d9187b206d8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0931b81937c71a9a6990bfbf7bfc73cb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAttackMain.html#a0931b81937c71a9a6990bfbf7bfc73cb">perform</a> (<a class="el" href="classRobot.html">Robot</a> *)</td></tr>
-<tr class="memdesc:a0931b81937c71a9a6990bfbf7bfc73cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform this behavior's action on a robot Given an arbitrary roobot, The <em>perform</em> function of a <a class="el" href="classBehavior.html">Behavior</a> defines how to run the behavior on a robot.  <a href="#a0931b81937c71a9a6990bfbf7bfc73cb">More...</a><br/></td></tr>
+<tr class="memdesc:a0931b81937c71a9a6990bfbf7bfc73cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform this behavior's action on a robot Given an arbitrary roobot, The <em>perform</em> function of a <a class="el" href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. ">Behavior</a> defines how to run the behavior on a robot.  <a href="#a0931b81937c71a9a6990bfbf7bfc73cb">More...</a><br/></td></tr>
 <tr class="separator:a0931b81937c71a9a6990bfbf7bfc73cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e6e3b0439ef19b05f0c4a1ebdfbfd62"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAttackMain.html#a6e6e3b0439ef19b05f0c4a1ebdfbfd62">isFinished</a> () override</td></tr>
 <tr class="memdesc:a6e6e3b0439ef19b05f0c4a1ebdfbfd62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return if behavior is "finished" Return true when the behavior is "finished," false otherwise. This could be reaching a target, or whenever a derived behavior is considered finished. Can be used in Stratigies to effectively assign behaviors one after another.  <a href="#a6e6e3b0439ef19b05f0c4a1ebdfbfd62">More...</a><br/></td></tr>
 <tr class="separator:a6e6e3b0439ef19b05f0c4a1ebdfbfd62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p><a class="el" href="classAttackMain.html" title="AttackMain is the main driver behavior for the NormalGameStrategy. ">AttackMain</a> is the main driver behavior for the NormalGameStrategy. </p>
+<dl class="section author"><dt>Author</dt><dd>Muhaimen Shamsi, JamesW</dd></dl>
+<p>A robot assigned this behavior assumes there is another robot with <a class="el" href="classAttackSupport.html" title="AttackSupport is a complement to Attackmain, used in NormalGameStrategy. ">AttackSupport</a> assigned. The behavior evaluates distance to the enemy goal&ndash;if too far, the robot will drive a distance then pass to the Attacksupport robot. But if close enough, the robot will shoot to the goal. In addition, if the robot drives too far from the start point, it will make a pass. </p>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classAttackSupport.html" title="AttackSupport is a complement to Attackmain, used in NormalGameStrategy. ">AttackSupport</a> </dd></dl>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a6e6e3b0439ef19b05f0c4a1ebdfbfd62"></a>
 <div class="memitem">
 <div class="memproto">
@@ -166,7 +175,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Perform this behavior's action on a robot Given an arbitrary roobot, The <em>perform</em> function of a <a class="el" href="classBehavior.html">Behavior</a> defines how to run the behavior on a robot. </p>
+<p>Perform this behavior's action on a robot Given an arbitrary roobot, The <em>perform</em> function of a <a class="el" href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. ">Behavior</a> defines how to run the behavior on a robot. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">Robot*</td><td>the robot to perform on. </td></tr>
@@ -185,7 +194,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Aug 19 2015 20:59:30 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Aug 20 2015 16:54:01 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

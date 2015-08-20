@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['_5fisfacingpoint',['_isFacingPoint',['../structComparisons_1_1__isFacingPoint.html',1,'Comparisons']]]
+  ['attackmain',['AttackMain',['../classAttackMain.html',1,'']]],
+  ['attacksupport',['AttackSupport',['../classAttackSupport.html',1,'']]]
 ];

@@ -7,11 +7,12 @@
 
 using namespace std;
 
-/*
- * refree box
- * Narges Ghaedi
- *
- * Referee Box Command Quick Reference:
+/*! @brief Communication module to receive information from the RefBox
+ * @author Origin. Narges Ghaedi, JamesW
+ *@details
+ * Retrieves and parses a legacy packet from the SSL Referee Box,
+ * and fills out the GameModel.
+ * <b>Referee Box Command Quick Reference:</b>
  * Command type               Command
  * ==========================================================
  * <<Control commands>>
@@ -47,10 +48,15 @@ using namespace std;
 class RefComm : public QThread
 {
 public:
+    /*! @brief Constructor
+     * @param gm The GameModel to fill with information
+     * @param net_ref_address Address Refbox is broadcasting to
+     * @param port The port Refbox is broadcasting to */
     RefComm(GameModel *gm,
             int port = 10001,
             string net_ref_address="224.5.23.1",
             string net_ref_interface="");
+
    ~RefComm();
 
     //communicating with reciver
@@ -67,11 +73,12 @@ protected:
     GameModel *gamemodel;
 
 private:
-   /* The legacy Refbox packet is as follows:
+   /*! @brief The legacy Refbox packet
+    * @details
+    * The packet format is as follows:
     * +---------+---------+------------+--------------+-------------------+
     * | Command | Counter | Goals blue | Goals yellow | time left (16 Bit)|
-    * +---------+---------+------------+--------------+-------------------+
-    */
+    * +---------+---------+------------+--------------+-------------------+ */
     struct Packet {
         char command;
         unsigned char counter;

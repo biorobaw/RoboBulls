@@ -138,7 +138,7 @@ void StrategyController::clearCurrentStrategy()
 
 void StrategyController::frameBegin()
 {
-    FPPA::update();
+    Movement::FPPA::update();
 }
 
 void StrategyController::frameEnd()
@@ -147,7 +147,7 @@ void StrategyController::frameEnd()
     {
         Robot *rob = model->getMyTeam().at(i);
         if (!GuiInterface::getGuiInterface()->isOverriddenBot()[rob->getID()]) {
-            if(rob->hasBeh)
+            if(rob->hasBehavior())
                 rob->getCurrentBeh()->perform(rob);
          }
     }

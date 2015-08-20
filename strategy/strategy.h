@@ -23,25 +23,25 @@
 class Strategy
 {
 public:
-    /*! @briefDecides How to assign behaviors to each robot on the team.
-     * This function is called when StrategyController is ran with a
+    /*! @brief Decides How to assign behaviors to each robot on the team.
+     * @details This function is called when StrategyController is ran with a
      * new command recieved from GameModel */
     virtual void assignBeh() = 0;
 
-    /*! Function (optional) that updates the Strategy object.
-     * This function is called when StrategyController is ran with
+    /*! @brief Function (optional) that updates the Strategy object.
+     * @details This function is called when StrategyController is ran with
      * a non-new command from GameModel. Return true to notify the strategy
      * is finished and have a new one assigned, false otherwise. */
     virtual bool update();
 
-    /*! Function used to control strategy flow.
-     * Return an ASCII character corrisponding to a game state to switch
+    /*! @brief Function used to control strategy flow.
+     * @details Return an ASCII character corrisponding to a game state to switch
      * the StrategyController to. return '\0' or the current gate state
      * (via GameModel) to keep the current state. */
     virtual char getNextStrategy();
 
-    /*! Destructor
-     * Implement a distructor for a "ending routine" when this object
+    /*! @brief Destructor
+     * @details Implement a distructor for a "ending routine" when this object
      * is deleted due to an update in StrategyController */
     virtual ~Strategy();
 };

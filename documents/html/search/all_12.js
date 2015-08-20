@@ -1,11 +1,5 @@
 var searchData=
 [
-  ['teststrategy',['TestStrategy',['../classTestStrategy.html',1,'']]],
-  ['threewheelcalculator',['ThreeWheelCalculator',['../classMovement_1_1ThreeWheelCalculator.html',1,'Movement']]],
-  ['threewheelvels',['threeWheelVels',['../structMovement_1_1threeWheelVels.html',1,'Movement']]],
-  ['timeout',['TimeOut',['../classTimeOut.html',1,'TimeOut'],['../classTimeOut.html#aafbbea3dc5e4beb858231a14eb72ec7b',1,'TimeOut::TimeOut()']]],
-  ['topleftregion',['topLeftRegion',['../classRegion.html#ab338dce81f5a4b49916104004e2b723c',1,'Region']]],
-  ['toprightregion',['topRightRegion',['../classRegion.html#ab2a90a0cc7b9540e8ef447c2f7bb2c66',1,'Region']]],
-  ['tostring',['toString',['../classBehaviorAssignment.html#af0e0fe5e451e0ec0ac81dceeef74da22',1,'BehaviorAssignment::toString()'],['../classGameModel.html#ae93e9dce7f6ea0cce5a204c5e910df6e',1,'GameModel::toString()'],['../classRobot.html#a22063fbc7fa2e18b4cf7d31848d3fb7b',1,'Robot::toString()'],['../classPoint.html#a94896c5fc859f471861aaad239b42d9f',1,'Point::toString()'],['../classRegion.html#a43c2dc219bf8661a712b8c0c8b660711',1,'Region::toString()']]],
-  ['type',['type',['../classRobot.html#a2652e11e8dbe541235ade55c3d1a12cb',1,'Robot::type()'],['../namespaceMovement.html#a74b28fda28211060df3b66c2ce160bd6',1,'Movement::Type()']]]
+  ['update',['update',['../structMovement_1_1Collisions_1_1detail_1_1RobotMoveStatus.html#aa8dc53461e40123385339af5f502ecef',1,'Movement::Collisions::detail::RobotMoveStatus::update()'],['../classStopStrategy.html#aa971ce819885ddb2d30b10110428d8a0',1,'StopStrategy::update()'],['../classStrategy.html#addd5ae07531160ed360f697f98308e5b',1,'Strategy::update()'],['../classVideo_1_1VideoStrategy1.html#aed332e998fce8e0f8e6a6e978d8c02b0',1,'Video::VideoStrategy1::update()'],['../classVideo_1_1VideoStrategy2.html#a7a633e94b79c349df0c7973747dd31b1',1,'Video::VideoStrategy2::update()'],['../classVideo_1_1VideoStrategy3.html#a798a48e70000bca5b0c0a1ac505a2265',1,'Video::VideoStrategy3::update()'],['../classVideo_1_1VideoStrategy4.html#a25ab62f0a1ad61c892d772d68fc8fbd1',1,'Video::VideoStrategy4::update()'],['../classVideo_1_1VideoStrategy5.html#ac37c78560d396769099832f36bb7e7af',1,'Video::VideoStrategy5::update()'],['../classVelocityCalculator.html#a087dc498ade5220f4a0b6b19d0616f86',1,'VelocityCalculator::update()'],['../namespaceMovement_1_1Collisions.html#a3e935efce44fb8ef4da1c8820dae7c88',1,'Movement::Collisions::update()'],['../namespaceMovement_1_1FPPA.html#a071418b2a7cc92aba8caf6c40a45708b',1,'Movement::FPPA::update()']]],
+  ['updateinfo',['updateInfo',['../classVisionComm.html#acc3047bc688a15c1216eec0e6b257d1b',1,'VisionComm']]]
 ];

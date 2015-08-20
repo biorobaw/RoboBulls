@@ -14,48 +14,14 @@ Robot::Robot()
     currentBehavior = nullptr;
 }
 
-void setRobotPosition(Point); Point getRobotPosition();
-/*! The robot's current position as a Point object.
- * The setter is used by VisionComm to update the
- * robot's position at each iteration. */
+Robot::Robot(int id, int team) : Robot()
+{
+    setID(id);
+    setTeam(team);
+}
 
-Point getVelocity(); float getSpeed();
-/*! These functions return the robot’s instantaneous velocity in m/s
- * as an X/Y pair and speed. Speed is the magnitude of velocity. */
-
-void setOrientation(float); float getOrientation();
-/*! The robot's current position orientation as a float.
- * The setter is used by VisionComm to update the robot's
- * orientation at each iteration. */
-
-void setID(int); int getID();
-
-
-
-void Robot::setRobotPosition(Point rbtPoint){robotPosition = rbtPoint;}
-
-void Robot::setOrientation(float ornt){orientation = ornt;}
-
-void Robot::setID(int ID){id = ID;}
-
-/*! @name Wheel Velocity Assignment @{
- *  @brief Assigns velocites to wheels
- * <i>Do not use directly</i>. These functions are used to sey
- * the wheel velocities on the robots. These setters directly
- * affect the commands that get sent to the robots as the
- * communication class uses the getters to determine what
- * velocities to send for each robot.
- * <b>For differential drives</b>, only setR (right wheel velocity)
- * and setL (left wheel velocity) are necessary. On the simulator,
- * this sets both right and both left wheel velocities to the same
- * value to mimic a differential drive.
- * <b>For three wheeled robots</b>, only setR (right wheel velocity), setL
- * (left wheel velocity) and setB (back wheel velocity) are necessary.
- * This is not designed for the simulator, but it could be tested by
- * adapting the simulator settings file if necessary.
- * <b>For four wheeled robots</b>, only setLF (left front wheel velocity),
- * setRF (right front wheel velocity), setLB (left back wheel velocity)
- * and setRB (right back wheel velocity) are necessary. */
+/*! @{
+ *  @brief Assigns velocites to a wheels <i>Do not use directly</i>  */
 void Robot::setL(float left){LF = LB = left;}
 void Robot::setR(float right){RF = RB = right;}
 void Robot::setB(float back){LB = RB = back;}
@@ -63,73 +29,65 @@ void Robot::setLF(float left_forward){LF = left_forward;}
 void Robot::setRF(float right_forward){RF = right_forward;}
 void Robot::setLB(float left_backward){LB = left_backward;}
 void Robot::setRB(float right_backward){RB = right_backward;}
-//!@}
+//! @}
 
-void Robot::setTeam(bool which) { team = which; }
-
-/*! @brief Set the robot to kick (1/0) *
- * A property that determines whether the robot should run its kick procedure
+/*! @brief Set the robot to kick (1/0)
+ * @details A property that determines whether the robot should run its kick procedure
  * (which is defined in the robot firmware). If setKick(1) is called in
  * any iteration for a robot, setKick(0) is automatically called
  * when commands are sent to the robot so that the robot does not continuously
  * keep kicking.
- * \see setDrible
- */
+ * @see setDrible */
 void Robot::setKick(bool Kick){kick = Kick;}
 
 /*! @brief Set the robot to Dribble.
- * This is currently only functional in the simulator as
+ * @details This is currently only functional in the simulator as
  * none of our robots are equipped with dribblers. The speed of
  * the Dribbler can be varied between 0 and 100 on the simulator.
  * Effective use in the simulator still requires study of the effect
  * of dribble speed on ball handling.
- * @see setKick
- */
+ * @see setKick*/
 void Robot::setDrible(bool drible){ drible = drible; }
 
-void Robot::setCurrentBeh(Behavior *currentBeh)
-{
-    currentBehavior = currentBeh;
-    hasBeh = true;
-}
+/*! @{
+ *  @brief Query the robot's current wheel velocities */
+int Robot::getL() { return LF; }
+int Robot::getR() { return RF; }
+int Robot::getB() { return RB; }    //RB and RL are the same for three-wheel
+int Robot::getLF() { return LF; }
+int Robot::getRF() { return RF; }
+int Robot::getLB() { return LB; }
+int Robot::getRB() { return RB; }
+//! @}
 
-void Robot::setVelocity(Point vel) { velocity = vel; }
-
+//! @brief Get the robot's Point position on the field
 Point Robot::getRobotPosition() { return robotPosition; }
 
+//! @brief Returns the roobt's orientation in radians
 float Robot::getOrientation() { return orientation; }
 
 /*! @brief Get the robot's numerical ID
- * The robot's ID as indicated by the pattern on top of the robot. */
+ * @details The robot's ID as indicated by the pattern on top of the robot. */
 int Robot::getID() { return id; }
 
-/*! @name Wheel Velocitiy Retrevial
- * @brief Query the robot's current wheel velocities
- * Check out the setters for details
- * @see setL
- * @see setR */
-int Robot::getL() { return LF; }
-
-int Robot::getR() { return RF; }
-
-int Robot::getB() { return RB; }    //RB and RL are the same for three-wheel
-
-int Robot::getLF() { return LF; }
-
-int Robot::getRF() { return RF; }
-
-int Robot::getLB() { return LB; }
-
-int Robot::getRB() { return RB; }
-
+//! @brief Returns true if the robot is currently kicking this iteration
 int Robot::getKick() {return kick;}
 
+//! @brief Returns a pointer to the robot's current behavior
 Behavior* Robot::getCurrentBeh(){ return currentBehavior; }
 
+//! @brief Returns true if the robot is a member of getMyTeam in GameModel
 bool Robot::isOnMyTeam() { return team; }
 
+//! @brief Returns true if the robot curently has a Behavior
+bool Robot::hasBehavior() { return hasBeh; }
+
+//! @brief Returns the current velocity in m/s
+//! @see getRobotPosition
+//! @see VelocityCalculator
 Point Robot::getVelocity() { return velocity; }
 
+//! @brief Return the speed, the magnitude of the velocity (in <b>m/s</b>)
 float Robot::getSpeed()
 {
     Point vel = getVelocity();
@@ -146,8 +104,8 @@ void Robot::clearCurrentBeh()
     }
 }
 
-/*! @brief Returns the robot type.
- * This information is used by the velocity calculators in the Movement section of the code.
+/*! @brief Returns the robot wheel type.
+ * @details This information is used by the velocity calculators in the Movement section of the code.
  * This function returns information specified in include/config/robot_types.h
  * @see RobotType
  * @see robotIDTypes
@@ -158,6 +116,7 @@ RobotType Robot::type()
     return robotIDTypes[id];
 }
 
+//! @brief Returns a string representation of the robot
 std::string Robot::toString()
 {
     stringstream ss;
@@ -165,5 +124,25 @@ std::string Robot::toString()
     return ss.str();
 }
 
+//! @brief Return if the robot is currently dribbling
 bool Robot::getDrible(){return drible;}
 
+/****************** Private Functions ******************/
+
+//! @brief Sets the robot's behavior pointer (do deletion is made)
+void Robot::setCurrentBeh(Behavior *currentBeh)
+{
+    currentBehavior = currentBeh;
+    hasBeh = true;
+}
+
+void Robot::setRobotPosition(Point rbtPoint){robotPosition = rbtPoint;}
+
+void Robot::setOrientation(float ornt){orientation = ornt;}
+
+void Robot::setID(int ID){id = ID;}
+
+void Robot::setVelocity(Point vel) { velocity = vel; }
+
+//! @brief Sets which team the robot is on
+void Robot::setTeam(bool which) { team = which; }

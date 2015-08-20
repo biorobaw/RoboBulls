@@ -43,7 +43,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
-      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -96,31 +95,38 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">DefendState Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>A base class, a state in the <a class="el" href="classDefendBehavior.html" title="DefendBehavior is the next iteration of a defense mode (circa May 2015). ">DefendBehavior</a> state machine.  
+ <a href="classDefendState.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="defendbehavior_8h_source.html">defendbehavior.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for DefendState:</div>
 <div class="dyncontent">
  <div class="center">
   <img src="classDefendState.png" usemap="#DefendState_map" alt=""/>
   <map id="DefendState_map" name="DefendState_map">
-<area href="classDefendStateIdle.html" alt="DefendStateIdle" shape="rect" coords="0,56,125,80"/>
-<area href="classDefendStateIdleKick.html" alt="DefendStateIdleKick" shape="rect" coords="135,56,260,80"/>
-<area href="classDefendStateKick.html" alt="DefendStateKick" shape="rect" coords="270,56,395,80"/>
+<area href="classDefendStateIdle.html" title="DefendState To choose a point to idle at. " alt="DefendStateIdle" shape="rect" coords="0,56,125,80"/>
+<area href="classDefendStateIdleKick.html" title="DefendState that merely does KickToPointOmni to kick the ball away.  Happens when the ball stops clos..." alt="DefendStateIdleKick" shape="rect" coords="135,56,260,80"/>
+<area href="classDefendStateKick.html" title="DefendState to sit in the ball&#39;s incoming path. " alt="DefendStateKick" shape="rect" coords="270,56,395,80"/>
 </map>
  </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a73fc60cb2f0cd49e696de4dbf9d2dbb0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a73fc60cb2f0cd49e696de4dbf9d2dbb0"></a>
-virtual <a class="el" href="classDefendState.html">DefendState</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>action</b> (<a class="el" href="classRobot.html">Robot</a> *robot)</td></tr>
+virtual <a class="el" href="classDefendState.html">DefendState</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDefendState.html#a73fc60cb2f0cd49e696de4dbf9d2dbb0">action</a> (<a class="el" href="classRobot.html">Robot</a> *robot)</td></tr>
+<tr class="memdesc:a73fc60cb2f0cd49e696de4dbf9d2dbb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a state and return a new one Returns <code>this</code> if no transition is made */. <br/></td></tr>
 <tr class="separator:a73fc60cb2f0cd49e696de4dbf9d2dbb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:aaa5c1aa15cc90d9571f72f2f0764fdf5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaa5c1aa15cc90d9571f72f2f0764fdf5"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>setupClaimedPoints</b> ()</td></tr>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDefendState.html#aaa5c1aa15cc90d9571f72f2f0764fdf5">setupClaimedPoints</a> ()</td></tr>
+<tr class="memdesc:aaa5c1aa15cc90d9571f72f2f0764fdf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes all claimed points to initial positions. <br/></td></tr>
 <tr class="separator:aaa5c1aa15cc90d9571f72f2f0764fdf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad04a8bd20142a4e4e4bebadf3de8acc6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad04a8bd20142a4e4e4bebadf3de8acc6"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>clearClaimedPoints</b> ()</td></tr>
+<tr class="memitem:ad04a8bd20142a4e4e4bebadf3de8acc6"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDefendState.html#ad04a8bd20142a4e4e4bebadf3de8acc6">clearClaimedPoints</a> ()</td></tr>
+<tr class="memdesc:ad04a8bd20142a4e4e4bebadf3de8acc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears all robot's claimed points.  <a href="#ad04a8bd20142a4e4e4bebadf3de8acc6">More...</a><br/></td></tr>
 <tr class="separator:ad04a8bd20142a4e4e4bebadf3de8acc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-methods"></a>
@@ -138,6 +144,37 @@ Static Protected Attributes</h2></td></tr>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>whoIsKicking</b> = -1</td></tr>
 <tr class="separator:a35bdaa31e3a0862c293ecf719010e4c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>A base class, a state in the <a class="el" href="classDefendBehavior.html" title="DefendBehavior is the next iteration of a defense mode (circa May 2015). ">DefendBehavior</a> state machine. </p>
+<dl class="section author"><dt>Author</dt><dd>JamesW</dd></dl>
+<p>States are changed by returning a new instance of one from <code>action</code>. Similar to the <code>perform</code> function </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="ad04a8bd20142a4e4e4bebadf3de8acc6"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DefendState::clearClaimedPoints </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Clears all robot's claimed points. </p>
+<p>by setting <code>defendPoints</code> back to the default positions and filling <code>claimed</code> with -1 </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>behavior/<a class="el" href="defendbehavior_8h_source.html">defendbehavior.h</a></li>
 <li>behavior/defendbehavior.cpp</li>
@@ -145,7 +182,7 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>whoIsKicking</b
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Aug 19 2015 20:59:30 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Aug 20 2015 16:54:01 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

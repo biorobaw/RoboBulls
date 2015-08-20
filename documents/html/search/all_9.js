@@ -1,15 +1,10 @@
 var searchData=
 [
-  ['idequal',['idEqual',['../structComparisons_1_1idEqual.html',1,'Comparisons']]],
-  ['idfilter',['idFilter',['../structComparisons_1_1idFilter.html',1,'Comparisons']]],
-  ['idnotequal',['idNotEqual',['../structComparisons_1_1idNotEqual.html',1,'Comparisons']]],
-  ['ignorablepredicate',['IgnorablePredicate',['../structComparisons_1_1IgnorablePredicate.html',1,'Comparisons']]],
-  ['indiectkickstrategy',['IndiectKickStrategy',['../classIndiectKickStrategy.html',1,'']]],
-  ['inittimer',['InitTimer',['../classTimeOut.html#aa96187756674f5e1d28c2db61e2fae44',1,'TimeOut']]],
-  ['isclose',['isClose',['../classMeasurments.html#a5877d56fc029ca92154b8dc04fc12f39',1,'Measurments::isClose(const Point &amp;, const Point &amp;, float tol=DIST_TOLERANCE)'],['../classMeasurments.html#a29f717614002c36ee88804dd0a8b58e6',1,'Measurments::isClose(const Point &amp;, Robot *, float tol=DIST_TOLERANCE)'],['../classMeasurments.html#af7aea9bc827221be2dfe14f0aba1d271',1,'Measurments::isClose(Robot *, const Point &amp;, float tol=DIST_TOLERANCE)'],['../classMeasurments.html#a89f70111ca79c9e9466c61fba86322ed',1,'Measurments::isClose(Robot *, Robot *, float tol=DIST_TOLERANCE)'],['../classMeasurments.html#aad00ea9f079a4e300944d5e1080c4e64',1,'Measurments::isClose(float angle1, float angle2, float tol=ROT_TOLERANCE)']]],
-  ['isfinished',['isFinished',['../classAttackMain.html#a6e6e3b0439ef19b05f0c4a1ebdfbfd62',1,'AttackMain::isFinished()'],['../classBehavior.html#a850e6042516a458a7e509536fae53adf',1,'Behavior::isFinished()'],['../classGenericMovementBehavior.html#acdd16af72d03bab5727a465de853ebc0',1,'GenericMovementBehavior::isFinished()'],['../classGenericSkillBehavior.html#a926961a37f5932c2009812b94fd52902',1,'GenericSkillBehavior::isFinished()'],['../classKickToGoal.html#a944c97f568c833ac45307c12dbeead2a',1,'KickToGoal::isFinished()'],['../classPassBallReceiver.html#a851d02ca2215e2e18fbc6c69d21ac913',1,'PassBallReceiver::isFinished()'],['../classPassBallSender.html#aaf07fc44cefa15a279819dc5245fb646',1,'PassBallSender::isFinished()'],['../classRotateOnPoint.html#a17b170fb006552a990e86c8cd187dfdd',1,'RotateOnPoint::isFinished()'],['../classVideo_1_1OmniRandomKicker.html#a63b795d3d5a179d8a55f53c9fe213239',1,'Video::OmniRandomKicker::isFinished()']]],
-  ['isnewcommand',['isNewCommand',['../classGameModel.html#a2e38250ff88398f6770d6575f29240e7',1,'GameModel']]],
-  ['isobstacleinline',['isObstacleInLine',['../namespaceFPPA.html#a66cb04dffbfb886b9afaa7307f80b29e',1,'FPPA']]],
-  ['isonmyteam',['isOnMyTeam',['../classRobot.html#a200c866efe527e68eace25777354bd8b',1,'Robot']]],
-  ['ispointinline',['isPointInLine',['../namespaceFPPA.html#a323b739ea43ff7d060c8fec3f9a5cbc1',1,'FPPA']]]
+  ['kick',['Kick',['../classSkill_1_1Kick.html',1,'Skill']]],
+  ['kick',['Kick',['../classSkill_1_1Kick.html#af0422a93803abf764656af3475cc25b8',1,'Skill::Kick::Kick()'],['../classSkill_1_1Kick.html#a2d968d9be3f638520f3e62055b49ac42',1,'Skill::Kick::Kick(int lvel, int rvel)']]],
+  ['kickbeh',['KickBeh',['../classVideo_1_1KickBeh.html',1,'Video']]],
+  ['kickoffstrategy',['KickOffStrategy',['../classKickOffStrategy.html',1,'']]],
+  ['kicktogoal',['KickToGoal',['../classKickToGoal.html',1,'']]],
+  ['kicktopointomni',['KickToPointOmni',['../classSkill_1_1KickToPointOmni.html',1,'Skill']]],
+  ['kicktopointomni',['KickToPointOmni',['../classSkill_1_1KickToPointOmni.html#aa68e37f846a09b3051303ac2e421f9b4',1,'Skill::KickToPointOmni::KickToPointOmni(const Point &amp;target, float targetTolerance=-1, float kickDistance=-1)'],['../classSkill_1_1KickToPointOmni.html#a4143d495a2f8358f6edfa93c6d903267',1,'Skill::KickToPointOmni::KickToPointOmni(Point *targetPtr, float targetTolerance=-1, float kickDistance=-1)']]]
 ];

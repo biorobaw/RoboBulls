@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['y',['y',['../classPoint.html#a6101960c8d2d4e8ea1d32c9234bbeb8d',1,'Point']]]
+  ['myside',['mySide',['../classGameModel.html#a13026eb1955e46748604ac48f13f980e',1,'GameModel']]]
 ];

@@ -1,25 +1,26 @@
 #ifndef GENERIC_SKILL_BEHAVIOR_H
 #define GENERIC_SKILL_BEHAVIOR_H
-
 #include "behavior/behavior.h"
-
-/* GenericSkillBehavior
- * GenericSkillBehavior is a wrapper convience behavior for a single skill.
- * Used in the robot's assignSkill function, this behavior simply performs
- * a single skill indefinately, and "isFinished" is determined directly
- * from that skill.
- */
-
 class Robot;
+
+/*! @brief A wrapper convience behavior for a single skill.
+ * @details Used in the robot's assignSkill function, this behavior simply performs
+ * a single skill indefinately, and "isFinished" is determined directly
+ * from that skill. */
 
 template<typename SkillType>
 class GenericSkillBehavior : public Behavior
 {
 public:
     template<typename... Args>
-     GenericSkillBehavior(Args&&... args);
+    GenericSkillBehavior(Args&&... args);
+
     ~GenericSkillBehavior();
+
+     //!< @brief Perform the skill
     void perform(Robot* robot);
+
+    //!< @brief The isFinished returns the result from <i>perform</i> of the Skill
     bool isFinished() override;
 private:
     SkillType* skill;

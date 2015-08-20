@@ -43,7 +43,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
-      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -93,27 +92,36 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">DriveBallAndKick Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Uses the DriveBall, Kick, and Stop skills. to drive then kick the ball.  
+ <a href="classDriveBallAndKick.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="driveballandkick_8h_source.html">driveballandkick.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for DriveBallAndKick:</div>
 <div class="dyncontent">
  <div class="center">
   <img src="classDriveBallAndKick.png" usemap="#DriveBallAndKick_map" alt=""/>
   <map id="DriveBallAndKick_map" name="DriveBallAndKick_map">
-<area href="classBehavior.html" alt="Behavior" shape="rect" coords="0,0,111,24"/>
+<area href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. " alt="Behavior" shape="rect" coords="0,0,111,24"/>
 </map>
  </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a13ff01f6c681f04e5afac1b92f1e1478"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDriveBallAndKick.html#a13ff01f6c681f04e5afac1b92f1e1478">perform</a> (<a class="el" href="classRobot.html">Robot</a> *)</td></tr>
-<tr class="memdesc:a13ff01f6c681f04e5afac1b92f1e1478"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform this behavior's action on a robot Given an arbitrary roobot, The <em>perform</em> function of a <a class="el" href="classBehavior.html">Behavior</a> defines how to run the behavior on a robot.  <a href="#a13ff01f6c681f04e5afac1b92f1e1478">More...</a><br/></td></tr>
+<tr class="memdesc:a13ff01f6c681f04e5afac1b92f1e1478"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform this behavior's action on a robot Given an arbitrary roobot, The <em>perform</em> function of a <a class="el" href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. ">Behavior</a> defines how to run the behavior on a robot.  <a href="#a13ff01f6c681f04e5afac1b92f1e1478">More...</a><br/></td></tr>
 <tr class="separator:a13ff01f6c681f04e5afac1b92f1e1478"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classBehavior"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classBehavior')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classBehavior.html">Behavior</a></td></tr>
 <tr class="memitem:a850e6042516a458a7e509536fae53adf inherit pub_methods_classBehavior"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBehavior.html#a850e6042516a458a7e509536fae53adf">isFinished</a> ()</td></tr>
 <tr class="memdesc:a850e6042516a458a7e509536fae53adf inherit pub_methods_classBehavior"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return if behavior is "finished" Return true when the behavior is "finished," false otherwise. This could be reaching a target, or whenever a derived behavior is considered finished. Can be used in Stratigies to effectively assign behaviors one after another.  <a href="#a850e6042516a458a7e509536fae53adf">More...</a><br/></td></tr>
 <tr class="separator:a850e6042516a458a7e509536fae53adf inherit pub_methods_classBehavior"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Uses the DriveBall, Kick, and Stop skills. to drive then kick the ball. </p>
+<dl class="section author"><dt>Author</dt><dd>Narges Ghaedi</dd></dl>
+<p>The robot drives the ball to a kickPoint ( <a class="el" href="classPoint.html" title="2D Point Class A Point is a 2D vector in space. Typically used to represent positions on the Robot Fi...">Point(1600, 0)</a> ), and kicks the ball into the goal. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a13ff01f6c681f04e5afac1b92f1e1478"></a>
 <div class="memitem">
 <div class="memproto">
@@ -136,7 +144,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Perform this behavior's action on a robot Given an arbitrary roobot, The <em>perform</em> function of a <a class="el" href="classBehavior.html">Behavior</a> defines how to run the behavior on a robot. </p>
+<p>Perform this behavior's action on a robot Given an arbitrary roobot, The <em>perform</em> function of a <a class="el" href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. ">Behavior</a> defines how to run the behavior on a robot. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">Robot*</td><td>the robot to perform on. </td></tr>
@@ -155,7 +163,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Aug 19 2015 20:59:30 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Aug 20 2015 16:54:01 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

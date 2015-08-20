@@ -5,10 +5,9 @@
 #include "utilities/region.h"
 #include "model/robot.h"
 
-
-//Right now it just makes the robot kick the ball
-//to the specified region.
-//More sophistication can be added later
+/*! @brief The robot kicks the ball to the center of a specified Region,
+ * @author Muhaimen Shamsi
+ * @details See Region documentation for more details on Regions. */
 
 class SendBallToRegion:public Behavior
 {

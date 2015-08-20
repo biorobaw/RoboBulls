@@ -91,7 +91,6 @@ SOURCES += main.cpp \
 	movement/three_omni_motion/omni3_velcalculator.cpp \
 	skill/driveball.cpp \
 	skill/kick.cpp \
-	skill/kicktopoint.cpp \
 	skill/kicktopointomni.cpp \
 	skill/stop.cpp \
 	strategy/freekickstrategy.cpp \
@@ -181,7 +180,6 @@ HEADERS += \
 	movement/three_omni_motion/omni3_velcalculator.h \
 	skill/driveball.h \
 	skill/kick.h \
-	skill/kicktopoint.h \
 	skill/kicktopointomni.h \
 	skill/skill.h \
 	skill/stop.h \

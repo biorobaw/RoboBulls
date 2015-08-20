@@ -20,7 +20,7 @@ namespace Skill
 class KickToPointOmni : public Skill
 {
 public:
-    /*! @brief <b>Static-point</b> constructor It takes the same arguments as the original KickToPoint.
+    /*! @brief <b>Static-point</b> constructor, for kicking to a static point
     * @param target Target point to kick toarwards
     * @param targetTolerance: Tolerance for the robot angle facing the target point before
     * a kick is made, for accuracy or non-accuracy reasons.
@@ -31,7 +31,7 @@ public:
                     float targetTolerance = -1,
                     float kickDistance = -1);
 
-    /*! @brief <b>variable-point</b> constructor
+    /*! @brief <b>variable-point</b> constructor, for kicking to a changing point
      * @param targetPtr Pointer to a point to kick to. Can change while skill is created */
     KickToPointOmni(Point* targetPtr,
                     float  targetTolerance = -1,
