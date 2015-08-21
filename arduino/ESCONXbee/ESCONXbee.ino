@@ -244,10 +244,10 @@ void runComm()
       if (Serial.available()>=8)
       {
         //Serial.println("Reading Commands");
-        targetLFvelSerial = (int)Serial.read()-100;
-        targetLBvelSerial = (int)Serial.read()-100;
-        targetRFvelSerial = (int)Serial.read()-100;
-        targetRBvelSerial = (int)Serial.read()-100;
+        targetLFvelSerial = ((int)Serial.read()-100)*0.666;
+        targetLBvelSerial = ((int)Serial.read()-100)*0.666;
+        targetRFvelSerial = ((int)Serial.read()-100)*0.666;
+        targetRBvelSerial = ((int)Serial.read()-100)*0.666;
         kickSerial = (int)Serial.read();
         chipSerial = (int)Serial.read();
         dribbleSerial = (int)Serial.read();
