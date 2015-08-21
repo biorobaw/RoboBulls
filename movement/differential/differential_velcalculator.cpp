@@ -36,7 +36,7 @@ wheelvelocities DifferentialCalculator::calculateVels
 		break;
 	default:
 		std::string msg = "DifferentialCalculator called with bad moveType " + 
-			std::to_string((MovementType)moveType);
+            std::to_string(moveType);
 		throw std::runtime_error(msg.c_str());
 	}
 	

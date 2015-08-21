@@ -7,80 +7,80 @@
 
 class Robot;
 
+/*! @brief This class contains many useful function we use all
+ * over the project to calculate distances and angles.
+ * It’s also misspelled but left that way for backwards compatibility.
+ * Many of these functions (distance, midpoint, angleBetween) have
+ * four Robot* / Point combination overloads. */
+
 class Measurments
 {
 public:
-    Measurments(){}
-
-    /* Returns the distance between two points using the
-     * standard distance formula.
-     */
+    /*! @name 2D Distance Formula Family
+     * @{
+     * @brief Returns the distance between two points using the
+     * standard distance formula. */
     static float distance(const Point&, const Point&);
     static float distance(const Point&, Robot*);
     static float distance(Robot*, const Point&);
     static float distance(Robot*, Robot*);
 
-
-    /* Returns the midpoint between two points a and b using
-     * the standard 2D midpoint formula
-     */
+    /*! @brief Returns the midpoint between two points a and b using
+     * the standard 2D midpoint formula */
     static Point midPoint(const Point&, const Point&);
     static Point midPoint(const Point&, Robot*);
     static Point midPoint(Robot*, const Point&);
     static Point midPoint(Robot*, Robot*);
 
-    /* Returns the angle between two points as measured
-     * from the horizontal.
-     */
+    /*! @brief Compare the points to determine if they are within a certain
+     * tolerance of each other. A "close enough" alternative to
+     * the == operator. */
+    static bool isClose(const Point&, const Point&, float tol = DIST_TOLERANCE);
+    static bool isClose(const Point&, Robot*, float tol = DIST_TOLERANCE);
+    static bool isClose(Robot*, const Point&, float tol = DIST_TOLERANCE);
+    static bool isClose(Robot*, Robot*, float tol = DIST_TOLERANCE);
+    //!@}
+
+
+    /*! @name Angle functions family
+     * @{
+     * @brief Returns the angle between two points as measured
+     * from the horizontal. */
     static float angleBetween(const Point&, const Point&);
     static float angleBetween(const Point&, Robot*);
     static float angleBetween(Robot*, const Point&);
     static float angleBetween(Robot*, Robot*);
 
-    /* Compare the points to determine if they are within a certain
-     * tolerance of each other. A "close enough" alternative to
-     * the == operator.
-     */
-    static bool isClose(const Point&, const Point&, float tol = DIST_TOLERANCE);
-    static bool isClose(const Point&, Robot*, float tol = DIST_TOLERANCE);
-    static bool isClose(Robot*, const Point&, float tol = DIST_TOLERANCE);
-    static bool isClose(Robot*, Robot*, float tol = DIST_TOLERANCE);
-
-
-    //Calculates the slope, given two points
-    static float slope(Point, Point);
-
-
-    // Calculates the smallest difference between two orientations (angle2 - angle1)
+    //!@brief Calculates the smallest difference between two orientations (angle2 - angle1)
     static float angleDiff(float angle1, float angle2);
 
-
-    // Calculates the sum of two orientations (angle2 + angle1)
+    //!@brief Calculates the sum of two orientations (angle2 + angle1) */
     static float angleSum(float angle1, float angle2);
-	
 
-	/* isClose overload for angles; wrapper around angleDiff to make doing this less
-	 * of a pain.
-	 */
+    /*! @brief isClose overload for angles
+     *  @see isClose */
     static bool isClose(float angle1, float angle2, float tol = ROT_TOLERANCE);
-	
+    //!@}
 
-	/* Clamps a value between min and max */
-	template<typename T>
-    static T clamp(const T& value, const T& min, const T& max);
-	
-	
-	/* Given a line defined by LStart and LEnd, returns the shortest distance from the 
+    /*! @name Line Functions Family
+     * @{
+     * @brief Given a line defined by LStart and LEnd, returns the shortest distance from the
 	 * line to the point p0; this is always the length of the line perpendicular to
-	 * LStart and LEnd touching p0.
-	 */
+     * LStart and LEnd touching p0. */
 	static float lineDistance(const Point& p0, const Point& LStart, const Point& LEnd);
 
-    /* Given a line A befined by LStart and LEnd, returns the point on A that is
+    /*! @brief Given a line A defined by LStart and LEnd, returns the point on A that is
      * closet to p0. Similar to above, this is across the perpendicular distance
-     * from p0 to A.
-     */
+     * from p0 to A. */
     static Point linePoint(const Point& p0, const Point& LStart, const Point& LEnd);
+
+    /*! @brief Calculates the slope, given two points */
+    static float slope(Point, Point);
+    //! @}
+
+    //!@brief Clamps a value between min and max
+    template<typename T>
+    static T clamp(const T& value, const T& min, const T& max);
 };
 
 

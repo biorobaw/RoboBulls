@@ -7,12 +7,11 @@
 #include "model/gamemodel.h"
 #include "utilities/point.h"
 #include "skill/skill.h"
-#include "skill/kicktopoint.h"
 #include "behavior/genericmovementbehavior.h"
 
-/*
- * PassBallSender class
- * This class finds a good receiver robot and
+/*! @brief Behavior to pass the ball to a robot with PassBallReceiver
+ * @author Narges Ghaedi
+ * @details This class finds a good receiver robot and
  * sends the ball in front of it.
  * The receiver robot has the following charactristics:
  *      1. It has less number of opp. players compared to others
@@ -30,8 +29,7 @@
  * Squggestions for improvements:
  *      ** send the ball to the robot that is closer
  *      to the opp. goal, closer to the robot, and has least
- *      amount of opponents players in its region
- * */
+ *      amount of opponents players in its region*/
 
 class PassBallSender : public GenericMovementBehavior
 {
@@ -56,20 +54,20 @@ public:
 
     bool kicked;
 
-    /*
-     * this struct is used to gather all the
+    /*! @brief Hold information about players on the firld
+     * @details This struct is used to gather all the
      * charactristics of all the robots on the
      * field.
      * we compare these charactristics to decide which
      * robot the sender should pass to
      * */
     struct playersCharactristics{
-        Point position;
-        int ID;
-        double distanceToGoal;  // how far away is the reciver player from the goal
-        int surroundingAppNum;  //number of opponent players surrounding our team players
-        double distanceToRobot; // how far away is the recieve player from sender player
-        bool inBadArea;         // Is robot in an area that is dangerous to make a pass?
+        Point position;         //!<Position of the player
+        int ID;                 //!<ID of the player
+        double distanceToGoal;  //!<how far away is the reciver player from the goal
+        int surroundingAppNum;  //!<number of opponent players surrounding our team players
+        double distanceToRobot; //!<how far away is the recieve player from sender player
+        bool inBadArea;         //!<Is robot in an area that is dangerous to make a pass?
     };
 
     vector <playersCharactristics> myTeamInfo; //stores all the robots charactristics

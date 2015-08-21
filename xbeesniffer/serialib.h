@@ -46,7 +46,6 @@ This is a licence-free software, it can be used by anyone who try to build a bet
 
 /*!  \class serialib
      \brief     This class can manage a serial port. The class allows basic operations (opening the connection, reading, writing data and closing the connection).
-     \example   Example1.cpp
    */
 
 
@@ -157,64 +156,6 @@ public:
 private:    
     struct timeval      PreviousTime;
 };
-
-
-
-/*!
-  \mainpage serialib class
-
-  \brief
-       \htmlonly
-       <TABLE>
-       <TR><TD>
-            <a href="../serialibv1.2.zip" title="Download the serialib class">
-                <TABLE>
-                <TR><TD><IMG SRC="download.png" BORDER=0 WIDTH=100> </TD></TR>
-                <TR><TD><P ALIGN="center">[Download]</P> </TD></TR>
-                </TABLE>
-            </A>
-            </TD>
-            <TD>
-                <script type="text/javascript"><!--google_ad_client = "ca-pub-0665655683291467";
-                google_ad_slot = "0230365165";
-                google_ad_width = 728;
-                google_ad_height = 90;
-                //-->
-                </script>
-                <script type="text/javascript"
-                src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-                </script>
-            </TD>
-        </TR>
-        </TABLE>
-
-        \endhtmlonly
-
-    The class serialib offers simple access to the serial port devices for windows and linux. It can be used for any serial device (Built-in serial port, USB to RS232 converter, arduino board or any hardware using or emulating a serial port)
-    \image html serialib.png
-    The class can be used under Windows and Linux.
-    The class allows basic operations like :
-    - opening and closing connection
-    - reading data (characters, array of bytes or strings)
-    - writing data (characters, array of bytes or strings)
-    - non-blocking functions (based on timeout).
-
-
-  \author   Philippe Lucidarme (University of Angers) <serialib@googlegroups.com>
-  \date     1th may 2011 (Last update: 25th september 2012)
-  \version  1.2
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
-INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
-PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE X CONSORTIUM BE LIABLE FOR ANY CLAIM,
-DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-This is a licence-free software, it can be used by anyone who try to build a better world.
-*/
-
-
-
 
 #endif // SERIALIB_H
 

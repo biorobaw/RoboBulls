@@ -1,5 +1,5 @@
 #include "model/gamemodel.h"
-#include "movement/gotopositionwithorientation.h"
+#include "movement/gotoposition.h"
 #include "skill/skill.h"
 #include "math.h"
 #include "driveball.h"

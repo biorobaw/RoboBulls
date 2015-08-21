@@ -1,7 +1,6 @@
 #include <assert.h>
 #include "include/config/simulated.h"
 #include "skill/kicktopointomni.h"
-#include "skill/kicktopoint.h"
 #include "attackmain.h"
 
 AttackMain::AttackMain(Robot* attacker)

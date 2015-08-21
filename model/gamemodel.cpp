@@ -27,47 +27,58 @@ int GameModel::opSide = -1;
 /************************ Public Methods ***************************/
 /*******************************************************************/
 
-
+/*! @brief Class constructor */
 GameModel::GameModel()
 {
     gameState  = '\0';
-
-//    Robot * rob = new Robot();
-//    rob->setID(2);
-//    rob->setTeam(TEAM_YELLOW);
-//    myTeam.push_back(rob);
 }
 
+//! @brief Sets a StrategyController to run the game with
 void GameModel::setStrategyController(StrategyController *sc)
 {
     this->sc = sc;
 }
 
+/*! @brief Returns the robot that currently has the ball
+ * A robot has the ball if it is close to it and is facing it */
 Robot* GameModel::getHasBall()
 {
     return robotWithBall;
 }
 
+/*! @brief Look for a robot with id `id` on getMyTeam()
+ * @param id The id of the robot to look for
+ * @see Robot class
+ * \return A robot pointer if found, or NULL if not on the team */
 Robot* GameModel::findMyTeam(int id)
 {
     return find(id, myTeam);
 }
 
+/*! @brief Look for a robot with id `id` on getOponentTeam()
+ * @param id The id of the robot to look for
+ * \return A robot pointer if found, or NULL if not on the team */
 Robot* GameModel::findOpTeam(int id)
 {
     return find(id, opTeam);
 }
 
+/*! @brief Return a vector of all robots on the opposing team
+ * \return The opposing team (getBlueTeam() if Yellow, getYellowTeam() if Blue) */
 vector<Robot*>& GameModel::getOponentTeam()
 {
     return opTeam;
 }
 
+/*! @brief Return a vector of all robots on the current team
+ * \return The current team (getBlueTeam() if Blue, getYellowTeam() if Yellow) */
 vector<Robot *>& GameModel::getMyTeam()
 {
     return myTeam;
 }
 
+/*! @brief Return a vector of all robots on the Blue team
+ * \return The Blue team */
 vector<Robot*>& GameModel::getBlueTeam()
 {
 #if TEAM == TEAM_BLUE
@@ -77,6 +88,8 @@ vector<Robot*>& GameModel::getBlueTeam()
 #endif
 }
 
+/*! @brief Return a vector of all robots on the Yellow team
+ * \return The Yellow team */
 vector<Robot*>& GameModel::getYellowTeam()
 {
 #if TEAM == TEAM_BLUE
@@ -86,84 +99,112 @@ vector<Robot*>& GameModel::getYellowTeam()
 #endif
 }
 
+/*! @brief Return a 2D point of the current ball location
+ * \return A Point with the ball's position */
 Point GameModel::getBallPoint()
 {
     return ballPoint;
 }
 
+/*! @brief Return a 2D point of the X and Y component of the ball's velocity
+ * \see Point
+ * \see VelocityCalculator
+ * \return The ball's velocity as an X/Y point in m/s*/
 Point GameModel::getBallVelocity()
 {
     return ballVelocity;
 }
 
+/*! @brief Return a 2D point of the X and Y component of the ball's acceleration
+ * \see getBallVelocity
+ * \see VelocityCalculator
+ * \return The ball's acceleration as an X/Y point in m/s*/
 Point GameModel::getBallAcceleration()
 {
     return ballAcceleration;
 }
 
+/*! @brief Returns the ball's <i>speed</i> (magnitude of velocity) in m/s */
 float GameModel::getBallSpeed()
 {
     return std::hypot(ballVelocity.x, ballVelocity.y);
 }
 
+/*! @brief Returns true of the ball is not moving, or false if it is moving */
 bool GameModel::getBallIsStopped()
 {
     return ballStopped;
 }
 
+/*! @brief Returns a predition of the ball's position in 2 seconds
+ * The Ball Prediciton is a rudimentary kinematics calculation that takes into
+ * account the position and velocity.
+ * \see getBallPoint
+ * \see getBallVelocity
+ * \return The ball's expected location in about two seconds. */
 Point GameModel::getBallPrediction()
 {
     return ballPrediction;
 }
 
+//! @brief From the RefComm, Returns the number of Blue goals
 char GameModel::getBlueGoals()
 {
     return blueGoals;
 }
 
+//! @brief From the RefComm, Returns the number of Yellow goals
 char GameModel::getYellowGoals()
 {
     return yellowGoals;
 }
 
+//! @brief Returns the remaining time in seconds
 short GameModel::getRemainingTime()
 {
     return remainingTime;
 }
 
+//! @brief Returns the current game state, used by StrategyController
 char GameModel::getGameState()
 {
     return gameState;
 }
 
+/*! @brief To get the singleton instance of the GameModel.
+ *  @deprecated Use gameModel global pointer instead  */
 GameModel * GameModel::getModel()
 {
     return gameModel;
 }
 
+//! @brief Returns true id RefComm has sent a new command
 bool GameModel::isNewCommand()
 {
     return this->hasNewCommand;
 }
 
+//! @brief Returns the penalty point that penalty kicks are taken from
 Point GameModel::getPenaltyPoint()
 {
 #if TEAM == TEAM_BLUE
-        return Point(2045, 22);
+    return Point(2045, 22);
 #else
-        return Point(-2045, 22);
+    return Point(-2045, 22);
 #endif
 }
 
+//! @brief Returns the opponents's goal, that we are trying to score in
 Point GameModel::getOpponentGoal()
 {
 #if TEAM == TEAM_BLUE
-        return Point(3000,0);
+    return Point(3000,0);
 #else
-        return Point(-3000, 0);
+    return Point(-3000, 0);
 #endif
 }
 
+//! @brief Returns the goal point that we are defending (edge of the field)
 Point GameModel::getMyGoal()
 {
 #if TEAM == TEAM_BLUE
@@ -173,11 +214,13 @@ Point GameModel::getMyGoal()
 #endif
 }
 
+//! @brief Returns the last different game state before this one
 char GameModel::getPreviousGameState()
 {
     return previousGameState;
 }
 
+//! @brief Returns a string representation of the GameModel, including all robots and the ball
 std::string GameModel::toString()
 {
     stringstream myString;
@@ -205,36 +248,36 @@ std::string GameModel::toString()
 /*******************************************************************/
 
 /* Called by VisionComm */
-/* Don't overlook this function, it's more important than you think
- */
+/* Don't overlook this function, it's more important than you think */
+/*! @brief Used by VisionComm; The main shebang; calls the run functions of the
+ * StrategyController and make the project work. This also update the GUI system. */
 void GameModel::notifyObservers()
 {
     setRobotHasBall();
     sc->run();
 }
 
-/* Called by RefComm */
+/*! @brief Used by RefComm; Set the current game state (See RefComm reference)
+ * @see RefComm
+ * @see getGameState */
 void GameModel::setGameState(char gameState)
 {
     char lastGameState = this->gameState;
     if(lastGameState != gameState)
     {
         hasNewCommand = true;
-        setPreviousGameState(lastGameState);
+        previousGameState = lastGameState;
     }
     this->gameState = gameState;
 }
 
-void GameModel::setPreviousGameState(char lastGameState)
-{
-    previousGameState = lastGameState;
-}
-
+//! @brief Callback called from StrategyController when a new command is processed
 void GameModel::onCommandProcessed()
 {
     this->hasNewCommand = false;
 }
 
+//! @brief To do the actual calculation of the ball's predocted point
 static Point calcBallPrediction()
 {
     //p = p0 + vt, with t = 2
@@ -243,6 +286,7 @@ static Point calcBallPrediction()
     return predict;
 }
 
+//! @brief Sets the position of the ball. Updates velocity and acceleration
 void GameModel::setBallPoint(Point bp)
 {
     //Sets ball point, and calculates velocity, acceleration, and the prediction.
@@ -264,6 +308,7 @@ static bool calculateHasBall(Robot* robot)
            Comparisons::isFacingPoint(robot, bp);
 }
 
+//! @brief Sets the robot that has currently been determined to have the ball.
 void GameModel::setRobotHasBall()
 {
     //Count of how many times `robotWithBall` has been seen without ball
@@ -293,21 +338,32 @@ void GameModel::setRobotHasBall()
         this->robotWithBall->hasBall = true;
 }
 
+//! @brief Used by RefComm; Set the current game state (See RefComm reference)
 void GameModel::setTimeLeft(short time)
 {
     remainingTime = time;
 }
 
+//! @brief Used by RefComm; Set the number of blue team goals
 void GameModel::setBlueGoals(char goals)
 {
     blueGoals = goals;
 }
 
+//! @brief Used by RefComm; Set the number of yellow team goals
 void GameModel::setYellowGoals(char goals)
 {
     yellowGoals = goals;
 }
 
+/*! @brief General-case find function
+ * Looks for a robot with id `id` in a vector of robots. Like find_if.
+ * @param id The Id to look for
+ * @param team The team to look in (either getMyTeam or getOponentTeam)
+ * @see findMyTeam
+ * @see findOpTeam
+ * @return A Robot pointer pointing into `team` if found, or NULL if not found
+ */
 Robot* GameModel::find(int id, std::vector<Robot*>& team)
 {
     /* Often, the vision system (and also almost always on the simulator)
@@ -331,20 +387,28 @@ Robot* GameModel::find(int id, std::vector<Robot*>& team)
     return NULL;
 }
 
-
-static void calculateRobotVelocity(Robot* robot) 
+/*! @brief Stores a VelocityCalculator for each robot, and updates each robot's velocitiy.
+ * This is called when the VisionComm says a robot has been updated */
+static Point calculateRobotVelocity(Robot* robot)
 {
     static VelocityCalculator robotVelCalcs[20];
     int   index  = (10 * robot->isOnMyTeam()) + robot->getID();
     Point newVel = robotVelCalcs[index].update(robot->getRobotPosition());
-    robot->setVelocity(newVel);
+    return newVel;
 }
 
+//! @brief Used by VisiomComm; Update the information in the specified robot on the specified team
 void GameModel::onRobotUpdated(Robot* robot)
 {
-    calculateRobotVelocity(robot);
+    robot->setVelocity(calculateRobotVelocity(robot));
 }
 
+/*! @brief Removes a robot from a team
+ * Should not be used directly. Used to provide an interface for utilities/debug.h
+ * "remove_robot" command. Use that instead.
+ * @param id The Id to remove
+ * @param team The team (TEAM_YELLOW) or (TEAM_BLUE) to remove from
+ * @see utilities/debug.h */
 void GameModel::removeRobot(int id, int team)
 {
     auto* vector = &getMyTeam();

@@ -31,16 +31,6 @@ NXTRobComm::~NXTRobComm()
     Xbee.Close();
 }
 
-void NXTRobComm::send(unsigned b)
-{
-    Xbee.WriteChar(b);
-}
-
-void NXTRobComm::send(char* commptr, int size)
-{
-    Xbee.Write(commptr, size);
-}
-
 //Config to change sending individual wheels or program velocities
 #define ROBOT_WHEEL_TEST 0
 
@@ -98,5 +88,5 @@ void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
     }
 
     // Send Array of packets
-    send((char*)&teamPacketBuf, sizeof(packet_t)*5);
+    Xbee.Write((char*)&teamPacketBuf, sizeof(packet_t)*5);
 }

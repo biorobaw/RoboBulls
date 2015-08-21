@@ -5,6 +5,9 @@
 
 using namespace std;
 
+/*! @brief 2D Point Class
+ * A Point is a 2D vector in space. Typically used to represent positions
+ * on the Robot Field */
 class Point
 {
 public:
@@ -24,7 +27,8 @@ public:
 	
     std::string toString() const;
 public:
-    float x, y;
+    float x;    //!< The X coordinate
+    float y;    //!< The Y coordinate
 };
 
 

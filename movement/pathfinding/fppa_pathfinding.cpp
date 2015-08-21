@@ -8,6 +8,8 @@
 #include "model/gamemodel.h"
 #include "movement/pathfinding/fppa_pathfinding.h"
 
+
+
 /* Implementation of the Fast Path Planning Algorithm
  * In a sense, this is a mostly a generalized implementation.
  * But it is currently hardcoded to work with robobulls only.
@@ -40,10 +42,10 @@
 
 /************************************************************************/
 
-namespace FPPA
-{
-namespace impl
-{
+namespace Movement {
+namespace FPPA {
+namespace impl {
+
     const Point fieldTopLeft = Point(-FIELD_LENGTH, -FIELD_WIDTH);
     const Point fieldBotRight = Point(FIELD_LENGTH, FIELD_WIDTH);
     int framesUntilUpdate = 0;
@@ -223,20 +225,13 @@ namespace impl
 } //namespace impl
 
 
-    void pathfindingBegin()
+    void update()
     {
-        if(impl::framesUntilUpdate == 0) {
+        if(impl::framesUntilUpdate-- == 0) {
             impl::buildObstacleCollection();
             impl::framesUntilUpdate = FRAME_UPDATE_COUNT;
         }
     }
-
-
-    void pathfindingEnd()
-    {
-        --impl::framesUntilUpdate;
-    }
-
 
     PathInfo findShortestPath(const Point& start, const Point& end, bool avoidBall,
                               PathDirection pathHint, float unlessValue)
@@ -324,3 +319,4 @@ namespace impl
     }
 
 } //namespace FPPA
+} //namespace Movement

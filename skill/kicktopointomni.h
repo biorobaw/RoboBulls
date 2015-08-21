@@ -1,6 +1,5 @@
 #ifndef KTP_OMNI_H
 #define KTP_OMNI_H
-
 #include "model/robot.h"
 #include "utilities/point.h"
 #include "skill/skill.h"
@@ -9,41 +8,31 @@
 namespace Skill
 {
 
-/* KickToPointOmni:
- * A simplified, optimized version of KTP for Omni robots.
+/*! @brief General-purpose  skill to kick the ball to a point
+ *  @author JamesW
+ * @details A simplified, optimized version of KTP for Omni robots.
  * The ability the track a moving target is preserved with the
- * pointer constructor.
- *
- * KickToPointOmni makes some assumptions about movement of the robot
- * that apply only to omnis. The robot is asked to move to behind the
- * ball at any angle, then rotated to the ball. In the "moving to ball"
- * state (MOVE_FORWARD), no checks are made for "not facing the ball" because
- * the omni doesn't need to stop and rotate to adjust--only position is
- * checked against
- *
- * It takes the same arguments as the original KickToPoint.
- *target
- *  | Target point to kick toarwards
- *  | `Point* targetPtr` allows the skill to kick to a changing point.
- *  | Pass in a pointer and the skill will continue to allign.
- *targetTolerance:
- *  | Tolerance for the robot angle facing the target point before
- *  | a kick is made, for accuracy or non-accuracy reasons.
- *  | Leave blank to use default
- * kickDistance:
- *  | How close should the robot be to the target before kicking.
- *  | leave blank to kick as soon as possible
- */
+ * pointer constructor. The robot is asked to fist move to behind the ball
+ * at any angle while rotating to face the ball. Then the Robot moves
+ * forwards, and finally kicks the ball when close enough.
+ * KTPO supports both a <b>static point</b> and <b>variable point</b> constructors. */
 
 class KickToPointOmni : public Skill
 {
 public:
-    //Constant point constructor
+    /*! @brief <b>Static-point</b> constructor, for kicking to a static point
+    * @param target Target point to kick toarwards
+    * @param targetTolerance: Tolerance for the robot angle facing the target point before
+    * a kick is made, for accuracy or non-accuracy reasons.
+    * Leave blank to use default
+    * @param kickDistance: How close should the robot be to the target before kicking.
+    * leave blank to kick as soon as possible */
     KickToPointOmni(const Point& target,
                     float targetTolerance = -1,
                     float kickDistance = -1);
 
-    //Variable point constructor
+    /*! @brief <b>variable-point</b> constructor, for kicking to a changing point
+     * @param targetPtr Pointer to a point to kick to. Can change while skill is created */
     KickToPointOmni(Point* targetPtr,
                     float  targetTolerance = -1,
                     float  kickDistance = -1);

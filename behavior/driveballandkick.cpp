@@ -4,7 +4,7 @@
 #include "skill/driveball.h"
 #include "skill/stop.h"
 #include "skill/kick.h"
-#include "movement/gotopositionwithorientation.h"
+#include "movement/gotoposition.h"
 #include "behavior/genericmovementbehavior.h"
 #include "utilities/point.h"
 #include <math.h>

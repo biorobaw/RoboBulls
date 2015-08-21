@@ -4,6 +4,11 @@
 #include "strategy/strategy.h"
 #include "model/gamemodel.h"
 
+/*! @brief Strategy to implement the game stopped state 'S'
+ * @author JamesW
+ * @details To implement to stopped game state, we have the robots gather
+ * in a circle around the ball */
+
 class StopStrategy:public Strategy
 {
 public:
@@ -12,12 +17,11 @@ public:
 
 private:
     /* In case of ball movement or some other effect, the target points
-     * for StopBehavior need to be rebuilt.
-     */
+     * for StopBehavior need to be rebuilt. */
     void rebuildTargetPoints();
+
     /* Need to keep track of the previous ball point, and rebuild target
-     * points on a significant change
-     */
+     * points on a significant change */
     static Point prevBallPoint;
 };
 

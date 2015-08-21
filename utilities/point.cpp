@@ -4,10 +4,8 @@
 
 bool Point::operator==(const Point& rhs)
 {
-    return ((this->x == rhs.x) &&
-            (this->y == rhs.y));
+    return ((x == rhs.x) && (y == rhs.y));
 }
-
 
 bool Point::operator!=(const Point& rhs)
 {
@@ -16,15 +14,15 @@ bool Point::operator!=(const Point& rhs)
 
 Point& Point::operator=(const Point& rhs)
 {
-    this->x = rhs.x;
-    this->y = rhs.y;
+    x = rhs.x;
+    y = rhs.y;
     return *this;
 }
 
 Point& Point::operator+=(const Point& rhs)
 {
-	this->x += rhs.x;
-	this->y += rhs.y;
+    x += rhs.x;
+    y += rhs.y;
     return *this;
 }
 
@@ -44,20 +42,20 @@ Point& Point::operator*=(float rhs)
 
 Point& Point::operator/=(float rhs)
 {
-	this->x /= rhs;
-	this->y /= rhs;
+    x /= rhs;
+    y /= rhs;
     return *this;
 }
 
 Point Point::operator+(const Point& rhs)
 {
-    Point ret(this->x + rhs.x, this->y + rhs.y);
+    Point ret(x + rhs.x, y + rhs.y);
     return ret;
 }
 
 Point Point::operator-(const Point& rhs)
 {
-    Point ret(this->x - rhs.x, this->y - rhs.y);
+    Point ret(x - rhs.x, y - rhs.y);
     return ret;
 }
 
@@ -67,14 +65,11 @@ Point Point::operator*(float rhs)
     return ret;
 }
 
+/*! @brief Returns a string representation of the Point
+ *  Example: "(x, y) = (543.0, -1123.8)" */
 std::string Point::toString() const
 {
     stringstream ss;
     ss << "(x, y)= " << "("<<x<<", "<<y<<")";
     return ss.str();
 }
-
-/*
- * Old: float x = Point.getX();
- * New: float x = Point.x;
- */

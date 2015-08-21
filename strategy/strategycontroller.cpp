@@ -1,8 +1,7 @@
-#include "strategycontroller.h"
 #include "strategy/strategy.h"
-
 #include "model/gamemodel.h"
 #include "model/robot.h"
+#include "communication/robcomm.h"
 #include "behavior/behavior.h"
 #include "strategy/stopstrategy.h"
 #include "strategy/teststrategy.h"
@@ -16,8 +15,11 @@
 #include "strategy/videostrategies.h"
 #include "movement/pathfinding/fppa_pathfinding.h"
 #include "gui/guiinterface.h"
+#include "strategycontroller.h"
 
-using namespace std;
+//! @brief Chooses between listening to RefComm,and always choosing TestStrategy.
+#define USE_TEST_STRATEGY 0
+
 
 StrategyController::StrategyController(GameModel* gm)
 {
@@ -52,7 +54,7 @@ void StrategyController::assignNewStrategy(char gameState)
     /* Testing macro: Change this to 0 to ignore game sate
      * commands; use to test a single strategy
      */
-#if 0
+#if !USE_TEST_STRATEGY
     switch(gameState)
     {
     case 'S':    //stop game
@@ -136,9 +138,8 @@ void StrategyController::clearCurrentStrategy()
 
 void StrategyController::frameBegin()
 {
-    FPPA::pathfindingBegin();
+    Movement::FPPA::update();
 }
-
 
 void StrategyController::frameEnd()
 {
@@ -146,12 +147,11 @@ void StrategyController::frameEnd()
     {
         Robot *rob = model->getMyTeam().at(i);
         if (!GuiInterface::getGuiInterface()->isOverriddenBot()[rob->getID()]) {
-            if(rob->hasBeh)
+            if(rob->hasBehavior())
                 rob->getCurrentBeh()->perform(rob);
          }
     }
 
     RobComm * robcom = RobComm::getRobComm();
     robcom->sendVelsLarge(model->getMyTeam());
-    FPPA::pathfindingEnd();
 }

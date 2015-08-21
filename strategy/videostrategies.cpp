@@ -10,6 +10,9 @@
 #include "behavior/defendfarfromball.h"
 #include "behavior/kicktogoal.h"
 
+namespace Video
+{
+
 /************************************************************************/
 /* USER CONFIGURATION */
 
@@ -347,5 +350,4 @@ bool VideoStrategy5::update()
     return false;
 }
 
-
-
+}   //namespace Video

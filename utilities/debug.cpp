@@ -156,9 +156,7 @@ void builtin_remove_robot(const std::vector<std::string>& args)
 void builtin_add_robot(const std::vector<std::string>& args)
 {
     buildin_robot_action(args, [&](int id, int team){
-        Robot* robot = new Robot();
-        robot->setID(id);
-        robot->setTeam(team);
+        Robot* robot = new Robot(id, team);
         ((team == TEAM_BLUE) ? gameModel->getBlueTeam() : gameModel->getYellowTeam()).push_back(robot);
         std::cout << "Added robot " << id << " to team " << team << std::endl;
     });

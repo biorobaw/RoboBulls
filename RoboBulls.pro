@@ -85,14 +85,12 @@ SOURCES += main.cpp \
 	movement/differential/closedloopcontrol.cpp \
 	movement/differential/differential_velcalculator.cpp \
 	movement/four_omni_motion/omni4_velcalculator.cpp \
-	movement/gotopositionwithorientation.cpp \
 	movement/move_collisions.cpp \
 	movement/move.cpp \
 	movement/pathfinding/fppa_pathfinding.cpp \
 	movement/three_omni_motion/omni3_velcalculator.cpp \
 	skill/driveball.cpp \
 	skill/kick.cpp \
-	skill/kicktopoint.cpp \
 	skill/kicktopointomni.cpp \
 	skill/stop.cpp \
 	strategy/freekickstrategy.cpp \
@@ -112,7 +110,8 @@ SOURCES += main.cpp \
 	utilities/measurments.cpp \
 	utilities/point.cpp \
 	utilities/region.cpp \
-	utilities/velocitycalculator.cpp
+	utilities/velocitycalculator.cpp \
+    movement/gotoposition.cpp
 
 HEADERS += \
 	behavior/attackmain.h \
@@ -174,7 +173,6 @@ HEADERS += \
 	movement/differential/differential_velcalculator.h \
 	movement/four_omni_motion/omni4_velcalculator.h \
 	movement/gotoposition.h \
-	movement/gotopositionwithorientation.h \
 	movement/move_collisions.h \
 	movement/move.h \
 	movement/movetype.h \
@@ -182,7 +180,6 @@ HEADERS += \
 	movement/three_omni_motion/omni3_velcalculator.h \
 	skill/driveball.h \
 	skill/kick.h \
-	skill/kicktopoint.h \
 	skill/kicktopointomni.h \
 	skill/skill.h \
 	skill/stop.h \

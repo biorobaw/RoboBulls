@@ -8,6 +8,8 @@ using namespace std::placeholders;
 namespace Comparisons
 {
 
+//! @cond
+
 struct idFilter {
     std::function<bool(int, int)> compare_function;
     int compare_id;
@@ -28,106 +30,107 @@ struct idNotEqual : public idFilter {
     { compare_function = std::not_equal_to<int>{}; }
 };
 
+//! @endcond
 
 //Unary operators
-bool IgnorablePredicate::operator()(Robot* robot) {
+bool Predicate::operator()(Robot* robot) {
     try {
         return isNotIgnored(robot) and robotCompareFn(robot, nullptr);
     } catch( ... ) {
         return isNotIgnored(robot);
     }
 }
-bool IgnorablePredicate::operator()(const Point& point) {
+bool Predicate::operator()(const Point& point) {
     return pointCompareFn(point, Point(0,0));
 }
 
 //Binary operators
-bool IgnorablePredicate::operator()(Robot* a, Robot* b) {
+bool Predicate::operator()(Robot* a, Robot* b) {
     try {
         return isNotIgnored(a) and isNotIgnored(b) and robotCompareFn(a, b);
     } catch( ... ) {
         return isNotIgnored(a);
     }
 }
-bool IgnorablePredicate::operator()(const Point& a, const Point& b) {
+bool Predicate::operator()(const Point& a, const Point& b) {
     return pointCompareFn(a, b);
 }
 
 //Ignore Functions
-IgnorablePredicate& IgnorablePredicate::ignore_if(std::function<bool(Robot*)> function) {
+Predicate& Predicate::ignore_if(std::function<bool(Robot*)> function) {
     ignoreFunctions[nextIgnoreSpot++] = function;
     return *this;
 }
-IgnorablePredicate& IgnorablePredicate::ignoreID(int id) {
+Predicate& Predicate::ignoreID(int id) {
     return ignore_if(idEqual(id));
 }
-IgnorablePredicate& IgnorablePredicate::ignoreIDNot(int id) {
+Predicate& Predicate::ignoreIDNot(int id) {
     return ignore_if(idNotEqual(id));
 }
-IgnorablePredicate& IgnorablePredicate::ignoreID(Robot* r) {
+Predicate& Predicate::ignoreID(Robot* r) {
     return ignoreID(r->getID());
 }
-IgnorablePredicate& IgnorablePredicate::ignoreIDNot(Robot* r) {
+Predicate& Predicate::ignoreIDNot(Robot* r) {
     return ignoreIDNot(r->getID());
 }
-IgnorablePredicate& IgnorablePredicate::ignoreIDs(std::initializer_list<int> ids) {
+Predicate& Predicate::ignoreIDs(std::initializer_list<int> ids) {
     for(int id : ids)
         ignore_if(idEqual(id));
     return *this;
 }
-IgnorablePredicate& IgnorablePredicate::ignoreIDs(std::initializer_list<Robot*> robs) {
+Predicate& Predicate::ignoreIDs(std::initializer_list<Robot*> robs) {
     for(Robot* rob : robs)
         ignore_if(idEqual(rob->getID()));
     return *this;
 }
-IgnorablePredicate& IgnorablePredicate::ignoreIDsNot(std::initializer_list<int> ids) {
+Predicate& Predicate::ignoreIDsNot(std::initializer_list<int> ids) {
     for(int id : ids)
         ignore_if(idNotEqual(id));
     return *this;
 }
 
 //MyTeam/OpTeam/AnyTeam helper functions
-Robot* IgnorablePredicate::maxMyTeam() {
+Robot* Predicate::maxMyTeam() {
     auto& myTeam = gameModel->getMyTeam();
     return *max(myTeam);
 }
 
-Robot* IgnorablePredicate::maxOpTeam() {
+Robot* Predicate::maxOpTeam() {
     auto& opTeam = gameModel->getOponentTeam();
     return *max(opTeam);
 }
 
-Robot* IgnorablePredicate::maxAnyTeam() {
+Robot* Predicate::maxAnyTeam() {
     return std::max(maxMyTeam(), maxOpTeam(), *this);
 }
 
-Robot* IgnorablePredicate::minMyTeam() {
+Robot* Predicate::minMyTeam() {
     auto& myTeam = gameModel->getMyTeam();
     return *min(myTeam);
 }
 
-Robot* IgnorablePredicate::minOpTeam() {
+Robot* Predicate::minOpTeam() {
     auto& opTeam = gameModel->getOponentTeam();
     return *min(opTeam);
 }
 
-Robot* IgnorablePredicate::minAnyTeam() {
+Robot* Predicate::minAnyTeam() {
     return std::min(minMyTeam(), minMyTeam(), *this);
 }
 
-Robot* IgnorablePredicate::anyMyTeam() {
+Robot* Predicate::anyMyTeam() {
     auto& myTeam = gameModel->getMyTeam();
     auto it = any(myTeam);
     return it != myTeam.end() ? *it : NULL;
 }
 
-Robot* IgnorablePredicate::anyOpTeam() {
+Robot* Predicate::anyOpTeam() {
     auto& opTeam = gameModel->getOponentTeam();
     auto it = any(opTeam);
     return it != opTeam.end() ? *it : NULL;
 }
 
-Robot* IgnorablePredicate::anyAnyTeam() {
+Robot* Predicate::anyAnyTeam() {
     Robot* r = anyMyTeam();
     if(r) return r;
     r = anyOpTeam();
@@ -135,10 +138,10 @@ Robot* IgnorablePredicate::anyAnyTeam() {
     return NULL;
 }
 
-void IgnorablePredicate::setCompareFunction() { }
+void Predicate::setCompareFunction() { }
 
 
-bool IgnorablePredicate::isNotIgnored(Robot* robot) {
+bool Predicate::isNotIgnored(Robot* robot) {
     for(int i = 0; i != nextIgnoreSpot; ++i)
         if(ignoreFunctions[i](robot))
             return false;
@@ -199,15 +202,16 @@ pred_distanceOpGoal::pred_distanceOpGoal()
 
 /****************************************************************/
 
-bool isFacingPointCompareFn(Robot* robot, Robot* null, const Point& pred_Point, float pred_tolerance,
-                            std::function<bool(float,float)> compare_function) {
-    (void)(null);
+//! @cond
+bool isFacingPointCompareFn(Robot* robot, Robot*, const Point& pred_Point, float pred_tolerance,
+                            compareFunction compare_function) {
     Point robPos     = robot->getRobotPosition();
     float robAngle   = robot->getOrientation();
     float angleTween = Measurments::angleBetween(robPos, pred_Point);
     float angleDiff  = abs( Measurments::angleDiff(angleTween, robAngle) );
     return compare_function(angleDiff, pred_tolerance);
 }
+//! @endcond
 
 //Base class constructors
 _isFacingPoint::_isFacingPoint(const Point& testPoint, float tol)
@@ -232,6 +236,7 @@ void pred_isNotFacingPoint::setCompareFunction() {
 
 /****************************************************************/
 
+//! @cond
 static bool pointOutsideCompareFnPt(const Point& testPoint, compareFunction f) {
     if(f(abs(testPoint.x), FIELD_WIDTH*0.966))
         return true;
@@ -239,10 +244,10 @@ static bool pointOutsideCompareFnPt(const Point& testPoint, compareFunction f) {
         return true;
     return false;
 }
-
 static bool pointOutsideCompareFnRob(Robot* r, std::function<bool(float,float)> f) {
     return pointOutsideCompareFnPt(r->getRobotPosition(), f);
 }
+//! @endcond
 
 pred_isPointOutsideField::pred_isPointOutsideField() {
 }
@@ -261,17 +266,14 @@ void pred_isPointInsideField::setCompareFunction() {
 
 
 /****************************************************************/
-
-bool isDistGreaterCompareFnPt(const Point& a, const Point& null, const Point& b, float dist,
-                       compareFunction f) {
-    (void)(null);
+//! @if
+bool isDistGreaterCompareFnPt(const Point& a, const Point&, const Point& b, float dist, compareFunction f) {
     return f(Measurments::distance(a, b), dist);
 }
-
-bool isDistGreaterCompareFnRb(Robot* a, Robot* null, const Point& b, float dist, compareFunction f) {
-    (void)(null);
+bool isDistGreaterCompareFnRb(Robot* a, Robot*, const Point& b, float dist, compareFunction f) {
     return isDistGreaterCompareFnPt(a->getRobotPosition(), Point(0,0), b, dist, f);
 }
+//! @endif
 
 pred_isDistanceToGreater::pred_isDistanceToGreater(const Point& a, float dist)
     : pred_testPoint(a)

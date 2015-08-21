@@ -5,11 +5,11 @@
 #include "skill/skill.h"
 #include "utilities/point.h"
 
-/* Since this is only used in FreeKickStrategy, there is a hack for the robot
- * to not kick unless all robots are stopped. Don't use this. Just use normal KTPO:
- * ex: robot->assignSkill<KickToPointOmni>(gameModel->getOpponentGoal());
+/*! @brief Old Behavior to kick to the opponent's goal
+ * @details <b>Don't use. </b> Behavior used in FreeKickStrategy to kick to goal
+ * Contains a hack that only work in that Strategy
+ * @deprecated Use robot->assignSkill<KickToPointOmni>(gameModel->getOpponentGoal());
  */
-
 class KickToGoal : public Behavior
 {
 public:

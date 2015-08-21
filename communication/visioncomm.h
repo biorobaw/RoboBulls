@@ -1,7 +1,5 @@
-
 #ifndef VISIONCOMM_H
 #define VISIONCOMM_H
-
 #include <string>
 #include <QtCore/QThread>
 #include "include/netraw.h"
@@ -11,24 +9,20 @@
 #include "include/robocup_ssl_client.h"
 #include "model/gamemodel.h"
 #include "model/robot.h"
-using namespace std;
 
-/**
- * @brief CONF_THRESHOLD sets the minimum confidence to consider the ball as detected.
-*/
+//! @brief CONF_THRESHOLD sets the minimum confidence to consider the ball as detected.
 const float CONF_THRESHOLD_BALL = 0.75;
 const float CONF_THRESHOLD_BOTS = 0.8;
 
-/**
- * @brief DISCARD_RATE sets the rate in which packets are discarded. only 1/DISCARD_RATE packages are processed.
- */
+//! @brief DISCARD_RATE sets the rate in which packets are discarded.
+//! Only 1/DISCARD_RATE packages are processed.
 const int DISCARD_RATE = 1;
 
 /**
- * @brief The VisionComm class
- * Detects the robots and ball and puts each robot in the corresponding team
+ * @brief The VisionComm class recieves information from the vision cameras
+ * @author Origin. Narges Ghaedi, JamesW
+ * @details Detects the robots and ball and puts each robot in the corresponding team
  * based on robot's color (Blue team/ Yellow team)
- * Narges Ghaedi... ``et al``
  */
 class VisionComm: public QThread
 {
@@ -43,8 +37,13 @@ public:
     void run();
 
 protected:
+    //! @brief Parses an SSL_DetectionFrame and fills out GameModel
     void recieveRobotTeam(const SSL_DetectionFrame& frame, int whichTeam);
+
+    //! @brief Parses an SSL_DetectionFrame and fills out GameModel
     void recieveBall(const SSL_DetectionFrame& frame);
+
+    //! @brief Updates GameModel information to fill out a robot
     void updateInfo(const SSL_DetectionRobot& robot, int detectedTeamColor);
     
     GameModel *gamemodel;

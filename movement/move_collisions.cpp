@@ -57,15 +57,14 @@ namespace Movement {
 namespace Collisions {
 namespace detail {
 
-/* Internal structure to keep track of all
- * move/collide statuses of each robot */
+/*! @brief Internal structure to keep track of all move/collide statuses of each robot */
 struct RobotMoveStatus
 {
     RobotMoveStatus();
-    int   status() const;          //Returns MOVE_* status
-    bool  moving() const;          //Returns true if seen moiving
-    void  update(Robot* robot);    //Updates the status and moving status
-    Point backupDirection() const; //Gets the unit direction the robot should backup in
+    int   status() const;          //!<Returns MOVE_* status
+    bool  moving() const;          //!<Returns true if seen moiving
+    void  update(Robot* robot);    //!<Updates the status and moving status
+    Point backupDirection() const; //!<Gets the unit direction the robot should backup in
 
 private:
     //Querying and helper functions
@@ -81,23 +80,26 @@ private:
     void   updateMoveOk(Robot* robot);
     void   updateMoveYielding(Robot* robot);
     void   updateMoveCollided(Robot* robot);
-    int    m_status;          //MOVE_* status
-    bool   m_isMoving;        //Is robot moving?
-    int    m_observeCount;    //Count of times observed non-moving
-    Point  m_lastDiffPoint;   //Last point observed moving at
-    Robot* m_collideBot;      //for YIELDING/COLLIDED, what robot did it collide with
-    int    m_collideCounter;  //If COLLIDED, Counter to how long robot is backing up
-    Point  m_collideDirection;//If COLLIDED, unit direction robot should backup in
+    int    m_status;          //!<MOVE_* status
+    bool   m_isMoving;        //!<Is robot moving?
+    int    m_observeCount;    //!<Count of times observed non-moving
+    Point  m_lastDiffPoint;   //!<Last point observed moving at
+    Robot* m_collideBot;      //!<for YIELDING/COLLIDED, what robot did it collide with
+    int    m_collideCounter;  //!<If COLLIDED, Counter to how long robot is backing up
+    Point  m_collideDirection;//!<If COLLIDED, unit direction robot should backup in
 };
 
 /****************************************************/
 /* State Variables */
 
-/* "Move statuses" of all robots. This container contains both Blue/Yellow statuses,
+/*! @brief stored RobotMoveStatus for all robots.
+ * @details This container contains both Blue/Yellow statuses,
  * and is needed to differentiate same IDs with different teams
  */
 struct RobotMoveStatusContainer
 {
+    /*!< @brief Returns a status in moveStatusesMine or moveStatusesOpponent
+     * based on robot's team */
     RobotMoveStatus& operator[](Robot* robot) {
         int id = robot->getID();
         return robot->isOnMyTeam() ? moveStatusesMine[id] : moveStatusesOpponent[id];
