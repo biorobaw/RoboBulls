@@ -277,25 +277,27 @@ void GameModel::onCommandProcessed()
     this->hasNewCommand = false;
 }
 
-//! @brief To do the actual calculation of the ball's predocted point
-static Point calcBallPrediction()
+//! @brief To do the actual calculation of the ball's predicted (stopping) point
+static Point calcBallPrediction(float t)
 {
-    //p = p0 + vt, with t = 2
-    Point bp = gameModel->getBallPoint();
-    Point predict = bp + gameModel->getBallVelocity() * POINTS_PER_METER * 2.0;
-    return predict;
+    //p = p0 + vt + (1/2)at^2, with t = some t
+    Point predict_t =
+              gameModel->getBallPoint()
+            + gameModel->getBallVelocity() * POINTS_PER_METER * t
+            + gameModel->getBallAcceleration()*POINTS_PER_METER * t * t * 0.5;
+    return predict_t;
 }
 
 //! @brief Sets the position of the ball. Updates velocity and acceleration
 void GameModel::setBallPoint(Point bp)
 {
     //Sets ball point, and calculates velocity, acceleration, and the prediction.
-    static VelocityCalculator ballVelCalculator;
-    static VelocityCalculator ballAclCalculator;
+    static VelocityCalculator ballVelCalculator(10);
+    static VelocityCalculator ballAclCalculator(3);
     ballPoint = bp;
     ballVelocity = ballVelCalculator.update(bp);
-    ballAcceleration = ballAclCalculator.update(ballVelocity * POINTS_PER_METER);
-    ballPrediction = calcBallPrediction();
+    ballAcceleration = ballAclCalculator.update(ballVelocity);
+    ballPrediction = calcBallPrediction(3.2);
 }
 
 
