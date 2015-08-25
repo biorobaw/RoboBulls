@@ -1,0 +1,6 @@
++++ - Enter Command mode
+ATCH - query channel
+ATCH D & - set channel to D
+ATWR - write changes
+ATCN - quit command mode
+ATBD - Baud Rate. We use 6
