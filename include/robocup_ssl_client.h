@@ -29,7 +29,8 @@
 #include "messages_robocup_ssl_refbox_log.pb.h"
 using namespace std;
 /**
-	@author Author Name
+	@author Stefan Zickler, 2009
+	@brief Client to recieve the standard PtotoBuf SSL Messages
 */
 
 class RoboCupSSLClient{

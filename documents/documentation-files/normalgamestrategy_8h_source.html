@@ -40,6 +40,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -72,7 +73,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -130,7 +131,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">#endif // NORMALGAMESTRATEGY_H</span></div>
 <div class="ttc" id="classNormalGameStrategy_html_aa24cd3fe14a5a2eb125ea3e25a426bbd"><div class="ttname"><a href="classNormalGameStrategy.html#aa24cd3fe14a5a2eb125ea3e25a426bbd">NormalGameStrategy::isOnAttack</a></div><div class="ttdeci">static bool isOnAttack</div><div class="ttdoc">Are we currently on attack? </div><div class="ttdef"><b>Definition:</b> normalgamestrategy.h:60</div></div>
 <div class="ttc" id="classNormalGameStrategy_html_a85265e9882901bc0773a7e9743596aee"><div class="ttname"><a href="classNormalGameStrategy.html#a85265e9882901bc0773a7e9743596aee">NormalGameStrategy::assignBeh</a></div><div class="ttdeci">void assignBeh() override</div><div class="ttdoc">Decides How to assign behaviors to each robot on the team. </div></div>
-<div class="ttc" id="classRobot_html"><div class="ttname"><a href="classRobot.html">Robot</a></div><div class="ttdoc">The Robot class representing Robots on the field. </div><div class="ttdef"><b>Definition:</b> robot.h:16</div></div>
+<div class="ttc" id="classRobot_html"><div class="ttname"><a href="classRobot.html">Robot</a></div><div class="ttdoc">The Robot class representing Robots on the field. </div><div class="ttdef"><b>Definition:</b> robot.h:18</div></div>
 <div class="ttc" id="classNormalGameStrategy_html_ab729c5d7ead4bc3314b4139780be3214"><div class="ttname"><a href="classNormalGameStrategy.html#ab729c5d7ead4bc3314b4139780be3214">NormalGameStrategy::update</a></div><div class="ttdeci">bool update() override</div><div class="ttdoc">Function (optional) that updates the Strategy object. </div></div>
 <div class="ttc" id="classNormalGameStrategy_html_a407c42c00c98f17d6eed6d684aba31b1"><div class="ttname"><a href="classNormalGameStrategy.html#a407c42c00c98f17d6eed6d684aba31b1">NormalGameStrategy::moveRobotToIdleLine</a></div><div class="ttdeci">static void moveRobotToIdleLine(Robot *robot, bool waiter=false)</div><div class="ttdoc">Moves robots to an idle line, a line near the goal and spaced by ID. </div></div>
 <div class="ttc" id="classStrategy_html"><div class="ttname"><a href="classStrategy.html">Strategy</a></div><div class="ttdoc">Strategy is the abstract base class for other strategy classes. </div><div class="ttdef"><b>Definition:</b> strategy.h:23</div></div>
@@ -140,7 +141,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Aug 25 2015 13:42:04 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Aug 25 2015 16:39:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

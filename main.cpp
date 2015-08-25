@@ -27,7 +27,7 @@
  *
  * @section config Configuration
  * The project is controlled by a number of configuration files.
- * See the include/config directory. The two most important are:
+ * See the Config Module in Modules. The two most important are:
  * - *include/config/simulated.h*--Simulated or Field play-- The SIMULATED macrco
  *   selects to run the project on the field (ENG lab) or grSim simulator.
  * - *include/config/team.h*--Team Selection--The TEAM macro selects TEAM_BLUE or TEAM_YELLOW.
@@ -44,7 +44,7 @@
  * 4) Go to **strategy/teststrategy.cpp** and insert
  *    **gameModel->findMyTeam(0)->assignBeh<GoToBeh>();** under **TestStrategy::assignBeh**<br>
  * 5) Open the grSim simulator (grSim/bin/grsim) from the script's install path
- *    on your computer or any other computer<br>*
+ *    on your computer or any other computer<br>
  * 6) Making sure SIMULATED in include/config/simulated is 1, Run the program.
  *
  * If these steps are completed correctly, Robot 0 on TEAM should move to the center

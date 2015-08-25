@@ -7,8 +7,7 @@
  * a robot is one or another, they must be manually specified. 
  * In this file, there is a map of robot IDs to their type.
  * In order to change the type, change the type next to the commented ID.
- * These values are then returned by robot->type() to get the robot type.
- */
+ * These values are then returned by robot->type() to get the robot type. */
 
 //! @brief Possible types for a robot in terms of number of wheels
 enum RobotType
@@ -18,14 +17,17 @@ enum RobotType
 	fourWheelOmni
 };
 
+//! @addtogroup config
+//! @{
 
 //! @brief An array indexed by ID to RobotType
 extern const RobotType robotIDTypes[];
-
 
 /*! @brief The goalie robot's ID is given as an integer.
  * @details This ID can be changed with the `goalie_id` integer on
  * the utility command line. It is 5 by default (see .cpp) */
 extern int GOALIE_ID;
+
+//! @}
 
 #endif

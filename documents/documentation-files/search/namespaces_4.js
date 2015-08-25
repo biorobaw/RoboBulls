@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['video',['Video',['../namespaceVideo.html',1,'']]]
+  ['skill',['Skill',['../namespaceSkill.html',1,'']]]
 ];

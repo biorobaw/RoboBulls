@@ -1,10 +1,12 @@
 var searchData=
 [
+  ['radius',['radius',['../classStopStrategy.html#aaf4dbf0ba9fc34a09e8efd7371d4208f',1,'StopStrategy']]],
   ['rb',['RB',['../classRobot.html#a5754bca7673d734295be8b0718ac7328',1,'Robot']]],
   ['read',['Read',['../classserialib.html#ad36272576f4bc10c5cfa1ed1f37887f5',1,'serialib']]],
   ['readchar',['ReadChar',['../classserialib.html#acf7289cac411dbcf38a9d069be25bc8d',1,'serialib']]],
   ['readstring',['ReadString',['../classserialib.html#a616669a303259d00487f0835613ac9b7',1,'serialib']]],
   ['readstringnotimeout',['ReadStringNoTimeOut',['../classserialib.html#ad3fdbddb05199470df984675a5df4a73',1,'serialib']]],
+  ['rebuildtargetpoints',['rebuildTargetPoints',['../classStopStrategy.html#ac081e2c1a57d07d6c253f8eb69c8babc',1,'StopStrategy']]],
   ['receive',['receive',['../classVisionComm.html#aa23323f8a5ecfc952613fc0f25c928d6',1,'VisionComm']]],
   ['recieveball',['recieveBall',['../classVisionComm.html#ae101f4d19b5321fff364cede9fe32dfb',1,'VisionComm']]],
   ['recieverobotteam',['recieveRobotTeam',['../classVisionComm.html#adc2d53f051d797123173215d921a1d30',1,'VisionComm']]],
@@ -18,11 +20,19 @@ var searchData=
   ['right_5fback',['right_back',['../structNXTRobComm_1_1packet__t.html#adabd9f23e8b8d36037d4fe319a278bdb',1,'NXTRobComm::packet_t']]],
   ['right_5ffront',['right_front',['../structNXTRobComm_1_1packet__t.html#afe7d9056f4eeb91d96df7792a12db328',1,'NXTRobComm::packet_t']]],
   ['robcomm',['RobComm',['../classRobComm.html',1,'RobComm'],['../classRobComm.html#a6908c68b0cd550700107758c9737a85b',1,'RobComm::robcomm()']]],
+  ['robocup_5fssl_5fclient_2ecpp',['robocup_ssl_client.cpp',['../robocup__ssl__client_8cpp.html',1,'']]],
+  ['robocup_5fssl_5fclient_2eh',['robocup_ssl_client.h',['../robocup__ssl__client_8h.html',1,'']]],
+  ['robocupsslclient',['RoboCupSSLClient',['../classRoboCupSSLClient.html',1,'']]],
   ['robot',['Robot',['../classRobot.html',1,'Robot'],['../classRobot.html#a4fc7c70ae20623f05e06f2ecb388b6c4',1,'Robot::Robot()'],['../classRobot.html#ab2e37bdf180378220ce462d14c436ada',1,'Robot::Robot(int id, int team)']]],
+  ['robot_5fradius',['ROBOT_RADIUS',['../group__config.html#ga4327ddecff4dccd778c7dbb8c721d59a',1,'ROBOT_RADIUS():&#160;tolerances.cpp'],['../group__config.html#ga4327ddecff4dccd778c7dbb8c721d59a',1,'ROBOT_RADIUS():&#160;tolerances.cpp']]],
+  ['robot_5fsize',['ROBOT_SIZE',['../group__config.html#gaefaebbfc0e5e228f5119c0e4c717636d',1,'ROBOT_SIZE():&#160;tolerances.cpp'],['../group__config.html#gaefaebbfc0e5e228f5119c0e4c717636d',1,'ROBOT_SIZE():&#160;tolerances.cpp']]],
+  ['robotidtypes',['robotIDTypes',['../group__config.html#ga6ebc17207380003d5b4f96849314487e',1,'robotIDTypes():&#160;robot_types.cpp'],['../group__config.html#ga6ebc17207380003d5b4f96849314487e',1,'robotIDTypes():&#160;robot_types.cpp']]],
   ['robotmovestatus',['RobotMoveStatus',['../structMovement_1_1Collisions_1_1detail_1_1RobotMoveStatus.html',1,'Movement::Collisions::detail']]],
   ['robotmovestatuscontainer',['RobotMoveStatusContainer',['../structMovement_1_1Collisions_1_1detail_1_1RobotMoveStatusContainer.html',1,'Movement::Collisions::detail']]],
   ['robotposition',['robotPosition',['../classRobot.html#adbb6b1370d88f44935969b7d753f8611',1,'Robot']]],
   ['robotwithball',['robotWithBall',['../classGameModel.html#acc6f695eae0eb8b5a8667cdd30009419',1,'GameModel']]],
+  ['robtargetpoints',['robTargetPoints',['../classStopStrategy.html#a3b2df11bda4a677fea2d8a70947ec738',1,'StopStrategy']]],
+  ['rot_5ftolerance',['ROT_TOLERANCE',['../group__config.html#ga26a84561ecda0c5d9bfd9bcaa7ba53f1',1,'ROT_TOLERANCE():&#160;tolerances.cpp'],['../group__config.html#ga26a84561ecda0c5d9bfd9bcaa7ba53f1',1,'ROT_TOLERANCE():&#160;tolerances.cpp']]],
   ['rotateonpoint',['RotateOnPoint',['../classRotateOnPoint.html',1,'RotateOnPoint'],['../classRotateOnPoint.html#a670ef74bc11cfeb0f96f249e2e75e6f6',1,'RotateOnPoint::RotateOnPoint()']]],
   ['run',['run',['../classVisionComm.html#a4793244a583151f3492a4917c63a06b0',1,'VisionComm::run()'],['../classStrategyController.html#a4878e0fa27bf965462d7d53d9b4c0cc7',1,'StrategyController::run()']]]
 ];

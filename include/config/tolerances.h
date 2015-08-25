@@ -1,7 +1,9 @@
 #ifndef CONFIG_TOLERANCES_H
 #define CONFIG_TOLERANCES_H
 
-//! @file Defines default tolerances and constants for movement and rotation
+//! @file
+//! @addtogroup config
+//! @{
 
 //! @brief The robot's radius in program points.
 extern const int ROBOT_RADIUS;
@@ -19,5 +21,7 @@ extern const int DIST_TOLERANCE;
  * This is also the default tolerance for the angle version
  * of Measurements::isClose */
 extern const int ROT_TOLERANCE;
+
+//! @}
 
 #endif

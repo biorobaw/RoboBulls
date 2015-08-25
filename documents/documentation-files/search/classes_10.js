@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['wheelvelocities',['wheelvelocities',['../structMovement_1_1wheelvelocities.html',1,'Movement']]]
+  ['velocitycalculator',['VelocityCalculator',['../classVelocityCalculator.html',1,'']]],
+  ['visioncomm',['VisionComm',['../classVisionComm.html',1,'']]]
 ];

@@ -40,6 +40,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -74,7 +75,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -305,7 +306,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>VisionComm</b></td><
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The <a class="el" href="classRobot.html" title="The Robot class representing Robots on the field. ">Robot</a> class representing Robots on the field. </p>
-<p>The robot class includes the required information about robot such position, orientation, id, and etc. </p>
+<p>The robot class includes the required information about robot such position, orientation, id, velocity, and behavior information.<br/>
+ These are usually returned by a <a class="el" href="classGameModel.html" title="The GameModel class Game model class can be considered as the heart of robobulls project all the info...">GameModel</a> function. They should not be created directly under normal circumstances </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a6fc16d57af4d8a5dc61a14087afadfac"></a>
 <div class="memitem">
@@ -449,10 +451,10 @@ template&lt;typename SkillType , typename... Args&gt; </div>
 </div><div class="memdoc">
 
 <p>Returns the robot wheel type. </p>
-<p>This information is used by the velocity calculators in the <a class="el" href="namespaceMovement.html" title="Namespace containing all Movement functions and classes. ">Movement</a> section of the code. This function returns information specified in include/config/robot_types.h </p>
+<p>This information is used by the velocity calculators in the <a class="el" href="namespaceMovement.html" title="Namespace containing all Movement functions and classes. ">Movement</a> section of the code. This function returns information specified in <a class="el" href="robot__types_8h_source.html">include/config/robot_types.h</a> </p>
 <dl class="section see"><dt>See Also</dt><dd>RobotType </dd>
 <dd>
-robotIDTypes </dd></dl>
+<a class="el" href="group__config.html#ga6ebc17207380003d5b4f96849314487e" title="An array indexed by ID to RobotType. ">robotIDTypes</a> </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>One of: (<code>differential</code>, <code>threeWheelOmni</code>, or <code>fourWheelOmni</code>). </dd></dl>
 
 </div>
@@ -464,7 +466,7 @@ robotIDTypes </dd></dl>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Aug 25 2015 13:42:05 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Aug 25 2015 16:39:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

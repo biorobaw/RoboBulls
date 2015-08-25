@@ -40,6 +40,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -74,7 +75,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -141,19 +142,19 @@ static <a class="el" href="classPoint.html">Point</a>&#160;</td><td class="memIt
 <tr class="memdesc:a78dca22ec83e9eca7eb29bc100b37956"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the midpoint between two points a and b using the standard 2D midpoint formula. <br/></td></tr>
 <tr class="separator:a78dca22ec83e9eca7eb29bc100b37956"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5877d56fc029ca92154b8dc04fc12f39"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5877d56fc029ca92154b8dc04fc12f39"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeasurments.html#a5877d56fc029ca92154b8dc04fc12f39">isClose</a> (const <a class="el" href="classPoint.html">Point</a> &amp;, const <a class="el" href="classPoint.html">Point</a> &amp;, float tol=DIST_TOLERANCE)</td></tr>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeasurments.html#a5877d56fc029ca92154b8dc04fc12f39">isClose</a> (const <a class="el" href="classPoint.html">Point</a> &amp;, const <a class="el" href="classPoint.html">Point</a> &amp;, float tol=<a class="el" href="group__config.html#gad5a0ff76855ce26f6d1600cbc8a7db1b">DIST_TOLERANCE</a>)</td></tr>
 <tr class="memdesc:a5877d56fc029ca92154b8dc04fc12f39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compare the points to determine if they are within a certain tolerance of each other. A "close enough" alternative to the == operator. <br/></td></tr>
 <tr class="separator:a5877d56fc029ca92154b8dc04fc12f39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29f717614002c36ee88804dd0a8b58e6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a29f717614002c36ee88804dd0a8b58e6"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeasurments.html#a29f717614002c36ee88804dd0a8b58e6">isClose</a> (const <a class="el" href="classPoint.html">Point</a> &amp;, <a class="el" href="classRobot.html">Robot</a> *, float tol=DIST_TOLERANCE)</td></tr>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeasurments.html#a29f717614002c36ee88804dd0a8b58e6">isClose</a> (const <a class="el" href="classPoint.html">Point</a> &amp;, <a class="el" href="classRobot.html">Robot</a> *, float tol=<a class="el" href="group__config.html#gad5a0ff76855ce26f6d1600cbc8a7db1b">DIST_TOLERANCE</a>)</td></tr>
 <tr class="memdesc:a29f717614002c36ee88804dd0a8b58e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the midpoint between two points a and b using the standard 2D midpoint formula. <br/></td></tr>
 <tr class="separator:a29f717614002c36ee88804dd0a8b58e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7aea9bc827221be2dfe14f0aba1d271"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af7aea9bc827221be2dfe14f0aba1d271"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeasurments.html#af7aea9bc827221be2dfe14f0aba1d271">isClose</a> (<a class="el" href="classRobot.html">Robot</a> *, const <a class="el" href="classPoint.html">Point</a> &amp;, float tol=DIST_TOLERANCE)</td></tr>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeasurments.html#af7aea9bc827221be2dfe14f0aba1d271">isClose</a> (<a class="el" href="classRobot.html">Robot</a> *, const <a class="el" href="classPoint.html">Point</a> &amp;, float tol=<a class="el" href="group__config.html#gad5a0ff76855ce26f6d1600cbc8a7db1b">DIST_TOLERANCE</a>)</td></tr>
 <tr class="memdesc:af7aea9bc827221be2dfe14f0aba1d271"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the midpoint between two points a and b using the standard 2D midpoint formula. <br/></td></tr>
 <tr class="separator:af7aea9bc827221be2dfe14f0aba1d271"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89f70111ca79c9e9466c61fba86322ed"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a89f70111ca79c9e9466c61fba86322ed"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeasurments.html#a89f70111ca79c9e9466c61fba86322ed">isClose</a> (<a class="el" href="classRobot.html">Robot</a> *, <a class="el" href="classRobot.html">Robot</a> *, float tol=DIST_TOLERANCE)</td></tr>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeasurments.html#a89f70111ca79c9e9466c61fba86322ed">isClose</a> (<a class="el" href="classRobot.html">Robot</a> *, <a class="el" href="classRobot.html">Robot</a> *, float tol=<a class="el" href="group__config.html#gad5a0ff76855ce26f6d1600cbc8a7db1b">DIST_TOLERANCE</a>)</td></tr>
 <tr class="memdesc:a89f70111ca79c9e9466c61fba86322ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the midpoint between two points a and b using the standard 2D midpoint formula. <br/></td></tr>
 <tr class="separator:a89f70111ca79c9e9466c61fba86322ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Angle functions family</div></td></tr>
@@ -183,7 +184,7 @@ static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeasurments.html#aa05c45795449b2752994f8e708ee6b58">angleSum</a> (float angle1, float angle2)</td></tr>
 <tr class="memdesc:aa05c45795449b2752994f8e708ee6b58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the sum of two orientations (angle2 + angle1) */. <br/></td></tr>
 <tr class="separator:aa05c45795449b2752994f8e708ee6b58"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad00ea9f079a4e300944d5e1080c4e64"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeasurments.html#aad00ea9f079a4e300944d5e1080c4e64">isClose</a> (float angle1, float angle2, float tol=ROT_TOLERANCE)</td></tr>
+<tr class="memitem:aad00ea9f079a4e300944d5e1080c4e64"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeasurments.html#aad00ea9f079a4e300944d5e1080c4e64">isClose</a> (float angle1, float angle2, float tol=<a class="el" href="group__config.html#ga26a84561ecda0c5d9bfd9bcaa7ba53f1">ROT_TOLERANCE</a>)</td></tr>
 <tr class="memdesc:aad00ea9f079a4e300944d5e1080c4e64"><td class="mdescLeft">&#160;</td><td class="mdescRight">isClose overload for angles  <a href="#aad00ea9f079a4e300944d5e1080c4e64">More...</a><br/></td></tr>
 <tr class="separator:aad00ea9f079a4e300944d5e1080c4e64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Line Functions Family</div></td></tr>
@@ -229,7 +230,7 @@ static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>tol</em> = <code>ROT_TOLERANCE</code>&#160;</td>
+          <td class="paramname"><em>tol</em> = <code><a class="el" href="group__config.html#ga26a84561ecda0c5d9bfd9bcaa7ba53f1">ROT_TOLERANCE</a></code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -256,7 +257,7 @@ static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Aug 25 2015 13:42:05 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Aug 25 2015 16:39:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

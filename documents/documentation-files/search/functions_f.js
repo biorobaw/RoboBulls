@@ -4,6 +4,7 @@ var searchData=
   ['readchar',['ReadChar',['../classserialib.html#acf7289cac411dbcf38a9d069be25bc8d',1,'serialib']]],
   ['readstring',['ReadString',['../classserialib.html#a616669a303259d00487f0835613ac9b7',1,'serialib']]],
   ['readstringnotimeout',['ReadStringNoTimeOut',['../classserialib.html#ad3fdbddb05199470df984675a5df4a73',1,'serialib']]],
+  ['rebuildtargetpoints',['rebuildTargetPoints',['../classStopStrategy.html#ac081e2c1a57d07d6c253f8eb69c8babc',1,'StopStrategy']]],
   ['receive',['receive',['../classVisionComm.html#aa23323f8a5ecfc952613fc0f25c928d6',1,'VisionComm']]],
   ['recieveball',['recieveBall',['../classVisionComm.html#ae101f4d19b5321fff364cede9fe32dfb',1,'VisionComm']]],
   ['recieverobotteam',['recieveRobotTeam',['../classVisionComm.html#adc2d53f051d797123173215d921a1d30',1,'VisionComm']]],

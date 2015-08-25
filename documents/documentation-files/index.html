@@ -40,6 +40,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li class="current"><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -67,7 +68,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -83,36 +84,36 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="contents">
 <div class="textblock"><h1><a class="anchor" id="install"></a>
 Installation</h1>
-<p>The required libraries and tools to run the game can be installed by running <b>documents/scripts/install_robobulls.sh</b> found with the Git download. By default, it is installed in <code>$HOME</code>, but check out the script to change it. if "robobulls2" is not the installation path, it will also be downloaded.</p>
-<p>The Installation Script will download, and compile the following.</p>
+<p>The required libraries and tools to run the game can be installed by running <b>documents/scripts/install_robobulls.sh</b> found with the Git download. By default, it installs in <code>$HOME</code>, but check out the script to change it. if "robobulls2" is not the installation path, it will also be downloaded.</p>
+<p>The Installation Script will download and compile the following.</p>
 <ul>
-<li>All required libraries to compile and run the code</li>
+<li>All required libraries to compile and run the code and tools</li>
 <li>The <a href="https://github.com/mani-monaj/grSim">grSim Simulator</a>, the program used to simulate a game.</li>
-<li>The <a href="http://robocupssl.cpe.ku.ac.th/referee:start">SSL RefereeBox</a>, the standard control platform for the game.</li>
+<li>The <a href="http://robocupssl.cpe.ku.ac.th/referee:start">SSL Referee Box</a>, the standard control platform for the game.</li>
 <li>The <a href="https://github.com/mllofriu/robobulls2">RoboBulls2 Project</a>, the project itself.</li>
 </ul>
 <h1><a class="anchor" id="config"></a>
 Configuration</h1>
-<p>The project is controlled by a number of configuration files. See the include/config directory. The two most important are:</p>
+<p>The project is controlled by a number of configuration files. See the Config Module in Modules. The two most important are:</p>
 <ul>
-<li><em>include/config/simulated.h</em>&ndash;Simulated or Field play&ndash; The SIMULATED macrco selects to run the project on the field (ENG lab) or grSim simulator.</li>
-<li><em>include/config/team.h</em>&ndash;Team Selection&ndash;The TEAM macro selects TEAM_BLUE or TEAM_YELLOW.</li>
+<li><em><a class="el" href="simulated_8h.html">include/config/simulated.h</a></em>&ndash;Simulated or Field play&ndash; The SIMULATED macrco selects to run the project on the field (ENG lab) or grSim simulator.</li>
+<li><em><a class="el" href="team_8h.html">include/config/team.h</a></em>&ndash;Team Selection&ndash;The TEAM macro selects TEAM_BLUE or TEAM_YELLOW.</li>
 </ul>
 <h1><a class="anchor" id="start"></a>
 Getting Started--Running The Project</h1>
 <p>Here we are going to compile and run the project on the simulator and perform a simple <a class="el" href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. ">Behavior</a>.<br/>
 <br/>
  1) Open the RoboBulls.pro project in Qt Creator and compile. After running the installation script, there should be no compilation issues (Tested on Ubuntu 14.04 only)<br/>
- 2) Open the grSim simulator (grSim/bin/grsim) from the script's install path on your computer or any other computer<br/>
- 3) Go to <b>communication/simrobcomm.cpp</b> and change <b>_addr</b> in the <a class="el" href="classSimRobComm.html" title="RobComm to send to the grSim simulator. ">SimRobComm</a> constructor to the IP of the computer running the simulator (127.0.0.1 for local).<br/>
- 4) Go to <b>strategy/strategycontroller.cpp</b> and change USE_TEST_STRATEGY to 1<br/>
- 5) Go to <b>strategy/teststrategy</b> and insert <b>gameModel-&gt;findMyTeam(0)-&gt;assignBeh&lt;GoToBeh&gt;();</b> under TestStrategy::assignBeh<br/>
+ 2) Go to <b>communication/simrobcomm.cpp</b> and change <b>_addr</b> in the <a class="el" href="classSimRobComm.html" title="RobComm to send to the grSim simulator. ">SimRobComm</a> constructor to the IP of the computer running the simulator (127.0.0.1 for local).<br/>
+ 3) Go to <b>strategy/strategycontroller.cpp</b> and change USE_TEST_STRATEGY to 1<br/>
+ 4) Go to <b>strategy/teststrategy.cpp</b> and insert <b>gameModel-&gt;findMyTeam(0)-&gt;assignBeh&lt;GoToBeh&gt;();</b> under <b>TestStrategy::assignBeh</b><br/>
+ 5) Open the grSim simulator (grSim/bin/grsim) from the script's install path on your computer or any other computer<br/>
  6) Making sure SIMULATED in include/config/simulated is 1, Run the program.</p>
 <p>If these steps are completed correctly, <a class="el" href="classRobot.html" title="The Robot class representing Robots on the field. ">Robot</a> 0 on TEAM should move to the center of the field. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Aug 25 2015 13:42:05 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Aug 25 2015 16:39:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

@@ -1,3 +1,4 @@
+#include "math.h"
 #include "include/config/tolerances.h"
 #include "include/config/simulated.h"
 #include "include/config/globals.h"
@@ -12,4 +13,4 @@
  const int ROT_TOLERANCE  = 10*(M_PI/180);
 #endif
 
- const int ROBOT_SIZE = ROBOT_RADIUS * 2.5;
+const int ROBOT_SIZE = ROBOT_RADIUS * 2.5;

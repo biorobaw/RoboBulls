@@ -30,5 +30,6 @@ var searchData=
   ['setyellowgoals',['setYellowGoals',['../classGameModel.html#a0401e8e088b444cb5a09c951715fe92c',1,'GameModel']]],
   ['simrobcomm',['SimRobComm',['../classSimRobComm.html#a8bd58f2c912ff9f3df054503f47b4d6f',1,'SimRobComm']]],
   ['slope',['slope',['../classMeasurments.html#a788ee4265cfddbfb5e5180829afd58bd',1,'Measurments']]],
-  ['status',['status',['../structMovement_1_1Collisions_1_1detail_1_1RobotMoveStatus.html#a3096b154eebf420930d9de2980f8f3fe',1,'Movement::Collisions::detail::RobotMoveStatus']]]
+  ['status',['status',['../structMovement_1_1Collisions_1_1detail_1_1RobotMoveStatus.html#a3096b154eebf420930d9de2980f8f3fe',1,'Movement::Collisions::detail::RobotMoveStatus']]],
+  ['stopstrategy',['StopStrategy',['../classStopStrategy.html#aa467c6aa810894f616cb36f62369957a',1,'StopStrategy']]]
 ];

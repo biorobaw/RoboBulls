@@ -40,6 +40,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -72,7 +73,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -95,7 +96,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define CLOSEDLOOPCONTROL_H</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &lt;math.h&gt;</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;deque&gt;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;include/config/globals.h&quot;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="globals_8h.html">include/config/globals.h</a>&quot;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;model/robot.h&quot;</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">/* Code in this file is adapted from</span></div>
@@ -131,10 +132,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        { <a class="code" href="classMovement_1_1ClosedLoopBase.html">ClosedLoopBase</a>(); }</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        </div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <a class="code" href="structMovement_1_1wheelvelocities.html">wheelvelocities</a> <a class="code" href="classMovement_1_1ClosedLoopBase.html#ade318f9559d7492c07bf6f0424434d25">closed_loop_control</a></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        (<a class="code" href="classRobot.html">Robot</a>* robot, <span class="keywordtype">double</span> x_goal, <span class="keywordtype">double</span> y_goal, <span class="keywordtype">double</span> theta_goal = UNUSED_ANGLE_VALUE);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        (<a class="code" href="classRobot.html">Robot</a>* robot, <span class="keywordtype">double</span> x_goal, <span class="keywordtype">double</span> y_goal, <span class="keywordtype">double</span> theta_goal = <a class="code" href="globals_8h.html#af8e3ef85fce83e2f92bd95d7f5a46e11">UNUSED_ANGLE_VALUE</a>);</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        </div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <a class="code" href="structMovement_1_1wheelvelocities.html">wheelvelocities</a> <a class="code" href="classMovement_1_1ClosedLoopBase.html#ade318f9559d7492c07bf6f0424434d25">closed_loop_control</a></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        (<a class="code" href="classRobot.html">Robot</a>* robot, <a class="code" href="classPoint.html">Point</a> goal, <span class="keywordtype">double</span> theta_goal = UNUSED_ANGLE_VALUE);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        (<a class="code" href="classRobot.html">Robot</a>* robot, <a class="code" href="classPoint.html">Point</a> goal, <span class="keywordtype">double</span> theta_goal = <a class="code" href="globals_8h.html#af8e3ef85fce83e2f92bd95d7f5a46e11">UNUSED_ANGLE_VALUE</a>);</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keyword">private</span>:</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> sizeRhoQ   = 100;<span class="comment">/*original value 400*/</span></div>
@@ -183,10 +184,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;}</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="preprocessor">#endif // CLOSEDLOOPCONTROL_H</span></div>
-<div class="ttc" id="classRobot_html"><div class="ttname"><a href="classRobot.html">Robot</a></div><div class="ttdoc">The Robot class representing Robots on the field. </div><div class="ttdef"><b>Definition:</b> robot.h:16</div></div>
+<div class="ttc" id="classRobot_html"><div class="ttname"><a href="classRobot.html">Robot</a></div><div class="ttdoc">The Robot class representing Robots on the field. </div><div class="ttdef"><b>Definition:</b> robot.h:18</div></div>
 <div class="ttc" id="classMovement_1_1ClosedLoopSharpTurns_html"><div class="ttname"><a href="classMovement_1_1ClosedLoopSharpTurns.html">Movement::ClosedLoopSharpTurns</a></div><div class="ttdoc">Instance of ClosedLoopBase with sharpTurnConstants. </div><div class="ttdef"><b>Definition:</b> closedloopcontrol.h:106</div></div>
 <div class="ttc" id="classMovement_1_1ClosedLoopNoSlowdown_html"><div class="ttname"><a href="classMovement_1_1ClosedLoopNoSlowdown.html">Movement::ClosedLoopNoSlowdown</a></div><div class="ttdoc">Instance of ClosedLoopBase with noSlowdownConstants. </div><div class="ttdef"><b>Definition:</b> closedloopcontrol.h:99</div></div>
 <div class="ttc" id="classPoint_html"><div class="ttname"><a href="classPoint.html">Point</a></div><div class="ttdoc">2D Point Class </div><div class="ttdef"><b>Definition:</b> point.h:12</div></div>
+<div class="ttc" id="globals_8h_html"><div class="ttname"><a href="globals_8h.html">globals.h</a></div></div>
+<div class="ttc" id="globals_8h_html_af8e3ef85fce83e2f92bd95d7f5a46e11"><div class="ttname"><a href="globals_8h.html#af8e3ef85fce83e2f92bd95d7f5a46e11">UNUSED_ANGLE_VALUE</a></div><div class="ttdeci">#define UNUSED_ANGLE_VALUE</div><div class="ttdoc">Unused Angle Value for skill/movement constructor code. </div><div class="ttdef"><b>Definition:</b> globals.h:36</div></div>
 <div class="ttc" id="classMovement_1_1ClosedLoopBase_html"><div class="ttname"><a href="classMovement_1_1ClosedLoopBase.html">Movement::ClosedLoopBase</a></div><div class="ttdoc">Velocity calculation base for differential-type robots. </div><div class="ttdef"><b>Definition:</b> closedloopcontrol.h:40</div></div>
 <div class="ttc" id="structMovement_1_1wheelvelocities_html"><div class="ttname"><a href="structMovement_1_1wheelvelocities.html">Movement::wheelvelocities</a></div><div class="ttdoc">results container from CLC Algorithm </div><div class="ttdef"><b>Definition:</b> closedloopcontrol.h:30</div></div>
 <div class="ttc" id="classMovement_1_1ClosedLoopBase_html_ade318f9559d7492c07bf6f0424434d25"><div class="ttname"><a href="classMovement_1_1ClosedLoopBase.html#ade318f9559d7492c07bf6f0424434d25">Movement::ClosedLoopBase::closed_loop_control</a></div><div class="ttdeci">wheelvelocities closed_loop_control(Robot *robot, double x_goal, double y_goal, double theta_goal=UNUSED_ANGLE_VALUE)</div><div class="ttdoc">Calculate an instantanious threeWheelVels to move torwards a point. </div><div class="ttdef"><b>Definition:</b> closedloopcontrol.cpp:79</div></div>
@@ -194,7 +197,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Aug 25 2015 13:42:04 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Aug 25 2015 16:39:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

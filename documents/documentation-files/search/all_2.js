@@ -22,6 +22,7 @@ var searchData=
   ['clst',['clst',['../classMovement_1_1DifferentialCalculator.html#ae1e8c3724caaa0698064801855c2b18f',1,'Movement::DifferentialCalculator']]],
   ['command',['command',['../structRefComm_1_1Packet.html#ac040e763d4d6a7fc15a415c2f3f54d6f',1,'RefComm::Packet']]],
   ['comparisons',['Comparisons',['../namespaceComparisons.html',1,'']]],
+  ['config',['Config',['../group__config.html',1,'']]],
   ['contains',['contains',['../classRegion.html#aa18426596e8e3b9e08c1560c38d4afb6',1,'Region']]],
   ['containsline',['containsLine',['../classRegion.html#a9cbdf8777d57e05840de6429f4cf40e3',1,'Region']]],
   ['counter',['counter',['../structRefComm_1_1Packet.html#a1b2e2c579a2bb7b444d4379fe5bfda8a',1,'RefComm::Packet']]],
