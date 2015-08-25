@@ -11,7 +11,9 @@
 /**
  * @brief The Robot class representing Robots on the field
  * @details The robot class includes the required information about robot
- * such position, orientation, id, and etc.
+ * such position, orientation, id, velocity, and behavior information.<br>
+ * These are usually returned by a GameModel function. They should not be created
+ * directly under normal circumstances
  */
 class Robot
 {

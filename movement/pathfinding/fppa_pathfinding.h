@@ -9,8 +9,8 @@ namespace Movement
 /*! @brief Fast Path Planning Algorithm
  * @author JamesW
  * @details This namespace implements the Fast Path Planning Algorithm (FPPA)
- * as described in the paper "Fast Path Planning Algorithm for the RoboCub Small Size League"
- * by Rodriguez S., Rojas E., Calderon J. et al.
+ * as described in the [paper](http://fei.edu.br/rcs/2014/RegularPapers/robocupsymposium2014_submission_55.pdf)
+ * "Fast Path Planning Algorithm for the RoboCub Small Size League" by Rodriguez S., Rojas E., Calderon J. et al.
  * The algorithm is meant to provide reliable path-finding in real time, such as in
  * the case of the RoboCup league. */
 

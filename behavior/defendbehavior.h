@@ -3,7 +3,6 @@
 #include "behavior/genericmovementbehavior.h"
 #include "skill/kicktopointomni.h"
 
-/* DEFEND BEHAVIOR -- See documentation on DefendBehavior below */
 //! @file A general-purpose defence behavior for the game.
  
 /************************************************************/
@@ -45,6 +44,8 @@ private:
     static const Point defPoints[];//Default points to sit at
     static int   updateCount;      //Count to delay `action` updating of points
 };
+
+//! @cond
 
 /************************************************************/
 
@@ -96,6 +97,7 @@ private:
     bool  tryGetValidLinePoint(Robot*);
 };
 
+//! @endcond
 
 /************************************************************/
 

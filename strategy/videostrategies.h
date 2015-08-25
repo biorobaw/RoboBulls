@@ -6,8 +6,11 @@
 #include "skill/kicktopointomni.h"
 class Robot;
 
-/*! @brief Strategies used in the RoboCup 2015 qualification Video
- *  @deprecated */
+//Constains strategies used in the RoboCup 2015 qualification Video
+//Not documented in Doxygen because they are deprecated
+
+//! @cond
+
 namespace Video
 {
 
@@ -141,5 +144,6 @@ private:
 
 }
 
+//! @endcond
 
 #endif

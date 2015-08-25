@@ -2,15 +2,16 @@
 #include <list>
 #include "include/config/team.h"
 #include "utilities/measurments.h"
-#include "utilities/comparisons.h"
 #include "behavior/defendfarfromball.h"
+#include "model/gamemodel.h"
+#include "utilities/comparisons.h"
 #include "stopstrategy.h"
-
-#define RADIUS 1000
 #define STOPSTRAT_DEBUG 0
 
-Point StopStrategy::prevBallPoint = Point(9999,9999);
-Point robTargetPoints[10];
+StopStrategy::StopStrategy(float radius)
+    : prevBallPoint(9999,9999)
+    , radius(radius)
+    { }
 
 void StopStrategy::assignBeh()
 {
@@ -44,16 +45,13 @@ void StopStrategy::rebuildTargetPoints()
 {
     std::list<Point> newPoints;
     Point ballPoint = gameModel->getBallPoint();
-
     int teamSize = gameModel->getMyTeam().size();
-    int maxSize  = std::max(teamSize, (int)gameModel->getOponentTeam().size());
+    int maxTeamSize  = std::max(teamSize, (int)gameModel->getOponentTeam().size());
 
-    /* Interesting thing:
-     * If we're yellow team, then we add an offset to the initial
+    /* If we're yellow team, then we add an offset to the initial
      * theta, to allow the yellow robots to move to different points than
-     * the blue robots. They both follow the same increment.
-     */
-    float theta_inc = (2*M_PI) / maxSize;
+     * the blue robots. They both follow the same increment. */
+    float theta_inc = (2*M_PI) / maxTeamSize;
 #if TEAM==TEAM_BLUE
     float theta = 0;
 #else
@@ -61,18 +59,16 @@ void StopStrategy::rebuildTargetPoints()
 #endif
 
     /* First create an evenly distributed number of points around the ball.
-     * Later, I want to make this so all robots are placed on one side.
-     */
+     * Later, I want to make this so all robots are placed on one side. */
     for(int i = 0; i != teamSize; ++i, theta += theta_inc)
     {
-        float x_pos = (RADIUS * cos(theta)) + ballPoint.x;
-        float y_pos = (RADIUS * sin(theta)) + ballPoint.y;
+        float x_pos = (radius * cos(theta)) + ballPoint.x;
+        float y_pos = (radius * sin(theta)) + ballPoint.y;
         newPoints.emplace_back(x_pos, y_pos);
     }
 
     /* Then for each robot, find the closest point around the ball to the robot. This
-     * will be the robot's new target point stored in robTargetPoints
-     */
+     * will be the robot's new target point stored in robTargetPoints */
     for(Robot* rob : gameModel->getMyTeam())
     {
         auto min_pos = Comparisons::distance(rob).min(newPoints);

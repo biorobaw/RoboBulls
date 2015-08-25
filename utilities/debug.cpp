@@ -114,9 +114,9 @@ static void debugListenFn()
     }
 }
 
-void registerVariable(const std::string& variable, int* pointer)
+void registerVariable(const std::string& name, int* pointer)
 {
-    commandMap[variable] = pointer;
+    commandMap[name] = pointer;
 }
 
 void registerFunction(const std::string& name, debug_fn function)
@@ -127,6 +127,7 @@ void registerFunction(const std::string& name, debug_fn function)
 /**********************************************************************/
 //Built-in functions are put and registered here
 /**********************************************************************/
+//! @cond
 
 /* Generic template function that looks for a robot and a team, and calls a function
  * with parsed information (<id> <team>) as a callback */
@@ -161,6 +162,8 @@ void builtin_add_robot(const std::vector<std::string>& args)
         std::cout << "Added robot " << id << " to team " << team << std::endl;
     });
 }
+
+//! @endcond
 
 void listenStart()
 {

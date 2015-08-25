@@ -1,7 +1,5 @@
 #include <time.h>
-#include "utilities/measurments.h"
 #include "utilities/velocitycalculator.h"
-#include "utilities/debug.h"
 
 VelocityCalculator::VelocityCalculator(unsigned deque_size)
     : maxSize(deque_size)

@@ -12,7 +12,7 @@
 namespace Movement
 {
 
-/*! @brief Constants for then Closed-loop control algorithm
+/*! @brief Constants for the differential-drive closed-loop control algorithm
  * @details Frequently used constant sets for closed loop control motion can be defined here.
  * Refer to the motion control folder on Robobulls Google Drive for papers on what
  * exactly the constants do. The diagram below shows how modifying the constants can

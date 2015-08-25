@@ -1,6 +1,5 @@
 #ifndef NORMALGAMESTRATEGY_H
 #define NORMALGAMESTRATEGY_H
-
 #include "model/robot.h"
 #include "strategy/strategy.h"
 
@@ -10,15 +9,17 @@
  *
  * This strategy switches between both attack and defend behaviors.
  *
- * Attack/Defend switch criteria: (considerSwitchCreiteria)
+ * **Attack/Defend switch criteria: (considerSwitchCreiteria)**
  *  - If the enemy/our team has been seen with the ball NORMAL_SWITCH_COUNT
  *    times we switch from attack to defend or vice versa.
- * Attacking (assignAttackBehaviors):
+ *
+ * **Attacking (assignAttackBehaviors):**
  *  - The closest robot to the ball is assigned to kick to the goal.
  *  - Robot #5 is assigned to go to the goal and defend the goal.
  *  - The remaining robot is assigned to prowl the enemy field and assume
  *    a stretegic position to recieve a pass.
- * Defending (assignDefendBehaviors):
+ *
+ * **Defending (assignDefendBehaviors):**
  *  - One robot is sent to the center to encourage a quick Attack switch
  *  - Robot #5 still defend the goal
  *  - The remaining robot is sent to block the enemy passer/receiver team
@@ -28,7 +29,6 @@
  * then Feb 13-14 Engineering Expo...
  * then Summer '15 revival...
  */
-
 class NormalGameStrategy : public Strategy
 {
 public:
@@ -38,10 +38,15 @@ public:
     bool update() override;
 
 public:
-    //! Moves robots to an idle line, a line near the goal and spaced by ID.
+    /*! @brief Moves robots to an idle line, a line near the goal and spaced by ID.
+     * @details Meant to be used outside the class, moves the robot to a line
+     * on our side of the field. Used when that robot has no behavior
+     * @param waiter Possibly sends a single robot to the center to wait if true */
     static void moveRobotToIdleLine(Robot* robot, bool waiter = false);
 
-    //! Assigns DefendFarFromBall to ID GOALIE_ID if it is on the team
+    /*! @brief Assigns DefendFarFromBall to ID GOALIE_ID if it is on the team
+     * @details Meant to be used outside the class, if the robot with GOALIE_ID
+     * isn't null, assigns DefendFarFromBall to it */
     static void assignGoalieIfOk();
 
 private:
@@ -54,9 +59,9 @@ private:
 private:
     static bool isOnAttack;
     static bool hasStoppedForThisKickoff;
+    void findMostValidRobots(Point, Robot*&, Robot*&, Robot *&c_out);
     Robot* currentMainAttacker;
     Robot* currentSuppAttacker;
-    void findMostValidRobots(Point, Robot*&, Robot*&, Robot *&c_out);
     Point ballOriginalPos;
     bool  needsAttackAssign;
     bool  needsDefenceAssign;

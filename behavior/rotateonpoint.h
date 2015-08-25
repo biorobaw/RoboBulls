@@ -6,7 +6,7 @@
 /*! @brief Behavior to rotate around a stationary point
  * @author James W
  * @details This behavior is omni-only. It allows a robot to approach a point
- * `center` from any angle, and rotate on a circle, facing the center,
+ * from any angle, and rotate on a circle, facing the center,
  * to face a final direction of `faceAngle`. Additionally, the `dist`
  * argument specifies the dist to stay from `where` when rotating.
  * isFinished() returns true when the robot is near the target point
@@ -18,7 +18,7 @@ public:
     /*! @brief Constructor
      * @param center Point to rotate around
      * @param faceAngle and angle to face when done rotating
-     * @param dist the Distnace to stay away from the point */
+     * @param dist The Distance to stay away from the point while rotating */
     RotateOnPoint(Point center, float faceAngle, float dist);
 
     void perform(Robot *robot) override;

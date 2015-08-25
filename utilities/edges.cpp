@@ -4,7 +4,7 @@
 
 /*************************************************************************/
 
-namespace impl
+namespace edges
 {
 
 //This is the magic: A map to map a function with its last result

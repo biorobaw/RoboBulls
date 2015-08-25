@@ -7,11 +7,11 @@
 
 class Robot;
 
-/*! @brief This class contains many useful function we use all
- * over the project to calculate distances and angles.
- * It’s also misspelled but left that way for backwards compatibility.
- * Many of these functions (distance, midpoint, angleBetween) have
- * four Robot* / Point combination overloads. */
+/*! @brief Contains useful math and utility functions
+ * @details Measurments is used over the project to calculate various
+ * distances and angles. It’s also misspelled but left that way for
+ * backwards compatibility. Many of these functions (distance, midpoint, angleBetween)
+ * have four Robot* / Point combination overloads. */
 
 class Measurments
 {
@@ -78,7 +78,7 @@ public:
     static float slope(Point, Point);
     //! @}
 
-    //!@brief Clamps a value between min and max
+    //!@brief Clamps (limits) a value between min and max
     template<typename T>
     static T clamp(const T& value, const T& min, const T& max);
 };

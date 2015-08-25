@@ -10,8 +10,10 @@
 #include "model/gamemodel.h"
 #include "model/robot.h"
 
-//! @brief CONF_THRESHOLD sets the minimum confidence to consider the ball as detected.
+//! @brief Sets the minimum confidence to consider a ball reading as valid
 const float CONF_THRESHOLD_BALL = 0.75;
+
+//! @brief Sets the minimum confidence to consider a robot as a valid reading
 const float CONF_THRESHOLD_BOTS = 0.8;
 
 //! @brief DISCARD_RATE sets the rate in which packets are discarded.
@@ -30,10 +32,10 @@ public:
     VisionComm(GameModel *gm);
     ~VisionComm();
 
-    //communicating with reciver
+    //! @brief Recieves an SSL_WrapperPacket and fills in the GameModel information
     bool receive();
     
-    //QThread run method
+    //! @brief QThread run method
     void run();
 
 protected:

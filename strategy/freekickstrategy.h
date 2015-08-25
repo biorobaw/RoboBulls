@@ -14,7 +14,7 @@ public:
     char getNextStrategy() override;
 
 private:
-    Robot* kickerRobot;  //Robot that is sent to kick the ball
+    Robot* kickerRobot;  //!<Robot that is sent to kick the ball
 };
 
 #endif // FREEKICKSTRATEGY_H

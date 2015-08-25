@@ -6,11 +6,9 @@
 
 /*! @brief `Region` is a utility class to define a 2D region (rectangle) on the field.
  *
- * A Region is defined in terms
- * of two Points, given in the constructor as X1, X2, Y1, Y2.
- * The Region class contains some useful information
- * querying functions once the region is defined, and
- * is used sparsely throughout the code. */
+ * A Region is defined in terms of two Points, given in the constructor as X1, X2, Y1, Y2.
+ * The Region class contains some useful information querying functions once
+ * the region is defined, and is used sparsely throughout the code. */
 
 class Region
 {

@@ -23,9 +23,8 @@ public:
     static int mySide; //!<-1 or 1, representing polarity of "my" side of field
     static int opSide; //!<Opposite of mySide
 
-    /* Game access functions
-     * These should be utilized by normal code to retrieve the state
-     * of the game from anywhere in the code */
+    /*! @name Game access functions
+     * @{*/
     vector<Robot*>& getOponentTeam();
     vector<Robot*>& getMyTeam();
     vector<Robot*>& getBlueTeam();
@@ -47,6 +46,8 @@ public:
     Robot* getHasBall();
     Robot* findMyTeam(int);
     Robot* findOpTeam(int);
+    //! @}
+
     Robot* find(int, std::vector<Robot*>&);
     bool   isNewCommand();
     void   removeRobot(int id, int team);

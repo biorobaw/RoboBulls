@@ -30,7 +30,7 @@ namespace Comparisons
 
 typedef std::function<bool(float,float)> compareFunction;
 
-//Generic predicate that includes some "ignore" criteria
+//! @brief Base class predicate that includes some "ignore" criteria
 class Predicate
 {
 public:

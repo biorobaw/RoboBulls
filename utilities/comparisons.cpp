@@ -266,14 +266,14 @@ void pred_isPointInsideField::setCompareFunction() {
 
 
 /****************************************************************/
-//! @if
+//! @cond
 bool isDistGreaterCompareFnPt(const Point& a, const Point&, const Point& b, float dist, compareFunction f) {
     return f(Measurments::distance(a, b), dist);
 }
 bool isDistGreaterCompareFnRb(Robot* a, Robot*, const Point& b, float dist, compareFunction f) {
     return isDistGreaterCompareFnPt(a->getRobotPosition(), Point(0,0), b, dist, f);
 }
-//! @endif
+//! @endcond
 
 pred_isDistanceToGreater::pred_isDistanceToGreater(const Point& a, float dist)
     : pred_testPoint(a)

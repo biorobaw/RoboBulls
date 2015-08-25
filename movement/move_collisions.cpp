@@ -98,7 +98,7 @@ private:
  */
 struct RobotMoveStatusContainer
 {
-    /*!< @brief Returns a status in moveStatusesMine or moveStatusesOpponent
+    /*! @brief Returns a status in moveStatusesMine or moveStatusesOpponent
      * based on robot's team */
     RobotMoveStatus& operator[](Robot* robot) {
         int id = robot->getID();

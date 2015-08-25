@@ -14,7 +14,7 @@
  * declared `static`.
  */
 
-namespace impl
+namespace edges
 {
 
 using boolFunctionPtr = bool(*)(void);
@@ -24,9 +24,9 @@ bool negedge_impl(boolFunctionPtr function);
 }
 
 #define posedge( expression )\
-    impl::posedge_impl( [&](){return (expression);} )
+    edges::posedge_impl( [&](){return (expression);} )
 
 #define negedge( expression ) \
-    impl::negedge_impl( [&](){return (expression);} )
+    edges::negedge_impl( [&](){return (expression);} )
 
 #endif

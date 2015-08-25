@@ -9,40 +9,37 @@ using namespace std;
 
 /*! @brief Communication module to receive information from the RefBox
  * @author Origin. Narges Ghaedi, JamesW
- *@details
- * Retrieves and parses a legacy packet from the SSL Referee Box,
- * and fills out the GameModel.
+ * @details
+ * Retrieves and parses a legacy packet from the
+ * [SSL Referee Box](http://robocupssl.cpe.ku.ac.th/referee:start),
+ * and fills out the GameModel.<br><br>
  * <b>Referee Box Command Quick Reference:</b>
- * Command type               Command
- * ==========================================================
- * <<Control commands>>
- *     Halt                         H
- *     Stop                         S
- *     Ready                        ' ' (space)
- *     Start                        s
- * <<Game Notifications>>
- *     Begin first half             1
- *     Begin half time              h
- *     Begin second half            2
- *     Begin overtime half 1        o
- *     Begin overtime half 2        O
- *     Begin penalty shootout       a
+ * Command Type                 |   Command
+ * -----------------------------|----------
+ *     Halt                     |   H
+ *     Stop                     |   S
+ *     Ready                    |   ' ' (space)
+ *     Start                    |   s
+ *     Begin first half         |   1
+ *     Begin half time          |   h
+ *     Begin second half        |   2
+ *     Begin overtime half 1    |   o
+ *     Begin overtime half 2    |   O
+ *     Begin penalty shootout   |   a
  *
- * Command type      Yellow Team Command     Blue Team Command
- * ==========================================================
- * <<Game restarts>>
- *     Kick off                    k                     K
- *     Penalty                     p                     P
- *     Direct Free kick            f                     F
- *     Indirect Free kick          i                     I
- * <<Extras>>
- *     Timeout                     t                     T
- *     Timeout end                 z                     z
- *     Goal scored                 g                     G
- *     decrease Goal score         d                     D
- *     Yellow Card                 y                     Y
- *     Red Card                    r                     R
- *     Cancel                      c
+ * Command Type  |   Yellow Team Command     |  Blue Team Command
+ * --------------|---------------------------|-------------------
+ *     Kick off             |       k        |           K
+ *     Penalty              |       p        |           P
+ *     Direct Free kick     |       f        |           F
+ *     Indirect Free kick   |       i        |           I
+ *     Timeout              |       t        |           T
+ *     Timeout end          |       z        |           z
+ *     Goal scored          |       g        |           G
+ *     decrease Goal score  |       d        |           D
+ *     Yellow Card          |       y        |           Y
+ *     Red Card             |       r        |           R
+ *     Cancel               |       c        |           c
  */
 
 class RefComm : public QThread
@@ -74,17 +71,14 @@ protected:
 
 private:
    /*! @brief The legacy Refbox packet
-    * @details
-    * The packet format is as follows:
-    * +---------+---------+------------+--------------+-------------------+
-    * | Command | Counter | Goals blue | Goals yellow | time left (16 Bit)|
-    * +---------+---------+------------+--------------+-------------------+ */
+    * @details [RefBox legacy format](http://robocupssl.cpe.ku.ac.th/referee:legacy-protocol)
+    * This is the formati of packet recieved by the RefBox. */
     struct Packet {
-        char command;
-        unsigned char counter;
-        unsigned char goals_blue;
-        unsigned char goals_yellow;
-        unsigned short time_left;
+        char command;               //!<ASCII chatacter sent as the current comment
+        unsigned char counter;      //!<Incremented when a new command is sent
+        unsigned char goals_blue;   //!<Number of Blue goals
+        unsigned char goals_yellow; //!<Number of Yellow goals
+        unsigned short time_left;   //!<Remaining time (Seconds)?
     } lastPacket;
 };
 

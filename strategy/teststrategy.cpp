@@ -9,7 +9,9 @@
 #include "include/config/simulated.h"
 
 /************************************************************************/
+//Test Behaviors Section
 
+//Test behavior to kick the ball to the center
 class KickBeh : public Behavior
 {
     Skill::KickToPointOmni* ktpo;
@@ -17,13 +19,15 @@ public:
     KickBeh() {
         ktpo = new Skill::KickToPointOmni(Point(0,0));
     }
-
-    void perform(Robot * robot) override
-    {
+    ~KickBeh() {
+        delete ktpo;
+    }
+    void perform(Robot * robot) override {
         ktpo->perform(robot);
     }
 };
 
+//Test behavior to rotate to the ball
 class RotBeh : public GenericMovementBehavior
 {
     void perform(Robot * robot) override
@@ -34,6 +38,7 @@ class RotBeh : public GenericMovementBehavior
     }
 };
 
+//Test behavior to move to a point only
 class GoToBeh : public GenericMovementBehavior
 {
     void perform(Robot * robot) override
@@ -42,11 +47,12 @@ class GoToBeh : public GenericMovementBehavior
         GenericMovementBehavior::perform(robot);
     }
 };
+
+//Test behavior to move the robot from (-2000,0) to (2000,0)
+//while facing the ball
 class ShamsiStrafe : public GenericMovementBehavior
 {
 public:
-    //The robot moves between (-2000,0) and (2000,0)
-    //While constantly facing the ball
     enum {pos_one,pos_two} state = pos_one;
     void perform(Robot *robot) override
     {
@@ -72,6 +78,7 @@ public:
     }
 };
 
+/************************************************************************/
 
 bool TestStrategy::update()
 {
@@ -85,5 +92,5 @@ bool TestStrategy::update()
 
 void TestStrategy::assignBeh()
 {
-
+    gameModel->findMyTeam(0)->assignBeh<GoToBeh>();
 }

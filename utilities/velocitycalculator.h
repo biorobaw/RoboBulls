@@ -26,6 +26,8 @@ class VelocityCalculator
 {
 public:
     /*! @brief Constructor
+     *  @details A smaller deque_size can provide more up-to-date readings at the
+     *  cost of incresed spikes and noise.
      *  @param deque_size controls how many velocity readings to measure over.
      *  By default a 10 readings are stored */
     VelocityCalculator(unsigned deque_size = 10);

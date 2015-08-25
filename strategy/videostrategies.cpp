@@ -10,6 +10,7 @@
 #include "behavior/defendfarfromball.h"
 #include "behavior/kicktogoal.h"
 
+//! @cond
 namespace Video
 {
 
@@ -351,3 +352,5 @@ bool VideoStrategy5::update()
 }
 
 }   //namespace Video
+
+//! @endcond

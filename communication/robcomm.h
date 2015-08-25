@@ -16,7 +16,10 @@ public:
     //! @brief Get singleton instance of the RobComm
     static RobComm * getRobComm();
 
-    //! @brief Required; send velocities to the entire team at once
+    /*! @brief Required; send velocities to the entire team at once
+     * @details Given a vector of Robot, RobComms implementing this funciton
+     * are to send out packets to these robots, sending their information such
+     * as their wheel velocities and kick/dribble status */
     virtual void sendVelsLarge(std::vector<Robot*>&) = 0;
 
 private:

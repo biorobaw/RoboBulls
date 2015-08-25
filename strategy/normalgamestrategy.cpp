@@ -10,7 +10,11 @@
 #include "utilities/edges.h"
 #include "strategy/normalgamestrategy.h"
 
+//! @brief Are we currently on attack?
 bool NormalGameStrategy::isOnAttack = true;
+
+//Rest of the code here is not in Doxygen
+//! @cond
 
 /*************************************************/
 /** CONFIGURATION **/
@@ -409,3 +413,5 @@ void NormalGameStrategy::findMostValidRobots(Point target, Robot*& a_out, Robot*
     b_out = b_found;
     c_out = c_found;
 }
+
+//! @endcond
