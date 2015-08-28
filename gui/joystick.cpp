@@ -8,16 +8,33 @@
 namespace joystick
 {
 
+bool configure(const std::string& name, int& jAxisMoveUp, int& jAxisMoveSide, int& jAxisRotate)
+{
+    if(name == "Saitek P990 Dual Analog Pad") {
+        jAxisMoveUp = 1;
+        jAxisMoveSide = 0;
+        jAxisRotate = 3;
+    } else if(name == "Logitech Logitech Dual Action") {
+        jAxisMoveUp = 1;
+        jAxisMoveSide = 0;
+        jAxisRotate = 2;
+    } else {
+        return false;
+    }
+    return true;
+}
+
+}
+
+namespace joystick
+{
+
 //Thread to listen for joystick inputs
 std::thread joystickThread;
-
-//To keep track of there being a joystick or not.
-bool areDetectedJoysticks;
 
 //Calculated from Joystick movements
 float LB, LF, RB, RF;
 bool  Kick, Dribble;
-
 
 void listener()
 {
@@ -30,15 +47,7 @@ void listener()
 
     //Get correct axes numbers for joystick movement
     std::string name = SDL_JoystickNameForIndex(0);
-    if(name == "Saitek P990 Dual Analog Pad") {
-        jAxisMoveUp = 1;
-        jAxisMoveSide = 0;
-        jAxisRotate = 3;
-    } else if(name == "Logitech Logitech Dual Action") {
-        jAxisMoveUp = 1;
-        jAxisMoveSide = 0;
-        jAxisRotate = 2;
-    } else {
+    if(!configure(name, jAxisMoveUp, jAxisMoveSide, jAxisRotate)) {
         throw std::runtime_error("Joystick \"" + name + "\" is not supported.");
     }
 
@@ -76,7 +85,6 @@ void listener()
         {
             Point p = r->getRobotPosition();
             float o = r->getOrientation();
-
             Kick = buttons[1];
             Dribble = buttons[0];
             float tPos =   o +     -(M_PI/180)*axes[jAxisRotate];
@@ -101,7 +109,6 @@ void init()
     //Worth noting this is a different thread than listen function
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_JOYSTICK | SDL_INIT_NOPARACHUTE);
     SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
-    areDetectedJoysticks = false;
 }
 
 void listen()
@@ -112,15 +119,9 @@ void listen()
     joystickThread = std::thread(listener);
 }
 
-bool checkForJoystick()
-{
-    areDetectedJoysticks = (SDL_NumJoysticks() != 0);
-    return hasSupport();
-}
-
 bool hasSupport()
 {
-    return areDetectedJoysticks;
+    return SDL_NumJoysticks() != 0;
 }
 
 }

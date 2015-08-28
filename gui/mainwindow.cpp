@@ -88,7 +88,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //Joystick initialization
     joystick::init();
-    if(joystick::checkForJoystick()) {
+    if(joystick::hasSupport()) {
         joystick::listen();
     }
 }
