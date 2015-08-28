@@ -8,9 +8,11 @@
 #include "stopstrategy.h"
 #define STOPSTRAT_DEBUG 0
 
+//Keeping track of previous ball point over updating
+Point StopStrategy::prevBallPoint = Point(9999,9999);
+
 StopStrategy::StopStrategy(float radius)
-    : prevBallPoint(9999,9999)
-    , radius(radius)
+    : radius(radius)
     { }
 
 void StopStrategy::assignBeh()

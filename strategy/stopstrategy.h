@@ -27,7 +27,7 @@ private:
     /*! @brief Keeping track of the previous ball point.
      * @details Need to keep track of the previous ball point, and rebuild target
      * points on a significant change. */
-    Point prevBallPoint;
+    static Point prevBallPoint;
 
     /*! @brief Stored points of the target each Robot should go to.
      * @details Built from rebuildTargetPoints */
