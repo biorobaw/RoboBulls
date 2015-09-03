@@ -31,14 +31,11 @@ void Robot::setLB(float left_backward){LB = left_backward;}
 void Robot::setRB(float right_backward){RB = right_backward;}
 //! @}
 
-/*! @brief Set the robot to kick (1/0)
- * @details A property that determines whether the robot should run its kick procedure
- * (which is defined in the robot firmware). If setKick(1) is called in
- * any iteration for a robot, setKick(0) is automatically called
- * when commands are sent to the robot so that the robot does not continuously
- * keep kicking.
+/*! @brief Set power in m/s for the robot to kick
+ * @details *Do not use;* use Skil::Kick instead
+ * Sets the initial kick velocity for the robot in m/s
  * @see setDrible */
-void Robot::setKick(bool Kick){kick = Kick;}
+void Robot::setKick(float Kick){kick = Kick;}
 
 /*! @brief Set the robot to Dribble.
  * @details This is currently only functional in the simulator as
@@ -70,8 +67,8 @@ float Robot::getOrientation() { return orientation; }
  * @details The robot's ID as indicated by the pattern on top of the robot. */
 int Robot::getID() { return id; }
 
-//! @brief Returns true if the robot is currently kicking this iteration
-int Robot::getKick() {return kick;}
+//! @brief Returns the current kick power of the robot (or 0 if not kicking)
+float Robot::getKick() {return kick;}
 
 //! @brief Returns a pointer to the robot's current behavior
 Behavior* Robot::getCurrentBeh(){ return currentBehavior; }

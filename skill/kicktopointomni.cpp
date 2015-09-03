@@ -126,7 +126,7 @@ bool KickToPointOmni::perform(Robot* robot)
         break;
     case KICK:
         {
-            Kick k;
+            Kick k(Measurments::distance(robot, *m_targetPointer));
             k.perform(robot);
             state = MOVE_BEHIND;
             return true;

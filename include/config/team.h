@@ -11,10 +11,9 @@
 //! @addtogroup config
 //! @{
 
-/*! @brief The Program's Team constant (TEAM_BLUE or TEAM_YELLOW)
- * @details The player's team. In the case of having two teams,
- * compile one program with TEAM set to TEAM_BLUE, and one
- * program with TEAM set to TEAM_YELLOW. */
+/*! @brief The Program's Team (TEAM_BLUE or TEAM_YELLOW)
+ * @details The player's team constant. This sets which team the program
+ * will transmit to. XBee Channel D is for Blue, E is for Yellow */
 
 #define TEAM TEAM_BLUE
 

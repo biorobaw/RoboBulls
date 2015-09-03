@@ -168,8 +168,6 @@ void PassBallSender::perform(Robot * robot)
     bool angleIsRight = abs(Measurments::angleDiff(robot->getOrientation(), angle)) < ANGLE;
     bool robotCloseToBall = Measurments::distance(robot->getRobotPosition(), ballPos) < CLOSE_ENOUGH;
     bool robotCloseToBehindBall = Measurments::distance(robot->getRobotPosition(), behindBall) < CLOSE_ENOUGH;
-
-    int lVel, rVel;
     int distance = Measurments::distance(ballPos, passPoint);
 
     switch(state)
@@ -203,22 +201,7 @@ void PassBallSender::perform(Robot * robot)
             break;
         case kicking:
         {
-            if (distance <= 1900)
-            {
-                lVel = 1;
-                rVel = 1;
-            }
-            else if (distance > 1900 && distance <= 3800)
-            {
-                lVel = 10;
-                rVel = 10;
-            }
-            else if (distance > 3800)
-            {
-                lVel = 100;
-                rVel = 100;
-            }
-            Skill::Kick kick(lVel, rVel);
+            Skill::Kick kick(distance);
             kick.perform(robot);
             if (!robotCloseToBall)
                 state = idling;

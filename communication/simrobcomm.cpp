@@ -20,28 +20,31 @@ SimRobComm::SimRobComm()
     _port = 20011;
 }
 
-void SimRobComm::sendVelsLarge(std::vector<Robot *>& robots)
+void SimRobComm::sendVelsLarge(std::vector<Robot*>& robots)
 {
     for (Robot* rob : robots)
     {
-        bool kick = rob->getKick();
-        bool dribble = rob->getDrible();
-        sendPacket(rob->getID(),rob->getLF(),rob->getRF(),rob->getLB(),rob->getRB(),
-                   kick,dribble);
+        sendPacket(rob);
         rob->setKick(0);
         rob->setDrible(0);
     }
 }
 
-void SimRobComm::sendPacket(int id, int LF, int RF, int LB, int RB, bool kick, bool drible)
+void SimRobComm::sendPacket(Robot* robot)
 {
     grSim_Packet packet;
-    bool yellow = TEAM == 1;
-
-    packet.mutable_commands()->set_isteamyellow(yellow);
+    packet.mutable_commands()->set_isteamyellow( (TEAM == TEAM_YELLOW) );
     packet.mutable_commands()->set_timestamp(0.0);
-
     grSim_Robot_Command* command = packet.mutable_commands()->add_robot_commands();
+
+    //Retrive robot information
+    int id = robot->getID();
+    int LF = robot->getLF();
+    int RF = robot->getRF();
+    int LB = robot->getLB();
+    int RB = robot->getRB();
+    float kick = robot->getKick();
+    bool  drible = robot->getDrible();
 
     // Fill in simulator packet
     command->set_id(id);
@@ -53,7 +56,7 @@ void SimRobComm::sendPacket(int id, int LF, int RF, int LB, int RB, bool kick, b
     command->set_veltangent(0);
     command->set_velnormal(0);  // No normal velocity, differentials cannot move sideways
     command->set_velangular(0);
-    command->set_kickspeedx(kick ? 6 : 0);
+    command->set_kickspeedx(kick);
     command->set_kickspeedz(0); // No chipper
     command->set_spinner(drible ? 20 : 0);
 

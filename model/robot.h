@@ -33,7 +33,7 @@ public:
     void setRF(float right_forward);
     void setLB(float left_backward);
     void setRB(float right_backward);
-    void setKick(bool);
+    void setKick(float kick = 4.0);
     void setDrible(bool);
     //! @}
     
@@ -52,7 +52,7 @@ public:
     float getSpeed();
     float getOrientation();
     int   getID();
-    int   getKick();
+    float getKick();
     bool  getDrible();
     bool  isOnMyTeam();
     bool  hasBehavior();
@@ -91,8 +91,8 @@ private:
     float orientation;          //!< orientation of the robot
     float LF, RF, LB, RB;       //!< used for robot's movements
     Behavior * currentBehavior; //!< Pointer to current behavior
-    bool kick;                  //!< Robot is kicking
-    bool drible;                //!< Roboty is dribbling
+    float kick;                 //!< Robot kick power in m/s
+    bool drible;                //!< Roboty is dribbling?
     bool team;                  //!< On myTeam? 1/0
     bool hasBall;               //!< Have the ball? 1/0
     bool hasBeh;                //!< Currently has a Behavior? 1/0

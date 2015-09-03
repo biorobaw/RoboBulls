@@ -1,4 +1,5 @@
 #include <time.h>
+#include "include/config/globals.h"
 #include "utilities/velocitycalculator.h"
 
 VelocityCalculator::VelocityCalculator(unsigned deque_size)

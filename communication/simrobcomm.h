@@ -4,7 +4,7 @@
 #include "model/robot.h"
 #include "robcomm.h"
 
-//!< @brief Percentage of stored robot velocity sent to simulator
+//! @brief Percentage of stored robot velocity sent to simulator
 const float mappingRatio = 0.333;
 
 /*! @brief RobComm to send to the grSim simulator
@@ -16,7 +16,7 @@ public:
     //! @brief Constructor sets the IP and port to send to **see .cpp**
     SimRobComm();
 
-    virtual void sendVelsLarge(std::vector<Robot*>&);
+    void sendVelsLarge(std::vector<Robot*>&) override;
 
 private:
     QUdpSocket udpsocket;
@@ -24,7 +24,7 @@ private:
     quint16 _port;
 
     //! @brief Sends a packet to the simulator
-    void sendPacket(int id, int LF, int RF, int LB, int RB, bool kick, bool drible);
+    void sendPacket(Robot *robot);
 };
 
 #endif // SIMROBCOMM_H

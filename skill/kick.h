@@ -6,27 +6,29 @@ namespace Skill
 {
 
 /*! @brief Skill to kick the ball
- *  @author Narges Ghaedi
- *  @details Sets the kick to 1 on the robot.
- *  The constructors can emulate different kick distances
- *  by sending velocities to the while kicking. See Ctors */
+ *  @author Narges Ghaedi, JamesW
+ *  @details Sets the kick active on the robot.
+ *  The constructor specifies a distance to kick the ball.
+ *  <b>(Only implemented on the Simulator)</b> */
 
 class Kick: public Skill
 {
 public:
-    //! @brief Default constructor; wheel velocities normal
-    Kick();
-
-    /*! @brief Custom velocity constructor
-     * @param lvel velocity to send to the left wheel when kicking
-     * @param lvel velocity to send to the left wheel when kicking */
-    Kick(int lvel, int rvel);
+    /*! @brief Constructor with optional distance
+     * @details A kick will be sent with enough
+     * velocity to move a stationary ball about kickDistance
+     * from the kick. Leave blank to send a default-powered kick.
+     * @param kickDistance Approximate distance in Points to kick for */
+    Kick(float kickDistance = 1500);
 
     bool perform(Robot *);
 
 private:
-    int lVel;
-    int rVel;
+    //Translates a distance request into required initial kick velocity
+    float getVelocityforDistance();
+
+    //Distance we wish to kick
+    float kickDistance;
 };
 
 }

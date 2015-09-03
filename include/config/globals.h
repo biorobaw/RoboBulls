@@ -26,6 +26,12 @@
 //! @brief Y length (short-ways) length of goalie box
 #define GOAL_WIDTH      700
 
+//! @brief Conversion factor from meters to field Point coordinates
+#define POINTS_PER_METER 1250
+
+//! @brief Conversion factor from Points to meters
+#define METERS_PER_POINT (1.0 / POINTS_PER_METER)
+
 //! @}
 
 /*! @brief Unused Angle Value for skill/movement constructor code

@@ -41,12 +41,12 @@ public:
 
 private:
     Movement::GoToPosition move_skill;
-    Point  m_targetPoint;           //Local (static) target stored only by first ctor
-    Point* m_targetPointer;         //Pointer to point we are kicking to
-      int  m_moveCompletionCount;   //Number of times move_skill says we are behind ball
-    float  m_targetTolerance;       //Mininum angle threshold we must be facing the target to kick
-      int  m_kickDistance;          //Mininim distance we must be to *m_targetPointer to kick (or -1)
-      int  m_kickLockCount;         //Count of times we are seen in "kick lock"
+    Point  m_targetPoint;         //Local (static-point) target stored only by first ctor
+    Point* m_targetPointer;       //Pointer to point we are kicking to (m_targetPoint for static)
+      int  m_moveCompletionCount; //Number of times move_skill says we are behind ball
+    float  m_targetTolerance;     //Mininum angle threshold we must be facing the target to kick
+      int  m_kickDistance;        //Mininim distance we must be to *m_targetPointer to kick (or -1)
+      int  m_kickLockCount;       //Count of times we are seen in "kick lock"
 
     //Current skill state
     enum { MOVE_BEHIND,  //We are far from the ball and are moving behind it to face target

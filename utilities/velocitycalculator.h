@@ -3,14 +3,6 @@
 #include <deque>
 #include "utilities/point.h"
 
-//! @file
-
-//! @brief Conversion factor from meters to field Point coordinates
-#define POINTS_PER_METER 1250
-
-//! @brief Conversion factor from Points to meters
-#define METERS_PER_POINT (1.0 / POINTS_PER_METER)
-
 /*! @brief Generic object to calculate velocity of a Point over time.
  * @author JamesW
  *
