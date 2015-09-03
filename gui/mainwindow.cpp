@@ -613,7 +613,7 @@ void MainWindow::on_btn_botReverse_released() {
 void MainWindow::on_btn_botKick_pressed() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botKick->setDown(true);
-        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setKick(true);
+        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setKick();
         fieldpanel->guiTeam[fieldpanel->selectedBot]->kicking = true;
     }
 }
@@ -621,7 +621,7 @@ void MainWindow::on_btn_botKick_pressed() {
 void MainWindow::on_btn_botKick_released() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botKick->setDown(false);
-        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setKick(false);
+        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setKick(0);
         fieldpanel->guiTeam[fieldpanel->selectedBot]->kicking = false;
     }
 }

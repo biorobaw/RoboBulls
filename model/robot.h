@@ -33,7 +33,7 @@ public:
     void setRF(float right_forward);
     void setLB(float left_backward);
     void setRB(float right_backward);
-    void setKick(float kick = 4.0);
+    void setKick(float kick = 5.0);
     void setDrible(bool);
     //! @}
     
