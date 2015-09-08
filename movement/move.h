@@ -98,9 +98,9 @@ protected:
         (Robot* rob, Point targetPoint, float targetAngle, Type moveType) = 0;
         
 private:
-    Point m_targetPoint;        //The requested final target point
-    float m_targetAngle;        //The requested final target angle
-    float velMultiplier = 1;    //Velocity multipler added to calculated vels
+    Point m_targetPoint;    //The requested final target point
+    float m_targetAngle;    //The requested final target angle
+    float velMultiplier;    //Velocity multipler added to calculated vels
 
     //States
     bool  isInitialized;        //If recreate() has been called once (or ctor)

@@ -27,12 +27,21 @@ namespace Movement
 {
 
 Move::Move()
-{ }
+    : m_targetPoint(9999,9999)
+    , m_targetAngle(UNUSED_ANGLE_VALUE)
+    , velMultiplier(1)
+    , isInitialized(false)
+    , useObstacleAvoid(true)
+    , useAvoidBall(true)
+    , hasFoundPathEnd(false)
+    , currentPathIsClear(true)
+    { }
 
 Move::~Move()
 { }
 
 Move::Move(Point targetPoint, float targetAngle, bool withObstacleAvoid, bool avoidBall)
+    : Move()
 {
     recreate(targetPoint, targetAngle, withObstacleAvoid, avoidBall);
 }
