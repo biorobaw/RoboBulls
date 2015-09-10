@@ -18,6 +18,10 @@ bool configure(const std::string& name, int& jAxisMoveUp, int& jAxisMoveSide, in
         jAxisMoveUp = 1;
         jAxisMoveSide = 0;
         jAxisRotate = 2;
+    } else if(name == "Logitech Logitsech Freedom 2.4") {
+        jAxisMoveUp = 1;
+        jAxisMoveSide = 0;
+        jAxisRotate = 2;
     } else {
         return false;
     }
@@ -31,6 +35,9 @@ namespace joystick
 
 //Thread to listen for joystick inputs
 std::thread joystickThread;
+
+//Is a *supported* joystick conencted? Used in hasSupport
+bool hasSupportedJoystick = true;
 
 //Calculated from Joystick movements
 float LB, LF, RB, RF;
@@ -46,9 +53,14 @@ void listener()
     SDL_JoystickOpen(0);
 
     //Get correct axes numbers for joystick movement
+    //If the joystick name is not registered, disable support.
     std::string name = SDL_JoystickNameForIndex(0);
-    if(!configure(name, jAxisMoveUp, jAxisMoveSide, jAxisRotate)) {
-        throw std::runtime_error("Joystick \"" + name + "\" is not supported.");
+    if(configure(name, jAxisMoveUp, jAxisMoveSide, jAxisRotate) == false) {
+        std::cerr
+            << "********************************\n"
+            << "Joystick \"" + name + "\" is not supported.\n"
+            << "********************************\n";
+        hasSupportedJoystick = false;
     }
 
     /********************************************************/
@@ -113,15 +125,20 @@ void init()
 
 void listen()
 {
-    std::cout << "********************************" << '\n'
-              << "Joystick Control Enabled"         << '\n'
-              << "********************************" << std::endl;
     joystickThread = std::thread(listener);
+    std::this_thread::sleep_for(std::chrono::milliseconds(5));
+    if(hasSupport()) {
+        std::cout
+            << "********************************" << '\n'
+            << "Joystick Control Enabled"         << '\n'
+            << SDL_JoystickNameForIndex(0)        << '\n'
+            << "********************************" << std::endl;
+    }
 }
 
 bool hasSupport()
 {
-    return SDL_NumJoysticks() != 0;
+    return hasSupportedJoystick && (SDL_NumJoysticks() != 0);
 }
 
 }
