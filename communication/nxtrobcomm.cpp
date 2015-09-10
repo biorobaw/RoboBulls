@@ -1,3 +1,4 @@
+#include <cstring>
 #include "nxtrobcomm.h"
 #include "utilities/debug.h"
 #include "include/config/robot_types.h"
@@ -40,7 +41,7 @@ void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
     packet_t teamPacketBuf[5];
 
     // Initialize packet to zeros
-    memset(&teamPacketBuf, 0, sizeof(packet_t)*5);
+    std::memset(&teamPacketBuf, 0, sizeof(packet_t)*5);
 
     // For each robot...
     for(unsigned i = 0; i != robots.size(); ++i)
