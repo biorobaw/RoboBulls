@@ -10,7 +10,8 @@
  *
  * **Currently supported joysticks**
  * - Saitek P990 Dual Analog Pad
- * - Logitech Logitech Dual Action
+ * - Logitech Dual Action
+ * - Logitech Freedom 2.4
  *
  * **Adding New Joysticks**<br><br>
  * Like an FPS game, robots are typically moved with the *left* joystick, and rotated
@@ -26,7 +27,7 @@
 namespace joystick
 {
 
-//! @brief Information to be sent to the overridden robot (do not use directly)
+//! @brief Information from joysticks to be sent to the overridden robot (do not use directly)
 //! @{
 extern float LB, LF, RB, RF;
 extern bool  Kick, Dribble;
@@ -38,7 +39,7 @@ extern bool  Kick, Dribble;
 void init();
 
 //! @brief Query joystick support
-//! @return True if a joystick is connected to the system
+//! @return True if a supported joystick is connected to the system
 bool hasSupport();
 
 //! @brief Starts a new thread listening for joystick events

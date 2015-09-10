@@ -18,7 +18,7 @@ bool configure(const std::string& name, int& jAxisMoveUp, int& jAxisMoveSide, in
         jAxisMoveUp = 1;
         jAxisMoveSide = 0;
         jAxisRotate = 2;
-    } else if(name == "Logitech Logitsech Freedom 2.4") {
+    } else if(name == "Logitech Logitech Freedom 2.4") {
         jAxisMoveUp = 1;
         jAxisMoveSide = 0;
         jAxisRotate = 2;
