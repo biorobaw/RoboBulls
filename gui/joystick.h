@@ -2,16 +2,19 @@
 #define JOYSTICK_H
 
 /*! @brief Joystick control support
- * @details Uses SDL to interface with a single-connected joystick to control
+ * @details *This is an internal file; it should not be used directly except to add joysticks.*
+ *
+ * Uses SDL to interface with a single-connected joystick to control
  * a robot. *listen* recieves any joystick events and updates the variables, which
  * the GUI MainWindow reads to control a robot if it is selected.
- *
- * *This is an internal file; it should not be used directly except to add joysticks.*
  *
  * **Currently supported joysticks**
  * - Saitek P990 Dual Analog Pad
  * - Logitech Dual Action
  * - Logitech Freedom 2.4
+ *
+ * Any one of these joysticks can be added and removed during runtime. If no joystick is connected,
+ * the arrow keys can be used to control overridden robots.
  *
  * **Adding New Joysticks**<br><br>
  * Like an FPS game, robots are typically moved with the *left* joystick, and rotated
@@ -33,18 +36,14 @@ extern float LB, LF, RB, RF;
 extern bool  Kick, Dribble;
 //! @}
 
-/********************************/
-
-//! @brief Initializes joystick support. **Call this before any other calls**
-void init();
-
-//! @brief Query joystick support
-//! @return True if a supported joystick is connected to the system
-bool hasSupport();
-
 //! @brief Starts a new thread listening for joystick events
 //! @details Updates the variables above with robot-ready parameters.
 void listen();
+
+//! @brief Query joystick support
+//! @details This function must be called after listen()
+//! @return True if a supported joystick is connected to the system
+bool hasSupport();
 
 }
 

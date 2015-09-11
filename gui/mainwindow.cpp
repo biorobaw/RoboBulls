@@ -87,10 +87,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->zoom_default, SIGNAL(clicked()), fieldpanel, SLOT(defaultZoom()));
 
     //Joystick initialization
-    joystick::init();
-    if(joystick::hasSupport()) {
-        joystick::listen();
-    }
+    joystick::listen();
 }
 
 void MainWindow::handleJoystickInput()
