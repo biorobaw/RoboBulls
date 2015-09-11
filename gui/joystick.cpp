@@ -43,33 +43,19 @@ bool hasSupportedJoystick = true;
 float LB, LF, RB, RF;
 bool  Kick, Dribble;
 
-void listener()
+void listener(int jAxisMoveUp, int jAxisMoveSide, int jAxisRotate)
 {
-    int quit = 0;
+    int quit = 0;                      //Quit?
+    float axes[8] = {0};               //Joystick axis readings
+    Uint8 buttons[50] = {0};           //Joystick button readings
+    SDL_Event event;                   //SDL event
+    Movement::FourWheelCalculator fwc; //Used to calculate velocites from joystick
+
     LB = LF = RB = RF = Kick = 0;
-    int jAxisMoveUp, jAxisMoveSide, jAxisRotate;
     
     //Open joystick 0. Assumed to be aviliable.
     SDL_JoystickOpen(0);
 
-    //Get correct axes numbers for joystick movement
-    //If the joystick name is not registered, disable support.
-    std::string name = SDL_JoystickNameForIndex(0);
-    if(configure(name, jAxisMoveUp, jAxisMoveSide, jAxisRotate) == false) {
-        std::cerr
-            << "********************************\n"
-            << "Joystick \"" + name + "\" is not supported.\n"
-            << "********************************\n";
-        hasSupportedJoystick = false;
-    }
-
-    /********************************************************/
-    
-    float axes[8] = {0};
-    Uint8 buttons[50] = {0};
-    SDL_Event event;
-    Movement::FourWheelCalculator fwc;
-    
     while(!quit)
     {
         SDL_Delay(5);
@@ -119,20 +105,27 @@ void init()
     //Check out `https://github.com/Grumbel/sdl-jstest`
     //   would have never figured out this hint otherwise
     //Worth noting this is a different thread than listen function
-    SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_JOYSTICK | SDL_INIT_NOPARACHUTE);
+    SDL_Init(SDL_INIT_TIMER | SDL_INIT_JOYSTICK | SDL_INIT_NOPARACHUTE);
     SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
 }
 
 void listen()
 {
-    joystickThread = std::thread(listener);
-    std::this_thread::sleep_for(std::chrono::milliseconds(5));
-    if(hasSupport()) {
+    int jAxisMoveUp, jAxisMoveSide, jAxisRotate;
+    std::string name = SDL_JoystickNameForIndex(0);
+    if(configure(name, jAxisMoveUp, jAxisMoveSide, jAxisRotate)) {
         std::cout
-            << "********************************" << '\n'
-            << "Joystick Control Enabled"         << '\n'
-            << SDL_JoystickNameForIndex(0)        << '\n'
-            << "********************************" << std::endl;
+            << "********************************\n"
+            << "Joystick Control Enabled\n"
+            << name + '\n'
+            << "********************************\n";
+        joystickThread = std::thread(listener, jAxisMoveUp, jAxisMoveSide, jAxisRotate);
+    } else {
+        std::cout
+            << "********************************\n"
+            << "Joystick \"" + name + "\" is not supported.\n"
+            << "********************************\n";
+        hasSupportedJoystick = false;
     }
 }
 
