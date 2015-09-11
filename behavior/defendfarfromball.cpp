@@ -4,9 +4,13 @@
 #include "defendfarfromball.h"
 #include "gui/guiinterface.h"
 
-//The distance from the goal where the defend robot stays idle
+//The distance from the goal where the robot stays idle
 #define IDLE_DISTANCE 300
 
+//The distance from the goal where the robot stays to block a possible kick
+#define BLOCK_DISTANCE 600
+
+//Currently unused? Other Strategies broken
 int DefendFarFromBall::goalieDist = 900;
 
 DefendFarFromBall::DefendFarFromBall()
@@ -47,11 +51,19 @@ void DefendFarFromBall::perform(Robot *robot)
         GuiInterface::getGuiInterface()->drawPath(lineEnds.first, lineEnds.second);
         setMovementTargets(movePoint, angleToBall);
     }
-    else if (ballBot != NULL) {
+    else if (ballBot != NULL && !ballBot->isOnMyTeam()) {
         //If there is a robot with the ball, we move to get in it's way.
-        setMovementTargets(idlePoint, angleToBall);
+        //There's some logic here not to follow following out-of-view balls
+        Point myGoal = gameModel->getMyGoal();
+        double  blockAng = Measurments::angleBetween(idlePoint, ballBot);
+        double centerAng = Measurments::angleBetween(idlePoint, Point(0,0));
+        double direction = blockAng;
+        if(abs(blockAng) > 120*(M_PI/180))
+            direction = centerAng;
+        Point blockPoint(cos(direction)*BLOCK_DISTANCE + myGoal.x, sin(direction)*BLOCK_DISTANCE + myGoal.y);
+        setMovementTargets(blockPoint, angleToBall);
     } else {
-        //Othereise we are just idling at the idle point
+        //Otherwise we are just idling at the idle point
         setMovementTargets(idlePoint, angleToBall);
     }
 
