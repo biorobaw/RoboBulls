@@ -9,7 +9,7 @@ Robot::Robot()
     RF = 0; RB = 0;
     orientation = 0;
     kick = false;
-    drible = true;
+    drible = false;
     hasBeh = false;
     currentBehavior = nullptr;
 }

@@ -1,5 +1,6 @@
 #include <QApplication>
 #include <csignal>
+#include <cstdlib>
 #include "communication/visioncomm.h"
 #include "communication/robcomm.h"
 #include "communication/refcomm.h"

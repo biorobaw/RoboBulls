@@ -1,13 +1,13 @@
+#include <cstring>
 #include "nxtrobcomm.h"
 #include "utilities/debug.h"
 #include "include/config/robot_types.h"
 
-//Used to control Omni's PID Controller
-static float k = 0.4;
-static int p = 30;
-
 //Used for testing wheels; see ROBOT_WHEEL_TEST
 int lf, lb, rf, rb;
+
+//A constant to multiple velocities
+static float k = 0.4;
 
 NXTRobComm::NXTRobComm()
 {
@@ -40,7 +40,7 @@ void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
     packet_t teamPacketBuf[5];
 
     // Initialize packet to zeros
-    memset(&teamPacketBuf, 0, sizeof(packet_t)*5);
+    std::memset(&teamPacketBuf, 0, sizeof(packet_t)*5);
 
     // For each robot...
     for(unsigned i = 0; i != robots.size(); ++i)
@@ -78,9 +78,9 @@ void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
             packet->kick = rob->getKick() ? 'k' : 0;
         }
 
-        //Unused; p and i are hacks for the Encoder Arduino robot
-        packet->chip_power = p;
-        packet->dribble_power = i;
+        //Dribble (1/0) and Chip power (no chipper)
+        packet->chip_power = 0;
+        packet->dribble_power = rob->getDrible();
 
         //Reset kick and dribble status in robot
         rob->setKick(0);

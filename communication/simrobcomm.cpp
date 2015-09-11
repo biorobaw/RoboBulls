@@ -54,11 +54,11 @@ void SimRobComm::sendPacket(Robot* robot)
     command->set_wheel3( RB * mappingRatio);    //Right Backward
     command->set_wheel4( RF * mappingRatio);    //Right Forward
     command->set_veltangent(0);
-    command->set_velnormal(0);  // No normal velocity, differentials cannot move sideways
+    command->set_velnormal(0);  // No normal velocity
     command->set_velangular(0);
     command->set_kickspeedx(kick);
     command->set_kickspeedz(0); // No chipper
-    command->set_spinner(drible ? 20 : 0);
+    command->set_spinner(drible ? 80 : 0);
 
     //Send packet
     QByteArray dgram;

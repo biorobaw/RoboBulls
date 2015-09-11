@@ -107,9 +107,7 @@ float Measurments::lineDistance(const Point& p0, const Point& LStart, const Poin
 	float y1 = LStart.y;
 	float x2 = LEnd.x;
 	float x1 = LStart.x;
-
-	return abs((y2-y1)*p0.x - (x2-x1)*p0.y - x1*y2 + x2*y1)
-			/ Measurments::distance(LStart, LEnd);
+    return abs((y2-y1)*p0.x - (x2-x1)*p0.y - x1*y2 + x2*y1) / Measurments::distance(LStart, LEnd);
 }
 
 
