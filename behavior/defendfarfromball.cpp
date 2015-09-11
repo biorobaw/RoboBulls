@@ -2,99 +2,59 @@
 #include "model/gamemodel.h"
 #include "utilities/measurments.h"
 #include "defendfarfromball.h"
+#include "gui/guiinterface.h"
 
-//The distance from the goal where the defend robot stays
-#define DISTANCE 300
-#define VEL_CHANGE_COUNT 3500
+//The distance from the goal where the defend robot stays idle
+#define IDLE_DISTANCE 300
 
 int DefendFarFromBall::goalieDist = 900;
 
 DefendFarFromBall::DefendFarFromBall()
-    : GenericMovementBehavior()
-    , KTPSkill(nullptr)
-    , wasNotPreviousScoreHazard(true)
-    , isKickingAwayBall(false)
-    , lastKickCounter(0)
-    , velChangeCounter(0)
-    , isOnSlowVelMode(false)
+    : idlePoint(gameModel->getMyGoal() + Point(IDLE_DISTANCE,0) * GameModel::opSide)
 {
-    setVelocityMultiplier(0.65);
+
+}
+
+bool DefendFarFromBall::isBallMovingTowardsGoal(std::pair<Point,Point>& lineEndsOut)
+{
+    //Filter out balls not moving towards goal
+    Point goal = gameModel->getMyGoal();
+    Point bVel = gameModel->getBallVelocity();
+    if(signbit(goal.x) != signbit(bVel.x) || abs(bVel.x) < 0.1)
+        return false;
+
+    //Calculate y position at goal point
+    Point ballPos = gameModel->getBallPoint();
+    float y = (bVel.y / bVel.x) * (goal.x - ballPos.x) + ballPos.y;
+
+    //Set the output to a pair Points representing the line of the ball's trajectory.
+    lineEndsOut = {ballPos, Point(goal.x,y)};
+
+    //Is the Y position within the goalie box?
+    return (y > -GOAL_WIDTH*0.75) && (y < GOAL_WIDTH*0.75);
 }
 
 void DefendFarFromBall::perform(Robot *robot)
 {
-    GameModel *gm = GameModel::getModel();
-    Point robPoint = robot->getRobotPosition();
-    Point ballPoint = gm->getBallPoint();
-    Point myGoal = gm->getMyGoal();
+    float angleToBall = Measurments::angleBetween(robot, gameModel->getBallPoint());
+    Robot* ballBot = gameModel->getHasBall();
 
-    /* Check if there are any opp robots within 3000 distance of the ball
-    *  This boolean is used to determine if the goalie should wait
-    *  before kicking the ball to a teammate in case an opp robot intersepts
-    *  the ball
-    *  * TODO: Probably remove this
-    */
-    bool safeToKick = 1;
-    /*
-    for(Robot* opRob:gm->getOponentTeam())
-    {
-        if (Measurments::distance(opRob->getRobotPosition(),ballPoint) < 3000)
-            safeToKick = 0;
+    /* If the ball is moving torwards goal, we move to get into the line of trajectory.
+     * Otherwise, if the ball is not moving to the goal, we remain stationary */
+    std::pair<Point,Point> lineEnds;
+    if(isBallMovingTowardsGoal(lineEnds))  {
+        Point movePoint = Measurments::linePoint(robot->getRobotPosition(), lineEnds.first, lineEnds.second);
+        GuiInterface::getGuiInterface()->drawPath(lineEnds.first, lineEnds.second);
+        setMovementTargets(movePoint, angleToBall);
     }
-    */
-
-    bool isScoreHazard =
-            Measurments::distance(myGoal, ballPoint) < goalieDist
-            and Measurments::distance(myGoal, ballPoint) > 300
-            and not(Measurments::isClose(robPoint, ballPoint, 100))
-            and lastKickCounter <= 0
-            and safeToKick;
-
-    if(isScoreHazard or isKickingAwayBall) {
-        //Initially this goes here
-        if(wasNotPreviousScoreHazard) {
-            KTPSkill = new Skill::KickToPointOmni(Point(0,0));
-            isKickingAwayBall = true;
-            wasNotPreviousScoreHazard = false;
-        }
-        //Performing the kick and stopping if finished
-        if(KTPSkill->perform(robot) or
-                Measurments::distance(ballPoint, myGoal) > 1200){
-            lastKickCounter = 100;
-            wasNotPreviousScoreHazard = true;
-            isKickingAwayBall = false;
-            delete KTPSkill;
-            KTPSkill = nullptr;
-        }
+    else if (ballBot != NULL) {
+        //If there is a robot with the ball, we move to get in it's way.
+        setMovementTargets(idlePoint, angleToBall);
     } else {
-        //Logic to be able to kick again
-        if(lastKickCounter > 0) {
-            --lastKickCounter;
-        }
-        if(++velChangeCounter >= VEL_CHANGE_COUNT) {
-            velChangeCounter = 0;
-            isOnSlowVelMode = !isOnSlowVelMode;
-        }
-        if(isOnSlowVelMode) {
-            setVelocityMultiplier(0.60);
-        } else {
-            setVelocityMultiplier(0.75);
-        }
-
-        //Logic to not be dumb following out-of-view balls
-        Point  cmpPoint(myGoal.x + 500*GameModel::opSide, 0);
-        double    cmpAng = Measurments::angleBetween(cmpPoint, ballPoint);
-        double   realAng = Measurments::angleBetween(myGoal, ballPoint);
-        double centerAng = Measurments::angleBetween(cmpPoint, Point(0,0));
-        double direction = realAng;
-        if(abs(cmpAng) > 100*(M_PI/180))
-            direction = centerAng;
-
-        //Just sitting and facing the ball
-        Point defensiveWall(cos(direction)*DISTANCE + myGoal.x,
-                            sin(direction)*DISTANCE + myGoal.y);
-        setMovementTargets(defensiveWall, direction, false, false);
-        GenericMovementBehavior::perform(robot, Movement::Type::facePoint);
+        //Othereise we are just idling at the idle point
+        setMovementTargets(idlePoint, angleToBall);
     }
+
+    GenericMovementBehavior::perform(robot);
 }
 

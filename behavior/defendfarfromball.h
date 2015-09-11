@@ -6,25 +6,30 @@
 
 /*! @brief The “goalie” behavior of the game.
  * @author Narges Ghaedi, James W
- * The robot defends the goal by positioning itself at the goal and moving
- * in between the goal and the ball facing the ball, wherever the ball may be.
- * When the ball becomes close, this behavior moves the robots out and
- * kicks the ball to the center of the field to remove it from the goalie box. */
+ *
+ * The robot defends the goal by positioning itself in the trajectory of the ball
+ * when it is moving torwards the goal, as well as positioning itself to block a robot
+ * when it has the ball and is facing the goal.
+ *
+ * When the ball becomes close, the goalie moves out and kicks the ball to the
+ * center of the field to remove it from the goalie box.
+ */
 
 class DefendFarFromBall : public GenericMovementBehavior
 {
 public:
-    DefendFarFromBall();
-    void perform(Robot*);
     static int goalieDist; //!< @brief Distance to goal needed for goalie to react
 
 public:
-    Skill::KickToPointOmni* KTPSkill = nullptr;
-    bool wasNotPreviousScoreHazard;
-    bool isKickingAwayBall;
-    int  lastKickCounter;
-    int  velChangeCounter;
-    bool isOnSlowVelMode;
+    DefendFarFromBall();
+    void perform(Robot*);
+
+private:
+    /*! @brief Returns true if the ball is moving with non-zero velocity torwards the goal.
+     * @param lineEndsOut If true, A pair of Point of {the ball's position, where it will land in the goal} */
+    bool isBallMovingTowardsGoal(std::pair<Point,Point>& lineEndsOut);
+
+    Point idlePoint; //!< Point to sit at when no action happens
 };
 
 #endif // DEFENDFARFROMBALL_H
