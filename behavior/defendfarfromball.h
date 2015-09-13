@@ -5,7 +5,7 @@
 #include "movement/gotoposition.h"
 
 /*! @brief The “goalie” behavior of the game.
- * @author Narges Ghaedi, James W
+ * @author Narges Ghaedi, James W, Adam
  *
  * The robot defends the goal by positioning itself in the trajectory of the ball
  * when it is moving torwards the goal, as well as positioning itself to block a robot
@@ -18,10 +18,11 @@
 class DefendFarFromBall : public GenericMovementBehavior
 {
 public:
-    static int goalieDist; //!< @brief Distance to goal needed for goalie to react
+    static int goalieDist; //!< Distance ball must be to idlePoint for goalie to move it kick it
 
 public:
     DefendFarFromBall();
+    ~DefendFarFromBall();
     void perform(Robot*);
 
 private:
@@ -29,7 +30,13 @@ private:
      * @param lineEndsOut If true, A pair of Point of {the ball's position, where it will land in the goal} */
     bool isBallMovingTowardsGoal(std::pair<Point,Point>& lineEndsOut);
 
-    Point idlePoint; //!< Point to sit at when no action happens
+    /*! @brief Returns true if the ball is behind the goal (idle point)
+     * @details In such cases, we will not chance the ball, as it is out of the field or unreachable */
+    bool isBallBehindGoal();
+
+    Point idlePoint;        //!< Point to sit at when no action happens
+    bool isKickingBallAway; //!< Are we in the process of kicking the ball from the goal?
+    Skill::KickToPointOmni* kick_skill; //!< Skill to kick the ball with
 };
 
 #endif // DEFENDFARFROMBALL_H
