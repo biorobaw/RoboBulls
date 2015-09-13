@@ -172,9 +172,11 @@ void listenStart()
     registerFunction("add_robot", builtin_add_robot);
     registerVariable("goalie_id", &GOALIE_ID);
 
-    std::cout << "********************************" << '\n'
-              << "Utility Command Line Enabled    " << '\n'
-              << "********************************" << std::endl;
+    std::cout
+        << '\n'
+        << "Utility Command Line Enabled      \n"
+        << "Type \"help\" for more information\n"
+        << "********************************  \n";
 
     //Starts the new thread and returns
     debugThread = std::thread(debugListenFn);

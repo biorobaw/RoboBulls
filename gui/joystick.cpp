@@ -22,6 +22,10 @@ bool configure(const std::string& name, int& jAxisMoveUp, int& jAxisMoveSide, in
         jAxisMoveUp = 1;
         jAxisMoveSide = 0;
         jAxisRotate = 2;
+    } else if(name == "Microsoft X-Box 360 pad") {
+        jAxisMoveUp = 1;
+        jAxisMoveSide = 0;
+        jAxisRotate = 3;
     } else {
         return false;
     }
@@ -71,7 +75,7 @@ void listener()
             hasSupportedJoystick = true;
 
             std::cout
-                << "********************************\n"
+                << '\n'
                 << "Joystick Control Enabled\n"
                 << name + '\n'
                 << "********************************\n";
@@ -129,15 +133,15 @@ void listener()
                 }
             }
         } else {
-            //When a non-support joystick is plugged in, keep giving a message every 3 seconds
+            hasSupportedJoystick = false;
+            //When a non-support joystick is plugged in, keep giving a message every 5 seconds
             static clock_t time = 0;
-            if((float)(clock() - time) / CLOCKS_PER_SEC > 3) {
+            if((float)(clock() - time) / CLOCKS_PER_SEC > 5) {
                 time = clock();
                 std::cout
-                    << "********************************\n"
+                    << '\n'
                     << "Joystick \"" + name + "\" is not supported.\n"
                     << "********************************\n";
-                hasSupportedJoystick = false;
             }
         }
     }

@@ -1,6 +1,9 @@
 #include <QApplication>
 #include <csignal>
 #include <cstdlib>
+#include <iostream>
+#include "include/config/simulated.h"
+#include "include/config/team.h"
 #include "communication/visioncomm.h"
 #include "communication/robcomm.h"
 #include "communication/refcomm.h"
@@ -80,6 +83,15 @@ void registerExitSignals()
     std::set_terminate(exitStopRobot);
 }
 
+//! @brief Print a message about build time and useful config information
+void printBuildInfo()
+{
+    std::cout
+        << "RoboBulls 2 Build " << __DATE__ << " " << __TIME__ << '\n'
+        << "Simulated: " << SIMULATED << '\n'
+        << "     Team: " << (TEAM == TEAM_BLUE ? "Blue" : "Yellow") << '\n';
+}
+
 int main(int argc, char *argv[])
 {
     //Initialize GameModel, StrategyController, Vision, and Ref
@@ -89,6 +101,9 @@ int main(int argc, char *argv[])
     StrategyController sc(gm);
     gm->setStrategyController(&sc);
     registerExitSignals();
+
+    //Build message
+    printBuildInfo();
 
     //Create the GUI and show it
     QApplication a(argc, argv);
