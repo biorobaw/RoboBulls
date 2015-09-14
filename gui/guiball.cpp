@@ -1,23 +1,15 @@
 #include "guiball.h"
-#include <include/config/simulated.h>
 
 GuiBall::GuiBall()
 {
     Pressed = false;
-    if (SIMULATED) {
-        setFlag(ItemIsMovable); // makes it movable
-    }
     int radius = boundingRect().width() / 2;
     setTransformOriginPoint(radius,radius);   // sets center point, around which it rotates
-
-
 }
 
 QRectF GuiBall::boundingRect() const
 {
     int diameter = 200;
-    //int radius = diameter / 2;
-//    return QRectF(radius,radius,diameter,diameter);
     return QRectF(0,0,diameter,diameter);
 }
 

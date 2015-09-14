@@ -1,29 +1,17 @@
 #include <algorithm>
 #include "kicktogoal.h"
-#include "include/config/simulated.h"
 #include "model/gamemodel.h"
 #include "skill/stop.h"
 #include "skill/kicktopointomni.h"
 #include "utilities/comparisons.h"
 
-#if SIMULATED
-    #define ANGLE   (10 * M_PI/180)
-    #define CLOSE_TO_BALL 110
-    #define BEHIND_RADIUS (ROBOT_RADIUS*2.25)
-    #define CLOSE_ENOUGH 110
-    #define R   200
-    #define SPEED_TOL 0.15
-#else
-    #define ANGLE   (5 * M_PI/180)
-    #define CLOSE_TO_BALL 110
-    #define BEHIND_RADIUS (ROBOT_RADIUS*2.25)
-    #define CLOSE_ENOUGH 220
-    #define R   100
-    #define SPEED_TOL 0.8
-#endif
-
+#define ANGLE   (10 * M_PI/180)
+#define CLOSE_TO_BALL 110
+#define BEHIND_RADIUS (ROBOT_RADIUS*2.25)
+#define CLOSE_ENOUGH 110
+#define R   200
+#define SPEED_TOL 0.15
 #define KTGOAL_DEBUG 0
-
 
 KickToGoal::KickToGoal()
 {

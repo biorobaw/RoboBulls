@@ -6,7 +6,6 @@
 #include "behavior/defendbehavior.h"
 #include "behavior/defendfarfromball.h"
 #include "behavior/rotateonpoint.h"
-#include "include/config/simulated.h"
 
 /************************************************************************/
 //Test Behaviors Section

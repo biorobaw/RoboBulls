@@ -1,6 +1,4 @@
-#include "include/config/simulated.h"
 #include "attacksupport.h"
-
 
 AttackSupport::AttackSupport(Robot* passer)
     : main_attacker(passer)

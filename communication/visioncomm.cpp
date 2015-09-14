@@ -9,11 +9,7 @@ using namespace std;
 
 VisionComm::VisionComm(GameModel *gm)
 {
-#if SIMULATED
     client = new RoboCupSSLClient(VISION_PORT, VISION_ADDRESS);
-#else
-    client = new RoboCupSSLClient();
-#endif
     client->open(true);
     gamemodel = gm;
     packetCount=0;
