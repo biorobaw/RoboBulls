@@ -30,7 +30,7 @@ CONFIG   -= app_bundle
 #}
 
 TEMPLATE = app
-QMAKE_CXX = g++-4.8
+QMAKE_CXX = g++
 
 SOURCES += main.cpp \
 	behavior/attackmain.cpp \
@@ -200,7 +200,8 @@ HEADERS += \
 	utilities/measurments.h \
 	utilities/point.h \
 	utilities/region.h \
-	utilities/velocitycalculator.h
+	utilities/velocitycalculator.h \
+    include/config/communication.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 

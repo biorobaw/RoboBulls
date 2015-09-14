@@ -7,7 +7,7 @@ function echored() { RED='\033[0;31m'; NC='\033[0m'; printf "${RED}$1${NC}\n"; }
 
 #All preliminary libraries
 echored "Installing Preliminary libraries"
-sudo apt-get install -y git g++ g++-4.8 make libprotobuf-dev protobuf-compiler libgtkmm-2.4-dev qt5-default qt5-qmake qtcreator libsdl2-dev minicom build-essential cmake libqt4-dev libgl1-mesa-dev libglu1-mesa-dev libprotobuf-dev libode-dev
+sudo apt-get install -y git g++ make libprotobuf-dev protobuf-compiler libgtkmm-2.4-dev qt5-default qt5-qmake qtcreator libsdl2-dev minicom build-essential cmake libqt4-dev libgl1-mesa-dev libglu1-mesa-dev libprotobuf-dev libode-dev
 
 #RefBox installation, if not downloaded
 if [ ! -d $INSTALL_PATH/ssl-refbox ]; then
