@@ -42,6 +42,7 @@ static void debugListenFn()
 
     //Makes sure any initial printing is done first
     std::this_thread::sleep_for(std::chrono::seconds(1));
+    std::cout << '\n';
 
     while(1)
     {
@@ -54,11 +55,11 @@ static void debugListenFn()
 
         if(arguments[0] == "help")
         {
-            std::cout << "set <i>         \tSet an integer\n"
-                      << "get <i>         \tRetrieve integer value\n"
-                      << "get             \tRetrieve all registered values\n"
-                      << "call <fn> [args]\tCall a registerd function\n"
-                      << "help            \tShow this help text" << std::endl;
+            std::cout << "set <i>          Set an integer\n"
+                      << "get <i>          Retrieve integer value\n"
+                      << "get              Retrieve all registered values\n"
+                      << "call <f> [args]  Call a registerd function\n"
+                      << "help             Show this help text" << std::endl;
         }
         else if(arguments[0] == "set") //Set a variable
         {

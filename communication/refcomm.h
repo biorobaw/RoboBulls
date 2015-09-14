@@ -49,10 +49,7 @@ public:
      * @param gm The GameModel to fill with information
      * @param net_ref_address Address Refbox is broadcasting to
      * @param port The port Refbox is broadcasting to */
-    RefComm(GameModel *gm,
-            int port = 10001,
-            string net_ref_address="224.5.23.1",
-            string net_ref_interface="");
+    RefComm(GameModel *gm);
 
    ~RefComm();
 

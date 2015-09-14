@@ -4,6 +4,7 @@
 #include <iostream>
 #include "include/config/simulated.h"
 #include "include/config/team.h"
+#include "include/config/communication.h"
 #include "communication/visioncomm.h"
 #include "communication/robcomm.h"
 #include "communication/refcomm.h"
@@ -75,10 +76,8 @@ void exitStopRobot()
 //! @brief Registers exit signals to stop the robots on a crash or program close
 void registerExitSignals()
 {
-    static const int bad_signals[] =
-        {SIGSEGV, SIGKILL, SIGHUP, SIGABRT, SIGTERM, SIGQUIT};
-    for(int i : bad_signals)
-        std::signal(i, exitStopRobot);
+    for(int bad_signal : {SIGSEGV, SIGKILL, SIGHUP, SIGABRT, SIGTERM, SIGQUIT})
+        std::signal(bad_signal, exitStopRobot);
     std::atexit(exitStopRobot);
     std::set_terminate(exitStopRobot);
 }
@@ -87,9 +86,12 @@ void registerExitSignals()
 void printBuildInfo()
 {
     std::cout
-        << "RoboBulls 2 Build " << __DATE__ << " " << __TIME__ << '\n'
-        << "Simulated: " << SIMULATED << '\n'
-        << "     Team: " << (TEAM == TEAM_BLUE ? "Blue" : "Yellow") << '\n';
+        << "RoboBulls 2 Build " << __DATE__ << " " << __TIME__ << std::endl
+        << "       Team: " << ((TEAM == TEAM_BLUE) ? "Blue" : "Yellow") << std::endl
+        << "  Simulated: " << SIMULATED << std::endl
+        << "  Simulator: " << SIMULATOR_ADDRESS << ":" << SIMULATOR_PORT << std::endl
+        << "     Vision: " << VISION_ADDRESS    << ":" << VISION_PORT    << std::endl
+        << "     RefBox: " << REFBOX_LISTEN_ENABLED << std::endl;
 }
 
 int main(int argc, char *argv[])

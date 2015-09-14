@@ -1,16 +1,14 @@
 #include "communication/refcomm.h"
+#include "include/config/communication.h"
 #include <iostream>
 
 using namespace std;
 
-RefComm::RefComm(GameModel *gm,
-                 int port,
-                 string net_address,
-                 string net_interface)
+RefComm::RefComm(GameModel *gm)
 {
-    _port=port;
-    _net_address=net_address;
-    _net_interface=net_interface;
+    _port=REFBOX_PORT;
+    _net_address=REFBOX_ADDRESS;
+    _net_interface="";
     gamemodel = gm;
 }
 

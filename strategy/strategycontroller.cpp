@@ -1,25 +1,18 @@
 #include "strategy/strategy.h"
 #include "model/gamemodel.h"
 #include "model/robot.h"
-#include "communication/robcomm.h"
-#include "behavior/behavior.h"
 #include "strategy/stopstrategy.h"
 #include "strategy/teststrategy.h"
-#include "strategy/penaltystrategy.h"
 #include "strategy/kickoffstrategy.h"
 #include "strategy/freekickstrategy.h"
-#include "strategy/haltstrategy.h"
 #include "strategy/normalgamestrategy.h"
+#include "strategy/penaltystrategy.h"
 #include "strategy/indiectkickstrategy.h"
-#include "strategy/normalgamestrategy.h"
-#include "strategy/videostrategies.h"
-#include "movement/pathfinding/fppa_pathfinding.h"
+#include "strategy/haltstrategy.h"
+#include "communication/robcomm.h"
 #include "gui/guiinterface.h"
+#include "include/config/communication.h"
 #include "strategycontroller.h"
-
-//! @brief Chooses between listening to RefComm,and always choosing TestStrategy.
-#define USE_TEST_STRATEGY 0
-
 
 StrategyController::StrategyController(GameModel* gm)
 {
@@ -51,10 +44,7 @@ void StrategyController::assignNewStrategy(char gameState)
 {
     clearCurrentStrategy();
 
-    /* Testing macro: Change this to 0 to ignore game sate
-     * commands; use to test a single strategy
-     */
-#if !USE_TEST_STRATEGY
+#if REFBOX_LISTEN_ENABLED
     switch(gameState)
     {
     case 'S':    //stop game

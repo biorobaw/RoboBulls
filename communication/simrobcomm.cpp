@@ -3,21 +3,14 @@
 #include "include/grSim_Commands.pb.h"
 #include "include/grSim_Replacement.pb.h"
 #include "include/config/team.h"
+#include "include/config/communication.h"
 #include "model/robot.h"
 #include "simrobcomm.h"
 
 SimRobComm::SimRobComm()
 {
-    //Shamsi Sim Address (ENG-122)
-    //_addr = "131.247.14.101";
-
-    //James Sim Address (ENG-122)
-    _addr = "131.247.14.106";
-
-    //Local Sim Address
-    //_addr = "127.0.0.1";
-
-    _port = 20011;
+    _addr = SIMULATOR_ADDRESS;
+    _port = SIMULATOR_PORT;
 }
 
 void SimRobComm::sendVelsLarge(std::vector<Robot*>& robots)

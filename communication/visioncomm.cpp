@@ -2,25 +2,15 @@
 #include <deque>
 #include "include/config/simulated.h"
 #include "include/config/team.h"
+#include "include/config/communication.h"
 #include "visioncomm.h"
 using namespace std;
 
 
 VisionComm::VisionComm(GameModel *gm)
 {
-// Use different ports depending on whether it is simulated or the actual vision system
 #if SIMULATED
-    //Shamsi Vision Address
-    //client = new RoboCupSSLClient(10020,"224.5.23.5");
-
-    //James Vision Address
-    client = new RoboCupSSLClient(10020,"224.5.23.3");
-
-    //Narges Vision Address
-    //client = new RoboCupSSLClient(10020,"224.5.23.8");
-
-    //Ryan Vision Address
-    //client = new RoboCupSSLClient(10020,"224.5.23.17");
+    client = new RoboCupSSLClient(VISION_PORT, VISION_ADDRESS);
 #else
     client = new RoboCupSSLClient();
 #endif
