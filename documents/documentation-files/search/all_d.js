@@ -1,13 +1,11 @@
 var searchData=
 [
-  ['offset_5fang',['offset_ang',['../classRotateOnPoint.html#a22a380bea2b0fc84ded3528caa70a153',1,'RotateOnPoint']]],
-  ['offset_5fpoint',['offset_point',['../classRotateOnPoint.html#af85094c4522945c5ff714ab53184ac7f',1,'RotateOnPoint']]],
-  ['oncommandprocessed',['onCommandProcessed',['../classGameModel.html#acb699cd3f0bc8c808dcfb686554149cb',1,'GameModel']]],
-  ['onrobotupdated',['onRobotUpdated',['../classGameModel.html#a858fc566aa17ca6076c8262476b93098',1,'GameModel']]],
-  ['open',['Open',['../classserialib.html#a7d6d0cee1526e0f3c7150252b7ef1b46',1,'serialib']]],
-  ['operator_5b_5d',['operator[]',['../structMovement_1_1Collisions_1_1detail_1_1RobotMoveStatusContainer.html#aa5657e368c7acb899ed7ecd5469d4dab',1,'Movement::Collisions::detail::RobotMoveStatusContainer']]],
-  ['opside',['opSide',['../classGameModel.html#a8d7fb294de8327501e24ed1113ba0285',1,'GameModel']]],
-  ['opteam',['opTeam',['../classGameModel.html#a802c40d632c3f6b6e5c7fbf56d4df307',1,'GameModel']]],
-  ['orientation',['orientation',['../classRobot.html#affc0c754c8dc2133cb6171e9a34579fd',1,'Robot']]],
-  ['overall_5fvelocity',['OVERALL_VELOCITY',['../group__config.html#ga59bdd018431bf4e8534562203bd0a390',1,'globals.h']]]
+  ['net',['Net',['../namespaceNet.html',1,'']]],
+  ['none_5fof',['none_of',['../classComparisons_1_1Predicate.html#ab1d7e7df655e63eefd2d089a09f100cf',1,'Comparisons::Predicate']]],
+  ['normalgamestrategy',['NormalGameStrategy',['../classNormalGameStrategy.html',1,'']]],
+  ['notifyobservers',['notifyObservers',['../classGameModel.html#a6475bef8f2009e627c787bfb2fe69d7e',1,'GameModel']]],
+  ['numofopponents',['numOfOpponents',['../classRegion.html#af2844ef4b6771bbc417160a1d7925af2',1,'Region']]],
+  ['numofrobots',['numOfRobots',['../classRegion.html#af2ecceddf5247ca4c30d4756bac1615d',1,'Region::numOfRobots()'],['../classRegion.html#a6d51d7cebe0aa2f637afb9a780d00758',1,'Region::numOfRobots(vector&lt; Robot * &gt; ignoreOpponents, vector&lt; Robot * &gt;ignoreTeammates)']]],
+  ['numofteammates',['numOfTeammates',['../classRegion.html#a2f41053db2b1c9e7016eb889a3a9a270',1,'Region']]],
+  ['nxtrobcomm',['NXTRobComm',['../classNXTRobComm.html',1,'']]]
 ];

@@ -9,7 +9,7 @@ var searchData=
   ['recieveball',['recieveBall',['../classVisionComm.html#ae101f4d19b5321fff364cede9fe32dfb',1,'VisionComm']]],
   ['recieverobotteam',['recieveRobotTeam',['../classVisionComm.html#adc2d53f051d797123173215d921a1d30',1,'VisionComm']]],
   ['recreate',['recreate',['../classMovement_1_1Move.html#a70eaa9f4713240f59be3867af60d38df',1,'Movement::Move']]],
-  ['refcomm',['RefComm',['../classRefComm.html#a7d9dd7fe839c6500f1a6aea2d451508d',1,'RefComm']]],
+  ['refcomm',['RefComm',['../classRefComm.html#a9b581213329035b86f8d2c0b2b59a4af',1,'RefComm']]],
   ['region',['Region',['../classRegion.html#a02c9d40904747b87895e8ec4c8628629',1,'Region']]],
   ['registerfunction',['registerFunction',['../namespacedebug.html#abb1d03a859332a1936b010ab34cf5c25',1,'debug']]],
   ['registervariable',['registerVariable',['../namespacedebug.html#a56f52c96546c656d951bf2ea206e6009',1,'debug']]],

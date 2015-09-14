@@ -91,6 +91,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
+<tr class="memitem:ga57b4cb2a4f39df770aab4003eba2ef40"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga57b4cb2a4f39df770aab4003eba2ef40">REFBOX_LISTEN_ENABLED</a>&#160;&#160;&#160;1</td></tr>
+<tr class="memdesc:ga57b4cb2a4f39df770aab4003eba2ef40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Referee Box&ndash;do we listen to commands? See <a class="el" href="classStrategyController.html" title="Controls selection of an active strategy (play) based on the game state. ">StrategyController</a>.  <a href="#ga57b4cb2a4f39df770aab4003eba2ef40">More...</a><br/></td></tr>
+<tr class="separator:ga57b4cb2a4f39df770aab4003eba2ef40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga59bdd018431bf4e8534562203bd0a390"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga59bdd018431bf4e8534562203bd0a390"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga59bdd018431bf4e8534562203bd0a390">OVERALL_VELOCITY</a>&#160;&#160;&#160;1</td></tr>
 <tr class="memdesc:ga59bdd018431bf4e8534562203bd0a390"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overall velocity for all behaviors. Change this constant to slow down or speed up the whole game. <br/></td></tr>
@@ -119,11 +122,19 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga546bbf1628170f1a544966509185fb00">GOAL_WIDTH</a>&#160;&#160;&#160;700</td></tr>
 <tr class="memdesc:ga546bbf1628170f1a544966509185fb00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Y length (short-ways) length of goalie box. <br/></td></tr>
 <tr class="separator:ga546bbf1628170f1a544966509185fb00"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaae94c5b4d241d9dccd2c2894e4e8d306"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#gaae94c5b4d241d9dccd2c2894e4e8d306">SIMULATED</a>&#160;&#160;&#160;0</td></tr>
+<tr class="memitem:ga4da22e6ae08148cfa9fb1717a900810b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga4da22e6ae08148cfa9fb1717a900810b"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga4da22e6ae08148cfa9fb1717a900810b">POINTS_PER_METER</a>&#160;&#160;&#160;1250</td></tr>
+<tr class="memdesc:ga4da22e6ae08148cfa9fb1717a900810b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Conversion factor from meters to field <a class="el" href="classPoint.html" title="2D Point Class ">Point</a> coordinates. <br/></td></tr>
+<tr class="separator:ga4da22e6ae08148cfa9fb1717a900810b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae9851dee98edaed777207dc56faef78c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gae9851dee98edaed777207dc56faef78c"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#gae9851dee98edaed777207dc56faef78c">METERS_PER_POINT</a>&#160;&#160;&#160;(1.0 / <a class="el" href="group__config.html#ga4da22e6ae08148cfa9fb1717a900810b">POINTS_PER_METER</a>)</td></tr>
+<tr class="memdesc:gae9851dee98edaed777207dc56faef78c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Conversion factor from Points to meters. <br/></td></tr>
+<tr class="separator:gae9851dee98edaed777207dc56faef78c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaae94c5b4d241d9dccd2c2894e4e8d306"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#gaae94c5b4d241d9dccd2c2894e4e8d306">SIMULATED</a>&#160;&#160;&#160;1</td></tr>
 <tr class="memdesc:gaae94c5b4d241d9dccd2c2894e4e8d306"><td class="mdescLeft">&#160;</td><td class="mdescRight">The SIMULATED constant, either 1 or 0.  <a href="#gaae94c5b4d241d9dccd2c2894e4e8d306">More...</a><br/></td></tr>
 <tr class="separator:gaae94c5b4d241d9dccd2c2894e4e8d306"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gafc1f230b5d02ed0e5d1f3e6f970651b4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#gafc1f230b5d02ed0e5d1f3e6f970651b4">TEAM</a>&#160;&#160;&#160;<a class="el" href="team_8h.html#a800a654c67c2655c7451dbeff61036a9">TEAM_BLUE</a></td></tr>
-<tr class="memdesc:gafc1f230b5d02ed0e5d1f3e6f970651b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Program's Team constant (TEAM_BLUE or TEAM_YELLOW)  <a href="#gafc1f230b5d02ed0e5d1f3e6f970651b4">More...</a><br/></td></tr>
+<tr class="memdesc:gafc1f230b5d02ed0e5d1f3e6f970651b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Program's Team (TEAM_BLUE or TEAM_YELLOW)  <a href="#gafc1f230b5d02ed0e5d1f3e6f970651b4">More...</a><br/></td></tr>
 <tr class="separator:gafc1f230b5d02ed0e5d1f3e6f970651b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
@@ -150,17 +161,80 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=
 <tr class="memitem:ga26a84561ecda0c5d9bfd9bcaa7ba53f1"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga26a84561ecda0c5d9bfd9bcaa7ba53f1">ROT_TOLERANCE</a></td></tr>
 <tr class="memdesc:ga26a84561ecda0c5d9bfd9bcaa7ba53f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The max difference in angle for two angles in radians to be considered equal.  <a href="#ga26a84561ecda0c5d9bfd9bcaa7ba53f1">More...</a><br/></td></tr>
 <tr class="separator:ga26a84561ecda0c5d9bfd9bcaa7ba53f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga354023cfcd61da084c6158dd519f2069"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga354023cfcd61da084c6158dd519f2069"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga354023cfcd61da084c6158dd519f2069">VISION_ADDRESS_SHAMSI</a>&#160;&#160;&#160;&quot;224.5.23.5&quot;</td></tr>
+<tr class="memdesc:ga354023cfcd61da084c6158dd519f2069"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vision listen address options. <br/></td></tr>
+<tr class="separator:ga354023cfcd61da084c6158dd519f2069"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab5d685b838790735168ae3b1462c3283"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gab5d685b838790735168ae3b1462c3283"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#gab5d685b838790735168ae3b1462c3283">VISION_ADDRESS_JAMES</a>&#160;&#160;&#160;&quot;224.5.23.3&quot;</td></tr>
+<tr class="memdesc:gab5d685b838790735168ae3b1462c3283"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vision listen address options. <br/></td></tr>
+<tr class="separator:gab5d685b838790735168ae3b1462c3283"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga81f11ff4625ee44298d2be1394033f9b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga81f11ff4625ee44298d2be1394033f9b"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga81f11ff4625ee44298d2be1394033f9b">VISION_ADDRESS_NONSIM</a>&#160;&#160;&#160;&quot;224.5.23.2&quot;</td></tr>
+<tr class="memdesc:ga81f11ff4625ee44298d2be1394033f9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vision listen address options. <br/></td></tr>
+<tr class="separator:ga81f11ff4625ee44298d2be1394033f9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab93ba8b45f8468222a29e39397bf15b1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gab93ba8b45f8468222a29e39397bf15b1"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#gab93ba8b45f8468222a29e39397bf15b1">SIMULATOR_ADDRESS_JAMES</a>&#160;&#160;&#160;&quot;131.247.14.106&quot;</td></tr>
+<tr class="memdesc:gab93ba8b45f8468222a29e39397bf15b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vision listen address options. <br/></td></tr>
+<tr class="separator:gab93ba8b45f8468222a29e39397bf15b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa57c1976425827d0e95b2b767f286d7d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaa57c1976425827d0e95b2b767f286d7d"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#gaa57c1976425827d0e95b2b767f286d7d">SIMULATOR_ADDRESS_SHAMSI</a>&#160;&#160;&#160;&quot;131.247.14.101&quot;</td></tr>
+<tr class="memdesc:gaa57c1976425827d0e95b2b767f286d7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vision listen address options. <br/></td></tr>
+<tr class="separator:gaa57c1976425827d0e95b2b767f286d7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0b6711e9412c9d0625e677f20d893892"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga0b6711e9412c9d0625e677f20d893892"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga0b6711e9412c9d0625e677f20d893892">SIMULATOR_ADDRESS_LOCAL</a>&#160;&#160;&#160;&quot;127.0.0.1&quot;</td></tr>
+<tr class="memdesc:ga0b6711e9412c9d0625e677f20d893892"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vision listen address options. <br/></td></tr>
+<tr class="separator:ga0b6711e9412c9d0625e677f20d893892"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5b373c8e4b2e71be2b1025e6ab6ecd6d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga5b373c8e4b2e71be2b1025e6ab6ecd6d"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga5b373c8e4b2e71be2b1025e6ab6ecd6d">SIMULATOR_ADDRESS</a>&#160;&#160;&#160;<a class="el" href="group__config.html#gab93ba8b45f8468222a29e39397bf15b1">SIMULATOR_ADDRESS_JAMES</a></td></tr>
+<tr class="memdesc:ga5b373c8e4b2e71be2b1025e6ab6ecd6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comunication configurations. <br/></td></tr>
+<tr class="separator:ga5b373c8e4b2e71be2b1025e6ab6ecd6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga458f28159eb4494649a44484e7c29486"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga458f28159eb4494649a44484e7c29486"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga458f28159eb4494649a44484e7c29486">SIMULATOR_PORT</a>&#160;&#160;&#160;20011</td></tr>
+<tr class="memdesc:ga458f28159eb4494649a44484e7c29486"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comunication configurations. <br/></td></tr>
+<tr class="separator:ga458f28159eb4494649a44484e7c29486"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae138d5590f67cd5b561c9fefe2039a02"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gae138d5590f67cd5b561c9fefe2039a02"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#gae138d5590f67cd5b561c9fefe2039a02">VISION_ADDRESS</a>&#160;&#160;&#160;<a class="el" href="group__config.html#ga81f11ff4625ee44298d2be1394033f9b">VISION_ADDRESS_NONSIM</a></td></tr>
+<tr class="memdesc:gae138d5590f67cd5b561c9fefe2039a02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comunication configurations. <br/></td></tr>
+<tr class="separator:gae138d5590f67cd5b561c9fefe2039a02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga85c6edfbd123744403fb90b315c70843"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga85c6edfbd123744403fb90b315c70843"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga85c6edfbd123744403fb90b315c70843">VISION_PORT</a>&#160;&#160;&#160;10002</td></tr>
+<tr class="memdesc:ga85c6edfbd123744403fb90b315c70843"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comunication configurations. <br/></td></tr>
+<tr class="separator:ga85c6edfbd123744403fb90b315c70843"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5766b15b484d6ed382baf2ab77b11df6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga5766b15b484d6ed382baf2ab77b11df6"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga5766b15b484d6ed382baf2ab77b11df6">REFBOX_ADDRESS</a>&#160;&#160;&#160;&quot;224.5.23.1&quot;</td></tr>
+<tr class="memdesc:ga5766b15b484d6ed382baf2ab77b11df6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comunication configurations. <br/></td></tr>
+<tr class="separator:ga5766b15b484d6ed382baf2ab77b11df6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga10c6f9a3aecaba9ea62d80650b50c7eb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga10c6f9a3aecaba9ea62d80650b50c7eb"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga10c6f9a3aecaba9ea62d80650b50c7eb">REFBOX_PORT</a>&#160;&#160;&#160;10001</td></tr>
+<tr class="memdesc:ga10c6f9a3aecaba9ea62d80650b50c7eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comunication configurations. <br/></td></tr>
+<tr class="separator:ga10c6f9a3aecaba9ea62d80650b50c7eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Configuration Constants. </p>
 <p>These are constants in <b>include/config</b> which control the game. </p>
 <h2 class="groupheader">Macro Definition Documentation</h2>
+<a class="anchor" id="ga57b4cb2a4f39df770aab4003eba2ef40"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define REFBOX_LISTEN_ENABLED&#160;&#160;&#160;1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Referee Box&ndash;do we listen to commands? See <a class="el" href="classStrategyController.html" title="Controls selection of an active strategy (play) based on the game state. ">StrategyController</a>. </p>
+<p>Chooses between listening to <a class="el" href="classRefComm.html" title="Communication module to receive information from the RefBox. ">RefComm</a>, and always choosing <a class="el" href="classTestStrategy.html" title="Class to test behaviors and other code. ">TestStrategy</a>. </p>
+
+</div>
+</div>
 <a class="anchor" id="gaae94c5b4d241d9dccd2c2894e4e8d306"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define SIMULATED&#160;&#160;&#160;0</td>
+          <td class="memname">#define SIMULATED&#160;&#160;&#160;1</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -184,8 +258,8 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=
       </table>
 </div><div class="memdoc">
 
-<p>The Program's Team constant (TEAM_BLUE or TEAM_YELLOW) </p>
-<p>The player's team. In the case of having two teams, compile one program with TEAM set to TEAM_BLUE, and one program with TEAM set to TEAM_YELLOW. </p>
+<p>The Program's Team (TEAM_BLUE or TEAM_YELLOW) </p>
+<p>The player's team constant. This sets which team the program will transmit to. XBee Channel D is for Blue, E is for Yellow </p>
 
 </div>
 </div>
@@ -223,7 +297,7 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Aug 25 2015 16:39:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Sep 14 2015 13:40:08 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

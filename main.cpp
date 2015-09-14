@@ -32,10 +32,12 @@
  *
  * @section config Configuration
  * The project is controlled by a number of configuration files.
- * See the Config Module in Modules. The two most important are:
+ * See the Config Module in Modules. The three most important are:
  * - *include/config/simulated.h*--Simulated or Field play-- The SIMULATED macrco
  *   selects to run the project on the field (ENG lab) or grSim simulator.
  * - *include/config/team.h*--Team Selection--The TEAM macro selects TEAM_BLUE or TEAM_YELLOW.
+ * - *include/config/communication.h*--Network config--Sets the addresses and ports of the
+ *    communication modules
  *
  * @section start Getting Started--Running The Project
  * Here we are going to compile and run the project on the simulator and perform a simple
@@ -43,14 +45,16 @@
  * 1) Open the RoboBulls.pro project in Qt Creator and compile.
  *    After running the installation script, there should be no compilation issues
  *    (Tested on Ubuntu 14.04 only)<br>
- * 2) Go to **communication/simrobcomm.cpp** and change <b>_addr</b> in the SimRobComm
- *    constructor to the IP of the computer running the simulator (127.0.0.1 for local).<br>
- * 3) Go to **strategy/strategycontroller.cpp** and change USE_TEST_STRATEGY to 1<br>
+ * 2) Open the grSim simulator (grSim/bin/grsim) from the script's install path
+ *    on your computer or any other computer<br>
+ * 3) Change <b>REFBOX_LISTEN_ENABLED</b> to 0--This will enable of the TestStrategy below.<br>
  * 4) Go to **strategy/teststrategy.cpp** and insert
  *    **gameModel->findMyTeam(0)->assignBeh<GoToBeh>();** under **TestStrategy::assignBeh**<br>
  * 5) Open the grSim simulator (grSim/bin/grsim) from the script's install path
  *    on your computer or any other computer<br>
- * 6) Making sure SIMULATED in include/config/simulated is 1, Run the program.
+ * 6) Go to **include/config/communication.h** and change <b>SIMULATOR_ADDRESS</b> to the IP
+ *    (in quotes) of the computer running grSim (SIMULATOR_ADDRESS_LOCAL for local).<br>
+ * 7) Making sure <b>SIMULATED</b> in include/config/simulated is 1, Run the program.
  *
  * If these steps are completed correctly, Robot 0 on TEAM should move to the center
  * of the field.

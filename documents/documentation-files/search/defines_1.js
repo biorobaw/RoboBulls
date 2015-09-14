@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['points_5fper_5fmeter',['POINTS_PER_METER',['../velocitycalculator_8h.html#a4da22e6ae08148cfa9fb1717a900810b',1,'velocitycalculator.h']]]
+  ['unused_5fangle_5fvalue',['UNUSED_ANGLE_VALUE',['../globals_8h.html#af8e3ef85fce83e2f92bd95d7f5a46e11',1,'globals.h']]]
 ];

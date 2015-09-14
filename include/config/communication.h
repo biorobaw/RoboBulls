@@ -2,8 +2,9 @@
 #define COMMUNICATION_H
 #include "include/config/simulated.h"
 
-/*! @file Address and port configurations for the communication moudles
- *  @addtogroup config
+/*! @file
+ * @brief Address and port configurations for the communication modules
+ * @addtogroup config
  * @{
  */
 
@@ -21,7 +22,7 @@
 #define SIMULATOR_ADDRESS_LOCAL  "127.0.0.1"
 //! @}
 
-//! @brief Current Communication Address Options
+//! @brief Comunication configurations
 //! @{
 
 #define SIMULATOR_ADDRESS   SIMULATOR_ADDRESS_JAMES
@@ -41,7 +42,7 @@
 //!@}
 
 //! @brief Referee Box--do we listen to commands? See StrategyController
-//! @defails Chooses between listening to RefComm, and always choosing TestStrategy.
+//! @details Chooses between listening to RefComm, and always choosing TestStrategy.
 #define REFBOX_LISTEN_ENABLED 1
 
 //!@}

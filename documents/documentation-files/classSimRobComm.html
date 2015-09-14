@@ -115,16 +115,16 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSimRobComm.html#a8bd58f2c912ff9f3df054503f47b4d6f">SimRobComm</a> ()</td></tr>
 <tr class="memdesc:a8bd58f2c912ff9f3df054503f47b4d6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor sets the IP and port to send to <b>see .cpp</b> <br/></td></tr>
 <tr class="separator:a8bd58f2c912ff9f3df054503f47b4d6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0ee6a013cc2e9cea7f7b7d19bf54a11"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSimRobComm.html#ad0ee6a013cc2e9cea7f7b7d19bf54a11">sendVelsLarge</a> (std::vector&lt; <a class="el" href="classRobot.html">Robot</a> * &gt; &amp;)</td></tr>
-<tr class="memdesc:ad0ee6a013cc2e9cea7f7b7d19bf54a11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Required; send velocities to the entire team at once.  <a href="#ad0ee6a013cc2e9cea7f7b7d19bf54a11">More...</a><br/></td></tr>
-<tr class="separator:ad0ee6a013cc2e9cea7f7b7d19bf54a11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c32b97ef4bfa92b48793ae92679d0eb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSimRobComm.html#a6c32b97ef4bfa92b48793ae92679d0eb">sendVelsLarge</a> (std::vector&lt; <a class="el" href="classRobot.html">Robot</a> * &gt; &amp;) override</td></tr>
+<tr class="memdesc:a6c32b97ef4bfa92b48793ae92679d0eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Required; send velocities to the entire team at once.  <a href="#a6c32b97ef4bfa92b48793ae92679d0eb">More...</a><br/></td></tr>
+<tr class="separator:a6c32b97ef4bfa92b48793ae92679d0eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:a52f1e24f2a2f069c02536a548974496b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a52f1e24f2a2f069c02536a548974496b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSimRobComm.html#a52f1e24f2a2f069c02536a548974496b">sendPacket</a> (int id, int LF, int RF, int LB, int RB, bool kick, bool drible)</td></tr>
-<tr class="memdesc:a52f1e24f2a2f069c02536a548974496b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a packet to the simulator. <br/></td></tr>
-<tr class="separator:a52f1e24f2a2f069c02536a548974496b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7208dbf94548fafc943fadf0ccccb867"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7208dbf94548fafc943fadf0ccccb867"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSimRobComm.html#a7208dbf94548fafc943fadf0ccccb867">sendPacket</a> (<a class="el" href="classRobot.html">Robot</a> *robot)</td></tr>
+<tr class="memdesc:a7208dbf94548fafc943fadf0ccccb867"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a packet to the simulator. <br/></td></tr>
+<tr class="separator:a7208dbf94548fafc943fadf0ccccb867"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -138,7 +138,7 @@ static <a class="el" href="classRobComm.html">RobComm</a> *&#160;</td><td class=
 <div class="textblock"><p><a class="el" href="classRobComm.html" title="RobComm is a base class used to send signals to robots. ">RobComm</a> to send to the grSim simulator. </p>
 <p>uses ProtoBuf and QT to send to a computer running a grSim simulator </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="ad0ee6a013cc2e9cea7f7b7d19bf54a11"></a>
+<a class="anchor" id="a6c32b97ef4bfa92b48793ae92679d0eb"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -155,7 +155,7 @@ static <a class="el" href="classRobComm.html">RobComm</a> *&#160;</td><td class=
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -174,7 +174,7 @@ static <a class="el" href="classRobComm.html">RobComm</a> *&#160;</td><td class=
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Aug 25 2015 16:39:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Sep 14 2015 13:40:09 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

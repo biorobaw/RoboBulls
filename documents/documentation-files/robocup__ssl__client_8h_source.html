@@ -117,34 +117,34 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &quot;messages_robocup_ssl_wrapper.pb.h&quot;</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &quot;messages_robocup_ssl_refbox_log.pb.h&quot;</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">using namespace </span>std;</div>
-<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="classRoboCupSSLClient.html">   35</a></span>&#160;<span class="keyword">class </span><a class="code" href="classRoboCupSSLClient.html">RoboCupSSLClient</a>{</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">int</span> MaxDataGramSize = 65536;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="keywordtype">char</span> * in_buffer;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <a class="code" href="classNet_1_1UDP.html">Net::UDP</a> mc; <span class="comment">// multicast client</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  QMutex mutex;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <span class="keywordtype">int</span> _port;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <span class="keywordtype">string</span> _net_address;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="keywordtype">string</span> _net_interface;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <a class="code" href="classRoboCupSSLClient.html">RoboCupSSLClient</a>(<span class="keywordtype">int</span> port = 10002,</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                     <span class="keywordtype">string</span> net_ref_address=<span class="stringliteral">&quot;224.5.23.2&quot;</span>,</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                     <span class="keywordtype">string</span> net_ref_interface=<span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    ~<a class="code" href="classRoboCupSSLClient.html">RoboCupSSLClient</a>();</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordtype">bool</span> open(<span class="keywordtype">bool</span> blocking=<span class="keyword">false</span>);</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordtype">void</span> close();</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordtype">bool</span> receive(SSL_WrapperPacket &amp; packet);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;};</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="classRoboCupSSLClient_html"><div class="ttname"><a href="classRoboCupSSLClient.html">RoboCupSSLClient</a></div><div class="ttdef"><b>Definition:</b> robocup_ssl_client.h:35</div></div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="classRoboCupSSLClient.html">   36</a></span>&#160;<span class="keyword">class </span><a class="code" href="classRoboCupSSLClient.html">RoboCupSSLClient</a>{</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">int</span> MaxDataGramSize = 65536;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <span class="keywordtype">char</span> * in_buffer;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <a class="code" href="classNet_1_1UDP.html">Net::UDP</a> mc; <span class="comment">// multicast client</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  QMutex mutex;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <span class="keywordtype">int</span> _port;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="keywordtype">string</span> _net_address;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <span class="keywordtype">string</span> _net_interface;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <a class="code" href="classRoboCupSSLClient.html">RoboCupSSLClient</a>(<span class="keywordtype">int</span> port = 10002,</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                     <span class="keywordtype">string</span> net_ref_address=<span class="stringliteral">&quot;224.5.23.2&quot;</span>,</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                     <span class="keywordtype">string</span> net_ref_interface=<span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    ~<a class="code" href="classRoboCupSSLClient.html">RoboCupSSLClient</a>();</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordtype">bool</span> open(<span class="keywordtype">bool</span> blocking=<span class="keyword">false</span>);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordtype">void</span> close();</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordtype">bool</span> receive(SSL_WrapperPacket &amp; packet);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;};</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="classRoboCupSSLClient_html"><div class="ttname"><a href="classRoboCupSSLClient.html">RoboCupSSLClient</a></div><div class="ttdoc">Client to recieve the standard PtotoBuf SSL Messages. </div><div class="ttdef"><b>Definition:</b> robocup_ssl_client.h:36</div></div>
 <div class="ttc" id="classNet_1_1UDP_html"><div class="ttname"><a href="classNet_1_1UDP.html">Net::UDP</a></div><div class="ttdef"><b>Definition:</b> netraw.h:55</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Aug 25 2015 16:39:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Sep 14 2015 13:40:08 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

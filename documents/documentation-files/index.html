@@ -94,26 +94,28 @@ Installation</h1>
 </ul>
 <h1><a class="anchor" id="config"></a>
 Configuration</h1>
-<p>The project is controlled by a number of configuration files. See the Config Module in Modules. The two most important are:</p>
+<p>The project is controlled by a number of configuration files. See the Config Module in Modules. The three most important are:</p>
 <ul>
 <li><em><a class="el" href="simulated_8h.html">include/config/simulated.h</a></em>&ndash;Simulated or Field play&ndash; The SIMULATED macrco selects to run the project on the field (ENG lab) or grSim simulator.</li>
 <li><em><a class="el" href="team_8h.html">include/config/team.h</a></em>&ndash;Team Selection&ndash;The TEAM macro selects TEAM_BLUE or TEAM_YELLOW.</li>
+<li><em><a class="el" href="communication_8h.html" title="Address and port configurations for the communication modules. ">include/config/communication.h</a></em>&ndash;Network config&ndash;Sets the addresses and ports of the communication modules</li>
 </ul>
 <h1><a class="anchor" id="start"></a>
 Getting Started--Running The Project</h1>
 <p>Here we are going to compile and run the project on the simulator and perform a simple <a class="el" href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. ">Behavior</a>.<br/>
 <br/>
  1) Open the RoboBulls.pro project in Qt Creator and compile. After running the installation script, there should be no compilation issues (Tested on Ubuntu 14.04 only)<br/>
- 2) Go to <b>communication/simrobcomm.cpp</b> and change <b>_addr</b> in the <a class="el" href="classSimRobComm.html" title="RobComm to send to the grSim simulator. ">SimRobComm</a> constructor to the IP of the computer running the simulator (127.0.0.1 for local).<br/>
- 3) Go to <b>strategy/strategycontroller.cpp</b> and change USE_TEST_STRATEGY to 1<br/>
- 4) Go to <b>strategy/teststrategy.cpp</b> and insert <b>gameModel-&gt;findMyTeam(0)-&gt;assignBeh&lt;GoToBeh&gt;();</b> under <b>TestStrategy::assignBeh</b><br/>
+ 2) Open the grSim simulator (grSim/bin/grsim) from the script's install path on your computer or any other computer<br/>
+ 3) Change <b>REFBOX_LISTEN_ENABLED</b> to 0&ndash;This will enable of the <a class="el" href="classTestStrategy.html" title="Class to test behaviors and other code. ">TestStrategy</a> below.<br/>
+ 4) Go to <b>strategy/teststrategy.cpp</b> and insert <b>gameModel-&gt;findMyTeam(0)-&gt;assignBeh&lt;GoToBeh&gt;();</b> under <b><a class="el" href="classTestStrategy.html#a46a1281ba6df12f5a680f86f2c990e1b" title="Decides How to assign behaviors to each robot on the team. ">TestStrategy::assignBeh</a></b><br/>
  5) Open the grSim simulator (grSim/bin/grsim) from the script's install path on your computer or any other computer<br/>
- 6) Making sure SIMULATED in include/config/simulated is 1, Run the program.</p>
+ 6) Go to <b><a class="el" href="communication_8h.html" title="Address and port configurations for the communication modules. ">include/config/communication.h</a></b> and change <b>SIMULATOR_ADDRESS</b> to the IP (in quotes) of the computer running grSim (SIMULATOR_ADDRESS_LOCAL for local).<br/>
+ 7) Making sure <b>SIMULATED</b> in include/config/simulated is 1, Run the program.</p>
 <p>If these steps are completed correctly, <a class="el" href="classRobot.html" title="The Robot class representing Robots on the field. ">Robot</a> 0 on TEAM should move to the center of the field. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Aug 25 2015 16:39:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Sep 14 2015 13:40:09 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

@@ -1,7 +1,18 @@
 var searchData=
 [
-  ['udp',['UDP',['../classNet_1_1UDP.html',1,'Net']]],
-  ['unused_5fangle_5fvalue',['UNUSED_ANGLE_VALUE',['../globals_8h.html#af8e3ef85fce83e2f92bd95d7f5a46e11',1,'globals.h']]],
-  ['update',['update',['../structMovement_1_1Collisions_1_1detail_1_1RobotMoveStatus.html#aa8dc53461e40123385339af5f502ecef',1,'Movement::Collisions::detail::RobotMoveStatus::update()'],['../classNormalGameStrategy.html#ab729c5d7ead4bc3314b4139780be3214',1,'NormalGameStrategy::update()'],['../classStopStrategy.html#aa971ce819885ddb2d30b10110428d8a0',1,'StopStrategy::update()'],['../classStrategy.html#addd5ae07531160ed360f697f98308e5b',1,'Strategy::update()'],['../classVelocityCalculator.html#a087dc498ade5220f4a0b6b19d0616f86',1,'VelocityCalculator::update()'],['../namespaceMovement_1_1Collisions.html#a3e935efce44fb8ef4da1c8820dae7c88',1,'Movement::Collisions::update()'],['../namespaceMovement_1_1FPPA.html#a071418b2a7cc92aba8caf6c40a45708b',1,'Movement::FPPA::update()']]],
-  ['updateinfo',['updateInfo',['../classVisionComm.html#acc3047bc688a15c1216eec0e6b257d1b',1,'VisionComm']]]
+  ['team',['team',['../classRobot.html#a68eef60e146d6bed8c870889cd7ba6f0',1,'Robot::team()'],['../group__config.html#gafc1f230b5d02ed0e5d1f3e6f970651b4',1,'TEAM():&#160;team.h']]],
+  ['team_2eh',['team.h',['../team_8h.html',1,'']]],
+  ['team_5fblue',['TEAM_BLUE',['../team_8h.html#a800a654c67c2655c7451dbeff61036a9',1,'team.h']]],
+  ['team_5fyellow',['TEAM_YELLOW',['../team_8h.html#ac7768db2bc280b0104d0aa69ec8bcd70',1,'team.h']]],
+  ['teststrategy',['TestStrategy',['../classTestStrategy.html',1,'']]],
+  ['threewheelcalculator',['ThreeWheelCalculator',['../classMovement_1_1ThreeWheelCalculator.html',1,'Movement']]],
+  ['threewheelvels',['threeWheelVels',['../structMovement_1_1threeWheelVels.html',1,'Movement']]],
+  ['tilde',['tilde',['../structNXTRobComm_1_1packet__t.html#a28e4f14697a01f732d1b8f0356e9b81d',1,'NXTRobComm::packet_t']]],
+  ['time_5fleft',['time_left',['../structRefComm_1_1Packet.html#a5fc48f9d756d63495d0f5cbed6888c73',1,'RefComm::Packet']]],
+  ['timeout',['TimeOut',['../classTimeOut.html',1,'TimeOut'],['../classTimeOut.html#aafbbea3dc5e4beb858231a14eb72ec7b',1,'TimeOut::TimeOut()']]],
+  ['tolerances_2eh',['tolerances.h',['../tolerances_8h.html',1,'']]],
+  ['topleftregion',['topLeftRegion',['../classRegion.html#ab338dce81f5a4b49916104004e2b723c',1,'Region']]],
+  ['toprightregion',['topRightRegion',['../classRegion.html#ab2a90a0cc7b9540e8ef447c2f7bb2c66',1,'Region']]],
+  ['tostring',['toString',['../classBehaviorAssignment.html#af0e0fe5e451e0ec0ac81dceeef74da22',1,'BehaviorAssignment::toString()'],['../classGameModel.html#ae93e9dce7f6ea0cce5a204c5e910df6e',1,'GameModel::toString()'],['../classRobot.html#a22063fbc7fa2e18b4cf7d31848d3fb7b',1,'Robot::toString()'],['../classPoint.html#a94896c5fc859f471861aaad239b42d9f',1,'Point::toString()'],['../classRegion.html#a43c2dc219bf8661a712b8c0c8b660711',1,'Region::toString()']]],
+  ['type',['type',['../classRobot.html#a2652e11e8dbe541235ade55c3d1a12cb',1,'Robot::type()'],['../namespaceMovement.html#a74b28fda28211060df3b66c2ce160bd6',1,'Movement::Type()']]]
 ];

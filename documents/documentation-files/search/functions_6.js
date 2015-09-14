@@ -20,7 +20,7 @@ var searchData=
   ['getgamestate',['getGameState',['../classGameModel.html#ae6b2fc2f081ab906cdfccb90a046e69e',1,'GameModel']]],
   ['gethasball',['getHasBall',['../classGameModel.html#a0d207259b2b866a45fcce659d15ef4df',1,'GameModel']]],
   ['getid',['getID',['../classRobot.html#aee41eb922736dbb951804ae682a1db67',1,'Robot']]],
-  ['getkick',['getKick',['../classRobot.html#aa95229ad4c96eeac1564d4f667b8725e',1,'Robot']]],
+  ['getkick',['getKick',['../classRobot.html#ac1ef4587ad8b0fac194228fbc1766d53',1,'Robot']]],
   ['getl',['getL',['../classRobot.html#a8df8fda5667a187a63d8046a674bddff',1,'Robot']]],
   ['getlb',['getLB',['../classRobot.html#aa5b7314a1336874fe4b3a95ab8d66cf8',1,'Robot']]],
   ['getlf',['getLF',['../classRobot.html#aae09e67418bc41aeb09650153950064c',1,'Robot']]],

@@ -6,9 +6,12 @@ class Robot;
 /*! @brief Class to test behaviors and other code
  *
  * Not part of the main game, TestStrategy exists as a sandbox
- * to test code. To use, change USE_TEST_STRATEGY to 1 in StrategyController
+ * to test code. To use, change REFBOX_LISTEN_ENABLED to 0 in
+ * include/config/communication.h. By doing this, StrategyController
+ * will always select and run TestStrategy instead of the strategy
+ * given by the RefBox.
  * @see StrategyController
- * @see USE_TEST_STRATEGY */
+ * @see include/config/communication.h */
 
 class TestStrategy : public Strategy
 {

@@ -114,51 +114,37 @@ Inheritance diagram for Skill::Kick:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af0422a93803abf764656af3475cc25b8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af0422a93803abf764656af3475cc25b8"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSkill_1_1Kick.html#af0422a93803abf764656af3475cc25b8">Kick</a> ()</td></tr>
-<tr class="memdesc:af0422a93803abf764656af3475cc25b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor; wheel velocities normal. <br/></td></tr>
-<tr class="separator:af0422a93803abf764656af3475cc25b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d968d9be3f638520f3e62055b49ac42"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSkill_1_1Kick.html#a2d968d9be3f638520f3e62055b49ac42">Kick</a> (int lvel, int rvel)</td></tr>
-<tr class="memdesc:a2d968d9be3f638520f3e62055b49ac42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Custom velocity constructor.  <a href="#a2d968d9be3f638520f3e62055b49ac42">More...</a><br/></td></tr>
-<tr class="separator:a2d968d9be3f638520f3e62055b49ac42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7511320863873b399e2d040fa5521bb3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSkill_1_1Kick.html#a7511320863873b399e2d040fa5521bb3">Kick</a> (float kickDistance=1500)</td></tr>
+<tr class="memdesc:a7511320863873b399e2d040fa5521bb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor with optional distance.  <a href="#a7511320863873b399e2d040fa5521bb3">More...</a><br/></td></tr>
+<tr class="separator:a7511320863873b399e2d040fa5521bb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d71d040b485d1bb5fc26c77dd63803a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSkill_1_1Kick.html#a8d71d040b485d1bb5fc26c77dd63803a">perform</a> (<a class="el" href="classRobot.html">Robot</a> *)</td></tr>
 <tr class="memdesc:a8d71d040b485d1bb5fc26c77dd63803a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform the <a class="el" href="classSkill_1_1Skill.html" title="The Skill Base Class. ">Skill</a>'s code on a robot.  <a href="#a8d71d040b485d1bb5fc26c77dd63803a">More...</a><br/></td></tr>
 <tr class="separator:a8d71d040b485d1bb5fc26c77dd63803a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classSkill_1_1Skill.html" title="The Skill Base Class. ">Skill</a> to kick the ball. </p>
-<dl class="section author"><dt>Author</dt><dd>Narges Ghaedi</dd></dl>
-<p>Sets the kick to 1 on the robot. The constructors can emulate different kick distances by sending velocities to the while kicking. See Ctors </p>
+<dl class="section author"><dt>Author</dt><dd>Narges Ghaedi, JamesW</dd></dl>
+<p>Sets the kick active on the robot. The constructor specifies a distance to kick the ball. <b>(Only implemented on the Simulator)</b> </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a2d968d9be3f638520f3e62055b49ac42"></a>
+<a class="anchor" id="a7511320863873b399e2d040fa5521bb3"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">Skill::Kick::Kick </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>lvel</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>kickDistance</em> = <code>1500</code></td><td>)</td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>rvel</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Custom velocity constructor. </p>
+<p>Constructor with optional distance. </p>
+<p>A kick will be sent with enough velocity to move a stationary ball about kickDistance from the kick. Leave blank to send a default-powered kick. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">lvel</td><td>velocity to send to the left wheel when kicking </td></tr>
-    <tr><td class="paramname">lvel</td><td>velocity to send to the left wheel when kicking </td></tr>
+    <tr><td class="paramname">kickDistance</td><td>Approximate distance in Points to kick for </td></tr>
   </table>
   </dd>
 </dl>
@@ -203,7 +189,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Aug 25 2015 16:39:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Sep 14 2015 13:40:09 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

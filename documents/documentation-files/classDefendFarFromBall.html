@@ -89,6 +89,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classDefendFarFromBall-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">DefendFarFromBall Class Reference</div>  </div>
@@ -130,8 +132,32 @@ Public Member Functions</h2></td></tr>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a58a8967e631860f2b80cb3f8e8df801d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a58a8967e631860f2b80cb3f8e8df801d"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDefendFarFromBall.html#a58a8967e631860f2b80cb3f8e8df801d">goalieDist</a> = 900</td></tr>
-<tr class="memdesc:a58a8967e631860f2b80cb3f8e8df801d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Distance to goal needed for goalie to react. <br/></td></tr>
+<tr class="memdesc:a58a8967e631860f2b80cb3f8e8df801d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Distance ball must be to idlePoint for goalie to move it kick it. <br/></td></tr>
 <tr class="separator:a58a8967e631860f2b80cb3f8e8df801d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a4c488c3f5e4bebd4fbac88b00a86fa01"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDefendFarFromBall.html#a4c488c3f5e4bebd4fbac88b00a86fa01">isBallMovingTowardsGoal</a> (std::pair&lt; <a class="el" href="classPoint.html">Point</a>, <a class="el" href="classPoint.html">Point</a> &gt; &amp;lineEndsOut)</td></tr>
+<tr class="memdesc:a4c488c3f5e4bebd4fbac88b00a86fa01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the ball is moving with non-zero velocity torwards the goal.  <a href="#a4c488c3f5e4bebd4fbac88b00a86fa01">More...</a><br/></td></tr>
+<tr class="separator:a4c488c3f5e4bebd4fbac88b00a86fa01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23110660e1608dce43a12a21870d4ddf"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDefendFarFromBall.html#a23110660e1608dce43a12a21870d4ddf">isBallBehindGoal</a> ()</td></tr>
+<tr class="memdesc:a23110660e1608dce43a12a21870d4ddf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the ball is behind the goal (idle point)  <a href="#a23110660e1608dce43a12a21870d4ddf">More...</a><br/></td></tr>
+<tr class="separator:a23110660e1608dce43a12a21870d4ddf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a8d7a4e4d667d58a72c1178416e0ee4fb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8d7a4e4d667d58a72c1178416e0ee4fb"></a>
+<a class="el" href="classPoint.html">Point</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDefendFarFromBall.html#a8d7a4e4d667d58a72c1178416e0ee4fb">idlePoint</a></td></tr>
+<tr class="memdesc:a8d7a4e4d667d58a72c1178416e0ee4fb"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classPoint.html" title="2D Point Class ">Point</a> to sit at when no action happens. <br/></td></tr>
+<tr class="separator:a8d7a4e4d667d58a72c1178416e0ee4fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0baba4b9ad5b28f6ba798789ee3718c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac0baba4b9ad5b28f6ba798789ee3718c"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDefendFarFromBall.html#ac0baba4b9ad5b28f6ba798789ee3718c">isKickingBallAway</a></td></tr>
+<tr class="memdesc:ac0baba4b9ad5b28f6ba798789ee3718c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Are we in the process of kicking the ball from the goal? <br/></td></tr>
+<tr class="separator:ac0baba4b9ad5b28f6ba798789ee3718c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adee4a3fbea02e0f49f3ae2bdd6d5d251"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adee4a3fbea02e0f49f3ae2bdd6d5d251"></a>
+<a class="el" href="classSkill_1_1KickToPointOmni.html">Skill::KickToPointOmni</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDefendFarFromBall.html#adee4a3fbea02e0f49f3ae2bdd6d5d251">kick_skill</a></td></tr>
+<tr class="memdesc:adee4a3fbea02e0f49f3ae2bdd6d5d251"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespaceSkill.html" title="Namespace containing all Skills. ">Skill</a> to kick the ball with. <br/></td></tr>
+<tr class="separator:adee4a3fbea02e0f49f3ae2bdd6d5d251"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -156,8 +182,68 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The “goalie” behavior of the game. </p>
-<dl class="section author"><dt>Author</dt><dd>Narges Ghaedi, James W The robot defends the goal by positioning itself at the goal and moving in between the goal and the ball facing the ball, wherever the ball may be. When the ball becomes close, this behavior moves the robots out and kicks the ball to the center of the field to remove it from the goalie box. </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Narges Ghaedi, James W, Adam</dd></dl>
+<p>The robot defends the goal by positioning itself in the trajectory of the ball when it is moving torwards the goal, as well as positioning itself to block a robot when it has the ball and is facing the goal.</p>
+<p>When the ball becomes close, the goalie moves out and kicks the ball to the center of the field to remove it from the goalie box. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a23110660e1608dce43a12a21870d4ddf"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool DefendFarFromBall::isBallBehindGoal </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns true if the ball is behind the goal (idle point) </p>
+<p>In such cases, we will not chance the ball, as it is out of the field or unreachable </p>
+
+</div>
+</div>
+<a class="anchor" id="a4c488c3f5e4bebd4fbac88b00a86fa01"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool DefendFarFromBall::isBallMovingTowardsGoal </td>
+          <td>(</td>
+          <td class="paramtype">std::pair&lt; <a class="el" href="classPoint.html">Point</a>, <a class="el" href="classPoint.html">Point</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>lineEndsOut</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns true if the ball is moving with non-zero velocity torwards the goal. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lineEndsOut</td><td>If true, A pair of <a class="el" href="classPoint.html" title="2D Point Class ">Point</a> of {the ball's position, where it will land in the goal} </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a class="anchor" id="a81035e4b79a8b3ad2b0d803d7816d902"></a>
 <div class="memitem">
 <div class="memproto">
@@ -199,7 +285,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Aug 25 2015 16:39:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Sep 14 2015 13:40:09 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

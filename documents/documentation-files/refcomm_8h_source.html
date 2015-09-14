@@ -104,50 +104,47 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="classRefComm.html">   45</a></span>&#160;<span class="keyword">class </span><a class="code" href="classRefComm.html">RefComm</a> : <span class="keyword">public</span> QThread</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;{</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <a class="code" href="classRefComm.html">RefComm</a>(<a class="code" href="classGameModel.html">GameModel</a> *gm,</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            <span class="keywordtype">int</span> port = 10001,</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            <span class="keywordtype">string</span> net_ref_address=<span class="stringliteral">&quot;224.5.23.1&quot;</span>,</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <span class="keywordtype">string</span> net_ref_interface=<span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;   ~<a class="code" href="classRefComm.html">RefComm</a>();</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="comment">//communicating with reciver</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">bool</span> open(<span class="keywordtype">bool</span> blocking=<span class="keyword">false</span>);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordtype">void</span> close();</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordtype">bool</span> receive();</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordtype">void</span> run();</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <a class="code" href="classNet_1_1UDP.html">Net::UDP</a> mc; <span class="comment">// multicast client</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordtype">int</span>    _port;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordtype">string</span> _net_address;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordtype">string</span> _net_interface;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <a class="code" href="classGameModel.html">GameModel</a> *gamemodel;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="structRefComm_1_1Packet.html">   76</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structRefComm_1_1Packet.html">Packet</a> {</div>
-<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="structRefComm_1_1Packet.html#ac040e763d4d6a7fc15a415c2f3f54d6f">   77</a></span>&#160;        <span class="keywordtype">char</span> <a class="code" href="structRefComm_1_1Packet.html#ac040e763d4d6a7fc15a415c2f3f54d6f">command</a>;               </div>
-<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="structRefComm_1_1Packet.html#a1b2e2c579a2bb7b444d4379fe5bfda8a">   78</a></span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <a class="code" href="structRefComm_1_1Packet.html#a1b2e2c579a2bb7b444d4379fe5bfda8a">counter</a>;      </div>
-<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="structRefComm_1_1Packet.html#a8e811ec5411f9ccf0607f8d2dff3ad63">   79</a></span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <a class="code" href="structRefComm_1_1Packet.html#a8e811ec5411f9ccf0607f8d2dff3ad63">goals_blue</a>;   </div>
-<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="structRefComm_1_1Packet.html#a4f3f940c147810fecf9b951be8b2c0f0">   80</a></span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <a class="code" href="structRefComm_1_1Packet.html#a4f3f940c147810fecf9b951be8b2c0f0">goals_yellow</a>; </div>
-<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="structRefComm_1_1Packet.html#a5fc48f9d756d63495d0f5cbed6888c73">   81</a></span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> <a class="code" href="structRefComm_1_1Packet.html#a5fc48f9d756d63495d0f5cbed6888c73">time_left</a>;   </div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    } lastPacket;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;};</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor">#endif // REFCOMM_H</span></div>
-<div class="ttc" id="structRefComm_1_1Packet_html"><div class="ttname"><a href="structRefComm_1_1Packet.html">RefComm::Packet</a></div><div class="ttdoc">The legacy Refbox packet. </div><div class="ttdef"><b>Definition:</b> refcomm.h:76</div></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <a class="code" href="classRefComm.html">RefComm</a>(<a class="code" href="classGameModel.html">GameModel</a> *gm);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;   ~<a class="code" href="classRefComm.html">RefComm</a>();</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="comment">//communicating with reciver</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">bool</span> open(<span class="keywordtype">bool</span> blocking=<span class="keyword">false</span>);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordtype">void</span> close();</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordtype">bool</span> receive();</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">void</span> run();</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <a class="code" href="classNet_1_1UDP.html">Net::UDP</a> mc; <span class="comment">// multicast client</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordtype">int</span>    _port;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordtype">string</span> _net_address;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordtype">string</span> _net_interface;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <a class="code" href="classGameModel.html">GameModel</a> *gamemodel;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="structRefComm_1_1Packet.html">   73</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structRefComm_1_1Packet.html">Packet</a> {</div>
+<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="structRefComm_1_1Packet.html#ac040e763d4d6a7fc15a415c2f3f54d6f">   74</a></span>&#160;        <span class="keywordtype">char</span> <a class="code" href="structRefComm_1_1Packet.html#ac040e763d4d6a7fc15a415c2f3f54d6f">command</a>;               </div>
+<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="structRefComm_1_1Packet.html#a1b2e2c579a2bb7b444d4379fe5bfda8a">   75</a></span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <a class="code" href="structRefComm_1_1Packet.html#a1b2e2c579a2bb7b444d4379fe5bfda8a">counter</a>;      </div>
+<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="structRefComm_1_1Packet.html#a8e811ec5411f9ccf0607f8d2dff3ad63">   76</a></span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <a class="code" href="structRefComm_1_1Packet.html#a8e811ec5411f9ccf0607f8d2dff3ad63">goals_blue</a>;   </div>
+<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="structRefComm_1_1Packet.html#a4f3f940c147810fecf9b951be8b2c0f0">   77</a></span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <a class="code" href="structRefComm_1_1Packet.html#a4f3f940c147810fecf9b951be8b2c0f0">goals_yellow</a>; </div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="structRefComm_1_1Packet.html#a5fc48f9d756d63495d0f5cbed6888c73">   78</a></span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> <a class="code" href="structRefComm_1_1Packet.html#a5fc48f9d756d63495d0f5cbed6888c73">time_left</a>;   </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    } lastPacket;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;};</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="preprocessor">#endif // REFCOMM_H</span></div>
+<div class="ttc" id="structRefComm_1_1Packet_html"><div class="ttname"><a href="structRefComm_1_1Packet.html">RefComm::Packet</a></div><div class="ttdoc">The legacy Refbox packet. </div><div class="ttdef"><b>Definition:</b> refcomm.h:73</div></div>
 <div class="ttc" id="classRefComm_html"><div class="ttname"><a href="classRefComm.html">RefComm</a></div><div class="ttdoc">Communication module to receive information from the RefBox. </div><div class="ttdef"><b>Definition:</b> refcomm.h:45</div></div>
 <div class="ttc" id="classNet_1_1UDP_html"><div class="ttname"><a href="classNet_1_1UDP.html">Net::UDP</a></div><div class="ttdef"><b>Definition:</b> netraw.h:55</div></div>
 <div class="ttc" id="classGameModel_html"><div class="ttname"><a href="classGameModel.html">GameModel</a></div><div class="ttdoc">The GameModel class Game model class can be considered as the heart of robobulls project all the info...</div><div class="ttdef"><b>Definition:</b> gamemodel.h:18</div></div>
-<div class="ttc" id="structRefComm_1_1Packet_html_a4f3f940c147810fecf9b951be8b2c0f0"><div class="ttname"><a href="structRefComm_1_1Packet.html#a4f3f940c147810fecf9b951be8b2c0f0">RefComm::Packet::goals_yellow</a></div><div class="ttdeci">unsigned char goals_yellow</div><div class="ttdoc">Number of Yellow goals. </div><div class="ttdef"><b>Definition:</b> refcomm.h:80</div></div>
-<div class="ttc" id="structRefComm_1_1Packet_html_a1b2e2c579a2bb7b444d4379fe5bfda8a"><div class="ttname"><a href="structRefComm_1_1Packet.html#a1b2e2c579a2bb7b444d4379fe5bfda8a">RefComm::Packet::counter</a></div><div class="ttdeci">unsigned char counter</div><div class="ttdoc">Incremented when a new command is sent. </div><div class="ttdef"><b>Definition:</b> refcomm.h:78</div></div>
-<div class="ttc" id="structRefComm_1_1Packet_html_a5fc48f9d756d63495d0f5cbed6888c73"><div class="ttname"><a href="structRefComm_1_1Packet.html#a5fc48f9d756d63495d0f5cbed6888c73">RefComm::Packet::time_left</a></div><div class="ttdeci">unsigned short time_left</div><div class="ttdoc">Remaining time (Seconds)? </div><div class="ttdef"><b>Definition:</b> refcomm.h:81</div></div>
-<div class="ttc" id="structRefComm_1_1Packet_html_a8e811ec5411f9ccf0607f8d2dff3ad63"><div class="ttname"><a href="structRefComm_1_1Packet.html#a8e811ec5411f9ccf0607f8d2dff3ad63">RefComm::Packet::goals_blue</a></div><div class="ttdeci">unsigned char goals_blue</div><div class="ttdoc">Number of Blue goals. </div><div class="ttdef"><b>Definition:</b> refcomm.h:79</div></div>
-<div class="ttc" id="structRefComm_1_1Packet_html_ac040e763d4d6a7fc15a415c2f3f54d6f"><div class="ttname"><a href="structRefComm_1_1Packet.html#ac040e763d4d6a7fc15a415c2f3f54d6f">RefComm::Packet::command</a></div><div class="ttdeci">char command</div><div class="ttdoc">ASCII chatacter sent as the current comment. </div><div class="ttdef"><b>Definition:</b> refcomm.h:77</div></div>
+<div class="ttc" id="structRefComm_1_1Packet_html_a4f3f940c147810fecf9b951be8b2c0f0"><div class="ttname"><a href="structRefComm_1_1Packet.html#a4f3f940c147810fecf9b951be8b2c0f0">RefComm::Packet::goals_yellow</a></div><div class="ttdeci">unsigned char goals_yellow</div><div class="ttdoc">Number of Yellow goals. </div><div class="ttdef"><b>Definition:</b> refcomm.h:77</div></div>
+<div class="ttc" id="structRefComm_1_1Packet_html_a1b2e2c579a2bb7b444d4379fe5bfda8a"><div class="ttname"><a href="structRefComm_1_1Packet.html#a1b2e2c579a2bb7b444d4379fe5bfda8a">RefComm::Packet::counter</a></div><div class="ttdeci">unsigned char counter</div><div class="ttdoc">Incremented when a new command is sent. </div><div class="ttdef"><b>Definition:</b> refcomm.h:75</div></div>
+<div class="ttc" id="structRefComm_1_1Packet_html_a5fc48f9d756d63495d0f5cbed6888c73"><div class="ttname"><a href="structRefComm_1_1Packet.html#a5fc48f9d756d63495d0f5cbed6888c73">RefComm::Packet::time_left</a></div><div class="ttdeci">unsigned short time_left</div><div class="ttdoc">Remaining time (Seconds)? </div><div class="ttdef"><b>Definition:</b> refcomm.h:78</div></div>
+<div class="ttc" id="structRefComm_1_1Packet_html_a8e811ec5411f9ccf0607f8d2dff3ad63"><div class="ttname"><a href="structRefComm_1_1Packet.html#a8e811ec5411f9ccf0607f8d2dff3ad63">RefComm::Packet::goals_blue</a></div><div class="ttdeci">unsigned char goals_blue</div><div class="ttdoc">Number of Blue goals. </div><div class="ttdef"><b>Definition:</b> refcomm.h:76</div></div>
+<div class="ttc" id="structRefComm_1_1Packet_html_ac040e763d4d6a7fc15a415c2f3f54d6f"><div class="ttname"><a href="structRefComm_1_1Packet.html#ac040e763d4d6a7fc15a415c2f3f54d6f">RefComm::Packet::command</a></div><div class="ttdeci">char command</div><div class="ttdoc">ASCII chatacter sent as the current comment. </div><div class="ttdef"><b>Definition:</b> refcomm.h:74</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Aug 25 2015 16:39:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Sep 14 2015 13:40:08 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

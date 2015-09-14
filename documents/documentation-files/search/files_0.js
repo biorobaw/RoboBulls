@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['globals_2eh',['globals.h',['../globals_8h.html',1,'']]]
+  ['communication_2eh',['communication.h',['../communication_8h.html',1,'']]]
 ];

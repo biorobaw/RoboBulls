@@ -12,6 +12,7 @@
  * - Saitek P990 Dual Analog Pad
  * - Logitech Dual Action
  * - Logitech Freedom 2.4
+ * - Microsoft X-Box 360 pad
  *
  * Any one of these joysticks can be added and removed during runtime. If no joystick is connected,
  * the arrow keys can be used to control overridden robots.

@@ -90,6 +90,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="classStopStrategy-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">StopStrategy Class Reference</div>  </div>
@@ -137,9 +138,6 @@ Private Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a510d5d02970ba23f72f70ff317b43a2a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classPoint.html">Point</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStopStrategy.html#a510d5d02970ba23f72f70ff317b43a2a">prevBallPoint</a></td></tr>
-<tr class="memdesc:a510d5d02970ba23f72f70ff317b43a2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Keeping track of the previous ball point.  <a href="#a510d5d02970ba23f72f70ff317b43a2a">More...</a><br/></td></tr>
-<tr class="separator:a510d5d02970ba23f72f70ff317b43a2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b2df11bda4a677fea2d8a70947ec738"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classPoint.html">Point</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStopStrategy.html#a3b2df11bda4a677fea2d8a70947ec738">robTargetPoints</a> [10]</td></tr>
 <tr class="memdesc:a3b2df11bda4a677fea2d8a70947ec738"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stored points of the target each <a class="el" href="classRobot.html" title="The Robot class representing Robots on the field. ">Robot</a> should go to.  <a href="#a3b2df11bda4a677fea2d8a70947ec738">More...</a><br/></td></tr>
 <tr class="separator:a3b2df11bda4a677fea2d8a70947ec738"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -147,6 +145,12 @@ Private Attributes</h2></td></tr>
 float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStopStrategy.html#aaf4dbf0ba9fc34a09e8efd7371d4208f">radius</a></td></tr>
 <tr class="memdesc:aaf4dbf0ba9fc34a09e8efd7371d4208f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Radius to stay from the ball point. <br/></td></tr>
 <tr class="separator:aaf4dbf0ba9fc34a09e8efd7371d4208f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
+Static Private Attributes</h2></td></tr>
+<tr class="memitem:a510d5d02970ba23f72f70ff317b43a2a"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classPoint.html">Point</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStopStrategy.html#a510d5d02970ba23f72f70ff317b43a2a">prevBallPoint</a> = <a class="el" href="classPoint.html">Point</a>(9999,9999)</td></tr>
+<tr class="memdesc:a510d5d02970ba23f72f70ff317b43a2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Keeping track of the previous ball point.  <a href="#a510d5d02970ba23f72f70ff317b43a2a">More...</a><br/></td></tr>
+<tr class="separator:a510d5d02970ba23f72f70ff317b43a2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classStrategy.html" title="Strategy is the abstract base class for other strategy classes. ">Strategy</a> to implement the game stopped state 'S'. </p>
@@ -269,12 +273,12 @@ float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classPoint.html">Point</a> StopStrategy::prevBallPoint</td>
+          <td class="memname"><a class="el" href="classPoint.html">Point</a> StopStrategy::prevBallPoint = <a class="el" href="classPoint.html">Point</a>(9999,9999)</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -314,7 +318,7 @@ float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Aug 25 2015 16:39:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Sep 14 2015 13:40:09 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

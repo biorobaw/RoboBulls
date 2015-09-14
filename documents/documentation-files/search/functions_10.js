@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['sendpacket',['sendPacket',['../classSimRobComm.html#a52f1e24f2a2f069c02536a548974496b',1,'SimRobComm']]],
-  ['sendvelslarge',['sendVelsLarge',['../classNXTRobComm.html#ad2d43321c2bf0b95009fb136eec0c5ac',1,'NXTRobComm::sendVelsLarge()'],['../classRobComm.html#ace6ca5e8446e4b720f4d14d517b0b3da',1,'RobComm::sendVelsLarge()'],['../classSimRobComm.html#ad0ee6a013cc2e9cea7f7b7d19bf54a11',1,'SimRobComm::sendVelsLarge()']]],
+  ['sendpacket',['sendPacket',['../classSimRobComm.html#a7208dbf94548fafc943fadf0ccccb867',1,'SimRobComm']]],
+  ['sendvelslarge',['sendVelsLarge',['../classNXTRobComm.html#ad2d43321c2bf0b95009fb136eec0c5ac',1,'NXTRobComm::sendVelsLarge()'],['../classRobComm.html#ace6ca5e8446e4b720f4d14d517b0b3da',1,'RobComm::sendVelsLarge()'],['../classSimRobComm.html#a6c32b97ef4bfa92b48793ae92679d0eb',1,'SimRobComm::sendVelsLarge()']]],
   ['serialib',['serialib',['../classserialib.html#a26166f63ad73013ca7cbcd2ae59edc91',1,'serialib']]],
   ['setb',['setB',['../classRobot.html#a3a33d05e0b2b137a6de538a2b354cb92',1,'Robot']]],
   ['setballpoint',['setBallPoint',['../classGameModel.html#a5ec642fe5c327b977c6dae28fdbdaf32',1,'GameModel']]],
@@ -9,7 +9,7 @@ var searchData=
   ['setcurrentbeh',['setCurrentBeh',['../classRobot.html#a1ca7723e4c6aa0502f48fb2997f47ab0',1,'Robot']]],
   ['setdrible',['setDrible',['../classRobot.html#a43996680a35a08942c269dc5c39c8a74',1,'Robot']]],
   ['setgamestate',['setGameState',['../classGameModel.html#af15bc154469f5ebdba43969049c3dee3',1,'GameModel']]],
-  ['setkick',['setKick',['../classRobot.html#aba47a6981e5121d08572f50885da2d75',1,'Robot']]],
+  ['setkick',['setKick',['../classRobot.html#a81094a6cf0d277c97dd7b1d422558f41',1,'Robot']]],
   ['setl',['setL',['../classRobot.html#a9afcbbfab6d5c2e85fd9414f9dd49666',1,'Robot']]],
   ['setlb',['setLB',['../classRobot.html#ab95668932978e1d5ce2bce8c46f2168b',1,'Robot']]],
   ['setlf',['setLF',['../classRobot.html#a0cbfe2a2c27ca425e5466f78de73086c',1,'Robot']]],

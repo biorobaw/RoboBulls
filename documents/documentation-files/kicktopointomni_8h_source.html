@@ -117,12 +117,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">private</span>:</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <a class="code" href="classMovement_1_1GoToPosition.html">Movement::GoToPosition</a> move_skill;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <a class="code" href="classPoint.html">Point</a>  m_targetPoint;           <span class="comment">//Local (static) target stored only by first ctor</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <a class="code" href="classPoint.html">Point</a>* m_targetPointer;         <span class="comment">//Pointer to point we are kicking to</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;      <span class="keywordtype">int</span>  m_moveCompletionCount;   <span class="comment">//Number of times move_skill says we are behind ball</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordtype">float</span>  m_targetTolerance;       <span class="comment">//Mininum angle threshold we must be facing the target to kick</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;      <span class="keywordtype">int</span>  m_kickDistance;          <span class="comment">//Mininim distance we must be to *m_targetPointer to kick (or -1)</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;      <span class="keywordtype">int</span>  m_kickLockCount;         <span class="comment">//Count of times we are seen in &quot;kick lock&quot;</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <a class="code" href="classPoint.html">Point</a>  m_targetPoint;         <span class="comment">//Local (static-point) target stored only by first ctor</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <a class="code" href="classPoint.html">Point</a>* m_targetPointer;       <span class="comment">//Pointer to point we are kicking to (m_targetPoint for static)</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;      <span class="keywordtype">int</span>  m_moveCompletionCount; <span class="comment">//Number of times move_skill says we are behind ball</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordtype">float</span>  m_targetTolerance;     <span class="comment">//Mininum angle threshold we must be facing the target to kick</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;      <span class="keywordtype">int</span>  m_kickDistance;        <span class="comment">//Mininim distance we must be to *m_targetPointer to kick (or -1)</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;      <span class="keywordtype">int</span>  m_kickLockCount;       <span class="comment">//Count of times we are seen in &quot;kick lock&quot;</span></div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="comment">//Current skill state</span></div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keyword">enum</span> { MOVE_BEHIND,  <span class="comment">//We are far from the ball and are moving behind it to face target</span></div>
@@ -152,7 +152,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Aug 25 2015 16:39:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Sep 14 2015 13:40:08 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

@@ -104,13 +104,14 @@ Inheritance diagram for Strategy:</div>
  <div class="center">
   <img src="classStrategy.png" usemap="#Strategy_map" alt=""/>
   <map id="Strategy_map" name="Strategy_map">
-<area href="classFreeKickStrategy.html" title="Strategy to implement a free kick game state &#39;F&#39; and &#39;f&#39;. " alt="FreeKickStrategy" shape="rect" coords="0,56,131,80"/>
-<area href="classHaltStrategy.html" title="Strategy to implement the Halt game state &#39;H&#39;. " alt="HaltStrategy" shape="rect" coords="141,56,272,80"/>
-<area href="classIndiectKickStrategy.html" title="Strategy used to perform indirect kicks with passes. " alt="IndiectKickStrategy" shape="rect" coords="282,56,413,80"/>
-<area href="classKickOffStrategy.html" title="Strategy to implement a kickoff game state &#39;K&#39; and &#39;k&#39;. " alt="KickOffStrategy" shape="rect" coords="423,56,554,80"/>
-<area href="classNormalGameStrategy.html" title="This strategy is meant for the &#39; &#39; gamestate (space) which means normal play. " alt="NormalGameStrategy" shape="rect" coords="564,56,695,80"/>
-<area href="classPenaltyStrategy.html" title="Strategy to implement a penalty kick game state &#39;P&#39; and &#39;p&#39;. " alt="PenaltyStrategy" shape="rect" coords="705,56,836,80"/>
-<area href="classStopStrategy.html" title="Strategy to implement the game stopped state &#39;S&#39;. " alt="StopStrategy" shape="rect" coords="846,56,977,80"/>
+<area href="classFreeKickStrategy.html" title="Strategy to implement a free kick game state &#39;F&#39; and &#39;f&#39;. " alt="FreeKickStrategy" shape="rect" coords="141,56,272,80"/>
+<area href="classHaltStrategy.html" title="Strategy to implement the Halt game state &#39;H&#39;. " alt="HaltStrategy" shape="rect" coords="141,112,272,136"/>
+<area href="classIndiectKickStrategy.html" title="Strategy used to perform indirect kicks with passes. " alt="IndiectKickStrategy" shape="rect" coords="141,168,272,192"/>
+<area href="classKickOffStrategy.html" title="Strategy to implement a kickoff game state &#39;K&#39; and &#39;k&#39;. " alt="KickOffStrategy" shape="rect" coords="141,224,272,248"/>
+<area href="classNormalGameStrategy.html" title="This strategy is meant for the &#39; &#39; gamestate (space) which means normal play. " alt="NormalGameStrategy" shape="rect" coords="141,280,272,304"/>
+<area href="classPenaltyStrategy.html" title="Strategy to implement a penalty kick game state &#39;P&#39; and &#39;p&#39;. " alt="PenaltyStrategy" shape="rect" coords="141,336,272,360"/>
+<area href="classStopStrategy.html" title="Strategy to implement the game stopped state &#39;S&#39;. " alt="StopStrategy" shape="rect" coords="141,392,272,416"/>
+<area href="classTestStrategy.html" title="Class to test behaviors and other code. " alt="TestStrategy" shape="rect" coords="141,448,272,472"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -184,7 +185,7 @@ Public Member Functions</h2></td></tr>
 <p>Decides How to assign behaviors to each robot on the team. </p>
 <p>This function is called when <a class="el" href="classStrategyController.html" title="Controls selection of an active strategy (play) based on the game state. ">StrategyController</a> is ran with a new command recieved from <a class="el" href="classGameModel.html" title="The GameModel class Game model class can be considered as the heart of robobulls project all the info...">GameModel</a> </p>
 
-<p>Implemented in <a class="el" href="classIndiectKickStrategy.html#a248a4e29472f3e5a4a10f49d22855bea">IndiectKickStrategy</a>, <a class="el" href="classNormalGameStrategy.html#a85265e9882901bc0773a7e9743596aee">NormalGameStrategy</a>, <a class="el" href="classStopStrategy.html#a7500414e0aba9e53edd9b712530ad04f">StopStrategy</a>, <a class="el" href="classPenaltyStrategy.html#aeaea58ad3c200229f299bbfc901283c2">PenaltyStrategy</a>, <a class="el" href="classKickOffStrategy.html#a8f57590ce413728449bfc639b63b641a">KickOffStrategy</a>, <a class="el" href="classFreeKickStrategy.html#a9ca14d927fc8f3d436501042ec1223a9">FreeKickStrategy</a>, and <a class="el" href="classHaltStrategy.html#a60224086a56769bd224b168472edfd91">HaltStrategy</a>.</p>
+<p>Implemented in <a class="el" href="classIndiectKickStrategy.html#a248a4e29472f3e5a4a10f49d22855bea">IndiectKickStrategy</a>, <a class="el" href="classNormalGameStrategy.html#a85265e9882901bc0773a7e9743596aee">NormalGameStrategy</a>, <a class="el" href="classTestStrategy.html#a46a1281ba6df12f5a680f86f2c990e1b">TestStrategy</a>, <a class="el" href="classStopStrategy.html#a7500414e0aba9e53edd9b712530ad04f">StopStrategy</a>, <a class="el" href="classPenaltyStrategy.html#aeaea58ad3c200229f299bbfc901283c2">PenaltyStrategy</a>, <a class="el" href="classKickOffStrategy.html#a8f57590ce413728449bfc639b63b641a">KickOffStrategy</a>, <a class="el" href="classFreeKickStrategy.html#a9ca14d927fc8f3d436501042ec1223a9">FreeKickStrategy</a>, and <a class="el" href="classHaltStrategy.html#a60224086a56769bd224b168472edfd91">HaltStrategy</a>.</p>
 
 </div>
 </div>
@@ -240,7 +241,7 @@ Public Member Functions</h2></td></tr>
 <p>Function (optional) that updates the <a class="el" href="classStrategy.html" title="Strategy is the abstract base class for other strategy classes. ">Strategy</a> object. </p>
 <p>This function is called when <a class="el" href="classStrategyController.html" title="Controls selection of an active strategy (play) based on the game state. ">StrategyController</a> is ran with a non-new command from <a class="el" href="classGameModel.html" title="The GameModel class Game model class can be considered as the heart of robobulls project all the info...">GameModel</a>. Return true to notify the strategy is finished and have a new one assigned, false otherwise. </p>
 
-<p>Reimplemented in <a class="el" href="classNormalGameStrategy.html#ab729c5d7ead4bc3314b4139780be3214">NormalGameStrategy</a>, and <a class="el" href="classStopStrategy.html#aa971ce819885ddb2d30b10110428d8a0">StopStrategy</a>.</p>
+<p>Reimplemented in <a class="el" href="classNormalGameStrategy.html#ab729c5d7ead4bc3314b4139780be3214">NormalGameStrategy</a>, <a class="el" href="classTestStrategy.html#aa55b150d07132f6f92f1540c1c0757e6">TestStrategy</a>, and <a class="el" href="classStopStrategy.html#aa971ce819885ddb2d30b10110428d8a0">StopStrategy</a>.</p>
 
 </div>
 </div>
@@ -251,7 +252,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Aug 25 2015 16:39:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Sep 14 2015 13:40:09 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

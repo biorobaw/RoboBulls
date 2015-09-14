@@ -1,10 +1,11 @@
 var searchData=
 [
-  ['left_5fback',['left_back',['../structNXTRobComm_1_1packet__t.html#ace21a78c7aac75bb83b77118556f25e6',1,'NXTRobComm::packet_t']]],
-  ['left_5ffront',['left_front',['../structNXTRobComm_1_1packet__t.html#aff722ca5160b86dded9386b139c54f75',1,'NXTRobComm::packet_t']]],
-  ['linedistance',['lineDistance',['../classMeasurments.html#abb76fb14fbd37a3840f7705e22934f62',1,'Measurments']]],
-  ['linepoint',['linePoint',['../classMeasurments.html#a004b5c4722486143f0dffac69d0eba90',1,'Measurments']]],
-  ['listenstart',['listenStart',['../namespacedebug.html#a539a40bb17205de6ad4bdfe0adeca574',1,'debug']]],
-  ['lowerleftregion',['lowerLeftRegion',['../classRegion.html#af871e0fecaaca82d436c49fe1baf29c6',1,'Region']]],
-  ['lowerrightregion',['lowerRightRegion',['../classRegion.html#a6e4bd4fa68988ffa310b32fb8ba3b312',1,'Region']]]
+  ['kick',['Kick',['../classSkill_1_1Kick.html',1,'Skill']]],
+  ['kick',['kick',['../structNXTRobComm_1_1packet__t.html#a2adaeacbed9e49385ed96ca3f7627639',1,'NXTRobComm::packet_t::kick()'],['../classRobot.html#abdfb206979361e1ab29991995561e7a2',1,'Robot::kick()'],['../classSkill_1_1Kick.html#a7511320863873b399e2d040fa5521bb3',1,'Skill::Kick::Kick()'],['../namespacejoystick.html#ae85a71b94a18ce9be16e8c4e67756f70',1,'joystick::Kick()']]],
+  ['kick_5fskill',['kick_skill',['../classDefendFarFromBall.html#adee4a3fbea02e0f49f3ae2bdd6d5d251',1,'DefendFarFromBall']]],
+  ['kickerrobot',['kickerRobot',['../classFreeKickStrategy.html#ab7a41d4a9c7188e711f96b71ccc77504',1,'FreeKickStrategy']]],
+  ['kickoffstrategy',['KickOffStrategy',['../classKickOffStrategy.html',1,'']]],
+  ['kicktogoal',['KickToGoal',['../classKickToGoal.html',1,'']]],
+  ['kicktopointomni',['KickToPointOmni',['../classSkill_1_1KickToPointOmni.html',1,'Skill']]],
+  ['kicktopointomni',['KickToPointOmni',['../classSkill_1_1KickToPointOmni.html#aa68e37f846a09b3051303ac2e421f9b4',1,'Skill::KickToPointOmni::KickToPointOmni(const Point &amp;target, float targetTolerance=-1, float kickDistance=-1)'],['../classSkill_1_1KickToPointOmni.html#a4143d495a2f8358f6edfa93c6d903267',1,'Skill::KickToPointOmni::KickToPointOmni(Point *targetPtr, float targetTolerance=-1, float kickDistance=-1)']]]
 ];
