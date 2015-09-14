@@ -78,11 +78,14 @@ DefendState* DefendState::action(Robot* robot)
          * o_coeffs are the angle offsets, for sideways formation.
          * o is the angle difference betwween two adjacent robots.
          *
+         * dAngle is the differencein angle each robot sits from the adjacent one.
+         * Small means they sit more tightly packed together
+         *
          * Multiplying X by `opSide` makes the addition to the goal point
          * always point torwards the middle. (Not really though)
          */
-        static const float o = 0.2617993 + (15 + 10*SIMULATED) * (M_PI/180);
-        static int   coeffs[] = {1500, 1300, 1300, 1100, 1100};
+        static const float dAngle = (15 + 10*!SIMULATED) * (M_PI/180);
+        static int coeffs[] = {1500, 1300, 1300, 1100, 1100};
     #if TEAM == TEAM_BLUE
         static int o_coeffs[] = {   0,    1,   -1,    2,   -2};
     #else
@@ -93,11 +96,11 @@ DefendState* DefendState::action(Robot* robot)
         for(int i = 0; i != 5; ++i)
         {
             Point offset;
-            offset.x = coeffs[i] * cos(a + o * o_coeffs[i]);
+            offset.x = coeffs[i] * cos(a + dAngle * o_coeffs[i]);
         #if TEAM == TEAM_BLUE
             offset.x *= GameModel::opSide;
         #endif
-            offset.y = coeffs[i] * sin(a + o * o_coeffs[i]);
+            offset.y = coeffs[i] * sin(a + dAngle * o_coeffs[i]);
             defendPoints[i] = gl +  offset;
             defendPoints[i].x *= GameModel::mySide;
         }
@@ -171,7 +174,7 @@ DefendState::~DefendState() {
 
 #if SIMULATED
  #define LINE_DISTANCE 400  //Distance ball must be to robot to move to kick
- #define GOALIE_DIST   800  //Distance blal must be away from goal to invervene
+ #define GOALIE_DIST   800  //Distance ball must be away from goal to invervene
 #else
  #define LINE_DISTANCE 1200
  #define GOALIE_DIST   300
