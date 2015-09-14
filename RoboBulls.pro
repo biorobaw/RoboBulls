@@ -4,30 +4,12 @@
 #
 #-------------------------------------------------
 
-QT       += core network
-
-QT       -= gui
-
-QT      += widgets
+QT += core network widgets
+QT -= gui
 
 TARGET = RoboBulls
-CONFIG   += console
-CONFIG   -= app_bundle
-
-#DESTDIR = ../../bin
-#UI_DIR = .
-
-#CONFIG(debug, debug|release) {
-#        TARGET = myappd
-#        OBJECTS_DIR = ../../Documents/RoboBulls-build-desktop-Qt_4_8_3_in_PATH__System__Debug
-#        MOC_DIR = ../../Documents/RoboBulls-build-desktop-Qt_4_8_3_in_PATH__System__Debug
-#}
-
-#CONFIG(release, debug|release) {
-#        TARGET = myapp
-#        OBJECTS_DIR = ../../Documents/RoboBulls-build-desktop-Qt_4_8_3_in_PATH__System__Release
-#        MOC_DIR = ../../Documents/RoboBulls-build-desktop-Qt_4_8_3_in_PATH__System__Release
-#}
+CONFIG += console
+CONFIG -= app_bundle
 
 TEMPLATE = app
 QMAKE_CXX = g++
@@ -89,6 +71,7 @@ SOURCES += main.cpp \
 	movement/move.cpp \
 	movement/pathfinding/fppa_pathfinding.cpp \
 	movement/three_omni_motion/omni3_velcalculator.cpp \
+	movement/gotoposition.cpp \
 	skill/driveball.cpp \
 	skill/kick.cpp \
 	skill/kicktopointomni.cpp \
@@ -110,8 +93,7 @@ SOURCES += main.cpp \
 	utilities/measurments.cpp \
 	utilities/point.cpp \
 	utilities/region.cpp \
-	utilities/velocitycalculator.cpp \
-    movement/gotoposition.cpp
+	utilities/velocitycalculator.cpp
 
 HEADERS += \
 	behavior/attackmain.h \
@@ -157,6 +139,7 @@ HEADERS += \
 	include/config/simulated.h \
 	include/config/team.h \
 	include/config/tolerances.h \
+	include/config/communication.h \
 	include/grSim_Commands.pb.h \
 	include/grSim_Packet.pb.h \
 	include/grSim_Replacement.pb.h \
@@ -200,8 +183,7 @@ HEADERS += \
 	utilities/measurments.h \
 	utilities/point.h \
 	utilities/region.h \
-	utilities/velocitycalculator.h \
-    include/config/communication.h
+	utilities/velocitycalculator.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 

@@ -89,9 +89,10 @@ void printBuildInfo()
         << "RoboBulls 2 Build " << __DATE__ << " " << __TIME__ << std::endl
         << "       Team: " << ((TEAM == TEAM_BLUE) ? "Blue" : "Yellow") << std::endl
         << "  Simulated: " << SIMULATED << std::endl
+        << "   Refboxed: " << REFBOX_LISTEN_ENABLED << std::endl
         << "  Simulator: " << SIMULATOR_ADDRESS << ":" << SIMULATOR_PORT << std::endl
         << "     Vision: " << VISION_ADDRESS    << ":" << VISION_PORT    << std::endl
-        << "     RefBox: " << REFBOX_LISTEN_ENABLED << std::endl;
+        << "     RefBox: " << REFBOX_ADDRESS    << ":" << REFBOX_PORT    << std::endl;
 }
 
 int main(int argc, char *argv[])
