@@ -242,6 +242,34 @@ std::string GameModel::toString()
     return myString.str();
 }
 
+/*! @brief Queues a robot replacement for robot with an id on a team.
+ * @details [grSim_Replacement](https://github.com/roboime/ssl-sim/blob/master/protos/grSim_Replacement.proto)
+ * allows for position of angle changes of simulated robots using packets. This function asks the simulator
+ * to move a robot to an x and y point.
+ * @param id ID of robot to move
+ * @param team TEAM_BLUE or TEAM_YELLOW ?
+ * @param x X Position to move robot to
+ * @param y Y Positon to move robot to
+ * @param dir Orientation to set robot at (leave blank to keep current robot orientation) */
+void GameModel::addRobotReplacement(int id, int team, float x, float y, float dir)
+{
+    //Keep orientation if left blank
+    if(dir == -10) {
+        Robot* robot = gameModel->find(id, (team == TEAM_BLUE) ? getBlueTeam() : getYellowTeam());
+        dir = robot->getOrientation();
+    }
+    RobotReplacement replacement {id, team, x, y, dir};
+    robotReplacements.push_back(replacement);
+    hasRobotReplacements = true;
+}
+
+void GameModel::addBallReplacement(float x, float y, float vx, float vy)
+{
+    ballReplacement = {x, y, vx, vy};
+    hasBallReplacement = true;
+}
+
+
 
 /*******************************************************************/
 /************************ Private Methods **************************/

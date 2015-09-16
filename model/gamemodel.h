@@ -48,9 +48,18 @@ public:
     Robot* findOpTeam(int);
     //! @}
 
+    //! @name grSim Replacement functions
+    //! @{
+    void addRobotReplacement(int id, int team, float x, float y, float dir = -10);
+    void addBallReplacement(float x, float y, float vx = 0, float vy = 0);
+    //! @}
+
+    //! @name Misc. Functions
+    //! @{
     Robot* find(int, std::vector<Robot*>&);
     bool   isNewCommand();
     void   removeRobot(int id, int team);
+    //! @}
 
 private:
     /* StrategyController link */
@@ -77,6 +86,7 @@ private:
      * referee box with our code. */
     friend class VisionComm;
     friend class RefComm;
+    friend class SimRobComm;
     void onRobotUpdated(Robot*);
     void setBallPoint(Point);
     void setRobotHasBall();
@@ -85,6 +95,24 @@ private:
     void setBlueGoals(char);
     void setYellowGoals(char);
     void notifyObservers();
+
+    //grSim Replacement data
+    struct RobotReplacement {
+        int id;
+        int team;
+        float x, y, dir;
+    };
+    struct BallReplacement {
+        float x, y;
+        float vx, vy;
+    };
+    //Vector of queued replacements for robots
+    std::vector<RobotReplacement> robotReplacements;
+    //An optimal replacement of the ball
+    BallReplacement ballReplacement;
+    //Do the above two fields contains replacemant data?
+    bool hasRobotReplacements = false;
+    bool hasBallReplacement = false;
     
 public:
     //Old legacy functions

@@ -23,8 +23,11 @@ private:
     QHostAddress _addr;
     quint16 _port;
 
-    //! @brief Sends a packet to the simulator
+    //! @brief Sends a standard packet to the simulator
     void sendPacket(Robot *robot);
+
+    //! @brief Sends all replacement packets to the simulator
+    void sendReplacementPackets();
 };
 
 #endif // SIMROBCOMM_H
