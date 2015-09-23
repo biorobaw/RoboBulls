@@ -38,15 +38,15 @@ bool DriveBall::perform(Robot* robot)
     float ballTargetAngle =  Measurments::angleBetween(ballPoint, targetPosition);
     Point behindBall      = ballPoint + Point(DIST*cos(targetBallAngle),
                                               DIST*sin(targetBallAngle));
-    cout << "ball pos\t" << gm->getBallPoint().toString() << endl;
-    for (Robot* rob: gm->getMyTeam())
-    {
+    /*
+    std::cout << "ball pos\t" << gm->getBallPoint().toString() << std::endl;
+    for (Robot* rob: gm->getMyTeam()) {
         cout << "rob " << rob->getID() << " pos\t" << rob->getRobotPosition().toString() << endl;
-    }
+    } */
     switch (state)
     {
     case moveBehindBall:
-        cout << "moving behind ball" << endl;
+        //cout << "moving behind ball" << endl;
         move_skill.setVelocityMultiplier(VEL_MULT*2);
         move_skill.recreate(behindBall, ballTargetAngle, true);
         if(move_skill.perform(robot)) {
@@ -55,7 +55,7 @@ bool DriveBall::perform(Robot* robot)
         break;
 
     case driveBall:
-        cout << "drive ball" << endl;
+        //cout << "drive ball" << endl;
         bool farFromBall   = !Measurments::isClose(robPoint, ballPoint, DIST*1.25);
         bool notFacingBall =  Measurments::lineDistance(ballPoint, robPoint, targetPosition)
                 > ROBOT_RADIUS*1.75;

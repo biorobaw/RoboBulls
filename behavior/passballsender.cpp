@@ -32,7 +32,7 @@ Point PassBallSender::findPassPoint(Robot* sender)
     GameModel *gm = GameModel::getModel();
 
     Region PlayerRegion;
-    vector<Robot*> myTeam = gm->getMyTeam();
+    std::vector<Robot*> myTeam = gm->getMyTeam();
     Point passPoint;
     Point oppGoal = gm->getOpponentGoal();
 

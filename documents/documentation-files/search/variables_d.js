@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['sc',['sc',['../classGameModel.html#a4d55d7b7a28d54fc46be3efc6ff45480',1,'GameModel']]],
-  ['sign',['sign',['../classRotateOnPoint.html#a7d09accb7fcd9f523e99115edf5567cc',1,'RotateOnPoint']]],
-  ['surroundingappnum',['surroundingAppNum',['../structPassBallSender_1_1playersCharactristics.html#af9e96668369c61aa650e76cd859c0486',1,'PassBallSender::playersCharactristics']]]
+  ['team',['team',['../classRobot.html#a68eef60e146d6bed8c870889cd7ba6f0',1,'Robot']]],
+  ['tilde',['tilde',['../structNXTRobComm_1_1packet__t.html#a28e4f14697a01f732d1b8f0356e9b81d',1,'NXTRobComm::packet_t']]],
+  ['time_5fleft',['time_left',['../structRefComm_1_1Packet.html#a5fc48f9d756d63495d0f5cbed6888c73',1,'RefComm::Packet']]],
+  ['topleftregion',['topLeftRegion',['../classRegion.html#ab338dce81f5a4b49916104004e2b723c',1,'Region']]],
+  ['toprightregion',['topRightRegion',['../classRegion.html#ab2a90a0cc7b9540e8ef447c2f7bb2c66',1,'Region']]]
 ];

@@ -44,6 +44,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
+      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -113,19 +114,22 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    quint16 _port;</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classSimRobComm.html#a7208dbf94548fafc943fadf0ccccb867">sendPacket</a>(<a class="code" href="classRobot.html">Robot</a> *robot);</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;};</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#endif // SIMROBCOMM_H</span></div>
-<div class="ttc" id="classRobot_html"><div class="ttname"><a href="classRobot.html">Robot</a></div><div class="ttdoc">The Robot class representing Robots on the field. </div><div class="ttdef"><b>Definition:</b> robot.h:18</div></div>
-<div class="ttc" id="classSimRobComm_html_a7208dbf94548fafc943fadf0ccccb867"><div class="ttname"><a href="classSimRobComm.html#a7208dbf94548fafc943fadf0ccccb867">SimRobComm::sendPacket</a></div><div class="ttdeci">void sendPacket(Robot *robot)</div><div class="ttdoc">Sends a packet to the simulator. </div><div class="ttdef"><b>Definition:</b> simrobcomm.cpp:26</div></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classSimRobComm.html#ac0a89a21c9550fe822d5b637d3adde65">sendReplacementPackets</a>();</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;};</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#endif // SIMROBCOMM_H</span></div>
+<div class="ttc" id="classRobot_html"><div class="ttname"><a href="classRobot.html">Robot</a></div><div class="ttdoc">The Robot class representing Robots on the field. </div><div class="ttdef"><b>Definition:</b> robot.h:21</div></div>
+<div class="ttc" id="classSimRobComm_html_a7208dbf94548fafc943fadf0ccccb867"><div class="ttname"><a href="classSimRobComm.html#a7208dbf94548fafc943fadf0ccccb867">SimRobComm::sendPacket</a></div><div class="ttdeci">void sendPacket(Robot *robot)</div><div class="ttdoc">Sends a standard packet to the simulator. </div><div class="ttdef"><b>Definition:</b> simrobcomm.cpp:31</div></div>
 <div class="ttc" id="classSimRobComm_html"><div class="ttname"><a href="classSimRobComm.html">SimRobComm</a></div><div class="ttdoc">RobComm to send to the grSim simulator. </div><div class="ttdef"><b>Definition:</b> simrobcomm.h:13</div></div>
-<div class="ttc" id="classSimRobComm_html_a8bd58f2c912ff9f3df054503f47b4d6f"><div class="ttname"><a href="classSimRobComm.html#a8bd58f2c912ff9f3df054503f47b4d6f">SimRobComm::SimRobComm</a></div><div class="ttdeci">SimRobComm()</div><div class="ttdoc">Constructor sets the IP and port to send to see .cpp </div><div class="ttdef"><b>Definition:</b> simrobcomm.cpp:10</div></div>
+<div class="ttc" id="classSimRobComm_html_a8bd58f2c912ff9f3df054503f47b4d6f"><div class="ttname"><a href="classSimRobComm.html#a8bd58f2c912ff9f3df054503f47b4d6f">SimRobComm::SimRobComm</a></div><div class="ttdeci">SimRobComm()</div><div class="ttdoc">Constructor sets the IP and port to send to see .cpp </div><div class="ttdef"><b>Definition:</b> simrobcomm.cpp:11</div></div>
 <div class="ttc" id="classRobComm_html"><div class="ttname"><a href="classRobComm.html">RobComm</a></div><div class="ttdoc">RobComm is a base class used to send signals to robots. </div><div class="ttdef"><b>Definition:</b> robcomm.h:13</div></div>
-<div class="ttc" id="classSimRobComm_html_a6c32b97ef4bfa92b48793ae92679d0eb"><div class="ttname"><a href="classSimRobComm.html#a6c32b97ef4bfa92b48793ae92679d0eb">SimRobComm::sendVelsLarge</a></div><div class="ttdeci">void sendVelsLarge(std::vector&lt; Robot * &gt; &amp;) override</div><div class="ttdoc">Required; send velocities to the entire team at once. </div><div class="ttdef"><b>Definition:</b> simrobcomm.cpp:16</div></div>
+<div class="ttc" id="classSimRobComm_html_a6c32b97ef4bfa92b48793ae92679d0eb"><div class="ttname"><a href="classSimRobComm.html#a6c32b97ef4bfa92b48793ae92679d0eb">SimRobComm::sendVelsLarge</a></div><div class="ttdeci">void sendVelsLarge(std::vector&lt; Robot * &gt; &amp;) override</div><div class="ttdoc">Required; send velocities to the entire team at once. </div><div class="ttdef"><b>Definition:</b> simrobcomm.cpp:17</div></div>
+<div class="ttc" id="classSimRobComm_html_ac0a89a21c9550fe822d5b637d3adde65"><div class="ttname"><a href="classSimRobComm.html#ac0a89a21c9550fe822d5b637d3adde65">SimRobComm::sendReplacementPackets</a></div><div class="ttdeci">void sendReplacementPackets()</div><div class="ttdoc">Sends all replacement packets to the simulator. </div><div class="ttdef"><b>Definition:</b> simrobcomm.cpp:68</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Sep 14 2015 13:40:08 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Sep 23 2015 14:45:59 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

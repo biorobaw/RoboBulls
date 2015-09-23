@@ -32,7 +32,7 @@ bool DefendFarFromBall::isBallMovingTowardsGoal(std::pair<Point,Point>& lineEnds
     //Filter out balls not moving towards goal
     Point goal = gameModel->getMyGoal();
     Point bVel = gameModel->getBallVelocity();
-    if(signbit(goal.x) != signbit(bVel.x) || abs(bVel.x) < 0.05)
+    if(std::signbit(goal.x) != std::signbit(bVel.x) || abs(bVel.x) < 0.05)
         return false;
     if(isBallBehindGoal())
         return false;

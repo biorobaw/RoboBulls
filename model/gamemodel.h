@@ -9,26 +9,32 @@ class StrategyController;
 class VisionComm;
 class Robot;
 
+/** @addtogroup everydayuse Everyday Use
+ * @brief Classes and functions used in everyday code
+ * @{ */
+
 /**
  * @brief The GameModel class
- * Game model class can be considered as the heart of robobulls project
+ * @details Game model class can be considered as the heart of robobulls project
  * all the information from other classes gets updated in gamemodel
  * you can receive most up to date info about robots and ball from this class
+ *
+ * <b>Example Everyday Usage</b>
+ * @include example_gamemodel.cpp
  */
 class GameModel
 {
 public:
-    GameModel();
     static GameModel* getModel();
     static int mySide; //!<-1 or 1, representing polarity of "my" side of field
     static int opSide; //!<Opposite of mySide
 
     /*! @name Game access functions
      * @{*/
-    vector<Robot*>& getOponentTeam();
-    vector<Robot*>& getMyTeam();
-    vector<Robot*>& getBlueTeam();
-    vector<Robot*>& getYellowTeam();
+    std::vector<Robot*>& getOponentTeam();
+    std::vector<Robot*>& getMyTeam();
+    std::vector<Robot*>& getBlueTeam();
+    std::vector<Robot*>& getYellowTeam();
     Point  getBallPoint();
     Point  getBallVelocity();
     Point  getBallAcceleration();
@@ -57,29 +63,32 @@ public:
     //! @name Misc. Functions
     //! @{
     Robot* find(int, std::vector<Robot*>&);
-    bool   isNewCommand();
-    void   removeRobot(int id, int team);
+    bool isNewCommand();
+    void removeRobot(int id, int team);
+    void setStrategyController(StrategyController * sc);
+    void onCommandProcessed();
+    std::string toString();
     //! @}
 
 private:
     /* StrategyController link */
-    StrategyController *sc = NULL;        //!< Link to strategy controller
+    StrategyController *sc = NULL;        //Link to strategy controller
 
     /* General Game Information */
-    vector <Robot*> opTeam;               //!< The team of Robot on my team
-    vector <Robot*> myTeam;               //!< The team of Robot on the opponent team
-    Robot* robotWithBall   = NULL;        //!< Robot currently holding the ball
-    Point  ballPoint       = Point(0,0);  //!< The current point fo the ball on the field
-    Point  ballVelocity    = Point(0,0);  //!< The current velocity of the ball on the field
-    Point  ballAcceleration= Point(0,0);  //!< The current acceleration of the ball on the field
-    Point  ballPrediction  = Point(0,0);  //!< Prediciton point of the ball
-    char   gameState       = '\0';        //!< The current state of the game from RefComm
-    bool   hasNewCommand   = false;       //!< True on tje iteration that gameState has changed
-    char   blueGoals       = 0;           //!< Number of scores yellow goals
-    char   yellowGoals     = 0;           //!< Number of scores yellow goals
-    short  remainingTime   = 0;           //!< Remaining time in seconds
-    char   previousGameState = '\0';      //!< The previous gamestate
-    bool   ballStopped = false;           //!< Is the ball stationary?
+    std::vector<Robot*> opTeam;           //The team of Robot on my team
+    std::vector<Robot*> myTeam;           //The team of Robot on the opponent team
+    Robot* robotWithBall   = NULL;        //Robot currently holding the ball
+    Point  ballPoint       = Point(0,0);  //The current point fo the ball on the field
+    Point  ballVelocity    = Point(0,0);  //The current velocity of the ball on the field
+    Point  ballAcceleration= Point(0,0);  //The current acceleration of the ball on the field
+    Point  ballPrediction  = Point(0,0);  //Prediciton point of the ball
+    char   gameState       = '\0';        //The current state of the game from RefComm
+    bool   hasNewCommand   = false;       //True on tje iteration that gameState has changed
+    char   blueGoals       = 0;           //Number of scores yellow goals
+    char   yellowGoals     = 0;           //Number of scores yellow goals
+    short  remainingTime   = 0;           //Remaining time in seconds
+    char   previousGameState = '\0';      //The previous gamestate
+    bool   ballStopped = false;           //Is the ball stationary?
 
     /* Functions to update gamemodel from vision system.
      * Provides *the* link between vision detection and
@@ -96,6 +105,7 @@ private:
     void setYellowGoals(char);
     void notifyObservers();
 
+    //! @cond
     //grSim Replacement data
     struct RobotReplacement {
         int id;
@@ -106,6 +116,7 @@ private:
         float x, y;
         float vx, vy;
     };
+    //! @endcond
     //Vector of queued replacements for robots
     std::vector<RobotReplacement> robotReplacements;
     //An optimal replacement of the ball
@@ -113,15 +124,11 @@ private:
     //Do the above two fields contains replacemant data?
     bool hasRobotReplacements = false;
     bool hasBallReplacement = false;
-    
-public:
-    //Old legacy functions
-    void setStrategyController(StrategyController * sc);
-    void onCommandProcessed();
-    std::string toString();
 };
 
 //Global singleton pointer to access GameModel
 extern GameModel* gameModel;
+
+//! @}
 
 #endif // GAMEMODEL_H

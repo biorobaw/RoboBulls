@@ -15,7 +15,7 @@ void FreeKickStrategy::assignBeh()
 {
     GameModel *gm = GameModel::getModel();
 
-    vector <Robot*> myTeam;
+    std::vector<Robot*> myTeam;
 
     myTeam = gm->getMyTeam();
 

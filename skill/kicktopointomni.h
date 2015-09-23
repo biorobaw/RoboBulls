@@ -15,8 +15,11 @@ namespace Skill
  * pointer constructor. The robot is asked to fist move to behind the ball
  * at any angle while rotating to face the ball. Then the Robot moves
  * forwards, and finally kicks the ball when close enough.
- * KTPO supports both a <b>static point</b> and <b>variable point</b> constructors. */
-
+ * KTPO supports both a <b>static point</b> and <b>variable point</b> constructors.
+ *
+ * <b>Example Everyday Usage</b>
+ * @include example_kicktopointomni.cpp
+ */
 class KickToPointOmni : public Skill
 {
 public:

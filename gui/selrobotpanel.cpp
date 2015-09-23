@@ -48,7 +48,7 @@ void SelRobotPanel::printBehavior(int id) {
        std::string s = getbehavior->getBehaviorName(bot);
         guiPrintRobot(id, s);
 //        dash->guiPrint(getbehavior->getBehaviorName(bot));
-        cout << s << "\n";
+        std::cout << s << "\n";
     }
 }
 

@@ -1,6 +1,7 @@
 #ifndef CONFIG_SIMULATED_H
 #define CONFIG_SIMULATED_H
 //! @file
+//! @addtogroup everydayuse
 //! @addtogroup config
 //! @brief Configuration Constants
 //! @details These are constants in **include/config** which control the game.

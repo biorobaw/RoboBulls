@@ -83,7 +83,7 @@ fourWheelVels FourWheelCalculator::defaultCalc
     double RB =  (-sin(RB_offset) * x_vel_robot + cos(RB_offset)*y_vel_robot + wheel_radius*theta_vel);
 
     //Normalize wheel velocities
-    unsigned int max_mtr_spd = 100;
+    int max_mtr_spd = 100;
     if (abs(LF)>max_mtr_spd)
     {
         LB=(max_mtr_spd/abs(LF))*LB;
@@ -175,7 +175,7 @@ fourWheelVels FourWheelCalculator::facePointCalc
     double RB =  (-sin(RB_offset) * x_vel_robot + cos(RB_offset)*y_vel_robot + wheel_radius*theta_vel);
 
     //Normalize wheel velocities
-    unsigned int max_mtr_spd = 100;
+    int max_mtr_spd = 100;
     if (abs(LF)>max_mtr_spd)
     {
         LB=(max_mtr_spd/abs(LF))*LB;

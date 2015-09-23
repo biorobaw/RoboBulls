@@ -1,6 +1,9 @@
 var searchData=
 [
-  ['kick',['kick',['../structNXTRobComm_1_1packet__t.html#a2adaeacbed9e49385ed96ca3f7627639',1,'NXTRobComm::packet_t::kick()'],['../classRobot.html#abdfb206979361e1ab29991995561e7a2',1,'Robot::kick()'],['../namespacejoystick.html#ae85a71b94a18ce9be16e8c4e67756f70',1,'joystick::Kick()']]],
-  ['kick_5fskill',['kick_skill',['../classDefendFarFromBall.html#adee4a3fbea02e0f49f3ae2bdd6d5d251',1,'DefendFarFromBall']]],
-  ['kickerrobot',['kickerRobot',['../classFreeKickStrategy.html#ab7a41d4a9c7188e711f96b71ccc77504',1,'FreeKickStrategy']]]
+  ['lb',['LB',['../namespacejoystick.html#aa7edb7708a681b71d78db21d7258b663',1,'joystick']]],
+  ['left_5fback',['left_back',['../structNXTRobComm_1_1packet__t.html#ace21a78c7aac75bb83b77118556f25e6',1,'NXTRobComm::packet_t']]],
+  ['left_5ffront',['left_front',['../structNXTRobComm_1_1packet__t.html#aff722ca5160b86dded9386b139c54f75',1,'NXTRobComm::packet_t']]],
+  ['lf',['LF',['../namespacejoystick.html#a365971c86ee9b680ae7a36dd16549e41',1,'joystick']]],
+  ['lowerleftregion',['lowerLeftRegion',['../classRegion.html#af871e0fecaaca82d436c49fe1baf29c6',1,'Region']]],
+  ['lowerrightregion',['lowerRightRegion',['../classRegion.html#a6e4bd4fa68988ffa310b32fb8ba3b312',1,'Region']]]
 ];

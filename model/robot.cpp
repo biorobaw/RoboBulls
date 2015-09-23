@@ -116,7 +116,7 @@ RobotType Robot::type()
 //! @brief Returns a string representation of the robot
 std::string Robot::toString()
 {
-    stringstream ss;
+    std::stringstream ss;
     ss << "\t" << getRobotPosition().toString() << "\t ID: " << getID();
     return ss.str();
 }

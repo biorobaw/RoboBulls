@@ -58,6 +58,10 @@
  *
  * If these steps are completed correctly, Robot 0 on TEAM should move to the center
  * of the field.
+ *
+ * @example example_gamemodel.cpp
+ * @example example_genericmovement.cpp
+ * @example example_kicktopointomni.cpp
  */
 
 //! @brief Sets robots velocities to zero and exits the program

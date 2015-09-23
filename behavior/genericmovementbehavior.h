@@ -4,47 +4,38 @@
 #include "movement/gotoposition.h"
 #include "movement/movetype.h"
 
-/*! @brief A Behavior-level interface to Movement
+//! @ingroup everydayuse baseclasses
+//! @{
+
+/*! @brief Behavior to perform generic point-to-point Movement
  * @author JamesW
- * @details This purpose of this Behavior is to provide an interface to the
- * Movement layer of the "velocity sending" hierarchy. The reason is that many
- * behaviors directly used deprecated things like CLC, and also because there exists
- * a lot of boilerplate in managing a pointer to a GoToPosition object. This class
- * simply manages internally a GoToPositon object and provides an interface to it.
- * The basic usage idea--in a perform() function of a derived class--
- * is to call setMovementTargets, and then call GenericMovementBehavior::perform. */
+ * @details This class interfaces with a Movement::GoToPosition object to provide
+ * Behaviors a simple method of moving from point to point. If a Behavior's only function
+ * is to perform movement with no other actions, GenericMovementBehavior is a good baseclass.
+ *
+ * <b>Example Everyday Usage</b>
+ * @include example_genericmovement.cpp */
 
 class GenericMovementBehavior : public Behavior
 {
 public:
-    /*! @brief Constructor is also an interface to a GoToPosition object.
-     * @details It can set up the movement object on construction
-     * instead of being defaulted to 0,0
-     * @see GoToPosition
-     */    
+    /*! @brief Equivalent to calling setMovementTargets initially */
     GenericMovementBehavior(
-        Point target    = Point(0,0), 
-        float angTarget = UNUSED_ANGLE_VALUE, 
-        bool  obsAvoid  = true, 
+        Point target    = Point(0,0),
+        float angTarget = UNUSED_ANGLE_VALUE,
+        bool  obsAvoid  = true,
         bool  ballAvoid = true);
-        
-   ~GenericMovementBehavior();
-   
+
+   //! @brief Performs the movement after setMovementTargets is set */
    void perform(Robot* robot) override;
    
-   /* isFinished override
-    * return true when the movement object has reached the movement
-    * targets
-    */
+   //! @brief Return true when reached the movement targets
    bool isFinished() override;
 
 protected:
 
-    /*! @brief Calls the GoToPosition object
-     * @details This actually calculates and sets the velocities on the robot via .
-     * GoToPosition. After a derived class has obtained a point and angle 
-     * (and set them with setMovementTargets), call this to calculate wheelvels 
-     * and set them on the robot; use  GenericMovementBehavior::perform(robot); */
+    /*! @brief Perform movement to move to movement targets
+     * @details use GenericMovementBehavior::perform(robot); */
     void perform(Robot* robot, Movement::Type type);
 
     //! @{
@@ -53,8 +44,7 @@ protected:
      * to move to, use setMovementTargets to recreate the GoToPosition object to those
      * parameters: point, angle, and use obstacle avoidance or not */
     void setMovementTargets(Point targetPoint, float targetAngle = UNUSED_ANGLE_VALUE);
-    void setMovementTargets(Point targetPoint, float targetAngle,
-                            bool useObstacleAvoid, bool useAvoidBall = true);
+    void setMovementTargets(Point targetPoint, float targetAngle,  bool useObstacleAvoid, bool useAvoidBall = true);
     //! @}
         
     //! @brief Set the velocity multiplier on the Movement object.
@@ -64,13 +54,13 @@ protected:
     void setMovementTolerances(float newDistolerance, float newRotTolerance);
     
 private:
-    Movement::GoToPosition* movement;
+    Movement::GoToPosition movement;
     float velocityMultipier;
-    float newDistTolerance;
-    float newRotTolerance;
     bool  useObstacleAvoid;
     bool  useAvoidBall;
     bool  movementFinished;
 };
+
+//! @}
 
 #endif

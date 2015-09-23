@@ -478,7 +478,7 @@ void FieldPanel::doubleClickScan() {
                 centeredBotID = i;
                 centerViewOnBot();
                 zoomField(20);
-                dash->guiPrint("Focused on Robot " + to_string(centeredBotID));
+                dash->guiPrint("Focused on Robot " + std::to_string(centeredBotID));
                 break;
             }
         }//nullcheck

@@ -7,6 +7,9 @@
 
 class Robot;
 
+/*! @addtogroup everydayuse
+ * @{ */
+
 /*! @brief Contains useful math and utility functions
  * @details Measurments is used over the project to calculate various
  * distances and angles. It’s also misspelled but left that way for
@@ -83,6 +86,7 @@ public:
     static T clamp(const T& value, const T& min, const T& max);
 };
 
+//! @}
 
 /***************************************************/
 

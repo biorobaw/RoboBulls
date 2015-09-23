@@ -36,7 +36,7 @@ void AttackSupport::recalculateWp(Robot* robot)
     previousBP = bp;
 
     //Vectors of robots to ignore (itself + opponents in penalty area)
-    vector<Robot*> ignoreOpponents, ignoreTeammates;
+    std::vector<Robot*> ignoreOpponents, ignoreTeammates;
     ignoreTeammates.push_back(robot);
 
     //Filter out all robots in the penalty area from population consideration

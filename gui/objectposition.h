@@ -2,9 +2,10 @@
 #define OBJECTPOSITION_H
 
 #include <QString>
-#include "utilities/point.h"
 #include <deque>
-
+#include "utilities/point.h"
+using std::string;
+using std::deque;
 class MainWindow;
 
 class ObjectPosition

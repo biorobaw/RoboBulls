@@ -9,7 +9,7 @@ namespace Skill
  *  @author Narges Ghaedi, JamesW
  *  @details Sets the kick active on the robot.
  *  The constructor specifies a distance to kick the ball.
- *  <b>(Only implemented on the Simulator)</b> */
+ *  <b>(variable distance only implemented on the Simulator)</b> */
 
 class Kick: public Skill
 {
