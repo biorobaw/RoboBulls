@@ -2,6 +2,10 @@
 
 GenericMovementBehavior::GenericMovementBehavior
     (Point target, float angTarget, bool obsAvoid, bool ballAvoid)
+    : velocityMultipier(1.0),
+      useObstacleAvoid(true),
+      useAvoidBall(false),
+      movementFinished(false)
 {
     setMovementTargets(target, angTarget, obsAvoid, ballAvoid);
 }
