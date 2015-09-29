@@ -93,6 +93,7 @@ bool KickToPointOmni::perform(Robot* robot)
             }
 
             //Calculate the point behind the ball to move
+            //TODO: factor in ball prediction
             float targetBallAng = Measurments::angleBetween(*m_targetPointer, bp);
             float dx = BEHIND_RADIUS * cos(targetBallAng);
             float dy = BEHIND_RADIUS * sin(targetBallAng);

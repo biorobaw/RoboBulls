@@ -35,6 +35,7 @@ class PassBallSender : public GenericMovementBehavior
 {
 public:
     PassBallSender(Robot* waiter);
+    ~PassBallSender();
     void perform(Robot*);
     bool isFinished() override;
 
@@ -77,7 +78,8 @@ private:
     Point passingPoint;
     int receiverID;
     Point target;
-    enum states {movingBehind, approaching, kicking, idling} state;
+    Skill::Skill* kickSkill; //KickToPointOmni to kick the ball
+    enum states {waiting, performing, stopped} state;
 };
 
 #endif // PASSBALLSENDER_H

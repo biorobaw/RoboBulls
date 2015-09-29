@@ -94,12 +94,17 @@ void PassBallReceiver::perform(Robot *robot)
     case initial:
         if(passer->getCurrentBeh()->isFinished()) {
             //If the passer kicked, we move to kick the ball to the goal
-            kickToPoint = new Skill::KickToPointOmni(&goalArea);
+            kickToPoint = new Skill::KickToPointOmni(&goalArea, -1, -1, true);
             state = kicking;
         } else {
-            //Otherwise,we move to where the passer is going to kick.
-            float a = Measurments::angleBetween(robot, passer);
-            setMovementTargets(getPasserPassPoint(), a);
+            //Otherwise,we move to where the passer is going to kick, with a little
+            //to make the passer kick in front of us
+            float robGoalAng = Measurments::angleBetween(robot, goalArea);
+            Point passTarget = getPasserPassPoint();
+            float goal2Target = Measurments::angleBetween(goalArea, passTarget);
+            Point movePoint = passTarget + Point(100 * cos(goal2Target),
+                                                 100 * sin(goal2Target));
+            setMovementTargets(movePoint, robGoalAng);
             GenericMovementBehavior::perform(robot);
         }
         break;
