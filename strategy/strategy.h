@@ -1,6 +1,9 @@
 #ifndef STRATEGY_H
 #define STRATEGY_H
 
+//! @addtogroup baseclasses
+//! @{
+
 /*! @brief Strategy is the abstract base class for other strategy classes.
  * @ingroup Base Classes
  * @details All the strategy classes inherit from the Strategy class
@@ -11,14 +14,20 @@
  * function is to keep track of information regarding the robots
  * assigned behaviors in assignBeh, but not actually assign anybody a
  * behavior unless a new condition is met. This allows for more dynamic
- * and complex strategies. Strategy also has a function called getNextStrategy()
- * (See indirectkickstrategy.cpp for an example).
- * This update allows strategies to be switched within the
- * StrategyController on a single game state. The idea is to have a
- * “pseudo-linked-list” of strategies, where any strategy can request
- * a change to another one at any point in time, by returning its ASCII
- * RefBox command to StrategyController from getNextStrategy. Return the
- * NULL character ‘\0’ to continue the current strategy. */
+ * and complex strategies.
+ *
+ * <b>Creating a Strategy</b><br>
+ * Similar to a behavior, users should include “strategy/strategy.h”
+ * and override from the base class.
+ * There are two functions that define a strategy--­­​assignBeh ​and ​update​.
+ * Having at least ​assignBeh ​defined is required for a strategy. ​
+ * assignBeh ​is a function that should use the ​GameModel ​and other
+ * tools to figure out ​how ​to assign behaviors to robots. Next, to
+ * use this strategy, it must be placed somewhere as a choosable option
+ * in StrategyController.cpp ​. in ​StrategyController’s ​gameModelUpdated()
+ * function,  users will see a “testing macro macro”­­ this is used by us
+ * to ignore the RefBox’s commands to test only one strategy. Here, you
+ * can add your own strategy in. */
 
 class Strategy
 {
@@ -35,7 +44,8 @@ public:
     virtual bool update();
 
     /*! @brief Function used to control strategy flow.
-     * @details Return an ASCII character corrisponding to a game state to switch
+     * @details Allows strategies to be switched within a single game state.
+     * Return an ASCII character corrisponding to a game state to switch
      * the StrategyController to. return '\0' or the current gate state
      * (via GameModel) to keep the current state. */
     virtual char getNextStrategy();
@@ -45,5 +55,7 @@ public:
      * is deleted due to an update in StrategyController */
     virtual ~Strategy();
 };
+
+//! @}
 
 #endif // STRATEGY_H

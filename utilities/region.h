@@ -41,7 +41,8 @@ public:
     int numOfTeammates();
 
     /*! @brief Excludes the robots in the vectors passed passed in. */
-    int numOfRobots(vector <Robot *> ignoreOpponents,vector <Robot *>ignoreTeammates);
+    int numOfRobots(std::vector<Robot*>& ignoreOpponents,
+                    std::vector<Robot*>& ignoreTeammates);
 
     /*! @brief Returns the calculated center of the Region */
     Point centre();
@@ -50,7 +51,7 @@ public:
     static bool goalScored();
 
     /*! @brief Returns a string representation of the Region */
-    string toString();
+    std::string toString();
 
     /*! @brief Associate a numeric strategic value with the region */
     void setStrategicValue(int);

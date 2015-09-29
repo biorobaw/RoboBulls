@@ -43,7 +43,7 @@ public:
 
 private:
     const double wheel_radius = 27;
-    unsigned int max_mtr_spd = 100;
+    int max_mtr_spd = 100;
     double distance_to_goal, angle_to_goal;
 
     //! @brief Movement algorithm to handle Type::Default movement

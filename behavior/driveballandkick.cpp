@@ -8,6 +8,7 @@
 #include "behavior/genericmovementbehavior.h"
 #include "utilities/point.h"
 #include <math.h>
+using namespace std;
 
 #if SIMULATED
     #define CLOSE_ENOUGH 110

@@ -1,9 +1,9 @@
 #ifndef POINT_H
 #define POINT_H
-
 #include <string>
 
-using namespace std;
+//! @addtogroup everydayuse
+//! @{
 
 /*! @brief 2D Point Class
  * @details A Point is a 2D vector in space. Typically used to represent positions
@@ -35,5 +35,6 @@ public:
     float y;    //!< The Y coordinate
 };
 
+//! @}
 
 #endif // POINT_H

@@ -44,6 +44,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
+      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -91,11 +92,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classGenericMovementBehavior-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">GenericMovementBehavior Class Reference</div>  </div>
+<div class="title">GenericMovementBehavior Class Reference<div class="ingroups"><a class="el" href="group__everydayuse.html">Everyday Use</a> &#124; <a class="el" href="group__baseclasses.html">Base Classes</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>A Behavior-level interface to <a class="el" href="namespaceMovement.html" title="Namespace containing all Movement functions and classes. ">Movement</a>.  
+<p><a class="el" href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. ">Behavior</a> to perform generic point-to-point <a class="el" href="namespaceMovement.html" title="Namespace containing all Movement functions and classes. ">Movement</a>.  
  <a href="classGenericMovementBehavior.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="genericmovementbehavior_8h_source.html">genericmovementbehavior.h</a>&gt;</code></p>
@@ -117,20 +118,23 @@ Inheritance diagram for GenericMovementBehavior:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a3d8bf66bd36e028bad427b211d901708"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGenericMovementBehavior.html#a3d8bf66bd36e028bad427b211d901708">GenericMovementBehavior</a> (<a class="el" href="classPoint.html">Point</a> target=<a class="el" href="classPoint.html">Point</a>(0, 0), float angTarget=<a class="el" href="globals_8h.html#af8e3ef85fce83e2f92bd95d7f5a46e11">UNUSED_ANGLE_VALUE</a>, bool obsAvoid=true, bool ballAvoid=true)</td></tr>
-<tr class="memdesc:a3d8bf66bd36e028bad427b211d901708"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor is also an interface to a GoToPosition object.  <a href="#a3d8bf66bd36e028bad427b211d901708">More...</a><br/></td></tr>
+<tr class="memitem:a3d8bf66bd36e028bad427b211d901708"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3d8bf66bd36e028bad427b211d901708"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGenericMovementBehavior.html#a3d8bf66bd36e028bad427b211d901708">GenericMovementBehavior</a> (<a class="el" href="classPoint.html">Point</a> target=<a class="el" href="classPoint.html">Point</a>(0, 0), float angTarget=<a class="el" href="globals_8h.html#af8e3ef85fce83e2f92bd95d7f5a46e11">UNUSED_ANGLE_VALUE</a>, bool obsAvoid=true, bool ballAvoid=true)</td></tr>
+<tr class="memdesc:a3d8bf66bd36e028bad427b211d901708"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to calling setMovementTargets initially. <br/></td></tr>
 <tr class="separator:a3d8bf66bd36e028bad427b211d901708"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acae60b4ca7d2fdbaf7a3c9dce69c2bb2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGenericMovementBehavior.html#acae60b4ca7d2fdbaf7a3c9dce69c2bb2">perform</a> (<a class="el" href="classRobot.html">Robot</a> *robot) override</td></tr>
-<tr class="memdesc:acae60b4ca7d2fdbaf7a3c9dce69c2bb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform this behavior's action on a robot Given an arbitrary roobot, The <em>perform</em> function of a <a class="el" href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. ">Behavior</a> defines how to run the behavior on a robot.  <a href="#acae60b4ca7d2fdbaf7a3c9dce69c2bb2">More...</a><br/></td></tr>
+<tr class="memitem:acae60b4ca7d2fdbaf7a3c9dce69c2bb2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acae60b4ca7d2fdbaf7a3c9dce69c2bb2"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGenericMovementBehavior.html#acae60b4ca7d2fdbaf7a3c9dce69c2bb2">perform</a> (<a class="el" href="classRobot.html">Robot</a> *robot) override</td></tr>
+<tr class="memdesc:acae60b4ca7d2fdbaf7a3c9dce69c2bb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs the movement after setMovementTargets is set */. <br/></td></tr>
 <tr class="separator:acae60b4ca7d2fdbaf7a3c9dce69c2bb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acdd16af72d03bab5727a465de853ebc0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGenericMovementBehavior.html#acdd16af72d03bab5727a465de853ebc0">isFinished</a> () override</td></tr>
-<tr class="memdesc:acdd16af72d03bab5727a465de853ebc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return if behavior is "finished" Return true when the behavior is "finished," false otherwise. This could be reaching a target, or whenever a derived behavior is considered finished. Can be used in Stratigies to effectively assign behaviors one after another.  <a href="#acdd16af72d03bab5727a465de853ebc0">More...</a><br/></td></tr>
+<tr class="memitem:acdd16af72d03bab5727a465de853ebc0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acdd16af72d03bab5727a465de853ebc0"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGenericMovementBehavior.html#acdd16af72d03bab5727a465de853ebc0">isFinished</a> () override</td></tr>
+<tr class="memdesc:acdd16af72d03bab5727a465de853ebc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return true when reached the movement targets. <br/></td></tr>
 <tr class="separator:acdd16af72d03bab5727a465de853ebc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a9ef9c427431b9f34e0197f9f17f33135"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGenericMovementBehavior.html#a9ef9c427431b9f34e0197f9f17f33135">perform</a> (<a class="el" href="classRobot.html">Robot</a> *robot, <a class="el" href="namespaceMovement.html#a74b28fda28211060df3b66c2ce160bd6">Movement::Type</a> type)</td></tr>
-<tr class="memdesc:a9ef9c427431b9f34e0197f9f17f33135"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls the GoToPosition object.  <a href="#a9ef9c427431b9f34e0197f9f17f33135">More...</a><br/></td></tr>
+<tr class="memdesc:a9ef9c427431b9f34e0197f9f17f33135"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform movement to move to movement targets.  <a href="#a9ef9c427431b9f34e0197f9f17f33135">More...</a><br/></td></tr>
 <tr class="separator:a9ef9c427431b9f34e0197f9f17f33135"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adcda63186c2bec56e194f1db916de974"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adcda63186c2bec56e194f1db916de974"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGenericMovementBehavior.html#adcda63186c2bec56e194f1db916de974">setVelocityMultiplier</a> (float newMultiplier)</td></tr>
@@ -149,119 +153,30 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:ada69562e2cb0372b8bb0348ec876db1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A Behavior-level interface to <a class="el" href="namespaceMovement.html" title="Namespace containing all Movement functions and classes. ">Movement</a>. </p>
+<div class="textblock"><p><a class="el" href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. ">Behavior</a> to perform generic point-to-point <a class="el" href="namespaceMovement.html" title="Namespace containing all Movement functions and classes. ">Movement</a>. </p>
 <dl class="section author"><dt>Author</dt><dd>JamesW</dd></dl>
-<p>This purpose of this <a class="el" href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. ">Behavior</a> is to provide an interface to the <a class="el" href="namespaceMovement.html" title="Namespace containing all Movement functions and classes. ">Movement</a> layer of the "velocity sending" hierarchy. The reason is that many behaviors directly used deprecated things like CLC, and also because there exists a lot of boilerplate in managing a pointer to a GoToPosition object. This class simply manages internally a GoToPositon object and provides an interface to it. The basic usage idea&ndash;in a <a class="el" href="classGenericMovementBehavior.html#acae60b4ca7d2fdbaf7a3c9dce69c2bb2" title="Perform this behavior&#39;s action on a robot Given an arbitrary roobot, The perform function of a Behavi...">perform()</a> function of a derived class&ndash; is to call setMovementTargets, and then call <a class="el" href="classGenericMovementBehavior.html#acae60b4ca7d2fdbaf7a3c9dce69c2bb2" title="Perform this behavior&#39;s action on a robot Given an arbitrary roobot, The perform function of a Behavi...">GenericMovementBehavior::perform</a>. </p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a3d8bf66bd36e028bad427b211d901708"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">GenericMovementBehavior::GenericMovementBehavior </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classPoint.html">Point</a>&#160;</td>
-          <td class="paramname"><em>target</em> = <code><a class="el" href="classPoint.html">Point</a>(0,0)</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>angTarget</em> = <code><a class="el" href="globals_8h.html#af8e3ef85fce83e2f92bd95d7f5a46e11">UNUSED_ANGLE_VALUE</a></code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>obsAvoid</em> = <code>true</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>ballAvoid</em> = <code>true</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Constructor is also an interface to a GoToPosition object. </p>
-<p>It can set up the movement object on construction instead of being defaulted to 0,0 </p>
-<dl class="section see"><dt>See Also</dt><dd>GoToPosition </dd></dl>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="acdd16af72d03bab5727a465de853ebc0"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool GenericMovementBehavior::isFinished </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Return if behavior is "finished" Return true when the behavior is "finished," false otherwise. This could be reaching a target, or whenever a derived behavior is considered finished. Can be used in Stratigies to effectively assign behaviors one after another. </p>
-<dl class="section return"><dt>Returns</dt><dd>True if the behavior is considered finished, false otherwise. </dd></dl>
-
-<p>Reimplemented from <a class="el" href="classBehavior.html#a850e6042516a458a7e509536fae53adf">Behavior</a>.</p>
-
-<p>Reimplemented in <a class="el" href="classPassBallSender.html#aaf07fc44cefa15a279819dc5245fb646">PassBallSender</a>, <a class="el" href="classPassBallReceiver.html#a851d02ca2215e2e18fbc6c69d21ac913">PassBallReceiver</a>, and <a class="el" href="classRotateOnPoint.html#a17b170fb006552a990e86c8cd187dfdd">RotateOnPoint</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="acae60b4ca7d2fdbaf7a3c9dce69c2bb2"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void GenericMovementBehavior::perform </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classRobot.html">Robot</a> *&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Perform this behavior's action on a robot Given an arbitrary roobot, The <em>perform</em> function of a <a class="el" href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. ">Behavior</a> defines how to run the behavior on a robot. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">Robot*</td><td>the robot to perform on. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Implements <a class="el" href="classBehavior.html#ae9cd383ce108e38784a62896b4395169">Behavior</a>.</p>
-
-<p>Reimplemented in <a class="el" href="classPassBallSender.html#a86e1b65c4ff43511fd79228844bed1f0">PassBallSender</a>, <a class="el" href="classPassBallReceiver.html#a3efcc67d0daad0174e95e3ef2c514039">PassBallReceiver</a>, <a class="el" href="classPenaltyBehavior.html#a056de4ccedc06a289afdf3ccb7c0a7a4">PenaltyBehavior</a>, and <a class="el" href="classRotateOnPoint.html#a1d0198673564aec892d52cda1e88e443">RotateOnPoint</a>.</p>
-
-</div>
-</div>
+<p>This class interfaces with a <a class="el" href="classMovement_1_1GoToPosition.html" title="Top-level Interface to provide robot movement. ">Movement::GoToPosition</a> object to provide Behaviors a simple method of moving from point to point. If a <a class="el" href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. ">Behavior</a>'s only function is to perform movement with no other actions, <a class="el" href="classGenericMovementBehavior.html" title="Behavior to perform generic point-to-point Movement. ">GenericMovementBehavior</a> is a good baseclass.</p>
+<p><b>Example Everyday Usage</b> </p>
+<div class="fragment"><div class="line"><span class="comment">//This is an example showing how to use GenericMovementBehavior in a behavior</span></div>
+<div class="line"><span class="comment">//We inhert from GenericMovementBehavior</span></div>
+<div class="line"></div>
+<div class="line"><span class="keyword">class </span>ExampleBehavior : <span class="keyword">public</span> <a class="code" href="classGenericMovementBehavior.html">GenericMovementBehavior</a></div>
+<div class="line">{</div>
+<div class="line">    <span class="keywordtype">void</span> <a class="code" href="classGenericMovementBehavior.html#acae60b4ca7d2fdbaf7a3c9dce69c2bb2">perform</a>(<a class="code" href="classRobot.html">Robot</a>* robot)<span class="keyword"> override </span>{</div>
+<div class="line">        <span class="comment">//GMB Method: We set a movement poisiton target to prepare for movement.</span></div>
+<div class="line">        <span class="comment">//In this case, we&#39;re setting the robot to move to point (0,0)</span></div>
+<div class="line">        <a class="code" href="classGenericMovementBehavior.html#a8ac45d3889afbb70d75c871caf0d8c5c">setMovementTargets</a>( <a class="code" href="classPoint.html">Point</a>(0,0) );</div>
+<div class="line"></div>
+<div class="line">        <span class="comment">//Actually perform movement</span></div>
+<div class="line">        <a class="code" href="classGenericMovementBehavior.html#acae60b4ca7d2fdbaf7a3c9dce69c2bb2">GenericMovementBehavior::perform</a>(robot);</div>
+<div class="line">    }</div>
+<div class="line">};</div>
+<div class="line"></div>
+<div class="line"><span class="comment">//This behavior can be assigned to a robot with:</span></div>
+<div class="line">robot-&gt;assignBeh&lt;ExampleBehavior&gt;();</div>
+<div class="line"></div>
+</div><!-- fragment --> <dl><dt><b>Examples: </b></dt><dd><a class="el" href="example_genericmovement_8cpp-example.html#_a0">example_genericmovement.cpp</a>.</dd>
+</dl></div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a9ef9c427431b9f34e0197f9f17f33135"></a>
 <div class="memitem">
 <div class="memproto">
@@ -294,8 +209,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </table>
 </div><div class="memdoc">
 
-<p>Calls the GoToPosition object. </p>
-<p>This actually calculates and sets the velocities on the robot via . GoToPosition. After a derived class has obtained a point and angle (and set them with setMovementTargets), call this to calculate wheelvels and set them on the robot; use GenericMovementBehavior::perform(robot); </p>
+<p>Perform movement to move to movement targets. </p>
+<p>use GenericMovementBehavior::perform(robot); </p>
 
 </div>
 </div>
@@ -333,7 +248,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 <p>Sets the next movement targets (<a class="el" href="classPoint.html" title="2D Point Class ">Point</a> target and angle) to move to. </p>
 <p>This is the most important function; after a derived class has calculated the points to move to, use setMovementTargets to recreate the GoToPosition object to those parameters: point, angle, and use obstacle avoidance or not </p>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="example_genericmovement_8cpp-example.html#a3">example_genericmovement.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a class="anchor" id="ada69562e2cb0372b8bb0348ec876db1e"></a>
@@ -392,7 +308,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Sep 14 2015 13:40:09 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Sep 23 2015 14:45:59 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

@@ -8,6 +8,9 @@
 #include "behavior/genericskillbehavior.h"
 #include "include/config/robot_types.h"
 
+/*! @addtogroup everydayuse
+ * @{ */
+
 /**
  * @brief The Robot class representing Robots on the field
  * @details The robot class includes the required information about robot
@@ -24,28 +27,7 @@ public:
     //! @brief Robot Constructor with ID and team
     Robot(int id, int team);
 
-    //! @name Information Setting (setters)
-    //! @{
-    void setR(float);
-    void setL(float);
-    void setB(float);
-    void setLF(float left_forward);
-    void setRF(float right_forward);
-    void setLB(float left_backward);
-    void setRB(float right_backward);
-    void setKick(float kick = 5.0);
-    void setDrible(bool);
-    //! @}
-    
-    //! @name Behavior and Skill Assignment
-    //! @{
-    template<typename BehaviorType, typename... Args>
-    bool assignBeh(Args&&... args);
-    template<typename SkillType, typename... Args>
-    bool assignSkill(Args&&... args);
-    //! @}
-
-    //! @name Information Retrevial (getters)
+    //! @name Information Retrevial
     //! @{
     Point getRobotPosition();
     Point getVelocity();
@@ -57,6 +39,27 @@ public:
     bool  isOnMyTeam();
     bool  hasBehavior();
     RobotType type();
+    //! @}
+
+    //! @name Behavior and Skill Assignment
+    //! @{
+    template<typename BehaviorType, typename... Args>
+    bool assignBeh(Args&&... args);
+    template<typename SkillType, typename... Args>
+    bool assignSkill(Args&&... args);
+    //! @}
+
+    //! @name Information Setting
+    //! @{
+    void setR(float);
+    void setL(float);
+    void setB(float);
+    void setLF(float left_forward);
+    void setRF(float right_forward);
+    void setLB(float left_backward);
+    void setRB(float right_backward);
+    void setKick(float kick = 5.0);
+    void setDrible(bool);
     //! @}
 
     //! @name Wheel Velocity Query
@@ -101,6 +104,7 @@ private:
     friend class VisionComm;
 };
 
+//! @}
 
 /*********************************************/
 

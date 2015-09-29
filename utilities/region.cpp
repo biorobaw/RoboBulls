@@ -12,10 +12,10 @@ Region::Region()
 
 Region::Region(float X1,float X2,float Y1,float Y2)
 {
-    minX = min(X1,X2);
-    maxX = max(X1,X2);
-    minY = min(Y1,Y2);
-    maxY = max(Y1,Y2);
+    minX = std::min(X1,X2);
+    maxX = std::max(X1,X2);
+    minY = std::min(Y1,Y2);
+    maxY = std::max(Y1,Y2);
 }
 
 
@@ -112,7 +112,7 @@ int Region::numOfOpponents()
     return number_of_robots;
 }
 
-int Region::numOfRobots(vector<Robot *> ignoreOpponents, vector<Robot *> ignoreTeammates)
+int Region::numOfRobots(std::vector<Robot*>& ignoreOpponents, std::vector<Robot*>& ignoreTeammates)
 {
     GameModel* gm = GameModel::getModel();
 
@@ -160,13 +160,13 @@ Point Region::centre()
     return centre;
 }
 
-string Region::toString()
+std::string Region::toString()
 {
-    stringstream ss;
+    std::stringstream ss;
 
     ss << "minX, maxX, minY, maxY: "
     << minX << ", " << maxX << ", "
-    << minY << ", " << maxY << endl;
+    << minY << ", " << maxY << std::endl;
 
     return ss.str();
 }

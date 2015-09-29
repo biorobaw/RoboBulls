@@ -69,7 +69,7 @@ Point Point::operator*(float rhs)
  *  Example: "(x, y) = (543.0, -1123.8)" */
 std::string Point::toString() const
 {
-    stringstream ss;
+    std::stringstream ss;
     ss << "(x, y)= " << "("<<x<<", "<<y<<")";
     return ss.str();
 }

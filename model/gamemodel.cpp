@@ -27,12 +27,6 @@ int GameModel::opSide = -1;
 /************************ Public Methods ***************************/
 /*******************************************************************/
 
-/*! @brief Class constructor */
-GameModel::GameModel()
-{
-    gameState  = '\0';
-}
-
 //! @brief Sets a StrategyController to run the game with
 void GameModel::setStrategyController(StrategyController *sc)
 {
@@ -65,21 +59,21 @@ Robot* GameModel::findOpTeam(int id)
 
 /*! @brief Return a vector of all robots on the opposing team
  * \return The opposing team (getBlueTeam() if Yellow, getYellowTeam() if Blue) */
-vector<Robot*>& GameModel::getOponentTeam()
+std::vector<Robot*>& GameModel::getOponentTeam()
 {
     return opTeam;
 }
 
 /*! @brief Return a vector of all robots on the current team
  * \return The current team (getBlueTeam() if Blue, getYellowTeam() if Yellow) */
-vector<Robot *>& GameModel::getMyTeam()
+std::vector<Robot*>& GameModel::getMyTeam()
 {
     return myTeam;
 }
 
 /*! @brief Return a vector of all robots on the Blue team
  * \return The Blue team */
-vector<Robot*>& GameModel::getBlueTeam()
+std::vector<Robot*>& GameModel::getBlueTeam()
 {
 #if TEAM == TEAM_BLUE
     return getMyTeam();
@@ -90,7 +84,7 @@ vector<Robot*>& GameModel::getBlueTeam()
 
 /*! @brief Return a vector of all robots on the Yellow team
  * \return The Yellow team */
-vector<Robot*>& GameModel::getYellowTeam()
+std::vector<Robot*>& GameModel::getYellowTeam()
 {
 #if TEAM == TEAM_BLUE
     return getOponentTeam();
@@ -223,20 +217,20 @@ char GameModel::getPreviousGameState()
 //! @brief Returns a string representation of the GameModel, including all robots and the ball
 std::string GameModel::toString()
 {
-    stringstream myString;
+    std::stringstream myString;
 
-    myString << "Ball Position: " << ballPoint.toString() <<endl;
+    myString << "Ball Position: " << ballPoint.toString() << std::endl;
 
     myString<<"\nMy Team Robots: \n";
-    for (vector<Robot*>::iterator it = myTeam.begin(); it != myTeam.end(); it++)
+    for (auto it = myTeam.begin(); it != myTeam.end(); it++)
     {
-        myString << "\t" << (*it)->toString()<<endl;
+        myString << "\t" << (*it)->toString()<< std::endl;
     }
 
     myString<<"\nOponent Team Robots: \n";
-    for (vector<Robot*>::iterator it = opTeam.begin(); it != opTeam.end(); it++)
+    for(auto it = opTeam.begin(); it != opTeam.end(); it++)
     {
-        myString << "\t" << (*it)->toString() <<endl;
+        myString << "\t" << (*it)->toString() << std::endl;
     }
 
     return myString.str();
@@ -247,7 +241,7 @@ std::string GameModel::toString()
  * allows for position of angle changes of simulated robots using packets. This function asks the simulator
  * to move a robot to an x and y point.
  * @param id ID of robot to move
- * @param team TEAM_BLUE or TEAM_YELLOW ?
+ * @param team TEAM_BLUE or TEAM_YELLOW
  * @param x X Position to move robot to
  * @param y Y Positon to move robot to
  * @param dir Orientation to set robot at (leave blank to keep current robot orientation) */
@@ -263,13 +257,17 @@ void GameModel::addRobotReplacement(int id, int team, float x, float y, float di
     hasRobotReplacements = true;
 }
 
+/*! @brief Creates a ball replacement request
+ * @details Like addRobotReplacement, grSim allows us to change the position of the ball with replacement packets.
+ * @param x X Position to move ball to
+ * @param y Y Positon to move ball to
+ * @param vx X Velocity in m/s to set the ball to
+ * @param vx Y Velocity in m/s to set the ball to */
 void GameModel::addBallReplacement(float x, float y, float vx, float vy)
 {
     ballReplacement = {x, y, vx, vy};
     hasBallReplacement = true;
 }
-
-
 
 /*******************************************************************/
 /************************ Private Methods **************************/
@@ -387,7 +385,7 @@ void GameModel::setYellowGoals(char goals)
 }
 
 /*! @brief General-case find function
- * Looks for a robot with id `id` in a vector of robots. Like find_if.
+ * Looks for a robot with id `id` in a vector of robots. Similar to std::find_if.
  * @param id The Id to look for
  * @param team The team to look in (either getMyTeam or getOponentTeam)
  * @see findMyTeam
@@ -444,8 +442,7 @@ void GameModel::removeRobot(int id, int team)
     auto* vector = &getMyTeam();
     if(team != TEAM)
         vector = &getOponentTeam();
-    auto it = std::find_if(vector->begin(), vector->end(),
-                           [=](Robot* r){return r->getID()==id;});
+    auto it = std::find_if(vector->begin(), vector->end(), [=](Robot* r){return r->getID()==id;});
     if(it != vector->end()) {
         delete *it; //Free the Robot* pointer first
         vector->erase(it);

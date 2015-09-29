@@ -44,6 +44,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
+      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -93,7 +94,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a href="#friends">Friends</a> &#124;
 <a href="classRobot-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">Robot Class Reference</div>  </div>
+<div class="title">Robot Class Reference<div class="ingroups"><a class="el" href="group__everydayuse.html">Everyday Use</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -112,7 +113,54 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRobot.html#ab2e37bdf180378220ce462d14c436ada">Robot</a> (int <a class="el" href="classRobot.html#ad7fd8fd1721ae41eb67246b9b360e7a6">id</a>, int <a class="el" href="classRobot.html#a68eef60e146d6bed8c870889cd7ba6f0">team</a>)</td></tr>
 <tr class="memdesc:ab2e37bdf180378220ce462d14c436ada"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classRobot.html" title="The Robot class representing Robots on the field. ">Robot</a> Constructor with ID and team. <br/></td></tr>
 <tr class="separator:ab2e37bdf180378220ce462d14c436ada"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">Information Setting (setters)</div></td></tr>
+<tr><td colspan="2"><div class="groupHeader">Information Retrevial</div></td></tr>
+<tr class="memitem:acd2a6232d60f811a5dbe3a8fb33547ca"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acd2a6232d60f811a5dbe3a8fb33547ca"></a>
+<a class="el" href="classPoint.html">Point</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRobot.html#acd2a6232d60f811a5dbe3a8fb33547ca">getRobotPosition</a> ()</td></tr>
+<tr class="memdesc:acd2a6232d60f811a5dbe3a8fb33547ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the robot's <a class="el" href="classPoint.html" title="2D Point Class ">Point</a> position on the field. <br/></td></tr>
+<tr class="separator:acd2a6232d60f811a5dbe3a8fb33547ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf14631cc9e6fd8b12805241c9571081"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classPoint.html">Point</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRobot.html#acf14631cc9e6fd8b12805241c9571081">getVelocity</a> ()</td></tr>
+<tr class="memdesc:acf14631cc9e6fd8b12805241c9571081"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current velocity in m/s.  <a href="#acf14631cc9e6fd8b12805241c9571081">More...</a><br/></td></tr>
+<tr class="separator:acf14631cc9e6fd8b12805241c9571081"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3dc9aec2bd1f59314f97a5fbe8db988"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac3dc9aec2bd1f59314f97a5fbe8db988"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRobot.html#ac3dc9aec2bd1f59314f97a5fbe8db988">getSpeed</a> ()</td></tr>
+<tr class="memdesc:ac3dc9aec2bd1f59314f97a5fbe8db988"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the speed, the magnitude of the velocity (in <b>m/s</b>) <br/></td></tr>
+<tr class="separator:ac3dc9aec2bd1f59314f97a5fbe8db988"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba074cdf7969fafa3200ae264fad8e2e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aba074cdf7969fafa3200ae264fad8e2e"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRobot.html#aba074cdf7969fafa3200ae264fad8e2e">getOrientation</a> ()</td></tr>
+<tr class="memdesc:aba074cdf7969fafa3200ae264fad8e2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the roobt's orientation in radians. <br/></td></tr>
+<tr class="separator:aba074cdf7969fafa3200ae264fad8e2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee41eb922736dbb951804ae682a1db67"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRobot.html#aee41eb922736dbb951804ae682a1db67">getID</a> ()</td></tr>
+<tr class="memdesc:aee41eb922736dbb951804ae682a1db67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the robot's numerical ID.  <a href="#aee41eb922736dbb951804ae682a1db67">More...</a><br/></td></tr>
+<tr class="separator:aee41eb922736dbb951804ae682a1db67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1ef4587ad8b0fac194228fbc1766d53"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac1ef4587ad8b0fac194228fbc1766d53"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRobot.html#ac1ef4587ad8b0fac194228fbc1766d53">getKick</a> ()</td></tr>
+<tr class="memdesc:ac1ef4587ad8b0fac194228fbc1766d53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current kick power of the robot (or 0 if not kicking) <br/></td></tr>
+<tr class="separator:ac1ef4587ad8b0fac194228fbc1766d53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a884016794c572271aa3435ee9b7e06e1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a884016794c572271aa3435ee9b7e06e1"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRobot.html#a884016794c572271aa3435ee9b7e06e1">getDrible</a> ()</td></tr>
+<tr class="memdesc:a884016794c572271aa3435ee9b7e06e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return if the robot is currently dribbling. <br/></td></tr>
+<tr class="separator:a884016794c572271aa3435ee9b7e06e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a200c866efe527e68eace25777354bd8b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a200c866efe527e68eace25777354bd8b"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRobot.html#a200c866efe527e68eace25777354bd8b">isOnMyTeam</a> ()</td></tr>
+<tr class="memdesc:a200c866efe527e68eace25777354bd8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the robot is a member of getMyTeam in <a class="el" href="classGameModel.html" title="The GameModel class. ">GameModel</a>. <br/></td></tr>
+<tr class="separator:a200c866efe527e68eace25777354bd8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac3b345eec6840d59d92a79c088aa516"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aac3b345eec6840d59d92a79c088aa516"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRobot.html#aac3b345eec6840d59d92a79c088aa516">hasBehavior</a> ()</td></tr>
+<tr class="memdesc:aac3b345eec6840d59d92a79c088aa516"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the robot curently has a <a class="el" href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. ">Behavior</a>. <br/></td></tr>
+<tr class="separator:aac3b345eec6840d59d92a79c088aa516"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2652e11e8dbe541235ade55c3d1a12cb"><td class="memItemLeft" align="right" valign="top">RobotType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRobot.html#a2652e11e8dbe541235ade55c3d1a12cb">type</a> ()</td></tr>
+<tr class="memdesc:a2652e11e8dbe541235ade55c3d1a12cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the robot wheel type.  <a href="#a2652e11e8dbe541235ade55c3d1a12cb">More...</a><br/></td></tr>
+<tr class="separator:a2652e11e8dbe541235ade55c3d1a12cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Behavior and Skill Assignment</div></td></tr>
+<tr class="memitem:a6fc16d57af4d8a5dc61a14087afadfac"><td class="memTemplParams" colspan="2">template&lt;typename BehaviorType , typename... Args&gt; </td></tr>
+<tr class="memitem:a6fc16d57af4d8a5dc61a14087afadfac"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classRobot.html#a6fc16d57af4d8a5dc61a14087afadfac">assignBeh</a> (Args &amp;&amp;...args)</td></tr>
+<tr class="memdesc:a6fc16d57af4d8a5dc61a14087afadfac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign a <a class="el" href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. ">Behavior</a> to a robot.  <a href="#a6fc16d57af4d8a5dc61a14087afadfac">More...</a><br/></td></tr>
+<tr class="separator:a6fc16d57af4d8a5dc61a14087afadfac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52230b3f95c62e0ef9227166e20b0b00"><td class="memTemplParams" colspan="2">template&lt;typename SkillType , typename... Args&gt; </td></tr>
+<tr class="memitem:a52230b3f95c62e0ef9227166e20b0b00"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classRobot.html#a52230b3f95c62e0ef9227166e20b0b00">assignSkill</a> (Args &amp;&amp;...args)</td></tr>
+<tr class="memdesc:a52230b3f95c62e0ef9227166e20b0b00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign a single <a class="el" href="namespaceSkill.html" title="Namespace containing all Skills. ">Skill</a> to a robot.  <a href="#a52230b3f95c62e0ef9227166e20b0b00">More...</a><br/></td></tr>
+<tr class="separator:a52230b3f95c62e0ef9227166e20b0b00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Information Setting</div></td></tr>
 <tr class="memitem:aa294ac1c782726f8ba08b7635e82fb70"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa294ac1c782726f8ba08b7635e82fb70"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRobot.html#aa294ac1c782726f8ba08b7635e82fb70">setR</a> (float)</td></tr>
 <tr class="memdesc:aa294ac1c782726f8ba08b7635e82fb70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigns velocites to a wheels <em>Do not use directly</em> <br/></td></tr>
@@ -147,53 +195,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a43996680a35a08942c269dc5c39c8a74"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRobot.html#a43996680a35a08942c269dc5c39c8a74">setDrible</a> (bool)</td></tr>
 <tr class="memdesc:a43996680a35a08942c269dc5c39c8a74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the robot to Dribble.  <a href="#a43996680a35a08942c269dc5c39c8a74">More...</a><br/></td></tr>
 <tr class="separator:a43996680a35a08942c269dc5c39c8a74"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">Behavior and Skill Assignment</div></td></tr>
-<tr class="memitem:a6fc16d57af4d8a5dc61a14087afadfac"><td class="memTemplParams" colspan="2">template&lt;typename BehaviorType , typename... Args&gt; </td></tr>
-<tr class="memitem:a6fc16d57af4d8a5dc61a14087afadfac"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classRobot.html#a6fc16d57af4d8a5dc61a14087afadfac">assignBeh</a> (Args &amp;&amp;...args)</td></tr>
-<tr class="memdesc:a6fc16d57af4d8a5dc61a14087afadfac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign a <a class="el" href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. ">Behavior</a> to a robot.  <a href="#a6fc16d57af4d8a5dc61a14087afadfac">More...</a><br/></td></tr>
-<tr class="separator:a6fc16d57af4d8a5dc61a14087afadfac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52230b3f95c62e0ef9227166e20b0b00"><td class="memTemplParams" colspan="2">template&lt;typename SkillType , typename... Args&gt; </td></tr>
-<tr class="memitem:a52230b3f95c62e0ef9227166e20b0b00"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classRobot.html#a52230b3f95c62e0ef9227166e20b0b00">assignSkill</a> (Args &amp;&amp;...args)</td></tr>
-<tr class="memdesc:a52230b3f95c62e0ef9227166e20b0b00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign a single <a class="el" href="namespaceSkill.html" title="Namespace containing all Skills. ">Skill</a> to a robot.  <a href="#a52230b3f95c62e0ef9227166e20b0b00">More...</a><br/></td></tr>
-<tr class="separator:a52230b3f95c62e0ef9227166e20b0b00"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">Information Retrevial (getters)</div></td></tr>
-<tr class="memitem:acd2a6232d60f811a5dbe3a8fb33547ca"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acd2a6232d60f811a5dbe3a8fb33547ca"></a>
-<a class="el" href="classPoint.html">Point</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRobot.html#acd2a6232d60f811a5dbe3a8fb33547ca">getRobotPosition</a> ()</td></tr>
-<tr class="memdesc:acd2a6232d60f811a5dbe3a8fb33547ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the robot's <a class="el" href="classPoint.html" title="2D Point Class ">Point</a> position on the field. <br/></td></tr>
-<tr class="separator:acd2a6232d60f811a5dbe3a8fb33547ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf14631cc9e6fd8b12805241c9571081"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classPoint.html">Point</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRobot.html#acf14631cc9e6fd8b12805241c9571081">getVelocity</a> ()</td></tr>
-<tr class="memdesc:acf14631cc9e6fd8b12805241c9571081"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current velocity in m/s.  <a href="#acf14631cc9e6fd8b12805241c9571081">More...</a><br/></td></tr>
-<tr class="separator:acf14631cc9e6fd8b12805241c9571081"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3dc9aec2bd1f59314f97a5fbe8db988"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac3dc9aec2bd1f59314f97a5fbe8db988"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRobot.html#ac3dc9aec2bd1f59314f97a5fbe8db988">getSpeed</a> ()</td></tr>
-<tr class="memdesc:ac3dc9aec2bd1f59314f97a5fbe8db988"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the speed, the magnitude of the velocity (in <b>m/s</b>) <br/></td></tr>
-<tr class="separator:ac3dc9aec2bd1f59314f97a5fbe8db988"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba074cdf7969fafa3200ae264fad8e2e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aba074cdf7969fafa3200ae264fad8e2e"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRobot.html#aba074cdf7969fafa3200ae264fad8e2e">getOrientation</a> ()</td></tr>
-<tr class="memdesc:aba074cdf7969fafa3200ae264fad8e2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the roobt's orientation in radians. <br/></td></tr>
-<tr class="separator:aba074cdf7969fafa3200ae264fad8e2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aee41eb922736dbb951804ae682a1db67"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRobot.html#aee41eb922736dbb951804ae682a1db67">getID</a> ()</td></tr>
-<tr class="memdesc:aee41eb922736dbb951804ae682a1db67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the robot's numerical ID.  <a href="#aee41eb922736dbb951804ae682a1db67">More...</a><br/></td></tr>
-<tr class="separator:aee41eb922736dbb951804ae682a1db67"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac1ef4587ad8b0fac194228fbc1766d53"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac1ef4587ad8b0fac194228fbc1766d53"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRobot.html#ac1ef4587ad8b0fac194228fbc1766d53">getKick</a> ()</td></tr>
-<tr class="memdesc:ac1ef4587ad8b0fac194228fbc1766d53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current kick power of the robot (or 0 if not kicking) <br/></td></tr>
-<tr class="separator:ac1ef4587ad8b0fac194228fbc1766d53"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a884016794c572271aa3435ee9b7e06e1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a884016794c572271aa3435ee9b7e06e1"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRobot.html#a884016794c572271aa3435ee9b7e06e1">getDrible</a> ()</td></tr>
-<tr class="memdesc:a884016794c572271aa3435ee9b7e06e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return if the robot is currently dribbling. <br/></td></tr>
-<tr class="separator:a884016794c572271aa3435ee9b7e06e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a200c866efe527e68eace25777354bd8b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a200c866efe527e68eace25777354bd8b"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRobot.html#a200c866efe527e68eace25777354bd8b">isOnMyTeam</a> ()</td></tr>
-<tr class="memdesc:a200c866efe527e68eace25777354bd8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the robot is a member of getMyTeam in <a class="el" href="classGameModel.html" title="The GameModel class Game model class can be considered as the heart of robobulls project all the info...">GameModel</a>. <br/></td></tr>
-<tr class="separator:a200c866efe527e68eace25777354bd8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aac3b345eec6840d59d92a79c088aa516"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aac3b345eec6840d59d92a79c088aa516"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRobot.html#aac3b345eec6840d59d92a79c088aa516">hasBehavior</a> ()</td></tr>
-<tr class="memdesc:aac3b345eec6840d59d92a79c088aa516"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the robot curently has a <a class="el" href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. ">Behavior</a>. <br/></td></tr>
-<tr class="separator:aac3b345eec6840d59d92a79c088aa516"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2652e11e8dbe541235ade55c3d1a12cb"><td class="memItemLeft" align="right" valign="top">RobotType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRobot.html#a2652e11e8dbe541235ade55c3d1a12cb">type</a> ()</td></tr>
-<tr class="memdesc:a2652e11e8dbe541235ade55c3d1a12cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the robot wheel type.  <a href="#a2652e11e8dbe541235ade55c3d1a12cb">More...</a><br/></td></tr>
-<tr class="separator:a2652e11e8dbe541235ade55c3d1a12cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Wheel Velocity Query</div></td></tr>
 <tr class="memitem:aab5ef4f006962bd88634cc75cc7274be"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aab5ef4f006962bd88634cc75cc7274be"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRobot.html#aab5ef4f006962bd88634cc75cc7274be">getR</a> ()</td></tr>
@@ -307,8 +308,9 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>VisionComm</b></td><
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The <a class="el" href="classRobot.html" title="The Robot class representing Robots on the field. ">Robot</a> class representing Robots on the field. </p>
 <p>The robot class includes the required information about robot such position, orientation, id, velocity, and behavior information.<br/>
- These are usually returned by a <a class="el" href="classGameModel.html" title="The GameModel class Game model class can be considered as the heart of robobulls project all the info...">GameModel</a> function. They should not be created directly under normal circumstances </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+ These are usually returned by a <a class="el" href="classGameModel.html" title="The GameModel class. ">GameModel</a> function. They should not be created directly under normal circumstances </p>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="example_gamemodel_8cpp-example.html#_a3">example_gamemodel.cpp</a>, <a class="el" href="example_genericmovement_8cpp-example.html#_a2">example_genericmovement.cpp</a>, and <a class="el" href="example_kicktopointomni_8cpp-example.html#_a4">example_kicktopointomni.cpp</a>.</dd>
+</dl></div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a6fc16d57af4d8a5dc61a14087afadfac"></a>
 <div class="memitem">
 <div class="memproto">
@@ -466,7 +468,7 @@ template&lt;typename SkillType , typename... Args&gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Sep 14 2015 13:40:09 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Sep 23 2015 14:45:59 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

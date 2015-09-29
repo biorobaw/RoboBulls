@@ -47,17 +47,21 @@
  *    (Tested on Ubuntu 14.04 only)<br>
  * 2) Open the grSim simulator (grSim/bin/grsim) from the script's install path
  *    on your computer or any other computer<br>
- * 3) Change <b>REFBOX_LISTEN_ENABLED</b> to 0--This will enable of the TestStrategy below.<br>
- * 4) Go to **strategy/teststrategy.cpp** and insert
- *    **gameModel->findMyTeam(0)->assignBeh<GoToBeh>();** under **TestStrategy::assignBeh**<br>
- * 5) Open the grSim simulator (grSim/bin/grsim) from the script's install path
- *    on your computer or any other computer<br>
- * 6) Go to **include/config/communication.h** and change <b>SIMULATOR_ADDRESS</b> to the IP
+ * 3) Go to **include/config/communication.h** and change <b>SIMULATOR_ADDRESS</b> to the IP
  *    (in quotes) of the computer running grSim (SIMULATOR_ADDRESS_LOCAL for local).<br>
+ * 4) Change <b>REFBOX_LISTEN_ENABLED</b> to 0--This will enable of the TestStrategy below.<br>
+ * 5) Change <b>VISION_ADDRESS</b> under the #if SIMULATED to the "Vision multicast address" shown on the
+ *    left-hand side of the simulator<br>
+ * 6) Go to **strategy/teststrategy.cpp** and insert
+ *    **gameModel->findMyTeam(0)->assignBeh<GoToBeh>();** under **TestStrategy::assignBeh**<br>
  * 7) Making sure <b>SIMULATED</b> in include/config/simulated is 1, Run the program.
  *
  * If these steps are completed correctly, Robot 0 on TEAM should move to the center
  * of the field.
+ *
+ * @example example_gamemodel.cpp
+ * @example example_genericmovement.cpp
+ * @example example_kicktopointomni.cpp
  */
 
 //! @brief Sets robots velocities to zero and exits the program

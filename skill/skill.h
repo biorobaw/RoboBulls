@@ -6,11 +6,13 @@ class Robot;
 namespace Skill
 {
 
+//! @addtogroup baseclasses
+//! @{
+
 /*! @brief The Skill Base Class
  * @details Skill class is the base class for all the skills
  * defined in robobulls project. It requires one <i>perform</i>
- * function
- * @ingroup Base Classes */
+ * function */
 
 class Skill
 {
@@ -25,6 +27,8 @@ public:
 
     virtual ~Skill(){}
 };
+
+//!@}
 
 }
 

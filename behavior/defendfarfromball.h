@@ -5,7 +5,7 @@
 #include "movement/gotoposition.h"
 
 /*! @brief The “goalie” behavior of the game.
- * @author Narges Ghaedi, James W, Adam
+ * @author Narges Ghaedi, James W, Adam H
  *
  * The robot defends the goal by positioning itself in the trajectory of the ball
  * when it is moving torwards the goal, as well as positioning itself to block a robot
@@ -27,15 +27,22 @@ public:
 
 private:
     /*! @brief Returns true if the ball is moving with non-zero velocity torwards the goal.
+     * @details This is used to move the goalie in the path of a ball moving to the goal
      * @param lineEndsOut If true, A pair of Point of {the ball's position, where it will land in the goal} */
     bool isBallMovingTowardsGoal(std::pair<Point,Point>& lineEndsOut);
 
+    /*! @brief Returns true if `robot` is facing our goal.
+     * @details This is used to place the goalie in the path of a possible robot kick.
+     * @param robot Robot to test
+     * @param lineSegOut If true, A pair of Point of {the ball's position, where it will land in the goal} */
+    bool ballOnRobotIsAimedAtOurGoal(Robot* robot, std::pair<Point,Point>& lineSegOut);
+
     /*! @brief Returns true if the ball is behind the goal (idle point)
-     * @details In such cases, we will not chance the ball, as it is out of the field or unreachable */
+     * @details In such cases, we will not chase the ball as it is out of the field or unreachable */
     bool isBallBehindGoal();
 
-    Point idlePoint;        //!< Point to sit at when no action happens
-    bool isKickingBallAway; //!< Are we in the process of kicking the ball from the goal?
+    Point idlePoint;                    //!< Point to sit at when no action happens
+    bool isKickingBallAway;             //!< Are we in the process of kicking the ball from the goal?
     Skill::KickToPointOmni* kick_skill; //!< Skill to kick the ball with
 };
 

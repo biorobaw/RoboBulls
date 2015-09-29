@@ -70,7 +70,7 @@ public:
         bool inBadArea;         //!<Is robot in an area that is dangerous to make a pass?
     };
 
-    vector <playersCharactristics> myTeamInfo; //stores all the robots charactristics
+    std::vector <playersCharactristics> myTeamInfo; //stores all the robots charactristics
 
 private:
     Robot* waitingRobot;    //A robot that is waiting at the line, used to start

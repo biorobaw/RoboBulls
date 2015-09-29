@@ -3,6 +3,10 @@
 
 class Robot;
 
+/*! @addtogroup baseclasses Base Classes
+ * @brief Base classes for inherited functionality
+ * @{ */
+
 /*! @brief Abstract Behavior class which all other behaviors inherit.
  * @author Orign. Narges Ghaedi; JamesW
  * @ingroup Base Classes
@@ -12,7 +16,17 @@ class Robot;
  * loop that a robot has that behavior. The idea is to override this in
  * derived behaviors to perform actions. Also included is a virtual isFinished()
  * function. Child behaviors should override this and return true when the
- * behavior is “finished.”
+ * behavior is “finished.
+ *
+ * <b>Creating a Behavior</b><br>
+ * First, in a file, #include “behavior/behavior.h” and override it. A behavior is defined
+ * mostly by its perform(Robot*) ​function; the perform function of a ​
+ * Behavior ​ typically is a *switch statement over some state variable* to perform a
+ * number of skills. This perform function is called each time the game runs
+ * (about 55 times per second) so it is to instantaneously update any skills or
+ * movement objects. Users should do any expensive initial calculations in the
+ * Behavior’s constructor. After a behavior is created, it can be assigned to
+ * any number of robots with robot->assignBeh, typically in a Strategy
  */
 
 class Behavior
@@ -35,5 +49,6 @@ public:
     virtual bool isFinished();
 };
 
+//! @}
 
 #endif

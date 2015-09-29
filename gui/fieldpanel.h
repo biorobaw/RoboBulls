@@ -4,7 +4,7 @@
 #include <deque>
 #include "guisidelines.h"
 #include "utilities/point.h"
-
+using std::deque;
 class GuiRobot;
 class GuiBall;
 class GuiSidelines;

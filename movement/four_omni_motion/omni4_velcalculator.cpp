@@ -1,6 +1,7 @@
 #include "movement/four_omni_motion/omni4_velcalculator.h"
 #include "utilities/debug.h"
 #include "include/config/tolerances.h"
+using std::abs;
 
 namespace Movement
 {

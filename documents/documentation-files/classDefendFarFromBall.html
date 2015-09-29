@@ -44,6 +44,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
+      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -107,7 +108,7 @@ Inheritance diagram for DefendFarFromBall:</div>
  <div class="center">
   <img src="classDefendFarFromBall.png" usemap="#DefendFarFromBall_map" alt=""/>
   <map id="DefendFarFromBall_map" name="DefendFarFromBall_map">
-<area href="classGenericMovementBehavior.html" title="A Behavior-level interface to Movement. " alt="GenericMovementBehavior" shape="rect" coords="0,56,166,80"/>
+<area href="classGenericMovementBehavior.html" title="Behavior to perform generic point-to-point Movement. " alt="GenericMovementBehavior" shape="rect" coords="0,56,166,80"/>
 <area href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. " alt="Behavior" shape="rect" coords="0,0,166,24"/>
 </map>
  </div></div>
@@ -118,14 +119,17 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a81035e4b79a8b3ad2b0d803d7816d902"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform this behavior's action on a robot Given an arbitrary roobot, The <em>perform</em> function of a <a class="el" href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. ">Behavior</a> defines how to run the behavior on a robot.  <a href="#a81035e4b79a8b3ad2b0d803d7816d902">More...</a><br/></td></tr>
 <tr class="separator:a81035e4b79a8b3ad2b0d803d7816d902"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classGenericMovementBehavior"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classGenericMovementBehavior')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classGenericMovementBehavior.html">GenericMovementBehavior</a></td></tr>
-<tr class="memitem:a3d8bf66bd36e028bad427b211d901708 inherit pub_methods_classGenericMovementBehavior"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGenericMovementBehavior.html#a3d8bf66bd36e028bad427b211d901708">GenericMovementBehavior</a> (<a class="el" href="classPoint.html">Point</a> target=<a class="el" href="classPoint.html">Point</a>(0, 0), float angTarget=<a class="el" href="globals_8h.html#af8e3ef85fce83e2f92bd95d7f5a46e11">UNUSED_ANGLE_VALUE</a>, bool obsAvoid=true, bool ballAvoid=true)</td></tr>
-<tr class="memdesc:a3d8bf66bd36e028bad427b211d901708 inherit pub_methods_classGenericMovementBehavior"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor is also an interface to a GoToPosition object.  <a href="#a3d8bf66bd36e028bad427b211d901708">More...</a><br/></td></tr>
+<tr class="memitem:a3d8bf66bd36e028bad427b211d901708 inherit pub_methods_classGenericMovementBehavior"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3d8bf66bd36e028bad427b211d901708"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGenericMovementBehavior.html#a3d8bf66bd36e028bad427b211d901708">GenericMovementBehavior</a> (<a class="el" href="classPoint.html">Point</a> target=<a class="el" href="classPoint.html">Point</a>(0, 0), float angTarget=<a class="el" href="globals_8h.html#af8e3ef85fce83e2f92bd95d7f5a46e11">UNUSED_ANGLE_VALUE</a>, bool obsAvoid=true, bool ballAvoid=true)</td></tr>
+<tr class="memdesc:a3d8bf66bd36e028bad427b211d901708 inherit pub_methods_classGenericMovementBehavior"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to calling setMovementTargets initially. <br/></td></tr>
 <tr class="separator:a3d8bf66bd36e028bad427b211d901708 inherit pub_methods_classGenericMovementBehavior"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acae60b4ca7d2fdbaf7a3c9dce69c2bb2 inherit pub_methods_classGenericMovementBehavior"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGenericMovementBehavior.html#acae60b4ca7d2fdbaf7a3c9dce69c2bb2">perform</a> (<a class="el" href="classRobot.html">Robot</a> *robot) override</td></tr>
-<tr class="memdesc:acae60b4ca7d2fdbaf7a3c9dce69c2bb2 inherit pub_methods_classGenericMovementBehavior"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform this behavior's action on a robot Given an arbitrary roobot, The <em>perform</em> function of a <a class="el" href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. ">Behavior</a> defines how to run the behavior on a robot.  <a href="#acae60b4ca7d2fdbaf7a3c9dce69c2bb2">More...</a><br/></td></tr>
+<tr class="memitem:acae60b4ca7d2fdbaf7a3c9dce69c2bb2 inherit pub_methods_classGenericMovementBehavior"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acae60b4ca7d2fdbaf7a3c9dce69c2bb2"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGenericMovementBehavior.html#acae60b4ca7d2fdbaf7a3c9dce69c2bb2">perform</a> (<a class="el" href="classRobot.html">Robot</a> *robot) override</td></tr>
+<tr class="memdesc:acae60b4ca7d2fdbaf7a3c9dce69c2bb2 inherit pub_methods_classGenericMovementBehavior"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs the movement after setMovementTargets is set */. <br/></td></tr>
 <tr class="separator:acae60b4ca7d2fdbaf7a3c9dce69c2bb2 inherit pub_methods_classGenericMovementBehavior"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acdd16af72d03bab5727a465de853ebc0 inherit pub_methods_classGenericMovementBehavior"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGenericMovementBehavior.html#acdd16af72d03bab5727a465de853ebc0">isFinished</a> () override</td></tr>
-<tr class="memdesc:acdd16af72d03bab5727a465de853ebc0 inherit pub_methods_classGenericMovementBehavior"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return if behavior is "finished" Return true when the behavior is "finished," false otherwise. This could be reaching a target, or whenever a derived behavior is considered finished. Can be used in Stratigies to effectively assign behaviors one after another.  <a href="#acdd16af72d03bab5727a465de853ebc0">More...</a><br/></td></tr>
+<tr class="memitem:acdd16af72d03bab5727a465de853ebc0 inherit pub_methods_classGenericMovementBehavior"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acdd16af72d03bab5727a465de853ebc0"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGenericMovementBehavior.html#acdd16af72d03bab5727a465de853ebc0">isFinished</a> () override</td></tr>
+<tr class="memdesc:acdd16af72d03bab5727a465de853ebc0 inherit pub_methods_classGenericMovementBehavior"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return true when reached the movement targets. <br/></td></tr>
 <tr class="separator:acdd16af72d03bab5727a465de853ebc0 inherit pub_methods_classGenericMovementBehavior"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
@@ -140,6 +144,9 @@ Private Member Functions</h2></td></tr>
 <tr class="memitem:a4c488c3f5e4bebd4fbac88b00a86fa01"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDefendFarFromBall.html#a4c488c3f5e4bebd4fbac88b00a86fa01">isBallMovingTowardsGoal</a> (std::pair&lt; <a class="el" href="classPoint.html">Point</a>, <a class="el" href="classPoint.html">Point</a> &gt; &amp;lineEndsOut)</td></tr>
 <tr class="memdesc:a4c488c3f5e4bebd4fbac88b00a86fa01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the ball is moving with non-zero velocity torwards the goal.  <a href="#a4c488c3f5e4bebd4fbac88b00a86fa01">More...</a><br/></td></tr>
 <tr class="separator:a4c488c3f5e4bebd4fbac88b00a86fa01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e291c5135886bda8c6a84d6e46b2122"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDefendFarFromBall.html#a3e291c5135886bda8c6a84d6e46b2122">ballOnRobotIsAimedAtOurGoal</a> (<a class="el" href="classRobot.html">Robot</a> *robot, std::pair&lt; <a class="el" href="classPoint.html">Point</a>, <a class="el" href="classPoint.html">Point</a> &gt; &amp;lineSegOut)</td></tr>
+<tr class="memdesc:a3e291c5135886bda8c6a84d6e46b2122"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if <code>robot</code> is facing our goal.  <a href="#a3e291c5135886bda8c6a84d6e46b2122">More...</a><br/></td></tr>
+<tr class="separator:a3e291c5135886bda8c6a84d6e46b2122"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23110660e1608dce43a12a21870d4ddf"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDefendFarFromBall.html#a23110660e1608dce43a12a21870d4ddf">isBallBehindGoal</a> ()</td></tr>
 <tr class="memdesc:a23110660e1608dce43a12a21870d4ddf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the ball is behind the goal (idle point)  <a href="#a23110660e1608dce43a12a21870d4ddf">More...</a><br/></td></tr>
 <tr class="separator:a23110660e1608dce43a12a21870d4ddf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -163,7 +170,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_methods_classGenericMovementBehavior"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classGenericMovementBehavior')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classGenericMovementBehavior.html">GenericMovementBehavior</a></td></tr>
 <tr class="memitem:a9ef9c427431b9f34e0197f9f17f33135 inherit pro_methods_classGenericMovementBehavior"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGenericMovementBehavior.html#a9ef9c427431b9f34e0197f9f17f33135">perform</a> (<a class="el" href="classRobot.html">Robot</a> *robot, <a class="el" href="namespaceMovement.html#a74b28fda28211060df3b66c2ce160bd6">Movement::Type</a> type)</td></tr>
-<tr class="memdesc:a9ef9c427431b9f34e0197f9f17f33135 inherit pro_methods_classGenericMovementBehavior"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls the GoToPosition object.  <a href="#a9ef9c427431b9f34e0197f9f17f33135">More...</a><br/></td></tr>
+<tr class="memdesc:a9ef9c427431b9f34e0197f9f17f33135 inherit pro_methods_classGenericMovementBehavior"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform movement to move to movement targets.  <a href="#a9ef9c427431b9f34e0197f9f17f33135">More...</a><br/></td></tr>
 <tr class="separator:a9ef9c427431b9f34e0197f9f17f33135 inherit pro_methods_classGenericMovementBehavior"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adcda63186c2bec56e194f1db916de974 inherit pro_methods_classGenericMovementBehavior"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adcda63186c2bec56e194f1db916de974"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGenericMovementBehavior.html#adcda63186c2bec56e194f1db916de974">setVelocityMultiplier</a> (float newMultiplier)</td></tr>
@@ -182,10 +189,54 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The “goalie” behavior of the game. </p>
-<dl class="section author"><dt>Author</dt><dd>Narges Ghaedi, James W, Adam</dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Narges Ghaedi, James W, Adam H</dd></dl>
 <p>The robot defends the goal by positioning itself in the trajectory of the ball when it is moving torwards the goal, as well as positioning itself to block a robot when it has the ball and is facing the goal.</p>
 <p>When the ball becomes close, the goalie moves out and kicks the ball to the center of the field to remove it from the goalie box. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a3e291c5135886bda8c6a84d6e46b2122"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool DefendFarFromBall::ballOnRobotIsAimedAtOurGoal </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classRobot.html">Robot</a> *&#160;</td>
+          <td class="paramname"><em>robot</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::pair&lt; <a class="el" href="classPoint.html">Point</a>, <a class="el" href="classPoint.html">Point</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>lineSegOut</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns true if <code>robot</code> is facing our goal. </p>
+<p>This is used to place the goalie in the path of a possible robot kick. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">robot</td><td><a class="el" href="classRobot.html" title="The Robot class representing Robots on the field. ">Robot</a> to test </td></tr>
+    <tr><td class="paramname">lineSegOut</td><td>If true, A pair of <a class="el" href="classPoint.html" title="2D Point Class ">Point</a> of {the ball's position, where it will land in the goal} </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a class="anchor" id="a23110660e1608dce43a12a21870d4ddf"></a>
 <div class="memitem">
 <div class="memproto">
@@ -208,7 +259,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><div class="memdoc">
 
 <p>Returns true if the ball is behind the goal (idle point) </p>
-<p>In such cases, we will not chance the ball, as it is out of the field or unreachable </p>
+<p>In such cases, we will not chase the ball as it is out of the field or unreachable </p>
 
 </div>
 </div>
@@ -235,6 +286,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><div class="memdoc">
 
 <p>Returns true if the ball is moving with non-zero velocity torwards the goal. </p>
+<p>This is used to move the goalie in the path of a ball moving to the goal </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">lineEndsOut</td><td>If true, A pair of <a class="el" href="classPoint.html" title="2D Point Class ">Point</a> of {the ball's position, where it will land in the goal} </td></tr>
@@ -285,7 +337,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Sep 14 2015 13:40:09 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Sep 23 2015 14:45:59 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

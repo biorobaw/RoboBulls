@@ -89,6 +89,36 @@ bool TestStrategy::update()
 #define CASTLE_ROBOT_ID 2
 #define SCON_ROBOT_ID   4
 
+class KickBehavior : public Behavior
+{
+public:
+    //Constructor with a point to kick to
+    KickBehavior(Point kickTarget)
+    {
+        //Initially create the skill the kicking target to a point
+        k = new Skill::KickToPointOmni(kickTarget);
+    }
+
+    ~KickBehavior()
+    {
+        delete k;
+    }
+
+    void perform(Robot* robot) override
+    {
+        //Work on performing the kick each iteration
+        bool kickFinished = k->perform(robot);
+
+        //KTPO returns true after each state is finished and the  kick is done
+        if(kickFinished) {
+            std::cout << "KickToPointOmni has finished kicking" << std::endl;
+        }
+    }
+
+private:
+    Skill::KickToPointOmni* k;
+};
+
 void TestStrategy::assignBeh()
 {
     gameModel->findMyTeam(0)->assignBeh<GoToBeh>();

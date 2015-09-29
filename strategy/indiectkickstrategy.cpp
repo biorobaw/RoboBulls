@@ -18,7 +18,7 @@
 void IndiectKickStrategy::assignBeh()
 {
     GameModel *gm = GameModel::getModel();
-    vector<Robot*>& myTeam = gm->getMyTeam();
+    std::vector<Robot*>& myTeam = gm->getMyTeam();
 
     Robot *sender;
     Robot *receiver;
@@ -44,7 +44,7 @@ void IndiectKickStrategy::assignBeh()
             int surroundingAppNum;  //number of opponent players surrounding our team players
             double distanceToRobot; // how far away is the reciever player from sender player
         };
-        vector <playersCharactristics> myTeamInfo;
+        std::vector <playersCharactristics> myTeamInfo;
 
         for (unsigned it = 0 ; it < myTeam.size(); it++)
         {

@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['gamemodel',['GameModel',['../classGameModel.html#aa5637be937d4a2ffe81541d513838424',1,'GameModel']]],
   ['gamemodelcontinued',['gameModelContinued',['../classStrategyController.html#ad08153f6336ce5d92f5d5e03df869b6c',1,'StrategyController']]],
   ['gamemodelupdated',['gameModelUpdated',['../classStrategyController.html#a24ff9339f44fa8cc160106f613f255a1',1,'StrategyController']]],
   ['genericmovementbehavior',['GenericMovementBehavior',['../classGenericMovementBehavior.html#a3d8bf66bd36e028bad427b211d901708',1,'GenericMovementBehavior']]],
@@ -13,7 +12,7 @@ var searchData=
   ['getballspeed',['getBallSpeed',['../classGameModel.html#a1195d94c634b489ace1eb4703ad313de',1,'GameModel']]],
   ['getballvelocity',['getBallVelocity',['../classGameModel.html#a46a3a55945d46b65cd311595ae7f62cb',1,'GameModel']]],
   ['getbluegoals',['getBlueGoals',['../classGameModel.html#a520e2e4a6ef07dd6226fccfa0c03abd6',1,'GameModel']]],
-  ['getblueteam',['getBlueTeam',['../classGameModel.html#a18b1923d61ac6b930fcb1cfa35380e7d',1,'GameModel']]],
+  ['getblueteam',['getBlueTeam',['../classGameModel.html#a85c40c1ee8113a373e7fef4607724f1c',1,'GameModel']]],
   ['getcurrentbeh',['getCurrentBeh',['../classRobot.html#a43472de26b7f796ffe16fc60f4659aa0',1,'Robot']]],
   ['getcurrentobstacles',['getCurrentObstacles',['../namespaceMovement_1_1FPPA.html#a2a9ca0ffea86897b0ccf790d5164ceba',1,'Movement::FPPA']]],
   ['getdrible',['getDrible',['../classRobot.html#a884016794c572271aa3435ee9b7e06e1',1,'Robot']]],
@@ -27,9 +26,9 @@ var searchData=
   ['getmodel',['getModel',['../classGameModel.html#aa6696915161bd22de4eda8147fc34cba',1,'GameModel']]],
   ['getmovestatus',['getMoveStatus',['../namespaceMovement_1_1Collisions.html#a2e226c0bd0d2d6da2b673e3d2f69cc48',1,'Movement::Collisions']]],
   ['getmygoal',['getMyGoal',['../classGameModel.html#ad4b948a1be8c124e00983dc15f41743b',1,'GameModel']]],
-  ['getmyteam',['getMyTeam',['../classGameModel.html#ab728e3ce5d4b8965c94bceee56fcd7fe',1,'GameModel']]],
+  ['getmyteam',['getMyTeam',['../classGameModel.html#abeb752d2da5d02cd9a4294909e77ff07',1,'GameModel']]],
   ['getnextstrategy',['getNextStrategy',['../classFreeKickStrategy.html#a761cb4da0afafc1815a378869c3dcb35',1,'FreeKickStrategy::getNextStrategy()'],['../classIndiectKickStrategy.html#ae59dce12ab03b165399db0c15b2356fa',1,'IndiectKickStrategy::getNextStrategy()'],['../classStrategy.html#a8513b3a9660bfb58e9d9adc283135130',1,'Strategy::getNextStrategy()']]],
-  ['getoponentteam',['getOponentTeam',['../classGameModel.html#add56268cd1e2f3fa2dcc93c739d02afa',1,'GameModel']]],
+  ['getoponentteam',['getOponentTeam',['../classGameModel.html#a808a636dc940da1e45407149e10310fb',1,'GameModel']]],
   ['getopponentgoal',['getOpponentGoal',['../classGameModel.html#a4a8877f2ddf061b1203fd48440d2709d',1,'GameModel']]],
   ['getorientation',['getOrientation',['../classRobot.html#aba074cdf7969fafa3200ae264fad8e2e',1,'Robot']]],
   ['getpenaltypoint',['getPenaltyPoint',['../classGameModel.html#a530bcad960ee36cc794cbc4dbc4c6ced',1,'GameModel']]],
@@ -44,6 +43,6 @@ var searchData=
   ['getstrategicvalue',['getStrategicValue',['../classRegion.html#a2cac96e81e1b6613e03fa1e6d0f94d1d',1,'Region']]],
   ['getvelocity',['getVelocity',['../classRobot.html#acf14631cc9e6fd8b12805241c9571081',1,'Robot']]],
   ['getyellowgoals',['getYellowGoals',['../classGameModel.html#aff5671c5510a6fdaab86490aa73ccc2b',1,'GameModel']]],
-  ['getyellowteam',['getYellowTeam',['../classGameModel.html#a484ad2125639b06f00954cf0ae07587c',1,'GameModel']]],
+  ['getyellowteam',['getYellowTeam',['../classGameModel.html#ae5f87ede7065dc0c343ca1a08745dbda',1,'GameModel']]],
   ['goalscored',['goalScored',['../classRegion.html#a3ab78e2b3418eb3568b9699a87f2d326',1,'Region']]]
 ];

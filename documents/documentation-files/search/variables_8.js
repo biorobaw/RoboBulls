@@ -1,9 +1,11 @@
 var searchData=
 [
-  ['lb',['LB',['../namespacejoystick.html#aa7edb7708a681b71d78db21d7258b663',1,'joystick']]],
-  ['left_5fback',['left_back',['../structNXTRobComm_1_1packet__t.html#ace21a78c7aac75bb83b77118556f25e6',1,'NXTRobComm::packet_t']]],
-  ['left_5ffront',['left_front',['../structNXTRobComm_1_1packet__t.html#aff722ca5160b86dded9386b139c54f75',1,'NXTRobComm::packet_t']]],
-  ['lf',['LF',['../namespacejoystick.html#a365971c86ee9b680ae7a36dd16549e41',1,'joystick']]],
-  ['lowerleftregion',['lowerLeftRegion',['../classRegion.html#af871e0fecaaca82d436c49fe1baf29c6',1,'Region']]],
-  ['lowerrightregion',['lowerRightRegion',['../classRegion.html#a6e4bd4fa68988ffa310b32fb8ba3b312',1,'Region']]]
+  ['m_5fcollidebot',['m_collideBot',['../structMovement_1_1Collisions_1_1detail_1_1RobotMoveStatus.html#aff59c926571312d360d202dc42dca3d4',1,'Movement::Collisions::detail::RobotMoveStatus']]],
+  ['m_5fcollidecounter',['m_collideCounter',['../structMovement_1_1Collisions_1_1detail_1_1RobotMoveStatus.html#a41b2d4bc962ce2fd0259e773798b6881',1,'Movement::Collisions::detail::RobotMoveStatus']]],
+  ['m_5fcollidedirection',['m_collideDirection',['../structMovement_1_1Collisions_1_1detail_1_1RobotMoveStatus.html#ac706497d7eb3ae19ff026c4f7238becb',1,'Movement::Collisions::detail::RobotMoveStatus']]],
+  ['m_5fismoving',['m_isMoving',['../structMovement_1_1Collisions_1_1detail_1_1RobotMoveStatus.html#a7cced09bdf187a303a6a8b1e12ea6723',1,'Movement::Collisions::detail::RobotMoveStatus']]],
+  ['m_5flastdiffpoint',['m_lastDiffPoint',['../structMovement_1_1Collisions_1_1detail_1_1RobotMoveStatus.html#a1c15d6cccd4d546ac2aee93fc3c49e83',1,'Movement::Collisions::detail::RobotMoveStatus']]],
+  ['m_5fobservecount',['m_observeCount',['../structMovement_1_1Collisions_1_1detail_1_1RobotMoveStatus.html#a749d800446582a086c744b08cd1078d5',1,'Movement::Collisions::detail::RobotMoveStatus']]],
+  ['m_5fstatus',['m_status',['../structMovement_1_1Collisions_1_1detail_1_1RobotMoveStatus.html#a8452b1c00a807f4ac7798550c6225737',1,'Movement::Collisions::detail::RobotMoveStatus']]],
+  ['myside',['mySide',['../classGameModel.html#a13026eb1955e46748604ac48f13f980e',1,'GameModel']]]
 ];

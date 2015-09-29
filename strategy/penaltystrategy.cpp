@@ -20,7 +20,7 @@ void PenaltyStrategy::assignBeh()
 
     GameModel* gamemodel = GameModel::getModel();
 
-    vector <Robot*> myTeam;
+    std::vector <Robot*> myTeam;
 
     myTeam = gamemodel->getMyTeam();
 
@@ -69,7 +69,7 @@ void PenaltyStrategy::assignBeh()
             }
             closestRobotID = closestRobot->getID();
         }
-        cout << "closest robot ID\t" << closestRobotID << endl;
+        std::cout << "closest robot ID\t" << closestRobotID << std::endl;
 
         penAssignment.assignBeh(closestRobot);  // assigns penalty behavior to closest robot to the penalty point
 

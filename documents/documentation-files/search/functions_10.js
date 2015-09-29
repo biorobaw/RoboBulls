@@ -1,6 +1,7 @@
 var searchData=
 [
   ['sendpacket',['sendPacket',['../classSimRobComm.html#a7208dbf94548fafc943fadf0ccccb867',1,'SimRobComm']]],
+  ['sendreplacementpackets',['sendReplacementPackets',['../classSimRobComm.html#ac0a89a21c9550fe822d5b637d3adde65',1,'SimRobComm']]],
   ['sendvelslarge',['sendVelsLarge',['../classNXTRobComm.html#ad2d43321c2bf0b95009fb136eec0c5ac',1,'NXTRobComm::sendVelsLarge()'],['../classRobComm.html#ace6ca5e8446e4b720f4d14d517b0b3da',1,'RobComm::sendVelsLarge()'],['../classSimRobComm.html#a6c32b97ef4bfa92b48793ae92679d0eb',1,'SimRobComm::sendVelsLarge()']]],
   ['serialib',['serialib',['../classserialib.html#a26166f63ad73013ca7cbcd2ae59edc91',1,'serialib']]],
   ['setb',['setB',['../classRobot.html#a3a33d05e0b2b137a6de538a2b354cb92',1,'Robot']]],

@@ -62,7 +62,7 @@ void ClosedLoopBase::handleError(double x_goal, double y_goal)
             sumErrOfQ -= errorQ.front();
             sumErrOfQ += newValues[i];
             if (errorQ.empty())
-                cout << "errorQ is empty" << endl;
+                std::cout << "errorQ is empty" << std::endl;
             errorQ.pop_front();
             errorQ.push_back(newValues[i]);
         }
@@ -149,7 +149,7 @@ wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, double x_goal,
 
     if (abs(left_motor_velocity) > 100 || abs(right_motor_velocity) > 100)
     {
-        float maximum = max(abs(left_motor_velocity), abs(right_motor_velocity));
+        float maximum = std::max(abs(left_motor_velocity), abs(right_motor_velocity));
         float ratio = maximum / 100;
 
         left_motor_velocity = left_motor_velocity / ratio;
