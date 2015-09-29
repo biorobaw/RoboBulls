@@ -64,6 +64,7 @@ private:
 
     //Querying information to help switch states
     bool isFacingBall(Robot* robot);
+    bool isFacingTarget(Robot* robot);
     bool isCloseToBall(Robot* robot);
     bool isVeryFarFromBall(Robot* robot);
     bool isWithinKickDistnace(Robot* robot);

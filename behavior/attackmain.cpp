@@ -65,12 +65,15 @@ void AttackMain::perform(Robot * robot)
     case driving:
         if(touched_ball && closeToDriveEnd)
         {
-            //If we have our passer and are far from a shot, kick to passer. Else kick to goal
-            if((support_attacker != nullptr) && !closeToGoalShot)
+            //If we have our passer and are far from a shot, and the supporter is closer
+            //to the goal, make a pass. Otherwise kick to goal
+            bool supporterCloserToGoal =
+                    Measurments::distance(gp, sp) < Measurments::distance(gp, rp);
+            if((support_attacker != nullptr) && !closeToGoalShot && supporterCloserToGoal)
             {
                 std::cout << "Choosing pass" << std::endl;
                 delete skill;
-                skill = new Skill::KickToPointOmni(&sp);
+                skill = new Skill::KickToPointOmni(&sp, 0.25);
             } else {
                 std::cout << "Choosing score" << std::endl;
                 Point offset(0, -500 + rand() % 1000);

@@ -121,7 +121,7 @@ bool KickToPointOmni::perform(Robot* robot)
              * moves too far or we are in kick lock */
             if(canKick(robot)) {
                 state = KICK;
-            } else if(isVeryFarFromBall(robot) || isInKickLock(robot)) {
+            } else if(!isFacingTarget(robot) || isVeryFarFromBall(robot) || isInKickLock(robot)) {
                 state = MOVE_BEHIND;
             }
         }
@@ -158,7 +158,10 @@ bool KickToPointOmni::perform(Robot* robot)
     * pushing the ball along in which it cannot get behind it. This helps to detect that */
 
 bool KickToPointOmni::canKick(Robot* robot) {
-    return isCloseToBall(robot) && isFacingBall(robot) && isWithinKickDistnace(robot);
+    return isCloseToBall(robot) &&
+           isFacingBall(robot) &&
+           isWithinKickDistnace(robot) &&
+           isFacingTarget(robot);
 }
 
 bool KickToPointOmni::isWithinKickDistnace(Robot *robot) {
@@ -177,6 +180,10 @@ bool KickToPointOmni::isFacingBall(Robot* robot) {
     return Comparisons::isFacingPoint(robot, gameModel->getBallPoint(), m_targetTolerance);
 }
 
+bool KickToPointOmni::isFacingTarget(Robot* robot) {
+    return Comparisons::isFacingPoint(robot, *m_targetPointer, m_targetTolerance);
+}
+
 bool KickToPointOmni::isInKickLock(Robot* robot)
 {
     if(isCloseToBall(robot) && !isFacingBall(robot))
@@ -190,6 +197,7 @@ bool KickToPointOmni::isInKickLock(Robot* robot)
  * It happens when the ball has reasonable velocity that is not facing
  * the robot. That means we kicked
  * FIXME: This is duplicated from DefendBehavior
+ * FIXME: Make this better
  */
 bool KickToPointOmni::ballIsMovingAway(Robot* robot)
 {
