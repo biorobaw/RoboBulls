@@ -36,16 +36,10 @@ PassBallSender::~PassBallSender()
 
 Point PassBallSender::findPassPoint(Robot*)
 {
-    //Either the top or lower region on the opponent's side,
-    //chosesn by which was the least enemies.
-    Region topRegion, botRegion;
-#if TEAM == TEAM_BLUE
-    topRegion = Region::topRightRegion;
-    botRegion = Region::lowerRightRegion;
-#else
-    topRegion = Region::topLeftRegion;
-    botRegion = Region::lowerLeftRegion;
-#endif
+    /* Check both halves of the opponent's side so see which
+     * has the least number of enemies */
+    Region topRegion = Region::topRightRegion;
+    Region botRegion = Region::lowerRightRegion;
     int topEnemies = topRegion.numOfOpponents();
     int botEnemies = botRegion.numOfOpponents();
     Region best = (botEnemies < topEnemies) ? botRegion : topRegion;

@@ -46,12 +46,7 @@ bool PassBallReceiver::playerInBadArea(Robot *robot)
     fieldSides.left = Region(-3000, 3000, 2000, 1500);
     fieldSides.right = Region(-3000, 3000, -2000, -1500);
 
-    Region riskRegion;
-    if (TEAM == TEAM_BLUE)
-        riskRegion = Region (0, -3000, -2000, 2000);
-    else
-        riskRegion = Region (0, 3000, -2000, 2000);
-
+    Region riskRegion = Region (0, -3000, -2000, 2000);
     if (fieldSides.up.contains(robot->getRobotPosition()) ||
         fieldSides.down.contains(robot->getRobotPosition()) ||
         fieldSides.left.contains(robot->getRobotPosition()) ||

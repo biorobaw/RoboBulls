@@ -26,8 +26,6 @@ class GameModel
 {
 public:
     static GameModel* getModel();
-    static int mySide; //!<-1 or 1, representing polarity of "my" side of field
-    static int opSide; //!<Opposite of mySide
 
     /*! @name Game access functions
      * @{*/
