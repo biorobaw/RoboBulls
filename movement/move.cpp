@@ -196,7 +196,7 @@ void Move::getCollisionState(Robot* robot, bool& collided, bool& yielding) const
     collided = yielding = false;
 #if MOVEMENT_USE_ROB_COLLIDE
     Collisions::update();
-    auto status = Collisions::getMoveStatus(robot);
+    int status = Collisions::getMoveStatus(robot);
     collided = (status == MOVE_COLLIDED);   //When the robot has collided with another
     yielding = (status == MOVE_YIELDING);   //When the robot is yielding to another
 #endif
@@ -204,14 +204,13 @@ void Move::getCollisionState(Robot* robot, bool& collided, bool& yielding) const
 
 bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
 {
-    bool isCollided, isYielding;
-    getCollisionState(robot, isCollided, isYielding);
-
     if(!hasFoundPathEnd) {
         //Pathfinding waypoint mode.
         if(currentPathIsClear) {
             /* If path clear, nextPoint is decided on if the robot is collided,
              * yielding, or in the clear. see getCollisionState function */
+            bool isCollided, isYielding;
+            getCollisionState(robot, isCollided, isYielding);
             if(isYielding) {
                 nextPoint = robot->getRobotPosition();
             } else if(isCollided) {

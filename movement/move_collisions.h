@@ -27,7 +27,7 @@ namespace Movement
 namespace Collisions 
 {
     /*! @brief Updates all "moving" statuses of each robot and sets each to
-     *  MOVE_OK/MOVE_STOPPED/MOVE_COLLIDED based on some factors */
+     *  MOVE_OK/MOVE_YIELDING/MOVE_COLLIDED based on some factors */
     void update();
     
     //! @brief Returns the MOVE_OK...MOVE_COLLIDED for a given robot. */
