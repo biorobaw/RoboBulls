@@ -45,11 +45,15 @@ void VisionComm::updateInfo(const SSL_DetectionRobot& robot, int detectedTeamCol
 
         // Assumption: rob contains the robot with id == detected_id
         Point positionReading(robot.x(), robot.y());
+        float rotationReading = robot.orientation();
     #if SIDE == SIDE_POSITIVE
         positionReading.x *= -1;
+        //Point decomp { cos(rotationReading), sin(rotationReading) };
+        //decomp.x *= -1;
+        //rotationReading = atan2(decomp.y, decomp.x);
     #endif
         rob->setRobotPosition( positionReading );
-        rob->setOrientation(robot.orientation());
+        rob->setOrientation(rotationReading);
 
         gamemodel->onRobotUpdated(rob);
     }
