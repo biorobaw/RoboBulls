@@ -47,10 +47,12 @@ void VisionComm::updateInfo(const SSL_DetectionRobot& robot, int detectedTeamCol
         Point positionReading(robot.x(), robot.y());
         float rotationReading = robot.orientation();
     #if SIDE == SIDE_POSITIVE
-        positionReading.x *= -1;
-        //Point decomp { cos(rotationReading), sin(rotationReading) };
-        //decomp.x *= -1;
-        //rotationReading = atan2(decomp.y, decomp.x);
+        positionReading *= -1;
+        if(rotationReading > 0) {
+            rotationReading = -(M_PI - rotationReading);
+        } else {
+            rotationReading = -(-M_PI - rotationReading);
+        }
     #endif
         rob->setRobotPosition( positionReading );
         rob->setOrientation(rotationReading);
@@ -97,7 +99,7 @@ void VisionComm::recieveBall(const SSL_DetectionFrame& frame)
         {
             Point newDetection = Point(bestDetect->x(), bestDetect->y());
         #if SIDE == SIDE_POSITIVE
-            newDetection.x *= -1;
+            newDetection *= -1;
         #endif
 
             // If the ball is detected outside the noise radius more than 5 times
