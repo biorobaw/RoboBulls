@@ -242,7 +242,7 @@ void NormalGameStrategy::assignGoalieIfOk()
 //Was added here to deal with simplebehaviors.cpp
 void NormalGameStrategy::moveRobotToIdleLine(Robot* robot, bool waiter)
 {
-    Point wait_point(0, -1500+3000*TEAM);
+    Point wait_point(0, -1500);
 
     //Closest guy to the wait point sits there instead, if requested
     if(waiter && Comparisons::distance(wait_point).minMyTeam() == robot) {

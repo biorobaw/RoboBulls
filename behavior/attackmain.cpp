@@ -50,6 +50,7 @@ void AttackMain::perform(Robot * robot)
 
     //Are we close enough to shoot a goal?
     bool closeToGoalShot = Measurments::isClose(bp, gp, shot_distance);
+
     //Are we far from (according to rules) from the drive start that we need to kick?
     bool closeToDriveEnd  = touched_ball && !Measurments::isClose(drive_start_point, rp, drive_distance);
 
@@ -57,7 +58,7 @@ void AttackMain::perform(Robot * robot)
     switch (state)
     {
     case initial:
-        std::cout << "Initial" << std::endl;
+        //std::cout << "Initial" << std::endl;
         delete skill;
         skill = new Skill::KickToPointOmni(gp, -1, 0, true);
         state = driving;
@@ -71,11 +72,11 @@ void AttackMain::perform(Robot * robot)
                     Measurments::distance(gp, sp) < Measurments::distance(gp, rp);
             if((support_attacker != nullptr) && !closeToGoalShot && supporterCloserToGoal)
             {
-                std::cout << "Choosing pass" << std::endl;
+                //std::cout << "Choosing pass" << std::endl;
                 delete skill;
                 skill = new Skill::KickToPointOmni(&sp, 0.25);
             } else {
-                std::cout << "Choosing score" << std::endl;
+                //std::cout << "Choosing score" << std::endl;
                 Point offset(0, -500 + rand() % 1000);
                 delete skill;
                 skill = new Skill::KickToPointOmni(gp + offset, SCORE_ANGLE_TOLERANCE, -1, true);
