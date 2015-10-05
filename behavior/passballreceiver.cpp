@@ -4,7 +4,6 @@
 #include "skill/kicktopointomni.h"
 #include "skill/kick.h"
 #include "utilities/region.h"
-#include "include/config/team.h"
 #include "passballreceiver.h"
 
 #if SIMULATED

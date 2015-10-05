@@ -3,7 +3,6 @@
 #include "skill/kick.h"
 #include "skill/stop.h"
 #include "skill/kicktopointomni.h"
-#include "include/config/team.h"
 #include "passballsender.h"
 
 //TODO: Do we need this SIMULATED? It's not being used now

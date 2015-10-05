@@ -1,5 +1,4 @@
 #include "include/config/simulated.h"
-#include "include/config/team.h"
 #include "utilities/comparisons.h"
 #include "behavior/defendbehavior.h"
 
