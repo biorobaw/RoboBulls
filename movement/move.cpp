@@ -230,8 +230,7 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
         //Rotating mode. If robot did not reach target angle, rotate only
         calculateVels(robot, m_targetPoint, m_targetAngle, moveType);
         if (Measurments::isClose(m_targetPoint, robot, lastDistTolerance) &&
-            Measurments::isClose(m_targetAngle, robot->getOrientation(), lastAngTolerance*1.5)) {
-            lfront=lback=rfront=rback=left=right=back=0;
+            Measurments::isClose(m_targetAngle, robot->getOrientation(), lastAngTolerance*1.25)) {
             return true;
         }
     }

@@ -56,7 +56,18 @@ private:
     const double RF_offset =  40*M_PI/180; //40
     const double RB_offset = 315*M_PI/180; //315
     const double wheel_radius = 27;
-    double distance_to_goal, angle_to_goal;
+    double distance_to_goal, angle_error;
+
+    //Error Memebers
+    void calc_error(float x_goal, float y_goal);
+    void clear_errors();
+    Point last_goal_target;
+    unsigned int dist_error_maxsize=100;
+    unsigned int angle_error_maxsize=50;
+    double dist_error_integral=0;
+    double angle_error_integral=0;
+    std::deque<double> dist_error_deque;
+    std::deque<double> angle_error_deque;
 };
 
 }
