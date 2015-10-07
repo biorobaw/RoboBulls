@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include <future>
+#include <thread>
 #include <functional>
 #include <cstdlib>
 #include "model/gamemodel.h"
@@ -17,8 +17,9 @@ namespace debug
 static std::unordered_map<std::string, debug_fn> funcMap;
 
 //Map of registered variable names to integer pointers
-static std::unordered_map<std::string, int*> commandMap;
+static std::unordered_map<std::string, float*> commandMap;
 
+//Thread to use to listen for commands
 static std::thread debugThread;
 
 //Generic string split function
@@ -66,7 +67,7 @@ static void debugListenFn()
             if(arguments.size() == 3) {
                 auto it = commandMap.find(arguments[1]);
                 if( it != commandMap.end() ) {
-                    *(it->second) = std::atoi(arguments[2].c_str()); //pointer is set here
+                    *(it->second) = std::atof(arguments[2].c_str()); //pointer is set here
                 } else {
                     std::cout << "No entry \"" << arguments[1] << "\" exists" << std::endl;
                 }
@@ -115,7 +116,7 @@ static void debugListenFn()
     }
 }
 
-void registerVariable(const std::string& name, int* pointer)
+void registerVariable(const std::string& name, float *pointer)
 {
     commandMap[name] = pointer;
 }
@@ -148,7 +149,7 @@ void buildin_robot_action(const std::vector<std::string>& args, Function callbac
 //builtin to remove a robot from GameModel
 void builtin_remove_robot(const std::vector<std::string>& args)
 {
-    buildin_robot_action(args, [&](int id, int team){
+    buildin_robot_action(args, [&](int id, int team) {
         gameModel->removeRobot(id, team);
         std::cout << "Removed robot " << id << " from team " << team << std::endl;
     });
@@ -157,9 +158,10 @@ void builtin_remove_robot(const std::vector<std::string>& args)
 //builtin to a robot to GameModel
 void builtin_add_robot(const std::vector<std::string>& args)
 {
-    buildin_robot_action(args, [&](int id, int team){
+    buildin_robot_action(args, [&](int id, char team) {
         Robot* robot = new Robot(id, team);
-        ((team == TEAM_BLUE) ? gameModel->getBlueTeam() : gameModel->getYellowTeam()).push_back(robot);
+        ((team == TEAM_BLUE) ? gameModel->getBlueTeam() :
+                               gameModel->getYellowTeam()).push_back(robot);
         std::cout << "Added robot " << id << " to team " << team << std::endl;
     });
 }
@@ -168,7 +170,7 @@ void builtin_add_robot(const std::vector<std::string>& args)
 
 void listenStart()
 {
-    //The default builtin functions are registed here
+    //The default builtin functions and variables are registed here
     registerFunction("remove_robot", builtin_remove_robot);
     registerFunction("add_robot", builtin_add_robot);
     registerVariable("goalie_id", &GOALIE_ID);

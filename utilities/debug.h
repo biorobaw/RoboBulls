@@ -7,13 +7,13 @@
 /*! @brief RoboBulls command line
  * @author JamesW
  * @details The debug command line allows the changing of an arbitraty
- * integer variableand calling of arbitrary functions at runtime from the console.
+ * floating point variables calling of arbitrary functions at runtime from the console.
  * In essensnce, a terminal for Robobulls.<br>
  *
- * Pointers to integers are registered to a name using "registerVariable".
+ * Pointers to floats are registered to a name using "registerVariable".
  * Functions are registed to a name using "registerFunction". Once running,
  * "set" and "get" commands on the comamnd line can be used to set a new value
- * and retreieve the current value to an interger pointer, and "call" can be
+ * and retreieve the current value to a pointer, and "call" can be
  * used tocall a function.
  *
  * The `listenStart` function spawns new thread that listens on for
@@ -47,8 +47,8 @@ typedef std::function<void(const std::vector<std::string>&)> debug_fn;
 
 /*! @brief Register a variable for appearance in the command line
  * @param variable The name of the variable in the command line
- * @param pointer Pointer to integer that will be written to with a "set" command */
-void registerVariable(const std::string& name, int* pointer);
+ * @param pointer Pointer to float that will be written to with a "set" command */
+void registerVariable(const std::string& name, float* pointer);
 
 /*! @brief Register a function to be called from the command line
  * @details A function

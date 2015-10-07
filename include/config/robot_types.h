@@ -24,9 +24,10 @@ enum RobotType
 extern const RobotType robotIDTypes[];
 
 /*! @brief The goalie robot's ID is given as an integer.
- * @details This ID can be changed with the `goalie_id` integer on
- * the utility command line. It is 5 by default (see .cpp) */
-extern int GOALIE_ID;
+ * @details This ID can be changed with the `goalie_id` entry on
+ * the utility command line. It is 5 by default (see .cpp)
+ * It is a float to be changed dynamically, but only use ints */
+extern float GOALIE_ID;
 
 //! @}
 

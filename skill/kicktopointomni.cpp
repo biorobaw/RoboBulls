@@ -34,21 +34,21 @@ namespace Skill
  * resulting in the robot continually in a lock pushing the ball in a line.
  */
 #if SIMULATED
-int BEHIND_RADIUS  = 200;
-int KICK_DISTANCE  = 110;
-int FACING_ANGLE_TOL  = 30;
-int FORWARD_WAIT_COUNT = 1;
-int MOVE_TOLERANCE = DIST_TOLERANCE/2;
+float BEHIND_RADIUS  = 200;
+float KICK_DISTANCE  = 110;
+float FACING_ANGLE_TOL  = 30;
+float FORWARD_WAIT_COUNT = 1;
+float MOVE_TOLERANCE = DIST_TOLERANCE/2;
 #else
-int BEHIND_RADIUS  = ROBOT_SIZE;
-int KICK_DISTANCE  = 200;
-int FACING_ANGLE_TOL  = 20;
-int FORWARD_WAIT_COUNT = 15;
-int MOVE_TOLERANCE = DIST_TOLERANCE*1.2;
+float BEHIND_RADIUS  = ROBOT_SIZE;
+float KICK_DISTANCE  = 200;
+float FACING_ANGLE_TOL  = 20;
+float FORWARD_WAIT_COUNT = 15;
+float MOVE_TOLERANCE = DIST_TOLERANCE*1.2;
 #endif
 
-int KICKLOCK_COUNT = 80;
-int RECREATE_DIST_TOL = 25;
+float KICKLOCK_COUNT = 80;
+float RECREATE_DIST_TOL = 25;
 
 /************************************************************************/
 

@@ -24,4 +24,4 @@ const RobotType robotIDTypes[] = {
 #endif
 
 //Goalie ID integer
-int GOALIE_ID = 5;
+float GOALIE_ID = 5;
