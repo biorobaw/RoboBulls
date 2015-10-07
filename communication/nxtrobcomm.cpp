@@ -65,7 +65,7 @@ void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
             packet->right_front = Measurments::clamp(rob->getRF(), -127, 127)*k + 100;
             packet->right_back  = Measurments::clamp(rob->getRB(), -127, 127)*k + 100;
         #endif
-            packet->kick = rob->getKick() ? 1 : 0;
+            packet->kick = rob->getKick() ? 'k' : 0;
         }
         else {
             //Packet format with lego NXTs, use ~ and $ with no K nor +100, Kick is 'k'
