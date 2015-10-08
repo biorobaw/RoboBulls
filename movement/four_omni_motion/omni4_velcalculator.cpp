@@ -15,7 +15,7 @@ float THETA_MULT = 3;
 float THETA_MULT2 = 1;
 
 //Multiplier for x_vel and y_vel in defaultCalc
-float XY_MULT = 3;
+float XY_MULT = 1;
 
 //Error for Proportional XY
 float xy_prop_mult = 0.1;
@@ -193,7 +193,7 @@ fourWheelVels FourWheelCalculator::facePointCalc
     {
         x_vel = 90*cos(angle_to_goal);
         y_vel = 90*sin(angle_to_goal);
-        theta_vel *= ((float)THETA_MULT2 / 10);
+        theta_vel *= THETA_MULT2;
     }
 
     // Robot Frame Velocities
