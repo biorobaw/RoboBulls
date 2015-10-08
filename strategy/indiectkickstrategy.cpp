@@ -38,69 +38,36 @@ void IndiectKickStrategy::assignBeh()
         //Sender is always closet to ball (this used to be 20 lines of code)
         sender = Comparisons::distanceBall().ignoreID(GOALIE_ID).minMyTeam();
 
-        Region PlayerRegion;
-        struct playersCharactristics{
+        struct playersCharactristics {
             int ID;
             int surroundingAppNum;  //number of opponent players surrounding our team players
             double distanceToRobot; // how far away is the reciever player from sender player
         };
-        std::vector <playersCharactristics> myTeamInfo;
+        std::vector<playersCharactristics> myTeamInfo;
 
-        for (unsigned it = 0 ; it < myTeam.size(); it++)
+        //We populate the vector myTeamInfo with playersCharactristics then choose best later
+        for(Robot* robot : gameModel->getMyTeam())
         {
-            if (sender->getID() != myTeam[it]->getID())
-            {
-                PlayerRegion = Region(myTeam[it]->getRobotPosition().x + R,
-                                       myTeam[it]->getRobotPosition().x - R,
-                                       myTeam[it]->getRobotPosition().y + R,
-                                       myTeam[it]->getRobotPosition().y - R);
-                playersCharactristics pch;
-                pch.ID = myTeam[it]->getID();
-                pch.surroundingAppNum = PlayerRegion.numOfOpponents();
-                pch.distanceToRobot = Measurments::distance(myTeam[it]->getRobotPosition(), sender->getRobotPosition());
-                myTeamInfo.push_back(pch);
-            }
+            if(robot->getID() == GOALIE_ID || robot == sender)
+                continue;
+            Point robPos = robot->getRobotPosition();
+            Region PlayerRegion { robPos.x+R, robPos.x-R, robPos.y+R, robPos.y-R };
+            playersCharactristics pch;
+            pch.ID = robot->getID();
+            pch.surroundingAppNum = PlayerRegion.numOfOpponents();
+            pch.distanceToRobot = Measurments::distance(robot, sender);
+            myTeamInfo.push_back(pch);
         }
 
-        int k = 0;
-        int lessSurroundings = 0;
-        double distance;
-        for (unsigned j = 0; j < myTeamInfo.size(); j++)
-        {
-            if (j == 0 && myTeamInfo[j].ID != GOALIE_ID)
-            {
-                lessSurroundings = myTeamInfo[j].surroundingAppNum;
-                distance = myTeamInfo[j].distanceToRobot;
-                k = 0;
-            }
-            else if (j == 0 && myTeamInfo[j].ID == GOALIE_ID)
-            {
-                lessSurroundings = myTeamInfo[1].surroundingAppNum;
-                distance = myTeamInfo[1].distanceToRobot;
-                k = 1;
-            }
-            else
-            {
-                if (lessSurroundings > myTeamInfo[j].surroundingAppNum
-                        && myTeamInfo[j].ID != GOALIE_ID)
-                {
-                    lessSurroundings = myTeamInfo[j].surroundingAppNum;
-                    distance = myTeamInfo[j].distanceToRobot;
-                    k = j;
-                }
-                else if (lessSurroundings == myTeamInfo[j].surroundingAppNum &&
-                                 myTeamInfo[j].distanceToRobot < distance &&
-                                 myTeamInfo[j].ID != GOALIE_ID)
-                {
-                    lessSurroundings = myTeamInfo[j].surroundingAppNum;
-                    distance = myTeamInfo[j].distanceToRobot;
-                    k = j;
-                }
-            }
-        }
+        //Best: The least number of opponents and closest distance to kicker
+        auto bestRobotRegion = std::min_element(myTeamInfo.begin(), myTeamInfo.end(),
+          [](playersCharactristics& a, playersCharactristics& b) {
+                return a.surroundingAppNum < b.surroundingAppNum ||
+                       a.distanceToRobot < b.distanceToRobot;
+          });
 
         //Assigning passBallReceiver behavior to the receiver robot
-        int receiverID = myTeamInfo[k].ID;
+        int receiverID = bestRobotRegion->ID;
         receiver = gameModel->findMyTeam(receiverID);
         receiver->assignBeh<PassBallReceiver>(sender);
         receiverBot = receiver; //Store reciever in class for getNextStrategy

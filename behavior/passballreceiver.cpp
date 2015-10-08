@@ -4,7 +4,6 @@
 #include "skill/kicktopointomni.h"
 #include "skill/kick.h"
 #include "utilities/region.h"
-#include "include/config/team.h"
 #include "passballreceiver.h"
 
 #if SIMULATED
@@ -46,12 +45,7 @@ bool PassBallReceiver::playerInBadArea(Robot *robot)
     fieldSides.left = Region(-3000, 3000, 2000, 1500);
     fieldSides.right = Region(-3000, 3000, -2000, -1500);
 
-    Region riskRegion;
-    if (TEAM == TEAM_BLUE)
-        riskRegion = Region (0, -3000, -2000, 2000);
-    else
-        riskRegion = Region (0, 3000, -2000, 2000);
-
+    Region riskRegion = Region (0, -3000, -2000, 2000);
     if (fieldSides.up.contains(robot->getRobotPosition()) ||
         fieldSides.down.contains(robot->getRobotPosition()) ||
         fieldSides.left.contains(robot->getRobotPosition()) ||
@@ -94,12 +88,17 @@ void PassBallReceiver::perform(Robot *robot)
     case initial:
         if(passer->getCurrentBeh()->isFinished()) {
             //If the passer kicked, we move to kick the ball to the goal
-            kickToPoint = new Skill::KickToPointOmni(&goalArea);
+            kickToPoint = new Skill::KickToPointOmni(&goalArea, -1, -1, true);
             state = kicking;
         } else {
-            //Otherwise,we move to where the passer is going to kick.
-            float a = Measurments::angleBetween(robot, passer);
-            setMovementTargets(getPasserPassPoint(), a);
+            //Otherwise,we move to where the passer is going to kick, with a little
+            //to make the passer kick in front of us
+            float robGoalAng = Measurments::angleBetween(robot, goalArea);
+            Point passTarget = getPasserPassPoint();
+            float goal2Target = Measurments::angleBetween(goalArea, passTarget);
+            Point movePoint = passTarget + Point(100 * cos(goal2Target),
+                                                 100 * sin(goal2Target));
+            setMovementTargets(movePoint, robGoalAng);
             GenericMovementBehavior::perform(robot);
         }
         break;

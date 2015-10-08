@@ -1,30 +1,26 @@
 #include <assert.h>
 #include "include/config/simulated.h"
 #include "skill/kicktopointomni.h"
+#include "skill/stop.h"
 #include "attackmain.h"
 
 AttackMain::AttackMain(Robot* attacker)
-    : drive_skill(nullptr)
-    , pass_skill(nullptr)
-    , score_skill(nullptr)
+    : skill(nullptr)
 {
     support_attacker = attacker;
     state = initial;
 }
 
-
 AttackMain::~AttackMain()
 {
-    delete drive_skill;
-    delete pass_skill;
-    delete score_skill;
+    delete skill;
 }
 
 /* Angle tolerances for kicking in degrees (then converted to radians).
  * Passing is lower because it needs to be more precise */
 #if SIMULATED
  #define SCORE_ANGLE_TOLERANCE  (30*M_PI/180)
- #define PASS_ANGLE_TOLERANCE   (20*M_PI/180)
+ #define PASS_ANGLE_TOLERANCE   (15*M_PI/180)
 #else
  #define SCORE_ANGLE_TOLERANCE  (7*M_PI/180)
  #define PASS_ANGLE_TOLERANCE   (7*M_PI/180)
@@ -52,70 +48,54 @@ void AttackMain::perform(Robot * robot)
         }
     }
 
+    //Are we close enough to shoot a goal?
+    bool closeToGoalShot = Measurments::isClose(bp, gp, shot_distance);
+
+    //Are we far from (according to rules) from the drive start that we need to kick?
+    bool closeToDriveEnd  = touched_ball && !Measurments::isClose(drive_start_point, rp, drive_distance);
+
     //Create switch logic
     switch (state)
     {
-        case initial:
-            state = drive;
-            drive_skill = new Skill::KickToPointOmni(gp, -1, shot_distance*1.25);
-            break;
-
-        case drive:
-            /***************************************************************
-             * Evaluate transition to pass state. If the robot if `drive_distance` units away
-             * from drive start (check RoboCup rules, this might need to change) this happens.
-             */
-            if(touched_ball && !Measurments::isClose(drive_start_point, rp, drive_distance))
+    case initial:
+        //std::cout << "Initial" << std::endl;
+        delete skill;
+        skill = new Skill::KickToPointOmni(gp, -1, 0, true);
+        state = driving;
+        break;
+    case driving:
+        if(touched_ball && closeToDriveEnd)
+        {
+            //If we have our passer and are far from a shot, and the supporter is closer
+            //to the goal, make a pass. Otherwise kick to goal
+            bool supporterCloserToGoal =
+                    Measurments::distance(gp, sp) < Measurments::distance(gp, rp);
+            if((support_attacker != nullptr) && !closeToGoalShot && supporterCloserToGoal)
             {
-                //If we have our passer, kick to it. Else kick to goal
-                if(support_attacker != nullptr) {
-                    delete pass_skill;
-                    delete drive_skill;
-                    drive_skill = nullptr;
-                    pass_skill = new Skill::KickToPointOmni(&sp, PASS_ANGLE_TOLERANCE);
-                    state = pass;
-                } else {
-                    delete score_skill;
-                    Point offset(0, -500 + rand() % 1000);
-                    score_skill = new Skill::KickToPointOmni(gp + offset, SCORE_ANGLE_TOLERANCE);
-                    state = score;
-                }
-            }
-            /***************************************************************
-             * Evaluate transition to score state. If the robot is within `shot_distance` units
-             * of the enemy goal, this happens.
-             */
-            else if(touched_ball && Measurments::isClose(bp, gp, shot_distance))
-            {
-                delete score_skill;
+                //std::cout << "Choosing pass" << std::endl;
+                delete skill;
+                skill = new Skill::KickToPointOmni(&sp, 0.25);
+            } else {
+                //std::cout << "Choosing score" << std::endl;
                 Point offset(0, -500 + rand() % 1000);
-                score_skill = new Skill::KickToPointOmni(gp + offset, SCORE_ANGLE_TOLERANCE);
-                state = score;
+                delete skill;
+                skill = new Skill::KickToPointOmni(gp + offset, SCORE_ANGLE_TOLERANCE, -1, true);
             }
-            else
-            {
-                drive_skill->perform(robot);
-            }
-            break;
-        #if 1
-        case score:
-            assert(score_skill != nullptr);
+            state = end;
+        }
+    case end:
+        /* A state that does nothing. This exists for after we have driven the ball, and we chose
+         * to either pass or kick. We're just performing the skill at this point */
+    default:
+        break;
+    }
 
-            if(score_skill->perform(robot) == true) {
-                done = true;
-                state = initial;
-            }
-            //else if(!Measurments::isClose(bp, gp, shot_distance)) {
-            //    state = initial;
-            //}
-            break;
-        #endif
-        case pass:
-            assert(pass_skill != nullptr);
-            if(pass_skill->perform(robot))
-                done = true;
-            break;
-        default: break;
+    //Perform whatever skill the above case is telling us
+    if(skill != nullptr) {
+        if(skill->perform(robot)) {
+            done = true;
+            state = initial;
+        }
     }
 }
 

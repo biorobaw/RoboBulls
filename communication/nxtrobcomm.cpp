@@ -4,7 +4,7 @@
 #include "include/config/robot_types.h"
 
 //Used for testing wheels; see ROBOT_WHEEL_TEST
-int lf, lb, rf, rb;
+float lf, lb, rf, rb;
 
 //A constant to multiple velocities
 static float k = 0.4;

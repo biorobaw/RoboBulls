@@ -21,12 +21,12 @@
  *             *
  ******************/
 Point KickOffStrategy::myKickoffPoints[10] = {
-    /*0*/ Point( 200,    0),
-    /*1*/ Point( 800, -600),
-    /*2*/ Point( 800,  600),
-    /*3*/ Point(1300, -900),
-    /*4*/ Point(1300,  900),
-    /*5*/ Point(2900,    0)
+    /*0*/ Point(-200,    0),
+    /*1*/ Point(-800, -600),
+    /*2*/ Point(-800,  600),
+    /*3*/ Point(-1300,-900),
+    /*4*/ Point(-1300, 900),
+    /*5*/ Point(-2900,   0)
 };
 
 /******************
@@ -39,12 +39,12 @@ Point KickOffStrategy::myKickoffPoints[10] = {
  *             *
  ******************/
 Point KickOffStrategy::opKickoffPoints[10] = {
-    /*0*/ Point(1200,    0),
-    /*1*/ Point(1900,  800),
-    /*2*/ Point(1900, -800),
-    /*3*/ Point(1200,  800),
-    /*4*/ Point(1200, -800),
-    /*5*/ Point(2900,    0)
+    /*0*/ Point(-1200,    0),
+    /*1*/ Point(-1900,  800),
+    /*2*/ Point(-1900, -800),
+    /*3*/ Point(-1200,  800),
+    /*4*/ Point(-1200, -800),
+    /*5*/ Point(-2900,    0)
 };
 
 
@@ -65,7 +65,6 @@ void KickOffStrategy::assignBeh()
 
         //We just iterate through the point list as the robots come
         Point nextPoint = whichKickoffPointList[i++];
-        nextPoint.x *= GameModel::mySide;   //Keeps X values on correct side
 
         //Assign to move to that point, and they all face to the center
         float angleToCenter = Measurments::angleBetween(nextPoint, Point(0,0));

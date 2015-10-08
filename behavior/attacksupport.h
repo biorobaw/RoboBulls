@@ -1,11 +1,9 @@
 #ifndef ATTACK_SUPPORT_H
 #define ATTACK_SUPPORT_H
 #include "behavior/genericmovementbehavior.h"
-#include "utilities/measurments.h"
 #include "utilities/region.h"
 #include "model/gamemodel.h"
 #include "model/robot.h"
-#include "movement/gotoposition.h"
 
 /*! @brief AttackSupport is a complement to Attackmain, used in NormalGameStrategy.
  * @author Muhaimen Shamsi, JamesW
@@ -22,9 +20,9 @@ public:
 
 private:
     Robot* main_attacker;       //Pointer to robot passing to us
-    void recalculateWp(Robot*); //Re-calculates wp be to the least populated area
+    void recalculateWp(Robot*); //Re-calculates wp be to the "best" area
     Point wp;                   //Point to wait at for a pass
-    Point previousBP;           //Previous ball point, used to not reclaculate so often
+    Point previousBP;           //Previous ball point, used to not reclaculate wp so often
 };
 
 #endif // ATTACK_SUPPORT_H

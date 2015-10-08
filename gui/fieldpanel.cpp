@@ -216,6 +216,9 @@ void FieldPanel::setupScene() {
         }
     }
 
+    //Set the team for the field; used only to draw goal colors correctly
+    field->myTeam = (TEAM == TEAM_BLUE) ? "Blue" : "Yellow";
+
     // Turning on Bot IDs by default
     dash->ui->check_showIDs->setChecked(true);
 

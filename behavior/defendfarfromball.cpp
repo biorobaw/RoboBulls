@@ -17,7 +17,7 @@
 int DefendFarFromBall::goalieDist = 900;
 
 DefendFarFromBall::DefendFarFromBall()
-    : idlePoint(gameModel->getMyGoal() + Point(IDLE_DISTANCE,0) * GameModel::opSide)
+    : idlePoint(gameModel->getMyGoal() + Point(IDLE_DISTANCE,0))
     , isKickingBallAway(false)
     , kick_skill(nullptr)
     { }
@@ -55,8 +55,7 @@ bool DefendFarFromBall::ballOnRobotIsAimedAtOurGoal(Robot* robot, std::pair<Poin
     opposite to that of our goal */
     Point myGoalPos = gameModel->getMyGoal();
     float orientation = robot->getOrientation();
-    if ((myGoalPos.x > 0 && !(orientation > - M_PI/2 && orientation < M_PI/2)) ||
-        (myGoalPos.x < 0 &&   orientation > - M_PI/2 && orientation < M_PI/2))
+    if (orientation > -M_PI/2 && orientation < M_PI/2)
         return false;
 
     /* Essentially get a line that runs through the ball's position and has a slope

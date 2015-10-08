@@ -14,15 +14,6 @@
 // Global static pointer used to ensure a single instance of the class.
 GameModel* gameModel = new GameModel();
 
-//Multiplier indicating which side of the field we/they are on
-#if TEAM==TEAM_BLUE
-int GameModel::mySide = -1;
-int GameModel::opSide =  1;
-#else
-int GameModel::mySide =  1;
-int GameModel::opSide = -1;
-#endif
-
 /*******************************************************************/
 /************************ Public Methods ***************************/
 /*******************************************************************/
@@ -181,31 +172,19 @@ bool GameModel::isNewCommand()
 //! @brief Returns the penalty point that penalty kicks are taken from
 Point GameModel::getPenaltyPoint()
 {
-#if TEAM == TEAM_BLUE
     return Point(2045, 22);
-#else
-    return Point(-2045, 22);
-#endif
 }
 
 //! @brief Returns the opponents's goal, that we are trying to score in
 Point GameModel::getOpponentGoal()
 {
-#if TEAM == TEAM_BLUE
-    return Point(3000,0);
-#else
-    return Point(-3000, 0);
-#endif
+    return Point(FIELD_LENGTH, 0);
 }
 
 //! @brief Returns the goal point that we are defending (edge of the field)
 Point GameModel::getMyGoal()
 {
-#if TEAM == TEAM_BLUE
-        return Point(-3000, 0);
-#else
-        return Point(3000,0);
-#endif
+    return Point(-FIELD_LENGTH, 0);
 }
 
 //! @brief Returns the last different game state before this one

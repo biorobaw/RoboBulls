@@ -44,8 +44,18 @@ void VisionComm::updateInfo(const SSL_DetectionRobot& robot, int detectedTeamCol
         }
 
         // Assumption: rob contains the robot with id == detected_id
-        rob->setRobotPosition( Point(robot.x(), robot.y()) );
-        rob->setOrientation(robot.orientation());
+        Point positionReading(robot.x(), robot.y());
+        float rotationReading = robot.orientation();
+    #if SIDE == SIDE_POSITIVE
+        positionReading *= -1;
+        if(rotationReading > 0) {
+            rotationReading = -(M_PI - rotationReading);
+        } else {
+            rotationReading = -(-M_PI - rotationReading);
+        }
+    #endif
+        rob->setRobotPosition( positionReading );
+        rob->setOrientation(rotationReading);
 
         gamemodel->onRobotUpdated(rob);
     }
@@ -88,6 +98,9 @@ void VisionComm::recieveBall(const SSL_DetectionFrame& frame)
         if(isGoodDetection(*bestDetect, frame, CONF_THRESHOLD_BALL))
         {
             Point newDetection = Point(bestDetect->x(), bestDetect->y());
+        #if SIDE == SIDE_POSITIVE
+            newDetection *= -1;
+        #endif
 
             // If the ball is detected outside the noise radius more than 5 times
             // it is considered to be moving and its position will be updated

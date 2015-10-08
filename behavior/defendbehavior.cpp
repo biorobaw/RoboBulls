@@ -1,5 +1,4 @@
 #include "include/config/simulated.h"
-#include "include/config/team.h"
 #include "utilities/comparisons.h"
 #include "behavior/defendbehavior.h"
 
@@ -42,11 +41,11 @@ int DefendState::updateCount = 0;
 
 //Points to sit at at ball angle of 0 (and when not on our side)
 const Point DefendState::defPoints[] = {
-    Point(1500,    0),
-    Point(2000,  500),
-    Point(2000, -500),
-    Point(2500, 1000),
-    Point(2500,-1000)
+    Point(-1500,    0),
+    Point(-2000,  500),
+    Point(-2000, -500),
+    Point(-2500, 1000),
+    Point(-2500,-1000)
 };
 
 void DefendState::clearClaimedPoints()
@@ -70,7 +69,7 @@ DefendState* DefendState::action(Robot* robot)
     Point bp = gameModel->getBallPoint();
     Point gl = gameModel->getMyGoal();
 
-    if(whoIsKicking==-1 && !ballIsMovingAway() && abs(bp.x - gl.x) < FIELD_LENGTH)
+    if(whoIsKicking==-1 && !ballIsMovingAway() && bp.x < 0)
     {
         /* If the ball is on our side, we make the robots sway, while
          * still in formation, to face the ball. These are the coefficients
@@ -86,23 +85,15 @@ DefendState* DefendState::action(Robot* robot)
          */
         static const float dAngle = (15 + 10*!SIMULATED) * (M_PI/180);
         static int coeffs[] = {1500, 1300, 1300, 1100, 1100};
-    #if TEAM == TEAM_BLUE
-        static int o_coeffs[] = {   0,    1,   -1,    2,   -2};
-    #else
-        static int o_coeffs[] = {   0,   -1,    1,   -2,    2};
-    #endif
+        static int o_coeffs[] = {0, 1, -1,  2, -2};
         float a = Measurments::angleBetween(gl, bp);
 
         for(int i = 0; i != 5; ++i)
         {
             Point offset;
             offset.x = coeffs[i] * cos(a + dAngle * o_coeffs[i]);
-        #if TEAM == TEAM_BLUE
-            offset.x *= GameModel::opSide;
-        #endif
             offset.y = coeffs[i] * sin(a + dAngle * o_coeffs[i]);
             defendPoints[i] = gl +  offset;
-            defendPoints[i].x *= GameModel::mySide;
         }
     }
     else {
@@ -153,7 +144,7 @@ Point* DefendState::searchClaimPoint(Robot* robot)
         }
 
         //Here we ensure there is no other robot there physically
-        Point test(p.x * GameModel::mySide, p.y);
+        Point test(p.x, p.y);
         Robot* closest = Comparisons::distance(test).minMyTeam();
         if(closest->getID() != robot->getID()
             && Measurments::distance(test, closest) < ROBOT_RADIUS) {
@@ -204,7 +195,6 @@ DefendState* DefendStateIdle::action(Robot* robot)
             abort();
         }
         Point chosenPoint = *chosenPointPtr;
-        chosenPoint.x *= GameModel::mySide;
 
         float ballRobAng = Measurments::angleBetween(robot, gameModel->getBallPoint());
         setMovementTargets(chosenPoint, ballRobAng);

@@ -29,16 +29,20 @@ public:
     * a kick is made, for accuracy or non-accuracy reasons.
     * Leave blank to use default
     * @param kickDistance: How close should the robot be to the target before kicking.
-    * leave blank to kick as soon as possible */
+    * leave blank to kick as soon as possible
+    * @param useFullPower Use a full-power kick instead of a variable power one to the target */
     KickToPointOmni(const Point& target,
                     float targetTolerance = -1,
-                    float kickDistance = -1);
+                    float kickDistance = -1,
+                    bool  useFullPower = false);
 
     /*! @brief <b>variable-point</b> constructor, for kicking to a changing point
-     * @param targetPtr Pointer to a point to kick to. Can change while skill is created */
+     * @param targetPtr Pointer to a point to kick to. Can change while skill is created
+     * @see KickToPointOmni */
     KickToPointOmni(Point* targetPtr,
                     float  targetTolerance = -1,
-                    float  kickDistance = -1);
+                    float  kickDistance = -1,
+                     bool  useFullPower = false);
 
     bool perform(Robot* robot) override;
 
@@ -50,6 +54,7 @@ private:
     float  m_targetTolerance;     //Mininum angle threshold we must be facing the target to kick
       int  m_kickDistance;        //Mininim distance we must be to *m_targetPointer to kick (or -1)
       int  m_kickLockCount;       //Count of times we are seen in "kick lock"
+      bool m_useFullPower;        //Do we perform the kick with full power?
 
     //Current skill state
     enum { MOVE_BEHIND,  //We are far from the ball and are moving behind it to face target
@@ -59,11 +64,13 @@ private:
 
     //Querying information to help switch states
     bool isFacingBall(Robot* robot);
+    bool isFacingTarget(Robot* robot);
     bool isCloseToBall(Robot* robot);
     bool isVeryFarFromBall(Robot* robot);
     bool isWithinKickDistnace(Robot* robot);
     bool isInKickLock(Robot* robot);
     bool canKick(Robot *robot);
+    bool ballIsMovingAway(Robot* robot);
 };
 
 }
