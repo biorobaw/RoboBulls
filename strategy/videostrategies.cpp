@@ -21,8 +21,8 @@ namespace Video
  * X_DEV and Y_DEV define the maximum deviation in one direction that will be applied
  *      when kicking to the target. Thus the name "random." Cannot be 0.
  */
-static int X_DEV = 500;
-static int Y_DEV = 1000;
+static float X_DEV = 500;
+static float Y_DEV = 1000;
 
 /* ***************** VideoStrategy2 Configuration
  * CLOSE_DIST Defines the distance the ball must be to the ball predicion point in state
@@ -31,11 +31,11 @@ static int Y_DEV = 1000;
  *        The robot will return to the waiting point.
  */
 #if SIMULATED
-static int CLOSE_DIST = 800;
-static int WAIT_COUNT_MAX = 500;
+static float CLOSE_DIST = 800;
+static float WAIT_COUNT_MAX = 500;
 #else
-static int CLOSE_DIST = 800;
-static int WAIT_COUNT_MAX = 2000;
+static float CLOSE_DIST = 800;
+static float WAIT_COUNT_MAX = 2000;
 #endif
 
 /************************************************************************/
@@ -77,7 +77,7 @@ bool OmniRandomKicker::isFinished()
 void OmniRandomKicker::perform(Robot* robot)
 {
     if(ktp == nullptr) {
-        Point offset = Point(-X_DEV+rand()%(2*X_DEV), -Y_DEV+rand()%(2*Y_DEV));
+        Point offset = Point(-X_DEV+rand()%(2*(int)X_DEV), -Y_DEV+rand()%(2*(int)Y_DEV));
         Point myGoal = gameModel->getMyGoal();
         Point opgoal = gameModel->getOpponentGoal();
         Point less = std::min(myGoal, opgoal, Comparisons::distance(receiver));
