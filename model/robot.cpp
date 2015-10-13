@@ -35,7 +35,7 @@ void Robot::setRB(float right_backward){RB = right_backward;}
  * @details *Do not use;* use Skil::Kick instead
  * Sets the initial kick velocity for the robot in m/s
  * @see setDrible */
-void Robot::setKick(float Kick){kick = Kick;}
+void Robot::setKick(float power){ kick = power; }
 
 /*! @brief Set the robot to Dribble.
  * @details This is currently only functional in the simulator as
@@ -44,7 +44,7 @@ void Robot::setKick(float Kick){kick = Kick;}
  * Effective use in the simulator still requires study of the effect
  * of dribble speed on ball handling.
  * @see setKick*/
-void Robot::setDrible(bool drible){ drible = drible; }
+void Robot::setDrible(bool on){ drible = on; }
 
 /*! @{
  *  @brief Query the robot's current wheel velocities */

@@ -21,7 +21,7 @@ void SimRobComm::sendVelsLarge(std::vector<Robot*>& robots)
     {
         sendPacket(rob);
         rob->setKick(0);
-        rob->setDrible(0);
+        //rob->setDrible(0);
     }
 
     //Send replacement packets
