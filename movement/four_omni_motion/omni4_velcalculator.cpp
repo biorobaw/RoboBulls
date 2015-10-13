@@ -17,16 +17,16 @@ float THETA_MULT2 = 1;
 //Multiplier for x_vel and y_vel in defaultCalc
 float XY_MULT = 1;
 
-//Error for Proportional XY
+//Multiplier for Proportional XY
 float xy_prop_mult = 0.1;
 
 //Multiplier for integral XY
 float xy_int_mult = 0.0005;
 
 //Multiplier for theta proportional
-float theta_prop_mult = 1;
+float theta_prop_mult = 0.5;
 
-//Multiplier for theta integral error
+//Multiplier for theta integral
 float theta_int_mult = 0.001;
 
 FourWheelCalculator::FourWheelCalculator()
