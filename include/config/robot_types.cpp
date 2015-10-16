@@ -11,11 +11,7 @@ const RobotType robotIDTypes[] = {
  /*2*/	fourWheelOmni,
  /*3*/	fourWheelOmni,
  /*4*/	fourWheelOmni,
-#if SIMULATED
  /*5*/	fourWheelOmni,
-#else
- /*5*/	fourWheelOmni,
-#endif
  /*6*/	fourWheelOmni,
  /*7*/	fourWheelOmni,
  /*8*/	fourWheelOmni,
