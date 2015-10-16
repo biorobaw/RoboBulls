@@ -22,26 +22,17 @@ XbeeReceiver::XbeeReceiver()
 void XbeeReceiver::receive()
 {
     char c;
-    char p[10];
-    int i = 0;
-
     while (true) {
         int received = xbee.ReadChar(&c, 0);
         if (received > 0) {
             if (c == '~' || c == char(250)) {
-                i = 0;
                 cout << endl;
                 cout << '~' << " ";
             } else if (c == '$' || c == char(255)) {
                 cout << '$' << " ";
-                // Not kicking
-                //assert (i != 9 || p[6] == 0);
             } else {
                 cout << (int)(c) << " ";
             }
-
-            p[i] = c;
-            i++;
         }
     }
 }

@@ -1,0 +1,8 @@
+# This is a file customizing Minicom for the xbee and our system.
+# Rename to ".minirc.dfl" by adding the dot, and copy to home directory
+# Machine-generated file - use setup menu in minicom to change parameters.
+pu port             /dev/xbee
+pu baudrate         57600
+pu localecho        Yes
+pu addlinefeed      Yes
+pu linewrap         Yes
