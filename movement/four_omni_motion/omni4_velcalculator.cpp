@@ -18,13 +18,13 @@ float THETA_MULT2 = 1;
 float XY_MULT = 1;
 
 //Multiplier for Proportional XY
-float xy_prop_mult = 0.1;
+float xy_prop_mult = 0.08;
 
 //Multiplier for integral XY
 float xy_int_mult = 0.0005;
 
 //Multiplier for theta proportional
-float theta_prop_mult = 0.5;
+float theta_prop_mult = 0.08;
 
 //Multiplier for theta integral
 float theta_int_mult = 0.001;

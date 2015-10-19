@@ -11,7 +11,7 @@
 #define BLOCK_DISTANCE 600
 
 //Percent of goal width to respond to a line. Can be more than 1
-#define GOAL_WIDTH_PCT (GOAL_WIDTH * 1.0)
+#define GOAL_WIDTH_PCT (GOAL_WIDTH * 1.3)
 
 //How close must the ball before we go to kick it away?
 int DefendFarFromBall::goalieDist = 900;
@@ -32,10 +32,10 @@ bool DefendFarFromBall::isBallMovingTowardsGoal(std::pair<Point,Point>& lineEnds
     //Filter out balls not moving towards goal
     Point goal = gameModel->getMyGoal();
     Point bVel = gameModel->getBallVelocity();
-    if(std::signbit(goal.x) != std::signbit(bVel.x) || abs(bVel.x) < 0.05)
+    if(bVel.x > 0 || abs(bVel.x) < 0.01)
         return false;
-    if(isBallBehindGoal())
-        return false;
+    //if(isBallBehindGoal())
+        //return false;
 
     //Calculate y position at goal point
     Point ballPos = gameModel->getBallPoint();
@@ -45,7 +45,7 @@ bool DefendFarFromBall::isBallMovingTowardsGoal(std::pair<Point,Point>& lineEnds
     lineEndsOut = {ballPos, Point(goal.x,y)};
 
     //Is the Y position within the goalie box?
-    return (y > GOAL_WIDTH_PCT) && (y < GOAL_WIDTH_PCT);
+    return (y > -GOAL_WIDTH_PCT) && (y < GOAL_WIDTH_PCT);
 }
 
 //TODO: Combine with isBallMovingTowardsGoal
@@ -98,6 +98,7 @@ void DefendFarFromBall::perform(Robot *robot)
     if(isBallMovingTowardsGoal(lineEnds))  {
         Point movePoint = Measurments::linePoint(robot->getRobotPosition(), lineEnds.first, lineEnds.second);
         GuiInterface::getGuiInterface()->drawPath(lineEnds.first, lineEnds.second);
+        setVelocityMultiplier(1.5);
         setMovementTargets(movePoint, angleToBall, false, false);
     }
     else if(ballBot && ballBot->getID() != GOALIE_ID
@@ -108,6 +109,7 @@ void DefendFarFromBall::perform(Robot *robot)
         GuiInterface::getGuiInterface()->drawPath(facingSegment.first, facingSegment.second, 0.1);
         GuiInterface::getGuiInterface()->drawPath(robot->getRobotPosition(), nearestPointOnLine, 0.1);
         setMovementTargets(nearestPointOnLine, angleToBall, false, false);
+        setMovementTargets(idlePoint, angleToBall);
     }
     else if(!isKickingBallAway && Measurments::distance(ball, idlePoint) < goalieDist) {
         //If we're not kicking and the ball is close to the goal, we want to kick it away.
@@ -124,6 +126,7 @@ void DefendFarFromBall::perform(Robot *robot)
     }
     else {
         //Otherwise we are just idling at the idle point
+        setVelocityMultiplier(1);
         setMovementTargets(idlePoint, angleToBall);
     }
 
