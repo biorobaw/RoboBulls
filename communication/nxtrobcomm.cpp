@@ -60,10 +60,10 @@ void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
             packet->right_front = rf + 100;
             packet->right_back  = rb + 100;
         #else
-            packet->left_front  = Measurments::clamp(rob->getLF(), -127, 127)*k + 100;
-            packet->left_back   = Measurments::clamp(rob->getLB(), -127, 127)*k + 100;
-            packet->right_front = Measurments::clamp(rob->getRF(), -127, 127)*k + 100;
-            packet->right_back  = Measurments::clamp(rob->getRB(), -127, 127)*k + 100;
+            packet->left_front  = Measurments::clamp(rob->getLF(), -100, 100)*k + 100;
+            packet->left_back   = Measurments::clamp(rob->getLB(), -100, 100)*k + 100;
+            packet->right_front = Measurments::clamp(rob->getRF(), -100, 100)*k + 100;
+            packet->right_back  = Measurments::clamp(rob->getRB(), -100, 100)*k + 100;
         #endif
         }
         else {
@@ -83,7 +83,7 @@ void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
 
         //Reset kick and dribble status in robot
         rob->setKick(0);
-        //rob->setDrible(0);
+        rob->setDrible(0);
     }
 
     // Send Array of packets

@@ -68,8 +68,11 @@
 void exitStopRobot(int)
 {
     for(Robot* rob : gameModel->getMyTeam()) {
-        rob->setL(0);
-        rob->setR(0);
+        rob->setLF(0); rob->setLB(0);
+        rob->setRF(0); rob->setRB(0);
+        rob->setB(0);
+        rob->setDrible(0);
+        rob->setKick(0);
     }
     RobComm::getRobComm()->sendVelsLarge(gameModel->getMyTeam());
     exit(1);
