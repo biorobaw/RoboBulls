@@ -6,6 +6,7 @@
 // Tool classes
 #include <math.h>
 #include <time.h>
+#include <iostream>
 #include <QGraphicsView>
 #include <QShortcut>
 #include <QKeyEvent>
@@ -88,6 +89,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //Joystick initialization
     joystick::listen();
+
+    //All rboots overridden by default
+    on_btn_override_all_released();
 }
 
 void MainWindow::handleJoystickInput()
@@ -666,15 +670,17 @@ void MainWindow::on_btn_override_all_released() {
         overriddenBots[i] = true;
     }
     for (int i=0; i<teamSize_blue; i++) {
-        if (gamemodel->find(i, gamemodel->getMyTeam()) != NULL) {
-            // Telling robot QObjects to change color
-            robotpanel->botIcons[i]->overridden = true;
-            fieldpanel->guiTeam[i]->overridden = true;
-            // stopping all bots, so they don't fly off at their current velocities
-            gamemodel->find(i, gamemodel->getMyTeam())->setL(0);
-            gamemodel->find(i, gamemodel->getMyTeam())->setR(0);
-            gamemodel->find(i, gamemodel->getMyTeam())->setB(0);
-        }//nullcheck
+        // Telling robot QObjects to change color
+        overriddenBots[i] = true;
+        robotpanel->botIcons[i]->overridden = true;
+        fieldpanel->guiTeam[i]->overridden = true;
+        // stopping all bots, so they don't fly off at their current velocities
+        Robot* robot = gameModel->findMyTeam(i);
+        if(robot != NULL) {
+            robot->setL(0);
+            robot->setR(0);
+            robot->setB(0);
+        }
     }
 }
 
