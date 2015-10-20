@@ -16,10 +16,6 @@ const float CONF_THRESHOLD_BALL = 0.75;
 //! @brief Sets the minimum confidence to consider a robot as a valid reading
 const float CONF_THRESHOLD_BOTS = 0.8;
 
-//! @brief DISCARD_RATE sets the rate in which packets are discarded.
-//! Only 1/DISCARD_RATE packages are processed.
-const int DISCARD_RATE = 1;
-
 /**
  * @brief The VisionComm class recieves information from the vision cameras
  * @author Origin. Narges Ghaedi, JamesW
@@ -47,15 +43,22 @@ protected:
 
     //! @brief Updates GameModel information to fill out a robot
     void updateInfo(const SSL_DetectionRobot& robot, int detectedTeamColor);
-    
-    GameModel *gamemodel;
-    SSL_WrapperPacket packet;
-    RoboCupSSLClient * client;
-    int packetCount;
-    int frames = 0;
-    int totalframes = 0;
-    int blue_rob[10]={0};
-    int yellow_rob[10]={0};
+
+    //! @brief Recieves a new packet only if `ms_limit` ms has passed since last call
+    void receiveIfMSPassed(int ms_limit);
+
+    //! @brief Returns true if we are using four or two cameras.
+    bool isFourCameraMode();
+
+    GameModel *gamemodel;           //! Pointer to GameModel to update
+    SSL_WrapperPacket packet;       //! Packet recieved by client
+    RoboCupSSLClient * client;      //! client to receive packets
+    int resetFrames = 0;            //! Frames passed up remove all potential robot detections
+    int totalframes = 0;            //! Total frames passed since start
+    int blue_rob_readings[10]={0};  //! Number of detections of each blue robot
+    int yell_rob_readings[10]={0};  //! Number of detections of each yelloe robot
+    timeval lastRecvTime;           //! When did we last receive a packet? Used to not recieve every one
+    bool fourCameraMode = false;    //! Are we in four-camera mode (true)? Or Two-camera mode?
 };
 
 #endif // VISIONCOMM_H
