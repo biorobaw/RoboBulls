@@ -1,6 +1,7 @@
 #include "movement/four_omni_motion/omni4_velcalculator.h"
 #include "utilities/debug.h"
 #include "include/config/tolerances.h"
+#include "include/config/simulated.h"
 using std::abs;
 
 namespace Movement
@@ -17,17 +18,17 @@ float THETA_MULT2 = 1;
 //Multiplier for x_vel and y_vel in defaultCalc
 float XY_MULT = 1;
 
-//Multiplier for Proportional XY
-float xy_prop_mult = 0.08;
-
-//Multiplier for integral XY
-float xy_int_mult = 0.0005;
-
-//Multiplier for theta proportional
-float theta_prop_mult = 0.08;
-
-//Multiplier for theta integral
-float theta_int_mult = 0.001;
+#if SIMULATED
+float xy_prop_mult = 0.1;       //Multiplier for Proportional XY
+float xy_int_mult = 0.002;      //Multiplier for integral XY
+float theta_prop_mult = 0.5;    //Multiplier for theta proportional
+float theta_int_mult = 0.0015;  //Multiplier for theta integral
+#else
+float xy_prop_mult = 0.025;     //Multiplier for Proportional XY
+float xy_int_mult = 0.0005;     //Multiplier for integral XY
+float theta_prop_mult = 0.1;    //Multiplier for theta proportional
+float theta_int_mult = 0.0015;  //Multiplier for theta integral
+#endif
 
 FourWheelCalculator::FourWheelCalculator()
 {
@@ -74,13 +75,24 @@ fourWheelVels FourWheelCalculator::defaultCalc
     //Calulate error integral component
     calc_error(x_goal, y_goal);
 
+    //No XY movement under a certain distance--helps controllers not break
+    //But only if not SIMULATED
+    float xy_prop_used = xy_prop_mult;
+    float xy_int_used = xy_int_mult;
+#if !SIMULATED
+    if(Measurments::distance(rob, last_goal_target) < ROBOT_RADIUS*1.2) {
+        xy_prop_used = 0;
+        xy_int_used = 0;
+    }
+#endif
+
     //Inertial Frame Velocities
     double x_vel =
-        (xy_prop_mult * distance_to_goal +
-         xy_int_mult  * dist_error_integral)*cos(angle_to_goal);
+        (xy_prop_used * distance_to_goal +
+         xy_int_used  * dist_error_integral)*cos(angle_to_goal);
     double y_vel =
-        (xy_prop_mult * distance_to_goal +
-         xy_int_mult  * dist_error_integral)*sin(angle_to_goal);
+        (xy_prop_used * distance_to_goal +
+         xy_int_used  * dist_error_integral)*sin(angle_to_goal);
     double theta_vel =
          theta_prop_mult * angle_error
        + theta_int_mult  * angle_error_integral;
@@ -165,13 +177,24 @@ fourWheelVels FourWheelCalculator::facePointCalc
     //PID
     calc_error(x_goal, y_goal);
 
+    //No XY movement under a certain distance--helps controllers not break
+    //But only if not SIMULATED
+    float xy_prop_used = xy_prop_mult;
+    float xy_int_used = xy_int_mult;
+#if !SIMULATED
+    if(Measurments::distance(rob, last_goal_target) < ROBOT_RADIUS*1.2) {
+        xy_prop_used = 0;
+        xy_int_used = 0;
+    }
+#endif
+
     //Interial Frame Velocities
     double x_vel =
-        (xy_prop_mult * distance_to_goal +
-         xy_int_mult  * dist_error_integral)*cos(angle_to_goal);
+        (xy_prop_used * distance_to_goal +
+         xy_int_used  * dist_error_integral)*cos(angle_to_goal);
     double y_vel =
-        (xy_prop_mult * distance_to_goal +
-         xy_int_mult  * dist_error_integral)*sin(angle_to_goal);
+        (xy_prop_used * distance_to_goal +
+         xy_int_used  * dist_error_integral)*sin(angle_to_goal);
     double theta_vel =
          theta_prop_mult * angle_error
        + theta_int_mult  * angle_error_integral;
