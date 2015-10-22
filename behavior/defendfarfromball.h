@@ -10,7 +10,6 @@
  * The robot defends the goal by positioning itself in the trajectory of the ball
  * when it is moving torwards the goal, as well as positioning itself to block a robot
  * when it has the ball and is facing the goal.
- *
  * When the ball becomes close, the goalie moves out and kicks the ball to the
  * center of the field to remove it from the goalie box.
  */
@@ -37,9 +36,9 @@ private:
      * @param lineSegOut If true, A pair of Point of {the ball's position, where it will land in the goal} */
     bool ballOnRobotIsAimedAtOurGoal(Robot* robot, std::pair<Point,Point>& lineSegOut);
 
-    /*! @brief Returns true if the ball is behind the goal (idle point)
+    /*! @brief Returns true if the ball is either behind the goal or too close to the edge
      * @details In such cases, we will not chase the ball as it is out of the field or unreachable */
-    bool isBallBehindGoal();
+    bool isBallUnreachable();
 
     Point idlePoint;                    //!< Point to sit at when no action happens
     bool isKickingBallAway;             //!< Are we in the process of kicking the ball from the goal?

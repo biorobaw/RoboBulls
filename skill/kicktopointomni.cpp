@@ -34,20 +34,22 @@ namespace Skill
  * resulting in the robot continually in a lock pushing the ball in a line.
  */
 #if SIMULATED
-float BEHIND_RADIUS  = 200;
-float KICK_DISTANCE  = 110;
+float BEHIND_RADIUS  = ROBOT_SIZE*1.1;
+float KICK_DISTANCE  = 220;
 float FACING_ANGLE_TOL  = 30;
 float FORWARD_WAIT_COUNT = 1;
 float MOVE_TOLERANCE = DIST_TOLERANCE/2;
+float KICK_LOCK_ANGLE = 15 * (M_PI/180);
 #else
 float BEHIND_RADIUS  = ROBOT_SIZE;
 float KICK_DISTANCE  = 150;
 float FACING_ANGLE_TOL  = 20;
 float FORWARD_WAIT_COUNT = 15;
 float MOVE_TOLERANCE = DIST_TOLERANCE*1.2;
+float KICK_LOCK_ANGLE = 15 * (M_PI/180);
 #endif
 
-float KICKLOCK_COUNT = 80;
+float KICKLOCK_COUNT = 20;
 float RECREATE_DIST_TOL = 25;
 
 /************************************************************************/
@@ -81,6 +83,9 @@ bool KickToPointOmni::perform(Robot* robot)
 
     // Angle between the ball and the kick target
     float ballTargetAng = Measurments::angleBetween(bp, *m_targetPointer);
+
+    if(isInKickLock(robot))
+        state = MOVE_BEHIND;
 
     switch(state)
     {
@@ -125,7 +130,7 @@ bool KickToPointOmni::perform(Robot* robot)
              * moves too far or we are in kick lock */
             if(canKick(robot)) {
                 state = KICK;
-            } else if(!isFacingTarget(robot) || isVeryFarFromBall(robot) || isInKickLock(robot)) {
+            } else if(!isFacingTarget(robot) || isVeryFarFromBall(robot)) {
                 state = MOVE_BEHIND;
             }
         }
@@ -165,11 +170,11 @@ bool KickToPointOmni::perform(Robot* robot)
 bool KickToPointOmni::canKick(Robot* robot) {
     return isCloseToBall(robot) &&
            isFacingBall(robot) &&
-           isWithinKickDistnace(robot) &&
+           isWithinKickDistance(robot) &&
            isFacingTarget(robot);
 }
 
-bool KickToPointOmni::isWithinKickDistnace(Robot *robot) {
+bool KickToPointOmni::isWithinKickDistance(Robot *robot) {
     return m_kickDistance == -1 || Measurments::distance(robot, *m_targetPointer) < m_kickDistance;
 }
 
@@ -191,10 +196,14 @@ bool KickToPointOmni::isFacingTarget(Robot* robot) {
 
 bool KickToPointOmni::isInKickLock(Robot* robot)
 {
-    if(isCloseToBall(robot) && !isFacingBall(robot))
-        ++m_kickLockCount;
-    if(m_kickLockCount > KICKLOCK_COUNT)
-        return (m_kickLockCount = 0, true);
+    bool close = isCloseToBall(robot);
+    bool facingBall = Comparisons::isFacingPoint(robot, gameModel->getBallPoint(), KICK_LOCK_ANGLE);
+    if(close && !facingBall) {
+        if(++m_kickLockCount > KICKLOCK_COUNT) {
+            m_kickLockCount = 0;
+            return true;
+        }
+    }
     return false;
 }
 

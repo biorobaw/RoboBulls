@@ -67,7 +67,7 @@ private:
     bool isFacingTarget(Robot* robot);
     bool isCloseToBall(Robot* robot);
     bool isVeryFarFromBall(Robot* robot);
-    bool isWithinKickDistnace(Robot* robot);
+    bool isWithinKickDistance(Robot* robot);
     bool isInKickLock(Robot* robot);
     bool canKick(Robot *robot);
     bool ballIsMovingAway(Robot* robot);
