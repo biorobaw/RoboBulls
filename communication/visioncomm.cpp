@@ -117,7 +117,7 @@ void VisionComm::recieveBall(const SSL_DetectionFrame& frame)
     static Point lastDetection;
 
     //Stop if no balls present
-    if(frame.balls_size() < 0)
+    if(frame.balls_size() <= 0)
         return;
 
     //Choose the best ball based on confidence
