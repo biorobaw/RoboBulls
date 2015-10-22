@@ -1,5 +1,4 @@
 #include "include/config/robot_types.h"
-#include "include/config/simulated.h"
 
 /* Robot types are differential, threeWheelOmni fourWheelOmni
  * Change one to have that ID registered as a robot of that type. */

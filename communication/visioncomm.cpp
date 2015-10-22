@@ -1,23 +1,29 @@
 #include <cmath>
-#include <deque>
+#include <sys/time.h>
 #include "include/config/simulated.h"
 #include "include/config/team.h"
 #include "include/config/communication.h"
 #include "visioncomm.h"
 using namespace std;
 
-
 VisionComm::VisionComm(GameModel *gm)
 {
     client = new RoboCupSSLClient(VISION_PORT, VISION_ADDRESS);
     client->open(true);
     gamemodel = gm;
-    packetCount=0;
+    fourCameraMode = isFourCameraMode();
 }
 
 VisionComm::~VisionComm(void)
 {
     client->close();
+    delete client;
+}
+
+bool VisionComm::isFourCameraMode()
+{
+    client->receive(packet);
+    return (packet.geometry().calib_size() == 4);
 }
 
 /* This function processes a DetectionRobot from the vision system and fills
@@ -64,26 +70,45 @@ void VisionComm::updateInfo(const SSL_DetectionRobot& robot, int detectedTeamCol
 
 template<typename Detection>
 static bool isGoodDetection
-    (const Detection& detection, const SSL_DetectionFrame& frame, float confidence)
+    (const Detection& detection, const SSL_DetectionFrame& frame, float confidence, bool fourCameraMode)
 {
     bool isGoodConf = detection.confidence() > confidence;
-    bool isGoodSide = (detection.x() >= 0 && frame.camera_id() == 0) ||
-                      (detection.x()  < 0 && frame.camera_id() == 1) || SIMULATED;
+    bool isGoodSide = false;
+
+    //For correct side, we look at the X and Y readings and the camera that
+    //reported them. This is to help prevent duplicated readings on the edges
+    float x = detection.x();
+    float y = detection.y();
+    float cam = frame.camera_id();
+    if(!fourCameraMode) {
+        isGoodSide =
+        (x >= 0 && cam == 0) ||
+        (x  < 0 && cam == 1);
+    } else {
+        isGoodSide =
+        (x >= 0 && y >= 0 && cam == 0) ||
+        (x  < 0 && y >= 0 && cam == 1) ||
+        (x  < 0 && y  < 0 && cam == 2) ||
+        (x >= 0 && y  < 0 && cam == 3);
+    }
+    isGoodSide |= SIMULATED;    //Simulated overrides anything
+
     return isGoodConf && isGoodSide;
 }
 
-
-/* Looks at all detected balls in the frame detection, and chooses
- * the best one based on confidence. Sets the GameModel's ballpoint
- * as this best one if the confidence is > CONF_THRESHOLD_BALL
- * and it is detected on the correct side.
- */
+//Predicate for max_element, determining which ball is best on confidence
 static bool ballCompareFn(const SSL_DetectionBall&  a, const SSL_DetectionBall&  b) {
     return a.confidence() < b.confidence();
 }
 
-#define NOISE_RADIUS   15
+//Movement distance between detections within which the ball is said to be stationary
+#define NOISE_RADIUS 15
 
+/* Looks at all detected balls in the frame detection, and chooses
+ * the best one based on confidence. Sets the GameModel's ballpoint
+ * as this best one if that confidence is > CONF_THRESHOLD_BALL,
+ * and it is detected on the correct side.
+ */
 void VisionComm::recieveBall(const SSL_DetectionFrame& frame)
 {
     static Point noiseCenterPoint;
@@ -91,48 +116,51 @@ void VisionComm::recieveBall(const SSL_DetectionFrame& frame)
     static int seenStoppedCount = 0;
     static Point lastDetection;
 
-    if(frame.balls_size() > 0)
+    //Stop if no balls present
+    if(frame.balls_size() <= 0)
+        return;
+
+    //Choose the best ball based on confidence
+    auto bestDetect = std::max_element(frame.balls().begin(), frame.balls().end(), ballCompareFn);
+
+    //If it is still a good detection...
+    if(isGoodDetection(*bestDetect, frame, CONF_THRESHOLD_BALL, fourCameraMode))
     {
-        auto bestDetect = std::max_element(frame.balls().begin(), frame.balls().end(), ballCompareFn);
+        Point newDetection = Point(bestDetect->x(), bestDetect->y());
+    #if SIDE == SIDE_POSITIVE
+        newDetection *= -1;
+    #endif
 
-        if(isGoodDetection(*bestDetect, frame, CONF_THRESHOLD_BALL))
+        // If the ball is detected outside the noise radius more than 5 times
+        // it is considered to be moving and its position will be updated
+        if(gameModel->ballStopped)
         {
-            Point newDetection = Point(bestDetect->x(), bestDetect->y());
-        #if SIDE == SIDE_POSITIVE
-            newDetection *= -1;
-        #endif
+            gameModel->setBallPoint(gameModel->getBallPoint());
 
-            // If the ball is detected outside the noise radius more than 5 times
-            // it is considered to be moving and its position will be updated
-            if(gameModel->ballStopped)
+            if(Measurments::distance(newDetection, noiseCenterPoint) > NOISE_RADIUS)
+                ++seenOutsideRadiusCount;
+            if(seenOutsideRadiusCount > 2)
             {
-                gameModel->setBallPoint(gameModel->getBallPoint());
-
-                if(Measurments::distance(newDetection, noiseCenterPoint) > NOISE_RADIUS)
-                    ++seenOutsideRadiusCount;
-                if(seenOutsideRadiusCount > 2)
-                {
-                    gameModel->ballStopped = false;
-                    seenOutsideRadiusCount = 0;
-                }
+                gameModel->ballStopped = false;
+                seenOutsideRadiusCount = 0;
             }
-            // If the ball is detected close (distance < 1) to its last point
-            // 4 times it is considered stopped it's position will not be updated
-            else
+        }
+        // If the ball is detected close (distance < 1) to its last point
+        // 4 times it is considered stopped it's position will not be updated
+        else
+        {
+            gameModel->setBallPoint(newDetection);
+
+            if(Measurments::distance(newDetection,lastDetection) < 1)
+                ++seenStoppedCount;
+            if(seenStoppedCount >= 4)
             {
-                gameModel->setBallPoint(newDetection);
-
-                if(Measurments::distance(newDetection,lastDetection) < 1)
-                    ++seenStoppedCount;
-                if(seenStoppedCount >= 4)
-                {
-                    gameModel->ballStopped = true;
-                    noiseCenterPoint = newDetection;
-                    seenStoppedCount = 0;
-                }
-
-                lastDetection = newDetection;
+                gameModel->ballStopped = true;
+                noiseCenterPoint = newDetection;
+                seenStoppedCount = 0;
             }
+
+            lastDetection = newDetection;
         }
     }
 }
@@ -145,18 +173,18 @@ void VisionComm::recieveRobotTeam(const SSL_DetectionFrame& frame, int whichTeam
 {
     auto* currentTeamDetection = &frame.robots_blue();
     auto* currentTeamVector    = &gamemodel->getMyTeam();
-    int*  currentTeamCounts    = blue_rob;
+    int*  currentTeamCounts    = blue_rob_readings;
 
     if(whichTeam == TEAM_YELLOW) {
         currentTeamDetection = &frame.robots_yellow();
-        currentTeamCounts    = yellow_rob;
+        currentTeamCounts    = yell_rob_readings;
     }
     if(whichTeam != TEAM)
         currentTeamVector = &gamemodel->getOponentTeam();
     
     for(const SSL_DetectionRobot& robot : *currentTeamDetection)
     {
-        if(isGoodDetection(robot, frame, CONF_THRESHOLD_BOTS)) {
+        if(isGoodDetection(robot, frame, CONF_THRESHOLD_BOTS, fourCameraMode)) {
             int robotID = robot.robot_id();
             if(gamemodel->find(robotID, *currentTeamVector) or currentTeamCounts[robotID] >= 25) {
                 updateInfo(robot, whichTeam);
@@ -167,12 +195,26 @@ void VisionComm::recieveRobotTeam(const SSL_DetectionFrame& frame, int whichTeam
     }
 }
 
+void VisionComm::receiveIfMSPassed(int ms_limit)
+{
+    timeval now;
+    gettimeofday(&now, NULL);
+    float seconds = now.tv_sec - lastRecvTime.tv_sec;
+    float useconds = now.tv_usec - lastRecvTime.tv_usec;
+    float ms_passed = ((seconds) * 1000 + useconds/1000.0) + 0.5;
+    if(ms_passed > ms_limit) {
+        client->receive(packet);    //Recieve packet here
+        lastRecvTime = now;
+    }
+}
 
 bool VisionComm::receive()
 {
-    if (client->receive(packet) and packet.has_detection() and ++packetCount>=DISCARD_RATE)
+    //Receive a new packet if X ms has passed
+    receiveIfMSPassed(1);
+
+    if(packet.has_detection())
     {
-        packetCount = 0;
         const SSL_DetectionFrame& frame = packet.detection();
         recieveBall(frame);
         recieveRobotTeam(frame, TEAM_BLUE);
@@ -186,10 +228,10 @@ bool VisionComm::receive()
     
     /* After 50 frames the "seen counts" of each team are set to 0. This prevents
      * ghost robots from appearing over time */
-    if(++frames > 50) {
-        frames = 0;
-        for(int& i : blue_rob) i = 0;
-        for(int& i : yellow_rob) i = 0;
+    if(++resetFrames > 50) {
+        resetFrames = 0;
+        for(int& reading : blue_rob_readings) reading = 0;
+        for(int& reading : yell_rob_readings) reading = 0;
     }
 
     return true;
