@@ -210,8 +210,8 @@ void VisionComm::receiveIfMSPassed(int ms_limit)
 
 bool VisionComm::receive()
 {
-    //Receive a new packet if X ms has passed
-    receiveIfMSPassed(1);
+    //Receive a new packet if X ms has passed (0 FOR NOW)
+    receiveIfMSPassed(0);
 
     if(packet.has_detection())
     {

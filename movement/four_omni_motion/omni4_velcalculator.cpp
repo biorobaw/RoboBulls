@@ -79,7 +79,7 @@ fourWheelVels FourWheelCalculator::defaultCalc
     //But only if not SIMULATED
     float xy_prop_used = xy_prop_mult;
     float xy_int_used = xy_int_mult;
-#if !SIMULATED
+#if 0
     if(Measurments::distance(rob, last_goal_target) < ROBOT_RADIUS*1.2) {
         xy_prop_used = 0;
         xy_int_used = 0;
@@ -181,7 +181,7 @@ fourWheelVels FourWheelCalculator::facePointCalc
     //But only if not SIMULATED
     float xy_prop_used = xy_prop_mult;
     float xy_int_used = xy_int_mult;
-#if !SIMULATED
+#if 0
     if(Measurments::distance(rob, last_goal_target) < ROBOT_RADIUS*1.2) {
         xy_prop_used = 0;
         xy_int_used = 0;
