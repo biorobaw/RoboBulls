@@ -1,14 +1,14 @@
 #include <Servo.h>
 int id;
-int myid = 1;    // This Robot's ID
+int myid = 3;    // This Robot's ID
 
 // Declare motor pins
-#define speedPinLF 3
+#define speedPinLF 5
 #define enablePinLF 31  
 #define dirPinLF 33
 #define brakePinLF 35
 
-#define speedPinLB 5
+#define speedPinLB 3
 #define enablePinLB 40
 #define dirPinLB 42
 #define brakePinLB 44
@@ -118,8 +118,8 @@ void setKick()
   switch(current)
   {
     case charging:
-      digitalWrite(kickPin, HIGH);
-      digitalWrite(chargePin, LOW);
+      digitalWrite(kickPin, LOW);
+      digitalWrite(chargePin, HIGH);
       if(kick == 'k' && millis()-chargeStartTime >= chargeTime)
       {
         current = kicking;
@@ -127,11 +127,11 @@ void setKick()
       }
       break;
     case kicking:
-      digitalWrite(kickPin, LOW);
-      digitalWrite(chargePin, HIGH);  
+      digitalWrite(kickPin, HIGH);
+      digitalWrite(chargePin, LOW);  
       if(millis()-kickStartTime >= kickTime)
       {
-        digitalWrite(kickPin, HIGH);
+        digitalWrite(kickPin, LOW);
         current = charging;
         chargeStartTime = millis();
       }
@@ -144,9 +144,9 @@ void setKick()
 void setDribble()
 {
     if(dribble == 1)
-      digitalWrite(dribblePin, LOW);     
+      digitalWrite(dribblePin, HIGH);     
     else
-      digitalWrite(dribblePin, HIGH);
+      digitalWrite(dribblePin, LOW);
 }
 //***********************************************************************************
 
@@ -176,13 +176,13 @@ void setSpeeds()
   if(targetLBvel > 0 )
   {
     analogWrite(speedPinLB, map(abs(targetLBvel),0,100,lowPWM,highPWM));
-    digitalWrite(dirPinLB, HIGH);
+    digitalWrite(dirPinLB, LOW);
     digitalWrite(brakePinLB, LOW);
   }
   else if(targetLBvel < 0)
   {
     analogWrite(speedPinLB, map(abs(targetLBvel),0,100,lowPWM,highPWM));
-    digitalWrite(dirPinLB, LOW);
+    digitalWrite(dirPinLB, HIGH);
     digitalWrite(brakePinLB, LOW);
   }
   else
@@ -191,13 +191,13 @@ void setSpeeds()
   if(targetRFvel > 0 )
   {
     analogWrite(speedPinRF, map(abs(targetRFvel),0,100,lowPWM,highPWM));
-    digitalWrite(dirPinRF, HIGH);
+    digitalWrite(dirPinRF, LOW);
     digitalWrite(brakePinRF, LOW);
   }
   else if(targetRFvel < 0 )
   {
     analogWrite(speedPinRF, map(abs(targetRFvel),0,100,lowPWM,highPWM));
-    digitalWrite(dirPinRF, LOW);
+    digitalWrite(dirPinRF, HIGH);
     digitalWrite(brakePinRF, LOW);
   }
   else
@@ -293,7 +293,7 @@ void runComm()
           targetRFvel = targetRFvelSerial;
           targetRBvel = targetRBvelSerial;
           kick = kickSerial;
-      
+    
           //Serial.println("Packet Complete"); 
         }
         else

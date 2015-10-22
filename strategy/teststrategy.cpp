@@ -37,6 +37,17 @@ class RotBeh : public GenericMovementBehavior
     }
 };
 
+//Test behavior to dribble when ball is close
+class DribbleBeh : public Behavior
+{
+    void perform(Robot* robot) override
+    {
+        Point bp = gameModel->getBallPoint();
+        bool b = Measurments::distance(robot,bp) < 500;
+        robot->setDrible(b);
+    }
+};
+
 //Test behavior to move to a point only
 class GoToBeh : public GenericMovementBehavior
 {
@@ -81,45 +92,18 @@ public:
 
 bool TestStrategy::update()
 {
+    //Change IDs and behaviors to be assigned here.
+    //All robots must exists before any action is taken.
+    Robot* r0 = gameModel->findMyTeam(3);
+    Robot* r1 = gameModel->findMyTeam(5);
+    if(r0 and r1) {
+        r0->assignBeh<GoToBeh>();
+        r1->assignBeh<GoToBeh>();
+    }
     return false;
 }
 
-//IDs of field robots
-#define HALL_ROBOT_ID   3
-#define CASTLE_ROBOT_ID 2
-#define SCON_ROBOT_ID   4
-
-class KickBehavior : public Behavior
-{
-public:
-    //Constructor with a point to kick to
-    KickBehavior(Point kickTarget)
-    {
-        //Initially create the skill the kicking target to a point
-        k = new Skill::KickToPointOmni(kickTarget);
-    }
-
-    ~KickBehavior()
-    {
-        delete k;
-    }
-
-    void perform(Robot* robot) override
-    {
-        //Work on performing the kick each iteration
-        bool kickFinished = k->perform(robot);
-
-        //KTPO returns true after each state is finished and the  kick is done
-        if(kickFinished) {
-            std::cout << "KickToPointOmni has finished kicking" << std::endl;
-        }
-    }
-
-private:
-    Skill::KickToPointOmni* k;
-};
-
 void TestStrategy::assignBeh()
 {
-    gameModel->findMyTeam(0)->assignBeh<GoToBeh>();
+
 }
