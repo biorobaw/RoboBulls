@@ -53,12 +53,12 @@ fourWheelVels FourWheelCalculator::calculateVels
         return facePointCalc(rob,x_goal,y_goal,theta_goal);
         break;
     default:
-        return defaultCalc(rob,x_goal,y_goal,theta_goal);
+        return defaultCalc(rob,x_goal,y_goal,theta_goal, moveType);
     }
 }
 
 fourWheelVels FourWheelCalculator::defaultCalc
-    (Robot* rob, float x_goal, float y_goal, float theta_goal)
+    (Robot* rob, float x_goal, float y_goal, float theta_goal, Type moveType)
 {
     //Current Position
     double x_current = rob->getRobotPosition().x;
@@ -75,16 +75,15 @@ fourWheelVels FourWheelCalculator::defaultCalc
     //Calulate error integral component
     calc_error(x_goal, y_goal);
 
-    //No XY movement under a certain distance--helps controllers not break
-    //But only if not SIMULATED
+    //No XY movement when explicitly staying still, and we are close
+    // to the target--helps controllers not break
     float xy_prop_used = xy_prop_mult;
     float xy_int_used = xy_int_mult;
-#if 0
-    if(Measurments::distance(rob, last_goal_target) < ROBOT_RADIUS*1.2) {
+    if(moveType == Type::StayStill
+            && Measurments::distance(rob, last_goal_target) < ROBOT_RADIUS*1.8) {
         xy_prop_used = 0;
         xy_int_used = 0;
     }
-#endif
 
     //Inertial Frame Velocities
     double x_vel =
@@ -177,16 +176,9 @@ fourWheelVels FourWheelCalculator::facePointCalc
     //PID
     calc_error(x_goal, y_goal);
 
-    //No XY movement under a certain distance--helps controllers not break
-    //But only if not SIMULATED
+    //Unlike defaultCalc, we always use the same XY prop/int multipliers
     float xy_prop_used = xy_prop_mult;
     float xy_int_used = xy_int_mult;
-#if 0
-    if(Measurments::distance(rob, last_goal_target) < ROBOT_RADIUS*1.2) {
-        xy_prop_used = 0;
-        xy_int_used = 0;
-    }
-#endif
 
     //Interial Frame Velocities
     double x_vel =

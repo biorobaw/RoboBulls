@@ -42,6 +42,7 @@ private:
 
     Point idlePoint;                    //!< Point to sit at when no action happens
     bool isKickingBallAway;             //!< Are we in the process of kicking the ball from the goal?
+    bool isIdling;                      //!< Are we idling at the idle point?
     Skill::KickToPointOmni* kick_skill; //!< Skill to kick the ball with
 };
 

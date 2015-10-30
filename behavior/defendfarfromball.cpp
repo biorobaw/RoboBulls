@@ -5,17 +5,18 @@
 #include "gui/guiinterface.h"
 
 //The distance from the goal where the robot stays idle
-#define IDLE_DISTANCE 300
+#define IDLE_DISTANCE 400
 
 //Percent of goal width to respond to a line. Can be more than 1
 #define GOAL_WIDTH_PCT (GOAL_WIDTH * 1.5)
 
 //How close must the ball before we go to kick it away?
-int DefendFarFromBall::goalieDist = 900;
+int DefendFarFromBall::goalieDist = 1300;
 
 DefendFarFromBall::DefendFarFromBall()
     : idlePoint(gameModel->getMyGoal() + Point(IDLE_DISTANCE,0))
     , isKickingBallAway(false)
+    , isIdling(false)
     , kick_skill(nullptr)
     { }
 
@@ -89,6 +90,9 @@ void DefendFarFromBall::perform(Robot *robot)
     //Segment to hold ballOnRobotIsAimedAtOurGoal and isBallMovingTowardsGoal return
     std::pair<Point,Point> lineSegment;
 
+    //Assume not idling--if we are, it will be set to true below
+    isIdling = false;
+
     if(isKickingBallAway) {
         //We are actively kicking the ball away
         //We will stop kicking if it becomes unreach able or we actually kick it away
@@ -128,20 +132,19 @@ void DefendFarFromBall::perform(Robot *robot)
             setMovementTargets(idlePoint, angleToBall, false, false);
         }
     }
-    else if(isBallUnreachable()) {
-        /* If the ball is unreachable, we just do nothing while facing center to avoid getting stuck */
-        setVelocityMultiplier(1);
-        setMovementTargets(idlePoint, Measurments::angleBetween(robot,Point(0,0)));
-    }
     else {
-        //Otherwise we are just idling at the idle point
+        //Otherwise we are just idling at the idle point, facing the center if it is unreachable,
+        // or to the ball otherwise
+        float facingAngle = isBallUnreachable() ? Measurments::angleBetween(robot,Point(0,0)) : angleToBall;
         setVelocityMultiplier(1);
-        setMovementTargets(idlePoint, angleToBall);
+        setMovementTargets(idlePoint, facingAngle);
+        isIdling = true;
     }
 
     //If we are not kicking, we just use generic move. Otherwise, kick_skill moves the robot
     //and this cannot be called
     if(!isKickingBallAway) {
-        GenericMovementBehavior::perform(robot);
+        auto type = isIdling ? Movement::Type::StayStill : Movement::Type::Default;
+        GenericMovementBehavior::perform(robot, type);
     }
 }

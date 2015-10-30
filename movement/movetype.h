@@ -21,12 +21,13 @@ enum Type
     Default = -1,
 
     //Differential Movement Types
-    SharpTurns,
-	NoSlowdown,
+    SharpTurns, //Try to make more shaper curves around object
+    NoSlowdown, //Attempts to not have as much of a slowdown when reaching a point
     DiffCount,  //Leave last and do not use
 
     //Omni Movement Types
-    facePoint
+    facePoint,  //Puts more emphasis on rotation
+    StayStill   //Used when the robot shoudl stay in it's current spot
 };
 
 

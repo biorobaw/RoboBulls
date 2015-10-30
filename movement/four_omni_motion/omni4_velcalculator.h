@@ -44,8 +44,8 @@ public:
         (Robot* rob, float x_goal, float y_goal, float theta_goal, Type moveType);
 
 private:
-    //! @brief Movement algorithm to handle Type::Default movement
-    fourWheelVels defaultCalc(Robot* rob, float x_goal, float y_goal, float theta_goal);
+    //! @brief Movement algorithm to handle Type::Default and Type::StayStill movement
+    fourWheelVels defaultCalc(Robot* rob, float x_goal, float y_goal, float theta_goal, Type moveType);
 
     //! @brief Movement algorithm to handle Type::facePoint movement
     fourWheelVels facePointCalc(Robot* rob, float x_goal, float y_goal, float angle_to_point);
