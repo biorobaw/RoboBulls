@@ -10,13 +10,14 @@
  * to the enemy goal--if too far, the robot will drive a distance
  * then pass to the Attacksupport robot. But if close enough, the
  * robot will shoot to the goal. In addition, if the robot drives
- * too far from the start point, it will make a pass.
+ * too far from the start point, it will make a pass is the supporter is
+ * at least some distance away and we haven't told it to always kick to goal (forceGoalKick)
  * @see AttackSupport */
 
 class AttackMain:public Behavior
 {
 public:
-    AttackMain(Robot* attacker = nullptr);
+    AttackMain(Robot* attacker = nullptr, bool forceGoalKick = false);
    ~AttackMain();
     void perform(Robot *);
     bool isFinished() override;
@@ -30,7 +31,7 @@ private:
     const double shot_distance = 2000;
     const double drive_distance = 200;
 
-    bool touched_ball = false, done = false;
+    bool touched_ball = false, done = false, forcedGoalKick = false;
     Skill::Skill* skill;
 
     enum states { initial, driving, end } state;

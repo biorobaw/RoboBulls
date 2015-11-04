@@ -3,7 +3,7 @@
 AttackSupport::AttackSupport(Robot* passer)
     : main_attacker(passer)
     , wp(0,0)
-    , previousBP(0,0)
+    , previousAttackerPos(0,0)
     { }
 
 void AttackSupport::perform(Robot * robot)
@@ -22,7 +22,6 @@ void AttackSupport::perform(Robot * robot)
 void AttackSupport::recalculateWp(Robot* robot)
 {
     Point gp = gameModel->getOpponentGoal();
-    Point bp = gameModel->getBallPoint();
     int goal_dir = gp.x/abs(gp.x);
 
     //Regions in which to check for robots
@@ -31,10 +30,10 @@ void AttackSupport::recalculateWp(Robot* robot)
     static Region right_of_main(0, goal_dir*3000, 0, -2000);
     static Region penalty_area (gp.x, gp.x-goal_dir*500,-500,500);
 
-    //We do not recalculate if the ball hasn't moved too much
-    if (Measurments::isClose(bp,previousBP,40))
+    //We do not recalculate if the attacker hasn't moved too much
+    if (Measurments::isClose(main_attacker,previousAttackerPos,40))
         return;
-    previousBP = bp;
+    previousAttackerPos = main_attacker->getRobotPosition();
 
     /* Logic to decide which half to stay on.
      * First, we try to go to the Region that the passer is not in.

@@ -11,7 +11,7 @@
 #define GOAL_WIDTH_PCT (GOAL_WIDTH * 1.5)
 
 //How close must the ball before we go to kick it away?
-int DefendFarFromBall::goalieDist = 1300;
+int DefendFarFromBall::goalieDist = 900;
 
 DefendFarFromBall::DefendFarFromBall()
     : idlePoint(gameModel->getMyGoal() + Point(IDLE_DISTANCE,0))

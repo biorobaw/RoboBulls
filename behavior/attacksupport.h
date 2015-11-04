@@ -22,7 +22,7 @@ private:
     Robot* main_attacker;       //Pointer to robot passing to us
     void recalculateWp(Robot*); //Re-calculates wp be to the "best" area
     Point wp;                   //Point to wait at for a pass
-    Point previousBP;           //Previous ball point, used to not reclaculate wp so often
+    Point previousAttackerPos;  //Previous attacker position, used to not reclaculate wp so often
 };
 
 #endif // ATTACK_SUPPORT_H
