@@ -328,12 +328,11 @@ void NormalGameStrategy::assignAttackBehaviors(bool switchSides)
             if(robot != currentMainAttacker)
                 NormalGameStrategy::moveRobotToIdleLine(robot, true);
         }
-        assignGoalieIfOk();
 
         //Behaviors are assigned and assign the new attacker, because we are attacking
         if(switchSides) {
             driverBot->assignBeh<AttackSupport>(recvBot);
-              recvBot->assignBeh<AttackMain>(driverBot);
+              recvBot->assignBeh<AttackMain>(driverBot, true); //The receiver cannot pass. No passing loops.
             currentMainAttacker = recvBot;
         } else {
             driverBot->assignBeh<AttackMain>(recvBot);
@@ -341,6 +340,7 @@ void NormalGameStrategy::assignAttackBehaviors(bool switchSides)
             currentMainAttacker = driverBot;
         }
 
+        //Finally assign goalie
         assignGoalieIfOk();
     }
 }
