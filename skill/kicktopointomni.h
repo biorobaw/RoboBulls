@@ -54,7 +54,11 @@ private:
     float  m_targetTolerance;     //Mininum angle threshold we must be facing the target to kick
       int  m_kickDistance;        //Mininim distance we must be to *m_targetPointer to kick (or -1)
       int  m_kickLockCount;       //Count of times we are seen in "kick lock"
-      bool m_useFullPower;        //Do we perform the kick with full power?
+     bool  m_hasRecoveredKickLock;//If was in KickLock, have recivered (moved behind fully?)
+     bool  m_useFullPower;        //Do we perform the kick with full power?
+    float  m_lastBallAwayDist;    //How far was the last ball observed from out position?
+      int  m_ballMovingAwayCount; //How many times have we seen m_lastBallAwayDist increasing?
+     bool  m_hasKickedOnce;
 
     //Current skill state
     enum { MOVE_BEHIND,  //We are far from the ball and are moving behind it to face target

@@ -39,17 +39,17 @@ float KICK_DISTANCE  = 220;
 float FACING_ANGLE_TOL  = 30;
 float FORWARD_WAIT_COUNT = 1;
 float MOVE_TOLERANCE = DIST_TOLERANCE/2;
-float KICK_LOCK_ANGLE = 15 * (M_PI/180);
+float KICK_LOCK_ANGLE = 3 * (M_PI/180);
 #else
 float BEHIND_RADIUS  = ROBOT_SIZE;
 float KICK_DISTANCE  = 150;
 float FACING_ANGLE_TOL  = 20;
 float FORWARD_WAIT_COUNT = 15;
 float MOVE_TOLERANCE = DIST_TOLERANCE*1.2;
-float KICK_LOCK_ANGLE = 15 * (M_PI/180);
+float KICK_LOCK_ANGLE = 12 * (M_PI/180);
 #endif
 
-float KICKLOCK_COUNT = 20;
+float KICKLOCK_COUNT = 15;
 float RECREATE_DIST_TOL = 25;
 
 /************************************************************************/
@@ -68,7 +68,11 @@ KickToPointOmni::KickToPointOmni(Point* targetPtr,
     , m_targetTolerance((targetTolerance == -1) ? FACING_ANGLE_TOL*(M_PI/180) : targetTolerance)
     , m_kickDistance(kickDistance)
     , m_kickLockCount(0)
+    , m_hasRecoveredKickLock(true)
     , m_useFullPower(useFullPower)
+    , m_lastBallAwayDist(0)
+    , m_ballMovingAwayCount(0)
+    , m_hasKickedOnce(false)
     , state(MOVE_BEHIND)
 {
     debug::registerVariable("ktpo_kd", &KICK_DISTANCE);
@@ -84,8 +88,14 @@ bool KickToPointOmni::perform(Robot* robot)
     // Angle between the ball and the kick target
     float ballTargetAng = Measurments::angleBetween(bp, *m_targetPointer);
 
+    //If at any time we are in kick lock, stop and restart out progress (state-wise)
     if(isInKickLock(robot))
         state = MOVE_BEHIND;
+
+    //If at any time we HAVE kicked the ball, and it is moving away, stop. We've finished.
+    // This should eventually happen by going through the three states below.
+    if(m_hasKickedOnce && ballIsMovingAway(robot))
+        return true;
 
     switch(state)
     {
@@ -97,7 +107,7 @@ bool KickToPointOmni::perform(Robot* robot)
                 break;
             }
 
-            robot->setDrible(1); //To stop from MOVE_FORWARD
+            robot->setDrible(0); //To stop from MOVE_FORWARD
 
             //Calculate the point behind the ball to move
             //TODO: factor in ball prediction
@@ -115,6 +125,7 @@ bool KickToPointOmni::perform(Robot* robot)
                 ++m_moveCompletionCount;
             if(m_moveCompletionCount > FORWARD_WAIT_COUNT) {
                 state = MOVE_FORWARD;
+                m_hasRecoveredKickLock = true;
                 m_moveCompletionCount = 0;
             }
         }
@@ -137,21 +148,26 @@ bool KickToPointOmni::perform(Robot* robot)
         break;
     case KICK:
         {
+            //Stop the dribble game.
             robot->setDrible(0);
+
+            //Are we using full power? Otherwise, use distance-based power
             float powerDistance = Measurments::distance(robot, *m_targetPointer);
             if(m_useFullPower)
                 powerDistance = Kick::defaultKickDistance;
+
+            //Perform the kick with the power and record that we did
             Kick k(powerDistance);
             k.perform(robot);
-            if(ballIsMovingAway(robot) || isVeryFarFromBall(robot)) {
-                state = MOVE_BEHIND;
-                return true;
-            } else {
-                state = MOVE_FORWARD;
-            }
+            m_hasKickedOnce = true;
+
+            //Now: We go back to move behind. The skill does not return true until
+            // we have seen the ball moving away. That happens above.
+            state = MOVE_FORWARD;
         }
         break;
     }
+
     return false;
 }
 
@@ -168,7 +184,8 @@ bool KickToPointOmni::perform(Robot* robot)
     * pushing the ball along in which it cannot get behind it. This helps to detect that */
 
 bool KickToPointOmni::canKick(Robot* robot) {
-    return isCloseToBall(robot) &&
+    return m_hasRecoveredKickLock &&
+           isCloseToBall(robot) &&
            isFacingBall(robot) &&
            isWithinKickDistance(robot) &&
            isFacingTarget(robot);
@@ -201,6 +218,7 @@ bool KickToPointOmni::isInKickLock(Robot* robot)
     if(close && !facingBall) {
         if(++m_kickLockCount > KICKLOCK_COUNT) {
             m_kickLockCount = 0;
+            m_hasRecoveredKickLock = false;
             return true;
         }
     }
@@ -208,21 +226,33 @@ bool KickToPointOmni::isInKickLock(Robot* robot)
 }
 
 /* Check to see if kicking is done or not.
- * It happens when the ball has reasonable velocity that is not facing
- * the robot. That means we kicked
+ * It happens when we have observed the ball moving away, when:
+ *  - The current distance of ball-to-robot is greater than the last
+ *  - The change is significant
+ *  - It happened far from the robot. So we don't record changes of the robot pushing the ball.
  * FIXME: This is duplicated from DefendBehavior
- * FIXME: Make this better
  */
 bool KickToPointOmni::ballIsMovingAway(Robot* robot)
 {
-    Point bp = gameModel->getBallPoint();
-    Point bv = gameModel->getBallVelocity();
-    Point ba = gameModel->getBallAcceleration();
-    //float bs = gameModel->getBallSpeed();
-    float ba_mag = std::hypot(ba.x, ba.y);
-    float va = atan2(bv.y, bv.x);
-    float ballRobAng = Measurments::angleBetween(bp, robot);
-    return (ba_mag > 0.001) && !(Measurments::isClose(va, ballRobAng, 90*(M_PI/180)));
+    //Let's look at the distance from the robot to the ball. Okay:
+    float thisDist = Measurments::distance(gameModel->getBallPoint(), robot);
+
+    if( thisDist > m_lastBallAwayDist               //The distance is farther away than last
+        && abs(thisDist - m_lastBallAwayDist) > 40  //The increase is significant
+        && thisDist > ROBOT_SIZE*2)                 //The change is far from robot
+    {
+        m_lastBallAwayDist = thisDist;
+        ++m_ballMovingAwayCount;
+    }
+
+    //The above three conditions have held enough times.
+    //We reset it go not save invalid state over kicking again, if it happens.
+    if(m_ballMovingAwayCount > 2) {
+        m_ballMovingAwayCount = 0;
+        return true;
+    }
+
+    return false;
 }
 
 
