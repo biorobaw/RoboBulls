@@ -16,18 +16,13 @@ void SimpleBehaviors::perform(Robot * r)
     }
     else if(gs == 'P' || gs == 'F' || gs == 'I' )
     {
-    #if TEAM == TEAM_YELLOW
-        r->assignBeh<DefendBehavior>();
-    #else
-         NormalGameStrategy::moveRobotToIdleLine(r);
-    #endif
+
+        NormalGameStrategy::moveRobotToIdleLine(r);
+
     }
     else if(gs == 'p' || gs == 'f' || gs == 'i')
     {
-    #if TEAM == TEAM_BLUE
-        r->assignBeh<DefendBehavior>();
-    #else
-         NormalGameStrategy::moveRobotToIdleLine(r);
-    #endif
+        NormalGameStrategy::moveRobotToIdleLine(r);
+
     }
 }
