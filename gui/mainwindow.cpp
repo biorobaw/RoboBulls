@@ -30,7 +30,6 @@
 #include "guiscene.h"
 #include "guiinterface.h"
 #include "guirobot.h"
-#include "getbehavior.h"
 #include "joystick.h"
 
 // Project classes
@@ -56,7 +55,6 @@ MainWindow::MainWindow(QWidget *parent) :
     robotpanel      = new RobotPanel(this);
     fieldpanel      = new FieldPanel(this);
     gamepanel       = new GamePanel(this);
-    getbehavior     = new GetBehavior(this);
 
     // Generating GUI
     teamSize_blue = 10;
@@ -138,7 +136,6 @@ void MainWindow::coreLoop(int tick) {
     fieldpanel->scanForScrollModifier();
     fieldpanel->scanForSelection();
     setMyVelocity();
-    selrobotpanel->setGuiOverride();
     fieldpanel->updateScene();
     robotpanel->updateBotPanel();
     updateBallInfo();

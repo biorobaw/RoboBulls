@@ -29,7 +29,6 @@ class QGraphicsItem;
 class QGraphicsEllipseItem;
 class QGraphicsRectItem;
 class QGraphicsScene;
-class GetBehavior;
 
 //Main Project forwards
 class GameModel;
@@ -57,7 +56,6 @@ public:
     ObjectPosition * objectPos;
     GamePanel *gamepanel;
     GuiDrawLine *guidrawline;
-    GetBehavior *getbehavior;
 
     QString getRemTime();
     // Debug functions

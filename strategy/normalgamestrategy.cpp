@@ -1,5 +1,4 @@
 #include "include/config/team.h"
-#include "behavior/behaviorassignment.h"
 #include "behavior/genericmovementbehavior.h"
 #include "behavior/defendfarfromball.h"
 #include "behavior/attackmain.h"
@@ -177,9 +176,9 @@ bool NormalGameStrategy::update()
                  !ballMoved &&
                  !hasStoppedForThisKickoff)
         {
-            BehaviorAssignment<SimpleBehaviors> haltAssignment;
-            haltAssignment.setSingleAssignment(true);
-            haltAssignment.assignBeh();
+            //Idling while the opponent has not kicked the ball
+            for(Robot* robot : gameModel->getMyTeam())
+                robot->assignBeh<SimpleBehaviors>();
         }
         else
         {

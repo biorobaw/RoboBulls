@@ -1,6 +1,5 @@
 #include "indiectkickstrategy.h"
 #include "behavior/simplebehaviors.h"
-#include "behavior/behaviorassignment.h"
 #include "model/gamemodel.h"
 #include "behavior/passballreceiver.h"
 #include "behavior/passballsender.h"
@@ -18,8 +17,6 @@
 void IndiectKickStrategy::assignBeh()
 {
     GameModel *gm = GameModel::getModel();
-    std::vector<Robot*>& myTeam = gm->getMyTeam();
-
     Robot *sender;
     Robot *receiver;
 
@@ -87,20 +84,14 @@ void IndiectKickStrategy::assignBeh()
     else if ((gm->getGameState() == 'i' && TEAM == TEAM_BLUE) ||
              (gm->getGameState() == 'I' && TEAM == TEAM_YELLOW))
     {
-        BehaviorAssignment<DefendFarFromBall> golieAssignment;
-        golieAssignment.setSingleAssignment(true);
-        for (Robot* rob: myTeam)
-        {
-            if (rob->getID() == GOALIE_ID)
-                golieAssignment.assignBeh(rob);
-        }
-        BehaviorAssignment<SimpleBehaviors> simpleAssignment;
-        simpleAssignment.setSingleAssignment(true);
-        for (unsigned i = 0; i < myTeam.size(); i++)
-        {
-            if (myTeam.at(i)->getID() != GOALIE_ID)
-                simpleAssignment.assignBeh(myTeam.at(i));
-        }
+        //Assign all simple behaviors
+        for(Robot* robot : gameModel->getMyTeam())
+            robot->assignBeh<SimpleBehaviors>();
+
+        //Then assign goalie DefendFarFromBall
+        Robot* goalie = gameModel->findMyTeam(GOALIE_ID);
+        if(goalie)
+            goalie->assignBeh<DefendFarFromBall>();
     }
 }
 

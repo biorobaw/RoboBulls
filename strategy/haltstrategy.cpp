@@ -1,15 +1,9 @@
 #include "haltstrategy.h"
-#include "skill/skill.h"
-#include "behavior/behaviorassignment.h"
+#include "model/gamemodel.h"
 #include "behavior/simplebehaviors.h"
-
-HaltStrategy::HaltStrategy()
-{
-}
 
 void HaltStrategy::assignBeh()
 {
-    BehaviorAssignment<SimpleBehaviors> haltAssignment;
-    haltAssignment.setSingleAssignment(true);
-    haltAssignment.assignBeh();
+    for(Robot* robot : gameModel->getMyTeam())
+        robot->assignBeh<SimpleBehaviors>();
 }
