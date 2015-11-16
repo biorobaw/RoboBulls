@@ -16,7 +16,7 @@ void AttackSupport::perform(Robot * robot)
 
     //Sets movement to always face the ball, sitting at wait point (wp)
     setMovementTargets(wp, Measurments::angleBetween(robot, main_attacker));
-    GenericMovementBehavior::perform(robot);
+    StaticMovementBehavior::perform(robot);
 }
 
 void AttackSupport::recalculateWp(Robot* robot)

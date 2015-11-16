@@ -66,7 +66,7 @@ public:
  * Sends the robot to a point at a fixed x and a given y (in constructor)
  * Used to sit still when the ball is in either goal
  */
-class RetreatAfterGoal : public GenericMovementBehavior
+class RetreatAfterGoal : public StaticMovementBehavior
 {
     int myYPos = 0;
 public:
@@ -80,7 +80,7 @@ public:
         double wait_orientation = Measurments::angleBetween(robot->getRobotPosition(),gm->getBallPoint());
 
         setMovementTargets(wait_point, wait_orientation);
-        GenericMovementBehavior::perform(robot);
+        StaticMovementBehavior::perform(robot);
     }
 };
 

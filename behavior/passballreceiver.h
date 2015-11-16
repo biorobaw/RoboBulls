@@ -24,7 +24,7 @@
  * shoots toward the goal
  * @see PassBallSender */
 
-class PassBallReceiver : public GenericMovementBehavior
+class PassBallReceiver : public StaticMovementBehavior
 {
 public:
     PassBallReceiver(Robot *theSender);

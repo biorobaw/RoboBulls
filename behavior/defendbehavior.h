@@ -52,7 +52,7 @@ private:
 /*! @brief DefendState To choose a point to idle at.
  * @details If activeKick is true, goes to kick the ball away if it is coming close.
  */
-class DefendStateIdle : public DefendState, public GenericMovementBehavior
+class DefendStateIdle : public DefendState, public StaticMovementBehavior
 {
 public:
      DefendStateIdle(bool activeKick = true);

@@ -99,7 +99,7 @@ void PassBallReceiver::perform(Robot *robot)
             Point movePoint = passTarget + Point(100 * cos(goal2Target),
                                                  100 * sin(goal2Target));
             setMovementTargets(movePoint, robGoalAng);
-            GenericMovementBehavior::perform(robot);
+            StaticMovementBehavior::perform(robot);
         }
         break;
 
