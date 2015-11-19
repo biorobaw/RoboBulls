@@ -245,7 +245,7 @@ void NormalGameStrategy::moveRobotToIdleLine(Robot* robot, bool waiter)
 
     //Closest guy to the wait point sits there instead, if requested
     if(waiter && Comparisons::distance(wait_point).minMyTeam() == robot) {
-        robot->assignBeh<GenericMovementBehavior>( wait_point );
+        robot->assignBeh<StaticMovementBehavior>( wait_point );
     } else {
         //Otherwise assigns the robot to sit along a line across the field
         int incSize = FIELD_WIDTH / (gameModel->getMyTeam().size() - 1);
@@ -329,14 +329,17 @@ void NormalGameStrategy::assignAttackBehaviors(bool switchSides)
         }
 
         //Behaviors are assigned and assign the new attacker, because we are attacking
-        if(switchSides) {
-            driverBot->assignBeh<AttackSupport>(recvBot);
-              recvBot->assignBeh<AttackMain>(driverBot, true); //The receiver cannot pass. No passing loops.
-            currentMainAttacker = recvBot;
-        } else {
-            driverBot->assignBeh<AttackMain>(recvBot);
-              recvBot->assignBeh<AttackSupport>(driverBot);
-            currentMainAttacker = driverBot;
+        //First check to see if we found two robots in the first
+        if(driverBot && recvBot) {
+            if(switchSides) {
+                driverBot->assignBeh<AttackSupport>(recvBot);
+                  recvBot->assignBeh<AttackMain>(driverBot, true); //The receiver cannot pass. No passing loops.
+                currentMainAttacker = recvBot;
+            } else {
+                driverBot->assignBeh<AttackMain>(recvBot);
+                  recvBot->assignBeh<AttackSupport>(driverBot);
+                currentMainAttacker = driverBot;
+            }
         }
 
         //Finally assign goalie
@@ -389,7 +392,8 @@ void NormalGameStrategy::assignGoalKickBehaviors()
 
 /* Utility function that finds three robots `a_out` `b_out` and `c_out` such that:
  * - a_out is closest to the `target`, and b_out and c_out are other unique robots.
- * - None are not the goalie robot
+ * - None are the goalie robot
+ * Any of these can be NULL. Check returned values.
  */
 void NormalGameStrategy::findMostValidRobots(Point target, Robot*& a_out, Robot*& b_out, Robot*& c_out)
 {
@@ -404,9 +408,6 @@ void NormalGameStrategy::findMostValidRobots(Point target, Robot*& a_out, Robot*
 
     //c_found is also another robot
     c_found = Comparisons::idNot(GOALIE_ID).ignoreIDs({a_found, b_found}).anyMyTeam();
-
-    if(!a_found || !b_found)
-        throw std::runtime_error("ERROR: Valid robots not found!");
 
     a_out = a_found;
     b_out = b_found;
