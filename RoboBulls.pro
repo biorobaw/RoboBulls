@@ -26,6 +26,7 @@ SOURCES += main.cpp \
 	behavior/passballreceiver.cpp \
 	behavior/passballsender.cpp \
 	behavior/penaltybehavior.cpp \
+	behavior/rotateonpoint.cpp \
 	behavior/simplebehaviors.cpp \
 	communication/nxtrobcomm.cpp \
 	communication/refcomm.cpp \
