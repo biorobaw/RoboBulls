@@ -307,6 +307,11 @@ bool NormalGameStrategy::considerSwitchCreiteria()
     return NormalGameStrategy::isOnAttack;
 }
 
+//To ingnore robots with no kicker in assigning them to drive the ball
+static bool no_kicker(Robot* robot) {
+    return not robot->hasKicker();
+}
+
 /* What TwoVOne did, where two robots are on the other side of the
  * field and drive as far as possible, and at the end of that drive,
  * pass the ball to the other and repeat until halfway to the goal and
@@ -319,8 +324,10 @@ void NormalGameStrategy::assignAttackBehaviors(bool switchSides)
         needsAttackAssign = false;
         needsDefenceAssign = true;
 
-        Robot* driverBot, *recvBot, *otherBot;
-        findMostValidRobots(gameModel->getBallPoint(), driverBot, recvBot, otherBot);
+        //driverBot: Robot closet to the ball, not the goalie, that has a kicker
+        Robot* driverBot = Comparisons::distanceBall().ignore_if(no_kicker).ignoreID(GOALIE_ID).minMyTeam();
+        //recvBot: Robot that is not driverBot nor the goalie
+        Robot* recvBot = Comparisons::idNot(GOALIE_ID).ignoreID(driverBot).anyMyTeam();
 
         //First, makes all robots sit still (for now)
         for(Robot* robot : gameModel->getMyTeam()) {
@@ -329,8 +336,8 @@ void NormalGameStrategy::assignAttackBehaviors(bool switchSides)
         }
 
         //Behaviors are assigned and assign the new attacker, because we are attacking
-        //First check to see if we found two robots in the first
         if(driverBot && recvBot) {
+            //If we have found both robots, assign them both
             if(switchSides) {
                 driverBot->assignBeh<AttackSupport>(recvBot);
                   recvBot->assignBeh<AttackMain>(driverBot, true); //The receiver cannot pass. No passing loops.
@@ -340,6 +347,9 @@ void NormalGameStrategy::assignAttackBehaviors(bool switchSides)
                   recvBot->assignBeh<AttackSupport>(driverBot);
                 currentMainAttacker = driverBot;
             }
+        } else if (driverBot) {
+            //If there is only one robot, just make it kick to the goal
+            driverBot->assignBeh<AttackMain>(nullptr, true);
         }
 
         //Finally assign goalie
@@ -387,31 +397,6 @@ void NormalGameStrategy::assignGoalKickBehaviors()
     }
     assignGoalieIfOk();
     currentMainAttacker = NULL;
-}
-
-
-/* Utility function that finds three robots `a_out` `b_out` and `c_out` such that:
- * - a_out is closest to the `target`, and b_out and c_out are other unique robots.
- * - None are the goalie robot
- * Any of these can be NULL. Check returned values.
- */
-void NormalGameStrategy::findMostValidRobots(Point target, Robot*& a_out, Robot*& b_out, Robot*& c_out)
-{
-    std::vector<Robot*>& myTeam = gameModel->getMyTeam();
-    Robot* a_found = NULL, *b_found = NULL, *c_found = NULL;
-	
-	//Find robot closest to `target`
-    a_found = *Comparisons::distance(target).ignoreID(GOALIE_ID).min(myTeam);
-
-    //b_found is another robot
-    b_found = Comparisons::idNot(GOALIE_ID).ignoreID(a_found).anyMyTeam();
-
-    //c_found is also another robot
-    c_found = Comparisons::idNot(GOALIE_ID).ignoreIDs({a_found, b_found}).anyMyTeam();
-
-    a_out = a_found;
-    b_out = b_found;
-    c_out = c_found;
 }
 
 //! @endcond

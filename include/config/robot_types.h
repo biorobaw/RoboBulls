@@ -23,6 +23,9 @@ enum RobotType
 //! @brief An array indexed by ID to RobotType
 extern const RobotType robotIDTypes[];
 
+//! @brief Array indexed by ID as to if the robot has kicking capabilities
+extern const bool robotHasKicker[];
+
 /*! @brief The goalie robot's ID is given as an integer.
  * @details This ID can be changed with the `goalie_id` entry on
  * the utility command line. It is 5 by default (see .cpp)

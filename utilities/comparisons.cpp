@@ -47,11 +47,16 @@ bool Predicate::operator()(const Point& point) {
 //Binary operators
 bool Predicate::operator()(Robot* a, Robot* b) {
     try {
-        return isNotIgnored(a) and isNotIgnored(b) and robotCompareFn(a, b);
+        if(!isNotIgnored(a))
+            return false;
+        if(!isNotIgnored(b))
+            return true;
+        return robotCompareFn(a,b);
     } catch( ... ) {
         return isNotIgnored(a);
     }
 }
+
 bool Predicate::operator()(const Point& a, const Point& b) {
     return pointCompareFn(a, b);
 }
