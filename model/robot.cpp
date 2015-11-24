@@ -84,7 +84,7 @@ bool Robot::hasBehavior() { return hasBeh; }
 bool Robot::hasKicker()
 {
 #if SIMULATED
-    //return true;
+    return true;
 #else
     assert(id >= 0 && id < 10);
     return robotHasKicker[id];
