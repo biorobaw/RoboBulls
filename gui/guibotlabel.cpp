@@ -1,6 +1,7 @@
 #include "include/config/team.h"
 #include "model/gamemodel.h"
 #include "guibotlabel.h"
+#include "movement/move_collisions.h"
 
 GuiBotLabel::GuiBotLabel()
 {
@@ -39,8 +40,10 @@ void GuiBotLabel::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
             }
         }
 
-        //Drawing numerical ID
-        QString label("" + QString::number(id));
+        //Drawing numerical ID and Displays the current collision status
+        //(0) = Move_OK, (1) = MOVE_YIELDING, (2) = MOVE_COLLIDED
+        Robot* stateRob = gameModel->findMyTeam(id);
+        QString label("" + QString::number(id) + "(" + QString::number(Movement::Collisions::getMoveStatus(stateRob)) + ")");
         QFont sansFont("Courier", rec.width()/4, QFont::Bold);
         painter->setFont(sansFont);
         painter->drawText(rec,label);
@@ -51,9 +54,10 @@ void GuiBotLabel::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
         {
             painter->setBrush(QBrush(QColor::fromRgb(255,69,0,255), Qt::SolidPattern));
             if(r->isOnMyTeam() == (TEAM == TEAM_BLUE ? mainTeam : !mainTeam)) {
-                QRectF b(100, 50, -50, -50);
+                QRectF b(100, 0, -50, -50);
                 painter->drawEllipse(b);
             }
         }
+
     }
 }

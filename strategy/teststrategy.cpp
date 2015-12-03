@@ -90,6 +90,23 @@ public:
 
 /************************************************************************/
 
+//Chooses a robot to move to the ball position
+class PracticeBehavior : public GenericMovementBehavior
+{
+
+    void perform(Robot *robot) override
+    {
+        Point ballPosition = gameModel->getBallPoint();
+
+        setMovementTargets(ballPosition);
+
+        GenericMovementBehavior::perform(robot);
+
+    }
+
+};
+
+
 bool TestStrategy::update()
 {
     //Change IDs and behaviors to be assigned here.
