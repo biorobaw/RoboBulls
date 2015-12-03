@@ -25,11 +25,11 @@
 //! @brief Comunication configurations
 //! @{
 
-#define SIMULATOR_ADDRESS   "127.0.0.1"
+#define SIMULATOR_ADDRESS   SIMULATOR_ADDRESS_JAMES
 #define SIMULATOR_PORT      20011
 
 #if SIMULATED
- #define VISION_ADDRESS     "224.5.23.2"
+ #define VISION_ADDRESS     VISION_ADDRESS_JAMES
  #define VISION_PORT        10020
 #else
  #define VISION_ADDRESS     VISION_ADDRESS_NONSIM
