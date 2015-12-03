@@ -54,7 +54,7 @@ void GuiBotLabel::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
         {
             painter->setBrush(QBrush(QColor::fromRgb(255,69,0,255), Qt::SolidPattern));
             if(r->isOnMyTeam() == (TEAM == TEAM_BLUE ? mainTeam : !mainTeam)) {
-                QRectF b(100, 50, -50, -50);
+                QRectF b(100, 0, -50, -50);
                 painter->drawEllipse(b);
             }
         }
