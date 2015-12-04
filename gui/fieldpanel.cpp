@@ -45,16 +45,16 @@ void FieldPanel::setupScene() {
     ball->setToolTip("Ball");
 
     //Bot Labels - blue team
-    botLabel0 = new GuiBotLabel;
-    botLabel1 = new GuiBotLabel;
-    botLabel2 = new GuiBotLabel;
-    botLabel3 = new GuiBotLabel;
-    botLabel4 = new GuiBotLabel;
-    botLabel5 = new GuiBotLabel;
-    botLabel6 = new GuiBotLabel;
-    botLabel7 = new GuiBotLabel;
-    botLabel8 = new GuiBotLabel;
-    botLabel9 = new GuiBotLabel;
+    botLabel0 = new GuiBotLabel(TEAM_BLUE);
+    botLabel1 = new GuiBotLabel(TEAM_BLUE);
+    botLabel2 = new GuiBotLabel(TEAM_BLUE);
+    botLabel3 = new GuiBotLabel(TEAM_BLUE);
+    botLabel4 = new GuiBotLabel(TEAM_BLUE);
+    botLabel5 = new GuiBotLabel(TEAM_BLUE);
+    botLabel6 = new GuiBotLabel(TEAM_BLUE);
+    botLabel7 = new GuiBotLabel(TEAM_BLUE);
+    botLabel8 = new GuiBotLabel(TEAM_BLUE);
+    botLabel9 = new GuiBotLabel(TEAM_BLUE);
 
     guiLabels.push_back(botLabel0);
     guiLabels.push_back(botLabel1);
@@ -68,16 +68,16 @@ void FieldPanel::setupScene() {
     guiLabels.push_back(botLabel9);
 
     // Bot Labels - yellow team
-    botLabel0Y = new GuiBotLabel;
-    botLabel1Y = new GuiBotLabel;
-    botLabel2Y = new GuiBotLabel;
-    botLabel3Y = new GuiBotLabel;
-    botLabel4Y = new GuiBotLabel;
-    botLabel5Y = new GuiBotLabel;
-    botLabel6Y = new GuiBotLabel;
-    botLabel7Y = new GuiBotLabel;
-    botLabel8Y = new GuiBotLabel;
-    botLabel9Y = new GuiBotLabel;
+    botLabel0Y = new GuiBotLabel(TEAM_YELLOW);
+    botLabel1Y = new GuiBotLabel(TEAM_YELLOW);
+    botLabel2Y = new GuiBotLabel(TEAM_YELLOW);
+    botLabel3Y = new GuiBotLabel(TEAM_YELLOW);
+    botLabel4Y = new GuiBotLabel(TEAM_YELLOW);
+    botLabel5Y = new GuiBotLabel(TEAM_YELLOW);
+    botLabel6Y = new GuiBotLabel(TEAM_YELLOW);
+    botLabel7Y = new GuiBotLabel(TEAM_YELLOW);
+    botLabel8Y = new GuiBotLabel(TEAM_YELLOW);
+    botLabel9Y = new GuiBotLabel(TEAM_YELLOW);
 
     guiLabelsY.push_back(botLabel0Y);
     guiLabelsY.push_back(botLabel1Y);
@@ -617,5 +617,6 @@ void FieldPanel::hidePrimeBotPanel()
     dash->ui->frame_primeBot->hide();
     selectedBot = -1;
 }
+
 
 
