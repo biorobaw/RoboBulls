@@ -12,16 +12,15 @@
 class GuiBotLabel : public QGraphicsItem
 {
 public:
-    GuiBotLabel();
+    GuiBotLabel(int team);
 
     QRectF boundingRect() const;    // outermost edges of the object (must be implemented with QGraphicsItem)
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     int id;
+    int team;
     bool hidden = true;
     bool mainTeam = true;
-    std::string myTeam = "Blue";
-
-
 };
 
 #endif // GUIBOTLABEL_H
+
