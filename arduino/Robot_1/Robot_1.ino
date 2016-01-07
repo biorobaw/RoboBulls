@@ -3,30 +3,35 @@ int id;
 int myid = 1;    // This Robot's ID
 
 // Declare motor pins
-#define speedPinLF 3
-#define enablePinLF 31  
-#define dirPinLF 33
-#define brakePinLF 35
+#define speedPinLF 4
+#define gndPinLF 24
+#define enablePinLF 25  
+#define dirPinLF 26
+#define brakePinLF 27
 
 #define speedPinLB 5
-#define enablePinLB 40
-#define dirPinLB 42
-#define brakePinLB 44
+#define gndPinLB 32
+#define enablePinLB 33
+#define dirPinLB 34
+#define brakePinLB 35
 
 #define speedPinRF 6 
-#define enablePinRF 22 
-#define dirPinRF 24 
-#define brakePinRF 26
+#define gndPinRF 40
+#define enablePinRF 41 
+#define dirPinRF 42
+#define brakePinRF 43
 
-#define speedPinRB 9
+#define speedPinRB 7
+#define gndPinRB 48
 #define enablePinRB 49 
-#define dirPinRB 51
-#define brakePinRB 53
+#define dirPinRB 50
+#define brakePinRB 51
 
 // Define pin locations for kicker and chipper
-#define kickPin 7
-#define chargePin 8
-#define dribblePin 10
+#define dribblePin 8
+#define kickPin 9
+#define chargePin 10
+
 
 // Velocities
 //  90 = Stop
@@ -53,22 +58,17 @@ void setup()
   pinMode(chargePin, OUTPUT);
   pinMode(dribblePin, OUTPUT);    
 
-  // Set Motor Pins to output
+  // Set controller signal pins to output
+  pinMode(gndPinLF,OUTPUT);
+  pinMode(gndPinLB,OUTPUT);
+  pinMode(gndPinRF,OUTPUT);
+  pinMode(gndPinRB,OUTPUT);
+  
   pinMode(enablePinLF,OUTPUT);
   pinMode(enablePinLB,OUTPUT);
   pinMode(enablePinRF,OUTPUT);
-  pinMode(enablePinRB,OUTPUT);
+  pinMode(enablePinRB,OUTPUT); 
   
-  digitalWrite(enablePinLF,HIGH);
-  digitalWrite(enablePinLB,HIGH);
-  digitalWrite(enablePinRF,HIGH);
-  digitalWrite(enablePinRB,HIGH);
-  
-  analogWrite(speedPinLF,30);
-  analogWrite(speedPinLB,30);
-  analogWrite(speedPinRF,30);
-  analogWrite(speedPinRB,30);
-    
   pinMode(dirPinLF,OUTPUT);
   pinMode(dirPinLB,OUTPUT);
   pinMode(dirPinRF,OUTPUT);
@@ -78,6 +78,31 @@ void setup()
   pinMode(brakePinLB,OUTPUT);
   pinMode(brakePinRF,OUTPUT);
   pinMode(brakePinRB,OUTPUT);
+  
+  // Set Controller Signal GND to 0V
+  digitalWrite(gndPinLF,LOW);
+  digitalWrite(gndPinLB,LOW);
+  digitalWrite(gndPinRF,LOW);
+  digitalWrite(gndPinRB,LOW);
+  
+  // Enable Controllers
+  digitalWrite(enablePinLF,HIGH);
+  digitalWrite(enablePinLB,HIGH);
+  digitalWrite(enablePinRF,HIGH);
+  digitalWrite(enablePinRB,HIGH);
+  
+  // Enable Brakes
+  digitalWrite(brakePinLF,HIGH);
+  digitalWrite(brakePinLB,HIGH);
+  digitalWrite(brakePinRF,HIGH);
+  digitalWrite(brakePinRB,HIGH);
+  
+  // Set Speed to Zero
+  analogWrite(speedPinLF,30);
+  analogWrite(speedPinLB,30);
+  analogWrite(speedPinRF,30);
+  analogWrite(speedPinRB,30);    
+  
 
   //Note: For the UNO, the USB/Micro
   //switch must be in the micro position. 
@@ -154,20 +179,20 @@ void setDribble()
 // Write Speeds to Motors
 void setSpeeds()
 {
-  //Bound for PWN duty cycles, about 10% and 90% of 0 and 255
-  static int lowPWM = 30, highPWM = 220;
+  //Bound for PWM duty cycles, about 10% and 90% of 0 and 255
+  static int lowPWM = 30, highPWM = 225;
 
   // output speeds
   if(targetLFvel > 0 )
   {
     analogWrite(speedPinLF, map(abs(targetLFvel),0,100,lowPWM,highPWM));
-    digitalWrite(dirPinLF, HIGH);
+    digitalWrite(dirPinLF, LOW);
     digitalWrite(brakePinLF, LOW);
   }
   else if(targetLFvel < 0 )
   {
     analogWrite(speedPinLF, map(abs(targetLFvel),0,100,lowPWM,highPWM));
-    digitalWrite(dirPinLF, LOW);
+    digitalWrite(dirPinLF, HIGH);
     digitalWrite(brakePinLF, LOW);
   }
   else
@@ -176,13 +201,13 @@ void setSpeeds()
   if(targetLBvel > 0 )
   {
     analogWrite(speedPinLB, map(abs(targetLBvel),0,100,lowPWM,highPWM));
-    digitalWrite(dirPinLB, HIGH);
+    digitalWrite(dirPinLB, LOW);
     digitalWrite(brakePinLB, LOW);
   }
   else if(targetLBvel < 0)
   {
     analogWrite(speedPinLB, map(abs(targetLBvel),0,100,lowPWM,highPWM));
-    digitalWrite(dirPinLB, LOW);
+    digitalWrite(dirPinLB, HIGH);
     digitalWrite(brakePinLB, LOW);
   }
   else
@@ -202,22 +227,21 @@ void setSpeeds()
   }
   else
     digitalWrite(brakePinRF, HIGH);
-    
+  
   if(targetRBvel > 0 )
-  {
-    analogWrite(speedPinRB, map(abs(targetRBvel),0,100,lowPWM,highPWM));
-    digitalWrite(dirPinRB, LOW);
-    digitalWrite(brakePinRB, LOW);
-  }
-  else if(targetRBvel < 0 )
   {
     analogWrite(speedPinRB, map(abs(targetRBvel),0,100,lowPWM,highPWM));
     digitalWrite(dirPinRB, HIGH);
     digitalWrite(brakePinRB, LOW);
   }
+  else if(targetRBvel < 0 )
+  {
+    analogWrite(speedPinRB, map(abs(targetRBvel),0,100,lowPWM,highPWM));
+    digitalWrite(dirPinRB, LOW);
+    digitalWrite(brakePinRB, LOW);
+  }
   else
-    digitalWrite(brakePinRB, HIGH);
-    
+    digitalWrite(brakePinRB, HIGH);   
 }
 //***********************************************************************************
 
