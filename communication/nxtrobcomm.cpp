@@ -6,7 +6,7 @@
 //Used for testing wheels; see ROBOT_WHEEL_TEST
 float lf, lb, rf, rb;
 
-//A constant to multiple velocities
+//A constant to multiply velocities
 static float k = 0.4;
 
 NXTRobComm::NXTRobComm()

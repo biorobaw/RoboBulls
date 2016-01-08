@@ -9,25 +9,16 @@ namespace Movement
 
 #define FOUR_WHEEL_DEBUG 0
 
-//Multiplier for theta_vel in defaultCalc
-float THETA_MULT = 3;
-
-//Multiplier for theta_vel in facePointCalc
-float THETA_MULT2 = 1;
-
-//Multiplier for x_vel and y_vel in defaultCalc
-float XY_MULT = 1;
-
 #if SIMULATED
 float xy_prop_mult = 0.1;       //Multiplier for Proportional XY
 float xy_int_mult = 0.002;      //Multiplier for integral XY
 float theta_prop_mult = 0.5;    //Multiplier for theta proportional
 float theta_int_mult = 0.0015;  //Multiplier for theta integral
 #else
-float xy_prop_mult = 0.025;     //Multiplier for Proportional XY
-float xy_int_mult = 0.0005;     //Multiplier for integral XY
-float theta_prop_mult = 0.1;    //Multiplier for theta proportional
-float theta_int_mult = 0.0015;  //Multiplier for theta integral
+float xy_prop_mult = 1;     //Multiplier for Proportional XY
+float xy_int_mult = 0.000;     //Multiplier for integral XY
+float theta_prop_mult = 1;    //Multiplier for theta proportional
+float theta_int_mult = 0.000;  //Multiplier for theta integral
 #endif
 
 FourWheelCalculator::FourWheelCalculator()
@@ -75,7 +66,7 @@ fourWheelVels FourWheelCalculator::defaultCalc
     //Calulate error integral component
     calc_error(x_goal, y_goal);
 
-    //No XY movement when explicitly staying still, and we are close
+    // No XY movement when explicitly staying still, and we are close
     // to the target--helps controllers not break
     float xy_prop_used = xy_prop_mult;
     float xy_int_used = xy_int_mult;
@@ -103,9 +94,9 @@ fourWheelVels FourWheelCalculator::defaultCalc
     // Reduce speed near target
     if (distance_to_goal < 700)
     {
-        x_vel *= XY_MULT;
-        y_vel *= XY_MULT;
-        theta_vel *= THETA_MULT;
+        x_vel *= 0.1;
+        y_vel *= 0.1;
+        theta_vel *= 0.1;
     }
 
     // Robot Frame Velocities
@@ -196,20 +187,21 @@ fourWheelVels FourWheelCalculator::facePointCalc
         theta_vel=-theta_vel;
 
     // Reduce speed near target
-    if (distance_to_goal < 300)
+    if (distance_to_goal < 700)
     {
-        x_vel *= 0.7;
-        y_vel *= 0.7;
+        x_vel *= 0.1;
+        y_vel *= 0.1;
     }
 
     // Focus on rotation
     double vel = sqrt(x_vel*x_vel+y_vel*y_vel);
     if (abs(Measurments::angleDiff(theta_goal,theta_current))>ROT_TOLERANCE*0.5 && vel > 40)
     {
-        x_vel = 90*cos(angle_to_goal);
-        y_vel = 90*sin(angle_to_goal);
-        theta_vel *= THETA_MULT2;
+        x_vel = vel*cos(angle_to_goal);
+        y_vel = vel*sin(angle_to_goal);
     }
+
+
 
     // Robot Frame Velocities
     double y_vel_robot = cos(theta_current)*x_vel+sin(theta_current)*y_vel;
