@@ -58,7 +58,19 @@ void RobotPanel::setupBotPanel() {
     velocityDials.push_back(dash->ui->dial_botVel_8);
     velocityDials.push_back(dash->ui->dial_botVel_9);
 
-    // Speed dials
+    //Current Behavior Labels
+    currBehavior.push_back(dash->ui->currBehavior_0);
+    currBehavior.push_back(dash->ui->currBehavior_1);
+    currBehavior.push_back(dash->ui->currBehavior_2);
+    currBehavior.push_back(dash->ui->currBehavior_3);
+    currBehavior.push_back(dash->ui->currBehavior_4);
+    currBehavior.push_back(dash->ui->currBehavior_5);
+    currBehavior.push_back(dash->ui->currBehavior_6);
+    currBehavior.push_back(dash->ui->currBehavior_7);
+    currBehavior.push_back(dash->ui->currBehavior_8);
+    currBehavior.push_back(dash->ui->currBehavior_9);
+
+ /*   // Speed dials disabled so that I can see GUI changes
     speedDials.push_back(dash->ui->dial_botSpeed_0);
     speedDials.push_back(dash->ui->dial_botSpeed_1);
     speedDials.push_back(dash->ui->dial_botSpeed_2);
@@ -69,7 +81,7 @@ void RobotPanel::setupBotPanel() {
     speedDials.push_back(dash->ui->dial_botSpeed_7);
     speedDials.push_back(dash->ui->dial_botSpeed_8);
     speedDials.push_back(dash->ui->dial_botSpeed_9);
-
+*/
     // X Coordinate vector
     botXcoords.push_back(dash->ui->lcd_coordX_0);
     botXcoords.push_back(dash->ui->lcd_coordX_1);
@@ -272,8 +284,13 @@ void RobotPanel::updateBotPanel() {
             } else {                                        // motionless
                 velocityDials[i]->setStyleSheet("background-color: rgb(150, 150, 150);");
             }
-            // Speed dials
-            int maxSpeed = speedDials[i]->maximum();
+
+            //Setting the Current behavior labels for the robots
+            currBehavior[i]->setText("  ");
+
+
+            // Speed dials disabled so that I can see how GUI is updated
+/*          int maxSpeed = speedDials[i]->maximum();
             speedDials[i]->setValue(dash->objectPos->botSpeeds[i] * dash->objectPos->speedModifier);
             if (speedDials[i]->value() > dash->objectPos->movementMin) {
                 speedDials[i]->setStyleSheet("background-color: rgb(0, 191, 255);");
@@ -292,7 +309,7 @@ void RobotPanel::updateBotPanel() {
             } else {
                 speedDials[i]->setStyleSheet("background-color: rgb(150, 150, 150);");
             }
-
+*/
             botIconFrames[i]->update();
 
         } else {

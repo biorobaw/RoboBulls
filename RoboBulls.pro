@@ -93,7 +93,8 @@ SOURCES += main.cpp \
 	utilities/measurments.cpp \
 	utilities/point.cpp \
 	utilities/region.cpp \
-	utilities/velocitycalculator.cpp
+	utilities/velocitycalculator.cpp \
+    utilities/getclassname.cpp
 
 HEADERS += \
 	behavior/attackmain.h \
@@ -183,7 +184,8 @@ HEADERS += \
 	utilities/measurments.h \
 	utilities/point.h \
 	utilities/region.h \
-	utilities/velocitycalculator.h
+	utilities/velocitycalculator.h \
+    utilities/getclassname.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 

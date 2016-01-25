@@ -2854,7 +2854,7 @@ background-color: rgba(255, 0, 0, 100);</string>
               <property name="geometry">
                <rect>
                 <x>0</x>
-                <y>0</y>
+                <y>-343</y>
                 <width>269</width>
                 <height>869</height>
                </rect>
@@ -3227,68 +3227,17 @@ background-color: rgba(255, 0, 0, 100);</string>
                     </item>
                    </layout>
                   </widget>
-                  <widget class="QDial" name="dial_botSpeed_0">
-                   <property name="enabled">
-                    <bool>false</bool>
-                   </property>
+                  <widget class="QLabel" name="currBehavior_0">
                    <property name="geometry">
                     <rect>
-                     <x>92</x>
-                     <y>25</y>
-                     <width>45</width>
-                     <height>45</height>
+                     <x>80</x>
+                     <y>50</y>
+                     <width>67</width>
+                     <height>17</height>
                     </rect>
                    </property>
-                   <property name="baseSize">
-                    <size>
-                     <width>0</width>
-                     <height>0</height>
-                    </size>
-                   </property>
-                   <property name="cursor">
-                    <cursorShape>ForbiddenCursor</cursorShape>
-                   </property>
-                   <property name="focusPolicy">
-                    <enum>Qt::NoFocus</enum>
-                   </property>
-                   <property name="contextMenuPolicy">
-                    <enum>Qt::NoContextMenu</enum>
-                   </property>
-                   <property name="toolTip">
-                    <string>Average wheel velocity</string>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">background-color: rgb(150, 150, 150);</string>
-                   </property>
-                   <property name="minimum">
-                    <number>0</number>
-                   </property>
-                   <property name="maximum">
-                    <number>1000</number>
-                   </property>
-                   <property name="singleStep">
-                    <number>1</number>
-                   </property>
-                   <property name="pageStep">
-                    <number>10</number>
-                   </property>
-                   <property name="tracking">
-                    <bool>false</bool>
-                   </property>
-                   <property name="invertedAppearance">
-                    <bool>false</bool>
-                   </property>
-                   <property name="invertedControls">
-                    <bool>false</bool>
-                   </property>
-                   <property name="wrapping">
-                    <bool>false</bool>
-                   </property>
-                   <property name="notchTarget">
-                    <double>1.000000000000000</double>
-                   </property>
-                   <property name="notchesVisible">
-                    <bool>false</bool>
+                   <property name="text">
+                    <string>TextLabel</string>
                    </property>
                   </widget>
                  </widget>
@@ -3642,68 +3591,17 @@ background-color: rgba(255, 0, 0, 100);</string>
                     </item>
                    </layout>
                   </widget>
-                  <widget class="QDial" name="dial_botSpeed_1">
-                   <property name="enabled">
-                    <bool>false</bool>
-                   </property>
+                  <widget class="QLabel" name="currBehavior_1">
                    <property name="geometry">
                     <rect>
-                     <x>92</x>
-                     <y>25</y>
-                     <width>45</width>
-                     <height>45</height>
+                     <x>80</x>
+                     <y>50</y>
+                     <width>67</width>
+                     <height>17</height>
                     </rect>
                    </property>
-                   <property name="baseSize">
-                    <size>
-                     <width>0</width>
-                     <height>0</height>
-                    </size>
-                   </property>
-                   <property name="cursor">
-                    <cursorShape>ForbiddenCursor</cursorShape>
-                   </property>
-                   <property name="focusPolicy">
-                    <enum>Qt::NoFocus</enum>
-                   </property>
-                   <property name="contextMenuPolicy">
-                    <enum>Qt::NoContextMenu</enum>
-                   </property>
-                   <property name="toolTip">
-                    <string>Average wheel velocity</string>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">background-color: rgb(150, 150, 150);</string>
-                   </property>
-                   <property name="minimum">
-                    <number>0</number>
-                   </property>
-                   <property name="maximum">
-                    <number>1000</number>
-                   </property>
-                   <property name="singleStep">
-                    <number>1</number>
-                   </property>
-                   <property name="pageStep">
-                    <number>10</number>
-                   </property>
-                   <property name="tracking">
-                    <bool>false</bool>
-                   </property>
-                   <property name="invertedAppearance">
-                    <bool>false</bool>
-                   </property>
-                   <property name="invertedControls">
-                    <bool>false</bool>
-                   </property>
-                   <property name="wrapping">
-                    <bool>false</bool>
-                   </property>
-                   <property name="notchTarget">
-                    <double>1.000000000000000</double>
-                   </property>
-                   <property name="notchesVisible">
-                    <bool>false</bool>
+                   <property name="text">
+                    <string>TextLabel</string>
                    </property>
                   </widget>
                  </widget>
@@ -4057,68 +3955,17 @@ background-color: rgba(255, 0, 0, 100);</string>
                     </item>
                    </layout>
                   </widget>
-                  <widget class="QDial" name="dial_botSpeed_2">
-                   <property name="enabled">
-                    <bool>false</bool>
-                   </property>
+                  <widget class="QLabel" name="currBehavior_2">
                    <property name="geometry">
                     <rect>
-                     <x>92</x>
-                     <y>25</y>
-                     <width>45</width>
-                     <height>45</height>
+                     <x>80</x>
+                     <y>50</y>
+                     <width>67</width>
+                     <height>17</height>
                     </rect>
                    </property>
-                   <property name="baseSize">
-                    <size>
-                     <width>0</width>
-                     <height>0</height>
-                    </size>
-                   </property>
-                   <property name="cursor">
-                    <cursorShape>ForbiddenCursor</cursorShape>
-                   </property>
-                   <property name="focusPolicy">
-                    <enum>Qt::NoFocus</enum>
-                   </property>
-                   <property name="contextMenuPolicy">
-                    <enum>Qt::NoContextMenu</enum>
-                   </property>
-                   <property name="toolTip">
-                    <string>Average wheel velocity</string>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">background-color: rgb(150, 150, 150);</string>
-                   </property>
-                   <property name="minimum">
-                    <number>0</number>
-                   </property>
-                   <property name="maximum">
-                    <number>1000</number>
-                   </property>
-                   <property name="singleStep">
-                    <number>1</number>
-                   </property>
-                   <property name="pageStep">
-                    <number>10</number>
-                   </property>
-                   <property name="tracking">
-                    <bool>false</bool>
-                   </property>
-                   <property name="invertedAppearance">
-                    <bool>false</bool>
-                   </property>
-                   <property name="invertedControls">
-                    <bool>false</bool>
-                   </property>
-                   <property name="wrapping">
-                    <bool>false</bool>
-                   </property>
-                   <property name="notchTarget">
-                    <double>1.000000000000000</double>
-                   </property>
-                   <property name="notchesVisible">
-                    <bool>false</bool>
+                   <property name="text">
+                    <string>TextLabel</string>
                    </property>
                   </widget>
                  </widget>
@@ -4472,68 +4319,17 @@ background-color: rgba(255, 0, 0, 100);</string>
                     </item>
                    </layout>
                   </widget>
-                  <widget class="QDial" name="dial_botSpeed_3">
-                   <property name="enabled">
-                    <bool>false</bool>
-                   </property>
+                  <widget class="QLabel" name="currBehavior_3">
                    <property name="geometry">
                     <rect>
-                     <x>92</x>
-                     <y>25</y>
-                     <width>45</width>
-                     <height>45</height>
+                     <x>80</x>
+                     <y>50</y>
+                     <width>67</width>
+                     <height>17</height>
                     </rect>
                    </property>
-                   <property name="baseSize">
-                    <size>
-                     <width>0</width>
-                     <height>0</height>
-                    </size>
-                   </property>
-                   <property name="cursor">
-                    <cursorShape>ForbiddenCursor</cursorShape>
-                   </property>
-                   <property name="focusPolicy">
-                    <enum>Qt::NoFocus</enum>
-                   </property>
-                   <property name="contextMenuPolicy">
-                    <enum>Qt::NoContextMenu</enum>
-                   </property>
-                   <property name="toolTip">
-                    <string>Average wheel velocity</string>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">background-color: rgb(150, 150, 150);</string>
-                   </property>
-                   <property name="minimum">
-                    <number>0</number>
-                   </property>
-                   <property name="maximum">
-                    <number>1000</number>
-                   </property>
-                   <property name="singleStep">
-                    <number>1</number>
-                   </property>
-                   <property name="pageStep">
-                    <number>10</number>
-                   </property>
-                   <property name="tracking">
-                    <bool>false</bool>
-                   </property>
-                   <property name="invertedAppearance">
-                    <bool>false</bool>
-                   </property>
-                   <property name="invertedControls">
-                    <bool>false</bool>
-                   </property>
-                   <property name="wrapping">
-                    <bool>false</bool>
-                   </property>
-                   <property name="notchTarget">
-                    <double>1.000000000000000</double>
-                   </property>
-                   <property name="notchesVisible">
-                    <bool>false</bool>
+                   <property name="text">
+                    <string>TextLabel</string>
                    </property>
                   </widget>
                  </widget>
@@ -4887,68 +4683,17 @@ background-color: rgba(255, 0, 0, 100);</string>
                     </item>
                    </layout>
                   </widget>
-                  <widget class="QDial" name="dial_botSpeed_4">
-                   <property name="enabled">
-                    <bool>false</bool>
-                   </property>
+                  <widget class="QLabel" name="currBehavior_4">
                    <property name="geometry">
                     <rect>
-                     <x>92</x>
-                     <y>25</y>
-                     <width>45</width>
-                     <height>45</height>
+                     <x>80</x>
+                     <y>50</y>
+                     <width>67</width>
+                     <height>17</height>
                     </rect>
                    </property>
-                   <property name="baseSize">
-                    <size>
-                     <width>0</width>
-                     <height>0</height>
-                    </size>
-                   </property>
-                   <property name="cursor">
-                    <cursorShape>ForbiddenCursor</cursorShape>
-                   </property>
-                   <property name="focusPolicy">
-                    <enum>Qt::NoFocus</enum>
-                   </property>
-                   <property name="contextMenuPolicy">
-                    <enum>Qt::NoContextMenu</enum>
-                   </property>
-                   <property name="toolTip">
-                    <string>Average wheel velocity</string>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">background-color: rgb(150, 150, 150);</string>
-                   </property>
-                   <property name="minimum">
-                    <number>0</number>
-                   </property>
-                   <property name="maximum">
-                    <number>1000</number>
-                   </property>
-                   <property name="singleStep">
-                    <number>1</number>
-                   </property>
-                   <property name="pageStep">
-                    <number>10</number>
-                   </property>
-                   <property name="tracking">
-                    <bool>false</bool>
-                   </property>
-                   <property name="invertedAppearance">
-                    <bool>false</bool>
-                   </property>
-                   <property name="invertedControls">
-                    <bool>false</bool>
-                   </property>
-                   <property name="wrapping">
-                    <bool>false</bool>
-                   </property>
-                   <property name="notchTarget">
-                    <double>1.000000000000000</double>
-                   </property>
-                   <property name="notchesVisible">
-                    <bool>false</bool>
+                   <property name="text">
+                    <string>TextLabel</string>
                    </property>
                   </widget>
                  </widget>
@@ -5302,68 +5047,17 @@ background-color: rgba(255, 0, 0, 100);</string>
                     </item>
                    </layout>
                   </widget>
-                  <widget class="QDial" name="dial_botSpeed_5">
-                   <property name="enabled">
-                    <bool>false</bool>
-                   </property>
+                  <widget class="QLabel" name="currBehavior_5">
                    <property name="geometry">
                     <rect>
-                     <x>92</x>
-                     <y>25</y>
-                     <width>45</width>
-                     <height>45</height>
+                     <x>80</x>
+                     <y>50</y>
+                     <width>67</width>
+                     <height>17</height>
                     </rect>
                    </property>
-                   <property name="baseSize">
-                    <size>
-                     <width>0</width>
-                     <height>0</height>
-                    </size>
-                   </property>
-                   <property name="cursor">
-                    <cursorShape>ForbiddenCursor</cursorShape>
-                   </property>
-                   <property name="focusPolicy">
-                    <enum>Qt::NoFocus</enum>
-                   </property>
-                   <property name="contextMenuPolicy">
-                    <enum>Qt::NoContextMenu</enum>
-                   </property>
-                   <property name="toolTip">
-                    <string>Average wheel velocity</string>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">background-color: rgb(150, 150, 150);</string>
-                   </property>
-                   <property name="minimum">
-                    <number>0</number>
-                   </property>
-                   <property name="maximum">
-                    <number>1000</number>
-                   </property>
-                   <property name="singleStep">
-                    <number>1</number>
-                   </property>
-                   <property name="pageStep">
-                    <number>10</number>
-                   </property>
-                   <property name="tracking">
-                    <bool>false</bool>
-                   </property>
-                   <property name="invertedAppearance">
-                    <bool>false</bool>
-                   </property>
-                   <property name="invertedControls">
-                    <bool>false</bool>
-                   </property>
-                   <property name="wrapping">
-                    <bool>false</bool>
-                   </property>
-                   <property name="notchTarget">
-                    <double>1.000000000000000</double>
-                   </property>
-                   <property name="notchesVisible">
-                    <bool>false</bool>
+                   <property name="text">
+                    <string>TextLabel</string>
                    </property>
                   </widget>
                  </widget>
@@ -5702,68 +5396,17 @@ background-color: rgba(255, 0, 0, 100);</string>
                     </item>
                    </layout>
                   </widget>
-                  <widget class="QDial" name="dial_botSpeed_6">
-                   <property name="enabled">
-                    <bool>false</bool>
-                   </property>
+                  <widget class="QLabel" name="currBehavior_6">
                    <property name="geometry">
                     <rect>
-                     <x>92</x>
-                     <y>25</y>
-                     <width>45</width>
-                     <height>45</height>
+                     <x>80</x>
+                     <y>50</y>
+                     <width>67</width>
+                     <height>17</height>
                     </rect>
                    </property>
-                   <property name="baseSize">
-                    <size>
-                     <width>0</width>
-                     <height>0</height>
-                    </size>
-                   </property>
-                   <property name="cursor">
-                    <cursorShape>ForbiddenCursor</cursorShape>
-                   </property>
-                   <property name="focusPolicy">
-                    <enum>Qt::NoFocus</enum>
-                   </property>
-                   <property name="contextMenuPolicy">
-                    <enum>Qt::NoContextMenu</enum>
-                   </property>
-                   <property name="toolTip">
-                    <string>Average wheel velocity</string>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">background-color: rgb(150, 150, 150);</string>
-                   </property>
-                   <property name="minimum">
-                    <number>0</number>
-                   </property>
-                   <property name="maximum">
-                    <number>2000</number>
-                   </property>
-                   <property name="singleStep">
-                    <number>1</number>
-                   </property>
-                   <property name="pageStep">
-                    <number>10</number>
-                   </property>
-                   <property name="tracking">
-                    <bool>false</bool>
-                   </property>
-                   <property name="invertedAppearance">
-                    <bool>false</bool>
-                   </property>
-                   <property name="invertedControls">
-                    <bool>false</bool>
-                   </property>
-                   <property name="wrapping">
-                    <bool>false</bool>
-                   </property>
-                   <property name="notchTarget">
-                    <double>1.000000000000000</double>
-                   </property>
-                   <property name="notchesVisible">
-                    <bool>false</bool>
+                   <property name="text">
+                    <string>TextLabel</string>
                    </property>
                   </widget>
                  </widget>
@@ -6105,68 +5748,17 @@ background-color: rgba(255, 0, 0, 100);</string>
                     </item>
                    </layout>
                   </widget>
-                  <widget class="QDial" name="dial_botSpeed_7">
-                   <property name="enabled">
-                    <bool>false</bool>
-                   </property>
+                  <widget class="QLabel" name="currBehavior_7">
                    <property name="geometry">
                     <rect>
-                     <x>92</x>
-                     <y>25</y>
-                     <width>45</width>
-                     <height>45</height>
+                     <x>80</x>
+                     <y>50</y>
+                     <width>67</width>
+                     <height>17</height>
                     </rect>
                    </property>
-                   <property name="baseSize">
-                    <size>
-                     <width>0</width>
-                     <height>0</height>
-                    </size>
-                   </property>
-                   <property name="cursor">
-                    <cursorShape>ForbiddenCursor</cursorShape>
-                   </property>
-                   <property name="focusPolicy">
-                    <enum>Qt::NoFocus</enum>
-                   </property>
-                   <property name="contextMenuPolicy">
-                    <enum>Qt::NoContextMenu</enum>
-                   </property>
-                   <property name="toolTip">
-                    <string>Average wheel velocity</string>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">background-color: rgb(150, 150, 150);</string>
-                   </property>
-                   <property name="minimum">
-                    <number>0</number>
-                   </property>
-                   <property name="maximum">
-                    <number>2000</number>
-                   </property>
-                   <property name="singleStep">
-                    <number>1</number>
-                   </property>
-                   <property name="pageStep">
-                    <number>10</number>
-                   </property>
-                   <property name="tracking">
-                    <bool>false</bool>
-                   </property>
-                   <property name="invertedAppearance">
-                    <bool>false</bool>
-                   </property>
-                   <property name="invertedControls">
-                    <bool>false</bool>
-                   </property>
-                   <property name="wrapping">
-                    <bool>false</bool>
-                   </property>
-                   <property name="notchTarget">
-                    <double>1.000000000000000</double>
-                   </property>
-                   <property name="notchesVisible">
-                    <bool>false</bool>
+                   <property name="text">
+                    <string>TextLabel</string>
                    </property>
                   </widget>
                  </widget>
@@ -6508,68 +6100,17 @@ background-color: rgba(255, 0, 0, 100);</string>
                     </item>
                    </layout>
                   </widget>
-                  <widget class="QDial" name="dial_botSpeed_8">
-                   <property name="enabled">
-                    <bool>false</bool>
-                   </property>
+                  <widget class="QLabel" name="currBehavior_8">
                    <property name="geometry">
                     <rect>
-                     <x>92</x>
-                     <y>25</y>
-                     <width>45</width>
-                     <height>45</height>
+                     <x>80</x>
+                     <y>50</y>
+                     <width>67</width>
+                     <height>17</height>
                     </rect>
                    </property>
-                   <property name="baseSize">
-                    <size>
-                     <width>0</width>
-                     <height>0</height>
-                    </size>
-                   </property>
-                   <property name="cursor">
-                    <cursorShape>ForbiddenCursor</cursorShape>
-                   </property>
-                   <property name="focusPolicy">
-                    <enum>Qt::NoFocus</enum>
-                   </property>
-                   <property name="contextMenuPolicy">
-                    <enum>Qt::NoContextMenu</enum>
-                   </property>
-                   <property name="toolTip">
-                    <string>Average wheel velocity</string>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">background-color: rgb(150, 150, 150);</string>
-                   </property>
-                   <property name="minimum">
-                    <number>0</number>
-                   </property>
-                   <property name="maximum">
-                    <number>2000</number>
-                   </property>
-                   <property name="singleStep">
-                    <number>1</number>
-                   </property>
-                   <property name="pageStep">
-                    <number>10</number>
-                   </property>
-                   <property name="tracking">
-                    <bool>false</bool>
-                   </property>
-                   <property name="invertedAppearance">
-                    <bool>false</bool>
-                   </property>
-                   <property name="invertedControls">
-                    <bool>false</bool>
-                   </property>
-                   <property name="wrapping">
-                    <bool>false</bool>
-                   </property>
-                   <property name="notchTarget">
-                    <double>1.000000000000000</double>
-                   </property>
-                   <property name="notchesVisible">
-                    <bool>false</bool>
+                   <property name="text">
+                    <string>TextLabel</string>
                    </property>
                   </widget>
                  </widget>
@@ -6911,68 +6452,17 @@ background-color: rgba(255, 0, 0, 100);</string>
                     </item>
                    </layout>
                   </widget>
-                  <widget class="QDial" name="dial_botSpeed_9">
-                   <property name="enabled">
-                    <bool>false</bool>
-                   </property>
+                  <widget class="QLabel" name="currBehavior_9">
                    <property name="geometry">
                     <rect>
-                     <x>92</x>
-                     <y>25</y>
-                     <width>45</width>
-                     <height>45</height>
+                     <x>80</x>
+                     <y>50</y>
+                     <width>67</width>
+                     <height>17</height>
                     </rect>
                    </property>
-                   <property name="baseSize">
-                    <size>
-                     <width>0</width>
-                     <height>0</height>
-                    </size>
-                   </property>
-                   <property name="cursor">
-                    <cursorShape>ForbiddenCursor</cursorShape>
-                   </property>
-                   <property name="focusPolicy">
-                    <enum>Qt::NoFocus</enum>
-                   </property>
-                   <property name="contextMenuPolicy">
-                    <enum>Qt::NoContextMenu</enum>
-                   </property>
-                   <property name="toolTip">
-                    <string>Average wheel velocity</string>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">background-color: rgb(150, 150, 150);</string>
-                   </property>
-                   <property name="minimum">
-                    <number>0</number>
-                   </property>
-                   <property name="maximum">
-                    <number>2000</number>
-                   </property>
-                   <property name="singleStep">
-                    <number>1</number>
-                   </property>
-                   <property name="pageStep">
-                    <number>10</number>
-                   </property>
-                   <property name="tracking">
-                    <bool>false</bool>
-                   </property>
-                   <property name="invertedAppearance">
-                    <bool>false</bool>
-                   </property>
-                   <property name="invertedControls">
-                    <bool>false</bool>
-                   </property>
-                   <property name="wrapping">
-                    <bool>false</bool>
-                   </property>
-                   <property name="notchTarget">
-                    <double>1.000000000000000</double>
-                   </property>
-                   <property name="notchesVisible">
-                    <bool>false</bool>
+                   <property name="text">
+                    <string>TextLabel</string>
                    </property>
                   </widget>
                  </widget>
