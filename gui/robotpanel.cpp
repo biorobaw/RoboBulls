@@ -265,7 +265,7 @@ void RobotPanel::updateBotPanel() {
             botFrames[i]->setEnabled(true);
             botXcoords[i]->display(dash->objectPos->getBotCoordX(true, i));
             botYcoords[i]->display(dash->objectPos->getBotCoordY(true, i));
-            botOrients[i]->setValue(dash->objectPos->getBotOrientDouble(true, i));
+            botOrients[i]->setValue(dash->objectPos->getBotOrientDouble(true, i) +90 );
             botIcons[i]->setX(0);
             botIcons[i]->setY(0);
             botIcons[i]->setZValue(2);

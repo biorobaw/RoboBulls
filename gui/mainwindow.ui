@@ -2863,7 +2863,7 @@ background-color: rgba(255, 0, 0, 100);</string>
               <property name="geometry">
                <rect>
                 <x>0</x>
-                <y>0</y>
+                <y>-343</y>
                 <width>269</width>
                 <height>869</height>
                </rect>
@@ -3082,7 +3082,7 @@ background-color: rgba(255, 0, 0, 100);</string>
                     <bool>false</bool>
                    </property>
                    <property name="invertedAppearance">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </property>
                    <property name="wrapping">
                     <bool>true</bool>
@@ -3446,7 +3446,7 @@ background-color: rgba(255, 0, 0, 100);</string>
                     <bool>false</bool>
                    </property>
                    <property name="invertedAppearance">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </property>
                    <property name="wrapping">
                     <bool>true</bool>
@@ -3810,7 +3810,7 @@ background-color: rgba(255, 0, 0, 100);</string>
                     <bool>false</bool>
                    </property>
                    <property name="invertedAppearance">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </property>
                    <property name="wrapping">
                     <bool>true</bool>
@@ -4174,7 +4174,7 @@ background-color: rgba(255, 0, 0, 100);</string>
                     <bool>false</bool>
                    </property>
                    <property name="invertedAppearance">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </property>
                    <property name="wrapping">
                     <bool>true</bool>
@@ -4538,7 +4538,7 @@ background-color: rgba(255, 0, 0, 100);</string>
                     <bool>false</bool>
                    </property>
                    <property name="invertedAppearance">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </property>
                    <property name="wrapping">
                     <bool>true</bool>
@@ -4902,7 +4902,7 @@ background-color: rgba(255, 0, 0, 100);</string>
                     <bool>false</bool>
                    </property>
                    <property name="invertedAppearance">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </property>
                    <property name="wrapping">
                     <bool>true</bool>
@@ -5266,7 +5266,7 @@ background-color: rgba(255, 0, 0, 100);</string>
                     <bool>false</bool>
                    </property>
                    <property name="invertedAppearance">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </property>
                    <property name="wrapping">
                     <bool>true</bool>
@@ -5615,7 +5615,7 @@ background-color: rgba(255, 0, 0, 100);</string>
                     <bool>false</bool>
                    </property>
                    <property name="invertedAppearance">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </property>
                    <property name="wrapping">
                     <bool>true</bool>
@@ -5967,7 +5967,7 @@ background-color: rgba(255, 0, 0, 100);</string>
                     <bool>false</bool>
                    </property>
                    <property name="invertedAppearance">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </property>
                    <property name="wrapping">
                     <bool>true</bool>
@@ -6319,7 +6319,7 @@ background-color: rgba(255, 0, 0, 100);</string>
                     <bool>false</bool>
                    </property>
                    <property name="invertedAppearance">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </property>
                    <property name="wrapping">
                     <bool>true</bool>
