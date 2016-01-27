@@ -43,7 +43,7 @@
 
 //! @brief Referee Box--do we listen to commands? See StrategyController
 //! @details Chooses between listening to RefComm, and always choosing TestStrategy.
-#define REFBOX_LISTEN_ENABLED 0
+#define REFBOX_LISTEN_ENABLED 1
 
 //!@}
 

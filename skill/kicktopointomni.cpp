@@ -121,7 +121,7 @@ bool KickToPointOmni::perform(Robot* robot)
 
             //Make sure move_skill keeps the robot at the correct pose
             //This is done by waiting for confirmation from the movement class
-            if(move_skill.perform(robot, Movement::Type::facePoint))
+            if(move_skill.perform(robot))
                 ++m_moveCompletionCount;
             if(m_moveCompletionCount > FORWARD_WAIT_COUNT) {
                 state = MOVE_FORWARD;

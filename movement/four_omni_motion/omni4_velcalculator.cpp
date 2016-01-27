@@ -102,14 +102,15 @@ fourWheelVels FourWheelCalculator::defaultCalc
     // Robot Frame Velocities
     double y_vel_robot = cos(theta_current)*x_vel+sin(theta_current)*y_vel;
     double x_vel_robot = sin(theta_current)*x_vel-cos(theta_current)*y_vel;
+    double vel_robot = sqrt(x_vel_robot*x_vel_robot + y_vel_robot * y_vel_robot);
 
-    //Wheel Velocity Calculations
-    double RF =  (-sin(RF_offset) * x_vel_robot + cos(RF_offset)*y_vel_robot + wheel_radius*theta_vel);
-    double LF = -(-sin(LF_offset) * x_vel_robot + cos(LF_offset)*y_vel_robot + wheel_radius*theta_vel);
-    double LB = -(-sin(LB_offset) * x_vel_robot + cos(LB_offset)*y_vel_robot + wheel_radius*theta_vel);
-    double RB =  (-sin(RB_offset) * x_vel_robot + cos(RB_offset)*y_vel_robot + wheel_radius*theta_vel);
+    // Wheel Velocity Calculations
+    double RF =  (-sin(RF_offset) * x_vel_robot + cos(RF_offset)*y_vel_robot - trans_offset*vel_robot*cos(RF_offset) + wheel_radius*theta_vel);
+    double LF = -(-sin(LF_offset) * x_vel_robot + cos(LF_offset)*y_vel_robot - trans_offset*vel_robot*cos(LF_offset) + wheel_radius*theta_vel);
+    double LB = -(-sin(LB_offset) * x_vel_robot + cos(LB_offset)*y_vel_robot - trans_offset*vel_robot*cos(LB_offset) + wheel_radius*theta_vel);
+    double RB =  (-sin(RB_offset) * x_vel_robot + cos(RB_offset)*y_vel_robot - trans_offset*vel_robot*cos(RB_offset) + wheel_radius*theta_vel);
 
-    //Normalize wheel velocities
+    // Normalize wheel velocities
     unsigned int max_mtr_spd = 100;
     if (abs(LF)>max_mtr_spd)
     {
@@ -195,13 +196,12 @@ fourWheelVels FourWheelCalculator::facePointCalc
 
     // Focus on rotation
     double vel = sqrt(x_vel*x_vel+y_vel*y_vel);
-    if (abs(Measurments::angleDiff(theta_goal,theta_current))>ROT_TOLERANCE*0.5 && vel > 40)
+    if (abs(Measurments::angleDiff(theta_goal,theta_current)) > ROT_TOLERANCE*3 && vel > 50)
     {
-        x_vel = vel*cos(angle_to_goal);
-        y_vel = vel*sin(angle_to_goal);
+        x_vel = (abs(x_vel)>=abs(y_vel))? 50 * x_vel/abs(x_vel) : 50*x_vel/abs(y_vel);
+        y_vel = (abs(x_vel)<=abs(y_vel))? 50 * y_vel/abs(y_vel) : 50*y_vel/abs(x_vel);
+        theta_vel *= 2;
     }
-
-
 
     // Robot Frame Velocities
     double y_vel_robot = cos(theta_current)*x_vel+sin(theta_current)*y_vel;
