@@ -1,7 +1,7 @@
 #include <Encoder.h>
 #include <Servo.h>
 int id;
-int myid = 1;    // This Robot's ID
+int myid = 4;    // This Robot's ID
 
 // Declare motor pins
 #define speedPinLF 4
@@ -119,7 +119,8 @@ void setup()
   //switch must be in the micro position. 
 
   // Start Serial Port
-  Serial1.begin(57600);  
+  Serial1.begin(57600);
+
 }
 //***********************************************************************************
 
@@ -127,7 +128,7 @@ void setup()
 long timestamp = 0;
 long LastLoopUpdate = 0;
 void loop()
-{  
+{
   runComm();
   if(millis()-LastLoopUpdate > 10)
   {
@@ -203,7 +204,8 @@ void setDribble()
     pos = newPos;
     lastUpdTime = newTime;
   }
-    
+  
+  Serial1.println(averageVel);  
   if(dribble == 1)
   {
     // State Machine
@@ -252,8 +254,8 @@ void setSpeeds()
 {
   //Bound for PWM duty cycles, about 10% and 90% of 0 and 255
   static int lowPWM = 30, highPWM = 225;
-
-  // output speeds
+  
+  // Output speeds
   if(targetLFvel > 0 )
   {
     analogWrite(speedPinLF, map(abs(targetLFvel),0,100,lowPWM,highPWM));
@@ -272,13 +274,13 @@ void setSpeeds()
   if(targetLBvel > 0 )
   {
     analogWrite(speedPinLB, map(abs(targetLBvel),0,100,lowPWM,highPWM));
-    digitalWrite(dirPinLB, LOW);
+    digitalWrite(dirPinLB, HIGH);
     digitalWrite(brakePinLB, LOW);
   }
   else if(targetLBvel < 0)
   {
     analogWrite(speedPinLB, map(abs(targetLBvel),0,100,lowPWM,highPWM));
-    digitalWrite(dirPinLB, HIGH);
+    digitalWrite(dirPinLB, LOW);
     digitalWrite(brakePinLB, LOW);
   }
   else
@@ -287,13 +289,13 @@ void setSpeeds()
   if(targetRFvel > 0 )
   {
     analogWrite(speedPinRF, map(abs(targetRFvel),0,100,lowPWM,highPWM));
-    digitalWrite(dirPinRF, HIGH);
+    digitalWrite(dirPinRF, LOW);
     digitalWrite(brakePinRF, LOW);
   }
   else if(targetRFvel < 0 )
   {
     analogWrite(speedPinRF, map(abs(targetRFvel),0,100,lowPWM,highPWM));
-    digitalWrite(dirPinRF, LOW);
+    digitalWrite(dirPinRF, HIGH);
     digitalWrite(brakePinRF, LOW);
   }
   else
@@ -302,22 +304,19 @@ void setSpeeds()
   if(targetRBvel > 0 )
   {
     analogWrite(speedPinRB, map(abs(targetRBvel),0,100,lowPWM,highPWM));
-    digitalWrite(dirPinRB, HIGH);
+    digitalWrite(dirPinRB, LOW);
     digitalWrite(brakePinRB, LOW);
   }
   else if(targetRBvel < 0 )
   {
     analogWrite(speedPinRB, map(abs(targetRBvel),0,100,lowPWM,highPWM));
-    digitalWrite(dirPinRB, LOW);
+    digitalWrite(dirPinRB, HIGH);
     digitalWrite(brakePinRB, LOW);
   }
   else
-    digitalWrite(brakePinRB, HIGH);   
+    digitalWrite(brakePinRB, HIGH);
 }
 //***********************************************************************************
-
-
-
 
 //***********************************************************************************
 

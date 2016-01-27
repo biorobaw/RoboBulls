@@ -83,7 +83,7 @@ void setup()
   //switch must be in the micro position. 
 
   // Start Serial Port
-  Serial.begin(57600);
+  Serial1.begin(57600);
   
 }
 //***********************************************************************************
@@ -109,7 +109,7 @@ void loop()
 // Actuates the Kicker
 unsigned long kickStartTime = 0;
 unsigned long chargeStartTime = 0;
-int chargeTime = 3000; //ms
+int chargeTime = 6000; //ms
 int kickTime = 30;  //ms
 enum kickerState {kicking, charging};
 kickerState current = charging;
@@ -230,14 +230,14 @@ void setSpeeds()
 
 void printVels()
 {
-  Serial.print(targetLFvel);
-  Serial.print('\t');
-  Serial.print(targetLBvel);
-  Serial.print('\t');
-  Serial.print(targetRFvel);
-  Serial.print('\t');
-  Serial.print(targetRBvel);
-  Serial.print('\n');
+  Serial1.print(targetLFvel);
+  Serial1.print('\t');
+  Serial1.print(targetLBvel);
+  Serial1.print('\t');
+  Serial1.print(targetRFvel);
+  Serial1.print('\t');
+  Serial1.print(targetRBvel);
+  Serial1.print('\n');
 }
 //***********************************************************************************
 char state = 't';
@@ -251,43 +251,43 @@ int kickSerial, chipSerial, dribbleSerial = 0;
 
 void runComm()
 {
-  if(Serial.available()>=10)
+  if(Serial1.available()>=10)
   {
     switch(state)
     {
     case 't':                          // Wait for Start Marker
-      if(char(Serial.read()) == char(250))
+      if(char(Serial1.read()) == char(250))
       {
         state = 'i';
         id = 90; 
         kickSerial = 0;
-        //Serial.println("Tilde Received");        
+        //Serial1.println("Tilde Received");        
       }         
       break;
     case 'i':                          // Check ID
-      id = (int)Serial.read();
+      id = (int)Serial1.read();
       if (id == myid){
         state = 'b';
         digitalWrite(13, LOW);
-        //Serial.println("ID Match");        
+        //Serial1.println("ID Match");        
         break;
       }
       state = 't';
-      //Serial.println("ID Incorrect"); 
+      //Serial1.println("ID Incorrect"); 
       break;
     case 'b':                         // Read Packet
-      if (Serial.available()>=8)
+      if (Serial1.available()>=8)
       {
-        //Serial.println("Reading Commands");
-        targetLFvelSerial = ((int)Serial.read()-100);
-        targetLBvelSerial = ((int)Serial.read()-100);
-        targetRFvelSerial = (int)Serial.read()-100;
-        targetRBvelSerial = ((int)Serial.read()-100);
-        kickSerial = (int)Serial.read();
-        chipSerial = (int)Serial.read();
-        dribbleSerial = (int)Serial.read();
+        //Serial1.println("Reading Commands");
+        targetLFvelSerial = ((int)Serial1.read()-100);
+        targetLBvelSerial = ((int)Serial1.read()-100);
+        targetRFvelSerial = (int)Serial1.read()-100;
+        targetRBvelSerial = ((int)Serial1.read()-100);
+        kickSerial = (int)Serial1.read();
+        chipSerial = (int)Serial1.read();
+        dribbleSerial = (int)Serial1.read();
 
-        if (char(Serial.read()) == char(255))          // Check for End Marker
+        if (char(Serial1.read()) == char(255))          // Check for End Marker
         {
           state = 't';
           targetLFvel = targetLFvelSerial;
@@ -296,11 +296,11 @@ void runComm()
           targetRBvel = targetRBvelSerial;
           kick = kickSerial;
           dribble = dribbleSerial;      
-          //Serial.println("Packet Complete"); 
+          //Serial1.println("Packet Complete"); 
         }
         else
         {
-          //Serial.println("Packet Incomplete");          
+          //Serial1.println("Packet Incomplete");          
           state = 't';
         }
         break;
