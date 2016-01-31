@@ -145,7 +145,7 @@ void loop()
 unsigned long kickStartTime = 0;
 unsigned long chargeStartTime = 0;
 int chargeTime = 6000; //ms
-int kickTime = 30;  //ms
+int kickTime = 50;  //ms
 enum kickerState {
   kicking, charging};
 kickerState current = charging;
