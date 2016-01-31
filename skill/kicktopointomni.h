@@ -62,7 +62,8 @@ private:
 
     //Current skill state
     enum { MOVE_BEHIND,  //We are far from the ball and are moving behind it to face target
-           MOVE_FORWARD, //We are behind the ball facing target, and are moving forward to kick
+           MOVE_FORWARD1, //We are behind the ball facing target, and are moving forward to kick
+           MOVE_FORWARD2,
            KICK          //We are kicking the ball
          } state;
 

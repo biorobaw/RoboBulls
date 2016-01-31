@@ -101,7 +101,6 @@ class PracticeBehavior : public GenericMovementBehavior
         setMovementTargets(ballPosition);
 
         GenericMovementBehavior::perform(robot);
-
     }
 
 };
@@ -111,9 +110,9 @@ bool TestStrategy::update()
 {
     //Change IDs and behaviors to be assigned here.
     //All robots must exists before any action is taken.
-    Robot* r0 = gameModel->findMyTeam(3);
+    Robot* r0 = gameModel->findMyTeam(5);
     if(r0) {
-        r0->assignBeh<ShamsiStrafe>();
+        r0->assignBeh<KickBeh>();
     }
     return false;
 }
