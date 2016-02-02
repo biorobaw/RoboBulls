@@ -51,10 +51,11 @@ private:
     fourWheelVels facePointCalc(Robot* rob, float x_goal, float y_goal, float angle_to_point);
 
     //Robot Physical Properties
-    double LF_offset = 135*M_PI/180; //135 Robot's x-Axis (right side) is zero
-    double LB_offset = 225*M_PI/180; //225
-    double RF_offset =  45*M_PI/180; //45
-    double RB_offset = 315*M_PI/180; //315
+    double LF_offset = 144*M_PI/180; //135 Robot's x-Axis (right side) is zero
+    double LB_offset = 224*M_PI/180; //225
+    double RF_offset =  36*M_PI/180; //45
+    double RB_offset = 316*M_PI/180; //315
+    double trans_offset = 0.0149;
     const double wheel_radius = 27;
     double distance_to_goal, angle_error;
 

@@ -84,7 +84,7 @@ public:
                 if (Measurments::isClose(rp,target_two,100))
                 state = pos_one;
         }
-        GenericMovementBehavior::perform(robot);
+        GenericMovementBehavior::perform(robot, Movement::Type::Default);
     }
 };
 
@@ -101,7 +101,6 @@ class PracticeBehavior : public GenericMovementBehavior
         setMovementTargets(ballPosition);
 
         GenericMovementBehavior::perform(robot);
-
     }
 
 };
@@ -111,7 +110,7 @@ bool TestStrategy::update()
 {
     //Change IDs and behaviors to be assigned here.
     //All robots must exists before any action is taken.
-    Robot* r0 = gameModel->findMyTeam(1);
+    Robot* r0 = gameModel->findMyTeam(5);
     if(r0) {
         r0->assignBeh<KickBeh>();
     }
