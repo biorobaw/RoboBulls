@@ -37,6 +37,26 @@ bool configure(const std::string& name, int& jAxisMoveUp, int& jAxisMoveSide, in
 namespace joystick
 {
 
+values joystickmap[10];
+
+void map_joystick(const std::vector<std::string>& args)
+{
+    if(args.size() != 2) {
+        std::cerr << "Usage: map_joy <joy-id> <rob-id>";
+        return;
+    }
+
+    //Update the joystick at joy_id to point to rob_id
+    int joy_id = std::atoi(args[0].c_str());
+    int rob_id = std::atoi(args[1].c_str());
+    joystickmap[joy_id].id = rob_id;
+}
+
+}
+
+namespace joystick
+{
+
 //Thread to listen for joystick inputs
 std::thread joystickThread;
 

@@ -107,6 +107,13 @@ void printBuildInfo()
         << "     RefBox: " << REFBOX_ADDRESS    << ":" << REFBOX_PORT    << std::endl;
 }
 
+void echo(const std::vector<std::string>& args)
+{
+    std::cout << "Echoing:" << std::endl;
+    for(auto& s : args)
+        std::cout << s << std::endl;
+}
+
 int main(int argc, char *argv[])
 {
     //Initialize GameModel, StrategyController, Vision, and Ref
@@ -126,6 +133,9 @@ int main(int argc, char *argv[])
 
     //Start Vision and Refcomm and run the application
     debug::listenStart();
+
+    debug::registerFunction("echo", echo);
+
     visionCommunicator.start();
     refCommunicator.start();
     return a.exec();
