@@ -1,4 +1,5 @@
 #include <Servo.h>
+
 int id;
 int myid = 3;    // This Robot's ID
 
@@ -37,6 +38,10 @@ double targetRFvel = 0;
 double targetLBvel = 0;
 double targetRBvel = 0;
 
+double prevLFvel = 0;
+double prevRFvel = 0;
+double prevLBvel = 0;
+double prevRBvel = 0;
 
 // Kicker Chipper Dribbler
 int kick, chip, dribble = 0;
@@ -45,9 +50,9 @@ int kick, chip, dribble = 0;
 void setup()
 {   
   // Debug
-//  pinMode(13, OUTPUT);
-//  digitalWrite(13,HIGH);
-  
+  //  pinMode(13, OUTPUT);
+  //  digitalWrite(13,HIGH);
+
   // Set Kicker and Chipper pins to output
   pinMode(kickPin, OUTPUT);
   pinMode(chargePin, OUTPUT);
@@ -58,22 +63,22 @@ void setup()
   pinMode(enablePinLB,OUTPUT);
   pinMode(enablePinRF,OUTPUT);
   pinMode(enablePinRB,OUTPUT);
-  
+
   digitalWrite(enablePinLF,HIGH);
   digitalWrite(enablePinLB,HIGH);
   digitalWrite(enablePinRF,HIGH);
   digitalWrite(enablePinRB,HIGH);
-  
+
   analogWrite(speedPinLF,30);
   analogWrite(speedPinLB,30);
   analogWrite(speedPinRF,30);
   analogWrite(speedPinRB,30);
-    
+
   pinMode(dirPinLF,OUTPUT);
   pinMode(dirPinLB,OUTPUT);
   pinMode(dirPinRF,OUTPUT);
   pinMode(dirPinRB,OUTPUT);
-  
+
   pinMode(brakePinLF,OUTPUT);
   pinMode(brakePinLB,OUTPUT);
   pinMode(brakePinRF,OUTPUT);
@@ -84,7 +89,7 @@ void setup()
 
   // Start Serial Port
   Serial.begin(57600);
-  
+
 }
 //***********************************************************************************
 
@@ -111,30 +116,31 @@ unsigned long kickStartTime = 0;
 unsigned long chargeStartTime = 0;
 int chargeTime = 3000; //ms
 int kickTime = 30;  //ms
-enum kickerState {kicking, charging};
+enum kickerState {
+  kicking, charging};
 kickerState current = charging;
 void setKick()
 {
   switch(current)
   {
-    case charging:
+  case charging:
+    digitalWrite(kickPin, LOW);
+    digitalWrite(chargePin, HIGH);
+    if(kick == 'k' && millis()-chargeStartTime >= chargeTime)
+    {
+      current = kicking;
+      kickStartTime = millis();
+    }
+    break;
+  case kicking:
+    digitalWrite(kickPin, HIGH);
+    digitalWrite(chargePin, LOW);  
+    if(millis()-kickStartTime >= kickTime)
+    {
       digitalWrite(kickPin, LOW);
-      digitalWrite(chargePin, HIGH);
-      if(kick == 'k' && millis()-chargeStartTime >= chargeTime)
-      {
-        current = kicking;
-        kickStartTime = millis();
-      }
-      break;
-    case kicking:
-      digitalWrite(kickPin, HIGH);
-      digitalWrite(chargePin, LOW);  
-      if(millis()-kickStartTime >= kickTime)
-      {
-        digitalWrite(kickPin, LOW);
-        current = charging;
-        chargeStartTime = millis();
-      }
+      current = charging;
+      chargeStartTime = millis();
+    }
   }
 }
 //***********************************************************************************
@@ -143,21 +149,52 @@ void setKick()
 // Turns on the dribbler
 void setDribble()
 {
-    if(dribble == 1)
-      digitalWrite(dribblePin, HIGH);     
-    else
-      digitalWrite(dribblePin, LOW);
+  if(dribble == 1)
+    digitalWrite(dribblePin, HIGH);     
+  else
+    digitalWrite(dribblePin, LOW);
+}
+//***********************************************************************************
+
+//***********************************************************************************
+// Returns if an int is positive, negative, or zero
+// Used in setSpeeds() function
+int sign(int x)
+{
+  if(x < 0)
+    return -1;
+  else if(x > 0)
+    return 1;
+  return 0;
 }
 //***********************************************************************************
 
 //***********************************************************************************
 // Write Speeds to Motors
+
 void setSpeeds()
 {
-  //Bound for PWN duty cycles, about 10% and 90% of 0 and 255
+  // Bound for PWM duty cycles, about 10% and 90% of 0 and 255
   static int lowPWM = 30, highPWM = 220;
 
-  // output speeds
+  // If there is a change in target direction in any of the wheels and the change is significant
+  boolean change_dir = false;
+  if( (prevLFvel!=0 && sign(prevLFvel) != sign(targetLFvel))
+    ||(prevLBvel!=0 && sign(prevLBvel) != sign(targetLBvel))
+    ||(prevRFvel!=0 && sign(prevRFvel) != sign(targetRFvel))
+    ||(prevRBvel!=0 && sign(prevRBvel) != sign(targetRBvel)))
+    change_dir = true; 
+  
+  // Stop all wheels
+  if(change_dir)
+  {
+    targetLFvel = 0;
+    targetLBvel = 0;
+    targetRFvel = 0;
+    targetRBvel = 0;    
+  }
+  
+  // Output speeds
   if(targetLFvel > 0 )
   {
     analogWrite(speedPinLF, map(abs(targetLFvel),0,100,lowPWM,highPWM));
@@ -172,7 +209,7 @@ void setSpeeds()
   }
   else
     digitalWrite(brakePinLF, HIGH);
-          
+
   if(targetLBvel > 0 )
   {
     analogWrite(speedPinLB, map(abs(targetLBvel),0,100,lowPWM,highPWM));
@@ -187,7 +224,7 @@ void setSpeeds()
   }
   else
     digitalWrite(brakePinLB, HIGH);
-    
+
   if(targetRFvel > 0 )
   {
     analogWrite(speedPinRF, map(abs(targetRFvel),0,100,lowPWM,highPWM));
@@ -202,7 +239,7 @@ void setSpeeds()
   }
   else
     digitalWrite(brakePinRF, HIGH);
-    
+
   if(targetRBvel > 0 )
   {
     analogWrite(speedPinRB, map(abs(targetRBvel),0,100,lowPWM,highPWM));
@@ -217,15 +254,20 @@ void setSpeeds()
   }
   else
     digitalWrite(brakePinRB, HIGH);
+  
+  if(change_dir)
+    delay(200); //ms
     
+  prevLFvel = targetLFvel;
+  prevLBvel = targetLBvel;
+  prevRFvel = targetRFvel;
+  prevRBvel = targetRBvel;
 }
 //***********************************************************************************
 
 
-
-
 //***********************************************************************************
-
+// Print the received velocities over serial port
 void printVels()
 {
   Serial.print(targetLFvel);
@@ -238,6 +280,9 @@ void printVels()
   Serial.print('\n');
 }
 //***********************************************************************************
+
+//***********************************************************************************
+// Xbee communication function
 char state = 't';
 
 double targetLFvelSerial = 0;
@@ -266,7 +311,7 @@ void runComm()
       id = (int)Serial.read();
       if (id == myid){
         state = 'b';
-//        digitalWrite(13, LOW);
+        //        digitalWrite(13, LOW);
         //Serial.println("ID Match");        
         break;
       }
@@ -293,7 +338,7 @@ void runComm()
           targetRFvel = targetRFvelSerial;
           targetRBvel = targetRBvelSerial;
           kick = kickSerial;
-    
+
           //Serial.println("Packet Complete"); 
         }
         else
@@ -307,5 +352,9 @@ void runComm()
     } 
   }
 }
+
+
+
+
 
 

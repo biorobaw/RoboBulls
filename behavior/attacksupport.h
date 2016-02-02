@@ -11,7 +11,7 @@
  * enemies, and the one that the AttackMain robot is not inside of--and waits
  * for a pass from the AttackMain robot. */
 
-class AttackSupport : public GenericMovementBehavior
+class AttackSupport : public StaticMovementBehavior
 {
 public:
     AttackSupport(Robot* passer);

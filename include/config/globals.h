@@ -6,7 +6,7 @@
 
 /*! @brief Overall velocity for all behaviors. Change this
  * constant to slow down or speed up the whole game. */
-#define OVERALL_VELOCITY 1
+#define OVERALL_VELOCITY 1.5
 
 //! @brief The center-to-goal length (X-Axis) of the standard RoboCup field
 #define FIELD_LENGTH   3000

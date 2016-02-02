@@ -1,9 +1,9 @@
 #include "freekickstrategy.h"
-#include "behavior/behaviorassignment.h"
 #include "behavior/kicktogoal.h"
 #include "model/gamemodel.h"
 #include "behavior/simplebehaviors.h"
 #include "behavior/defendfarfromball.h"
+#include "strategy/normalgamestrategy.h"
 #include "include/config/team.h"
 
 FreeKickStrategy::FreeKickStrategy()
@@ -22,20 +22,8 @@ void FreeKickStrategy::assignBeh()
     if ((gm->getGameState() == 'F' && TEAM == TEAM_BLUE) ||
         (gm->getGameState() == 'f' && TEAM == TEAM_YELLOW))
     {
-        BehaviorAssignment<KickToGoal> kickToGoalAssignment;
-        kickToGoalAssignment.setSingleAssignment(true);
-
-        BehaviorAssignment<SimpleBehaviors> simpleAssignment;
-        simpleAssignment.setSingleAssignment(true);
-
-        BehaviorAssignment<DefendFarFromBall> golieAssignment;
-        golieAssignment.setSingleAssignment(true);
-        for (Robot* rob: myTeam)
-        {
-            if (rob->getID() == GOALIE_ID)
-                golieAssignment.assignBeh(rob);
-        }
-
+        //Assign the goalie if he is there
+        NormalGameStrategy::assignGoalieIfOk();
 
         int closestRobotID;
         Point ballPoint = gm->getBallPoint();
@@ -68,29 +56,25 @@ void FreeKickStrategy::assignBeh()
             closestRobotID = kickerRobot->getID();
         }
 
-        kickToGoalAssignment.assignBeh(kickerRobot);  //lets the closest robot to the ball to perform the free kick
+        kickerRobot->assignBeh<KickToGoal>();   //lets the closest robot to the ball to perform the free kick
 
         if (myTeam.size() > 1)  // assigns simple behavior to the rest of robots
         {
-            for (unsigned i = 0; i < myTeam.size(); i++)
-            {
-                if (myTeam.at(i)->getID() != closestRobotID && myTeam.at(i)->getID() != GOALIE_ID)
-                    simpleAssignment.assignBeh(myTeam.at(i));
+            for(Robot* robot : gameModel->getMyTeam()) {
+                if(robot->getID() != GOALIE_ID && robot->getID() != closestRobotID)
+                    robot->assignBeh<SimpleBehaviors>();
             }
         }
     }
     else if ((gm->getGameState() == 'f' && TEAM == TEAM_BLUE)
-            || (gm->getGameState() == 'F' && TEAM == TEAM_YELLOW))
+          || (gm->getGameState() == 'F' && TEAM == TEAM_YELLOW))
     {
-        gameModel->findMyTeam(GOALIE_ID)->assignBeh<DefendFarFromBall>();
+        //Everyone is simple
+        for(Robot* robot : gameModel->getMyTeam())
+            robot->assignBeh<SimpleBehaviors>();
 
-        BehaviorAssignment<SimpleBehaviors> simpleAssignment;
-        simpleAssignment.setSingleAssignment(true);
-        for (unsigned i = 0; i < myTeam.size(); i++)
-        {
-            if (myTeam.at(i)->getID() != GOALIE_ID)
-                simpleAssignment.assignBeh(myTeam.at(i));
-        }
+        //Assign goalie if he is there
+        NormalGameStrategy::assignGoalieIfOk();
     }
 }
 

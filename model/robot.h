@@ -38,6 +38,7 @@ public:
     bool  getDrible();
     bool  isOnMyTeam();
     bool  hasBehavior();
+    bool  hasKicker();
     RobotType type();
     //! @}
 

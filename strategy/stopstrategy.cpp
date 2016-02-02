@@ -25,7 +25,7 @@ void StopStrategy::assignBeh()
             continue;
         Point robTarget = robTargetPoints[robot->getID()];
         float targetAngle = Measurments::angleBetween(robTarget, bp);
-        robot->assignBeh<GenericMovementBehavior>(robTarget, targetAngle);
+        robot->assignBeh<StaticMovementBehavior>(robTarget, targetAngle);
     }
 
     Robot* goalie = gameModel->findMyTeam(GOALIE_ID);

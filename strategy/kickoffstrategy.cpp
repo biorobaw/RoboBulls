@@ -74,7 +74,7 @@ void KickOffStrategy::assignBeh()
 
         //Assign to move to that point, then face to the center
         float angleToCenter = Measurments::angleBetween(nextPoint, Point(0,0));
-        robot->assignBeh<GenericMovementBehavior>(nextPoint, angleToCenter);
+        robot->assignBeh<StaticMovementBehavior>(nextPoint, angleToCenter);
     }
 
     //Goalie is a special case

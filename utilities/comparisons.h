@@ -127,7 +127,7 @@ protected:
     std::function<bool(float, float)> compare_function;
 
 private:
-    std::array<std::function<bool(Robot*)>, 10> ignoreFunctions;
+    std::array<std::function<bool(Robot*)>, 4> ignoreFunctions;
     int nextIgnoreSpot = 0;
     bool isNotIgnored(Robot* robot);
 };

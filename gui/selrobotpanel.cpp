@@ -8,17 +8,17 @@
 #include "fieldpanel.h"
 #include "guiinterface.h"
 #include "ui_mainwindow.h"
-#include "getbehavior.h"
 #include "guirobot.h"
 #include "model/gamemodel.h"
+#include <typeinfo>
+#include <typeindex>
+#ifdef __GNUC__
+ #include <cxxabi.h>
+ #include <unordered_map>
+#endif
 
 SelRobotPanel::SelRobotPanel(MainWindow * mw) {
     dash = mw;
-}
-
-
-void SelRobotPanel::setGuiOverride() {
-    // Required for Override to work with Vision
 }
 
 void SelRobotPanel::guiPrintRobot(int robotID, string output) {
@@ -38,25 +38,20 @@ void SelRobotPanel::guiPrintRobot(int robotID, string output) {
             botBehavior[robotID] += ("\n" + QString::fromStdString(output));
         }
     }
-    // test
-    //    botBehavior[robotID] = ("\n" + QString::fromStdString(output));
 }
 
 void SelRobotPanel::printBehavior(int id) {
     if (dash->gamemodel->find(id,dash->gamemodel->getMyTeam()) != NULL) {
        Robot * bot = dash->gamemodel->find(id, dash->gamemodel->getMyTeam());
-       std::string s = getbehavior->getBehaviorName(bot);
+       std::string s = getBehaviorName(bot);
         guiPrintRobot(id, s);
-//        dash->guiPrint(getbehavior->getBehaviorName(bot));
         std::cout << s << "\n";
     }
 }
 
 void SelRobotPanel::setupSelRobotPanel() {
     hide();
-
-    return;
-}//end guiPrintRobot()
+}
 
 void SelRobotPanel::updateSelectedBotPanel(int id) {
     int v = 0;
@@ -151,9 +146,9 @@ void SelRobotPanel::updateSelectedBotPanel(int id) {
             dash->ui->check_botOverride->hide();
         }
 
-        dash->guiPrint(getbehavior->getBehaviorName(dash->gamemodel->find(id, dash->gamemodel->getMyTeam())));
+        dash->guiPrint(getBehaviorName(dash->gamemodel->find(id, dash->gamemodel->getMyTeam())));
         guiPrintRobot(id, "Behavior Keywords:");
-        QStringList keywords = dash->objectPos->getKeyWords(getbehavior->getBehaviorName(dash->gamemodel->find(id, dash->gamemodel->getMyTeam())));
+        QStringList keywords = dash->objectPos->getKeyWords(getBehaviorName(dash->gamemodel->find(id, dash->gamemodel->getMyTeam())));
         foreach (QString word, keywords) {
             guiPrintRobot(id, word.toStdString());
         }
@@ -163,9 +158,6 @@ void SelRobotPanel::updateSelectedBotPanel(int id) {
         dash->ui->text_primeBot->setText(botBehavior[id]);
         QScrollBar *sb = dash->ui->text_primeBot->verticalScrollBar();
         sb->setValue(sb->maximum());
-
-
-
     }
 }
 
@@ -174,4 +166,40 @@ void SelRobotPanel::hide()
     dash->ui->frame_primeBot->hide();
     dash->fieldpanel->selectedBot = -1;
     dash->ui->check_botOverride->setChecked(false);
+}
+
+const std::string& SelRobotPanel::getBehaviorName(Robot* robot)
+{
+    static std::string noBehavior = "No Behavior";
+
+    if(robot == NULL or not(robot->hasBehavior())) {
+        return noBehavior;
+    }
+
+    try
+    {
+#ifdef __GNUC__
+    //https://gcc.gnu.org/onlinedocs/libstdc++/manual/ext_demangling.html
+    //Map to hold names, because demangle mallocs a string, inefficient.
+    static std::unordered_map<std::type_index, std::string> nameMemory;
+
+    //Get type info
+    const std::type_index& info = typeid(*(robot->getCurrentBeh()));
+
+    //Memory lookup?
+    if(nameMemory.find(info) == nameMemory.end()) {
+        int status;
+        char* name = abi::__cxa_demangle(info.name(), 0, 0, &status);
+        nameMemory[info] = std::string(name);
+        free(name);
+    }
+
+    return nameMemory[info];
+#else
+    return typeid(*(robot->getCurrentBeh())).name();
+#endif
+    }
+    catch(...) {
+        return noBehavior;
+    }
 }

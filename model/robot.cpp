@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <sstream>
 #include <cmath>
+#include "include/config/simulated.h"
 #include "robot.h"
 
 Robot::Robot()
@@ -78,6 +79,17 @@ bool Robot::isOnMyTeam() { return team; }
 
 //! @brief Returns true if the robot curently has a Behavior
 bool Robot::hasBehavior() { return hasBeh; }
+
+//! @brief Returns true if the robot has a hardware ability to kick.
+bool Robot::hasKicker()
+{
+#if SIMULATED
+    return true;
+#else
+    assert(id >= 0 && id < 10);
+    return robotHasKicker[id];
+#endif
+}
 
 //! @brief Returns the current velocity in m/s
 //! @see getRobotPosition

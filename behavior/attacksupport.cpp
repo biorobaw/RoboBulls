@@ -8,15 +8,15 @@ AttackSupport::AttackSupport(Robot* passer)
 
 void AttackSupport::perform(Robot * robot)
 {
-    //It's best to have the dribbler on when waiting for a pass
-    robot->setDrible(true);
+    //It's best not to have the dribbler on when waiting for a pass
+    // robot->setDrible(true);
 
     //Reclaculates our waiting point if one side does not have the passer
     recalculateWp(robot);
 
     //Sets movement to always face the ball, sitting at wait point (wp)
     setMovementTargets(wp, Measurments::angleBetween(robot, main_attacker));
-    GenericMovementBehavior::perform(robot);
+    StaticMovementBehavior::perform(robot);
 }
 
 void AttackSupport::recalculateWp(Robot* robot)

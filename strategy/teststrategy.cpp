@@ -49,12 +49,12 @@ class DribbleBeh : public Behavior
 };
 
 //Test behavior to move to a point only
-class GoToBeh : public GenericMovementBehavior
+class GoToBeh : public StaticMovementBehavior
 {
     void perform(Robot * robot) override
     {
         setMovementTargets(Point(0,0), 0);
-        GenericMovementBehavior::perform(robot);
+        StaticMovementBehavior::perform(robot);
     }
 };
 
@@ -75,16 +75,16 @@ public:
         switch(state)
         {
             case pos_one:
-            setMovementTargets(target_one,ori);
-            if (Measurments::isClose(rp,target_one,100))
-            state = pos_two;
-            break;
+                setMovementTargets(target_one,ori);
+                if (Measurments::isClose(rp,target_one,100))
+                state = pos_two;
+                break;
             case pos_two:
-            setMovementTargets(target_two,ori);
-            if (Measurments::isClose(rp,target_two,100))
-            state = pos_one;
+                setMovementTargets(target_two,ori);
+                if (Measurments::isClose(rp,target_two,100))
+                state = pos_one;
         }
-        GenericMovementBehavior::perform(robot, Movement::Type::facePoint);
+        GenericMovementBehavior::perform(robot);
     }
 };
 
@@ -111,11 +111,9 @@ bool TestStrategy::update()
 {
     //Change IDs and behaviors to be assigned here.
     //All robots must exists before any action is taken.
-    Robot* r0 = gameModel->findMyTeam(3);
-    Robot* r1 = gameModel->findMyTeam(5);
-    if(r0 and r1) {
-        r0->assignBeh<GoToBeh>();
-        r1->assignBeh<GoToBeh>();
+    Robot* r0 = gameModel->findMyTeam(1);
+    if(r0) {
+        r0->assignBeh<KickBeh>();
     }
     return false;
 }

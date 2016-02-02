@@ -26,7 +26,7 @@ SOURCES += main.cpp \
 	behavior/passballreceiver.cpp \
 	behavior/passballsender.cpp \
 	behavior/penaltybehavior.cpp \
-	behavior/sendballtoregion.cpp \
+	behavior/rotateonpoint.cpp \
 	behavior/simplebehaviors.cpp \
 	communication/nxtrobcomm.cpp \
 	communication/refcomm.cpp \
@@ -35,7 +35,6 @@ SOURCES += main.cpp \
 	communication/visioncomm.cpp \
 	gui/fieldpanel.cpp \
 	gui/gamepanel.cpp \
-	gui/getbehavior.cpp \
 	gui/guiball.cpp \
 	gui/guibotlabel.cpp \
 	gui/guicomm.cpp \
@@ -94,12 +93,11 @@ SOURCES += main.cpp \
 	utilities/point.cpp \
 	utilities/region.cpp \
 	utilities/velocitycalculator.cpp \
-    utilities/getclassname.cpp
+        utilities/getclassname.cpp
 
 HEADERS += \
 	behavior/attackmain.h \
 	behavior/attacksupport.h \
-	behavior/behaviorassignment.h \
 	behavior/behavior.h \
 	behavior/defendbehavior.h \
 	behavior/defendfarfromball.h \
@@ -111,7 +109,6 @@ HEADERS += \
 	behavior/passballsender.h \
 	behavior/penaltybehavior.h \
 	behavior/rotateonpoint.h \
-	behavior/sendballtoregion.h \
 	behavior/simplebehaviors.h \
 	communication/nxtrobcomm.h \
 	communication/refcomm.h \
@@ -120,7 +117,6 @@ HEADERS += \
 	communication/visioncomm.h \
 	gui/fieldpanel.h \
 	gui/gamepanel.h \
-	gui/getbehavior.h \
 	gui/guiball.h \
 	gui/guibotlabel.h \
 	gui/guicomm.h \
@@ -185,7 +181,7 @@ HEADERS += \
 	utilities/point.h \
 	utilities/region.h \
 	utilities/velocitycalculator.h \
-    utilities/getclassname.h
+        utilities/getclassname.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 

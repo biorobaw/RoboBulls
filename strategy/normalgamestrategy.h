@@ -59,7 +59,6 @@ private:
 private:
     static bool isOnAttack;
     static bool hasStoppedForThisKickoff;
-    void findMostValidRobots(Point, Robot*&, Robot*&, Robot *&c_out);
     Robot* currentMainAttacker;
     Robot* currentSuppAttacker;
     Point ballOriginalPos;

@@ -1,4 +1,3 @@
-#include "behavior/behaviorassignment.h"
 #include "behavior/simplebehaviors.h"
 #include "utilities/measurments.h"
 #include "utilities/comparisons.h"

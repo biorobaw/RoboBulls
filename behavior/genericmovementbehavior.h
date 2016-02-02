@@ -61,6 +61,21 @@ private:
     bool  movementFinished;
 };
 
+
+/** @brief Behavior to perform generic point-to-point Movement, stopping at the end
+ * @author JamesW
+ * @details This behavior is a specialization of GenericMovementBehavior,
+ * which uses the Movement::Type::StayStill move type, which stops at the end to avoid
+ * the Brazil-era robot controllers from breaking
+ */
+class StaticMovementBehavior : public GenericMovementBehavior
+{
+public:
+    using GenericMovementBehavior::GenericMovementBehavior;
+public:
+    void perform(Robot* robot) override;
+};
+
 //! @}
 
 #endif

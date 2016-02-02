@@ -18,5 +18,18 @@ const RobotType robotIDTypes[] = {
 };
 #endif
 
+const bool robotHasKicker[] = {
+ /*0*/	false,
+ /*1*/	true,
+ /*2*/	false,
+ /*3*/	false,
+ /*4*/	false,
+ /*5*/	true,
+ /*6*/	false,
+ /*7*/	false,
+ /*8*/	false,
+ /*9*/	false
+};
+
 //Goalie ID integer
 float GOALIE_ID = 5;
