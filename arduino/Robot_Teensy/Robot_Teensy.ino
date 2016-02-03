@@ -30,9 +30,9 @@ int myid = 4;    // This Robot's ID
 #define speedPinRB 23
 
 // Define pin locations for kicker and chipper
-#define dribblePin 8
-#define kickPin 9
-#define chargePin 10
+//#define dribblePin 8
+//#define kickPin 9
+//#define chargePin 10
 
 
 // Velocities
@@ -49,10 +49,10 @@ double targetRBvel = 0;
 int kick, chip, dribble = 0;
 
 // Encoder Variables
-Encoder encoder(2, 3);
-unsigned long pos;
-float averageVel;
-unsigned long lastUpdTime;
+//Encoder encoder(2, 3);
+//unsigned long pos;
+//float averageVel;
+//unsigned long lastUpdTime;
 
 //***********************************************************************************
 void setup()
@@ -62,9 +62,9 @@ void setup()
   //  digitalWrite(13,HIGH);
 
   // Set Kicker and Chipper pins to output
-  pinMode(kickPin, OUTPUT);
-  pinMode(chargePin, OUTPUT);
-  pinMode(dribblePin, OUTPUT);
+//  pinMode(kickPin, OUTPUT);
+//  pinMode(chargePin, OUTPUT);
+//  pinMode(dribblePin, OUTPUT);
 
   // Set controller signal pins to output
   pinMode(gndPinLF, OUTPUT);
@@ -112,9 +112,9 @@ void setup()
   analogWrite(speedPinRB, 30);
 
   // Encoder Variables
-  pos = encoder.read();
-  lastUpdTime = millis();
-  averageVel = 0;
+//  pos = encoder.read();
+//  lastUpdTime = millis();
+//  averageVel = 0;
 
   //Note: For the UNO, the USB/Micro
   //switch must be in the micro position.
@@ -154,27 +154,28 @@ enum kickerState {
 kickerState current = charging;
 void setKick()
 {
-  switch (current)
-  {
-    case charging:
-      digitalWrite(kickPin, HIGH);
-      digitalWrite(chargePin, LOW);
-      if (kick == 'k' && millis() - chargeStartTime >= chargeTime)
-      {
-        current = kicking;
-        kickStartTime = millis();
-      }
-      break;
-    case kicking:
-      digitalWrite(kickPin, LOW);
-      digitalWrite(chargePin, HIGH);
-      if (millis() - kickStartTime >= kickTime)
-      {
-        digitalWrite(kickPin, HIGH);
-        current = charging;
-        chargeStartTime = millis();
-      }
-  }
+  // Need to clear grounds and use those pins
+//  switch (current)
+//  {
+//    case charging:
+//      digitalWrite(kickPin, HIGH);
+//      digitalWrite(chargePin, LOW);
+//      if (kick == 'k' && millis() - chargeStartTime >= chargeTime)
+//      {
+//        current = kicking;
+//        kickStartTime = millis();
+//      }
+//      break;
+//    case kicking:
+//      digitalWrite(kickPin, LOW);
+//      digitalWrite(chargePin, HIGH);
+//      if (millis() - kickStartTime >= kickTime)
+//      {
+//        digitalWrite(kickPin, HIGH);
+//        current = charging;
+//        chargeStartTime = millis();
+//      }
+//  }
 }
 //***********************************************************************************
 
@@ -197,56 +198,56 @@ char dribbler_state = 'i';
 
 void setDribble()
 {
-  unsigned long newPos, newTime;
-  newPos = encoder.read();
-  newTime = millis();
-
-  if (newTime > lastUpdTime) {
-    averageVel = (1 - alpha) * averageVel + alpha * ((float)(newPos - pos)) / (newTime - lastUpdTime) * TICKS_MILLI_2_TURNS_SEC;
-    pos = newPos;
-    lastUpdTime = newTime;
-  }
-
-  Serial1.println(averageVel);
-  if (dribble == 1)
-  {
-    // State Machine
-    if (dribbler_state == 'i') // initial
-    {
-      // Attempt to start the dribbler
-      digitalWrite(dribblePin, LOW);     //Active Low
-      dribble_start_time = millis();
-      dribbler_state = 'w';
-    }
-
-    else if ( dribbler_state == 'w') // wait for start
-    {
-      // Wait for the dribbler to rev up
-      if  ( millis() - dribble_start_time > 1500)
-        dribbler_state = 'c';
-    }
-
-    else if ( dribbler_state == 'c') // check for min speed
-    {
-      if (averageVel < 0.5) // Too Slow
-      {
-        digitalWrite(dribblePin, HIGH);
-        recovery_start_time = millis();
-        dribbler_state = 'r';
-      }
-    }
-
-    else if ( dribbler_state == 'r') // recovery
-    {
-      if ( millis() - recovery_start_time >  3000)
-        dribbler_state = 'i';
-    }
-  }
-  else
-  {
-    digitalWrite(dribblePin, HIGH);
-    dribbler_state = 'i';  // reset dribbler state machine
-  }
+//  unsigned long newPos, newTime;
+//  newPos = encoder.read();
+//  newTime = millis();
+//
+//  if (newTime > lastUpdTime) {
+//    averageVel = (1 - alpha) * averageVel + alpha * ((float)(newPos - pos)) / (newTime - lastUpdTime) * TICKS_MILLI_2_TURNS_SEC;
+//    pos = newPos;
+//    lastUpdTime = newTime;
+//  }
+//
+//  Serial1.println(averageVel);
+//  if (dribble == 1)
+//  {
+//    // State Machine
+//    if (dribbler_state == 'i') // initial
+//    {
+//      // Attempt to start the dribbler
+//      digitalWrite(dribblePin, LOW);     //Active Low
+//      dribble_start_time = millis();
+//      dribbler_state = 'w';
+//    }
+//
+//    else if ( dribbler_state == 'w') // wait for start
+//    {
+//      // Wait for the dribbler to rev up
+//      if  ( millis() - dribble_start_time > 1500)
+//        dribbler_state = 'c';
+//    }
+//
+//    else if ( dribbler_state == 'c') // check for min speed
+//    {
+//      if (averageVel < 0.5) // Too Slow
+//      {
+//        digitalWrite(dribblePin, HIGH);
+//        recovery_start_time = millis();
+//        dribbler_state = 'r';
+//      }
+//    }
+//
+//    else if ( dribbler_state == 'r') // recovery
+//    {
+//      if ( millis() - recovery_start_time >  3000)
+//        dribbler_state = 'i';
+//    }
+//  }
+//  else
+//  {
+//    digitalWrite(dribblePin, HIGH);
+//    dribbler_state = 'i';  // reset dribbler state machine
+//  }
 }
 //***********************************************************************************
 
@@ -257,19 +258,19 @@ void setSpeeds()
   //Bound for PWM duty cycles, about 10% and 90% of 0 and 255
   static int lowPWM = 30, highPWM = 225;
 
-  targetLFvel = targetLFvel = targetRFvel = targetRBvel = 20;
+//  targetLFvel = targetLBvel = targetRFvel = targetRBvel = 20;
 
   // Output speeds
   if (targetLFvel > 0 )
   {
     analogWrite(speedPinLF, map(abs(targetLFvel), 0, 100, lowPWM, highPWM));
-    digitalWrite(dirPinLF, LOW);
+    digitalWrite(dirPinLF, HIGH);
     digitalWrite(brakePinLF, LOW);
   }
   else if (targetLFvel < 0 )
   {
     analogWrite(speedPinLF, map(abs(targetLFvel), 0, 100, lowPWM, highPWM));
-    digitalWrite(dirPinLF, HIGH);
+    digitalWrite(dirPinLF, LOW);
     digitalWrite(brakePinLF, LOW);
   }
   else
