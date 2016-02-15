@@ -130,10 +130,10 @@ long LastLoopUpdate = 0;
 void loop()
 {
   runComm();
+  setKick();  
   if(millis()-LastLoopUpdate > 10)
   {
     setSpeeds();
-    setKick();
     setDribble();
     LastLoopUpdate = millis(); 
   }
@@ -172,6 +172,7 @@ void setKick()
       current = charging;
       chargeStartTime = millis();
     }
+    kick = 0;
   }
 }
 //***********************************************************************************
@@ -386,7 +387,10 @@ void runComm()
           targetLBvel = targetLBvelSerial;
           targetRFvel = targetRFvelSerial;
           targetRBvel = targetRBvelSerial;
-          kick = kickSerial;
+          if(kickSerial == 'k')
+            kick = kickSerial;
+          dribble = dribbleSerial;
+          chip = chipSerial;
 
           //Serial1.println("Packet Complete"); 
         }

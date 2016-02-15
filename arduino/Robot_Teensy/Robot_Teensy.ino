@@ -4,7 +4,7 @@ int id;
 int myid = 4;    // This Robot's ID
 
 // Declare motor pins
-#define gndPinLF 17
+//#define gndPinLF 
 #define enablePinLF 2
 #define dirPinLF 3
 #define brakePinLF 4
@@ -30,9 +30,9 @@ int myid = 4;    // This Robot's ID
 #define speedPinRB 23
 
 // Define pin locations for kicker and chipper
-//#define dribblePin 8
-//#define kickPin 9
-//#define chargePin 10
+#define dribblePin 17
+#define kickPin 18
+#define chargePin 19
 
 
 // Velocities
@@ -48,26 +48,17 @@ double targetRBvel = 0;
 // Kicker Chipper Dribbler
 int kick, chip, dribble = 0;
 
-// Encoder Variables
-//Encoder encoder(2, 3);
-//unsigned long pos;
-//float averageVel;
-//unsigned long lastUpdTime;
 
 //***********************************************************************************
 void setup()
 {
-  // Debug
-  //  pinMode(13, OUTPUT);
-  //  digitalWrite(13,HIGH);
-
   // Set Kicker and Chipper pins to output
-//  pinMode(kickPin, OUTPUT);
-//  pinMode(chargePin, OUTPUT);
-//  pinMode(dribblePin, OUTPUT);
+  pinMode(kickPin, OUTPUT);
+  pinMode(chargePin, OUTPUT);
+  pinMode(dribblePin, OUTPUT);
 
   // Set controller signal pins to output
-  pinMode(gndPinLF, OUTPUT);
+  //pinMode(gndPinLF, OUTPUT);
   pinMode(gndPinLB, OUTPUT);
   pinMode(gndPinRF, OUTPUT);
   pinMode(gndPinRB, OUTPUT);
@@ -88,7 +79,7 @@ void setup()
   pinMode(brakePinRB, OUTPUT);
 
   // Set Controller Signal GND to 0V
-  digitalWrite(gndPinLF, LOW);
+  //digitalWrite(gndPinLF, LOW);
   digitalWrite(gndPinLB, LOW);
   digitalWrite(gndPinRF, LOW);
   digitalWrite(gndPinRB, LOW);
@@ -111,17 +102,8 @@ void setup()
   analogWrite(speedPinRF, 30);
   analogWrite(speedPinRB, 30);
 
-  // Encoder Variables
-//  pos = encoder.read();
-//  lastUpdTime = millis();
-//  averageVel = 0;
-
-  //Note: For the UNO, the USB/Micro
-  //switch must be in the micro position.
-
   // Start Serial Port
   Serial1.begin(57600);
-
 }
 //***********************************************************************************
 
@@ -154,100 +136,39 @@ enum kickerState {
 kickerState current = charging;
 void setKick()
 {
-  // Need to clear grounds and use those pins
-//  switch (current)
-//  {
-//    case charging:
-//      digitalWrite(kickPin, HIGH);
-//      digitalWrite(chargePin, LOW);
-//      if (kick == 'k' && millis() - chargeStartTime >= chargeTime)
-//      {
-//        current = kicking;
-//        kickStartTime = millis();
-//      }
-//      break;
-//    case kicking:
-//      digitalWrite(kickPin, LOW);
-//      digitalWrite(chargePin, HIGH);
-//      if (millis() - kickStartTime >= kickTime)
-//      {
-//        digitalWrite(kickPin, HIGH);
-//        current = charging;
-//        chargeStartTime = millis();
-//      }
-//  }
+  switch (current)
+  {
+    case charging:
+      digitalWrite(kickPin, HIGH);
+      digitalWrite(chargePin, LOW);
+      if (kick == 'k' && millis() - chargeStartTime >= chargeTime)
+      {
+        current = kicking;
+        kickStartTime = millis();
+      }
+      break;
+    case kicking:
+      digitalWrite(kickPin, LOW);
+      digitalWrite(chargePin, HIGH);
+      if (millis() - kickStartTime >= kickTime)
+      {
+        digitalWrite(kickPin, HIGH);
+        current = charging;
+        chargeStartTime = millis();
+      }
+  }
 }
 //***********************************************************************************
 
 //***********************************************************************************
 // Manages the dribbler
 
-const float alpha = 1;
-const int TICKS_PER_TURN = 12 * 30;
-const float TICKS_MILLI_2_TURNS_SEC = 1000 / TICKS_PER_TURN;
-
-unsigned long dribble_start_time = 0;
-unsigned long recovery_start_time = 0;
-char dribbler_state = 'i';
-/*
- i = initial
- w = wait for start
- c = check for min speed
- r = recovery
- */
-
 void setDribble()
 {
-//  unsigned long newPos, newTime;
-//  newPos = encoder.read();
-//  newTime = millis();
-//
-//  if (newTime > lastUpdTime) {
-//    averageVel = (1 - alpha) * averageVel + alpha * ((float)(newPos - pos)) / (newTime - lastUpdTime) * TICKS_MILLI_2_TURNS_SEC;
-//    pos = newPos;
-//    lastUpdTime = newTime;
-//  }
-//
-//  Serial1.println(averageVel);
-//  if (dribble == 1)
-//  {
-//    // State Machine
-//    if (dribbler_state == 'i') // initial
-//    {
-//      // Attempt to start the dribbler
-//      digitalWrite(dribblePin, LOW);     //Active Low
-//      dribble_start_time = millis();
-//      dribbler_state = 'w';
-//    }
-//
-//    else if ( dribbler_state == 'w') // wait for start
-//    {
-//      // Wait for the dribbler to rev up
-//      if  ( millis() - dribble_start_time > 1500)
-//        dribbler_state = 'c';
-//    }
-//
-//    else if ( dribbler_state == 'c') // check for min speed
-//    {
-//      if (averageVel < 0.5) // Too Slow
-//      {
-//        digitalWrite(dribblePin, HIGH);
-//        recovery_start_time = millis();
-//        dribbler_state = 'r';
-//      }
-//    }
-//
-//    else if ( dribbler_state == 'r') // recovery
-//    {
-//      if ( millis() - recovery_start_time >  3000)
-//        dribbler_state = 'i';
-//    }
-//  }
-//  else
-//  {
-//    digitalWrite(dribblePin, HIGH);
-//    dribbler_state = 'i';  // reset dribbler state machine
-//  }
+  if(dribble=='d')
+    digitalWrite(dribblePin, LOW);
+  else  
+    digitalWrite(dribblePin, HIGH);    
 }
 //***********************************************************************************
 
@@ -392,6 +313,8 @@ void runComm()
             targetRFvel = targetRFvelSerial;
             targetRBvel = targetRBvelSerial;
             kick = kickSerial;
+            dribble = dribbleSerial;
+            chip = chipSerial;
 
             //Serial1.println("Packet Complete");
           }
