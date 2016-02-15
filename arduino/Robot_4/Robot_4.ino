@@ -3,30 +3,34 @@ int id;
 int myid = 4;    // This Robot's ID
 
 // Declare motor pins
-#define speedPinLF 5
-#define enablePinLF 31  
-#define dirPinLF 33
-#define brakePinLF 35
+#define speedPinLF 4
+#define gndPinLF 24
+#define enablePinLF 25  
+#define dirPinLF 26
+#define brakePinLF 27
 
-#define speedPinLB 3
-#define enablePinLB 40
-#define dirPinLB 42
-#define brakePinLB 44
+#define speedPinLB 5
+#define gndPinLB 32
+#define enablePinLB 33
+#define dirPinLB 34
+#define brakePinLB 35
 
 #define speedPinRF 6 
-#define enablePinRF 22 
-#define dirPinRF 24 
-#define brakePinRF 26
+#define gndPinRF 40
+#define enablePinRF 41 
+#define dirPinRF 42
+#define brakePinRF 43
 
-#define speedPinRB 9
+#define speedPinRB 7
+#define gndPinRB 48
 #define enablePinRB 49 
-#define dirPinRB 51
-#define brakePinRB 53
+#define dirPinRB 50
+#define brakePinRB 51
 
 // Define pin locations for kicker and chipper
-#define kickPin 7
-#define chargePin 8
-#define dribblePin 10
+#define dribblePin 8
+#define kickPin 9
+#define chargePin 10
 
 // Velocities
 //  90 = Stop
@@ -44,47 +48,59 @@ int kick, chip, dribble = 0;
 //***********************************************************************************
 void setup()
 {   
-  // Debug
-  pinMode(13, OUTPUT);
-  digitalWrite(13,HIGH);
-  
   // Set Kicker and Chipper pins to output
   pinMode(kickPin, OUTPUT);
   pinMode(chargePin, OUTPUT);
-  pinMode(dribblePin, OUTPUT);  
+  pinMode(dribblePin, OUTPUT);    
 
-  // Set Motor Pins to output
+  // Set controller signal pins to output
+  pinMode(gndPinLF,OUTPUT);
+  pinMode(gndPinLB,OUTPUT);
+  pinMode(gndPinRF,OUTPUT);
+  pinMode(gndPinRB,OUTPUT);
+
   pinMode(enablePinLF,OUTPUT);
   pinMode(enablePinLB,OUTPUT);
   pinMode(enablePinRF,OUTPUT);
-  pinMode(enablePinRB,OUTPUT);
-  
-  digitalWrite(enablePinLF,HIGH);
-  digitalWrite(enablePinLB,HIGH);
-  digitalWrite(enablePinRF,HIGH);
-  digitalWrite(enablePinRB,HIGH);
-  
-  analogWrite(speedPinLF,30);
-  analogWrite(speedPinLB,30);
-  analogWrite(speedPinRF,30);
-  analogWrite(speedPinRB,30);
-    
+  pinMode(enablePinRB,OUTPUT); 
+
   pinMode(dirPinLF,OUTPUT);
   pinMode(dirPinLB,OUTPUT);
   pinMode(dirPinRF,OUTPUT);
   pinMode(dirPinRB,OUTPUT);
-  
+
   pinMode(brakePinLF,OUTPUT);
   pinMode(brakePinLB,OUTPUT);
   pinMode(brakePinRF,OUTPUT);
   pinMode(brakePinRB,OUTPUT);
 
-  //Note: For the UNO, the USB/Micro
-  //switch must be in the micro position. 
+  // Set Controller Signal GND to 0V
+  digitalWrite(gndPinLF,LOW);
+  digitalWrite(gndPinLB,LOW);
+  digitalWrite(gndPinRF,LOW);
+  digitalWrite(gndPinRB,LOW);
+
+  // Enable Controllers
+  digitalWrite(enablePinLF,HIGH);
+  digitalWrite(enablePinLB,HIGH);
+  digitalWrite(enablePinRF,HIGH);
+  digitalWrite(enablePinRB,HIGH);
+
+  // Enable Brakes
+  digitalWrite(brakePinLF,HIGH);
+  digitalWrite(brakePinLB,HIGH);
+  digitalWrite(brakePinRF,HIGH);
+  digitalWrite(brakePinRB,HIGH);
+
+  // Set Speed to Zero
+  analogWrite(speedPinLF,30);
+  analogWrite(speedPinLB,30);
+  analogWrite(speedPinRF,30);
+  analogWrite(speedPinRB,30);    
 
   // Start Serial Port
   Serial1.begin(57600);
-  
+
 }
 //***********************************************************************************
 
@@ -94,10 +110,10 @@ long LastLoopUpdate = 0;
 void loop()
 {
   runComm();
+  setKick();  
   if(millis()-LastLoopUpdate > 10)
   {
     setSpeeds();
-    setKick();
     setDribble();
     LastLoopUpdate = millis(); 
   }
@@ -110,71 +126,73 @@ void loop()
 unsigned long kickStartTime = 0;
 unsigned long chargeStartTime = 0;
 int chargeTime = 6000; //ms
-int kickTime = 30;  //ms
-enum kickerState {kicking, charging};
+int kickTime = 15;  //ms
+enum kickerState {
+  kicking, charging};
 kickerState current = charging;
 void setKick()
 {
   switch(current)
   {
-    case charging:
-      digitalWrite(kickPin, LOW);
-      digitalWrite(chargePin, HIGH);
-      if(kick == 'k' && millis()-chargeStartTime >= chargeTime)
-      {
-        current = kicking;
-        kickStartTime = millis();
-      }
-      break;
-    case kicking:
+  case charging:
+    digitalWrite(kickPin, HIGH);
+    digitalWrite(chargePin, LOW);
+    if(kick == 'k' && millis()-chargeStartTime >= chargeTime)
+    {
+      current = kicking;
+      kickStartTime = millis();
+    }
+    break;
+  case kicking:
+    digitalWrite(kickPin, LOW);
+    digitalWrite(chargePin, HIGH);  
+    if(millis()-kickStartTime >= kickTime)
+    {
       digitalWrite(kickPin, HIGH);
-      digitalWrite(chargePin, LOW);  
-      if(millis()-kickStartTime >= kickTime)
-      {
-        digitalWrite(kickPin, LOW);
-        current = charging;
-        chargeStartTime = millis();
-      }
+      current = charging;
+      chargeStartTime = millis();
+    }
+    kick = 0;
   }
 }
 //***********************************************************************************
 
 //***********************************************************************************
-// Controls on the Dribbler
-//***********************************************************************************
+// Manages the dribbler
+
 void setDribble()
 {
-  if(dribble == 1)
-   digitalWrite(dribblePin, HIGH);
+  if(dribble == 'd')
+    digitalWrite(dribblePin, LOW);
   else
-   digitalWrite(dribblePin, LOW); 
+    digitalWrite(dribblePin, HIGH);
+   
 }
-
-
+//***********************************************************************************
 
 //***********************************************************************************
 // Write Speeds to Motors
 void setSpeeds()
 {
-  //Bound for PWN duty cycles, about 10% and 90% of 0 and 255
-  static int lowPWM = 28, highPWM = 225;
+  //Bound for PWM duty cycles, about 10% and 90% of 0 and 255
+  static int lowPWM = 30, highPWM = 225;
 
-  // output speeds
+  // Output speeds
   if(targetLFvel > 0 )
-  {
-    analogWrite(speedPinLF, map(abs(targetLFvel),0,100,lowPWM,highPWM));
-    digitalWrite(dirPinLF, HIGH);
-    digitalWrite(brakePinLF, LOW);
-  }
-  else if(targetLFvel < 0 )
   {
     analogWrite(speedPinLF, map(abs(targetLFvel),0,100,lowPWM,highPWM));
     digitalWrite(dirPinLF, LOW);
     digitalWrite(brakePinLF, LOW);
   }
+  else if(targetLFvel < 0 )
+  {
+    analogWrite(speedPinLF, map(abs(targetLFvel),0,100,lowPWM,highPWM));
+    digitalWrite(dirPinLF, HIGH);
+    digitalWrite(brakePinLF, LOW);
+  }
   else
     digitalWrite(brakePinLF, HIGH);
-          
+
   if(targetLBvel > 0 )
   {
     analogWrite(speedPinLB, map(abs(targetLBvel),0,100,lowPWM,highPWM));
@@ -189,7 +207,7 @@ void setSpeeds()
   }
   else
     digitalWrite(brakePinLB, HIGH);
-    
+
   if(targetRFvel > 0 )
   {
     analogWrite(speedPinRF, map(abs(targetRFvel),0,100,lowPWM,highPWM));
@@ -204,7 +222,7 @@ void setSpeeds()
   }
   else
     digitalWrite(brakePinRF, HIGH);
-    
+
   if(targetRBvel > 0 )
   {
     analogWrite(speedPinRB, map(abs(targetRBvel),0,100,lowPWM,highPWM));
@@ -219,12 +237,8 @@ void setSpeeds()
   }
   else
     digitalWrite(brakePinRB, HIGH);
-    
 }
 //***********************************************************************************
-
-
-
 
 //***********************************************************************************
 
@@ -268,7 +282,7 @@ void runComm()
       id = (int)Serial1.read();
       if (id == myid){
         state = 'b';
-        digitalWrite(13, LOW);
+        //        digitalWrite(13, LOW);
         //Serial1.println("ID Match");        
         break;
       }
@@ -294,8 +308,11 @@ void runComm()
           targetLBvel = targetLBvelSerial;
           targetRFvel = targetRFvelSerial;
           targetRBvel = targetRBvelSerial;
-          kick = kickSerial;
-          dribble = dribbleSerial;      
+          if(kickSerial == 'k')
+            kick = kickSerial;
+          dribble = dribbleSerial;
+          chip = chipSerial;
+
           //Serial1.println("Packet Complete"); 
         }
         else
@@ -309,30 +326,6 @@ void runComm()
     } 
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

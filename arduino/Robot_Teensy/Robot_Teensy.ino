@@ -1,7 +1,6 @@
-#include <Encoder.h>
 #include <Servo.h>
 int id;
-int myid = 4;    // This Robot's ID
+int myid = 5;    // This Robot's ID
 
 // Declare motor pins
 //#define gndPinLF 
@@ -279,19 +278,18 @@ void runComm()
           state = 'i';
           id = 90;
           kickSerial = 0;
-          //Serial1.println("Tilde Received");
+          //Serial.println("Tilde Received");
         }
         break;
       case 'i':                          // Check ID
         id = (int)Serial1.read();
         if (id == myid) {
-          state = 'b';
-          //        digitalWrite(13, LOW);
-          //Serial1.println("ID Match");
+          state = 'b';          
+          //Serial.println("ID Match");
           break;
         }
         state = 't';
-        //Serial1.println("ID Incorrect");
+        //Serial.println("ID Incorrect");
         break;
       case 'b':                         // Read Packet
         if (Serial1.available() >= 8)
@@ -316,11 +314,11 @@ void runComm()
             dribble = dribbleSerial;
             chip = chipSerial;
 
-            //Serial1.println("Packet Complete");
+            //Serial.println("Packet Complete");
           }
           else
           {
-            //Serial1.println("Packet Incomplete");
+            //Serial.println("Packet Incomplete");
             state = 't';
           }
           break;
