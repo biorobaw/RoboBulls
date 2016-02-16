@@ -45,7 +45,7 @@ struct values
     bool  Kick, Dribble;
 
     //What robot should this be for? Changed by map_joy on command line
-    int id;
+    int id = -1;
 };
 
 //! @brief Information from joysticks to be sent to the overridden robot (do not use directly)

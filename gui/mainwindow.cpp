@@ -99,20 +99,28 @@ void MainWindow::handleJoystickInput()
     {
         //Joystick updating is a bit different than keyboard. The joy axises can always
         //Be sent to the robot, so it is done here in the main loop
-        if(joystick::hasSupport()) {
-            Robot* r = gameModel->findMyTeam(fieldpanel->selectedBot);
-            r->setLB(joystick::LB);
-            r->setRB(joystick::RB);
-            r->setRF(joystick::RF);
-            r->setLF(joystick::LF);
+        if(joystick::hasSupport())
+        {
+            for(joystick::values& value: joystick::joystickmap)
+            {
+                if(value.id == -1) {
+                    continue;
+                }
+                Robot* r = gameModel->findMyTeam(value.id);
+                r->setLB(value.LB);
+                r->setRB(value.RB);
+                r->setRF(value.RF);
+                r->setLF(value.LF);
 
-            if(joystick::Kick)
-                  on_btn_botKick_pressed();
-             else on_btn_botKick_released();
+                if(value.Kick)
+                      on_btn_botKick_pressed();
+                 else on_btn_botKick_released();
 
-            if(joystick::Dribble)
-                 on_btn_botDrible_pressed();
-            else on_btn_botDrible_released();
+                if(value.Dribble)
+                     on_btn_botDrible_pressed();
+                else on_btn_botDrible_released();
+            }
+
         }
     }
 }

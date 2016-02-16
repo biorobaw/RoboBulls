@@ -4,6 +4,7 @@
 #include "movement/four_omni_motion/omni4_velcalculator.h"
 #include "gui/guiinterface.h"
 #include "gui/joystick.h"
+#include "utilities/debug.h"
 
 namespace joystick
 {
@@ -171,8 +172,11 @@ void listener()
 
 void listen()
 {
+    debug::registerFunction("map_joystick",map_joystick);
     joystickThread = std::thread(listener);
 }
+
+
 
 bool hasSupport()
 {
