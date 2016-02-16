@@ -110,8 +110,9 @@ bool TestStrategy::update()
 {
     //Change IDs and behaviors to be assigned here.
     //All robots must exists before any action is taken.
-    Robot* r0 = gameModel->findMyTeam(5);
-    if(r0) {
+    Robot* r0  = gameModel->findMyTeam(5);
+    if(r0)
+    {
         r0->assignBeh<KickBeh>();
     }
     return false;
