@@ -107,7 +107,7 @@ void printBuildInfo()
         << "     RefBox: " << REFBOX_ADDRESS    << ":" << REFBOX_PORT    << std::endl;
 }
 
-void echo(const std::vector<std::string>& args)
+void map_joystick(const std::vector<std::string>& args) //fix this function once gui/joystick fucntion has been updated
 {
     std::cout << "Echoing:" << std::endl;
     for(auto& s : args)
@@ -134,8 +134,7 @@ int main(int argc, char *argv[])
     //Start Vision and Refcomm and run the application
     debug::listenStart();
 
-    debug::registerFunction("echo", echo);
-
+    debug::registerFunction("map_joystick", map_joystick);
     visionCommunicator.start();
     refCommunicator.start();
     return a.exec();
