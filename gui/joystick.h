@@ -51,10 +51,6 @@ struct reading
 //! @brief Information from joysticks to be sent to the overridden robot (do not use directly)
 //! @{
 extern reading joystickReadings[10];
-
-//TO be removed: Single-robot values
-extern float LB, LF, RB, RF;
-extern bool  Kick, Dribble;
 //! @}
 
 //! @brief Starts a new thread listening for joystick events

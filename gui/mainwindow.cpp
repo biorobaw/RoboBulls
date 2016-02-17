@@ -98,9 +98,9 @@ void MainWindow::handleJoystickInput()
     //Be sent to the robot, so it is done here in the main loop
     for(joystick::reading& value: joystick::joystickReadings)
     {
-        if(value.id == -1) {
+        if(value.id == -1)
             continue;
-        }
+
         Robot* r = gameModel->findMyTeam(value.id);
         r->setLB(value.LB);
         r->setRB(value.RB);
@@ -108,11 +108,11 @@ void MainWindow::handleJoystickInput()
         r->setLF(value.LF);
 
         if(value.Kick)
-              on_btn_botKick_pressed();
-         else on_btn_botKick_released();
+            on_btn_botKick_pressed();
+        else on_btn_botKick_released();
 
         if(value.Dribble)
-             on_btn_botDrible_pressed();
+            on_btn_botDrible_pressed();
         else on_btn_botDrible_released();
     }
 }

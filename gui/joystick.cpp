@@ -126,8 +126,8 @@ Movement::fourWheelVels calculateRobotVelocity
         Point p = r->getRobotPosition();
         float o = r->getOrientation();
         float tPos =   o +     -(M_PI/180)*axes[conf.jAxisRotate];
-        float xPos = p.x + 3 *  axes[conf.jAxisMoveSide];
-        float yPos = p.y + 3 * -axes[conf.jAxisMoveUp];
+        float xPos = p.x + 12 *  axes[conf.jAxisMoveSide];
+        float yPos = p.y + 12 * -axes[conf.jAxisMoveUp];
         Movement::FourWheelCalculator fwc;
         auto velocity = fwc.calculateVels(r, xPos, yPos, tPos, Movement::Type::Default);
         return velocity;
@@ -185,14 +185,13 @@ void listener()
         {
             reading& value = joystickReadings[joy];
             if(value.id != -1) {
-                //std::cout << "Calculating " << joy << std::endl;
                 auto vels = calculateRobotVelocity(value.id, joy, axes[joy]);
                 value.LB = vels.LB;
                 value.LF = vels.LF;
                 value.RB = vels.RB;
                 value.LF = vels.LF;
-                value.Kick = buttons[0];
-                value.Dribble = buttons[1];
+                value.Kick = buttons[joy][0];
+                value.Dribble = buttons[joy][1];
             }
         }
     }
