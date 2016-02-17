@@ -36,7 +36,7 @@ namespace joystick
 //! @brief Values read in by a SDL joystick
 //! @details These values are assigned to a robot though the map_joystick
 //!  funciton, and the wheel velocities are sent to the robot at "id"
-struct values
+struct reading
 {
     //Wheel velocities for robot
     float LB, LF, RB, RF;
@@ -50,7 +50,7 @@ struct values
 
 //! @brief Information from joysticks to be sent to the overridden robot (do not use directly)
 //! @{
-extern values joystickmap[10];
+extern reading joystickReadings[10];
 
 //TO be removed: Single-robot values
 extern float LB, LF, RB, RF;

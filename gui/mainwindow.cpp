@@ -94,34 +94,26 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::handleJoystickInput()
 {
-    //If there is a selected bot that is overriden....
-    if(fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked())
+    //Joystick updating is a bit different than keyboard. The joy axises can always
+    //Be sent to the robot, so it is done here in the main loop
+    for(joystick::reading& value: joystick::joystickReadings)
     {
-        //Joystick updating is a bit different than keyboard. The joy axises can always
-        //Be sent to the robot, so it is done here in the main loop
-        if(joystick::hasSupport())
-        {
-            for(joystick::values& value: joystick::joystickmap)
-            {
-                if(value.id == -1) {
-                    continue;
-                }
-                Robot* r = gameModel->findMyTeam(value.id);
-                r->setLB(value.LB);
-                r->setRB(value.RB);
-                r->setRF(value.RF);
-                r->setLF(value.LF);
-
-                if(value.Kick)
-                      on_btn_botKick_pressed();
-                 else on_btn_botKick_released();
-
-                if(value.Dribble)
-                     on_btn_botDrible_pressed();
-                else on_btn_botDrible_released();
-            }
-
+        if(value.id == -1) {
+            continue;
         }
+        Robot* r = gameModel->findMyTeam(value.id);
+        r->setLB(value.LB);
+        r->setRB(value.RB);
+        r->setRF(value.RF);
+        r->setLF(value.LF);
+
+        if(value.Kick)
+              on_btn_botKick_pressed();
+         else on_btn_botKick_released();
+
+        if(value.Dribble)
+             on_btn_botDrible_pressed();
+        else on_btn_botDrible_released();
     }
 }
 
