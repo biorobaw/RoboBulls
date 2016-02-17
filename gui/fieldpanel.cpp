@@ -294,7 +294,7 @@ void FieldPanel::updateScene() {
                 guiTeam[i]->setRotation(angle);
                 // Action colors (may be better in the button slots)
                 if (i != selectedBot) {
-                    if (dash->gamemodel->find(i, dash->gamemodel->getMyTeam())->getDrible() ) {
+                    if (dash->gamemodel->find(i, dash->gamemodel->getMyTeam())->getDribble() ) {
                         guiTeam[i]->dribling = true;
                     } else { guiTeam[i]->dribling = false; }
                     if (dash->gamemodel->find(i, dash->gamemodel->getMyTeam())->getKick() == 1) {

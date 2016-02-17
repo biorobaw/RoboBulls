@@ -117,7 +117,7 @@ bool Move::perform(Robot *robot, Movement::Type moveType)
          * to the ending point, assign a path to get back to it */
         if(hasFoundPathEnd && Measurments::distance(robot, m_targetPoint) > ROBOT_SIZE) {
             hasFoundPathEnd = false;
-            assignNewPath(robot->getRobotPosition());
+            assignNewPath(robot->getPosition());
         }
         finished = this->calcObstacleAvoidance(robot, moveType);
     } else {
@@ -135,7 +135,7 @@ bool Move::perform(Robot *robot, Movement::Type moveType)
 
 bool Move::calcRegularMovement(Robot* robot, Type moveType)
 {
-    Point robotPos = robot->getRobotPosition();
+    Point robotPos = robot->getPosition();
     float robotAng = robot->getOrientation();
 
     //Check to see if movement is not necessary; close in position and angle
@@ -153,7 +153,7 @@ bool Move::calcRegularMovement(Robot* robot, Type moveType)
 bool Move::determinePathClear(Robot* robot) const
 {
     //Check to see if there is an obstalce in current path
-    Point robotPoint = robot->getRobotPosition();
+    Point robotPoint = robot->getPosition();
     Point obsPoint;
     bool isNewObstacleInPath = FPPA::isObstacleInLine(robotPoint, nextPoint, &obsPoint, useAvoidBall);
 
@@ -212,9 +212,9 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
             bool isCollided, isYielding;
             getCollisionState(robot, isCollided, isYielding);
             if(isYielding) {
-                nextPoint = robot->getRobotPosition();
+                nextPoint = robot->getPosition();
             } else if(isCollided) {
-                nextPoint = robot->getRobotPosition() + Collisions::getBackupDirection(robot) * 600;
+                nextPoint = robot->getPosition() + Collisions::getBackupDirection(robot) * 600;
             } else {
                 nextPoint = updatePathQueue(robot);
                 currentPathIsClear = determinePathClear(robot);
@@ -222,7 +222,7 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
             calculateVels(robot, nextPoint, m_targetAngle, moveType);
         } else {
             //A new path needs to be assigned. Do no movement
-            assignNewPath(robot->getRobotPosition());
+            assignNewPath(robot->getPosition());
             currentPathIsClear = true;
         }
     } else {

@@ -46,11 +46,11 @@ bool PassBallReceiver::playerInBadArea(Robot *robot)
     fieldSides.right = Region(-3000, 3000, -2000, -1500);
 
     Region riskRegion = Region (0, -3000, -2000, 2000);
-    if (fieldSides.up.contains(robot->getRobotPosition()) ||
-        fieldSides.down.contains(robot->getRobotPosition()) ||
-        fieldSides.left.contains(robot->getRobotPosition()) ||
-        fieldSides.right.contains(robot->getRobotPosition()) ||
-        riskRegion.contains(robot->getRobotPosition()))
+    if (fieldSides.up.contains(robot->getPosition()) ||
+        fieldSides.down.contains(robot->getPosition()) ||
+        fieldSides.left.contains(robot->getPosition()) ||
+        fieldSides.right.contains(robot->getPosition()) ||
+        riskRegion.contains(robot->getPosition()))
         return true;
     else
         return false;
@@ -71,7 +71,7 @@ void PassBallReceiver::perform(Robot *robot)
     GameModel *gm = GameModel::getModel();
     Point appGoal = gm->getOpponentGoal();
     Robot* oppGolie = gm->findOpTeam(GOALIE_ID);
-    Point goliePos = oppGolie->getRobotPosition();
+    Point goliePos = oppGolie->getPosition();
     float min_y = appGoal.y - R;
     float max_y = appGoal.y + R;
 

@@ -7,6 +7,7 @@
 #include "model/gamemodel.h"
 #include "model/robot.h"
 #include "simrobcomm.h"
+#include <iostream>
 
 SimRobComm::SimRobComm()
 {
@@ -42,7 +43,7 @@ void SimRobComm::sendPacket(Robot* robot)
     int LB = robot->getLB();
     int RB = robot->getRB();
     float kick = robot->getKick();
-    bool  drible = robot->getDrible();
+    bool  dribble = robot->getDribble();
 
     // Fill in simulator packet
     command->set_id(id);
@@ -56,7 +57,7 @@ void SimRobComm::sendPacket(Robot* robot)
     command->set_velangular(0);
     command->set_kickspeedx(kick);
     command->set_kickspeedz(0); // No chipper
-    command->set_spinner(drible ? 80 : 0);
+    command->set_spinner(dribble ? 80 : 0);
 
     //Send packet
     QByteArray dgram;

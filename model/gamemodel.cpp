@@ -400,7 +400,7 @@ static Point calculateRobotVelocity(Robot* robot)
 {
     static VelocityCalculator robotVelCalcs[20];
     int   index  = (10 * robot->isOnMyTeam()) + robot->getID();
-    Point newVel = robotVelCalcs[index].update(robot->getRobotPosition());
+    Point newVel = robotVelCalcs[index].update(robot->getPosition());
     return newVel;
 }
 

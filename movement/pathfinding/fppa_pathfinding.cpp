@@ -168,9 +168,9 @@ namespace impl {
         currentFrameObstacles.reserve(myTeam.size() + opTeam.size() + 1);
 
         for(Robot* rob : myTeam)
-            currentFrameObstacles.push_back(rob->getRobotPosition());
+            currentFrameObstacles.push_back(rob->getPosition());
         for(Robot* rob : opTeam)
-            currentFrameObstacles.push_back(rob->getRobotPosition());
+            currentFrameObstacles.push_back(rob->getPosition());
 
     #if FPPA_DEBUG
            std::cout << "[FPPA] All Obstacles: " << std::endl;

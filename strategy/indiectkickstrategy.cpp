@@ -47,7 +47,7 @@ void IndiectKickStrategy::assignBeh()
         {
             if(robot->getID() == GOALIE_ID || robot == sender)
                 continue;
-            Point robPos = robot->getRobotPosition();
+            Point robPos = robot->getPosition();
             Region PlayerRegion { robPos.x+R, robPos.x-R, robPos.y+R, robPos.y-R };
             playersCharactristics pch;
             pch.ID = robot->getID();

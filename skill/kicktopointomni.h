@@ -51,6 +51,7 @@ private:
     Point  m_targetPoint;         //Local (static-point) target stored only by first ctor
     Point* m_targetPointer;       //Pointer to point we are kicking to (m_targetPoint for static)
       int  m_moveCompletionCount; //Number of times move_skill says we are behind ball
+    Point behindBall;             //Point behind the ball to navigate to for alighnment with target
     float  m_targetTolerance;     //Mininum angle threshold we must be facing the target to kick
       int  m_kickDistance;        //Mininim distance we must be to *m_targetPointer to kick (or -1)
       int  m_kickLockCount;       //Count of times we are seen in "kick lock"
@@ -58,10 +59,12 @@ private:
      bool  m_useFullPower;        //Do we perform the kick with full power?
     float  m_lastBallAwayDist;    //How far was the last ball observed from out position?
       int  m_ballMovingAwayCount; //How many times have we seen m_lastBallAwayDist increasing?
+      int  m_kickCommandCount;
      bool  m_hasKickedOnce;
 
     //Current skill state
     enum { MOVE_BEHIND,  //We are far from the ball and are moving behind it to face target
+           MOVE_INTERMEDIATE,   // We are moving closer to the ball
            MOVE_FORWARD, //We are behind the ball facing target, and are moving forward to kick
            KICK          //We are kicking the ball
          } state;

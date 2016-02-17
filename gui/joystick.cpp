@@ -120,7 +120,7 @@ void listener()
                 Robot* r = gameModel->findMyTeam(GuiInterface::getGuiInterface()->getSelOverBot());
                 if(r != NULL)
                 {
-                    Point p = r->getRobotPosition();
+                    Point p = r->getPosition();
                     float o = r->getOrientation();
                     float tPos =   o +     -(M_PI/180)*axes[jAxisRotate];
                     float xPos = p.x + 3 *  axes[jAxisMoveSide];

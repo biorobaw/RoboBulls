@@ -5,6 +5,7 @@
 #include "include/config/globals.h"
 #include "movement/pathfinding/fppa_pathfinding.h"
 #include "movement/movetype.h"
+#include "include/config/tolerances.h"
 
 class Robot;
 
@@ -120,10 +121,10 @@ private:
     long  lastLineDrawnTime;
     
     //Default and user-set recreation (see recreate()) tolerances
-    float recrDistTolerance  = 30;
-    float recrAngleTolerance = 3*M_PI/180;
-    float lastDistTolerance  = 100; //CLC guarantees this
-    float lastAngTolerance   = 5*M_PI/180;
+    float recrDistTolerance  = 10;
+    float recrAngleTolerance = 1*M_PI/180;
+    float lastDistTolerance  = DIST_TOLERANCE;
+    float lastAngTolerance   = ROT_TOLERANCE;
 
     //Obstacle avoidance functions
     Point updatePathQueue(Robot *robot);

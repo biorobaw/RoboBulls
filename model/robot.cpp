@@ -59,7 +59,7 @@ int Robot::getRB() { return RB; }
 //! @}
 
 //! @brief Get the robot's Point position on the field
-Point Robot::getRobotPosition() { return robotPosition; }
+Point Robot::getPosition() { return robotPosition; }
 
 //! @brief Returns the roobt's orientation in radians
 float Robot::getOrientation() { return orientation; }
@@ -129,12 +129,12 @@ RobotType Robot::type()
 std::string Robot::toString()
 {
     std::stringstream ss;
-    ss << "\t" << getRobotPosition().toString() << "\t ID: " << getID();
+    ss << "\t" << getPosition().toString() << "\t ID: " << getID();
     return ss.str();
 }
 
 //! @brief Return if the robot is currently dribbling
-bool Robot::getDrible(){return drible;}
+bool Robot::getDribble(){return drible;}
 
 /****************** Private Functions ******************/
 

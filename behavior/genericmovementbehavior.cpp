@@ -10,11 +10,10 @@ GenericMovementBehavior::GenericMovementBehavior
     setMovementTargets(target, angTarget, obsAvoid, ballAvoid);
 }
 
-
 //Override Behavior perform
 void GenericMovementBehavior::perform(Robot* robot)
 {
-    perform(robot, Movement::Type::SharpTurns);
+    perform(robot);
 }
 
 /***********************************************************/
@@ -63,6 +62,6 @@ void GenericMovementBehavior::setMovementTolerances(float newDistTolerance, floa
 
 void StaticMovementBehavior::perform(Robot *robot)
 {
-    GenericMovementBehavior::perform(robot, Movement::Type::StayStill);
+    GenericMovementBehavior::perform(robot);
 }
 

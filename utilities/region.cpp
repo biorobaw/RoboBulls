@@ -64,14 +64,14 @@ int Region::numOfRobots()
 
     for (Robot * robot : gm->getOponentTeam())
     {
-        if(Region::contains(robot->getRobotPosition()))
+        if(Region::contains(robot->getPosition()))
         {
            number_of_robots++;
         }
     }
     for (Robot * robot : gm->getMyTeam())
     {
-        if(Region::contains(robot->getRobotPosition()))
+        if(Region::contains(robot->getPosition()))
         {
            number_of_robots++;
         }
@@ -87,7 +87,7 @@ int Region::numOfTeammates()
 
     for (Robot * robot : gm->getMyTeam())
     {
-        if(Region::contains(robot->getRobotPosition()))
+        if(Region::contains(robot->getPosition()))
         {
            number_of_robots++;
         }
@@ -103,7 +103,7 @@ int Region::numOfOpponents()
 
     for (Robot * robot : gm->getOponentTeam())
     {
-        if(Region::contains(robot->getRobotPosition()))
+        if(Region::contains(robot->getPosition()))
         {
            number_of_robots++;
         }
@@ -120,13 +120,13 @@ int Region::numOfRobots(std::vector<Robot*>& ignoreOpponents, std::vector<Robot*
 
     for (Robot * robotAdd : gm->getOponentTeam())
     {
-        if( Region::contains(robotAdd->getRobotPosition()) )
+        if( Region::contains(robotAdd->getPosition()) )
         {
            number_of_robots++;
         }
         for (Robot * robotSubtract : ignoreOpponents)
         {
-            if( Region::contains(robotSubtract->getRobotPosition())
+            if( Region::contains(robotSubtract->getPosition())
             &&  robotSubtract->getID() == robotAdd->getID())
             {
                 number_of_robots--;
@@ -136,13 +136,13 @@ int Region::numOfRobots(std::vector<Robot*>& ignoreOpponents, std::vector<Robot*
 
     for (Robot * robotAdd : gm->getMyTeam())
     {
-        if( Region::contains(robotAdd->getRobotPosition()) )
+        if( Region::contains(robotAdd->getPosition()) )
         {
            number_of_robots++;
         }
         for (Robot * robotSubtract : ignoreTeammates)
         {
-            if( Region::contains(robotSubtract->getRobotPosition())
+            if( Region::contains(robotSubtract->getPosition())
             &&  robotSubtract->getID() == robotAdd->getID())
             {
                 number_of_robots--;

@@ -80,7 +80,7 @@ fourWheelVels GoToPosition::calculateGoalField(Robot* robot, Type moveType)
         Point unit(cos(fromGoal), sin(fromGoal));
 
         //The `target` is the robot's point plus a vector away from the goal
-        Point target = robot->getRobotPosition() + (unit * 1000);
+        Point target = robot->getPosition() + (unit * 1000);
         result = fwc.calculateVels(robot, target, robot->getOrientation(), moveType);
     }
 

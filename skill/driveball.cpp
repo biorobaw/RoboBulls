@@ -33,7 +33,7 @@ bool DriveBall::perform(Robot* robot)
 {
     GameModel* gm   = GameModel::getModel();
     Point ballPoint = gm->getBallPoint();
-    Point robPoint  = robot->getRobotPosition();
+    Point robPoint  = robot->getPosition();
     float targetBallAngle = Measurments::angleBetween(targetPosition, ballPoint);
     float ballTargetAngle =  Measurments::angleBetween(ballPoint, targetPosition);
     Point behindBall      = ballPoint + Point(DIST*cos(targetBallAngle),

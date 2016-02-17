@@ -143,7 +143,7 @@ QString ObjectPosition::getBotCoord(int id) {
     std::vector<Robot*> team = dash->gamemodel->getMyTeam();
 
     if (team.at(0) != NULL){
-        std::string posRob = dash->gamemodel->find(id, team)->getRobotPosition().toString();
+        std::string posRob = dash->gamemodel->find(id, team)->getPosition().toString();
         qPos = QString::fromStdString(posRob);
     }
     return qPos;
@@ -158,7 +158,7 @@ int ObjectPosition::getBotCoordX(bool myTeam, int id) {
     } else {
         team = &dash->gamemodel->getOponentTeam();
     }
-    x = dash->gamemodel->find(id, *team)->getRobotPosition().x;
+    x = dash->gamemodel->find(id, *team)->getPosition().x;
     return x;
 }
 
@@ -170,7 +170,7 @@ int ObjectPosition::getBotCoordY(bool myTeam, int id) {
     } else {
         team = &dash->gamemodel->getOponentTeam();
     }
-    y = dash->gamemodel->find(id, *team)->getRobotPosition().y;
+    y = dash->gamemodel->find(id, *team)->getPosition().y;
     return y;
 }
 

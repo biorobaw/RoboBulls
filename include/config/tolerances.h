@@ -20,7 +20,7 @@ extern const int DIST_TOLERANCE;
  * @details Test this with Measurements::angleDiff.
  * This is also the default tolerance for the angle version
  * of Measurements::isClose */
-extern const int ROT_TOLERANCE;
+extern const double ROT_TOLERANCE;
 
 //! @}
 

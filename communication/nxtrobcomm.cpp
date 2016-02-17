@@ -7,7 +7,7 @@
 float lf, lb, rf, rb;
 
 //A constant to multiply velocities
-static float k = 0.5;
+static float k = 0.4;
 
 NXTRobComm::NXTRobComm()
 {
@@ -77,8 +77,8 @@ void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
         }
 
         //Kick, dribble, and Chip power (no chipper, always 0)
-        packet->kick = rob->getKick() ? 'k' : 0;
-        packet->dribble_power = rob->getDrible();
+        packet->kick = rob->getKick() > 0 ? 'k' : 0;
+        packet->dribble_power = rob->getDribble() > 0 ? 'd' : 0;
         packet->chip_power = 0;
 
         //Reset kick and dribble status in robot

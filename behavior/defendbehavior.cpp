@@ -364,7 +364,7 @@ bool DefendStateKick::tryGetValidLinePoint(Robot* r)
     Point bp = gameModel->getBallPoint();
     Point bpp= gameModel->getBallPrediction();
     Point goal = gameModel->getMyGoal();
-    Point p = Measurments::linePoint(r->getRobotPosition(), bp, bpp);
+    Point p = Measurments::linePoint(r->getPosition(), bp, bpp);
     if(abs(goal.x - p.x) < 2500 && Measurments::distance(r, p) < LINE_DISTANCE*2) {
         linePoint = p;
         chosenLinePoint = true;

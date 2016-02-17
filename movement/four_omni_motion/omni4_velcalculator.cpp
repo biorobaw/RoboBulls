@@ -1,7 +1,5 @@
 #include "movement/four_omni_motion/omni4_velcalculator.h"
-#include "utilities/debug.h"
-#include "include/config/tolerances.h"
-#include "include/config/simulated.h"
+
 using std::abs;
 
 namespace Movement
@@ -11,7 +9,7 @@ namespace Movement
 
 #if SIMULATED
 float xy_prop_mult = 0.1;       //Multiplier for Proportional XY
-float xy_int_mult = 0.002;      //Multiplier for integral XY
+float xy_int_mult = 0.0001;      //Multiplier for integral XY
 float theta_prop_mult = 0.5;    //Multiplier for theta proportional
 float theta_int_mult = 0.0015;  //Multiplier for theta integral
 #else
@@ -52,8 +50,8 @@ fourWheelVels FourWheelCalculator::defaultCalc
     (Robot* rob, float x_goal, float y_goal, float theta_goal, Type moveType)
 {
     //Current Position
-    double x_current = rob->getRobotPosition().x;
-    double y_current = rob->getRobotPosition().y;
+    double x_current = rob->getPosition().x;
+    double y_current = rob->getPosition().y;
     double theta_current = rob->getOrientation();
     last_goal_target = Point(x_goal, y_goal);
 
@@ -66,23 +64,13 @@ fourWheelVels FourWheelCalculator::defaultCalc
     //Calulate error integral component
     calc_error(x_goal, y_goal);
 
-    // No XY movement when explicitly staying still, and we are close
-    // to the target--helps controllers not break
-    float xy_prop_used = xy_prop_mult;
-    float xy_int_used = xy_int_mult;
-    if(moveType == Type::StayStill
-            && Measurments::distance(rob, last_goal_target) < ROBOT_RADIUS*1.8) {
-        xy_prop_used = 0;
-        xy_int_used = 0;
-    }
-
     //Inertial Frame Velocities
     double x_vel =
-        (xy_prop_used * distance_to_goal +
-         xy_int_used  * dist_error_integral)*cos(angle_to_goal);
+        (xy_prop_mult * distance_to_goal +
+         xy_int_mult  * dist_error_integral)*cos(angle_to_goal);
     double y_vel =
-        (xy_prop_used * distance_to_goal +
-         xy_int_used  * dist_error_integral)*sin(angle_to_goal);
+        (xy_prop_mult * distance_to_goal +
+         xy_int_mult  * dist_error_integral)*sin(angle_to_goal);
     double theta_vel =
          theta_prop_mult * angle_error
        + theta_int_mult  * angle_error_integral;
@@ -91,6 +79,7 @@ fourWheelVels FourWheelCalculator::defaultCalc
         abs(Measurments::angleDiff(theta_goal,theta_current+theta_vel)))
         theta_vel=-theta_vel;
 
+#if !SIMULATED
     // Reduce speed near target
     if (distance_to_goal < 700)
     {
@@ -98,6 +87,7 @@ fourWheelVels FourWheelCalculator::defaultCalc
         y_vel *= 0.1;
         theta_vel *= 0.1;
     }
+#endif
 
     // Robot Frame Velocities
     double y_vel_robot = cos(theta_current)*x_vel+sin(theta_current)*y_vel;
@@ -147,6 +137,7 @@ fourWheelVels FourWheelCalculator::defaultCalc
     vels.LF = LF;
     vels.RB = RB;
     vels.RF = RF;
+
     return vels;
 }
 
@@ -154,8 +145,8 @@ fourWheelVels FourWheelCalculator::facePointCalc
     (Robot* rob, float x_goal, float y_goal, float theta_goal)
 {
     //Current Position
-    double x_current = rob->getRobotPosition().x;
-    double y_current = rob->getRobotPosition().y;
+    double x_current = rob->getPosition().x;
+    double y_current = rob->getPosition().y;
     double theta_current = rob->getOrientation();
     last_goal_target = Point(x_goal, y_goal);
 

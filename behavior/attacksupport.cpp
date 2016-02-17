@@ -33,14 +33,14 @@ void AttackSupport::recalculateWp(Robot* robot)
     //We do not recalculate if the attacker hasn't moved too much
     if (Measurments::isClose(main_attacker,previousAttackerPos,40))
         return;
-    previousAttackerPos = main_attacker->getRobotPosition();
+    previousAttackerPos = main_attacker->getPosition();
 
     /* Logic to decide which half to stay on.
      * First, we try to go to the Region that the passer is not in.
      * If the attacker is on none, we choose the one with the least number of opponents. */
-    if(left_of_main.contains(main_attacker->getRobotPosition())) {
+    if(left_of_main.contains(main_attacker->getPosition())) {
         wp = right_of_main.centre();
-    } else if (right_of_main.contains(main_attacker->getRobotPosition())) {
+    } else if (right_of_main.contains(main_attacker->getPosition())) {
         wp = left_of_main.centre();
     }
     else {
@@ -49,7 +49,7 @@ void AttackSupport::recalculateWp(Robot* robot)
         ignoreTeammates.push_back(robot);
         //Filter out all robots in the penalty area from population consideration
         for(Robot * rob : gameModel->getOponentTeam()) {
-            if(penalty_area.contains(rob->getRobotPosition()))
+            if(penalty_area.contains(rob->getPosition()))
                 ignoreOpponents.push_back(rob);
         }
         if( left_of_main.numOfRobots(ignoreOpponents,ignoreTeammates) <=

@@ -82,7 +82,7 @@ wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, double x_goal,
 
     //*******************************************************************************************
     /* Get initial information about the robot. */
-    Point robotPos       = robot->getRobotPosition();
+    Point robotPos       = robot->getPosition();
     double x_current     = robotPos.x;
     double y_current     = robotPos.y;
     double theta_current = robot->getOrientation();

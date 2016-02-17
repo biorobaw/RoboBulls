@@ -37,9 +37,9 @@ void RotateOnPoint::perform(Robot *robot)
                 float next = Measurments::angleSum(to_robot, sign * 45*(M_PI/180));
                 Point offset = center_point + Point(cos(next), sin(next)) * center_dist;
                 setMovementTargets(offset, to_center);
-                if(Measurments::isClose(robot->getRobotPosition(), final_point, DIST_TOLERANCE*0.75)) {
+                if(Measurments::isClose(robot->getPosition(), final_point, DIST_TOLERANCE*0.75)) {
                     finished = true;
-                    setMovementTargets(robot->getRobotPosition(), to_center);
+                    setMovementTargets(robot->getPosition(), to_center);
                 }
             }
         }

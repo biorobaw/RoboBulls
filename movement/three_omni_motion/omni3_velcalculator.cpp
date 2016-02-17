@@ -30,8 +30,8 @@ threeWheelVels ThreeWheelCalculator::defaultCalc
     (Robot* rob, float x_goal, float y_goal, float theta_goal)
 {
     //Current Position
-    double x_current = rob->getRobotPosition().x;
-    double y_current = rob->getRobotPosition().y;
+    double x_current = rob->getPosition().x;
+    double y_current = rob->getPosition().y;
     double theta_current = rob->getOrientation();
 
     Point rp = Point(x_current,y_current);
@@ -97,8 +97,8 @@ threeWheelVels ThreeWheelCalculator::facePointCalc
     (Robot* rob, float x_goal, float y_goal, float theta_goal)
 {
     //Current Position
-    double x_current = rob->getRobotPosition().x;
-    double y_current = rob->getRobotPosition().y;
+    double x_current = rob->getPosition().x;
+    double y_current = rob->getPosition().y;
     double theta_current = rob->getOrientation();
 
     Point rp = Point(x_current,y_current);

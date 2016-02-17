@@ -104,14 +104,14 @@ void DefendFarFromBall::perform(Robot *robot)
         }
     }
     else if(!isKickingBallAway && Measurments::distance(ball, idlePoint) < goalieDist) {
-        //If we're not kicking and the ball is close to the goal, we want to kick it away.
+        // If we're not kicking and the ball is close to the goal, we want to kick it away.
         isKickingBallAway = true;
         kick_skill = new Skill::KickToPointOmni(Point(0,0));
     }
     else if(isBallMovingTowardsGoal(lineSegment))  {
-        /* If the ball is moving torwards goal, we move to get into the line of trajectory.
+        /* If the ball is moving towards goal, we move to get into the line of trajectory.
          * But we only move if the nearest point is near the goal */
-        Point movePoint = Measurments::linePoint(robot->getRobotPosition(), lineSegment.first, lineSegment.second);
+        Point movePoint = Measurments::linePoint(robot->getPosition(), lineSegment.first, lineSegment.second);
         if(Measurments::distance(movePoint, idlePoint) < goalieDist) {
             gui->drawPath(lineSegment.first, lineSegment.second);
             setVelocityMultiplier(1.5);
@@ -123,17 +123,17 @@ void DefendFarFromBall::perform(Robot *robot)
     else if(ballBot && ballBot->getID() != GOALIE_ID && ballOnRobotIsAimedAtOurGoal(ballBot, lineSegment)) {
         //If there is a robot with the ball facing our goal, we move to get in it's trajectory.
         //But we only move if the nearest point is near the goal
-        Point nearestPointOnLine = Measurments::linePoint(robot->getRobotPosition(), lineSegment.first, lineSegment.second);
+        Point nearestPointOnLine = Measurments::linePoint(robot->getPosition(), lineSegment.first, lineSegment.second);
         if(Measurments::distance(nearestPointOnLine, idlePoint) < goalieDist) {
             gui->drawPath(lineSegment.first, lineSegment.second, 0.1);
-            gui->drawPath(robot->getRobotPosition(), nearestPointOnLine, 0.1);
+            gui->drawPath(robot->getPosition(), nearestPointOnLine, 0.1);
             setMovementTargets(nearestPointOnLine, angleToBall, false, false);
         } else {
             setMovementTargets(idlePoint, angleToBall, false, false);
         }
     }
     else {
-        //Otherwise we are just idling at the idle point, facing the center if it is unreachable,
+        // Otherwise we are just idling at the idle point, facing the center if it is unreachable,
         // or to the ball otherwise
         float facingAngle = isBallUnreachable() ? Measurments::angleBetween(robot,Point(0,0)) : angleToBall;
         setVelocityMultiplier(1);

@@ -253,7 +253,7 @@ void RobotMoveStatus::updateIsMovingStatus(Robot* robot)
      * recorded moved position */
     if(Measurments::distance(robot, m_lastDiffPoint) > ROBOT_MOVING_DIST_TOL) {
         m_isMoving      = true;
-        m_lastDiffPoint = robot->getRobotPosition();
+        m_lastDiffPoint = robot->getPosition();
         m_observeCount  = 0;
     } else {
         /* The robot is *not* moving after we've seen it's distance close enough

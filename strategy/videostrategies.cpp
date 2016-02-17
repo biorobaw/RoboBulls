@@ -337,7 +337,7 @@ bool VideoStrategy5::update()
         keeper->assignBeh<GenericMovementBehavior>(Point(-2700,0),0,false,false);
 
     // Decide where the target for ATK should be based on GK position
-    keeper->getRobotPosition().y>0?
+    keeper->getPosition().y>0?
         target = Point(-3000,-350):
         target = Point(-3000,350);
 

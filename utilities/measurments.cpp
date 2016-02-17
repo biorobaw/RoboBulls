@@ -9,13 +9,13 @@ float Measurments::distance(const Point& p1, const Point& p2) {
     return sqrt((dy * dy) + (dx * dx));
 }
 float Measurments::distance(const Point& p1, Robot* r1) {
-    return Measurments::distance(p1, r1->getRobotPosition());
+    return Measurments::distance(p1, r1->getPosition());
 }
 float Measurments::distance(Robot* r1, const Point& p1) {
-    return Measurments::distance(r1->getRobotPosition(), p1);
+    return Measurments::distance(r1->getPosition(), p1);
 }
 float Measurments::distance(Robot* r1, Robot* r2) {
-    return Measurments::distance(r1->getRobotPosition(), r2->getRobotPosition());
+    return Measurments::distance(r1->getPosition(), r2->getPosition());
 }
 
 
@@ -23,13 +23,13 @@ Point Measurments::midPoint(const Point& a, const Point& b){
     return Point((a.x + b.x) / 2, (a.y + b.y) / 2);
 }
 Point Measurments::midPoint(const Point& p1, Robot* r1) {
-    return Measurments::midPoint(p1, r1->getRobotPosition());
+    return Measurments::midPoint(p1, r1->getPosition());
 }
 Point Measurments::midPoint(Robot* r1, const Point& p1) {
-    return Measurments::midPoint(r1->getRobotPosition(), p1);
+    return Measurments::midPoint(r1->getPosition(), p1);
 }
 Point Measurments::midPoint(Robot* r1, Robot* r2) {
-    return Measurments::midPoint(r1->getRobotPosition(), r2->getRobotPosition());
+    return Measurments::midPoint(r1->getPosition(), r2->getPosition());
 }
 
 
@@ -38,26 +38,26 @@ float Measurments::angleBetween(const Point& p1, const Point& p2) {
     return atan2(p2.y - p1.y, p2.x - p1.x);
 }
 float Measurments::angleBetween(const Point& p1, Robot* r1) {
-    return Measurments::angleBetween(p1, r1->getRobotPosition());
+    return Measurments::angleBetween(p1, r1->getPosition());
 }
 float Measurments::angleBetween(Robot* r1, const Point& p1) {
-    return Measurments::angleBetween(r1->getRobotPosition(), p1);
+    return Measurments::angleBetween(r1->getPosition(), p1);
 }
 float Measurments::angleBetween(Robot* r1, Robot* r2) {
-    return Measurments::angleBetween(r1->getRobotPosition(), r2->getRobotPosition());
+    return Measurments::angleBetween(r1->getPosition(), r2->getPosition());
 }
 
 bool Measurments::isClose(const Point& p1, const Point& p2, float tol) {
     return (fabs(p1.y - p2.y) <= tol) && (fabs(p2.x - p1.x) <= tol);
 }
 bool Measurments::isClose(const Point& p1, Robot* r1, float tol) {
-    return Measurments::isClose(p1, r1->getRobotPosition(), tol);
+    return Measurments::isClose(p1, r1->getPosition(), tol);
 }
 bool Measurments::isClose(Robot* r1, const Point& p1, float tol) {
-    return Measurments::isClose(r1->getRobotPosition(), p1, tol);
+    return Measurments::isClose(r1->getPosition(), p1, tol);
 }
 bool Measurments::isClose(Robot* r1, Robot* r2, float tol) {
-    return Measurments::isClose(r1->getRobotPosition(), r2->getRobotPosition(), tol);
+    return Measurments::isClose(r1->getPosition(), r2->getPosition(), tol);
 }
 
 

@@ -29,13 +29,13 @@ public:
 
     //! @name Information Retrevial
     //! @{
-    Point getRobotPosition();
+    Point getPosition();
     Point getVelocity();
     float getSpeed();
     float getOrientation();
     int   getID();
     float getKick();
-    bool  getDrible();
+    bool  getDribble();
     bool  isOnMyTeam();
     bool  hasBehavior();
     bool  hasKicker();

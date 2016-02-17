@@ -6,6 +6,9 @@
 #include "model/robot.h"
 #include "movement/movetype.h"
 #include "utilities/measurments.h"
+#include "utilities/debug.h"
+#include "include/config/tolerances.h"
+#include "include/config/simulated.h"
 
 namespace Movement
 {
@@ -55,7 +58,11 @@ private:
     double LB_offset = 224*M_PI/180; //225
     double RF_offset =  36*M_PI/180; //45
     double RB_offset = 316*M_PI/180; //315
+#if SIMULATED
+    double trans_offset = 0;
+#else
     double trans_offset = 0.0149;
+#endif
     const double wheel_radius = 27;
     double distance_to_goal, angle_error;
 

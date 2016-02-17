@@ -31,8 +31,8 @@ void AttackMain::perform(Robot * robot)
 {
     //Get info from gamemodel
     if(support_attacker != nullptr)
-        sp = support_attacker->getRobotPosition();
-    rp = robot->getRobotPosition();
+        sp = support_attacker->getPosition();
+    rp = robot->getPosition();
     gp = gameModel->getOpponentGoal();
     bp = gameModel->getBallPoint();
     goal_direction = Measurments::angleBetween(rp, gp);  //Sets drive direction towards goal

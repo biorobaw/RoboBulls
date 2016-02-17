@@ -55,7 +55,7 @@ public:
             GenericMovementBehavior::perform(robot);
         } else {
             //Case to stop robot from floating
-            setMovementTargets(robot->getRobotPosition());
+            setMovementTargets(robot->getPosition());
         }
     }
 };
@@ -76,7 +76,7 @@ public:
     {
         GameModel * gm = GameModel::getModel();
         Point wait_point = Point(gm->getMyGoal().x*0.5, myYPos);
-        double wait_orientation = Measurments::angleBetween(robot->getRobotPosition(),gm->getBallPoint());
+        double wait_orientation = Measurments::angleBetween(robot->getPosition(),gm->getBallPoint());
 
         setMovementTargets(wait_point, wait_orientation);
         StaticMovementBehavior::perform(robot);

@@ -47,8 +47,8 @@ void FreeKickStrategy::assignBeh()
             {
                 if (myTeam.at(i)->getID() != GOALIE_ID)
                 {
-                    Point iPos = myTeam.at(i)->getRobotPosition();
-                    Point closestPos = kickerRobot->getRobotPosition();
+                    Point iPos = myTeam.at(i)->getPosition();
+                    Point closestPos = kickerRobot->getPosition();
                     if (Measurments::distance(iPos, ballPoint) < Measurments::distance(closestPos, ballPoint))
                         kickerRobot = myTeam.at(i);
                 }

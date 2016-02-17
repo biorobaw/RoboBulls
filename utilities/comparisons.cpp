@@ -187,7 +187,7 @@ pred_distance::pred_distance(const Point& testPoint)
         pointCompareFn = std::bind(distanceComparePointFn, _1, _2, pred_testPoint);
     }
 pred_distance::pred_distance(Robot* robot)
-    : pred_distance(robot->getRobotPosition())
+    : pred_distance(robot->getPosition())
     { }
 
 pred_distanceBall::pred_distanceBall()
@@ -210,7 +210,7 @@ pred_distanceOpGoal::pred_distanceOpGoal()
 //! @cond
 bool isFacingPointCompareFn(Robot* robot, Robot*, const Point& pred_Point, float pred_tolerance,
                             compareFunction compare_function) {
-    Point robPos     = robot->getRobotPosition();
+    Point robPos     = robot->getPosition();
     float robAngle   = robot->getOrientation();
     float angleTween = Measurments::angleBetween(robPos, pred_Point);
     float angleDiff  = abs( Measurments::angleDiff(angleTween, robAngle) );
@@ -224,7 +224,7 @@ _isFacingPoint::_isFacingPoint(const Point& testPoint, float tol)
     , pred_tolerance(tol)
     { }
 _isFacingPoint::_isFacingPoint(Robot* testRobot, float tol)
-    : _isFacingPoint(testRobot->getRobotPosition(), tol)
+    : _isFacingPoint(testRobot->getPosition(), tol)
     { }
 
 void pred_isFacingPoint::setCompareFunction() {
@@ -250,7 +250,7 @@ static bool pointOutsideCompareFnPt(const Point& testPoint, compareFunction f) {
     return false;
 }
 static bool pointOutsideCompareFnRob(Robot* r, std::function<bool(float,float)> f) {
-    return pointOutsideCompareFnPt(r->getRobotPosition(), f);
+    return pointOutsideCompareFnPt(r->getPosition(), f);
 }
 //! @endcond
 
@@ -276,7 +276,7 @@ bool isDistGreaterCompareFnPt(const Point& a, const Point&, const Point& b, floa
     return f(Measurments::distance(a, b), dist);
 }
 bool isDistGreaterCompareFnRb(Robot* a, Robot*, const Point& b, float dist, compareFunction f) {
-    return isDistGreaterCompareFnPt(a->getRobotPosition(), Point(0,0), b, dist, f);
+    return isDistGreaterCompareFnPt(a->getPosition(), Point(0,0), b, dist, f);
 }
 //! @endcond
 
@@ -286,7 +286,7 @@ pred_isDistanceToGreater::pred_isDistanceToGreater(const Point& a, float dist)
     { }
 
 pred_isDistanceToGreater::pred_isDistanceToGreater(Robot* a, float dist)
-    : pred_isDistanceToGreater(a->getRobotPosition(), dist)
+    : pred_isDistanceToGreater(a->getPosition(), dist)
     { }
 
 void pred_isDistanceToGreater::setCompareFunction() {
@@ -308,13 +308,13 @@ void pred_isDistanceToLess::setCompareFunction() {
 /*******************************************************************/
 
 bool isFacingPoint(Robot* a, Robot* b, float tol) {
-    return isFacingPoint(a, b->getRobotPosition(), tol);
+    return isFacingPoint(a, b->getPosition(), tol);
 }
 bool isFacingPoint(Robot* a, const Point& b, float tol) {
     return isFacingPointCompareFn(a, nullptr, b, tol, std::less<float>{});
 }
 bool isNotFacingPoint(Robot* a, Robot* b, float tol) {
-    return isNotFacingPoint(a, b->getRobotPosition(), tol);
+    return isNotFacingPoint(a, b->getPosition(), tol);
 }
 bool isNotFacingPoint(Robot* a, const Point& b, float tol) {
     return isFacingPointCompareFn(a, nullptr, b, tol, std::greater<float>{});
@@ -332,28 +332,28 @@ bool isPointInsideField(Robot* a) {
     return pointOutsideCompareFnRob(a, std::less<float>{});
 }
 bool isDistanceToGreater(Robot* a, Robot* b, float tol) {
-    return isDistanceToGreater(a->getRobotPosition(), b->getRobotPosition(), tol);
+    return isDistanceToGreater(a->getPosition(), b->getPosition(), tol);
 }
 bool isDistanceToGreater(const Point& a, const Point& b, float tol) {
     return isDistGreaterCompareFnPt(a, Point(), b, tol, std::greater<float>{});
 }
 bool isDistanceToGreater(Robot* a, const Point& b, float tol) {
-    return isDistanceToGreater(a->getRobotPosition(), b, tol);
+    return isDistanceToGreater(a->getPosition(), b, tol);
 }
 bool isDistanceToGreater(const Point& a, Robot* b, float tol) {
-    return isDistanceToGreater(a, b->getRobotPosition(), tol);
+    return isDistanceToGreater(a, b->getPosition(), tol);
 }
 bool isDistanceToLess(Robot* a, Robot* b, float tol) {
-    return isDistanceToLess(a->getRobotPosition(), b->getRobotPosition(), tol);
+    return isDistanceToLess(a->getPosition(), b->getPosition(), tol);
 }
 bool isDistanceToLess(const Point& a, const Point& b, float tol) {
     return isDistGreaterCompareFnPt(a, Point(), b, tol, std::less<float>{});
 }
 bool isDistanceToLess(Robot* a, const Point& b, float tol) {
-    return isDistanceToLess(a->getRobotPosition(), b, tol);
+    return isDistanceToLess(a->getPosition(), b, tol);
 }
 bool isDistanceToLess(const Point& a, Robot* b, float tol) {
-    return isDistanceToLess(a, b->getRobotPosition(), tol);
+    return isDistanceToLess(a, b->getPosition(), tol);
 }
 
 

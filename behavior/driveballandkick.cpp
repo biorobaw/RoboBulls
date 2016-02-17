@@ -47,26 +47,26 @@ void DriveBallAndKick::perform(Robot* robot)
     case driving:
         cout << "in switch driving!"<<endl;
 
-        if (Measurments::isClose(kickPoint, robot->getRobotPosition(), CLOSE_ENOUGH) &&
-            Measurments::isClose(robot->getRobotPosition(), gm->getBallPoint(), CLOSE_ENOUGH) &&
+        if (Measurments::isClose(kickPoint, robot->getPosition(), CLOSE_ENOUGH) &&
+            Measurments::isClose(robot->getPosition(), gm->getBallPoint(), CLOSE_ENOUGH) &&
             abs(Measurments::angleDiff(robot->getOrientation(), direction)) < ANGLE/2 &&
-            Measurments::angleDiff(robot->getOrientation(), abs(Measurments::angleBetween(robot->getRobotPosition(), gm->getBallPoint()))) <= ANGLE/4*5)
+            Measurments::angleDiff(robot->getOrientation(), abs(Measurments::angleBetween(robot->getPosition(), gm->getBallPoint()))) <= ANGLE/4*5)
         {
             cout<<"first kick try"<<endl;
             state = kicking;
             delete skill;
             skill = new Skill::Kick();
         }
-        else if (Measurments::isClose(robot->getRobotPosition(), gm->getBallPoint(), CLOSE_ENOUGH)
+        else if (Measurments::isClose(robot->getPosition(), gm->getBallPoint(), CLOSE_ENOUGH)
                  && abs(Measurments::angleDiff(robot->getOrientation(), direction)) < ANGLE
-                 && abs(Measurments::angleDiff(robot->getOrientation(), abs(Measurments::angleBetween(robot->getRobotPosition(), gm->getBallPoint())))) > ANGLE/4*5
-                 && Measurments::isClose(robot->getRobotPosition(), kickPoint, CLOSE_ENOUGH))
+                 && abs(Measurments::angleDiff(robot->getOrientation(), abs(Measurments::angleBetween(robot->getPosition(), gm->getBallPoint())))) > ANGLE/4*5
+                 && Measurments::isClose(robot->getPosition(), kickPoint, CLOSE_ENOUGH))
         {
             move.setMovementTolerances(CLOSE_ENOUGH, ANGLE);
             move.setVelocityMultiplier(0.1);
             move.recreate(gm->getBallPoint(), direction, true);
             move.perform(robot, Movement::Type::Default);
-            if (Measurments::isClose(robot->getRobotPosition(), gm->getBallPoint(), CLOSE_ENOUGH) &&
+            if (Measurments::isClose(robot->getPosition(), gm->getBallPoint(), CLOSE_ENOUGH) &&
                 Measurments::angleDiff(robot->getOrientation(), direction) < ANGLE)
             {
                 state = kicking;
@@ -82,7 +82,7 @@ void DriveBallAndKick::perform(Robot* robot)
         break;
     case kicking:
         cout << "in switch kicking!"<<endl;
-        if (Measurments::isClose(gm->getBallPoint(), robot->getRobotPosition(), CLOSE_ENOUGH))
+        if (Measurments::isClose(gm->getBallPoint(), robot->getPosition(), CLOSE_ENOUGH))
         {
                 state = kicking;
                 delete skill;
@@ -103,9 +103,9 @@ void DriveBallAndKick::perform(Robot* robot)
             delete skill;
             skill = new Skill::DriveBall(kickPoint, direction);
         }
-        else if (Measurments::isClose(robot->getRobotPosition(), gm->getBallPoint(), CLOSE_ENOUGH/2)
+        else if (Measurments::isClose(robot->getPosition(), gm->getBallPoint(), CLOSE_ENOUGH/2)
                  && abs(Measurments::angleDiff(robot->getOrientation(), direction)) < ANGLE
-                 && Measurments::angleDiff(robot->getOrientation(), abs(Measurments::angleBetween(robot->getRobotPosition(), gm->getBallPoint()))) <= ANGLE/4*5)
+                 && Measurments::angleDiff(robot->getOrientation(), abs(Measurments::angleBetween(robot->getPosition(), gm->getBallPoint()))) <= ANGLE/4*5)
         {
             state = kicking;
             delete skill;
