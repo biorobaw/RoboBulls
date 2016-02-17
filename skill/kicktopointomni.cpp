@@ -35,9 +35,17 @@ float FORWARD_WAIT_COUNT = 15;
 float STRICTEST_ANG_TOL = 10 * (M_PI/180);
 float KICK_LOCK_ANGLE = 3 * (M_PI/180);
 #else
+<<<<<<< HEAD
 float BEHIND_RAD_AVOID = ROBOT_SIZE * 0.6;
 float BEHIND_RAD = ROBOT_SIZE * 0.3;
 float FORWARD_WAIT_COUNT = 15;
+=======
+float BEHIND_RADIUS  = ROBOT_SIZE;
+float KICK_DISTANCE  = 160;
+float FACING_ANGLE_TOL  = 20;
+float FORWARD_WAIT_COUNT = 15;
+float MOVE_TOLERANCE = DIST_TOLERANCE;
+>>>>>>> 2072e3763be4836c41609d1911a4b97d17efb797
 float KICK_LOCK_ANGLE = 12 * (M_PI/180);
 float STRICTEST_ANG_TOL = 40 * (M_PI/180);
 #endif
@@ -203,11 +211,14 @@ bool KickToPointOmni::perform(Robot* robot)
     * pushing the ball along in which it cannot get behind it. This helps to detect that */
 
 bool KickToPointOmni::canKick(Robot* robot) {
+    bool closeToBall = isCloseToBall(robot);
+    bool facing = isFacingBall(robot);
+    bool withinKickDist =  isWithinKickDistance(robot);
+    bool facingTarget = isFacingTarget(robot);
     return m_hasRecoveredKickLock &&
-           isCloseToBall(robot) &&
-           isFacingBall(robot) &&
-           isWithinKickDistance(robot) &&
-           isFacingTarget(robot);
+           closeToBall && facing &&
+           withinKickDist &&
+           facingTarget;
 }
 
 bool KickToPointOmni::isWithinKickDistance(Robot *robot) {

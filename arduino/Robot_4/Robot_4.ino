@@ -1,4 +1,3 @@
-#include <Encoder.h>
 #include <Servo.h>
 int id;
 int myid = 4;    // This Robot's ID
@@ -33,7 +32,6 @@ int myid = 4;    // This Robot's ID
 #define kickPin 9
 #define chargePin 10
 
-
 // Velocities
 //  90 = Stop
 // 180 = Full Forward 
@@ -47,19 +45,9 @@ double targetRBvel = 0;
 // Kicker Chipper Dribbler
 int kick, chip, dribble = 0;
 
-// Encoder Variables
-Encoder encoder(2, 3);
-unsigned long pos;
-float averageVel;
-unsigned long lastUpdTime;
-
 //***********************************************************************************
 void setup()
 {   
-  // Debug
-  //  pinMode(13, OUTPUT);
-  //  digitalWrite(13,HIGH);
-
   // Set Kicker and Chipper pins to output
   pinMode(kickPin, OUTPUT);
   pinMode(chargePin, OUTPUT);
@@ -110,14 +98,6 @@ void setup()
   analogWrite(speedPinRF,30);
   analogWrite(speedPinRB,30);    
 
-  // Encoder Variables
-  pos = encoder.read();
-  lastUpdTime = millis();
-  averageVel = 0;  
-
-  //Note: For the UNO, the USB/Micro
-  //switch must be in the micro position. 
-
   // Start Serial Port
   Serial1.begin(57600);
 
@@ -130,10 +110,10 @@ long LastLoopUpdate = 0;
 void loop()
 {
   runComm();
+  setKick();  
   if(millis()-LastLoopUpdate > 10)
   {
     setSpeeds();
-    setKick();
     setDribble();
     LastLoopUpdate = millis(); 
   }
@@ -146,7 +126,7 @@ void loop()
 unsigned long kickStartTime = 0;
 unsigned long chargeStartTime = 0;
 int chargeTime = 6000; //ms
-int kickTime = 30;  //ms
+int kickTime = 15;  //ms
 enum kickerState {
   kicking, charging};
 kickerState current = charging;
@@ -172,6 +152,7 @@ void setKick()
       current = charging;
       chargeStartTime = millis();
     }
+    kick = 0;
   }
 }
 //***********************************************************************************
@@ -179,72 +160,13 @@ void setKick()
 //***********************************************************************************
 // Manages the dribbler
 
-const float alpha = 1;
-const int TICKS_PER_TURN = 12 * 30;
-const float TICKS_MILLI_2_TURNS_SEC = 1000 / TICKS_PER_TURN;
-
-unsigned long dribble_start_time = 0;
-unsigned long recovery_start_time = 0;
-char dribbler_state = 'i';
-/*
- i = initial
- w = wait for start
- c = check for min speed
- r = recovery
- */
-
 void setDribble()
 {
-  unsigned long newPos, newTime;
-  newPos = encoder.read();
-  newTime = millis();
-
-  if (newTime > lastUpdTime){
-    averageVel = (1-alpha) * averageVel + alpha * ((float)(newPos-pos))/(newTime-lastUpdTime) * TICKS_MILLI_2_TURNS_SEC;
-    pos = newPos;
-    lastUpdTime = newTime;
-  }
-  
-  Serial1.println(averageVel);  
-  if(dribble == 1)
-  {
-    // State Machine
-    if(dribbler_state == 'i')  // initial
-    {
-      // Attempt to start the dribbler
-      digitalWrite(dribblePin, LOW);     //Active Low
-      dribble_start_time = millis();
-      dribbler_state = 'w';
-    }
-
-    else if( dribbler_state == 'w')  // wait for start
-    {
-      // Wait for the dribbler to rev up
-      if  ( millis()-dribble_start_time > 1500)
-        dribbler_state = 'c';
-    }
-
-    else if( dribbler_state == 'c') // check for min speed
-    {
-      if(averageVel < 0.5)  // Too Slow
-      {
-        digitalWrite(dribblePin, HIGH);
-        recovery_start_time = millis();
-        dribbler_state = 'r';
-      }
-    }
-
-    else if( dribbler_state == 'r') // recovery
-    {
-      if( millis() - recovery_start_time >  3000)
-        dribbler_state = 'i';
-    }
-  }
+  if(dribble == 'd')
+    digitalWrite(dribblePin, LOW);
   else
-  {
     digitalWrite(dribblePin, HIGH);
-    dribbler_state = 'i';  // reset dribbler state machine
-  }
+   
 }
 //***********************************************************************************
 
@@ -254,7 +176,7 @@ void setSpeeds()
 {
   //Bound for PWM duty cycles, about 10% and 90% of 0 and 255
   static int lowPWM = 30, highPWM = 225;
-  
+
   // Output speeds
   if(targetLFvel > 0 )
   {
@@ -386,7 +308,10 @@ void runComm()
           targetLBvel = targetLBvelSerial;
           targetRFvel = targetRFvelSerial;
           targetRBvel = targetRBvelSerial;
-          kick = kickSerial;
+          if(kickSerial == 'k')
+            kick = kickSerial;
+          dribble = dribbleSerial;
+          chip = chipSerial;
 
           //Serial1.println("Packet Complete"); 
         }

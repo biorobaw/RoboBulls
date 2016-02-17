@@ -264,47 +264,51 @@ void NormalGameStrategy::moveRobotToIdleLine(Robot* robot, bool waiter)
  * (when we see the switch condition NORMAL_SWITCH_COUNT times)
  */
 bool NormalGameStrategy::considerSwitchCreiteria()
+
 {
-    static int switchCounter = 0;
-    Robot* ballRobot = gameModel->getHasBall();
+      Robot* r = gameModel->findMyTeam(GOALIE_ID);
+      r->assignBeh<DefendFarFromBall>();
+
+//    static int switchCounter = 0;
+//    Robot* ballRobot = gameModel->getHasBall();
 
 
-    if(ballRobot == NULL || (ballRobot->isOnMyTeam() and not(isOnAttack))) {
-        ++switchCounter;
-        if(switchCounter > DEF_TO_ATT_SWITCH_COUNT) {
-            /* We have seen the ball in our hands for long enough,
-             * we will switch to attack. (return true)
-             */
-            needsDefenceAssign = true;
-            switchCounter = 0;
-            return true;
-        }
-    }
-    else if(ballRobot and not(ballRobot->isOnMyTeam()) and isOnAttack){
-        ++switchCounter;
-        if(switchCounter > ATT_TO_DEF_SWITCH_COUNT) {
-            /* We have not seen the ball in our hands for long enough,
-             * we will switch to defend. (return false)
-             */
-            needsAttackAssign = true;
-            switchCounter = 0;
-            return false;
-        }
-    }
-    else {
-        //We default to defence if ball is in either goal
-        Point opGoal = gameModel->getOpponentGoal();
-        Point myGoal = gameModel->getMyGoal();
-        Point ball = gameModel->getBallPoint();
-        bool ballInOpGoal = Measurments::isClose(ball, opGoal, DefendFarFromBall::goalieDist);
-        bool ballinMyGoal = Measurments::isClose(ball, myGoal, DefendFarFromBall::goalieDist);
-        if(ballInOpGoal || ballinMyGoal) {
-            return false;
-        }
-    }
+//    if(ballRobot == NULL || (ballRobot->isOnMyTeam() and not(isOnAttack))) {
+//        ++switchCounter;
+//        if(switchCounter > DEF_TO_ATT_SWITCH_COUNT) {
+//            /* We have seen the ball in our hands for long enough,
+//             * we will switch to attack. (return true)
+//             */
+//            needsDefenceAssign = true;
+//            switchCounter = 0;
+//            return true;
+//        }
+//    }
+//    else if(ballRobot and not(ballRobot->isOnMyTeam()) and isOnAttack){
+//        ++switchCounter;
+//        if(switchCounter > ATT_TO_DEF_SWITCH_COUNT) {
+//            /* We have not seen the ball in our hands for long enough,
+//             * we will switch to defend. (return false)
+//             */
+//            needsAttackAssign = true;
+//            switchCounter = 0;
+//            return false;
+//        }
+//    }
+//    else {
+//        //We default to defence if ball is in either goal
+//        Point opGoal = gameModel->getOpponentGoal();
+//        Point myGoal = gameModel->getMyGoal();
+//        Point ball = gameModel->getBallPoint();
+//        bool ballInOpGoal = Measurments::isClose(ball, opGoal, DefendFarFromBall::goalieDist);
+//        bool ballinMyGoal = Measurments::isClose(ball, myGoal, DefendFarFromBall::goalieDist);
+//        if(ballInOpGoal || ballinMyGoal) {
+//            return false;
+//        }
+//    }
 
-    //No change in attack
-    return NormalGameStrategy::isOnAttack;
+//    //No change in attack
+//    return NormalGameStrategy::isOnAttack;
 }
 
 //To ingnore robots with no kicker in assigning them to drive the ball

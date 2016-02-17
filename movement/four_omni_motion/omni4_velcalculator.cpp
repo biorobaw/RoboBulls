@@ -13,8 +13,8 @@ float xy_int_mult = 0.0001;      //Multiplier for integral XY
 float theta_prop_mult = 0.5;    //Multiplier for theta proportional
 float theta_int_mult = 0.0015;  //Multiplier for theta integral
 #else
-float xy_prop_mult = 1;     //Multiplier for Proportional XY
-float xy_int_mult = 0.000;     //Multiplier for integral XY
+float xy_prop_mult = .25;     //Multiplier for Proportional XY
+float xy_int_mult = 0.0025;     //Multiplier for integral XY
 float theta_prop_mult = 1;    //Multiplier for theta proportional
 float theta_int_mult = 0.000;  //Multiplier for theta integral
 #endif
@@ -60,6 +60,9 @@ fourWheelVels FourWheelCalculator::defaultCalc
     distance_to_goal = Measurments::distance(rp,gp);
     float angle_to_goal = Measurments::angleBetween(rp, gp);
     angle_error = Measurments::angleDiff(rob->getOrientation(), theta_goal);
+
+//    std::cout << "4WheelCalc: " << distance_to_goal << std::endl;
+
 
     //Calulate error integral component
     calc_error(x_goal, y_goal);
