@@ -55,6 +55,7 @@ bool configure(const std::string& name, axis_configuration& config_out)
 namespace joystick
 {
 
+
 reading joystickReadings[10];
 
 void map_joystick(const std::vector<std::string>& args)
@@ -129,7 +130,7 @@ Movement::fourWheelVels calculateRobotVelocity
     if(r) {
         Point p = r->getRobotPosition();
         float o = r->getOrientation();
-        float tPos =   o + (M_PI/180)* -axes[conf.jAxisRotate];
+        float tPos =   o + 5* (M_PI/180)* axes[conf.jAxisRotate];
         float xPos = p.x +      mult * -axes[conf.jAxisMoveSide];
         float yPos = p.y +      mult *  axes[conf.jAxisMoveUp];
         auto velocity = fwc.calculateVels(r, xPos, yPos, tPos, Movement::Type::Default);

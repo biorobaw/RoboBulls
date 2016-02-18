@@ -108,8 +108,7 @@ void MainWindow::handleJoystickInput()
         r->setLF(value.LF);
 
         if(value.Kick)
-            on_btn_botKick_pressed();
-        else on_btn_botKick_released();
+            r->setKick(5);
 
         if(value.Dribble)
             on_btn_botDrible_pressed();
