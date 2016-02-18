@@ -7,7 +7,7 @@
 float lf, lb, rf, rb;
 
 //A constant to multiply velocities
-static float k = 0.3;
+static float k = 0.15;
 
 NXTRobComm::NXTRobComm()
 {

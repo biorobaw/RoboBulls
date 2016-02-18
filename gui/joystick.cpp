@@ -117,7 +117,7 @@ bool registerJoystick(SDL_JoystickID id, const std::string& name)
 
 Movement::FourWheelCalculator fwc;
 
-float mult = 5;
+float mult = 25;
 
 Movement::fourWheelVels calculateRobotVelocity
     (int robotID, SDL_JoystickID joyID, float* axes)
@@ -130,7 +130,7 @@ Movement::fourWheelVels calculateRobotVelocity
     if(r) {
         Point p = r->getRobotPosition();
         float o = r->getOrientation();
-        float tPos =   o + 5* (M_PI/180)* axes[conf.jAxisRotate];
+        float tPos =   o + 10* (M_PI/180)* axes[conf.jAxisRotate];
         float xPos = p.x +      mult * -axes[conf.jAxisMoveSide];
         float yPos = p.y +      mult *  axes[conf.jAxisMoveUp];
         auto velocity = fwc.calculateVels(r, xPos, yPos, tPos, Movement::Type::Default);
