@@ -80,7 +80,7 @@ void print_joymap(const std::vector<std::string>&)
         const reading& r = joystickReadings[joy];
         if(r.id != -1) {
             const char* name = SDL_JoystickNameForIndex(joy);
-            std::cout << joy << " " << name << " connected to robot " << r.id << std::endl;
+            std::cout << joy << ": \"" << name << "\" connected to robot " << r.id << std::endl;
         }
     }
 }
@@ -114,6 +114,10 @@ bool registerJoystick(SDL_JoystickID id, const std::string& name)
     }
 }
 
+Movement::FourWheelCalculator fwc;
+
+float mult = 5;
+
 Movement::fourWheelVels calculateRobotVelocity
     (int robotID, SDL_JoystickID joyID, float* axes)
 {
@@ -125,10 +129,9 @@ Movement::fourWheelVels calculateRobotVelocity
     if(r) {
         Point p = r->getRobotPosition();
         float o = r->getOrientation();
-        float tPos =   o +     -(M_PI/180)*axes[conf.jAxisRotate];
-        float xPos = p.x + 12 *  axes[conf.jAxisMoveSide];
-        float yPos = p.y + 12 * -axes[conf.jAxisMoveUp];
-        Movement::FourWheelCalculator fwc;
+        float tPos =   o + (M_PI/180)* -axes[conf.jAxisRotate];
+        float xPos = p.x +      mult * -axes[conf.jAxisMoveSide];
+        float yPos = p.y +      mult *  axes[conf.jAxisMoveUp];
         auto velocity = fwc.calculateVels(r, xPos, yPos, tPos, Movement::Type::Default);
         return velocity;
     }
@@ -189,7 +192,7 @@ void listener()
                 value.LB = vels.LB;
                 value.LF = vels.LF;
                 value.RB = vels.RB;
-                value.LF = vels.LF;
+                value.RF = vels.RF;
                 value.Kick = buttons[joy][0];
                 value.Dribble = buttons[joy][1];
             }
@@ -203,6 +206,7 @@ void listen()
 {
     debug::registerFunction("mapjoy", map_joystick);
     debug::registerFunction("p", print_joymap);
+    debug::registerVariable("m", &mult);
 
     joystickThread = std::thread(listener);
 }
