@@ -102,10 +102,16 @@ void MainWindow::handleJoystickInput()
             continue;
 
         Robot* r = gameModel->findMyTeam(value.id);
-        r->setLB(value.LB);
-        r->setRB(value.RB);
-        r->setRF(value.RF);
-        r->setLF(value.LF);
+        if(r->type() == fourWheelOmni) {
+            r->setLB(value.LB);
+            r->setRB(value.RB);
+            r->setRF(value.RF);
+            r->setLF(value.LF);
+        } else {
+            r->setR(value.RF);
+            r->setL(value.LF);
+            r->setB(value.RB);
+        }
 
         if(value.Kick)
             r->setKick(5);

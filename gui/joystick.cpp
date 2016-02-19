@@ -1,7 +1,9 @@
 #include <SDL2/SDL.h>
 #include <thread>
+#include "include/config/team.h"
 #include "model/gamemodel.h"
 #include "movement/four_omni_motion/omni4_velcalculator.h"
+#include "movement/three_omni_motion/omni3_velcalculator.h"
 #include "gui/guiinterface.h"
 #include "gui/joystick.h"
 #include "utilities/debug.h"
@@ -117,6 +119,8 @@ bool registerJoystick(SDL_JoystickID id, const std::string& name)
 
 Movement::FourWheelCalculator fwc;
 
+Movement::ThreeWheelCalculator twc;
+
 //How big is the movement vector multiplied?
 float mult = 25;
 
@@ -131,6 +135,8 @@ Movement::fourWheelVels calculateRobotVelocity
 {
     //Get the proper axis configurations
     axis_configuration conf = axisConfigs[joyID];
+
+    Movement::fourWheelVels returnVal;
 
     //Find the robot, and calculate movement based on the joystick axes.
     Robot* r = gameModel->findMyTeam(robotID);
@@ -147,10 +153,19 @@ Movement::fourWheelVels calculateRobotVelocity
         float xPos = p.x +  real_mult * -axes[conf.jAxisMoveSide];
         float yPos = p.y +  real_mult *  axes[conf.jAxisMoveUp];
 
-        GuiInterface::getGuiInterface()->drawPath(p, Point(xPos, yPos));
+        //Hack that should be removed quickly
+        if(gameModel->findMyTeam(robotID)->type() == fourWheelOmni) {
+            returnVal = fwc.calculateVels(r, xPos, yPos, tPos, Movement::Type::Default);
+        } else {
+            auto velocity3 = twc.calculateVels(r, xPos, yPos, tPos, Movement::Type::Default);
+            returnVal.LF = velocity3.L;
+            returnVal.RF = velocity3.R;
+            returnVal.RB = velocity3.B;
+        }
 
-        auto velocity = fwc.calculateVels(r, xPos, yPos, tPos, Movement::Type::Default);
-        return velocity;
+        //GuiInterface::getGuiInterface()->drawPath(p, Point(xPos, yPos));
+
+        return returnVal;
     }
 
     //Should never get here anyway
@@ -165,6 +180,17 @@ void listener()
     //Initialize SDL and Joystick support
     SDL_Init(SDL_INIT_TIMER | SDL_INIT_JOYSTICK | SDL_INIT_NOPARACHUTE);
     SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
+
+    //Hardcoding initial joystick mapping
+#if TEAM == TEAM_YELLOW
+    map_joystick({"0", "2"});
+    map_joystick({"1", "3"});
+    map_joystick({"2", "4"});
+#else
+    map_joystick({"0", "1"});
+    map_joystick({"1", "5"});
+    map_joystick({"2", "6"});
+#endif
 
     //Variables to read joystick info
     float axes[10][8] = {0};      //Joystick axis readings buffer
