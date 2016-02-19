@@ -117,10 +117,17 @@ bool registerJoystick(SDL_JoystickID id, const std::string& name)
 
 Movement::FourWheelCalculator fwc;
 
+//How big is the movement vector multiplied?
 float mult = 25;
 
+//How much is the movement vector divided by when we're in slow mode?
+float mult_div = 6;
+
+//Rotation multiplier
+float rot_mult = 5;
+
 Movement::fourWheelVels calculateRobotVelocity
-    (int robotID, SDL_JoystickID joyID, float* axes)
+    (int robotID, SDL_JoystickID joyID, float* axes, bool slowMode)
 {
     //Get the proper axis configurations
     axis_configuration conf = axisConfigs[joyID];
@@ -130,9 +137,18 @@ Movement::fourWheelVels calculateRobotVelocity
     if(r) {
         Point p = r->getRobotPosition();
         float o = r->getOrientation();
-        float tPos =   o + 10* (M_PI/180)* axes[conf.jAxisRotate];
-        float xPos = p.x +      mult * -axes[conf.jAxisMoveSide];
-        float yPos = p.y +      mult *  axes[conf.jAxisMoveUp];
+
+        //Slow down if we are in slow mode
+        float real_mult = mult;
+        if(slowMode)
+            real_mult = mult/mult_div;
+
+        float tPos =   o +   rot_mult * (M_PI/180) * axes[conf.jAxisRotate];
+        float xPos = p.x +  real_mult * -axes[conf.jAxisMoveSide];
+        float yPos = p.y +  real_mult *  axes[conf.jAxisMoveUp];
+
+        GuiInterface::getGuiInterface()->drawPath(p, Point(xPos, yPos));
+
         auto velocity = fwc.calculateVels(r, xPos, yPos, tPos, Movement::Type::Default);
         return velocity;
     }
@@ -189,7 +205,8 @@ void listener()
         {
             reading& value = joystickReadings[joy];
             if(value.id != -1) {
-                auto vels = calculateRobotVelocity(value.id, joy, axes[joy]);
+                bool slowmode = buttons[joy][7];
+                auto vels = calculateRobotVelocity(value.id, joy, axes[joy], slowmode);
                 value.LB = vels.LB;
                 value.LF = vels.LF;
                 value.RB = vels.RB;
@@ -208,6 +225,8 @@ void listen()
     debug::registerFunction("mapjoy", map_joystick);
     debug::registerFunction("p", print_joymap);
     debug::registerVariable("m", &mult);
+    debug::registerVariable("md", &mult_div);
+    debug::registerVariable("rm", &rot_mult);
 
     joystickThread = std::thread(listener);
 }
