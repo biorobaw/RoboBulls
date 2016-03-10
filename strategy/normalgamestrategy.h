@@ -44,9 +44,9 @@ public:
      * @param waiter Possibly sends a single robot to the center to wait if true */
     static void moveRobotToIdleLine(Robot* robot, bool waiter = false);
 
-    /*! @brief Assigns DefendFarFromBall to ID GOALIE_ID if it is on the team
+    /*! @brief Assigns goalie behavior to ID GOALIE_ID if it is on the team
      * @details Meant to be used outside the class, if the robot with GOALIE_ID
-     * isn't null, assigns DefendFarFromBall to it */
+     * isn't null, assigns GoalieBehavior to it */
     static void assignGoalieIfOk();
 
 private:

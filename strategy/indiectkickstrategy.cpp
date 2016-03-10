@@ -6,7 +6,7 @@
 #include "utilities/region.h"
 #include "utilities/comparisons.h"
 #include "include/config/team.h"
-#include "behavior/defendfarfromball.h"
+#include "behavior/goaliebehavior.h"
 
 #if SIMULATED
     #define R 400
@@ -79,7 +79,7 @@ void IndiectKickStrategy::assignBeh()
         //Goalie is always goalie
         Robot* goalie = gameModel->findMyTeam(GOALIE_ID);
         if(goalie)
-            goalie->assignBeh<DefendFarFromBall>();
+            goalie->assignBeh<GoalieBehavior>();
     }
     else if ((gm->getGameState() == 'i' && TEAM == TEAM_BLUE) ||
              (gm->getGameState() == 'I' && TEAM == TEAM_YELLOW))
@@ -88,10 +88,10 @@ void IndiectKickStrategy::assignBeh()
         for(Robot* robot : gameModel->getMyTeam())
             robot->assignBeh<SimpleBehaviors>();
 
-        //Then assign goalie DefendFarFromBall
+        //Then assign goalie GoalieBehavior
         Robot* goalie = gameModel->findMyTeam(GOALIE_ID);
         if(goalie)
-            goalie->assignBeh<DefendFarFromBall>();
+            goalie->assignBeh<GoalieBehavior>();
     }
 }
 

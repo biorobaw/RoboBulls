@@ -7,7 +7,7 @@
 #include "utilities/comparisons.h"
 #include "utilities/edges.h"
 #include "gui/guiinterface.h"
-#include "behavior/defendfarfromball.h"
+#include "behavior/goaliebehavior.h"
 #include "behavior/kicktogoal.h"
 
 //! @cond
@@ -333,7 +333,7 @@ bool VideoStrategy5::update()
 
     // GK assignments
     bp.x >-2800?
-        keeper->assignBeh<DefendFarFromBall>():
+        keeper->assignBeh<GoalieBehavior>():
         keeper->assignBeh<GenericMovementBehavior>(Point(-2700,0),0,false,false);
 
     // Decide where the target for ATK should be based on GK position

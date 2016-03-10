@@ -63,7 +63,6 @@ fourWheelVels FourWheelCalculator::defaultCalc
 
 //    std::cout << "4WheelCalc: " << distance_to_goal << std::endl;
 
-
     //Calulate error integral component
     calc_error(x_goal, y_goal);
 

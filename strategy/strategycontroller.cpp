@@ -85,7 +85,7 @@ void StrategyController::assignNewStrategy(char gameState)
     };
 #else
     (void)(gameState);
-    activeStrategy = new TestStrategy();
+    activeStrategy = new NormalGameStrategy();
 #endif
 }
 

@@ -2,7 +2,7 @@
 #include "behavior/kicktogoal.h"
 #include "model/gamemodel.h"
 #include "behavior/simplebehaviors.h"
-#include "behavior/defendfarfromball.h"
+#include "behavior/goaliebehavior.h"
 #include "strategy/normalgamestrategy.h"
 #include "include/config/team.h"
 

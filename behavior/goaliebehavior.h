@@ -1,5 +1,5 @@
-#ifndef DEFENDFARFROMBALL_H
-#define DEFENDFARFROMBALL_H
+#ifndef GOALIEBEHAVIOR_H
+#define GOALIEBEHAVIOR_H
 #include "skill/kicktopointomni.h"
 #include "behavior/genericmovementbehavior.h"
 #include "movement/gotoposition.h"
@@ -14,14 +14,14 @@
  * center of the field to remove it from the goalie box.
  */
 
-class DefendFarFromBall : public GenericMovementBehavior
+class GoalieBehavior:public GenericMovementBehavior
 {
 public:
     static int goalieDist; //!< Distance ball must be to idlePoint for goalie to move it kick it
 
 public:
-    DefendFarFromBall();
-    ~DefendFarFromBall();
+    GoalieBehavior();
+    ~GoalieBehavior();
     void perform(Robot*);
 
 private:
@@ -46,4 +46,4 @@ private:
     Skill::KickToPointOmni* kick_skill; //!< Skill to kick the ball with
 };
 
-#endif // DEFENDFARFROMBALL_H
+#endif // GoalieBehavior_H

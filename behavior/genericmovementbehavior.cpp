@@ -13,7 +13,7 @@ GenericMovementBehavior::GenericMovementBehavior
 //Override Behavior perform
 void GenericMovementBehavior::perform(Robot* robot)
 {
-    perform(robot);
+    perform(robot,Movement::Type::Default);
 }
 
 /***********************************************************/

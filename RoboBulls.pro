@@ -4,6 +4,7 @@
 #
 #-------------------------------------------------
 
+
 QT += core network widgets
 QT -= gui
 
@@ -18,8 +19,6 @@ SOURCES += main.cpp \
 	behavior/attackmain.cpp \
 	behavior/attacksupport.cpp \
 	behavior/behavior.cpp \
-	behavior/defendbehavior.cpp \
-	behavior/defendfarfromball.cpp \
 	behavior/driveballandkick.cpp \
 	behavior/genericmovementbehavior.cpp \
 	behavior/kicktogoal.cpp \
@@ -92,14 +91,15 @@ SOURCES += main.cpp \
 	utilities/measurments.cpp \
 	utilities/point.cpp \
 	utilities/region.cpp \
-	utilities/velocitycalculator.cpp
+	utilities/velocitycalculator.cpp \
+    behavior/defendbehavior.cpp \
+    behavior/goaliebehavior.cpp
 
 HEADERS += \
 	behavior/attackmain.h \
 	behavior/attacksupport.h \
 	behavior/behavior.h \
 	behavior/defendbehavior.h \
-	behavior/defendfarfromball.h \
 	behavior/driveballandkick.h \
 	behavior/genericmovementbehavior.h \
 	behavior/genericskillbehavior.h \
@@ -180,6 +180,7 @@ HEADERS += \
 	utilities/point.h \
 	utilities/region.h \
 	utilities/velocitycalculator.h \
+    behavior/goaliebehavior.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 

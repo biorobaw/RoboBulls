@@ -30,7 +30,7 @@
 #define SIMULATOR_PORT      20011
 
 #if SIMULATED
- #define VISION_ADDRESS     VISION_ADDRESS_ADRIANO
+ #define VISION_ADDRESS     VISION_ADDRESS_SHAMSI
  #define VISION_PORT        10020
 #else
  #define VISION_ADDRESS     VISION_ADDRESS_NONSIM
@@ -44,7 +44,7 @@
 
 //! @brief Referee Box--do we listen to commands? See StrategyController
 //! @details Chooses between listening to RefComm, and always choosing TestStrategy.
-#define REFBOX_LISTEN_ENABLED 1
+#define REFBOX_LISTEN_ENABLED 0
 
 //!@}
 

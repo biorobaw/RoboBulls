@@ -1,7 +1,7 @@
 #include <math.h>
 #include "model/gamemodel.h"
 #include "utilities/measurments.h"
-#include "defendfarfromball.h"
+#include "goaliebehavior.h"
 #include "gui/guiinterface.h"
 
 //The distance from the goal where the robot stays idle
@@ -11,21 +11,21 @@
 #define GOAL_WIDTH_PCT (GOAL_WIDTH * 1.5)
 
 //How close must the ball before we go to kick it away?
-int DefendFarFromBall::goalieDist = 900;
+int GoalieBehavior::goalieDist = 900;
 
-DefendFarFromBall::DefendFarFromBall()
+GoalieBehavior::GoalieBehavior()
     : idlePoint(gameModel->getMyGoal() + Point(IDLE_DISTANCE,0))
     , isKickingBallAway(false)
     , isIdling(false)
     , kick_skill(nullptr)
     { }
 
-DefendFarFromBall::~DefendFarFromBall()
+GoalieBehavior::~GoalieBehavior()
 {
     delete kick_skill;
 }
 
-bool DefendFarFromBall::isBallMovingTowardsGoal(std::pair<Point,Point>& lineEndsOut)
+bool GoalieBehavior::isBallMovingTowardsGoal(std::pair<Point,Point>& lineEndsOut)
 {
     //Filter out balls not moving towards goal
     Point goal = gameModel->getMyGoal();
@@ -45,7 +45,7 @@ bool DefendFarFromBall::isBallMovingTowardsGoal(std::pair<Point,Point>& lineEnds
 }
 
 //TODO: Combine with isBallMovingTowardsGoal
-bool DefendFarFromBall::ballOnRobotIsAimedAtOurGoal(Robot* robot, std::pair<Point,Point>& lineSegOut)
+bool GoalieBehavior::ballOnRobotIsAimedAtOurGoal(Robot* robot, std::pair<Point,Point>& lineSegOut)
 {
     /* Return false automatically if the robot's orientation is facing a direction
     opposite to that of our goal */
@@ -73,14 +73,14 @@ bool DefendFarFromBall::ballOnRobotIsAimedAtOurGoal(Robot* robot, std::pair<Poin
     return yAtGoalLine > -GOAL_WIDTH_PCT && yAtGoalLine < GOAL_WIDTH_PCT;
 }
 
-bool DefendFarFromBall::isBallUnreachable()
+bool GoalieBehavior::isBallUnreachable()
 {
     Point ball = gameModel->getBallPoint();
     bool angleTest = abs(Measurments::angleBetween(idlePoint, ball)) > 90*(M_PI/180);
     return angleTest;
 }
 
-void DefendFarFromBall::perform(Robot *robot)
+void GoalieBehavior::perform(Robot *robot)
 {
     Point ball = gameModel->getBallPoint();
     float angleToBall = Measurments::angleBetween(robot, ball);

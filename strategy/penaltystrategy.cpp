@@ -1,7 +1,7 @@
 #include "behavior/simplebehaviors.h"
 #include "utilities/measurments.h"
 #include "utilities/comparisons.h"
-#include "behavior/defendfarfromball.h"
+#include "behavior/goaliebehavior.h"
 #include "include/config/team.h"
 #include "penaltystrategy.h"
 
@@ -34,5 +34,5 @@ void PenaltyStrategy::assignBeh()
     //Assign Goalie if he's there
     Robot* goalie = gameModel->findMyTeam(GOALIE_ID);
     if(goalie)
-        goalie->assignBeh<DefendFarFromBall>();
+        goalie->assignBeh<GoalieBehavior>();
 }

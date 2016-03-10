@@ -1,6 +1,6 @@
 #include "include/config/team.h"
 #include "behavior/genericmovementbehavior.h"
-#include "behavior/defendfarfromball.h"
+#include "behavior/goaliebehavior.h"
 #include "behavior/attackmain.h"
 #include "behavior/attacksupport.h"
 #include "behavior/defendbehavior.h"
@@ -25,7 +25,7 @@ bool NormalGameStrategy::isOnAttack = true;
 #define DEF_TO_ATT_SWITCH_COUNT 16
 
 /* Defines the number of times the ball must be seen outside of the goal
- * to have the robots start moving again. Used to prevent jerkey movement
+ * to have the robots start moving again. Used to prevent jerky movement
  * on the field, and causes a delay when the ball *does* come out of the goal.
  */
 #define MIN_BALLINGOAL_COUNT 24
@@ -134,8 +134,8 @@ bool NormalGameStrategy::update()
     //Ball near goals, used as checks to not do anything first
     static bool ballInOpGoal = false;
     static bool ballinMyGoal = false;
-    ballInOpGoal = Measurments::isClose(ball, opGoal, DefendFarFromBall::goalieDist);
-    ballinMyGoal = Measurments::isClose(ball, myGoal, DefendFarFromBall::goalieDist);
+    ballInOpGoal = Measurments::isClose(ball, opGoal, GoalieBehavior::goalieDist);
+    ballinMyGoal = Measurments::isClose(ball, myGoal, GoalieBehavior::goalieDist);
 
     isOnAttack = considerSwitchCreiteria();
 
@@ -234,7 +234,7 @@ void NormalGameStrategy::assignGoalieIfOk()
 {
     Robot* goalie = gameModel->findMyTeam(GOALIE_ID);
     if(goalie)
-        goalie->assignBeh<DefendFarFromBall>();
+        goalie->assignBeh<GoalieBehavior>();
 }
 
 //Static function to be used in other places.
@@ -267,7 +267,7 @@ bool NormalGameStrategy::considerSwitchCreiteria()
 
 {
       Robot* r = gameModel->findMyTeam(GOALIE_ID);
-      r->assignBeh<DefendFarFromBall>();
+      r->assignBeh<GoalieBehavior>();
 
 //    static int switchCounter = 0;
 //    Robot* ballRobot = gameModel->getHasBall();
@@ -300,8 +300,8 @@ bool NormalGameStrategy::considerSwitchCreiteria()
 //        Point opGoal = gameModel->getOpponentGoal();
 //        Point myGoal = gameModel->getMyGoal();
 //        Point ball = gameModel->getBallPoint();
-//        bool ballInOpGoal = Measurments::isClose(ball, opGoal, DefendFarFromBall::goalieDist);
-//        bool ballinMyGoal = Measurments::isClose(ball, myGoal, DefendFarFromBall::goalieDist);
+//        bool ballInOpGoal = Measurments::isClose(ball, opGoal, GoalieBehavior::goalieDist);
+//        bool ballinMyGoal = Measurments::isClose(ball, myGoal, GoalieBehavior::goalieDist);
 //        if(ballInOpGoal || ballinMyGoal) {
 //            return false;
 //        }

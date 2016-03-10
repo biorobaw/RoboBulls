@@ -4,7 +4,7 @@
 #include "model/gamemodel.h"
 #include "utilities/comparisons.h"
 #include "behavior/defendbehavior.h"
-#include "behavior/defendfarfromball.h"
+#include "behavior/goaliebehavior.h"
 #include "behavior/rotateonpoint.h"
 #include "ctime"
 
