@@ -32,7 +32,7 @@
 /* Defines the minimum distance an obstacle must be from a line segment in the path
  * before it is considered an obstacle. Using multiples of ROBOT_SIZE is ideal.
  */
-#define OBSTACLE_LINE_DIST  (2 * ROBOT_SIZE)
+#define OBSTACLE_LINE_DIST  (2 * ROB_OBST_DIA)
 /* Defines, when sub-divding a path to avoid an obstalce, the perpendicular distance
  * it travels from the segment to avoid it. Reducing the search size by a factor can
  * help eliminate the jagged edges in the path, but risks cutting corners too close around
@@ -102,7 +102,7 @@ namespace impl {
     {
         if(Region::goalLeftRegion.contains(toCheck) || Region::goalRightRegion.contains(toCheck))
             return true;
-        return Comparisons::isDistanceToLess(toCheck, ROBOT_SIZE).any_of(currentFrameObstacles);
+        return Comparisons::isDistanceToLess(toCheck, ROB_OBST_DIA).any_of(currentFrameObstacles);
     }
 
     /*********************************************************/
@@ -308,7 +308,7 @@ namespace impl {
 
     bool isPointInLine(const Point& start, const Point& end, const Point& question)
     {
-        return Measurments::lineDistance(question, start, end) < ROBOT_SIZE &&
+        return Measurments::lineDistance(question, start, end) < ROB_OBST_DIA &&
                impl::insideRadiusRectangle(question, start, end);
     }
 

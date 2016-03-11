@@ -13,4 +13,4 @@
  const double ROT_TOLERANCE  = 5*(M_PI/180);
 #endif
 
-const int ROBOT_SIZE = ROBOT_RADIUS * 2.5;
+const int ROB_OBST_DIA = ROBOT_RADIUS * 2.5;

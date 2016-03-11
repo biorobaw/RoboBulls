@@ -61,7 +61,7 @@ void Move::recreate(Point targetPoint, float targetAngle, bool withObstacleAvoid
         useAvoidBall       = avoidBall;
         currentPathIsClear = false;
         nextTargetAngle    = UNUSED_ANGLE_VALUE;
-        nextDistTolerance  = ROBOT_SIZE;
+        nextDistTolerance  = ROB_OBST_DIA;
         pathInfo.first.clear();
         pathQueue.clear();
         lastObstacles.clear();
@@ -115,7 +115,7 @@ bool Move::perform(Robot *robot, Movement::Type moveType)
     if(useObstacleAvoid) {
         /* Check to see if we've found the end of the path. If we have and we're not close
          * to the ending point, assign a path to get back to it */
-        if(hasFoundPathEnd && Measurments::distance(robot, m_targetPoint) > ROBOT_SIZE) {
+        if(hasFoundPathEnd && Measurments::distance(robot, m_targetPoint) > ROB_OBST_DIA) {
             hasFoundPathEnd = false;
             assignNewPath(robot->getPosition());
         }

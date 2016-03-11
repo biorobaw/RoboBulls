@@ -1,5 +1,5 @@
-#ifndef INDIECTKICKSTRATEGY_H
-#define INDIECTKICKSTRATEGY_H
+#ifndef INDIRECTKICKSTRATEGY_H
+#define INDIRECTKICKSTRATEGY_H
 
 #include "strategy/strategy.h"
 #include "model/gamemodel.h"
@@ -32,7 +32,7 @@
  * mechanism that PassBallSender uses in this strategy
  * to find the robot that sender will send the ball to
  */
-class IndiectKickStrategy : public Strategy
+class IndirectKickStrategy : public Strategy
 {
 public:
     void assignBeh();

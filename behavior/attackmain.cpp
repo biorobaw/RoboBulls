@@ -4,11 +4,11 @@
 #include "skill/stop.h"
 #include "attackmain.h"
 
-AttackMain::AttackMain(Robot* attacker, bool forceGoalKick)
+AttackMain::AttackMain(Robot* supp_attacker, bool forceGoalKick)
     : forcedGoalKick(forceGoalKick)
     , skill(nullptr)
 {
-    support_attacker = attacker;
+    support_attacker = supp_attacker;
     state = initial;
 }
 
@@ -29,7 +29,7 @@ AttackMain::~AttackMain()
 
 void AttackMain::perform(Robot * robot)
 {
-    //Get info from gamemodel
+    // Get info from gamemodel
     if(support_attacker != nullptr)
         sp = support_attacker->getPosition();
     rp = robot->getPosition();
@@ -37,7 +37,7 @@ void AttackMain::perform(Robot * robot)
     bp = gameModel->getBallPoint();
     goal_direction = Measurments::angleBetween(rp, gp);  //Sets drive direction towards goal
 
-    //When the robot reaches the ball for the first time, drive_start_point is set to current position
+    // When the robot reaches the ball for the first time, drive_start_point is set to current position
     if(touched_ball == false)
     {
         if(Measurments::isClose(rp,bp,250))
@@ -47,7 +47,7 @@ void AttackMain::perform(Robot * robot)
         }
     }
 
-    //Are we far from (according to rules) from the drive start that we need to kick?
+    //Are we far enough (according to SSL rules) from the drive start that we need to kick?
     bool closeToDriveEnd  = touched_ball && !Measurments::isClose(drive_start_point, rp, drive_distance);
 
     //Create switch logic
@@ -62,14 +62,14 @@ void AttackMain::perform(Robot * robot)
         //So, when we're close to the drive's end...
         if(touched_ball && closeToDriveEnd)
         {
-            //If we have our passer and are far from a shot, and the supporter is closer
+            //If we have a support attacker and are far from a shot AND the supporter is closer
             //to the goal, make a pass. Otherwise kick to goal
 
-            //Is the attacker closer to the goal than we?
+            //Is the supp_attacker closer to the goal than we are?
             bool supporterCloserToGoal = Measurments::distance(gp, sp) < Measurments::distance(gp, rp);
 
-            //Is the attacker reasonable far from us, to prevent stupid short passes?
-            bool supporterSlightlyFar = Measurments::distance(support_attacker, robot) > ROBOT_SIZE*5;
+            //Is the support attacker reasonably far from us, to prevent stupid short passes?
+            bool supporterSlightlyFar = Measurments::distance(support_attacker, robot) > ROB_OBST_DIA*5;
 
             //Are we close enough to shoot a goal?
             bool closeToGoalShot = Measurments::isClose(bp, gp, shot_distance);
@@ -94,7 +94,7 @@ void AttackMain::perform(Robot * robot)
         }
     case end:
         /* A state that does nothing. This exists for after we have driven the ball, and we chose
-         * to either pass or kick. We're just performing the skill at this point */
+         * to either pass or kick. */
         break;
     default:
         break;

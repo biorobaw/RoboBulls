@@ -1,4 +1,4 @@
-#include "indiectkickstrategy.h"
+#include "indirectkickstrategy.h"
 #include "behavior/simplebehaviors.h"
 #include "model/gamemodel.h"
 #include "behavior/passballreceiver.h"
@@ -14,7 +14,7 @@
     #define R 700
 #endif
 
-void IndiectKickStrategy::assignBeh()
+void IndirectKickStrategy::assignBeh()
 {
     GameModel *gm = GameModel::getModel();
     Robot *sender;
@@ -96,7 +96,7 @@ void IndiectKickStrategy::assignBeh()
 }
 
 
-char IndiectKickStrategy::getNextStrategy()
+char IndirectKickStrategy::getNextStrategy()
 {
     /* Here we check to see if the robot has kicked (PassBallReceiver's
      * "isFinished" ans return to NGS if so */

@@ -12,38 +12,46 @@ namespace Skill
 /* USER CONFIGURATION */
 
 /* BEHIND_RAD_AVOID Defines the distance behind the ball that the robot will initially
- * move to to get in position for a kick. Must be at least ROBOT_SIZE
+ * move to in order to get in position for a kick. Must be at least 80
+ * for obstacle avoidance not to interfere.
  *
- * RECREATE_DIST_TOL Defines the distance tolerance that the ball must move to be
- * recreated in the MOVE_BEHIND state. Helps make on-field motion less jittery.
- *
- * FACING_ANGLE_TOL Defines the angle tolerance in degrees (an integer) that
- * the robot must be facing the kick target with to be able to kick.
+ * BEHIND_RAD Defines the distance behind the ball that the robot will move to
+ * without considering the ball as an obstacle.
  *
  * FORWARD_WAIT_COUNT Defines the number of times the movement skill must finish
  * (return true) until the robot starts to move forward. On the field, this ensures
  * the robot is actually facing the ball somewhat.
  *
  * KICKLOCK_COUNT is the number of times isInKickLock must see the robot in "kick lock"
- * before it take action. Kicklock occurs when the robot is close to the ball but not facing it,
+ * before it takes action. Kicklock occurs when the robot is close to the ball but not facing it,
  * resulting in the robot continually in a lock pushing the ball in a line.
+ *
+ * RECREATE_DIST_TOL Defines the distance tolerance that the ball must move to be
+ * recreated in the MOVE_BEHIND state. Helps make on-field motion less jittery.
+ *
+ * STRICTEST_ANGLE_TOL Defines the tightest angle tolerance in degrees that
+ * the robot must be facing the kick target with to be able to kick. Results in the most accurate kick.
+ * Can be overridden by constructor argument to be less strict when needed.
+ *
  */
 #if SIMULATED
-float BEHIND_RAD_AVOID = ROBOT_SIZE * 0.6;
-float BEHIND_RAD = ROBOT_SIZE * 0.4;
+float BEHIND_RAD_AVOID = ROB_OBST_DIA * 0.6;
+float BEHIND_RAD = ROB_OBST_DIA * 0.4;
 float FORWARD_WAIT_COUNT = 15;
+float RECREATE_DIST_TOL = 25;
 float STRICTEST_ANG_TOL = 10 * (M_PI/180);
 float KICK_LOCK_ANGLE = 3 * (M_PI/180);
+float KICKLOCK_COUNT = 15;
 #else
 float BEHIND_RAD_AVOID = ROBOT_SIZE * 0.6;
 float BEHIND_RAD = ROBOT_SIZE * 0.3;
 float FORWARD_WAIT_COUNT = 15;
-float KICK_LOCK_ANGLE = 12 * (M_PI/180);
+float RECREATE_DIST_TOL = 25;
 float STRICTEST_ANG_TOL = 40 * (M_PI/180);
+float KICK_LOCK_ANGLE = 12 * (M_PI/180);
+float KICKLOCK_COUNT = 15;
 #endif
 
-float KICKLOCK_COUNT = 15;
-float RECREATE_DIST_TOL = 25;
 
 /************************************************************************/
 
@@ -58,7 +66,7 @@ KickToPointOmni::KickToPointOmni(Point* targetPtr,
                                  float targetTolerance, float kickDistance, bool useFullPower)
     : m_targetPointer(targetPtr)
     , m_moveCompletionCount(0)
-    , m_targetTolerance((targetTolerance == -1) ? STRICTEST_ANG_TOL : targetTolerance)
+    , m_targetTolerance((targetTolerance < 0) ? STRICTEST_ANG_TOL : targetTolerance)
     , m_kickDistance(kickDistance)
     , m_kickLockCount(0)
     , m_hasRecoveredKickLock(true)
@@ -70,7 +78,7 @@ KickToPointOmni::KickToPointOmni(Point* targetPtr,
     , state(MOVE_BEHIND)
 
 {
-    debug::registerVariable("ktpo_rc", &RECREATE_DIST_TOL);
+    //debug::registerVariable("ktpo_rc", &RECREATE_DIST_TOL);
 }
 
 bool KickToPointOmni::perform(Robot* robot)
@@ -269,7 +277,7 @@ bool KickToPointOmni::ballIsMovingAway(Robot* robot)
 
     bool farther_than_last = thisDist > m_lastBallAwayDist;
     bool increase_is_significant = abs(thisDist - m_lastBallAwayDist) > 40;
-    bool far_from_robot = thisDist > ROBOT_SIZE*2;
+    bool far_from_robot = thisDist > ROB_OBST_DIA*2;
 
     std::cout << farther_than_last << increase_is_significant << far_from_robot << std::endl;
 

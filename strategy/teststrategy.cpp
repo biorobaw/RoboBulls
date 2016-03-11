@@ -11,7 +11,8 @@
 /************************************************************************/
 //Test Behaviors Section
 
-//Test behavior to kick the ball to the center
+// Test behavior to repeatedly kick the ball to the center
+// Waits 6 seconds between kicks
 class KickBeh : public Behavior
 {
     Skill::KickToPointOmni* ktpo;
@@ -54,7 +55,7 @@ public:
 
 };
 
-//Test behavior to rotate to the ball
+// Test behavior to rotate to the ball
 class RotBeh : public GenericMovementBehavior
 {
     void perform(Robot * robot) override
@@ -65,7 +66,7 @@ class RotBeh : public GenericMovementBehavior
     }
 };
 
-//Test behavior to dribble when ball is close
+// Test behavior to dribble when ball is close
 class DribbleBeh : public Behavior
 {
     void perform(Robot* robot) override
@@ -76,7 +77,7 @@ class DribbleBeh : public Behavior
     }
 };
 
-//Test behavior to move to a point only
+// Test behavior to move to a point and print distance and angle errors
 class MotionTestBeh : public GenericMovementBehavior
 {
 public:
@@ -91,8 +92,8 @@ public:
     }
 };
 
-//Test behavior to move the robot from (-2000,0) to (2000,0)
-//while facing the ball
+// Test behavior to move the robot from (-2000,0) to (2000,0)
+// while facing the ball
 class ShamsiStrafe : public GenericMovementBehavior
 {
 public:
@@ -121,29 +122,30 @@ public:
     }
 };
 
-/************************************************************************/
 
-//Chooses a robot to move to the ball position
-class PracticeBehavior : public GenericMovementBehavior
+// Moves robot to the given position
+class GoToBehavior : public GenericMovementBehavior
 {
+public:
+    GoToBehavior(Point& p):p(p){}
+
     void perform(Robot *robot) override
     {
-        Point ballPosition = gameModel->getBallPoint();
-        setMovementTargets(ballPosition);
+        setMovementTargets(p);
         GenericMovementBehavior::perform(robot);
     }
-
+private:
+    Point p;
 };
 
 bool TestStrategy::update()
 {
-    //Change IDs and behaviors to be assigned here.
-    //All robots must exists before any action is taken.
-    Robot* r0 = gameModel->findMyTeam(5);
-    if(r0) {
-        r0->assignBeh<KickBeh>();
-//        r0->assignBeh<MotionTestBeh>();
-    }
+    // Change IDs and behaviors to be assigned here.
+    // All robots must exist before any action is taken.
+    Robot* r1 = gameModel->findMyTeam(1);
+//    Robot* r2 = gameModel->findMyTeam(2);
+    r1->assignBeh<KickBeh>();
+
     return false;
 }
 

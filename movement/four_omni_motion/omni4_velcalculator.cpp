@@ -30,7 +30,7 @@ FourWheelCalculator::FourWheelCalculator()
 fourWheelVels FourWheelCalculator::calculateVels
     (Robot* rob, Point goalPoint, float theta_goal, Type moveType)
 {
-	return calculateVels(rob, goalPoint.x, goalPoint.y, theta_goal, moveType);
+    return calculateVels(rob, goalPoint.x, goalPoint.y, theta_goal, moveType);
 }
 
 fourWheelVels FourWheelCalculator::calculateVels
@@ -42,12 +42,12 @@ fourWheelVels FourWheelCalculator::calculateVels
         return facePointCalc(rob,x_goal,y_goal,theta_goal);
         break;
     default:
-        return defaultCalc(rob,x_goal,y_goal,theta_goal, moveType);
+        return defaultCalc(rob,x_goal,y_goal,theta_goal);
     }
 }
 
 fourWheelVels FourWheelCalculator::defaultCalc
-    (Robot* rob, float x_goal, float y_goal, float theta_goal, Type moveType)
+    (Robot* rob, float x_goal, float y_goal, float theta_goal)
 {
     //Current Position
     double x_current = rob->getPosition().x;

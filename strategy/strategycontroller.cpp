@@ -7,7 +7,7 @@
 #include "strategy/freekickstrategy.h"
 #include "strategy/normalgamestrategy.h"
 #include "strategy/penaltystrategy.h"
-#include "strategy/indiectkickstrategy.h"
+#include "strategy/indirectkickstrategy.h"
 #include "strategy/haltstrategy.h"
 #include "communication/robcomm.h"
 #include "gui/guiinterface.h"

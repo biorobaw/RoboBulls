@@ -3,9 +3,9 @@
 #include "behavior/behavior.h"
 class Robot;
 
-/*! @brief A wrapper convience behavior for a single skill.
+/*! @brief A wrapper convenience behavior for a single skill.
  * @details Used in the robot's assignSkill function, this behavior simply performs
- * a single skill indefinately, and "isFinished" is determined directly
+ * a single skill indefinitely, and "isFinished" is determined directly
  * from that skill. */
 
 template<typename SkillType>

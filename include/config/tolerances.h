@@ -9,7 +9,8 @@
 extern const int ROBOT_RADIUS;
 
 //! @brief The robot's diameter in program points plus a small overshoot
-extern const int ROBOT_SIZE;
+//! Used for obstacle avoidance calculations
+extern const int ROB_OBST_DIA;
 
 /*! @brief How close the robot needs to be to the target in program points
  * before it is considered at that position */

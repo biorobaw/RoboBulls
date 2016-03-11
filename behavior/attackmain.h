@@ -17,7 +17,7 @@
 class AttackMain:public Behavior
 {
 public:
-    AttackMain(Robot* attacker = nullptr, bool forceGoalKick = false);
+    AttackMain(Robot* supp_attacker = nullptr, bool forceGoalKick = false);
    ~AttackMain();
     void perform(Robot *);
     bool isFinished() override;

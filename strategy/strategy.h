@@ -33,12 +33,12 @@ class Strategy
 {
 public:
     /*! @brief Decides How to assign behaviors to each robot on the team.
-     * @details This function is called when StrategyController is ran with a
+     * @details This function is called when StrategyController is run with a
      * new command recieved from GameModel */
     virtual void assignBeh() = 0;
 
     /*! @brief Function (optional) that updates the Strategy object.
-     * @details This function is called when StrategyController is ran with
+     * @details This function is called when StrategyController is run with
      * a non-new command from GameModel. Return true to notify the strategy
      * is finished and have a new one assigned, false otherwise. */
     virtual bool update();

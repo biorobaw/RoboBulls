@@ -76,7 +76,6 @@ SOURCES += main.cpp \
 	skill/stop.cpp \
 	strategy/freekickstrategy.cpp \
 	strategy/haltstrategy.cpp \
-	strategy/indiectkickstrategy.cpp \
 	strategy/kickoffstrategy.cpp \
 	strategy/normalgamestrategy.cpp \
 	strategy/penaltystrategy.cpp \
@@ -93,7 +92,8 @@ SOURCES += main.cpp \
 	utilities/region.cpp \
 	utilities/velocitycalculator.cpp \
     behavior/defendbehavior.cpp \
-    behavior/goaliebehavior.cpp
+    behavior/goaliebehavior.cpp \
+    strategy/indirectkickstrategy.cpp
 
 HEADERS += \
 	behavior/attackmain.h \
@@ -164,7 +164,6 @@ HEADERS += \
 	skill/stop.h \
 	strategy/freekickstrategy.h \
 	strategy/haltstrategy.h \
-	strategy/indiectkickstrategy.h \
 	strategy/kickoffstrategy.h \
 	strategy/normalgamestrategy.h \
 	strategy/penaltystrategy.h \
@@ -180,7 +179,8 @@ HEADERS += \
 	utilities/point.h \
 	utilities/region.h \
 	utilities/velocitycalculator.h \
-    behavior/goaliebehavior.h
+    behavior/goaliebehavior.h \
+    strategy/indirectkickstrategy.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 

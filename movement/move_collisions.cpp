@@ -38,7 +38,7 @@
  * will never find a path around the collision object due to the close-to-start
  * FPPA exclusion rule.
  */
-#define ROBOT_MOVE_BACKUP_DIST      (ROBOT_SIZE*1.2)
+#define ROBOT_MOVE_BACKUP_DIST      (ROB_OBST_DIA*1.2)
 /* Defines a distance such that if two robots are within this distance, and one is
  * facing the other, it will yield to the other robot. This is to avoid a collison
  * when in a "collizion hazard"
@@ -48,7 +48,7 @@
  * to each other, they can be considered for being collided with each other
  * collided. **Beware** This needs to be less than ROBOT_COLLIDE_HAZARD_DIST
  */
-#define ROBOT_COLLIDED_DIST         (ROBOT_SIZE*1.5)
+#define ROBOT_COLLIDED_DIST         (ROB_OBST_DIA*1.5)
 
 /************************************************************************/
 /* Implementation */
