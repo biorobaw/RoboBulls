@@ -2863,7 +2863,7 @@ background-color: rgba(255, 0, 0, 100);</string>
               <property name="geometry">
                <rect>
                 <x>0</x>
-                <y>-343</y>
+                <y>0</y>
                 <width>269</width>
                 <height>869</height>
                </rect>
@@ -3239,11 +3239,16 @@ background-color: rgba(255, 0, 0, 100);</string>
                   <widget class="QLabel" name="currBehavior_0">
                    <property name="geometry">
                     <rect>
-                     <x>80</x>
+                     <x>60</x>
                      <y>50</y>
-                     <width>67</width>
-                     <height>17</height>
+                     <width>101</width>
+                     <height>20</height>
                     </rect>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>8</pointsize>
+                    </font>
                    </property>
                    <property name="text">
                     <string>TextLabel</string>
@@ -3603,11 +3608,16 @@ background-color: rgba(255, 0, 0, 100);</string>
                   <widget class="QLabel" name="currBehavior_1">
                    <property name="geometry">
                     <rect>
-                     <x>80</x>
+                     <x>60</x>
                      <y>50</y>
-                     <width>67</width>
-                     <height>17</height>
+                     <width>101</width>
+                     <height>20</height>
                     </rect>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>8</pointsize>
+                    </font>
                    </property>
                    <property name="text">
                     <string>TextLabel</string>
@@ -3967,11 +3977,16 @@ background-color: rgba(255, 0, 0, 100);</string>
                   <widget class="QLabel" name="currBehavior_2">
                    <property name="geometry">
                     <rect>
-                     <x>80</x>
+                     <x>60</x>
                      <y>50</y>
-                     <width>67</width>
-                     <height>17</height>
+                     <width>101</width>
+                     <height>20</height>
                     </rect>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>8</pointsize>
+                    </font>
                    </property>
                    <property name="text">
                     <string>TextLabel</string>
@@ -4331,11 +4346,16 @@ background-color: rgba(255, 0, 0, 100);</string>
                   <widget class="QLabel" name="currBehavior_3">
                    <property name="geometry">
                     <rect>
-                     <x>80</x>
+                     <x>60</x>
                      <y>50</y>
-                     <width>67</width>
-                     <height>17</height>
+                     <width>101</width>
+                     <height>20</height>
                     </rect>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>8</pointsize>
+                    </font>
                    </property>
                    <property name="text">
                     <string>TextLabel</string>
@@ -4695,11 +4715,16 @@ background-color: rgba(255, 0, 0, 100);</string>
                   <widget class="QLabel" name="currBehavior_4">
                    <property name="geometry">
                     <rect>
-                     <x>80</x>
+                     <x>60</x>
                      <y>50</y>
-                     <width>67</width>
-                     <height>17</height>
+                     <width>101</width>
+                     <height>20</height>
                     </rect>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>8</pointsize>
+                    </font>
                    </property>
                    <property name="text">
                     <string>TextLabel</string>
@@ -5059,11 +5084,16 @@ background-color: rgba(255, 0, 0, 100);</string>
                   <widget class="QLabel" name="currBehavior_5">
                    <property name="geometry">
                     <rect>
-                     <x>80</x>
+                     <x>60</x>
                      <y>50</y>
-                     <width>67</width>
-                     <height>17</height>
+                     <width>101</width>
+                     <height>20</height>
                     </rect>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>8</pointsize>
+                    </font>
                    </property>
                    <property name="text">
                     <string>TextLabel</string>

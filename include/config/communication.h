@@ -25,7 +25,7 @@
 //! @brief Comunication configurations
 //! @{
 
-#define SIMULATOR_ADDRESS   SIMULATOR_ADDRESS_JAMES
+#define SIMULATOR_ADDRESS   SIMULATOR_ADDRESS_LOCAL
 #define SIMULATOR_PORT      20011
 
 #if SIMULATED

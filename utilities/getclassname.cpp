@@ -5,6 +5,7 @@
 
 template<typename T>
 
+
 const std::string& getClassName(const T& variable)
 {
     static std::string empty;

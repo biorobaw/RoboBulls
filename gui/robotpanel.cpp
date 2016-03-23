@@ -256,7 +256,10 @@ void RobotPanel::setupBotPanel() {
 
 }//setupBotPanel
 
+
+
 void RobotPanel::updateBotPanel() {
+
     // Printing current bot info to Robot Panels
     for (int i=0; i<dash->teamSize_blue; i++) {
         botTitle[i]->setText("Robot " + QString::number(i));
@@ -287,8 +290,8 @@ void RobotPanel::updateBotPanel() {
 
             //Setting the Current behavior labels for the robots
             //Find a way to fix the template error!!*********
-            //Robot* robot = gameModel->findMyTeam(i);
-            //currBehavior[i]->setText(*(getclassname::getClassName(robot->getCurrentBeh())));
+            Robot* robot = gameModel->findMyTeam(i);
+            currBehavior[i]->setText(QString::fromStdString(SelRobotPanel::getBehaviorName(robot)));
 
 
             // Speed dials disabled so that I can see how GUI is updated

@@ -19,7 +19,8 @@ template<typename T>
 class getclassname
 {
 public:
-    getclassname();
+    getclassname()
+    {};
 
     const std::string& getClassName(const T& variable);
 
