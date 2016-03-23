@@ -11,10 +11,13 @@
 #include "selrobotpanel.h"
 #include "ui_mainwindow.h"
 #include "model/gamemodel.h"
+#include "utilities/getclassname.h"
+#include "model/robot.h"
 
 //Helper classes
 #include "guirobot.h"
 #include "guiball.h"
+
 
 RobotPanel::RobotPanel(MainWindow *mw) {
     dash = mw;
@@ -53,10 +56,10 @@ void RobotPanel::setupBotPanel() {
     velocityDials.push_back(dash->ui->dial_botVel_3);
     velocityDials.push_back(dash->ui->dial_botVel_4);
     velocityDials.push_back(dash->ui->dial_botVel_5);
-    velocityDials.push_back(dash->ui->dial_botVel_6);
-    velocityDials.push_back(dash->ui->dial_botVel_7);
-    velocityDials.push_back(dash->ui->dial_botVel_8);
-    velocityDials.push_back(dash->ui->dial_botVel_9);
+//    velocityDials.push_back(dash->ui->dial_botVel_6);
+//    velocityDials.push_back(dash->ui->dial_botVel_7);
+//    velocityDials.push_back(dash->ui->dial_botVel_8);
+//    velocityDials.push_back(dash->ui->dial_botVel_9);
 
     //Current Behavior Labels
     currBehavior.push_back(dash->ui->currBehavior_0);
@@ -65,10 +68,7 @@ void RobotPanel::setupBotPanel() {
     currBehavior.push_back(dash->ui->currBehavior_3);
     currBehavior.push_back(dash->ui->currBehavior_4);
     currBehavior.push_back(dash->ui->currBehavior_5);
-    currBehavior.push_back(dash->ui->currBehavior_6);
-    currBehavior.push_back(dash->ui->currBehavior_7);
-    currBehavior.push_back(dash->ui->currBehavior_8);
-    currBehavior.push_back(dash->ui->currBehavior_9);
+
 
  /*   // Speed dials disabled so that I can see GUI changes
     speedDials.push_back(dash->ui->dial_botSpeed_0);
@@ -89,10 +89,10 @@ void RobotPanel::setupBotPanel() {
     botXcoords.push_back(dash->ui->lcd_coordX_3);
     botXcoords.push_back(dash->ui->lcd_coordX_4);
     botXcoords.push_back(dash->ui->lcd_coordX_5);
-    botXcoords.push_back(dash->ui->lcd_coordX_6);
-    botXcoords.push_back(dash->ui->lcd_coordX_7);
-    botXcoords.push_back(dash->ui->lcd_coordX_8);
-    botXcoords.push_back(dash->ui->lcd_coordX_9);
+//    botXcoords.push_back(dash->ui->lcd_coordX_6);
+//    botXcoords.push_back(dash->ui->lcd_coordX_7);
+//    botXcoords.push_back(dash->ui->lcd_coordX_8);
+//    botXcoords.push_back(dash->ui->lcd_coordX_9);
 
     // Y Coordinate vector
     botYcoords.push_back(dash->ui->lcd_coordY_0);
@@ -101,10 +101,10 @@ void RobotPanel::setupBotPanel() {
     botYcoords.push_back(dash->ui->lcd_coordY_3);
     botYcoords.push_back(dash->ui->lcd_coordY_4);
     botYcoords.push_back(dash->ui->lcd_coordY_5);
-    botYcoords.push_back(dash->ui->lcd_coordY_6);
-    botYcoords.push_back(dash->ui->lcd_coordY_7);
-    botYcoords.push_back(dash->ui->lcd_coordY_8);
-    botYcoords.push_back(dash->ui->lcd_coordY_9);
+//    botYcoords.push_back(dash->ui->lcd_coordY_6);
+//    botYcoords.push_back(dash->ui->lcd_coordY_7);
+//    botYcoords.push_back(dash->ui->lcd_coordY_8);
+//    botYcoords.push_back(dash->ui->lcd_coordY_9);
 
     // Orientation vector
     botOrients.push_back(dash->ui->dial_botOrient_0);
@@ -113,10 +113,10 @@ void RobotPanel::setupBotPanel() {
     botOrients.push_back(dash->ui->dial_botOrient_3);
     botOrients.push_back(dash->ui->dial_botOrient_4);
     botOrients.push_back(dash->ui->dial_botOrient_5);
-    botOrients.push_back(dash->ui->dial_botOrient_6);
-    botOrients.push_back(dash->ui->dial_botOrient_7);
-    botOrients.push_back(dash->ui->dial_botOrient_8);
-    botOrients.push_back(dash->ui->dial_botOrient_9);
+//    botOrients.push_back(dash->ui->dial_botOrient_6);
+//    botOrients.push_back(dash->ui->dial_botOrient_7);
+//    botOrients.push_back(dash->ui->dial_botOrient_8);
+//    botOrients.push_back(dash->ui->dial_botOrient_9);
 
     // Icons vector
     robotIcon0 = new GuiRobot;
@@ -125,20 +125,20 @@ void RobotPanel::setupBotPanel() {
     robotIcon3 = new GuiRobot;
     robotIcon4 = new GuiRobot;
     robotIcon5 = new GuiRobot;
-    robotIcon6 = new GuiRobot;
-    robotIcon7 = new GuiRobot;
-    robotIcon8 = new GuiRobot;
-    robotIcon9 = new GuiRobot;
+//    robotIcon6 = new GuiRobot;
+//    robotIcon7 = new GuiRobot;
+//    robotIcon8 = new GuiRobot;
+//    robotIcon9 = new GuiRobot;
     botIcons.push_back(robotIcon0);
     botIcons.push_back(robotIcon1);
     botIcons.push_back(robotIcon2);
     botIcons.push_back(robotIcon3);
     botIcons.push_back(robotIcon4);
     botIcons.push_back(robotIcon5);
-    botIcons.push_back(robotIcon6);
-    botIcons.push_back(robotIcon7);
-    botIcons.push_back(robotIcon8);
-    botIcons.push_back(robotIcon9);
+//    botIcons.push_back(robotIcon6);
+//    botIcons.push_back(robotIcon7);
+//    botIcons.push_back(robotIcon8);
+//    botIcons.push_back(robotIcon9);
     // Icon scenes vector
     scene_botIcon_0 = new QGraphicsScene;
     scene_botIcon_1 = new QGraphicsScene;
@@ -146,20 +146,20 @@ void RobotPanel::setupBotPanel() {
     scene_botIcon_3 = new QGraphicsScene;
     scene_botIcon_4 = new QGraphicsScene;
     scene_botIcon_5 = new QGraphicsScene;
-    scene_botIcon_6 = new QGraphicsScene;
-    scene_botIcon_7 = new QGraphicsScene;
-    scene_botIcon_8 = new QGraphicsScene;
-    scene_botIcon_9 = new QGraphicsScene;
+//    scene_botIcon_6 = new QGraphicsScene;
+//    scene_botIcon_7 = new QGraphicsScene;
+//    scene_botIcon_8 = new QGraphicsScene;
+//    scene_botIcon_9 = new QGraphicsScene;
     botIconScenes.push_back(scene_botIcon_0);
     botIconScenes.push_back(scene_botIcon_1);
     botIconScenes.push_back(scene_botIcon_2);
     botIconScenes.push_back(scene_botIcon_3);
     botIconScenes.push_back(scene_botIcon_4);
     botIconScenes.push_back(scene_botIcon_5);
-    botIconScenes.push_back(scene_botIcon_6);
-    botIconScenes.push_back(scene_botIcon_7);
-    botIconScenes.push_back(scene_botIcon_8);
-    botIconScenes.push_back(scene_botIcon_9);
+//    botIconScenes.push_back(scene_botIcon_6);
+//    botIconScenes.push_back(scene_botIcon_7);
+//    botIconScenes.push_back(scene_botIcon_8);
+//    botIconScenes.push_back(scene_botIcon_9);
 
     // Icon frames vector
     botIconFrames.push_back(dash->ui->gView_robot_0);
@@ -168,10 +168,10 @@ void RobotPanel::setupBotPanel() {
     botIconFrames.push_back(dash->ui->gView_robot_3);
     botIconFrames.push_back(dash->ui->gView_robot_4);
     botIconFrames.push_back(dash->ui->gView_robot_5);
-    botIconFrames.push_back(dash->ui->gView_robot_6);
-    botIconFrames.push_back(dash->ui->gView_robot_7);
-    botIconFrames.push_back(dash->ui->gView_robot_8);
-    botIconFrames.push_back(dash->ui->gView_robot_9);
+//    botIconFrames.push_back(dash->ui->gView_robot_6);
+//    botIconFrames.push_back(dash->ui->gView_robot_7);
+//    botIconFrames.push_back(dash->ui->gView_robot_8);
+//    botIconFrames.push_back(dash->ui->gView_robot_9);
 
     // Selected bot icons
     robotIcon0Sel = new GuiRobot;
@@ -180,10 +180,10 @@ void RobotPanel::setupBotPanel() {
     robotIcon3Sel = new GuiRobot;
     robotIcon4Sel = new GuiRobot;
     robotIcon5Sel = new GuiRobot;
-    robotIcon6Sel = new GuiRobot;
-    robotIcon7Sel = new GuiRobot;
-    robotIcon8Sel = new GuiRobot;
-    robotIcon9Sel = new GuiRobot;
+//    robotIcon6Sel = new GuiRobot;
+//    robotIcon7Sel = new GuiRobot;
+//    robotIcon8Sel = new GuiRobot;
+//    robotIcon9Sel = new GuiRobot;
 
     botIconsSelected.push_back(robotIcon0Sel);
     botIconsSelected.push_back(robotIcon1Sel);
@@ -191,10 +191,10 @@ void RobotPanel::setupBotPanel() {
     botIconsSelected.push_back(robotIcon3Sel);
     botIconsSelected.push_back(robotIcon4Sel);
     botIconsSelected.push_back(robotIcon5Sel);
-    botIconsSelected.push_back(robotIcon6Sel);
-    botIconsSelected.push_back(robotIcon7Sel);
-    botIconsSelected.push_back(robotIcon8Sel);
-    botIconsSelected.push_back(robotIcon9Sel);
+//    botIconsSelected.push_back(robotIcon6Sel);
+//    botIconsSelected.push_back(robotIcon7Sel);
+//    botIconsSelected.push_back(robotIcon8Sel);
+//    botIconsSelected.push_back(robotIcon9Sel);
 
     scene_botIconSel_0 = new QGraphicsScene;
     scene_botIconSel_1 = new QGraphicsScene;
@@ -202,10 +202,10 @@ void RobotPanel::setupBotPanel() {
     scene_botIconSel_3 = new QGraphicsScene;
     scene_botIconSel_4 = new QGraphicsScene;
     scene_botIconSel_5 = new QGraphicsScene;
-    scene_botIconSel_6 = new QGraphicsScene;
-    scene_botIconSel_7 = new QGraphicsScene;
-    scene_botIconSel_8 = new QGraphicsScene;
-    scene_botIconSel_9 = new QGraphicsScene;
+//    scene_botIconSel_6 = new QGraphicsScene;
+//    scene_botIconSel_7 = new QGraphicsScene;
+//    scene_botIconSel_8 = new QGraphicsScene;
+//    scene_botIconSel_9 = new QGraphicsScene;
 
     botIconSelScenes.push_back(scene_botIconSel_0);
     botIconSelScenes.push_back(scene_botIconSel_1);
@@ -213,10 +213,10 @@ void RobotPanel::setupBotPanel() {
     botIconSelScenes.push_back(scene_botIconSel_3);
     botIconSelScenes.push_back(scene_botIconSel_4);
     botIconSelScenes.push_back(scene_botIconSel_5);
-    botIconSelScenes.push_back(scene_botIconSel_6);
-    botIconSelScenes.push_back(scene_botIconSel_7);
-    botIconSelScenes.push_back(scene_botIconSel_8);
-    botIconSelScenes.push_back(scene_botIconSel_9);
+//    botIconSelScenes.push_back(scene_botIconSel_6);
+//    botIconSelScenes.push_back(scene_botIconSel_7);
+//    botIconSelScenes.push_back(scene_botIconSel_8);
+//    botIconSelScenes.push_back(scene_botIconSel_9);
 
     // Ball GUI icon
     ballIcon = new GuiBall();
@@ -286,7 +286,9 @@ void RobotPanel::updateBotPanel() {
             }
 
             //Setting the Current behavior labels for the robots
-            currBehavior[i]->setText("  ");
+            //Find a way to fix the template error!!*********
+            //Robot* robot = gameModel->findMyTeam(i);
+            //currBehavior[i]->setText(*(getclassname::getClassName(robot->getCurrentBeh())));
 
 
             // Speed dials disabled so that I can see how GUI is updated

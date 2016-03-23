@@ -181,16 +181,16 @@ void listener()
     SDL_Init(SDL_INIT_TIMER | SDL_INIT_JOYSTICK | SDL_INIT_NOPARACHUTE);
     SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
 
-    //Hardcoding initial joystick mapping
-#if TEAM == TEAM_YELLOW
-    map_joystick({"0", "2"});
-    map_joystick({"1", "3"});
-    map_joystick({"2", "4"});
-#else
-    map_joystick({"0", "1"});
-    map_joystick({"1", "5"});
-    map_joystick({"2", "6"});
-#endif
+    //Hardcoding initial joystick mapping (comment out if not using joysticks override)
+//#if TEAM == TEAM_YELLOW
+//    map_joystick({"0", "2"});
+//    map_joystick({"1", "3"});
+//    map_joystick({"2", "4"});
+//#else
+//    map_joystick({"0", "1"});
+//    map_joystick({"1", "5"});
+//    map_joystick({"2", "6"});
+//#endif
 
     //Variables to read joystick info
     float axes[10][8] = {0};      //Joystick axis readings buffer

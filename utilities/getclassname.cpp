@@ -1,13 +1,9 @@
 #include "getclassname.h"
 
-//***************** Attempting to get the class name so that it can be added to the UI to show Robots current behavior
+//**** Attempting to get the class name so that it can be added to the UI to show Robots current behavior
 
 
-/*template<typename T>
-getclassname::getclassname()
-{
-}
-
+template<typename T>
 
 const std::string& getClassName(const T& variable)
 {
@@ -44,4 +40,4 @@ const std::string& getClassName(const T& variable)
     return empty;
 }
 
-*/
+

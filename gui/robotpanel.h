@@ -42,6 +42,8 @@ public:
     std::vector<QDial*> velocityDials;
     std::vector<QLabel*> currBehavior;
 //  std::vector<QDial*> speedDials;         Will erase after I add the current behavior to where the speed dial used to be
+
+
     // Bot icon graphics views
 
     std::vector<QGraphicsView*> botIconFrames;
