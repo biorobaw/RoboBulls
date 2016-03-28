@@ -2863,7 +2863,7 @@ background-color: rgba(255, 0, 0, 100);</string>
               <property name="geometry">
                <rect>
                 <x>0</x>
-                <y>0</y>
+                <y>-343</y>
                 <width>269</width>
                 <height>869</height>
                </rect>
@@ -5171,6 +5171,22 @@ background-color: rgba(255, 0, 0, 100);</string>
                    </property>
                    <property name="alignment">
                     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                   </property>
+                  </widget>
+                  <widget class="QLabel" name="gState">
+                   <property name="geometry">
+                    <rect>
+                     <x>26</x>
+                     <y>29</y>
+                     <width>161</width>
+                     <height>31</height>
+                    </rect>
+                   </property>
+                   <property name="text">
+                    <string>Default Game State</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
                    </property>
                   </widget>
                  </widget>

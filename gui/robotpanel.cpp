@@ -70,6 +70,7 @@ void RobotPanel::setupBotPanel() {
     currBehavior.push_back(dash->ui->currBehavior_5);
 
 
+
  /*   // Speed dials disabled so that I can see GUI changes
     speedDials.push_back(dash->ui->dial_botSpeed_0);
     speedDials.push_back(dash->ui->dial_botSpeed_1);
@@ -323,6 +324,8 @@ void RobotPanel::updateBotPanel() {
         }
     }
 
+    //Populating the gameState label with the current refbox command
+    dash->ui->gState->setText(QString::fromStdString(getGameState()));
 
     // Mouse point
     dash->ui->lcd_coordX_cursor->display(dash->objectPos->getMouseCoordX());
@@ -409,5 +412,61 @@ void RobotPanel::toggleIconVisible() {
             thisBot->setOpacity(1);
         }
     }
+}
+
+const std::string RobotPanel::getGameState()
+{
+    char gameState = gameModel->getGameState();
+
+    switch(gameState)
+    {
+    case 'S':    //stop game
+        return "Stop Game";
+        break;
+    case 'G':    //Blue Goal
+        return "Blue Goal";
+        break;
+    case 'g':    //Yellow Goal
+        return "Yellow Goal";
+        break;
+    case 'p':   //Yellow Penalty Kick
+        return "Yellow Penalty Kick";
+        break;
+    case 'P':   //Blue Penalty Kick
+        return "Blue Penalty Kick";
+        break;
+    case 'k':   //Yellow Kickoff
+        return "Yellow Kickoff";
+        break;
+    case 'K':   //Blue Kickoff
+        return "Blue Kickoff";
+        break;
+    case 'f':   //Yellow Free Kick
+        return "Yellow Free Kick";
+        break;
+    case 'F':   //Blue Free Kick
+        return "Blue Free Kick";
+        break;
+    case 'i':   //Yellow Indirect Kick
+        return "Yellow Indirect Kick";
+        break;
+    case 'I':   //Blue Indirect kick
+        return "Blue Indirect Kick";
+        break;
+    case 'T':
+    case 't':
+    case 'H':    //Halt
+        return "Halt";
+        break;
+    case ' ':    //Normal game play
+        return "Normal game play";
+        break;
+    case 's':    //Force Start
+        return "Force Start";
+        break;
+    default:    //Anything Else
+        return "Defaul GameState";
+        break;
+    };
 }
 

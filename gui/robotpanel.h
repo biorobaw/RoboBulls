@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <vector>
+#include <string>
 
 class QDial;
 class QFrame;
@@ -30,6 +31,7 @@ public:
     void updateBotPanel();
     void scrollToSelBot(int id);
     void updateTeamColors();
+    const std::string getGameState();
 
 
 //private:
@@ -41,6 +43,7 @@ public:
     std::vector<QLabel*> botTitle;
     std::vector<QDial*> velocityDials;
     std::vector<QLabel*> currBehavior;
+    QLabel* gState;
 //  std::vector<QDial*> speedDials;         Will erase after I add the current behavior to where the speed dial used to be
 
 
