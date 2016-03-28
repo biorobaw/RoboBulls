@@ -327,6 +327,20 @@ void RobotPanel::updateBotPanel() {
     //Populating the gameState label with the current refbox command
     dash->ui->gState->setText(QString::fromStdString(getGameState()));
 
+    //Populating the ballVel label with current ball velocity
+    //Fix so that velocity reading are rounded to 2nd or 3rd decimal
+    dash->ui->ballVel->setText("Vell: " + QString::fromStdString(gameModel->getBallVelocity().toString()) );
+
+    //Populating the ballAccel label with curent ball acceleration
+    dash->ui->ballAccel->setText("Accel: " + QString::fromStdString(gameModel->getBallAcceleration().toString()));
+
+    //Populating the ballMove label with the current movement status of the ball
+    //Fix this inquire about why getBallIsStopped is always returning false
+    if(gamemodel->getBallIsStopped())
+        dash->ui->ballMove->setText("Ball is not moving");
+    else
+        dash->ui->ballMove->setText("Ball is moving");
+
     // Mouse point
     dash->ui->lcd_coordX_cursor->display(dash->objectPos->getMouseCoordX());
     dash->ui->lcd_coordY_cursor->display(dash->objectPos->getMouseCoordY());

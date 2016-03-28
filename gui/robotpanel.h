@@ -44,6 +44,9 @@ public:
     std::vector<QDial*> velocityDials;
     std::vector<QLabel*> currBehavior;
     QLabel* gState;
+    QLabel* ballVel;
+    QLabel* ballAccel;
+    QLabel* ballMove;
 //  std::vector<QDial*> speedDials;         Will erase after I add the current behavior to where the speed dial used to be
 
 

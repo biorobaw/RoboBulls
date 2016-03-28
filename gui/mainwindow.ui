@@ -5148,7 +5148,7 @@ background-color: rgba(255, 0, 0, 100);</string>
                     <rect>
                      <x>5</x>
                      <y>5</y>
-                     <width>81</width>
+                     <width>241</width>
                      <height>21</height>
                     </rect>
                    </property>
@@ -5158,6 +5158,7 @@ background-color: rgba(255, 0, 0, 100);</string>
                      <pointsize>10</pointsize>
                      <weight>75</weight>
                      <bold>true</bold>
+                     <underline>true</underline>
                     </font>
                    </property>
                    <property name="autoFillBackground">
@@ -5170,7 +5171,7 @@ background-color: rgba(255, 0, 0, 100);</string>
                     <string>Game State</string>
                    </property>
                    <property name="alignment">
-                    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                    <set>Qt::AlignHCenter|Qt::AlignTop</set>
                    </property>
                   </widget>
                   <widget class="QLabel" name="gState">
@@ -5238,7 +5239,7 @@ background-color: rgba(255, 0, 0, 100);</string>
                     <rect>
                      <x>5</x>
                      <y>5</y>
-                     <width>71</width>
+                     <width>241</width>
                      <height>21</height>
                     </rect>
                    </property>
@@ -5248,6 +5249,7 @@ background-color: rgba(255, 0, 0, 100);</string>
                      <pointsize>10</pointsize>
                      <weight>75</weight>
                      <bold>true</bold>
+                     <underline>true</underline>
                     </font>
                    </property>
                    <property name="autoFillBackground">
@@ -5260,7 +5262,46 @@ background-color: rgba(255, 0, 0, 100);</string>
                     <string>Ball Info</string>
                    </property>
                    <property name="alignment">
-                    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                    <set>Qt::AlignHCenter|Qt::AlignTop</set>
+                   </property>
+                  </widget>
+                  <widget class="QLabel" name="ballVel">
+                   <property name="geometry">
+                    <rect>
+                     <x>10</x>
+                     <y>60</y>
+                     <width>231</width>
+                     <height>17</height>
+                    </rect>
+                   </property>
+                   <property name="text">
+                    <string>Velocity Reading</string>
+                   </property>
+                  </widget>
+                  <widget class="QLabel" name="ballAccel">
+                   <property name="geometry">
+                    <rect>
+                     <x>10</x>
+                     <y>40</y>
+                     <width>231</width>
+                     <height>17</height>
+                    </rect>
+                   </property>
+                   <property name="text">
+                    <string>Acceleration Reading</string>
+                   </property>
+                  </widget>
+                  <widget class="QLabel" name="ballMove">
+                   <property name="geometry">
+                    <rect>
+                     <x>10</x>
+                     <y>20</y>
+                     <width>221</width>
+                     <height>17</height>
+                    </rect>
+                   </property>
+                   <property name="text">
+                    <string>Ball Movement</string>
                    </property>
                   </widget>
                  </widget>
@@ -5312,7 +5353,7 @@ background-color: rgba(255, 0, 0, 100);</string>
                     <rect>
                      <x>5</x>
                      <y>5</y>
-                     <width>61</width>
+                     <width>241</width>
                      <height>21</height>
                     </rect>
                    </property>
@@ -5322,6 +5363,7 @@ background-color: rgba(255, 0, 0, 100);</string>
                      <pointsize>10</pointsize>
                      <weight>75</weight>
                      <bold>true</bold>
+                     <underline>true</underline>
                     </font>
                    </property>
                    <property name="autoFillBackground">
@@ -5334,7 +5376,7 @@ background-color: rgba(255, 0, 0, 100);</string>
                     <string>Strategy</string>
                    </property>
                    <property name="alignment">
-                    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                    <set>Qt::AlignHCenter|Qt::AlignTop</set>
                    </property>
                   </widget>
                  </widget>
@@ -5386,7 +5428,7 @@ background-color: rgba(255, 0, 0, 100);</string>
                     <rect>
                      <x>5</x>
                      <y>5</y>
-                     <width>71</width>
+                     <width>241</width>
                      <height>21</height>
                     </rect>
                    </property>
@@ -5396,6 +5438,7 @@ background-color: rgba(255, 0, 0, 100);</string>
                      <pointsize>10</pointsize>
                      <weight>75</weight>
                      <bold>true</bold>
+                     <underline>true</underline>
                     </font>
                    </property>
                    <property name="autoFillBackground">
@@ -5408,7 +5451,7 @@ background-color: rgba(255, 0, 0, 100);</string>
                     <string>Team Info</string>
                    </property>
                    <property name="alignment">
-                    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                    <set>Qt::AlignHCenter|Qt::AlignTop</set>
                    </property>
                   </widget>
                  </widget>
