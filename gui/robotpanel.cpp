@@ -341,6 +341,9 @@ void RobotPanel::updateBotPanel() {
     else
         dash->ui->ballMove->setText("Ball is moving");
 
+    //Populating the currStrategy label with the current strategy
+    dash->ui->currStrategy->setText(QString::fromStdString(getCurrStrategy()));
+
     // Mouse point
     dash->ui->lcd_coordX_cursor->display(dash->objectPos->getMouseCoordX());
     dash->ui->lcd_coordY_cursor->display(dash->objectPos->getMouseCoordY());
@@ -426,6 +429,53 @@ void RobotPanel::toggleIconVisible() {
             thisBot->setOpacity(1);
         }
     }
+}
+
+const std::string RobotPanel::getCurrStrategy()
+{
+    char gameState = gameModel->getGameState();
+
+    switch(gameState)
+    {
+    case 'S':    //stop game
+    case 'G':    //Blue Goal
+    case 'g':    //Yellow Goal
+        return "Stop Strategy";
+        break;
+    case 'p':   //Yellow Penalty Kick
+    case 'P':   //Blue Penalty Kick
+        return "Penalty Strategy";
+        break;
+    case 'k':   //Yellow Kickoff
+    case 'K':   //Blue Kickoff
+        return "Kick Off Strategy";
+        break;
+    case 'f':   //Yellow Free Kick
+    case 'F':   //Blue Free Kick
+        return "Free Kick Strategy";
+        break;
+    case 'i':   //Yellow Indirect Kick
+    case 'I':   //Blue Indirect kick
+        return "Indirect Kick Strategy";
+        break;
+    case 'T':
+    case 't':
+    case 'H':    //Halt
+        return "Halt Strategy";
+        break;
+    case ' ':    //Normal game play
+        return "Normal Game Strategy";
+        break;
+    case 's':    //Force Start
+        return "Normal Game Strategy";
+        break;
+    default:    //Anything Else
+        return "GS Not Implemented";
+        break;
+    };
+
+
+
 }
 
 const std::string RobotPanel::getGameState()

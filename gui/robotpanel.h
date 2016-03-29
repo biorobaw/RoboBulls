@@ -32,6 +32,7 @@ public:
     void scrollToSelBot(int id);
     void updateTeamColors();
     const std::string getGameState();
+    const std::string getCurrStrategy();
 
 
 //private:
@@ -47,6 +48,7 @@ public:
     QLabel* ballVel;
     QLabel* ballAccel;
     QLabel* ballMove;
+    QLabel* currStrategy;
 //  std::vector<QDial*> speedDials;         Will erase after I add the current behavior to where the speed dial used to be
 
 

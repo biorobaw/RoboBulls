@@ -5379,6 +5379,22 @@ background-color: rgba(255, 0, 0, 100);</string>
                     <set>Qt::AlignHCenter|Qt::AlignTop</set>
                    </property>
                   </widget>
+                  <widget class="QLabel" name="currStrategy">
+                   <property name="geometry">
+                    <rect>
+                     <x>6</x>
+                     <y>40</y>
+                     <width>241</width>
+                     <height>20</height>
+                    </rect>
+                   </property>
+                   <property name="text">
+                    <string>Current Strategy</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                  </widget>
                  </widget>
                 </item>
                 <item>
