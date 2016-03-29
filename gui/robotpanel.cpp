@@ -344,6 +344,17 @@ void RobotPanel::updateBotPanel() {
     //Populating the currStrategy label with the current strategy
     dash->ui->currStrategy->setText(QString::fromStdString(getCurrStrategy()));
 
+    //Populating the team info frame in robot panel
+    int blueG = gameModel->getBlueGoals();
+    dash->ui->blueGoal->setText("Blue Goals: " + QString::number(blueG));
+
+    int yellG = gameModel->getYellowGoals();
+    dash->ui->yellGoal->setText("Yellow Goals: " + QString::number(yellG));
+
+    //Find out why time is not showing correctly
+    int time = gameModel->getRemainingTime();
+    dash->ui->timeRem->setText("Time Left: " + QString::number(time));
+
     // Mouse point
     dash->ui->lcd_coordX_cursor->display(dash->objectPos->getMouseCoordX());
     dash->ui->lcd_coordY_cursor->display(dash->objectPos->getMouseCoordY());

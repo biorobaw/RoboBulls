@@ -5470,6 +5470,45 @@ background-color: rgba(255, 0, 0, 100);</string>
                     <set>Qt::AlignHCenter|Qt::AlignTop</set>
                    </property>
                   </widget>
+                  <widget class="QLabel" name="blueGoal">
+                   <property name="geometry">
+                    <rect>
+                     <x>10</x>
+                     <y>20</y>
+                     <width>231</width>
+                     <height>17</height>
+                    </rect>
+                   </property>
+                   <property name="text">
+                    <string>Blue Goals</string>
+                   </property>
+                  </widget>
+                  <widget class="QLabel" name="yellGoal">
+                   <property name="geometry">
+                    <rect>
+                     <x>10</x>
+                     <y>40</y>
+                     <width>231</width>
+                     <height>17</height>
+                    </rect>
+                   </property>
+                   <property name="text">
+                    <string>Yellow Goals</string>
+                   </property>
+                  </widget>
+                  <widget class="QLabel" name="timeRem">
+                   <property name="geometry">
+                    <rect>
+                     <x>10</x>
+                     <y>60</y>
+                     <width>231</width>
+                     <height>17</height>
+                    </rect>
+                   </property>
+                   <property name="text">
+                    <string>Time Remaining</string>
+                   </property>
+                  </widget>
                  </widget>
                 </item>
                </layout>

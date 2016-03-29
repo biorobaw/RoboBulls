@@ -49,6 +49,9 @@ public:
     QLabel* ballAccel;
     QLabel* ballMove;
     QLabel* currStrategy;
+    QLabel* blueGoal;
+    QLabel* yellGoal;
+    QLabel* timeRem;
 //  std::vector<QDial*> speedDials;         Will erase after I add the current behavior to where the speed dial used to be
 
 
