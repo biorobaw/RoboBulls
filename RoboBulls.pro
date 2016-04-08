@@ -93,7 +93,9 @@ SOURCES += main.cpp \
 	utilities/velocitycalculator.cpp \
     behavior/defendbehavior.cpp \
     behavior/goaliebehavior.cpp \
-    strategy/indirectkickstrategy.cpp
+    strategy/indirectkickstrategy.cpp \
+    strategy/threevthree.cpp \
+    communication/kf.cpp
 
 HEADERS += \
 	behavior/attackmain.h \
@@ -180,11 +182,13 @@ HEADERS += \
 	utilities/region.h \
 	utilities/velocitycalculator.h \
     behavior/goaliebehavior.h \
-    strategy/indirectkickstrategy.h
+    strategy/indirectkickstrategy.h \
+    strategy/threevthree.h \
+    communication/kf.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 
-unix|win32: LIBS += -lprotobuf -lSDL2
+unix|win32: LIBS +=  -lprotobuf -lSDL2 -lkalman
 
 OTHER_FILES += \
     gui/images/0.png \

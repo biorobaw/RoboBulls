@@ -10,7 +10,7 @@
  * a rolling velocity of whatever point is passed to it. Returned is the
  * new velocity of the point in <b>m/s</b>, which is taken over the
  * front and the end of the queue. Create an instance of this class
- * and continually pass a point to it tomeasure its velocity.
+ * and continually pass a point to it to measure its velocity.
  * Use POINTS_PER_METER to convert the returnes m/s into Points per second
  */
 

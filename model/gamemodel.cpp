@@ -285,7 +285,7 @@ void GameModel::onCommandProcessed()
 //! @brief To do the actual calculation of the ball's predicted (stopping) point
 static Point calcBallPrediction(float t)
 {
-    //p = p0 + vt + (1/2)at^2, with t = some t
+    //p(t) = p0 + vt + (1/2)at^2, with t = some t
     Point predict_t =
               gameModel->getBallPoint()
             + gameModel->getBallVelocity() * POINTS_PER_METER * t

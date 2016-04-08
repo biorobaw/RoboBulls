@@ -67,7 +67,7 @@ void VisionComm::updateInfo(const SSL_DetectionRobot& robot, int detectedTeamCol
     }
 }
 
-
+//Used to check if the detection and the camera are on the same side of the field.
 template<typename Detection>
 static bool isGoodDetection
     (const Detection& detection, const SSL_DetectionFrame& frame, float confidence, bool fourCameraMode)
@@ -131,14 +131,15 @@ void VisionComm::recieveBall(const SSL_DetectionFrame& frame)
         newDetection *= -1;
     #endif
 
-        // If the ball is detected outside the noise radius more than 5 times
+        // If the ball is detected outside the noise radius more than X times
         // it is considered to be moving and its position will be updated
         if(gameModel->ballStopped)
         {
-            gameModel->setBallPoint(gameModel->getBallPoint());
+//            gameModel->setBallPoint(gameModel->getBallPoint());
 
             if(Measurments::distance(newDetection, noiseCenterPoint) > NOISE_RADIUS)
                 ++seenOutsideRadiusCount;
+
             if(seenOutsideRadiusCount > 2)
             {
                 gameModel->ballStopped = false;
