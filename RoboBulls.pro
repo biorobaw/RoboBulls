@@ -95,7 +95,7 @@ SOURCES += main.cpp \
     behavior/goaliebehavior.cpp \
     strategy/indirectkickstrategy.cpp \
     strategy/threevthree.cpp \
-    communication/kf.cpp
+    communication/kfball.cpp
 
 HEADERS += \
 	behavior/attackmain.h \
@@ -184,7 +184,7 @@ HEADERS += \
     behavior/goaliebehavior.h \
     strategy/indirectkickstrategy.h \
     strategy/threevthree.h \
-    communication/kf.h
+    communication/kfball.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 
