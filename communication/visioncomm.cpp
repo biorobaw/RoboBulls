@@ -165,7 +165,7 @@ void VisionComm::recieveBall(const SSL_DetectionFrame& frame)
         z(2) = newDetection.y;
 
         KFBall::Vector u(6);
-        kfilter.step(u, z);
+        //kfilter.step(u, z);
 
         //KFBall::Vector result = kfilter.getX();
         //cout << "Stop: " << result(1) << ", " << result(4) << endl;
