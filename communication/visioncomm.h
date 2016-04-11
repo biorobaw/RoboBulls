@@ -9,6 +9,7 @@
 #include "include/robocup_ssl_client.h"
 #include "model/gamemodel.h"
 #include "model/robot.h"
+#include "kfball.h"
 
 //! @brief Sets the minimum confidence to consider a ball reading as valid
 const float CONF_THRESHOLD_BALL = 0.75;
@@ -60,6 +61,7 @@ protected:
     timeval lastRecvTime;           //! When did we last receive a packet? Used to not recieve every one
     bool fourCameraMode = false;    //! Are we in four-camera mode (true)? Or Two-camera mode?
     bool kfilter_init = false;   //! Has the kalman filter been initialized with a ball point?
+    KFBall kfilter;
 };
 
 #endif // VISIONCOMM_H

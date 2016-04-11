@@ -4,7 +4,7 @@
 #include "include/config/team.h"
 #include "include/config/communication.h"
 #include "visioncomm.h"
-#include "kfball.h"
+
 using namespace std;
 
 VisionComm::VisionComm(GameModel *gm)
@@ -132,45 +132,43 @@ void VisionComm::recieveBall(const SSL_DetectionFrame& frame)
         newDetection *= -1;
     #endif
 
-        // Kalman Filter Tests
-        KFBall kfilter;
+//        // Kalman Filter Tests
+//        KFBall::Matrix P0;
+//        P0.resize(6,6);
+//        P0(1,1) = 1000;
+//        P0(2,2) = 500;
+//        P0(3,3) = 100;
+//        P0(4,4) = 1000;
+//        P0(5,5) = 500;
+//        P0(6,6) = 100;
 
-        KFBall::Matrix P0;
-        P0.resize(6,6);
-        P0(1,1) = 1000;
-        P0(2,2) = 500;
-        P0(3,3) = 100;
-        P0(4,4) = 1000;
-        P0(5,5) = 500;
-        P0(6,6) = 100;
+//        if(!kfilter_init)
+//        {
+//            //Initial estimate
+//            KFBall::Vector x(6);
+//            x(1) = newDetection.x;
+//            x(2) = 0.0;
+//            x(3) = newDetection.x;
+//            x(4) = newDetection.y;
+//            x(5) = 0.0;
+//            x(6) = newDetection.x;
 
-        if(!kfilter_init)
-        {
-            //Initial estimate
-            KFBall::Vector x(6);
-            x(1) = newDetection.x;
-            x(2) = 0.0;
-            x(3) = newDetection.x;
-            x(4) = newDetection.y;
-            x(5) = 0.0;
-            x(6) = newDetection.x;
+//            kfilter.init(x, P0);
+//            kfilter_init = true;
+//        }
 
-            kfilter.init(x, P0);
-            kfilter_init = true;
-        }
+//        // Update Filter
+//        KFBall::Vector z(2);
+//        z(1) = newDetection.x;
+//        z(2) = newDetection.y;
 
-        // Update Filter
-        KFBall::Vector z(2);
-        z(1) = newDetection.x;
-        z(2) = newDetection.y;
+//        KFBall::Vector u(6);
+//        kfilter.step(u, z);
 
-        KFBall::Vector u(6);
-        //kfilter.step(u, z);
-
-        //KFBall::Vector result = kfilter.getX();
-        //cout << "Stop: " << result(1) << ", " << result(4) << endl;
-        //cout << "Vel: " << result(2) << ", " << result(5) << endl;
-        //cout << "Pos: " << result(3) << ", " << result(6) << endl << endl;
+//        KFBall::Vector result = kfilter.getX();
+//        cout << "Stop: " << result(1) << ", " << result(4) << endl;
+//        cout << "Vel: " << result(2) << ", " << result(5) << endl;
+//        cout << "Pos: " << result(3) << ", " << result(6) << endl << endl;
 
         // If the ball is detected outside the noise radius more than X times
         // it is considered to be moving and its position will be updated

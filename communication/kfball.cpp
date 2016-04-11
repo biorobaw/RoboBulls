@@ -1,21 +1,36 @@
 #include "communication/kfball.h"
 
-KFBall::KFBall():a(-3), T(0.03)
+KFBall::KFBall():a(-0.5), T(1.0/55.0)
 {
-    //setDim(x, u, w, z, v)
+    // setDim(x, u, w, z, v)
     setDim(6, 2, 2, 2, 2);
 }
 
 void KFBall::makeProcess()
 {
     Vector x_(x.size());
-    // stop_x, vel_x, pos_x, stop_y, vel_y, pos_y
+    // stop_x
     x_(1) = x(3) + x(2)*x(2)/(2*fabs(a));
-    x_(2) = x(2) + a * T;
+
+    // vel_x
+    x_(2) = x(2);
+    if(x(2) != 0)
+        x_(2) += fabs(x(2))/x(2) * a * T;
+
+    // pos_x
     x_(3) = x(3) + x(2) * T;
-    x_(4) = x(6) + x(5)*x(5)/(5*fabs(a));
-    x_(5) = x(5) + a * T;
+
+    // stop_y
+    x_(4) = x(6) + x(5)*x(5)/(2*fabs(a));
+
+    // vel_y
+    x_(5) = x(5);
+    if(x(5) != 0)
+        x_(5) += fabs(x(5))/x(5) * a * T;
+
+    // pos_y
     x_(6) = x(6) + x(5) * T;
+
     x.swap(x_);
 }
 
@@ -121,8 +136,8 @@ void KFBall::makeV()
 
 void KFBall::makeR()
 {
-    R(1,1) = 10.0;
+    R(1,1) = 3.0;
     R(1,2) = 0.0;
     R(2,1) = 0.0;
-    R(2,2) = 10.0;
+    R(2,2) = 3.0;
 }
