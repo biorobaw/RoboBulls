@@ -47,6 +47,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     gamemodel = GameModel::getModel();
 
+
     // Setting up GUI; not enabling thread until we're done
     ui->btn_connectGui->setEnabled(false);
     // Creating helper classes (order is important)
@@ -71,6 +72,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->btn_connectGui->setEnabled(true);
     MainWindow::resize(850,630);
     setFocusOnField();
+
     // Time, in milliseconds, before GUI autoconnects to project; increase value if needed
     QTimer::singleShot(1000, this, SLOT(on_btn_connectGui_clicked()));
 

@@ -54,3 +54,13 @@ void GuiInterface::guiPrintRobot(int robotID, std::string output) {
 void GuiInterface::guiPrintTerminal(std::string output) {
     dash->guiPrint(output);
 }
+
+void GuiInterface::drawRegion(Point A, Point B, Point C, Point D, double seconds)
+{
+    dash->fieldpanel->setupLine(A,B,seconds);
+    dash->fieldpanel->setupLine(B,C,seconds);
+    dash->fieldpanel->setupLine(C,D,seconds);
+    dash->fieldpanel->setupLine(D,A,seconds);
+
+
+}

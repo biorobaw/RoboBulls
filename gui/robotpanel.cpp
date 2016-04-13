@@ -13,7 +13,7 @@
 #include "model/gamemodel.h"
 #include "utilities/getclassname.h"
 #include "model/robot.h"
-
+#include "utilities/measurments.h"
 //Helper classes
 #include "guirobot.h"
 #include "guiball.h"
@@ -329,13 +329,19 @@ void RobotPanel::updateBotPanel() {
 
     //Populating the ballVel label with current ball velocity
     //Fix so that velocity reading are rounded to 2nd or 3rd decimal
+    if(std::hypot(gameModel->getBallVelocity().x,gameModel->getBallVelocity().y) < .001)
+        dash->ui->ballVel->setText("Vell: (0, 0)");
+    else
     dash->ui->ballVel->setText("Vell: " + QString::fromStdString(gameModel->getBallVelocity().toString()) );
 
     //Populating the ballAccel label with curent ball acceleration
-    dash->ui->ballAccel->setText("Accel: " + QString::fromStdString(gameModel->getBallAcceleration().toString()));
+    if(std::hypot(gameModel->getBallAcceleration().x,gameModel->getBallAcceleration().y) < .001)
+        dash->ui->ballAccel->setText("Accel: (0, 0)");
+    else
+        dash->ui->ballAccel->setText("Accel: " + QString::fromStdString(gameModel->getBallAcceleration().toString()));
 
     //Populating the ballMove label with the current movement status of the ball
-    //Fix this inquire about why getBallIsStopped is always returning false
+    //Fix this inquire about why getBallIsStopped is always returning false!!!!!!!!!!!!!!!!!!!!!!!
     if(gamemodel->getBallIsStopped())
         dash->ui->ballMove->setText("Ball is not moving");
     else
@@ -351,7 +357,7 @@ void RobotPanel::updateBotPanel() {
     int yellG = gameModel->getYellowGoals();
     dash->ui->yellGoal->setText("Yellow Goals: " + QString::number(yellG));
 
-    //Find out why time is not showing correctly
+    //Populating remaining time label
     int time = gameModel->getRemainingTime();
     dash->ui->timeRem->setText("Time Left: " + QString::number(time));
 

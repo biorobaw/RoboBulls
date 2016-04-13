@@ -21,6 +21,7 @@ public:
     void setHidePaths(bool hide);
     void guiPrintRobot(int robotID, std::string output);
     void guiPrintTerminal(std::string output);
+    void drawRegion(Point A, Point B, Point C, Point D, double seconds = 3);
 
     //Returns the robot that is overriden and selected, or -1 if none.
     int  getSelOverBot();

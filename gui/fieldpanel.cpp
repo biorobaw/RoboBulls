@@ -5,6 +5,7 @@
 #include "mainwindow.h"
 #include "include/config/team.h"
 #include "ui_mainwindow.h"
+#include "guiinterface.h"
 
 //Helper classes
 #include "guirobot.h"
@@ -366,6 +367,19 @@ void FieldPanel::updateScene() {
     centerViewOnBot();
     // Printing debug lines
     drawLine();
+
+    //Testing
+//    GuiInterface test;
+//    Point tL = {0,0};
+//    Point tR = {0, 20};
+//    Point bL = {-10, 0};
+//    Point bR = {-10,20};
+
+//    test.drawRegion(tL,tR,bL,bR,10);
+
+    //Testing
+
+
     updateLineQueue();
 
 
