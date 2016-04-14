@@ -1,5 +1,7 @@
 #ifndef JOYSTICK_H
 #define JOYSTICK_H
+#include <vector>
+#include <string>
 
 /*! @brief Joystick control support
  * @details *This is an internal file; it should not be used directly except to add joysticks.*
@@ -31,10 +33,24 @@
 namespace joystick
 {
 
+//! @brief Values read in by a SDL joystick
+//! @details These values are assigned to a robot though the map_joystick
+//!  funciton, and the wheel velocities are sent to the robot at "id"
+struct reading
+{
+    //Wheel velocities for robot
+    float LB, LF, RB, RF;
+
+    //Kick+Dribble status for robot
+    bool  Kick, Dribble;
+
+    //What robot should this be for? Changed by map_joy on command line
+    int id = -1;
+};
+
 //! @brief Information from joysticks to be sent to the overridden robot (do not use directly)
 //! @{
-extern float LB, LF, RB, RF;
-extern bool  Kick, Dribble;
+extern reading joystickReadings[10];
 //! @}
 
 //! @brief Starts a new thread listening for joystick events
@@ -45,6 +61,11 @@ void listen();
 //! @details This function must be called after listen()
 //! @return True if a supported joystick is connected to the system
 bool hasSupport();
+
+//! @brief Map a joystick to a robot.
+//! @details A command line function to make the values in "joystickmap"
+//!  go to a particular robot. [0] is joystick id, [1] is robot id.
+void map_joystick(const std::vector<std::string>& args);
 
 }
 

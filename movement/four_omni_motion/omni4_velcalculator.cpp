@@ -14,17 +14,17 @@ float theta_prop_mult = 0.5;    //Multiplier for theta proportional
 float theta_int_mult = 0.0015;  //Multiplier for theta integral
 #else
 float xy_prop_mult = .25;     //Multiplier for Proportional XY
-float xy_int_mult = 0.0025;     //Multiplier for integral XY
-float theta_prop_mult = 1;    //Multiplier for theta proportional
+float xy_int_mult = 0;     //Multiplier for integral XY
+float theta_prop_mult = 5;    //Multiplier for theta proportional
 float theta_int_mult = 0.000;  //Multiplier for theta integral
 #endif
 
 FourWheelCalculator::FourWheelCalculator()
 {
-    debug::registerVariable("xyp", &xy_prop_mult);
-    debug::registerVariable("xyi", &xy_int_mult);
-    debug::registerVariable("thp", &theta_prop_mult);
-    debug::registerVariable("thi", &theta_int_mult);
+    //debug::registerVariable("xyp", &xy_prop_mult);
+    //debug::registerVariable("xyi", &xy_int_mult);
+    //debug::registerVariable("thp", &theta_prop_mult);
+    //debug::registerVariable("thi", &theta_int_mult);
 }
 
 fourWheelVels FourWheelCalculator::calculateVels

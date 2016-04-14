@@ -12,7 +12,9 @@
 //! @{
 #define VISION_ADDRESS_SHAMSI "224.5.23.5"
 #define VISION_ADDRESS_JAMES  "224.5.23.3"
-#define VISION_ADDRESS_ADRIANO "224.5.23.2"
+#define VISION_ADDRESS_ADRIANO "224.5.23.1"
+
+//Should not be the same as any of the simulators
 #define VISION_ADDRESS_NONSIM "224.5.23.2"
 //! @}
 

@@ -107,6 +107,8 @@ void printBuildInfo()
         << "     RefBox: " << REFBOX_ADDRESS    << ":" << REFBOX_PORT    << std::endl;
 }
 
+
+
 int main(int argc, char *argv[])
 {
     //Initialize GameModel, StrategyController, Vision, and Ref
@@ -126,6 +128,8 @@ int main(int argc, char *argv[])
 
     //Start Vision and Refcomm and run the application
     debug::listenStart();
+
+
     visionCommunicator.start();
     refCommunicator.start();
     return a.exec();

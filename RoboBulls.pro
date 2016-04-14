@@ -91,11 +91,12 @@ SOURCES += main.cpp \
 	utilities/point.cpp \
 	utilities/region.cpp \
 	utilities/velocitycalculator.cpp \
-    behavior/defendbehavior.cpp \
-    behavior/goaliebehavior.cpp \
-    strategy/indirectkickstrategy.cpp \
-    strategy/threevthree.cpp \
-    communication/kfball.cpp
+        behavior/defendbehavior.cpp \
+        behavior/goaliebehavior.cpp \
+        strategy/indirectkickstrategy.cpp \
+        strategy/threevthree.cpp \
+        communication/kfball.cpp \
+        utilities/getclassname.cpp
 
 HEADERS += \
 	behavior/attackmain.h \
@@ -181,10 +182,11 @@ HEADERS += \
 	utilities/point.h \
 	utilities/region.h \
 	utilities/velocitycalculator.h \
-    behavior/goaliebehavior.h \
-    strategy/indirectkickstrategy.h \
-    strategy/threevthree.h \
-    communication/kfball.h
+        behavior/goaliebehavior.h \
+        strategy/indirectkickstrategy.h \
+        strategy/threevthree.h \
+        communication/kfball.h \
+        utilities/getclassname.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 

@@ -18,13 +18,16 @@ public:
     void printBehavior(int id);
     void setupSelRobotPanel();
     void hide();    //Hides the selected bot panel and resets selected/overridden bot
+    //Returns name for a robot behavior
+    const static std::string& getBehaviorName(Robot* robot);
 
 public slots:
     void updateSelectedBotPanel(int id);
 
 private:
     //Returns the name for a robot's behavior
-    const std::string& getBehaviorName(Robot* robot);
+    //*****moved to public******
+    //const static std::string& getBehaviorName(Robot* robot);
 };
 
 #endif // SELROBOTPANEL_H

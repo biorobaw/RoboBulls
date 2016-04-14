@@ -91,7 +91,9 @@ public:
     bool justScrolled = false;
     int currentFieldAngle = 0;
     // User interaction
-    int selectedBot = -1;               // the ID of the currently selected bot
+    int selectedBot= -1;
+
+    // the ID of the currently selected bot
 
     // for drawLine
     Point linePointA = Point(0,0);

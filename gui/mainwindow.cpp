@@ -47,6 +47,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     gamemodel = GameModel::getModel();
 
+
     // Setting up GUI; not enabling thread until we're done
     ui->btn_connectGui->setEnabled(false);
     // Creating helper classes (order is important)
@@ -57,8 +58,8 @@ MainWindow::MainWindow(QWidget *parent) :
     gamepanel       = new GamePanel(this);
 
     // Generating GUI
-    teamSize_blue = 10;
-    teamSize_yellow = 10;
+    teamSize_blue = 6;
+    teamSize_yellow = 6;
     checkTeamColors();
     fieldpanel->setupScene();
     fieldpanel->defaultZoom();
@@ -71,6 +72,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->btn_connectGui->setEnabled(true);
     MainWindow::resize(850,630);
     setFocusOnField();
+
     // Time, in milliseconds, before GUI autoconnects to project; increase value if needed
     QTimer::singleShot(1000, this, SLOT(on_btn_connectGui_clicked()));
 
@@ -94,26 +96,31 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::handleJoystickInput()
 {
-    //If there is a selected bot that is overriden....
-    if(fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked())
+    //Joystick updating is a bit different than keyboard. The joy axises can always
+    //Be sent to the robot, so it is done here in the main loop
+    for(joystick::reading& value: joystick::joystickReadings)
     {
-        //Joystick updating is a bit different than keyboard. The joy axises can always
-        //Be sent to the robot, so it is done here in the main loop
-        if(joystick::hasSupport()) {
-            Robot* r = gameModel->findMyTeam(fieldpanel->selectedBot);
-            r->setLB(joystick::LB);
-            r->setRB(joystick::RB);
-            r->setRF(joystick::RF);
-            r->setLF(joystick::LF);
+        if(value.id == -1)
+            continue;
 
-            if(joystick::Kick)
-                  on_btn_botKick_pressed();
-             else on_btn_botKick_released();
-
-            if(joystick::Dribble)
-                 on_btn_botDrible_pressed();
-            else on_btn_botDrible_released();
+        Robot* r = gameModel->findMyTeam(value.id);
+        if(r->type() == fourWheelOmni) {
+            r->setLB(value.LB);
+            r->setRB(value.RB);
+            r->setRF(value.RF);
+            r->setLF(value.LF);
+        } else {
+            r->setR(value.RF);
+            r->setL(value.LF);
+            r->setB(value.RB);
         }
+
+        if(value.Kick)
+            r->setKick(5);
+
+        if(value.Dribble)
+            on_btn_botDrible_pressed();
+        else on_btn_botDrible_released();
     }
 }
 

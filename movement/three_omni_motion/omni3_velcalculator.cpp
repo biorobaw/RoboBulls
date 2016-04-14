@@ -46,12 +46,6 @@ threeWheelVels ThreeWheelCalculator::defaultCalc
     if (abs(Measurments::angleDiff(theta_goal,theta_current))<abs(Measurments::angleDiff(theta_goal,theta_current+theta_vel)))
         theta_vel=-theta_vel;
 
-    // Reduce speed near target
-    if (distance_to_goal < 400)
-    {
-        x_vel *= 0.5;
-        y_vel *= 0.5;
-    }
 
     // Robot Frame Velocities
     double x_vel_robot =  cos(theta_current)*x_vel + sin(theta_current)*y_vel;

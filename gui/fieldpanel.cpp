@@ -5,6 +5,7 @@
 #include "mainwindow.h"
 #include "include/config/team.h"
 #include "ui_mainwindow.h"
+#include "guiinterface.h"
 
 //Helper classes
 #include "guirobot.h"
@@ -108,10 +109,10 @@ void FieldPanel::setupScene() {
     guiTeam.push_back(robot3);
     guiTeam.push_back(robot4);
     guiTeam.push_back(robot5);
-    guiTeam.push_back(robot6);
-    guiTeam.push_back(robot7);
-    guiTeam.push_back(robot8);
-    guiTeam.push_back(robot9);
+//    guiTeam.push_back(robot6);
+//    guiTeam.push_back(robot7);
+//    guiTeam.push_back(robot8);
+//    guiTeam.push_back(robot9);
 
     // Yellow Team
     robot0Y = new GuiRobot();
@@ -131,10 +132,10 @@ void FieldPanel::setupScene() {
     guiTeamY.push_back(robot3Y);
     guiTeamY.push_back(robot4Y);
     guiTeamY.push_back(robot5Y);
-    guiTeamY.push_back(robot6Y);
-    guiTeamY.push_back(robot7Y);
-    guiTeamY.push_back(robot8Y);
-    guiTeamY.push_back(robot9Y);
+//    guiTeamY.push_back(robot6Y);
+//    guiTeamY.push_back(robot7Y);
+//    guiTeamY.push_back(robot8Y);
+//    guiTeamY.push_back(robot9Y);
 
     // Adding the previous gui items to the scene
     scene->addItem(field);
@@ -166,10 +167,10 @@ void FieldPanel::setupScene() {
     scene->addItem(robot3);
     scene->addItem(robot4);
     scene->addItem(robot5);
-    scene->addItem(robot6);
-    scene->addItem(robot7);
-    scene->addItem(robot8);
-    scene->addItem(robot9);
+//    scene->addItem(robot6);
+//    scene->addItem(robot7);
+//    scene->addItem(robot8);
+//    scene->addItem(robot9);
 
     scene->addItem(robot0Y);
     scene->addItem(robot1Y);
@@ -177,10 +178,10 @@ void FieldPanel::setupScene() {
     scene->addItem(robot3Y);
     scene->addItem(robot4Y);
     scene->addItem(robot5Y);
-    scene->addItem(robot6Y);
-    scene->addItem(robot7Y);
-    scene->addItem(robot8Y);
-    scene->addItem(robot9Y);
+//    scene->addItem(robot6Y);
+//    scene->addItem(robot7Y);
+//    scene->addItem(robot8Y);
+//    scene->addItem(robot9Y);
 
     scene->addItem(sidelines);
     scene->addItem(ball);
@@ -366,6 +367,19 @@ void FieldPanel::updateScene() {
     centerViewOnBot();
     // Printing debug lines
     drawLine();
+
+    //Testing
+//    GuiInterface test;
+//    Point tL = {0,0};
+//    Point tR = {0, 20};
+//    Point bL = {-10, 0};
+//    Point bR = {-10,20};
+
+//    test.drawRegion(tL,tR,bL,bR,10);
+
+    //Testing
+
+
     updateLineQueue();
 
 
