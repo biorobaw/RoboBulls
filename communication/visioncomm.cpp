@@ -99,8 +99,8 @@ static bool isGoodDetection
     return isGoodConf && isGoodSide;
 }
 
-//Movement distance between detections within which the ball is said to be stationary
-#define B_STOP_THRESH .01f
+// Movement distance between detections within which the ball is said to be stationary
+#define B_STOP_THRESH .05f
 
 /* Looks at all detected balls in the frame detection, and chooses
  * the best one based on confidence. Sets the GameModel's ballpoint
@@ -126,18 +126,22 @@ void VisionComm::recieveBall(const SSL_DetectionFrame& frame)
             newDetection *= -1;
         #endif
 
-        cout << (int)newDetection.x  << ", " << (int)newDetection.y << endl;
-        // Kalman Filter Tests
-        KFBall::Matrix P0;
-        P0.resize(4,4);
-        P0(1,1) = 500;
-        P0(2,2) = 100;
-        P0(3,3) = 500;
-        P0(4,4) = 100;
+//        GuiInterface* gui = GuiInterface::getGuiInterface();
+//        gui->drawPath(newDetection, newDetection, 0.1);
 
+
+
+        // Kalman Filter
         if(!kfilter_init)
         {
-            // Initial Measurement
+            // Initialize Filter
+            KFBall::Matrix P0;
+            P0.resize(4,4);
+            P0(1,1) = 500;
+            P0(2,2) = 100;
+            P0(3,3) = 500;
+            P0(4,4) = 100;
+
             KFBall::Vector x(4);
             x(1) = 0.0;
             x(2) = newDetection.x;

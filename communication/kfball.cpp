@@ -2,11 +2,15 @@
 #include "include/config/simulated.h"
 
 #if SIMULATED
-#define ACCEL -9
+#define ACCEL -9.0
 #define TIME_STEP 1.0/55.0
+#define QVAL 0.05
+#define RVAL 10.0
 #else
-#define ACCEL -9
-#define TIME_STEP 1.0/55.0
+#define ACCEL -10.0
+#define TIME_STEP 0.0193    // Determined using printTimeStep()
+#define QVAL 0.5    // Was 0.5
+#define RVAL 15.0   // Was 15.0
 #endif
 KFBall::KFBall():a(ACCEL), T(TIME_STEP)
 {
@@ -28,6 +32,8 @@ int sign(double x)
 void KFBall::makeProcess()
 {
     Vector x_(x.size());
+
+    //printTimeStep();
 
     // vel_x
     if(fabs(x(1)) - fabs(a * T) >= 0)
@@ -123,18 +129,38 @@ void KFBall::makeV()
 // Process Noise Covariance
 void KFBall::makeQ()
 {
-    Q(1,1) = 0.05;
+    Q(1,1) = QVAL;
     Q(1,2) = 0.0;
     Q(2,1) = 0.0;
-    Q(2,2) = 0.05;
+    Q(2,2) = QVAL;
 }
 
 // Measurement Noise Covariance
-// Tuned for grSim value of 2.0 stdev
 void KFBall::makeR()
 {
-    R(1,1) = 10.0;
+    R(1,1) = RVAL;
     R(1,2) = 0.0;
     R(2,1) = 0.0;
-    R(2,2) = 10.0;
+    R(2,2) = RVAL;
+}
+
+void KFBall::printTimeStep()
+{
+    // Store the time steps in a deque
+    time_t curr_clock = clock();
+    intervals.push_back(curr_clock - prev_clock);
+    prev_clock = curr_clock;
+
+    // Don't store too many records
+    size_t n_records = 120;
+    if(intervals.size() > n_records)
+        intervals.pop_front();
+
+    // Calculate Average
+    time_t time_step = 0;
+    for(time_t t: intervals)
+        time_step += t;
+    time_step /= n_records;
+
+    std::cout << "Time Step: " << time_step/(double)CLOCKS_PER_SEC << std::endl;
 }

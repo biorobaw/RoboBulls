@@ -61,9 +61,14 @@ protected:
     int yell_rob_readings[10]={0};  //! Number of detections of each yelloe robot
     timeval lastRecvTime;           //! When did we last receive a packet? Used to not recieve every one
     bool fourCameraMode = false;    //! Are we in four-camera mode (true)? Or Two-camera mode?
+
     KFBall* kfilter;                //! Kalman filter instance
     bool kfilter_init = false;      //! Has the kalman filter been initialized with the first measurement?
     KFBall::Vector u;               //! Stores the previous state estimate of the kalman filter
+
+    Point prev_pos;
+    Point vel_history[5];
+    int vel_hist_index = 0;
 };
 
 #endif // VISIONCOMM_H
