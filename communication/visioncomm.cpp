@@ -13,6 +13,8 @@ VisionComm::VisionComm(GameModel *gm)
     client->open(true);
     gamemodel = gm;
     fourCameraMode = isFourCameraMode();
+    kfilter = new KFBall();
+    u.resize(4);
 }
 
 VisionComm::~VisionComm(void)
@@ -103,7 +105,7 @@ static bool ballCompareFn(const SSL_DetectionBall&  a, const SSL_DetectionBall& 
 }
 
 //Movement distance between detections within which the ball is said to be stationary
-#define NOISE_RADIUS 15
+#define NOISE_RADIUS 4
 
 /* Looks at all detected balls in the frame detection, and chooses
  * the best one based on confidence. Sets the GameModel's ballpoint
@@ -128,52 +130,54 @@ void VisionComm::recieveBall(const SSL_DetectionFrame& frame)
     if(isGoodDetection(*bestDetect, frame, CONF_THRESHOLD_BALL, fourCameraMode))
     {
         Point newDetection = Point(bestDetect->x(), bestDetect->y());
-    #if SIDE == SIDE_POSITIVE
-        newDetection *= -1;
-    #endif
+        #if SIDE == SIDE_POSITIVE
+            newDetection *= -1;
+        #endif
 
-//        // Kalman Filter Tests
-//        KFBall::Matrix P0;
-//        P0.resize(6,6);
-//        P0(1,1) = 1000;
-//        P0(2,2) = 500;
-//        P0(3,3) = 100;
-//        P0(4,4) = 1000;
-//        P0(5,5) = 500;
-//        P0(6,6) = 100;
+        // Kalman Filter Tests
+        KFBall::Matrix P0;
+        P0.resize(4,4);
+        P0(1,1) = 500;
+        P0(2,2) = 100;
+        P0(3,3) = 500;
+        P0(4,4) = 100;
 
-//        if(!kfilter_init)
-//        {
-//            //Initial estimate
-//            KFBall::Vector x(6);
-//            x(1) = newDetection.x;
-//            x(2) = 0.0;
-//            x(3) = newDetection.x;
-//            x(4) = newDetection.y;
-//            x(5) = 0.0;
-//            x(6) = newDetection.x;
+        if(!kfilter_init)
+        {
+            // Initial Measurement
+            KFBall::Vector x(4);
+            x(1) = 0.0;
+            x(2) = newDetection.x;
+            x(3) = 0.0;
+            x(4) = newDetection.y;
 
-//            kfilter.init(x, P0);
-//            kfilter_init = true;
-//        }
+            kfilter->init(x, P0);
+            kfilter_init = true;
+        }
+        else
+        {
+            // Update Filter
+            KFBall::Vector z(2);
+            z(1) = newDetection.x;
+            z(2) = newDetection.y;
 
-//        // Update Filter
-//        KFBall::Vector z(2);
-//        z(1) = newDetection.x;
-//        z(2) = newDetection.y;
+            kfilter->step(u, z);
 
-//        KFBall::Vector u(6);
-//        kfilter.step(u, z);
+            KFBall::Vector state = kfilter->getX();
 
-//        KFBall::Vector result = kfilter.getX();
-//        cout << "Stop: " << result(1) << ", " << result(4) << endl;
-//        cout << "Vel: " << result(2) << ", " << result(5) << endl;
-//        cout << "Pos: " << result(3) << ", " << result(6) << endl << endl;
+            for(int i = 1; i <= 4; ++i)
+                u(i) = state(i);
+
+            newDetection.x = state(2);
+            newDetection.y = state(4);
+        }
 
         // If the ball is detected outside the noise radius more than X times
         // it is considered to be moving and its position will be updated
         if(gameModel->ballStopped)
         {
+            // setBallPoint carries out calculations on velocity, so
+            // it must be called even when the ball is stopped
             gameModel->setBallPoint(gameModel->getBallPoint());
 
             if(Measurments::distance(newDetection, noiseCenterPoint) > NOISE_RADIUS)

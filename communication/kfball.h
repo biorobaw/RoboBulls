@@ -3,6 +3,9 @@
 #include "kalman/ekfilter.hpp"
 #include "model/gamemodel.h"
 
+// Set up in accordance with:
+// http://kalman.sourceforge.net/doc/example.html#expage
+
 class KFBall : public Kalman::EKFilter<double,1>
 {
 public:

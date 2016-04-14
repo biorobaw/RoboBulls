@@ -85,7 +85,7 @@ void GoalieBehavior::perform(Robot *robot)
     Point ball = gameModel->getBallPoint();
     float angleToBall = Measurments::angleBetween(robot, ball);
     Robot* ballBot = gameModel->getHasBall();
-    GuiInterface* gui = GuiInterface::getGuiInterface();
+    //GuiInterface* gui = GuiInterface::getGuiInterface();
 
     //Segment to hold ballOnRobotIsAimedAtOurGoal and isBallMovingTowardsGoal return
     std::pair<Point,Point> lineSegment;
@@ -113,7 +113,7 @@ void GoalieBehavior::perform(Robot *robot)
          * But we only move if the nearest point is near the goal */
         Point movePoint = Measurments::linePoint(robot->getPosition(), lineSegment.first, lineSegment.second);
         if(Measurments::distance(movePoint, idlePoint) < goalieDist) {
-            gui->drawPath(lineSegment.first, lineSegment.second);
+            //gui->drawPath(lineSegment.first, lineSegment.second);
             setVelocityMultiplier(1.5);
             setMovementTargets(movePoint, angleToBall, false, false);
         } else {
@@ -125,8 +125,8 @@ void GoalieBehavior::perform(Robot *robot)
         //But we only move if the nearest point is near the goal
         Point nearestPointOnLine = Measurments::linePoint(robot->getPosition(), lineSegment.first, lineSegment.second);
         if(Measurments::distance(nearestPointOnLine, idlePoint) < goalieDist) {
-            gui->drawPath(lineSegment.first, lineSegment.second, 0.1);
-            gui->drawPath(robot->getPosition(), nearestPointOnLine, 0.1);
+            //gui->drawPath(lineSegment.first, lineSegment.second, 0.1);
+            //gui->drawPath(robot->getPosition(), nearestPointOnLine, 0.1);
             setMovementTargets(nearestPointOnLine, angleToBall, false, false);
         } else {
             setMovementTargets(idlePoint, angleToBall, false, false);

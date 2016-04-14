@@ -1,131 +1,108 @@
 #include "communication/kfball.h"
+#include "include/config/simulated.h"
 
-KFBall::KFBall():a(-0.5), T(1.0/55.0)
+#if SIMULATED
+#define DECEL -1.0
+#define TIME_STEP 1.0/55.0
+#else
+
+#endif
+KFBall::KFBall():a(DECEL), T(TIME_STEP)
 {
     // setDim(x, u, w, z, v)
-    setDim(6, 2, 2, 2, 2);
+    setDim(4, 2, 2, 2, 2);
 }
 
+// State Vector
 void KFBall::makeProcess()
 {
     Vector x_(x.size());
-    // stop_x
-    x_(1) = x(3) + x(2)*x(2)/(2*fabs(a));
 
     // vel_x
-    x_(2) = x(2);
-    if(x(2) != 0)
-        x_(2) += fabs(x(2))/x(2) * a * T;
+    x_(1) = x(1);
+    if(fabs(x(1)) - fabs(a) < 0)
+        x_(1) = 0;
+    else
+        x_(1) += fabs(x(1))/x(1) * a * T;
 
     // pos_x
-    x_(3) = x(3) + x(2) * T;
-
-    // stop_y
-    x_(4) = x(6) + x(5)*x(5)/(2*fabs(a));
+    x_(2) = x(2) + x(1) * T + 0.5 * a * T * T;
 
     // vel_y
-    x_(5) = x(5);
-    if(x(5) != 0)
-        x_(5) += fabs(x(5))/x(5) * a * T;
+    x_(3) = x(3);
+    if(fabs(x(3)) - fabs(a) < 0)
+        x_(3) = 0;
+    else
+        x_(3) += fabs(x(3))/x(3) * a * T;
 
     // pos_y
-    x_(6) = x(6) + x(5) * T;
+    x_(4) = x(4) + x(3) * T + 0.5 * a * T * T;
 
     x.swap(x_);
 }
 
+// Measurements
 void KFBall::makeMeasure()
 {
-    z(1)= x(3);
-    z(2)= x(6);
+    z(1)= x(2);
+    z(2)= x(4);
 }
 
+// State Vector Jacobian
 void KFBall::makeA()
 {
-    A(1,1) = 0.0;
-    A(1,2) = x(2)/fabs(a);
-    A(1,3) = 1.0;
+    A(1,1) = 1.0;
+    A(1,2) = 0.0;
+    A(1,3) = 0.0;
     A(1,4) = 0.0;
-    A(1,5) = 0.0;
-    A(1,6) = 0.0;
 
-    A(2,1) = 0.0;
+    A(2,1) = T;
     A(2,2) = 1.0;
     A(2,3) = 0.0;
     A(2,4) = 0.0;
-    A(2,5) = 0.0;
-    A(2,6) = 0.0;
 
     A(3,1) = 0.0;
-    A(3,2) = T;
+    A(3,2) = 0.0;
     A(3,3) = 1.0;
     A(3,4) = 0.0;
-    A(3,5) = 0.0;
-    A(3,6) = 0.0;
 
     A(4,1) = 0.0;
     A(4,2) = 0.0;
-    A(4,3) = 0.0;
-    A(4,4) = 0.0;
-    A(4,5) = x(5)/fabs(a);
-    A(4,6) = 1.0;
-
-    A(5,1) = 0.0;
-    A(5,2) = 0.0;
-    A(5,3) = 0.0;
-    A(5,4) = 0.0;
-    A(5,5) = 1.0;
-    A(5,6) = 0.0;
-
-    A(6,1) = 0.0;
-    A(6,2) = 0.0;
-    A(6,3) = 0.0;
-    A(6,4) = 0.0;
-    A(6,5) = T;
-    A(6,6) = 1.0;
+    A(4,3) = T;
+    A(4,4) = 1.0;
 }
 
+// Measurement Noise derivative
 void KFBall::makeW()
 {
     W(1,1) = 0.0;
     W(1,2) = 0.0;
+
     W(2,1) = 1.0;
     W(2,2) = 0.0;
+
     W(3,1) = 0.0;
     W(3,2) = 0.0;
+
     W(4,1) = 0.0;
-    W(4,2) = 0.0;
-    W(5,1) = 0.0;
-    W(5,2) = 1.0;
-    W(6,1) = 0.0;
-    W(6,2) = 0.0;
+    W(4,2) = 1.0;
 }
 
-void KFBall::makeQ()
-{
-    Q(1,1) = 100.0;
-    Q(1,2) = 0.0;
-    Q(2,1) = 0.0;
-    Q(2,2) = 100.0;
-}
-
+// Process Noise derivatives
 void KFBall::makeH()
 {
     H(1,1) = 0.0;
-    H(1,2) = 0.0;
-    H(1,3) = 1.0;
+    H(1,2) = 1.0;
+    H(1,3) = 0.0;
     H(1,4) = 0.0;
-    H(1,5) = 0.0;
-    H(1,6) = 0.0;
 
     H(2,1) = 0.0;
     H(2,2) = 0.0;
     H(2,3) = 0.0;
-    H(2,1) = 0.0;
-    H(2,2) = 0.0;
-    H(2,3) = 1.0;
+    H(2,4) = 1.0;
 }
 
+// Measurement Noise derivatives
 void KFBall::makeV()
 {
     V(1,1) = 1.0;
@@ -134,10 +111,20 @@ void KFBall::makeV()
     V(2,2) = 1.0;
 }
 
+// Process Noise Covariance
+void KFBall::makeQ()
+{
+    Q(1,1) = 100.0;
+    Q(1,2) = 0.0;
+    Q(2,1) = 0.0;
+    Q(2,2) = 100.0;
+}
+
+// Measurement Noise Covariance
 void KFBall::makeR()
 {
-    R(1,1) = 3.0;
+    R(1,1) = 100.0;
     R(1,2) = 0.0;
     R(2,1) = 0.0;
-    R(2,2) = 3.0;
+    R(2,2) = 100.0;
 }
