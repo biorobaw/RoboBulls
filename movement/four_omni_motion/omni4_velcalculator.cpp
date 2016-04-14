@@ -57,9 +57,9 @@ fourWheelVels FourWheelCalculator::defaultCalc
 
     Point rp = Point(x_current,y_current);
     Point gp = Point(x_goal,y_goal);
-    distance_to_goal = Measurments::distance(rp,gp);
-    float angle_to_goal = Measurments::angleBetween(rp, gp);
-    angle_error = Measurments::angleDiff(rob->getOrientation(), theta_goal);
+    distance_to_goal = Measurements::distance(rp,gp);
+    float angle_to_goal = Measurements::angleBetween(rp, gp);
+    angle_error = Measurements::angleDiff(rob->getOrientation(), theta_goal);
 
 //    std::cout << "4WheelCalc: " << distance_to_goal << std::endl;
 
@@ -77,8 +77,8 @@ fourWheelVels FourWheelCalculator::defaultCalc
          theta_prop_mult * angle_error
        + theta_int_mult  * angle_error_integral;
 
-    if (abs(Measurments::angleDiff(theta_goal,theta_current))<
-        abs(Measurments::angleDiff(theta_goal,theta_current+theta_vel)))
+    if (abs(Measurements::angleDiff(theta_goal,theta_current))<
+        abs(Measurements::angleDiff(theta_goal,theta_current+theta_vel)))
         theta_vel=-theta_vel;
 
 #if !SIMULATED
@@ -154,9 +154,9 @@ fourWheelVels FourWheelCalculator::facePointCalc
 
     Point rp = Point(x_current,y_current);
     Point gp = Point(x_goal,y_goal);
-    distance_to_goal = Measurments::distance(rp,gp);
-    float angle_to_goal = Measurments::angleBetween(rp, gp);
-    angle_error = Measurments::angleDiff(rob->getOrientation(), theta_goal);
+    distance_to_goal = Measurements::distance(rp,gp);
+    float angle_to_goal = Measurements::angleBetween(rp, gp);
+    angle_error = Measurements::angleDiff(rob->getOrientation(), theta_goal);
 
     //PID
     calc_error(x_goal, y_goal);
@@ -176,8 +176,8 @@ fourWheelVels FourWheelCalculator::facePointCalc
          theta_prop_mult * angle_error
        + theta_int_mult  * angle_error_integral;
 
-    if (abs(Measurments::angleDiff(theta_goal,theta_current))<
-        abs(Measurments::angleDiff(theta_goal,theta_current+theta_vel)))
+    if (abs(Measurements::angleDiff(theta_goal,theta_current))<
+        abs(Measurements::angleDiff(theta_goal,theta_current+theta_vel)))
         theta_vel=-theta_vel;
 
     // Reduce speed near target
@@ -189,7 +189,7 @@ fourWheelVels FourWheelCalculator::facePointCalc
 
     // Focus on rotation
     double vel = sqrt(x_vel*x_vel+y_vel*y_vel);
-    if (abs(Measurments::angleDiff(theta_goal,theta_current)) > ROT_TOLERANCE*3 && vel > 50)
+    if (abs(Measurements::angleDiff(theta_goal,theta_current)) > ROT_TOLERANCE*3 && vel > 50)
     {
         x_vel = (abs(x_vel)>=abs(y_vel))? 50 * x_vel/abs(x_vel) : 50*x_vel/abs(y_vel);
         y_vel = (abs(x_vel)<=abs(y_vel))? 50 * y_vel/abs(y_vel) : 50*y_vel/abs(x_vel);
@@ -249,7 +249,7 @@ fourWheelVels FourWheelCalculator::facePointCalc
 void FourWheelCalculator::calc_error(float x_goal, float y_goal)
 {
     //Reset queues if the target has moved
-    if(Measurments::distance(Point(x_goal,y_goal), last_goal_target) > 50)
+    if(Measurements::distance(Point(x_goal,y_goal), last_goal_target) > 50)
         clear_errors();
 
     //Integral Error for distance

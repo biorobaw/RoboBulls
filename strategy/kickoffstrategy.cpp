@@ -73,7 +73,7 @@ void KickOffStrategy::assignBeh()
         pointList.erase(nextPointItr);
 
         //Assign to move to that point, then face to the center
-        float angleToCenter = Measurments::angleBetween(nextPoint, Point(0,0));
+        float angleToCenter = Measurements::angleBetween(nextPoint, Point(0,0));
         robot->assignBeh<StaticMovementBehavior>(nextPoint, angleToCenter);
     }
 

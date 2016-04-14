@@ -2,15 +2,26 @@
 #include "include/config/simulated.h"
 
 #if SIMULATED
-#define DECEL -1.0
+#define ACCEL -9
 #define TIME_STEP 1.0/55.0
 #else
-
+#define ACCEL -9
+#define TIME_STEP 1.0/55.0
 #endif
-KFBall::KFBall():a(DECEL), T(TIME_STEP)
+KFBall::KFBall():a(ACCEL), T(TIME_STEP)
 {
     // setDim(x, u, w, z, v)
     setDim(4, 2, 2, 2, 2);
+}
+
+int sign(double x)
+{
+    if(x > 0)
+        return 1;
+    else if(x < 0)
+        return -1;
+    else
+        return 0;
 }
 
 // State Vector
@@ -19,24 +30,22 @@ void KFBall::makeProcess()
     Vector x_(x.size());
 
     // vel_x
-    x_(1) = x(1);
-    if(fabs(x(1)) - fabs(a) < 0)
-        x_(1) = 0;
+    if(fabs(x(1)) - fabs(a * T) >= 0)
+        x_(1) = x(1) + sign(x(1)) * a * T;
     else
-        x_(1) += fabs(x(1))/x(1) * a * T;
+        x_(1) = x(1) * 0.95;
 
     // pos_x
-    x_(2) = x(2) + x(1) * T + 0.5 * a * T * T;
+    x_(2) = x(2) + x(1) * T + sign(x(1)) * 0.5 * a * T * T;
 
     // vel_y
-    x_(3) = x(3);
-    if(fabs(x(3)) - fabs(a) < 0)
-        x_(3) = 0;
+    if(fabs(x(3)) - fabs(a * T) >= 0)
+        x_(3) = x(3) + sign(x(3)) * a * T;
     else
-        x_(3) += fabs(x(3))/x(3) * a * T;
+        x_(3) = x(3) * 0.95;
 
     // pos_y
-    x_(4) = x(4) + x(3) * T + 0.5 * a * T * T;
+    x_(4) = x(4) + x(3) * T + sign(x(3)) * 0.5 * a * T * T;
 
     x.swap(x_);
 }
@@ -114,17 +123,18 @@ void KFBall::makeV()
 // Process Noise Covariance
 void KFBall::makeQ()
 {
-    Q(1,1) = 100.0;
+    Q(1,1) = 0.05;
     Q(1,2) = 0.0;
     Q(2,1) = 0.0;
-    Q(2,2) = 100.0;
+    Q(2,2) = 0.05;
 }
 
 // Measurement Noise Covariance
+// Tuned for grSim value of 2.0 stdev
 void KFBall::makeR()
 {
-    R(1,1) = 100.0;
+    R(1,1) = 10.0;
     R(1,2) = 0.0;
     R(2,1) = 0.0;
-    R(2,2) = 100.0;
+    R(2,2) = 10.0;
 }

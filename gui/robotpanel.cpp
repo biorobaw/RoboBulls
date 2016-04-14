@@ -329,23 +329,17 @@ void RobotPanel::updateBotPanel() {
 
     //Populating the ballVel label with current ball velocity
     //Fix so that velocity reading are rounded to 2nd or 3rd decimal
-    if(std::hypot(gameModel->getBallVelocity().x,gameModel->getBallVelocity().y) < .001)
-        dash->ui->ballVel->setText("Vell: (0, 0)");
+    double b_vel = gameModel->getBallSpeed();
+    if(b_vel == 0)
+        dash->ui->ballVel->setText("Vel: 0 (Stopped)");
     else
-    dash->ui->ballVel->setText("Vell: " + QString::fromStdString(gameModel->getBallVelocity().toString()) );
+    {
+        dash->ui->ballVel->setText("Vel: " +
+        QString::fromStdString(std::to_string(b_vel)) );
+    }
 
     //Populating the ballAccel label with curent ball acceleration
-    if(std::hypot(gameModel->getBallAcceleration().x,gameModel->getBallAcceleration().y) < .001)
-        dash->ui->ballAccel->setText("Accel: (0, 0)");
-    else
-        dash->ui->ballAccel->setText("Accel: " + QString::fromStdString(gameModel->getBallAcceleration().toString()));
-
-    //Populating the ballMove label with the current movement status of the ball
-    //Fix this inquire about why getBallIsStopped is always returning false!!!!!!!!!!!!!!!!!!!!!!!
-    if(gamemodel->getBallIsStopped())
-        dash->ui->ballMove->setText("Ball is not moving");
-    else
-        dash->ui->ballMove->setText("Ball is moving");
+    dash->ui->ballAccel->setText("Accel: Constant");
 
     //Populating the currStrategy label with the current strategy
     dash->ui->currStrategy->setText(QString::fromStdString(getCurrStrategy()));

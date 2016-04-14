@@ -99,7 +99,7 @@ void  BallReceiver::perform(Robot* robot)
 {
     static bool onMySide = false;
 
-    Point prediction = gameModel->getBallPrediction();
+    Point prediction = gameModel->getBallStopPoint();
     onMySide = ((prediction.x<0) == (waitPoint.x<0));
 
     /* We only consider the prediction of it is the first time the prediction
@@ -113,7 +113,7 @@ void  BallReceiver::perform(Robot* robot)
         target = waitPoint;
     }
 
-    float ang = Measurments::angleBetween(robot, gameModel->getBallPoint());
+    float ang = Measurements::angleBetween(robot, gameModel->getBallPoint());
     setMovementTargets(target, ang);
     GenericMovementBehavior::perform(robot);
 }
@@ -156,7 +156,7 @@ void VideoStrategy1::assignBeh()
         
         //Behavior assign for receiver: move to side
         Point recvrTarget = getSideFor(currentRecver->getID());
-        float ang = Measurments::angleBetween(recvrTarget, Point(0,0));
+        float ang = Measurements::angleBetween(recvrTarget, Point(0,0));
         currentRecver->assignBeh<GenericMovementBehavior>(recvrTarget, ang);
         
         //Assignment for passer: Kick to receiver.
@@ -185,7 +185,7 @@ VideoStrategy2::VideoStrategy2(int r0, Point pointToWaitAt)
 void VideoStrategy2::assignBeh()
 {
     //Start out moving to the goal point and stopping
-    float ang = Measurments::angleBetween(waitPoint, Point(0,0));
+    float ang = Measurements::angleBetween(waitPoint, Point(0,0));
     robot->assignBeh<GenericMovementBehavior>(waitPoint, ang, false, false);
 }
 
@@ -199,10 +199,10 @@ bool VideoStrategy2::update()
     case NONE:
         {
             //Advance if GameModel's ball prediciton is on the same side as the wait point
-            Point prediction = gameModel->getBallPrediction();
+            Point prediction = gameModel->getBallStopPoint();
             if((prediction.x < 0) == (waitPoint.x < 0)) 
             {
-                float a = Measurments::angleBetween(robot, prediction);
+                float a = Measurements::angleBetween(robot, prediction);
                 robot->assignBeh<GenericMovementBehavior>(prediction, a);
                 state = WAITING;
             }
@@ -211,7 +211,7 @@ bool VideoStrategy2::update()
     case WAITING:
         {
             //Is the ball comes near us, kick it away.
-            if(Measurments::distance(robot, bp) < CLOSE_DIST) {
+            if(Measurements::distance(robot, bp) < CLOSE_DIST) {
                 Point kickTo = waitPoint;
                 kickTo.x = -kickTo.x;
                 robot->assignSkill<Skill::KickToPointOmni>(kickTo);
@@ -244,7 +244,7 @@ VideoStrategy3::VideoStrategy3(int who)
 void VideoStrategy3::assignBeh()
 {
     //Start out going to the penalty point
-    float ang = Measurments::angleBetween(guy, Point(0,0));
+    float ang = Measurements::angleBetween(guy, Point(0,0));
     guy->assignBeh<GenericMovementBehavior>(gameModel->getPenaltyPoint(), ang, false, false);
 }
 
@@ -290,7 +290,7 @@ bool VideoStrategy4::update()
     r2 = gameModel->findMyTeam(r1ID);
 
     bp = gameModel->getBallPoint();
-    bpPredict = gameModel->getBallPrediction();
+    bpPredict = gameModel->getBallStopPoint();
 
     // For r1:
     if (bp.x>200)

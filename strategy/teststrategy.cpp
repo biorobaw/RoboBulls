@@ -60,7 +60,7 @@ class RotBeh : public GenericMovementBehavior
 {
     void perform(Robot * robot) override
     {
-        float ang = Measurments::angleBetween(robot, gameModel->getBallPoint());
+        float ang = Measurements::angleBetween(robot, gameModel->getBallPoint());
         setMovementTargets(robot->getPosition(), ang);
         GenericMovementBehavior::perform(robot);
     }
@@ -72,7 +72,7 @@ class DribbleBeh : public Behavior
     void perform(Robot* robot) override
     {
         Point bp = gameModel->getBallPoint();
-        bool b = Measurments::distance(robot,bp) < 500;
+        bool b = Measurements::distance(robot,bp) < 500;
         robot->setDrible(b);
     }
 };
@@ -86,7 +86,7 @@ public:
         Point target = Point(0,0);
         setMovementTargets(target,0, false, false);
 
-        std::cout << "Distance Error: " << Measurments::distance(robot->getPosition(),target) << std::endl;
+        std::cout << "Distance Error: " << Measurements::distance(robot->getPosition(),target) << std::endl;
         std::cout << "Angle Error in Degrees: " << robot->getOrientation()*180/M_PI << std::endl;
         GenericMovementBehavior::perform(robot,Movement::Type::Default);
     }
@@ -105,17 +105,17 @@ public:
         Point bp = gm->getBallPoint();
         Point target_one = Point(-2000,0);
         Point target_two = Point(2000,0);
-        double ori = Measurments::angleBetween(rp,bp);
+        double ori = Measurements::angleBetween(rp,bp);
         switch(state)
         {
             case pos_one:
                 setMovementTargets(target_one,ori);
-                if (Measurments::isClose(rp,target_one,100))
+                if (Measurements::isClose(rp,target_one,100))
                 state = pos_two;
                 break;
             case pos_two:
                 setMovementTargets(target_two,ori);
-                if (Measurments::isClose(rp,target_two,100))
+                if (Measurements::isClose(rp,target_two,100))
                 state = pos_one;
         }
         GenericMovementBehavior::perform(robot, Movement::Type::Default);

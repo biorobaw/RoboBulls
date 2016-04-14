@@ -14,8 +14,8 @@ static bool ballIsMovingAway()
     Point bv = gameModel->getBallVelocity();
     float bs = gameModel->getBallSpeed();
     float ba = atan2(bv.y, bv.x);
-    float ballGoalAng = Measurments::angleBetween(bp, gameModel->getMyGoal());
-    return (bs > 0.25) && !(Measurments::isClose(ba, ballGoalAng, 90*(M_PI/180)));
+    float ballGoalAng = Measurements::angleBetween(bp, gameModel->getMyGoal());
+    return (bs > 0.25) && !(Measurements::isClose(ba, ballGoalAng, 90*(M_PI/180)));
 }
 
 /* Return true when we think the ball is stopped or moving slow
@@ -86,7 +86,7 @@ DefendState* DefendState::action(Robot* robot)
         static const float dAngle = (15 + 10*!SIMULATED) * (M_PI/180);
         static int coeffs[] = {1500, 1300, 1300, 1100, 1100};
         static int o_coeffs[] = {0, 1, -1,  2, -2};
-        float a = Measurments::angleBetween(gl, bp);
+        float a = Measurements::angleBetween(gl, bp);
 
         for(int i = 0; i != 5; ++i)
         {
@@ -147,7 +147,7 @@ Point* DefendState::searchClaimPoint(Robot* robot)
         Point test(p.x, p.y);
         Robot* closest = Comparisons::distance(test).minMyTeam();
         if(closest->getID() != robot->getID()
-            && Measurments::distance(test, closest) < ROBOT_RADIUS) {
+            && Measurements::distance(test, closest) < ROBOT_RADIUS) {
             continue;
         }
         claimed[robot->getID()] = i;
@@ -196,7 +196,7 @@ DefendState* DefendStateIdle::action(Robot* robot)
         }
         Point chosenPoint = *chosenPointPtr;
 
-        float ballRobAng = Measurments::angleBetween(robot, gameModel->getBallPoint());
+        float ballRobAng = Measurements::angleBetween(robot, gameModel->getBallPoint());
         setMovementTargets(chosenPoint, ballRobAng);
         StaticMovementBehavior::perform(robot);
 
@@ -209,16 +209,16 @@ DefendState* DefendStateIdle::action(Robot* robot)
          */
         Point bp  = gameModel->getBallPoint();
         Point bv  = gameModel->getBallVelocity();
-        Point bpr = gameModel->getBallPrediction();
+        Point bpr = gameModel->getBallStopPoint();
         Point gl  = gameModel->getMyGoal();
         float bs  = gameModel->getBallSpeed();
         float velang = atan2(bv.y, bv.x);
 
         if( ( activeKicking) &&
             ( abs(bpr.x - gl.x) < 2900 ) &&
-            ( Measurments::lineDistance(chosenPoint, bp, bpr) < LINE_DISTANCE ) &&
+            ( Measurements::lineDistance(chosenPoint, bp, bpr) < LINE_DISTANCE ) &&
             ( bs > 0.2 ) &&
-            ( Measurments::isClose(velang, Measurments::angleBetween(bp, gl), 90*(M_PI/180))))
+            ( Measurements::isClose(velang, Measurements::angleBetween(bp, gl), 90*(M_PI/180))))
         {
            return new DefendStateKick();
         }
@@ -229,8 +229,8 @@ DefendState* DefendStateIdle::action(Robot* robot)
          * \"AND the ball near the goal AND the ball is not moving away...\" Kick it.
          */
         if(    activeKicking
-            && Measurments::distance(bp, robot) < 4*LINE_DISTANCE
-            && Measurments::distance(bp, gl) < 2500
+            && Measurements::distance(bp, robot) < 4*LINE_DISTANCE
+            && Measurements::distance(bp, gl) < 2500
             && whoIsKicking == -1
             && not(ballIsMovingAway())
             && Comparisons::distanceBall().minMyTeam() == robot)
@@ -307,13 +307,13 @@ DefendState* DefendStateKick::action(Robot* robot)
         //Inside here we are just in the line of the ball and are waiting
         if(not(kickingBall)) {
             tryGetValidLinePoint(robot);
-            float ballRobAng = Measurments::angleBetween(robot, bp);
+            float ballRobAng = Measurements::angleBetween(robot, bp);
             setMovementTargets(linePoint, ballRobAng);
             GenericMovementBehavior::perform(robot);
 
             //If the ball is close, and we are the closet to the ball,
             //and nobody else is kicking, we kick.
-            if(Measurments::distance(robot, bp) < 600
+            if(Measurements::distance(robot, bp) < 600
                 && whoIsKicking == -1
                 && Comparisons::distanceBall().minMyTeam() == robot) 
             {
@@ -334,7 +334,7 @@ DefendState* DefendStateKick::action(Robot* robot)
                 kickBallTimeout = 0;
 
             //Second condition to return to idle. Stop if it moves too far away
-            if(Measurments::distance(robot, bp) > LINE_DISTANCE*3) {
+            if(Measurements::distance(robot, bp) > LINE_DISTANCE*3) {
                 return new DefendStateIdle();
             }
         }
@@ -342,7 +342,7 @@ DefendState* DefendStateKick::action(Robot* robot)
         //Tiemout conditions. If we have waited too long, or the ball is
         //is too close to the goal, we go back to idle.
         if(++kickBallTimeout > 400
-            || Measurments::distance(goal, bp) < GOALIE_DIST //Goalie action distance
+            || Measurements::distance(goal, bp) < GOALIE_DIST //Goalie action distance
             || ballIsMovingAway())
         {
         #if DEFENDBEHAVIOR_DEBUG
@@ -356,16 +356,16 @@ DefendState* DefendStateKick::action(Robot* robot)
 }
 
 /* Tries to get a valid line point along the ball's projected path.
- * If it does find one, sets this->chosenLinePoint to it and
+ * If it finds one, sets this->chosenLinePoint to it and
  * returns true.
  */
 bool DefendStateKick::tryGetValidLinePoint(Robot* r)
 {
     Point bp = gameModel->getBallPoint();
-    Point bpp= gameModel->getBallPrediction();
+    Point bpp = gameModel->getBallStopPoint();
     Point goal = gameModel->getMyGoal();
-    Point p = Measurments::linePoint(r->getPosition(), bp, bpp);
-    if(abs(goal.x - p.x) < 2500 && Measurments::distance(r, p) < LINE_DISTANCE*2) {
+    Point p = Measurements::linePoint(r->getPosition(), bp, bpp);
+    if(abs(goal.x - p.x) < 2500 && Measurements::distance(r, p) < LINE_DISTANCE*2) {
         linePoint = p;
         chosenLinePoint = true;
         return true;

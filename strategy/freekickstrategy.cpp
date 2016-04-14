@@ -49,7 +49,7 @@ void FreeKickStrategy::assignBeh()
                 {
                     Point iPos = myTeam.at(i)->getPosition();
                     Point closestPos = kickerRobot->getPosition();
-                    if (Measurments::distance(iPos, ballPoint) < Measurments::distance(closestPos, ballPoint))
+                    if (Measurements::distance(iPos, ballPoint) < Measurements::distance(closestPos, ballPoint))
                         kickerRobot = myTeam.at(i);
                 }
             }

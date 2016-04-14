@@ -113,7 +113,7 @@ int main(int argc, char *argv[])
 {
     //Initialize GameModel, StrategyController, Vision, and Ref
     GameModel* gm = GameModel::getModel();
-       RefComm refCommunicator(gm);
+    RefComm refCommunicator(gm);
     VisionComm visionCommunicator(gm);
     StrategyController sc(gm);
     gm->setStrategyController(&sc);

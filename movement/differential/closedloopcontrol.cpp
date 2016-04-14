@@ -33,7 +33,7 @@ void ClosedLoopBase::handleError(double x_goal, double y_goal)
      * because the accumulated error is no longer valid. Then update the last point
      */
 	Point newTarget = Point(x_goal, y_goal);
-    if( !Measurments::isClose(lastTargetPoint, newTarget, 25) )
+    if( !Measurements::isClose(lastTargetPoint, newTarget, 25) )
     {
         for(auto& pair : this->errorContainers) {
             pair.first.clear();
@@ -87,12 +87,12 @@ wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, double x_goal,
     double y_current     = robotPos.y;
     double theta_current = robot->getOrientation();
     double angleToGoal   = atan2 ((y_goal-y_current) , (x_goal-x_current));
-    float angDiff        = Measurments::angleDiff(theta_current, theta_goal);
+    float angDiff        = Measurements::angleDiff(theta_current, theta_goal);
 
     //Rho, Alpha, Beta
     newRho   = (sqrt(pow((y_current - y_goal),2) + pow((x_current-x_goal),2)))/1;
-    newAlpha = Measurments::angleDiff(theta_current, angleToGoal);
-    newBeta  = Measurments::angleDiff(angleToGoal, theta_goal);
+    newAlpha = Measurements::angleDiff(theta_current, angleToGoal);
+    newBeta  = Measurements::angleDiff(angleToGoal, theta_goal);
 
 #if CLOOP_CONTROL_DEBUG
     std::cout << "rho "   		  << newRho   				  << std::endl;

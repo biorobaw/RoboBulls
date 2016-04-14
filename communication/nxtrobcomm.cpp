@@ -61,20 +61,20 @@ void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
             packet->right_front = rf + 100;
             packet->right_back  = rb + 100;
         #else
-            packet->left_front  = Measurments::clamp(rob->getLF(), -100, 100)*k + 100;
-            packet->left_back   = Measurments::clamp(rob->getLB(), -100, 100)*k + 100;
-            packet->right_front = Measurments::clamp(rob->getRF(), -100, 100)*k + 100;
-            packet->right_back  = Measurments::clamp(rob->getRB(), -100, 100)*k + 100;
+            packet->left_front  = Measurements::clamp(rob->getLF(), -100, 100)*k + 100;
+            packet->left_back   = Measurements::clamp(rob->getLB(), -100, 100)*k + 100;
+            packet->right_front = Measurements::clamp(rob->getRF(), -100, 100)*k + 100;
+            packet->right_back  = Measurements::clamp(rob->getRB(), -100, 100)*k + 100;
         #endif
         }
         else {
             //Packet format with lego NXTs, use ~ and $, no modification to vels
             packet->tilde = '~';
             packet->dollar = '$';
-            packet->left_front  = Measurments::clamp(rob->getLF(), -127, 127);
-            packet->left_back   = Measurments::clamp(rob->getLB(), -127, 127);
-            packet->right_front = Measurments::clamp(rob->getRF(), -127, 127);
-            packet->right_back  = Measurments::clamp(rob->getRB(), -127, 127);
+            packet->left_front  = Measurements::clamp(rob->getLF(), -127, 127);
+            packet->left_back   = Measurements::clamp(rob->getLB(), -127, 127);
+            packet->right_front = Measurements::clamp(rob->getRF(), -127, 127);
+            packet->right_back  = Measurements::clamp(rob->getRB(), -127, 127);
         }
 
         //Kick, dribble, and Chip power (no chipper, always 0)

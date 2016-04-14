@@ -175,10 +175,10 @@ pred_idNot::pred_idNot(std::initializer_list<int> ids) {
 /****************************************************************/
 
 static bool distanceCompareRobotFn(Robot* a, Robot* b, const Point& pt) {
-    return Measurments::distance(a, pt) < Measurments::distance(b, pt);
+    return Measurements::distance(a, pt) < Measurements::distance(b, pt);
 }
 static bool distanceComparePointFn(const Point& a, const Point& b, const Point& pt) {
-    return Measurments::distance(a, pt) < Measurments::distance(b, pt);
+    return Measurements::distance(a, pt) < Measurements::distance(b, pt);
 }
 
 pred_distance::pred_distance(const Point& testPoint)
@@ -212,8 +212,8 @@ bool isFacingPointCompareFn(Robot* robot, Robot*, const Point& pred_Point, float
                             compareFunction compare_function) {
     Point robPos     = robot->getPosition();
     float robAngle   = robot->getOrientation();
-    float angleTween = Measurments::angleBetween(robPos, pred_Point);
-    float angleDiff  = abs( Measurments::angleDiff(angleTween, robAngle) );
+    float angleTween = Measurements::angleBetween(robPos, pred_Point);
+    float angleDiff  = abs( Measurements::angleDiff(angleTween, robAngle) );
     return compare_function(angleDiff, pred_tolerance);
 }
 //! @endcond
@@ -273,7 +273,7 @@ void pred_isPointInsideField::setCompareFunction() {
 /****************************************************************/
 //! @cond
 bool isDistGreaterCompareFnPt(const Point& a, const Point&, const Point& b, float dist, compareFunction f) {
-    return f(Measurments::distance(a, b), dist);
+    return f(Measurements::distance(a, b), dist);
 }
 bool isDistGreaterCompareFnRb(Robot* a, Robot*, const Point& b, float dist, compareFunction f) {
     return isDistGreaterCompareFnPt(a->getPosition(), Point(0,0), b, dist, f);

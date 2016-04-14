@@ -43,8 +43,8 @@ float STRICTEST_ANG_TOL = 10 * (M_PI/180);
 float KICK_LOCK_ANGLE = 3 * (M_PI/180);
 float KICKLOCK_COUNT = 15;
 #else
-float BEHIND_RAD_AVOID = ROBOT_SIZE * 0.6;
-float BEHIND_RAD = ROBOT_SIZE * 0.3;
+float BEHIND_RAD_AVOID = ROB_OBST_DIA * 0.6;
+float BEHIND_RAD = ROB_OBST_DIA * 0.3;
 float FORWARD_WAIT_COUNT = 15;
 float RECREATE_DIST_TOL = 25;
 float STRICTEST_ANG_TOL = 40 * (M_PI/180);
@@ -86,7 +86,7 @@ bool KickToPointOmni::perform(Robot* robot)
     Point bp = gameModel->getBallPoint();
 
     // Angle between the ball and the kick target
-    float ballTargetAng = Measurments::angleBetween(bp, *m_targetPointer);
+    float ballTargetAng = Measurements::angleBetween(bp, *m_targetPointer);
 
     // If at any time we are in kick lock, stop and restart out progress (state-wise)
     if(isInKickLock(robot))
@@ -102,7 +102,7 @@ bool KickToPointOmni::perform(Robot* robot)
 
     //Calculate the point behind the ball to move
     //TODO: factor in ball prediction
-    float targetBallAng = Measurments::angleBetween(*m_targetPointer, bp);
+    float targetBallAng = Measurements::angleBetween(*m_targetPointer, bp);
 
     switch(state)
     {
@@ -171,7 +171,7 @@ bool KickToPointOmni::perform(Robot* robot)
 //            std::cout << "KTPO STATE: KICK" << std::endl;
 
             // Are we using full power? Otherwise, use distance-based power
-            float powerDistance = Measurments::distance(robot, *m_targetPointer);
+            float powerDistance = Measurements::distance(robot, *m_targetPointer);
             if(m_useFullPower)
                 powerDistance = Kick::defaultKickDistance;
 
@@ -222,7 +222,7 @@ bool KickToPointOmni::canKick(Robot* robot) {
 }
 
 bool KickToPointOmni::isWithinKickDistance(Robot *robot) {
-    return m_kickDistance == -1 || Measurments::distance(robot, *m_targetPointer) < m_kickDistance;
+    return m_kickDistance == -1 || Measurements::distance(robot, *m_targetPointer) < m_kickDistance;
 }
 
 bool KickToPointOmni::isCloseToBall(Robot *robot) {
@@ -231,11 +231,11 @@ bool KickToPointOmni::isCloseToBall(Robot *robot) {
     // too much or too little. Instead we check how far the robot has travelled from
     // the behindball point.
     //std::cout << Measurments::distance(robot, behindBall) << std::endl;
-    return Measurments::distance(robot, behindBall) >= 50;
+    return Measurements::distance(robot, behindBall) >= 50;
 }
 
 bool KickToPointOmni::isVeryFarFromBall(Robot *robot) {
-    return Measurments::distance(robot, gameModel->getBallPoint()) > ROBOT_RADIUS*6;
+    return Measurements::distance(robot, gameModel->getBallPoint()) > ROBOT_RADIUS*6;
 }
 
 bool KickToPointOmni::isFacingBall(Robot* robot) {
@@ -273,7 +273,7 @@ bool KickToPointOmni::isInKickLock(Robot* robot)
 bool KickToPointOmni::ballIsMovingAway(Robot* robot)
 {
     //Let's look at the distance from the robot to the ball. Okay:
-    float thisDist = Measurments::distance(gameModel->getBallPoint(), robot);
+    float thisDist = Measurements::distance(gameModel->getBallPoint(), robot);
 
     bool farther_than_last = thisDist > m_lastBallAwayDist;
     bool increase_is_significant = abs(thisDist - m_lastBallAwayDist) > 40;

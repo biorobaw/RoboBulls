@@ -54,7 +54,7 @@ void Move::recreate(Point targetPoint, float targetAngle, bool withObstacleAvoid
      * remade each time, and other expensive things are done. So if the new point
      * is close enough to the last, let's not do anything
      */
-    if(Measurments::distance(m_targetPoint, targetPoint) > recrDistTolerance) {
+    if(Measurements::distance(m_targetPoint, targetPoint) > recrDistTolerance) {
         m_targetPoint      = targetPoint;
         m_targetAngle      = targetAngle;
         useObstacleAvoid   = withObstacleAvoid;
@@ -68,7 +68,7 @@ void Move::recreate(Point targetPoint, float targetAngle, bool withObstacleAvoid
         lastDirection = FPPA::PathDirection::None;
         isInitialized = true;
     } 
-    else if(!Measurments::isClose(m_targetAngle, targetAngle, recrAngleTolerance)) {
+    else if(!Measurements::isClose(m_targetAngle, targetAngle, recrAngleTolerance)) {
         m_targetAngle = targetAngle;
     }
     else if(withObstacleAvoid != useObstacleAvoid) {
@@ -110,12 +110,12 @@ bool Move::perform(Robot *robot, Movement::Type moveType)
      * GoToPositon. The lower levels don't see this.
      */
     if(m_targetAngle == UNUSED_ANGLE_VALUE)
-        m_targetAngle = Measurments::angleBetween(robot, m_targetPoint);
+        m_targetAngle = Measurements::angleBetween(robot, m_targetPoint);
 
     if(useObstacleAvoid) {
         /* Check to see if we've found the end of the path. If we have and we're not close
          * to the ending point, assign a path to get back to it */
-        if(hasFoundPathEnd && Measurments::distance(robot, m_targetPoint) > ROB_OBST_DIA) {
+        if(hasFoundPathEnd && Measurements::distance(robot, m_targetPoint) > ROB_OBST_DIA) {
             hasFoundPathEnd = false;
             assignNewPath(robot->getPosition());
         }
@@ -139,8 +139,8 @@ bool Move::calcRegularMovement(Robot* robot, Type moveType)
     float robotAng = robot->getOrientation();
 
     //Check to see if movement is not necessary; close in position and angle
-    if (Measurments::isClose(m_targetPoint, robotPos, lastDistTolerance) &&
-        Measurments::isClose(m_targetAngle, robotAng, lastAngTolerance)) {
+    if (Measurements::isClose(m_targetPoint, robotPos, lastDistTolerance) &&
+        Measurements::isClose(m_targetAngle, robotAng, lastAngTolerance)) {
         lfront=lback=rfront=rback=left=right=back=0;
         return true;
     } else {
@@ -174,7 +174,7 @@ bool Move::determinePathClear(Robot* robot) const
 Point Move::updatePathQueue(Robot* robot)
 {
     //Pops path queue if close to next point
-    if(Measurments::isClose(robot, nextPoint, nextDistTolerance)) {
+    if(Measurements::isClose(robot, nextPoint, nextDistTolerance)) {
         pathQueue.pop_front();
         if(pathQueue.size() == 1) {
             nextDistTolerance = lastDistTolerance;
@@ -228,8 +228,8 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
     } else {
         //Rotating mode. If robot did not reach target angle, rotate only
         calculateVels(robot, m_targetPoint, m_targetAngle, moveType);
-        if (Measurments::isClose(m_targetPoint, robot, lastDistTolerance) &&
-            Measurments::isClose(m_targetAngle, robot->getOrientation(), lastAngTolerance*1.25)) {
+        if (Measurements::isClose(m_targetPoint, robot, lastDistTolerance) &&
+            Measurements::isClose(m_targetAngle, robot->getOrientation(), lastAngTolerance*1.25)) {
             return true;
         }
     }

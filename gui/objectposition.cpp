@@ -64,7 +64,7 @@ void ObjectPosition::getBotSpeeds() {
             pastPos.y = pastBotPoints[i].y;
 
 //            c = ( pow((currentPos.x - pastPos.x), 2) + pow((currentPos.y - pastPos.y), 2) );
-            c = Measurments::distance(currentPos,pastPos);
+            c = Measurements::distance(currentPos,pastPos);
 
             s = sqrt(c);
             botSpeeds[i] = s;

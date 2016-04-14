@@ -100,37 +100,19 @@ Point GameModel::getBallVelocity()
     return ballVelocity;
 }
 
-/*! @brief Return a 2D point of the X and Y component of the ball's acceleration
- * \see getBallVelocity
- * \see VelocityCalculator
- * \return The ball's acceleration as an X/Y point in m/s*/
-Point GameModel::getBallAcceleration()
+/*! @brief Return a predicted stopping point for the ball
+ * \return A Point with the ball's position */
+Point GameModel::getBallStopPoint()
 {
-    return ballAcceleration;
+    return ballStopPoint;
 }
 
 /*! @brief Returns the ball's <i>speed</i> (magnitude of velocity) in m/s */
 float GameModel::getBallSpeed()
 {
-    return std::hypot(ballVelocity.x, ballVelocity.y);
+    return Measurements::mag(ballVelocity);
 }
 
-/*! @brief Returns true of the ball is not moving, or false if it is moving */
-bool GameModel::getBallIsStopped()
-{
-    return ballStopped;
-}
-
-/*! @brief Returns a predition of the ball's position in 2 seconds
- * The Ball Prediciton is a rudimentary kinematics calculation that takes into
- * account the position and velocity.
- * \see getBallPoint
- * \see getBallVelocity
- * \return The ball's expected location in about two seconds. */
-Point GameModel::getBallPrediction()
-{
-    return ballPrediction;
-}
 
 //! @brief From the RefComm, Returns the number of Blue goals
 char GameModel::getBlueGoals()
@@ -282,31 +264,25 @@ void GameModel::onCommandProcessed()
     this->hasNewCommand = false;
 }
 
-//! @brief To do the actual calculation of the ball's predicted (stopping) point
-static Point calcBallPrediction(float t)
-{
-    //p(t) = p0 + vt + (1/2)at^2, with t = some t
-    Point predict_t =
-              gameModel->getBallPoint()
-            + gameModel->getBallVelocity() * POINTS_PER_METER * t
-            + gameModel->getBallAcceleration()*POINTS_PER_METER * t * t * 0.5;
-    return predict_t;
-}
-
-//! @brief Sets the position of the ball. Updates velocity and acceleration
+//! @brief Sets the position of the ball
 void GameModel::setBallPoint(Point bp)
 {
-    //Sets ball point, and calculates velocity, acceleration, and the prediction.
-    static VelocityCalculator ballVelCalculator(10);
-    static VelocityCalculator ballAclCalculator(3);
     ballPoint = bp;
-    ballVelocity = ballVelCalculator.update(bp);
-    ballAcceleration = ballAclCalculator.update(ballVelocity);
-    ballPrediction = calcBallPrediction(3.2);
 }
 
+//! @brief Sets the velocity of the ball
+void GameModel::setBallVelocity(Point vel)
+{
+    ballVelocity = vel;
+}
 
-static bool calculateHasBall(Robot* robot) 
+//! @brief Sets the stopping point of the ball
+void GameModel::setBallStopPoint(Point stop_point)
+{
+    ballStopPoint = stop_point;
+}
+
+static bool hasBall(Robot* robot)
 {
     Point bp = gameModel->getBallPoint();
     if(!robot) 
@@ -327,12 +303,12 @@ void GameModel::setRobotHasBall()
     for(Robot* robot : opTeam)
         robot->hasBall = false;
 
-    if(!calculateHasBall(this->robotWithBall) and ++lastSeenWithoutBallCount > 10) 
+    if(!hasBall(this->robotWithBall) and ++lastSeenWithoutBallCount > 10)
     {
         lastSeenWithoutBallCount = 0;
-        auto ballBot = std::find_if(myTeam.begin(), myTeam.end(), calculateHasBall);
+        auto ballBot = std::find_if(myTeam.begin(), myTeam.end(), hasBall);
         if(ballBot == myTeam.end()) {            //Not found in myTeam
-            ballBot = std::find_if(opTeam.begin(), opTeam.end(), calculateHasBall);
+            ballBot = std::find_if(opTeam.begin(), opTeam.end(), hasBall);
             if(ballBot == opTeam.end()) {        //Not found in opTeam
                 this->robotWithBall = NULL;
                 return;

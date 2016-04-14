@@ -59,8 +59,8 @@ Point PassBallSender::getPassingPoint()
 void PassBallSender::perform(Robot * robot)
 {
     Point passPoint = findPassPoint(robot);
-    float angle = Measurments::angleBetween(robot->getPosition(), passPoint);
-    float angleInv = Measurments::angleBetween(passPoint, robot->getPosition());
+    float angle = Measurements::angleBetween(robot->getPosition(), passPoint);
+    float angleInv = Measurements::angleBetween(passPoint, robot->getPosition());
     Point ballPos = gameModel->getBallPoint();
     Point behindBall = Point(DIST*cos(angleInv)+ballPos.x, DIST*sin(angleInv)+ballPos.y);
 

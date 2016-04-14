@@ -32,7 +32,7 @@ bool VisionComm::isFourCameraMode()
 /* This function processes a DetectionRobot from the vision system and fills
  * out the information in the GameModel
  */
-void VisionComm::updateInfo(const SSL_DetectionRobot& robot, int detectedTeamColor)
+void VisionComm::receiveRobot(const SSL_DetectionRobot& robot, int detectedTeamColor)
 {
     vector<Robot*>* currentTeam = &gamemodel->getMyTeam();
 
@@ -70,7 +70,7 @@ void VisionComm::updateInfo(const SSL_DetectionRobot& robot, int detectedTeamCol
     }
 }
 
-//Used to check if the detection and the camera are on the same side of the field.
+//Used to check if a detection and its camera are on the same side of the field.
 template<typename Detection>
 static bool isGoodDetection
     (const Detection& detection, const SSL_DetectionFrame& frame, float confidence, bool fourCameraMode)
@@ -99,13 +99,8 @@ static bool isGoodDetection
     return isGoodConf && isGoodSide;
 }
 
-//Predicate for max_element, determining which ball is best on confidence
-static bool ballCompareFn(const SSL_DetectionBall&  a, const SSL_DetectionBall&  b) {
-    return a.confidence() < b.confidence();
-}
-
 //Movement distance between detections within which the ball is said to be stationary
-#define NOISE_RADIUS 4
+#define B_STOP_THRESH .01f
 
 /* Looks at all detected balls in the frame detection, and chooses
  * the best one based on confidence. Sets the GameModel's ballpoint
@@ -114,17 +109,14 @@ static bool ballCompareFn(const SSL_DetectionBall&  a, const SSL_DetectionBall& 
  */
 void VisionComm::recieveBall(const SSL_DetectionFrame& frame)
 {
-    static Point noiseCenterPoint;
-    static int seenOutsideRadiusCount = 0;
-    static int seenStoppedCount = 0;
-    static Point lastDetection;
-
     //Stop if no balls present
     if(frame.balls_size() <= 0)
         return;
 
     //Choose the best ball based on confidence
-    auto bestDetect = std::max_element(frame.balls().begin(), frame.balls().end(), ballCompareFn);
+    auto bestDetect = std::max_element(frame.balls().begin(), frame.balls().end(),
+                                       [](const SSL_DetectionBall& b1, const SSL_DetectionBall& b2)
+                                         {return b1.confidence() < b2.confidence();});
 
     //If it is still a good detection...
     if(isGoodDetection(*bestDetect, frame, CONF_THRESHOLD_BALL, fourCameraMode))
@@ -134,6 +126,7 @@ void VisionComm::recieveBall(const SSL_DetectionFrame& frame)
             newDetection *= -1;
         #endif
 
+        cout << (int)newDetection.x  << ", " << (int)newDetection.y << endl;
         // Kalman Filter Tests
         KFBall::Matrix P0;
         P0.resize(4,4);
@@ -168,43 +161,14 @@ void VisionComm::recieveBall(const SSL_DetectionFrame& frame)
             for(int i = 1; i <= 4; ++i)
                 u(i) = state(i);
 
-            newDetection.x = state(2);
-            newDetection.y = state(4);
-        }
+            // Update GameModel
+            gameModel->setBallPoint(Point(state(2), state(4)));
 
-        // If the ball is detected outside the noise radius more than X times
-        // it is considered to be moving and its position will be updated
-        if(gameModel->ballStopped)
-        {
-            // setBallPoint carries out calculations on velocity, so
-            // it must be called even when the ball is stopped
-            gameModel->setBallPoint(gameModel->getBallPoint());
-
-            if(Measurments::distance(newDetection, noiseCenterPoint) > NOISE_RADIUS)
-                ++seenOutsideRadiusCount;
-
-            if(seenOutsideRadiusCount > 2)
-            {
-                gameModel->ballStopped = false;
-                seenOutsideRadiusCount = 0;
-            }
-        }
-        // If the ball is detected close (distance < 1) to its last point
-        // 4 times it is considered stopped it's position will not be updated
-        else
-        {
-            gameModel->setBallPoint(newDetection);
-
-            if(Measurments::distance(newDetection,lastDetection) < 1)
-                ++seenStoppedCount;
-            if(seenStoppedCount >= 4)
-            {
-                gameModel->ballStopped = true;
-                noiseCenterPoint = newDetection;
-                seenStoppedCount = 0;
-            }
-
-            lastDetection = newDetection;
+            double b_vel = hypot(state(1), state(3));
+            if(b_vel < B_STOP_THRESH)
+                gameModel->setBallVelocity(Point(0, 0));
+            else
+                gameModel->setBallVelocity(Point(state(1), state(3)));
         }
     }
 }
@@ -231,7 +195,7 @@ void VisionComm::recieveRobotTeam(const SSL_DetectionFrame& frame, int whichTeam
         if(isGoodDetection(robot, frame, CONF_THRESHOLD_BOTS, fourCameraMode)) {
             int robotID = robot.robot_id();
             if(gamemodel->find(robotID, *currentTeamVector) or currentTeamCounts[robotID] >= 25) {
-                updateInfo(robot, whichTeam);
+                receiveRobot(robot, whichTeam);
             } else {
                 ++currentTeamCounts[robotID];
             }

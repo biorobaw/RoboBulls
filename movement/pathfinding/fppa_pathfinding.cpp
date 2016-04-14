@@ -74,12 +74,12 @@ namespace impl {
         {
             /* Here we exclude obstacle points that are too close to the starting point,
              * or exclude the ball if avoidBall is not on. */
-            if(Measurments::isClose(obstacle, beginPos, ROBOT_RADIUS))
+            if(Measurements::isClose(obstacle, beginPos, ROBOT_RADIUS))
                 continue;
-            if(Measurments::isClose(gameModel->getBallPoint(), obstacle, 80) and not(avoidBall))
+            if(Measurements::isClose(gameModel->getBallPoint(), obstacle, 80) and not(avoidBall))
                 continue;
 
-            obstacle_found = Measurments::lineDistance(obstacle, beginPos, endPos) < OBSTACLE_LINE_DIST &&
+            obstacle_found = Measurements::lineDistance(obstacle, beginPos, endPos) < OBSTACLE_LINE_DIST &&
                 insideRadiusRectangle(obstacle, beginPos, endPos);
 
             if(obstacle_found) {
@@ -111,7 +111,7 @@ namespace impl {
     {
         /* The search point is `SEARCH_DIRECTION_DIST` points perpendicularly from
          * the line between initialPos and endPos, with sign determining the direction */
-        float theta = Measurments::angleBetween(initialPos, endPos);
+        float theta = Measurements::angleBetween(initialPos, endPos);
         float dx = SEARCH_DIRECTION_DIST * cos(theta + M_PI_2);
         float dy = SEARCH_DIRECTION_DIST * sin(theta + M_PI_2);
         return Point(sign * dx, sign * dy);
@@ -201,8 +201,8 @@ namespace impl {
     static void sanitizePoint(Point& pt)
     {
         //Used to clamp point to inside field
-        pt.x = Measurments::clamp(pt.x,-FIELD_LENGTH+100.f, FIELD_LENGTH-100.f);
-        pt.y = Measurments::clamp(pt.y, -FIELD_WIDTH+100.f,  FIELD_WIDTH-100.f);
+        pt.x = Measurements::clamp(pt.x,-FIELD_LENGTH+100.f, FIELD_LENGTH-100.f);
+        pt.y = Measurements::clamp(pt.y, -FIELD_WIDTH+100.f,  FIELD_WIDTH-100.f);
     }
 
     static bool isValidPath(const Path& p)
@@ -218,7 +218,7 @@ namespace impl {
         //Generic loop summing the distance between nodes in the path
         float totalDist = 0;
         for(auto it = p.begin(); it != p.end()-1; ++it)
-            totalDist += Measurments::distance(*it, *(it+1));
+            totalDist += Measurements::distance(*it, *(it+1));
         return totalDist;
     }
 
@@ -299,7 +299,7 @@ namespace impl {
 
         if(obstacle_info.first) {
             if(obsPosOut != nullptr) *obsPosOut = obstacle_info.second;
-            return Measurments::isClose(start, obstacle_info.second, 2500);
+            return Measurements::isClose(start, obstacle_info.second, 2500);
         } else {
             return false;
         }
@@ -308,7 +308,7 @@ namespace impl {
 
     bool isPointInLine(const Point& start, const Point& end, const Point& question)
     {
-        return Measurments::lineDistance(question, start, end) < ROB_OBST_DIA &&
+        return Measurements::lineDistance(question, start, end) < ROB_OBST_DIA &&
                impl::insideRadiusRectangle(question, start, end);
     }
 

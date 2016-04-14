@@ -2863,7 +2863,7 @@ background-color: rgba(255, 0, 0, 100);</string>
               <property name="geometry">
                <rect>
                 <x>0</x>
-                <y>-343</y>
+                <y>-208</y>
                 <width>269</width>
                 <height>869</height>
                </rect>
@@ -5269,7 +5269,7 @@ background-color: rgba(255, 0, 0, 100);</string>
                    <property name="geometry">
                     <rect>
                      <x>10</x>
-                     <y>60</y>
+                     <y>40</y>
                      <width>231</width>
                      <height>17</height>
                     </rect>
@@ -5282,26 +5282,13 @@ background-color: rgba(255, 0, 0, 100);</string>
                    <property name="geometry">
                     <rect>
                      <x>10</x>
-                     <y>40</y>
+                     <y>20</y>
                      <width>231</width>
                      <height>17</height>
                     </rect>
                    </property>
                    <property name="text">
                     <string>Acceleration Reading</string>
-                   </property>
-                  </widget>
-                  <widget class="QLabel" name="ballMove">
-                   <property name="geometry">
-                    <rect>
-                     <x>10</x>
-                     <y>20</y>
-                     <width>221</width>
-                     <height>17</height>
-                    </rect>
-                   </property>
-                   <property name="text">
-                    <string>Ball Movement</string>
                    </property>
                   </widget>
                  </widget>

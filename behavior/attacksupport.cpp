@@ -15,7 +15,7 @@ void AttackSupport::perform(Robot * robot)
     recalculateWp(robot);
 
     //Sets movement to always face the ball, sitting at wait point (wp)
-    setMovementTargets(wp, Measurments::angleBetween(robot, main_attacker));
+    setMovementTargets(wp, Measurements::angleBetween(robot, main_attacker));
     StaticMovementBehavior::perform(robot);
 }
 
@@ -31,7 +31,7 @@ void AttackSupport::recalculateWp(Robot* robot)
     static Region penalty_area (gp.x, gp.x-goal_dir*500,-500,500);
 
     //We do not recalculate if the attacker hasn't moved too much
-    if (Measurments::isClose(main_attacker,previousAttackerPos,40))
+    if (Measurements::isClose(main_attacker,previousAttackerPos,40))
         return;
     previousAttackerPos = main_attacker->getPosition();
 

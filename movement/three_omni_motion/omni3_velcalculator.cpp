@@ -36,14 +36,14 @@ threeWheelVels ThreeWheelCalculator::defaultCalc
 
     Point rp = Point(x_current,y_current);
     Point gp = Point(x_goal,y_goal);
-    distance_to_goal = Measurments::distance(rp,gp);
-    angle_to_goal = Measurments::angleBetween(rp,gp);
+    distance_to_goal = Measurements::distance(rp,gp);
+    angle_to_goal = Measurements::angleBetween(rp,gp);
 
     //Inertial Frame Velocities
     double x_vel = (distance_to_goal)*cos(angle_to_goal);
     double y_vel = (distance_to_goal)*sin(angle_to_goal);
-    double theta_vel = Measurments::angleDiff(theta_current,theta_goal);
-    if (abs(Measurments::angleDiff(theta_goal,theta_current))<abs(Measurments::angleDiff(theta_goal,theta_current+theta_vel)))
+    double theta_vel = Measurements::angleDiff(theta_current,theta_goal);
+    if (abs(Measurements::angleDiff(theta_goal,theta_current))<abs(Measurements::angleDiff(theta_goal,theta_current+theta_vel)))
         theta_vel=-theta_vel;
 
 
@@ -97,14 +97,14 @@ threeWheelVels ThreeWheelCalculator::facePointCalc
 
     Point rp = Point(x_current,y_current);
     Point gp = Point(x_goal,y_goal);
-    distance_to_goal = Measurments::distance(rp,gp);
-    angle_to_goal = Measurments::angleBetween(rp,gp);
+    distance_to_goal = Measurements::distance(rp,gp);
+    angle_to_goal = Measurements::angleBetween(rp,gp);
 
     //Inertial Frame Velocities
     double x_vel = (distance_to_goal)*cos(angle_to_goal);
     double y_vel = (distance_to_goal)*sin(angle_to_goal);
-    double theta_vel = Measurments::angleDiff(theta_current,theta_goal);
-    if (abs(Measurments::angleDiff(theta_goal,theta_current))<abs(Measurments::angleDiff(theta_goal,theta_current+theta_vel)))
+    double theta_vel = Measurements::angleDiff(theta_current,theta_goal);
+    if (abs(Measurements::angleDiff(theta_goal,theta_current))<abs(Measurements::angleDiff(theta_goal,theta_current+theta_vel)))
         theta_vel=-theta_vel;
 
     // Reduce speed near target
@@ -116,7 +116,7 @@ threeWheelVels ThreeWheelCalculator::facePointCalc
 
     // Focus on rotation
     double vel = sqrt(x_vel*x_vel+y_vel*y_vel);
-    if (abs(Measurments::angleDiff(theta_goal,theta_current))>ROT_TOLERANCE*0.5 && vel > 40)
+    if (abs(Measurements::angleDiff(theta_goal,theta_current))>ROT_TOLERANCE*0.5 && vel > 40)
     {
         x_vel = 40*cos(angle_to_goal);
         y_vel = 40*sin(angle_to_goal);

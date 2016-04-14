@@ -35,9 +35,7 @@ public:
     std::vector<Robot*>& getYellowTeam();
     Point  getBallPoint();
     Point  getBallVelocity();
-    Point  getBallAcceleration();
-    Point  getBallPrediction();
-    bool   getBallIsStopped();
+    Point  getBallStopPoint();
     float  getBallSpeed();
     char   getBlueGoals();
     char   getYellowGoals();
@@ -78,15 +76,14 @@ private:
     Robot* robotWithBall   = NULL;        //Robot currently holding the ball
     Point  ballPoint       = Point(0,0);  //The current point fo the ball on the field
     Point  ballVelocity    = Point(0,0);  //The current velocity of the ball on the field
-    Point  ballAcceleration= Point(0,0);  //The current acceleration of the ball on the field
+    Point  ballStopPoint   = Point(0,0);  //The predicted stop point of the ball
     Point  ballPrediction  = Point(0,0);  //Prediciton point of the ball
     char   gameState       = '\0';        //The current state of the game from RefComm
-    bool   hasNewCommand   = false;       //True on tje iteration that gameState has changed
+    bool   hasNewCommand   = false;       //True on the iteration that gameState has changed
     char   blueGoals       = 0;           //Number of scores yellow goals
     char   yellowGoals     = 0;           //Number of scores yellow goals
     short  remainingTime   = 0;           //Remaining time in seconds
     char   previousGameState = '\0';      //The previous gamestate
-    bool   ballStopped = false;           //Is the ball stationary?
 
     /* Functions to update gamemodel from vision system.
      * Provides *the* link between vision detection and
@@ -96,6 +93,8 @@ private:
     friend class SimRobComm;
     void onRobotUpdated(Robot*);
     void setBallPoint(Point);
+    void setBallVelocity(Point);
+    void setBallStopPoint(Point);
     void setRobotHasBall();
     void setGameState(char);
     void setTimeLeft(short);

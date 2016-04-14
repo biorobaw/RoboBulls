@@ -193,8 +193,8 @@ bool RobotMoveStatus::robotFacingRobot(Robot* a, Robot* b)
     if(a->type() != differential) {
         Point vel = a->getVelocity();
         float ang = atan2(vel.y, vel.x);
-        float bad = Measurments::angleBetween(a, b);
-        return Measurments::isClose(ang, bad, tolerance);
+        float bad = Measurements::angleBetween(a, b);
+        return Measurements::isClose(ang, bad, tolerance);
     } else {
         return Comparisons::isFacingPoint(a, b, tolerance);
     }
@@ -202,7 +202,7 @@ bool RobotMoveStatus::robotFacingRobot(Robot* a, Robot* b)
 
 bool RobotMoveStatus::robotCollideHazard(Robot* a, Robot* b)
 {
-    return Measurments::distance(a,b) < ROBOT_COLLIDE_HAZARD_DIST;
+    return Measurements::distance(a,b) < ROBOT_COLLIDE_HAZARD_DIST;
 }
 
 bool RobotMoveStatus::areCollided(Robot *a, Robot *b)
@@ -210,7 +210,7 @@ bool RobotMoveStatus::areCollided(Robot *a, Robot *b)
     //If the other guy is stopped, we don't consider them collided
     if(!currentMoveStatuses[b].moving())
         return false;
-    bool robotsTooClose = Measurments::distance(a, b) <= ROBOT_COLLIDED_DIST;
+    bool robotsTooClose = Measurements::distance(a, b) <= ROBOT_COLLIDED_DIST;
     bool robFacingOther = robotFacingRobot(a, b);
     return robotCollideHazard(a,b) && robotsTooClose && robFacingOther;
 }
@@ -251,7 +251,7 @@ void RobotMoveStatus::updateIsMovingStatus(Robot* robot)
 {
     /* The robot *is* moving if it is ROBOT_MOVING_DIST_TOL away from its last
      * recorded moved position */
-    if(Measurments::distance(robot, m_lastDiffPoint) > ROBOT_MOVING_DIST_TOL) {
+    if(Measurements::distance(robot, m_lastDiffPoint) > ROBOT_MOVING_DIST_TOL) {
         m_isMoving      = true;
         m_lastDiffPoint = robot->getPosition();
         m_observeCount  = 0;
@@ -287,7 +287,7 @@ void RobotMoveStatus::updateMoveOk(Robot* robot)
 void RobotMoveStatus::updateMoveYielding(Robot* robot)
 {
     //We can go back to moving if the collidebot has stopped, or it is far away
-    bool farAway = Measurments::distance(robot, m_collideBot) > ROBOT_COLLIDE_HAZARD_DIST;
+    bool farAway = Measurements::distance(robot, m_collideBot) > ROBOT_COLLIDE_HAZARD_DIST;
     if(farAway || !currentMoveStatuses[m_collideBot].moving())
         set(MOVE_OK);
 }
@@ -306,7 +306,7 @@ void RobotMoveStatus::updateMoveCollided(Robot* robot)
         m_collideDirection = Point(0,0);
         set(MOVE_OK);
     } else {
-        float angle = Measurments::angleBetween(m_collideBot, robot);
+        float angle = Measurements::angleBetween(m_collideBot, robot);
         m_collideDirection = Point(cos(angle), sin(angle));
     }
 }

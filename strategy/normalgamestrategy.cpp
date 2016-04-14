@@ -47,8 +47,8 @@ public:
         if(ballBot && !ballBot->isOnMyTeam())
         {
             Point bp = gameModel->getBallPoint();
-            float Opang = Measurments::angleBetween(ballBot, bp);
-            float myAng = Measurments::angleBetween(robot, ballBot);
+            float Opang = Measurements::angleBetween(ballBot, bp);
+            float myAng = Measurements::angleBetween(robot, ballBot);
             Point offset = Point(cos(Opang), sin(Opang)) * 1000;
             Point target = bp + offset;
             setMovementTargets(target, myAng);
@@ -76,7 +76,7 @@ public:
     {
         GameModel * gm = GameModel::getModel();
         Point wait_point = Point(gm->getMyGoal().x*0.5, myYPos);
-        double wait_orientation = Measurments::angleBetween(robot->getPosition(),gm->getBallPoint());
+        double wait_orientation = Measurements::angleBetween(robot->getPosition(),gm->getBallPoint());
 
         setMovementTargets(wait_point, wait_orientation);
         StaticMovementBehavior::perform(robot);
@@ -129,13 +129,13 @@ bool NormalGameStrategy::update()
     Point ball = gm->getBallPoint();
     Point opGoal = gm->getOpponentGoal();
     Point myGoal = gm->getMyGoal();
-    bool ballMoved = !Measurments::isClose(ballOriginalPos, ball);
+    bool ballMoved = !Measurements::isClose(ballOriginalPos, ball);
 
     //Ball near goals, used as checks to not do anything first
     static bool ballInOpGoal = false;
     static bool ballinMyGoal = false;
-    ballInOpGoal = Measurments::isClose(ball, opGoal, GoalieBehavior::goalieDist);
-    ballinMyGoal = Measurments::isClose(ball, myGoal, GoalieBehavior::goalieDist);
+    ballInOpGoal = Measurements::isClose(ball, opGoal, GoalieBehavior::goalieDist);
+    ballinMyGoal = Measurements::isClose(ball, myGoal, GoalieBehavior::goalieDist);
 
     isOnAttack = considerSwitchCreiteria();
 
@@ -300,8 +300,8 @@ bool NormalGameStrategy::considerSwitchCreiteria()
         Point opGoal = gameModel->getOpponentGoal();
         Point myGoal = gameModel->getMyGoal();
         Point ball = gameModel->getBallPoint();
-        bool ballInOpGoal = Measurments::isClose(ball, opGoal, GoalieBehavior::goalieDist);
-        bool ballinMyGoal = Measurments::isClose(ball, myGoal, GoalieBehavior::goalieDist);
+        bool ballInOpGoal = Measurements::isClose(ball, opGoal, GoalieBehavior::goalieDist);
+        bool ballinMyGoal = Measurements::isClose(ball, myGoal, GoalieBehavior::goalieDist);
         if(ballInOpGoal || ballinMyGoal) {
             return false;
         }

@@ -35,12 +35,12 @@ void AttackMain::perform(Robot * robot)
     rp = robot->getPosition();
     gp = gameModel->getOpponentGoal();
     bp = gameModel->getBallPoint();
-    goal_direction = Measurments::angleBetween(rp, gp);  //Sets drive direction towards goal
+    goal_direction = Measurements::angleBetween(rp, gp);  //Sets drive direction towards goal
 
     // When the robot reaches the ball for the first time, drive_start_point is set to current position
     if(touched_ball == false)
     {
-        if(Measurments::isClose(rp,bp,250))
+        if(Measurements::isClose(rp,bp,250))
         {
             drive_start_point = rp;
             touched_ball = true;
@@ -48,7 +48,7 @@ void AttackMain::perform(Robot * robot)
     }
 
     //Are we far enough (according to SSL rules) from the drive start that we need to kick?
-    bool closeToDriveEnd  = touched_ball && !Measurments::isClose(drive_start_point, rp, drive_distance);
+    bool closeToDriveEnd  = touched_ball && !Measurements::isClose(drive_start_point, rp, drive_distance);
 
     //Create switch logic
     switch (state)
@@ -66,13 +66,13 @@ void AttackMain::perform(Robot * robot)
             //to the goal, make a pass. Otherwise kick to goal
 
             //Is the supp_attacker closer to the goal than we are?
-            bool supporterCloserToGoal = Measurments::distance(gp, sp) < Measurments::distance(gp, rp);
+            bool supporterCloserToGoal = Measurements::distance(gp, sp) < Measurements::distance(gp, rp);
 
             //Is the support attacker reasonably far from us, to prevent stupid short passes?
-            bool supporterSlightlyFar = Measurments::distance(support_attacker, robot) > ROB_OBST_DIA*5;
+            bool supporterSlightlyFar = Measurements::distance(support_attacker, robot) > ROB_OBST_DIA*5;
 
             //Are we close enough to shoot a goal?
-            bool closeToGoalShot = Measurments::isClose(bp, gp, shot_distance);
+            bool closeToGoalShot = Measurements::isClose(bp, gp, shot_distance);
 
             if( support_attacker != nullptr
                 and !forcedGoalKick

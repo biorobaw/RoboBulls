@@ -24,7 +24,7 @@ void StopStrategy::assignBeh()
         if(robot->getID() == GOALIE_ID)
             continue;
         Point robTarget = robTargetPoints[robot->getID()];
-        float targetAngle = Measurments::angleBetween(robTarget, bp);
+        float targetAngle = Measurements::angleBetween(robTarget, bp);
         robot->assignBeh<StaticMovementBehavior>(robTarget, targetAngle);
     }
 
@@ -36,7 +36,7 @@ void StopStrategy::assignBeh()
 bool StopStrategy::update()
 {
     Point nowBallPoint = gameModel->getBallPoint();
-    if(Measurments::distance(nowBallPoint, prevBallPoint) > 50) {
+    if(Measurements::distance(nowBallPoint, prevBallPoint) > 50) {
         prevBallPoint = nowBallPoint;
         return true;
     }

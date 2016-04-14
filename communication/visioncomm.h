@@ -44,7 +44,7 @@ protected:
     void recieveBall(const SSL_DetectionFrame& frame);
 
     //! @brief Updates GameModel information to fill out a robot
-    void updateInfo(const SSL_DetectionRobot& robot, int detectedTeamColor);
+    void receiveRobot(const SSL_DetectionRobot& robot, int detectedTeamColor);
 
     //! @brief Recieves a new packet only if `ms_limit` ms has passed since last call
     void receiveIfMSPassed(int ms_limit);

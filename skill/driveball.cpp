@@ -34,8 +34,8 @@ bool DriveBall::perform(Robot* robot)
     GameModel* gm   = GameModel::getModel();
     Point ballPoint = gm->getBallPoint();
     Point robPoint  = robot->getPosition();
-    float targetBallAngle = Measurments::angleBetween(targetPosition, ballPoint);
-    float ballTargetAngle =  Measurments::angleBetween(ballPoint, targetPosition);
+    float targetBallAngle = Measurements::angleBetween(targetPosition, ballPoint);
+    float ballTargetAngle =  Measurements::angleBetween(ballPoint, targetPosition);
     Point behindBall      = ballPoint + Point(DIST*cos(targetBallAngle),
                                               DIST*sin(targetBallAngle));
     /*
@@ -56,8 +56,8 @@ bool DriveBall::perform(Robot* robot)
 
     case driveBall:
         //cout << "drive ball" << endl;
-        bool farFromBall   = !Measurments::isClose(robPoint, ballPoint, DIST*1.25);
-        bool notFacingBall =  Measurments::lineDistance(ballPoint, robPoint, targetPosition)
+        bool farFromBall   = !Measurements::isClose(robPoint, ballPoint, DIST*1.25);
+        bool notFacingBall =  Measurements::lineDistance(ballPoint, robPoint, targetPosition)
                 > ROBOT_RADIUS*1.75;
         if(farFromBall || notFacingBall) {
             state = moveBehindBall;
@@ -69,7 +69,7 @@ bool DriveBall::perform(Robot* robot)
         break;
     }
 
-    return (state==driveBall && Measurments::isClose(robPoint, targetPosition, CLOSE_ENOUGH));
+    return (state==driveBall && Measurements::isClose(robPoint, targetPosition, CLOSE_ENOUGH));
 }
 
 }

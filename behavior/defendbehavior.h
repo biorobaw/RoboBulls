@@ -35,7 +35,6 @@ protected:
     //Loops through, looks, and sets the point internally for this robot to claim
     static Point* searchClaimPoint(Robot*);
 
-protected:
     static int   whoIsKicking;     //Who is moving to kick the ball?
 
 private:

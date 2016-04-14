@@ -52,7 +52,7 @@ void IndirectKickStrategy::assignBeh()
             playersCharactristics pch;
             pch.ID = robot->getID();
             pch.surroundingAppNum = PlayerRegion.numOfOpponents();
-            pch.distanceToRobot = Measurments::distance(robot, sender);
+            pch.distanceToRobot = Measurements::distance(robot, sender);
             myTeamInfo.push_back(pch);
         }
 

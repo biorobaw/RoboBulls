@@ -10,8 +10,8 @@ RotateOnPoint::RotateOnPoint(Point center, float faceAngle, float dist)
 
 void RotateOnPoint::perform(Robot *robot)
 {
-    float to_center = Measurments::angleBetween(robot, center_point);
-    float to_robot  = Measurments::angleBetween(center_point, robot);
+    float to_center = Measurements::angleBetween(robot, center_point);
+    float to_robot  = Measurements::angleBetween(center_point, robot);
 
     switch(state)
     {
@@ -20,7 +20,7 @@ void RotateOnPoint::perform(Robot *robot)
             float a = center_ang + M_PI;
             offset_point  = center_point + Point(cos(to_robot), sin(to_robot)) * center_dist;
               final_point = center_point + Point(cos(a), sin(a)) * center_dist;
-               offset_ang = Measurments::angleBetween(center_point, offset_point);
+               offset_ang = Measurements::angleBetween(center_point, offset_point);
             state = closing;
         }
         break;
@@ -34,10 +34,10 @@ void RotateOnPoint::perform(Robot *robot)
         break;
     case rotating: {
             if(not finished) {
-                float next = Measurments::angleSum(to_robot, sign * 45*(M_PI/180));
+                float next = Measurements::angleSum(to_robot, sign * 45*(M_PI/180));
                 Point offset = center_point + Point(cos(next), sin(next)) * center_dist;
                 setMovementTargets(offset, to_center);
-                if(Measurments::isClose(robot->getPosition(), final_point, DIST_TOLERANCE*0.75)) {
+                if(Measurements::isClose(robot->getPosition(), final_point, DIST_TOLERANCE*0.75)) {
                     finished = true;
                     setMovementTargets(robot->getPosition(), to_center);
                 }
