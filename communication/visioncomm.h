@@ -12,6 +12,8 @@
 #include "kfball.h"
 #include "gui/guiinterface.h"
 
+#define VEL_HIST_SIZE 20
+
 //! @brief Sets the minimum confidence to consider a ball reading as valid
 const float CONF_THRESHOLD_BALL = 0.75;
 
@@ -66,9 +68,9 @@ protected:
     bool kfilter_init = false;      //! Has the kalman filter been initialized with the first measurement?
     KFBall::Vector u;               //! Stores the previous state estimate of the kalman filter
 
-    Point prev_pos;
-    Point vel_history[5];
-    int vel_hist_index = 0;
+    Point prev_k_b_pos;
+    Point vel_hist[VEL_HIST_SIZE];
+    int i_vel_hist = 0;
 };
 
 #endif // VISIONCOMM_H

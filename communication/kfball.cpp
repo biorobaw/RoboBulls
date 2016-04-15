@@ -9,13 +9,16 @@
 #else
 #define ACCEL -10.0
 #define TIME_STEP 0.0193    // Determined using printTimeStep()
-#define QVAL 0.5    // Was 0.5
-#define RVAL 15.0   // Was 15.0
+#define QPOS 0.5    // Was 0.5
+#define QVEL 1    // Was 0.5
+#define RPOS 15.0   // Was 15.0
+#define RVEL 10.0   // Was 15.0
 #endif
+
 KFBall::KFBall():a(ACCEL), T(TIME_STEP)
 {
     // setDim(x, u, w, z, v)
-    setDim(4, 2, 2, 2, 2);
+    setDim(4, 4, 4, 4, 4);
 }
 
 int sign(double x)
@@ -59,8 +62,10 @@ void KFBall::makeProcess()
 // Measurements
 void KFBall::makeMeasure()
 {
-    z(1)= x(2);
-    z(2)= x(4);
+    z(1)= x(1);
+    z(2)= x(2);
+    z(3)= x(3);
+    z(4)= x(4);
 }
 
 // State Vector Jacobian
@@ -90,58 +95,54 @@ void KFBall::makeA()
 // Measurement Noise derivative
 void KFBall::makeW()
 {
-    W(1,1) = 0.0;
-    W(1,2) = 0.0;
+    for (size_t i = 1; i <= W.ncol(); ++i)
+        for (size_t j = 1; j <= W.nrow(); ++j)
+            W(i,j) = 0.0;
 
-    W(2,1) = 1.0;
-    W(2,2) = 0.0;
-
-    W(3,1) = 0.0;
-    W(3,2) = 0.0;
-
-    W(4,1) = 0.0;
-    W(4,2) = 1.0;
+    W(1,1) = 1.0;
+    W(2,2) = 1.0;
+    W(3,3) = 1.0;
+    W(4,4) = 1.0;
 }
 
 // Process Noise derivatives
 void KFBall::makeH()
 {
-    H(1,1) = 0.0;
-    H(1,2) = 1.0;
-    H(1,3) = 0.0;
-    H(1,4) = 0.0;
+    for (size_t i = 1; i <= H.ncol(); ++i)
+        for (size_t j = 1; j <= H.nrow(); ++j)
+            H(i,j) = 0.0;
 
-    H(2,1) = 0.0;
-    H(2,2) = 0.0;
-    H(2,3) = 0.0;
-    H(2,4) = 1.0;
+    H(1,1) = 1.0;
+    H(2,2) = 1.0;
+    H(3,3) = 1.0;
+    H(4,4) = 1.0;
 }
 
 // Measurement Noise derivatives
 void KFBall::makeV()
 {
     V(1,1) = 1.0;
-    V(1,2) = 0.0;
-    V(2,1) = 0.0;
     V(2,2) = 1.0;
+    V(3,3) = 1.0;
+    V(4,4) = 1.0;
 }
 
 // Process Noise Covariance
 void KFBall::makeQ()
 {
-    Q(1,1) = QVAL;
-    Q(1,2) = 0.0;
-    Q(2,1) = 0.0;
-    Q(2,2) = QVAL;
+    Q(1,1) = QVEL;
+    Q(2,2) = QPOS;
+    Q(3,3) = QVEL;
+    Q(4,4) = QPOS;
 }
 
 // Measurement Noise Covariance
 void KFBall::makeR()
 {
-    R(1,1) = RVAL;
-    R(1,2) = 0.0;
-    R(2,1) = 0.0;
-    R(2,2) = RVAL;
+    R(1,1) = RVEL;
+    R(2,2) = RPOS;
+    R(3,3) = RVEL;
+    R(4,4) = RPOS;
 }
 
 void KFBall::printTimeStep()

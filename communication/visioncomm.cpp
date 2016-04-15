@@ -100,7 +100,7 @@ static bool isGoodDetection
 }
 
 // Movement distance between detections within which the ball is said to be stationary
-#define B_STOP_THRESH .05f
+#define B_STOP_THRESH 5.0
 
 /* Looks at all detected balls in the frame detection, and chooses
  * the best one based on confidence. Sets the GameModel's ballpoint
@@ -121,15 +121,24 @@ void VisionComm::recieveBall(const SSL_DetectionFrame& frame)
     //If it is still a good detection...
     if(isGoodDetection(*bestDetect, frame, CONF_THRESHOLD_BALL, fourCameraMode))
     {
-        Point newDetection = Point(bestDetect->x(), bestDetect->y());
+        Point b_pos = Point(bestDetect->x(), bestDetect->y());
         #if SIDE == SIDE_POSITIVE
-            newDetection *= -1;
+            new_b_pos *= -1;
         #endif
 
-//        GuiInterface* gui = GuiInterface::getGuiInterface();
-//        gui->drawPath(newDetection, newDetection, 0.1);
+        // Record velocity history
+        Point k_b_pos = Point(u(2), u(4));
+        vel_hist[i_vel_hist] = k_b_pos - prev_k_b_pos;
+        i_vel_hist = (i_vel_hist + 1) % (VEL_HIST_SIZE - 1);
+        prev_k_b_pos = k_b_pos;
 
+        // Calculate Average Velocity from history
+        Point avg_vel = Point(0,0);
+        for(Point v: vel_hist)
+            avg_vel += v;
 
+        avg_vel /= (VEL_HIST_SIZE * 0.0193);
+        // 0.0193 is the seconds between frames
 
         // Kalman Filter
         if(!kfilter_init)
@@ -144,9 +153,9 @@ void VisionComm::recieveBall(const SSL_DetectionFrame& frame)
 
             KFBall::Vector x(4);
             x(1) = 0.0;
-            x(2) = newDetection.x;
+            x(2) = b_pos.x;
             x(3) = 0.0;
-            x(4) = newDetection.y;
+            x(4) = b_pos.y;
 
             kfilter->init(x, P0);
             kfilter_init = true;
@@ -154,13 +163,18 @@ void VisionComm::recieveBall(const SSL_DetectionFrame& frame)
         else
         {
             // Update Filter
-            KFBall::Vector z(2);
-            z(1) = newDetection.x;
-            z(2) = newDetection.y;
+            KFBall::Vector z(4);
+            z(1) = avg_vel.x;
+            z(2) = b_pos.x;
+            z(3) = avg_vel.y;
+            z(4) = b_pos.y;
 
             kfilter->step(u, z);
 
             KFBall::Vector state = kfilter->getX();
+
+//            GuiInterface* gui = GuiInterface::getGuiInterface();
+//            gui->drawPath(b_pos, b_pos + avg_vel, 0.1);
 
             for(int i = 1; i <= 4; ++i)
                 u(i) = state(i);

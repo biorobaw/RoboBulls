@@ -8,7 +8,7 @@
 // Set up in accordance with:
 // http://kalman.sourceforge.net/doc/example.html#expage
 
-class KFBall : public Kalman::EKFilter<double,1>
+class KFBall : public Kalman::EKFilter<double,1,true,true,false>
 {
 public:
     KFBall();
