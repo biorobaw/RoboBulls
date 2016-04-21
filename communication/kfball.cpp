@@ -4,8 +4,10 @@
 #if SIMULATED
 #define ACCEL -9.0
 #define TIME_STEP 1.0/55.0
-#define QVAL 0.05
-#define RVAL 10.0
+#define QPOS 0.5    // Was 0.5
+#define QVEL 1    // Was 0.5
+#define RPOS 15.0   // Was 15.0
+#define RVEL 10.0   // Was 15.0
 #else
 #define ACCEL -10.0
 #define TIME_STEP 0.0193    // Determined using printTimeStep()
