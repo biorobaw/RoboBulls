@@ -57,11 +57,10 @@ void VisionComm::receiveRobot(const SSL_DetectionRobot& robot, int detectedTeamC
         float rotationReading = robot.orientation();
     #if SIDE == SIDE_POSITIVE
         positionReading *= -1;
-        if(rotationReading > 0) {
+        if(rotationReading > 0)
             rotationReading = -(M_PI - rotationReading);
-        } else {
+        else
             rotationReading = -(-M_PI - rotationReading);
-        }
     #endif
         rob->setRobotPosition( positionReading );
         rob->setOrientation(rotationReading);
@@ -123,8 +122,11 @@ void VisionComm::recieveBall(const SSL_DetectionFrame& frame)
     {
         Point b_pos = Point(bestDetect->x(), bestDetect->y());
         #if SIDE == SIDE_POSITIVE
-            new_b_pos *= -1;
+            b_pos *= -1;
         #endif
+
+//        GuiInterface* gui = GuiInterface::getGuiInterface();
+//        gui->drawPath(b_pos, b_pos, 0.1);
 
         // Record velocity history
         Point k_b_pos = Point(u(2), u(4));

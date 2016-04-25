@@ -3,7 +3,7 @@
 #include "model/gamemodel.h"
 #include "behavior/passballreceiver.h"
 #include "behavior/passballsender.h"
-#include "utilities/region.h"
+#include "utilities/region/rectangle.h"
 #include "utilities/comparisons.h"
 #include "include/config/team.h"
 #include "behavior/goaliebehavior.h"
@@ -48,7 +48,7 @@ void IndirectKickStrategy::assignBeh()
             if(robot->getID() == GOALIE_ID || robot == sender)
                 continue;
             Point robPos = robot->getPosition();
-            Region PlayerRegion { robPos.x+R, robPos.x-R, robPos.y+R, robPos.y-R };
+            Rectangle PlayerRegion { robPos.x+R, robPos.y+R, robPos.x-R, robPos.y-R };
             playersCharactristics pch;
             pch.ID = robot->getID();
             pch.surroundingAppNum = PlayerRegion.numOfOpponents();

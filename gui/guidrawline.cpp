@@ -1,7 +1,4 @@
 #include "guidrawline.h"
-#include <QTimer>
-#include <QPainter>
-#include <iostream>
 
 GuiDrawLine::GuiDrawLine() {
 
@@ -50,7 +47,7 @@ void GuiDrawLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
     painter->drawLine(A, B);
     painter->setBrush(brush);
     painter->setPen(QPen(QColor::fromRgb(255,0,0,0), 0, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
-    painter->drawEllipse(B,30,30);
+    painter->drawEllipse(B,10,10);
 //    }
 }
 

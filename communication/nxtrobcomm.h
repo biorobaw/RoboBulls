@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include "include/serialib.h"
 #include "model/robot.h"
-#include "utilities/measurments.h"
+#include "utilities/measurements.h"
 #include "robcomm.h"
 
 /*! @brief RobComm to send packets to real Robots

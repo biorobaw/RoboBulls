@@ -2,9 +2,8 @@
 #include <iostream>
 #include <stdlib.h>
 #include <string.h>
-#include "utilities/measurments.h"
+#include "utilities/measurements.h"
 #include "utilities/comparisons.h"
-#include "utilities/region.h"
 #include "utilities/velocitycalculator.h"
 #include "model/gamemodel.h"
 #include "model/robot.h"

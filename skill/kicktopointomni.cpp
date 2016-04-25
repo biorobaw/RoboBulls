@@ -230,7 +230,7 @@ bool KickToPointOmni::isCloseToBall(Robot *robot) {
     // A misplacement of the markings on top of the robot can render the check tolerance
     // too much or too little. Instead we check how far the robot has travelled from
     // the behindball point.
-    //std::cout << Measurments::distance(robot, behindBall) << std::endl;
+    //std::cout << measurements::distance(robot, behindBall) << std::endl;
     return Measurements::distance(robot, behindBall) >= 50;
 }
 

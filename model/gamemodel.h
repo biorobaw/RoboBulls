@@ -2,7 +2,7 @@
 #define GAMEMODEL_H
 #include <vector>
 #include "utilities/point.h"
-#include "utilities/measurments.h"
+#include "utilities/measurements.h"
 #include "model/robot.h"
 
 class StrategyController;

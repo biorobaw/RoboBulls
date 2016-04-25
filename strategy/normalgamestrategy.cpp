@@ -134,8 +134,8 @@ bool NormalGameStrategy::update()
     //Ball near goals, used as checks to not do anything first
     static bool ballInOpGoal = false;
     static bool ballinMyGoal = false;
-    ballInOpGoal = Measurements::isClose(ball, opGoal, GoalieBehavior::goalieDist);
-    ballinMyGoal = Measurements::isClose(ball, myGoal, GoalieBehavior::goalieDist);
+    ballInOpGoal = Measurements::isClose(ball, opGoal, GoalieBehavior::clearDist);
+    ballinMyGoal = Measurements::isClose(ball, myGoal, GoalieBehavior::clearDist);
 
     isOnAttack = considerSwitchCreiteria();
 
@@ -248,8 +248,8 @@ void NormalGameStrategy::moveRobotToIdleLine(Robot* robot, bool waiter)
         robot->assignBeh<StaticMovementBehavior>( wait_point );
     } else {
         //Otherwise assigns the robot to sit along a line across the field
-        int incSize = FIELD_WIDTH / (gameModel->getMyTeam().size() - 1);
-        int y = -FIELD_WIDTH/2 + incSize * robot->getID();
+        int incSize = HALF_FIELD_WIDTH / (gameModel->getMyTeam().size() - 1);
+        int y = -HALF_FIELD_WIDTH/2 + incSize * robot->getID();
         robot->assignBeh<RetreatAfterGoal>(y);
     }
 }
@@ -300,8 +300,8 @@ bool NormalGameStrategy::considerSwitchCreiteria()
         Point opGoal = gameModel->getOpponentGoal();
         Point myGoal = gameModel->getMyGoal();
         Point ball = gameModel->getBallPoint();
-        bool ballInOpGoal = Measurements::isClose(ball, opGoal, GoalieBehavior::goalieDist);
-        bool ballinMyGoal = Measurements::isClose(ball, myGoal, GoalieBehavior::goalieDist);
+        bool ballInOpGoal = Measurements::isClose(ball, opGoal, GoalieBehavior::clearDist);
+        bool ballinMyGoal = Measurements::isClose(ball, myGoal, GoalieBehavior::clearDist);
         if(ballInOpGoal || ballinMyGoal) {
             return false;
         }

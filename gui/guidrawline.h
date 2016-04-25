@@ -2,6 +2,9 @@
 #define GUIDRAWLINE_H
 
 #include <QGraphicsItem>
+#include <QTimer>
+#include <QPainter>
+#include <iostream>
 #include "utilities/point.h"
 
 class QPainter;

@@ -111,9 +111,9 @@ void DriveBallAndKick::perform(Robot* robot)
             delete skill;
             skill = new Skill::Kick();
         }
-//        else if (Measurments::isClose(robot->getRobotPosition(), gm->getBallPoint(), CLOSE_ENOUGH/2)
-//                 && abs(Measurments::angleDiff(robot->getOrientation(), direction)) < ANGLE
-//                 && Measurments::angleDiff(robot->getOrientation(), abs(Measurments::angleBetween(robot->getRobotPosition(), gm->getBallPoint()))) > ANGLE/4*5)
+//        else if (measurements::isClose(robot->getRobotPosition(), gm->getBallPoint(), CLOSE_ENOUGH/2)
+//                 && abs(measurements::angleDiff(robot->getOrientation(), direction)) < ANGLE
+//                 && measurements::angleDiff(robot->getOrientation(), abs(measurements::angleBetween(robot->getRobotPosition(), gm->getBallPoint()))) > ANGLE/4*5)
 //        {
 
 //        }

@@ -39,7 +39,7 @@ void GuiInterface::show() {
     dash->show();
 }
 
-void GuiInterface::drawPath(Point A, Point B, double seconds) {
+void GuiInterface::drawPath(const Point& A, const Point& B, const double seconds) {
     dash->fieldpanel->setupLine(A, B, seconds);
 }
 
@@ -55,12 +55,12 @@ void GuiInterface::guiPrintTerminal(std::string output) {
     dash->guiPrint(output);
 }
 
-void GuiInterface::drawRegion(Point A, Point B, Point C, Point D, double seconds)
+void GuiInterface::drawPoint(const Point& p)
 {
-    dash->fieldpanel->setupLine(A,B,seconds);
-    dash->fieldpanel->setupLine(B,C,seconds);
-    dash->fieldpanel->setupLine(C,D,seconds);
-    dash->fieldpanel->setupLine(D,A,seconds);
+    dash->fieldpanel->setupPoint(p);
+}
 
-
+void GuiInterface::drawRegion(const std::vector<Point> p_vec)
+{
+    dash->fieldpanel->setupRegion(p_vec);
 }

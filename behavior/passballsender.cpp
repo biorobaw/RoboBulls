@@ -1,5 +1,5 @@
-#include "utilities/region.h"
-#include "utilities/measurments.h"
+#include "utilities/region/rectangle.h"
+#include "utilities/measurements.h"
 #include "skill/kick.h"
 #include "skill/stop.h"
 #include "skill/kicktopointomni.h"
@@ -37,11 +37,11 @@ Point PassBallSender::findPassPoint(Robot*)
 {
     /* Check both halves of the opponent's side so see which
      * has the least number of enemies */
-    Region topRegion = Region::topRightRegion;
-    Region botRegion = Region::lowerRightRegion;
-    int topEnemies = topRegion.numOfOpponents();
-    int botEnemies = botRegion.numOfOpponents();
-    Region best = (botEnemies < topEnemies) ? botRegion : topRegion;
+    Rectangle topRectangle = Rectangle(0,0, HALF_FIELD_LENGTH, HALF_FIELD_WIDTH);
+    Rectangle botRectangle = Rectangle(0,0, HALF_FIELD_LENGTH,-HALF_FIELD_WIDTH);
+    int topEnemies = topRectangle.numOfOpponents();
+    int botEnemies = botRectangle.numOfOpponents();
+    Rectangle best = (botEnemies < topEnemies) ? botRectangle : topRectangle;
     passingPoint = best.centre();
     return passingPoint;
 }

@@ -4,6 +4,9 @@
 #include <deque>
 #include "guisidelines.h"
 #include "utilities/point.h"
+#include "guidrawpoint.h"
+#include "guidrawregion.h"
+
 using std::deque;
 class GuiRobot;
 class GuiBall;
@@ -100,13 +103,24 @@ public:
     Point linePointB = Point(0,0);
     double lineLifeSpan = 0;
     bool needLine = false;
+
+    // Line drawing information
     deque<Point> lineAPoints;
     deque<Point> lineBPoints;
     deque<double> lineLifeSpans;
+
+    // Point drawing information
+    deque<Point> simplePoints;
+
+    // Region drawing information
+    deque<Point> region_points;
+
     bool hidePaths = false;
 
 private:
     deque<GuiDrawLine*> lineQueue;
+    GuiDrawPoint* point_drawer;
+    GuiDrawRegion* region_drawer;
     void doubleClickScan();
     void cameraMoveScan();
     bool fieldClickScan();
@@ -118,9 +132,11 @@ public slots:
     void zoomField(int scale);
     void defaultZoom();
     void drawLine();
+    void drawPoint();
+    void drawRegion();
     void setupLine(Point start, Point stop, double seconds);
-
-
+    void setupPoint(Point p);
+    void setupRegion(std::vector<Point>);
 
 };
 

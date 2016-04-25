@@ -26,9 +26,9 @@ void AttackSupport::recalculateWp(Robot* robot)
 
     //Regions in which to check for robots
     //TODO: Use standardized regions
-    static Region left_of_main (0, goal_dir*3000, 0, 2000);
-    static Region right_of_main(0, goal_dir*3000, 0, -2000);
-    static Region penalty_area (gp.x, gp.x-goal_dir*500,-500,500);
+    static Rectangle left_of_main (0, 0, goal_dir*3000, 2000);
+    static Rectangle right_of_main(0, 0, goal_dir*3000, -2000);
+    static Rectangle penalty_area (gp.x, -500, gp.x-goal_dir*500, 500);
 
     //We do not recalculate if the attacker hasn't moved too much
     if (Measurements::isClose(main_attacker,previousAttackerPos,40))

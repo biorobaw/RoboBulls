@@ -5,7 +5,7 @@
 #include <iostream>
 #include "model/robot.h"
 #include "movement/movetype.h"
-#include "utilities/measurments.h"
+#include "utilities/measurements.h"
 #include "utilities/debug.h"
 #include "include/config/tolerances.h"
 #include "include/config/simulated.h"

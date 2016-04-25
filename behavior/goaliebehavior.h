@@ -1,11 +1,14 @@
 #ifndef GOALIEBEHAVIOR_H
 #define GOALIEBEHAVIOR_H
+#include <math.h>
 #include "skill/kicktopointomni.h"
 #include "behavior/genericmovementbehavior.h"
-#include "movement/gotoposition.h"
+#include "utilities/region/defencearea.h"
+#include "utilities/measurements.h"
+#include "gui/guiinterface.h"
 
 /*! @brief The “goalie” behavior of the game.
- * @author Narges Ghaedi, James W, Adam H
+ * @author Narges G, James W, Adam H, Muhaimen S
  *
  * The robot defends the goal by positioning itself in the trajectory of the ball
  * when it is moving torwards the goal, as well as positioning itself to block a robot
@@ -17,7 +20,7 @@
 class GoalieBehavior:public GenericMovementBehavior
 {
 public:
-    static int goalieDist; //!< Distance ball must be to idlePoint for goalie to move it kick it
+    static int clearDist; //!< Distance ball must be to idlePoint for goalie to move it kick it
 
 public:
     GoalieBehavior();
@@ -34,11 +37,15 @@ private:
      * @details This is used to place the goalie in the path of a possible robot kick.
      * @param robot Robot to test
      * @param lineSegOut If true, A pair of Point of {the ball's position, where it will land in the goal} */
-    bool ballOnRobotIsAimedAtOurGoal(Robot* robot, std::pair<Point,Point>& lineSegOut);
+    bool botOnBallIsAimedAtOurGoal(Robot* robot, std::pair<Point,Point>& lineSegOut);
 
     /*! @brief Returns true if the ball is either behind the goal or too close to the edge
      * @details In such cases, we will not chase the ball as it is out of the field or unreachable */
     bool isBallUnreachable();
+
+    /*! @brief Returns true if the ball is stopped in the penalty area
+     * @details We will only try to kick the ball away once this returns true */
+    bool isSafeToClearBall();
 
     Point idlePoint;                    //!< Point to sit at when no action happens
     bool isKickingBallAway;             //!< Are we in the process of kicking the ball from the goal?

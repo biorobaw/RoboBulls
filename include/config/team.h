@@ -28,8 +28,8 @@
  * @details This specifies if we are playing from the negative X axis
  * or the positive X axis. This applies transformations to the camera's
  * readings always making our goal on the negative X axis. The enemy's
- * goal is always at positive X. */
-#define SIDE SIDE_NEGATIVE
+ * goal is always at positive X. It should not be used anywhere else. */
+#define SIDE SIDE_POSITIVE
 //! @}
 
 #endif

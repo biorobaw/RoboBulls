@@ -17,11 +17,12 @@ public:
     static GuiInterface * getGuiInterface();
     const std::vector<bool>& isOverriddenBot();
     void show();
-    void drawPath(Point A, Point B, double seconds = 1);
+    void drawPath(const Point& A, const Point& B, const double seconds = 1);
     void setHidePaths(bool hide);
     void guiPrintRobot(int robotID, std::string output);
     void guiPrintTerminal(std::string output);
-    void drawRegion(Point A, Point B, Point C, Point D, double seconds = 3);
+    void drawPoint(const Point& p);
+    void drawRegion(const std::vector<Point>);
 
     //Returns the robot that is overriden and selected, or -1 if none.
     int  getSelOverBot();

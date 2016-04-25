@@ -1,9 +1,9 @@
-#include "utilities/measurments.h"
+#include "utilities/measurements.h"
 #include "behavior/passballsender.h"
 #include "skill/stop.h"
 #include "skill/kicktopointomni.h"
 #include "skill/kick.h"
-#include "utilities/region.h"
+#include "utilities/region/rectangle.h"
 #include "passballreceiver.h"
 
 #if SIMULATED
@@ -34,18 +34,14 @@ PassBallReceiver::~PassBallReceiver()
 
 bool PassBallReceiver::playerInBadArea(Robot *robot)
 {
-    struct sides {  Region up;
-                    Region down;
-                    Region left;
-                    Region right;
+    struct sides {  Rectangle up =  Rectangle(-2500, 2000, -3000, -2000);
+                    Rectangle down = Rectangle(2500, 2000, 3000, -2000);
+                    Rectangle left = Rectangle(-3000, 2000, 3000, 1500);
+                    Rectangle right = Rectangle(-3000, -2000, 3000, -1500);
                  };
     sides fieldSides;
-    fieldSides.up = Region(-2500, -3000, 2000, -2000);
-    fieldSides.down = Region(2500, 3000, 2000, -2000);
-    fieldSides.left = Region(-3000, 3000, 2000, 1500);
-    fieldSides.right = Region(-3000, 3000, -2000, -1500);
 
-    Region riskRegion = Region (0, -3000, -2000, 2000);
+    Rectangle riskRegion = Rectangle (0, -2000, -3000, 2000);
     if (fieldSides.up.contains(robot->getPosition()) ||
         fieldSides.down.contains(robot->getPosition()) ||
         fieldSides.left.contains(robot->getPosition()) ||

@@ -1,5 +1,5 @@
-#ifndef MEASURMENTS_H
-#define MEASURMENTS_H
+#ifndef measurements_H
+#define measurements_H
 
 #include <cmath>
 #include "utilities/point.h"
@@ -11,7 +11,7 @@ class Robot;
  * @{ */
 
 /*! @brief Contains useful math and utility functions
- * @details Measurments is used over the project to calculate various
+ * @details measurements is used over the project to calculate various
  * distances and angles. It’s also misspelled but left that way for
  * backwards compatibility. Many of these functions (distance, midpoint, angleBetween)
  * have four Robot* / Point combination overloads. */
@@ -96,4 +96,4 @@ T Measurements::clamp(const T& value, const T& min, const T& max) {
     return std::min(max, std::max(value, min));
 }
 
-#endif // MEASURMENTS_H
+#endif // measurements_H

@@ -13,8 +13,11 @@
 #include "guiball.h"
 #include "guibotlabel.h"
 #include "guidrawline.h"
+#include "guidrawpoint.h"
+#include "guidrawregion.h"
 #include "guifield.h"
 #include "model/gamemodel.h"
+#include <vector>
 
 FieldPanel::FieldPanel(MainWindow * mw) {
     dash = mw;
@@ -367,24 +370,11 @@ void FieldPanel::updateScene() {
     centerViewOnBot();
     // Printing debug lines
     drawLine();
-
-    //Testing
-//    GuiInterface test;
-//    Point tL = {0,0};
-//    Point tR = {0, 20};
-//    Point bL = {-10, 0};
-//    Point bR = {-10,20};
-
-//    test.drawRegion(tL,tR,bL,bR,10);
-
-    //Testing
-
-
+    drawPoint();
+    drawRegion();
     updateLineQueue();
 
-
     dash->ui->gView_field->update();
-
 }
 
 void FieldPanel::scanForSelection() {
@@ -432,6 +422,16 @@ void FieldPanel::setupLine(Point start, Point stop, double seconds) {
     }
 }
 
+void FieldPanel::setupPoint(Point p) {
+    // Adding data from game's thread to deques for future reference by our thread
+    simplePoints.push_front(p);
+}
+
+void FieldPanel::setupRegion(std::vector<Point> p_vec) {
+    // Adding data from game's thread to deques for future reference by our thread
+    region_points.insert(region_points.begin(), p_vec.begin(), p_vec.end());
+}
+
 void FieldPanel::drawLine() {
     // Creating a new line based on received specs
     if (lineAPoints.size() > 0) {
@@ -447,21 +447,52 @@ void FieldPanel::drawLine() {
             newLine->x2 = lineBPoints[i].x;
             newLine->y2 = lineBPoints[i].y;
             newLine->lifeSpan = lineLifeSpans[i];
-            newLine->setZValue(2);
+            newLine->setZValue(3);
             newLine->setX(100);
             newLine->setY(100);
             newLine->ageLine();
             // adding our line to the scene and to the aging queue
             scene->addItem(newLine);
             lineQueue.push_front(newLine);
-
-    //        cout << "newLine A.x: " << newLine->x1 << " \n";
-    //        cout << "newLine B.x: " << newLine->x2 << " \n";
         }
     }
-
 }
 
+void FieldPanel::drawPoint() {
+    if(point_drawer == nullptr)
+        point_drawer = new GuiDrawPoint();
+    else
+    {
+        delete point_drawer;
+        point_drawer = new GuiDrawPoint();
+    }
+
+    for (Point p : simplePoints)
+        point_drawer->points.push_back(p);
+
+    simplePoints.clear();
+
+    point_drawer->setZValue(2);
+    scene->addItem(point_drawer);
+}
+
+void FieldPanel::drawRegion() {
+    if(region_drawer == nullptr)
+        region_drawer = new GuiDrawRegion();
+    else
+    {
+        delete region_drawer;
+        region_drawer = new GuiDrawRegion();
+    }
+
+    for (Point p : region_points)
+        region_drawer->Q_polygon.push_back(QPoint(p.x, p.y));
+
+    region_points.clear();
+
+    region_drawer->setZValue(2);
+    scene->addItem(region_drawer);
+}
 
 void FieldPanel::updateLineQueue() {
     // Refreshing the field if there are lines to draw

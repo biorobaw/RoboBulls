@@ -267,7 +267,7 @@ PREDICATE_FUNCTION(pred_id,                  id)
 PREDICATE_FUNCTION(pred_idNot,               idNot)
 
 /*! @{
- * @name In addition to functions, Comparisons provides Measurments-style \
+ * @name In addition to functions, Comparisons provides measurements-style \
  * standalone math querying functions<br> */
 bool isFacingPoint(Robot*, Robot*, float tol = _IFP_TOL);
 bool isFacingPoint(Robot*, const Point&, float tol = _IFP_TOL);

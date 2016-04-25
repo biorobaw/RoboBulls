@@ -158,15 +158,19 @@ Point GameModel::getPenaltyPoint()
 }
 
 //! @brief Returns the opponents's goal, that we are trying to score in
+//! VisionComm transforms received info such that opponent is always
+//! on the positive side based on the SIDE global
 Point GameModel::getOpponentGoal()
 {
-    return Point(FIELD_LENGTH, 0);
+    return Point(HALF_FIELD_LENGTH, 0);
 }
 
-//! @brief Returns the goal point that we are defending (edge of the field)
+//! @brief Returns the goal point that we are defending
+//! //! VisionComm transforms received info such that we are always
+//! on the negative side based on the SIDE global
 Point GameModel::getMyGoal()
 {
-    return Point(-FIELD_LENGTH, 0);
+    return Point(-HALF_FIELD_LENGTH, 0);
 }
 
 //! @brief Returns the last different game state before this one

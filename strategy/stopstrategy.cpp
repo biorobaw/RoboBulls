@@ -1,7 +1,7 @@
 #include <iostream>
 #include <list>
 #include "include/config/team.h"
-#include "utilities/measurments.h"
+#include "utilities/measurements.h"
 #include "behavior/goaliebehavior.h"
 #include "model/gamemodel.h"
 #include "utilities/comparisons.h"

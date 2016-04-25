@@ -2,9 +2,9 @@
 #include <algorithm>
 #include <iostream>
 #include "include/config/tolerances.h"
-#include "utilities/measurments.h"
+#include "utilities/measurements.h"
 #include "utilities/comparisons.h"
-#include "utilities/region.h"
+#include "utilities/region/defencearea.h"
 #include "model/gamemodel.h"
 #include "movement/pathfinding/fppa_pathfinding.h"
 
@@ -46,8 +46,8 @@ namespace Movement {
 namespace FPPA {
 namespace impl {
 
-    const Point fieldTopLeft = Point(-FIELD_LENGTH, -FIELD_WIDTH);
-    const Point fieldBotRight = Point(FIELD_LENGTH, FIELD_WIDTH);
+    const Point fieldTopLeft  = Point(-HALF_FIELD_LENGTH, -HALF_FIELD_WIDTH);
+    const Point fieldBotRight = Point( HALF_FIELD_LENGTH,  HALF_FIELD_WIDTH);
     int framesUntilUpdate = 0;
     std::vector<Point> currentFrameObstacles;
 
@@ -100,7 +100,8 @@ namespace impl {
 
     static bool isObstacleAtPoint(const Point& toCheck)
     {
-        if(Region::goalLeftRegion.contains(toCheck) || Region::goalRightRegion.contains(toCheck))
+        DefenceArea da = DefenceArea();
+        if(da.contains(toCheck))
             return true;
         return Comparisons::isDistanceToLess(toCheck, ROB_OBST_DIA).any_of(currentFrameObstacles);
     }
@@ -200,9 +201,9 @@ namespace impl {
 
     static void sanitizePoint(Point& pt)
     {
-        //Used to clamp point to inside field
-        pt.x = Measurements::clamp(pt.x,-FIELD_LENGTH+100.f, FIELD_LENGTH-100.f);
-        pt.y = Measurements::clamp(pt.y, -FIELD_WIDTH+100.f,  FIELD_WIDTH-100.f);
+        // Used to clamp point to inside field
+        pt.x = Measurements::clamp(pt.x, -HALF_FIELD_LENGTH+100.f, HALF_FIELD_LENGTH-100.f);
+        pt.y = Measurements::clamp(pt.y, -HALF_FIELD_WIDTH+100.f,  HALF_FIELD_WIDTH-100.f);
     }
 
     static bool isValidPath(const Path& p)
@@ -210,7 +211,7 @@ namespace impl {
         //Returns true if no point in the path is within 20% of the edge of the field
         //Exclude the first point becasue it is the robot
         return std::none_of(p.begin()+1, p.end(),[](const Point& t) {
-            return abs(t.x) >= 0.80*FIELD_LENGTH || abs(t.y) >= 0.80*FIELD_WIDTH;});
+                   return abs(t.x) >= 0.80*HALF_FIELD_LENGTH || abs(t.y) >= 0.80*HALF_FIELD_WIDTH;});
     }
 
     static float getPathLength(const Path& p)

@@ -1,5 +1,5 @@
 #include "behavior/simplebehaviors.h"
-#include "utilities/measurments.h"
+#include "utilities/measurements.h"
 #include "utilities/comparisons.h"
 #include "behavior/goaliebehavior.h"
 #include "include/config/team.h"

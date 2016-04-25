@@ -23,7 +23,7 @@
  *  - One robot is sent to the center to encourage a quick Attack switch
  *  - Robot #5 still defend the goal
  *  - The remaining robot is sent to block the enemy passer/receiver team
- *    by placing itself between them (Measurments::midPoint).
+ *    by placing itself between them (measurements::midPoint).
  *
  * This strategy was designed for the Nov.26 presentation..
  * then Feb 13-14 Engineering Expo...

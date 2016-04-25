@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include "movement/differential/closedloopcontrol.h"
-#include "utilities/measurments.h"
+#include "utilities/measurements.h"
 
 namespace Movement
 {

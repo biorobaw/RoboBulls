@@ -29,3 +29,24 @@ protected:
 };
 
 #endif // KF_H
+
+/* Simulator Settings
+Physics
+    World
+        65
+        False
+        0.015
+        9.8
+    Ball
+        0.044
+        0.1
+        1.0
+        0.5
+        0.1
+        0.004
+        0.004
+
+Communication
+
+
+*/

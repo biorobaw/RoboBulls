@@ -4,7 +4,7 @@
 #include <vector>
 #include "model/robot.h"
 #include "movement/movetype.h"
-#include "utilities/measurments.h"
+#include "utilities/measurements.h"
 
 namespace Movement
 {

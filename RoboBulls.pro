@@ -87,16 +87,20 @@ SOURCES += main.cpp \
 	utilities/comparisons.cpp \
 	utilities/debug.cpp \
 	utilities/edges.cpp \
-	utilities/measurments.cpp \
 	utilities/point.cpp \
-	utilities/region.cpp \
 	utilities/velocitycalculator.cpp \
         behavior/defendbehavior.cpp \
         behavior/goaliebehavior.cpp \
         strategy/indirectkickstrategy.cpp \
         strategy/threevthree.cpp \
         communication/kfball.cpp \
-        utilities/getclassname.cpp
+        utilities/getclassname.cpp \
+    utilities/region/sector.cpp \
+    utilities/region/rectangle.cpp \
+    utilities/measurements.cpp \
+    utilities/region/defencearea.cpp \
+    gui/guidrawpoint.cpp \
+    gui/guidrawregion.cpp
 
 HEADERS += \
 	behavior/attackmain.h \
@@ -178,15 +182,20 @@ HEADERS += \
 	utilities/comparisons.h \
 	utilities/debug.h \
 	utilities/edges.h \
-	utilities/measurments.h \
 	utilities/point.h \
-	utilities/region.h \
 	utilities/velocitycalculator.h \
         behavior/goaliebehavior.h \
         strategy/indirectkickstrategy.h \
         strategy/threevthree.h \
         communication/kfball.h \
-        utilities/getclassname.h
+        utilities/getclassname.h \
+    utilities/region/sector.h \
+    utilities/region/rectangle.h \
+    utilities/region/region.h \
+    utilities/measurements.h \
+    utilities/region/defencearea.h \
+    gui/guidrawpoint.h \
+    gui/guidrawregion.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 

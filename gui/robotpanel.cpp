@@ -13,7 +13,7 @@
 #include "model/gamemodel.h"
 #include "utilities/getclassname.h"
 #include "model/robot.h"
-#include "utilities/measurments.h"
+#include "utilities/measurements.h"
 //Helper classes
 #include "guirobot.h"
 #include "guiball.h"
