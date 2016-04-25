@@ -45,7 +45,7 @@ private:
 
     /*! @brief Returns true if the ball is stopped in the penalty area
      * @details We will only try to kick the ball away once this returns true */
-    bool isSafeToClearBall();
+    bool shouldClearBall();
 
     Point idlePoint;                    //!< Point to sit at when no action happens
     bool isKickingBallAway;             //!< Are we in the process of kicking the ball from the goal?

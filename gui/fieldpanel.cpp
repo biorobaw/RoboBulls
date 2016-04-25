@@ -473,6 +473,8 @@ void FieldPanel::drawPoint() {
     simplePoints.clear();
 
     point_drawer->setZValue(2);
+    point_drawer->setX(100);
+    point_drawer->setY(100);
     scene->addItem(point_drawer);
 }
 
@@ -491,6 +493,8 @@ void FieldPanel::drawRegion() {
     region_points.clear();
 
     region_drawer->setZValue(2);
+    region_drawer->setX(100);
+    region_drawer->setY(100);
     scene->addItem(region_drawer);
 }
 

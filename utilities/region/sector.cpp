@@ -46,7 +46,7 @@ void Sector::draw()
     for(int x = c.x - r; x <= c.x + r; x+=20)
         for(int y = c.y - r; y <= c.y + r; y+=20)
             if(this->contains(Point(x,y)))
-                sector.push_back(Point(x+100,y+100));
+                sector.push_back(Point(x,y));
 
     GuiInterface* gui = GuiInterface::getGuiInterface();
     gui->drawRegion(sector);

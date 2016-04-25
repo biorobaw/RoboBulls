@@ -78,16 +78,16 @@ bool GoalieBehavior::isBallUnreachable()
     return angleTest;
 }
 
-bool GoalieBehavior::isSafeToClearBall()
+bool GoalieBehavior::shouldClearBall()
 {
+    // We only clear the ball when it is inside the defence area
+    // and not moving
     DefenceArea da;
-    da.draw();
-    return da.contains(gameModel->getBallPoint());
+    return da.contains(gameModel->getBallPoint()) && gameModel->getBallSpeed() == 0;
 }
 
 void GoalieBehavior::perform(Robot *robot)
 {
-    isSafeToClearBall();
     Point ball = gameModel->getBallPoint();
     float angleToBall = Measurements::angleBetween(robot, ball);
     Robot* ballBot = gameModel->getHasBall();
@@ -109,7 +109,8 @@ void GoalieBehavior::perform(Robot *robot)
             kick_skill = nullptr;
         }
     }
-    else if(Measurements::distance(ball, idlePoint) < clearDist) {
+    else if(shouldClearBall())
+    {
         // If we're not kicking and the ball is close to the goal, we want to kick it away.
         isKickingBallAway = true;
         kick_skill = new Skill::KickToPointOmni(Point(0,0));

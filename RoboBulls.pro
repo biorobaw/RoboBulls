@@ -199,7 +199,7 @@ HEADERS += \
 
 QMAKE_CXXFLAGS += -std=c++0x
 
-unix|win32: LIBS +=  -lprotobuf -lSDL2 -lkalman
+unix|win32: LIBS +=  -lprotobuf -lSDL2
 
 OTHER_FILES += \
     gui/images/0.png \

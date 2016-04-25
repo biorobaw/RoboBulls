@@ -107,8 +107,6 @@ void printBuildInfo()
         << "     RefBox: " << REFBOX_ADDRESS    << ":" << REFBOX_PORT    << std::endl;
 }
 
-
-
 int main(int argc, char *argv[])
 {
     //Initialize GameModel, StrategyController, Vision, and Ref

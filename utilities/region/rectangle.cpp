@@ -165,7 +165,7 @@ void Rectangle::draw()
     for(int x = min_x; x <= max_x; x+=20)
         for(int y = min_y; y <= max_y; y+=20)
             if(this->contains(Point(x,y)))
-                rect.push_back(Point(x+100,y+100));
+                rect.push_back(Point(x,y));
 
     GuiInterface* gui = GuiInterface::getGuiInterface();
     gui->drawRegion(rect);
