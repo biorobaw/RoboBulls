@@ -15,7 +15,7 @@ float theta_int_mult = 0.0015;  //Multiplier for theta integral
 #else
 float xy_prop_mult = .25;     //Multiplier for Proportional XY
 float xy_int_mult = 0;     //Multiplier for integral XY
-float theta_prop_mult = 5;    //Multiplier for theta proportional
+float theta_prop_mult = 1;    //Multiplier for theta proportional
 float theta_int_mult = 0.000;  //Multiplier for theta integral
 #endif
 
@@ -85,9 +85,9 @@ fourWheelVels FourWheelCalculator::defaultCalc
     // Reduce speed near target
     if (distance_to_goal < 700)
     {
-        x_vel *= 0.1;
-        y_vel *= 0.1;
-        theta_vel *= 0.1;
+        x_vel *= 0.5;
+        y_vel *= 0.5;
+        theta_vel *= 0.5;
     }
 #endif
 

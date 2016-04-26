@@ -83,6 +83,7 @@ bool GoalieBehavior::shouldClearBall()
     // We only clear the ball when it is inside the defence area
     // and not moving
     DefenceArea da;
+    //da.draw();
     return da.contains(gameModel->getBallPoint()) && gameModel->getBallSpeed() == 0;
 }
 
@@ -91,7 +92,7 @@ void GoalieBehavior::perform(Robot *robot)
     Point ball = gameModel->getBallPoint();
     float angleToBall = Measurements::angleBetween(robot, ball);
     Robot* ballBot = gameModel->getHasBall();
-    //GuiInterface* gui = GuiInterface::getGuiInterface();
+    GuiInterface* gui = GuiInterface::getGuiInterface();
 
     //Segment to hold ballOnRobotIsAimedAtOurGoal and isBallMovingTowardsGoal return
     std::pair<Point,Point> lineSegment;
@@ -120,7 +121,7 @@ void GoalieBehavior::perform(Robot *robot)
          * But we only move if the nearest point is near the goal */
         Point movePoint = Measurements::linePoint(robot->getPosition(), lineSegment.first, lineSegment.second);
         if(Measurements::distance(movePoint, idlePoint) < clearDist) {
-            //gui->drawPath(lineSegment.first, lineSegment.second);
+            gui->drawPath(lineSegment.first, lineSegment.second);
             setVelocityMultiplier(1.5);
             setMovementTargets(movePoint, angleToBall, false, false);
         } else {

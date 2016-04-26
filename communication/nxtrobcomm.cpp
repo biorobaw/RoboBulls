@@ -7,7 +7,7 @@
 float lf, lb, rf, rb;
 
 //A constant to multiply velocities
-static float k = 0.15;
+static float k = 0.2;
 
 NXTRobComm::NXTRobComm()
 {
@@ -52,7 +52,7 @@ void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
         packet->id = rob->getID();
 
         if(rob->type() == fourWheelOmni) {
-            //Packet format with Arduino: 250 and 255 with k+100
+            //Packet format with Arduino: 250 and 255 with vel*k+100
             packet->tilde = char(250);
             packet->dollar = char(255);
         #if ROBOT_WHEEL_TEST

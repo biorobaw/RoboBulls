@@ -6,7 +6,7 @@
 #include "movement/move_collisions.h"
 #include "model/gamemodel.h"
 #include "utilities/comparisons.h"
-#include "gui/guiinterface.h"              //Ryan
+#include "gui/guiinterface.h"
 
 /************************************************************************/
 /* USER CONFIGURATION */
