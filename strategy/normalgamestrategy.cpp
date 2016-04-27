@@ -94,6 +94,8 @@ NormalGameStrategy::NormalGameStrategy()
     , ballOriginalPos(GameModel::getModel()->getBallPoint())
     , needsAttackAssign(true)
     , needsDefenceAssign(true)
+    , my_def_area(0)
+    , opp_def_area(1)
     { }
 
 /* So, here, the only way to get back into NGS is through a kickoff.
@@ -127,15 +129,13 @@ bool NormalGameStrategy::update()
     bool oldAttack = isOnAttack;
     GameModel* gm = GameModel::getModel();
     Point ball = gm->getBallPoint();
-    Point opGoal = gm->getOpponentGoal();
-    Point myGoal = gm->getMyGoal();
     bool ballMoved = !Measurements::isClose(ballOriginalPos, ball);
 
     //Ball near goals, used as checks to not do anything first
-    static bool ballInOpGoal = false;
+    static bool ballInOpDefArea = false;
     static bool ballinMyGoal = false;
-    ballInOpGoal = Measurements::isClose(ball, opGoal, GoalieBehavior::clearDist);
-    ballinMyGoal = Measurements::isClose(ball, myGoal, GoalieBehavior::clearDist);
+    ballInOpDefArea = opp_def_area.contains(ball);
+    ballinMyGoal = my_def_area.contains(ball);
 
     isOnAttack = considerSwitchCreiteria();
 
@@ -143,10 +143,10 @@ bool NormalGameStrategy::update()
      * the robots retreat back to their half, and no attack/defend
      * is run. Changes to defence mode.
      */
-    if(posedge(ballInOpGoal or ballinMyGoal))
+    if(posedge(ballInOpDefArea or ballinMyGoal))
         assignGoalKickBehaviors();
 
-    if(ballInOpGoal or ballinMyGoal)
+    if(ballInOpDefArea or ballinMyGoal)
     {
         /* A count is kept to ensure robots don't move
          * until the ball is surely out of the goal
@@ -296,15 +296,10 @@ bool NormalGameStrategy::considerSwitchCreiteria()
         }
     }
     else {
-        //We default to defence if ball is in either goal
-        Point opGoal = gameModel->getOpponentGoal();
-        Point myGoal = gameModel->getMyGoal();
+        //We default to defence if ball is in either defence area
         Point ball = gameModel->getBallPoint();
-        bool ballInOpGoal = Measurements::isClose(ball, opGoal, GoalieBehavior::clearDist);
-        bool ballinMyGoal = Measurements::isClose(ball, myGoal, GoalieBehavior::clearDist);
-        if(ballInOpGoal || ballinMyGoal) {
+        if(my_def_area.contains(ball) || opp_def_area.contains(ball))
             return false;
-        }
     }
 
     //No change in attack

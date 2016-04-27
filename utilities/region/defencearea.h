@@ -10,13 +10,13 @@
 class DefenceArea : public Region
 {
 public:
-    DefenceArea();
+    DefenceArea(bool team = 0);
     bool contains(const Point &) override;
     void draw() override;
 private:
     // Consult SSL Rule book for clarification of the following regions
-    static Rectangle r;
-    static Sector s1, s2;
+    Rectangle r;
+    Sector s1, s2;
 };
 
 #endif // DEFENCEAREA_H

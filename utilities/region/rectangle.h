@@ -12,6 +12,8 @@
 class Rectangle : public Region
 {
 public:
+    Rectangle();
+
     /*! @brief Constructs rectangle with a top-left point (X1,Y1) and
      * bottom-left point (X2,Y2)
      * \param X1 The left edge of the region

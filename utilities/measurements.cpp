@@ -118,14 +118,26 @@ float Measurements::lineDistance(const Point& p0, const Point& LStart, const Poi
 
 Point Measurements::linePoint(const Point& p0, const Point& LStart, const Point& LEnd)
 {
-    //See https://pantherfile.uwm.edu/ericskey/www/231material/hws19.pdf
-    float y2 = LEnd.y;
-    float y1 = LStart.y;
-    float x2 = LEnd.x;
-    float x1 = LStart.x;
-    float m = (y2 - y1) / (x2 - x1);
-    float b = m * (-x1) + y1;
-    float x = (p0.x + m*p0.y - b*m) / (m*m + 1);
-    float y = (m*p0.x + m*m*p0.y + b) / (m*m + 1);
-    return Point(x, y);
+//    //See https://pantherfile.uwm.edu/ericskey/www/231material/hws19.pdf
+//    float y2 = LEnd.y;
+//    float y1 = LStart.y;
+//    float x2 = LEnd.x;
+//    float x1 = LStart.x;
+//    float m = (y2 - y1) / (x2 - x1);
+//    float b = m * (-x1) + y1;
+//    float x = (p0.x + m*p0.y - b*m) / (m*m + 1);
+//    float y = (m*p0.x + m*m*p0.y + b) / (m*m + 1);
+//    return Point(x, y);
+
+    // Return minimum distance between line segment vw and point p
+    const double l2 = pow((LStart.x - LEnd.x),2) + pow((LStart.y - LEnd.y),2);  // i.e. |w-v|^2 -  avoid a sqrt
+    if (l2 == 0.0) return LStart;   // v == w case
+    // Consider the line extending the segment, parameterized as v + t (w - v).
+    // We find projection of point p onto the line.
+    // It falls where t = [(p-v) . (w-v)] / |w-v|^2
+    // We clamp t from [0,1] to handle points outside the segment vw.
+    Point A = p0 - LStart, B = LEnd - LStart;
+    const double t = std::max(0.0, std::min(1.0, (A.x*B.x + A.y*B.y) / l2));
+    Point projection = LStart + (LEnd - LStart) * t;  // Projection falls on the segment
+    return projection;
 }

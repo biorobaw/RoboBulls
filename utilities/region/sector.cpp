@@ -1,5 +1,7 @@
 #include "sector.h"
 
+Sector::Sector(){}
+
 Sector::Sector(Point centre, float radius, float start_angle, float end_angle)
     :c(centre), r(radius), a1(start_angle), a2(end_angle)
 {
@@ -24,13 +26,13 @@ bool Sector::contains(const Point& p)
         || Measurements::angleBetween(c, p) < a2)
             return false;
     }
-    if(a1 <= 0 && a2 >= 0)
+    else if(a1 <= 0 && a2 >= 0)
     {
-        if(Measurements::angleBetween(c, p) < a1
-        || Measurements::angleBetween(c, p) > a2)
+        if(Measurements::angleBetween(c, p) > a1
+        || Measurements::angleBetween(c, p) < a2)
             return false;
     }
-    if(a1 <= 0 && a2 <= 0)
+    else // a1 and a2 are both negative
     {
         if(Measurements::angleBetween(c, p) > a1
         || Measurements::angleBetween(c, p) < a2)

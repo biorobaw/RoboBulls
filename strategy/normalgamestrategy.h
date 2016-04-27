@@ -2,6 +2,7 @@
 #define NORMALGAMESTRATEGY_H
 #include "model/robot.h"
 #include "strategy/strategy.h"
+#include "utilities/region/defencearea.h"
 
 /*! @brief This strategy is meant for the ' ' gamestate (space) which means
  * normal play.
@@ -64,6 +65,8 @@ private:
     Point ballOriginalPos;
     bool  needsAttackAssign;
     bool  needsDefenceAssign;
+    DefenceArea my_def_area;
+    DefenceArea opp_def_area;
 };
 
 #endif // NORMALGAMESTRATEGY_H

@@ -29,7 +29,7 @@
 #define DEF_AREA_OFFSET 100
 
 //! @brief Width of Goal Post
-#define GOAL_WIDTH 700
+#define GOAL_WIDTH 1000
 
 //! @brief Conversion factor from meters to field Point coordinates
 #define POINTS_PER_METER 1250

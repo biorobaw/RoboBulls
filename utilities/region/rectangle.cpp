@@ -1,5 +1,10 @@
 #include "rectangle.h"
 
+Rectangle::Rectangle()
+{
+}
+
+
 Rectangle::Rectangle(float X1,float Y1,float X2,float Y2)
 {
     min_x = std::min(X1,X2);

@@ -47,13 +47,13 @@ Point& Point::operator/=(float rhs)
     return *this;
 }
 
-Point Point::operator+(const Point& rhs)
+Point Point::operator+(const Point& rhs) const
 {
     Point ret(x + rhs.x, y + rhs.y);
     return ret;
 }
 
-Point Point::operator-(const Point& rhs)
+Point Point::operator-(const Point& rhs) const
 {
     Point ret(x - rhs.x, y - rhs.y);
     return ret;

@@ -20,9 +20,6 @@
 class GoalieBehavior:public GenericMovementBehavior
 {
 public:
-    static int clearDist; //!< Distance ball must be to idlePoint for goalie to move it kick it
-
-public:
     GoalieBehavior();
     ~GoalieBehavior();
     void perform(Robot*);
@@ -51,6 +48,7 @@ private:
     bool isKickingBallAway;             //!< Are we in the process of kicking the ball from the goal?
     bool isIdling;                      //!< Are we idling at the idle point?
     Skill::KickToPointOmni* kick_skill; //!< Skill to kick the ball with
+    DefenceArea def_area;
 };
 
 #endif // GoalieBehavior_H

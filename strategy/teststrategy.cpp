@@ -143,7 +143,7 @@ bool TestStrategy::update()
     //Change IDs and behaviors to be assigned here.
     //All robots must exists before any action is taken.
     Robot* r0  = gameModel->findMyTeam(3);
-    Point p = Point(-1000,0);
+//    Point p = Point(-1000,0);
     if(r0)
         r0->assignBeh<GoalieBehavior>();
     return false;
