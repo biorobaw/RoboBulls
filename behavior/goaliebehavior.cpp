@@ -2,7 +2,7 @@
 #include "goaliebehavior.h"
 
 //The distance from the goal where the robot stays idle
-#define IDLE_DISTANCE 400
+#define IDLE_DISTANCE ROBOT_RADIUS*2.5
 
 GoalieBehavior::GoalieBehavior()
     : idlePoint(gameModel->getMyGoal() + Point(IDLE_DISTANCE,0))
@@ -36,7 +36,6 @@ bool GoalieBehavior::isBallMovingTowardsGoal(std::pair<Point,Point>& lineEndsOut
     return (y > -GOAL_WIDTH/2) && (y < GOAL_WIDTH/2);
 }
 
-//TODO: Combine with isBallMovingTowardsGoal
 bool GoalieBehavior::botOnBallIsAimedAtOurGoal(Robot* robot, std::pair<Point,Point>& lineSegOut)
 {
     /* Return false automatically if the robot's orientation is facing a direction
@@ -65,10 +64,9 @@ bool GoalieBehavior::botOnBallIsAimedAtOurGoal(Robot* robot, std::pair<Point,Poi
     return yAtGoalLine > -GOAL_WIDTH/2 && yAtGoalLine < GOAL_WIDTH/2;
 }
 
-bool GoalieBehavior::isBallUnreachable()
+bool GoalieBehavior::isBallReachable()
 {
-    Point ball = gameModel->getBallPoint();
-    return abs(Measurements::angleBetween(idlePoint, ball)) > 90*(M_PI/180);
+    return abs(Measurements::angleBetween(idlePoint, gameModel->getBallPoint())) < 90*(M_PI/180);
 }
 
 bool GoalieBehavior::shouldClearBall()
@@ -80,10 +78,10 @@ bool GoalieBehavior::shouldClearBall()
 
 void GoalieBehavior::perform(Robot *robot)
 {
+    def_area.draw();
     Point ball = gameModel->getBallPoint();
     float angleToBall = Measurements::angleBetween(robot, ball);
     Robot* ballBot = gameModel->getHasBall();
-    GuiInterface* gui = GuiInterface::getGuiInterface();
 
     //Segment to hold ballOnRobotIsAimedAtOurGoal and isBallMovingTowardsGoal return
     std::pair<Point,Point> lineSegment;
@@ -95,7 +93,7 @@ void GoalieBehavior::perform(Robot *robot)
     // We will stop kicking if it becomes unreachable or we actually kick it away
     if(isKickingBallAway)
     {
-        if(kick_skill->perform(robot) || isBallUnreachable() ||
+        if(kick_skill->perform(robot) || !isBallReachable() ||
            !def_area.contains(gameModel->getBallPoint()))
         {
             isKickingBallAway = false;
@@ -107,63 +105,51 @@ void GoalieBehavior::perform(Robot *robot)
     // If we're not kicking and the ball is in the defence area, we want to kick it away.
     else if(shouldClearBall())
     {
+        std::cout << "Should Clear Ball" << std::endl;
         isKickingBallAway = true;
         kick_skill = new Skill::KickToPointOmni(Point(0,0));
     }
 
-    /* If the ball is moving towards goal, we move to get into the line of trajectory.
-     * But we only move if the nearest point is near the goal */
-    else if(isBallMovingTowardsGoal(lineSegment))
-    {
-        /* If the ball is moving towards goal, we move to get into the line of trajectory.
-         * But we only move if the nearest point is near the goal */
-        Point movePoint = Measurements::linePoint(robot->getPosition(), lineSegment.first, lineSegment.second);
-        if(def_area.contains(gameModel->getBallPoint()))
-        {
-            gui->drawPath(lineSegment.first, lineSegment.second);
-            setVelocityMultiplier(3);
-            setMovementTargets(movePoint, angleToBall, false, false);
-        }
-        else
-            setMovementTargets(idlePoint, angleToBall, false, false);
-    }
-
     // If there is a robot with the ball facing our goal, we move to get in it's trajectory.
-    // But we only move if the nearest point is near the goal
     else if(ballBot && ballBot->getID() != GOALIE_ID && botOnBallIsAimedAtOurGoal(ballBot, lineSegment))
     {
-
-        Point nearestPointOnLine = Measurements::linePoint(robot->getPosition(), lineSegment.first, lineSegment.second);
-        if(def_area.contains(gameModel->getBallPoint()))
-        {
-            gui->drawPath(lineSegment.first, lineSegment.second, 0.1);
-            gui->drawPath(robot->getPosition(), nearestPointOnLine, 0.1);
-            setVelocityMultiplier(3);
-            setMovementTargets(nearestPointOnLine, angleToBall, false, false);
-        }
-        else
-            setMovementTargets(idlePoint, angleToBall, false, false);
+        Point blockPoint = Measurements::linePoint(robot->getPosition(), lineSegment.first, lineSegment.second);
+        setVelocityMultiplier(3);
+        setMovementTargets(blockPoint, angleToBall, false, false);
     }
 
-    // If the the ball is free and not behind the goal-post,
-    // Move to block the shortest path from the ball to the goal
-    else if (!isBallUnreachable())
+    // If the ball is moving towards goal, we move to get into the line of trajectory.
+    else if(isBallMovingTowardsGoal(lineSegment))
+    {
+        Point blockPoint = Measurements::linePoint(robot->getPosition(), lineSegment.first, lineSegment.second);
+        setVelocityMultiplier(3);
+        setMovementTargets(blockPoint, angleToBall, false, false);
+    }
+
+    // If the the ball is free and not outside the field, opponents can try to score.
+    // So, move to block the shortest path from the ball to the goal
+    else if (isBallReachable())
     {
         // This is the point along the goal-post closest to the ball
         Point goal_point = Measurements::linePoint(gameModel->getBallPoint(),
                                                    Point(gameModel->getMyGoal().x, GOAL_WIDTH/2),
                                                    Point(gameModel->getMyGoal().x, -GOAL_WIDTH/2));
-        gui->drawPath(gameModel->getBallPoint(),goal_point);
 
-        // This is the point along ball_point->goal_point closest to the robot
+        // This is the point along the line segment ball_point->goal_point closest to the robot
         Point intercept_point = Measurements::linePoint(robot->getPosition(),
                                                         gameModel->getBallPoint(),
                                                         goal_point);
 
-        gui->drawPath(robot->getPosition(),intercept_point);
-
-        setVelocityMultiplier(3);
-        setMovementTargets(intercept_point, angleToBall, false, false);
+        if(def_area.contains(intercept_point))
+        {
+            setVelocityMultiplier(3);
+            setMovementTargets(intercept_point, angleToBall, false, false);
+        }
+        else
+        {
+            setVelocityMultiplier(1);
+            setMovementTargets(idlePoint, Measurements::angleBetween(robot, Point(0,0)));
+        }
     }
 
     // Otherwise we are just idling at the idle point, facing the center

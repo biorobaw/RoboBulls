@@ -38,7 +38,7 @@ private:
 
     /*! @brief Returns true if the ball is either behind the goal or too close to the edge
      * @details In such cases, we will not chase the ball as it is out of the field or unreachable */
-    bool isBallUnreachable();
+    bool isBallReachable();
 
     /*! @brief Returns true if the ball is stopped in the penalty area
      * @details We will only try to kick the ball away once this returns true */
