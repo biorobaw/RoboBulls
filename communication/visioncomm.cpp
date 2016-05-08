@@ -12,7 +12,7 @@ VisionComm::VisionComm(GameModel *gm)
     client = new RoboCupSSLClient(VISION_PORT, VISION_ADDRESS);
     client->open(true);
     gamemodel = gm;
-    fourCameraMode = isFourCameraMode();
+    fourCameraMode = SIMULATED || FOUR_CAMERA;
     kfilter = new KFBall();
     u.resize(4);
 }
@@ -81,6 +81,9 @@ static bool isGoodDetection
     //reported them. This is to help prevent duplicated readings on the edges
     float x = detection.x();
     float y = detection.y();
+
+
+
     float cam = frame.camera_id();
     if(!fourCameraMode) {
         isGoodSide =
@@ -93,7 +96,7 @@ static bool isGoodDetection
         (x  < 0 && y  < 0 && cam == 2) ||
         (x >= 0 && y  < 0 && cam == 3);
     }
-    isGoodSide |= SIMULATED;    //Simulated overrides anything
+    //isGoodSide |= SIMULATED;    //Simulated overrides anything
 
     return isGoodConf && isGoodSide;
 }
@@ -217,7 +220,7 @@ void VisionComm::recieveRobotTeam(const SSL_DetectionFrame& frame, int whichTeam
             if(gamemodel->find(robotID, *currentTeamVector) or currentTeamCounts[robotID] >= 25) {
                 receiveRobot(robot, whichTeam);
             } else {
-                ++currentTeamCounts[robotID];
+               ++currentTeamCounts[robotID];
             }
         }
     }
@@ -256,7 +259,7 @@ bool VisionComm::receive()
     
     /* After 50 frames the "seen counts" of each team are set to 0. This prevents
      * ghost robots from appearing over time */
-    if(++resetFrames > 50) {
+    if(++resetFrames > 100) {
         resetFrames = 0;
         for(int& reading : blue_rob_readings) reading = 0;
         for(int& reading : yell_rob_readings) reading = 0;

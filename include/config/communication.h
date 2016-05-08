@@ -8,6 +8,9 @@
  * @{
  */
 
+/*! @brief Are we processing packets from four cameras? */
+#define FOUR_CAMERA 0
+
 //! @brief Vision listen address options
 //! @{
 #define VISION_ADDRESS_SHAMSI "224.5.23.5"
@@ -28,11 +31,11 @@
 //! @brief Comunication configurations
 //! @{
 
-#define SIMULATOR_ADDRESS   SIMULATOR_ADDRESS_LOCAL
+#define SIMULATOR_ADDRESS   "131.247.14.98"
 #define SIMULATOR_PORT      20011
 
 #if SIMULATED
- #define VISION_ADDRESS     VISION_ADDRESS_SHAMSI
+ #define VISION_ADDRESS     "224.5.23.110"
  #define VISION_PORT        10020
 #else
  #define VISION_ADDRESS     VISION_ADDRESS_NONSIM
