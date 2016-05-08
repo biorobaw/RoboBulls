@@ -37,6 +37,8 @@
 //! @brief Conversion factor from Points to meters
 #define METERS_PER_POINT (1.0 / POINTS_PER_METER)
 
+#define BALL_RADIUS 25
+
 //! @}
 
 /*! @brief Unused Angle Value for skill/movement constructor code

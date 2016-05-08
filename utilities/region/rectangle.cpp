@@ -56,7 +56,7 @@ int Rectangle::numOfRobots()
 
     int number_of_robots = 0;
 
-    for (Robot * robot : gm->getOponentTeam())
+    for (Robot * robot : gm->getOppTeam())
     {
         if(Rectangle::contains(robot->getPosition()))
         {
@@ -95,7 +95,7 @@ int Rectangle::numOfOpponents()
 
     int number_of_robots = 0;
 
-    for (Robot * robot : gm->getOponentTeam())
+    for (Robot * robot : gm->getOppTeam())
     {
         if(Rectangle::contains(robot->getPosition()))
         {
@@ -112,7 +112,7 @@ int Rectangle::numOfRobots(std::vector<Robot*>& ignoreOpponents, std::vector<Rob
 
     int number_of_robots = 0;
 
-    for (Robot * robotAdd : gm->getOponentTeam())
+    for (Robot * robotAdd : gm->getOppTeam())
     {
         if( Rectangle::contains(robotAdd->getPosition()) )
         {

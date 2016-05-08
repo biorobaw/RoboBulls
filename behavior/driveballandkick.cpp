@@ -31,7 +31,7 @@ void DriveBallAndKick::perform(Robot* robot)
 {
     GameModel* gm = GameModel::getModel();
 
-    Point goal = gm->getOpponentGoal();
+    Point goal = gm->getOppGoal();
     Point kickPoint(1600, 0);
     double direction = Measurements::angleBetween(kickPoint, goal);
 

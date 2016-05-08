@@ -78,7 +78,6 @@ bool GoalieBehavior::shouldClearBall()
 
 void GoalieBehavior::perform(Robot *robot)
 {
-    def_area.draw();
     Point ball = gameModel->getBallPoint();
     float angleToBall = Measurements::angleBetween(robot, ball);
     Robot* ballBot = gameModel->getHasBall();
@@ -113,7 +112,7 @@ void GoalieBehavior::perform(Robot *robot)
     // If there is a robot with the ball facing our goal, we move to get in it's trajectory.
     else if(ballBot && ballBot->getID() != GOALIE_ID && botOnBallIsAimedAtOurGoal(ballBot, lineSegment))
     {
-        Point blockPoint = Measurements::linePoint(robot->getPosition(), lineSegment.first, lineSegment.second);
+        Point blockPoint = Measurements::lineSegmentPoint(robot->getPosition(), lineSegment.first, lineSegment.second);
         setVelocityMultiplier(3);
         setMovementTargets(blockPoint, angleToBall, false, false);
     }
@@ -121,7 +120,7 @@ void GoalieBehavior::perform(Robot *robot)
     // If the ball is moving towards goal, we move to get into the line of trajectory.
     else if(isBallMovingTowardsGoal(lineSegment))
     {
-        Point blockPoint = Measurements::linePoint(robot->getPosition(), lineSegment.first, lineSegment.second);
+        Point blockPoint = Measurements::lineSegmentPoint(robot->getPosition(), lineSegment.first, lineSegment.second);
         setVelocityMultiplier(3);
         setMovementTargets(blockPoint, angleToBall, false, false);
     }
@@ -131,12 +130,12 @@ void GoalieBehavior::perform(Robot *robot)
     else if (isBallReachable())
     {
         // This is the point along the goal-post closest to the ball
-        Point goal_point = Measurements::linePoint(gameModel->getBallPoint(),
+        Point goal_point = Measurements::lineSegmentPoint(gameModel->getBallPoint(),
                                                    Point(gameModel->getMyGoal().x, GOAL_WIDTH/2),
                                                    Point(gameModel->getMyGoal().x, -GOAL_WIDTH/2));
 
         // This is the point along the line segment ball_point->goal_point closest to the robot
-        Point intercept_point = Measurements::linePoint(robot->getPosition(),
+        Point intercept_point = Measurements::lineSegmentPoint(robot->getPosition(),
                                                         gameModel->getBallPoint(),
                                                         goal_point);
 
@@ -151,6 +150,8 @@ void GoalieBehavior::perform(Robot *robot)
             setMovementTargets(idlePoint, Measurements::angleBetween(robot, Point(0,0)));
         }
     }
+
+    // TODO: Insert ball is moving condition to defend against deflections
 
     // Otherwise we are just idling at the idle point, facing the center
     else

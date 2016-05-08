@@ -120,7 +120,7 @@ void moveUpdateStart()
 {
     //Obtains all robots on both teams in one vector; ease of updating
     currentAllRobots = gameModel->getMyTeam();
-    for(Robot* rob : gameModel->getOponentTeam())
+    for(Robot* rob : gameModel->getOppTeam())
         currentAllRobots.push_back(rob);
 }
 

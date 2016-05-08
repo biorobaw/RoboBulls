@@ -37,7 +37,7 @@ void VisionComm::receiveRobot(const SSL_DetectionRobot& robot, int detectedTeamC
     vector<Robot*>* currentTeam = &gamemodel->getMyTeam();
 
     if (detectedTeamColor != TEAM)
-        currentTeam = &gamemodel->getOponentTeam();
+        currentTeam = &gamemodel->getOppTeam();
 
     if (robot.has_robot_id())
     {
@@ -208,7 +208,7 @@ void VisionComm::recieveRobotTeam(const SSL_DetectionFrame& frame, int whichTeam
         currentTeamCounts    = yell_rob_readings;
     }
     if(whichTeam != TEAM)
-        currentTeamVector = &gamemodel->getOponentTeam();
+        currentTeamVector = &gamemodel->getOppTeam();
     
     for(const SSL_DetectionRobot& robot : *currentTeamDetection)
     {

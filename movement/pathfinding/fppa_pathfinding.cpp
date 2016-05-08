@@ -163,7 +163,7 @@ namespace impl {
     static void buildObstacleCollection()
     {
         const auto& myTeam = gameModel->getMyTeam();
-        const auto& opTeam = gameModel->getOponentTeam();
+        const auto& opTeam = gameModel->getOppTeam();
 
         currentFrameObstacles.clear();
         currentFrameObstacles.reserve(myTeam.size() + opTeam.size() + 1);

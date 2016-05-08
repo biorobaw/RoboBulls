@@ -48,7 +48,7 @@ void StopStrategy::rebuildTargetPoints()
     std::list<Point> newPoints;
     Point ballPoint = gameModel->getBallPoint();
     int teamSize = gameModel->getMyTeam().size();
-    int maxTeamSize  = std::max(teamSize, (int)gameModel->getOponentTeam().size());
+    int maxTeamSize  = std::max(teamSize, (int)gameModel->getOppTeam().size());
 
     /* If we're yellow team, then we add an offset to the initial
      * theta, to allow the yellow robots to move to different points than

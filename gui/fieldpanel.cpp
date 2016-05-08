@@ -333,7 +333,7 @@ void FieldPanel::updateScene() {
 
         // Yellow Team
         for (int i=0; i<dash->teamSize_yellow; i++) {
-            if (dash->gamemodel->find(i, dash->gamemodel->getOponentTeam()) != NULL) {
+            if (dash->gamemodel->find(i, dash->gamemodel->getOppTeam()) != NULL) {
                 guiTeamY[i]->show();
                 guiLabelsY[i]->show();
                 guiTeamY[i]->setX(dash->objectPos->getBotCoordX(false, i));

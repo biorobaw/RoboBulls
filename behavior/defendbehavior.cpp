@@ -252,7 +252,7 @@ DefendStateIdleKick::DefendStateIdleKick()
 #if DEFENDBEHAVIOR_DEBUG
     std::cout << "DefendStateIdleKick Created" << std::endl;
 #endif
-    ktpo = new Skill::KickToPointOmni(gameModel->getOpponentGoal());
+    ktpo = new Skill::KickToPointOmni(gameModel->getOppGoal());
 }
 
 DefendStateIdleKick::~DefendStateIdleKick()
@@ -318,7 +318,7 @@ DefendState* DefendStateKick::action(Robot* robot)
                 && Comparisons::distanceBall().minMyTeam() == robot) 
             {
                 whoIsKicking = robot->getID();
-                ktpo = new Skill::KickToPointOmni(gameModel->getOpponentGoal());
+                ktpo = new Skill::KickToPointOmni(gameModel->getOppGoal());
                 kickingBall = true;
             }
 
@@ -364,7 +364,7 @@ bool DefendStateKick::tryGetValidLinePoint(Robot* r)
     Point bp = gameModel->getBallPoint();
     Point bpp = gameModel->getBallStopPoint();
     Point goal = gameModel->getMyGoal();
-    Point p = Measurements::linePoint(r->getPosition(), bp, bpp);
+    Point p = Measurements::lineSegmentPoint(r->getPosition(), bp, bpp);
     if(abs(goal.x - p.x) < 2500 && Measurements::distance(r, p) < LINE_DISTANCE*2) {
         linePoint = p;
         chosenLinePoint = true;

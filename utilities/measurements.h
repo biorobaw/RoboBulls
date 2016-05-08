@@ -74,9 +74,12 @@ public:
 	static float lineDistance(const Point& p0, const Point& LStart, const Point& LEnd);
 
     /*! @brief Given a line A defined by LStart and LEnd, returns the point on A that is
-     * closest to p0. Similar to above, this is across the perpendicular distance
-     * from p0 to A. */
-    static Point linePoint(const Point& p0, const Point& LStart, const Point& LEnd);
+     * closest to p0. Similar to above. */
+    static Point lineSegmentPoint(const Point& p0, const Point& LStart, const Point& LEnd);
+
+    /*! @brief Given a line segment defined by LStart and LEnd, returns the shortest distance from the
+    * line segment to the point p0. */
+   static float lineSegmentDistance(const Point& p0, const Point& LStart, const Point& LEnd);
 
     /*! @brief Calculates the slope, given two points */
     static float slope(Point, Point);

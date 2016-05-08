@@ -36,6 +36,9 @@ private:
 
     enum states { initial, driving, end } state;
 
+    // Returns true if there is a clear shot into the goal from the robot's position
+    // If returning true, also returns the point along the goal post at which to aim
+    std::pair<bool, Point> calcBestGoalPoint(Robot*);
 };
 
 #endif // ATTACK_MAIN_H

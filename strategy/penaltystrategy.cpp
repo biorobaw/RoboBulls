@@ -22,7 +22,7 @@ void PenaltyStrategy::assignBeh()
         closestRobot = Comparisons::distanceOpGoal().minMyTeam();
 
         //Assigns closest robot to kick
-        closestRobot->assignSkill<Skill::KickToPointOmni>(gameModel->getOpponentGoal(), -1, -1, true);
+        closestRobot->assignSkill<Skill::KickToPointOmni>(gameModel->getOppGoal(), -1, -1, true);
     }
 
     //Assign simple behaviors to entire team, except for kicker and goalie
