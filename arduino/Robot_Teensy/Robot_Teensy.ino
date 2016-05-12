@@ -3,30 +3,26 @@ int id;
 int myid = 5;    // This Robot's ID
 
 // Declare motor pins
-//#define gndPinLF 
 #define enablePinLF 2
 #define dirPinLF 3
 #define brakePinLF 4
 
-#define gndPinLB 5
-#define enablePinLB 6
-#define dirPinLB 7
-#define brakePinLB 8
+#define enablePinLB 5
+#define dirPinLB 6
+#define brakePinLB 7
 
-#define gndPinRF 9
-#define enablePinRF 10
-#define dirPinRF 11
-#define brakePinRF 12
+#define enablePinRF 19
+#define dirPinRF 18
+#define brakePinRF 17
 
-#define gndPinRB 13
-#define enablePinRB 14
+#define enablePinRB 16
 #define dirPinRB 15
-#define brakePinRB 16
+#define brakePinRB 14
 
-#define speedPinLF 20
-#define speedPinLB 21
-#define speedPinRF 22
-#define speedPinRB 23
+#define speedPinLF 23
+#define speedPinLB 22
+#define speedPinRF 21
+#define speedPinRB 20
 
 // Define pin locations for kicker and chipper
 #define dribblePin 17
