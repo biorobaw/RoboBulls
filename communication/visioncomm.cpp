@@ -36,7 +36,7 @@ void VisionComm::receiveRobot(const SSL_DetectionRobot& robot, int detectedTeamC
 {
     vector<Robot*>* currentTeam = &gamemodel->getMyTeam();
 
-    if (detectedTeamColor != TEAM)
+    if (detectedTeamColor != OUR_TEAM)
         currentTeam = &gamemodel->getOppTeam();
 
     if (robot.has_robot_id())
@@ -48,7 +48,7 @@ void VisionComm::receiveRobot(const SSL_DetectionRobot& robot, int detectedTeamC
         {
             rob = new Robot();
             rob->setID(id);
-            rob->setTeam(detectedTeamColor == TEAM);
+            rob->setTeam(detectedTeamColor == OUR_TEAM);
             currentTeam->push_back(rob);
         }
 
@@ -81,8 +81,6 @@ static bool isGoodDetection
     //reported them. This is to help prevent duplicated readings on the edges
     float x = detection.x();
     float y = detection.y();
-
-
 
     float cam = frame.camera_id();
     if(!fourCameraMode) {
@@ -200,17 +198,17 @@ void VisionComm::recieveBall(const SSL_DetectionFrame& frame)
  * the information, if we're confident on the Robot detection
  * Initialized to updating blue, but changes to yellow if not updating blue
  */
-void VisionComm::recieveRobotTeam(const SSL_DetectionFrame& frame, int whichTeam)
+void VisionComm::recieveRobotTeam(const SSL_DetectionFrame& frame, int team)
 {
     auto* currentTeamDetection = &frame.robots_blue();
     auto* currentTeamVector    = &gamemodel->getMyTeam();
     int*  currentTeamCounts    = blue_rob_readings;
 
-    if(whichTeam == TEAM_YELLOW) {
+    if(team == TEAM_YELLOW) {
         currentTeamDetection = &frame.robots_yellow();
         currentTeamCounts    = yell_rob_readings;
     }
-    if(whichTeam != TEAM)
+    if(team != OUR_TEAM)
         currentTeamVector = &gamemodel->getOppTeam();
     
     for(const SSL_DetectionRobot& robot : *currentTeamDetection)
@@ -218,7 +216,7 @@ void VisionComm::recieveRobotTeam(const SSL_DetectionFrame& frame, int whichTeam
         if(isGoodDetection(robot, frame, CONF_THRESHOLD_BOTS, fourCameraMode)) {
             int robotID = robot.robot_id();
             if(gamemodel->find(robotID, *currentTeamVector) or currentTeamCounts[robotID] >= 25) {
-                receiveRobot(robot, whichTeam);
+                receiveRobot(robot, team);
             } else {
                ++currentTeamCounts[robotID];
             }
@@ -253,11 +251,11 @@ bool VisionComm::receive()
 
         /* After we have had a chance to initially recieve all robots,
          * the RoboBulls game is run with the new information here. */
-        if (++totalframes > 80)
+        if (++totalframes > 200)
             gamemodel->notifyObservers();
     }
     
-    /* After 50 frames the "seen counts" of each team are set to 0. This prevents
+    /* After 100 frames the "seen counts" of each team are set to 0. This prevents
      * ghost robots from appearing over time */
     if(++resetFrames > 100) {
         resetFrames = 0;

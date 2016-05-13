@@ -25,8 +25,8 @@ void IndirectKickStrategy::assignBeh()
      * and makes it the sender.
      * we use the sender in PassBallSender behavior
      * */
-    if ((gm->getGameState() == 'I' && TEAM == TEAM_BLUE) ||
-        (gm->getGameState() == 'i' && TEAM == TEAM_YELLOW))
+    if ((gm->getGameState() == 'I' && OUR_TEAM == TEAM_BLUE) ||
+        (gm->getGameState() == 'i' && OUR_TEAM == TEAM_YELLOW))
     {
         //First we have all other robots do whatever
         for(Robot* robot : gameModel->getMyTeam())
@@ -81,8 +81,8 @@ void IndirectKickStrategy::assignBeh()
         if(goalie)
             goalie->assignBeh<GoalieBehavior>();
     }
-    else if ((gm->getGameState() == 'i' && TEAM == TEAM_BLUE) ||
-             (gm->getGameState() == 'I' && TEAM == TEAM_YELLOW))
+    else if ((gm->getGameState() == 'i' && OUR_TEAM == TEAM_BLUE) ||
+             (gm->getGameState() == 'I' && OUR_TEAM == TEAM_YELLOW))
     {
         //Assign all simple behaviors
         for(Robot* robot : gameModel->getMyTeam())

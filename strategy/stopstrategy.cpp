@@ -54,7 +54,7 @@ void StopStrategy::rebuildTargetPoints()
      * theta, to allow the yellow robots to move to different points than
      * the blue robots. They both follow the same increment. */
     float theta_inc = (2*M_PI) / maxTeamSize;
-#if TEAM==TEAM_BLUE
+#if OUR_TEAM==TEAM_BLUE
     float theta = 0;
 #else
     float theta = theta_inc/2;

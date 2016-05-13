@@ -36,7 +36,7 @@ void GuiBotLabel::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
         /* If we're on our team ,get the move status. Otherwise just
          * get the Id for the above label */
         QString label;
-        if(team == TEAM) {
+        if(team == OUR_TEAM) {
            Robot* robot = gameModel->findMyTeam(id);
            if(robot) {
                 label = "" + QString::number(id) + "(" + QString::number(Movement::Collisions::getMoveStatus(robot)) + ")";
@@ -53,7 +53,7 @@ void GuiBotLabel::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
         if(r != NULL && r->getID() == id)
         {
             painter->setBrush(QBrush(QColor::fromRgb(255,69,0,255), Qt::SolidPattern));
-            if(r->isOnMyTeam() == (TEAM == TEAM_BLUE ? mainTeam : !mainTeam)) {
+            if(r->isOnMyTeam() == (OUR_TEAM == TEAM_BLUE ? mainTeam : !mainTeam)) {
                 QRectF b(100, 0, -50, -50);
                 painter->drawEllipse(b);
             }

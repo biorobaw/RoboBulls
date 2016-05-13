@@ -145,6 +145,7 @@ bool TestStrategy::update()
     //All robots must exists before any action is taken.
     Robot* r0 = gameModel->findMyTeam(3);
     Robot* r1 = gameModel->findMyTeam(5);
+
     if(r0)
         r0->assignBeh<GoalieBehavior>();
     if(r1)

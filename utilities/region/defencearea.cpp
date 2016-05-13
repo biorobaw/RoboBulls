@@ -2,7 +2,7 @@
 
 DefenceArea::DefenceArea(bool team)
 {
-    if(!team)    // team == 0 refers to our team
+    if(team == OUR_TEAM)    // Initialize our defence area
     {
         r = Rectangle(-HALF_FIELD_LENGTH,
                         -DEF_AREA_OFFSET,
@@ -11,13 +11,13 @@ DefenceArea::DefenceArea(bool team)
 
         s1 = Sector(Point(-HALF_FIELD_LENGTH, DEF_AREA_OFFSET),
                             DEF_AREA_RADIUS,
-                            M_PI_2, 0);
+                            0, M_PI_2);
 
         s2 = Sector(Point(-HALF_FIELD_LENGTH, -DEF_AREA_OFFSET),
                             DEF_AREA_RADIUS,
-                            0, -M_PI_2);
+                            -M_PI_2, 0);
     }
-    else    // team == 1 refers to opponent team
+    else    // initialize opponent defence area
     {
         r = Rectangle(HALF_FIELD_LENGTH,
                         -DEF_AREA_OFFSET,
@@ -26,11 +26,11 @@ DefenceArea::DefenceArea(bool team)
 
         s1 = Sector(Point(HALF_FIELD_LENGTH, DEF_AREA_OFFSET),
                             DEF_AREA_RADIUS,
-                            M_PI, M_PI_2);
+                            M_PI_2, M_PI);
 
         s2 = Sector(Point(HALF_FIELD_LENGTH, -DEF_AREA_OFFSET),
                             DEF_AREA_RADIUS,
-                            -M_PI_2, -M_PI);
+                            -M_PI, -M_PI_2);
     }
 }
 

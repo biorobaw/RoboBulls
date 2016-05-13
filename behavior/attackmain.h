@@ -1,7 +1,16 @@
 #ifndef ATTACK_MAIN_H
 #define ATTACK_MAIN_H
 #include "behavior.h"
+#include "include/config/simulated.h"
+#include "skill/kicktopointomni.h"
 #include "model/gamemodel.h"
+#include "gui/guiinterface.h"
+#include "utilities/region/sector.h"
+#include "genericmovementbehavior.h"
+#include "algorithm"
+#include "utilities/region/defencearea.h"
+
+#include <vector>
 
 /*! @brief AttackMain is the main driver behavior for the NormalGameStrategy.
  * @author Muhaimen Shamsi, JamesW
@@ -14,7 +23,13 @@
  * at least some distance away and we haven't told it to always kick to goal (forceGoalKick)
  * @see AttackSupport */
 
-class AttackMain:public Behavior
+#define PND 50  //Distance between nodes in the probability field
+// Probability Field Variables
+#define PF_LENGTH (FIELD_LENGTH+1)/PND
+#define PF_WIDTH  (FIELD_WIDTH +1)/PND
+#define PF_SIZE  PF_LENGTH * PF_WIDTH
+
+class AttackMain:public GenericMovementBehavior
 {
 public:
     AttackMain(Robot* supp_attacker = nullptr, bool forceGoalKick = false);
@@ -23,15 +38,23 @@ public:
     bool isFinished() override;
 
 private:
+    struct ProbNode
+    {
+        Point point;
+        float base_val;
+        float actual_val;
+    };
+
     GameModel * gm;
-    Robot* support_attacker;
+    Robot* supp;
     Point drive_start_point, rp, sp, gp, bp;
+    ProbNode prob_field[(FIELD_LENGTH+1)/PND][(FIELD_WIDTH+1)/PND];
 
     double goal_direction;
     const double shot_distance = 2000;
     const double drive_distance = 200;
 
-    bool touched_ball = false, done = false, forcedGoalKick = false;
+    bool forcedGoalKick = false, touched_ball = false, done = false;
     Skill::Skill* skill;
 
     enum states { initial, driving, end } state;
@@ -39,6 +62,7 @@ private:
     // Returns true if there is a clear shot into the goal from the robot's position
     // If returning true, also returns the point along the goal post at which to aim
     std::pair<bool, Point> calcBestGoalPoint(Robot*);
+    void calcActualProb();
 };
 
 #endif // ATTACK_MAIN_H

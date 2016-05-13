@@ -66,7 +66,7 @@ std::vector<Robot*>& GameModel::getMyTeam()
  * \return The Blue team */
 std::vector<Robot*>& GameModel::getBlueTeam()
 {
-#if TEAM == TEAM_BLUE
+#if OUR_TEAM == TEAM_BLUE
     return getMyTeam();
 #else
     return getOppTeam();
@@ -77,7 +77,7 @@ std::vector<Robot*>& GameModel::getBlueTeam()
  * \return The Yellow team */
 std::vector<Robot*>& GameModel::getYellowTeam()
 {
-#if TEAM == TEAM_BLUE
+#if OUR_TEAM == TEAM_BLUE
     return getOponentTeam();
 #else
     return getMyTeam();
@@ -399,7 +399,7 @@ void GameModel::onRobotUpdated(Robot* robot)
 void GameModel::removeRobot(int id, int team)
 {
     auto* vector = &getMyTeam();
-    if(team != TEAM)
+    if(team != OUR_TEAM)
         vector = &getOppTeam();
     auto it = std::find_if(vector->begin(), vector->end(), [=](Robot* r){return r->getID()==id;});
     if(it != vector->end()) {

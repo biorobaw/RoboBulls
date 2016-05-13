@@ -1,4 +1,3 @@
-
 #include "goaliebehavior.h"
 
 //The distance from the goal where the robot stays idle
@@ -9,71 +8,12 @@ GoalieBehavior::GoalieBehavior()
     , isKickingBallAway(false)
     , isIdling(false)
     , kick_skill(nullptr)
-    , def_area(0)
+    , def_area(OUR_TEAM)
     { }
 
 GoalieBehavior::~GoalieBehavior()
 {
     delete kick_skill;
-}
-
-bool GoalieBehavior::isBallMovingTowardsGoal(std::pair<Point,Point>& lineEndsOut)
-{
-    // Filter out balls not moving towards goal
-    Point goal = gameModel->getMyGoal();
-    Point bVel = gameModel->getBallVelocity();
-    if(bVel.x > 0)
-        return false;
-
-    // Calculate y position at goal point
-    Point ballPos = gameModel->getBallPoint();
-    float y = (bVel.y / bVel.x) * (goal.x - ballPos.x) + ballPos.y;
-
-    // Set the output to a pair Points representing the line of the ball's trajectory.
-    lineEndsOut = {ballPos, Point(goal.x,y)};
-
-    // Is the Y position within the goalie box?
-    return (y > -GOAL_WIDTH/2) && (y < GOAL_WIDTH/2);
-}
-
-bool GoalieBehavior::botOnBallIsAimedAtOurGoal(Robot* robot, std::pair<Point,Point>& lineSegOut)
-{
-    /* Return false automatically if the robot's orientation is facing a direction
-    opposite to that of our goal */
-    Point myGoalPos = gameModel->getMyGoal();
-    float orientation = robot->getOrientation();
-    if (orientation > -M_PI/2 && orientation < M_PI/2)
-        return false;
-
-    /* Essentially get a line that runs through the ball's position and has a slope
-     * that is equivalent to where the robot is facing. We use the ball position because
-     * the slope of the path will always be the robot's orientation but the ball
-     * may be off center from the robot's kicker mechanism */
-    float slope = tan( orientation );
-    Point ballPos = gameModel->getBallPoint();
-
-    // Extrapolate the line to retrieve the y-coordinate at the x-coordinate of the goal
-    float yAtGoalLine = slope * ( myGoalPos.x - ballPos.x ) + ballPos.y;
-
-    Point endPoint = Point( myGoalPos.x, yAtGoalLine );
-
-    // Write to the line segment variable
-    lineSegOut = std::make_pair(ballPos, endPoint);
-
-    // If the y coordinate is within the range of the goal then return true
-    return yAtGoalLine > -GOAL_WIDTH/2 && yAtGoalLine < GOAL_WIDTH/2;
-}
-
-bool GoalieBehavior::isBallReachable()
-{
-    return abs(Measurements::angleBetween(idlePoint, gameModel->getBallPoint())) < 90*(M_PI/180);
-}
-
-bool GoalieBehavior::shouldClearBall()
-{
-    // We only clear the ball when it is inside the defence area
-    // and not moving
-    return def_area.contains(gameModel->getBallPoint()) && gameModel->getBallSpeed() == 0;
 }
 
 void GoalieBehavior::perform(Robot *robot)
@@ -168,3 +108,63 @@ void GoalieBehavior::perform(Robot *robot)
         GenericMovementBehavior::perform(robot, type);
     }
 }
+
+bool GoalieBehavior::isBallMovingTowardsGoal(std::pair<Point,Point>& lineEndsOut)
+{
+    // Filter out balls not moving towards goal
+    Point goal = gameModel->getMyGoal();
+    Point bVel = gameModel->getBallVelocity();
+    if(bVel.x > 0)
+        return false;
+
+    // Calculate y position at goal point
+    Point ballPos = gameModel->getBallPoint();
+    float y = (bVel.y / bVel.x) * (goal.x - ballPos.x) + ballPos.y;
+
+    // Set the output to a pair Points representing the line of the ball's trajectory.
+    lineEndsOut = {ballPos, Point(goal.x,y)};
+
+    // Is the Y position within the goalie box?
+    return (y > -GOAL_WIDTH/2) && (y < GOAL_WIDTH/2);
+}
+
+bool GoalieBehavior::botOnBallIsAimedAtOurGoal(Robot* robot, std::pair<Point,Point>& lineSegOut)
+{
+    /* Return false automatically if the robot's orientation is facing a direction
+    opposite to that of our goal */
+    Point myGoalPos = gameModel->getMyGoal();
+    float orientation = robot->getOrientation();
+    if (orientation > -M_PI/2 && orientation < M_PI/2)
+        return false;
+
+    /* Essentially get a line that runs through the ball's position and has a slope
+     * that is equivalent to where the robot is facing. We use the ball position because
+     * the slope of the path will always be the robot's orientation but the ball
+     * may be off center from the robot's kicker mechanism */
+    float slope = tan( orientation );
+    Point ballPos = gameModel->getBallPoint();
+
+    // Extrapolate the line to retrieve the y-coordinate at the x-coordinate of the goal
+    float yAtGoalLine = slope * ( myGoalPos.x - ballPos.x ) + ballPos.y;
+
+    Point endPoint = Point( myGoalPos.x, yAtGoalLine );
+
+    // Write to the line segment variable
+    lineSegOut = std::make_pair(ballPos, endPoint);
+
+    // If the y coordinate is within the range of the goal then return true
+    return yAtGoalLine > -GOAL_WIDTH/2 && yAtGoalLine < GOAL_WIDTH/2;
+}
+
+bool GoalieBehavior::isBallReachable()
+{
+    return abs(Measurements::angleBetween(idlePoint, gameModel->getBallPoint())) < 90*(M_PI/180);
+}
+
+bool GoalieBehavior::shouldClearBall()
+{
+    // We only clear the ball when it is inside the defence area
+    // and not moving
+    return def_area.contains(gameModel->getBallPoint()) && gameModel->getBallSpeed() == 0;
+}
+

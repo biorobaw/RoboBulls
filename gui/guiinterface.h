@@ -17,7 +17,7 @@ public:
     static GuiInterface * getGuiInterface();
     const std::vector<bool>& isOverriddenBot();
     void show();
-    void drawPath(const Point& A, const Point& B, const double seconds = 1);
+    void drawLine(const Point& A, const Point& B, const double seconds = 1);
     void setHidePaths(bool hide);
     void guiPrintRobot(int robotID, std::string output);
     void guiPrintTerminal(std::string output);
