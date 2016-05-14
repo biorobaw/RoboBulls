@@ -32,7 +32,8 @@
 class AttackMain:public GenericMovementBehavior
 {
 public:
-    AttackMain(Robot* supp_attacker = nullptr, bool forceGoalKick = false);
+    // Fills in prob_field with scoring probabilities based on static factors
+    AttackMain();
    ~AttackMain();
     void perform(Robot *);
     bool isFinished() override;
@@ -45,23 +46,18 @@ private:
         float actual_val;
     };
 
-    GameModel * gm;
-    Robot* supp;
-    Point drive_start_point, rp, sp, gp, bp;
     ProbNode prob_field[(FIELD_LENGTH+1)/PND][(FIELD_WIDTH+1)/PND];
 
-    double goal_direction;
-    const double shot_distance = 2000;
-    const double drive_distance = 200;
+    Skill::KickToPointOmni* kick_skill;
+    Point kick_point;
+    bool done = false;
 
-    bool forcedGoalKick = false, touched_ball = false, done = false;
-    Skill::Skill* skill;
-
-    enum states { initial, driving, end } state;
 
     // Returns true if there is a clear shot into the goal from the robot's position
     // If returning true, also returns the point along the goal post at which to aim
     std::pair<bool, Point> calcBestGoalPoint(Robot*);
+
+    // Fills in prob_field with scoring probabilities based on dynamic factors
     void calcActualProb();
 };
 

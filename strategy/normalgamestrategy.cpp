@@ -339,16 +339,16 @@ void NormalGameStrategy::assignAttackBehaviors(bool switchSides)
             //If we have found both robots, assign them both
             if(switchSides) {
                 driverBot->assignBeh<AttackSupport>(recvBot);
-                  recvBot->assignBeh<AttackMain>(driverBot, true); //The receiver cannot pass. No passing loops.
+                  recvBot->assignBeh<AttackMain>(); //The receiver cannot pass. No passing loops.
                 currentMainAttacker = recvBot;
             } else {
-                driverBot->assignBeh<AttackMain>(recvBot);
+                driverBot->assignBeh<AttackMain>();
                   recvBot->assignBeh<AttackSupport>(driverBot);
                 currentMainAttacker = driverBot;
             }
         } else if (driverBot) {
             //If there is only one robot, just make it kick to the goal
-            driverBot->assignBeh<AttackMain>(nullptr, true);
+            driverBot->assignBeh<AttackMain>();
         }
 
         //Finally assign goalie

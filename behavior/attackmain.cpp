@@ -1,10 +1,6 @@
 #include "attackmain.h"
 
-AttackMain::AttackMain(Robot* supp_attacker, bool forceGoalKick)
-    : supp(supp_attacker)
-    , forcedGoalKick(forceGoalKick)
-    , skill(nullptr)
-    , state(initial)
+AttackMain::AttackMain()
 {
     // Calculate the probility of scoring from each point
     // in the probability field based on fixed factors
@@ -50,6 +46,8 @@ AttackMain::AttackMain(Robot* supp_attacker, bool forceGoalKick)
             n.base_val /= (w_dist + w_ang);
         }
     }
+
+    kick_skill = new Skill::KickToPointOmni(&kick_point,-1,-1,true);
 }
 
 
@@ -65,27 +63,40 @@ AttackMain::AttackMain(Robot* supp_attacker, bool forceGoalKick)
 
 void AttackMain::perform(Robot * robot)
 {
-    calcActualProb();
+    // Check if we can score
+    std::pair<bool, Point> result = calcBestGoalPoint(robot);
 
-    // Find max probability node in a window around the robot
-    ProbNode& max_node = prob_field[PF_LENGTH/2][0];
-
-    for(int x = PF_LENGTH/2; x < PF_LENGTH; ++x)
+    if(result.first)    // If we can score from where the ball is, kick
     {
-        for(int y = 0; y < PF_WIDTH; ++y)
-        {
-            ProbNode& curr = prob_field[x][y];
-
-            if(max_node.base_val+max_node.actual_val <= curr.base_val+curr.actual_val)
-               max_node = curr;
-
-            if(curr.base_val+curr.actual_val >= 0.4)
-                GuiInterface::getGuiInterface()->drawPoint(curr.point);
-        }
+        kick_point = result.second;
+        kick_skill->perform(robot);
     }
+    else    // If we cannot score, move
+    {
+        // Update dynamic probabilities
+        calcActualProb();
 
-    setMovementTargets(max_node.point, 0, true, false);
-    GenericMovementBehavior::perform(robot);
+        // Find max probability node in opponent side of field
+        ProbNode& max_node = prob_field[PF_LENGTH/2][0];
+
+        for(int x = PF_LENGTH/2; x < PF_LENGTH; ++x)
+        {
+            for(int y = 0; y < PF_WIDTH; ++y)
+            {
+                ProbNode& curr = prob_field[x][y];
+
+                if(max_node.base_val+max_node.actual_val <= curr.base_val+curr.actual_val)
+                   max_node = curr;
+
+                //if(curr.base_val+curr.actual_val >= 0.4)
+                 //   GuiInterface::getGuiInterface()->drawPoint(curr.point);
+            }
+        }
+
+        // Move Towards Max Node
+        setMovementTargets(max_node.point, 0, true, false);
+        GenericMovementBehavior::perform(robot);
+    }
 }
 
 
@@ -147,6 +158,7 @@ std::pair<bool, Point> AttackMain::calcBestGoalPoint(Robot* r)
     std::vector<Point> obstacles;
     auto myTeam = gameModel->getMyTeam();
     auto oppTeam = gameModel->getOppTeam();
+
     obstacles.reserve(myTeam.size() + oppTeam.size());
 
     for(Robot* rob : myTeam)
@@ -162,13 +174,13 @@ std::pair<bool, Point> AttackMain::calcBestGoalPoint(Robot* r)
     // positive end of the goal post
     if(r->getPosition().y > 0)
     {
-        for(int goal_y = GOAL_WIDTH/2; goal_y >= -GOAL_WIDTH/2; goal_y -= 20)
+        for(int goal_y = GOAL_WIDTH/2-20; goal_y >= -GOAL_WIDTH/2; goal_y -= 10)
         {
             Point target = gameModel->getOppGoal() + Point(0, goal_y);
             bool clear_shot = true;
             for(const Point& obstacle : obstacles)
             {
-                if(Measurements::lineDistance(obstacle, r->getPosition(), target) < BALL_RADIUS)
+                if(Measurements::lineDistance(obstacle, gameModel->getBallPoint(), target) < BALL_RADIUS+ROBOT_RADIUS+20)
                 {
                     clear_shot = false;
                     break;
@@ -182,13 +194,13 @@ std::pair<bool, Point> AttackMain::calcBestGoalPoint(Robot* r)
     // Otherwise we start checking from the negative end of the goal post
     else
     {
-        for(int goal_y = -GOAL_WIDTH/2; goal_y <= GOAL_WIDTH/2; goal_y += 20)
+        for(int goal_y = -GOAL_WIDTH/2+20; goal_y <= GOAL_WIDTH/2; goal_y += 10)
         {
             Point target = gameModel->getOppGoal() + Point(0, goal_y);
             bool clear_shot = true;
             for(const Point& obstacle : obstacles)
             {
-                if(Measurements::lineDistance(obstacle, r->getPosition(), target) < BALL_RADIUS)
+                if(Measurements::lineDistance(obstacle, gameModel->getBallPoint(), target) < BALL_RADIUS+ROBOT_RADIUS+20)
                 {
                     clear_shot = false;
                     break;
@@ -210,5 +222,5 @@ bool AttackMain::isFinished()
 
 AttackMain::~AttackMain()
 {
-    delete skill;
+    delete kick_skill;
 }
