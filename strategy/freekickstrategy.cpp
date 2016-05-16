@@ -19,8 +19,8 @@ void FreeKickStrategy::assignBeh()
 
     myTeam = gm->getMyTeam();
 
-    if ((gm->getGameState() == 'F' && TEAM == TEAM_BLUE) ||
-        (gm->getGameState() == 'f' && TEAM == TEAM_YELLOW))
+    if ((gm->getGameState() == 'F' && OUR_TEAM == TEAM_BLUE) ||
+        (gm->getGameState() == 'f' && OUR_TEAM == TEAM_YELLOW))
     {
         //Assign the goalie if he is there
         NormalGameStrategy::assignGoalieIfOk();
@@ -66,8 +66,8 @@ void FreeKickStrategy::assignBeh()
             }
         }
     }
-    else if ((gm->getGameState() == 'f' && TEAM == TEAM_BLUE)
-          || (gm->getGameState() == 'F' && TEAM == TEAM_YELLOW))
+    else if ((gm->getGameState() == 'f' && OUR_TEAM == TEAM_BLUE)
+          || (gm->getGameState() == 'F' && OUR_TEAM == TEAM_YELLOW))
     {
         //Everyone is simple
         for(Robot* robot : gameModel->getMyTeam())

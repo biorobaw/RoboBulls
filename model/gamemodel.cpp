@@ -50,7 +50,7 @@ Robot* GameModel::findOpTeam(int id)
 
 /*! @brief Return a vector of all robots on the opposing team
  * \return The opposing team (getBlueTeam() if Yellow, getYellowTeam() if Blue) */
-std::vector<Robot*>& GameModel::getOponentTeam()
+std::vector<Robot*>& GameModel::getOppTeam()
 {
     return opTeam;
 }
@@ -66,10 +66,10 @@ std::vector<Robot*>& GameModel::getMyTeam()
  * \return The Blue team */
 std::vector<Robot*>& GameModel::getBlueTeam()
 {
-#if TEAM == TEAM_BLUE
+#if OUR_TEAM == TEAM_BLUE
     return getMyTeam();
 #else
-    return getOponentTeam();
+    return getOppTeam();
 #endif
 }
 
@@ -77,7 +77,7 @@ std::vector<Robot*>& GameModel::getBlueTeam()
  * \return The Yellow team */
 std::vector<Robot*>& GameModel::getYellowTeam()
 {
-#if TEAM == TEAM_BLUE
+#if OUR_TEAM == TEAM_BLUE
     return getOponentTeam();
 #else
     return getMyTeam();
@@ -160,7 +160,7 @@ Point GameModel::getPenaltyPoint()
 //! @brief Returns the opponents's goal, that we are trying to score in
 //! VisionComm transforms received info such that opponent is always
 //! on the positive side based on the SIDE global
-Point GameModel::getOpponentGoal()
+Point GameModel::getOppGoal()
 {
     return Point(HALF_FIELD_LENGTH, 0);
 }
@@ -399,8 +399,8 @@ void GameModel::onRobotUpdated(Robot* robot)
 void GameModel::removeRobot(int id, int team)
 {
     auto* vector = &getMyTeam();
-    if(team != TEAM)
-        vector = &getOponentTeam();
+    if(team != OUR_TEAM)
+        vector = &getOppTeam();
     auto it = std::find_if(vector->begin(), vector->end(), [=](Robot* r){return r->getID()==id;});
     if(it != vector->end()) {
         delete *it; //Free the Robot* pointer first

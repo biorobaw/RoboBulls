@@ -5,12 +5,13 @@
 #include "rectangle.h"
 #include "sector.h"
 #include "iostream"
+#include "include/config/team.h"
 
 
 class DefenceArea : public Region
 {
 public:
-    DefenceArea(bool team = 0);
+    DefenceArea(bool team = !OUR_TEAM);
     bool contains(const Point &) override;
     void draw() override;
 private:

@@ -65,7 +65,7 @@ Point PassBallReceiver::getPasserPassPoint()
 void PassBallReceiver::perform(Robot *robot)
 {
     GameModel *gm = GameModel::getModel();
-    Point appGoal = gm->getOpponentGoal();
+    Point appGoal = gm->getOppGoal();
     Robot* oppGolie = gm->findOpTeam(GOALIE_ID);
     Point goliePos = oppGolie->getPosition();
     float min_y = appGoal.y - R;

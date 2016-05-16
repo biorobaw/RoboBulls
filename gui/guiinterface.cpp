@@ -39,7 +39,7 @@ void GuiInterface::show() {
     dash->show();
 }
 
-void GuiInterface::drawPath(const Point& A, const Point& B, const double seconds) {
+void GuiInterface::drawLine(const Point& A, const Point& B, const double seconds) {
     dash->fieldpanel->setupLine(A, B, seconds);
 }
 

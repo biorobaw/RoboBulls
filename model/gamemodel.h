@@ -29,7 +29,7 @@ public:
 
     /*! @name Game access functions
      * @{*/
-    std::vector<Robot*>& getOponentTeam();
+    std::vector<Robot*>& getOppTeam();
     std::vector<Robot*>& getMyTeam();
     std::vector<Robot*>& getBlueTeam();
     std::vector<Robot*>& getYellowTeam();
@@ -43,7 +43,7 @@ public:
     char   getGameState();
     char   getPreviousGameState();
     Point  getPenaltyPoint();
-    Point  getOpponentGoal();
+    Point  getOppGoal();
     Point  getMyGoal();
     Robot* getHasBall();
     Robot* findMyTeam(int);

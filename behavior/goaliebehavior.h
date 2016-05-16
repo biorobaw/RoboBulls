@@ -6,6 +6,7 @@
 #include "utilities/region/defencearea.h"
 #include "utilities/measurements.h"
 #include "gui/guiinterface.h"
+#include "include/config/team.h"
 
 /*! @brief The “goalie” behavior of the game.
  * @author Narges G, James W, Adam H, Muhaimen S

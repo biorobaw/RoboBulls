@@ -21,7 +21,7 @@ void AttackSupport::perform(Robot * robot)
 
 void AttackSupport::recalculateWp(Robot* robot)
 {
-    Point gp = gameModel->getOpponentGoal();
+    Point gp = gameModel->getOppGoal();
     int goal_dir = gp.x/abs(gp.x);
 
     //Regions in which to check for robots
@@ -48,7 +48,7 @@ void AttackSupport::recalculateWp(Robot* robot)
         std::vector<Robot*> ignoreOpponents, ignoreTeammates;
         ignoreTeammates.push_back(robot);
         //Filter out all robots in the penalty area from population consideration
-        for(Robot * rob : gameModel->getOponentTeam()) {
+        for(Robot * rob : gameModel->getOppTeam()) {
             if(penalty_area.contains(rob->getPosition()))
                 ignoreOpponents.push_back(rob);
         }

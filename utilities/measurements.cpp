@@ -116,7 +116,7 @@ float Measurements::lineDistance(const Point& p0, const Point& LStart, const Poi
 }
 
 
-Point Measurements::linePoint(const Point& p0, const Point& LStart, const Point& LEnd)
+Point Measurements::lineSegmentPoint(const Point& p0, const Point& LStart, const Point& LEnd)
 {
     // Return minimum distance between the line segment and point p0
     const double l2 = pow((LStart.x - LEnd.x),2) + pow((LStart.y - LEnd.y),2);  // i.e. |w-v|^2 -  avoid a sqrt
@@ -129,4 +129,10 @@ Point Measurements::linePoint(const Point& p0, const Point& LStart, const Point&
     const double t = std::max(0.0, std::min(1.0, (A.x*B.x + A.y*B.y) / l2));
     Point projection = LStart + (LEnd - LStart) * t;  // Projection falls on the segment
     return projection;
+}
+
+
+float Measurements::lineSegmentDistance(const Point& p0, const Point& LStart, const Point& LEnd)
+{
+    return distance(p0, lineSegmentPoint(p0,LStart,LEnd));
 }

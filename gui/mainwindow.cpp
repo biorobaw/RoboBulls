@@ -472,9 +472,9 @@ void MainWindow::setupKeyShortcuts() {
 }
 
 void MainWindow::checkTeamColors() {
-    if (TEAM == TEAM_BLUE) {
+    if (OUR_TEAM == TEAM_BLUE) {
         myTeam = "Blue";
-    } else if (TEAM == TEAM_YELLOW) {
+    } else if (OUR_TEAM == TEAM_YELLOW) {
         myTeam = "Yellow";
     }
 }

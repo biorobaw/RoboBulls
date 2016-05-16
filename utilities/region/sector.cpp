@@ -1,4 +1,5 @@
 #include "sector.h"
+#include <iostream>
 
 Sector::Sector(){}
 
@@ -13,33 +14,23 @@ bool Sector::contains(const Point& p)
     if(Measurements::distance(c, p) > r)
         return false;
 
-    // Check if within angle
-    if(a1 >= 0 && a2 >= 0)
-    {
-        if(Measurements::angleBetween(c, p) > a1
-        || Measurements::angleBetween(c, p) < a2)
-            return false;
-    }
-    else if(a1 >= 0 && a2 <= 0)
-    {
-        if(Measurements::angleBetween(c, p) > a1
-        || Measurements::angleBetween(c, p) < a2)
-            return false;
-    }
-    else if(a1 <= 0 && a2 >= 0)
-    {
-        if(Measurements::angleBetween(c, p) > a1
-        || Measurements::angleBetween(c, p) < a2)
-            return false;
-    }
-    else // a1 and a2 are both negative
-    {
-        if(Measurements::angleBetween(c, p) > a1
-        || Measurements::angleBetween(c, p) < a2)
-            return false;
-    }
+    // Get angle to point
+    double ap = Measurements::angleBetween(c, p);
 
-    return true;
+    // Convert Angles
+    if(a1 < 0)
+        a1 += 2*M_PI;
+
+    while(a2 < 0 || a1 > a2)
+        a2 += 2*M_PI;
+
+    if(ap < 0)
+        ap += 2*M_PI;
+
+    // Check if within angle
+    if(ap >= a1 && ap <= a2)
+        return true;
+    return false;
 }
 
 void Sector::draw()

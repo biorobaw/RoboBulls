@@ -37,7 +37,7 @@ bool KickToGoal::checkifOkay()
 void KickToGoal::perform(Robot * r)
 {
     GameModel* gm = GameModel::getModel();
-    Point appGoal = gm->getOpponentGoal();
+    Point appGoal = gm->getOppGoal();
     Robot* oppGolie = Comparisons::distanceOpGoal().minOpTeam(); //Assume goalie is closest bot
     Point goaliePos = oppGolie->getPosition();
     float min_y = appGoal.y - R;

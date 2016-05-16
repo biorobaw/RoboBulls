@@ -101,7 +101,7 @@ Robot* Predicate::maxMyTeam() {
 }
 
 Robot* Predicate::maxOpTeam() {
-    auto& opTeam = gameModel->getOponentTeam();
+    auto& opTeam = gameModel->getOppTeam();
     return *max(opTeam);
 }
 
@@ -115,7 +115,7 @@ Robot* Predicate::minMyTeam() {
 }
 
 Robot* Predicate::minOpTeam() {
-    auto& opTeam = gameModel->getOponentTeam();
+    auto& opTeam = gameModel->getOppTeam();
     return *min(opTeam);
 }
 
@@ -130,7 +130,7 @@ Robot* Predicate::anyMyTeam() {
 }
 
 Robot* Predicate::anyOpTeam() {
-    auto& opTeam = gameModel->getOponentTeam();
+    auto& opTeam = gameModel->getOppTeam();
     auto it = any(opTeam);
     return it != opTeam.end() ? *it : NULL;
 }
@@ -197,7 +197,7 @@ pred_distanceMyGoal::pred_distanceMyGoal()
     : pred_distance(gameModel->getMyGoal())
     { }
 pred_distanceOpGoal::pred_distanceOpGoal()
-    : pred_distance(gameModel->getOpponentGoal())
+    : pred_distance(gameModel->getOppGoal())
     { }
 
 /****************************************************************/

@@ -60,7 +60,7 @@ fourWheelVels GoToPosition::calculateGoalField(Robot* robot, Type moveType)
     fourWheelVels result = {0, 0, 0, 0};
     Point closest = Point(-1, -1);
     Point mG = gameModel->getMyGoal();
-    Point oG = gameModel->getOpponentGoal();
+    Point oG = gameModel->getOppGoal();
     float mygoalDist = Measurements::distance(robot, mG);
     float opGoalDist = Measurements::distance(robot, oG);
 
@@ -76,8 +76,8 @@ fourWheelVels GoToPosition::calculateGoalField(Robot* robot, Type moveType)
      */
     if(closest != Point(-1, -1))
     {
-        float fromGoal = Measurements::angleBetween(closest, robot);
-        Point unit(cos(fromGoal), sin(fromGoal));
+        float ang_to_goal = Measurements::angleBetween(closest, robot);
+        Point unit(cos(ang_to_goal), sin(ang_to_goal));
 
         //The `target` is the robot's point plus a vector away from the goal
         Point target = robot->getPosition() + (unit * 1000);

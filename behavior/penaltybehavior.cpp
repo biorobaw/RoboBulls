@@ -33,7 +33,7 @@ PenaltyBehavior::~PenaltyBehavior()
 void PenaltyBehavior::perform(Robot * myRobot)
 {
     GameModel *model = GameModel::getModel();
-    Point appGoal = model->getOpponentGoal();
+    Point appGoal = model->getOppGoal();
     Robot* oppGolie = model->findOpTeam(GOALIE_ID);
 
     Point goliePos = oppGolie->getPosition();

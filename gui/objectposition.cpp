@@ -156,7 +156,7 @@ int ObjectPosition::getBotCoordX(bool myTeam, int id) {
     if (myTeam) {
         team = &dash->gamemodel->getMyTeam();
     } else {
-        team = &dash->gamemodel->getOponentTeam();
+        team = &dash->gamemodel->getOppTeam();
     }
     x = dash->gamemodel->find(id, *team)->getPosition().x;
     return x;
@@ -168,7 +168,7 @@ int ObjectPosition::getBotCoordY(bool myTeam, int id) {
     if (myTeam) {
         team = &dash->gamemodel->getMyTeam();
     } else {
-        team = &dash->gamemodel->getOponentTeam();
+        team = &dash->gamemodel->getOppTeam();
     }
     y = dash->gamemodel->find(id, *team)->getPosition().y;
     return y;
@@ -186,7 +186,7 @@ double ObjectPosition::getBotOrientDouble(bool myTeam, int id) {
     if (myTeam) {
         team = &dash->gamemodel->getMyTeam();
     } else {
-        team = &dash->gamemodel->getOponentTeam();
+        team = &dash->gamemodel->getOppTeam();
     }
     o = dash->gamemodel->find(id, *team)->getOrientation();
     o *= (180/M_PI);

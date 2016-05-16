@@ -251,7 +251,7 @@ void Move::assignNewPath(const Point& robotPoint)
     if((float)(now - lastLineDrawnTime) / CLOCKS_PER_SEC > 0.5) {
         lastLineDrawnTime = now;
         for (unsigned int i=1; i<pathQueue.size(); i++)
-            GuiInterface::getGuiInterface()->drawPath(pathQueue[i-1], pathQueue[i], i*2);
+            GuiInterface::getGuiInterface()->drawLine(pathQueue[i-1], pathQueue[i], i*2);
     }
 }
 

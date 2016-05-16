@@ -79,7 +79,7 @@ void OmniRandomKicker::perform(Robot* robot)
     if(ktp == nullptr) {
         Point offset = Point(-X_DEV+rand()%(2*(int)X_DEV), -Y_DEV+rand()%(2*(int)Y_DEV));
         Point myGoal = gameModel->getMyGoal();
-        Point opgoal = gameModel->getOpponentGoal();
+        Point opgoal = gameModel->getOppGoal();
         Point less = std::min(myGoal, opgoal, Comparisons::distance(receiver));
         ktp = new Skill::KickToPointOmni(less + offset);
     } else {

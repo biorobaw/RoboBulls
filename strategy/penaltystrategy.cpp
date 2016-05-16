@@ -16,13 +16,13 @@ void PenaltyStrategy::assignBeh()
 
     //We only do something special if it is *our* penalty kick.
     char gs = gameModel->getGameState();
-    if ((gs == 'P' && TEAM == TEAM_BLUE) || (gs == 'p' && TEAM == TEAM_YELLOW))
+    if ((gs == 'P' && OUR_TEAM == TEAM_BLUE) || (gs == 'p' && OUR_TEAM == TEAM_YELLOW))
     {
         //Finds the closest robot to the penalty point and its ID
         closestRobot = Comparisons::distanceOpGoal().minMyTeam();
 
         //Assigns closest robot to kick
-        closestRobot->assignSkill<Skill::KickToPointOmni>(gameModel->getOpponentGoal(), -1, -1, true);
+        closestRobot->assignSkill<Skill::KickToPointOmni>(gameModel->getOppGoal(), -1, -1, true);
     }
 
     //Assign simple behaviors to entire team, except for kicker and goalie
