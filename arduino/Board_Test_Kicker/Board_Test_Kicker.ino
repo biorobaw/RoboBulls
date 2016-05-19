@@ -44,6 +44,7 @@ int kick, chip, dribble = 0;
 
 
 //***********************************************************************************
+unsigned long start_time = 0;
 void setup()
 {
   // Set Kicker and Chipper pins to output
@@ -52,7 +53,6 @@ void setup()
   pinMode(dribblePin, OUTPUT);
 
   // Set controller signal pins to output  
-
   pinMode(enablePinLF, OUTPUT);
   pinMode(enablePinLB, OUTPUT);
   pinMode(enablePinRF, OUTPUT);
@@ -68,7 +68,6 @@ void setup()
   pinMode(brakePinRF, OUTPUT);
   pinMode(brakePinRB, OUTPUT);
  
-
   // Enable Controllers
   digitalWrite(enablePinLF, HIGH);
   digitalWrite(enablePinLB, HIGH);
@@ -87,25 +86,24 @@ void setup()
   analogWrite(speedPinRF, 30);
   analogWrite(speedPinRB, 30);
 
+  // Set Kick charge and dribble
+  digitalWrite(kickPin, LOW);
+  digitalWrite(chargePin, HIGH);
+  digitalWrite(dribblePin, LOW);
+
   // Start Serial Port
   Serial1.begin(57600);
+
+  start_time = millis();
 }
 //***********************************************************************************
 
 //***********************************************************************************
-long timestamp = 0;
-long LastLoopUpdate = 0;
+
 void loop()
 {
-  runComm();
-  if (millis() - LastLoopUpdate > 10)
-  {
-    setSpeeds();
-    setKick();
-    setDribble();
-    LastLoopUpdate = millis();
-  }
-  //printVels();
+  kick = 'k';
+  setKick();
 }
 //***********************************************************************************
 
@@ -124,8 +122,8 @@ void setKick()
   switch (current)
   {
     case charging:
-      digitalWrite(kickPin, HIGH);
-      digitalWrite(chargePin, LOW);
+      digitalWrite(kickPin, LOW);
+      digitalWrite(chargePin, HIGH);
       if (kick == 'k' && millis() - chargeStartTime >= chargeTime)
       {
         current = kicking;
@@ -133,11 +131,11 @@ void setKick()
       }
       break;
     case kicking:
-      digitalWrite(kickPin, LOW);
-      digitalWrite(chargePin, HIGH);
+      digitalWrite(kickPin, HIGH);
+      digitalWrite(chargePin, LOW);
       if (millis() - kickStartTime >= kickTime)
       {
-        digitalWrite(kickPin, HIGH);
+        digitalWrite(kickPin, LOW);
         current = charging;
         chargeStartTime = millis();
       }
