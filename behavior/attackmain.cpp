@@ -39,15 +39,19 @@ void AttackMain::perform(Robot * robot)
 //        }
 //    }
 
-    // Check if we can score
-    std::pair<bool, Point> result = calcBestGoalPoint(robot);
+    std::pair<bool, Point> goal_eval = calcBestGoalPoint(robot);
+    std::pair<bool, Point> pass_eval = calcBestPassPoint(robot);
 
-    if(result.first)    // If we can score from where the ball is, kick
+    if(goal_eval.first)    // If we can score from where the ball is, score
     {
-        kick_point = result.second;
+        kick_point = goal_eval.second;
         kick_skill->perform(robot);
     }
-    // If we cannot score or pass, move
+    else if(pass_eval.first)    // Else if we can score from where the ball is, pass
+    {
+        kick_point = pass_eval.second;
+        kick_skill->perform(robot);
+    }
     else
     {
         // Update dynamic probabilities
@@ -62,7 +66,7 @@ void AttackMain::perform(Robot * robot)
             {
                 ProbNode& curr = prob_field[x][y];
 
-                if(max_node.base_val+max_node.actual_val <= curr.base_val+curr.actual_val)
+                if(max_node.static_val+max_node.dynamic_val <= curr.static_val+curr.dynamic_val)
                    max_node = curr;
             }
         }
@@ -72,7 +76,6 @@ void AttackMain::perform(Robot * robot)
         dribble_skill->perform(robot);
     }
 }
-
 
 void AttackMain::calcStaticProb()
 {
@@ -104,20 +107,20 @@ void AttackMain::calcStaticProb()
                 // probability = 1 - (1/3000) * distance
                 temp_p = 1.0 - 0.000333 * dist;
                 temp_p *= w_dist;
-                n.base_val += temp_p;
+                n.static_val += temp_p;
 
                 // probability = 1 - (1/(85*pi/180)) * angle
                 temp_p = 1.0 - 0.674 * angle;
                 temp_p *= w_ang;
-                n.base_val += temp_p;
+                n.static_val += temp_p;
             }
 
             // Remove Points from defence area
             if(def_area.contains(n.point))
-                n.base_val = 0;
+                n.static_val = 0;
 
             // Normalize probabilities
-            n.base_val /= (w_dist + w_ang);
+            n.static_val /= (w_dist + w_ang);
         }
     }
 }
@@ -127,7 +130,7 @@ void AttackMain::calcDynamicProb()
     // Clear previous calculations
     for(int x = 0; x < PF_LENGTH; ++x)
         for(int y = 0; y < PF_WIDTH; ++y)
-            prob_field[x][y].actual_val = 0;
+            prob_field[x][y].dynamic_val = 0;
 
     // Top end of goal post
     float A1 = gameModel->getOppGoal().x;
@@ -173,12 +176,11 @@ void AttackMain::calcDynamicProb()
                 float extension = 100;   // Distance beyond actual shadow that we consider blocked
                 if(n.point.y <= m1*(n.point.x - A1) + B1 + extension
                 && n.point.y >= m2*(n.point.x - A2) + B2 - extension)
-                   n.actual_val = -10.0;
+                   n.dynamic_val = -10.0;
             }
         }
     }
 }
-
 
 std::vector<std::vector<Point>> AttackMain::genClusters()
 {
@@ -222,7 +224,6 @@ std::vector<std::vector<Point>> AttackMain::genClusters()
     return clusters;
 }
 
-
 std::pair<bool, Point> AttackMain::calcBestGoalPoint(Robot* r)
 {
     // Populate a vector with robot positions
@@ -251,7 +252,7 @@ std::pair<bool, Point> AttackMain::calcBestGoalPoint(Robot* r)
             bool clear_shot = true;
             for(const Point& obstacle : obstacles)
             {
-                if(Measurements::lineDistance(obstacle, gameModel->getBallPoint(), target) < BALL_RADIUS+ROBOT_RADIUS+20)
+                if(Measurements::lineSegmentDistance(obstacle, gameModel->getBallPoint(), target) < BALL_RADIUS+ROBOT_RADIUS+20)
                 {
                     clear_shot = false;
                     break;
@@ -286,15 +287,61 @@ std::pair<bool, Point> AttackMain::calcBestGoalPoint(Robot* r)
     return std::pair<bool, Point>(false, Point(0,0));
 }
 
+std::pair<bool, Point> AttackMain::calcBestPassPoint(Robot* r)
+{
+    std::vector<Robot*> obstacles = gameModel->getOppTeam();
+    Point bp = gameModel->getBallPoint();
+    Point rp = r->getPosition();
+    Robot* best_supp = nullptr;
+    float best_prob = 0;
+
+    for(Robot* teammate : gameModel->getMyTeam())
+    {
+        if(teammate->getID() != r->getID())
+        {
+            Point tp = teammate->getPosition();
+            bool path_clear = Measurements::pathIsClear(obstacles, bp, tp, ROBOT_RADIUS+BALL_RADIUS+20);
+
+            float t_prob = getScoreProb(tp);
+            bool better_pos =  t_prob > getScoreProb(rp);
+
+            bool far_enough = !Measurements::isClose(r, teammate, 500);
+
+            if(path_clear && better_pos && far_enough)
+            {
+                if (best_supp == nullptr
+                || (best_supp != nullptr && t_prob > best_prob))
+                {
+                    best_supp = teammate;
+                    best_prob = t_prob;
+                }
+            }
+        }
+    }
+
+    if(best_supp == nullptr)
+        return std::pair<bool, Point>(false, Point(0,0));
+    else
+        return std::pair<bool, Point>(true, best_supp->getPosition());
+}
 
 bool AttackMain::isFinished()
 {
     return done;
 }
 
-
 AttackMain::~AttackMain()
 {
     delete kick_skill;
     delete dribble_skill;
+}
+
+float AttackMain::getScoreProb(const Point& p)
+{
+    if(Comparisons::isPointInsideField(p))
+    {
+        ProbNode pn = prob_field[PF_LENGTH/2+(int)p.x/PND][PF_WIDTH/2+(int)p.y/PND];
+        return fmax(0, pn.dynamic_val + pn.static_val);
+    }
+    return 0;
 }

@@ -2,6 +2,7 @@
 #define measurements_H
 
 #include <cmath>
+#include <vector>
 #include "utilities/point.h"
 #include "include/config/tolerances.h"
 
@@ -83,6 +84,11 @@ public:
 
     /*! @brief Calculates the slope, given two points */
     static float slope(Point, Point);
+    //! @}
+
+    /*! @brief Returns true if an obstacle-free path is found between two points */
+    static bool pathIsClear(const std::vector<Point>& obstacles, const Point& A, const Point& B, const int& tolerance);
+    static bool pathIsClear(const std::vector<Robot*>& obstacles, const Point& A, const Point& B, const int& tolerance);
     //! @}
 
     //!@brief Clamps (limits) a value between min and max

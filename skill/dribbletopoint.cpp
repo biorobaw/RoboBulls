@@ -2,9 +2,15 @@
 
 namespace Skill {
 
+
+DribbleToPoint::DribbleToPoint(Point& target)
+    : DribbleToPoint(&target)
+{
+}
+
 DribbleToPoint::DribbleToPoint(Point* target)
     : target(target)
-    , state(travel)
+    , state(move_to_ball)
 {
 }
 
@@ -17,7 +23,7 @@ bool DribbleToPoint::perform(Robot* robot)
 
     switch (state)
     {
-    case travel:
+    case move_to_ball:
     {
         std::cout << "Dribble: Travel" << std::endl;
 
@@ -34,7 +40,6 @@ bool DribbleToPoint::perform(Robot* robot)
             move_skill.perform(robot);
             grasp_point = bp;
         }
-
         break;
     }
     case grasp:
@@ -50,7 +55,7 @@ bool DribbleToPoint::perform(Robot* robot)
 
         if(!dist_check || !ang_check)
         {
-            state = travel;
+            state = move_to_ball;
             break;
         }
 
@@ -59,11 +64,11 @@ bool DribbleToPoint::perform(Robot* robot)
         move_skill.recreate(grasp_point, ang_to_ball, false, false);
 
         if(move_skill.perform(robot))
-            state = move;
+            state = move_to_target;
 
         break;
     }
-    case move:
+    case move_to_target:
     {
         std::cout << "Dribble: Move" << std::endl;
 
@@ -76,7 +81,7 @@ bool DribbleToPoint::perform(Robot* robot)
 
         if(!dist_check || !ang_check)
         {
-            state = travel;
+            state = move_to_ball;
             break;
         }
 
@@ -116,7 +121,7 @@ bool DribbleToPoint::perform(Robot* robot)
 
         if(move_skill.perform(robot)
         || Measurements::distance(rp, bp) > ROBOT_RADIUS*3)
-            state = travel;
+            state = move_to_ball;
 
         break;
     }

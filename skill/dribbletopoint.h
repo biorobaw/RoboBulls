@@ -18,6 +18,7 @@ namespace Skill
 class DribbleToPoint: public Skill
 {
 public:
+    DribbleToPoint(Point& target);
     DribbleToPoint(Point* target);
     bool perform(Robot*) override;
 
@@ -25,7 +26,7 @@ private:
     Point* target;
     Point grasp_point;
     Movement::GoToPosition move_skill;
-    enum {travel, grasp, move, adjust1, adjust2} state;
+    enum {move_to_ball, grasp, move_to_target, adjust1, adjust2} state;
 
     bool targetIsAhead(const float& ang_to_ball, const Point& rp);
     bool safeToAdjust(const Point& bp, const int rob_id);

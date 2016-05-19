@@ -10,6 +10,7 @@
 #include "genericmovementbehavior.h"
 #include "algorithm"
 #include "utilities/region/defencearea.h"
+#include "utilities/comparisons.h"
 
 #include <vector>
 
@@ -43,8 +44,8 @@ private:
     struct ProbNode
     {
         Point point;
-        float base_val;
-        float actual_val;
+        float static_val;
+        float dynamic_val;
     };
 
     ProbNode prob_field[(FIELD_LENGTH+1)/PND][(FIELD_WIDTH+1)/PND];
@@ -54,16 +55,23 @@ private:
     Point kick_point;
     bool done = false;
 
-    // Returns true if there is a clear shot into the goal from the robot's position
-    // If returning true, also returns the point along the goal post at which to aim
-    std::pair<bool, Point> calcBestGoalPoint(Robot*);
+    // Fills in prob_field with scoring probabilities
+    void calcStaticProb();
+    void calcDynamicProb();
 
     // Populates clusters with groups of opponents close together
     std::vector<std::vector<Point>> genClusters();
 
-    // Fills in prob_field with scoring probabilities
-    void calcStaticProb();
-    void calcDynamicProb();
+    // Returns true if there is a clear shot into the goal from the robot's position
+    // If returning true, also returns the point along the goal post at which to aim
+    std::pair<bool, Point> calcBestGoalPoint(Robot*);
+
+    // Returns true if there is a robot that we can pass to
+    // If returning true, also returns the point at which to aim
+    std::pair<bool, Point> calcBestPassPoint(Robot*);
+
+    // Returns the probability of scoring given a Point
+    float getScoreProb(const Point&);
 };
 
 #endif // ATTACK_MAIN_H

@@ -136,3 +136,20 @@ float Measurements::lineSegmentDistance(const Point& p0, const Point& LStart, co
 {
     return distance(p0, lineSegmentPoint(p0,LStart,LEnd));
 }
+
+
+bool Measurements::pathIsClear(const std::vector<Point>& obstacles, const Point& A, const Point& B, const int& tolerance)
+{
+    for(const Point& obstacle : obstacles)
+        if(lineSegmentDistance(obstacle, A, B) < tolerance)
+            return false;
+    return true;
+}
+
+bool Measurements::pathIsClear(const std::vector<Robot*>& obstacles, const Point& A, const Point& B, const int& tolerance)
+{
+    for(Robot* r : obstacles)
+        if(lineSegmentDistance(r->getPosition(), A, B) < tolerance)
+            return false;
+    return true;
+}
