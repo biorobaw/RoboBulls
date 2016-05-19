@@ -12,7 +12,7 @@ namespace Skill
  * @author Narges Ghaedi, James Waugh
  * @details Attempts to push the ball to the point targetPoint
  * at angle finalDirection
- * @deprecated Use KickToPointOmni with a kick distance instead */
+ * @deprecated Used for LEGO robots only. Use DribbleToPoint for SSL bots */
 
 class DriveBall:public Skill
 {

@@ -41,6 +41,9 @@ fourWheelVels FourWheelCalculator::calculateVels
     case Type::facePoint:
         return facePointCalc(rob,x_goal,y_goal,theta_goal);
         break;
+    case Type::dribble:
+        return dribbleCalc(rob,x_goal,y_goal,theta_goal);
+        break;
     default:
         return defaultCalc(rob,x_goal,y_goal,theta_goal);
     }
@@ -60,8 +63,6 @@ fourWheelVels FourWheelCalculator::defaultCalc
     distance_to_goal = Measurements::distance(rp,gp);
     float angle_to_goal = Measurements::angleBetween(rp, gp);
     angle_error = Measurements::angleDiff(rob->getOrientation(), theta_goal);
-
-//    std::cout << "4WheelCalc: " << distance_to_goal << std::endl;
 
     //Calulate error integral component
     calc_error(x_goal, y_goal);
@@ -95,6 +96,101 @@ fourWheelVels FourWheelCalculator::defaultCalc
     double y_vel_robot = cos(theta_current)*x_vel+sin(theta_current)*y_vel;
     double x_vel_robot = sin(theta_current)*x_vel-cos(theta_current)*y_vel;
     double vel_robot = sqrt(x_vel_robot*x_vel_robot + y_vel_robot * y_vel_robot);
+
+    // Wheel Velocity Calculations
+    double RF =  (-sin(RF_offset) * x_vel_robot + cos(RF_offset)*y_vel_robot - trans_offset*vel_robot*cos(RF_offset) + wheel_radius*theta_vel);
+    double LF = -(-sin(LF_offset) * x_vel_robot + cos(LF_offset)*y_vel_robot - trans_offset*vel_robot*cos(LF_offset) + wheel_radius*theta_vel);
+    double LB = -(-sin(LB_offset) * x_vel_robot + cos(LB_offset)*y_vel_robot - trans_offset*vel_robot*cos(LB_offset) + wheel_radius*theta_vel);
+    double RB =  (-sin(RB_offset) * x_vel_robot + cos(RB_offset)*y_vel_robot - trans_offset*vel_robot*cos(RB_offset) + wheel_radius*theta_vel);
+
+    // Normalize wheel velocities
+    unsigned int max_mtr_spd = 100;
+    if (abs(LF)>max_mtr_spd)
+    {
+        LB=(max_mtr_spd/abs(LF))*LB;
+        RF=(max_mtr_spd/abs(LF))*RF;
+        RB=(max_mtr_spd/abs(LF))*RB;
+        LF=(max_mtr_spd/abs(LF))*LF;
+    }
+    if (abs(LB)>max_mtr_spd)
+    {
+        LF=(max_mtr_spd/abs(LB))*LF;
+        RF=(max_mtr_spd/abs(LB))*RF;
+        RB=(max_mtr_spd/abs(LB))*RB;
+        LB=(max_mtr_spd/abs(LB))*LB;
+    }
+    if (abs(RF)>max_mtr_spd)
+    {
+        LF=(max_mtr_spd/abs(RF))*LF;
+        LB=(max_mtr_spd/abs(RF))*LB;
+        RB=(max_mtr_spd/abs(RF))*RB;
+        RF=(max_mtr_spd/abs(RF))*RF;
+    }
+    if (abs(RB)>max_mtr_spd)
+    {
+        LF=(max_mtr_spd/abs(RB))*LF;
+        LB=(max_mtr_spd/abs(RB))*LB;
+        RF=(max_mtr_spd/abs(RB))*RF;
+        RB=(max_mtr_spd/abs(RB))*RB;
+    }
+
+    //Create and return result container
+    fourWheelVels vels;
+    vels.LB = LB;
+    vels.LF = LF;
+    vels.RB = RB;
+    vels.RF = RF;
+
+    return vels;
+}
+
+fourWheelVels FourWheelCalculator::dribbleCalc
+    (Robot* rob, float x_goal, float y_goal, float theta_goal)
+{
+    //Current Position
+    double x_current = rob->getPosition().x;
+    double y_current = rob->getPosition().y;
+    double theta_current = rob->getOrientation();
+    last_goal_target = Point(x_goal, y_goal);
+
+    Point rp = Point(x_current,y_current);
+    Point gp = Point(x_goal,y_goal);
+    distance_to_goal = Measurements::distance(rp,gp);
+    float angle_to_goal = Measurements::angleBetween(rp, gp);
+    angle_error = Measurements::angleDiff(rob->getOrientation(), theta_goal);
+
+    //Calulate error integral component
+    calc_error(x_goal, y_goal);
+
+    //Inertial Frame Velocities
+    double x_vel =
+        (xy_prop_mult * distance_to_goal +
+         xy_int_mult  * dist_error_integral)*cos(angle_to_goal);
+    double y_vel =
+        (xy_prop_mult * distance_to_goal +
+         xy_int_mult  * dist_error_integral)*sin(angle_to_goal);
+    double theta_vel =
+         theta_prop_mult * angle_error
+       + theta_int_mult  * angle_error_integral;
+
+    if (abs(Measurements::angleDiff(theta_goal,theta_current))<
+        abs(Measurements::angleDiff(theta_goal,theta_current+theta_vel)))
+        theta_vel=-theta_vel;
+
+    // Robot Frame Velocities
+    double y_vel_robot = cos(theta_current)*x_vel+sin(theta_current)*y_vel;
+    double x_vel_robot = sin(theta_current)*x_vel-cos(theta_current)*y_vel;
+    double vel_robot = sqrt(x_vel_robot*x_vel_robot + y_vel_robot * y_vel_robot);
+    
+    // Cap velocities for dribbling
+    y_vel_robot = fmin(y_vel_robot, 100);
+    y_vel_robot = fmax(y_vel_robot, -20);
+
+    theta_vel -= x_vel_robot;
+    theta_vel = fmin(theta_vel, 0.1);
+    theta_vel = fmax(theta_vel, -0.1);
+
+    x_vel_robot = 0;
 
     // Wheel Velocity Calculations
     double RF =  (-sin(RF_offset) * x_vel_robot + cos(RF_offset)*y_vel_robot - trans_offset*vel_robot*cos(RF_offset) + wheel_radius*theta_vel);

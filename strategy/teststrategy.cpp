@@ -1,5 +1,6 @@
 #include "teststrategy.h"
 #include "skill/kicktopointomni.h"
+#include "skill/dribbletopoint.h"
 #include "behavior/genericmovementbehavior.h"
 #include "model/gamemodel.h"
 #include "utilities/comparisons.h"
@@ -52,8 +53,37 @@ public:
         if(duration >= 6)
             wait4recharge = false;
     }
+};
 
+// Test behavior to dribble the ball between two points
+class DribbleToPointBeh : public Behavior
+{
+    Skill::DribbleToPoint* skill;
+    Point A = Point(1500, 0);
+    Point B = Point(-1500, 0);
+    Point* target;
+public:
+    DribbleToPointBeh()
+    {
+        target = &A;
+        skill = new Skill::DribbleToPoint(target);
+    }
 
+    ~DribbleToPointBeh()
+    {
+        delete skill;
+    }
+
+    void perform(Robot * robot) override
+    {
+        if(skill->perform(robot))
+        {
+            if((*target) == A)
+                target = &B;
+            else
+                target = &A;
+        }
+    }
 };
 
 // Test behavior to rotate to the ball

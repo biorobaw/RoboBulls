@@ -2,7 +2,81 @@
 
 AttackMain::AttackMain()
 {
-    // Calculate the probility of scoring from each point
+    calcStaticProb();
+    kick_skill = new Skill::KickToPointOmni(&kick_point,-1,-1,true);
+    dribble_skill = new Skill::DribbleToPoint(&kick_point);
+}
+
+
+/* Angle tolerances for kicking in degrees (then converted to radians).
+ * Passing is lower because it needs to be more precise */
+#if SIMULATED
+ #define SCORE_ANGLE_TOLERANCE  (30*M_PI/180)
+ #define PASS_ANGLE_TOLERANCE   (15*M_PI/180)
+#else
+ #define SCORE_ANGLE_TOLERANCE  (7*M_PI/180)
+ #define PASS_ANGLE_TOLERANCE   (7*M_PI/180)
+#endif
+
+void AttackMain::perform(Robot * robot)
+{
+//    auto clusters = genClusters();
+//    for(std::vector<Point> cluster : clusters)
+//    {
+//       for(Point p: cluster)
+//           std::cout << p.x << ", " << p.y << "\t";
+//       std::cout << std::endl;
+//    }
+
+//    calcActualProb();
+//    for(int x = PF_LENGTH/2; x < PF_LENGTH; ++x)
+//    {
+//        for(int y = 0; y < PF_WIDTH; ++y)
+//        {
+//            ProbNode& curr = prob_field[x][y];
+//            if(curr.base_val+curr.actual_val >= 0.4)
+//                GuiInterface::getGuiInterface()->drawPoint(curr.point);
+//        }
+//    }
+
+    // Check if we can score
+    std::pair<bool, Point> result = calcBestGoalPoint(robot);
+
+    if(result.first)    // If we can score from where the ball is, kick
+    {
+        kick_point = result.second;
+        kick_skill->perform(robot);
+    }
+    // If we cannot score or pass, move
+    else
+    {
+        // Update dynamic probabilities
+        calcDynamicProb();
+
+        // Find max probability node in opponent side of field
+        ProbNode& max_node = prob_field[PF_LENGTH/2][0];
+
+        for(int x = PF_LENGTH/2; x < PF_LENGTH; ++x)
+        {
+            for(int y = 0; y < PF_WIDTH; ++y)
+            {
+                ProbNode& curr = prob_field[x][y];
+
+                if(max_node.base_val+max_node.actual_val <= curr.base_val+curr.actual_val)
+                   max_node = curr;
+            }
+        }
+
+        // Dribble Towards Max Node
+        kick_point = max_node.point;
+        dribble_skill->perform(robot);
+    }
+}
+
+
+void AttackMain::calcStaticProb()
+{
+    // Calculate the static probility of scoring from each point
     // in the probability field based on fixed factors
     Point opp_goal = gameModel->getOppGoal();
     float w_dist = 2.0, w_ang = 1.0;    // Relative weights
@@ -46,61 +120,9 @@ AttackMain::AttackMain()
             n.base_val /= (w_dist + w_ang);
         }
     }
-
-    kick_skill = new Skill::KickToPointOmni(&kick_point,-1,-1,true);
 }
 
-
-/* Angle tolerances for kicking in degrees (then converted to radians).
- * Passing is lower because it needs to be more precise */
-#if SIMULATED
- #define SCORE_ANGLE_TOLERANCE  (30*M_PI/180)
- #define PASS_ANGLE_TOLERANCE   (15*M_PI/180)
-#else
- #define SCORE_ANGLE_TOLERANCE  (7*M_PI/180)
- #define PASS_ANGLE_TOLERANCE   (7*M_PI/180)
-#endif
-
-void AttackMain::perform(Robot * robot)
-{
-    // Check if we can score
-    std::pair<bool, Point> result = calcBestGoalPoint(robot);
-
-    if(result.first)    // If we can score from where the ball is, kick
-    {
-        kick_point = result.second;
-        kick_skill->perform(robot);
-    }
-    else    // If we cannot score, move
-    {
-        // Update dynamic probabilities
-        calcActualProb();
-
-        // Find max probability node in opponent side of field
-        ProbNode& max_node = prob_field[PF_LENGTH/2][0];
-
-        for(int x = PF_LENGTH/2; x < PF_LENGTH; ++x)
-        {
-            for(int y = 0; y < PF_WIDTH; ++y)
-            {
-                ProbNode& curr = prob_field[x][y];
-
-                if(max_node.base_val+max_node.actual_val <= curr.base_val+curr.actual_val)
-                   max_node = curr;
-
-                //if(curr.base_val+curr.actual_val >= 0.4)
-                 //   GuiInterface::getGuiInterface()->drawPoint(curr.point);
-            }
-        }
-
-        // Move Towards Max Node
-        setMovementTargets(max_node.point, 0, true, false);
-        GenericMovementBehavior::perform(robot);
-    }
-}
-
-
-void AttackMain::calcActualProb()
+void AttackMain::calcDynamicProb()
 {
     // Clear previous calculations
     for(int x = 0; x < PF_LENGTH; ++x)
@@ -117,21 +139,32 @@ void AttackMain::calcActualProb()
 
     float R = ROBOT_RADIUS;
 
-    for(Robot* r: gameModel->getOppTeam())
+    // Generate clusters of robots
+    std::vector<std::vector<Point>> clusters = genClusters();
+
+    // Cast shadows to clusters of robots from goal post to determine
+    // unlikely scoring positions
+    for(std::vector<Point> cluster : clusters)
     {
-        float C = r->getPosition().x;
-        float D = r->getPosition().y;
+        float top_x = cluster.front().x;
+        float top_y = cluster.front().y;
 
-        // Gradient of line starting from top end of goal post and tangent to robot (from MATLAB)
-        float m1 = -(R*sqrt(pow(A1-C,2) + pow(B1-D,2) - R*R) + (D-B1)*(A1-C))/(pow(A1-C,2) - R*R);
+        float bot_x = cluster.back().x;
+        float bot_y = cluster.back().y;
 
-        // Gradient of line starting from bottom end of goal post and tangent to robot (from MATLAB)
-        float m2 = (R*sqrt(pow(A2-C,2) + pow(B2-D,2) - R*R) + (B2-D)*(A2-C))/(pow(A2-C,2) - R*R);
+        // Gradient of line starting from top end of goal post and tangent to top robot (from MATLAB)
+        float m1 = -(R*sqrt(pow(A1-top_x,2) + pow(B1-top_y,2) - R*R) + (top_y-B1)*(A1-top_x))/(pow(A1-top_x,2) - R*R);
+
+        // Gradient of line starting from bottom end of goal post and tangent to bottom robot (from MATLAB)
+        float m2 = (R*sqrt(pow(A2-bot_x,2) + pow(B2-bot_y,2) - R*R) + (B2-bot_y)*(A2-bot_x))/(pow(A2-bot_x,2) - R*R);
+
+//        GuiInterface::getGuiInterface()->drawLine(Point(A1,B1), Point(top_x, top_y), 0.01);
+//        GuiInterface::getGuiInterface()->drawLine(Point(A2,B2), Point(bot_x, bot_y), 0.01);
 
         // Set probabilities
-        for(int x = std::max(0,PF_LENGTH/2 + (int)(C-1000)/PND); x <= std::min(PF_LENGTH,PF_LENGTH/2 + (int)(C+3*R)/PND); ++x)
+        for(int x = PF_LENGTH/2; x <= PF_LENGTH; ++x)
         {
-            for(int y = std::max(0,PF_WIDTH/2 + (int)(D-1000)/PND); y <= std::min(PF_WIDTH,PF_WIDTH/2 + (int)(D+1000)/PND); ++y)
+            for(int y = 0; y <= PF_WIDTH; ++y)
             {
                 ProbNode& n = prob_field[x][y];
 
@@ -139,16 +172,54 @@ void AttackMain::calcActualProb()
                 // of a robot considering the goal post as light source
                 float extension = 100;   // Distance beyond actual shadow that we consider blocked
                 if(n.point.y <= m1*(n.point.x - A1) + B1 + extension
-                && n.point.y >= m2*(n.point.x - A2) + B2 - extension
-                && n.point.x <= C - R)
+                && n.point.y >= m2*(n.point.x - A2) + B2 - extension)
                    n.actual_val = -10.0;
-
-                // Reduced probability of scoring close to an opponent
-                if(Measurements::distance(r, n.point) < R * 2)
-                    n.actual_val = -10.0;
             }
         }
     }
+}
+
+
+std::vector<std::vector<Point>> AttackMain::genClusters()
+{
+    int cluster_tol = 2*ROBOT_RADIUS + 2*BALL_RADIUS + 10;
+
+    std::vector<std::vector<Point>> clusters;
+
+    for(Robot* opp: gameModel->getOppTeam())
+    {
+        // Check if each opponent belongs to an existing cluster
+        bool assigned = false;
+
+        for(std::vector<Point>& cluster: clusters)
+        {
+            for(Point& p : cluster)
+            {
+                if(Measurements::distance(opp->getPosition(), p) < cluster_tol)
+                {
+                    cluster.push_back(opp->getPosition());
+                    assigned = true;
+                    break;
+                }
+
+                if(assigned) break;
+            }
+        }
+
+        // If the robot does not fit in an existing cluster
+        if(!assigned)
+        {
+            // Add the robot position to a new cluster
+            std::vector<Point> cluster;
+            cluster.push_back(opp->getPosition());
+            clusters.push_back(cluster);
+        }
+    }
+
+    for(std::vector<Point>& cluster : clusters)
+        std::sort(cluster.begin(),cluster.end(), [](const Point& A, const Point& B){return A.y > B.y;});
+
+    return clusters;
 }
 
 
@@ -215,12 +286,15 @@ std::pair<bool, Point> AttackMain::calcBestGoalPoint(Robot* r)
     return std::pair<bool, Point>(false, Point(0,0));
 }
 
+
 bool AttackMain::isFinished()
 {
     return done;
 }
 
+
 AttackMain::~AttackMain()
 {
     delete kick_skill;
+    delete dribble_skill;
 }

@@ -3,6 +3,7 @@
 #include "behavior.h"
 #include "include/config/simulated.h"
 #include "skill/kicktopointomni.h"
+#include "skill/dribbletopoint.h"
 #include "model/gamemodel.h"
 #include "gui/guiinterface.h"
 #include "utilities/region/sector.h"
@@ -49,16 +50,20 @@ private:
     ProbNode prob_field[(FIELD_LENGTH+1)/PND][(FIELD_WIDTH+1)/PND];
 
     Skill::KickToPointOmni* kick_skill;
+    Skill::DribbleToPoint* dribble_skill;
     Point kick_point;
     bool done = false;
-
 
     // Returns true if there is a clear shot into the goal from the robot's position
     // If returning true, also returns the point along the goal post at which to aim
     std::pair<bool, Point> calcBestGoalPoint(Robot*);
 
-    // Fills in prob_field with scoring probabilities based on dynamic factors
-    void calcActualProb();
+    // Populates clusters with groups of opponents close together
+    std::vector<std::vector<Point>> genClusters();
+
+    // Fills in prob_field with scoring probabilities
+    void calcStaticProb();
+    void calcDynamicProb();
 };
 
 #endif // ATTACK_MAIN_H
