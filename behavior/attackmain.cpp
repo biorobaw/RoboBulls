@@ -58,7 +58,7 @@ void AttackMain::perform(Robot * robot)
         calcDynamicProb();
 
         // Find max probability node in opponent side of field
-        ProbNode& max_node = prob_field[PF_LENGTH/2][0];
+        ProbNode max_node = prob_field[PF_LENGTH/2][0];
 
         for(int x = PF_LENGTH/2; x < PF_LENGTH; ++x)
         {

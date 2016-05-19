@@ -6,12 +6,14 @@ namespace Skill {
 DribbleToPoint::DribbleToPoint(Point& target)
     : DribbleToPoint(&target)
 {
+    std::cout << "CTR1" << std::endl;
 }
 
 DribbleToPoint::DribbleToPoint(Point* target)
     : target(target)
     , state(move_to_ball)
 {
+    std::cout << "CTR2" << std::endl;
 }
 
 bool DribbleToPoint::perform(Robot* robot)
