@@ -99,6 +99,13 @@ float Measurements::angleSum(float angle1, float angle2)
     return atan2(sinA*cosB+sinB*cosA, cosA*cosB-sinA*sinB);
 }
 
+bool Measurements::angleInRange(float angle, float start, float end)
+{
+    end = (end - start) < 0.0f ? end - start + 2*M_PI : end - start;
+    angle = (angle - start) < 0.0f ? angle - start + 2*M_PI : angle - start;
+    return (angle < end);
+}
+
 
 bool Measurements::isClose(float angle1, float angle2, float tol)
 {

@@ -221,6 +221,7 @@ OTHER_FILES += \
     gui/images/gear2.png \
     gui/images/go-next.png \
     gui/images/slider-handle.png \
+    RoboBulls.supp
 
 RESOURCES += \
     gui/images.qrc

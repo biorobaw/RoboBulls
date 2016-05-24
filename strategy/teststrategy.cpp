@@ -7,6 +7,7 @@
 #include "behavior/defendbehavior.h"
 #include "behavior/goaliebehavior.h"
 #include "behavior/attackmain.h"
+#include "behavior/attacksupport.h"
 #include "behavior/rotateonpoint.h"
 #include "ctime"
 
@@ -175,11 +176,14 @@ bool TestStrategy::update()
     //All robots must exists before any action is taken.
     Robot* r0 = gameModel->findMyTeam(3);
     Robot* r1 = gameModel->findMyTeam(5);
+    Robot* r2 = gameModel->findMyTeam(4);
 
     if(r0)
         r0->assignBeh<GoalieBehavior>();
     if(r1)
         r1->assignBeh<AttackMain>();
+    if(r2)
+        r2->assignBeh<AttackSupport>();
     return false;
 }
 

@@ -78,7 +78,7 @@ wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, Point goal, do
 
 wheelvelocities ClosedLoopBase::closed_loop_control(Robot* robot, double x_goal, double y_goal, double theta_goal)
 {
-    double left_motor_velocity, right_motor_velocity;
+    double left_motor_velocity = 0, right_motor_velocity = 0;
 
     //*******************************************************************************************
     /* Get initial information about the robot. */

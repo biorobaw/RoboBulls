@@ -67,6 +67,9 @@ public:
     static bool isClose(float angle1, float angle2, float tol = ROT_TOLERANCE);
     //!@}
 
+    //!@brief returns true if an angle lies within
+    static bool angleInRange(float angle, float start, float end);
+
     /*! @name Line Functions Family
      * @{
      * @brief Given a line defined by LStart and LEnd, returns the shortest distance from the

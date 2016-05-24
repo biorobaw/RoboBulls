@@ -351,6 +351,7 @@ void FourWheelCalculator::calc_error(float x_goal, float y_goal)
     //Integral Error for distance
     if (dist_error_deque.size() == dist_error_maxsize) {
         dist_error_integral -= dist_error_deque.front();
+//        std::cout << "";
         dist_error_deque.pop_front();
     }
     dist_error_integral += distance_to_goal;

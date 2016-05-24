@@ -3,8 +3,8 @@
 AttackMain::AttackMain()
 {
     calcStaticProb();
-    kick_skill = new Skill::KickToPointOmni(&kick_point,-1,-1,true);
     dribble_skill = new Skill::DribbleToPoint(&kick_point);
+    kick_skill = new Skill::KickToPointOmni(&kick_point,-1,-1,true);
 }
 
 
@@ -44,11 +44,13 @@ void AttackMain::perform(Robot * robot)
 
     if(goal_eval.first)    // If we can score from where the ball is, score
     {
+        robot->setDrible(false);
         kick_point = goal_eval.second;
         kick_skill->perform(robot);
     }
     else if(pass_eval.first)    // Else if we can score from where the ball is, pass
     {
+        robot->setDrible(false);
         kick_point = pass_eval.second;
         kick_skill->perform(robot);
     }
@@ -77,6 +79,7 @@ void AttackMain::perform(Robot * robot)
     }
 }
 
+
 void AttackMain::calcStaticProb()
 {
     // Calculate the static probility of scoring from each point
@@ -88,9 +91,9 @@ void AttackMain::calcStaticProb()
 
     DefenceArea def_area(!OUR_TEAM);
 
-    for (int x = 0; x <= PF_LENGTH; ++x)
+    for (int x = 0; x < PF_LENGTH; ++x)
     {
-        for (int y = 0; y <= PF_WIDTH; ++y)
+        for (int y = 0; y < PF_WIDTH; ++y)
         {
             ProbNode& n = prob_field[x][y];
 

@@ -18,7 +18,7 @@ bool Sector::contains(const Point& p)
     double ap = Measurements::angleBetween(c, p);
 
     // Convert Angles
-    if(a1 < 0)
+    while(a1 < 0)
         a1 += 2*M_PI;
 
     while(a2 < 0 || a1 > a2)
