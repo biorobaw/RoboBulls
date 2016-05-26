@@ -21,6 +21,8 @@
 
 FieldPanel::FieldPanel(MainWindow * mw) {
     dash = mw;
+    region_drawer = nullptr;
+    point_drawer = nullptr;
 }
 
 void FieldPanel::setupScene() {
@@ -424,7 +426,8 @@ void FieldPanel::setupLine(Point start, Point stop, double seconds) {
 
 void FieldPanel::setupPoint(Point p) {
     // Adding data from game's thread to deques for future reference by our thread
-    simplePoints.push_front(p);
+    std::lock_guard<std::mutex> points_guard(points_mutex);
+    simple_points.push_front(p);
 }
 
 void FieldPanel::setupRegion(std::vector<Point> p_vec) {
@@ -467,10 +470,11 @@ void FieldPanel::drawPoint() {
         point_drawer = new GuiDrawPoint();
     }
 
-    for (Point p : simplePoints)
-        point_drawer->points.push_back(p);
+    std::lock_guard<std::mutex> points_guard(points_mutex);
 
-    simplePoints.clear();
+    for (Point p : simple_points)
+        point_drawer->points.push_back(p);
+    simple_points.clear();
 
     point_drawer->setZValue(2);
     point_drawer->setX(100);

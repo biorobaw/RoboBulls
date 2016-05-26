@@ -168,9 +168,9 @@ void AttackMain::calcDynamicProb()
 //        GuiInterface::getGuiInterface()->drawLine(Point(A2,B2), Point(bot_x, bot_y), 0.01);
 
         // Set probabilities
-        for(int x = PF_LENGTH/2; x <= PF_LENGTH; ++x)
+        for(int x = PF_LENGTH/2; x < PF_LENGTH; ++x)
         {
-            for(int y = 0; y <= PF_WIDTH; ++y)
+            for(int y = 0; y < PF_WIDTH; ++y)
             {
                 ProbNode& n = prob_field[x][y];
 

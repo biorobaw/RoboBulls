@@ -240,27 +240,44 @@ void VisionComm::receiveIfMSPassed(int ms_limit)
 bool VisionComm::receive()
 {
     //Receive a new packet if X ms has passed (0 FOR NOW)
-    receiveIfMSPassed(0);
+    //receiveIfMSPassed(0);
+    client->receive(packet);    //Recieve packet here
 
     if(packet.has_detection())
     {
         const SSL_DetectionFrame& frame = packet.detection();
-        recieveBall(frame);
-        recieveRobotTeam(frame, TEAM_BLUE);
-        recieveRobotTeam(frame, TEAM_YELLOW);
+        frames[frame.camera_id()] = frame;
+        frames_state[frame.camera_id()] = true;
+    }
+
+    bool all_frames_recv = true;
+
+    for(int i = 0; i < 4; ++i)
+        if(!frames_state[i])
+            all_frames_recv = false;
+
+    if(all_frames_recv)
+    {
+        for(int i = 0; i < 4; ++i)
+        {
+            recieveBall(frames[i]);
+            recieveRobotTeam(frames[i], TEAM_BLUE);
+            recieveRobotTeam(frames[i], TEAM_YELLOW);
+            frames_state[i] = false;
+        }
 
         /* After we have had a chance to initially recieve all robots,
          * the RoboBulls game is run with the new information here. */
         if (++totalframes > 200)
             gamemodel->notifyObservers();
-    }
-    
-    /* After 100 frames the "seen counts" of each team are set to 0. This prevents
-     * ghost robots from appearing over time */
-    if(++resetFrames > 100) {
-        resetFrames = 0;
-        for(int& reading : blue_rob_readings) reading = 0;
-        for(int& reading : yell_rob_readings) reading = 0;
+
+        /* After 100 frames the "seen counts" of each team are set to 0. This prevents
+         * ghost robots from appearing over time */
+        if(++resetFrames > 100) {
+            resetFrames = 0;
+            for(int& reading : blue_rob_readings) reading = 0;
+            for(int& reading : yell_rob_readings) reading = 0;
+        }
     }
 
     return true;

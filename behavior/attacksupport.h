@@ -13,7 +13,7 @@
  * enemies, and the one that the AttackMain robot is not inside of--and waits
  * for a pass from the AttackMain robot. */
 
-#define PND 50  //Distance between nodes in the probability field
+#define PND 30  //Distance between nodes in the probability field
 // Probability Field Variables
 #define PF_LENGTH (FIELD_LENGTH+1)/PND
 #define PF_WIDTH  (FIELD_WIDTH +1)/PND

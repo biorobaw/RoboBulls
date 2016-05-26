@@ -23,6 +23,6 @@ void GuiDrawPoint::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
         Q_points[i].setY(points.at(i).y);
     }
 
-    painter->setPen(Qt::red);
+    painter->setPen(Qt::black);
     painter->drawPoints(Q_points, num_points);
 }
