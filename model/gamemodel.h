@@ -125,7 +125,6 @@ private:
 
 //Global singleton pointer to access GameModel
 extern GameModel* gameModel;
-
 //! @}
 
 #endif // GAMEMODEL_H

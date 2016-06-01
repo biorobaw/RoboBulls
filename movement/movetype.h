@@ -27,6 +27,7 @@ enum Type
 
     //Omni Movement Types
     facePoint,  //Puts more emphasis on rotation
+    dribble,    //Used when dribbling the ball
     StayStill   //Used when the robot shoudl stay in it's current spot
 };
 

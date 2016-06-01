@@ -100,7 +100,8 @@ SOURCES += main.cpp \
     utilities/measurements.cpp \
     utilities/region/defencearea.cpp \
     gui/guidrawpoint.cpp \
-    gui/guidrawregion.cpp
+    gui/guidrawregion.cpp \
+    skill/dribbletopoint.cpp
 
 HEADERS += \
 	behavior/attackmain.h \
@@ -195,7 +196,8 @@ HEADERS += \
     utilities/measurements.h \
     utilities/region/defencearea.h \
     gui/guidrawpoint.h \
-    gui/guidrawregion.h
+    gui/guidrawregion.h \
+    skill/dribbletopoint.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 
@@ -219,6 +221,7 @@ OTHER_FILES += \
     gui/images/gear2.png \
     gui/images/go-next.png \
     gui/images/slider-handle.png \
+    RoboBulls.supp
 
 RESOURCES += \
     gui/images.qrc

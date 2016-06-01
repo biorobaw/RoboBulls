@@ -18,8 +18,6 @@ public:
     QRectF boundingRect() const;    // outermost edges of the object
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     std::vector<Point> points;
-private:
-    QPointF* Q_points;
 };
 
 #endif // GUIDRAWPOINT_H

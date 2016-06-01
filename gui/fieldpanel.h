@@ -2,6 +2,7 @@
 #define FIELDPANEL_H
 
 #include <deque>
+#include <mutex>
 #include "guisidelines.h"
 #include "utilities/point.h"
 #include "guidrawpoint.h"
@@ -110,7 +111,8 @@ public:
     deque<double> lineLifeSpans;
 
     // Point drawing information
-    deque<Point> simplePoints;
+    deque<Point> simple_points;
+    std::mutex points_mutex;
 
     // Region drawing information
     deque<Point> region_points;

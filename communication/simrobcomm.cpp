@@ -57,7 +57,7 @@ void SimRobComm::sendPacket(Robot* robot)
     command->set_velangular(0);
     command->set_kickspeedx(kick);
     command->set_kickspeedz(0); // No chipper
-    command->set_spinner(dribble ? 80 : 0);
+    command->set_spinner(dribble ? 300 : 0);
 
     //Send packet
     QByteArray dgram;

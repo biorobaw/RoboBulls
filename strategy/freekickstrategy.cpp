@@ -25,7 +25,7 @@ void FreeKickStrategy::assignBeh()
         //Assign the goalie if he is there
         NormalGameStrategy::assignGoalieIfOk();
 
-        int closestRobotID;
+        int closestRobotID = 0;
         Point ballPoint = gm->getBallPoint();
 
         /*Finds the closest robot to the ball point (assuming the

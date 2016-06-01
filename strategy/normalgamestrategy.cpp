@@ -267,7 +267,8 @@ bool NormalGameStrategy::considerSwitchCreiteria()
 
 {
       Robot* r = gameModel->findMyTeam(GOALIE_ID);
-      r->assignBeh<GoalieBehavior>();
+      if(r!=nullptr)
+        r->assignBeh<GoalieBehavior>();
 
     static int switchCounter = 0;
     Robot* ballRobot = gameModel->getHasBall();
@@ -338,17 +339,17 @@ void NormalGameStrategy::assignAttackBehaviors(bool switchSides)
         if(driverBot && recvBot) {
             //If we have found both robots, assign them both
             if(switchSides) {
-                driverBot->assignBeh<AttackSupport>(recvBot);
-                  recvBot->assignBeh<AttackMain>(driverBot, true); //The receiver cannot pass. No passing loops.
+                driverBot->assignBeh<AttackSupport>();
+                  recvBot->assignBeh<AttackMain>(); //The receiver cannot pass. No passing loops.
                 currentMainAttacker = recvBot;
             } else {
-                driverBot->assignBeh<AttackMain>(recvBot);
-                  recvBot->assignBeh<AttackSupport>(driverBot);
+                driverBot->assignBeh<AttackMain>();
+                  recvBot->assignBeh<AttackSupport>();
                 currentMainAttacker = driverBot;
             }
         } else if (driverBot) {
             //If there is only one robot, just make it kick to the goal
-            driverBot->assignBeh<AttackMain>(nullptr, true);
+            driverBot->assignBeh<AttackMain>();
         }
 
         //Finally assign goalie

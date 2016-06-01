@@ -56,6 +56,8 @@ protected:
 
     GameModel *gamemodel;           //! Pointer to GameModel to update
     SSL_WrapperPacket packet;       //! Packet recieved by client
+    SSL_DetectionFrame frames[4];   //! Accumulates frames
+    bool frames_state[4]{false};    //! Marks whether frames are dirty or clean
     RoboCupSSLClient * client;      //! client to receive packets
     int resetFrames = 0;            //! Frames passed up remove all potential robot detections
     int totalframes = 0;            //! Total frames passed since start

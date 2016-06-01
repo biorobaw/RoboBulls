@@ -1,9 +1,11 @@
 #ifndef ATTACK_SUPPORT_H
 #define ATTACK_SUPPORT_H
 #include "behavior/genericmovementbehavior.h"
-#include "utilities/region/rectangle.h"
+#include "utilities/region/defencearea.h"
 #include "model/gamemodel.h"
 #include "model/robot.h"
+#include <algorithm>
+#include "utilities/comparisons.h"
 
 /*! @brief AttackSupport is a complement to Attackmain, used in NormalGameStrategy.
  * @author Muhaimen Shamsi, JamesW
@@ -11,18 +13,47 @@
  * enemies, and the one that the AttackMain robot is not inside of--and waits
  * for a pass from the AttackMain robot. */
 
-class AttackSupport : public StaticMovementBehavior
+#define PND 30  //Distance between nodes in the probability field
+// Probability Field Variables
+#define PF_LENGTH (FIELD_LENGTH+1)/PND
+#define PF_WIDTH  (FIELD_WIDTH +1)/PND
+#define PF_SIZE  PF_LENGTH * PF_WIDTH
+
+class AttackSupport : public GenericMovementBehavior
 {
 public:
-    AttackSupport(Robot* passer);
-    void perform(Robot *);
-    Point getCurrentTarget();
+    // Fills in prob_field with scoring probabilities based on static factors
+    AttackSupport();
+   ~AttackSupport();
+    void perform(Robot *) override;
+    bool isFinished() override;
 
 private:
-    Robot* main_attacker;       //Pointer to robot passing to us
-    void recalculateWp(Robot*); //Re-calculates wp be to the "best" area
-    Point wp;                   //Point to wait at for a pass
-    Point previousAttackerPos;  //Previous attacker position, used to not reclaculate wp so often
+    struct ProbNode
+    {
+        Point point;
+        float static_val;
+        float dynamic_val;
+    };
+
+    ProbNode prob_field[(FIELD_LENGTH+1)/PND][(FIELD_WIDTH+1)/PND];
+
+    // Fills in prob_field with scoring probabilities
+    void calcStaticProb();
+    void calcDynamicProb(Robot * robot);
+    void genGoalShadows();
+    void genDistanceFromTeammates(Robot* robot);
+    void genBallShadows();
+
+    // Populates clusters with groups of opponents close together
+    std::vector<std::vector<Point>> genClusters();
+
+    // Returns true if there is a robot that we can pass to
+    // If returning true, also returns the point at which to aim
+    std::pair<bool, Point> calcBestSupportPoint(Robot*);
+
+    // Returns the probability of scoring given a Point
+    float getScoreProb(const Point&);
 };
 
 #endif // ATTACK_SUPPORT_H

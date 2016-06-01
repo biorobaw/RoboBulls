@@ -99,6 +99,13 @@ float Measurements::angleSum(float angle1, float angle2)
     return atan2(sinA*cosB+sinB*cosA, cosA*cosB-sinA*sinB);
 }
 
+bool Measurements::angleInRange(float angle, float start, float end)
+{
+    end = (end - start) < 0.0f ? end - start + 2*M_PI : end - start;
+    angle = (angle - start) < 0.0f ? angle - start + 2*M_PI : angle - start;
+    return (angle < end);
+}
+
 
 bool Measurements::isClose(float angle1, float angle2, float tol)
 {
@@ -135,4 +142,21 @@ Point Measurements::lineSegmentPoint(const Point& p0, const Point& LStart, const
 float Measurements::lineSegmentDistance(const Point& p0, const Point& LStart, const Point& LEnd)
 {
     return distance(p0, lineSegmentPoint(p0,LStart,LEnd));
+}
+
+
+bool Measurements::pathIsClear(const std::vector<Point>& obstacles, const Point& A, const Point& B, const int& tolerance)
+{
+    for(const Point& obstacle : obstacles)
+        if(lineSegmentDistance(obstacle, A, B) < tolerance)
+            return false;
+    return true;
+}
+
+bool Measurements::pathIsClear(const std::vector<Robot*>& obstacles, const Point& A, const Point& B, const int& tolerance)
+{
+    for(Robot* r : obstacles)
+        if(lineSegmentDistance(r->getPosition(), A, B) < tolerance)
+            return false;
+    return true;
 }

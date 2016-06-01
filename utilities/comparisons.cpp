@@ -243,9 +243,8 @@ void pred_isNotFacingPoint::setCompareFunction() {
 
 //! @cond
 static bool pointOutsideCompareFnPt(const Point& testPoint, compareFunction f) {
-    if(f(abs(testPoint.x), HALF_FIELD_WIDTH*0.966))
-        return true;
-    if(f(abs(testPoint.y), HALF_FIELD_LENGTH*0.95))
+    if(f(abs(testPoint.x), HALF_FIELD_LENGTH)
+    && f(abs(testPoint.y), HALF_FIELD_WIDTH))
         return true;
     return false;
 }

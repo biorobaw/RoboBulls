@@ -15,7 +15,7 @@ void GuiDrawPoint::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     (void)widget;
 
     int num_points = points.size();
-    Q_points = new QPointF[num_points];
+    QPointF Q_points[num_points];
 
     for(int i = 0; i < num_points; ++i)
     {
@@ -23,6 +23,6 @@ void GuiDrawPoint::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
         Q_points[i].setY(points.at(i).y);
     }
 
-    painter->setPen(Qt::red);
+    painter->setPen(Qt::black);
     painter->drawPoints(Q_points, num_points);
 }

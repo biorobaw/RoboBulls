@@ -1,11 +1,13 @@
 #include "teststrategy.h"
 #include "skill/kicktopointomni.h"
+#include "skill/dribbletopoint.h"
 #include "behavior/genericmovementbehavior.h"
 #include "model/gamemodel.h"
 #include "utilities/comparisons.h"
 #include "behavior/defendbehavior.h"
 #include "behavior/goaliebehavior.h"
 #include "behavior/attackmain.h"
+#include "behavior/attacksupport.h"
 #include "behavior/rotateonpoint.h"
 #include "ctime"
 
@@ -52,8 +54,37 @@ public:
         if(duration >= 6)
             wait4recharge = false;
     }
+};
 
+// Test behavior to dribble the ball between two points
+class DribbleToPointBeh : public Behavior
+{
+    Skill::DribbleToPoint* skill;
+    Point A = Point(1500, 0);
+    Point B = Point(-1500, 0);
+    Point* target;
+public:
+    DribbleToPointBeh()
+    {
+        target = &A;
+        skill = new Skill::DribbleToPoint(target);
+    }
 
+    ~DribbleToPointBeh()
+    {
+        delete skill;
+    }
+
+    void perform(Robot * robot) override
+    {
+        if(skill->perform(robot))
+        {
+            if((*target) == A)
+                target = &B;
+            else
+                target = &A;
+        }
+    }
 };
 
 // Test behavior to rotate to the ball
@@ -145,11 +176,14 @@ bool TestStrategy::update()
     //All robots must exists before any action is taken.
     Robot* r0 = gameModel->findMyTeam(3);
     Robot* r1 = gameModel->findMyTeam(5);
+    Robot* r2 = gameModel->findMyTeam(4);
 
     if(r0)
         r0->assignBeh<GoalieBehavior>();
     if(r1)
         r1->assignBeh<AttackMain>();
+    if(r2)
+        r2->assignBeh<AttackSupport>();
     return false;
 }
 

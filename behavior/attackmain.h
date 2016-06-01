@@ -3,12 +3,14 @@
 #include "behavior.h"
 #include "include/config/simulated.h"
 #include "skill/kicktopointomni.h"
+#include "skill/dribbletopoint.h"
 #include "model/gamemodel.h"
 #include "gui/guiinterface.h"
 #include "utilities/region/sector.h"
 #include "genericmovementbehavior.h"
 #include "algorithm"
 #include "utilities/region/defencearea.h"
+#include "utilities/comparisons.h"
 
 #include <vector>
 
@@ -32,7 +34,8 @@
 class AttackMain:public GenericMovementBehavior
 {
 public:
-    AttackMain(Robot* supp_attacker = nullptr, bool forceGoalKick = false);
+    // Fills in prob_field with scoring probabilities based on static factors
+    AttackMain();
    ~AttackMain();
     void perform(Robot *);
     bool isFinished() override;
@@ -41,28 +44,34 @@ private:
     struct ProbNode
     {
         Point point;
-        float base_val;
-        float actual_val;
+        float static_val;
+        float dynamic_val;
     };
 
-    GameModel * gm;
-    Robot* supp;
-    Point drive_start_point, rp, sp, gp, bp;
     ProbNode prob_field[(FIELD_LENGTH+1)/PND][(FIELD_WIDTH+1)/PND];
 
-    double goal_direction;
-    const double shot_distance = 2000;
-    const double drive_distance = 200;
+    Skill::KickToPointOmni* kick_skill;
+    Skill::DribbleToPoint* dribble_skill;
+    Point kick_point;
+    bool done = false;
 
-    bool forcedGoalKick = false, touched_ball = false, done = false;
-    Skill::Skill* skill;
+    // Fills in prob_field with scoring probabilities
+    void calcStaticProb();
+    void calcDynamicProb();
 
-    enum states { initial, driving, end } state;
+    // Populates clusters with groups of opponents close together
+    std::vector<std::vector<Point>> genClusters();
 
     // Returns true if there is a clear shot into the goal from the robot's position
     // If returning true, also returns the point along the goal post at which to aim
     std::pair<bool, Point> calcBestGoalPoint(Robot*);
-    void calcActualProb();
+
+    // Returns true if there is a robot that we can pass to
+    // If returning true, also returns the point at which to aim
+    std::pair<bool, Point> calcBestPassPoint(Robot*);
+
+    // Returns the probability of scoring given a Point
+    float getScoreProb(const Point&);
 };
 
 #endif // ATTACK_MAIN_H

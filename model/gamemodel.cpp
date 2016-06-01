@@ -387,7 +387,7 @@ static Point calculateRobotVelocity(Robot* robot)
 //! @brief Used by VisiomComm; Update the information in the specified robot on the specified team
 void GameModel::onRobotUpdated(Robot* robot)
 {
-    robot->setVelocity(calculateRobotVelocity(robot));
+    //robot->setVelocity(calculateRobotVelocity(robot));
 }
 
 /*! @brief Removes a robot from a team
@@ -407,3 +407,5 @@ void GameModel::removeRobot(int id, int team)
         vector->erase(it);
     }
 }
+
+

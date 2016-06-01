@@ -49,6 +49,9 @@ public:
 private:
     //! @brief Movement algorithm to handle Type::Default and Type::StayStill movement
     fourWheelVels defaultCalc(Robot* rob, float x_goal, float y_goal, float theta_goal);
+    
+    //! @brief Movement algorithm to handle Type::Dribble movement
+    fourWheelVels dribbleCalc(Robot* rob, float x_goal, float y_goal, float theta_goal);
 
     //! @brief Movement algorithm to handle Type::facePoint movement
     fourWheelVels facePointCalc(Robot* rob, float x_goal, float y_goal, float angle_to_point);
@@ -66,7 +69,7 @@ private:
     const double wheel_radius = 27;
     double distance_to_goal, angle_error;
 
-    //Error Memebers
+    //Error Members
     void calc_error(float x_goal, float y_goal);
     void clear_errors();
     Point last_goal_target;
