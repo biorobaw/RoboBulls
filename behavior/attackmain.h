@@ -25,7 +25,7 @@
  * at least some distance away and we haven't told it to always kick to goal (forceGoalKick)
  * @see AttackSupport */
 
-#define PND 50  //Distance between nodes in the probability field
+#define PND 30  //Distance between nodes in the probability field
 // Probability Field Variables
 #define PF_LENGTH (FIELD_LENGTH+1)/PND
 #define PF_WIDTH  (FIELD_WIDTH +1)/PND

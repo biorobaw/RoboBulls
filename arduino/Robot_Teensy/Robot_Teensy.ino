@@ -1,5 +1,5 @@
 int id;
-int myid = 5;    // This Robot's ID
+int myid = 0;    // This Robot's ID
 
 // Declare motor pins
 #define enablePinLF 2

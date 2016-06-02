@@ -9,15 +9,15 @@ void AttackSupport::perform(Robot * robot)
 {
     calcDynamicProb(robot);
 
-    for(int x = PF_LENGTH/2; x < PF_LENGTH; ++x)
-    {
-        for(int y = 0; y < PF_WIDTH; ++y)
-        {
-            ProbNode& curr = prob_field[x][y];
-            if(curr.static_val+curr.dynamic_val >= 0.0)
-                GuiInterface::getGuiInterface()->drawPoint(curr.point);
-        }
-    }
+//    for(int x = PF_LENGTH/2; x < PF_LENGTH; ++x)
+//    {
+//        for(int y = 0; y < PF_WIDTH; ++y)
+//        {
+//            ProbNode& curr = prob_field[x][y];
+//            if(curr.static_val+curr.dynamic_val >= 0.0)
+//                GuiInterface::getGuiInterface()->drawPoint(curr.point);
+//        }
+//    }
 
     // Find max probability node in opponent side of field
     ProbNode max_node = prob_field[PF_LENGTH/2][0];
@@ -177,10 +177,10 @@ void AttackSupport::genDistanceFromTeammates(Robot* robot)
 
 void AttackSupport::genBallShadows()
 {
-    // Cast shadows from ball to robots
+    // Cast shadows with ball as light source and opponents as opaque objects
     Point bp = gameModel->getBallPoint();
 
-    float R = ROBOT_RADIUS+25;
+    float R = ROBOT_RADIUS+50;
 
     for(Robot* opp: gameModel->getOppTeam())
     {
