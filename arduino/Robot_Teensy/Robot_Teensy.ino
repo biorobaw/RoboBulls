@@ -1,5 +1,6 @@
 int id;
-int myid = 0;    // This Robot's ID
+int myid = 2;    // This Robot's ID
+
 
 // Declare motor pins
 #define enablePinLF 2
@@ -24,10 +25,14 @@ int myid = 0;    // This Robot's ID
 #define speedPinRB 20
 
 // Define pin locations for kicker and chipper
-#define dribblePin 17
-#define kickPin 18
-#define chargePin 19
+#define dribblePin 10
+#define kickPin 9
+#define chargePin 8
 
+// Define pin locations for reading capacitor
+#define readCapPin A10
+#define read250Pin A11
+#define ledPin 13
 
 // Velocities
 //  90 = Stop
@@ -67,6 +72,8 @@ void setup()
   pinMode(brakePinLB, OUTPUT);
   pinMode(brakePinRF, OUTPUT);
   pinMode(brakePinRB, OUTPUT);
+
+  pinMode(ledPin, OUTPUT);
  
 
   // Enable Controllers
@@ -105,6 +112,7 @@ void loop()
     setDribble();
     LastLoopUpdate = millis();
   }
+  //blinkReadCap();
   //printVels();
 }
 //***********************************************************************************
@@ -124,8 +132,8 @@ void setKick()
   switch (current)
   {
     case charging:
-      digitalWrite(kickPin, HIGH);
-      digitalWrite(chargePin, LOW);
+      digitalWrite(kickPin, LOW);
+      digitalWrite(chargePin, HIGH);
       if (kick == 'k' && millis() - chargeStartTime >= chargeTime)
       {
         current = kicking;
@@ -133,11 +141,11 @@ void setKick()
       }
       break;
     case kicking:
-      digitalWrite(kickPin, LOW);
-      digitalWrite(chargePin, HIGH);
+      digitalWrite(kickPin, HIGH);
+      digitalWrite(chargePin, LOW);
       if (millis() - kickStartTime >= kickTime)
       {
-        digitalWrite(kickPin, HIGH);
+        digitalWrite(kickPin, LOW);
         current = charging;
         chargeStartTime = millis();
       }
@@ -226,6 +234,25 @@ void setSpeeds()
   }
   else
     digitalWrite(brakePinRB, HIGH);
+}
+//***********************************************************************************
+
+//Blink Reading**********************************************************************
+unsigned long last_blink_time = 0;
+void blinkReadCap()
+{
+  unsigned int pin_val = analogRead(readCapPin);  
+  
+  // High Voltage -> High Frequency Blink
+  float blink_delay = map(pin_val, 0, 1023, 2000, 0);
+
+  if(millis() - last_blink_time > blink_delay)  
+  {
+    digitalWrite(ledPin, HIGH);
+    last_blink_time = millis();
+  }
+  else
+    digitalWrite(ledPin, LOW );      
 }
 //***********************************************************************************
 
