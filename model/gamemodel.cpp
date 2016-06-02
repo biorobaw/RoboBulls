@@ -78,7 +78,7 @@ std::vector<Robot*>& GameModel::getBlueTeam()
 std::vector<Robot*>& GameModel::getYellowTeam()
 {
 #if OUR_TEAM == TEAM_BLUE
-    return getOponentTeam();
+    return getOppTeam();
 #else
     return getMyTeam();
 #endif

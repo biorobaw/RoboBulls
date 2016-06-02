@@ -177,10 +177,10 @@ void AttackSupport::genDistanceFromTeammates(Robot* robot)
 
 void AttackSupport::genBallShadows()
 {
-    // Cast shadows from ball to robots
+    // Cast shadows with ball as light source and opponents as opaque objects
     Point bp = gameModel->getBallPoint();
 
-    float R = ROBOT_RADIUS+25;
+    float R = ROBOT_RADIUS+50;
 
     for(Robot* opp: gameModel->getOppTeam())
     {
