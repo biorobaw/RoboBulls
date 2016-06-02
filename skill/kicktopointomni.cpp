@@ -35,16 +35,16 @@ namespace Skill
  *
  */
 #if SIMULATED
-float BEHIND_RAD_AVOID = ROB_OBST_DIA * 0.6;
-float BEHIND_RAD = ROB_OBST_DIA * 0.4;
+float BEHIND_RAD_AVOID = ROBOT_RADIUS+BALL_RADIUS + 80;
+float BEHIND_RAD = ROBOT_RADIUS+BALL_RADIUS+ 30;
 float FORWARD_WAIT_COUNT = 15;
 float RECREATE_DIST_TOL = 25;
 float STRICTEST_ANG_TOL = 10 * (M_PI/180);
 float KICK_LOCK_ANGLE = 3 * (M_PI/180);
 float KICKLOCK_COUNT = 15;
 #else
-float BEHIND_RAD_AVOID = ROB_OBST_DIA * 0.6;
-float BEHIND_RAD = ROB_OBST_DIA * 0.3;
+float BEHIND_RAD_AVOID = ROBOT_RADIUS+BALL_RADIUS + 80;
+float BEHIND_RAD = ROBOT_RADIUS+BALL_RADIUS + 30;
 float FORWARD_WAIT_COUNT = 15;
 float RECREATE_DIST_TOL = 25;
 float STRICTEST_ANG_TOL = 40 * (M_PI/180);
@@ -153,7 +153,7 @@ bool KickToPointOmni::perform(Robot* robot)
 
             // Move towards the ball at the angle to target (straight)
             move_skill.setVelocityMultiplier(0.2);
-            move_skill.recreate(bp - Point(BEHIND_RAD_AVOID * 10 * cos(targetBallAng), BEHIND_RAD_AVOID * 10 * sin(targetBallAng)), ballTargetAng, false, false);
+            move_skill.recreate(bp - Point(BEHIND_RAD_AVOID * 10 * cos(targetBallAng), BEHIND_RAD_AVOID * 10 * sin(targetBallAng)), ballTargetAng, true, false);
             move_skill.perform(robot);
 
             /* Kick when in range, or go back to moving behind if it
@@ -277,7 +277,7 @@ bool KickToPointOmni::ballIsMovingAway(Robot* robot)
 
     bool farther_than_last = thisDist > m_lastBallAwayDist;
     bool increase_is_significant = abs(thisDist - m_lastBallAwayDist) > 40;
-    bool far_from_robot = thisDist > ROB_OBST_DIA*2;
+    bool far_from_robot = thisDist > ROBOT_RADIUS*4;
 
     std::cout << farther_than_last << increase_is_significant << far_from_robot << std::endl;
 

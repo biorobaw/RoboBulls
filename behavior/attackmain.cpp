@@ -44,27 +44,31 @@ void AttackMain::perform(Robot * robot)
 
     if(goal_eval.first)    // If we can score from where the ball is, score
     {
+        std::cout << "AttackMain: Score" << std::endl;
         robot->setDrible(false);
         kick_point = goal_eval.second;
         kick_skill->perform(robot);
     }
     else if(pass_eval.first)    // Else if we can score from where the ball is, pass
     {
+        std::cout << "AttackMain: Pass" << std::endl;
         robot->setDrible(false);
         kick_point = pass_eval.second;
         kick_skill->perform(robot);
     }
     else
     {
+        std::cout << "AttackMain: Dribble" << std::endl;
+
         // Update dynamic probabilities
         calcDynamicProb();
 
         // Find max probability node in opponent side of field
-        ProbNode max_node = prob_field[PF_LENGTH/2][0];
+        ProbNode max_node = prob_field[PF_LENGTH_MAIN/2][0];
 
-        for(int x = PF_LENGTH/2; x < PF_LENGTH; ++x)
+        for(int x = PF_LENGTH_MAIN/2; x < PF_LENGTH_MAIN; ++x)
         {
-            for(int y = 0; y < PF_WIDTH; ++y)
+            for(int y = 0; y < PF_WIDTH_MAIN; ++y)
             {
                 ProbNode& curr = prob_field[x][y];
 
@@ -91,13 +95,13 @@ void AttackMain::calcStaticProb()
 
     DefenceArea def_area(!OUR_TEAM);
 
-    for (int x = 0; x < PF_LENGTH; ++x)
+    for (int x = 0; x < PF_LENGTH_MAIN; ++x)
     {
-        for (int y = 0; y < PF_WIDTH; ++y)
+        for (int y = 0; y < PF_WIDTH_MAIN; ++y)
         {
             ProbNode& n = prob_field[x][y];
 
-            n.point = Point(x*PND - HALF_FIELD_LENGTH, y*PND - HALF_FIELD_WIDTH);
+            n.point = Point(x*PND_MAIN - HALF_FIELD_LENGTH, y*PND_MAIN - HALF_FIELD_WIDTH);
 
             // Probability of scoring is a decreasing function of distance from
             // the goal. Anything beyond 3000 points gets a probability of zero.
@@ -131,8 +135,8 @@ void AttackMain::calcStaticProb()
 void AttackMain::calcDynamicProb()
 {
     // Clear previous calculations
-    for(int x = 0; x < PF_LENGTH; ++x)
-        for(int y = 0; y < PF_WIDTH; ++y)
+    for(int x = 0; x < PF_LENGTH_MAIN; ++x)
+        for(int y = 0; y < PF_WIDTH_MAIN; ++y)
             prob_field[x][y].dynamic_val = 0;
 
     // Top end of goal post
@@ -168,9 +172,9 @@ void AttackMain::calcDynamicProb()
 //        GuiInterface::getGuiInterface()->drawLine(Point(A2,B2), Point(bot_x, bot_y), 0.01);
 
         // Set probabilities
-        for(int x = PF_LENGTH/2; x < PF_LENGTH; ++x)
+        for(int x = PF_LENGTH_MAIN/2; x < PF_LENGTH_MAIN; ++x)
         {
-            for(int y = 0; y < PF_WIDTH; ++y)
+            for(int y = 0; y < PF_WIDTH_MAIN; ++y)
             {
                 ProbNode& n = prob_field[x][y];
 
@@ -343,7 +347,7 @@ float AttackMain::getScoreProb(const Point& p)
 {
     if(Comparisons::isPointInsideField(p))
     {
-        ProbNode pn = prob_field[PF_LENGTH/2+(int)p.x/PND][PF_WIDTH/2+(int)p.y/PND];
+        ProbNode pn = prob_field[PF_LENGTH_MAIN/2+(int)p.x/PND_MAIN][PF_WIDTH_MAIN/2+(int)p.y/PND_MAIN];
         return fmax(0, pn.dynamic_val + pn.static_val);
     }
     return 0;

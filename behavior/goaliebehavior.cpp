@@ -1,10 +1,7 @@
 #include "goaliebehavior.h"
 
-//The distance from the goal where the robot stays idle
-#define IDLE_DISTANCE ROBOT_RADIUS*2.5
-
 GoalieBehavior::GoalieBehavior()
-    : idlePoint(gameModel->getMyGoal() + Point(IDLE_DISTANCE,0))
+    : idlePoint(gameModel->getMyGoal() + Point(ROBOT_RADIUS,0))
     , isKickingBallAway(false)
     , isIdling(false)
     , kick_skill(nullptr)
@@ -44,7 +41,6 @@ void GoalieBehavior::perform(Robot *robot)
     // If we're not kicking and the ball is in the defence area, we want to kick it away.
     else if(shouldClearBall())
     {
-        std::cout << "Should Clear Ball" << std::endl;
         isKickingBallAway = true;
         kick_skill = new Skill::KickToPointOmni(Point(0,0));
     }
@@ -53,7 +49,7 @@ void GoalieBehavior::perform(Robot *robot)
     else if(ballBot && ballBot->getID() != GOALIE_ID && botOnBallIsAimedAtOurGoal(ballBot, lineSegment))
     {
         Point blockPoint = Measurements::lineSegmentPoint(robot->getPosition(), lineSegment.first, lineSegment.second);
-        setVelocityMultiplier(3);
+        setVelocityMultiplier(1.5);
         setMovementTargets(blockPoint, angleToBall, false, false);
     }
 
@@ -61,7 +57,7 @@ void GoalieBehavior::perform(Robot *robot)
     else if(isBallMovingTowardsGoal(lineSegment))
     {
         Point blockPoint = Measurements::lineSegmentPoint(robot->getPosition(), lineSegment.first, lineSegment.second);
-        setVelocityMultiplier(3);
+        setVelocityMultiplier(1.5);
         setMovementTargets(blockPoint, angleToBall, false, false);
     }
 
@@ -79,15 +75,15 @@ void GoalieBehavior::perform(Robot *robot)
                                                         gameModel->getBallPoint(),
                                                         goal_point);
 
-        if(def_area.contains(intercept_point))
+        if(def_area.contains(intercept_point,-ROBOT_RADIUS))
         {
-            setVelocityMultiplier(3);
+            setVelocityMultiplier(1.5);
             setMovementTargets(intercept_point, angleToBall, false, false);
         }
         else
         {
             setVelocityMultiplier(1);
-            setMovementTargets(idlePoint, Measurements::angleBetween(robot, Point(0,0)));
+            setMovementTargets(idlePoint, Measurements::angleBetween(robot, Point(0,0)),false,false);
         }
     }
 
@@ -109,7 +105,7 @@ void GoalieBehavior::perform(Robot *robot)
     }
 }
 
-bool GoalieBehavior::isBallMovingTowardsGoal(std::pair<Point,Point>& lineEndsOut)
+bool GoalieBehavior::isBallMovingTowardsGoal(std::pair<Point,Point>& lineSegOut)
 {
     // Filter out balls not moving towards goal
     Point goal = gameModel->getMyGoal();
@@ -122,7 +118,7 @@ bool GoalieBehavior::isBallMovingTowardsGoal(std::pair<Point,Point>& lineEndsOut
     float y = (bVel.y / bVel.x) * (goal.x - ballPos.x) + ballPos.y;
 
     // Set the output to a pair Points representing the line of the ball's trajectory.
-    lineEndsOut = {ballPos, Point(goal.x,y)};
+    lineSegOut = {ballPos, Point(goal.x+ROBOT_RADIUS,y)};
 
     // Is the Y position within the goalie box?
     return (y > -GOAL_WIDTH/2) && (y < GOAL_WIDTH/2);
@@ -147,7 +143,7 @@ bool GoalieBehavior::botOnBallIsAimedAtOurGoal(Robot* robot, std::pair<Point,Poi
     // Extrapolate the line to retrieve the y-coordinate at the x-coordinate of the goal
     float yAtGoalLine = slope * ( myGoalPos.x - ballPos.x ) + ballPos.y;
 
-    Point endPoint = Point( myGoalPos.x, yAtGoalLine );
+    Point endPoint = Point( myGoalPos.x + ROBOT_RADIUS, yAtGoalLine );
 
     // Write to the line segment variable
     lineSegOut = std::make_pair(ballPos, endPoint);

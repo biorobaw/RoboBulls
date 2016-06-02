@@ -141,13 +141,13 @@ public:
         switch(state)
         {
             case pos_one:
-                setMovementTargets(target_one,ori);
-                if (Measurements::isClose(rp,target_one,100))
+                setMovementTargets(target_one,ori,true,true);
+                if (Measurements::isClose(rp,target_one,DIST_TOLERANCE))
                 state = pos_two;
                 break;
             case pos_two:
-                setMovementTargets(target_two,ori);
-                if (Measurements::isClose(rp,target_two,100))
+                setMovementTargets(target_two,ori,true,true);
+                if (Measurements::isClose(rp,target_two,DIST_TOLERANCE))
                 state = pos_one;
         }
         GenericMovementBehavior::perform(robot, Movement::Type::Default);
@@ -159,11 +159,11 @@ public:
 class GoToBehavior : public GenericMovementBehavior
 {
 public:
-    GoToBehavior(Point& p):p(p){}
+    GoToBehavior(Point p):p(p){}
 
     void perform(Robot *robot) override
     {
-        setMovementTargets(p);
+        setMovementTargets(gameModel->getBallPoint());
         GenericMovementBehavior::perform(robot);
     }
 private:
@@ -174,16 +174,23 @@ bool TestStrategy::update()
 {
     //Change IDs and behaviors to be assigned here.
     //All robots must exists before any action is taken.
-    Robot* r0 = gameModel->findMyTeam(3);
-    Robot* r1 = gameModel->findMyTeam(5);
-    Robot* r2 = gameModel->findMyTeam(4);
+    Robot* r1 = gameModel->findMyTeam(1);
+    Robot* r2 = gameModel->findMyTeam(2);
+    Robot* r3 = gameModel->findMyTeam(GOALIE_ID);
+    Robot* r4 = gameModel->findMyTeam(4);
+    Robot* r5 = gameModel->findMyTeam(5);
 
-    if(r0)
-        r0->assignBeh<GoalieBehavior>();
     if(r1)
-        r1->assignBeh<AttackMain>();
+        r1->assignBeh<DefendBehavior>();
     if(r2)
-        r2->assignBeh<AttackSupport>();
+        r2->assignBeh<DefendBehavior>();
+    if(r3)
+        r3->assignBeh<GoalieBehavior>();
+    if(r4)
+        r4->assignBeh<AttackMain>();
+    if(r5)
+        r5->assignBeh<AttackSupport>();
+
     return false;
 }
 

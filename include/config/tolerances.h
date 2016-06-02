@@ -8,10 +8,6 @@
 //! @brief The robot's radius in program points.
 extern const int ROBOT_RADIUS;
 
-//! @brief The robot's diameter in program points plus a small overshoot
-//! Used for obstacle avoidance calculations
-extern const int ROB_OBST_DIA;
-
 /*! @brief How close the robot needs to be to the target in program points
  * before it is considered at that position */
 extern const int DIST_TOLERANCE;
@@ -22,6 +18,11 @@ extern const int DIST_TOLERANCE;
  * This is also the default tolerance for the angle version
  * of Measurements::isClose */
 extern const double ROT_TOLERANCE;
+
+
+/*! @brief An extension beyond the defence area in which we
+ *  consider a robot to be inside the defence area*/
+extern const double DEF_AREA_TOL;
 
 //! @}
 

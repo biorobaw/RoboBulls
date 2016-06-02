@@ -78,7 +78,7 @@ public:
      * target to be considered at thet point.*/
     void setMovementTolerances(float distTolerance, float angleTolerance);
     
-    /*! @brief Performs the conigured movement on the robot
+    /*! @brief Performs the configured movement on the robot
      * @param robot The robot to be moved
      * @param Type the type of movement; see Type for information
      * @see movetype.h
@@ -106,7 +106,7 @@ private:
     //States
     bool  isInitialized;        //If recreate() has been called once (or ctor)
     bool  useObstacleAvoid;     //Do we use obstacle avoidance?
-    bool  useAvoidBall;         //Do we avoid the ball?
+    bool  avoid_ball;         //Do we avoid the ball?
     bool  hasFoundPathEnd;      //Have we found the end of the path?
     bool  currentPathIsClear;   //Is the current path clear?
 
@@ -114,9 +114,7 @@ private:
     float nextTargetAngle;
     float nextDistTolerance;
     Point nextPoint;
-    FPPA::PathInfo      pathInfo;
     std::deque<Point>   pathQueue;
-    FPPA::PathDirection lastDirection;
     std::vector<Point>  lastObstacles;
     long  lastLineDrawnTime;
     
@@ -130,7 +128,7 @@ private:
     Point updatePathQueue(Robot *robot);
     bool  determinePathClear(Robot *robot) const;
     bool  calcObstacleAvoidance(Robot* rob, Type moveType);
-    void  assignNewPath(const Point& robotPoint);
+    void  assignNewPath(const Point& robotPoint, bool is_goalie);
     void  getCollisionState(Robot* robot, bool& collided, bool& yielding) const;
 
     //Regular movement

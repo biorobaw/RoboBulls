@@ -1,6 +1,7 @@
 #include "model/gamemodel.h"
 #include "movement/movetype.h"
 #include "movement/gotoposition.h"
+#include "utilities/region/defencearea.h"
 
 namespace Movement
 {
@@ -13,8 +14,8 @@ void GoToPosition::calculateVels(Robot *rob, Point targetPoint, float targetAngl
 {
     //Pushes the robot away from a goalie box if it is close, for non-goalies
     fourWheelVels fieldVels = {0,0,0,0};
-    if(rob->getID() != GOALIE_ID)
-        fieldVels = calculateGoalField(rob, moveType);
+//    if(rob->getID() != GOALIE_ID)
+//        fieldVels = calculateGoalField(rob, moveType);
 
     switch(rob->type())
     {
@@ -54,29 +55,30 @@ void GoToPosition::calculateVels(Robot *rob, Point targetPoint, float targetAngl
 /***********************************************************/
 /******************** Private Methods **********************/
 /***********************************************************/
-
 fourWheelVels GoToPosition::calculateGoalField(Robot* robot, Type moveType)
 {
     fourWheelVels result = {0, 0, 0, 0};
-    Point closest = Point(-1, -1);
-    Point mG = gameModel->getMyGoal();
-    Point oG = gameModel->getOppGoal();
-    float mygoalDist = Measurements::distance(robot, mG);
-    float opGoalDist = Measurements::distance(robot, oG);
 
-    //Which goal point are we nearest to?
-    if(mygoalDist < 1000)
-        closest = mG;
-    if(opGoalDist < 1000)
-        closest = oG;
+    DefenceArea da0(OUR_TEAM);
+    DefenceArea da1(!OUR_TEAM);
 
-    /* We define a unit vector pointing out from the goal point and multiply it by the
-     * robot's distance to the goal. Then add that to the robot's position and calculate
-     * velocities to there.
-     */
-    if(closest != Point(-1, -1))
+    Point rp = robot->getPosition();
+    if(da0.contains(rp, DEF_AREA_TOL))
     {
-        float ang_to_goal = Measurements::angleBetween(closest, robot);
+        da0.expelPoint(rp);
+
+        float ang_to_goal = Measurements::angleBetween(robot->getPosition(), rp);
+        Point unit(cos(ang_to_goal), sin(ang_to_goal));
+
+        //The `target` is the robot's point plus a vector away from the goal
+        Point target = robot->getPosition() + (unit * 1000);
+        result = fwc.calculateVels(robot, target, robot->getOrientation(), moveType);
+    }
+    else if(da1.contains(rp, DEF_AREA_TOL))
+    {
+        da1.expelPoint(rp);
+
+        float ang_to_goal = Measurements::angleBetween(robot->getPosition(), rp);
         Point unit(cos(ang_to_goal), sin(ang_to_goal));
 
         //The `target` is the robot's point plus a vector away from the goal

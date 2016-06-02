@@ -32,7 +32,7 @@ Move::Move()
     , velMultiplier(1)
     , isInitialized(false)
     , useObstacleAvoid(true)
-    , useAvoidBall(true)
+    , avoid_ball(true)
     , hasFoundPathEnd(false)
     , currentPathIsClear(true)
     { }
@@ -58,14 +58,12 @@ void Move::recreate(Point targetPoint, float targetAngle, bool withObstacleAvoid
         m_targetPoint      = targetPoint;
         m_targetAngle      = targetAngle;
         useObstacleAvoid   = withObstacleAvoid;
-        useAvoidBall       = avoidBall;
+        avoid_ball       = avoidBall;
         currentPathIsClear = false;
         nextTargetAngle    = UNUSED_ANGLE_VALUE;
-        nextDistTolerance  = ROB_OBST_DIA;
-        pathInfo.first.clear();
+        nextDistTolerance  = 20;
         pathQueue.clear();
         lastObstacles.clear();
-        lastDirection = FPPA::PathDirection::None;
         isInitialized = true;
     } 
     else if(!Measurements::isClose(m_targetAngle, targetAngle, recrAngleTolerance)) {
@@ -115,9 +113,9 @@ bool Move::perform(Robot *robot, Movement::Type moveType)
     if(useObstacleAvoid) {
         /* Check to see if we've found the end of the path. If we have and we're not close
          * to the ending point, assign a path to get back to it */
-        if(hasFoundPathEnd && Measurements::distance(robot, m_targetPoint) > ROB_OBST_DIA) {
+        if(hasFoundPathEnd && Measurements::distance(robot, m_targetPoint) > DIST_TOLERANCE) {
             hasFoundPathEnd = false;
-            assignNewPath(robot->getPosition());
+            assignNewPath(robot->getPosition(), (robot->getID() != GOALIE_ID));
         }
         finished = this->calcObstacleAvoidance(robot, moveType);
     } else {
@@ -155,18 +153,17 @@ bool Move::determinePathClear(Robot* robot) const
     //Check to see if there is an obstalce in current path
     Point robotPoint = robot->getPosition();
     Point obsPoint;
-    bool isNewObstacleInPath = FPPA::isObstacleInLine(robotPoint, nextPoint, &obsPoint, useAvoidBall);
+    bool isNewObstacleInPath = FPPA::isObstacleInLine(robotPoint, nextPoint, &obsPoint, avoid_ball);
 
     //Checking the next line as well for an obstacle
     if(!isNewObstacleInPath && pathQueue.size() > 2) {
         const Point& nextNextPoint = pathQueue[1];
-        isNewObstacleInPath = FPPA::isObstacleInLine(nextPoint, nextNextPoint, &obsPoint, useAvoidBall);
+        isNewObstacleInPath = FPPA::isObstacleInLine(nextPoint, nextNextPoint, &obsPoint, avoid_ball);
     }
 
-    //If there's an obstcle and it isn't near any recorded onces, the path is no longer clear
-    if(isNewObstacleInPath && Comparisons::isDistanceToLess(obsPoint, 100).none_of(lastObstacles)) {
+    //If there's an obstacle and it isn't near any recorded onces, the path is no longer clear
+    if(isNewObstacleInPath && Comparisons::isDistanceToLess(obsPoint, 20).none_of(lastObstacles))
         return false;
-    }
 
     return true;
 }
@@ -222,7 +219,7 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
             calculateVels(robot, nextPoint, m_targetAngle, moveType);
         } else {
             //A new path needs to be assigned. Do no movement
-            assignNewPath(robot->getPosition());
+            assignNewPath(robot->getPosition(), (robot->getID() != GOALIE_ID));
             currentPathIsClear = true;
         }
     } else {
@@ -238,20 +235,23 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
 }
 
 
-void Move::assignNewPath(const Point& robotPoint)
+void Move::assignNewPath(const Point& robotPoint, bool use_def_areas)
 {
-    FPPA::PathInfo p = FPPA::findShortestPath(robotPoint, m_targetPoint, useAvoidBall, lastDirection, 0.50);
-    pathQueue.assign(p.first.begin(), p.first.end());
-    lastDirection = p.second;
+    FPPA::Path path = FPPA::genPath(robotPoint, m_targetPoint, avoid_ball, use_def_areas);
+    pathQueue.assign(path.begin(), path.end());
     lastObstacles = FPPA::getCurrentObstacles(); //Copies
+
+    for (unsigned int i=1; i<pathQueue.size(); i++)
+        GuiInterface::getGuiInterface()->drawLine(pathQueue[i-1], pathQueue[i], 0.01);
 
     //Draws path lines on iterface
     //Uses clock() to avoid line spam
     long now = clock();
-    if((float)(now - lastLineDrawnTime) / CLOCKS_PER_SEC > 0.5) {
+    if((float)(now - lastLineDrawnTime) / CLOCKS_PER_SEC > 0.5)
+    {
         lastLineDrawnTime = now;
         for (unsigned int i=1; i<pathQueue.size(); i++)
-            GuiInterface::getGuiInterface()->drawLine(pathQueue[i-1], pathQueue[i], i*2);
+            GuiInterface::getGuiInterface()->drawLine(pathQueue[i-1], pathQueue[i], 0.25*i);
     }
 }
 

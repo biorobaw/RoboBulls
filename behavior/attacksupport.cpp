@@ -9,22 +9,22 @@ void AttackSupport::perform(Robot * robot)
 {
     calcDynamicProb(robot);
 
-    for(int x = PF_LENGTH/2; x < PF_LENGTH; ++x)
-    {
-        for(int y = 0; y < PF_WIDTH; ++y)
-        {
-            ProbNode& curr = prob_field[x][y];
-            if(curr.static_val+curr.dynamic_val >= 0.0)
-                GuiInterface::getGuiInterface()->drawPoint(curr.point);
-        }
-    }
+//    for(int x = PF_LENGTH_SUP/2; x < PF_LENGTH_SUP; ++x)
+//    {
+//        for(int y = 0; y < PF_WIDTH_SUP; ++y)
+//        {
+//            ProbNode& curr = prob_field[x][y];
+//            if(curr.static_val+curr.dynamic_val >= 0.0)
+//                GuiInterface::getGuiInterface()->drawPoint(curr.point);
+//        }
+//    }
 
     // Find max probability node in opponent side of field
-    ProbNode max_node = prob_field[PF_LENGTH/2][0];
+    ProbNode max_node = prob_field[PF_LENGTH_SUP/2][0];
 
-    for(int x = PF_LENGTH/2; x < PF_LENGTH; ++x)
+    for(int x = PF_LENGTH_SUP/2; x < PF_LENGTH_SUP; ++x)
     {
-        for(int y = 0; y < PF_WIDTH; ++y)
+        for(int y = 0; y < PF_WIDTH_SUP; ++y)
         {
             ProbNode& curr = prob_field[x][y];
 
@@ -51,13 +51,13 @@ void AttackSupport::calcStaticProb()
 
     DefenceArea def_area(!OUR_TEAM);
 
-    for (int x = 0; x < PF_LENGTH; ++x)
+    for (int x = 0; x < PF_LENGTH_SUP; ++x)
     {
-        for (int y = 0; y < PF_WIDTH; ++y)
+        for (int y = 0; y < PF_WIDTH_SUP; ++y)
         {
             ProbNode& n = prob_field[x][y];
 
-            n.point = Point(x*PND - HALF_FIELD_LENGTH, y*PND - HALF_FIELD_WIDTH);
+            n.point = Point(x*PND_SUP - HALF_FIELD_LENGTH, y*PND_SUP - HALF_FIELD_WIDTH);
 
             // Probability of scoring is a decreasing function of distance from
             // the goal. Anything beyond 3000 points gets a probability of zero.
@@ -91,8 +91,8 @@ void AttackSupport::calcStaticProb()
 void AttackSupport::calcDynamicProb(Robot * robot)
 {
     // Clear previous calculations
-    for(int x = 0; x < PF_LENGTH; ++x)
-        for(int y = 0; y < PF_WIDTH; ++y)
+    for(int x = 0; x < PF_LENGTH_SUP; ++x)
+        for(int y = 0; y < PF_WIDTH_SUP; ++y)
             prob_field[x][y].dynamic_val = 0;
 
     genGoalShadows();
@@ -139,9 +139,9 @@ void AttackSupport::genGoalShadows()
 //        GuiInterface::getGuiInterface()->drawLine(Point(g2x,g2y), Point(x2, y2), 0.01);
 
         // Set probabilities
-        for(int x = PF_LENGTH/2; x < PF_LENGTH; ++x)
+        for(int x = PF_LENGTH_SUP/2; x < PF_LENGTH_SUP; ++x)
         {
-            for(int y = 0; y < PF_WIDTH; ++y)
+            for(int y = 0; y < PF_WIDTH_SUP; ++y)
             {
                 ProbNode& n = prob_field[x][y];
 
@@ -158,9 +158,9 @@ void AttackSupport::genGoalShadows()
 void AttackSupport::genDistanceFromTeammates(Robot* robot)
 {
     // Set probabilities
-    for(int x = PF_LENGTH/2; x < PF_LENGTH; ++x)
+    for(int x = PF_LENGTH_SUP/2; x < PF_LENGTH_SUP; ++x)
     {
-        for(int y = 0; y < PF_WIDTH; ++y)
+        for(int y = 0; y < PF_WIDTH_SUP; ++y)
         {
             ProbNode& n = prob_field[x][y];
 
@@ -235,7 +235,7 @@ void AttackSupport::genBallShadows()
 //        GuiInterface::getGuiInterface()->drawLine(Point(bp.x, bp.y), Point(x1_edge, y1_edge), 0.001);
 //        GuiInterface::getGuiInterface()->drawLine(Point(bp.x, bp.y), Point(x2_edge, y2_edge), 0.001);
 
-        for(int x = min_x; x < max_x; x+=PND)
+        for(int x = min_x; x < max_x; x+=PND_SUP)
         {
             // Determine minimum and maximum y-values
             float min_y = m1*x - m1*bp.x + bp.y;
@@ -262,11 +262,11 @@ void AttackSupport::genBallShadows()
 
             if(min_y > max_y) std::swap(min_y, max_y);
 
-            for(int y = min_y; y < max_y; y+=PND)
+            for(int y = min_y; y < max_y; y+=PND_SUP)
             {
                 if(abs(x) < HALF_FIELD_LENGTH && abs(y) < HALF_FIELD_WIDTH)
                 {
-                    ProbNode& node = prob_field[PF_LENGTH/2 + x/PND][PF_WIDTH/2 + y/PND];
+                    ProbNode& node = prob_field[PF_LENGTH_SUP/2 + x/PND_SUP][PF_WIDTH_SUP/2 + y/PND_SUP];
 
                     float dist = Measurements::distance(bp, opp->getPosition());
 
@@ -335,7 +335,7 @@ float AttackSupport::getScoreProb(const Point& p)
 {
     if(Comparisons::isPointInsideField(p))
     {
-        ProbNode pn = prob_field[PF_LENGTH/2+(int)p.x/PND][PF_WIDTH/2+(int)p.y/PND];
+        ProbNode pn = prob_field[PF_LENGTH_SUP/2+(int)p.x/PND_SUP][PF_WIDTH_SUP/2+(int)p.y/PND_SUP];
         return fmax(0, pn.dynamic_val + pn.static_val);
     }
     return 0;

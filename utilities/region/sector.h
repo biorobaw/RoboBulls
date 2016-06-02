@@ -13,7 +13,6 @@ public:
     Sector(Point centre, float radius, float start_angle, float end_angle);
     bool contains(const Point &) override;
     void draw() override;
-private:
     Point c;
     float r, a1, a2;
 };

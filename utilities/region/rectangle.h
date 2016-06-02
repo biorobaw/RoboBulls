@@ -14,12 +14,9 @@ class Rectangle : public Region
 public:
     Rectangle();
 
-    /*! @brief Constructs rectangle with a top-left point (X1,Y1) and
-     * bottom-left point (X2,Y2)
-     * \param X1 The left edge of the region
-     * \param Y1 The top edge of the region
-     * \param X2 The right edge of the region
-     * \param Y2 The bottom edge of the region */
+    /*! @brief Constructs rectangle with a bottom-left point (X1,Y1) and
+     * top-right point (X2,Y2)
+     */
     Rectangle(float X1, float Y1, float X2, float Y2);
 
     /*! @brief Returns true if a point is inside the rectangular region */
@@ -52,9 +49,7 @@ public:
     /*! @brief Returns a string representation of the Region */
     std::string toString();
 
-private:
     float min_x, max_x, min_y, max_y;
-    int strategic_value;
 };
 
 #endif // RECTANGLE_H

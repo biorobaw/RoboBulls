@@ -15,7 +15,7 @@ Rectangle::Rectangle(float X1,float Y1,float X2,float Y2)
 
 bool Rectangle::contains(const Point& point)
 {
-    return point.x >= min_x && point.x < max_x && point.y >= min_y && point.y < max_y;
+    return point.x >= min_x && point.x <= max_x && point.y >= min_y && point.y <= max_y;
 }
 
 //See http://stackoverflow.com/questions/1585525/
@@ -166,12 +166,8 @@ std::string Rectangle::toString()
 
 void Rectangle::draw()
 {
-    std::vector<Point> rect;
-    for(int x = min_x; x <= max_x; x+=20)
-        for(int y = min_y; y <= max_y; y+=20)
+    for(int x = min_x; x <= max_x; x+=10)
+        for(int y = min_y; y <= max_y; y+=10)
             if(this->contains(Point(x,y)))
-                rect.push_back(Point(x,y));
-
-    GuiInterface* gui = GuiInterface::getGuiInterface();
-    gui->drawRegion(rect);
+                GuiInterface::getGuiInterface()->drawPoint(Point(x,y));
 }

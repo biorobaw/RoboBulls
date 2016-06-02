@@ -8,8 +8,8 @@ namespace Movement
 #define FOUR_WHEEL_DEBUG 0
 
 #if SIMULATED
-float xy_prop_mult = 0.1;       //Multiplier for Proportional XY
-float xy_int_mult = 0.0001;      //Multiplier for integral XY
+float xy_prop_mult = 0.25;       //Multiplier for Proportional XY
+float xy_int_mult = 0.00001;      //Multiplier for integral XY
 float theta_prop_mult = 0.5;    //Multiplier for theta proportional
 float theta_int_mult = 0.0015;  //Multiplier for theta integral
 #else
@@ -183,8 +183,8 @@ fourWheelVels FourWheelCalculator::dribbleCalc
     double vel_robot = sqrt(x_vel_robot*x_vel_robot + y_vel_robot * y_vel_robot);
     
     // Cap velocities for dribbling
-    y_vel_robot = fmin(y_vel_robot, 100);
-    y_vel_robot = fmax(y_vel_robot, -20);
+    y_vel_robot = fmin(y_vel_robot, 70);
+    y_vel_robot = fmax(y_vel_robot, -5);
 
     theta_vel -= x_vel_robot;
     theta_vel = fmin(theta_vel, 0.1);

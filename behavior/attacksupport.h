@@ -13,11 +13,11 @@
  * enemies, and the one that the AttackMain robot is not inside of--and waits
  * for a pass from the AttackMain robot. */
 
-#define PND 30  //Distance between nodes in the probability field
+#define PND_SUP 30  //Distance between nodes in the probability field
 // Probability Field Variables
-#define PF_LENGTH (FIELD_LENGTH+1)/PND
-#define PF_WIDTH  (FIELD_WIDTH +1)/PND
-#define PF_SIZE  PF_LENGTH * PF_WIDTH
+#define PF_LENGTH_SUP (FIELD_LENGTH+1)/PND_SUP
+#define PF_WIDTH_SUP  (FIELD_WIDTH +1)/PND_SUP
+#define PF_SIZE_SUP  PF_LENGTH_SUP * PF_WIDTH_SUP
 
 class AttackSupport : public GenericMovementBehavior
 {
@@ -36,11 +36,12 @@ private:
         float dynamic_val;
     };
 
-    ProbNode prob_field[(FIELD_LENGTH+1)/PND][(FIELD_WIDTH+1)/PND];
+    ProbNode prob_field[(FIELD_LENGTH+1)/PND_SUP][(FIELD_WIDTH+1)/PND_SUP];
 
     // Fills in prob_field with scoring probabilities
     void calcStaticProb();
     void calcDynamicProb(Robot * robot);
+
     void genGoalShadows();
     void genDistanceFromTeammates(Robot* robot);
     void genBallShadows();

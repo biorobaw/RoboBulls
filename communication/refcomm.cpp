@@ -38,7 +38,7 @@ bool RefComm::open(bool blocking) {
     }
 
     if(!mc.addMulticast(multiaddr,interface)) {
-      fprintf(stderr,"Unable to setup UDP multicast\n");
+      fprintf(stderr,"RefBox: Unable to setup UDP multicast\n");
       fflush(stderr);
       return(false);
     }

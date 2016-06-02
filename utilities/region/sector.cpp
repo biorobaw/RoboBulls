@@ -35,12 +35,8 @@ bool Sector::contains(const Point& p)
 
 void Sector::draw()
 {
-    std::vector<Point> sector;
-    for(int x = c.x - r; x <= c.x + r; x+=20)
-        for(int y = c.y - r; y <= c.y + r; y+=20)
+    for(int x = c.x - r; x <= c.x + r; x+=10)
+        for(int y = c.y - r; y <= c.y + r; y+=10)
             if(this->contains(Point(x,y)))
-                sector.push_back(Point(x,y));
-
-    GuiInterface* gui = GuiInterface::getGuiInterface();
-    gui->drawRegion(sector);
+                GuiInterface::getGuiInterface()->drawPoint(Point(x,y));
 }

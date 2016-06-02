@@ -181,8 +181,8 @@ DefendStateIdle::DefendStateIdle(bool activeKick)
 
 DefendState* DefendStateIdle::action(Robot* robot)
 {
-    //Base class's `action` updates claimed points to rotate the formation
-    //to face the ball (does not return anything)
+    // Base class's `action` updates claimed points to rotate the formation
+    // to face the ball (does not return anything)
     DefendState::action(robot);
 
     if(getClaimedPoint(robot) == nullptr) {

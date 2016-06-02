@@ -16,16 +16,8 @@ namespace Movement
 
 namespace FPPA
 {
-    //! @brief Represents weather the chosen path was the top or the bottom one
-    enum class PathDirection {
-        None, Bottom, Top
-    };
-
     //! @brief A vector of waypoints representing a clear path
     typedef std::vector<Point> Path;
-
-    //! @brief Path information returned by findShortestPath
-    typedef std::pair<Path, PathDirection> PathInfo;
 
     /****************************************************************/
 
@@ -47,10 +39,7 @@ namespace FPPA
      *  path UNLESS the shorter path is "unlessValue" percent better than the
      *  requested top/bottom path.
      * @see PathInfo */
-    PathInfo findShortestPath(const Point& start, const Point& end,
-                              bool avoidBall = true,
-                              PathDirection pathHint = PathDirection::None,
-                              float unlessValue = -1.0);
+    Path genPath(const Point& start, Point end, bool avoidBall = true, bool is_goalie = true);
 
     /*! @brief Check for an obstacle in a line
      * @details Check if there is an obstacle (robot or ball) in the
@@ -64,12 +53,6 @@ namespace FPPA
                           const Point& end,
                           Point *obsPosOut = nullptr,
                           bool avoidBall = true);
-
-    /*! @brief Test if a given single point in question is an obstacle in a given line
-     *  @param start The line starting point
-     *  @param end The line ending point
-     *  @param question The point to test */
-    bool isPointInLine(const Point& start, const Point& end, const Point& question);
 
     /*! @brief Get all current considered obstacles
      *  @details Returns a reference to the vector consisting of the positions of all

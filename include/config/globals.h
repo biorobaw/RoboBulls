@@ -28,7 +28,7 @@
 
 //! @brief Distance from Y=0 to the centre of circular areas
 //! //! Look at SSL rule book for clarification
-#define DEF_AREA_OFFSET 100
+#define DEF_AREA_OFFSET 250
 
 //! @brief Width of Goal Post
 #define GOAL_WIDTH 1000
@@ -39,7 +39,7 @@
 //! @brief Conversion factor from Points to meters
 #define METERS_PER_POINT (1.0 / POINTS_PER_METER)
 
-#define BALL_RADIUS 25
+#define BALL_RADIUS 23
 
 //! @}
 

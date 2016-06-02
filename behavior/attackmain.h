@@ -25,11 +25,11 @@
  * at least some distance away and we haven't told it to always kick to goal (forceGoalKick)
  * @see AttackSupport */
 
-#define PND 50  //Distance between nodes in the probability field
+#define PND_MAIN 30  //Distance between nodes in the probability field
 // Probability Field Variables
-#define PF_LENGTH (FIELD_LENGTH+1)/PND
-#define PF_WIDTH  (FIELD_WIDTH +1)/PND
-#define PF_SIZE  PF_LENGTH * PF_WIDTH
+#define PF_LENGTH_MAIN (FIELD_LENGTH+1)/PND_MAIN
+#define PF_WIDTH_MAIN  (FIELD_WIDTH +1)/PND_MAIN
+#define PF_SIZE_MAIN  PF_LENGTH_MAIN * PF_WIDTH_MAIN
 
 class AttackMain:public GenericMovementBehavior
 {
@@ -48,7 +48,7 @@ private:
         float dynamic_val;
     };
 
-    ProbNode prob_field[(FIELD_LENGTH+1)/PND][(FIELD_WIDTH+1)/PND];
+    ProbNode prob_field[(FIELD_LENGTH+1)/PND_MAIN][(FIELD_WIDTH+1)/PND_MAIN];
 
     Skill::KickToPointOmni* kick_skill;
     Skill::DribbleToPoint* dribble_skill;

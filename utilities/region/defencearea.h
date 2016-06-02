@@ -13,11 +13,15 @@ class DefenceArea : public Region
 public:
     DefenceArea(bool team = !OUR_TEAM);
     bool contains(const Point &) override;
+    bool contains(const Point &, const float tolerance);
     void draw() override;
+    void expelPoint(Point&);
+    std::vector<Point> lineIntercepts(const Point& A, const Point& B);
 private:
     // Consult SSL Rule book for clarification of the following regions
     Rectangle r;
     Sector s1, s2;
+    bool team;
 };
 
 #endif // DEFENCEAREA_H

@@ -119,7 +119,7 @@ bool DribbleToPoint::perform(Robot* robot)
         Point adjust_point = Point(bp.x + ROBOT_RADIUS*2 * cos(theta),
                                    bp.y + ROBOT_RADIUS*2 * sin(theta));
 
-        robot->setDrible(false);
+        robot->setDrible(true);
         move_skill.recreate(adjust_point, ang_to_ball, true, true);
 
         if(move_skill.perform(robot)
