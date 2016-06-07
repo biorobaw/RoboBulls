@@ -13,11 +13,14 @@
  * enemies, and the one that the AttackMain robot is not inside of--and waits
  * for a pass from the AttackMain robot. */
 
-#define PND_SUP 30  //Distance between nodes in the probability field
+// Distance between nodes in the probability field
+// (Probability Node Distance)
+#define PND_SUPP 30
+
 // Probability Field Variables
-#define PF_LENGTH_SUP (FIELD_LENGTH+1)/PND_SUP
-#define PF_WIDTH_SUP  (FIELD_WIDTH +1)/PND_SUP
-#define PF_SIZE_SUP  PF_LENGTH_SUP * PF_WIDTH_SUP
+#define PF_LENGTH_SUPP (FIELD_LENGTH+1)/PND_SUPP
+#define PF_WIDTH_SUPP  (FIELD_WIDTH +1)/PND_SUPP
+#define PF_SIZE_SUPP  PF_LENGTH_SUPP * PF_WIDTH_SUPP
 
 class AttackSupport : public GenericMovementBehavior
 {
@@ -29,6 +32,8 @@ public:
     bool isFinished() override;
 
 private:
+    bool finished;
+
     struct ProbNode
     {
         Point point;
@@ -36,7 +41,7 @@ private:
         float dynamic_val;
     };
 
-    ProbNode prob_field[(FIELD_LENGTH+1)/PND_SUP][(FIELD_WIDTH+1)/PND_SUP];
+    ProbNode prob_field[(FIELD_LENGTH+1)/PND_SUPP][(FIELD_WIDTH+1)/PND_SUPP];
 
     // Fills in prob_field with scoring probabilities
     void calcStaticProb();
@@ -45,6 +50,7 @@ private:
     void genGoalShadows();
     void genDistanceFromTeammates(Robot* robot);
     void genBallShadows();
+    void genGoalShotAvoidance();
 
     // Populates clusters with groups of opponents close together
     std::vector<std::vector<Point>> genClusters();

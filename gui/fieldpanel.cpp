@@ -443,7 +443,8 @@ void FieldPanel::drawLine() {
         if (newLines > 0) {
             startIter = lineAPoints.size() - newLines;
         }
-        for (unsigned int i=startIter; i<lineAPoints.size(); i++) {
+        for (unsigned int i=startIter; i<lineAPoints.size(); i++)
+        {
             GuiDrawLine * newLine = new GuiDrawLine();
             newLine->x1 = lineAPoints[i].x;
             newLine->y1 = lineAPoints[i].y;
@@ -454,6 +455,7 @@ void FieldPanel::drawLine() {
             newLine->setX(100);
             newLine->setY(100);
             newLine->ageLine();
+
             // adding our line to the scene and to the aging queue
             scene->addItem(newLine);
             lineQueue.push_front(newLine);

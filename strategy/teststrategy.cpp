@@ -24,7 +24,7 @@ class KickBeh : public Behavior
     bool wait4recharge;
 public:
     KickBeh() {
-        ktpo = new Skill::KickToPointOmni(Point(0,0),-1,-1,true);
+        ktpo = new Skill::KickToPointOmni(Point(3000,0),-1,-1,true);
         wait4recharge = false;
     }
     ~KickBeh() {
@@ -181,7 +181,7 @@ bool TestStrategy::update()
     Robot* r5 = gameModel->findMyTeam(5);
 
     if(r1)
-        r1->assignBeh<DefendBehavior>();
+        r1->assignBeh<KickBeh>();
     if(r2)
         r2->assignBeh<DefendBehavior>();
     if(r3)

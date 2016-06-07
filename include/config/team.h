@@ -22,14 +22,14 @@
 /*! @brief The Program's Team (TEAM_BLUE or TEAM_YELLOW)
  * @details The player's team constant. This sets which team the program
  * will transmit to. XBee Channel D is for Blue, E is for Yellow */
-#define OUR_TEAM TEAM_BLUE
+#define OUR_TEAM TEAM_YELLOW
 
 /*! @brief The currnet Side of the program's team
  * @details This specifies if we are playing from the negative X axis
  * or the positive X axis. It applies transformations to the camera's
  * readings always making our goal on the negative X axis. The enemy's
  * goal is always at positive X. It should not be used anywhere else. */
-#define SIDE SIDE_NEGATIVE
+#define SIDE SIDE_POSITIVE
 //! @}
 
 #endif

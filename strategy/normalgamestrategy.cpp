@@ -21,8 +21,8 @@ bool NormalGameStrategy::isOnAttack = true;
  * switching condition is true, that must be made until the attack/defend
  * switch is actually made
  */
-#define ATT_TO_DEF_SWITCH_COUNT 128
-#define DEF_TO_ATT_SWITCH_COUNT 16
+#define ATT_TO_DEF_SWITCH_COUNT 30
+#define DEF_TO_ATT_SWITCH_COUNT 30
 
 /* Defines the number of times the ball must be seen outside of the goal
  * to have the robots start moving again. Used to prevent jerky movement
@@ -35,7 +35,7 @@ bool NormalGameStrategy::isOnAttack = true;
 /** BEHAVIORS **/
 
 /* OpBallBlocker
- * A behavior similar to the late DefendCloseToBall that gets in front
+ * A behavior that gets in front
  * of the enemy robot with the ball.
  */
 class OpBallBlocker : public GenericMovementBehavior
@@ -94,7 +94,7 @@ NormalGameStrategy::NormalGameStrategy()
     , ballOriginalPos(GameModel::getModel()->getBallPoint())
     , needsAttackAssign(true)
     , needsDefenceAssign(true)
-    , my_def_area(0)
+    , our_def_area(0)
     , opp_def_area(1)
     { }
 
@@ -133,20 +133,20 @@ bool NormalGameStrategy::update()
 
     //Ball near goals, used as checks to not do anything first
     static bool ballInOpDefArea = false;
-    static bool ballinMyGoal = false;
+    static bool ballInMyDefArea = false;
     ballInOpDefArea = opp_def_area.contains(ball);
-    ballinMyGoal = my_def_area.contains(ball);
+    ballInMyDefArea = our_def_area.contains(ball);
 
     isOnAttack = considerSwitchCreiteria();
 
-    /* If the ball is close to opponent goal or the opponent goal,
+    /* If the ball is close to our goal or the opponent goal,
      * the robots retreat back to their half, and no attack/defend
-     * is run. Changes to defence mode.
+     * is run.
      */
-    if(posedge(ballInOpDefArea or ballinMyGoal))
+    if(posedge(ballInOpDefArea or ballInMyDefArea))
         assignGoalKickBehaviors();
 
-    if(ballInOpDefArea or ballinMyGoal)
+    if(ballInOpDefArea or ballInMyDefArea)
     {
         /* A count is kept to ensure robots don't move
          * until the ball is surely out of the goal
@@ -185,41 +185,40 @@ bool NormalGameStrategy::update()
             //The ball has moved and we have stopped for *this* kickoff.
             hasStoppedForThisKickoff = true;
 
-            if(ballNotInGoalCount < MIN_BALLINGOAL_COUNT) {
-                /* This ensures that the ball must be detected out of the goal
-                 * a number of times before the robots move. Otherwise, we sould see
-                 * very jerkey movement on the field with the ball being falsely
-                 * detected outside of the goal
-                 */
+            // Prevent jerky movement
+            if(ballNotInGoalCount < MIN_BALLINGOAL_COUNT)
+            {
                 ++ballNotInGoalCount;
                 return false;
             }
-            if(oldAttack != isOnAttack) {
-                /* If the attack status has switched, we stop and return true so that
-                 * StrategyController can assign this strategy again with the new mode
-                 */
+
+            if(oldAttack != isOnAttack)
+            {
+                // If the attack status has switched, we stop and return true so that
+                // StrategyController can assign this strategy again with the new mode
                 return true;
             }
-            else if(isOnAttack) {
-                //If there is no attacker, find one.
-                if(currentMainAttacker == NULL) {
+            else if(isOnAttack)
+            {
+                // If there is no main attacker, assign it.
+                if(currentMainAttacker == NULL)
+                {
                     needsAttackAssign = true;
                     assignAttackBehaviors();
                     return false;
                 }
-                /* If the attacker has kicked (isFinished), it has made a pass or a goal,
-                 * so we switch attack/defend behaviors. See assignAttackBehaviors
-                 */
-                if(currentMainAttacker->getCurrentBeh()->isFinished()) {
+                // If the attacker has kicked (isFinished), it has made a pass or a goal,
+                // so we switch attack/defend behaviors.
+                if(currentMainAttacker->getCurrentBeh()->isFinished())
+                {
                     needsAttackAssign = true;
                     assignAttackBehaviors(true);
                 }
             }
-            else {
-                /* Bug fix: This is entered if the ball comes out from the goal,
-                 * and the robots should directly go into defend. This allows swithcing
-                 * between modes to always work.
-                 */
+            else
+            {
+                // This is entered if the ball comes out from the goal,
+                // and the robots should directly go into defend.
                 assignDefendBehaviors();
             }
         }
@@ -229,7 +228,7 @@ bool NormalGameStrategy::update()
     return false;
 }
 
-//Utility function to not duplicate this code
+// Utility function to not duplicate this code
 void NormalGameStrategy::assignGoalieIfOk()
 {
     Robot* goalie = gameModel->findMyTeam(GOALIE_ID);
@@ -299,7 +298,7 @@ bool NormalGameStrategy::considerSwitchCreiteria()
     else {
         //We default to defence if ball is in either defence area
         Point ball = gameModel->getBallPoint();
-        if(my_def_area.contains(ball) || opp_def_area.contains(ball))
+        if(our_def_area.contains(ball) || opp_def_area.contains(ball))
             return false;
     }
 
@@ -320,6 +319,8 @@ static bool no_kicker(Robot* robot) {
  */
 void NormalGameStrategy::assignAttackBehaviors(bool switchSides)
 {
+    std::cout << "Assigning Attack Behaviors" << std::endl;
+
     if(needsAttackAssign) {
         needsAttackAssign = false;
         needsDefenceAssign = true;
@@ -338,13 +339,16 @@ void NormalGameStrategy::assignAttackBehaviors(bool switchSides)
         //Behaviors are assigned and assign the new attacker, because we are attacking
         if(driverBot && recvBot) {
             //If we have found both robots, assign them both
-            if(switchSides) {
+            if(switchSides)
+            {
                 driverBot->assignBeh<AttackSupport>();
-                  recvBot->assignBeh<AttackMain>(); //The receiver cannot pass. No passing loops.
+                recvBot->assignBeh<AttackMain>(); //The receiver cannot pass. No passing loops.
                 currentMainAttacker = recvBot;
-            } else {
+            }
+            else
+            {
                 driverBot->assignBeh<AttackMain>();
-                  recvBot->assignBeh<AttackSupport>();
+                recvBot->assignBeh<AttackSupport>();
                 currentMainAttacker = driverBot;
             }
         } else if (driverBot) {
@@ -364,7 +368,10 @@ void NormalGameStrategy::assignAttackBehaviors(bool switchSides)
  */
 void NormalGameStrategy::assignDefendBehaviors()
 {
-    if(needsDefenceAssign) {
+    std::cout << "Assigning Defend Behaviors" << std::endl;
+
+    if(needsDefenceAssign)
+    {
         needsDefenceAssign = false;
         needsAttackAssign = true;
 

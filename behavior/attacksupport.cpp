@@ -9,9 +9,9 @@ void AttackSupport::perform(Robot * robot)
 {
     calcDynamicProb(robot);
 
-//    for(int x = PF_LENGTH_SUP/2; x < PF_LENGTH_SUP; ++x)
+//    for(int x = PF_LENGTH_SUPP/2; x < PF_LENGTH_SUPP; ++x)
 //    {
-//        for(int y = 0; y < PF_WIDTH_SUP; ++y)
+//        for(int y = 0; y < PF_WIDTH_SUPP; ++y)
 //        {
 //            ProbNode& curr = prob_field[x][y];
 //            if(curr.static_val+curr.dynamic_val >= 0.0)
@@ -20,11 +20,11 @@ void AttackSupport::perform(Robot * robot)
 //    }
 
     // Find max probability node in opponent side of field
-    ProbNode max_node = prob_field[PF_LENGTH_SUP/2][0];
+    ProbNode max_node = prob_field[PF_LENGTH_SUPP/2][0];
 
-    for(int x = PF_LENGTH_SUP/2; x < PF_LENGTH_SUP; ++x)
+    for(int x = PF_LENGTH_SUPP/2; x < PF_LENGTH_SUPP; ++x)
     {
-        for(int y = 0; y < PF_WIDTH_SUP; ++y)
+        for(int y = 0; y < PF_WIDTH_SUPP; ++y)
         {
             ProbNode& curr = prob_field[x][y];
 
@@ -33,10 +33,17 @@ void AttackSupport::perform(Robot * robot)
         }
     }
 
-    // Dribble Towards max node while facing ball
+    // Move towards max node while facing ball
     float ang2ball = Measurements::angleBetween(robot->getPosition(), gameModel->getBallPoint());
-    setMovementTargets(max_node.point, ang2ball,true,false);
+    float dist2ball = Measurements::distance(robot, gameModel->getBallPoint());
+    setMovementTargets(max_node.point, ang2ball, true, false);
     GenericMovementBehavior::perform(robot);
+
+    // We signal that we are done supporting if:
+    // - We are closest member on our team to the ball and
+    // - We are within a certain range of the ball
+    finished = (Comparisons::distance(gameModel->getBallPoint()).minMyTeam()->getID() == robot->getID())
+            && (dist2ball <= ROBOT_RADIUS + BALL_RADIUS + 500);
 }
 
 
@@ -51,13 +58,13 @@ void AttackSupport::calcStaticProb()
 
     DefenceArea def_area(!OUR_TEAM);
 
-    for (int x = 0; x < PF_LENGTH_SUP; ++x)
+    for (int x = 0; x < PF_LENGTH_SUPP; ++x)
     {
-        for (int y = 0; y < PF_WIDTH_SUP; ++y)
+        for (int y = 0; y < PF_WIDTH_SUPP; ++y)
         {
             ProbNode& n = prob_field[x][y];
 
-            n.point = Point(x*PND_SUP - HALF_FIELD_LENGTH, y*PND_SUP - HALF_FIELD_WIDTH);
+            n.point = Point(x*PND_SUPP - HALF_FIELD_LENGTH, y*PND_SUPP - HALF_FIELD_WIDTH);
 
             // Probability of scoring is a decreasing function of distance from
             // the goal. Anything beyond 3000 points gets a probability of zero.
@@ -91,15 +98,18 @@ void AttackSupport::calcStaticProb()
 void AttackSupport::calcDynamicProb(Robot * robot)
 {
     // Clear previous calculations
-    for(int x = 0; x < PF_LENGTH_SUP; ++x)
-        for(int y = 0; y < PF_WIDTH_SUP; ++y)
+    for(int x = 0; x < PF_LENGTH_SUPP; ++x)
+        for(int y = 0; y < PF_WIDTH_SUPP; ++y)
             prob_field[x][y].dynamic_val = 0;
 
     genGoalShadows();
     genDistanceFromTeammates(robot);
     genBallShadows();
+    genGoalShotAvoidance();
 }
 
+// Cast shadows using the entire goal post as a light source and opp
+// robots as opaque objects to rule out impossible scoring positions
 void AttackSupport::genGoalShadows()
 {
     // Top end of goal post
@@ -115,8 +125,7 @@ void AttackSupport::genGoalShadows()
     // Generate clusters of robots
     std::vector<std::vector<Point>> clusters = genClusters();
 
-    // Cast shadows to clusters of robots from goal post to determine
-    // unlikely scoring positions
+    // Calculate shadow geometry for each cluster of robots
     for(std::vector<Point> cluster : clusters)
     {
         float top_x = cluster.front().x;
@@ -135,13 +144,10 @@ void AttackSupport::genGoalShadows()
 //        float x2 = (2*bot_x + 2*m2*bot_y + 2*m2*m2*g2x - 2*m2*g2y)/(2*m2*m2 + 2);
 //        float y2 = m2*x2 - m2*g2x + g2y;
 
-//        GuiInterface::getGuiInterface()->drawLine(Point(g1x,g1y), Point(x1, y1), 0.01);
-//        GuiInterface::getGuiInterface()->drawLine(Point(g2x,g2y), Point(x2, y2), 0.01);
-
         // Set probabilities
-        for(int x = PF_LENGTH_SUP/2; x < PF_LENGTH_SUP; ++x)
+        for(int x = PF_LENGTH_SUPP/2; x < PF_LENGTH_SUPP; ++x)
         {
-            for(int y = 0; y < PF_WIDTH_SUP; ++y)
+            for(int y = 0; y < PF_WIDTH_SUPP; ++y)
             {
                 ProbNode& n = prob_field[x][y];
 
@@ -155,12 +161,15 @@ void AttackSupport::genGoalShadows()
         }
     }
 }
+
+// Sets a dead-zone near teammates so that the support attacker
+// maintains a good distance from them to make passes meaningful
 void AttackSupport::genDistanceFromTeammates(Robot* robot)
 {
     // Set probabilities
-    for(int x = PF_LENGTH_SUP/2; x < PF_LENGTH_SUP; ++x)
+    for(int x = PF_LENGTH_SUPP/2; x < PF_LENGTH_SUPP; ++x)
     {
-        for(int y = 0; y < PF_WIDTH_SUP; ++y)
+        for(int y = 0; y < PF_WIDTH_SUPP; ++y)
         {
             ProbNode& n = prob_field[x][y];
 
@@ -174,13 +183,15 @@ void AttackSupport::genDistanceFromTeammates(Robot* robot)
     }
 }
 
-
+// Cast shadows with ball as light source and opponents as opaque objects
+// Rules out impossible receiving positions
+// TODO: Integrate clustering to this
 void AttackSupport::genBallShadows()
 {
-    // Cast shadows with ball as light source and opponents as opaque objects
+
     Point bp = gameModel->getBallPoint();
 
-    float R = ROBOT_RADIUS+50;
+    float R = ROBOT_RADIUS + 50;
 
     for(Robot* opp: gameModel->getOppTeam())
     {
@@ -227,17 +238,18 @@ void AttackSupport::genBallShadows()
             y2_edge = m2*(x2_edge - bp.x) + bp.y;
         }
 
-        // Determine minimum and maximum x-values
+        // Determine minimum and maximum x-values between both tangent-robot interceptions
         float min_x = 0, max_x = HALF_FIELD_LENGTH;
         max_x = fmin(max_x, fmax(bp.x, fmax(x1_edge, x2_edge)));
         min_x = fmax(min_x, fmin(bp.x, fmin(x1_edge, x2_edge)));
 
-//        GuiInterface::getGuiInterface()->drawLine(Point(bp.x, bp.y), Point(x1_edge, y1_edge), 0.001);
-//        GuiInterface::getGuiInterface()->drawLine(Point(bp.x, bp.y), Point(x2_edge, y2_edge), 0.001);
+//        GuiInterface::getGuiInterface()->drawLine(Point(bp.x, bp.y), Point(x1_edge, y1_edge));
+//        GuiInterface::getGuiInterface()->drawLine(Point(bp.x, bp.y), Point(x2_edge, y2_edge));
 
-        for(int x = min_x; x < max_x; x+=PND_SUP)
+        // Shade in the shadows with vertical strokes from from left to right
+        for(int x = min_x; x < max_x; x+=PND_SUPP)
         {
-            // Determine minimum and maximum y-values
+            // Determine min and max y-values on tangent lines for current the x-value
             float min_y = m1*x - m1*bp.x + bp.y;
             float min_y_dir = bp.y < min_y? 1 : -1;
 
@@ -262,14 +274,16 @@ void AttackSupport::genBallShadows()
 
             if(min_y > max_y) std::swap(min_y, max_y);
 
-            for(int y = min_y; y < max_y; y+=PND_SUP)
+            // Vertical strokes from min_y to max_y
+            for(int y = min_y; y < max_y; y+=PND_SUPP)
             {
                 if(abs(x) < HALF_FIELD_LENGTH && abs(y) < HALF_FIELD_WIDTH)
                 {
-                    ProbNode& node = prob_field[PF_LENGTH_SUP/2 + x/PND_SUP][PF_WIDTH_SUP/2 + y/PND_SUP];
+                    ProbNode& node = prob_field[PF_LENGTH_SUPP/2 + x/PND_SUPP][PF_WIDTH_SUPP/2 + y/PND_SUPP];
 
                     float dist = Measurements::distance(bp, opp->getPosition());
 
+                    // Only cast shadows behind the opponents
                     if(Measurements::distance(bp, node.point) > dist)
                         node.dynamic_val -= 10.0;
                 }
@@ -321,10 +335,42 @@ std::vector<std::vector<Point>> AttackSupport::genClusters()
     return clusters;
 }
 
+// Set the probability in the triangle between the ball and the goal-post
+// to impossible so that the support attacker doesn't position in the
+// way of a shot on goal
+void AttackSupport::genGoalShotAvoidance()
+{
+    // Top end of goal post
+    float g1x = gameModel->getOppGoal().x;
+    float g1y = gameModel->getOppGoal().y + GOAL_WIDTH/2 + ROBOT_RADIUS + 30;
+
+    // Bottom end of goal post
+    float g2x = gameModel->getOppGoal().x;
+    float g2y = gameModel->getOppGoal().y - GOAL_WIDTH/2 - ROBOT_RADIUS - 30;
+
+    Point bp = gameModel->getBallPoint();
+
+    float min_x = bp.x;
+    float max_x = g1x;
+
+    for(int x = min_x; x < max_x; x+=PND_SUPP)
+    {
+        float min_y = (x - bp.x)*(g2y - bp.y)/(g2x-bp.x) + bp.y;
+        float max_y = (x - bp.x)*(g1y - bp.y)/(g1x-bp.x) + bp.y;
+
+        for(int y = min_y; y < max_y; y+=PND_SUPP)
+        {
+            if(abs(x) < HALF_FIELD_LENGTH && abs(y) < HALF_FIELD_WIDTH)
+                prob_field[PF_LENGTH_SUPP/2 + x/PND_SUPP]
+                          [PF_WIDTH_SUPP/2  + y/PND_SUPP].dynamic_val -= 10.0;
+        }
+    }
+}
+
 
 bool AttackSupport::isFinished()
 {
-    return false;
+    return finished;
 }
 
 AttackSupport::~AttackSupport()
@@ -335,7 +381,7 @@ float AttackSupport::getScoreProb(const Point& p)
 {
     if(Comparisons::isPointInsideField(p))
     {
-        ProbNode pn = prob_field[PF_LENGTH_SUP/2+(int)p.x/PND_SUP][PF_WIDTH_SUP/2+(int)p.y/PND_SUP];
+        ProbNode pn = prob_field[PF_LENGTH_SUPP/2+(int)p.x/PND_SUPP][PF_WIDTH_SUPP/2+(int)p.y/PND_SUPP];
         return fmax(0, pn.dynamic_val + pn.static_val);
     }
     return 0;

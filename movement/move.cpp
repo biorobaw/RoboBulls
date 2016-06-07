@@ -230,7 +230,6 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
             return true;
         }
     }
-
     return false;   //Skill not finished
 }
 
@@ -241,8 +240,8 @@ void Move::assignNewPath(const Point& robotPoint, bool use_def_areas)
     pathQueue.assign(path.begin(), path.end());
     lastObstacles = FPPA::getCurrentObstacles(); //Copies
 
-    for (unsigned int i=1; i<pathQueue.size(); i++)
-        GuiInterface::getGuiInterface()->drawLine(pathQueue[i-1], pathQueue[i], 0.01);
+//    for (unsigned int i=1; i<pathQueue.size(); i++)
+//        GuiInterface::getGuiInterface()->drawLine(pathQueue[i-1], pathQueue[i]);
 
     //Draws path lines on iterface
     //Uses clock() to avoid line spam

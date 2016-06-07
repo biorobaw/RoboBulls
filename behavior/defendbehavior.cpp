@@ -1,6 +1,8 @@
 #include "include/config/simulated.h"
 #include "utilities/comparisons.h"
 #include "behavior/defendbehavior.h"
+#include "utilities/region/rectangle.h"
+#include "utilities/region/defencearea.h"
 
 #define DEFENDBEHAVIOR_DEBUG 0
 
@@ -34,13 +36,13 @@ Point DefendState::defendPoints[10];
 int DefendState::claimed[10];
 
 //ID of who is currently moving to kick the ball or -1 if none.
-int DefendState::whoIsKicking = -1;
+int DefendState::kicker_ID = -1;
 
 //Used to not have DefendState's base `action` run too often
 int DefendState::updateCount = 0;
 
 //Points to sit at at ball angle of 0 (and when not on our side)
-const Point DefendState::defPoints[] = {
+const Point DefendState::defaultPoints[] = {
     Point(-1500,    0),
     Point(-2000,  500),
     Point(-2000, -500),
@@ -69,7 +71,7 @@ DefendState* DefendState::action(Robot* robot)
     Point bp = gameModel->getBallPoint();
     Point gl = gameModel->getMyGoal();
 
-    if(whoIsKicking==-1 && !ballIsMovingAway() && bp.x < 0)
+    if(kicker_ID==-1 && !ballIsMovingAway() && bp.x < 0)
     {
         /* If the ball is on our side, we make the robots sway, while
          * still in formation, to face the ball. These are the coefficients
@@ -98,7 +100,7 @@ DefendState* DefendState::action(Robot* robot)
     }
     else {
         for(int i = 0; i != 5; ++i) {
-             defendPoints[i] = defPoints[i];
+             defendPoints[i] = defaultPoints[i];
         }
     }
 
@@ -118,7 +120,7 @@ void DefendState::setupClaimedPoints()
     updateCount = 0;
     clearClaimedPoints();
     for(int i = 0; i != 5; ++i) {
-        defendPoints[i] = defPoints[i];
+        defendPoints[i] = defaultPoints[i];
     }
 }
 
@@ -126,9 +128,9 @@ Point* DefendState::searchClaimPoint(Robot* robot)
 {
     for(int i = 0; i != 10; ++i)
     {
-        //Here, we check the `claimed` array to check if any
-        //slots contin the point we want to claim. If nobody is
-        //pointing there, we claim it.
+        // Here, we check the `claimed` array to check if any
+        // slots contin the point we want to claim. If nobody is
+        // pointing there, we claim it.
         Point& p = defendPoints[i];
         bool alreadyClaimed = false;
         for(int k : claimed) {
@@ -143,7 +145,7 @@ Point* DefendState::searchClaimPoint(Robot* robot)
             continue;
         }
 
-        //Here we ensure there is no other robot there physically
+        // Here we ensure there is no other robot there physically
         Point test(p.x, p.y);
         Robot* closest = Comparisons::distance(test).minMyTeam();
         if(closest->getID() != robot->getID()
@@ -171,33 +173,34 @@ DefendState::~DefendState() {
  #define GOALIE_DIST   300
 #endif
 
-DefendStateIdle::DefendStateIdle(bool activeKick)
-    : activeKicking(activeKick)
+DSIdle::DSIdle()
 {
 #if DEFENDBEHAVIOR_DEBUG
     std::cout << "DefendStateIdle Created" << std::endl;
 #endif
 }
 
-DefendState* DefendStateIdle::action(Robot* robot)
+DefendState* DSIdle::action(Robot* robot)
 {
+    std::cout << "DefendStateIdle" << std::endl;
+
     // Base class's `action` updates claimed points to rotate the formation
     // to face the ball (does not return anything)
     DefendState::action(robot);
 
-    if(getClaimedPoint(robot) == nullptr) {
+    if(getClaimedPoint(robot) == nullptr)
         searchClaimPoint(robot);
-    }
     else {
         //Idle at the point, facing the ball
         Point* chosenPointPtr = getClaimedPoint(robot);
-        if(chosenPointPtr == nullptr) {
+
+        if(chosenPointPtr == nullptr)
             abort();
-        }
+
         Point chosenPoint = *chosenPointPtr;
 
-        float ballRobAng = Measurements::angleBetween(robot, gameModel->getBallPoint());
-        setMovementTargets(chosenPoint, ballRobAng);
+        float robBallAng = Measurements::angleBetween(robot, gameModel->getBallPoint());
+        setMovementTargets(chosenPoint, robBallAng);
         StaticMovementBehavior::perform(robot);
 
         /* If the ball is coming to us, and we are certain, we want to kick the ball.
@@ -205,7 +208,7 @@ DefendState* DefendStateIdle::action(Robot* robot)
          * 1) The ball's predicted X is on our side of the field
          * 2) The ball-to-predicion line distance to robot is small
          * 3) The balls speed is significant
-         * 4) the ball is heading forwards the goal
+         * 4) the ball is heading torwards the goal
          */
         Point bp  = gameModel->getBallPoint();
         Point bv  = gameModel->getBallVelocity();
@@ -214,29 +217,28 @@ DefendState* DefendStateIdle::action(Robot* robot)
         float bs  = gameModel->getBallSpeed();
         float velang = atan2(bv.y, bv.x);
 
-        if( ( activeKicking) &&
-            ( abs(bpr.x - gl.x) < 2900 ) &&
+        if( ( abs(bpr.x - gl.x) < 2900 ) &&
             ( Measurements::lineDistance(chosenPoint, bp, bpr) < LINE_DISTANCE ) &&
             ( bs > 0.2 ) &&
             ( Measurements::isClose(velang, Measurements::angleBetween(bp, gl), 90*(M_PI/180))))
         {
-           return new DefendStateKick();
+           return new DSIntercept();
         }
 
         /* And here, we check if the ball is sitting near us. If it is, kick it back.
-         * I'm tired of this not being here.
-         * \"If the ball is close AND nobody is kicking AND I'm closest to ball...
-         * \"AND the ball near the goal AND the ball is not moving away...\" Kick it.
+         * "If the ball is close AND nobody is kicking AND I'm closest to ball...
+         * "AND the ball near the goal AND the ball is not moving away..." Kick it.
          */
-        if(    activeKicking
-            && Measurements::distance(bp, robot) < 4*LINE_DISTANCE
-            && Measurements::distance(bp, gl) < 2500
-            && whoIsKicking == -1
-            && not(ballIsMovingAway())
+        Rectangle our_half(-HALF_FIELD_LENGTH, -HALF_FIELD_WIDTH, 0, HALF_FIELD_WIDTH);
+        DefenceArea our_da(OUR_TEAM);
+
+        if( our_half.contains(bp)
+            && !our_da.contains(bp, ROBOT_RADIUS)
+            && kicker_ID == -1
             && Comparisons::distanceBall().minMyTeam() == robot)
         {
-            whoIsKicking = robot->getID();
-            return new DefendStateIdleKick();
+            kicker_ID = robot->getID();
+            return new DSKick();
         }
     }
 
@@ -247,24 +249,26 @@ DefendState* DefendStateIdle::action(Robot* robot)
 /************************************************************/
 
 
-DefendStateIdleKick::DefendStateIdleKick()
+DSKick::DSKick()
 {
 #if DEFENDBEHAVIOR_DEBUG
-    std::cout << "DefendStateIdleKick Created" << std::endl;
+    std::cout << "DefendStateKick Created" << std::endl;
 #endif
     ktpo = new Skill::KickToPointOmni(gameModel->getOppGoal());
 }
 
-DefendStateIdleKick::~DefendStateIdleKick()
+DSKick::~DSKick()
 {
     delete ktpo;
 }
 
-DefendState* DefendStateIdleKick::action(Robot* robot)
+DefendState* DSKick::action(Robot* robot)
 {
+    std::cout << "DefendStateKick" << std::endl;
+
     if(ktpo->perform(robot) || ballIsMovingAway()) {
-        whoIsKicking = -1;
-        return new DefendStateIdle();
+        kicker_ID = -1;
+        return new DSIdle();
     }
     return this;
 }
@@ -273,7 +277,7 @@ DefendState* DefendStateIdleKick::action(Robot* robot)
 /************************************************************/
 
 
-DefendStateKick::DefendStateKick()
+DSIntercept::DSIntercept()
     : ktpo(nullptr)
     , chosenLinePoint(false)
     , kickingBall(false)
@@ -285,14 +289,16 @@ DefendStateKick::DefendStateKick()
     setMovementTolerances(DIST_TOLERANCE/10, ROT_TOLERANCE);
 }
 
-DefendStateKick::~DefendStateKick()
+DSIntercept::~DSIntercept()
 {
     delete ktpo;
-    whoIsKicking = -1;
+    kicker_ID = -1;
 }
 
-DefendState* DefendStateKick::action(Robot* robot)
+DefendState* DSIntercept::action(Robot* robot)
 {
+    std::cout << "DefendStateIntercept" << std::endl;
+
     Point bp = gameModel->getBallPoint();
     Point goal = gameModel->getMyGoal();
 
@@ -300,7 +306,7 @@ DefendState* DefendStateKick::action(Robot* robot)
         //The conditions to go to this state validate the ball is RIGHT NOW
         //Heading to us. We go to the closet point on the ball's path.
         if(!tryGetValidLinePoint(robot)) {
-            return new DefendStateIdle();
+            return new DSIdle();
         }
     }
     else {
@@ -314,17 +320,17 @@ DefendState* DefendStateKick::action(Robot* robot)
             //If the ball is close, and we are the closet to the ball,
             //and nobody else is kicking, we kick.
             if(Measurements::distance(robot, bp) < 600
-                && whoIsKicking == -1
+                && kicker_ID == -1
                 && Comparisons::distanceBall().minMyTeam() == robot) 
             {
-                whoIsKicking = robot->getID();
+                kicker_ID = robot->getID();
                 ktpo = new Skill::KickToPointOmni(gameModel->getOppGoal());
                 kickingBall = true;
             }
 
             //If the ball is coming and it stops, go back to idle.
             if(ballIsStopped()) {
-                return new DefendStateIdle();
+                return new DSIdle();
             }
         }
         else {
@@ -335,7 +341,7 @@ DefendState* DefendStateKick::action(Robot* robot)
 
             //Second condition to return to idle. Stop if it moves too far away
             if(Measurements::distance(robot, bp) > LINE_DISTANCE*3) {
-                return new DefendStateIdle();
+                return new DSIdle();
             }
         }
 
@@ -348,7 +354,7 @@ DefendState* DefendStateKick::action(Robot* robot)
         #if DEFENDBEHAVIOR_DEBUG
             std::cout << "DefendStateKick Timeout " << robot->getID() << std::endl;
         #endif
-            return new DefendStateIdle();
+            return new DSIdle();
         }
     }
 
@@ -359,7 +365,7 @@ DefendState* DefendStateKick::action(Robot* robot)
  * If it finds one, sets this->chosenLinePoint to it and
  * returns true.
  */
-bool DefendStateKick::tryGetValidLinePoint(Robot* r)
+bool DSIntercept::tryGetValidLinePoint(Robot* r)
 {
     Point bp = gameModel->getBallPoint();
     Point bpp = gameModel->getBallStopPoint();
@@ -377,9 +383,8 @@ bool DefendStateKick::tryGetValidLinePoint(Robot* r)
 
 int DefendBehavior::currentUsers = 0;
 
-DefendBehavior::DefendBehavior(bool activeKick)
-    : activeKicking(activeKick)
-    , state(new DefendStateIdle(activeKick))
+DefendBehavior::DefendBehavior()
+    : state(new DSIdle())
 { 
     if(currentUsers == 0) {
         DefendState::setupClaimedPoints();

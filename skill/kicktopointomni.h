@@ -60,7 +60,7 @@ private:
     float  m_lastBallAwayDist;    //How far was the last ball observed from out position?
       int  m_ballMovingAwayCount; //How many times have we seen m_lastBallAwayDist increasing?
       int  m_kickCommandCount;
-     bool  m_hasKickedOnce;
+     bool  m_hasKicked;
 
     //Current skill state
     enum { MOVE_BEHIND,  //We are far from the ball and are moving behind it to face target

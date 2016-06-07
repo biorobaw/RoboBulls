@@ -12,7 +12,7 @@ namespace Skill
 /* USER CONFIGURATION */
 
 /* BEHIND_RAD_AVOID Defines the distance behind the ball that the robot will initially
- * move to in order to get in position for a kick. Must be at least 80
+ * move to in order to get in position for a kick. Must be at least 60
  * for obstacle avoidance not to interfere.
  *
  * BEHIND_RAD Defines the distance behind the ball that the robot will move to
@@ -35,8 +35,8 @@ namespace Skill
  *
  */
 #if SIMULATED
-float BEHIND_RAD_AVOID = ROBOT_RADIUS+BALL_RADIUS + 80;
-float BEHIND_RAD = ROBOT_RADIUS+BALL_RADIUS+ 30;
+float BEHIND_RAD_AVOID = ROBOT_RADIUS + BALL_RADIUS + 60;
+float BEHIND_RAD = ROBOT_RADIUS + BALL_RADIUS + 30;
 float FORWARD_WAIT_COUNT = 15;
 float RECREATE_DIST_TOL = 25;
 float STRICTEST_ANG_TOL = 10 * (M_PI/180);
@@ -74,7 +74,7 @@ KickToPointOmni::KickToPointOmni(Point* targetPtr,
     , m_lastBallAwayDist(0)
     , m_ballMovingAwayCount(0)
     , m_kickCommandCount(0)
-    , m_hasKickedOnce(false)
+    , m_hasKicked(false)
     , state(MOVE_BEHIND)
 
 {
@@ -93,10 +93,10 @@ bool KickToPointOmni::perform(Robot* robot)
         state = MOVE_BEHIND;
 
     // If at any time we HAVE kicked the ball, and it is moving away, stop. We've finished.
-    // This should eventually happen by going through the three states below.
-    if(m_hasKickedOnce)
+    // This should eventually happen by going through the states below.
+    if(m_hasKicked)
     {
-        m_hasKickedOnce = false;
+        m_hasKicked = false;
         return true;
     }
 
@@ -129,9 +129,10 @@ bool KickToPointOmni::perform(Robot* robot)
         {
 //            std::cout << "KTPO STATE: MOVE INTERMEDIATE" << std::endl;
 
-            // Move towards the ball at the angle to target (straight)
+            // Move towards the ball at the angle to target
+            // Motion will be straight ahead, given the completion of MOVE_BEHIND
             behindBall = bp + Point(BEHIND_RAD * cos(targetBallAng), BEHIND_RAD * sin(targetBallAng));
-            move_skill.setMovementTolerances(20,3*M_PI/180);
+            move_skill.setMovementTolerances(20, 3*M_PI/180);
             move_skill.setVelocityMultiplier(1);
             move_skill.recreate(behindBall, ballTargetAng, false, false);
 
@@ -153,17 +154,15 @@ bool KickToPointOmni::perform(Robot* robot)
 
             // Move towards the ball at the angle to target (straight)
             move_skill.setVelocityMultiplier(0.2);
-            move_skill.recreate(bp - Point(BEHIND_RAD_AVOID * 10 * cos(targetBallAng), BEHIND_RAD_AVOID * 10 * sin(targetBallAng)), ballTargetAng, true, false);
+            move_skill.recreate(bp - Point(BEHIND_RAD * cos(targetBallAng), BEHIND_RAD * sin(targetBallAng)), ballTargetAng, false, false);
             move_skill.perform(robot);
 
             /* Kick when in range, or go back to moving behind if it
              * moves too far or we are in kick lock */
-            if(canKick(robot)) {
+            if(canKick(robot))
                 state = KICK;
-            } else if(!isFacingTarget(robot) || isVeryFarFromBall(robot)) {
-
+            else if(!isFacingTarget(robot) || isVeryFarFromBall(robot))
                 state = MOVE_BEHIND;
-            }
         }
         break;
     case KICK:
@@ -190,7 +189,7 @@ bool KickToPointOmni::perform(Robot* robot)
             {
                 // We go back to move_behind.
                 state = MOVE_BEHIND;
-                m_hasKickedOnce = true;
+                m_hasKicked = true;
                 m_kickCommandCount = 0;
             }
         }
@@ -206,7 +205,7 @@ bool KickToPointOmni::perform(Robot* robot)
 //- isCloseToBall: We are close to the ball if we are within kicking distance
 //- isVeryFarFromBall: True if we are pretty far away from the ball
 //- isFacingBall: True if facing the ball. The tolerance angle is the user-given m_targetTolerance
-/*- isInKickLock: "Kick-lock" is a side-effect of robots.
+/*- isInKickLock: "Kick-lock" is a side-effect of robot physical geometry.
     * Sometimes the robot gets too close to the ball while not facing it, and keeps
     * pushing the ball along in which it cannot get behind it. This helps to detect that */
 

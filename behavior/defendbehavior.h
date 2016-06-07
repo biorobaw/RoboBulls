@@ -35,12 +35,12 @@ protected:
     //Loops through, looks, and sets the point internally for this robot to claim
     static Point* searchClaimPoint(Robot*);
 
-    static int   whoIsKicking;     //Who is moving to kick the ball?
+    static int   kicker_ID;     //Who is moving to kick the ball?
 
 private:
     static int   claimed[10];      //Index of Points in `defendPoints` to idle at
     static Point defendPoints[];   //Points to sit robots at.
-    static const Point defPoints[];//Default points to sit at
+    static const Point defaultPoints[];//Default points to sit at
     static int   updateCount;      //Count to delay `action` updating of points
 };
 
@@ -51,10 +51,10 @@ private:
 /*! @brief DefendState To choose a point to idle at.
  * @details If activeKick is true, goes to kick the ball away if it is coming close.
  */
-class DefendStateIdle : public DefendState, public StaticMovementBehavior
+class DSIdle : public DefendState, public StaticMovementBehavior
 {
 public:
-     DefendStateIdle(bool activeKick = true);
+     DSIdle();
      DefendState* action(Robot* robot) override;
 private:
     bool activeKicking;
@@ -66,11 +66,11 @@ private:
 /*! @brief DefendState that merely does KickToPointOmni to kick the ball away.
  * @dtails Happens when the ball stops close to a robot on our side
  */
-class DefendStateIdleKick: public DefendState
+class DSKick: public DefendState
 {
 public:
-    DefendStateIdleKick();
-   ~DefendStateIdleKick();
+    DSKick();
+   ~DSKick();
     DefendState* action(Robot* robot) override;
 private:
     Skill::KickToPointOmni* ktpo;
@@ -81,11 +81,11 @@ private:
 
 /*! @brief DefendState to sit in the ball's incoming path.
  * @details Then, kick the ball away and return to idle when finished */
-class DefendStateKick : public DefendState, public GenericMovementBehavior
+class DSIntercept : public DefendState, public GenericMovementBehavior
 {
 public:
-    DefendStateKick();
-   ~DefendStateKick();
+    DSIntercept();
+   ~DSIntercept();
     DefendState* action(Robot* robot) override;
 private:
     Skill::KickToPointOmni* ktpo;
@@ -113,11 +113,10 @@ private:
 class DefendBehavior : public Behavior
 {
 public:
-     DefendBehavior(bool activeKick = true);
+     DefendBehavior();
     ~DefendBehavior();
     void perform(Robot *) override;
 private:
-    bool activeKicking;         //Do we move from the defence to kick away ball?
     static int currentUsers;    //Number of robots currently using this behavior
     DefendState* state;         //Current state (one of the above)
 };

@@ -16,7 +16,7 @@
  *
  * **Attacking (assignAttackBehaviors):**
  *  - The closest robot to the ball is assigned to kick to the goal.
- *  - Robot #5 is assigned to go to the goal and defend the goal.
+ *  - Robot with GOALIE_ID is assigned to go to the goal and defend the goal.
  *  - The remaining robot is assigned to prowl the enemy field and assume
  *    a stretegic position to recieve a pass.
  *
@@ -26,9 +26,6 @@
  *  - The remaining robot is sent to block the enemy passer/receiver team
  *    by placing itself between them (measurements::midPoint).
  *
- * This strategy was designed for the Nov.26 presentation..
- * then Feb 13-14 Engineering Expo...
- * then Summer '15 revival...
  */
 class NormalGameStrategy : public Strategy
 {
@@ -65,7 +62,7 @@ private:
     Point ballOriginalPos;
     bool  needsAttackAssign;
     bool  needsDefenceAssign;
-    DefenceArea my_def_area;
+    DefenceArea our_def_area;
     DefenceArea opp_def_area;
 };
 

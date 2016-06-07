@@ -54,10 +54,12 @@ namespace impl {
         if(avoidBall)
         {
             Point bp = gameModel->getBallPoint();
-            obstacle_found = Measurements::lineSegmentDistance(bp, beginPos, endPos) <= ROBOT_RADIUS+BALL_RADIUS+10;
 
-            if(obstacle_found)
+            if(Measurements::lineSegmentDistance(bp, beginPos, endPos) <= ROBOT_RADIUS+BALL_RADIUS+10)
+            {
+                obstacle_found = true;
                 obstacle_position = bp;
+            }
         }
 
         // Check robots
@@ -68,9 +70,8 @@ namespace impl {
                 continue;
 
             if(Measurements::lineSegmentDistance(obstacle, beginPos, endPos) <= ROBOT_RADIUS*2+10)
+            {
                 obstacle_found = true;
-
-            if(obstacle_found) {
                 obstacle_position = obstacle;
                 break;
             }
@@ -150,7 +151,6 @@ namespace impl {
 
         if(obstacle_info.first == true)  // Obstacle was found
         {
-            //GuiInterface::getGuiInterface()->drawLine(beginPos, endPos, 0.01);
             Point nearest_to_obstacle = Measurements::lineSegmentPoint(obstacle_info.second, beginPos, endPos);
 
             Point srch_vctr = findUnitOrth(beginPos, endPos);

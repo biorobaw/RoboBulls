@@ -57,7 +57,7 @@ bool RoboCupSSLClient::open(bool blocking) {
   }
 
   if(!mc.addMulticast(multiaddr,interface)) {
-    fprintf(stderr,"Unable to setup UDP multicast\n");
+    fprintf(stderr,"SSL_Client: Unable to setup UDP multicast\n");
     fflush(stderr);
     return(false);
   }

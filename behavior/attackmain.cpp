@@ -44,21 +44,21 @@ void AttackMain::perform(Robot * robot)
 
     if(goal_eval.first)    // If we can score from where the ball is, score
     {
-        std::cout << "AttackMain: Score" << std::endl;
+//        std::cout << "AttackMain: Score" << std::endl;
         robot->setDrible(false);
         kick_point = goal_eval.second;
         kick_skill->perform(robot);
     }
     else if(pass_eval.first)    // Else if we can score from where the ball is, pass
     {
-        std::cout << "AttackMain: Pass" << std::endl;
+//        std::cout << "AttackMain: Pass" << std::endl;
         robot->setDrible(false);
         kick_point = pass_eval.second;
         kick_skill->perform(robot);
     }
     else
     {
-        std::cout << "AttackMain: Dribble" << std::endl;
+//        std::cout << "AttackMain: Dribble" << std::endl;
 
         // Update dynamic probabilities
         calcDynamicProb();
@@ -246,52 +246,52 @@ std::pair<bool, Point> AttackMain::calcBestGoalPoint(Robot* r)
     for(Robot* rob : oppTeam)
         obstacles.push_back(rob->getPosition());
 
-    // For a number of sample points along the opponent goal,
-    // check if an obstacle-free path is found for the ball
+    // Store clusters of targets
+    std::vector<std::vector<Point>> target_clusters;
 
-    // If the robot is in positive y, we start our checks from the
-    // positive end of the goal post
-    if(r->getPosition().y > 0)
+    std::vector<Point> empty_cluster;
+    target_clusters.push_back(empty_cluster);
+
+    // Sample a number of points along opp goal and generate clusters of clear shot points
+    for(int goal_y = -GOAL_WIDTH/2+BALL_RADIUS+10; goal_y <= GOAL_WIDTH/2-BALL_RADIUS-10; goal_y += 10)
     {
-        for(int goal_y = GOAL_WIDTH/2-20; goal_y >= -GOAL_WIDTH/2; goal_y -= 10)
-        {
-            Point target = gameModel->getOppGoal() + Point(0, goal_y);
-            bool clear_shot = true;
-            for(const Point& obstacle : obstacles)
-            {
-                if(Measurements::lineSegmentDistance(obstacle, gameModel->getBallPoint(), target) < BALL_RADIUS+ROBOT_RADIUS+20)
-                {
-                    clear_shot = false;
-                    break;
-                }
-            }
+        Point target = gameModel->getOppGoal() + Point(0, goal_y);
+        bool clear_shot = true;
 
-            if(clear_shot)
-                return std::pair<bool, Point>(true, target);
+        for(const Point& obstacle : obstacles)
+        {
+            // If there is an obstacle in the way
+            if(Measurements::lineSegmentDistance(obstacle, gameModel->getBallPoint(), target) <= BALL_RADIUS+ROBOT_RADIUS+50)
+            {
+                clear_shot = false;
+                break;
+            }
         }
+
+        if(clear_shot)
+            target_clusters.back().push_back(target);
+        else if(!target_clusters.back().empty())
+            target_clusters.push_back(empty_cluster);
     }
-    // Otherwise we start checking from the negative end of the goal post
+
+    // Find largest cluster and set the midpoint as the final target
+    auto max_cluster = std::max_element(target_clusters.begin(), target_clusters.end(),
+                                     [](const std::vector<Point>& A, const std::vector<Point>& B)
+                                     { return A.size() < B.size(); });
+
+    if(max_cluster->empty())
+        // No target found
+        return std::pair<bool, Point>(false, Point(0,0));
     else
     {
-        for(int goal_y = -GOAL_WIDTH/2+20; goal_y <= GOAL_WIDTH/2; goal_y += 10)
-        {
-            Point target = gameModel->getOppGoal() + Point(0, goal_y);
-            bool clear_shot = true;
-            for(const Point& obstacle : obstacles)
-            {
-                if(Measurements::lineDistance(obstacle, gameModel->getBallPoint(), target) < BALL_RADIUS+ROBOT_RADIUS+20)
-                {
-                    clear_shot = false;
-                    break;
-                }
-            }
+        // Find average
+        Point final_target(0,0);
+        for(Point p : *max_cluster)
+            final_target += p;
+        final_target *= 1.0/(max_cluster->size());
 
-            if(clear_shot)
-                return std::pair<bool, Point>(true, target);
-        }
+        return std::pair<bool, Point>(true, final_target);
     }
-
-    return std::pair<bool, Point>(false, Point(0,0));
 }
 
 std::pair<bool, Point> AttackMain::calcBestPassPoint(Robot* r)
@@ -307,7 +307,7 @@ std::pair<bool, Point> AttackMain::calcBestPassPoint(Robot* r)
         if(teammate->getID() != r->getID())
         {
             Point tp = teammate->getPosition();
-            bool path_clear = Measurements::pathIsClear(obstacles, bp, tp, ROBOT_RADIUS+BALL_RADIUS+20);
+            bool path_clear = Measurements::pathIsClear(obstacles, bp, tp, ROBOT_RADIUS+BALL_RADIUS+40);
 
             float t_prob = getScoreProb(tp);
             bool better_pos =  t_prob > getScoreProb(rp);
