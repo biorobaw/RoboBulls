@@ -50,7 +50,8 @@ private:
 
     ProbNode prob_field[(FIELD_LENGTH+1)/PND_MAIN][(FIELD_WIDTH+1)/PND_MAIN];
 
-    Skill::KickToPointOmni* kick_skill;
+    Skill::KickToPointOmni* score_skill;
+    Skill::KickToPointOmni* pass_skill;
     Skill::DribbleToPoint* dribble_skill;
     Point kick_point;
     bool done = false;
@@ -72,6 +73,14 @@ private:
 
     // Returns the probability of scoring given a Point
     float getScoreProb(const Point&);
+
+    enum {scoring, passing, dribbling} state;
+
+    // Counters to reduce the impact of noise
+    // on the state machine
+    int clear_shot_count = 0;
+    int clear_pass_count = 0;
+
 };
 
 #endif // ATTACK_MAIN_H

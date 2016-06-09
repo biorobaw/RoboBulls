@@ -75,8 +75,8 @@ fourWheelVels FourWheelCalculator::defaultCalc
         (xy_prop_mult * distance_to_goal +
          xy_int_mult  * dist_error_integral)*sin(angle_to_goal);
     double theta_vel =
-         theta_prop_mult * angle_error
-       + theta_int_mult  * angle_error_integral;
+         theta_prop_mult * angle_error +
+         theta_int_mult  * angle_error_integral;
 
     if (abs(Measurements::angleDiff(theta_goal,theta_current))<
         abs(Measurements::angleDiff(theta_goal,theta_current+theta_vel)))

@@ -128,6 +128,7 @@ Point Measurements::lineSegmentPoint(const Point& p0, const Point& LStart, const
     // Return minimum distance between the line segment and point p0
     const double l2 = pow((LStart.x - LEnd.x),2) + pow((LStart.y - LEnd.y),2);  // i.e. |w-v|^2 -  avoid a sqrt
     if (l2 == 0.0) return LStart;   // v == w case
+
     // Consider the line extending the segment, parameterized as start + t (end - start).
     // We find projection of point p onto the line.
     // It falls where t = [(p0-start) . (end-start)] / |end-start|^2
@@ -145,7 +146,7 @@ float Measurements::lineSegmentDistance(const Point& p0, const Point& LStart, co
 }
 
 
-bool Measurements::pathIsClear(const std::vector<Point>& obstacles, const Point& A, const Point& B, const int& tolerance)
+bool Measurements::noObstaclesInPath(const std::vector<Point>& obstacles, const Point& A, const Point& B, const int& tolerance)
 {
     for(const Point& obstacle : obstacles)
         if(lineSegmentDistance(obstacle, A, B) < tolerance)
@@ -153,9 +154,9 @@ bool Measurements::pathIsClear(const std::vector<Point>& obstacles, const Point&
     return true;
 }
 
-bool Measurements::pathIsClear(const std::vector<Robot*>& obstacles, const Point& A, const Point& B, const int& tolerance)
+bool Measurements::noRobotsInPath(const std::vector<Robot*>& robots, const Point& A, const Point& B, const int& tolerance)
 {
-    for(Robot* r : obstacles)
+    for(Robot* r : robots)
         if(lineSegmentDistance(r->getPosition(), A, B) < tolerance)
             return false;
     return true;

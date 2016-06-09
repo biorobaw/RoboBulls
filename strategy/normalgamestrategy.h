@@ -49,7 +49,7 @@ public:
 
 private:
     bool considerSwitchCreiteria();
-    void assignAttackBehaviors(bool switchSides = false);
+    void assignAttackBehaviors();
     void assignDefendBehaviors();
     void assignGoalKickBehaviors();
     void assignRetreatBehaviors();
@@ -60,8 +60,6 @@ private:
     Robot* currentMainAttacker;
     Robot* currentSuppAttacker;
     Point ballOriginalPos;
-    bool  needsAttackAssign;
-    bool  needsDefenceAssign;
     DefenceArea our_def_area;
     DefenceArea opp_def_area;
 };

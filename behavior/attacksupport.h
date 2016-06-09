@@ -46,6 +46,7 @@ private:
     // Fills in prob_field with scoring probabilities
     void calcStaticProb();
     void calcDynamicProb(Robot * robot);
+    ProbNode findMaxNode();
 
     void genGoalShadows();
     void genDistanceFromTeammates(Robot* robot);
@@ -61,6 +62,11 @@ private:
 
     // Returns the probability of scoring given a Point
     float getScoreProb(const Point&);
+
+    enum {intercept, position} state;
+
+    int switch2intercept_count = 0;
+    int switch2position_count = 0;
 };
 
 #endif // ATTACK_SUPPORT_H

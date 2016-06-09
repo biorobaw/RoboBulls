@@ -1,22 +1,23 @@
 #include "attackmain.h"
 
-AttackMain::AttackMain()
-{
-    calcStaticProb();
-    dribble_skill = new Skill::DribbleToPoint(&kick_point);
-    kick_skill = new Skill::KickToPointOmni(&kick_point,-1,-1,true);
-}
-
-
 /* Angle tolerances for kicking in degrees (then converted to radians).
  * Passing is lower because it needs to be more precise */
 #if SIMULATED
- #define SCORE_ANGLE_TOLERANCE  (30*M_PI/180)
- #define PASS_ANGLE_TOLERANCE   (15*M_PI/180)
+ #define SCORE_ANGLE_TOLERANCE  (1*M_PI/180)
+ #define PASS_ANGLE_TOLERANCE   (1*M_PI/180)
 #else
  #define SCORE_ANGLE_TOLERANCE  (7*M_PI/180)
  #define PASS_ANGLE_TOLERANCE   (7*M_PI/180)
 #endif
+
+AttackMain::AttackMain()
+{
+    calcStaticProb();
+    dribble_skill = new Skill::DribbleToPoint (&kick_point);
+    score_skill   = new Skill::KickToPointOmni(&kick_point,SCORE_ANGLE_TOLERANCE,-1,true);
+    pass_skill    = new Skill::KickToPointOmni(&kick_point,PASS_ANGLE_TOLERANCE, -1,true);
+    state = scoring;
+}
 
 void AttackMain::perform(Robot * robot)
 {
@@ -39,26 +40,94 @@ void AttackMain::perform(Robot * robot)
 //        }
 //    }
 
-    std::pair<bool, Point> goal_eval = calcBestGoalPoint(robot);
-    std::pair<bool, Point> pass_eval = calcBestPassPoint(robot);
-
-    if(goal_eval.first)    // If we can score from where the ball is, score
+    switch (state)
+    {
+    case scoring:
     {
 //        std::cout << "AttackMain: Score" << std::endl;
         robot->setDrible(false);
-        kick_point = goal_eval.second;
-        kick_skill->perform(robot);
+
+        // The isFinished() override is usually used to check if a pass
+        // has occured, so setting it to true when shooting on goal is not needed
+        done = false;
+
+        std::pair<bool, Point> goal_eval = calcBestGoalPoint(robot);
+
+        if(goal_eval.first)
+        {
+            kick_point = goal_eval.second;
+            clear_shot_count = std::min(30, clear_shot_count+1);
+        }
+        else
+            clear_shot_count--;
+
+        score_skill->perform(robot);
+
+        if(clear_shot_count < 0)
+        {
+            clear_shot_count = 0;
+            state = passing;
+        }
+
+        break;
     }
-    else if(pass_eval.first)    // Else if we can score from where the ball is, pass
+    case passing:
     {
 //        std::cout << "AttackMain: Pass" << std::endl;
         robot->setDrible(false);
-        kick_point = pass_eval.second;
-        kick_skill->perform(robot);
+
+        std::pair<bool, Point> pass_eval = calcBestPassPoint(robot);
+
+        if(pass_eval.first)
+        {
+            kick_point = pass_eval.second;
+            clear_pass_count = std::min(30, clear_pass_count+1);;
+        }
+        else
+            clear_pass_count--;
+
+        done = pass_skill->perform(robot);
+
+        if(clear_pass_count < 0)
+        {
+            clear_pass_count = 0;
+            state = dribbling;
+        }
+
+        break;
     }
-    else
+    case dribbling:
     {
 //        std::cout << "AttackMain: Dribble" << std::endl;
+
+        // Evaluate state transition to scoring
+        std::pair<bool, Point> goal_eval = calcBestGoalPoint(robot);
+        std::pair<bool, Point> pass_eval = calcBestPassPoint(robot);
+
+        if(goal_eval.first)
+            clear_shot_count++;
+        else
+            clear_shot_count = std::max(0, clear_shot_count-1);
+
+        if(clear_shot_count > 30)
+        {
+            clear_shot_count = 0;
+            state = scoring;
+            break;
+        }
+
+        // Evaluate state transition to passing
+        if(pass_eval.first)
+            clear_pass_count++;
+        else
+            clear_pass_count = std::max(0, clear_pass_count-1);
+
+        if(clear_pass_count > 30)
+        {
+            clear_pass_count = 0;
+            state = passing;
+            break;
+        }
 
         // Update dynamic probabilities
         calcDynamicProb();
@@ -80,6 +149,8 @@ void AttackMain::perform(Robot * robot)
         // Dribble Towards Max Node
         kick_point = max_node.point;
         dribble_skill->perform(robot);
+        done = false;
+    }
     }
 }
 
@@ -298,7 +369,6 @@ std::pair<bool, Point> AttackMain::calcBestPassPoint(Robot* r)
 {
     std::vector<Robot*> obstacles = gameModel->getOppTeam();
     Point bp = gameModel->getBallPoint();
-    Point rp = r->getPosition();
     Robot* best_supp = nullptr;
     float best_prob = 0;
 
@@ -307,14 +377,14 @@ std::pair<bool, Point> AttackMain::calcBestPassPoint(Robot* r)
         if(teammate->getID() != r->getID())
         {
             Point tp = teammate->getPosition();
-            bool path_clear = Measurements::pathIsClear(obstacles, bp, tp, ROBOT_RADIUS+BALL_RADIUS+40);
+            bool path_clear = Measurements::noRobotsInPath(obstacles, bp, tp, ROBOT_RADIUS+BALL_RADIUS+20);
 
             float t_prob = getScoreProb(tp);
-            bool better_pos =  t_prob > getScoreProb(rp);
+            bool has_score_potential =  t_prob > 0.4;
 
             bool far_enough = !Measurements::isClose(r, teammate, 500);
 
-            if(path_clear && better_pos && far_enough)
+            if(path_clear && has_score_potential && far_enough)
             {
                 if (best_supp == nullptr
                 || (best_supp != nullptr && t_prob > best_prob))
@@ -339,7 +409,8 @@ bool AttackMain::isFinished()
 
 AttackMain::~AttackMain()
 {
-    delete kick_skill;
+    delete score_skill;
+    delete pass_skill;
     delete dribble_skill;
 }
 

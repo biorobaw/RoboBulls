@@ -182,7 +182,7 @@ DSIdle::DSIdle()
 
 DefendState* DSIdle::action(Robot* robot)
 {
-    std::cout << "DefendStateIdle" << std::endl;
+//    std::cout << "DefendStateIdle" << std::endl;
 
     // Base class's `action` updates claimed points to rotate the formation
     // to face the ball (does not return anything)
@@ -264,7 +264,7 @@ DSKick::~DSKick()
 
 DefendState* DSKick::action(Robot* robot)
 {
-    std::cout << "DefendStateKick" << std::endl;
+//    std::cout << "DefendStateKick" << std::endl;
 
     if(ktpo->perform(robot) || ballIsMovingAway()) {
         kicker_ID = -1;
@@ -297,7 +297,7 @@ DSIntercept::~DSIntercept()
 
 DefendState* DSIntercept::action(Robot* robot)
 {
-    std::cout << "DefendStateIntercept" << std::endl;
+//    std::cout << "DefendStateIntercept" << std::endl;
 
     Point bp = gameModel->getBallPoint();
     Point goal = gameModel->getMyGoal();

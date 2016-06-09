@@ -3,22 +3,126 @@
 AttackSupport::AttackSupport()
 {
     calcStaticProb();
+    state = position;
 }
 
 void AttackSupport::perform(Robot * robot)
 {
-    calcDynamicProb(robot);
+    Point rp = robot->getPosition();
+    Point bp = gameModel->getBallPoint();
 
-//    for(int x = PF_LENGTH_SUPP/2; x < PF_LENGTH_SUPP; ++x)
-//    {
-//        for(int y = 0; y < PF_WIDTH_SUPP; ++y)
-//        {
-//            ProbNode& curr = prob_field[x][y];
-//            if(curr.static_val+curr.dynamic_val >= 0.0)
-//                GuiInterface::getGuiInterface()->drawPoint(curr.point);
-//        }
-//    }
+    // We signal that we are done supporting if:
+    // - We are closest member on our team to the ball and
+    finished = Comparisons::distance(bp).minMyTeam()->getID() == robot->getID()
+            && Measurements::isClose(rp, bp, ROBOT_RADIUS+BALL_RADIUS+200);
 
+    switch(state)
+    {
+    case intercept:
+    {
+        robot->setDrible(true);
+
+//        std::cout << "Intercepting" << std::endl;
+
+        // Evaluate transition to positioning
+        Point b_vel = gameModel->getBallVelocity();
+        Robot* ball_bot = gameModel->getHasBall();
+
+        bool ball_bot_not_facing_us =
+                ball_bot != nullptr && ball_bot->isOnMyTeam()
+                && Comparisons::isNotFacingPoint(ball_bot, rp, 15*M_PI/180);
+
+        bool better_interceptor_exists = !finished && Measurements::mag(b_vel) < 100;
+
+        if(ball_bot_not_facing_us || better_interceptor_exists)
+            switch2position_count++;
+        else
+            switch2position_count = 0;
+
+        if(switch2position_count >= 30)
+        {
+            switch2position_count = 0;
+            state = position;
+            break;
+        }
+
+        // Move into the line that the passing robot
+        // is facing if ball velocity is low
+        Point intercept_pt;
+
+        if(Measurements::mag(b_vel) < 200)
+        {
+            if(ball_bot != nullptr && ball_bot->isOnMyTeam())
+            {
+                Point ball_bot_pos = ball_bot->getPosition();
+                float ball_bot_ori = ball_bot->getOrientation();
+
+                Point facing_vector(cos(ball_bot_ori), sin(ball_bot_ori));
+                intercept_pt = Measurements::lineSegmentPoint(rp, ball_bot_pos, ball_bot_pos+(facing_vector*10000));
+            }
+        }
+        else
+            intercept_pt = Measurements::lineSegmentPoint(rp, bp, bp+(b_vel*10000));
+
+        float ang2ball = Measurements::angleBetween(rp, bp);
+
+        setMovementTolerances(1, 0.001);
+        setVelocityMultiplier(1.5);
+        setMovementTargets(intercept_pt, ang2ball, true, false);
+        GenericMovementBehavior::perform(robot);
+
+        break;
+    }
+    case position:
+    {
+        robot->setDrible(false);
+//        std::cout << "Positioning" << std::endl;
+
+        // Evaluate transition to intercepting by
+        // Checking if a teammate with the ball is facing this robot
+        Robot* ball_bot = gameModel->getHasBall();
+
+        if(ball_bot != nullptr && ball_bot->isOnMyTeam()
+        && Comparisons::isFacingPoint(ball_bot, rp, 10*M_PI/180)
+        && !Measurements::isClose(rp, ball_bot, 1000))
+            switch2intercept_count = std::min(30, switch2intercept_count+1);
+        else
+            switch2intercept_count = 0;
+
+        if(switch2intercept_count >= 30)
+        {
+            switch2intercept_count = 0;
+            state = intercept;
+            break;
+        }
+
+        // Move towards node with highest prob of scoring while facing ball
+        calcDynamicProb(robot);
+
+        ProbNode max_node = findMaxNode();
+        float ang2ball = Measurements::angleBetween(rp, bp);
+
+        setMovementTolerances(DIST_TOLERANCE, ROT_TOLERANCE);
+        setVelocityMultiplier(1.0);
+        setMovementTargets(max_node.point, ang2ball, true, false);
+        GenericMovementBehavior::perform(robot);
+    }
+    }
+
+
+    for(int x = PF_LENGTH_SUPP/2; x < PF_LENGTH_SUPP; ++x)
+    {
+        for(int y = 0; y < PF_WIDTH_SUPP; ++y)
+        {
+            ProbNode& curr = prob_field[x][y];
+            if(curr.static_val+curr.dynamic_val >= 0.4)
+                GuiInterface::getGuiInterface()->drawPoint(curr.point);
+        }
+    }
+}
+
+AttackSupport::ProbNode AttackSupport::findMaxNode()
+{
     // Find max probability node in opponent side of field
     ProbNode max_node = prob_field[PF_LENGTH_SUPP/2][0];
 
@@ -33,19 +137,8 @@ void AttackSupport::perform(Robot * robot)
         }
     }
 
-    // Move towards max node while facing ball
-    float ang2ball = Measurements::angleBetween(robot->getPosition(), gameModel->getBallPoint());
-    float dist2ball = Measurements::distance(robot, gameModel->getBallPoint());
-    setMovementTargets(max_node.point, ang2ball, true, false);
-    GenericMovementBehavior::perform(robot);
-
-    // We signal that we are done supporting if:
-    // - We are closest member on our team to the ball and
-    // - We are within a certain range of the ball
-    finished = (Comparisons::distance(gameModel->getBallPoint()).minMyTeam()->getID() == robot->getID())
-            && (dist2ball <= ROBOT_RADIUS + BALL_RADIUS + 500);
+    return max_node;
 }
-
 
 void AttackSupport::calcStaticProb()
 {
@@ -72,7 +165,9 @@ void AttackSupport::calcStaticProb()
             dist = Measurements::distance(n.point, opp_goal);
             angle = fabs(Measurements::angleBetween(n.point, opp_goal));
 
-            if(dist < 3000 && angle < 1.484) // 85 degrees
+            float max_ang_rad = 80*M_PI/180;
+
+            if(dist < 3000 && angle < max_ang_rad) // 80 degrees
             {
                 // probability = 1 - (1/3000) * distance
                 temp_p = 1.0 - 0.000333 * dist;
@@ -80,7 +175,7 @@ void AttackSupport::calcStaticProb()
                 n.static_val += temp_p;
 
                 // probability = 1 - (1/(85*pi/180)) * angle
-                temp_p = 1.0 - 0.674 * angle;
+                temp_p = 1.0 - angle/max_ang_rad;
                 temp_p *= w_ang;
                 n.static_val += temp_p;
             }
@@ -176,7 +271,7 @@ void AttackSupport::genDistanceFromTeammates(Robot* robot)
             for(Robot* tmate: gameModel->getMyTeam())
             {
                 if(tmate->getID() != robot->getID()
-                && (Measurements::distance(tmate->getPosition(), n.point) < 1000))
+                && (Measurements::distance(tmate->getPosition(), n.point) < 2000))
                         n.dynamic_val = -10;
             }
         }
