@@ -237,7 +237,7 @@ void VisionComm::receiveIfMSPassed(int ms_limit)
     }
 }
 
-bool VisionComm::receive()
+void VisionComm::receive()
 {
     //Receive a new packet if X ms has passed (0 FOR NOW)
     //receiveIfMSPassed(0);
@@ -252,13 +252,19 @@ bool VisionComm::receive()
 
     bool all_frames_recv = true;
 
-    for(int i = 0; i < 4; ++i)
+#if FOUR_CAMERA
+    #define CAM_LOOP_INDEX 4
+#else
+    #define CAM_LOOP_INDEX 2
+#endif
+
+    for(int i = 0; i < CAM_LOOP_INDEX; ++i)
         if(!frames_state[i])
             all_frames_recv = false;
 
     if(all_frames_recv)
     {
-        for(int i = 0; i < 4; ++i)
+        for(int i = 0; i < CAM_LOOP_INDEX; ++i)
         {
             recieveBall(frames[i]);
             recieveRobotTeam(frames[i], TEAM_BLUE);
@@ -279,8 +285,6 @@ bool VisionComm::receive()
             for(int& reading : yell_rob_readings) reading = 0;
         }
     }
-
-    return true;
 }
 
 

@@ -24,7 +24,7 @@ class KickBeh : public Behavior
     bool wait4recharge;
 public:
     KickBeh() {
-        ktpo = new Skill::KickToPointOmni(Point(3000,0),-1,-1,true);
+        ktpo = new Skill::KickToPointOmni(Point(0,0),-1,-1,true);
         wait4recharge = false;
     }
     ~KickBeh() {
@@ -105,7 +105,7 @@ class DribbleBeh : public Behavior
     {
         Point bp = gameModel->getBallPoint();
         bool b = Measurements::distance(robot,bp) < 500;
-        robot->setDrible(b);
+        robot->setDrible(true);
     }
 };
 
@@ -189,7 +189,7 @@ bool TestStrategy::update()
     if(r4)
         r4->assignBeh<AttackMain>();
     if(r5)
-        r5->assignBeh<AttackSupport>();
+        r5->assignBeh<DribbleBeh>();
 
     return false;
 }

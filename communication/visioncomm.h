@@ -33,7 +33,7 @@ public:
     ~VisionComm();
 
     //! @brief Recieves an SSL_WrapperPacket and fills in the GameModel information
-    bool receive();
+    void receive();
     
     //! @brief QThread run method
     void run();

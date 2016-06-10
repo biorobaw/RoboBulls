@@ -65,6 +65,7 @@ bool DribbleToPoint::perform(Robot* robot)
         robot->setDrible(true);
 
         move_skill.recreate(grasp_point, ang_to_ball, true, false);
+        move_skill.setVelocityMultiplier(0.3);
 
         if(move_skill.perform(robot))
             state = move_to_target;
