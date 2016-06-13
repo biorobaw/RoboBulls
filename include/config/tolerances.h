@@ -21,8 +21,15 @@ extern const double ROT_TOLERANCE;
 
 
 /*! @brief An extension beyond the defence area in which we
- *  consider a robot to be inside the defence area*/
+ *  consider a robot to be inside the defence area.
+ *  Used mostly for path planning */
 extern const double DEF_AREA_TOL;
+
+/*! @brief Variables used to control the speed
+ *  of a robot dribbling the ball */
+extern const double DRIBBLE_FRWD_SPD;
+extern const double DRIBBLE_BACK_SPD;
+extern const double DRIBBLE_TURN_RATE;
 
 //! @}
 

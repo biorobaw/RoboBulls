@@ -8,6 +8,8 @@
 #include "utilities/comparisons.h"
 #include "gui/guiinterface.h"
 
+#include <iostream>
+
 /************************************************************************/
 /* USER CONFIGURATION */
 
@@ -97,7 +99,7 @@ void Move::setMovementTolerances(float distTolerance, float angleTolerance)
 
 bool Move::perform(Robot *robot, Movement::Type moveType)
 {
-    bool finished = true;
+    bool finished = false;
 
     if(!isInitialized)
         return false;
@@ -110,7 +112,7 @@ bool Move::perform(Robot *robot, Movement::Type moveType)
     if(m_targetAngle == UNUSED_ANGLE_VALUE)
         m_targetAngle = Measurements::angleBetween(robot, m_targetPoint);
 
-    if(useObstacleAvoid) {
+    if(useObstacleAvoid || avoid_ball) {
         /* Check to see if we've found the end of the path. If we have and we're not close
          * to the ending point, assign a path to get back to it */
         if(hasFoundPathEnd && Measurements::distance(robot, m_targetPoint) > DIST_TOLERANCE) {
@@ -226,7 +228,8 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
         //Rotating mode. If robot did not reach target angle, rotate only
         calculateVels(robot, m_targetPoint, m_targetAngle, moveType);
         if (Measurements::isClose(m_targetPoint, robot, lastDistTolerance) &&
-            Measurements::isClose(m_targetAngle, robot->getOrientation(), lastAngTolerance*1.25)) {
+            Measurements::isClose(m_targetAngle, robot->getOrientation(), lastAngTolerance))
+        {
             return true;
         }
     }

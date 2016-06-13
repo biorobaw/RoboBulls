@@ -62,6 +62,10 @@ private:
     Point ballOriginalPos;
     DefenceArea our_def_area;
     DefenceArea opp_def_area;
+
+    // Used prevent repeated behavior assignment
+    bool defend_beh_assigned = false;
+    bool attack_beh_assigned = false;
 };
 
 #endif // NORMALGAMESTRATEGY_H

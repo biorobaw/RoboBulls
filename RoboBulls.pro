@@ -102,7 +102,8 @@ SOURCES += main.cpp \
     gui/guidrawpoint.cpp \
     gui/guidrawregion.cpp \
     skill/dribbletopoint.cpp \
-    behavior/challengeballbot.cpp
+    behavior/challengeballbot.cpp \
+    skill/dribbleback.cpp
 
 HEADERS += \
 	behavior/attackmain.h \
@@ -199,7 +200,8 @@ HEADERS += \
     gui/guidrawpoint.h \
     gui/guidrawregion.h \
     skill/dribbletopoint.h \
-    behavior/challengeballbot.h
+    behavior/challengeballbot.h \
+    skill/dribbleback.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 

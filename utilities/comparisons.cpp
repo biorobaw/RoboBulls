@@ -114,7 +114,7 @@ Robot* Predicate::minMyTeam() {
     return *min(myTeam);
 }
 
-Robot* Predicate::minOpTeam() {
+Robot* Predicate::minOppTeam() {
     auto& opTeam = gameModel->getOppTeam();
     return *min(opTeam);
 }
@@ -129,7 +129,7 @@ Robot* Predicate::anyMyTeam() {
     return it != myTeam.end() ? *it : NULL;
 }
 
-Robot* Predicate::anyOpTeam() {
+Robot* Predicate::anyOppTeam() {
     auto& opTeam = gameModel->getOppTeam();
     auto it = any(opTeam);
     return it != opTeam.end() ? *it : NULL;
@@ -138,7 +138,7 @@ Robot* Predicate::anyOpTeam() {
 Robot* Predicate::anyAnyTeam() {
     Robot* r = anyMyTeam();
     if(r) return r;
-    r = anyOpTeam();
+    r = anyOppTeam();
     if(r) return r;
     return NULL;
 }

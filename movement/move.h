@@ -106,7 +106,7 @@ private:
     //States
     bool  isInitialized;        //If recreate() has been called once (or ctor)
     bool  useObstacleAvoid;     //Do we use obstacle avoidance?
-    bool  avoid_ball;         //Do we avoid the ball?
+    bool  avoid_ball;           //Do we avoid the ball?
     bool  hasFoundPathEnd;      //Have we found the end of the path?
     bool  currentPathIsClear;   //Is the current path clear?
 

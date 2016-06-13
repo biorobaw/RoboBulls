@@ -9,7 +9,7 @@
  */
 
 /*! @brief Are we processing packets from four cameras? */
-#define FOUR_CAMERA 0
+#define FOUR_CAMERA 1
 
 //! @brief Vision listen address options
 //! @{
