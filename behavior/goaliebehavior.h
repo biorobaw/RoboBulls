@@ -2,9 +2,11 @@
 #define GOALIEBEHAVIOR_H
 #include <math.h>
 #include "skill/kicktopointomni.h"
+#include "skill/dribbleback.h"
 #include "behavior/genericmovementbehavior.h"
 #include "utilities/region/defencearea.h"
 #include "utilities/measurements.h"
+#include "utilities/comparisons.h"
 #include "gui/guiinterface.h"
 #include "include/config/team.h"
 
@@ -41,14 +43,19 @@ private:
      * @details In such cases, we will not chase the ball as it is out of the field or unreachable */
     bool isBallReachable();
 
-    /*! @brief Returns true if the ball is stopped in the penalty area
+    /*! @brief Returns true if the ball is stopped in the defence area
      * @details We will only try to kick the ball away once this returns true */
     bool shouldClearBall();
 
-    Point idlePoint;                    //!< Point to sit at when no action happens
-    bool isKickingBallAway;             //!< Are we in the process of kicking the ball from the goal?
-    bool isIdling;                      //!< Are we idling at the idle point?
-    Skill::KickToPointOmni* kick_skill; //!< Skill to kick the ball with
+    /*! @brief Returns true if the ball is stopped just outside the defence area
+     * @details We will only try to kick the ball away once this returns true */
+    bool shouldRetrieveBall();
+
+    Point idlePoint;                        //!< Point to sit at when no action happens
+    Point kickPoint;                        //!< Point to kick the point to
+    Skill::KickToPointOmni* kick_skill;     //!< Skill to kick the ball with
+    Skill::DribbleBack* dribble_skill;   //!< Skill to kick the ball with
+    bool retrieving_ball = false;           //!< Indicates that the ball is being retrieved
     DefenceArea def_area;
 };
 

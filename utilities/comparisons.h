@@ -112,10 +112,10 @@ public:
     Robot* maxOpTeam();
     Robot* maxAnyTeam();
     Robot* minMyTeam();
-    Robot* minOpTeam();
+    Robot* minOppTeam();
     Robot* minAnyTeam();
     Robot* anyMyTeam();
-    Robot* anyOpTeam();
+    Robot* anyOppTeam();
     Robot* anyAnyTeam();
     //! @}
 

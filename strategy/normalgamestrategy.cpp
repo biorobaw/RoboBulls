@@ -174,18 +174,18 @@ bool NormalGameStrategy::update()
             else if(isOnAttack)
             {
                 // Assign attack behaviors
-                if (currentMainAttacker == nullptr || currentSuppAttacker == nullptr
-                || (currentSuppAttacker != nullptr && currentSuppAttacker->getCurrentBeh()->isFinished()))
-                    assignAttackBehaviors();
+                assignAttackBehaviors();
+
+                // Set flag to re-assign attack behaviors if a pass has been
+                // completed to switch main/support attackers
+                if (currentSuppAttacker != nullptr
+                &&  currentSuppAttacker->getCurrentBeh()->isFinished())
+                    attack_beh_assigned = false;
 
                 return false;
             }
             else
-            {
-                // This is entered if the ball comes out from the goal,
-                // and the robots should directly go into defend.
                 assignDefendBehaviors();
-            }
         }
         return false;
     }
@@ -281,6 +281,11 @@ static bool no_kicker(Robot* robot) {
  */
 void NormalGameStrategy::assignAttackBehaviors()
 {
+    // Don't re-assign unnecessarily because it
+    // breaks behaviors
+    if(attack_beh_assigned)
+        return;
+
 //    std::cout << "Assigning Attack Behaviors" << std::endl;
 
     // Assign everyone as a defender for starters
@@ -299,6 +304,9 @@ void NormalGameStrategy::assignAttackBehaviors()
 
     //Finally assign goalie
     assignGoalieIfOk();
+
+    defend_beh_assigned = false;
+    attack_beh_assigned = true;
 }
 
 
@@ -308,6 +316,11 @@ void NormalGameStrategy::assignAttackBehaviors()
  */
 void NormalGameStrategy::assignDefendBehaviors()
 {
+    // Don't re-assign unnecessarily because it
+    // breaks behaviors
+    if(defend_beh_assigned)
+        return;
+
 //    std::cout << "Assigning Defend Behaviors" << std::endl;
 
     // Assign everyone as a defender for starters
@@ -321,6 +334,9 @@ void NormalGameStrategy::assignDefendBehaviors()
 
     //Usual special case for 5
     assignGoalieIfOk();
+
+    defend_beh_assigned = true;
+    attack_beh_assigned = false;
 }
 
 
@@ -336,6 +352,9 @@ void NormalGameStrategy::assignGoalKickBehaviors()
 
     //Usual special case for 5
     assignGoalieIfOk();
+
+    defend_beh_assigned = false;
+    attack_beh_assigned = false;
 }
 
 //! @endcond

@@ -67,7 +67,7 @@ public:
     DribbleToPointBeh()
     {
         target = &A;
-        skill = new Skill::DribbleToPoint(target);
+        skill = new Skill::DribbleToPoint(target, false, false);
     }
 
     ~DribbleToPointBeh()
@@ -84,6 +84,29 @@ public:
             else
                 target = &A;
         }
+    }
+};
+
+// Test behavior to dribble the ball between two points
+class DribbleBackBeh : public Behavior
+{
+    Skill::DribbleBack* skill;
+    Point target;
+public:
+    DribbleBackBeh()
+    {
+        target = Point(0,0);
+        skill = new Skill::DribbleBack(target);
+    }
+
+    ~DribbleBackBeh()
+    {
+        delete skill;
+    }
+
+    void perform(Robot * robot) override
+    {
+        skill->perform(robot);
     }
 };
 
@@ -105,7 +128,7 @@ class DribbleBeh : public Behavior
     {
         Point bp = gameModel->getBallPoint();
         bool b = Measurements::distance(robot,bp) < 500;
-        robot->setDrible(true);
+        robot->setDrible(b);
     }
 };
 
@@ -185,9 +208,9 @@ bool TestStrategy::update()
     if(r2)
         r2->assignBeh<DefendBehavior>();
     if(r3)
-        r3->assignBeh<GoalieBehavior>();
+        r3->assignBeh<DribbleBackBeh>();
     if(r4)
-        r4->assignBeh<AttackMain>();
+        r4->assignBeh<DribbleBackBeh>();
     if(r5)
         r5->assignBeh<DribbleBeh>();
 

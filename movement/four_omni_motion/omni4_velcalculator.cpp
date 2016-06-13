@@ -183,12 +183,12 @@ fourWheelVels FourWheelCalculator::dribbleCalc
     double vel_robot = sqrt(x_vel_robot*x_vel_robot + y_vel_robot * y_vel_robot);
     
     // Cap velocities for dribbling
-    y_vel_robot = fmin(y_vel_robot, 70);
-    y_vel_robot = fmax(y_vel_robot, -5);
+    y_vel_robot = fmin(y_vel_robot, DRIBBLE_FRWD_SPD);
+    y_vel_robot = fmax(y_vel_robot, -DRIBBLE_BACK_SPD);
 
     theta_vel -= x_vel_robot;
-    theta_vel = fmin(theta_vel, 0.1);
-    theta_vel = fmax(theta_vel, -0.1);
+    theta_vel = fmin(theta_vel, DRIBBLE_TURN_RATE);
+    theta_vel = fmax(theta_vel, -DRIBBLE_TURN_RATE);
 
     x_vel_robot = 0;
 
