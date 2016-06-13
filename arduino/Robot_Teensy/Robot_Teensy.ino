@@ -1,5 +1,5 @@
 int id;
-int myid = 4;    // This Robot's ID
+int myid = 1;    // This Robot's ID
 
 
 // Declare motor pins
