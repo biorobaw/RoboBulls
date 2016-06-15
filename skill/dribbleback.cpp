@@ -64,7 +64,7 @@ bool DribbleBack::perform(Robot* robot)
         robot->setDrible(true);
 
         move_skill.recreate(grasp_point, ang_to_ball, false, false);
-        move_skill.setVelocityMultiplier(0.3);
+        move_skill.setVelocityMultiplier(0.5);
 
         if(move_skill.perform(robot))
             state = move_back;

@@ -16,7 +16,7 @@
  * - define 0 = Not simulated; real world
  * - define 1 = Simulated; grSim */
 
-#define SIMULATED 1
+#define SIMULATED 0
 
 //! @}
 
