@@ -15,7 +15,7 @@ DribbleBack::DribbleBack(Point* target)
 
 bool DribbleBack::perform(Robot* robot)
 {
-    std::cout << "Dribble Back" << std::endl;
+//    std::cout << "Dribble Back" << std::endl;
 
     Point bp = gameModel->getBallPoint();
     Point rp = robot->getPosition();
@@ -26,7 +26,7 @@ bool DribbleBack::perform(Robot* robot)
     {
     case move_to_ball:
     {
-        std::cout << "Dribble Back: Move to Ball" << std::endl;
+//        std::cout << "Dribble Back: Move to Ball" << std::endl;
 
         robot->setDrible(false);
 
@@ -50,7 +50,7 @@ bool DribbleBack::perform(Robot* robot)
     }
     case grasp:
     {
-        std::cout << "Dribble Back: Grasp" << std::endl;
+//        std::cout << "Dribble Back: Grasp" << std::endl;
 
         bool dist_check = dist_to_ball < ROBOT_RADIUS + BALL_RADIUS + 75;
         bool ang_check = Measurements::angleDiff(ang_to_ball, robot->getOrientation()) < 20*M_PI/180;
@@ -73,7 +73,7 @@ bool DribbleBack::perform(Robot* robot)
     }
     case move_back:
     {
-        std::cout << "Dribble Back: Move" << std::endl;
+//        std::cout << "Dribble Back: Move" << std::endl;
 
         bool dist_check = dist_to_ball < ROBOT_RADIUS + BALL_RADIUS + 75;
         bool ang_check = Measurements::angleDiff(ang_to_ball, robot->getOrientation()) < 30*M_PI/180;
@@ -81,12 +81,14 @@ bool DribbleBack::perform(Robot* robot)
         if(!dist_check || !ang_check)
         {
             state = move_to_ball;
+            prev_vel = 0;
             break;
         }
 
         robot->setDrible(true);
 
-        int vel = -25;
+        float vel = fmax(-25, prev_vel - 0.1);
+        prev_vel = vel;
 
         robot->setLF(vel);
         robot->setLB(vel);

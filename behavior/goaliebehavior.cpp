@@ -35,8 +35,9 @@ void GoalieBehavior::perform(Robot *robot)
     }
 
     // If the ball is moving towards goal, we move to get into the line of trajectory.
-    else if(isBallMovingTowardsGoal(lineSegment))
+    else if(isBallMovingTowardsGoal(lineSegment) && !shouldRetrieveBall())
     {
+        std::cout << "Moving to goal" << std::endl;
         Point blockPoint = Measurements::lineSegmentPoint(robot->getPosition(), lineSegment.first, lineSegment.second);
         setVelocityMultiplier(1.5);
         setMovementTargets(blockPoint, angleToBall, false, false);
@@ -105,7 +106,7 @@ bool GoalieBehavior::isBallMovingTowardsGoal(std::pair<Point,Point>& lineSegOut)
     Point ballPos = gameModel->getBallPoint();
     float y = (bVel.y / bVel.x) * (goal.x - ballPos.x) + ballPos.y;
 
-    // Set the output to a pair Points representing the line of the ball's trajectory.
+    // Set the output to a pair of Points representing the line of the ball's trajectory.
     lineSegOut = {ballPos, Point(goal.x+ROBOT_RADIUS,y)};
 
     // Is the Y position within the goalie box?
@@ -163,7 +164,7 @@ bool GoalieBehavior::shouldRetrieveBall()
     Robot* nearest_opp = Comparisons::distance(bp).minOppTeam();
     Robot* nearest_teammate = Comparisons::distance(bp).minMyTeam();
 
-    bool result = def_area.contains(bp, ROBOT_RADIUS)
+    bool result = def_area.contains(bp, ROBOT_RADIUS*2)
     && !def_area.contains(bp, -2*BALL_RADIUS)
     && (gameModel->getBallSpeed() <= 100)
     && (Measurements::distance(nearest_opp, bp)

@@ -20,6 +20,7 @@ private:
     Point grasp_point;
     Movement::GoToPosition move_skill;
     enum {move_to_ball, grasp, move_back} state;
+    float prev_vel = 0;
 };
 
 }
