@@ -66,7 +66,7 @@ void StrategyController::assignNewStrategy(char gameState)
         break;
     case 'i':   //Yellow Indirect Kick
     case 'I':   //Blue Indirect kick
-        activeStrategy = new IndiectKickStrategy();
+        activeStrategy = new IndirectKickStrategy();
         break;
     case 'T':
     case 't':

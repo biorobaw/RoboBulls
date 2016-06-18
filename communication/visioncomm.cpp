@@ -252,7 +252,7 @@ void VisionComm::receive()
 
     bool all_frames_recv = true;
 
-#if FOUR_CAMERA
+#if SIMULATED || FOUR_CAMERA
     #define CAM_LOOP_INDEX 4
 #else
     #define CAM_LOOP_INDEX 2

@@ -97,6 +97,9 @@ public:
     //!@brief Clamps (limits) a value between min and max
     template<typename T>
     static T clamp(const T& value, const T& min, const T& max);
+
+    //!@brief Returns a unit vector
+    static Point unitVector(const Point&);
 };
 
 //! @}

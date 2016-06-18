@@ -59,9 +59,15 @@ Point Point::operator-(const Point& rhs) const
     return ret;
 }
 
-Point Point::operator*(float rhs)
+Point Point::operator*(float rhs) const
 {
     Point ret(x * rhs, y * rhs);
+    return ret;
+}
+
+Point Point::operator/(float rhs) const
+{
+    Point ret(x / rhs, y / rhs);
     return ret;
 }
 

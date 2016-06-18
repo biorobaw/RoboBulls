@@ -10,7 +10,7 @@ void ChallengeBallBot::perform(Robot *robot)
 
     if(ballBot && !ballBot->isOnMyTeam())
     {
-        std::cout << "block" << std::endl;
+//        std::cout << "block" << std::endl;
 
         Point bp = gameModel->getBallPoint();
         float oppAng2Ball = Measurements::angleBetween(ballBot, bp);
@@ -23,7 +23,7 @@ void ChallengeBallBot::perform(Robot *robot)
     else
     {
         //Case to stop robot from floating
-        std::cout << "stop" << std::endl;
+//        std::cout << "stop" << std::endl;
         setMovementTargets(robot->getPosition());
     }
 

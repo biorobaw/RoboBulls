@@ -8,76 +8,75 @@
 #include "stopstrategy.h"
 #define STOPSTRAT_DEBUG 0
 
-//Keeping track of previous ball point over updating
-Point StopStrategy::prevBallPoint = Point(9999,9999);
+static bool reposition_invalid = false;
 
-StopStrategy::StopStrategy(float radius)
-    : radius(radius)
-    { }
+StopStrategy::StopStrategy()
+{
+}
 
 void StopStrategy::assignBeh()
 {
-    Point bp = gameModel->getBallPoint();
-    rebuildTargetPoints();
-
-    for(Robot* robot : gameModel->getMyTeam()) {
-        if(robot->getID() == GOALIE_ID)
-            continue;
-        Point robTarget = robTargetPoints[robot->getID()];
-        float targetAngle = Measurements::angleBetween(robTarget, bp);
-        robot->assignBeh<StaticMovementBehavior>(robTarget, targetAngle);
-    }
-
     Robot* goalie = gameModel->findMyTeam(GOALIE_ID);
     if(goalie)
-        goalie->assignBeh<GoalieBehavior>();
+        goalie->assignBeh<GenericMovementBehavior>(gameModel->getMyGoal() + Point(ROBOT_RADIUS, 0),
+                                                   Measurements::angleBetween(goalie, gameModel->getBallPoint()));
+
 }
 
 bool StopStrategy::update()
 {
-    Point nowBallPoint = gameModel->getBallPoint();
-    if(Measurements::distance(nowBallPoint, prevBallPoint) > 50) {
-        prevBallPoint = nowBallPoint;
-        return true;
+    Point bp = gameModel->getBallPoint();
+
+    // Reposition every robot that is too close to the ball
+    for(Robot* robot: gameModel->getMyTeam())
+    {
+        int id = robot->getID();
+
+        if(Measurements::isClose(robot, bp, 600) && id != GOALIE_ID)
+        {
+            // Generate position vector away from ball
+            Point reposition = bp + Measurements::unitVector(robot->getPosition() - bp) * 600;
+
+            // If the vector is unreachable send the robot
+            // to the center of the field. This should eventually
+            // result in a legal position that is inside the field
+            DefenceArea our_def(0);
+            DefenceArea opp_def(1);
+
+            reposition_invalid = Comparisons::isPointOutsideField(reposition)
+                                              || our_def.contains(reposition)
+                                              || opp_def.contains(reposition);
+
+            if(negedge(reposition_invalid))
+                need_assign[id] = true;
+
+            if(reposition_invalid)
+            {
+                reposition = Point(0,0);
+                need_assign[id] = true;
+            }
+
+            if(need_assign[id])
+            {
+                robot->clearCurrentBeh();
+                robot->assignBeh<GenericMovementBehavior>(reposition, Measurements::angleBetween(robot, bp));
+                need_assign[id] = false;
+            }
+        }
+        else if(need_assign[id] && id != GOALIE_ID)
+        {
+            robot->clearCurrentBeh();
+            robot->assignBeh<GenericMovementBehavior>(robot->getPosition(), Measurements::angleBetween(robot, bp));
+            need_assign[id] = false;
+        }
     }
+
+    if (!Measurements::isClose(prev_point, bp, 25))
+    {
+        for(bool& b: need_assign)
+            b = true;
+        prev_point = bp;
+    }
+
     return false;
-}
-
-void StopStrategy::rebuildTargetPoints()
-{
-    std::list<Point> newPoints;
-    Point ballPoint = gameModel->getBallPoint();
-    int teamSize = gameModel->getMyTeam().size();
-    int maxTeamSize  = std::max(teamSize, (int)gameModel->getOppTeam().size());
-
-    /* If we're yellow team, then we add an offset to the initial
-     * theta, to allow the yellow robots to move to different points than
-     * the blue robots. They both follow the same increment. */
-    float theta_inc = (2*M_PI) / maxTeamSize;
-#if OUR_TEAM==TEAM_BLUE
-    float theta = 0;
-#else
-    float theta = theta_inc/2;
-#endif
-
-    /* First create an evenly distributed number of points around the ball.
-     * Later, I want to make this so all robots are placed on one side. */
-    for(int i = 0; i != teamSize; ++i, theta += theta_inc)
-    {
-        float x_pos = (radius * cos(theta)) + ballPoint.x;
-        float y_pos = (radius * sin(theta)) + ballPoint.y;
-        newPoints.emplace_back(x_pos, y_pos);
-    }
-
-    /* Then for each robot, find the closest point around the ball to the robot. This
-     * will be the robot's new target point stored in robTargetPoints */
-    for(Robot* rob : gameModel->getMyTeam())
-    {
-        auto min_pos = Comparisons::distance(rob).min(newPoints);
-        robTargetPoints[rob->getID()] = *min_pos;    //Set a new target point for rob
-        newPoints.erase(min_pos);                    //Remove this point because it is now used
-    #if STOPSTRAT_DEBUG
-        std::cout << rob->getID() << ": " << min_pos->toString() << std::endl;
-    #endif
-    }
 }

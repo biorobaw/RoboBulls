@@ -5,7 +5,7 @@
 
 float Measurements::mag(const Point& p)
 {
-    return hypot(p.x,p.y);
+    return hypot(p.x, p.y);
 }
 
 float Measurements::distance(const Point& p1, const Point& p2) {
@@ -161,4 +161,9 @@ bool Measurements::noRobotsInPath(const std::vector<Robot*>& robots, const Point
         if(lineSegmentDistance(r->getPosition(), A, B) < tolerance)
             return false;
     return true;
+}
+
+Point Measurements::unitVector(const Point& vector)
+{
+    return vector/mag(vector);
 }

@@ -37,7 +37,6 @@ void GoalieBehavior::perform(Robot *robot)
     // If the ball is moving towards goal, we move to get into the line of trajectory.
     else if(isBallMovingTowardsGoal(lineSegment) && !shouldRetrieveBall())
     {
-        std::cout << "Moving to goal" << std::endl;
         Point blockPoint = Measurements::lineSegmentPoint(robot->getPosition(), lineSegment.first, lineSegment.second);
         setVelocityMultiplier(1.5);
         setMovementTargets(blockPoint, angleToBall, false, false);

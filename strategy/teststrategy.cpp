@@ -128,7 +128,7 @@ class DribbleBeh : public Behavior
     {
         Point bp = gameModel->getBallPoint();
         bool b = Measurements::distance(robot,bp) < 500;
-        robot->setDrible(true);
+        robot->setDrible(b);
     }
 };
 

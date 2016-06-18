@@ -2,39 +2,24 @@
 #define STOPSTRATEGY_H
 #include "strategy/strategy.h"
 #include "utilities/point.h"
+#include "utilities/edges.h"
 
 /*! @brief Strategy to implement the game stopped state 'S'
  * @author JamesW
- * @details To implement to stopped game state, we have the robots gather
- * in a circle around the ball. the radius at which they do this should comply
- * with RoboCup rules */
+ * @details To implement to stopped game state, we have all robots
+ * move to a position that is at least 500mm from the ball */
 
 class StopStrategy:public Strategy
 {
 public:
-    /*! @brief Constructor
-     * @param radius Chooses the radius to circle around the ball at */
-    StopStrategy(float radius = 1000);
+    /*! @brief Constructor */
+    StopStrategy();
     void assignBeh() override;
     bool update() override;
 
 private:
-    /*! @brief Rebuilds target points in case of ball movement or added robot
-     * @details In case of ball movement or some other effect, the target points
-     * for StopBehavior need to be rebuilt. */
-    void rebuildTargetPoints();
-
-    /*! @brief Keeping track of the previous ball point.
-     * @details Need to keep track of the previous ball point, and rebuild target
-     * points on a significant change. */
-    static Point prevBallPoint;
-
-    /*! @brief Stored points of the target each Robot should go to.
-     * @details Built from rebuildTargetPoints */
-    Point robTargetPoints[10];
-
-    //! @brief Radius to stay from the ball point
-    float radius;
+    Point prev_point = Point(-9999, 9999);
+    bool need_assign[10] = {true};
 };
 
 #endif // STOPSTRATEGY_H

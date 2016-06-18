@@ -26,7 +26,8 @@ public:
 	Point&	operator/=(float rhs);
     Point	operator+(const Point& rhs) const;
     Point	operator-(const Point& rhs) const;
-    Point   operator*(float rhs);
+    Point   operator*(float rhs) const;
+    Point   operator/(float rhs) const;
     //! @}
 	
     std::string toString() const;
