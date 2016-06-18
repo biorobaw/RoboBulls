@@ -128,7 +128,7 @@ class DribbleBeh : public Behavior
     {
         Point bp = gameModel->getBallPoint();
         bool b = Measurements::distance(robot,bp) < 500;
-        robot->setDrible(b);
+        robot->setDrible(true);
     }
 };
 
@@ -199,20 +199,20 @@ bool TestStrategy::update()
     //All robots must exists before any action is taken.
     Robot* r1 = gameModel->findMyTeam(1);
     Robot* r2 = gameModel->findMyTeam(2);
-    Robot* r3 = gameModel->findMyTeam(GOALIE_ID);
+    Robot* r3 = gameModel->findMyTeam(3);
     Robot* r4 = gameModel->findMyTeam(4);
     Robot* r5 = gameModel->findMyTeam(5);
 
     if(r1)
-        r1->assignBeh<GoalieBehavior>();
+        r1->assignBeh<KickBeh>();
     if(r2)
-        r2->assignBeh<DefendBehavior>();
+        r2->assignBeh<KickBeh>();
     if(r3)
-        r3->assignBeh<GoalieBehavior>();
+        r3->assignBeh<KickBeh>();
     if(r4)
-        r4->assignBeh<DribbleBackBeh>();
+        r4->assignBeh<KickBeh>();
     if(r5)
-        r5->assignBeh<DribbleBackBeh>();
+        r5->assignBeh<KickBeh>();
 
     return false;
 }

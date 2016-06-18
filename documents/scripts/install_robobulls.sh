@@ -41,7 +41,7 @@ if [ ! -d $INSTALL_PATH/grSim ]; then
     cd vartypes-0.7 && mkdir build && cd build && cmake .. && make && sudo make install
     rm -rf vartypes-0.7
     cd $INSTALL_PATH
-    git clone https://github.com/mani-monaj/grSim
+    git clone https://github.com/mllofriu/grSim
     cd grSim && mkdir build && cd build && cmake .. && make
 else
     echored "grSim already installed (directory exists)"

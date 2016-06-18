@@ -71,7 +71,7 @@ DefendState* DefendState::action(Robot* robot)
     Point bp = gameModel->getBallPoint();
     Point gl = gameModel->getMyGoal();
 
-    if(kicker_ID==-1 && !ballIsMovingAway() && bp.x < 0)
+    if(bp.x < 0)
     {
         /* If the ball is on our side, we make the robots sway, while
          * still in formation, to face the ball. These are the coefficients
@@ -129,7 +129,7 @@ Point* DefendState::searchClaimPoint(Robot* robot)
     for(int i = 0; i != 10; ++i)
     {
         // Here, we check the `claimed` array to check if any
-        // slots contin the point we want to claim. If nobody is
+        // slots contain the point we want to claim. If nobody is
         // pointing there, we claim it.
         Point& p = defendPoints[i];
         bool alreadyClaimed = false;
@@ -219,7 +219,7 @@ DefendState* DSIdle::action(Robot* robot)
         float bs  = gameModel->getBallSpeed();
         float velang = atan2(bv.y, bv.x);
 
-        if( ( abs(bpr.x - gl.x) < 2900 ) &&
+        if( ( abs(bpr.x - gl.x) < 1000 ) &&
             ( Measurements::lineDistance(chosenPoint, bp, bpr) < LINE_DISTANCE ) &&
             ( bs > 0.2 ) &&
             ( Measurements::isClose(velang, Measurements::angleBetween(bp, gl), 90*(M_PI/180))))
@@ -235,7 +235,7 @@ DefendState* DSIdle::action(Robot* robot)
         DefenceArea our_da(OUR_TEAM);
 
         if( our_half.contains(bp)
-            && !our_da.contains(bp, ROBOT_RADIUS)
+            && our_da.contains(bp, 2000)
             && kicker_ID == -1
             && Comparisons::distanceBall().minMyTeam() == robot)
         {

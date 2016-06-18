@@ -81,7 +81,7 @@ void StrategyController::assignNewStrategy(char gameState)
         break;
     default:    //Anything Else
         std::cout << "Warning: GS \"" <<  gameState << "\" Not implemented" << std::endl;
-        activeStrategy = new NormalGameStrategy();
+        activeStrategy = new TestStrategy();
     };
 #else
     (void)(gameState);
