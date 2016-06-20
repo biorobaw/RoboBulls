@@ -4,6 +4,7 @@
 #include "utilities/point.h"
 #include "skill/skill.h"
 #include "movement/gotoposition.h"
+#include "gui/guiinterface.h"
 
 namespace Skill
 {

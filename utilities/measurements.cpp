@@ -155,12 +155,12 @@ bool Measurements::noObstaclesInPath(const std::vector<Point>& obstacles, const 
     return true;
 }
 
-bool Measurements::noRobotsInPath(const std::vector<Robot*>& robots, const Point& A, const Point& B, const int& tolerance)
+Robot* Measurements::robotInPath(const std::vector<Robot*>& robots, const Point& A, const Point& B, const int& tolerance)
 {
     for(Robot* r : robots)
         if(lineSegmentDistance(r->getPosition(), A, B) < tolerance)
-            return false;
-    return true;
+            return r;
+    return nullptr;
 }
 
 Point Measurements::unitVector(const Point& vector)

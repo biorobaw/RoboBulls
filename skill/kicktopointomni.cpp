@@ -84,6 +84,7 @@ KickToPointOmni::KickToPointOmni(Point* targetPtr,
 bool KickToPointOmni::perform(Robot* robot)
 {
     Point bp = gameModel->getBallPoint();
+    GuiInterface::getGuiInterface()->drawLine(bp, *m_targetPointer);
 
     // Angle between the ball and the kick target
     float ballTargetAng = Measurements::angleBetween(bp, *m_targetPointer);
@@ -295,6 +296,4 @@ bool KickToPointOmni::ballIsMovingAway(Robot* robot)
 
     return false;
 }
-
-
 }

@@ -377,7 +377,7 @@ std::pair<bool, Point> AttackMain::calcBestPassPoint(Robot* r)
         if(teammate->getID() != r->getID())
         {
             Point tp = teammate->getPosition();
-            bool path_clear = Measurements::noRobotsInPath(obstacles, bp, tp, ROBOT_RADIUS+BALL_RADIUS+20);
+            bool path_clear = Measurements::robotInPath(obstacles, bp, tp, ROBOT_RADIUS+BALL_RADIUS+20) == nullptr;
 
             float t_prob = getScoreProb(tp);
             bool has_score_potential =  t_prob > 0.4;

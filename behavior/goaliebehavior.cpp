@@ -6,7 +6,7 @@ GoalieBehavior::GoalieBehavior()
     , def_area(OUR_TEAM)
 {
     dribble_skill = new Skill::DribbleBack(idlePoint);
-    kick_skill = new Skill::KickToPointOmni(kickPoint);
+    kick_skill = new Skill::KickToPointOmni(&kickPoint);
 }
 
 GoalieBehavior::~GoalieBehavior()
@@ -51,7 +51,59 @@ void GoalieBehavior::perform(Robot *robot)
     // Kick the ball away if it is inside the defense area
     else if(shouldClearBall())
     {
-        kickPoint = Point(0, 0);
+        // Find reachable teammates
+        std::vector<Robot*> candidates;
+
+        std::vector<Robot*> obstacles(gameModel->getOppTeam());
+        obstacles.insert(obstacles.end(), gameModel->getMyTeam().begin(), gameModel->getMyTeam().end());
+
+        for(Robot* tmate: gameModel->getMyTeam())
+        {
+            if (tmate->getID() != robot->getID())
+            {
+                auto remove_it = std::remove_if(obstacles.begin(), obstacles.end(), [&](Robot* r)
+                {
+                    return r->isOnMyTeam() && (r->getID() == tmate->getID() || r->getID() == robot->getID());
+                });
+
+                obstacles.erase(remove_it, obstacles.end());
+
+                Robot* obst = Measurements::robotInPath(obstacles, bp, tmate->getPosition(), ROBOT_RADIUS + BALL_RADIUS + 20);
+
+                obstacles.push_back(tmate);
+                obstacles.push_back(robot);
+
+                if (obst == nullptr)
+                    candidates.push_back(tmate);
+            }
+        }
+
+        // Find farthest robot from among the reachable teammates
+        Robot* farthest = nullptr;
+        if(!candidates.empty())
+        {
+            farthest = candidates.front();
+            for(Robot* r: candidates)
+            {
+
+                if(r->getPosition().x > farthest->getPosition().x)
+                    farthest = r;
+            }
+        }
+
+        if(farthest != nullptr)
+        {
+            kickPoint = farthest->getPosition();
+            std::cout << 0 << std::endl;
+        }
+        else
+        {
+            kickPoint = Point(0, 0);
+            std::cout << 1 << std::endl;
+        }
+
+//        GuiInterface::getGuiInterface()->drawLine(bp, kickPoint);
+
         kick_skill->perform(robot);
     }
 

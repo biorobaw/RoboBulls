@@ -91,7 +91,7 @@ public:
 
     /*! @brief Returns true if an obstacle-free path is found between two points */
     static bool noObstaclesInPath(const std::vector<Point>& obstacles, const Point& A, const Point& B, const int& tolerance);
-    static bool noRobotsInPath(const std::vector<Robot*>& obstacles, const Point& A, const Point& B, const int& tolerance);
+    static Robot* robotInPath(const std::vector<Robot*>& obstacles, const Point& A, const Point& B, const int& tolerance);
     //! @}
 
     //!@brief Clamps (limits) a value between min and max
