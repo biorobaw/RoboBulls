@@ -149,7 +149,7 @@ void AttackSupport::calcStaticProb()
     float dist = 0.0, angle = 0.0;
     float temp_p = 0.0;
 
-    DefenceArea def_area(!OUR_TEAM);
+    DefenceArea def_area(!config->our_team);
 
     for (int x = 0; x < PF_LENGTH_SUPP; ++x)
     {

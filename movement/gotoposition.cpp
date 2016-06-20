@@ -59,8 +59,8 @@ fourWheelVels GoToPosition::calculateGoalField(Robot* robot, Type moveType)
 {
     fourWheelVels result = {0, 0, 0, 0};
 
-    DefenceArea da0(OUR_TEAM);
-    DefenceArea da1(!OUR_TEAM);
+    DefenceArea da0(config->our_team);
+    DefenceArea da1(!config->our_team);
 
     Point rp = robot->getPosition();
     if(da0.contains(rp, DEF_AREA_TOL))

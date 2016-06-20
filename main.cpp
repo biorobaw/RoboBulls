@@ -98,7 +98,7 @@ void printBuildInfo()
 {
     std::cout
         << "RoboBulls 2 Build " << __DATE__ << " " << __TIME__ << std::endl
-        << "       Team: " << ((OUR_TEAM == TEAM_BLUE) ? "Blue" : "Yellow") << std::endl
+        << "       Team: " << ((config->our_team == TEAM_BLUE) ? "Blue" : "Yellow") << std::endl
         << "       Side: " << ((SIDE == SIDE_NEGATIVE) ? "Negative" : "Positive") << std::endl
         << "  Simulated: " << SIMULATED << std::endl
         << "   Refboxed: " << REFBOX_LISTEN_ENABLED << std::endl

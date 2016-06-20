@@ -138,14 +138,14 @@ bool NormalGameStrategy::update()
          * */
         char prevGs = gm->getPreviousGameState();
 
-        if(((prevGs == 'K' && OUR_TEAM == TEAM_BLUE) ||
-            (prevGs == 'k' && OUR_TEAM == TEAM_YELLOW)) &&
+        if(((prevGs == 'K' && config->our_team == TEAM_BLUE) ||
+            (prevGs == 'k' && config->our_team == TEAM_YELLOW)) &&
             !ballMoved)
         {
             assignAttackBehaviors();
         }
-        else if(((prevGs == 'k' && OUR_TEAM == TEAM_BLUE) ||
-                 (prevGs == 'K' && OUR_TEAM == TEAM_YELLOW)) &&
+        else if(((prevGs == 'k' && config->our_team == TEAM_BLUE) ||
+                 (prevGs == 'K' && config->our_team == TEAM_YELLOW)) &&
                  !ballMoved &&
                  !hasStoppedForThisKickoff)
         {

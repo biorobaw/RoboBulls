@@ -103,7 +103,8 @@ SOURCES += main.cpp \
     gui/guidrawregion.cpp \
     skill/dribbletopoint.cpp \
     behavior/challengeballbot.cpp \
-    skill/dribbleback.cpp
+    skill/dribbleback.cpp \
+    model/configurations.cpp
 
 HEADERS += \
 	behavior/attackmain.h \

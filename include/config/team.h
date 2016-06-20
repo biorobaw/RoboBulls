@@ -19,10 +19,6 @@
 //! @addtogroup config
 //! @{
 
-/*! @brief The Program's Team (TEAM_BLUE or TEAM_YELLOW)
- * @details The player's team constant. This sets which team the program
- * will transmit to. XBee Channel D is for Blue, E is for Yellow */
-#define OUR_TEAM TEAM_BLUE
 
 /*! @brief The currnet Side of the program's team
  * @details This specifies if we are playing from the negative X axis
@@ -32,4 +28,17 @@
 #define SIDE SIDE_NEGATIVE
 //! @}
 
+class Configurations {
+public:
+    static Configurations * getConfigurations();
+
+    Configurations() : our_team(TEAM_YELLOW){}
+
+    /*! @brief The Program's Team (TEAM_BLUE or TEAM_YELLOW)
+     * @details The player's team constant. This sets which team the program
+     * will transmit to. XBee Channel D is for Blue, E is for Yellow */
+    int our_team;
+};
+
+extern Configurations * config;
 #endif

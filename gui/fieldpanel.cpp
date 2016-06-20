@@ -199,7 +199,7 @@ void FieldPanel::setupScene() {
         guiTeam[i]->setToolTip("Robot " + QString::number(i));
         guiLabels[i]->id = i;
         guiLabels[i]->setScale(2.5);
-        if (OUR_TEAM == TEAM_BLUE) {
+        if (config->our_team == TEAM_BLUE) {
             guiTeam[i]->mainTeam = true;
             guiLabels[i]->mainTeam = true;
         } else {
@@ -213,7 +213,7 @@ void FieldPanel::setupScene() {
         guiTeamY[i]->setToolTip("Robot " + QString::number(i));
         guiLabelsY[i]->id = i;
         guiLabelsY[i]->setScale(2.5);
-        if (OUR_TEAM == TEAM_YELLOW) {
+        if (config->our_team == TEAM_YELLOW) {
             guiTeamY[i]->mainTeam = true;
             guiLabelsY[i]->mainTeam = true;
         } else {
@@ -223,7 +223,7 @@ void FieldPanel::setupScene() {
     }
 
     //Set the team for the field; used only to draw goal colors correctly
-    field->myTeam = (OUR_TEAM == TEAM_BLUE) ? "Blue" : "Yellow";
+    field->myTeam = (config->our_team == TEAM_BLUE) ? "Blue" : "Yellow";
 
     // Turning on Bot IDs by default
     dash->ui->check_showIDs->setChecked(true);

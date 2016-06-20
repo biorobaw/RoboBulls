@@ -11,7 +11,7 @@
 class DefenceArea : public Region
 {
 public:
-    DefenceArea(bool team = !OUR_TEAM);
+    DefenceArea(bool team = !config->our_team);
     bool contains(const Point &) override;
     bool contains(const Point &, const float tolerance);
     void draw() override;

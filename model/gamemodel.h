@@ -64,6 +64,7 @@ public:
     void setStrategyController(StrategyController * sc);
     void onCommandProcessed();
     std::string toString();
+    void reset();
     //! @}
 
 private:

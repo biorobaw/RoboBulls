@@ -127,6 +127,7 @@ private slots:
     void on_btn_rotateField_left_clicked();
     void on_btn_multithread_clicked();
     void on_btn_toggleTeamColor_clicked();
+    void on_check_botOverride_clicked();
 };
 
 #endif // MAINWINDOW_H

@@ -3,7 +3,7 @@
 GoalieBehavior::GoalieBehavior()
     : idlePoint(gameModel->getMyGoal() + Point(ROBOT_RADIUS+50,0))
     , kick_skill(nullptr)
-    , def_area(OUR_TEAM)
+    , def_area(config->our_team)
 {
     dribble_skill = new Skill::DribbleBack(idlePoint);
     kick_skill = new Skill::KickToPointOmni(kickPoint);

@@ -66,22 +66,20 @@ std::vector<Robot*>& GameModel::getMyTeam()
  * \return The Blue team */
 std::vector<Robot*>& GameModel::getBlueTeam()
 {
-#if OUR_TEAM == TEAM_BLUE
+if (config->our_team == TEAM_BLUE)
     return getMyTeam();
-#else
+else
     return getOppTeam();
-#endif
 }
 
 /*! @brief Return a vector of all robots on the Yellow team
  * \return The Yellow team */
 std::vector<Robot*>& GameModel::getYellowTeam()
 {
-#if OUR_TEAM == TEAM_BLUE
+if (config->our_team == TEAM_BLUE)
     return getOppTeam();
-#else
+else
     return getMyTeam();
-#endif
 }
 
 /*! @brief Return a 2D point of the current ball location
@@ -399,7 +397,7 @@ void GameModel::onRobotUpdated(Robot* robot)
 void GameModel::removeRobot(int id, int team)
 {
     auto* vector = &getMyTeam();
-    if(team != OUR_TEAM)
+    if(team != config->our_team)
         vector = &getOppTeam();
     auto it = std::find_if(vector->begin(), vector->end(), [=](Robot* r){return r->getID()==id;});
     if(it != vector->end()) {
@@ -408,4 +406,8 @@ void GameModel::removeRobot(int id, int team)
     }
 }
 
+void GameModel::reset(){
+    myTeam.clear();
+    opTeam.clear();
+}
 

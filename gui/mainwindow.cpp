@@ -472,9 +472,9 @@ void MainWindow::setupKeyShortcuts() {
 }
 
 void MainWindow::checkTeamColors() {
-    if (OUR_TEAM == TEAM_BLUE) {
+    if (config->our_team == TEAM_BLUE) {
         myTeam = "Blue";
-    } else if (OUR_TEAM == TEAM_YELLOW) {
+    } else if (config->our_team == TEAM_YELLOW) {
         myTeam = "Yellow";
     }
 }
@@ -721,8 +721,17 @@ void MainWindow::on_combo_botScale_currentIndexChanged(int index){
 void MainWindow::on_btn_toggleTeamColor_clicked() {
     if (myTeam == "Blue") {
         myTeam = "Yellow";
+        config->our_team = TEAM_YELLOW;
     } else if (myTeam == "Yellow") {
         myTeam = "Blue";
+        config->our_team = TEAM_BLUE;
     }
     robotpanel->updateTeamColors();
+
+    gameModel->reset();
+}
+
+void MainWindow::on_check_botOverride_clicked()
+{
+
 }

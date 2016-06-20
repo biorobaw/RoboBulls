@@ -115,7 +115,7 @@ namespace impl {
         bool def_area_occupied = false;
         if(use_def_areas)
         {
-            DefenceArea da0(OUR_TEAM), da1(!OUR_TEAM);
+            DefenceArea da0(config->our_team), da1(!config->our_team);
             def_area_occupied = da0.contains(toCheck, DEF_AREA_TOL) || da1.contains(toCheck, DEF_AREA_TOL);
         }
 
@@ -220,8 +220,8 @@ namespace impl {
         dest.x = Measurements::clamp(dest.x, -HALF_FIELD_LENGTH+100.f,  HALF_FIELD_LENGTH-100.f);
         dest.y = Measurements::clamp(dest.y, -HALF_FIELD_WIDTH +100.f,  HALF_FIELD_WIDTH -100.f);
 
-        DefenceArea da0(OUR_TEAM);
-        DefenceArea da1(!OUR_TEAM);
+        DefenceArea da0(config->our_team);
+        DefenceArea da1(!config->our_team);
 
         // Push points to edge of defence areas
         if(def_area_on)

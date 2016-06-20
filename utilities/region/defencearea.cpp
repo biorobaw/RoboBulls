@@ -2,7 +2,7 @@
 
 DefenceArea::DefenceArea(bool team) :team(team)
 {
-    if(team == OUR_TEAM)    // Initialize our defence area
+    if(team == config->our_team)    // Initialize our defence area
     {
         r = Rectangle(-HALF_FIELD_LENGTH,
                         -DEF_AREA_OFFSET,
@@ -43,7 +43,7 @@ bool DefenceArea::contains(const Point& p)
 bool DefenceArea::contains(const Point& p, const float tol)
 {
     // Expand to tolerance
-    if(team == OUR_TEAM)
+    if(team == config->our_team)
         r.max_x = -HALF_FIELD_LENGTH + DEF_AREA_RADIUS + tol;
     else
         r.min_x = HALF_FIELD_LENGTH - DEF_AREA_RADIUS - tol;
@@ -56,7 +56,7 @@ bool DefenceArea::contains(const Point& p, const float tol)
     s1.r = DEF_AREA_RADIUS;
     s2.r = DEF_AREA_RADIUS;
 
-    if(team == OUR_TEAM)
+    if(team == config->our_team)
         r.max_x = -HALF_FIELD_LENGTH + DEF_AREA_RADIUS;
     else
         r.min_x = HALF_FIELD_LENGTH - DEF_AREA_RADIUS;
@@ -75,7 +75,7 @@ void DefenceArea::expelPoint(Point& point)
 {
     if(r.contains(point))
     {
-        if(team == OUR_TEAM)
+        if(team == config->our_team)
             point.x = -FIELD_LENGTH/2 + (DEF_AREA_RADIUS+DEF_AREA_TOL);
         else
             point.x =  FIELD_LENGTH/2 - (DEF_AREA_RADIUS+DEF_AREA_TOL);
@@ -99,7 +99,7 @@ void DefenceArea::expelPoint(Point& point)
         float B = 2*(m*c - m*q - p);
         float C = q*q - r*r + p*p - 2*c*q + c*c;
 
-        if(team == OUR_TEAM)
+        if(team == config->our_team)
             point.y = m*((-B + sqrt(B*B-4*A*C))/(2*A)) + c;
         else
             point.y = m*((-B - sqrt(B*B-4*A*C))/(2*A)) + c;
@@ -125,7 +125,7 @@ void DefenceArea::expelPoint(Point& point)
         float B = 2*(m*c - m*q - p);
         float C = q*q - r*r + p*p - 2*c*q + c*c;
 
-        if(team == OUR_TEAM)
+        if(team == config->our_team)
             point.y = m*((-B + sqrt(B*B-4*A*C))/(2*A)) + c;
         else
             point.y = m*((-B - sqrt(B*B-4*A*C))/(2*A)) + c;
@@ -146,7 +146,7 @@ std::vector<Point> DefenceArea::lineIntercepts(const Point& PA, const Point& PB)
     float x3 = FIELD_LENGTH/2 - DEF_AREA_RADIUS - DEF_AREA_TOL, y3 = DEF_AREA_OFFSET;
     float x4 = FIELD_LENGTH/2 - DEF_AREA_RADIUS - DEF_AREA_TOL, y4 = -DEF_AREA_OFFSET;
 
-    if (team == OUR_TEAM)
+    if (team == config->our_team)
     {
         x3 *= -1;
         x4 *= -1;
@@ -199,7 +199,7 @@ std::vector<Point> DefenceArea::lineIntercepts(const Point& PA, const Point& PB)
         float y2 = m*x2 + c;
 
         // Check if within correct sector
-        if(team == OUR_TEAM)
+        if(team == config->our_team)
         {
             Rectangle rec(-HALF_FIELD_LENGTH, DEF_AREA_OFFSET,
                         -HALF_FIELD_LENGTH+DEF_AREA_RADIUS+DEF_AREA_TOL, DEF_AREA_OFFSET+DEF_AREA_RADIUS+DEF_AREA_TOL);
@@ -268,7 +268,7 @@ std::vector<Point> DefenceArea::lineIntercepts(const Point& PA, const Point& PB)
         float x2 = (-B - sqrt(det))/(2*A);
         float y2 = m*x2 + c;
 
-        if(team == OUR_TEAM)
+        if(team == config->our_team)
         {
             Rectangle rec(-HALF_FIELD_LENGTH, -DEF_AREA_OFFSET-DEF_AREA_RADIUS-DEF_AREA_TOL,
                         -HALF_FIELD_LENGTH+DEF_AREA_RADIUS+DEF_AREA_TOL, -DEF_AREA_OFFSET);

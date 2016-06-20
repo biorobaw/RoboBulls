@@ -16,7 +16,7 @@ void PenaltyStrategy::assignBeh()
 
     //We only do something special if it is *our* penalty kick.
     char gs = gameModel->getGameState();
-    if ((gs == 'P' && OUR_TEAM == TEAM_BLUE) || (gs == 'p' && OUR_TEAM == TEAM_YELLOW))
+    if ((gs == 'P' && config->our_team == TEAM_BLUE) || (gs == 'p' && config->our_team == TEAM_YELLOW))
     {
         //Finds the closest robot to the penalty point and its ID
         closestRobot = Comparisons::distanceOpGoal().minMyTeam();

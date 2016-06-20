@@ -56,7 +56,7 @@ void KickOffStrategy::assignBeh()
     Point* whichKickoffPointList = myKickoffPoints;
     
     //Change to other point list if it's not our kickoff
-    if ((gs=='K' && OUR_TEAM==TEAM_YELLOW) || (gs=='k' && OUR_TEAM==TEAM_BLUE ))
+    if ((gs=='K' && config->our_team==TEAM_YELLOW) || (gs=='k' && config->our_team==TEAM_BLUE ))
         whichKickoffPointList = opKickoffPoints;
 
     //List of points for fast removal

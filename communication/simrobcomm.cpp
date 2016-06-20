@@ -32,7 +32,7 @@ void SimRobComm::sendVelsLarge(std::vector<Robot*>& robots)
 void SimRobComm::sendPacket(Robot* robot)
 {
     grSim_Packet packet;
-    packet.mutable_commands()->set_isteamyellow( (OUR_TEAM == TEAM_YELLOW) );
+    packet.mutable_commands()->set_isteamyellow( (config->our_team == TEAM_YELLOW) );
     packet.mutable_commands()->set_timestamp(0.0);
     grSim_Robot_Command* command = packet.mutable_commands()->add_robot_commands();
 
