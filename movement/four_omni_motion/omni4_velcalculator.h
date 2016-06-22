@@ -79,6 +79,7 @@ private:
     double angle_error_integral=0;
     std::deque<double> dist_error_deque;
     std::deque<double> angle_error_deque;
+    float prev_vel = 0;
 };
 
 }

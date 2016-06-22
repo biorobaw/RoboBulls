@@ -1,5 +1,5 @@
 #include "freekickstrategy.h"
-#include "behavior/kicktogoal.h"
+#include "behavior/attackmain.h"
 #include "model/gamemodel.h"
 #include "behavior/simplebehaviors.h"
 #include "behavior/goaliebehavior.h"
@@ -56,7 +56,7 @@ void FreeKickStrategy::assignBeh()
             closestRobotID = kickerRobot->getID();
         }
 
-        kickerRobot->assignBeh<KickToGoal>();   //lets the closest robot to the ball to perform the free kick
+        kickerRobot->assignBeh<AttackMain>();   //lets the closest robot to the ball to perform the free kick
 
         if (myTeam.size() > 1)  // assigns simple behavior to the rest of robots
         {

@@ -25,6 +25,9 @@ void GoalieBehavior::perform(Robot *robot)
     //Segment to hold ballOnRobotIsAimedAtOurGoal and isBallMovingTowardsGoal return
     std::pair<Point,Point> lineSegment;
 
+    if(def_area.contains(bp, -1.5*ROBOT_RADIUS) || !def_area.contains(bp, ROBOT_RADIUS*2))
+        retrieving_ball = false;
+
     // If there is a robot with the ball facing our goal, we move to get in it's trajectory.
     if(ballBot && ballBot->getID() != GOALIE_ID && botOnBallIsAimedAtOurGoal(ballBot, lineSegment))
     {
@@ -35,7 +38,7 @@ void GoalieBehavior::perform(Robot *robot)
     }
 
     // If the ball is moving towards goal, we move to get into the line of trajectory.
-    else if(isBallMovingTowardsGoal(lineSegment) && !shouldRetrieveBall())
+    else if(isBallMovingTowardsGoal(lineSegment) && !retrieving_ball)
     {
         Point blockPoint = Measurements::lineSegmentPoint(robot->getPosition(), lineSegment.first, lineSegment.second);
         setVelocityMultiplier(1.5);
@@ -45,8 +48,11 @@ void GoalieBehavior::perform(Robot *robot)
 
     // If the ball is stopped just outside our defence area, we dribble it inside
     // the defence area if safe
-    else if (shouldRetrieveBall())
+    else if (shouldRetrieveBall() || retrieving_ball)
+    {
+        retrieving_ball = true;
         dribble_skill->perform(robot);
+    }
 
     // Kick the ball away if it is inside the defense area
     else if(shouldClearBall())
@@ -207,7 +213,7 @@ bool GoalieBehavior::shouldClearBall()
 bool GoalieBehavior::shouldRetrieveBall()
 {
     // We bring the ball into the defense area if it is
-    // - closer than one robot radius outside the defense area
+    // - closer than 2 robot radius outside the defense area
     // - farther than ball diameter inside the defense area
     // - moving slow enough
     // - closer to one of our robots than to an opponent robot
@@ -216,7 +222,7 @@ bool GoalieBehavior::shouldRetrieveBall()
     Robot* nearest_teammate = Comparisons::distance(bp).minMyTeam();
 
     bool result = def_area.contains(bp, ROBOT_RADIUS*2)
-    && !def_area.contains(bp, -2*BALL_RADIUS)
+    && !def_area.contains(bp, -ROBOT_RADIUS)
     && (gameModel->getBallSpeed() <= 100)
     && (Measurements::distance(nearest_opp, bp)
        - Measurements::distance(nearest_teammate, bp) > ROBOT_RADIUS);

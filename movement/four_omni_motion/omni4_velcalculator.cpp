@@ -97,6 +97,15 @@ fourWheelVels FourWheelCalculator::defaultCalc
     double x_vel_robot = sin(theta_current)*x_vel-cos(theta_current)*y_vel;
     double vel_robot = sqrt(x_vel_robot*x_vel_robot + y_vel_robot * y_vel_robot);
 
+    // Apply acceleration ramp
+    if(vel_robot > prev_vel)
+    {
+        x_vel_robot = x_vel_robot * (prev_vel + 2) / vel_robot;
+        y_vel_robot = y_vel_robot * (prev_vel + 2) / vel_robot;
+        vel_robot = prev_vel + 2;
+    }
+    prev_vel = vel_robot;
+
     // Wheel Velocity Calculations
     double RF =  (-sin(RF_offset) * x_vel_robot + cos(RF_offset)*y_vel_robot - trans_offset*vel_robot*cos(RF_offset) + wheel_radius*theta_vel);
     double LF = -(-sin(LF_offset) * x_vel_robot + cos(LF_offset)*y_vel_robot - trans_offset*vel_robot*cos(LF_offset) + wheel_radius*theta_vel);
@@ -181,6 +190,15 @@ fourWheelVels FourWheelCalculator::dribbleCalc
     double y_vel_robot = cos(theta_current)*x_vel+sin(theta_current)*y_vel;
     double x_vel_robot = sin(theta_current)*x_vel-cos(theta_current)*y_vel;
     double vel_robot = sqrt(x_vel_robot*x_vel_robot + y_vel_robot * y_vel_robot);
+
+    // Apply acceleration ramp
+    if(vel_robot > prev_vel)
+    {
+        x_vel_robot = x_vel_robot * (prev_vel + 2) / vel_robot;
+        y_vel_robot = y_vel_robot * (prev_vel + 2) / vel_robot;
+        vel_robot = prev_vel + 2;
+    }
+    prev_vel = vel_robot;
     
     // Cap velocities for dribbling
     y_vel_robot = fmin(y_vel_robot, DRIBBLE_FRWD_SPD);

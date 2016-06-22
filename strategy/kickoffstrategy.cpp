@@ -23,13 +23,12 @@
  *    3        *
  *             *
  ******************/
-Point KickOffStrategy::myKickoffPoints[6] = {
+Point KickOffStrategy::myKickoffPoints[5] = {
     /*0*/ Point( -200,    0),
     /*1*/ Point( -800, -600),
     /*2*/ Point( -800,  600),
     /*3*/ Point(-1300, -900),
-    /*4*/ Point(-1300,  900),
-    /*5*/ Point(-2900,    0)
+    /*4*/ Point(-1300,  900)
 };
 
 /******************
@@ -41,13 +40,12 @@ Point KickOffStrategy::myKickoffPoints[6] = {
  *   2  4      *
  *             *
  ******************/
-Point KickOffStrategy::opKickoffPoints[6] = {
+Point KickOffStrategy::opKickoffPoints[5] = {
     /*0*/ Point(-1200,    0),
-    /*1*/ Point(-1900,  800),
-    /*2*/ Point(-1900, -800),
+    /*1*/ Point(-1800,  800),
+    /*2*/ Point(-1800, -800),
     /*3*/ Point(-1200,  800),
-    /*4*/ Point(-1200, -800),
-    /*5*/ Point(-2900,    0)
+    /*4*/ Point(-1200, -800)
 };
 
 void KickOffStrategy::assignBeh()
@@ -67,12 +65,12 @@ void KickOffStrategy::assignBeh()
         if(robot->getID() == GOALIE_ID)
             continue;
 
-        //We look for the closest point as the robots come, then remove it
+        // We look for the closest point as the robots come, then remove it
         auto nextPointItr = Comparisons::distance(robot).min(pointList);
         Point nextPoint = *nextPointItr;
         pointList.erase(nextPointItr);
 
-        //Assign to move to that point, then face to the center
+        // Assign to move to that point, then face to the center
         float angleToCenter = Measurements::angleBetween(nextPoint, Point(0,0));
         robot->assignBeh<StaticMovementBehavior>(nextPoint, angleToCenter);
     }
