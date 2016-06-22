@@ -28,7 +28,7 @@ bool DribbleBack::perform(Robot* robot)
     {
 //        std::cout << "Dribble Back: Move to Ball" << std::endl;
 
-        robot->setDrible(false);
+        robot->setDribble(false);
 
         bool dist_check = dist_to_ball < ROBOT_RADIUS + BALL_RADIUS + 50;
         bool ang_check = Measurements::angleDiff(ang_to_ball, robot->getOrientation()) < 5*M_PI/180;
@@ -61,7 +61,7 @@ bool DribbleBack::perform(Robot* robot)
             break;
         }
 
-        robot->setDrible(true);
+        robot->setDribble(true);
 
         move_skill.recreate(grasp_point, ang_to_ball, false, false);
         move_skill.setVelocityMultiplier(0.5);
@@ -85,7 +85,7 @@ bool DribbleBack::perform(Robot* robot)
             break;
         }
 
-        robot->setDrible(true);
+        robot->setDribble(true);
 
         float vel = fmax(-25, prev_vel - 0.1);
         prev_vel = vel;

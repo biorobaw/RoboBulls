@@ -188,7 +188,7 @@ DefendState* DSIdle::action(Robot* robot)
     // to face the ball (does not return anything)
     DefendState::action(robot);
 
-    robot->setDrible(false);
+    robot->setDribble(false);
 
     if(getClaimedPoint(robot) == nullptr)
         searchClaimPoint(robot);
@@ -356,7 +356,7 @@ DefendState* DSIntercept::action(Robot* robot)
         #endif
             return new DSIdle();
         }
-        robot->setDrible(true);
+        robot->setDribble(true);
     }
 
     return this;

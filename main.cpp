@@ -71,7 +71,7 @@ void exitStopRobot(int)
         rob->setLF(0); rob->setLB(0);
         rob->setRF(0); rob->setRB(0);
         rob->setB(0);
-        rob->setDrible(0);
+        rob->setDribble(0);
         rob->setKick(0);
     }
     RobComm::getRobComm()->sendVelsLarge(gameModel->getMyTeam());

@@ -81,11 +81,15 @@ void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
         //Kick, dribble, and Chip power (no chipper, always 0)
         packet->kick = rob->getKick() > 0 ? 'k' : 0;
         packet->dribble_power = rob->getDribble() > 0 ? 'd' : 0;
-        packet->chip_power = 0;
+        packet->chip_power = rob->getChip() > 0? 'c' : 0;
+
+        if(rob->getChip())
+            std::cout << "RESET" << std::endl;
 
         //Reset kick and dribble status in robot
         rob->setKick(0);
-        rob->setDrible(0);
+        rob->setDribble(0);
+        rob->setChip(0);
     }
 
     // Send Array of packets

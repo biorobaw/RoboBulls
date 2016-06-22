@@ -10,7 +10,7 @@ Robot::Robot()
     RF = 0; RB = 0;
     orientation = 0;
     kick = false;
-    drible = false;
+    dribble = false;
     hasBeh = false;
     currentBehavior = nullptr;
 }
@@ -45,7 +45,9 @@ void Robot::setKick(float power){ kick = power; }
  * Effective use in the simulator still requires study of the effect
  * of dribble speed on ball handling.
  * @see setKick*/
-void Robot::setDrible(bool on){ drible = on; }
+void Robot::setDribble(bool on){ dribble = on; }
+
+void Robot::setChip(bool on){ chip = on; }
 
 /*! @{
  *  @brief Query the robot's current wheel velocities */
@@ -134,7 +136,8 @@ std::string Robot::toString()
 }
 
 //! @brief Return if the robot is currently dribbling
-bool Robot::getDribble(){return drible;}
+bool Robot::getDribble(){return dribble;}
+bool Robot::getChip(){return chip;}
 
 /****************** Private Functions ******************/
 

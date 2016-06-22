@@ -62,7 +62,7 @@ bool DriveBall::perform(Robot* robot)
         if(farFromBall || notFacingBall) {
             state = moveBehindBall;
         }
-        robot->setDrible(true);
+        robot->setDribble(true);
         move_skill.setVelocityMultiplier(VEL_MULT);
         move_skill.recreate(this->targetPosition, this->direction, true,false);
         move_skill.perform(robot, Movement::Type::Default);

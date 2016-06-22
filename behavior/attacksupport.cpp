@@ -20,7 +20,7 @@ void AttackSupport::perform(Robot * robot)
     {
     case intercept:
     {
-        robot->setDrible(true);
+        robot->setDribble(true);
 
 //        std::cout << "Intercepting" << std::endl;
 
@@ -75,7 +75,7 @@ void AttackSupport::perform(Robot * robot)
     }
     case position:
     {
-        robot->setDrible(false);
+        robot->setDribble(false);
 //        std::cout << "Positioning" << std::endl;
 
         // Evaluate transition to intercepting by

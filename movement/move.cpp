@@ -115,7 +115,7 @@ bool Move::perform(Robot *robot, Movement::Type moveType)
     if(useObstacleAvoid || avoid_ball) {
         /* Check to see if we've found the end of the path. If we have and we're not close
          * to the ending point, assign a path to get back to it */
-        if(hasFoundPathEnd && Measurements::distance(robot, m_targetPoint) > DIST_TOLERANCE) {
+        if(hasFoundPathEnd && Measurements::distance(robot, m_targetPoint) > lastDistTolerance) {
             hasFoundPathEnd = false;
             assignNewPath(robot->getPosition(), (robot->getID() != GOALIE_ID));
         }
@@ -230,6 +230,7 @@ bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
         if (Measurements::isClose(m_targetPoint, robot, lastDistTolerance) &&
             Measurements::isClose(m_targetAngle, robot->getOrientation(), lastAngTolerance))
         {
+            lfront=lback=rfront=rback=left=right=back=0;
             return true;
         }
     }
@@ -290,3 +291,4 @@ void Move::setVels(Robot *robot)
 
 
 }
+

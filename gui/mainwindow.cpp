@@ -634,7 +634,7 @@ void MainWindow::on_btn_botKick_released() {
 void MainWindow::on_btn_botDrible_pressed() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botDrible->setDown(true);
-        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setDrible(true);
+        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setChip(true);
         fieldpanel->guiTeam[fieldpanel->selectedBot]->dribling = true;
     }
 }
@@ -642,7 +642,7 @@ void MainWindow::on_btn_botDrible_pressed() {
 void MainWindow::on_btn_botDrible_released() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botDrible->setDown(false);
-        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setDrible(false);
+        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setDribble(false);
         fieldpanel->guiTeam[fieldpanel->selectedBot]->dribling = false;
     }
 }

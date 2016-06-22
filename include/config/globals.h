@@ -4,7 +4,10 @@
 //! @addtogroup config
 //! @{
 
-
+//! @brief
+//! Use the dimensions of the field in the bio-robotics lab
+//! as opposed to standard SSL field dimensions
+#define BIO_ROB_FIELD 1
 
 /*! @brief Overall velocity for all behaviors. Change this
  * constant to slow down or speed up the whole game. */
@@ -24,11 +27,19 @@
 
 //! @brief Radius of circular corners of defence area
 //! Look at SSL rule book for clarification
+#if BIO_ROB_FIELD
+#define DEF_AREA_RADIUS 800
+#else
 #define DEF_AREA_RADIUS 500
+#endif
 
 //! @brief Distance from Y=0 to the centre of circular areas
 //! //! Look at SSL rule book for clarification
+#if BIO_ROB_FIELD
+#define DEF_AREA_OFFSET 10
+#else
 #define DEF_AREA_OFFSET 250
+#endif
 
 //! @brief Width of Goal Post
 #define GOAL_WIDTH 1000

@@ -128,7 +128,7 @@ class DribbleBeh : public Behavior
     {
         Point bp = gameModel->getBallPoint();
         bool b = Measurements::distance(robot,bp) < 500;
-        robot->setDrible(true);
+        robot->setDribble(true);
     }
 };
 
@@ -138,7 +138,7 @@ class MotionTestBeh : public GenericMovementBehavior
 public:
     void perform(Robot * robot) override
     {
-        Point target = Point(0,0);
+        Point target = Point(-1500,0);
         setMovementTargets(target,0, false, false);
 
         std::cout << "Distance Error: " << Measurements::distance(robot->getPosition(),target) << std::endl;
@@ -182,15 +182,13 @@ public:
 class GoToBehavior : public GenericMovementBehavior
 {
 public:
-    GoToBehavior(Point p):p(p){}
+    GoToBehavior(){}
 
     void perform(Robot *robot) override
     {
-        setMovementTargets(gameModel->getBallPoint());
+        setMovementTargets(gameModel->getBallPoint()+Point(500,0),Measurements::angleBetween(robot->getPosition(),gameModel->getBallPoint()),true, true);
         GenericMovementBehavior::perform(robot);
     }
-private:
-    Point p;
 };
 
 bool TestStrategy::update()
@@ -208,7 +206,7 @@ bool TestStrategy::update()
     if(r2)
         r2->assignBeh<GoalieBehavior>();
     if(r3)
-        r3->assignBeh<ShamsiStrafe>();
+        r3->assignBeh<GoalieBehavior>();
     if(r4)
         r4->assignBeh<GoalieBehavior>();
     if(r5)

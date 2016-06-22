@@ -45,7 +45,7 @@ void AttackMain::perform(Robot * robot)
     case scoring:
     {
 //        std::cout << "AttackMain: Score" << std::endl;
-        robot->setDrible(false);
+        robot->setDribble(false);
 
         // The isFinished() override is usually used to check if a pass
         // has occured, so setting it to true when shooting on goal is not needed
@@ -74,7 +74,7 @@ void AttackMain::perform(Robot * robot)
     case passing:
     {
 //        std::cout << "AttackMain: Pass" << std::endl;
-        robot->setDrible(false);
+        robot->setDribble(false);
 
         std::pair<bool, Point> pass_eval = calcBestPassPoint(robot);
 

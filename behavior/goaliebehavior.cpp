@@ -17,7 +17,7 @@ GoalieBehavior::~GoalieBehavior()
 
 void GoalieBehavior::perform(Robot *robot)
 {
-    robot->setDrible(false);
+    robot->setDribble(false);
     Point bp = gameModel->getBallPoint();
     float angleToBall = Measurements::angleBetween(robot, bp);
     Robot* ballBot = gameModel->getHasBall();
@@ -25,12 +25,13 @@ void GoalieBehavior::perform(Robot *robot)
     //Segment to hold ballOnRobotIsAimedAtOurGoal and isBallMovingTowardsGoal return
     std::pair<Point,Point> lineSegment;
 
-    if(def_area.contains(bp, -1.5*ROBOT_RADIUS) || !def_area.contains(bp, ROBOT_RADIUS*2))
+    if(def_area.contains(bp, -ROBOT_RADIUS) || !def_area.contains(bp, ROBOT_RADIUS*2))
         retrieving_ball = false;
 
     // If there is a robot with the ball facing our goal, we move to get in it's trajectory.
     if(ballBot && ballBot->getID() != GOALIE_ID && botOnBallIsAimedAtOurGoal(ballBot, lineSegment))
     {
+//        std::cout << "Ball Bot" << std::endl;
         Point blockPoint = Measurements::lineSegmentPoint(robot->getPosition(), lineSegment.first, lineSegment.second);
         setVelocityMultiplier(1.5);
         setMovementTargets(blockPoint, angleToBall, false, false);
@@ -40,6 +41,7 @@ void GoalieBehavior::perform(Robot *robot)
     // If the ball is moving towards goal, we move to get into the line of trajectory.
     else if(isBallMovingTowardsGoal(lineSegment) && !retrieving_ball)
     {
+//        std::cout << "Ball Moving Towards Goal" << std::endl;
         Point blockPoint = Measurements::lineSegmentPoint(robot->getPosition(), lineSegment.first, lineSegment.second);
         setVelocityMultiplier(1.5);
         setMovementTargets(blockPoint, angleToBall, false, false);
@@ -50,6 +52,7 @@ void GoalieBehavior::perform(Robot *robot)
     // the defence area if safe
     else if (shouldRetrieveBall() || retrieving_ball)
     {
+//        std::cout << "Retrieving" << std::endl;
         retrieving_ball = true;
         dribble_skill->perform(robot);
     }
@@ -57,6 +60,7 @@ void GoalieBehavior::perform(Robot *robot)
     // Kick the ball away if it is inside the defense area
     else if(shouldClearBall())
     {
+//        std::cout << "Clearing" << std::endl;
         // Find reachable teammates
         std::vector<Robot*> candidates;
 
@@ -98,17 +102,11 @@ void GoalieBehavior::perform(Robot *robot)
         }
 
         if(farthest != nullptr)
-        {
             kickPoint = farthest->getPosition();
-            std::cout << 0 << std::endl;
-        }
         else
-        {
             kickPoint = Point(0, 0);
-            std::cout << 1 << std::endl;
-        }
 
-//        GuiInterface::getGuiInterface()->drawLine(bp, kickPoint);
+        GuiInterface::getGuiInterface()->drawLine(bp, kickPoint);
 
         kick_skill->perform(robot);
     }
@@ -117,6 +115,8 @@ void GoalieBehavior::perform(Robot *robot)
     // So, move to block the shortest path from the ball to the goal
     else if (isBallReachable())
     {
+//        std::cout << "Stray Ball" << std::endl;
+
         // This is the point along the goal-post closest to the ball
         Point goal_point = Measurements::lineSegmentPoint(gameModel->getBallPoint(),
                                                    Point(gameModel->getMyGoal().x, GOAL_WIDTH/2),
@@ -145,6 +145,7 @@ void GoalieBehavior::perform(Robot *robot)
     // Otherwise we are just idling at the idle point, facing the center
     else
     {
+//        std::cout << "Ball Out of Bounds" << std::endl;
         setVelocityMultiplier(1);
         setMovementTargets(idlePoint, Measurements::angleBetween(robot, Point(0,0)));
         GenericMovementBehavior::perform(robot);

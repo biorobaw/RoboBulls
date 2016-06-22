@@ -36,6 +36,7 @@ public:
     int   getID();
     float getKick();
     bool  getDribble();
+    bool  getChip();
     bool  isOnMyTeam();
     bool  hasBehavior();
     bool  hasKicker();
@@ -60,7 +61,8 @@ public:
     void setLB(float left_backward);
     void setRB(float right_backward);
     void setKick(float power = 5.0);
-    void setDrible(bool);
+    void setDribble(bool);
+    void setChip(bool);
     //! @}
 
     //! @name Wheel Velocity Query
@@ -95,8 +97,9 @@ private:
     float orientation;          //!< orientation of the robot
     float LF, RF, LB, RB;       //!< used for robot's movements
     Behavior * currentBehavior; //!< Pointer to current behavior
-    float kick;                 //!< Robot kick power in m/s
-    bool drible;                //!< Roboty is dribbling?
+    float kick = 0;                 //!< Robot kick power in m/s
+    bool chip = false;                  //!< Robot chip
+    bool dribble = false;                //!< Robot is dribbling?
     bool team;                  //!< On myTeam? 1/0
     bool hasBall;               //!< Have the ball? 1/0
     bool hasBeh;                //!< Currently has a Behavior? 1/0

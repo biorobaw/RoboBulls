@@ -31,7 +31,7 @@ bool DribbleToPoint::perform(Robot* robot)
     {
 //        std::cout << "Dribble: Travel" << std::endl;
 
-        robot->setDrible(false);
+        robot->setDribble(false);
 
         bool dist_check = dist_to_ball < ROBOT_RADIUS + BALL_RADIUS + 50;
         bool ang_check = Measurements::angleDiff(ang_to_ball, robot->getOrientation()) < 5*M_PI/180;
@@ -68,7 +68,7 @@ bool DribbleToPoint::perform(Robot* robot)
             break;
         }
 
-        robot->setDrible(true);
+        robot->setDribble(true);
 
         move_skill.recreate(grasp_point, ang_to_ball, avoid_obstacles, false);
         move_skill.setVelocityMultiplier(0.3);
@@ -96,7 +96,7 @@ bool DribbleToPoint::perform(Robot* robot)
             break;
         }
 
-        robot->setDrible(true);
+        robot->setDribble(true);
 
         float ang_to_target = Measurements::angleBetween(rp, *target);
 
@@ -113,7 +113,7 @@ bool DribbleToPoint::perform(Robot* robot)
         Point adjust_point = Point(bp.x + ROBOT_RADIUS*2 * cos(theta),
                                    bp.y + ROBOT_RADIUS*2 * sin(theta));
 
-        robot->setDrible(false);
+        robot->setDribble(false);
         move_skill.recreate(adjust_point, ang_to_ball, avoid_obstacles, true);
         move_skill.setVelocityMultiplier(1.0);
 
@@ -130,7 +130,7 @@ bool DribbleToPoint::perform(Robot* robot)
         Point adjust_point = Point(bp.x + ROBOT_RADIUS*2 * cos(theta),
                                    bp.y + ROBOT_RADIUS*2 * sin(theta));
 
-        robot->setDrible(false);
+        robot->setDribble(false);
         move_skill.recreate(adjust_point, ang_to_ball, avoid_obstacles, true);
         move_skill.setVelocityMultiplier(1.0);
 

@@ -169,8 +169,11 @@ void setDribble()
 // Write Speeds to Motors
 void setSpeeds()
 {
-  //Bound for PWM duty cycles, about 10% and 90% of 0 and 255
-  static int lowPWM = 30, highPWM = 225;
+  if(chip == 'c')
+    resetAllESC();
+    
+  // Bounds for PWM duty cycles, about 10% and 90% of 0 and 255
+  static int lowPWM = 35, highPWM = 225;
 
 //  targetLFvel = targetLBvel = targetRFvel = targetRBvel = 20;
 
@@ -237,7 +240,7 @@ void setSpeeds()
 }
 //***********************************************************************************
 
-//Blink Reading**********************************************************************
+// Blink Reading**********************************************************************
 unsigned long last_blink_time = 0;
 void blinkReadCap()
 {
@@ -253,6 +256,33 @@ void blinkReadCap()
   }
   else
     digitalWrite(ledPin, LOW );      
+}
+//***********************************************************************************
+
+// Reset Controllers *****************************************************************
+void resetAllESC()
+{
+  // First stop all robots
+  digitalWrite(brakePinLF, HIGH);
+  digitalWrite(brakePinLB, HIGH);
+  digitalWrite(brakePinRF, HIGH);
+  digitalWrite(brakePinRB, HIGH);
+
+  delay(200);
+
+  // Disable Controllers
+  digitalWrite(enablePinLF, LOW);
+  digitalWrite(enablePinLB, LOW);
+  digitalWrite(enablePinRF, LOW);
+  digitalWrite(enablePinRB, LOW);
+
+  delay(200);
+  
+  // Enable Controllers
+  digitalWrite(enablePinLF, HIGH);
+  digitalWrite(enablePinLB, HIGH);
+  digitalWrite(enablePinRF, HIGH);
+  digitalWrite(enablePinRB, HIGH);       
 }
 //***********************************************************************************
 
