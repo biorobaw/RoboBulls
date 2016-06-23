@@ -110,15 +110,15 @@ void AttackSupport::perform(Robot * robot)
     }
 
 
-    for(int x = PF_LENGTH_SUPP/2; x < PF_LENGTH_SUPP; ++x)
-    {
-        for(int y = 0; y < PF_WIDTH_SUPP; ++y)
-        {
-            ProbNode& curr = prob_field[x][y];
-            if(curr.static_val+curr.dynamic_val >= 0.4)
-                GuiInterface::getGuiInterface()->drawPoint(curr.point);
-        }
-    }
+//    for(int x = PF_LENGTH_SUPP/2; x < PF_LENGTH_SUPP; ++x)
+//    {
+//        for(int y = 0; y < PF_WIDTH_SUPP; ++y)
+//        {
+//            ProbNode& curr = prob_field[x][y];
+//            if(curr.static_val+curr.dynamic_val >= 0.4)
+//                GuiInterface::getGuiInterface()->drawPoint(curr.point);
+//        }
+//    }
 }
 
 AttackSupport::ProbNode AttackSupport::findMaxNode()

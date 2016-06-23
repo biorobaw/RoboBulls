@@ -40,7 +40,7 @@ bool NormalGameStrategy::isOnAttack = true;
  * Sends the robot to a point at a fixed x and a given y (in constructor)
  * Used to sit still when the ball is in either goal
  */
-class RetreatAfterGoal : public StaticMovementBehavior
+class RetreatAfterGoal : public GenericMovementBehavior
 {
     int myYPos = 0;
 public:
@@ -54,7 +54,7 @@ public:
         double wait_orientation = Measurements::angleBetween(robot->getPosition(),gm->getBallPoint());
 
         setMovementTargets(wait_point, wait_orientation);
-        StaticMovementBehavior::perform(robot);
+        GenericMovementBehavior::perform(robot);
     }
 };
 
@@ -209,7 +209,7 @@ void NormalGameStrategy::moveRobotToIdleLine(Robot* robot, bool waiter)
 
     //Closest guy to the wait point sits there instead, if requested
     if(waiter && Comparisons::distance(wait_point).minMyTeam() == robot) {
-        robot->assignBeh<StaticMovementBehavior>( wait_point );
+        robot->assignBeh<GenericMovementBehavior>( wait_point );
     } else {
         //Otherwise assigns the robot to sit along a line across the field
         int incSize = HALF_FIELD_WIDTH / (gameModel->getMyTeam().size() - 1);

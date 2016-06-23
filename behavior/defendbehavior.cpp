@@ -203,7 +203,7 @@ DefendState* DSIdle::action(Robot* robot)
 
         float robBallAng = Measurements::angleBetween(robot, gameModel->getBallPoint());
         setMovementTargets(chosenPoint, robBallAng);
-        StaticMovementBehavior::perform(robot);
+        GenericMovementBehavior::perform(robot);
 
         /* If the ball is coming to us, and we are certain, we want to kick the ball.
          * Conditions checked are:

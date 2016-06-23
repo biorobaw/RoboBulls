@@ -58,10 +58,3 @@ void GenericMovementBehavior::setMovementTolerances(float newDistTolerance, floa
     movement.setMovementTolerances(newDistTolerance, newRotTolerance);
 }
 
-/***********************************************************/
-
-void StaticMovementBehavior::perform(Robot *robot)
-{
-    GenericMovementBehavior::perform(robot);
-}
-

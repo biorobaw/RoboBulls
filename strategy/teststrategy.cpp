@@ -204,7 +204,7 @@ bool TestStrategy::update()
     if(r1)
         r1->assignBeh<GoalieBehavior>();
     if(r2)
-        r2->assignBeh<GoalieBehavior>();
+        r2->assignBeh<DribbleBeh>();
     if(r3)
         r3->assignBeh<GoalieBehavior>();
     if(r4)

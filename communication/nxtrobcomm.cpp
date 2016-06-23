@@ -51,6 +51,8 @@ void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
         Robot* rob =  robots[i];
         packet->id = rob->getID();
 
+//        if(packet->id == 1)
+//            packet->id = 99;
 
         if(rob->type() == fourWheelOmni) {
             //Packet format with Arduino: 250 and 255 with vel*k+100

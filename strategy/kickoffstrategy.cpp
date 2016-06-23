@@ -24,7 +24,7 @@
  *             *
  ******************/
 Point KickOffStrategy::myKickoffPoints[5] = {
-    /*0*/ Point( -200,    0),
+    /*0*/ Point( -400,    0),
     /*1*/ Point( -800, -600),
     /*2*/ Point( -800,  600),
     /*3*/ Point(-1300, -900),
@@ -72,7 +72,7 @@ void KickOffStrategy::assignBeh()
 
         // Assign to move to that point, then face to the center
         float angleToCenter = Measurements::angleBetween(nextPoint, Point(0,0));
-        robot->assignBeh<StaticMovementBehavior>(nextPoint, angleToCenter);
+        robot->assignBeh<GenericMovementBehavior>(nextPoint, angleToCenter);
     }
 
     //Goalie is a special case

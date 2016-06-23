@@ -116,7 +116,10 @@ Robot* Predicate::minMyTeam() {
 
 Robot* Predicate::minOppTeam() {
     auto& opTeam = gameModel->getOppTeam();
-    return *min(opTeam);
+    if (!opTeam.empty())
+        return *min(opTeam);
+    else
+        return nullptr;
 }
 
 Robot* Predicate::minAnyTeam() {

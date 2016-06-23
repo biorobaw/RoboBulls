@@ -106,7 +106,7 @@ void GoalieBehavior::perform(Robot *robot)
         else
             kickPoint = Point(0, 0);
 
-        GuiInterface::getGuiInterface()->drawLine(bp, kickPoint);
+//        GuiInterface::getGuiInterface()->drawLine(bp, kickPoint);
 
         kick_skill->perform(robot);
     }
