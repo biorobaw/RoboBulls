@@ -1,4 +1,5 @@
 #include "strategy/strategy.h"
+#include "movement/move.h"
 #include "model/gamemodel.h"
 #include "model/robot.h"
 #include "strategy/stopstrategy.h"

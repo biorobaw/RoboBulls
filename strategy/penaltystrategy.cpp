@@ -1,4 +1,4 @@
-#include "behavior/simplebehaviors.h"
+#include "behavior/refstop.h"
 #include "utilities/measurements.h"
 #include "utilities/comparisons.h"
 #include "behavior/goaliebehavior.h"
@@ -14,7 +14,7 @@ void PenaltyStrategy::assignBeh()
     //Robot going to be sent to kick the ball
      Robot* closestRobot = NULL;
 
-    //We only do something special if it is *our* penalty kick.
+    // We only do something special if it is *our* penalty kick.
     char gs = gameModel->getGameState();
     if ((gs == 'P' && OUR_TEAM == TEAM_BLUE) || (gs == 'p' && OUR_TEAM == TEAM_YELLOW))
     {
@@ -28,7 +28,7 @@ void PenaltyStrategy::assignBeh()
     //Assign simple behaviors to entire team, except for kicker and goalie
     for(Robot* robot : gameModel->getMyTeam()) {
         if (robot->getID() != GOALIE_ID && robot != closestRobot)
-            robot->assignBeh<SimpleBehaviors>();
+            robot->assignBeh<RefStop>();
     }
 
     //Assign Goalie if he's there

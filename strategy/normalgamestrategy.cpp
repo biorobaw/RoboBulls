@@ -4,7 +4,7 @@
 #include "behavior/attackmain.h"
 #include "behavior/attacksupport.h"
 #include "behavior/defendbehavior.h"
-#include "behavior/simplebehaviors.h"
+#include "behavior/refstop.h"
 #include "behavior/challengeballbot.h"
 #include "utilities/comparisons.h"
 #include "utilities/edges.h"
@@ -151,7 +151,7 @@ bool NormalGameStrategy::update()
         {
             //Idling while the opponent has not kicked the ball
             for(Robot* robot : gameModel->getMyTeam())
-                robot->assignBeh<SimpleBehaviors>();
+                robot->assignBeh<RefStop>();
         }
         else
         {

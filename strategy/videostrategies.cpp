@@ -8,7 +8,6 @@
 #include "utilities/edges.h"
 #include "gui/guiinterface.h"
 #include "behavior/goaliebehavior.h"
-#include "behavior/kicktogoal.h"
 
 //! @cond
 namespace Video

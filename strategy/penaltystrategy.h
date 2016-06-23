@@ -3,7 +3,6 @@
 #include "strategy/strategy.h"
 #include "model/gamemodel.h"
 #include "behavior/behavior.h"
-#include "behavior/penaltybehavior.h"
 
 /*! @brief Strategy to implement a penalty kick game state 'P' and 'p'
  * @details ASSUMPTION: According to RoboCup rules, the ball is already at the

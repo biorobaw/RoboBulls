@@ -1,9 +1,9 @@
 #include "freekickstrategy.h"
 #include "behavior/attackmain.h"
 #include "model/gamemodel.h"
-#include "behavior/simplebehaviors.h"
 #include "behavior/goaliebehavior.h"
 #include "strategy/normalgamestrategy.h"
+#include "behavior/refstop.h"
 #include "include/config/team.h"
 
 FreeKickStrategy::FreeKickStrategy()
@@ -62,16 +62,16 @@ void FreeKickStrategy::assignBeh()
         {
             for(Robot* robot : gameModel->getMyTeam()) {
                 if(robot->getID() != GOALIE_ID && robot->getID() != closestRobotID)
-                    robot->assignBeh<SimpleBehaviors>();
+                    robot->assignBeh<RefStop>();
             }
         }
     }
     else if ((gm->getGameState() == 'f' && OUR_TEAM == TEAM_BLUE)
           || (gm->getGameState() == 'F' && OUR_TEAM == TEAM_YELLOW))
     {
-        //Everyone is simple
+        // Stop robots away from ball
         for(Robot* robot : gameModel->getMyTeam())
-            robot->assignBeh<SimpleBehaviors>();
+            robot->assignBeh<RefStop>();
 
         //Assign goalie if he is there
         NormalGameStrategy::assignGoalieIfOk();

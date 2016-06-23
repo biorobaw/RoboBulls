@@ -8,7 +8,7 @@
 #include "behavior/goaliebehavior.h"
 #include "behavior/attackmain.h"
 #include "behavior/attacksupport.h"
-#include "behavior/rotateonpoint.h"
+#include "behavior/refstop.h"
 #include "ctime"
 
 /************************************************************************/
@@ -202,15 +202,15 @@ bool TestStrategy::update()
     Robot* r5 = gameModel->findMyTeam(5);
 
     if(r1)
-        r1->assignBeh<GoalieBehavior>();
-    if(r2)
-        r2->assignBeh<GoalieBehavior>();
-    if(r3)
-        r3->assignBeh<GoalieBehavior>();
-    if(r4)
-        r4->assignBeh<GoalieBehavior>();
-    if(r5)
-        r5->assignBeh<GoalieBehavior>();
+        r1->assignBeh<RefStop>();
+//    if(r2)
+//        r2->assignBeh<GoalieBehavior>();
+//    if(r3)
+//        r3->assignBeh<GoalieBehavior>();
+//    if(r4)
+//        r4->assignBeh<GoalieBehavior>();
+//    if(r5)
+//        r5->assignBeh<GoalieBehavior>();
 
     return false;
 }

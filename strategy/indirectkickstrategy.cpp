@@ -1,12 +1,12 @@
 #include "indirectkickstrategy.h"
-#include "behavior/simplebehaviors.h"
 #include "model/gamemodel.h"
-#include "behavior/passballreceiver.h"
-#include "behavior/passballsender.h"
 #include "utilities/region/rectangle.h"
 #include "utilities/comparisons.h"
 #include "include/config/team.h"
 #include "behavior/goaliebehavior.h"
+#include "behavior/refstop.h"
+#include "behavior/attackmain.h"
+#include "behavior/attacksupport.h"
 
 #if SIMULATED
     #define R 400
@@ -30,7 +30,7 @@ void IndirectKickStrategy::assignBeh()
     {
         //First we have all other robots do whatever
         for(Robot* robot : gameModel->getMyTeam())
-            robot->assignBeh<SimpleBehaviors>();
+            robot->assignBeh<RefStop>();
 
         //Sender is always closet to ball (this used to be 20 lines of code)
         sender = Comparisons::distanceBall().ignoreID(GOALIE_ID).minMyTeam();
@@ -66,15 +66,14 @@ void IndirectKickStrategy::assignBeh()
         //Assigning passBallReceiver behavior to the receiver robot
         int receiverID = bestRobotRegion->ID;
         receiver = gameModel->findMyTeam(receiverID);
-        receiver->assignBeh<PassBallReceiver>(sender);
+        receiver->assignBeh<AttackSupport>();
         receiverBot = receiver; //Store reciever in class for getNextStrategy
 
         /* Figuring out a waiter: Robot that is not 5, sender, or reciever that
          * is farthest from this point. This point is about where NGS will send a robot
          * going to the waiting line. It finishes a lot quicker usually, breaking this idea.
          */
-        Robot* waiter = Comparisons::idNot(GOALIE_ID).ignoreIDs({sender, receiver}).anyMyTeam();
-        sender->assignBeh<PassBallSender>(waiter);
+        sender->assignBeh<AttackMain>();
 
         //Goalie is always goalie
         Robot* goalie = gameModel->findMyTeam(GOALIE_ID);
@@ -86,7 +85,7 @@ void IndirectKickStrategy::assignBeh()
     {
         //Assign all simple behaviors
         for(Robot* robot : gameModel->getMyTeam())
-            robot->assignBeh<SimpleBehaviors>();
+            robot->assignBeh<RefStop>();
 
         //Then assign goalie GoalieBehavior
         Robot* goalie = gameModel->findMyTeam(GOALIE_ID);

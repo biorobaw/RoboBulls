@@ -19,14 +19,7 @@ SOURCES += main.cpp \
 	behavior/attackmain.cpp \
 	behavior/attacksupport.cpp \
 	behavior/behavior.cpp \
-	behavior/driveballandkick.cpp \
 	behavior/genericmovementbehavior.cpp \
-	behavior/kicktogoal.cpp \
-	behavior/passballreceiver.cpp \
-	behavior/passballsender.cpp \
-	behavior/penaltybehavior.cpp \
-	behavior/rotateonpoint.cpp \
-	behavior/simplebehaviors.cpp \
 	communication/nxtrobcomm.cpp \
 	communication/refcomm.cpp \
 	communication/robcomm.cpp \
@@ -103,22 +96,16 @@ SOURCES += main.cpp \
     gui/guidrawregion.cpp \
     skill/dribbletopoint.cpp \
     behavior/challengeballbot.cpp \
-    skill/dribbleback.cpp
+    skill/dribbleback.cpp \
+    behavior/refstop.cpp
 
 HEADERS += \
 	behavior/attackmain.h \
 	behavior/attacksupport.h \
 	behavior/behavior.h \
 	behavior/defendbehavior.h \
-	behavior/driveballandkick.h \
 	behavior/genericmovementbehavior.h \
 	behavior/genericskillbehavior.h \
-	behavior/kicktogoal.h \
-	behavior/passballreceiver.h \
-	behavior/passballsender.h \
-	behavior/penaltybehavior.h \
-	behavior/rotateonpoint.h \
-	behavior/simplebehaviors.h \
 	communication/nxtrobcomm.h \
 	communication/refcomm.h \
 	communication/robcomm.h \
@@ -201,7 +188,8 @@ HEADERS += \
     gui/guidrawregion.h \
     skill/dribbletopoint.h \
     behavior/challengeballbot.h \
-    skill/dribbleback.h
+    skill/dribbleback.h \
+    behavior/refstop.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 
