@@ -211,6 +211,7 @@ namespace impl {
             currentRobotObstacles.push_back(rob->getPosition());
         for(Robot* rob : opTeam)
             currentRobotObstacles.push_back(rob->getPosition());
+
     }
 
     /*********************************************************/

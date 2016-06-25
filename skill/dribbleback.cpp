@@ -94,8 +94,6 @@ bool DribbleBack::perform(Robot* robot)
         robot->setLB(vel);
         robot->setRF(vel);
         robot->setRB(vel);
-
-        break;
     }
 
     }

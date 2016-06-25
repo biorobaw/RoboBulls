@@ -23,8 +23,8 @@
  *    3        *
  *             *
  ******************/
-Point KickOffStrategy::myKickoffPoints[5] = {
-    /*0*/ Point( -200,    0),
+Point KickOffStrategy::myKickoffPoints[NUM_KICK_OFF_POINTS] = {
+    /*0*/ Point( -400,    0),
     /*1*/ Point( -800, -600),
     /*2*/ Point( -800,  600),
     /*3*/ Point(-1300, -900),
@@ -40,7 +40,7 @@ Point KickOffStrategy::myKickoffPoints[5] = {
  *   2  4      *
  *             *
  ******************/
-Point KickOffStrategy::opKickoffPoints[5] = {
+Point KickOffStrategy::opKickoffPoints[NUM_KICK_OFF_POINTS] = {
     /*0*/ Point(-1200,    0),
     /*1*/ Point(-1800,  800),
     /*2*/ Point(-1800, -800),
@@ -58,7 +58,7 @@ void KickOffStrategy::assignBeh()
         whichKickoffPointList = opKickoffPoints;
 
     //List of points for fast removal
-    std::list<Point> pointList(whichKickoffPointList, whichKickoffPointList+6);
+    std::list<Point> pointList(whichKickoffPointList, whichKickoffPointList+NUM_KICK_OFF_POINTS);
 
     for(Robot* robot : gameModel->getMyTeam())
 	{
@@ -72,7 +72,7 @@ void KickOffStrategy::assignBeh()
 
         // Assign to move to that point, then face to the center
         float angleToCenter = Measurements::angleBetween(nextPoint, Point(0,0));
-        robot->assignBeh<StaticMovementBehavior>(nextPoint, angleToCenter);
+        robot->assignBeh<GenericMovementBehavior>(nextPoint, angleToCenter);
     }
 
     //Goalie is a special case

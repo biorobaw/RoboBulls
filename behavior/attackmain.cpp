@@ -3,8 +3,8 @@
 /* Angle tolerances for kicking in degrees (then converted to radians).
  * Passing is lower because it needs to be more precise */
 #if SIMULATED
- #define SCORE_ANGLE_TOLERANCE  (1*M_PI/180)
- #define PASS_ANGLE_TOLERANCE   (1*M_PI/180)
+ #define SCORE_ANGLE_TOLERANCE  (7*M_PI/180)
+ #define PASS_ANGLE_TOLERANCE   (7*M_PI/180)
 #else
  #define SCORE_ANGLE_TOLERANCE  (7*M_PI/180)
  #define PASS_ANGLE_TOLERANCE   (7*M_PI/180)

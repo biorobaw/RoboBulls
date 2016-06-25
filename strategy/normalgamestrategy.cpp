@@ -40,7 +40,7 @@ bool NormalGameStrategy::isOnAttack = true;
  * Sends the robot to a point at a fixed x and a given y (in constructor)
  * Used to sit still when the ball is in either goal
  */
-class RetreatAfterGoal : public StaticMovementBehavior
+class RetreatAfterGoal : public GenericMovementBehavior
 {
     int myYPos = 0;
 public:
@@ -54,7 +54,7 @@ public:
         double wait_orientation = Measurements::angleBetween(robot->getPosition(),gm->getBallPoint());
 
         setMovementTargets(wait_point, wait_orientation);
-        StaticMovementBehavior::perform(robot);
+        GenericMovementBehavior::perform(robot);
     }
 };
 
@@ -107,8 +107,8 @@ bool NormalGameStrategy::update()
     //Ball near goals, used as checks to not do anything first
     static bool ballInOpDefArea = false;
     static bool ballInMyDefArea = false;
-    ballInOpDefArea = opp_def_area.contains(ball);
-    ballInMyDefArea = our_def_area.contains(ball);
+    ballInOpDefArea = opp_def_area.contains(ball, 2*ROBOT_RADIUS);
+    ballInMyDefArea = our_def_area.contains(ball, 2*ROBOT_RADIUS);
 
     isOnAttack = considerSwitchCreiteria();
 
@@ -116,7 +116,7 @@ bool NormalGameStrategy::update()
      * the robots retreat back to their half, and no attack/defend
      * is run.
      */
-    if(posedge(ballInOpDefArea or ballInMyDefArea))
+    if(posedge(ballInOpDefArea || ballInMyDefArea))
         assignGoalKickBehaviors();
 
     if(ballInOpDefArea or ballInMyDefArea)
@@ -209,7 +209,7 @@ void NormalGameStrategy::moveRobotToIdleLine(Robot* robot, bool waiter)
 
     //Closest guy to the wait point sits there instead, if requested
     if(waiter && Comparisons::distance(wait_point).minMyTeam() == robot) {
-        robot->assignBeh<StaticMovementBehavior>( wait_point );
+        robot->assignBeh<GenericMovementBehavior>( wait_point );
     } else {
         //Otherwise assigns the robot to sit along a line across the field
         int incSize = HALF_FIELD_WIDTH / (gameModel->getMyTeam().size() - 1);
@@ -286,7 +286,7 @@ void NormalGameStrategy::assignAttackBehaviors()
     if(attack_beh_assigned)
         return;
 
-//    std::cout << "Assigning Attack Behaviors" << std::endl;
+    std::cout << "Assigning Attack Behaviors" << std::endl;
 
     // Assign everyone as a defender for starters
     for(Robot* rob : gameModel->getMyTeam())
@@ -302,7 +302,6 @@ void NormalGameStrategy::assignAttackBehaviors()
     if(currentSuppAttacker)
         currentSuppAttacker->assignBeh<AttackSupport>();
 
-    //Finally assign goalie
     assignGoalieIfOk();
 
     defend_beh_assigned = false;
@@ -321,7 +320,7 @@ void NormalGameStrategy::assignDefendBehaviors()
     if(defend_beh_assigned)
         return;
 
-//    std::cout << "Assigning Defend Behaviors" << std::endl;
+    std::cout << "Assigning Defend Behaviors" << std::endl;
 
     // Assign everyone as a defender for starters
     for(Robot* rob : gameModel->getMyTeam())
@@ -332,7 +331,7 @@ void NormalGameStrategy::assignDefendBehaviors()
     if(blocker)
         blocker->assignBeh<ChallengeBallBot>();
 
-    //Usual special case for 5
+
     assignGoalieIfOk();
 
     defend_beh_assigned = true;
@@ -346,6 +345,8 @@ void NormalGameStrategy::assignDefendBehaviors()
  */
 void NormalGameStrategy::assignGoalKickBehaviors()
 {
+    std::cout << "Assigning Goal Kick Behaviors" << std::endl;
+
     // Assign everyone as a defender for starters
     for(Robot* rob : gameModel->getMyTeam())
             rob->assignBeh<DefendBehavior>();

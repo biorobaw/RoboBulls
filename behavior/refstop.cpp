@@ -29,8 +29,6 @@ void RefStop::perform(Robot * robot)
         setVelocityMultiplier(1);
         setMovementTargets(reposition, Measurements::angleBetween(robot->getPosition(), bp));
 
-        GuiInterface::getGuiInterface()->drawLine(robot->getPosition(), reposition);
-
         finished  = false;
     }
     else

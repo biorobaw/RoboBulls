@@ -41,7 +41,7 @@ void GoalieBehavior::perform(Robot *robot)
     // If the ball is moving towards goal, we move to get into the line of trajectory.
     else if(isBallMovingTowardsGoal(lineSegment) && !retrieving_ball)
     {
-//        std::cout << "Ball Moving Towards Goal" << std::endl;
+        std::cout << "Ball Moving Towards Goal" << std::endl;
         Point blockPoint = Measurements::lineSegmentPoint(robot->getPosition(), lineSegment.first, lineSegment.second);
         setVelocityMultiplier(1.5);
         setMovementTargets(blockPoint, angleToBall, false, false);
@@ -50,7 +50,7 @@ void GoalieBehavior::perform(Robot *robot)
 
     // If the ball is stopped just outside our defence area, we dribble it inside
     // the defence area if safe
-    else if (shouldRetrieveBall() || retrieving_ball)
+    else if ((shouldRetrieveBall() || retrieving_ball) && !clearing_ball)
     {
 //        std::cout << "Retrieving" << std::endl;
         retrieving_ball = true;
@@ -61,6 +61,7 @@ void GoalieBehavior::perform(Robot *robot)
     else if(shouldClearBall())
     {
 //        std::cout << "Clearing" << std::endl;
+
         // Find reachable teammates
         std::vector<Robot*> candidates;
 
@@ -106,9 +107,9 @@ void GoalieBehavior::perform(Robot *robot)
         else
             kickPoint = Point(0, 0);
 
-        GuiInterface::getGuiInterface()->drawLine(bp, kickPoint);
+//        GuiInterface::getGuiInterface()->drawLine(bp, kickPoint);
 
-        kick_skill->perform(robot);
+        clearing_ball = kick_skill->perform(robot);
     }
 
     // If the the ball is in play and not outside the field, opponents can try to score.
@@ -157,7 +158,7 @@ bool GoalieBehavior::isBallMovingTowardsGoal(std::pair<Point,Point>& lineSegOut)
     // Filter out balls not moving towards goal
     Point goal = gameModel->getMyGoal();
     Point bVel = gameModel->getBallVelocity();
-    if(bVel.x > 0)
+    if(bVel.x > -10)
         return false;
 
     // Calculate y position at goal point
@@ -215,19 +216,27 @@ bool GoalieBehavior::shouldRetrieveBall()
 {
     // We bring the ball into the defense area if it is
     // - closer than 2 robot radius outside the defense area
-    // - farther than ball diameter inside the defense area
-    // - moving slow enough
-    // - closer to one of our robots than to an opponent robot
     Point bp = gameModel->getBallPoint();
+    bool b0 = def_area.contains(bp, ROBOT_RADIUS*2);
+
+    // - farther than ball diameter inside the defense area
+    bool b1 = !def_area.contains(bp, -ROBOT_RADIUS*0.5);
+
+    // - moving slow enough
+    bool b2 = (gameModel->getBallSpeed() <= 100);
+
+    // - closer to one of our robots than to an opponent robot
     Robot* nearest_opp = Comparisons::distance(bp).minOppTeam();
     Robot* nearest_teammate = Comparisons::distance(bp).minMyTeam();
 
-    bool result = def_area.contains(bp, ROBOT_RADIUS*2)
-    && !def_area.contains(bp, -ROBOT_RADIUS)
-    && (gameModel->getBallSpeed() <= 100)
-    && (Measurements::distance(nearest_opp, bp)
-       - Measurements::distance(nearest_teammate, bp) > ROBOT_RADIUS);
+    bool b3;
+    if(nearest_opp == nullptr
+    || Measurements::distance(nearest_opp, bp)
+     - Measurements::distance(nearest_teammate, bp) > ROBOT_RADIUS)
+        b3 = true;
+    else
+        b3 = false;
 
-    return result;
+    return b0 && b1 && b2 && b3;
 }
 

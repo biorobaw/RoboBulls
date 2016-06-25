@@ -13,8 +13,9 @@ class KickOffStrategy : public Strategy
 public:
     void assignBeh();
 private:
-    static Point myKickoffPoints[5];
-    static Point opKickoffPoints[5];
+#define NUM_KICK_OFF_POINTS 5
+    static Point myKickoffPoints[NUM_KICK_OFF_POINTS];
+    static Point opKickoffPoints[NUM_KICK_OFF_POINTS];
 };
 
 #endif // KICKOFFSTRATEGY_H

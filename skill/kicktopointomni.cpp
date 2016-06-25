@@ -35,11 +35,11 @@ namespace Skill
  *
  */
 #if SIMULATED
-float BEHIND_RAD_AVOID = ROBOT_RADIUS + BALL_RADIUS + 60;
-float BEHIND_RAD = ROBOT_RADIUS + BALL_RADIUS + 30;
+float BEHIND_RAD_AVOID = ROBOT_RADIUS + BALL_RADIUS+20;
+float BEHIND_RAD = ROBOT_RADIUS + BALL_RADIUS;
 float FORWARD_WAIT_COUNT = 15;
 float RECREATE_DIST_TOL = 25;
-float STRICTEST_ANG_TOL = 5 * (M_PI/180);
+float STRICTEST_ANG_TOL = 10 * (M_PI/180);
 float KICK_LOCK_ANGLE = 3 * (M_PI/180);
 float KICKLOCK_COUNT = 15;
 #else
@@ -123,6 +123,9 @@ bool KickToPointOmni::perform(Robot* robot)
                 m_hasRecoveredKickLock = true;
                 m_moveCompletionCount = 0;
             }
+
+            if(canKick(robot))
+                state = MOVE_INTERMEDIATE;
         }
         break;
 
@@ -212,13 +215,12 @@ bool KickToPointOmni::perform(Robot* robot)
 
 bool KickToPointOmni::canKick(Robot* robot) {
     bool closeToBall = isCloseToBall(robot);
-    bool facing = isFacingBall(robot);
-    bool withinKickDist =  isWithinKickDistance(robot);
+    bool facingBall = isFacingBall(robot);
     bool facingTarget = isFacingTarget(robot);
+    bool withinKickDist =  isWithinKickDistance(robot);
     return m_hasRecoveredKickLock &&
-           closeToBall && facing &&
-           withinKickDist &&
-           facingTarget;
+           closeToBall && facingBall && facingTarget
+           && withinKickDist;
 }
 
 bool KickToPointOmni::isWithinKickDistance(Robot *robot) {
@@ -239,7 +241,7 @@ bool KickToPointOmni::isVeryFarFromBall(Robot *robot) {
 }
 
 bool KickToPointOmni::isFacingBall(Robot* robot) {
-    return Comparisons::isFacingPoint(robot, gameModel->getBallPoint(), m_targetTolerance);
+    return Comparisons::isFacingPoint(robot, gameModel->getBallPoint(), M_PI/3.0);
 }
 
 bool KickToPointOmni::isFacingTarget(Robot* robot) {

@@ -53,6 +53,7 @@ float Measurements::angleBetween(Robot* r1, Robot* r2) {
 }
 
 bool Measurements::isClose(const Point& p1, const Point& p2, float tol) {
+
     return (fabs(p1.y - p2.y) <= tol) && (fabs(p2.x - p1.x) <= tol);
 }
 bool Measurements::isClose(const Point& p1, Robot* r1, float tol) {

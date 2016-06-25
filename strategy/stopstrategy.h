@@ -12,14 +12,9 @@
 class StopStrategy:public Strategy
 {
 public:
-    /*! @brief Constructor */
     StopStrategy();
     void assignBeh() override;
     bool update() override;
-
-private:
-    Point prev_point = Point(-9999, 9999);
-    bool need_assign[10] = {true};
 };
 
 #endif // STOPSTRATEGY_H

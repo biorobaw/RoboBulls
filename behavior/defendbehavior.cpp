@@ -85,12 +85,12 @@ DefendState* DefendState::action(Robot* robot)
          * Multiplying X by `opSide` makes the addition to the goal point
          * always point torwards the middle. (Not really though)
          */
-        static const float dAngle = (15 + 10*!SIMULATED) * (M_PI/180);
-        static int coeffs[] = {1500, 1300, 1300, 1100, 1100};
-        static int o_coeffs[] = {0, 1, -1,  2, -2};
+        static const float dAngle = 10 * (M_PI/180);
+        static int coeffs[] = {DEF_AREA_RADIUS+5*ROBOT_RADIUS, DEF_AREA_RADIUS+3*ROBOT_RADIUS, DEF_AREA_RADIUS+3*ROBOT_RADIUS};
+        static int o_coeffs[] = {0, 1, -1};
         float a = Measurements::angleBetween(gl, bp);
 
-        for(int i = 0; i != 5; ++i)
+        for(int i = 0; i != 3; ++i)
         {
             Point offset;
             offset.x = coeffs[i] * cos(a + dAngle * o_coeffs[i]);
@@ -99,7 +99,7 @@ DefendState* DefendState::action(Robot* robot)
         }
     }
     else {
-        for(int i = 0; i != 5; ++i) {
+        for(int i = 0; i != 3; ++i) {
              defendPoints[i] = defaultPoints[i];
         }
     }
@@ -126,7 +126,7 @@ void DefendState::setupClaimedPoints()
 
 Point* DefendState::searchClaimPoint(Robot* robot)
 {
-    for(int i = 0; i != 10; ++i)
+    for(int i = 0; i != 3; ++i)
     {
         // Here, we check the `claimed` array to check if any
         // slots contain the point we want to claim. If nobody is
@@ -203,7 +203,7 @@ DefendState* DSIdle::action(Robot* robot)
 
         float robBallAng = Measurements::angleBetween(robot, gameModel->getBallPoint());
         setMovementTargets(chosenPoint, robBallAng);
-        StaticMovementBehavior::perform(robot);
+        GenericMovementBehavior::perform(robot);
 
         /* If the ball is coming to us, and we are certain, we want to kick the ball.
          * Conditions checked are:

@@ -126,8 +126,6 @@ class DribbleBeh : public Behavior
 {
     void perform(Robot* robot) override
     {
-        Point bp = gameModel->getBallPoint();
-        bool b = Measurements::distance(robot,bp) < 500;
         robot->setDribble(true);
     }
 };
@@ -202,15 +200,15 @@ bool TestStrategy::update()
     Robot* r5 = gameModel->findMyTeam(5);
 
     if(r1)
-        r1->assignBeh<RefStop>();
-//    if(r2)
-//        r2->assignBeh<GoalieBehavior>();
-//    if(r3)
-//        r3->assignBeh<GoalieBehavior>();
-//    if(r4)
-//        r4->assignBeh<GoalieBehavior>();
-//    if(r5)
-//        r5->assignBeh<GoalieBehavior>();
+        r1->assignBeh<DribbleBeh>();
+    if(r2)
+        r2->assignBeh<DribbleBeh>();
+    if(r3)
+        r3->assignBeh<DribbleBeh>();
+    if(r4)
+        r4->assignBeh<DribbleBeh>();
+    if(r5)
+        r5->assignBeh<DribbleBackBeh>();
 
     return false;
 }

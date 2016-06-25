@@ -116,7 +116,10 @@ Robot* Predicate::minMyTeam() {
 
 Robot* Predicate::minOppTeam() {
     auto& opTeam = gameModel->getOppTeam();
-    return *min(opTeam);
+    if (!opTeam.empty())
+        return *min(opTeam);
+    else
+        return nullptr;
 }
 
 Robot* Predicate::minAnyTeam() {
@@ -213,7 +216,7 @@ bool isFacingPointCompareFn(Robot* robot, Robot*, const Point& pred_Point, float
     Point robPos     = robot->getPosition();
     float robAngle   = robot->getOrientation();
     float angleTween = Measurements::angleBetween(robPos, pred_Point);
-    float angleDiff  = abs( Measurements::angleDiff(angleTween, robAngle) );
+    float angleDiff  = fabs( Measurements::angleDiff(angleTween, robAngle) );
     return compare_function(angleDiff, pred_tolerance);
 }
 //! @endcond

@@ -12,7 +12,8 @@ void AttackSupport::perform(Robot * robot)
     Point bp = gameModel->getBallPoint();
 
     // We signal that we are done supporting if:
-    // - We are closest member on our team to the ball and
+    // - We are closest member on our team to the ball
+    // - The ball is close to us
     finished = Comparisons::distance(bp).minMyTeam()->getID() == robot->getID()
             && Measurements::isClose(rp, bp, ROBOT_RADIUS+BALL_RADIUS+200);
 
@@ -64,12 +65,17 @@ void AttackSupport::perform(Robot * robot)
         else
             intercept_pt = Measurements::lineSegmentPoint(rp, bp, bp+(b_vel*10000));
 
-        float ang2ball = Measurements::angleBetween(rp, bp);
-
-        setMovementTolerances(1, 0.001);
-        setVelocityMultiplier(1.5);
-        setMovementTargets(intercept_pt, ang2ball, true, false);
-        GenericMovementBehavior::perform(robot);
+        // Move to intercept only if the intercept point is near
+        if(Measurements::isClose(robot, intercept_pt, 200))
+        {
+            float ang2ball = Measurements::angleBetween(rp, bp);
+            setMovementTolerances(1, 0.001);
+            setVelocityMultiplier(1.5);
+            setMovementTargets(intercept_pt, ang2ball, true, false);
+            GenericMovementBehavior::perform(robot);
+        }
+        else
+            state = position;
 
         break;
     }
@@ -110,15 +116,15 @@ void AttackSupport::perform(Robot * robot)
     }
 
 
-    for(int x = PF_LENGTH_SUPP/2; x < PF_LENGTH_SUPP; ++x)
-    {
-        for(int y = 0; y < PF_WIDTH_SUPP; ++y)
-        {
-            ProbNode& curr = prob_field[x][y];
-            if(curr.static_val+curr.dynamic_val >= 0.4)
-                GuiInterface::getGuiInterface()->drawPoint(curr.point);
-        }
-    }
+//    for(int x = PF_LENGTH_SUPP/2; x < PF_LENGTH_SUPP; ++x)
+//    {
+//        for(int y = 0; y < PF_WIDTH_SUPP; ++y)
+//        {
+//            ProbNode& curr = prob_field[x][y];
+//            if(curr.static_val+curr.dynamic_val >= 0.4)
+//                GuiInterface::getGuiInterface()->drawPoint(curr.point);
+//        }
+//    }
 }
 
 AttackSupport::ProbNode AttackSupport::findMaxNode()
@@ -165,7 +171,7 @@ void AttackSupport::calcStaticProb()
             dist = Measurements::distance(n.point, opp_goal);
             angle = fabs(Measurements::angleBetween(n.point, opp_goal));
 
-            float max_ang_rad = 80*M_PI/180;
+            float max_ang_rad = 70*M_PI/180;
 
             if(dist < 3000 && angle < max_ang_rad) // 80 degrees
             {
@@ -437,11 +443,11 @@ void AttackSupport::genGoalShotAvoidance()
 {
     // Top end of goal post
     float g1x = gameModel->getOppGoal().x;
-    float g1y = gameModel->getOppGoal().y + GOAL_WIDTH/2 + ROBOT_RADIUS + 30;
+    float g1y = gameModel->getOppGoal().y + GOAL_WIDTH/2 + ROBOT_RADIUS + 500;
 
     // Bottom end of goal post
     float g2x = gameModel->getOppGoal().x;
-    float g2y = gameModel->getOppGoal().y - GOAL_WIDTH/2 - ROBOT_RADIUS - 30;
+    float g2y = gameModel->getOppGoal().y - GOAL_WIDTH/2 - ROBOT_RADIUS - 500;
 
     Point bp = gameModel->getBallPoint();
 

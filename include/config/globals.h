@@ -7,7 +7,7 @@
 //! @brief
 //! Use the dimensions of the field in the bio-robotics lab
 //! as opposed to standard SSL field dimensions
-#define BIO_ROB_FIELD 1
+#define BIO_ROB_FIELD 0
 
 /*! @brief Overall velocity for all behaviors. Change this
  * constant to slow down or speed up the whole game. */
