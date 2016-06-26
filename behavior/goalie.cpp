@@ -1,6 +1,6 @@
-#include "goaliebehavior.h"
+#include "goalie.h"
 
-GoalieBehavior::GoalieBehavior()
+Goalie::Goalie()
     : idlePoint(gameModel->getMyGoal() + Point(ROBOT_RADIUS+50,0))
     , kick_skill(nullptr)
     , def_area(OUR_TEAM)
@@ -9,13 +9,13 @@ GoalieBehavior::GoalieBehavior()
     kick_skill = new Skill::KickToPointOmni(&kickPoint);
 }
 
-GoalieBehavior::~GoalieBehavior()
+Goalie::~Goalie()
 {
     delete kick_skill;
     delete dribble_skill;
 }
 
-void GoalieBehavior::perform(Robot *robot)
+void Goalie::perform(Robot *robot)
 {
     robot->setDribble(false);
     Point bp = gameModel->getBallPoint();
@@ -41,7 +41,7 @@ void GoalieBehavior::perform(Robot *robot)
     // If the ball is moving towards goal, we move to get into the line of trajectory.
     else if(isBallMovingTowardsGoal(lineSegment) && !retrieving_ball)
     {
-        std::cout << "Ball Moving Towards Goal" << std::endl;
+//        std::cout << "Ball Moving Towards Goal" << std::endl;
         Point blockPoint = Measurements::lineSegmentPoint(robot->getPosition(), lineSegment.first, lineSegment.second);
         setVelocityMultiplier(1.5);
         setMovementTargets(blockPoint, angleToBall, false, false);
@@ -70,7 +70,8 @@ void GoalieBehavior::perform(Robot *robot)
 
         for(Robot* tmate: gameModel->getMyTeam())
         {
-            if (tmate->getID() != robot->getID())
+            if (tmate->getID() != robot->getID()
+            && tmate->getPosition().x > -1500)   // Ignore teammates too close to the goal
             {
                 auto remove_it = std::remove_if(obstacles.begin(), obstacles.end(), [&](Robot* r)
                 {
@@ -105,7 +106,7 @@ void GoalieBehavior::perform(Robot *robot)
         if(farthest != nullptr)
             kickPoint = farthest->getPosition();
         else
-            kickPoint = Point(0, 0);
+            kickPoint = Point(3000, 0);
 
 //        GuiInterface::getGuiInterface()->drawLine(bp, kickPoint);
 
@@ -153,7 +154,7 @@ void GoalieBehavior::perform(Robot *robot)
     }
 }
 
-bool GoalieBehavior::isBallMovingTowardsGoal(std::pair<Point,Point>& lineSegOut)
+bool Goalie::isBallMovingTowardsGoal(std::pair<Point,Point>& lineSegOut)
 {
     // Filter out balls not moving towards goal
     Point goal = gameModel->getMyGoal();
@@ -172,7 +173,7 @@ bool GoalieBehavior::isBallMovingTowardsGoal(std::pair<Point,Point>& lineSegOut)
     return (y > -GOAL_WIDTH/2) && (y < GOAL_WIDTH/2);
 }
 
-bool GoalieBehavior::botOnBallIsAimedAtOurGoal(Robot* robot, std::pair<Point,Point>& lineSegOut)
+bool Goalie::botOnBallIsAimedAtOurGoal(Robot* robot, std::pair<Point,Point>& lineSegOut)
 {
     /* Return false automatically if the robot's orientation is facing a direction
     opposite to that of our goal */
@@ -200,19 +201,19 @@ bool GoalieBehavior::botOnBallIsAimedAtOurGoal(Robot* robot, std::pair<Point,Poi
     return yAtGoalLine > -GOAL_WIDTH/2 && yAtGoalLine < GOAL_WIDTH/2;
 }
 
-bool GoalieBehavior::isBallReachable()
+bool Goalie::isBallReachable()
 {
     return abs(Measurements::angleBetween(idlePoint, gameModel->getBallPoint()) <= M_PI_2);
 }
 
-bool GoalieBehavior::shouldClearBall()
+bool Goalie::shouldClearBall()
 {
     // We only clear the ball when it is inside the defence area
     // and moving slow enough
     return def_area.contains(gameModel->getBallPoint()) && gameModel->getBallSpeed() <= 100;
 }
 
-bool GoalieBehavior::shouldRetrieveBall()
+bool Goalie::shouldRetrieveBall()
 {
     // We bring the ball into the defense area if it is
     // - closer than 2 robot radius outside the defense area

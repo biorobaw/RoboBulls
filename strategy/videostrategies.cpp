@@ -7,7 +7,7 @@
 #include "utilities/comparisons.h"
 #include "utilities/edges.h"
 #include "gui/guiinterface.h"
-#include "behavior/goaliebehavior.h"
+#include "behavior/goalie.h"
 
 //! @cond
 namespace Video
@@ -165,7 +165,7 @@ void VideoStrategy1::assignBeh()
 
 bool VideoStrategy1::update()
 {
-    return currentPasser->getCurrentBeh()->isFinished();
+    return currentPasser->getBehavior()->isFinished();
 }
 
 /************************************************************************/
@@ -225,7 +225,7 @@ bool VideoStrategy2::update()
     case KICKING:
         {
             //Distroy strategy if done kicking
-            if(robot->getCurrentBeh()->isFinished())
+            if(robot->getBehavior()->isFinished())
                 return true;
         }
         break;
@@ -262,7 +262,7 @@ bool VideoStrategy3::update()
     case KICKING:
         //If the ball goes back on the other side, destroy strategy.
         //Or if we're done kicking, destroy strategy.
-        if((bp.x < 0) or guy->getCurrentBeh()->isFinished()) {
+        if((bp.x < 0) or guy->getBehavior()->isFinished()) {
             return true;
         }
         break;
@@ -332,7 +332,7 @@ bool VideoStrategy5::update()
 
     // GK assignments
     bp.x >-2800?
-        keeper->assignBeh<GoalieBehavior>():
+        keeper->assignBeh<Goalie>():
         keeper->assignBeh<GenericMovementBehavior>(Point(-2700,0),0,false,false);
 
     // Decide where the target for ATK should be based on GK position

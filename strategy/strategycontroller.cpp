@@ -124,7 +124,7 @@ void StrategyController::clearCurrentStrategy()
     delete activeStrategy;
     activeStrategy = nullptr;
     for(Robot* robot : model->getMyTeam())
-        robot->clearCurrentBeh();
+        robot->clearBehavior();
 }
 
 
@@ -140,7 +140,7 @@ void StrategyController::frameEnd()
         Robot *rob = model->getMyTeam().at(i);
         if (!GuiInterface::getGuiInterface()->isOverriddenBot()[rob->getID()]) {
             if(rob->hasBehavior())
-                rob->getCurrentBeh()->perform(rob);
+                rob->getBehavior()->perform(rob);
          }
     }
 

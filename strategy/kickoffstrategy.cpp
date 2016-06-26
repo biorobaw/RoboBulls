@@ -1,6 +1,6 @@
 #include <list>
 #include "behavior/genericmovementbehavior.h"
-#include "behavior/goaliebehavior.h"
+#include "behavior/goalie.h"
 #include "include/config/team.h"
 #include "model/gamemodel.h"
 #include "utilities/comparisons.h"
@@ -78,5 +78,5 @@ void KickOffStrategy::assignBeh()
     //Goalie is a special case
     Robot* goalie = gameModel->findMyTeam(GOALIE_ID);
     if(goalie)
-        goalie->assignBeh<GoalieBehavior>();
+        goalie->assignBeh<Goalie>();
 }

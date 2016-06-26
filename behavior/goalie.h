@@ -1,5 +1,5 @@
-#ifndef GOALIEBEHAVIOR_H
-#define GOALIEBEHAVIOR_H
+#ifndef Goalie_H
+#define Goalie_H
 #include <math.h>
 #include "skill/kicktopointomni.h"
 #include "skill/dribbleback.h"
@@ -20,11 +20,11 @@
  * center of the field to remove it from the goalie box.
  */
 
-class GoalieBehavior:public GenericMovementBehavior
+class Goalie:public GenericMovementBehavior
 {
 public:
-    GoalieBehavior();
-    ~GoalieBehavior();
+    Goalie();
+    ~Goalie();
     void perform(Robot*);
 
 private:
@@ -60,4 +60,4 @@ private:
     DefenceArea def_area;
 };
 
-#endif // GoalieBehavior_H
+#endif // Goalie_H

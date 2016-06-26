@@ -82,7 +82,7 @@ namespace impl {
         {
             std::vector<Point> intercepts;
             DefenceArea da0(0);
-            intercepts = da0.lineIntercepts(beginPos, endPos);
+            intercepts = da0.lineSegmentIntercepts(beginPos, endPos);
 
             if(!intercepts.empty())
             {
@@ -91,7 +91,7 @@ namespace impl {
             }
 
             DefenceArea da1(1);
-            intercepts = da1.lineIntercepts(beginPos, endPos);
+            intercepts = da1.lineSegmentIntercepts(beginPos, endPos);
 
             if(!intercepts.empty())
             {

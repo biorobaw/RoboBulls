@@ -36,15 +36,9 @@ public:
     bool update() override;
 
 public:
-    /*! @brief Moves robots to an idle line, a line near the goal and spaced by ID.
-     * @details Meant to be used outside the class, moves the robot to a line
-     * on our side of the field. Used when that robot has no behavior
-     * @param waiter Possibly sends a single robot to the center to wait if true */
-    static void moveRobotToIdleLine(Robot* robot, bool waiter = false);
-
     /*! @brief Assigns goalie behavior to ID GOALIE_ID if it is on the team
      * @details Meant to be used outside the class, if the robot with GOALIE_ID
-     * isn't null, assigns GoalieBehavior to it */
+     * isn't null, assigns Goalie to it */
     static void assignGoalieIfOk();
 
 private:
@@ -52,11 +46,12 @@ private:
     void assignAttackBehaviors();
     void assignDefendBehaviors();
     void assignGoalKickBehaviors();
-    void assignRetreatBehaviors();
+    void assignClearBehaviors();
 
 private:
     static bool isOnAttack;
     static bool hasStoppedForThisKickoff;
+    static bool clearing_ball;
     Robot* currentMainAttacker;
     Robot* currentSuppAttacker;
     Point ballOriginalPos;

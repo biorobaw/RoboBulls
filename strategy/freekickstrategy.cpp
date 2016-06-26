@@ -1,7 +1,7 @@
 #include "freekickstrategy.h"
 #include "behavior/attackmain.h"
 #include "model/gamemodel.h"
-#include "behavior/goaliebehavior.h"
+#include "behavior/goalie.h"
 #include "strategy/normalgamestrategy.h"
 #include "behavior/refstop.h"
 #include "include/config/team.h"

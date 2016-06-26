@@ -3,7 +3,7 @@
 #include "utilities/region/rectangle.h"
 #include "utilities/comparisons.h"
 #include "include/config/team.h"
-#include "behavior/goaliebehavior.h"
+#include "behavior/goalie.h"
 #include "behavior/refstop.h"
 #include "behavior/attackmain.h"
 #include "behavior/attacksupport.h"
@@ -78,7 +78,7 @@ void IndirectKickStrategy::assignBeh()
         //Goalie is always goalie
         Robot* goalie = gameModel->findMyTeam(GOALIE_ID);
         if(goalie)
-            goalie->assignBeh<GoalieBehavior>();
+            goalie->assignBeh<Goalie>();
     }
     else if ((gm->getGameState() == 'i' && OUR_TEAM == TEAM_BLUE) ||
              (gm->getGameState() == 'I' && OUR_TEAM == TEAM_YELLOW))
@@ -87,10 +87,10 @@ void IndirectKickStrategy::assignBeh()
         for(Robot* robot : gameModel->getMyTeam())
             robot->assignBeh<RefStop>();
 
-        //Then assign goalie GoalieBehavior
+        //Then assign goalie Goalie
         Robot* goalie = gameModel->findMyTeam(GOALIE_ID);
         if(goalie)
-            goalie->assignBeh<GoalieBehavior>();
+            goalie->assignBeh<Goalie>();
     }
 }
 

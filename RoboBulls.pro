@@ -83,7 +83,6 @@ SOURCES += main.cpp \
 	utilities/point.cpp \
 	utilities/velocitycalculator.cpp \
         behavior/defendbehavior.cpp \
-        behavior/goaliebehavior.cpp \
         strategy/indirectkickstrategy.cpp \
         strategy/threevthree.cpp \
         communication/kfball.cpp \
@@ -97,7 +96,10 @@ SOURCES += main.cpp \
     skill/dribbletopoint.cpp \
     behavior/challengeballbot.cpp \
     skill/dribbleback.cpp \
-    behavior/refstop.cpp
+    behavior/refstop.cpp \
+    behavior/goalie.cpp \
+    behavior/markbot.cpp \
+    behavior/wall.cpp
 
 HEADERS += \
 	behavior/attackmain.h \
@@ -174,7 +176,6 @@ HEADERS += \
 	utilities/edges.h \
 	utilities/point.h \
 	utilities/velocitycalculator.h \
-        behavior/goaliebehavior.h \
         strategy/indirectkickstrategy.h \
         strategy/threevthree.h \
         communication/kfball.h \
@@ -189,7 +190,10 @@ HEADERS += \
     skill/dribbletopoint.h \
     behavior/challengeballbot.h \
     skill/dribbleback.h \
-    behavior/refstop.h
+    behavior/refstop.h \
+    behavior/goalie.h \
+    behavior/markbot.h \
+    behavior/wall.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 

@@ -5,7 +5,7 @@
 #include "model/gamemodel.h"
 #include "utilities/comparisons.h"
 #include "behavior/defendbehavior.h"
-#include "behavior/goaliebehavior.h"
+#include "behavior/goalie.h"
 #include "behavior/attackmain.h"
 #include "behavior/attacksupport.h"
 #include "behavior/refstop.h"
@@ -198,17 +198,6 @@ bool TestStrategy::update()
     Robot* r3 = gameModel->findMyTeam(3);
     Robot* r4 = gameModel->findMyTeam(4);
     Robot* r5 = gameModel->findMyTeam(5);
-
-    if(r1)
-        r1->assignBeh<DribbleBeh>();
-    if(r2)
-        r2->assignBeh<DribbleBeh>();
-    if(r3)
-        r3->assignBeh<DribbleBeh>();
-    if(r4)
-        r4->assignBeh<DribbleBeh>();
-    if(r5)
-        r5->assignBeh<DribbleBackBeh>();
 
     return false;
 }

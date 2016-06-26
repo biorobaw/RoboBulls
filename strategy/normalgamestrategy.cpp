@@ -1,10 +1,13 @@
 #include "include/config/team.h"
 #include "behavior/genericmovementbehavior.h"
-#include "behavior/goaliebehavior.h"
+#include "behavior/goalie.h"
 #include "behavior/attackmain.h"
 #include "behavior/attacksupport.h"
 #include "behavior/defendbehavior.h"
+#include "behavior/defend.h"
 #include "behavior/refstop.h"
+#include "behavior/wall.h"
+#include "behavior/markbot.h"
 #include "behavior/challengeballbot.h"
 #include "utilities/comparisons.h"
 #include "utilities/edges.h"
@@ -13,6 +16,7 @@
 
 //! @brief Are we currently on attack?
 bool NormalGameStrategy::isOnAttack = true;
+bool NormalGameStrategy::clearing_ball = false;
 
 //Rest of the code here is not in Doxygen
 //! @cond
@@ -119,6 +123,24 @@ bool NormalGameStrategy::update()
     if(posedge(ballInOpDefArea || ballInMyDefArea))
         assignGoalKickBehaviors();
 
+    // If a defender is clearing the ball, assign both the
+    // attackers to support
+    if(gameModel->findMyTeam(WALL_1)->hasBehavior()
+    || gameModel->findMyTeam(WALL_2)->hasBehavior())
+    {
+        clearing_ball = gameModel->findMyTeam(WALL_1)->getBehavior()->isFinished()
+                     || gameModel->findMyTeam(WALL_2)->getBehavior()->isFinished();
+    }
+    else if(gameModel->findMyTeam(WALL_1)->hasBehavior())
+        clearing_ball = gameModel->findMyTeam(WALL_1)->getBehavior()->isFinished();
+    else if(gameModel->findMyTeam(WALL_2)->hasBehavior())
+        clearing_ball = gameModel->findMyTeam(WALL_2)->getBehavior()->isFinished();
+    else
+        clearing_ball = false;
+
+    if(posedge(clearing_ball))
+        assignClearBehaviors();
+
     if(ballInOpDefArea or ballInMyDefArea)
     {
         /* A count is kept to ensure robots don't move
@@ -171,7 +193,7 @@ bool NormalGameStrategy::update()
                 // StrategyController can assign this strategy again with the new mode
                 return true;
             }
-            else if(isOnAttack)
+            else if(isOnAttack && !clearing_ball)
             {
                 // Assign attack behaviors
                 assignAttackBehaviors();
@@ -179,12 +201,12 @@ bool NormalGameStrategy::update()
                 // Set flag to re-assign attack behaviors if a pass has been
                 // completed to switch main/support attackers
                 if (currentSuppAttacker != nullptr
-                &&  currentSuppAttacker->getCurrentBeh()->isFinished())
+                &&  currentSuppAttacker->getBehavior()->isFinished())
                     attack_beh_assigned = false;
 
                 return false;
             }
-            else
+            else if (!clearing_ball)
                 assignDefendBehaviors();
         }
         return false;
@@ -198,24 +220,7 @@ void NormalGameStrategy::assignGoalieIfOk()
 {
     Robot* goalie = gameModel->findMyTeam(GOALIE_ID);
     if(goalie)
-        goalie->assignBeh<GoalieBehavior>();
-}
-
-//Static function to be used in other places.
-//Was added here to deal with simplebehaviors.cpp
-void NormalGameStrategy::moveRobotToIdleLine(Robot* robot, bool waiter)
-{
-    Point wait_point(0, -1500);
-
-    //Closest guy to the wait point sits there instead, if requested
-    if(waiter && Comparisons::distance(wait_point).minMyTeam() == robot) {
-        robot->assignBeh<GenericMovementBehavior>( wait_point );
-    } else {
-        //Otherwise assigns the robot to sit along a line across the field
-        int incSize = HALF_FIELD_WIDTH / (gameModel->getMyTeam().size() - 1);
-        int y = -HALF_FIELD_WIDTH/2 + incSize * robot->getID();
-        robot->assignBeh<RetreatAfterGoal>(y);
-    }
+        goalie->assignBeh<Goalie>();
 }
 
 
@@ -231,7 +236,7 @@ bool NormalGameStrategy::considerSwitchCreiteria()
 {
       Robot* r = gameModel->findMyTeam(GOALIE_ID);
       if(r!=nullptr)
-        r->assignBeh<GoalieBehavior>();
+        r->assignBeh<Goalie>();
 
     static int switchCounter = 0;
     Robot* ballRobot = gameModel->getHasBall();
@@ -268,11 +273,6 @@ bool NormalGameStrategy::considerSwitchCreiteria()
     return NormalGameStrategy::isOnAttack;
 }
 
-//To ingnore robots with no kicker in assigning them to drive the ball
-static bool no_kicker(Robot* robot) {
-    return not robot->hasKicker();
-}
-
 /* What TwoVOne did, where two robots are on the other side of the
  * field and drive as far as possible, and at the end of that drive,
  * pass the ball to the other and repeat until halfway to the goal and
@@ -288,19 +288,34 @@ void NormalGameStrategy::assignAttackBehaviors()
 
     std::cout << "Assigning Attack Behaviors" << std::endl;
 
-    // Assign everyone as a defender for starters
-    for(Robot* rob : gameModel->getMyTeam())
-        rob->assignBeh<DefendBehavior>();
+    Robot* wall1 = gameModel->findMyTeam(WALL_1);
+    Robot* wall2 = gameModel->findMyTeam(WALL_2);
+    Robot* attack1 = gameModel->findMyTeam(ATTACK_1);
+    Robot* attack2 = gameModel->findMyTeam(ATTACK_2);
 
-    // Robot closest to the ball, not the goalie, that has a kicker
-    currentMainAttacker = Comparisons::distanceBall().ignore_if(no_kicker).ignoreID(GOALIE_ID).minMyTeam();
-    if(currentMainAttacker)
-        currentMainAttacker->assignBeh<AttackMain>();
+    if(wall1)
+        wall1->assignBeh<Wall>();
+    if(wall2)
+        wall2->assignBeh<Wall>();
 
-    // Robot second closest to the ball, not driverBot nor the goalie, that has a kicker
-    currentSuppAttacker = Comparisons::distanceBall().ignore_if(no_kicker).ignoreID(GOALIE_ID).ignoreID(currentMainAttacker).minMyTeam();
-    if(currentSuppAttacker)
-        currentSuppAttacker->assignBeh<AttackSupport>();
+    if(attack1 != nullptr && attack2 != nullptr)
+    {
+        if(Measurements::distance(attack1, gameModel->getBallPoint()) <
+           Measurements::distance(attack2, gameModel->getBallPoint()))
+        {
+            attack1->assignBeh<AttackMain>();
+            attack2->assignBeh<AttackSupport>();
+        }
+        else
+        {
+            attack1->assignBeh<AttackSupport>();
+            attack2->assignBeh<AttackMain>();
+        }
+    }
+    else if(attack1 != nullptr)
+        attack1->assignBeh<AttackMain>();
+    else if(attack2 != nullptr)
+        attack2->assignBeh<AttackMain>();
 
     assignGoalieIfOk();
 
@@ -322,15 +337,19 @@ void NormalGameStrategy::assignDefendBehaviors()
 
     std::cout << "Assigning Defend Behaviors" << std::endl;
 
-    // Assign everyone as a defender for starters
-    for(Robot* rob : gameModel->getMyTeam())
-            rob->assignBeh<DefendBehavior>();
+    Robot* wall1 = gameModel->findMyTeam(WALL_1);
+    Robot* wall2 = gameModel->findMyTeam(WALL_2);
+    Robot* attack1 = gameModel->findMyTeam(ATTACK_1);
+    Robot* attack2 = gameModel->findMyTeam(ATTACK_2);
 
-    // Robot closest to the ball moves to block
-    Robot* blocker = Comparisons::distanceBall().minMyTeam();
-    if(blocker)
-        blocker->assignBeh<ChallengeBallBot>();
-
+    if(wall1)
+        wall1->assignBeh<Wall>();
+    if(wall2)
+        wall2->assignBeh<Wall>();
+    if(attack1)
+        attack1->assignBeh<MarkBot>();
+    if(attack2)
+        attack2->assignBeh<ChallengeBallBot>();
 
     assignGoalieIfOk();
 
@@ -347,15 +366,41 @@ void NormalGameStrategy::assignGoalKickBehaviors()
 {
     std::cout << "Assigning Goal Kick Behaviors" << std::endl;
 
-    // Assign everyone as a defender for starters
-    for(Robot* rob : gameModel->getMyTeam())
-            rob->assignBeh<DefendBehavior>();
+    Robot* wall1 = gameModel->findMyTeam(WALL_1);
+    Robot* wall2 = gameModel->findMyTeam(WALL_2);
+    Robot* attack1 = gameModel->findMyTeam(ATTACK_1);
+    Robot* attack2 = gameModel->findMyTeam(ATTACK_2);
 
-    //Usual special case for 5
+    if(wall1)
+        wall1->assignBeh<Wall>();
+    if(wall2)
+        wall2->assignBeh<Wall>();
+    if(attack1)
+        attack1->assignBeh<MarkBot>();
+    if(attack2)
+        attack2->assignBeh<AttackSupport>();
+
     assignGoalieIfOk();
 
     defend_beh_assigned = false;
     attack_beh_assigned = false;
 }
 
+
+// Used when a defender is trying to clear the ball
+void NormalGameStrategy::assignClearBehaviors()
+{
+    std::cout << "Assigning Clear Behaviors" << std::endl;
+
+    Robot* attack1 = gameModel->findMyTeam(ATTACK_1);
+    Robot* attack2 = gameModel->findMyTeam(ATTACK_2);
+
+    if(attack1)
+        attack1->assignBeh<AttackSupport>();
+    if(attack2)
+        attack2->assignBeh<AttackSupport>();
+
+    defend_beh_assigned = false;
+    attack_beh_assigned = false;
+}
 //! @endcond

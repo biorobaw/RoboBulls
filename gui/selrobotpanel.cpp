@@ -184,7 +184,7 @@ const std::string& SelRobotPanel::getBehaviorName(Robot* robot)
     static std::unordered_map<std::type_index, std::string> nameMemory;
 
     //Get type info
-    const std::type_index& info = typeid(*(robot->getCurrentBeh()));
+    const std::type_index& info = typeid(*(robot->getBehavior()));
 
     //Memory lookup?
     if(nameMemory.find(info) == nameMemory.end()) {

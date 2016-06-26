@@ -12,7 +12,7 @@ Robot::Robot()
     kick = false;
     dribble = false;
     hasBeh = false;
-    currentBehavior = nullptr;
+    behavior = nullptr;
 }
 
 Robot::Robot(int id, int team) : Robot()
@@ -74,7 +74,7 @@ int Robot::getID() { return id; }
 float Robot::getKick() {return kick;}
 
 //! @brief Returns a pointer to the robot's current behavior
-Behavior* Robot::getCurrentBeh(){ return currentBehavior; }
+Behavior* Robot::getBehavior(){ return behavior; }
 
 //! @brief Returns true if the robot is a member of getMyTeam in GameModel
 bool Robot::isOnMyTeam() { return team; }
@@ -106,12 +106,12 @@ float Robot::getSpeed()
 }
 
 //! @brief Clears (deletes) the currnt robots behavior and sets hasBeh to false
-void Robot::clearCurrentBeh()
+void Robot::clearBehavior()
 {
     hasBeh = false;
-    if(currentBehavior != nullptr) {
-        delete currentBehavior;
-        this->currentBehavior = nullptr;
+    if(behavior != nullptr) {
+        delete behavior;
+        this->behavior = nullptr;
     }
 }
 
@@ -144,7 +144,7 @@ bool Robot::getChip(){return chip;}
 //! @brief Sets the robot's behavior pointer (do deletion is made)
 void Robot::setCurrentBeh(Behavior *currentBeh)
 {
-    currentBehavior = currentBeh;
+    behavior = currentBeh;
     hasBeh = true;
 }
 

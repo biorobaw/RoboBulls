@@ -2,7 +2,7 @@
 #include <list>
 #include "include/config/team.h"
 #include "utilities/measurements.h"
-#include "behavior/goaliebehavior.h"
+#include "behavior/goalie.h"
 #include "behavior/refstop.h"
 #include "model/gamemodel.h"
 #include "utilities/comparisons.h"
@@ -19,7 +19,7 @@ void StopStrategy::assignBeh()
 
     Robot* goalie = gameModel->findMyTeam(GOALIE_ID);
     if(goalie)
-        goalie->assignBeh<GoalieBehavior>();
+        goalie->assignBeh<Goalie>();
 
 
 }

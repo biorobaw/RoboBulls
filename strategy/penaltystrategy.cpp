@@ -1,7 +1,7 @@
 #include "behavior/refstop.h"
 #include "utilities/measurements.h"
 #include "utilities/comparisons.h"
-#include "behavior/goaliebehavior.h"
+#include "behavior/goalie.h"
 #include "include/config/team.h"
 #include "penaltystrategy.h"
 
@@ -34,5 +34,5 @@ void PenaltyStrategy::assignBeh()
     //Assign Goalie if he's there
     Robot* goalie = gameModel->findMyTeam(GOALIE_ID);
     if(goalie)
-        goalie->assignBeh<GoalieBehavior>();
+        goalie->assignBeh<Goalie>();
 }

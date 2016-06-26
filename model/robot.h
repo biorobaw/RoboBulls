@@ -78,8 +78,8 @@ public:
 
     //! @name Misc information functions
     //! @{
-    Behavior* getCurrentBeh();
-    void clearCurrentBeh();
+    Behavior* getBehavior();
+    void clearBehavior();
     std::string toString();
     //! @}
 
@@ -96,7 +96,7 @@ private:
     Point velocity;             //!< Velocity in m/s
     float orientation;          //!< orientation of the robot
     float LF, RF, LB, RB;       //!< used for robot's movements
-    Behavior * currentBehavior; //!< Pointer to current behavior
+    Behavior * behavior; //!< Pointer to current behavior
     float kick = 0;                 //!< Robot kick power in m/s
     bool chip = false;                  //!< Robot chip
     bool dribble = false;                //!< Robot is dribbling?
@@ -126,8 +126,8 @@ bool Robot::assignBeh(Args&&... args)
         "Behavior must be constructible with these arguments");
     static_assert(std::is_base_of<Behavior, BehaviorType>::value,
         "This Behavior must derive from the Behavior base class");
-    if(not(hasBeh) or typeid(*getCurrentBeh()) != typeid(BehaviorType)) {
-        clearCurrentBeh();
+    if(not(hasBeh) or typeid(*getBehavior()) != typeid(BehaviorType)) {
+        clearBehavior();
         setCurrentBeh(new BehaviorType(args...));
         return true;
     }
