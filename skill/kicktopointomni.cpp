@@ -233,7 +233,7 @@ bool KickToPointOmni::isCloseToBall(Robot *robot) {
     // too much or too little. Instead we check how far the robot has travelled from
     // the behindball point.
     //std::cout << measurements::distance(robot, behindBall) << std::endl;
-    return Measurements::distance(robot, behindBall) >= 50;
+    return Measurements::distance(robot, behindBall) >= 30;
 }
 
 bool KickToPointOmni::isVeryFarFromBall(Robot *robot) {

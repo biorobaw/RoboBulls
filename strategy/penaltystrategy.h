@@ -1,8 +1,10 @@
 #ifndef PENALTYSTRATEGY_H
 #define PENALTYSTRATEGY_H
 #include "strategy/strategy.h"
+#include "strategy/normalgamestrategy.h"
+#include "behavior/wall.h"
 #include "model/gamemodel.h"
-#include "behavior/behavior.h"
+#include "include/config/team.h"
 
 /*! @brief Strategy to implement a penalty kick game state 'P' and 'p'
  * @details ASSUMPTION: According to RoboCup rules, the ball is already at the

@@ -16,12 +16,6 @@ void StopStrategy::assignBeh()
 {
     for(Robot* robot: gameModel->getMyTeam())
         robot->assignBeh<RefStop>();
-
-    Robot* goalie = gameModel->findMyTeam(GOALIE_ID);
-    if(goalie)
-        goalie->assignBeh<Goalie>();
-
-
 }
 
 bool StopStrategy::update()

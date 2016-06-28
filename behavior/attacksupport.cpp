@@ -33,9 +33,7 @@ void AttackSupport::perform(Robot * robot)
                 ball_bot != nullptr && ball_bot->isOnMyTeam()
                 && Comparisons::isNotFacingPoint(ball_bot, rp, 15*M_PI/180);
 
-        bool better_interceptor_exists = !finished && Measurements::mag(b_vel) < 100;
-
-        if(ball_bot_not_facing_us || better_interceptor_exists)
+        if(ball_bot_not_facing_us)
             switch2position_count++;
         else
             switch2position_count = 0;
@@ -116,15 +114,15 @@ void AttackSupport::perform(Robot * robot)
     }
 
 
-//    for(int x = PF_LENGTH_SUPP/2; x < PF_LENGTH_SUPP; ++x)
-//    {
-//        for(int y = 0; y < PF_WIDTH_SUPP; ++y)
-//        {
-//            ProbNode& curr = prob_field[x][y];
-//            if(curr.static_val+curr.dynamic_val >= 0.4)
-//                GuiInterface::getGuiInterface()->drawPoint(curr.point);
-//        }
-//    }
+    for(int x = PF_LENGTH_SUPP/2; x < PF_LENGTH_SUPP; ++x)
+    {
+        for(int y = 0; y < PF_WIDTH_SUPP; ++y)
+        {
+            ProbNode& curr = prob_field[x][y];
+            if(curr.static_val+curr.dynamic_val >= 0.4)
+                GuiInterface::getGuiInterface()->drawPoint(curr.point);
+        }
+    }
 }
 
 AttackSupport::ProbNode AttackSupport::findMaxNode()
@@ -257,7 +255,7 @@ void AttackSupport::genGoalShadows()
                 float extension = 100;   // Distance beyond actual shadow that we consider blocked
                 if(n.point.y <= m1*(n.point.x - g1x) + g1y + extension
                 && n.point.y >= m2*(n.point.x - g2x) + g2y - extension)
-                   n.dynamic_val = -10.0;
+                   n.dynamic_val = -100.0;
             }
         }
     }
@@ -278,7 +276,7 @@ void AttackSupport::genDistanceFromTeammates(Robot* robot)
             {
                 if(tmate->getID() != robot->getID()
                 && (Measurements::distance(tmate->getPosition(), n.point) < 2000))
-                        n.dynamic_val = -10;
+                        n.dynamic_val = -100.0;
             }
         }
     }
@@ -386,7 +384,7 @@ void AttackSupport::genBallShadows()
 
                     // Only cast shadows behind the opponents
                     if(Measurements::distance(bp, node.point) > dist)
-                        node.dynamic_val -= 10.0;
+                        node.dynamic_val = -100.0;
                 }
             }
         }
@@ -463,7 +461,7 @@ void AttackSupport::genGoalShotAvoidance()
         {
             if(abs(x) < HALF_FIELD_LENGTH && abs(y) < HALF_FIELD_WIDTH)
                 prob_field[PF_LENGTH_SUPP/2 + x/PND_SUPP]
-                          [PF_WIDTH_SUPP/2  + y/PND_SUPP].dynamic_val -= 10.0;
+                          [PF_WIDTH_SUPP/2  + y/PND_SUPP].dynamic_val = -100.0;
         }
     }
 }

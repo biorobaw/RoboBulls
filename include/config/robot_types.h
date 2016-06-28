@@ -31,8 +31,8 @@ extern const bool robotHasKicker[];
  * the utility command line. It is 5 by default (see .cpp)
  * It is a float to be changed dynamically, but only use ints */
 extern float GOALIE_ID;
-extern float WALL_1;
-extern float WALL_2;
+extern float DEFEND_1;
+extern float DEFEND_2;
 extern float ATTACK_1;
 extern float ATTACK_2;
 

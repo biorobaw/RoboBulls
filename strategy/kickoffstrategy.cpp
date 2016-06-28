@@ -1,79 +1,33 @@
-#include <list>
 #include "behavior/genericmovementbehavior.h"
 #include "behavior/goalie.h"
-#include "include/config/team.h"
 #include "model/gamemodel.h"
-#include "utilities/comparisons.h"
 #include "kickoffstrategy.h"
 
-/* For this, we define a list of points with absolute Xs representing
- * where the robots should go on Blue Kickoff / Yellow Kickoff;
- * there's diagrams commented out below. These are multiplied by
- * GameModel::mySide to keep them on the right side. Points are not
- * assigned based on ID, but each robot claims the next closest point
- * to it.
- */
-
 /******************
  *             *
- *    4        *
- *       2    |-|
- | 5        0 |o|
- *       1    |-|
- *    3        *
+ *       0     *
+ *    3       |-|
+ | 5     1    |o|
+ *    4       |-|
+ *       2     *
  *             *
  ******************/
-Point KickOffStrategy::myKickoffPoints[NUM_KICK_OFF_POINTS] = {
-    /*0*/ Point( -400,    0),
-    /*1*/ Point( -800, -600),
-    /*2*/ Point( -800,  600),
-    /*3*/ Point(-1300, -900),
-    /*4*/ Point(-1300,  900)
-};
-
-/******************
- *             *
- *   1  3      *
- *            |-|
- | 5    0     |o|
- *            |-|
- *   2  4      *
- *             *
- ******************/
-Point KickOffStrategy::opKickoffPoints[NUM_KICK_OFF_POINTS] = {
-    /*0*/ Point(-1200,    0),
-    /*1*/ Point(-1800,  800),
-    /*2*/ Point(-1800, -800),
-    /*3*/ Point(-1200,  800),
-    /*4*/ Point(-1200, -800)
-};
 
 void KickOffStrategy::assignBeh()
 {
-    char gs = gameModel->getGameState();
-    Point* whichKickoffPointList = myKickoffPoints;
-    
-    //Change to other point list if it's not our kickoff
-    if ((gs=='K' && OUR_TEAM==TEAM_YELLOW) || (gs=='k' && OUR_TEAM==TEAM_BLUE ))
-        whichKickoffPointList = opKickoffPoints;
+    Robot* wall1 = gameModel->findMyTeam(DEFEND_1);
+    Robot* wall2 = gameModel->findMyTeam(DEFEND_2);
+    Robot* attack1 = gameModel->findMyTeam(ATTACK_1);
+    Robot* attack2 = gameModel->findMyTeam(ATTACK_2);
 
-    //List of points for fast removal
-    std::list<Point> pointList(whichKickoffPointList, whichKickoffPointList+NUM_KICK_OFF_POINTS);
-
-    for(Robot* robot : gameModel->getMyTeam())
-	{
-        if(robot->getID() == GOALIE_ID)
-            continue;
-
-        // We look for the closest point as the robots come, then remove it
-        auto nextPointItr = Comparisons::distance(robot).min(pointList);
-        Point nextPoint = *nextPointItr;
-        pointList.erase(nextPointItr);
-
-        // Assign to move to that point, then face to the center
-        float angleToCenter = Measurements::angleBetween(nextPoint, Point(0,0));
-        robot->assignBeh<GenericMovementBehavior>(nextPoint, angleToCenter);
-    }
+    if(wall1)
+        wall1->assignBeh<GenericMovementBehavior>(Point(-650, 500), 0);
+    if(wall2)
+        wall2->assignBeh<GenericMovementBehavior>(Point(-1600, 0), 0);
+    if(attack1)
+        attack1->assignBeh<GenericMovementBehavior>(Point(-650, 0), 0);
+    if(attack2)
+        attack2->assignBeh<GenericMovementBehavior>(Point(-650, -500), 0);
 
     //Goalie is a special case
     Robot* goalie = gameModel->findMyTeam(GOALIE_ID);

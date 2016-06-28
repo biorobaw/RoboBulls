@@ -96,7 +96,6 @@ void Wall::perform(Robot * robot)
             farthest = candidates.front();
             for(Robot* r: candidates)
             {
-
                 if(r->getPosition().x > farthest->getPosition().x)
                     farthest = r;
             }
@@ -199,7 +198,7 @@ bool Wall::shouldClear(Robot* robot)
     Robot* possessor = gameModel->getHasBall();
 
     bool b1 = gameModel->getBallSpeed() < 10;
-    bool b2 = bp.x < 0 && !da.contains(bp, 2*ROBOT_RADIUS);
+    bool b2 = bp.x < -1000 && !da.contains(bp, 2*ROBOT_RADIUS);
     bool b3 = Comparisons::distanceBall().minMyTeam()->getID() == robot->getID();
     bool b4 = possessor == nullptr || (possessor != nullptr && possessor->getID() == robot->getID());
 
@@ -213,7 +212,7 @@ bool Wall::shouldStopClearing()
     // has the ball or is too close the defence area
     DefenceArea da(OUR_TEAM);
 
-    bool b1 = gameModel->getBallPoint().x > 0;
+    bool b1 = gameModel->getBallPoint().x > -1000;
     bool b2 = gameModel->getHasBall() != nullptr
             && !gameModel->getHasBall()->isOnMyTeam();
     bool b3 = da.contains(gameModel->getBallPoint(), ROBOT_RADIUS * 2);

@@ -45,7 +45,7 @@ public:
 
     /*! @brief Function used to control strategy flow.
      * @details Allows strategies to be switched within a single game state.
-     * Return an ASCII character corrisponding to a game state to switch
+     * Return an ASCII character corresponding to a game state to switch
      * the StrategyController to. return '\0' or the current gate state
      * (via GameModel) to keep the current state. */
     virtual char getNextStrategy();

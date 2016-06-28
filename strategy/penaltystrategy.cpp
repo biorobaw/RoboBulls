@@ -1,38 +1,36 @@
-#include "behavior/refstop.h"
-#include "utilities/measurements.h"
-#include "utilities/comparisons.h"
-#include "behavior/goalie.h"
-#include "include/config/team.h"
 #include "penaltystrategy.h"
 
 void PenaltyStrategy::assignBeh()
 {
-    /* Penalty task will be assigned to the robot
-     * that is closest to the penalty point.
-     * The rest of the robots stand at a point 40 cm
-     * behind the penalty point */
-    //Robot going to be sent to kick the ball
-     Robot* closestRobot = NULL;
-
-    // We only do something special if it is *our* penalty kick.
+    // If we are taking the penalty kick
     char gs = gameModel->getGameState();
     if ((gs == 'P' && OUR_TEAM == TEAM_BLUE) || (gs == 'p' && OUR_TEAM == TEAM_YELLOW))
     {
-        //Finds the closest robot to the penalty point and its ID
-        closestRobot = Comparisons::distanceOpGoal().minMyTeam();
+        // One of the defenders will take the penalty and move back
+        Robot* kicker = gameModel->findMyTeam(DEFEND_1);
+        if(kicker)
+            kicker->assignBeh<GenericMovementBehavior>(Point(gameModel->getOppGoal() - Point(1300,0)), 0);
 
-        //Assigns closest robot to kick
-        closestRobot->assignSkill<Skill::KickToPointOmni>(gameModel->getOppGoal(), -1, -1, true);
+        // Position the usual attackers behind the 400 mm mark
+        Robot* attack1 = gameModel->findMyTeam(ATTACK_1);
+        Robot* attack2 = gameModel->findMyTeam(ATTACK_2);
+        if(attack1)
+            attack1->assignBeh<GenericMovementBehavior>(Point(gameModel->getOppGoal() - Point(1700, 500)), 0);
+        if(attack2)
+            attack2->assignBeh<GenericMovementBehavior>(Point(gameModel->getOppGoal() - Point(1700,-500)), 0);
+
+        // The other defender walls our goal
+        Robot* def = gameModel->findMyTeam(DEFEND_2);
+        if(def)
+            def->assignBeh<Wall>();
+
+        // Goalie
+        NormalGameStrategy::assignGoalieIfOk();
+
     }
+    // If we are on the receiving end of a penalty kick
+    else
+    {
 
-    //Assign simple behaviors to entire team, except for kicker and goalie
-    for(Robot* robot : gameModel->getMyTeam()) {
-        if (robot->getID() != GOALIE_ID && robot != closestRobot)
-            robot->assignBeh<RefStop>();
     }
-
-    //Assign Goalie if he's there
-    Robot* goalie = gameModel->findMyTeam(GOALIE_ID);
-    if(goalie)
-        goalie->assignBeh<Goalie>();
 }

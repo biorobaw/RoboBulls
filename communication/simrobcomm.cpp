@@ -38,10 +38,10 @@ void SimRobComm::sendPacket(Robot* robot)
 
     //Retrive robot information
     int id = robot->getID();
-    int LF = robot->getLF();
-    int RF = robot->getRF();
-    int LB = robot->getLB();
-    int RB = robot->getRB();
+    int LF = Measurements::clamp(robot->getLF(), -100, 100);
+    int RF = Measurements::clamp(robot->getRF(), -100, 100);
+    int LB = Measurements::clamp(robot->getLB(), -100, 100);
+    int RB = Measurements::clamp(robot->getRB(), -100, 100);
     float kick = robot->getKick();
     bool  dribble = robot->getDribble();
 

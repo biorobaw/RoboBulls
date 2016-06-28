@@ -3,35 +3,16 @@
 #include "model/robot.h"
 #include "strategy/strategy.h"
 #include "utilities/region/defencearea.h"
+#include "behavior/genericmovementbehavior.h"
 
 /*! @brief This strategy is meant for the ' ' gamestate (space) which means
  * normal play.
- * @author JamesW
- *
- * This strategy switches between both attack and defend behaviors.
- *
- * **Attack/Defend switch criteria: (considerSwitchCreiteria)**
- *  - If the enemy/our team has been seen with the ball NORMAL_SWITCH_COUNT
- *    times we switch from attack to defend or vice versa.
- *
- * **Attacking (assignAttackBehaviors):**
- *  - The closest robot to the ball is assigned to kick to the goal.
- *  - Robot with GOALIE_ID is assigned to go to the goal and defend the goal.
- *  - The remaining robot is assigned to prowl the enemy field and assume
- *    a stretegic position to recieve a pass.
- *
- * **Defending (assignDefendBehaviors):**
- *  - One robot is sent to the center to encourage a quick Attack switch
- *  - Robot #5 still defend the goal
- *  - The remaining robot is sent to block the enemy passer/receiver team
- *    by placing itself between them (measurements::midPoint).
- *
+ * @author JamesW, Muhaimen Shamsi
  */
 class NormalGameStrategy : public Strategy
 {
 public:
-     NormalGameStrategy();
-    ~NormalGameStrategy();
+    NormalGameStrategy();
     void assignBeh() override;
     bool update() override;
 
@@ -42,25 +23,17 @@ public:
     static void assignGoalieIfOk();
 
 private:
-    bool considerSwitchCreiteria();
-    void assignAttackBehaviors();
-    void assignDefendBehaviors();
-    void assignGoalKickBehaviors();
-    void assignClearBehaviors();
-
-private:
-    static bool isOnAttack;
-    static bool hasStoppedForThisKickoff;
-    static bool clearing_ball;
-    Robot* currentMainAttacker;
-    Robot* currentSuppAttacker;
-    Point ballOriginalPos;
+    Point initialBallPos;
     DefenceArea our_def_area;
     DefenceArea opp_def_area;
+    bool clearing_ball = false;
 
-    // Used prevent repeated behavior assignment
-    bool defend_beh_assigned = false;
-    bool attack_beh_assigned = false;
+    // Used to switch when ball is closer to the other
+    Robot* supp;
+    Robot* main;
+
+    enum {opp_kickoff, our_kickoff_1, our_kickoff_2, our_kickoff_3,
+          evaluate, attack, defend, goalkick, clearball} state, prev_state;
 };
 
 #endif // NORMALGAMESTRATEGY_H
