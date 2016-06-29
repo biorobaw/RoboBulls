@@ -7,11 +7,11 @@
 float lf, lb, rf, rb;
 
 //A constant to multiply velocities
-static float k = 0.8;
+static float k = 0.4;
 
 NXTRobComm::NXTRobComm()
 {
-    if (Xbee.Open("/dev/xbee", 57600) != 1) {
+    if (Xbee.Open("/dev/xbee", 38400) != 1) {
         printf ("Error while opening port. Permission problem ?\n");
         exit(1);
     } else {

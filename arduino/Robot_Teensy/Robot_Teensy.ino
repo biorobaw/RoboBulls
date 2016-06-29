@@ -1,5 +1,5 @@
 int id;
-int myid = 5;    // This Robot's ID
+int myid = 1;    // This Robot's ID
 
 
 // Declare motor pins
@@ -95,7 +95,7 @@ void setup()
   analogWrite(speedPinRB, 30);
 
   // Start Serial Port
-  Serial1.begin(57600);
+  Serial1.begin(38400);
 }
 //***********************************************************************************
 
