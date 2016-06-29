@@ -144,6 +144,15 @@ void StrategyController::frameEnd()
          }
     }
 
-    RobComm * robcom = RobComm::getRobComm();
-    robcom->sendVelsLarge(model->getMyTeam());
+    // Send vels only if enough time has passed
+    timeval now;
+    gettimeofday(&now, NULL);
+    float seconds = now.tv_sec - lastSendTime.tv_sec;
+    float useconds = now.tv_usec - lastSendTime.tv_usec;
+    float ms_passed = ((seconds) * 1000 + useconds/1000.0) + 0.5;
+    if(ms_passed > XBEE_PERIOD_MS) {
+        RobComm * robcom = RobComm::getRobComm();
+        robcom->sendVelsLarge(model->getMyTeam());
+        lastSendTime = now;
+    }
 }

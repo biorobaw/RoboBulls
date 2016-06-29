@@ -46,12 +46,17 @@
 #define REFBOX_ADDRESS      "224.5.23.1"
 #define REFBOX_PORT         10001
 
+#if SIMULATED
+    #define XBEE_PERIOD_MS      0 // No limit
+#else
+    #define XBEE_PERIOD_MS      20 // 50 fps
+#endif
+
 //!@}
 
 //! @brief Referee Box--do we listen to commands? See StrategyController
 //! @details Chooses between listening to RefComm, and always choosing TestStrategy.
 #define REFBOX_LISTEN_ENABLED 1
-
 //!@}
 
 #endif // COMMUNICATION_H

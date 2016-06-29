@@ -4,6 +4,8 @@ class GameModel;
 class Behavior;
 class Strategy;
 
+#include <sys/time.h>
+
 /*! @brief Controls selection of an active strategy (play) based on the game state
  *
  * The StrategyController can be seen as the main driver of the
@@ -53,6 +55,7 @@ private:
 private:
     Strategy*  activeStrategy;
     GameModel* model;
+    timeval lastSendTime;
 };
 
 #endif // STRATEGYCONTROLLER_H
