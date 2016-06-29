@@ -69,8 +69,6 @@ void RobotPanel::setupBotPanel() {
     currBehavior.push_back(dash->ui->currBehavior_4);
     currBehavior.push_back(dash->ui->currBehavior_5);
 
-
-
  /*   // Speed dials disabled so that I can see GUI changes
     speedDials.push_back(dash->ui->dial_botSpeed_0);
     speedDials.push_back(dash->ui->dial_botSpeed_1);
@@ -126,20 +124,20 @@ void RobotPanel::setupBotPanel() {
     robotIcon3 = new GuiRobot;
     robotIcon4 = new GuiRobot;
     robotIcon5 = new GuiRobot;
-//    robotIcon6 = new GuiRobot;
-//    robotIcon7 = new GuiRobot;
-//    robotIcon8 = new GuiRobot;
-//    robotIcon9 = new GuiRobot;
+    robotIcon6 = new GuiRobot;
+    robotIcon7 = new GuiRobot;
+    robotIcon8 = new GuiRobot;
+    robotIcon9 = new GuiRobot;
     botIcons.push_back(robotIcon0);
     botIcons.push_back(robotIcon1);
     botIcons.push_back(robotIcon2);
     botIcons.push_back(robotIcon3);
     botIcons.push_back(robotIcon4);
     botIcons.push_back(robotIcon5);
-//    botIcons.push_back(robotIcon6);
-//    botIcons.push_back(robotIcon7);
-//    botIcons.push_back(robotIcon8);
-//    botIcons.push_back(robotIcon9);
+    botIcons.push_back(robotIcon6);
+    botIcons.push_back(robotIcon7);
+    botIcons.push_back(robotIcon8);
+    botIcons.push_back(robotIcon9);
     // Icon scenes vector
     scene_botIcon_0 = new QGraphicsScene;
     scene_botIcon_1 = new QGraphicsScene;
@@ -147,20 +145,20 @@ void RobotPanel::setupBotPanel() {
     scene_botIcon_3 = new QGraphicsScene;
     scene_botIcon_4 = new QGraphicsScene;
     scene_botIcon_5 = new QGraphicsScene;
-//    scene_botIcon_6 = new QGraphicsScene;
-//    scene_botIcon_7 = new QGraphicsScene;
-//    scene_botIcon_8 = new QGraphicsScene;
-//    scene_botIcon_9 = new QGraphicsScene;
+    scene_botIcon_6 = new QGraphicsScene;
+    scene_botIcon_7 = new QGraphicsScene;
+    scene_botIcon_8 = new QGraphicsScene;
+    scene_botIcon_9 = new QGraphicsScene;
     botIconScenes.push_back(scene_botIcon_0);
     botIconScenes.push_back(scene_botIcon_1);
     botIconScenes.push_back(scene_botIcon_2);
     botIconScenes.push_back(scene_botIcon_3);
     botIconScenes.push_back(scene_botIcon_4);
     botIconScenes.push_back(scene_botIcon_5);
-//    botIconScenes.push_back(scene_botIcon_6);
-//    botIconScenes.push_back(scene_botIcon_7);
-//    botIconScenes.push_back(scene_botIcon_8);
-//    botIconScenes.push_back(scene_botIcon_9);
+    botIconScenes.push_back(scene_botIcon_6);
+    botIconScenes.push_back(scene_botIcon_7);
+    botIconScenes.push_back(scene_botIcon_8);
+    botIconScenes.push_back(scene_botIcon_9);
 
     // Icon frames vector
     botIconFrames.push_back(dash->ui->gView_robot_0);
@@ -181,10 +179,10 @@ void RobotPanel::setupBotPanel() {
     robotIcon3Sel = new GuiRobot;
     robotIcon4Sel = new GuiRobot;
     robotIcon5Sel = new GuiRobot;
-//    robotIcon6Sel = new GuiRobot;
-//    robotIcon7Sel = new GuiRobot;
-//    robotIcon8Sel = new GuiRobot;
-//    robotIcon9Sel = new GuiRobot;
+    robotIcon6Sel = new GuiRobot;
+    robotIcon7Sel = new GuiRobot;
+    robotIcon8Sel = new GuiRobot;
+    robotIcon9Sel = new GuiRobot;
 
     botIconsSelected.push_back(robotIcon0Sel);
     botIconsSelected.push_back(robotIcon1Sel);
@@ -192,10 +190,10 @@ void RobotPanel::setupBotPanel() {
     botIconsSelected.push_back(robotIcon3Sel);
     botIconsSelected.push_back(robotIcon4Sel);
     botIconsSelected.push_back(robotIcon5Sel);
-//    botIconsSelected.push_back(robotIcon6Sel);
-//    botIconsSelected.push_back(robotIcon7Sel);
-//    botIconsSelected.push_back(robotIcon8Sel);
-//    botIconsSelected.push_back(robotIcon9Sel);
+    botIconsSelected.push_back(robotIcon6Sel);
+    botIconsSelected.push_back(robotIcon7Sel);
+    botIconsSelected.push_back(robotIcon8Sel);
+    botIconsSelected.push_back(robotIcon9Sel);
 
     scene_botIconSel_0 = new QGraphicsScene;
     scene_botIconSel_1 = new QGraphicsScene;
@@ -203,10 +201,10 @@ void RobotPanel::setupBotPanel() {
     scene_botIconSel_3 = new QGraphicsScene;
     scene_botIconSel_4 = new QGraphicsScene;
     scene_botIconSel_5 = new QGraphicsScene;
-//    scene_botIconSel_6 = new QGraphicsScene;
-//    scene_botIconSel_7 = new QGraphicsScene;
-//    scene_botIconSel_8 = new QGraphicsScene;
-//    scene_botIconSel_9 = new QGraphicsScene;
+    scene_botIconSel_6 = new QGraphicsScene;
+    scene_botIconSel_7 = new QGraphicsScene;
+    scene_botIconSel_8 = new QGraphicsScene;
+    scene_botIconSel_9 = new QGraphicsScene;
 
     botIconSelScenes.push_back(scene_botIconSel_0);
     botIconSelScenes.push_back(scene_botIconSel_1);
@@ -214,17 +212,17 @@ void RobotPanel::setupBotPanel() {
     botIconSelScenes.push_back(scene_botIconSel_3);
     botIconSelScenes.push_back(scene_botIconSel_4);
     botIconSelScenes.push_back(scene_botIconSel_5);
-//    botIconSelScenes.push_back(scene_botIconSel_6);
-//    botIconSelScenes.push_back(scene_botIconSel_7);
-//    botIconSelScenes.push_back(scene_botIconSel_8);
-//    botIconSelScenes.push_back(scene_botIconSel_9);
+    botIconSelScenes.push_back(scene_botIconSel_6);
+    botIconSelScenes.push_back(scene_botIconSel_7);
+    botIconSelScenes.push_back(scene_botIconSel_8);
+    botIconSelScenes.push_back(scene_botIconSel_9);
 
     // Ball GUI icon
     ballIcon = new GuiBall();
     scene_ballIcon = new QGraphicsScene;
 
     // relevant vectors filled & connected; initial details added to GUI
-    for (int i=0; i<dash->teamSize_blue; i++) {
+    for (int i=0; i<6; i++) {
         botIcons[i]->id = i;
         botIcons[i]->icon = true;
         botIconsSelected[i]->id = i;
@@ -258,11 +256,10 @@ void RobotPanel::setupBotPanel() {
 }//setupBotPanel
 
 
-
 void RobotPanel::updateBotPanel() {
 
     // Printing current bot info to Robot Panels
-    for (int i=0; i<dash->teamSize_blue; i++) {
+    for (int i=0; i<6; i++) {
         botTitle[i]->setText("Robot " + QString::number(i));
         // Nullcheck
         if (dash->gamemodel->find(i,dash->gamemodel->getMyTeam()) != NULL) {
@@ -392,7 +389,7 @@ void RobotPanel::updateTeamColors() {
         dash->ui->lcd_orient_prime->setStyleSheet("background-color: rgb(100, 100, 0);");
         dash->ui->lcd_coordX_prime->setStyleSheet("background-color: rgb(0, 0, 100);");
         dash->ui->lcd_coordY_prime->setStyleSheet("background-color: rgb(0, 0, 100);");
-        for (int i=0; i<dash->teamSize_blue; i++) {
+        for (int i=0; i<6; i++) {
             botOrients[i]->setStyleSheet("background-color: rgb(255, 255, 0);");
             botXcoords[i]->setStyleSheet("background-color: rgb(0, 0, 150);");
             botYcoords[i]->setStyleSheet("background-color: rgb(0, 0, 150);");

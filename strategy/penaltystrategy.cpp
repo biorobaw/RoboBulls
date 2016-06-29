@@ -31,6 +31,21 @@ void PenaltyStrategy::assignBeh()
     // If we are on the receiving end of a penalty kick
     else
     {
+        // All robots move behind the 400mm mark
+        for(Robot* robot: gameModel->getMyTeam())
+        {
+            if(robot != nullptr)
+                robot->assignBeh<GenericMovementBehavior>(gameModel->getMyGoal() + Point(2000,(robot->getID() - 3)*300), 0);
+
+        }
+        // Position Goalie
+        Robot* goalie = gameModel->findMyTeam(GOALIE_ID);
+        if(goalie)
+        {
+            goalie->clearBehavior();
+            goalie->assignBeh<GenericMovementBehavior>(gameModel->getMyGoal() + Point(ROBOT_RADIUS,0),0);
+        }
+
 
     }
 }

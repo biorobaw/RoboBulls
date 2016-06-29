@@ -10,11 +10,11 @@
 #define RPOS 5.0
 #else
 #define ACCEL -10.0
-#define TIME_STEP 0.0193    // Determined using printTimeStep()
-#define QVEL 1.0
-#define QPOS 0.5
-#define RVEL 10.0
-#define RPOS 15.0
+#define TIME_STEP 0.0112    // Determined using printTimeStep()
+#define QVEL 10.0
+#define QPOS 10.0
+#define RVEL 0.00001
+#define RPOS 0.00001
 #endif
 
 KFBall::KFBall():a(ACCEL), T(TIME_STEP)
@@ -38,7 +38,7 @@ void KFBall::makeProcess()
 {
     Vector x_(x.size());
 
-    //printTimeStep();
+//    printTimeStep();
 
     // vel_x
     if(fabs(x(1)) - fabs(a * T) >= 0)

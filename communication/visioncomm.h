@@ -9,16 +9,21 @@
 #include "include/robocup_ssl_client.h"
 #include "model/gamemodel.h"
 #include "model/robot.h"
+#include "include/config/simulated.h"
 #include "kfball.h"
 #include "gui/guiinterface.h"
 
 #define VEL_HIST_SIZE 20
 
 //! @brief Sets the minimum confidence to consider a ball reading as valid
+#if SIMULATED
 const float CONF_THRESHOLD_BALL = 0.75;
+#else
+const float CONF_THRESHOLD_BALL = 0.99999;
+#endif
 
 //! @brief Sets the minimum confidence to consider a robot as a valid reading
-const float CONF_THRESHOLD_BOTS = 0.8;
+const float CONF_THRESHOLD_BOTS = 0.5;
 
 /**
  * @brief The VisionComm class recieves information from the vision cameras

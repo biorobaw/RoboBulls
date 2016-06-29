@@ -15,7 +15,7 @@ float theta_int_mult = 0.0015;  //Multiplier for theta integral
 #else
 float xy_prop_mult = .25;     //Multiplier for Proportional XY
 float xy_int_mult = 0;     //Multiplier for integral XY
-float theta_prop_mult = 1.0;    //Multiplier for theta proportional
+float theta_prop_mult = 0.5;    //Multiplier for theta proportional
 float theta_int_mult = 0.000;  //Multiplier for theta integral
 #endif
 
@@ -102,7 +102,7 @@ fourWheelVels FourWheelCalculator::defaultCalc
     {
         x_vel_robot = x_vel_robot * (prev_vel + 2) / vel_robot;
         y_vel_robot = y_vel_robot * (prev_vel + 2) / vel_robot;
-        vel_robot = prev_vel + 2;
+        vel_robot = prev_vel + 0.7;
     }
     prev_vel = vel_robot;
 

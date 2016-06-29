@@ -29,8 +29,8 @@ private:
     bool clearing_ball = false;
 
     // Used to switch when ball is closer to the other
-    Robot* supp;
-    Robot* main;
+    Robot* supp = nullptr;
+    Robot* main = nullptr;
 
     enum {opp_kickoff, our_kickoff_1, our_kickoff_2, our_kickoff_3,
           evaluate, attack, defend, goalkick, clearball} state, prev_state;

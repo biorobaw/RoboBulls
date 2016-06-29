@@ -58,8 +58,8 @@ MainWindow::MainWindow(QWidget *parent) :
     gamepanel       = new GamePanel(this);
 
     // Generating GUI
-    teamSize_blue = 6;
-    teamSize_yellow = 6;
+    teamSize_blue = 10;
+    teamSize_yellow = 10;
     checkTeamColors();
     fieldpanel->setupScene();
     fieldpanel->defaultZoom();
@@ -70,7 +70,7 @@ MainWindow::MainWindow(QWidget *parent) :
     objectPos->setupPastBotPoints();
     objectPos->setupBotSpeeds();
     ui->btn_connectGui->setEnabled(true);
-    MainWindow::resize(850,630);
+    MainWindow::resize(1400,900);
     setFocusOnField();
 
     // Time, in milliseconds, before GUI autoconnects to project; increase value if needed

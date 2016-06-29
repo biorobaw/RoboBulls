@@ -19,6 +19,7 @@
 
 //Should not be the same as any of the simulators
 #define VISION_ADDRESS_NONSIM "224.5.23.2"
+#define VISION_ADDRESS_ROBOCUP16 "224.5.23.2"
 //! @}
 
 //! @brief Vision listen address options
@@ -38,8 +39,8 @@
  #define VISION_ADDRESS     VISION_ADDRESS_SHAMSI
  #define VISION_PORT        10020
 #else
- #define VISION_ADDRESS     VISION_ADDRESS_NONSIM
- #define VISION_PORT        10002
+ #define VISION_ADDRESS     VISION_ADDRESS_ROBOCUP16
+ #define VISION_PORT        10006
 #endif
 
 #define REFBOX_ADDRESS      "224.5.23.1"

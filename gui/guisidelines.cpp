@@ -7,7 +7,7 @@ GuiSidelines::GuiSidelines()
 
 QRectF GuiSidelines::boundingRect() const
 {
-    return QRectF(0,0,8200,6200); // 3585 ~ 3600, 2585 ~ 2600
+    return QRectF(0,0,10400,7400); // 3585 ~ 3600, 2585 ~ 2600
 }
 
 void GuiSidelines::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)

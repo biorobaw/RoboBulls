@@ -136,7 +136,7 @@ class MotionTestBeh : public GenericMovementBehavior
 public:
     void perform(Robot * robot) override
     {
-        Point target = Point(-1500,0);
+        Point target = Point(1500,1000);
         setMovementTargets(target,0, false, false);
 
         std::cout << "Distance Error: " << Measurements::distance(robot->getPosition(),target) << std::endl;
@@ -156,9 +156,9 @@ public:
         GameModel * gm = GameModel::getModel();
         Point rp = robot->getPosition();
         Point bp = gm->getBallPoint();
-        Point target_one = Point(-2000,0);
-        Point target_two = Point(2000,0);
-        double ori = Measurements::angleBetween(rp,bp);
+        Point target_one = Point(-3300,500);
+        Point target_two = Point(-500, 500);
+        double ori = Measurements::angleBetween(rp,Point(0,0));
         switch(state)
         {
             case pos_one:
@@ -198,6 +198,17 @@ bool TestStrategy::update()
     Robot* r3 = gameModel->findMyTeam(3);
     Robot* r4 = gameModel->findMyTeam(4);
     Robot* r5 = gameModel->findMyTeam(5);
+
+    if(r1)
+        r1->assignBeh<DribbleBeh>();
+    if(r2)
+        r2->assignBeh<DribbleBeh>();
+    if(r3)
+        r3->assignBeh<ShamsiStrafe>();
+    if(r4)
+        r4->assignBeh<ShamsiStrafe>();
+    if(r5)
+        r5->assignBeh<DribbleBeh>();
 
     return false;
 }

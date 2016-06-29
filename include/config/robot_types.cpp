@@ -14,7 +14,8 @@ const RobotType robotIDTypes[] = {
  /*6*/	fourWheelOmni,
  /*7*/	fourWheelOmni,
  /*8*/	fourWheelOmni,
- /*9*/	fourWheelOmni
+ /*9*/	fourWheelOmni,
+ /*10*/	fourWheelOmni
 };
 #endif
 
@@ -28,7 +29,8 @@ const bool robotHasKicker[] = {
  /*6*/	false,
  /*7*/	false,
  /*8*/	false,
- /*9*/	false
+ /*9*/	false,
+ /*10*/	false
 };
 
 //Goalie ID integer

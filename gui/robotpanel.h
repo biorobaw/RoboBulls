@@ -123,8 +123,6 @@ private:
 protected:
     GameModel *gamemodel;
     FieldPanel *fieldpanel;
-
-
 };
 
 #endif // ROBOTPANEL_H

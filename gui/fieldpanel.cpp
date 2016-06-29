@@ -33,14 +33,14 @@ void FieldPanel::setupScene() {
 
     // Creating the sidelines
     sidelines = new GuiSidelines();
-    sidelines->setX(-4000);         // Offsets are 50% of the item's height & width
-    sidelines->setY(-3000);
+    sidelines->setX(-5200);         // Offsets are 50% of the item's height & width
+    sidelines->setY(-3700);
     sidelines->setZValue(0);
 
     // Creating the field
     field = new GuiField();
-    field->setX(-2900);
-    field->setY(-1900); // Y seems to be 100 off (?)
+    field->setX(-(HALF_FIELD_LENGTH-100));
+    field->setY(-(HALF_FIELD_WIDTH-100)); // Y seems to be 100 off (?)
     field->setZValue(1);
     field->grid = false;
 //    field->highlighted = false;
@@ -114,10 +114,10 @@ void FieldPanel::setupScene() {
     guiTeam.push_back(robot3);
     guiTeam.push_back(robot4);
     guiTeam.push_back(robot5);
-//    guiTeam.push_back(robot6);
-//    guiTeam.push_back(robot7);
-//    guiTeam.push_back(robot8);
-//    guiTeam.push_back(robot9);
+    guiTeam.push_back(robot6);
+    guiTeam.push_back(robot7);
+    guiTeam.push_back(robot8);
+    guiTeam.push_back(robot9);
 
     // Yellow Team
     robot0Y = new GuiRobot();
@@ -137,10 +137,10 @@ void FieldPanel::setupScene() {
     guiTeamY.push_back(robot3Y);
     guiTeamY.push_back(robot4Y);
     guiTeamY.push_back(robot5Y);
-//    guiTeamY.push_back(robot6Y);
-//    guiTeamY.push_back(robot7Y);
-//    guiTeamY.push_back(robot8Y);
-//    guiTeamY.push_back(robot9Y);
+    guiTeamY.push_back(robot6Y);
+    guiTeamY.push_back(robot7Y);
+    guiTeamY.push_back(robot8Y);
+    guiTeamY.push_back(robot9Y);
 
     // Adding the previous gui items to the scene
     scene->addItem(field);
@@ -172,10 +172,10 @@ void FieldPanel::setupScene() {
     scene->addItem(robot3);
     scene->addItem(robot4);
     scene->addItem(robot5);
-//    scene->addItem(robot6);
-//    scene->addItem(robot7);
-//    scene->addItem(robot8);
-//    scene->addItem(robot9);
+    scene->addItem(robot6);
+    scene->addItem(robot7);
+    scene->addItem(robot8);
+    scene->addItem(robot9);
 
     scene->addItem(robot0Y);
     scene->addItem(robot1Y);
@@ -183,10 +183,10 @@ void FieldPanel::setupScene() {
     scene->addItem(robot3Y);
     scene->addItem(robot4Y);
     scene->addItem(robot5Y);
-//    scene->addItem(robot6Y);
-//    scene->addItem(robot7Y);
-//    scene->addItem(robot8Y);
-//    scene->addItem(robot9Y);
+    scene->addItem(robot6Y);
+    scene->addItem(robot7Y);
+    scene->addItem(robot8Y);
+    scene->addItem(robot9Y);
 
     scene->addItem(sidelines);
     scene->addItem(ball);
@@ -605,7 +605,7 @@ bool FieldPanel::panelBotClickScan() {
                 guiTeam[i]->highlighted = true;
                 refresh = true;
                 // Refresh GUI
-                for (int r=0; r<dash->teamSize_blue; r++) {
+                for (int r=0; r<6; r++) {
                     dash->robotpanel->botIconFrames[i]->update();
                 }
                 dash->ui->gView_robot_prime->hide();

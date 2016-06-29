@@ -123,7 +123,7 @@ void Robot::clearBehavior()
  * @return One of: (`differential`, `threeWheelOmni`, or `fourWheelOmni`). */
 RobotType Robot::type()
 {
-    assert(id >= 0 && id < 10);
+    assert(id >= 0 && id < 11);
     return robotIDTypes[id];
 }
 

@@ -60,15 +60,15 @@ bool NormalGameStrategy::update()
     // Update the flag indicating if the defenders are
     // clearing the ball. Key for coordination between attack
     // and defense.
-    if(gameModel->findMyTeam(DEFEND_1)->hasBehavior()
-    && gameModel->findMyTeam(DEFEND_2)->hasBehavior())
+    if(gameModel->findMyTeam(DEFEND_1) && gameModel->findMyTeam(DEFEND_1)->hasBehavior()
+    && gameModel->findMyTeam(DEFEND_2) && gameModel->findMyTeam(DEFEND_2)->hasBehavior())
     {
         clearing_ball = gameModel->findMyTeam(DEFEND_1)->getBehavior()->isFinished()
                      || gameModel->findMyTeam(DEFEND_2)->getBehavior()->isFinished();
     }
-    else if(gameModel->findMyTeam(DEFEND_1)->hasBehavior())
+    else if(gameModel->findMyTeam(DEFEND_1) && gameModel->findMyTeam(DEFEND_1)->hasBehavior())
         clearing_ball = gameModel->findMyTeam(DEFEND_1)->getBehavior()->isFinished();
-    else if(gameModel->findMyTeam(DEFEND_2)->hasBehavior())
+    else if(gameModel->findMyTeam(DEFEND_2) && gameModel->findMyTeam(DEFEND_2)->hasBehavior())
         clearing_ball = gameModel->findMyTeam(DEFEND_2)->getBehavior()->isFinished();
     else
         clearing_ball = false;

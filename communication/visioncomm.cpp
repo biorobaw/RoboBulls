@@ -75,12 +75,17 @@ static bool isGoodDetection
     (const Detection& detection, const SSL_DetectionFrame& frame, float confidence, bool fourCameraMode)
 {
     bool isGoodConf = detection.confidence() > confidence;
-    bool isGoodSide = false;
 
-    //For correct side, we look at the X and Y readings and the camera that
-    //reported them. This is to help prevent duplicated readings on the edges
+    // For correct side, we look at the X and Y readings and the camera that
+    // reported them. This is to help prevent duplicated readings on the edges
+    bool isGoodSide = false;
     float x = detection.x();
     float y = detection.y();
+
+    // Camera Config
+    // 1 | 0
+    // -----
+    // 2 | 3
 
     float cam = frame.camera_id();
     if(!fourCameraMode) {
@@ -89,10 +94,10 @@ static bool isGoodDetection
         (x  < 0 && cam == 1);
     } else {
         isGoodSide =
-        (x >= 0 && y >= 0 && cam == 0) ||
-        (x  < 0 && y >= 0 && cam == 1) ||
-        (x  < 0 && y  < 0 && cam == 2) ||
-        (x >= 0 && y  < 0 && cam == 3);
+        (x >  0 && y > 0 && cam == 0) ||
+        (x <= 0 && y > 0  && cam == 1) ||
+        (x <= 0 && y <= 0 && cam == 2) ||
+        (x >  0 && y <= 0 && cam == 3);
     }
     //isGoodSide |= SIMULATED;    //Simulated overrides anything
 
@@ -215,7 +220,7 @@ void VisionComm::recieveRobotTeam(const SSL_DetectionFrame& frame, int team)
     {
         if(isGoodDetection(robot, frame, CONF_THRESHOLD_BOTS, fourCameraMode)) {
             int robotID = robot.robot_id();
-            if(gamemodel->find(robotID, *currentTeamVector) or currentTeamCounts[robotID] >= 25) {
+            if(gamemodel->find(robotID, *currentTeamVector) or currentTeamCounts[robotID] >= 10) {
                 receiveRobot(robot, team);
             } else {
                ++currentTeamCounts[robotID];

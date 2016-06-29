@@ -12,7 +12,7 @@ GuiField::GuiField()
 
 QRectF GuiField::boundingRect() const
 {
-    return QRectF(0,0,6000,4000);
+    return QRectF(0,0,FIELD_LENGTH,FIELD_WIDTH);
 }
 
 void GuiField::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -25,7 +25,7 @@ void GuiField::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     QPen borderPen(QPen(Qt::white, 20, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
 
     // Lines
-    QLineF centerLine(3000,0, 3000,4000);
+    QLineF centerLine(HALF_FIELD_LENGTH,0,HALF_FIELD_LENGTH,FIELD_WIDTH);
 
     // Center circle
     int centerDiam = rec.height() / 4;

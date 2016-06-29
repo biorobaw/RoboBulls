@@ -10,11 +10,11 @@ Point VelocityCalculator::update(const Point& movedPoint)
 {
     addNewVelocityPoint(movedPoint);
 
-    //Difference of most recent reading and oldest
+    // Difference of most recent reading and oldest
     Point displacement = velCalculations.back().first - velCalculations.front().first;
     clock_t time = velCalculations.back().second - velCalculations.front().second;
 
-    //Calculate change displacement over seconds taken from above
+    // Calculate change displacement over seconds taken from above
     float changeInSec = (float)(time) / CLOCKS_PER_SEC;
     float velocityX = (displacement.x / POINTS_PER_METER) / changeInSec;
     float velocityY = (displacement.y / POINTS_PER_METER) / changeInSec;

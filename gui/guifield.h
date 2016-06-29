@@ -4,6 +4,7 @@
 #include <QGraphicsPixmapItem>
 #include <QGraphicsItem>
 #include <QDebug>
+#include <include/config/globals.h>
 
 //GuiField is the background of the field itself, behind the FieldPanel
 

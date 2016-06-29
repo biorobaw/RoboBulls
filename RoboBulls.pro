@@ -10,6 +10,7 @@ QT -= gui
 
 TARGET = RoboBulls
 CONFIG += console
+CONFIG += -j
 CONFIG -= app_bundle
 
 TEMPLATE = app
@@ -99,7 +100,8 @@ SOURCES += main.cpp \
     behavior/refstop.cpp \
     behavior/goalie.cpp \
     behavior/markbot.cpp \
-    behavior/wall.cpp
+    behavior/wall.cpp \
+    behavior/penaltygoalie.cpp
 
 HEADERS += \
 	behavior/attackmain.h \
@@ -193,7 +195,8 @@ HEADERS += \
     behavior/refstop.h \
     behavior/goalie.h \
     behavior/markbot.h \
-    behavior/wall.h
+    behavior/wall.h \
+    behavior/penaltygoalie.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 
