@@ -49,7 +49,7 @@
 #if SIMULATED
     #define XBEE_PERIOD_MS      0 // No limit
 #else
-    #define XBEE_PERIOD_MS      20 // 50 fps
+    #define XBEE_PERIOD_MS      40 // 25 fps
 #endif
 
 //!@}
