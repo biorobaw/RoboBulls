@@ -11,6 +11,9 @@
 #include "gui/guiinterface.h"
 #include "model/gamemodel.h"
 
+std::mutex GameModel::my_team_mutex;
+std::mutex GameModel::opp_team_mutex;
+
 // Global static pointer used to ensure a single instance of the class.
 GameModel* gameModel = new GameModel();
 
@@ -52,6 +55,7 @@ Robot* GameModel::findOpTeam(int id)
  * \return The opposing team (getBlueTeam() if Yellow, getYellowTeam() if Blue) */
 std::vector<Robot*>& GameModel::getOppTeam()
 {
+    std::lock_guard<std::mutex> opp_team_guard(opp_team_mutex);
     return opTeam;
 }
 
@@ -59,6 +63,7 @@ std::vector<Robot*>& GameModel::getOppTeam()
  * \return The current team (getBlueTeam() if Blue, getYellowTeam() if Yellow) */
 std::vector<Robot*>& GameModel::getMyTeam()
 {
+    std::lock_guard<std::mutex> my_team_guard(my_team_mutex);
     return myTeam;
 }
 

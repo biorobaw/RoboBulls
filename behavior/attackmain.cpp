@@ -47,10 +47,6 @@ void AttackMain::perform(Robot * robot)
 //        std::cout << "AttackMain: Score" << std::endl;
         robot->setDribble(false);
 
-        // The isFinished() override is usually used to check if a pass
-        // has occured, so setting it to true when shooting on goal is not needed
-        done = false;
-
         std::pair<bool, Point> goal_eval = calcBestGoalPoint(robot);
 
         if(goal_eval.first)
@@ -61,13 +57,15 @@ void AttackMain::perform(Robot * robot)
         else
             clear_shot_count--;
 
-        score_skill->perform(robot);
+        has_kicked_to_goal = score_skill->perform(robot);
 
         if(clear_shot_count < 0)
         {
             clear_shot_count = 0;
             state = passing;
         }
+
+        has_passed = false;
 
         break;
     }
@@ -86,13 +84,15 @@ void AttackMain::perform(Robot * robot)
         else
             clear_pass_count--;
 
-        done = pass_skill->perform(robot);
+        has_passed = pass_skill->perform(robot);
 
         if(clear_pass_count < 0)
         {
             clear_pass_count = 0;
             state = dribbling;
         }
+
+        has_passed = false;
 
         break;
     }
@@ -149,7 +149,9 @@ void AttackMain::perform(Robot * robot)
         // Dribble Towards Max Node
         kick_point = max_node.point;
         dribble_skill->perform(robot);
-        done = false;
+
+        has_kicked_to_goal = false;
+        has_passed = false;
     }
     }
 }
@@ -404,7 +406,17 @@ std::pair<bool, Point> AttackMain::calcBestPassPoint(Robot* r)
 
 bool AttackMain::isFinished()
 {
-    return done;
+    return has_passed;
+}
+
+bool AttackMain::hasPassed()
+{
+    return has_passed;
+}
+
+bool AttackMain::hasKickedToGoal()
+{
+    return has_kicked_to_goal;
 }
 
 AttackMain::~AttackMain()

@@ -8,6 +8,7 @@
 #include "behavior/wall.h"
 #include "behavior/markbot.h"
 #include "behavior/challengeballbot.h"
+#include "behavior/penaltygoalie.h"
 #include "utilities/comparisons.h"
 #include "utilities/edges.h"
 #include "strategy/normalgamestrategy.h"
@@ -29,7 +30,18 @@ NormalGameStrategy::NormalGameStrategy()
     ||      (prevGs == 'k' && OUR_TEAM == TEAM_YELLOW))
         state = our_kickoff_1;
 
-    // No consequential previous game-state
+    // We are shooting a penalty
+    else if((prevGs == 'p' && OUR_TEAM == TEAM_YELLOW)
+    ||      (prevGs == 'P' && OUR_TEAM == TEAM_BLUE))
+            state = shoot_penalty;
+
+    // We are receiving a penalty
+    else if((prevGs == 'P' && OUR_TEAM == TEAM_YELLOW)
+    ||      (prevGs == 'p' && OUR_TEAM == TEAM_BLUE))
+            state = defend_penalty;
+
+    // Force Start from ref-box. Previous game
+    // states ignored.
     else
         state = evaluate;
 }
@@ -57,6 +69,8 @@ bool NormalGameStrategy::update()
     Point bp = gameModel->getBallPoint();
     Robot* ball_bot = gameModel->getHasBall();
 
+    assignGoalieIfOk();
+
     // Update the flag indicating if the defenders are
     // clearing the ball. Key for coordination between attack
     // and defense.
@@ -81,9 +95,10 @@ bool NormalGameStrategy::update()
     {
     case our_kickoff_1:
     {
+        std::cout << "Kick Off 1" << std::endl;
+
         // First, one of the defenders positions itself
         // behind the ball and attacker 1
-
         if(kick_off_rob)
         {
             Point target = bp + Measurements::unitVector(bp-attack1->getPosition()) * 350;
@@ -95,6 +110,7 @@ bool NormalGameStrategy::update()
         break;
     case our_kickoff_2:
     {
+        std::cout << "Kick Off 2" << std::endl;
         // Once the motion is completed, set a new motion command
         // towards attacker 1
         if(kick_off_rob && kick_off_rob->hasBehavior()
@@ -102,13 +118,14 @@ bool NormalGameStrategy::update()
         {
             float angle = Measurements::angleBetween(kick_off_rob->getPosition(), attack1->getPosition());
             kick_off_rob->clearBehavior();
-            kick_off_rob->assignBeh<GenericMovementBehavior>(Point(0,0), angle, false, false);
+            kick_off_rob->assignBeh<GenericMovementBehavior>(Point(ROBOT_RADIUS-50,0), angle, false, false);
             state = our_kickoff_3;
         }
     }
         break;
     case our_kickoff_3:
     {
+        std::cout << "Kick Off 3" << std::endl;
         // The previous actions should nudge the ball towards attacker 1
         // and so we can begin evaluating our options for play
         if(!Measurements::isClose(initialBallPos, gameModel->getBallPoint(), 50))
@@ -120,12 +137,54 @@ bool NormalGameStrategy::update()
         break;
     case opp_kickoff:
     {
+        std::cout << "Opp Kick Off" << std::endl;
         if(!Measurements::isClose(initialBallPos, gameModel->getBallPoint(), 50))
             state = evaluate;
     }
         break;
+    case shoot_penalty:
+    {
+        std::cout << "Shoot Penalty" << std::endl;
+        Robot* shooter = gameModel->findMyTeam(DEFEND_1);
+        if(shooter)
+        {
+            shooter->assignBeh<AttackMain>();
+            if(dynamic_cast<AttackMain*>(shooter->getBehavior())->hasKickedToGoal())
+            {
+                shooter->assignBeh<Wall>();
+                state = evaluate;
+            }
+        }
+    }
+        break;
+    case defend_penalty:
+    {
+        std::cout << "Defend Penalty" << std::endl;
+        Robot* goalie = gameModel->findMyTeam(GOALIE_ID);
+        Robot* wall1 = gameModel->findMyTeam(DEFEND_1);
+        Robot* wall2 = gameModel->findMyTeam(DEFEND_2);
+        goalie->assignBeh<PenaltyGoalie>();
+
+        if(wall1)
+            wall1->clearBehavior();
+        if(wall2)
+            wall2->clearBehavior();
+
+        if(goalie->getBehavior()->isFinished())
+        {
+            assignGoalieIfOk();
+            state = evaluate;
+
+            if(wall1)
+                wall1->assignBeh<Wall>();
+            if(wall2)
+                wall2->assignBeh<Wall>();
+        }
+    }
+        break;
     case evaluate:
     {
+        std::cout << "Evaluate" << std::endl;
         // Evaluate attack
         if((prev_state != attack && !clearing_ball)
         || (main != nullptr && supp != nullptr && (Measurements::distance(supp,bp) < Measurements::distance(main, bp))))

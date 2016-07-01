@@ -108,7 +108,7 @@ void Wall::perform(Robot * robot)
 
         // Peform kick skill and go back to walling if
         // we are done or the ball no longer needs clearing
-        if(kick_skill->perform(robot) || shouldStopClearing())
+        if(kick_skill->perform(robot) || shouldStopClearing(robot))
         {
             being_cleared = false;
             state = wall;
@@ -121,7 +121,12 @@ void Wall::perform(Robot * robot)
 void Wall::calcWallPoints()
 {
     Point bp = gameModel->getBallPoint();
-    Point gp = gameModel->findMyTeam(GOALIE_ID)->getPosition();
+    Robot* goalie = gameModel->findMyTeam(GOALIE_ID);
+    Point gp;
+    if(goalie)
+        gp = gameModel->findMyTeam(GOALIE_ID)->getPosition();
+    else
+        gp = gameModel->getMyGoal();
     DefenceArea da(OUR_TEAM);
 
     // Get interception of line bp->goalie
@@ -200,24 +205,27 @@ bool Wall::shouldClear(Robot* robot)
     bool b1 = gameModel->getBallSpeed() < 10;
     bool b2 = bp.x < -1000 && !da.contains(bp, 2*ROBOT_RADIUS);
     bool b3 = Comparisons::distanceBall().minMyTeam()->getID() == robot->getID();
-    bool b4 = possessor == nullptr || (possessor != nullptr && possessor->getID() == robot->getID());
+    bool b4 = possessor == nullptr || (possessor != nullptr  &&
+                possessor->getID() == robot->getID());
 
     return b1 && b2 && b3 && b4;
 }
 
-bool Wall::shouldStopClearing()
+bool Wall::shouldStopClearing(Robot* robot)
 {
     // We go back to other tasks if the ball is no longer
     // on our side of the field or if an opponent
     // has the ball or is too close the defence area
     DefenceArea da(OUR_TEAM);
+    Robot* possessor = gameModel->getHasBall();
 
     bool b1 = gameModel->getBallPoint().x > -1000;
     bool b2 = gameModel->getHasBall() != nullptr
             && !gameModel->getHasBall()->isOnMyTeam();
     bool b3 = da.contains(gameModel->getBallPoint(), ROBOT_RADIUS * 2);
+    bool b4 = possessor != nullptr && possessor->getID() != robot->getID();
 
-    return b1 || b2 || b3;
+    return b1 || b2 || b3 || b4;
 }
 
 bool Wall::isFinished()

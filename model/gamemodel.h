@@ -4,6 +4,7 @@
 #include "utilities/point.h"
 #include "utilities/measurements.h"
 #include "model/robot.h"
+#include <mutex>
 
 class StrategyController;
 class VisionComm;
@@ -66,6 +67,8 @@ public:
     std::string toString();
     //! @}
 
+    static std::mutex my_team_mutex;
+    static std::mutex opp_team_mutex;
 private:
     /* StrategyController link */
     StrategyController *sc = NULL;        //Link to strategy controller

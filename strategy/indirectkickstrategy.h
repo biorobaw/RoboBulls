@@ -35,11 +35,13 @@
 class IndirectKickStrategy : public Strategy
 {
 public:
+    IndirectKickStrategy();
     void assignBeh();
     char getNextStrategy() override;
 
 private:
-    Robot* receiverBot; //Robot recieving pass to kick ball
+    Robot* kicker; //Robot recieving pass to kick ball
+    Point initial_bp;
 };
 
 #endif // INDIECTKICKSTRATEGY_H

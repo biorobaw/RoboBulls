@@ -1,5 +1,13 @@
 #ifndef MOVE_COLLISIONS_H
 #define MOVE_COLLISIONS_H
+
+
+#include "utilities/measurements.h"
+#include "utilities/comparisons.h"
+#include "utilities/velocitycalculator.h"
+#include "model/gamemodel.h"
+#include "model/robot.h"
+
 class Robot;
 class Point;
 

@@ -39,6 +39,8 @@ public:
    ~AttackMain();
     void perform(Robot *);
     bool isFinished() override;
+    bool hasKickedToGoal();
+    bool hasPassed();
 
 private:
     struct ProbNode
@@ -54,7 +56,8 @@ private:
     Skill::KickToPointOmni* pass_skill;
     Skill::DribbleToPoint* dribble_skill;
     Point kick_point;
-    bool done = false;
+    bool has_kicked_to_goal = false;
+    bool has_passed = false;
 
     // Fills in prob_field with scoring probabilities
     void calcStaticProb();

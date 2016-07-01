@@ -5,7 +5,7 @@
 #include "robcomm.h"
 
 //! @brief Percentage of stored robot velocity sent to simulator
-const float mappingRatio = 0.333;
+const float mappingRatio = 0.5;
 
 /*! @brief RobComm to send to the grSim simulator
  * @details uses ProtoBuf and QT to send to a computer running a grSim simulator */

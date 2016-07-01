@@ -589,7 +589,7 @@ bool FieldPanel::fieldClickScan() {
 }
 
 bool FieldPanel::panelBotClickScan() {
-    for (int i=0; i<dash->teamSize_blue; i++) {
+    for (int i=0; i<6; i++) {
         if (dash->gamemodel->find(i,dash->gamemodel->getMyTeam()) != NULL) {
             // Bots on the panel clicked
             if (dash->robotpanel->botIcons[i]->isSelected()) {
@@ -619,7 +619,7 @@ bool FieldPanel::panelBotClickScan() {
 }
 
 bool FieldPanel::fieldBotClickScan() {
-    for (int i=0; i<dash->teamSize_blue; i++) {
+    for (int i=0; i<6; i++) {
         if (dash->gamemodel->find(i,dash->gamemodel->getMyTeam()) != NULL) {
             // Bots on the field clicked
             if (guiTeam[i]->isSelected()) {

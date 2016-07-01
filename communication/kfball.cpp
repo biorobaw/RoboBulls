@@ -11,8 +11,8 @@
 #else
 #define ACCEL -10.0
 #define TIME_STEP 0.0112    // Determined using printTimeStep()
-#define QVEL 10.0
-#define QPOS 10.0
+#define QVEL 1.0
+#define QPOS 1.0
 #define RVEL 0.00001
 #define RPOS 0.00001
 #endif

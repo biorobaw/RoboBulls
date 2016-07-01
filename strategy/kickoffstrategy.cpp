@@ -5,11 +5,11 @@
 
 /******************
  *             *
- *       0     *
- *    3       |-|
- | 5     1    |o|
- *    4       |-|
- *       2     *
+ *             *
+ *    3  1    |-|
+ | 5          |o|
+ *    4  2    |-|
+ *             *
  *             *
  ******************/
 
@@ -21,15 +21,15 @@ void KickOffStrategy::assignBeh()
     Robot* attack2 = gameModel->findMyTeam(ATTACK_2);
 
     if(wall1)
-        wall1->assignBeh<GenericMovementBehavior>(Point(-650, 500), 0);
+        wall1->assignBeh<GenericMovementBehavior>(Point(-650, 300), 0);
     if(wall2)
         wall2->assignBeh<GenericMovementBehavior>(Point(-1600, 0), 0);
     if(attack1)
         attack1->assignBeh<GenericMovementBehavior>(Point(-650, 0), 0);
     if(attack2)
-        attack2->assignBeh<GenericMovementBehavior>(Point(-650, -500), 0);
+        attack2->assignBeh<GenericMovementBehavior>(Point(-650, -300), 0);
 
-    //Goalie is a special case
+    // Goalie is a special case
     Robot* goalie = gameModel->findMyTeam(GOALIE_ID);
     if(goalie)
         goalie->assignBeh<Goalie>();

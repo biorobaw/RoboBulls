@@ -64,7 +64,7 @@ bool DribbleBack::perform(Robot* robot)
         robot->setDribble(true);
 
         move_skill.recreate(grasp_point, ang_to_ball, false, false);
-        move_skill.setVelocityMultiplier(0.5);
+        move_skill.setVelocityMultiplier(0.2);
 
         if(move_skill.perform(robot))
             state = move_back;
@@ -87,7 +87,7 @@ bool DribbleBack::perform(Robot* robot)
 
         robot->setDribble(true);
 
-        float vel = fmax(-25, prev_vel - 0.1);
+        float vel = fmax(-3, prev_vel - 0.05);
         prev_vel = vel;
 
         robot->setLF(vel);

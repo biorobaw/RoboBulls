@@ -18,7 +18,6 @@
 
 #define SIMULATED 1
 
-
 //! @}
 
 #endif

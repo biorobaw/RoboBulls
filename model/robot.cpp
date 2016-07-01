@@ -9,7 +9,7 @@ Robot::Robot()
     LF = 0; LB = 0;
     RF = 0; RB = 0;
     orientation = 0;
-    kick = false;
+    kick = 0;
     dribble = false;
     hasBeh = false;
     behavior = nullptr;
@@ -123,7 +123,7 @@ void Robot::clearBehavior()
  * @return One of: (`differential`, `threeWheelOmni`, or `fourWheelOmni`). */
 RobotType Robot::type()
 {
-    assert(id >= 0 && id < 11);
+    assert(id >= 0 && id <= 11);
     return robotIDTypes[id];
 }
 

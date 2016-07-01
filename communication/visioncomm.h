@@ -17,9 +17,9 @@
 
 //! @brief Sets the minimum confidence to consider a ball reading as valid
 #if SIMULATED
-const float CONF_THRESHOLD_BALL = 0.75;
+const float CONF_THRESHOLD_BALL = 0.9;
 #else
-const float CONF_THRESHOLD_BALL = 0.99999;
+const float CONF_THRESHOLD_BALL = 0.8;
 #endif
 
 //! @brief Sets the minimum confidence to consider a robot as a valid reading
@@ -66,8 +66,8 @@ protected:
     RoboCupSSLClient * client;      //! client to receive packets
     int resetFrames = 0;            //! Frames passed up remove all potential robot detections
     int totalframes = 0;            //! Total frames passed since start
-    int blue_rob_readings[10]={0};  //! Number of detections of each blue robot
-    int yell_rob_readings[10]={0};  //! Number of detections of each yelloe robot
+    int blue_rob_readings[12]={0};  //! Number of detections of each blue robot
+    int yell_rob_readings[12]={0};  //! Number of detections of each yelloe robot
     timeval lastRecvTime;           //! When did we last receive a packet? Used to not recieve every one
     bool fourCameraMode = false;    //! Are we in four-camera mode (true)? Or Two-camera mode?
 

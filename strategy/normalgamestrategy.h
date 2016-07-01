@@ -33,6 +33,7 @@ private:
     Robot* main = nullptr;
 
     enum {opp_kickoff, our_kickoff_1, our_kickoff_2, our_kickoff_3,
+          shoot_penalty, defend_penalty,
           evaluate, attack, defend, goalkick, clearball} state, prev_state;
 };
 

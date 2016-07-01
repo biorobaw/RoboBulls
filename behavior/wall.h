@@ -36,7 +36,7 @@ private:
     Point kickPoint;
     Skill::KickToPointOmni* kick_skill;
     bool shouldClear(Robot*);
-    bool shouldStopClearing();
+    bool shouldStopClearing(Robot*);
 };
 
 #endif // WALL_H

@@ -35,7 +35,7 @@ const bool robotHasKicker[] = {
 
 //Goalie ID integer
 float GOALIE_ID = 1;
-float DEFEND_1 = 2;
+float DEFEND_1 = 5;
 float DEFEND_2 = 3;
 float ATTACK_1 = 4;
-float ATTACK_2 = 5;
+float ATTACK_2 = 2;

@@ -13,8 +13,8 @@
  const double DRIBBLE_BACK_SPD = 7;
  const double DRIBBLE_TURN_RATE = 0.1;
 #else
- const int ROBOT_RADIUS   = 120;
- const int DIST_TOLERANCE = 40;
+ const int ROBOT_RADIUS   = 110;
+ const int DIST_TOLERANCE = 50;
  const double ROT_TOLERANCE  = 5*(M_PI/180);
  const double DEF_AREA_TOL = ROBOT_RADIUS + 10;
 

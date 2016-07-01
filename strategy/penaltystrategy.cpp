@@ -15,9 +15,9 @@ void PenaltyStrategy::assignBeh()
         Robot* attack1 = gameModel->findMyTeam(ATTACK_1);
         Robot* attack2 = gameModel->findMyTeam(ATTACK_2);
         if(attack1)
-            attack1->assignBeh<GenericMovementBehavior>(Point(gameModel->getOppGoal() - Point(1700, 500)), 0);
+            attack1->assignBeh<GenericMovementBehavior>(Point(-500, 1000), 0);
         if(attack2)
-            attack2->assignBeh<GenericMovementBehavior>(Point(gameModel->getOppGoal() - Point(1700,-500)), 0);
+            attack2->assignBeh<GenericMovementBehavior>(Point(-500,-1000), 0);
 
         // The other defender walls our goal
         Robot* def = gameModel->findMyTeam(DEFEND_2);

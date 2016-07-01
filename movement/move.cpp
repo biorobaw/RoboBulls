@@ -17,7 +17,7 @@
  * Without this there's little point in trying an actual game
  * [See movement/move_collisions.h]
  */
-#define MOVEMENT_USE_ROB_COLLIDE 1
+#define MOVEMENT_USE_ROB_COLLIDE 0
 
 //Debug enable constant
 #define MOVEMENT_MOVE_DEBUG 0

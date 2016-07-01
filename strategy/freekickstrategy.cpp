@@ -1,13 +1,17 @@
 #include "freekickstrategy.h"
 #include "behavior/attackmain.h"
+#include "behavior/attacksupport.h"
 #include "model/gamemodel.h"
 #include "behavior/goalie.h"
 #include "strategy/normalgamestrategy.h"
 #include "behavior/refstop.h"
+#include "behavior/wall.h"
+#include "behavior/markbot.h"
 #include "include/config/team.h"
+#include "skill/kicktopointomni.h"
 
 FreeKickStrategy::FreeKickStrategy()
-    : kickerRobot(NULL)
+    :initial_bp(gameModel->getBallPoint())
 {
 }
 
@@ -15,81 +19,72 @@ void FreeKickStrategy::assignBeh()
 {
     GameModel *gm = GameModel::getModel();
 
-    std::vector<Robot*> myTeam;
+    Robot* wall1 = gameModel->findMyTeam(DEFEND_1);
+    Robot* wall2 = gameModel->findMyTeam(DEFEND_2);
+    Robot* attack1 = gameModel->findMyTeam(ATTACK_1);
+    Robot* attack2 = gameModel->findMyTeam(ATTACK_2);
 
-    myTeam = gm->getMyTeam();
-
+    // We are taking the free kick
     if ((gm->getGameState() == 'F' && OUR_TEAM == TEAM_BLUE) ||
         (gm->getGameState() == 'f' && OUR_TEAM == TEAM_YELLOW))
     {
-        //Assign the goalie if he is there
+        for(Robot* rob : gameModel->getMyTeam())
+            rob->clearBehavior();
+
+        if(attack1)
+        {
+            attack1->assignSkill<Skill::KickToPointOmni>(gm->getOppGoal());
+            kicker = attack1;
+        }
+        else if(attack2)
+        {
+            attack2->assignSkill<Skill::KickToPointOmni>(gm->getOppGoal());
+            kicker = attack2;
+        }
+        else if(wall1)
+        {
+            wall1->assignSkill<Skill::KickToPointOmni>(gm->getOppGoal());
+            kicker = wall1;
+        }
+        else if(wall2)
+        {
+            wall2->assignSkill<Skill::KickToPointOmni>(gm->getOppGoal());
+            kicker = wall2;
+        }
+
+        if(wall1 && !wall1->hasBehavior())
+            wall1->assignBeh<Wall>();
+        if(wall2 && !wall2->hasBehavior())
+            wall2->assignBeh<Wall>();
+        if(attack1 && !attack1->hasBehavior())
+            attack1->assignBeh<AttackMain>();
+        if(attack2 && !attack2->hasBehavior())
+            attack2->assignBeh<AttackSupport>();
+
         NormalGameStrategy::assignGoalieIfOk();
-
-        int closestRobotID = 0;
-        Point ballPoint = gm->getBallPoint();
-
-        /*Finds the closest robot to the ball point (assuming the
-         * ball is where the robots should perform free kick)
-         * and its ID
-         * If there is only one robot on the field, that one robot
-         * will perform the free kick
-         * */
-        if (myTeam.size() == 1)
-            kickerRobot = myTeam.at(0);
-        else if (myTeam.size() > 1)
-        {
-            if (myTeam.at(0)->getID() != GOALIE_ID)
-                kickerRobot = myTeam.at(0);
-            else
-                kickerRobot = myTeam.at(1);
-
-            for (unsigned i = 1; i < myTeam.size(); i++)
-            {
-                if (myTeam.at(i)->getID() != GOALIE_ID)
-                {
-                    Point iPos = myTeam.at(i)->getPosition();
-                    Point closestPos = kickerRobot->getPosition();
-                    if (Measurements::distance(iPos, ballPoint) < Measurements::distance(closestPos, ballPoint))
-                        kickerRobot = myTeam.at(i);
-                }
-            }
-            closestRobotID = kickerRobot->getID();
-        }
-
-        kickerRobot->assignBeh<AttackMain>();   //lets the closest robot to the ball to perform the free kick
-
-        if (myTeam.size() > 1)  // assigns simple behavior to the rest of robots
-        {
-            for(Robot* robot : gameModel->getMyTeam()) {
-                if(robot->getID() != GOALIE_ID && robot->getID() != closestRobotID)
-                    robot->assignBeh<RefStop>();
-            }
-        }
     }
+    // We are defending against a free kick
     else if ((gm->getGameState() == 'f' && OUR_TEAM == TEAM_BLUE)
           || (gm->getGameState() == 'F' && OUR_TEAM == TEAM_YELLOW))
     {
-        // Stop robots away from ball
-        for(Robot* robot : gameModel->getMyTeam())
-            robot->assignBeh<RefStop>();
+        if(wall1)
+            wall1->assignBeh<Wall>();
+        if(wall2)
+            wall2->assignBeh<Wall>();
+        if(attack1)
+            attack1->assignBeh<MarkBot>();
+        if(attack2)
+            attack2->assignBeh<MarkBot>();
 
-        //Assign goalie if he is there
         NormalGameStrategy::assignGoalieIfOk();
     }
 }
 
-
 char FreeKickStrategy::getNextStrategy()
 {
-    /* Here we check to see if the robot has kicked (KickToGoal's
-     * "isFinished") and go to NormalGame if so */
-#if 0
-    if(kickerRobot != NULL) {
-        return kickerRobot->getCurrentBeh()->isFinished() ? ' ' : '\0';
-    } else {
-        method to stop on opponent free kicks
-    }
-#endif
-
-    return '\0';
+    if ((kicker && kicker->getKick() > 0)
+    || !Measurements::isClose(initial_bp, gameModel->getBallPoint(), 70))
+        return ' '; // Go to normal game strategy
+    else
+        return '\0';
 }

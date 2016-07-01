@@ -7,6 +7,7 @@
 #include "skill/skill.h"
 #include "behavior/genericskillbehavior.h"
 #include "include/config/robot_types.h"
+#include "iostream"
 
 /*! @addtogroup everydayuse
  * @{ */
@@ -127,6 +128,7 @@ bool Robot::assignBeh(Args&&... args)
     static_assert(std::is_base_of<Behavior, BehaviorType>::value,
         "This Behavior must derive from the Behavior base class");
     if(not(hasBeh) or typeid(*getBehavior()) != typeid(BehaviorType)) {
+//        std::cout << "Clearing Behavior on robot " << id << std::endl;
         clearBehavior();
         setCurrentBeh(new BehaviorType(args...));
         return true;

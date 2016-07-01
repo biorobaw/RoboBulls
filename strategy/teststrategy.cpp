@@ -9,6 +9,8 @@
 #include "behavior/attackmain.h"
 #include "behavior/attacksupport.h"
 #include "behavior/refstop.h"
+#include "behavior/penaltygoalie.h"
+#include "behavior/wall.h"
 #include "ctime"
 
 /************************************************************************/
@@ -19,12 +21,11 @@
 class KickBeh : public Behavior
 {
     Skill::KickToPointOmni* ktpo;
-    Movement::GoToPosition move_skill;
     std::clock_t start;
     bool wait4recharge;
 public:
     KickBeh() {
-        ktpo = new Skill::KickToPointOmni(Point(0,0),-1,-1,true);
+        ktpo = new Skill::KickToPointOmni(Point(-4500,1500),-1,-1,true);
         wait4recharge = false;
     }
     ~KickBeh() {
@@ -43,9 +44,10 @@ public:
         {
             wait4recharge = true;
             start = std::clock();
-            move_skill.recreate(robot->getPosition());
-            move_skill.perform(robot);
-
+            robot->setLF(0);
+            robot->setLB(0);
+            robot->setRF(0);
+            robot->setRB(0);
         }
 
         // If 6 seconds have passed since starting recharge,
@@ -155,9 +157,9 @@ public:
     {
         GameModel * gm = GameModel::getModel();
         Point rp = robot->getPosition();
-        Point bp = gm->getBallPoint();
-        Point target_one = Point(-3300,500);
-        Point target_two = Point(-500, 500);
+//        Point bp = gm->getBallPoint();
+        Point target_one = Point(-3300,robot->getID()*300);
+        Point target_two = Point(-500, robot->getID()*300);
         double ori = Measurements::angleBetween(rp,Point(0,0));
         switch(state)
         {
@@ -200,15 +202,15 @@ bool TestStrategy::update()
     Robot* r5 = gameModel->findMyTeam(5);
 
     if(r1)
-        r1->assignBeh<DribbleBeh>();
+        r1->assignBeh<KickBeh>();
     if(r2)
-        r2->assignBeh<DribbleBeh>();
+        r2->assignBeh<KickBeh>();
     if(r3)
-        r3->assignBeh<ShamsiStrafe>();
+        r3->assignBeh<KickBeh>();
     if(r4)
-        r4->assignBeh<ShamsiStrafe>();
+        r4->assignBeh<KickBeh>();
     if(r5)
-        r5->assignBeh<DribbleBeh>();
+        r5->assignBeh<KickBeh>();
 
     return false;
 }

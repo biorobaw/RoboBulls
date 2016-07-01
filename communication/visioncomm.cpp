@@ -4,6 +4,7 @@
 #include "include/config/team.h"
 #include "include/config/communication.h"
 #include "visioncomm.h"
+#include "model/gamemodel.h"
 
 using namespace std;
 
@@ -34,6 +35,9 @@ bool VisionComm::isFourCameraMode()
  */
 void VisionComm::receiveRobot(const SSL_DetectionRobot& robot, int detectedTeamColor)
 {
+//    std::lock_guard<std::mutex> my_team_guard(GameModel::my_team_mutex);
+//    std::lock_guard<std::mutex> opp_team_guard(GameModel::opp_team_mutex);
+
     vector<Robot*>* currentTeam = &gamemodel->getMyTeam();
 
     if (detectedTeamColor != OUR_TEAM)
@@ -41,7 +45,15 @@ void VisionComm::receiveRobot(const SSL_DetectionRobot& robot, int detectedTeamC
 
     if (robot.has_robot_id())
     {
+        // 2 5 7 8
         int id = robot.robot_id();
+        switch(id)
+        {
+        case 7:
+            id = 7;
+            break;
+        }
+
         Robot* rob = gamemodel->find(id, *currentTeam);
 
         if (rob == NULL)
@@ -64,6 +76,8 @@ void VisionComm::receiveRobot(const SSL_DetectionRobot& robot, int detectedTeamC
     #endif
         rob->setRobotPosition( positionReading );
         rob->setOrientation(rotationReading);
+
+
 
         gamemodel->onRobotUpdated(rob);
     }
@@ -245,7 +259,7 @@ void VisionComm::receiveIfMSPassed(int ms_limit)
 void VisionComm::receive()
 {
     //Receive a new packet if X ms has passed (0 FOR NOW)
-    //receiveIfMSPassed(0);
+    //receiveIfMSPassed(10);
     client->receive(packet);    //Recieve packet here
 
     if(packet.has_detection())
