@@ -5,7 +5,7 @@
 class Robot;
 
 /*! @brief Strategy to implement a free kick game state 'F' and 'f'
- *  @author Narges G */
+ *  @author Muhaimen Shamsi*/
 
 class FreeKickStrategy: public Strategy
 {
@@ -15,7 +15,11 @@ public:
     char getNextStrategy() override;
 
 private:
-    Robot* kicker = nullptr;  //!<Robot that is sent to kick the ball
+    // Robot that is sent to kick the ball
+    Robot* kicker = nullptr;
+
+    // Stores the position of the ball when this strategy starts
+    // so that we know when the opponents have moved the ball
     Point initial_bp;
 };
 

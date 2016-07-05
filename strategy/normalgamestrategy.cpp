@@ -71,9 +71,8 @@ bool NormalGameStrategy::update()
 
     assignGoalieIfOk();
 
-    // Update the flag indicating if the defenders are
-    // clearing the ball. Key for coordination between attack
-    // and defense.
+    // Update the flag indicating if the defenders are clearing the ball.
+    // This is key for coordination between attack and defense.
     if(gameModel->findMyTeam(DEFEND_1) && gameModel->findMyTeam(DEFEND_1)->hasBehavior()
     && gameModel->findMyTeam(DEFEND_2) && gameModel->findMyTeam(DEFEND_2)->hasBehavior())
     {
@@ -87,10 +86,9 @@ bool NormalGameStrategy::update()
     else
         clearing_ball = false;
 
-    // Standard state machine that stays in the "evaluate" state
-    // the majority of the time. Most states are for assigning behaviors
-    // only when necessary to prevent continuous assignment which breaks
-    // behaviors.
+    // Standard state machine that stays in the "evaluate" state the majority of the time.
+    // Most states are for assigning behaviors only when necessary to prevent continuous
+    // assignment which breaks behaviors.
     switch(state)
     {
     case our_kickoff_1:
@@ -111,8 +109,7 @@ bool NormalGameStrategy::update()
     case our_kickoff_2:
     {
         std::cout << "Kick Off 2" << std::endl;
-        // Once the motion is completed, set a new motion command
-        // towards attacker 1
+        // Once the motion is completed, set a new motion command towards attacker 1
         if(kick_off_rob && kick_off_rob->hasBehavior()
         && kick_off_rob->getBehavior()->isFinished())
         {

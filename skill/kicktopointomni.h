@@ -13,13 +13,12 @@ namespace Skill
  *  @author JamesW
  * @details A simplified, optimized version of KTP for Omni robots.
  * The ability the track a moving target is preserved with the
- * pointer constructor. The robot is asked to fist move to behind the ball
- * at any angle while rotating to face the ball. Then the Robot moves
- * forwards, and finally kicks the ball when close enough.
+ * pointer constructor. The robot is asked to first move behind the ball
+ * while rotating to face the ball. Then the Robot moves forwards, and finally
+ * kicks the ball when close enough.
+ *
  * KTPO supports both a <b>static point</b> and <b>variable point</b> constructors.
  *
- * <b>Example Everyday Usage</b>
- * @include example_kicktopointomni.cpp
  */
 class KickToPointOmni : public Skill
 {
@@ -27,11 +26,10 @@ public:
     /*! @brief <b>Static-point</b> constructor, for kicking to a static point
     * @param target Target point to kick toarwards
     * @param targetTolerance: Tolerance for the robot angle facing the target point before
-    * a kick is made, for accuracy or non-accuracy reasons.
-    * Leave blank to use default
+    * a kick is made, for accuracy or non-accuracy reasons. Leave blank to use default.
     * @param kickDistance: How close should the robot be to the target before kicking.
     * leave blank to kick as soon as possible
-    * @param useFullPower Use a full-power kick instead of a variable power one to the target */
+    * @param useFullPower: Use a full-power kick instead of a variable power one to the target */
     KickToPointOmni(const Point& target,
                     float targetTolerance = -1,
                     float kickDistance = -1,
@@ -63,14 +61,14 @@ private:
       int  m_kickCommandCount;
      bool  m_hasKicked;
 
-    //Current skill state
+    // Current skill state
     enum { MOVE_BEHIND,  //We are far from the ball and are moving behind it to face target
            MOVE_INTERMEDIATE,   // We are moving closer to the ball
            MOVE_FORWARD, //We are behind the ball facing target, and are moving forward to kick
            KICK          //We are kicking the ball
          } state;
 
-    //Querying information to help switch states
+    // Querying information to help switch states
     bool isFacingBall(Robot* robot);
     bool isFacingTarget(Robot* robot);
     bool isCloseToBall(Robot* robot);
@@ -78,7 +76,6 @@ private:
     bool isWithinKickDistance(Robot* robot);
     bool isInKickLock(Robot* robot);
     bool canKick(Robot *robot);
-    bool ballIsMovingAway(Robot* robot);
 };
 
 }

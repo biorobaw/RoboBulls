@@ -9,6 +9,23 @@
 namespace Skill
 {
 
+/*! @brief Uses the dribbler to move the ball to a given point while driving
+ * backwards. Does not perform obstacle avoidance.
+ *
+ * @author Muhaimen Shamsi
+ *
+ * @details  This skill will position the robot in the line between the ball
+ * and the target, turn on the dribbler, make the robot approach
+ * the ball, and move straight backwards once the ball is grasped by
+ * the dribbler. It applies an acceleration while moving back.
+ *
+ * Useful when the DribbleToPoint skill's path-planning
+ * is not desired or when a guarantee is needed that the motion will
+ * be backwards. As such, this should be deprecated when DribbleToPoint
+ * is able to achive the same functionality through input parameters.
+ */
+
+
 class DribbleBack : public Skill
 {
 public:

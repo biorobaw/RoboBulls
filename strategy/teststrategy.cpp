@@ -155,7 +155,7 @@ public:
     enum {pos_one,pos_two} state = pos_one;
     void perform(Robot *robot) override
     {
-        GameModel * gm = GameModel::getModel();
+//        GameModel * gm = GameModel::getModel();
         Point rp = robot->getPosition();
 //        Point bp = gm->getBallPoint();
         Point target_one = Point(-3300,robot->getID()*300);

@@ -64,7 +64,6 @@ SOURCES += main.cpp \
 	movement/pathfinding/fppa_pathfinding.cpp \
 	movement/three_omni_motion/omni3_velcalculator.cpp \
 	movement/gotoposition.cpp \
-	skill/driveball.cpp \
 	skill/kick.cpp \
 	skill/kicktopointomni.cpp \
 	skill/stop.cpp \
@@ -158,7 +157,6 @@ HEADERS += \
 	movement/movetype.h \
 	movement/pathfinding/fppa_pathfinding.h \
 	movement/three_omni_motion/omni3_velcalculator.h \
-	skill/driveball.h \
 	skill/kick.h \
 	skill/kicktopointomni.h \
 	skill/skill.h \

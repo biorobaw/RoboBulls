@@ -204,7 +204,7 @@ bool KickToPointOmni::perform(Robot* robot)
 }
 
 //The following are utility functions to help switch state.
-//- canKick: All conditions okay to kick the ball
+//- canKick: All conditions okay to actuate the kicker
 //- isWithinKickDistnace: "Within kick distance" means we are close to the target to kick to it
 //- isCloseToBall: We are close to the ball if we are within kicking distance
 //- isVeryFarFromBall: True if we are pretty far away from the ball
@@ -262,40 +262,4 @@ bool KickToPointOmni::isInKickLock(Robot* robot)
     return false;
 }
 
-/* Check to see if kicking is done or not.
- * It happens when we have observed the ball moving away, when:
- *  - The current distance of ball-to-robot is greater than the last
- *  - The change is significant
- *  - It happened far from the robot. So we don't record changes of the robot pushing the ball.
- * FIXME: This is duplicated from DefendBehavior
- * FIXME: This is not reliable. Does not return true most of the time when it should.
- *        For now, this is not used and the skill returns after the state-machine
- *        reaches kick.
- */
-bool KickToPointOmni::ballIsMovingAway(Robot* robot)
-{
-    //Let's look at the distance from the robot to the ball. Okay:
-    float thisDist = Measurements::distance(gameModel->getBallPoint(), robot);
-
-    bool farther_than_last = thisDist > m_lastBallAwayDist;
-    bool increase_is_significant = abs(thisDist - m_lastBallAwayDist) > 40;
-    bool far_from_robot = thisDist > ROBOT_RADIUS*4;
-
-    std::cout << farther_than_last << increase_is_significant << far_from_robot << std::endl;
-
-    if( farther_than_last && increase_is_significant && far_from_robot)
-    {
-        m_lastBallAwayDist = thisDist;
-        ++m_ballMovingAwayCount;
-    }
-
-    //The above three conditions have held enough times.
-    //We reset it go not save invalid state over kicking again, if it happens.
-    if(m_ballMovingAwayCount > 2) {
-        m_ballMovingAwayCount = 0;
-        return true;
-    }
-
-    return false;
-}
 }
