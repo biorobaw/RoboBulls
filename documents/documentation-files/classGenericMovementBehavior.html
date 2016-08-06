@@ -106,13 +106,16 @@ Inheritance diagram for GenericMovementBehavior:</div>
  <div class="center">
   <img src="classGenericMovementBehavior.png" usemap="#GenericMovementBehavior_map" alt=""/>
   <map id="GenericMovementBehavior_map" name="GenericMovementBehavior_map">
-<area href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. " alt="Behavior" shape="rect" coords="440,0,606,24"/>
-<area href="classAttackSupport.html" title="AttackSupport is a complement to Attackmain, used in NormalGameStrategy. " alt="AttackSupport" shape="rect" coords="0,112,166,136"/>
-<area href="classDefendFarFromBall.html" title="The “goalie” behavior of the game. " alt="DefendFarFromBall" shape="rect" coords="176,112,342,136"/>
-<area href="classPassBallReceiver.html" title="Skill to recieve a ball pass from PassBallSender. " alt="PassBallReceiver" shape="rect" coords="352,112,518,136"/>
-<area href="classPassBallSender.html" title="Behavior to pass the ball to a robot with PassBallReceiver. " alt="PassBallSender" shape="rect" coords="528,112,694,136"/>
-<area href="classPenaltyBehavior.html" title="Behavior to perform a penalty kick. " alt="PenaltyBehavior" shape="rect" coords="704,112,870,136"/>
-<area href="classRotateOnPoint.html" title="Behavior to rotate around a stationary point. " alt="RotateOnPoint" shape="rect" coords="880,112,1046,136"/>
+<area href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. " alt="Behavior" shape="rect" coords="0,0,166,24"/>
+<area href="classAttackMain.html" alt="AttackMain" shape="rect" coords="176,112,342,136"/>
+<area href="classAttackSupport.html" alt="AttackSupport" shape="rect" coords="176,168,342,192"/>
+<area href="classChallengeBallBot.html" alt="ChallengeBallBot" shape="rect" coords="176,224,342,248"/>
+<area href="classGoalie.html" title="The “goalie” behavior of the game. " alt="Goalie" shape="rect" coords="176,280,342,304"/>
+<area href="classMarkBot.html" alt="MarkBot" shape="rect" coords="176,336,342,360"/>
+<area href="classPassBallReceiver.html" title="Skill to recieve a ball pass from PassBallSender. " alt="PassBallReceiver" shape="rect" coords="176,392,342,416"/>
+<area href="classPenaltyGoalie.html" alt="PenaltyGoalie" shape="rect" coords="176,448,342,472"/>
+<area href="classRefStop.html" alt="RefStop" shape="rect" coords="176,504,342,528"/>
+<area href="classWall.html" alt="Wall" shape="rect" coords="176,560,342,584"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -130,6 +133,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGenericMovementBehavior.html#acdd16af72d03bab5727a465de853ebc0">isFinished</a> () override</td></tr>
 <tr class="memdesc:acdd16af72d03bab5727a465de853ebc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return true when reached the movement targets. <br/></td></tr>
 <tr class="separator:acdd16af72d03bab5727a465de853ebc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classBehavior"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classBehavior')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classBehavior.html">Behavior</a></td></tr>
+<tr class="memitem:a91b4939194ce05f10ce81ce11c564fb3 inherit pub_methods_classBehavior"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBehavior.html#a91b4939194ce05f10ce81ce11c564fb3">perform</a> (obot *)=0</td></tr>
+<tr class="memdesc:a91b4939194ce05f10ce81ce11c564fb3 inherit pub_methods_classBehavior"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform this behavior's action on a robot Given an arbitrary roobot, The <em>perform</em> function of a <a class="el" href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. ">Behavior</a> defines how to run the behavior on a robot.  <a href="#a91b4939194ce05f10ce81ce11c564fb3">More...</a><br/></td></tr>
+<tr class="separator:a91b4939194ce05f10ce81ce11c564fb3 inherit pub_methods_classBehavior"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -308,7 +315,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Sep 23 2015 14:45:59 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jul 26 2016 13:40:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

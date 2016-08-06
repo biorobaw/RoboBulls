@@ -105,9 +105,9 @@ std::vector&lt; std::string &gt; &amp;)&gt;&#160;</td><td class="memItemRight" v
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a56f52c96546c656d951bf2ea206e6009"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedebug.html#a56f52c96546c656d951bf2ea206e6009">registerVariable</a> (const std::string &amp;name, int *pointer)</td></tr>
-<tr class="memdesc:a56f52c96546c656d951bf2ea206e6009"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register a variable for appearance in the command line.  <a href="#a56f52c96546c656d951bf2ea206e6009">More...</a><br/></td></tr>
-<tr class="separator:a56f52c96546c656d951bf2ea206e6009"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a442c80c05032131f1902d2e984b8cd36"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedebug.html#a442c80c05032131f1902d2e984b8cd36">registerVariable</a> (const std::string &amp;name, float *pointer)</td></tr>
+<tr class="memdesc:a442c80c05032131f1902d2e984b8cd36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register a variable for appearance in the command line.  <a href="#a442c80c05032131f1902d2e984b8cd36">More...</a><br/></td></tr>
+<tr class="separator:a442c80c05032131f1902d2e984b8cd36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb1d03a859332a1936b010ab34cf5c25"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedebug.html#abb1d03a859332a1936b010ab34cf5c25">registerFunction</a> (const std::string &amp;name, <a class="el" href="namespacedebug.html#ac6d006fca692a20bd1006e897ec5b7ce">debug_fn</a> function)</td></tr>
 <tr class="memdesc:abb1d03a859332a1936b010ab34cf5c25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register a function to be called from the command line.  <a href="#abb1d03a859332a1936b010ab34cf5c25">More...</a><br/></td></tr>
 <tr class="separator:abb1d03a859332a1936b010ab34cf5c25"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -118,9 +118,9 @@ Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>RoboBulls command line. </p>
 <dl class="section author"><dt>Author</dt><dd>JamesW</dd></dl>
-<p>The debug command line allows the changing of an arbitraty integer variableand calling of arbitrary functions at runtime from the console. In essensnce, a terminal for Robobulls.<br/>
+<p>The debug command line allows the changing of an arbitraty floating point variables calling of arbitrary functions at runtime from the console. In essensnce, a terminal for Robobulls.<br/>
 </p>
-<p>Pointers to integers are registered to a name using "registerVariable". Functions are registed to a name using "registerFunction". Once running, "set" and "get" commands on the comamnd line can be used to set a new value and retreieve the current value to an interger pointer, and "call" can be used tocall a function.</p>
+<p>Pointers to floats are registered to a name using "registerVariable". Functions are registed to a name using "registerFunction". Once running, "set" and "get" commands on the comamnd line can be used to set a new value and retreieve the current value to a pointer, and "call" can be used tocall a function.</p>
 <p>The <code>listenStart</code> function spawns new thread that listens on for lines on stdin. The accepted commands are the following. In addition, some built-in functions are in the command line.</p>
 <h2>Command Line Reference </h2>
 <table class="doxtable">
@@ -217,7 +217,7 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a56f52c96546c656d951bf2ea206e6009"></a>
+<a class="anchor" id="a442c80c05032131f1902d2e984b8cd36"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -230,7 +230,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int *&#160;</td>
+          <td class="paramtype">float *&#160;</td>
           <td class="paramname"><em>pointer</em>&#160;</td>
         </tr>
         <tr>
@@ -245,7 +245,7 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">variable</td><td>The name of the variable in the command line </td></tr>
-    <tr><td class="paramname">pointer</td><td>Pointer to integer that will be written to with a "set" command </td></tr>
+    <tr><td class="paramname">pointer</td><td>Pointer to float that will be written to with a "set" command </td></tr>
   </table>
   </dd>
 </dl>
@@ -255,7 +255,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Sep 23 2015 14:45:59 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jul 26 2016 13:40:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

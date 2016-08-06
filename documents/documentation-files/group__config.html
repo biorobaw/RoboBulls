@@ -92,51 +92,66 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
+<tr class="memitem:gab43db5089521535af2d689dd90668166"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gab43db5089521535af2d689dd90668166"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#gab43db5089521535af2d689dd90668166">FOUR_CAMERA</a>&#160;&#160;&#160;1</td></tr>
+<tr class="memdesc:gab43db5089521535af2d689dd90668166"><td class="mdescLeft">&#160;</td><td class="mdescRight">Are we processing packets from four cameras? <br/></td></tr>
+<tr class="separator:gab43db5089521535af2d689dd90668166"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga57b4cb2a4f39df770aab4003eba2ef40"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga57b4cb2a4f39df770aab4003eba2ef40">REFBOX_LISTEN_ENABLED</a>&#160;&#160;&#160;1</td></tr>
 <tr class="memdesc:ga57b4cb2a4f39df770aab4003eba2ef40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Referee Box&ndash;do we listen to commands? See <a class="el" href="classStrategyController.html" title="Controls selection of an active strategy (play) based on the game state. ">StrategyController</a>.  <a href="#ga57b4cb2a4f39df770aab4003eba2ef40">More...</a><br/></td></tr>
 <tr class="separator:ga57b4cb2a4f39df770aab4003eba2ef40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2b0fa41d5d9ddcbe821068ab907672e1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga2b0fa41d5d9ddcbe821068ab907672e1"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga2b0fa41d5d9ddcbe821068ab907672e1">BIO_ROB_FIELD</a>&#160;&#160;&#160;0</td></tr>
+<tr class="memdesc:ga2b0fa41d5d9ddcbe821068ab907672e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use the dimensions of the field in the bio-robotics lab as opposed to standard SSL field dimensions. <br/></td></tr>
+<tr class="separator:ga2b0fa41d5d9ddcbe821068ab907672e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga59bdd018431bf4e8534562203bd0a390"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga59bdd018431bf4e8534562203bd0a390"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga59bdd018431bf4e8534562203bd0a390">OVERALL_VELOCITY</a>&#160;&#160;&#160;1</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga59bdd018431bf4e8534562203bd0a390">OVERALL_VELOCITY</a>&#160;&#160;&#160;1.5</td></tr>
 <tr class="memdesc:ga59bdd018431bf4e8534562203bd0a390"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overall velocity for all behaviors. Change this constant to slow down or speed up the whole game. <br/></td></tr>
 <tr class="separator:ga59bdd018431bf4e8534562203bd0a390"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad74e564d8ec11a4a4d20850a303d968b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gad74e564d8ec11a4a4d20850a303d968b"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#gad74e564d8ec11a4a4d20850a303d968b">HALF_FIELD_LENGTH</a>&#160;&#160;&#160;4500</td></tr>
+<tr class="memdesc:gad74e564d8ec11a4a4d20850a303d968b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The center-to-goal-line length (X-Axis) of the field. <br/></td></tr>
+<tr class="separator:gad74e564d8ec11a4a4d20850a303d968b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4e8ecaf2d59499a8c159ccdf7be1baec"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga4e8ecaf2d59499a8c159ccdf7be1baec"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga4e8ecaf2d59499a8c159ccdf7be1baec">FIELD_LENGTH</a>&#160;&#160;&#160;3000</td></tr>
-<tr class="memdesc:ga4e8ecaf2d59499a8c159ccdf7be1baec"><td class="mdescLeft">&#160;</td><td class="mdescRight">The center-to-goal length (X-Axis) of the standard RoboCup field. <br/></td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga4e8ecaf2d59499a8c159ccdf7be1baec">FIELD_LENGTH</a>&#160;&#160;&#160;(<a class="el" href="group__config.html#gad74e564d8ec11a4a4d20850a303d968b">HALF_FIELD_LENGTH</a>*2)</td></tr>
+<tr class="memdesc:ga4e8ecaf2d59499a8c159ccdf7be1baec"><td class="mdescLeft">&#160;</td><td class="mdescRight">The full side-to-side length (X-Axis) <br/></td></tr>
 <tr class="separator:ga4e8ecaf2d59499a8c159ccdf7be1baec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0a197efe6d830f84cb24fee628777837"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga0a197efe6d830f84cb24fee628777837"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga0a197efe6d830f84cb24fee628777837">FIELD_2LENGTH</a>&#160;&#160;&#160;(<a class="el" href="group__config.html#ga4e8ecaf2d59499a8c159ccdf7be1baec">FIELD_LENGTH</a>*2)</td></tr>
-<tr class="memdesc:ga0a197efe6d830f84cb24fee628777837"><td class="mdescLeft">&#160;</td><td class="mdescRight">The full side-to-side length (X-Axis) <br/></td></tr>
-<tr class="separator:ga0a197efe6d830f84cb24fee628777837"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga31344a3e07d97cc01a92e162742e982d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga31344a3e07d97cc01a92e162742e982d"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga31344a3e07d97cc01a92e162742e982d">HALF_FIELD_WIDTH</a>&#160;&#160;&#160;3000</td></tr>
+<tr class="memdesc:ga31344a3e07d97cc01a92e162742e982d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The center-to-side length (Y-Axis) of the field. <br/></td></tr>
+<tr class="separator:ga31344a3e07d97cc01a92e162742e982d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga313353b53d609b3b2b37e1aecf98bf4c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga313353b53d609b3b2b37e1aecf98bf4c"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga313353b53d609b3b2b37e1aecf98bf4c">FIELD_WIDTH</a>&#160;&#160;&#160;2000</td></tr>
-<tr class="memdesc:ga313353b53d609b3b2b37e1aecf98bf4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The center-to-side length (Y-Axis) of the standard RoboCup field. <br/></td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga313353b53d609b3b2b37e1aecf98bf4c">FIELD_WIDTH</a>&#160;&#160;&#160;(<a class="el" href="group__config.html#ga31344a3e07d97cc01a92e162742e982d">HALF_FIELD_WIDTH</a>*2)</td></tr>
+<tr class="memdesc:ga313353b53d609b3b2b37e1aecf98bf4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The full goal-to-goal length (Y-Axis) <br/></td></tr>
 <tr class="separator:ga313353b53d609b3b2b37e1aecf98bf4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf5228afc8bb60b46489ad3eea1b6a538"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaf5228afc8bb60b46489ad3eea1b6a538"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#gaf5228afc8bb60b46489ad3eea1b6a538">FIELD_2WIDTH</a>&#160;&#160;&#160;(<a class="el" href="group__config.html#ga313353b53d609b3b2b37e1aecf98bf4c">FIELD_WIDTH</a>*2)</td></tr>
-<tr class="memdesc:gaf5228afc8bb60b46489ad3eea1b6a538"><td class="mdescLeft">&#160;</td><td class="mdescRight">The full goal-to-goal length (Y-Axis) <br/></td></tr>
-<tr class="separator:gaf5228afc8bb60b46489ad3eea1b6a538"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac4029d34dc57b2100896f491fd34b92c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gac4029d34dc57b2100896f491fd34b92c"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#gac4029d34dc57b2100896f491fd34b92c">GOAL_LENGTH</a>&#160;&#160;&#160;500</td></tr>
-<tr class="memdesc:gac4029d34dc57b2100896f491fd34b92c"><td class="mdescLeft">&#160;</td><td class="mdescRight">X length (long ways) width of goalie box. <br/></td></tr>
-<tr class="separator:gac4029d34dc57b2100896f491fd34b92c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga368ff66968ee284754b95902bc580c7c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga368ff66968ee284754b95902bc580c7c"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga368ff66968ee284754b95902bc580c7c">DEF_AREA_RADIUS</a>&#160;&#160;&#160;1000</td></tr>
+<tr class="memdesc:ga368ff66968ee284754b95902bc580c7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Radius of circular corners of defence area Look at SSL rule book for clarification. <br/></td></tr>
+<tr class="separator:ga368ff66968ee284754b95902bc580c7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0b124b258ac96c3ab94e993a3b274c34"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga0b124b258ac96c3ab94e993a3b274c34"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga0b124b258ac96c3ab94e993a3b274c34">DEF_AREA_OFFSET</a>&#160;&#160;&#160;250</td></tr>
+<tr class="memdesc:ga0b124b258ac96c3ab94e993a3b274c34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Distance from Y=0 to the centre of circular areas //! Look at SSL rule book for clarification. <br/></td></tr>
+<tr class="separator:ga0b124b258ac96c3ab94e993a3b274c34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga546bbf1628170f1a544966509185fb00"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga546bbf1628170f1a544966509185fb00"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga546bbf1628170f1a544966509185fb00">GOAL_WIDTH</a>&#160;&#160;&#160;700</td></tr>
-<tr class="memdesc:ga546bbf1628170f1a544966509185fb00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Y length (short-ways) length of goalie box. <br/></td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga546bbf1628170f1a544966509185fb00">GOAL_WIDTH</a>&#160;&#160;&#160;1000</td></tr>
+<tr class="memdesc:ga546bbf1628170f1a544966509185fb00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Width of Goal Post. <br/></td></tr>
 <tr class="separator:ga546bbf1628170f1a544966509185fb00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4da22e6ae08148cfa9fb1717a900810b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga4da22e6ae08148cfa9fb1717a900810b"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga4da22e6ae08148cfa9fb1717a900810b">POINTS_PER_METER</a>&#160;&#160;&#160;1250</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga4da22e6ae08148cfa9fb1717a900810b">POINTS_PER_METER</a>&#160;&#160;&#160;1000</td></tr>
 <tr class="memdesc:ga4da22e6ae08148cfa9fb1717a900810b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Conversion factor from meters to field <a class="el" href="classPoint.html" title="2D Point Class ">Point</a> coordinates. <br/></td></tr>
 <tr class="separator:ga4da22e6ae08148cfa9fb1717a900810b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gae9851dee98edaed777207dc56faef78c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gae9851dee98edaed777207dc56faef78c"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#gae9851dee98edaed777207dc56faef78c">METERS_PER_POINT</a>&#160;&#160;&#160;(1.0 / <a class="el" href="group__config.html#ga4da22e6ae08148cfa9fb1717a900810b">POINTS_PER_METER</a>)</td></tr>
-<tr class="memdesc:gae9851dee98edaed777207dc56faef78c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Conversion factor from Points to meters. <br/></td></tr>
+<tr class="memdesc:gae9851dee98edaed777207dc56faef78c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Conversion factor from points to meters. <br/></td></tr>
 <tr class="separator:gae9851dee98edaed777207dc56faef78c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaae94c5b4d241d9dccd2c2894e4e8d306"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#gaae94c5b4d241d9dccd2c2894e4e8d306">SIMULATED</a>&#160;&#160;&#160;1</td></tr>
+<tr class="memitem:gaae94c5b4d241d9dccd2c2894e4e8d306"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#gaae94c5b4d241d9dccd2c2894e4e8d306">SIMULATED</a>&#160;&#160;&#160;0</td></tr>
 <tr class="memdesc:gaae94c5b4d241d9dccd2c2894e4e8d306"><td class="mdescLeft">&#160;</td><td class="mdescRight">The SIMULATED constant, either 1 or 0.  <a href="#gaae94c5b4d241d9dccd2c2894e4e8d306">More...</a><br/></td></tr>
 <tr class="separator:gaae94c5b4d241d9dccd2c2894e4e8d306"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gafc1f230b5d02ed0e5d1f3e6f970651b4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#gafc1f230b5d02ed0e5d1f3e6f970651b4">TEAM</a>&#160;&#160;&#160;<a class="el" href="team_8h.html#a800a654c67c2655c7451dbeff61036a9">TEAM_BLUE</a></td></tr>
-<tr class="memdesc:gafc1f230b5d02ed0e5d1f3e6f970651b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Program's Team (TEAM_BLUE or TEAM_YELLOW)  <a href="#gafc1f230b5d02ed0e5d1f3e6f970651b4">More...</a><br/></td></tr>
-<tr class="separator:gafc1f230b5d02ed0e5d1f3e6f970651b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad57ff846ba580a339228b63d060e4bf9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#gad57ff846ba580a339228b63d060e4bf9">OUR_TEAM</a>&#160;&#160;&#160;<a class="el" href="team_8h.html#a800a654c67c2655c7451dbeff61036a9">TEAM_BLUE</a></td></tr>
+<tr class="memdesc:gad57ff846ba580a339228b63d060e4bf9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Program's Team (TEAM_BLUE or TEAM_YELLOW)  <a href="#gad57ff846ba580a339228b63d060e4bf9">More...</a><br/></td></tr>
+<tr class="separator:gad57ff846ba580a339228b63d060e4bf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4ad5358b722276fb6ec503ebc2b0d011"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga4ad5358b722276fb6ec503ebc2b0d011">SIDE</a>&#160;&#160;&#160;<a class="el" href="team_8h.html#a3536f334390f000f0e2d0aa1925eb157">SIDE_NEGATIVE</a></td></tr>
+<tr class="memdesc:ga4ad5358b722276fb6ec503ebc2b0d011"><td class="mdescLeft">&#160;</td><td class="mdescRight">The currnet Side of the program's team.  <a href="#ga4ad5358b722276fb6ec503ebc2b0d011">More...</a><br/></td></tr>
+<tr class="separator:ga4ad5358b722276fb6ec503ebc2b0d011"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -144,24 +159,32 @@ Variables</h2></td></tr>
 const RobotType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga6ebc17207380003d5b4f96849314487e">robotIDTypes</a> []</td></tr>
 <tr class="memdesc:ga6ebc17207380003d5b4f96849314487e"><td class="mdescLeft">&#160;</td><td class="mdescRight">An array indexed by ID to RobotType. <br/></td></tr>
 <tr class="separator:ga6ebc17207380003d5b4f96849314487e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac54413c11a8356618ebc9e74d874be7e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#gac54413c11a8356618ebc9e74d874be7e">GOALIE_ID</a></td></tr>
-<tr class="memdesc:gac54413c11a8356618ebc9e74d874be7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The goalie robot's ID is given as an integer.  <a href="#gac54413c11a8356618ebc9e74d874be7e">More...</a><br/></td></tr>
-<tr class="separator:gac54413c11a8356618ebc9e74d874be7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga277b4952f339ed9d7be6670884213d00"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga277b4952f339ed9d7be6670884213d00"></a>
+const bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga277b4952f339ed9d7be6670884213d00">robotHasKicker</a> []</td></tr>
+<tr class="memdesc:ga277b4952f339ed9d7be6670884213d00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Array indexed by ID as to if the robot has kicking capabilities. <br/></td></tr>
+<tr class="separator:ga277b4952f339ed9d7be6670884213d00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaca00d4d6b543d32559444f5dca4969ed"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#gaca00d4d6b543d32559444f5dca4969ed">GOALIE_ID</a></td></tr>
+<tr class="memdesc:gaca00d4d6b543d32559444f5dca4969ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">The goalie robot's ID is given as an integer.  <a href="#gaca00d4d6b543d32559444f5dca4969ed">More...</a><br/></td></tr>
+<tr class="separator:gaca00d4d6b543d32559444f5dca4969ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4327ddecff4dccd778c7dbb8c721d59a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga4327ddecff4dccd778c7dbb8c721d59a"></a>
 const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga4327ddecff4dccd778c7dbb8c721d59a">ROBOT_RADIUS</a></td></tr>
 <tr class="memdesc:ga4327ddecff4dccd778c7dbb8c721d59a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The robot's radius in program points. <br/></td></tr>
 <tr class="separator:ga4327ddecff4dccd778c7dbb8c721d59a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaefaebbfc0e5e228f5119c0e4c717636d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaefaebbfc0e5e228f5119c0e4c717636d"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#gaefaebbfc0e5e228f5119c0e4c717636d">ROBOT_SIZE</a></td></tr>
-<tr class="memdesc:gaefaebbfc0e5e228f5119c0e4c717636d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The robot's diameter in program points plus a small overshoot. <br/></td></tr>
-<tr class="separator:gaefaebbfc0e5e228f5119c0e4c717636d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad5a0ff76855ce26f6d1600cbc8a7db1b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gad5a0ff76855ce26f6d1600cbc8a7db1b"></a>
 const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#gad5a0ff76855ce26f6d1600cbc8a7db1b">DIST_TOLERANCE</a></td></tr>
 <tr class="memdesc:gad5a0ff76855ce26f6d1600cbc8a7db1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">How close the robot needs to be to the target in program points before it is considered at that position. <br/></td></tr>
 <tr class="separator:gad5a0ff76855ce26f6d1600cbc8a7db1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga26a84561ecda0c5d9bfd9bcaa7ba53f1"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga26a84561ecda0c5d9bfd9bcaa7ba53f1">ROT_TOLERANCE</a></td></tr>
-<tr class="memdesc:ga26a84561ecda0c5d9bfd9bcaa7ba53f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The max difference in angle for two angles in radians to be considered equal.  <a href="#ga26a84561ecda0c5d9bfd9bcaa7ba53f1">More...</a><br/></td></tr>
-<tr class="separator:ga26a84561ecda0c5d9bfd9bcaa7ba53f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2076b4d98161b90a1b0552bc5ac1eea8"><td class="memItemLeft" align="right" valign="top">const double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga2076b4d98161b90a1b0552bc5ac1eea8">ROT_TOLERANCE</a></td></tr>
+<tr class="memdesc:ga2076b4d98161b90a1b0552bc5ac1eea8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The max difference in angle for two angles in radians to be considered equal.  <a href="#ga2076b4d98161b90a1b0552bc5ac1eea8">More...</a><br/></td></tr>
+<tr class="separator:ga2076b4d98161b90a1b0552bc5ac1eea8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4a72db8cbd1d7b6f0632c7bde2b8fae3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga4a72db8cbd1d7b6f0632c7bde2b8fae3"></a>
+const double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga4a72db8cbd1d7b6f0632c7bde2b8fae3">DEF_AREA_TOL</a></td></tr>
+<tr class="memdesc:ga4a72db8cbd1d7b6f0632c7bde2b8fae3"><td class="mdescLeft">&#160;</td><td class="mdescRight">An extension beyond the defence area in which we consider a robot to be inside the defence area. Used mostly for path planning. <br/></td></tr>
+<tr class="separator:ga4a72db8cbd1d7b6f0632c7bde2b8fae3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5d21f691a9fb414da04c1ff69fbe7c59"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga5d21f691a9fb414da04c1ff69fbe7c59"></a>
+const double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga5d21f691a9fb414da04c1ff69fbe7c59">DRIBBLE_FRWD_SPD</a></td></tr>
+<tr class="memdesc:ga5d21f691a9fb414da04c1ff69fbe7c59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Variables used to control the speed of a robot dribbling the ball. <br/></td></tr>
+<tr class="separator:ga5d21f691a9fb414da04c1ff69fbe7c59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga354023cfcd61da084c6158dd519f2069"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga354023cfcd61da084c6158dd519f2069"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga354023cfcd61da084c6158dd519f2069">VISION_ADDRESS_SHAMSI</a>&#160;&#160;&#160;&quot;224.5.23.5&quot;</td></tr>
 <tr class="memdesc:ga354023cfcd61da084c6158dd519f2069"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vision listen address options. <br/></td></tr>
@@ -170,10 +193,18 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#gab5d685b838790735168ae3b1462c3283">VISION_ADDRESS_JAMES</a>&#160;&#160;&#160;&quot;224.5.23.3&quot;</td></tr>
 <tr class="memdesc:gab5d685b838790735168ae3b1462c3283"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vision listen address options. <br/></td></tr>
 <tr class="separator:gab5d685b838790735168ae3b1462c3283"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5fa5d9ce8ef80b580c0b67cdc4856a4e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga5fa5d9ce8ef80b580c0b67cdc4856a4e"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga5fa5d9ce8ef80b580c0b67cdc4856a4e">VISION_ADDRESS_ADRIANO</a>&#160;&#160;&#160;&quot;224.5.23.1&quot;</td></tr>
+<tr class="memdesc:ga5fa5d9ce8ef80b580c0b67cdc4856a4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vision listen address options. <br/></td></tr>
+<tr class="separator:ga5fa5d9ce8ef80b580c0b67cdc4856a4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga81f11ff4625ee44298d2be1394033f9b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga81f11ff4625ee44298d2be1394033f9b"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga81f11ff4625ee44298d2be1394033f9b">VISION_ADDRESS_NONSIM</a>&#160;&#160;&#160;&quot;224.5.23.2&quot;</td></tr>
 <tr class="memdesc:ga81f11ff4625ee44298d2be1394033f9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vision listen address options. <br/></td></tr>
 <tr class="separator:ga81f11ff4625ee44298d2be1394033f9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7fb1a8519e42069e3b7bf9e21c4f5ced"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga7fb1a8519e42069e3b7bf9e21c4f5ced"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga7fb1a8519e42069e3b7bf9e21c4f5ced">VISION_ADDRESS_ROBOCUP16</a>&#160;&#160;&#160;&quot;224.5.23.2&quot;</td></tr>
+<tr class="memdesc:ga7fb1a8519e42069e3b7bf9e21c4f5ced"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vision listen address options. <br/></td></tr>
+<tr class="separator:ga7fb1a8519e42069e3b7bf9e21c4f5ced"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab93ba8b45f8468222a29e39397bf15b1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gab93ba8b45f8468222a29e39397bf15b1"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#gab93ba8b45f8468222a29e39397bf15b1">SIMULATOR_ADDRESS_JAMES</a>&#160;&#160;&#160;&quot;131.247.14.106&quot;</td></tr>
 <tr class="memdesc:gab93ba8b45f8468222a29e39397bf15b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vision listen address options. <br/></td></tr>
@@ -187,7 +218,7 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=
 <tr class="memdesc:ga0b6711e9412c9d0625e677f20d893892"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vision listen address options. <br/></td></tr>
 <tr class="separator:ga0b6711e9412c9d0625e677f20d893892"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga5b373c8e4b2e71be2b1025e6ab6ecd6d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga5b373c8e4b2e71be2b1025e6ab6ecd6d"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga5b373c8e4b2e71be2b1025e6ab6ecd6d">SIMULATOR_ADDRESS</a>&#160;&#160;&#160;<a class="el" href="group__config.html#gab93ba8b45f8468222a29e39397bf15b1">SIMULATOR_ADDRESS_JAMES</a></td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga5b373c8e4b2e71be2b1025e6ab6ecd6d">SIMULATOR_ADDRESS</a>&#160;&#160;&#160;<a class="el" href="group__config.html#ga0b6711e9412c9d0625e677f20d893892">SIMULATOR_ADDRESS_LOCAL</a></td></tr>
 <tr class="memdesc:ga5b373c8e4b2e71be2b1025e6ab6ecd6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comunication configurations. <br/></td></tr>
 <tr class="separator:ga5b373c8e4b2e71be2b1025e6ab6ecd6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga458f28159eb4494649a44484e7c29486"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga458f28159eb4494649a44484e7c29486"></a>
@@ -195,11 +226,11 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=
 <tr class="memdesc:ga458f28159eb4494649a44484e7c29486"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comunication configurations. <br/></td></tr>
 <tr class="separator:ga458f28159eb4494649a44484e7c29486"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gae138d5590f67cd5b561c9fefe2039a02"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gae138d5590f67cd5b561c9fefe2039a02"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#gae138d5590f67cd5b561c9fefe2039a02">VISION_ADDRESS</a>&#160;&#160;&#160;<a class="el" href="group__config.html#ga81f11ff4625ee44298d2be1394033f9b">VISION_ADDRESS_NONSIM</a></td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#gae138d5590f67cd5b561c9fefe2039a02">VISION_ADDRESS</a>&#160;&#160;&#160;<a class="el" href="group__config.html#ga7fb1a8519e42069e3b7bf9e21c4f5ced">VISION_ADDRESS_ROBOCUP16</a></td></tr>
 <tr class="memdesc:gae138d5590f67cd5b561c9fefe2039a02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comunication configurations. <br/></td></tr>
 <tr class="separator:gae138d5590f67cd5b561c9fefe2039a02"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga85c6edfbd123744403fb90b315c70843"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga85c6edfbd123744403fb90b315c70843"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga85c6edfbd123744403fb90b315c70843">VISION_PORT</a>&#160;&#160;&#160;10002</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga85c6edfbd123744403fb90b315c70843">VISION_PORT</a>&#160;&#160;&#160;10006</td></tr>
 <tr class="memdesc:ga85c6edfbd123744403fb90b315c70843"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comunication configurations. <br/></td></tr>
 <tr class="separator:ga85c6edfbd123744403fb90b315c70843"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga5766b15b484d6ed382baf2ab77b11df6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga5766b15b484d6ed382baf2ab77b11df6"></a>
@@ -215,6 +246,21 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=
 <p>Configuration Constants. </p>
 <p>These are constants in <b>include/config</b> which control the game. </p>
 <h2 class="groupheader">Macro Definition Documentation</h2>
+<a class="anchor" id="gad57ff846ba580a339228b63d060e4bf9"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define OUR_TEAM&#160;&#160;&#160;<a class="el" href="team_8h.html#a800a654c67c2655c7451dbeff61036a9">TEAM_BLUE</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The Program's Team (TEAM_BLUE or TEAM_YELLOW) </p>
+<p>The player's team constant. This sets which team the program will transmit to. XBee Channel D is for Blue, E is for Yellow </p>
+
+</div>
+</div>
 <a class="anchor" id="ga57b4cb2a4f39df770aab4003eba2ef40"></a>
 <div class="memitem">
 <div class="memproto">
@@ -230,12 +276,27 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=
 
 </div>
 </div>
+<a class="anchor" id="ga4ad5358b722276fb6ec503ebc2b0d011"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SIDE&#160;&#160;&#160;<a class="el" href="team_8h.html#a3536f334390f000f0e2d0aa1925eb157">SIDE_NEGATIVE</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The currnet Side of the program's team. </p>
+<p>This specifies if we are playing from the negative X axis or the positive X axis. It applies transformations to the camera's readings always making our goal on the negative X axis. The enemy's goal is always at positive X. It should not be used anywhere else. </p>
+
+</div>
+</div>
 <a class="anchor" id="gaae94c5b4d241d9dccd2c2894e4e8d306"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define SIMULATED&#160;&#160;&#160;1</td>
+          <td class="memname">#define SIMULATED&#160;&#160;&#160;0</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -249,56 +310,41 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=
 
 </div>
 </div>
-<a class="anchor" id="gafc1f230b5d02ed0e5d1f3e6f970651b4"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define TEAM&#160;&#160;&#160;<a class="el" href="team_8h.html#a800a654c67c2655c7451dbeff61036a9">TEAM_BLUE</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>The Program's Team (TEAM_BLUE or TEAM_YELLOW) </p>
-<p>The player's team constant. This sets which team the program will transmit to. XBee Channel D is for Blue, E is for Yellow </p>
-
-</div>
-</div>
 <h2 class="groupheader">Variable Documentation</h2>
-<a class="anchor" id="gac54413c11a8356618ebc9e74d874be7e"></a>
+<a class="anchor" id="gaca00d4d6b543d32559444f5dca4969ed"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int GOALIE_ID</td>
+          <td class="memname">float GOALIE_ID</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>The goalie robot's ID is given as an integer. </p>
-<p>This ID can be changed with the <code>goalie_id</code> integer on the utility command line. It is 5 by default (see .cpp) </p>
+<p>This ID can be changed with the <code>goalie_id</code> entry on the utility command line. It is 5 by default (see .cpp) It is a float to be changed dynamically, but only use ints </p>
 
 </div>
 </div>
-<a class="anchor" id="ga26a84561ecda0c5d9bfd9bcaa7ba53f1"></a>
+<a class="anchor" id="ga2076b4d98161b90a1b0552bc5ac1eea8"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const int ROT_TOLERANCE</td>
+          <td class="memname">const double ROT_TOLERANCE</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>The max difference in angle for two angles in radians to be considered equal. </p>
-<p>Test this with Measurements::angleDiff. This is also the default tolerance for the angle version of Measurements::isClose </p>
+<p>Test this with <a class="el" href="classMeasurements.html#aa6b0e81c38da6b63bfbc9220594aa134" title="Calculates the smallest difference between two orientations (angle2 - angle1) ">Measurements::angleDiff</a>. This is also the default tolerance for the angle version of <a class="el" href="classMeasurements.html#a35a3658d600a8734715983a57bce378d" title="Compare the points to determine if they are within a certain tolerance of each other. A &quot;close enough&quot; alternative to the == operator. ">Measurements::isClose</a> </p>
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Sep 23 2015 14:45:59 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jul 26 2016 13:40:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

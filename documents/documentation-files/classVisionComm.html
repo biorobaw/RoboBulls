@@ -90,6 +90,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classVisionComm-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">VisionComm Class Reference</div>  </div>
@@ -111,10 +112,10 @@ Inheritance diagram for VisionComm:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa23323f8a5ecfc952613fc0f25c928d6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa23323f8a5ecfc952613fc0f25c928d6"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVisionComm.html#aa23323f8a5ecfc952613fc0f25c928d6">receive</a> ()</td></tr>
-<tr class="memdesc:aa23323f8a5ecfc952613fc0f25c928d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recieves an SSL_WrapperPacket and fills in the <a class="el" href="classGameModel.html" title="The GameModel class. ">GameModel</a> information. <br/></td></tr>
-<tr class="separator:aa23323f8a5ecfc952613fc0f25c928d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f925a879f887562b5314d9ecfebb9e7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8f925a879f887562b5314d9ecfebb9e7"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVisionComm.html#a8f925a879f887562b5314d9ecfebb9e7">receive</a> ()</td></tr>
+<tr class="memdesc:a8f925a879f887562b5314d9ecfebb9e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recieves an SSL_WrapperPacket and fills in the <a class="el" href="classGameModel.html" title="The GameModel class. ">GameModel</a> information. <br/></td></tr>
+<tr class="separator:a8f925a879f887562b5314d9ecfebb9e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4793244a583151f3492a4917c63a06b0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4793244a583151f3492a4917c63a06b0"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVisionComm.html#a4793244a583151f3492a4917c63a06b0">run</a> ()</td></tr>
 <tr class="memdesc:a4793244a583151f3492a4917c63a06b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">QThread run method. <br/></td></tr>
@@ -130,10 +131,77 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVisionComm.html#ae101f4d19b5321fff364cede9fe32dfb">recieveBall</a> (const SSL_DetectionFrame &amp;frame)</td></tr>
 <tr class="memdesc:ae101f4d19b5321fff364cede9fe32dfb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses an SSL_DetectionFrame and fills out <a class="el" href="classGameModel.html" title="The GameModel class. ">GameModel</a>. <br/></td></tr>
 <tr class="separator:ae101f4d19b5321fff364cede9fe32dfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc3047bc688a15c1216eec0e6b257d1b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acc3047bc688a15c1216eec0e6b257d1b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVisionComm.html#acc3047bc688a15c1216eec0e6b257d1b">updateInfo</a> (const SSL_DetectionRobot &amp;robot, int detectedTeamColor)</td></tr>
-<tr class="memdesc:acc3047bc688a15c1216eec0e6b257d1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates <a class="el" href="classGameModel.html" title="The GameModel class. ">GameModel</a> information to fill out a robot. <br/></td></tr>
-<tr class="separator:acc3047bc688a15c1216eec0e6b257d1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8acadd3bc229036c6976187446085718"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8acadd3bc229036c6976187446085718"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVisionComm.html#a8acadd3bc229036c6976187446085718">receiveRobot</a> (const SSL_DetectionRobot &amp;robot, int detectedTeamColor)</td></tr>
+<tr class="memdesc:a8acadd3bc229036c6976187446085718"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates <a class="el" href="classGameModel.html" title="The GameModel class. ">GameModel</a> information to fill out a robot. <br/></td></tr>
+<tr class="separator:a8acadd3bc229036c6976187446085718"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d789794f2f6728e1e8390deab3ea56a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2d789794f2f6728e1e8390deab3ea56a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVisionComm.html#a2d789794f2f6728e1e8390deab3ea56a">receiveIfMSPassed</a> (int ms_limit)</td></tr>
+<tr class="memdesc:a2d789794f2f6728e1e8390deab3ea56a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recieves a new packet only if <code>ms_limit</code> ms has passed since last call. <br/></td></tr>
+<tr class="separator:a2d789794f2f6728e1e8390deab3ea56a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4cf9a9d81125e6a084a24e5fe765879"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab4cf9a9d81125e6a084a24e5fe765879"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVisionComm.html#ab4cf9a9d81125e6a084a24e5fe765879">isFourCameraMode</a> ()</td></tr>
+<tr class="memdesc:ab4cf9a9d81125e6a084a24e5fe765879"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if we are using four or two cameras. <br/></td></tr>
+<tr class="separator:ab4cf9a9d81125e6a084a24e5fe765879"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a8c4825f611ab97a5f775e0a6493d40e3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8c4825f611ab97a5f775e0a6493d40e3"></a>
+SSL_WrapperPacket&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVisionComm.html#a8c4825f611ab97a5f775e0a6493d40e3">packet</a></td></tr>
+<tr class="memdesc:a8c4825f611ab97a5f775e0a6493d40e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to <a class="el" href="classGameModel.html" title="The GameModel class. ">GameModel</a> to update. <br/></td></tr>
+<tr class="separator:a8c4825f611ab97a5f775e0a6493d40e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48c14d67501c5f6b234964ca2dc5402f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a48c14d67501c5f6b234964ca2dc5402f"></a>
+SSL_DetectionFrame&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVisionComm.html#a48c14d67501c5f6b234964ca2dc5402f">frames</a> [4]</td></tr>
+<tr class="memdesc:a48c14d67501c5f6b234964ca2dc5402f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Packet recieved by client. <br/></td></tr>
+<tr class="separator:a48c14d67501c5f6b234964ca2dc5402f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6689c1112eacd56fb074e416feb6492"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae6689c1112eacd56fb074e416feb6492"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVisionComm.html#ae6689c1112eacd56fb074e416feb6492">frames_state</a> [4] {false}</td></tr>
+<tr class="memdesc:ae6689c1112eacd56fb074e416feb6492"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accumulates frames. <br/></td></tr>
+<tr class="separator:ae6689c1112eacd56fb074e416feb6492"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43fad3e1acc8cf309171979bddc94788"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a43fad3e1acc8cf309171979bddc94788"></a>
+<a class="el" href="classRoboCupSSLClient.html">RoboCupSSLClient</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVisionComm.html#a43fad3e1acc8cf309171979bddc94788">client</a></td></tr>
+<tr class="memdesc:a43fad3e1acc8cf309171979bddc94788"><td class="mdescLeft">&#160;</td><td class="mdescRight">Marks whether frames are dirty or clean. <br/></td></tr>
+<tr class="separator:a43fad3e1acc8cf309171979bddc94788"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab708102f76dfbb42b1debf2d192d6672"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab708102f76dfbb42b1debf2d192d6672"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVisionComm.html#ab708102f76dfbb42b1debf2d192d6672">resetFrames</a> = 0</td></tr>
+<tr class="memdesc:ab708102f76dfbb42b1debf2d192d6672"><td class="mdescLeft">&#160;</td><td class="mdescRight">client to receive packets <br/></td></tr>
+<tr class="separator:ab708102f76dfbb42b1debf2d192d6672"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02fa2764d7e9fa8da5948738dd0da21b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a02fa2764d7e9fa8da5948738dd0da21b"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVisionComm.html#a02fa2764d7e9fa8da5948738dd0da21b">totalframes</a> = 0</td></tr>
+<tr class="memdesc:a02fa2764d7e9fa8da5948738dd0da21b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frames passed up remove all potential robot detections. <br/></td></tr>
+<tr class="separator:a02fa2764d7e9fa8da5948738dd0da21b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affff9fa03bb68f249834ee6f60ea3078"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="affff9fa03bb68f249834ee6f60ea3078"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVisionComm.html#affff9fa03bb68f249834ee6f60ea3078">blue_rob_readings</a> [12] ={0}</td></tr>
+<tr class="memdesc:affff9fa03bb68f249834ee6f60ea3078"><td class="mdescLeft">&#160;</td><td class="mdescRight">Total frames passed since start. <br/></td></tr>
+<tr class="separator:affff9fa03bb68f249834ee6f60ea3078"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05215cd9b48834013a9df92812f0d25a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a05215cd9b48834013a9df92812f0d25a"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVisionComm.html#a05215cd9b48834013a9df92812f0d25a">yell_rob_readings</a> [12] ={0}</td></tr>
+<tr class="memdesc:a05215cd9b48834013a9df92812f0d25a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of detections of each blue robot. <br/></td></tr>
+<tr class="separator:a05215cd9b48834013a9df92812f0d25a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa72de0a438388646ab836d815dcfe1fa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa72de0a438388646ab836d815dcfe1fa"></a>
+timeval&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVisionComm.html#aa72de0a438388646ab836d815dcfe1fa">lastRecvTime</a></td></tr>
+<tr class="memdesc:aa72de0a438388646ab836d815dcfe1fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of detections of each yelloe robot. <br/></td></tr>
+<tr class="separator:aa72de0a438388646ab836d815dcfe1fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71fe8bad784d51341d2dc627729fcca7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a71fe8bad784d51341d2dc627729fcca7"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVisionComm.html#a71fe8bad784d51341d2dc627729fcca7">fourCameraMode</a> = false</td></tr>
+<tr class="memdesc:a71fe8bad784d51341d2dc627729fcca7"><td class="mdescLeft">&#160;</td><td class="mdescRight">When did we last receive a packet? Used to not recieve every one. <br/></td></tr>
+<tr class="separator:a71fe8bad784d51341d2dc627729fcca7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb084ef7b1b90dc54a77b3141ac3fe0f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abb084ef7b1b90dc54a77b3141ac3fe0f"></a>
+<a class="el" href="classKFBall.html">KFBall</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVisionComm.html#abb084ef7b1b90dc54a77b3141ac3fe0f">kfilter</a></td></tr>
+<tr class="memdesc:abb084ef7b1b90dc54a77b3141ac3fe0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Are we in four-camera mode (true)? Or Two-camera mode? <br/></td></tr>
+<tr class="separator:abb084ef7b1b90dc54a77b3141ac3fe0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a535304d16f7f854661dfda9ceee3312f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a535304d16f7f854661dfda9ceee3312f"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVisionComm.html#a535304d16f7f854661dfda9ceee3312f">kfilter_init</a> = false</td></tr>
+<tr class="memdesc:a535304d16f7f854661dfda9ceee3312f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Kalman filter instance. <br/></td></tr>
+<tr class="separator:a535304d16f7f854661dfda9ceee3312f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a725727da3188777873f4e39a3318b363"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a725727da3188777873f4e39a3318b363"></a>
+KFBall::Vector&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVisionComm.html#a725727da3188777873f4e39a3318b363">u</a></td></tr>
+<tr class="memdesc:a725727da3188777873f4e39a3318b363"><td class="mdescLeft">&#160;</td><td class="mdescRight">Has the kalman filter been initialized with the first measurement? <br/></td></tr>
+<tr class="separator:a725727da3188777873f4e39a3318b363"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05ee7dd7f091070a1eddbc5a456a12a9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a05ee7dd7f091070a1eddbc5a456a12a9"></a>
+<a class="el" href="classPoint.html">Point</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVisionComm.html#a05ee7dd7f091070a1eddbc5a456a12a9">prev_k_b_pos</a></td></tr>
+<tr class="memdesc:a05ee7dd7f091070a1eddbc5a456a12a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores the previous state estimate of the kalman filter. <br/></td></tr>
+<tr class="separator:a05ee7dd7f091070a1eddbc5a456a12a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The <a class="el" href="classVisionComm.html" title="The VisionComm class recieves information from the vision cameras. ">VisionComm</a> class recieves information from the vision cameras. </p>
@@ -146,7 +214,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Sep 23 2015 14:45:59 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jul 26 2016 13:40:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

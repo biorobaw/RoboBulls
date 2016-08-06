@@ -93,50 +93,97 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">attackmain.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef ATTACK_MAIN_H</span></div>
+<a href="attackmain_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef ATTACK_MAIN_H</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define ATTACK_MAIN_H</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &quot;behavior.h&quot;</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;model/gamemodel.h&quot;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div>
-<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="classAttackMain.html">   16</a></span>&#160;<span class="keyword">class </span><a class="code" href="classAttackMain.html">AttackMain</a>:<span class="keyword">public</span> <a class="code" href="classBehavior.html">Behavior</a></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;{</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <a class="code" href="classAttackMain.html">AttackMain</a>(<a class="code" href="classRobot.html">Robot</a>* attacker = <span class="keyword">nullptr</span>);</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;   ~<a class="code" href="classAttackMain.html">AttackMain</a>();</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classAttackMain.html#a0931b81937c71a9a6990bfbf7bfc73cb">perform</a>(<a class="code" href="classRobot.html">Robot</a> *);</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classAttackMain.html#a6e6e3b0439ef19b05f0c4a1ebdfbfd62">isFinished</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <a class="code" href="classGameModel.html">GameModel</a> * gm;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <a class="code" href="classRobot.html">Robot</a>* support_attacker;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <a class="code" href="classPoint.html">Point</a> drive_start_point, rp, sp, gp, bp;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keywordtype">double</span> goal_direction;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">double</span> shot_distance = 1800;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">double</span> drive_distance = 500;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordtype">bool</span> touched_ball = <span class="keyword">false</span>, done = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <a class="code" href="classSkill_1_1Skill.html">Skill::Skill</a>* drive_skill;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <a class="code" href="classSkill_1_1Skill.html">Skill::Skill</a>* pass_skill;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <a class="code" href="classSkill_1_1Skill.html">Skill::Skill</a>* score_skill;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keyword">enum</span> states { drive, pass, score, initial } state;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;};</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#endif // ATTACK_MAIN_H</span></div>
-<div class="ttc" id="classRobot_html"><div class="ttname"><a href="classRobot.html">Robot</a></div><div class="ttdoc">The Robot class representing Robots on the field. </div><div class="ttdef"><b>Definition:</b> robot.h:21</div></div>
-<div class="ttc" id="classGameModel_html"><div class="ttname"><a href="classGameModel.html">GameModel</a></div><div class="ttdoc">The GameModel class. </div><div class="ttdef"><b>Definition:</b> gamemodel.h:25</div></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;behavior.h&quot;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="simulated_8h.html">include/config/simulated.h</a>&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;skill/kicktopointomni.h&quot;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;skill/dribbletopoint.h&quot;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;model/gamemodel.h&quot;</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;gui/guiinterface.h&quot;</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;utilities/region/sector.h&quot;</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;genericmovementbehavior.h&quot;</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;algorithm&quot;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;utilities/region/defencearea.h&quot;</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &quot;utilities/comparisons.h&quot;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#define PND_MAIN 30  //Distance between nodes in the probability field</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor"></span><span class="comment">// Probability Field Variables</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#define PF_LENGTH_MAIN (FIELD_LENGTH+1)/PND_MAIN</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define PF_WIDTH_MAIN  (FIELD_WIDTH +1)/PND_MAIN</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define PF_SIZE_MAIN  PF_LENGTH_MAIN * PF_WIDTH_MAIN</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="classAttackMain.html">   53</a></span>&#160;<span class="keyword">class </span><a class="code" href="classAttackMain.html">AttackMain</a>:<span class="keyword">public</span> <a class="code" href="classGenericMovementBehavior.html">GenericMovementBehavior</a></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;{</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <a class="code" href="classAttackMain.html">AttackMain</a>();</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;   ~<a class="code" href="classAttackMain.html">AttackMain</a>();</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordtype">void</span> perform(<a class="code" href="classRobot.html">Robot</a> *);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classAttackMain.html#a6e6e3b0439ef19b05f0c4a1ebdfbfd62">isFinished</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">bool</span> hasKickedToGoal();</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordtype">bool</span> hasPassed();</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="structAttackMain_1_1ProbNode.html">   64</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structAttackMain_1_1ProbNode.html">ProbNode</a></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    {</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <a class="code" href="classPoint.html">Point</a> point;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="keywordtype">float</span> static_val;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="keywordtype">float</span> dynamic_val;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    };</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <a class="code" href="structAttackMain_1_1ProbNode.html">ProbNode</a> prob_field[(<a class="code" href="group__config.html#ga4e8ecaf2d59499a8c159ccdf7be1baec">FIELD_LENGTH</a>+1)/PND_MAIN][(<a class="code" href="group__config.html#ga313353b53d609b3b2b37e1aecf98bf4c">FIELD_WIDTH</a>+1)/PND_MAIN];</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <a class="code" href="classSkill_1_1KickToPointOmni.html">Skill::KickToPointOmni</a>* score_skill;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <a class="code" href="classSkill_1_1KickToPointOmni.html">Skill::KickToPointOmni</a>* pass_skill;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <a class="code" href="classSkill_1_1DribbleToPoint.html">Skill::DribbleToPoint</a>* dribble_skill;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <a class="code" href="classPoint.html">Point</a> kick_point;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordtype">bool</span> has_kicked_to_goal = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordtype">bool</span> has_passed = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keyword">enum</span> {scoring, passing, dribbling} state;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="comment">// Counters to reduce the impact of noise on the state machine</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordtype">int</span> clear_shot_count = 0;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordtype">int</span> clear_pass_count = 0;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classAttackMain.html#a05fa88c3fa04907f19328fef0b3f60c2">calcStaticProb</a>();</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classAttackMain.html#a6616a099b02c7c44d1c53b77520ff9da">calcDynamicProb</a>();</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    std::vector&lt;std::vector&lt;Point&gt;&gt; <a class="code" href="classAttackMain.html#a931ddcec4310c57caa5edc09824e5a06">genClusters</a>();</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    std::pair&lt;bool, Point&gt; <a class="code" href="classAttackMain.html#aeaaf6a2f3ea98210bfe055299ab8552b">calcBestGoalPoint</a>(<a class="code" href="classRobot.html">Robot</a>*);</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    std::pair&lt;bool, Point&gt; <a class="code" href="classAttackMain.html#aedc64dd2c7d413e1b6c68b0613ba570c">calcBestPassPoint</a>(<a class="code" href="classRobot.html">Robot</a>*);</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <span class="keywordtype">float</span> <a class="code" href="classAttackMain.html#adb6bfa6e9e185a021faef8aae2ef7a7a">getScoreProb</a>(<span class="keyword">const</span> <a class="code" href="classPoint.html">Point</a>&amp;);</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;};</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="preprocessor">#endif // ATTACK_MAIN_H</span></div>
+<div class="ttc" id="classSkill_1_1KickToPointOmni_html"><div class="ttname"><a href="classSkill_1_1KickToPointOmni.html">Skill::KickToPointOmni</a></div><div class="ttdoc">General-purpose skill to kick the ball to a point. </div><div class="ttdef"><b>Definition:</b> kicktopointomni.h:23</div></div>
+<div class="ttc" id="classRobot_html"><div class="ttname"><a href="classRobot.html">Robot</a></div><div class="ttdoc">The Robot class representing Robots on the field. </div><div class="ttdef"><b>Definition:</b> robot.h:22</div></div>
 <div class="ttc" id="classPoint_html"><div class="ttname"><a href="classPoint.html">Point</a></div><div class="ttdoc">2D Point Class </div><div class="ttdef"><b>Definition:</b> point.h:12</div></div>
-<div class="ttc" id="classBehavior_html"><div class="ttname"><a href="classBehavior.html">Behavior</a></div><div class="ttdoc">Abstract Behavior class which all other behaviors inherit. </div><div class="ttdef"><b>Definition:</b> behavior.h:32</div></div>
-<div class="ttc" id="classAttackMain_html_a0931b81937c71a9a6990bfbf7bfc73cb"><div class="ttname"><a href="classAttackMain.html#a0931b81937c71a9a6990bfbf7bfc73cb">AttackMain::perform</a></div><div class="ttdeci">void perform(Robot *)</div><div class="ttdoc">Perform this behavior&#39;s action on a robot Given an arbitrary roobot, The perform function of a Behavi...</div><div class="ttdef"><b>Definition:</b> attackmain.cpp:33</div></div>
-<div class="ttc" id="classAttackMain_html_a6e6e3b0439ef19b05f0c4a1ebdfbfd62"><div class="ttname"><a href="classAttackMain.html#a6e6e3b0439ef19b05f0c4a1ebdfbfd62">AttackMain::isFinished</a></div><div class="ttdeci">bool isFinished() override</div><div class="ttdoc">Return if behavior is &quot;finished&quot; Return true when the behavior is &quot;finished,&quot; false otherwise...</div><div class="ttdef"><b>Definition:</b> attackmain.cpp:123</div></div>
-<div class="ttc" id="classAttackMain_html"><div class="ttname"><a href="classAttackMain.html">AttackMain</a></div><div class="ttdoc">AttackMain is the main driver behavior for the NormalGameStrategy. </div><div class="ttdef"><b>Definition:</b> attackmain.h:16</div></div>
-<div class="ttc" id="classSkill_1_1Skill_html"><div class="ttname"><a href="classSkill_1_1Skill.html">Skill::Skill</a></div><div class="ttdoc">The Skill Base Class. </div><div class="ttdef"><b>Definition:</b> skill.h:17</div></div>
+<div class="ttc" id="classAttackMain_html_a05fa88c3fa04907f19328fef0b3f60c2"><div class="ttname"><a href="classAttackMain.html#a05fa88c3fa04907f19328fef0b3f60c2">AttackMain::calcStaticProb</a></div><div class="ttdeci">void calcStaticProb()</div><div class="ttdef"><b>Definition:</b> attackmain.cpp:160</div></div>
+<div class="ttc" id="structAttackMain_1_1ProbNode_html"><div class="ttname"><a href="structAttackMain_1_1ProbNode.html">AttackMain::ProbNode</a></div><div class="ttdef"><b>Definition:</b> attackmain.h:64</div></div>
+<div class="ttc" id="classAttackMain_html_a6e6e3b0439ef19b05f0c4a1ebdfbfd62"><div class="ttname"><a href="classAttackMain.html#a6e6e3b0439ef19b05f0c4a1ebdfbfd62">AttackMain::isFinished</a></div><div class="ttdeci">bool isFinished() override</div><div class="ttdoc">Return if behavior is &quot;finished&quot; Return true when the behavior is &quot;finished,&quot; false otherwise...</div><div class="ttdef"><b>Definition:</b> attackmain.cpp:407</div></div>
+<div class="ttc" id="group__config_html_ga313353b53d609b3b2b37e1aecf98bf4c"><div class="ttname"><a href="group__config.html#ga313353b53d609b3b2b37e1aecf98bf4c">FIELD_WIDTH</a></div><div class="ttdeci">#define FIELD_WIDTH</div><div class="ttdoc">The full goal-to-goal length (Y-Axis) </div><div class="ttdef"><b>Definition:</b> globals.h:89</div></div>
+<div class="ttc" id="simulated_8h_html"><div class="ttname"><a href="simulated_8h.html">simulated.h</a></div></div>
+<div class="ttc" id="classAttackMain_html"><div class="ttname"><a href="classAttackMain.html">AttackMain</a></div><div class="ttdef"><b>Definition:</b> attackmain.h:53</div></div>
+<div class="ttc" id="classAttackMain_html_a931ddcec4310c57caa5edc09824e5a06"><div class="ttname"><a href="classAttackMain.html#a931ddcec4310c57caa5edc09824e5a06">AttackMain::genClusters</a></div><div class="ttdeci">std::vector&lt; std::vector&lt; Point &gt; &gt; genClusters()</div><div class="ttdef"><b>Definition:</b> attackmain.cpp:265</div></div>
+<div class="ttc" id="group__config_html_ga4e8ecaf2d59499a8c159ccdf7be1baec"><div class="ttname"><a href="group__config.html#ga4e8ecaf2d59499a8c159ccdf7be1baec">FIELD_LENGTH</a></div><div class="ttdeci">#define FIELD_LENGTH</div><div class="ttdoc">The full side-to-side length (X-Axis) </div><div class="ttdef"><b>Definition:</b> globals.h:83</div></div>
+<div class="ttc" id="classAttackMain_html_aeaaf6a2f3ea98210bfe055299ab8552b"><div class="ttname"><a href="classAttackMain.html#aeaaf6a2f3ea98210bfe055299ab8552b">AttackMain::calcBestGoalPoint</a></div><div class="ttdeci">std::pair&lt; bool, Point &gt; calcBestGoalPoint(Robot *)</div><div class="ttdef"><b>Definition:</b> attackmain.cpp:307</div></div>
+<div class="ttc" id="classGenericMovementBehavior_html"><div class="ttname"><a href="classGenericMovementBehavior.html">GenericMovementBehavior</a></div><div class="ttdoc">Behavior to perform generic point-to-point Movement. </div><div class="ttdef"><b>Definition:</b> genericmovementbehavior.h:19</div></div>
+<div class="ttc" id="classSkill_1_1DribbleToPoint_html"><div class="ttname"><a href="classSkill_1_1DribbleToPoint.html">Skill::DribbleToPoint</a></div><div class="ttdoc">Uses the dribbler to move the ball to a given point. </div><div class="ttdef"><b>Definition:</b> dribbletopoint.h:18</div></div>
+<div class="ttc" id="classAttackMain_html_aedc64dd2c7d413e1b6c68b0613ba570c"><div class="ttname"><a href="classAttackMain.html#aedc64dd2c7d413e1b6c68b0613ba570c">AttackMain::calcBestPassPoint</a></div><div class="ttdeci">std::pair&lt; bool, Point &gt; calcBestPassPoint(Robot *)</div><div class="ttdef"><b>Definition:</b> attackmain.cpp:370</div></div>
+<div class="ttc" id="classAttackMain_html_a6616a099b02c7c44d1c53b77520ff9da"><div class="ttname"><a href="classAttackMain.html#a6616a099b02c7c44d1c53b77520ff9da">AttackMain::calcDynamicProb</a></div><div class="ttdeci">void calcDynamicProb()</div><div class="ttdef"><b>Definition:</b> attackmain.cpp:208</div></div>
+<div class="ttc" id="classAttackMain_html_adb6bfa6e9e185a021faef8aae2ef7a7a"><div class="ttname"><a href="classAttackMain.html#adb6bfa6e9e185a021faef8aae2ef7a7a">AttackMain::getScoreProb</a></div><div class="ttdeci">float getScoreProb(const Point &amp;)</div><div class="ttdef"><b>Definition:</b> attackmain.cpp:429</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Sep 23 2015 14:45:59 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jul 26 2016 13:40:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

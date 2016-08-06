@@ -100,56 +100,81 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;model/robot.h&quot;</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;movement/movetype.h&quot;</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;utilities/measurments.h&quot;</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">namespace </span>Movement</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;{</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;utilities/measurements.h&quot;</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;utilities/debug.h&quot;</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="tolerances_8h.html">include/config/tolerances.h</a>&quot;</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="simulated_8h.html">include/config/simulated.h</a>&quot;</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
-<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="structMovement_1_1fourWheelVels.html">   14</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structMovement_1_1fourWheelVels.html">fourWheelVels</a></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;{</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keywordtype">double</span> LB, LF, RB, RF;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;};</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="classMovement_1_1FourWheelCalculator.html">   25</a></span>&#160;<span class="keyword">class </span><a class="code" href="classMovement_1_1FourWheelCalculator.html">FourWheelCalculator</a></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;{</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <a class="code" href="classMovement_1_1FourWheelCalculator.html">FourWheelCalculator</a>();</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <a class="code" href="structMovement_1_1fourWheelVels.html">fourWheelVels</a> <a class="code" href="classMovement_1_1FourWheelCalculator.html#a2f9b2954ab7bf28a534368fe369e9942">calculateVels</a></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        (<a class="code" href="classRobot.html">Robot</a>* rob, <a class="code" href="classPoint.html">Point</a> goalPoint, <span class="keywordtype">float</span> theta_goal, <a class="code" href="namespaceMovement.html#a74b28fda28211060df3b66c2ce160bd6">Type</a> moveType);</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <a class="code" href="structMovement_1_1fourWheelVels.html">fourWheelVels</a> <a class="code" href="classMovement_1_1FourWheelCalculator.html#a2f9b2954ab7bf28a534368fe369e9942">calculateVels</a></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        (<a class="code" href="classRobot.html">Robot</a>* rob, <span class="keywordtype">float</span> x_goal, <span class="keywordtype">float</span> y_goal, <span class="keywordtype">float</span> theta_goal, <a class="code" href="namespaceMovement.html#a74b28fda28211060df3b66c2ce160bd6">Type</a> moveType);</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <a class="code" href="structMovement_1_1fourWheelVels.html">fourWheelVels</a> <a class="code" href="classMovement_1_1FourWheelCalculator.html#a96fae2f52d2afa7eaceb9b4d134ddc9d">defaultCalc</a>(<a class="code" href="classRobot.html">Robot</a>* rob, <span class="keywordtype">float</span> x_goal, <span class="keywordtype">float</span> y_goal, <span class="keywordtype">float</span> theta_goal);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <a class="code" href="structMovement_1_1fourWheelVels.html">fourWheelVels</a> <a class="code" href="classMovement_1_1FourWheelCalculator.html#a05c2f57a903d55a39a93bea7a75cef70">facePointCalc</a>(<a class="code" href="classRobot.html">Robot</a>* rob, <span class="keywordtype">float</span> x_goal, <span class="keywordtype">float</span> y_goal, <span class="keywordtype">float</span> angle_to_point);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="comment">//Robot Physical Properties</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">double</span> LF_offset = 140*M_PI/180; <span class="comment">//150 Robot&#39;s x-Axis (right side) is zero</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">double</span> LB_offset = 225*M_PI/180; <span class="comment">//225</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">double</span> RF_offset =  40*M_PI/180; <span class="comment">//40</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">double</span> RB_offset = 315*M_PI/180; <span class="comment">//315</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">double</span> wheel_radius = 27;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordtype">double</span> distance_to_goal, angle_to_goal;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;};</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;}</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="classRobot_html"><div class="ttname"><a href="classRobot.html">Robot</a></div><div class="ttdoc">The Robot class representing Robots on the field. </div><div class="ttdef"><b>Definition:</b> robot.h:21</div></div>
-<div class="ttc" id="classMovement_1_1FourWheelCalculator_html_a2f9b2954ab7bf28a534368fe369e9942"><div class="ttname"><a href="classMovement_1_1FourWheelCalculator.html#a2f9b2954ab7bf28a534368fe369e9942">Movement::FourWheelCalculator::calculateVels</a></div><div class="ttdeci">fourWheelVels calculateVels(Robot *rob, Point goalPoint, float theta_goal, Type moveType)</div><div class="ttdoc">Velocity calculation with a Point target overload. </div><div class="ttdef"><b>Definition:</b> omni4_velcalculator.cpp:28</div></div>
-<div class="ttc" id="classMovement_1_1FourWheelCalculator_html_a96fae2f52d2afa7eaceb9b4d134ddc9d"><div class="ttname"><a href="classMovement_1_1FourWheelCalculator.html#a96fae2f52d2afa7eaceb9b4d134ddc9d">Movement::FourWheelCalculator::defaultCalc</a></div><div class="ttdeci">fourWheelVels defaultCalc(Robot *rob, float x_goal, float y_goal, float theta_goal)</div><div class="ttdoc">Movement algorithm to handle Type::Default movement. </div><div class="ttdef"><b>Definition:</b> omni4_velcalculator.cpp:48</div></div>
-<div class="ttc" id="classMovement_1_1FourWheelCalculator_html_a05c2f57a903d55a39a93bea7a75cef70"><div class="ttname"><a href="classMovement_1_1FourWheelCalculator.html#a05c2f57a903d55a39a93bea7a75cef70">Movement::FourWheelCalculator::facePointCalc</a></div><div class="ttdeci">fourWheelVels facePointCalc(Robot *rob, float x_goal, float y_goal, float angle_to_point)</div><div class="ttdoc">Movement algorithm to handle Type::facePoint movement. </div><div class="ttdef"><b>Definition:</b> omni4_velcalculator.cpp:126</div></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">namespace </span>Movement</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;{</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="structMovement_1_1fourWheelVels.html">   17</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structMovement_1_1fourWheelVels.html">fourWheelVels</a></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;{</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keywordtype">double</span> LB, LF, RB, RF;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;};</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="classMovement_1_1FourWheelCalculator.html">   28</a></span>&#160;<span class="keyword">class </span><a class="code" href="classMovement_1_1FourWheelCalculator.html">FourWheelCalculator</a></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;{</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <a class="code" href="classMovement_1_1FourWheelCalculator.html">FourWheelCalculator</a>();</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <a class="code" href="structMovement_1_1fourWheelVels.html">fourWheelVels</a> <a class="code" href="classMovement_1_1FourWheelCalculator.html#a2f9b2954ab7bf28a534368fe369e9942">calculateVels</a></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        (<a class="code" href="classRobot.html">Robot</a>* rob, <a class="code" href="classPoint.html">Point</a> goalPoint, <span class="keywordtype">float</span> theta_goal, <a class="code" href="namespaceMovement.html#a74b28fda28211060df3b66c2ce160bd6">Type</a> moveType);</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <a class="code" href="structMovement_1_1fourWheelVels.html">fourWheelVels</a> <a class="code" href="classMovement_1_1FourWheelCalculator.html#a2f9b2954ab7bf28a534368fe369e9942">calculateVels</a></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        (<a class="code" href="classRobot.html">Robot</a>* rob, <span class="keywordtype">float</span> x_goal, <span class="keywordtype">float</span> y_goal, <span class="keywordtype">float</span> theta_goal, <a class="code" href="namespaceMovement.html#a74b28fda28211060df3b66c2ce160bd6">Movement::Type</a> move_type);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <a class="code" href="structMovement_1_1fourWheelVels.html">fourWheelVels</a> <a class="code" href="classMovement_1_1FourWheelCalculator.html#a96fae2f52d2afa7eaceb9b4d134ddc9d">defaultCalc</a>(<a class="code" href="classRobot.html">Robot</a>* rob, <span class="keywordtype">float</span> x_goal, <span class="keywordtype">float</span> y_goal, <span class="keywordtype">float</span> theta_goal);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <a class="code" href="structMovement_1_1fourWheelVels.html">fourWheelVels</a> <a class="code" href="classMovement_1_1FourWheelCalculator.html#ac9627ec324ec45748ab74d8afd4635b5">dribbleCalc</a>(<a class="code" href="classRobot.html">Robot</a>* rob, <span class="keywordtype">float</span> x_goal, <span class="keywordtype">float</span> y_goal, <span class="keywordtype">float</span> theta_goal);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <a class="code" href="structMovement_1_1fourWheelVels.html">fourWheelVels</a> <a class="code" href="classMovement_1_1FourWheelCalculator.html#a05c2f57a903d55a39a93bea7a75cef70">facePointCalc</a>(<a class="code" href="classRobot.html">Robot</a>* rob, <span class="keywordtype">float</span> x_goal, <span class="keywordtype">float</span> y_goal, <span class="keywordtype">float</span> angle_to_point);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="comment">//Robot Physical Properties</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">double</span> LF_offset = 144*M_PI/180; <span class="comment">//135 Robot&#39;s x-Axis (right side) is zero</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordtype">double</span> LB_offset = 224*M_PI/180; <span class="comment">//225</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordtype">double</span> RF_offset =  36*M_PI/180; <span class="comment">//45</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordtype">double</span> RB_offset = 316*M_PI/180; <span class="comment">//315</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor">#if SIMULATED</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor"></span>    <span class="keywordtype">double</span> trans_offset = 0;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor"></span>    <span class="keywordtype">double</span> trans_offset = 0.0149;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor"></span>    <span class="keyword">const</span> <span class="keywordtype">double</span> wheel_radius = 27;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordtype">double</span> distance_to_goal, angle_error;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="comment">//Error Members</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordtype">void</span> calc_error(<span class="keywordtype">float</span> x_goal, <span class="keywordtype">float</span> y_goal);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordtype">void</span> clear_errors();</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <a class="code" href="classPoint.html">Point</a> last_goal_target;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dist_error_maxsize=100;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> angle_error_maxsize=50;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordtype">double</span> dist_error_integral=0;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordtype">double</span> angle_error_integral=0;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    std::deque&lt;double&gt; dist_error_deque;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    std::deque&lt;double&gt; angle_error_deque;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keywordtype">float</span> prev_vel = 0;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;};</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;}</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="classRobot_html"><div class="ttname"><a href="classRobot.html">Robot</a></div><div class="ttdoc">The Robot class representing Robots on the field. </div><div class="ttdef"><b>Definition:</b> robot.h:22</div></div>
+<div class="ttc" id="classMovement_1_1FourWheelCalculator_html_a2f9b2954ab7bf28a534368fe369e9942"><div class="ttname"><a href="classMovement_1_1FourWheelCalculator.html#a2f9b2954ab7bf28a534368fe369e9942">Movement::FourWheelCalculator::calculateVels</a></div><div class="ttdeci">fourWheelVels calculateVels(Robot *rob, Point goalPoint, float theta_goal, Type moveType)</div><div class="ttdoc">Velocity calculation with a Point target overload. </div><div class="ttdef"><b>Definition:</b> omni4_velcalculator.cpp:31</div></div>
+<div class="ttc" id="classMovement_1_1FourWheelCalculator_html_a96fae2f52d2afa7eaceb9b4d134ddc9d"><div class="ttname"><a href="classMovement_1_1FourWheelCalculator.html#a96fae2f52d2afa7eaceb9b4d134ddc9d">Movement::FourWheelCalculator::defaultCalc</a></div><div class="ttdeci">fourWheelVels defaultCalc(Robot *rob, float x_goal, float y_goal, float theta_goal)</div><div class="ttdoc">Movement algorithm to handle Type::Default and Type::StayStill movement. </div><div class="ttdef"><b>Definition:</b> omni4_velcalculator.cpp:53</div></div>
+<div class="ttc" id="classMovement_1_1FourWheelCalculator_html_a05c2f57a903d55a39a93bea7a75cef70"><div class="ttname"><a href="classMovement_1_1FourWheelCalculator.html#a05c2f57a903d55a39a93bea7a75cef70">Movement::FourWheelCalculator::facePointCalc</a></div><div class="ttdeci">fourWheelVels facePointCalc(Robot *rob, float x_goal, float y_goal, float angle_to_point)</div><div class="ttdoc">Movement algorithm to handle Type::facePoint movement. </div><div class="ttdef"><b>Definition:</b> omni4_velcalculator.cpp:261</div></div>
 <div class="ttc" id="classPoint_html"><div class="ttname"><a href="classPoint.html">Point</a></div><div class="ttdoc">2D Point Class </div><div class="ttdef"><b>Definition:</b> point.h:12</div></div>
-<div class="ttc" id="structMovement_1_1fourWheelVels_html"><div class="ttname"><a href="structMovement_1_1fourWheelVels.html">Movement::fourWheelVels</a></div><div class="ttdoc">Return value from FourWheelCalculator. </div><div class="ttdef"><b>Definition:</b> omni4_velcalculator.h:14</div></div>
+<div class="ttc" id="simulated_8h_html"><div class="ttname"><a href="simulated_8h.html">simulated.h</a></div></div>
+<div class="ttc" id="structMovement_1_1fourWheelVels_html"><div class="ttname"><a href="structMovement_1_1fourWheelVels.html">Movement::fourWheelVels</a></div><div class="ttdoc">Return value from FourWheelCalculator. </div><div class="ttdef"><b>Definition:</b> omni4_velcalculator.h:17</div></div>
 <div class="ttc" id="namespaceMovement_html_a74b28fda28211060df3b66c2ce160bd6"><div class="ttname"><a href="namespaceMovement.html#a74b28fda28211060df3b66c2ce160bd6">Movement::Type</a></div><div class="ttdeci">Type</div><div class="ttdoc">Defines Movement Type modifiers. </div><div class="ttdef"><b>Definition:</b> movetype.h:19</div></div>
-<div class="ttc" id="classMovement_1_1FourWheelCalculator_html"><div class="ttname"><a href="classMovement_1_1FourWheelCalculator.html">Movement::FourWheelCalculator</a></div><div class="ttdoc">Wheel velocity calculator for four-wheel (Ardino) robots. </div><div class="ttdef"><b>Definition:</b> omni4_velcalculator.h:25</div></div>
+<div class="ttc" id="classMovement_1_1FourWheelCalculator_html"><div class="ttname"><a href="classMovement_1_1FourWheelCalculator.html">Movement::FourWheelCalculator</a></div><div class="ttdoc">Wheel velocity calculator for four-wheel (Ardino) robots. </div><div class="ttdef"><b>Definition:</b> omni4_velcalculator.h:28</div></div>
+<div class="ttc" id="tolerances_8h_html"><div class="ttname"><a href="tolerances_8h.html">tolerances.h</a></div></div>
+<div class="ttc" id="classMovement_1_1FourWheelCalculator_html_ac9627ec324ec45748ab74d8afd4635b5"><div class="ttname"><a href="classMovement_1_1FourWheelCalculator.html#ac9627ec324ec45748ab74d8afd4635b5">Movement::FourWheelCalculator::dribbleCalc</a></div><div class="ttdeci">fourWheelVels dribbleCalc(Robot *rob, float x_goal, float y_goal, float theta_goal)</div><div class="ttdoc">Movement algorithm to handle Type::Dribble movement. </div><div class="ttdef"><b>Definition:</b> omni4_velcalculator.cpp:157</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Sep 23 2015 14:45:59 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jul 26 2016 13:40:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

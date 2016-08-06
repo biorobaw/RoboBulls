@@ -89,7 +89,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#friends">Friends</a> &#124;
 <a href="classGameModel-members.html">List of all members</a>  </div>
@@ -106,9 +105,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">Game access functions</div></td></tr>
-<tr class="memitem:a808a636dc940da1e45407149e10310fb"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classRobot.html">Robot</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGameModel.html#a808a636dc940da1e45407149e10310fb">getOponentTeam</a> ()</td></tr>
-<tr class="memdesc:a808a636dc940da1e45407149e10310fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a vector of all robots on the opposing team.  <a href="#a808a636dc940da1e45407149e10310fb">More...</a><br/></td></tr>
-<tr class="separator:a808a636dc940da1e45407149e10310fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02a11bb60662ac038772e3a470df2504"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classRobot.html">Robot</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGameModel.html#a02a11bb60662ac038772e3a470df2504">getOppTeam</a> ()</td></tr>
+<tr class="memdesc:a02a11bb60662ac038772e3a470df2504"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a vector of all robots on the opposing team.  <a href="#a02a11bb60662ac038772e3a470df2504">More...</a><br/></td></tr>
+<tr class="separator:a02a11bb60662ac038772e3a470df2504"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abeb752d2da5d02cd9a4294909e77ff07"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classRobot.html">Robot</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGameModel.html#abeb752d2da5d02cd9a4294909e77ff07">getMyTeam</a> ()</td></tr>
 <tr class="memdesc:abeb752d2da5d02cd9a4294909e77ff07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a vector of all robots on the current team.  <a href="#abeb752d2da5d02cd9a4294909e77ff07">More...</a><br/></td></tr>
 <tr class="separator:abeb752d2da5d02cd9a4294909e77ff07"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -124,16 +123,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a46a3a55945d46b65cd311595ae7f62cb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classPoint.html">Point</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGameModel.html#a46a3a55945d46b65cd311595ae7f62cb">getBallVelocity</a> ()</td></tr>
 <tr class="memdesc:a46a3a55945d46b65cd311595ae7f62cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a 2D point of the X and Y component of the ball's velocity.  <a href="#a46a3a55945d46b65cd311595ae7f62cb">More...</a><br/></td></tr>
 <tr class="separator:a46a3a55945d46b65cd311595ae7f62cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac16ae1195088d7466343966a6c95e9e5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classPoint.html">Point</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGameModel.html#ac16ae1195088d7466343966a6c95e9e5">getBallAcceleration</a> ()</td></tr>
-<tr class="memdesc:ac16ae1195088d7466343966a6c95e9e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a 2D point of the X and Y component of the ball's acceleration.  <a href="#ac16ae1195088d7466343966a6c95e9e5">More...</a><br/></td></tr>
-<tr class="separator:ac16ae1195088d7466343966a6c95e9e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a4e5f473f17dc2942e86479110352c1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classPoint.html">Point</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGameModel.html#a7a4e5f473f17dc2942e86479110352c1">getBallPrediction</a> ()</td></tr>
-<tr class="memdesc:a7a4e5f473f17dc2942e86479110352c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a predition of the ball's position in 2 seconds The Ball Prediciton is a rudimentary kinematics calculation that takes into account the position and velocity.  <a href="#a7a4e5f473f17dc2942e86479110352c1">More...</a><br/></td></tr>
-<tr class="separator:a7a4e5f473f17dc2942e86479110352c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac64a2f7fb9d9f0dfa8911895aaec86cd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac64a2f7fb9d9f0dfa8911895aaec86cd"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGameModel.html#ac64a2f7fb9d9f0dfa8911895aaec86cd">getBallIsStopped</a> ()</td></tr>
-<tr class="memdesc:ac64a2f7fb9d9f0dfa8911895aaec86cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true of the ball is not moving, or false if it is moving. <br/></td></tr>
-<tr class="separator:ac64a2f7fb9d9f0dfa8911895aaec86cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a184339d57f602313cfb9123e2e1bc7b5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classPoint.html">Point</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGameModel.html#a184339d57f602313cfb9123e2e1bc7b5">getBallStopPoint</a> ()</td></tr>
+<tr class="memdesc:a184339d57f602313cfb9123e2e1bc7b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a predicted stopping point for the ball.  <a href="#a184339d57f602313cfb9123e2e1bc7b5">More...</a><br/></td></tr>
+<tr class="separator:a184339d57f602313cfb9123e2e1bc7b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1195d94c634b489ace1eb4703ad313de"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1195d94c634b489ace1eb4703ad313de"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGameModel.html#a1195d94c634b489ace1eb4703ad313de">getBallSpeed</a> ()</td></tr>
 <tr class="memdesc:a1195d94c634b489ace1eb4703ad313de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the ball's <em>speed</em> (magnitude of velocity) in m/s. <br/></td></tr>
@@ -162,13 +154,13 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <a class="el" href="classPoint.html">Point</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGameModel.html#a530bcad960ee36cc794cbc4dbc4c6ced">getPenaltyPoint</a> ()</td></tr>
 <tr class="memdesc:a530bcad960ee36cc794cbc4dbc4c6ced"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the penalty point that penalty kicks are taken from. <br/></td></tr>
 <tr class="separator:a530bcad960ee36cc794cbc4dbc4c6ced"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a8877f2ddf061b1203fd48440d2709d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4a8877f2ddf061b1203fd48440d2709d"></a>
-<a class="el" href="classPoint.html">Point</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGameModel.html#a4a8877f2ddf061b1203fd48440d2709d">getOpponentGoal</a> ()</td></tr>
-<tr class="memdesc:a4a8877f2ddf061b1203fd48440d2709d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the opponents's goal, that we are trying to score in. <br/></td></tr>
-<tr class="separator:a4a8877f2ddf061b1203fd48440d2709d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64c6dfeaa8634a65b4547cb784a81bed"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a64c6dfeaa8634a65b4547cb784a81bed"></a>
+<a class="el" href="classPoint.html">Point</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGameModel.html#a64c6dfeaa8634a65b4547cb784a81bed">getOppGoal</a> ()</td></tr>
+<tr class="memdesc:a64c6dfeaa8634a65b4547cb784a81bed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the opponents's goal, that we are trying to score in <a class="el" href="classVisionComm.html" title="The VisionComm class recieves information from the vision cameras. ">VisionComm</a> transforms received info such that opponent is always on the positive side based on the SIDE global. <br/></td></tr>
+<tr class="separator:a64c6dfeaa8634a65b4547cb784a81bed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad4b948a1be8c124e00983dc15f41743b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad4b948a1be8c124e00983dc15f41743b"></a>
 <a class="el" href="classPoint.html">Point</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGameModel.html#ad4b948a1be8c124e00983dc15f41743b">getMyGoal</a> ()</td></tr>
-<tr class="memdesc:ad4b948a1be8c124e00983dc15f41743b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the goal point that we are defending (edge of the field) <br/></td></tr>
+<tr class="memdesc:ad4b948a1be8c124e00983dc15f41743b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the goal point that we are defending //! <a class="el" href="classVisionComm.html" title="The VisionComm class recieves information from the vision cameras. ">VisionComm</a> transforms received info such that we are always on the negative side based on the SIDE global. <br/></td></tr>
 <tr class="separator:ad4b948a1be8c124e00983dc15f41743b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d207259b2b866a45fcce659d15ef4df"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0d207259b2b866a45fcce659d15ef4df"></a>
 <a class="el" href="classRobot.html">Robot</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGameModel.html#a0d207259b2b866a45fcce659d15ef4df">getHasBall</a> ()</td></tr>
@@ -178,7 +170,7 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:af3448c603f68fda525386f156a095b70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Look for a robot with id <code>id</code> on <a class="el" href="classGameModel.html#abeb752d2da5d02cd9a4294909e77ff07" title="Return a vector of all robots on the current team. ">getMyTeam()</a>  <a href="#af3448c603f68fda525386f156a095b70">More...</a><br/></td></tr>
 <tr class="separator:af3448c603f68fda525386f156a095b70"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb534b84ca08d7b4c70321e10bd16bb0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classRobot.html">Robot</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGameModel.html#aeb534b84ca08d7b4c70321e10bd16bb0">findOpTeam</a> (int)</td></tr>
-<tr class="memdesc:aeb534b84ca08d7b4c70321e10bd16bb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Look for a robot with id <code>id</code> on <a class="el" href="classGameModel.html#a808a636dc940da1e45407149e10310fb" title="Return a vector of all robots on the opposing team. ">getOponentTeam()</a>  <a href="#aeb534b84ca08d7b4c70321e10bd16bb0">More...</a><br/></td></tr>
+<tr class="memdesc:aeb534b84ca08d7b4c70321e10bd16bb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Look for a robot with id <code>id</code> on getOponentTeam()  <a href="#aeb534b84ca08d7b4c70321e10bd16bb0">More...</a><br/></td></tr>
 <tr class="separator:aeb534b84ca08d7b4c70321e10bd16bb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">grSim Replacement functions</div></td></tr>
 <tr class="memitem:aa70a207c760c36b9ffe29508875d0edd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGameModel.html#aa70a207c760c36b9ffe29508875d0edd">addRobotReplacement</a> (int id, int team, float x, float y, float dir=-10)</td></tr>
@@ -217,17 +209,6 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memdesc:aa6696915161bd22de4eda8147fc34cba"><td class="mdescLeft">&#160;</td><td class="mdescRight">To get the singleton instance of the <a class="el" href="classGameModel.html" title="The GameModel class. ">GameModel</a>.  <a href="#aa6696915161bd22de4eda8147fc34cba">More...</a><br/></td></tr>
 <tr class="separator:aa6696915161bd22de4eda8147fc34cba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
-Static Public Attributes</h2></td></tr>
-<tr class="memitem:a13026eb1955e46748604ac48f13f980e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a13026eb1955e46748604ac48f13f980e"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGameModel.html#a13026eb1955e46748604ac48f13f980e">mySide</a> = -1</td></tr>
-<tr class="memdesc:a13026eb1955e46748604ac48f13f980e"><td class="mdescLeft">&#160;</td><td class="mdescRight">-1 or 1, representing polarity of "my" side of field <br/></td></tr>
-<tr class="separator:a13026eb1955e46748604ac48f13f980e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d7fb294de8327501e24ed1113ba0285"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8d7fb294de8327501e24ed1113ba0285"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGameModel.html#a8d7fb294de8327501e24ed1113ba0285">opSide</a> = 1</td></tr>
-<tr class="memdesc:a8d7fb294de8327501e24ed1113ba0285"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opposite of mySide. <br/></td></tr>
-<tr class="separator:a8d7fb294de8327501e24ed1113ba0285"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr class="memitem:a858fc566aa17ca6076c8262476b93098"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a858fc566aa17ca6076c8262476b93098"></a>
@@ -236,8 +217,16 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:a858fc566aa17ca6076c8262476b93098"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ec642fe5c327b977c6dae28fdbdaf32"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5ec642fe5c327b977c6dae28fdbdaf32"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGameModel.html#a5ec642fe5c327b977c6dae28fdbdaf32">setBallPoint</a> (<a class="el" href="classPoint.html">Point</a>)</td></tr>
-<tr class="memdesc:a5ec642fe5c327b977c6dae28fdbdaf32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the position of the ball. Updates velocity and acceleration. <br/></td></tr>
+<tr class="memdesc:a5ec642fe5c327b977c6dae28fdbdaf32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the position of the ball. <br/></td></tr>
 <tr class="separator:a5ec642fe5c327b977c6dae28fdbdaf32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9a06578a45a6d9e28c23e41e41a7b0d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa9a06578a45a6d9e28c23e41e41a7b0d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGameModel.html#aa9a06578a45a6d9e28c23e41e41a7b0d">setBallVelocity</a> (<a class="el" href="classPoint.html">Point</a>)</td></tr>
+<tr class="memdesc:aa9a06578a45a6d9e28c23e41e41a7b0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the velocity of the ball. <br/></td></tr>
+<tr class="separator:aa9a06578a45a6d9e28c23e41e41a7b0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6822518a10857a6a5e8876c4a5798f38"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6822518a10857a6a5e8876c4a5798f38"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGameModel.html#a6822518a10857a6a5e8876c4a5798f38">setBallStopPoint</a> (<a class="el" href="classPoint.html">Point</a>)</td></tr>
+<tr class="memdesc:a6822518a10857a6a5e8876c4a5798f38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the stopping point of the ball. <br/></td></tr>
+<tr class="separator:a6822518a10857a6a5e8876c4a5798f38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84076a0674af466afdb41cb10968960b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a84076a0674af466afdb41cb10968960b"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGameModel.html#a84076a0674af466afdb41cb10968960b">setRobotHasBall</a> ()</td></tr>
 <tr class="memdesc:a84076a0674af466afdb41cb10968960b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the robot that has currently been determined to have the ball. <br/></td></tr>
@@ -297,7 +286,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>SimRobComm</b></td><
 <div class="line">    <a class="code" href="classRobot.html">Robot</a>* robot_5 = gameModel-&gt;<a class="code" href="classGameModel.html#af3448c603f68fda525386f156a095b70">findMyTeam</a>(5);</div>
 <div class="line">    <span class="keywordflow">if</span>(robot_5) {</div>
 <div class="line">        std::cout &lt;&lt; <span class="stringliteral">&quot;Robot with id 5 is currently on team, at position &quot;</span> </div>
-<div class="line">                  &lt;&lt; robot_5-&gt;<a class="code" href="classRobot.html#acd2a6232d60f811a5dbe3a8fb33547ca">getRobotPosition</a>()-&gt;<a class="code" href="classPoint.html#a94896c5fc859f471861aaad239b42d9f">toString</a>() &lt;&lt; std::endl;</div>
+<div class="line">                  &lt;&lt; robot_5-&gt;getRobotPosition()-&gt;<a class="code" href="classRobot.html#a22063fbc7fa2e18b4cf7d31848d3fb7b">toString</a>() &lt;&lt; std::endl;</div>
 <div class="line">    }</div>
 <div class="line">}</div>
 </div><!-- fragment --> </div><h2 class="groupheader">Member Function Documentation</h2>
@@ -488,7 +477,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>SimRobComm</b></td><
       </table>
 </div><div class="memdoc">
 
-<p>Look for a robot with id <code>id</code> on <a class="el" href="classGameModel.html#a808a636dc940da1e45407149e10310fb" title="Return a vector of all robots on the opposing team. ">getOponentTeam()</a> </p>
+<p>Look for a robot with id <code>id</code> on getOponentTeam() </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">id</td><td>The id of the robot to look for </td></tr>
@@ -496,27 +485,6 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>SimRobComm</b></td><
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A robot pointer if found, or NULL if not on the team </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="ac16ae1195088d7466343966a6c95e9e5"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classPoint.html">Point</a> GameModel::getBallAcceleration </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Return a 2D point of the X and Y component of the ball's acceleration. </p>
-<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classGameModel.html#a46a3a55945d46b65cd311595ae7f62cb" title="Return a 2D point of the X and Y component of the ball&#39;s velocity. ">getBallVelocity</a> </dd>
-<dd>
-<a class="el" href="classVelocityCalculator.html" title="Generic object to calculate velocity of a Point over time. ">VelocityCalculator</a> </dd></dl>
-<dl class="section return"><dt>Returns</dt><dd>The ball's acceleration as an X/Y point in m/s </dd></dl>
 
 </div>
 </div>
@@ -539,12 +507,12 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>SimRobComm</b></td><
 </dl>
 </div>
 </div>
-<a class="anchor" id="a7a4e5f473f17dc2942e86479110352c1"></a>
+<a class="anchor" id="a184339d57f602313cfb9123e2e1bc7b5"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classPoint.html">Point</a> GameModel::getBallPrediction </td>
+          <td class="memname"><a class="el" href="classPoint.html">Point</a> GameModel::getBallStopPoint </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -552,11 +520,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>SimRobComm</b></td><
       </table>
 </div><div class="memdoc">
 
-<p>Returns a predition of the ball's position in 2 seconds The Ball Prediciton is a rudimentary kinematics calculation that takes into account the position and velocity. </p>
-<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classGameModel.html#acbd460fe496b7962b8b1910331769d47" title="Return a 2D point of the current ball location. ">getBallPoint</a> </dd>
-<dd>
-<a class="el" href="classGameModel.html#a46a3a55945d46b65cd311595ae7f62cb" title="Return a 2D point of the X and Y component of the ball&#39;s velocity. ">getBallVelocity</a> </dd></dl>
-<dl class="section return"><dt>Returns</dt><dd>The ball's expected location in about two seconds. </dd></dl>
+<p>Return a predicted stopping point for the ball. </p>
+<dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="classPoint.html" title="2D Point Class ">Point</a> with the ball's position </dd></dl>
 
 </div>
 </div>
@@ -621,7 +586,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>SimRobComm</b></td><
 </div><div class="memdoc">
 
 <p>To get the singleton instance of the <a class="el" href="classGameModel.html" title="The GameModel class. ">GameModel</a>. </p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000003">Deprecated:</a></b></dt><dd>Use gameModel global pointer instead </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000001">Deprecated:</a></b></dt><dd>Use gameModel global pointer instead </dd></dl>
 
 </div>
 </div>
@@ -644,12 +609,12 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>SimRobComm</b></td><
 </dl>
 </div>
 </div>
-<a class="anchor" id="a808a636dc940da1e45407149e10310fb"></a>
+<a class="anchor" id="a02a11bb60662ac038772e3a470df2504"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt; <a class="el" href="classRobot.html">Robot</a> * &gt; &amp; GameModel::getOponentTeam </td>
+          <td class="memname">std::vector&lt; <a class="el" href="classRobot.html">Robot</a> * &gt; &amp; GameModel::getOppTeam </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -752,7 +717,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>SimRobComm</b></td><
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Sep 23 2015 14:45:59 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jul 26 2016 13:40:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

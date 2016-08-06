@@ -115,12 +115,12 @@ Inheritance diagram for Skill::KickToPointOmni:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa68e37f846a09b3051303ac2e421f9b4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSkill_1_1KickToPointOmni.html#aa68e37f846a09b3051303ac2e421f9b4">KickToPointOmni</a> (const <a class="el" href="classPoint.html">Point</a> &amp;target, float targetTolerance=-1, float kickDistance=-1)</td></tr>
-<tr class="memdesc:aa68e37f846a09b3051303ac2e421f9b4"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>Static-point</b> constructor, for kicking to a static point  <a href="#aa68e37f846a09b3051303ac2e421f9b4">More...</a><br/></td></tr>
-<tr class="separator:aa68e37f846a09b3051303ac2e421f9b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4143d495a2f8358f6edfa93c6d903267"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSkill_1_1KickToPointOmni.html#a4143d495a2f8358f6edfa93c6d903267">KickToPointOmni</a> (<a class="el" href="classPoint.html">Point</a> *targetPtr, float targetTolerance=-1, float kickDistance=-1)</td></tr>
-<tr class="memdesc:a4143d495a2f8358f6edfa93c6d903267"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>variable-point</b> constructor, for kicking to a changing point  <a href="#a4143d495a2f8358f6edfa93c6d903267">More...</a><br/></td></tr>
-<tr class="separator:a4143d495a2f8358f6edfa93c6d903267"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88274edeb436ab5f7eaca859e90a6add"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSkill_1_1KickToPointOmni.html#a88274edeb436ab5f7eaca859e90a6add">KickToPointOmni</a> (const <a class="el" href="classPoint.html">Point</a> &amp;target, float targetTolerance=-1, float kickDistance=-1, bool useFullPower=false)</td></tr>
+<tr class="memdesc:a88274edeb436ab5f7eaca859e90a6add"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>Static-point</b> constructor, for kicking to a static point  <a href="#a88274edeb436ab5f7eaca859e90a6add">More...</a><br/></td></tr>
+<tr class="separator:a88274edeb436ab5f7eaca859e90a6add"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64764d0997be7e9f7262235c7d8fb5b7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSkill_1_1KickToPointOmni.html#a64764d0997be7e9f7262235c7d8fb5b7">KickToPointOmni</a> (<a class="el" href="classPoint.html">Point</a> *targetPtr, float targetTolerance=-1, float kickDistance=-1, bool useFullPower=false)</td></tr>
+<tr class="memdesc:a64764d0997be7e9f7262235c7d8fb5b7"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>variable-point</b> constructor, for kicking to a changing point  <a href="#a64764d0997be7e9f7262235c7d8fb5b7">More...</a><br/></td></tr>
+<tr class="separator:a64764d0997be7e9f7262235c7d8fb5b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39deb156f8a5f12d1bfaed1ea03a0318"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSkill_1_1KickToPointOmni.html#a39deb156f8a5f12d1bfaed1ea03a0318">perform</a> (<a class="el" href="classRobot.html">Robot</a> *robot) override</td></tr>
 <tr class="memdesc:a39deb156f8a5f12d1bfaed1ea03a0318"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform the <a class="el" href="classSkill_1_1Skill.html" title="The Skill Base Class. ">Skill</a>'s code on a robot.  <a href="#a39deb156f8a5f12d1bfaed1ea03a0318">More...</a><br/></td></tr>
 <tr class="separator:a39deb156f8a5f12d1bfaed1ea03a0318"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -128,48 +128,11 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>General-purpose skill to kick the ball to a point. </p>
 <dl class="section author"><dt>Author</dt><dd>JamesW</dd></dl>
-<p>A simplified, optimized version of KTP for Omni robots. The ability the track a moving target is preserved with the pointer constructor. The robot is asked to fist move to behind the ball at any angle while rotating to face the ball. Then the <a class="el" href="classRobot.html" title="The Robot class representing Robots on the field. ">Robot</a> moves forwards, and finally kicks the ball when close enough. KTPO supports both a <b>static point</b> and <b>variable point</b> constructors.</p>
-<p><b>Example Everyday Usage</b> </p>
-<div class="fragment"><div class="line"><span class="comment">//This is an example showing how to use KickToPointOmni in a Behavior</span></div>
-<div class="line"></div>
-<div class="line"><span class="preprocessor">#include &quot;skill/kicktopointomni.h&quot;</span></div>
-<div class="line"></div>
-<div class="line"><span class="keyword">class </span>KickBehavior : <span class="keyword">public</span> <a class="code" href="classBehavior.html">Behavior</a></div>
-<div class="line">{</div>
-<div class="line"><span class="keyword">public</span>:</div>
-<div class="line">    <span class="comment">//Constructor with a point to kick to</span></div>
-<div class="line">    KickBehavior(<a class="code" href="classPoint.html">Point</a> kickTarget)</div>
-<div class="line">    {</div>
-<div class="line">        <span class="comment">//Initially create the skill the kicking target to a point</span></div>
-<div class="line">        k = <span class="keyword">new</span> <a class="code" href="classSkill_1_1KickToPointOmni.html">Skill::KickToPointOmni</a>(kickTarget);</div>
-<div class="line">    }</div>
-<div class="line"></div>
-<div class="line">    ~KickBehavior() </div>
-<div class="line">    {</div>
-<div class="line">        <span class="keyword">delete</span> k;</div>
-<div class="line">    }</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordtype">void</span> <a class="code" href="classSkill_1_1KickToPointOmni.html#a39deb156f8a5f12d1bfaed1ea03a0318">perform</a>(<a class="code" href="classRobot.html">Robot</a>* robot)<span class="keyword"> override</span></div>
-<div class="line"><span class="keyword">    </span>{</div>
-<div class="line">        <span class="comment">//Work on performing the kick each iteration</span></div>
-<div class="line">        <span class="keywordtype">bool</span> kickFinished = k-&gt;perform(robot);</div>
-<div class="line"></div>
-<div class="line">        <span class="comment">//KTPO returns true after each state is finished and the  kick is done</span></div>
-<div class="line">        <span class="keywordflow">if</span>(kickFinished) {</div>
-<div class="line">            std::cout &lt;&lt; <span class="stringliteral">&quot;KickToPointOmni has finished kicking&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line">        }</div>
-<div class="line">    }</div>
-<div class="line"></div>
-<div class="line"><span class="keyword">private</span>:</div>
-<div class="line">    <a class="code" href="classSkill_1_1KickToPointOmni.html">Skill::KickToPointOmni</a>* k;</div>
-<div class="line">}</div>
-<div class="line"></div>
-<div class="line"><span class="comment">//This Behavior can be assigned to a robot as follows:</span></div>
-<div class="line"><a class="code" href="classPoint.html">Point</a> kickTarget {400, 0};</div>
-<div class="line">robot-&gt;<a class="code" href="classRobot.html#a6fc16d57af4d8a5dc61a14087afadfac">assignBeh</a>&lt;KickBehavior&gt;(kickTarget);</div>
-</div><!-- fragment --> <dl><dt><b>Examples: </b></dt><dd><a class="el" href="example_kicktopointomni_8cpp-example.html#_a2">example_kicktopointomni.cpp</a>.</dd>
+<p>A simplified, optimized version of KTP for Omni robots. The ability the track a moving target is preserved with the pointer constructor. The robot is asked to first move behind the ball while rotating to face the ball. Then the <a class="el" href="classRobot.html" title="The Robot class representing Robots on the field. ">Robot</a> moves forwards, and finally kicks the ball when close enough.</p>
+<p>KTPO supports both a <b>static point</b> and <b>variable point</b> constructors. </p>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="example_kicktopointomni_8cpp-example.html#_a2">example_kicktopointomni.cpp</a>.</dd>
 </dl></div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="aa68e37f846a09b3051303ac2e421f9b4"></a>
+<a class="anchor" id="a88274edeb436ab5f7eaca859e90a6add"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -189,7 +152,13 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>kickDistance</em> = <code>-1</code>&#160;</td>
+          <td class="paramname"><em>kickDistance</em> = <code>-1</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>useFullPower</em> = <code>false</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -203,15 +172,16 @@ Public Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>Target point to kick toarwards </td></tr>
-    <tr><td class="paramname">targetTolerance</td><td>Tolerance for the robot angle facing the target point before a kick is made, for accuracy or non-accuracy reasons. Leave blank to use default </td></tr>
+    <tr><td class="paramname">targetTolerance</td><td>Tolerance for the robot angle facing the target point before a kick is made, for accuracy or non-accuracy reasons. Leave blank to use default. </td></tr>
     <tr><td class="paramname">kickDistance</td><td>How close should the robot be to the target before kicking. leave blank to kick as soon as possible </td></tr>
+    <tr><td class="paramname">useFullPower</td><td>Use a full-power kick instead of a variable power one to the target </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a class="anchor" id="a4143d495a2f8358f6edfa93c6d903267"></a>
+<a class="anchor" id="a64764d0997be7e9f7262235c7d8fb5b7"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -231,7 +201,13 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>kickDistance</em> = <code>-1</code>&#160;</td>
+          <td class="paramname"><em>kickDistance</em> = <code>-1</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>useFullPower</em> = <code>false</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -248,6 +224,7 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classSkill_1_1KickToPointOmni.html" title="General-purpose skill to kick the ball to a point. ">KickToPointOmni</a> </dd></dl>
 
 </div>
 </div>
@@ -289,7 +266,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Sep 23 2015 14:45:59 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jul 26 2016 13:40:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

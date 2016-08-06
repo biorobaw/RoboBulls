@@ -95,32 +95,44 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef JOYSTICK_H</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define JOYSTICK_H</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">namespace </span>joystick</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">extern</span> <span class="keywordtype">float</span> <a class="code" href="namespacejoystick.html#aa7edb7708a681b71d78db21d7258b663">LB</a>, <a class="code" href="namespacejoystick.html#a365971c86ee9b680ae7a36dd16549e41">LF</a>, <a class="code" href="namespacejoystick.html#a61c78d553b92ef37c20e8a9ae8e7ec93">RB</a>, <a class="code" href="namespacejoystick.html#ab3fb33b0b199fea38de9f76cb20f6c46">RF</a>;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">extern</span> <span class="keywordtype">bool</span>  <a class="code" href="namespacejoystick.html#ae85a71b94a18ce9be16e8c4e67756f70">Kick</a>, <a class="code" href="namespacejoystick.html#a0ae2fea7f453e71bc8c8874857885211">Dribble</a>;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keywordtype">void</span> <a class="code" href="namespacejoystick.html#a78ddefc653200b31beab0cdd30335a65">listen</a>();</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">namespace </span>joystick</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;{</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="structjoystick_1_1reading.html">   39</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structjoystick_1_1reading.html">reading</a></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;{</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="comment">//Wheel velocities for robot</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keywordtype">float</span> LB, LF, RB, RF;</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespacejoystick.html#ac257eddebaf44cdcaaf2142b3d552f75">hasSupport</a>();</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;}</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="comment">//Kick+Dribble status for robot</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordtype">bool</span>  Kick, Dribble;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="comment">//What robot should this be for? Changed by map_joy on command line</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordtype">int</span> <span class="keywordtype">id</span> = -1;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;};</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="namespacejoystick_html_ae85a71b94a18ce9be16e8c4e67756f70"><div class="ttname"><a href="namespacejoystick.html#ae85a71b94a18ce9be16e8c4e67756f70">joystick::Kick</a></div><div class="ttdeci">bool Kick</div><div class="ttdoc">Information from joysticks to be sent to the overridden robot (do not use directly) ...</div><div class="ttdef"><b>Definition:</b> joystick.cpp:48</div></div>
-<div class="ttc" id="namespacejoystick_html_aa7edb7708a681b71d78db21d7258b663"><div class="ttname"><a href="namespacejoystick.html#aa7edb7708a681b71d78db21d7258b663">joystick::LB</a></div><div class="ttdeci">float LB</div><div class="ttdoc">Information from joysticks to be sent to the overridden robot (do not use directly) ...</div><div class="ttdef"><b>Definition:</b> joystick.cpp:47</div></div>
-<div class="ttc" id="namespacejoystick_html_ab3fb33b0b199fea38de9f76cb20f6c46"><div class="ttname"><a href="namespacejoystick.html#ab3fb33b0b199fea38de9f76cb20f6c46">joystick::RF</a></div><div class="ttdeci">float RF</div><div class="ttdoc">Information from joysticks to be sent to the overridden robot (do not use directly) ...</div><div class="ttdef"><b>Definition:</b> joystick.cpp:47</div></div>
-<div class="ttc" id="namespacejoystick_html_a78ddefc653200b31beab0cdd30335a65"><div class="ttname"><a href="namespacejoystick.html#a78ddefc653200b31beab0cdd30335a65">joystick::listen</a></div><div class="ttdeci">void listen()</div><div class="ttdoc">Starts a new thread listening for joystick events. </div><div class="ttdef"><b>Definition:</b> joystick.cpp:152</div></div>
-<div class="ttc" id="namespacejoystick_html_a61c78d553b92ef37c20e8a9ae8e7ec93"><div class="ttname"><a href="namespacejoystick.html#a61c78d553b92ef37c20e8a9ae8e7ec93">joystick::RB</a></div><div class="ttdeci">float RB</div><div class="ttdoc">Information from joysticks to be sent to the overridden robot (do not use directly) ...</div><div class="ttdef"><b>Definition:</b> joystick.cpp:47</div></div>
-<div class="ttc" id="namespacejoystick_html_ac257eddebaf44cdcaaf2142b3d552f75"><div class="ttname"><a href="namespacejoystick.html#ac257eddebaf44cdcaaf2142b3d552f75">joystick::hasSupport</a></div><div class="ttdeci">bool hasSupport()</div><div class="ttdoc">Query joystick support. </div><div class="ttdef"><b>Definition:</b> joystick.cpp:157</div></div>
-<div class="ttc" id="namespacejoystick_html_a0ae2fea7f453e71bc8c8874857885211"><div class="ttname"><a href="namespacejoystick.html#a0ae2fea7f453e71bc8c8874857885211">joystick::Dribble</a></div><div class="ttdeci">bool Dribble</div><div class="ttdoc">Information from joysticks to be sent to the overridden robot (do not use directly) ...</div><div class="ttdef"><b>Definition:</b> joystick.cpp:48</div></div>
-<div class="ttc" id="namespacejoystick_html_a365971c86ee9b680ae7a36dd16549e41"><div class="ttname"><a href="namespacejoystick.html#a365971c86ee9b680ae7a36dd16549e41">joystick::LF</a></div><div class="ttdeci">float LF</div><div class="ttdoc">Information from joysticks to be sent to the overridden robot (do not use directly) ...</div><div class="ttdef"><b>Definition:</b> joystick.cpp:47</div></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">extern</span> <a class="code" href="structjoystick_1_1reading.html">reading</a> <a class="code" href="namespacejoystick.html#a9a7c40b30b111b016a957c3f92ea35d4">joystickReadings</a>[10];</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keywordtype">void</span> <a class="code" href="namespacejoystick.html#a78ddefc653200b31beab0cdd30335a65">listen</a>();</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespacejoystick.html#ac257eddebaf44cdcaaf2142b3d552f75">hasSupport</a>();</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keywordtype">void</span> <a class="code" href="namespacejoystick.html#a72fbd3f5052762fca59cff16dfc1fe29">map_joystick</a>(<span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; args);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;}</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="structjoystick_1_1reading_html"><div class="ttname"><a href="structjoystick_1_1reading.html">joystick::reading</a></div><div class="ttdoc">Values read in by a SDL joystick. </div><div class="ttdef"><b>Definition:</b> joystick.h:39</div></div>
+<div class="ttc" id="namespacejoystick_html_a78ddefc653200b31beab0cdd30335a65"><div class="ttname"><a href="namespacejoystick.html#a78ddefc653200b31beab0cdd30335a65">joystick::listen</a></div><div class="ttdeci">void listen()</div><div class="ttdoc">Starts a new thread listening for joystick events. </div><div class="ttdef"><b>Definition:</b> joystick.cpp:249</div></div>
+<div class="ttc" id="namespacejoystick_html_a72fbd3f5052762fca59cff16dfc1fe29"><div class="ttname"><a href="namespacejoystick.html#a72fbd3f5052762fca59cff16dfc1fe29">joystick::map_joystick</a></div><div class="ttdeci">void map_joystick(const std::vector&lt; std::string &gt; &amp;args)</div><div class="ttdoc">Map a joystick to a robot. </div><div class="ttdef"><b>Definition:</b> joystick.cpp:63</div></div>
+<div class="ttc" id="namespacejoystick_html_a9a7c40b30b111b016a957c3f92ea35d4"><div class="ttname"><a href="namespacejoystick.html#a9a7c40b30b111b016a957c3f92ea35d4">joystick::joystickReadings</a></div><div class="ttdeci">reading joystickReadings[10]</div><div class="ttdoc">Information from joysticks to be sent to the overridden robot (do not use directly) ...</div><div class="ttdef"><b>Definition:</b> joystick.cpp:61</div></div>
+<div class="ttc" id="namespacejoystick_html_ac257eddebaf44cdcaaf2142b3d552f75"><div class="ttname"><a href="namespacejoystick.html#ac257eddebaf44cdcaaf2142b3d552f75">joystick::hasSupport</a></div><div class="ttdeci">bool hasSupport()</div><div class="ttdoc">Query joystick support. </div><div class="ttdef"><b>Definition:</b> joystick.cpp:260</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Sep 23 2015 14:45:59 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jul 26 2016 13:40:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

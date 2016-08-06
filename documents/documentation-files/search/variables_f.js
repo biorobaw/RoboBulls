@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['x',['x',['../classPoint.html#a05dfe2dfbde813ad234b514f30e662f1',1,'Point']]],
-  ['xbee',['Xbee',['../classNXTRobComm.html#a5571be9f1e83e336f5b40dd6f4aaaf88',1,'NXTRobComm']]]
+  ['u',['u',['../classVisionComm.html#a725727da3188777873f4e39a3318b363',1,'VisionComm']]]
 ];

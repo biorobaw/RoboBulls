@@ -105,22 +105,26 @@ Inheritance diagram for Behavior:</div>
  <div class="center">
   <img src="classBehavior.png" usemap="#Behavior_map" alt=""/>
   <map id="Behavior_map" name="Behavior_map">
-<area href="classAttackMain.html" title="AttackMain is the main driver behavior for the NormalGameStrategy. " alt="AttackMain" shape="rect" coords="216,56,422,80"/>
-<area href="classDefendBehavior.html" title="DefendBehavior is the next iteration of a defense mode (circa May 2015). " alt="DefendBehavior" shape="rect" coords="216,112,422,136"/>
-<area href="classDriveBallAndKick.html" title="Uses the DriveBall, Kick, and Stop skills. to drive then kick the ball. " alt="DriveBallAndKick" shape="rect" coords="216,168,422,192"/>
-<area href="classGenericMovementBehavior.html" title="Behavior to perform generic point-to-point Movement. " alt="GenericMovementBehavior" shape="rect" coords="216,224,422,248"/>
-<area href="classGenericSkillBehavior.html" title="A wrapper convience behavior for a single skill. " alt="GenericSkillBehavior&lt; SkillType &gt;" shape="rect" coords="216,280,422,304"/>
-<area href="classKickToGoal.html" title="Old Behavior to kick to the opponent&#39;s goal. " alt="KickToGoal" shape="rect" coords="216,336,422,360"/>
-<area href="classSendBallToRegion.html" title="The robot kicks the ball to the center of a specified Region,. " alt="SendBallToRegion" shape="rect" coords="216,392,422,416"/>
-<area href="classSimpleBehaviors.html" title="Behavior to handle simple Strategy cases. " alt="SimpleBehaviors" shape="rect" coords="216,448,422,472"/>
+<area href="classDefendBehavior.html" title="DefendBehavior is the next iteration of a defense mode (circa May 2015). " alt="DefendBehavior" shape="rect" coords="0,56,206,80"/>
+<area href="classGenericMovementBehavior.html" title="Behavior to perform generic point-to-point Movement. " alt="GenericMovementBehavior" shape="rect" coords="216,56,422,80"/>
+<area href="classGenericSkillBehavior.html" title="A wrapper convenience behavior for a single skill. " alt="GenericSkillBehavior&lt; SkillType &gt;" shape="rect" coords="432,56,638,80"/>
+<area href="classAttackMain.html" alt="AttackMain" shape="rect" coords="432,112,638,136"/>
+<area href="classAttackSupport.html" alt="AttackSupport" shape="rect" coords="432,168,638,192"/>
+<area href="classChallengeBallBot.html" alt="ChallengeBallBot" shape="rect" coords="432,224,638,248"/>
+<area href="classGoalie.html" title="The “goalie” behavior of the game. " alt="Goalie" shape="rect" coords="432,280,638,304"/>
+<area href="classMarkBot.html" alt="MarkBot" shape="rect" coords="432,336,638,360"/>
+<area href="classPassBallReceiver.html" title="Skill to recieve a ball pass from PassBallSender. " alt="PassBallReceiver" shape="rect" coords="432,392,638,416"/>
+<area href="classPenaltyGoalie.html" alt="PenaltyGoalie" shape="rect" coords="432,448,638,472"/>
+<area href="classRefStop.html" alt="RefStop" shape="rect" coords="432,504,638,528"/>
+<area href="classWall.html" alt="Wall" shape="rect" coords="432,560,638,584"/>
 </map>
  </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae9cd383ce108e38784a62896b4395169"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBehavior.html#ae9cd383ce108e38784a62896b4395169">perform</a> (<a class="el" href="classRobot.html">Robot</a> *)=0</td></tr>
-<tr class="memdesc:ae9cd383ce108e38784a62896b4395169"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform this behavior's action on a robot Given an arbitrary roobot, The <em>perform</em> function of a <a class="el" href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. ">Behavior</a> defines how to run the behavior on a robot.  <a href="#ae9cd383ce108e38784a62896b4395169">More...</a><br/></td></tr>
-<tr class="separator:ae9cd383ce108e38784a62896b4395169"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91b4939194ce05f10ce81ce11c564fb3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBehavior.html#a91b4939194ce05f10ce81ce11c564fb3">perform</a> (obot *)=0</td></tr>
+<tr class="memdesc:a91b4939194ce05f10ce81ce11c564fb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform this behavior's action on a robot Given an arbitrary roobot, The <em>perform</em> function of a <a class="el" href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. ">Behavior</a> defines how to run the behavior on a robot.  <a href="#a91b4939194ce05f10ce81ce11c564fb3">More...</a><br/></td></tr>
+<tr class="separator:a91b4939194ce05f10ce81ce11c564fb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a850e6042516a458a7e509536fae53adf"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBehavior.html#a850e6042516a458a7e509536fae53adf">isFinished</a> ()</td></tr>
 <tr class="memdesc:a850e6042516a458a7e509536fae53adf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return if behavior is "finished" Return true when the behavior is "finished," false otherwise. This could be reaching a target, or whenever a derived behavior is considered finished. Can be used in Stratigies to effectively assign behaviors one after another.  <a href="#a850e6042516a458a7e509536fae53adf">More...</a><br/></td></tr>
 <tr class="separator:a850e6042516a458a7e509536fae53adf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -128,9 +132,9 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Abstract <a class="el" href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. ">Behavior</a> class which all other behaviors inherit. </p>
 <dl class="section author"><dt>Author</dt><dd>Orign. Narges Ghaedi; JamesW</dd></dl>
-<p>This is the base class for all behaviors in the robobulls project. it contains a virtual <a class="el" href="classBehavior.html#ae9cd383ce108e38784a62896b4395169" title="Perform this behavior&#39;s action on a robot Given an arbitrary roobot, The perform function of a Behavi...">perform(Robot*)</a> function, which is called every loop that a robot has that behavior. The idea is to override this in derived behaviors to perform actions. Also included is a virtual <a class="el" href="classBehavior.html#a850e6042516a458a7e509536fae53adf" title="Return if behavior is &quot;finished&quot; Return true when the behavior is &quot;finished,&quot; false otherwise...">isFinished()</a> function. Child behaviors should override this and return true when the behavior is “finished.</p>
+<p>This is the base class for all behaviors in the RoboBulls project. It contains a virtual perform(Robot*) function, which is called every loop that a robot has that behavior. The idea is to override this in derived behaviors to perform actions. Also included is a virtual <a class="el" href="classBehavior.html#a850e6042516a458a7e509536fae53adf" title="Return if behavior is &quot;finished&quot; Return true when the behavior is &quot;finished,&quot; false otherwise...">isFinished()</a> function. Child behaviors should override this and return true when the behavior is “finished". It may be sometimes necessary to add other queries such as hasKicked() or readyToAssist() to aid <a class="el" href="classStrategy.html" title="Strategy is the abstract base class for other strategy classes. ">Strategy</a> design.</p>
 <p><b>Creating a <a class="el" href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. ">Behavior</a></b><br/>
- First, in a file, #include “behavior/behavior.h” and override it. A behavior is defined mostly by its <a class="el" href="classBehavior.html#ae9cd383ce108e38784a62896b4395169" title="Perform this behavior&#39;s action on a robot Given an arbitrary roobot, The perform function of a Behavi...">perform(Robot*)</a> ​function; the perform function of a ​ <a class="el" href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. ">Behavior</a> ​ typically is a <em>switch statement over some state variable</em> to perform a number of skills. This perform function is called each time the game runs (about 55 times per second) so it is to instantaneously update any skills or movement objects. Users should do any expensive initial calculations in the Behavior’s constructor. After a behavior is created, it can be assigned to any number of robots with robot-&gt;assignBeh, typically in a <a class="el" href="classStrategy.html" title="Strategy is the abstract base class for other strategy classes. ">Strategy</a> </p>
+ First, in a file, #include “behavior/behavior.h” and override it. A behavior is defined mostly by its perform(Robot*) ​function; the perform function of a ​ <a class="el" href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. ">Behavior</a> ​ typically is a <em>switch statement over some state variable</em> to perform a number of skills. This perform function is called each time the game runs (about 55 times per second) so it is to instantaneously update any skills or movement objects. Users should do any expensive initial calculations in the Behavior’s constructor. After a behavior is created, it can be assigned to any number of robots with robot-&gt;assignBeh, typically in a <a class="el" href="classStrategy.html" title="Strategy is the abstract base class for other strategy classes. ">Strategy</a>. </p>
 <dl><dt><b>Examples: </b></dt><dd><a class="el" href="example_kicktopointomni_8cpp-example.html#_a0">example_kicktopointomni.cpp</a>.</dd>
 </dl></div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a850e6042516a458a7e509536fae53adf"></a>
@@ -157,11 +161,11 @@ Public Member Functions</h2></td></tr>
 <p>Return if behavior is "finished" Return true when the behavior is "finished," false otherwise. This could be reaching a target, or whenever a derived behavior is considered finished. Can be used in Stratigies to effectively assign behaviors one after another. </p>
 <dl class="section return"><dt>Returns</dt><dd>True if the behavior is considered finished, false otherwise. </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classPassBallSender.html#aaf07fc44cefa15a279819dc5245fb646">PassBallSender</a>, <a class="el" href="classGenericMovementBehavior.html#acdd16af72d03bab5727a465de853ebc0">GenericMovementBehavior</a>, <a class="el" href="classPassBallReceiver.html#a851d02ca2215e2e18fbc6c69d21ac913">PassBallReceiver</a>, <a class="el" href="classRotateOnPoint.html#a17b170fb006552a990e86c8cd187dfdd">RotateOnPoint</a>, <a class="el" href="classGenericSkillBehavior.html#a926961a37f5932c2009812b94fd52902">GenericSkillBehavior&lt; SkillType &gt;</a>, <a class="el" href="classAttackMain.html#a6e6e3b0439ef19b05f0c4a1ebdfbfd62">AttackMain</a>, and <a class="el" href="classKickToGoal.html#a944c97f568c833ac45307c12dbeead2a">KickToGoal</a>.</p>
+<p>Reimplemented in <a class="el" href="classAttackMain.html#a6e6e3b0439ef19b05f0c4a1ebdfbfd62">AttackMain</a>, <a class="el" href="classGenericMovementBehavior.html#acdd16af72d03bab5727a465de853ebc0">GenericMovementBehavior</a>, <a class="el" href="classPassBallReceiver.html#a851d02ca2215e2e18fbc6c69d21ac913">PassBallReceiver</a>, <a class="el" href="classAttackSupport.html#af236a0e130c7066b4ef32b0495715993">AttackSupport</a>, <a class="el" href="classGenericSkillBehavior.html#a926961a37f5932c2009812b94fd52902">GenericSkillBehavior&lt; SkillType &gt;</a>, <a class="el" href="classWall.html#a6ac0ec3abae93051756d7df85e75457c">Wall</a>, <a class="el" href="classMarkBot.html#adb26df6baa791a2bad66f6ab0c57e48a">MarkBot</a>, <a class="el" href="classPenaltyGoalie.html#a12996aa82918c7f8ca52c529dc7d4748">PenaltyGoalie</a>, and <a class="el" href="classRefStop.html#a2fceac93ebca74d8501398975f07ba67">RefStop</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ae9cd383ce108e38784a62896b4395169"></a>
+<a class="anchor" id="a91b4939194ce05f10ce81ce11c564fb3"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -171,7 +175,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">virtual void Behavior::perform </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classRobot.html">Robot</a> *&#160;</td>
+          <td class="paramtype">obot *&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
@@ -190,8 +194,6 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-
-<p>Implemented in <a class="el" href="classDefendBehavior.html#a42d88268b91208bdc59fcbc97c837a91">DefendBehavior</a>, <a class="el" href="classPassBallSender.html#a86e1b65c4ff43511fd79228844bed1f0">PassBallSender</a>, <a class="el" href="classPassBallReceiver.html#a3efcc67d0daad0174e95e3ef2c514039">PassBallReceiver</a>, <a class="el" href="classGenericMovementBehavior.html#acae60b4ca7d2fdbaf7a3c9dce69c2bb2">GenericMovementBehavior</a>, <a class="el" href="classDefendFarFromBall.html#a81035e4b79a8b3ad2b0d803d7816d902">DefendFarFromBall</a>, <a class="el" href="classPenaltyBehavior.html#a056de4ccedc06a289afdf3ccb7c0a7a4">PenaltyBehavior</a>, <a class="el" href="classRotateOnPoint.html#a1d0198673564aec892d52cda1e88e443">RotateOnPoint</a>, <a class="el" href="classAttackMain.html#a0931b81937c71a9a6990bfbf7bfc73cb">AttackMain</a>, <a class="el" href="classGenericSkillBehavior.html#a7e12becd53d522c314d15450e8f29191">GenericSkillBehavior&lt; SkillType &gt;</a>, <a class="el" href="classAttackSupport.html#a20cb4704501e1314d0bde134398e9466">AttackSupport</a>, <a class="el" href="classSimpleBehaviors.html#a0208131fbb3953c59136b2b4590dac66">SimpleBehaviors</a>, <a class="el" href="classDriveBallAndKick.html#a13ff01f6c681f04e5afac1b92f1e1478">DriveBallAndKick</a>, <a class="el" href="classKickToGoal.html#a2862809c271c0eaf81180935552c128a">KickToGoal</a>, and <a class="el" href="classSendBallToRegion.html#a0b14b8fd2d90ddc6405d666876131f20">SendBallToRegion</a>.</p>
 <dl><dt><b>Examples: </b></dt><dd><a class="el" href="example_kicktopointomni_8cpp-example.html#a3">example_kicktopointomni.cpp</a>.</dd>
 </dl>
 </div>
@@ -203,7 +205,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Sep 23 2015 14:45:59 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jul 26 2016 13:40:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

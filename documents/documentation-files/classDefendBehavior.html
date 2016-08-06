@@ -88,7 +88,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classDefendBehavior-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">DefendBehavior Class Reference</div>  </div>
@@ -109,12 +108,12 @@ Inheritance diagram for DefendBehavior:</div>
 </map>
  </div></div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr class="memitem:a42d88268b91208bdc59fcbc97c837a91"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDefendBehavior.html#a42d88268b91208bdc59fcbc97c837a91">perform</a> (<a class="el" href="classRobot.html">Robot</a> *) override</td></tr>
-<tr class="memdesc:a42d88268b91208bdc59fcbc97c837a91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform this behavior's action on a robot Given an arbitrary roobot, The <em>perform</em> function of a <a class="el" href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. ">Behavior</a> defines how to run the behavior on a robot.  <a href="#a42d88268b91208bdc59fcbc97c837a91">More...</a><br/></td></tr>
-<tr class="separator:a42d88268b91208bdc59fcbc97c837a91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_methods_classBehavior"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classBehavior')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classBehavior.html">Behavior</a></td></tr>
+<tr class="memitem:a91b4939194ce05f10ce81ce11c564fb3 inherit pub_methods_classBehavior"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBehavior.html#a91b4939194ce05f10ce81ce11c564fb3">perform</a> (obot *)=0</td></tr>
+<tr class="memdesc:a91b4939194ce05f10ce81ce11c564fb3 inherit pub_methods_classBehavior"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform this behavior's action on a robot Given an arbitrary roobot, The <em>perform</em> function of a <a class="el" href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. ">Behavior</a> defines how to run the behavior on a robot.  <a href="#a91b4939194ce05f10ce81ce11c564fb3">More...</a><br/></td></tr>
+<tr class="separator:a91b4939194ce05f10ce81ce11c564fb3 inherit pub_methods_classBehavior"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a850e6042516a458a7e509536fae53adf inherit pub_methods_classBehavior"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBehavior.html#a850e6042516a458a7e509536fae53adf">isFinished</a> ()</td></tr>
 <tr class="memdesc:a850e6042516a458a7e509536fae53adf inherit pub_methods_classBehavior"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return if behavior is "finished" Return true when the behavior is "finished," false otherwise. This could be reaching a target, or whenever a derived behavior is considered finished. Can be used in Stratigies to effectively assign behaviors one after another.  <a href="#a850e6042516a458a7e509536fae53adf">More...</a><br/></td></tr>
 <tr class="separator:a850e6042516a458a7e509536fae53adf inherit pub_methods_classBehavior"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -123,49 +122,14 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><p><a class="el" href="classDefendBehavior.html" title="DefendBehavior is the next iteration of a defense mode (circa May 2015). ">DefendBehavior</a> is the next iteration of a defense mode (circa May 2015). </p>
 <dl class="section author"><dt>Author</dt><dd>JamesW</dd></dl>
 <p><a class="el" href="classDefendBehavior.html" title="DefendBehavior is the next iteration of a defense mode (circa May 2015). ">DefendBehavior</a> sets robots to sit at points around the goal, and get in the line of motion of the ball and kick it back if it is coming torwards the goal. In addition, if the ball is stopped on our side a robot will break to kick it, and also the robots sway formation to face the ball if it on our side. This also serves as a first iteration of an "intelligent agents" type of behavior, where each robot independently runs the same behavior to without the need for a strategy. This is made up of <code>DefendStates</code> which link to one another. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a42d88268b91208bdc59fcbc97c837a91"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void DefendBehavior::perform </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classRobot.html">Robot</a> *&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Perform this behavior's action on a robot Given an arbitrary roobot, The <em>perform</em> function of a <a class="el" href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. ">Behavior</a> defines how to run the behavior on a robot. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">Robot*</td><td>the robot to perform on. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Implements <a class="el" href="classBehavior.html#ae9cd383ce108e38784a62896b4395169">Behavior</a>.</p>
-
-</div>
-</div>
-<hr/>The documentation for this class was generated from the following files:<ul>
+</div><hr/>The documentation for this class was generated from the following files:<ul>
 <li>behavior/<a class="el" href="defendbehavior_8h_source.html">defendbehavior.h</a></li>
 <li>behavior/defendbehavior.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Sep 23 2015 14:45:59 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jul 26 2016 13:40:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

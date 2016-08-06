@@ -235,10 +235,10 @@ void AttackMain::calcDynamicProb()
         float bot_x = cluster.back().x;
         float bot_y = cluster.back().y;
 
-        // Gradient of line starting from top end of goal post and tangent to top robot (from MATLAB)
+        // Gradient of line starting from top end of goal post and tangent to top robot (found using MATLAB)
         float m1 = -(R*sqrt(pow(A1-top_x,2) + pow(B1-top_y,2) - R*R) + (top_y-B1)*(A1-top_x))/(pow(A1-top_x,2) - R*R);
 
-        // Gradient of line starting from bottom end of goal post and tangent to bottom robot (from MATLAB)
+        // Gradient of line starting from bottom end of goal post and tangent to bottom robot (found using MATLAB)
         float m2 = (R*sqrt(pow(A2-bot_x,2) + pow(B2-bot_y,2) - R*R) + (B2-bot_y)*(A2-bot_x))/(pow(A2-bot_x,2) - R*R);
 
 //        GuiInterface::getGuiInterface()->drawLine(Point(A1,B1), Point(top_x, top_y), 0.01);

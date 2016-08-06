@@ -7,11 +7,28 @@
 #include <algorithm>
 #include "utilities/comparisons.h"
 
-/*! @brief AttackSupport is a complement to Attackmain, used in NormalGameStrategy.
- * @author Muhaimen Shamsi, JamesW
- * @details It goes to the most optimal half of the enemy field--the one with least
- * enemies, and the one that the AttackMain robot is not inside of--and waits
- * for a pass from the AttackMain robot. */
+/*!
+ * @file
+ * @author Muhaimen Shamsi
+ *
+ * @brief AttackSupport tries to help score a goal by positioning a robot in an opportune position.
+ *
+ * A robot assigned this behavior will try to move to a position that satisfies the following criteria:
+ * - There are no obstacles between the position and the goal.
+ * - There are no obstacles between the position and the ball.
+ * - The position is far enough from a ball possessor to make the pass viable.
+ * - The position is not between the ball and the goal, to avoid blocking shots on goal.
+ *
+ * A position satisfying all four criteria is found by casting "shadows" on a probability field,
+ * as described (in more detail) in AttackMain. @see AttackMain()
+ *
+ * The points in the probability field (discrete represenation of actual field)
+ * are assigned values as follows:
+ * - Decreasing probabilities as the points get farther from the goal post.
+ * - Decreasing probabilities as the points get farther from the centerline stretching from one goal post to the other.
+ * - Zero probability in the triangle between the ball point and the goal post (plus some tolerance).
+ * - Zero probability in a circle around the ball, to avoid passes that are too short.
+ */
 
 // Distance between nodes in the probability field
 // (Probability Node Distance)
@@ -33,12 +50,17 @@ public:
 
 private:
     bool finished;
+    enum {intercept, position} state;
+
+    // Counters to reduce the impact of noise on the state machine
+    int switch2intercept_count = 0;
+    int switch2position_count = 0;
 
     struct ProbNode
     {
         Point point;
-        float static_val;
-        float dynamic_val;
+        float static_val;   // Values that do not change during the game
+        float dynamic_val;  // Values that change during the game
     };
 
     ProbNode prob_field[(FIELD_LENGTH+1)/PND_SUPP][(FIELD_WIDTH+1)/PND_SUPP];
@@ -46,27 +68,50 @@ private:
     // Fills in prob_field with scoring probabilities
     void calcStaticProb();
     void calcDynamicProb(Robot * robot);
+
+    /*! Iterates through the probability nodes to find the one with the
+     * maximum value (static + dynamic). Only contains points on the opponent side.
+     * @return ProbNode The node with the max probability.
+     */
     ProbNode findMaxNode();
 
+    /*! Cast shadows using the entire goal post as a light source and opp
+     * robots as opaque objects to rule out impossible scoring positions */
     void genGoalShadows();
+
+    /*! Sets a dead-zone near teammates so that the support attacker
+     * maintains a good distance from them to make passes meaningful
+     * @param Robot* Needed for excluding the support attacker itself from distance calculations.
+     */
+
     void genDistanceFromTeammates(Robot* robot);
+
+    /*! Cast shadows with ball as light source and opponents as opaque objects
+     * Rules out impossible receiving positions
+     * \todo Integrate clustering to this */
     void genBallShadows();
+
+    /*! Set the probability in the triangle between the ball and the goal-post to 0
+     * so that the support attacker doesn't position in the way of a shot on goal */
     void genGoalShotAvoidance();
 
-    // Populates clusters with groups of opponents close together
+    /*! Returns information about clusters of robots.
+     * @return A 2D vector is returned with each row representing a cluster.
+     * Each column in the returned 2D vector points to a robot in the cluster.
+     * A cluster is defined as a group of robots that are within a certain distance of each other.
+     * The clustering distance is selected so as to cluster robots that are close such that
+     * a ball could not pass between them.
+     */
     std::vector<std::vector<Point>> genClusters();
 
-    // Returns true if there is a robot that we can pass to
-    // If returning true, also returns the point at which to aim
-    std::pair<bool, Point> calcBestSupportPoint(Robot*);
-
-    // Returns the probability of scoring given a Point
+    /*! Given a point, returns the probability of scoring a goal from there.
+     * This function assumes that probability is already calculated and stored in
+     * the probability array by calcDynamicProb() and calcStaticProb().
+     * @see calcDynamicProb() and @see calcStaticProb().
+     * @param Point The point at which the probability is queried.
+     * @return Probability of scoring.
+     */
     float getScoreProb(const Point&);
-
-    enum {intercept, position} state;
-
-    int switch2intercept_count = 0;
-    int switch2position_count = 0;
 };
 
 #endif // ATTACK_SUPPORT_H

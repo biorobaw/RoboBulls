@@ -90,7 +90,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="classNormalGameStrategy-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">NormalGameStrategy Class Reference</div>  </div>
@@ -129,41 +128,13 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a407c42c00c98f17d6eed6d684aba31b1"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNormalGameStrategy.html#a407c42c00c98f17d6eed6d684aba31b1">moveRobotToIdleLine</a> (<a class="el" href="classRobot.html">Robot</a> *robot, bool waiter=false)</td></tr>
-<tr class="memdesc:a407c42c00c98f17d6eed6d684aba31b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Moves robots to an idle line, a line near the goal and spaced by ID.  <a href="#a407c42c00c98f17d6eed6d684aba31b1">More...</a><br/></td></tr>
-<tr class="separator:a407c42c00c98f17d6eed6d684aba31b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75aa42fa522d6e19d9e45cf61ef01a57"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNormalGameStrategy.html#a75aa42fa522d6e19d9e45cf61ef01a57">assignGoalieIfOk</a> ()</td></tr>
-<tr class="memdesc:a75aa42fa522d6e19d9e45cf61ef01a57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigns <a class="el" href="classDefendFarFromBall.html" title="The “goalie” behavior of the game. ">DefendFarFromBall</a> to ID GOALIE_ID if it is on the team.  <a href="#a75aa42fa522d6e19d9e45cf61ef01a57">More...</a><br/></td></tr>
-<tr class="separator:a75aa42fa522d6e19d9e45cf61ef01a57"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
-Static Private Attributes</h2></td></tr>
-<tr class="memitem:aa24cd3fe14a5a2eb125ea3e25a426bbd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa24cd3fe14a5a2eb125ea3e25a426bbd"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNormalGameStrategy.html#aa24cd3fe14a5a2eb125ea3e25a426bbd">isOnAttack</a> = true</td></tr>
-<tr class="memdesc:aa24cd3fe14a5a2eb125ea3e25a426bbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Are we currently on attack? <br/></td></tr>
-<tr class="separator:aa24cd3fe14a5a2eb125ea3e25a426bbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5357d4e09a98be5103113c580e932a48"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNormalGameStrategy.html#a5357d4e09a98be5103113c580e932a48">assignGoalieIfOk</a> ()</td></tr>
+<tr class="memdesc:a5357d4e09a98be5103113c580e932a48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigns goalie behavior to ID GOALIE_ID if it is on the team.  <a href="#a5357d4e09a98be5103113c580e932a48">More...</a><br/></td></tr>
+<tr class="separator:a5357d4e09a98be5103113c580e932a48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This strategy is meant for the ' ' gamestate (space) which means normal play. </p>
-<dl class="section author"><dt>Author</dt><dd>JamesW</dd></dl>
-<p>This strategy switches between both attack and defend behaviors.</p>
-<p><b>Attack/Defend switch criteria: (considerSwitchCreiteria)</b></p>
-<ul>
-<li>If the enemy/our team has been seen with the ball NORMAL_SWITCH_COUNT times we switch from attack to defend or vice versa.</li>
-</ul>
-<p><b>Attacking (assignAttackBehaviors):</b></p>
-<ul>
-<li>The closest robot to the ball is assigned to kick to the goal.</li>
-<li><a class="el" href="classRobot.html" title="The Robot class representing Robots on the field. ">Robot</a> #5 is assigned to go to the goal and defend the goal.</li>
-<li>The remaining robot is assigned to prowl the enemy field and assume a stretegic position to recieve a pass.</li>
-</ul>
-<p><b>Defending (assignDefendBehaviors):</b></p>
-<ul>
-<li>One robot is sent to the center to encourage a quick Attack switch</li>
-<li><a class="el" href="classRobot.html" title="The Robot class representing Robots on the field. ">Robot</a> #5 still defend the goal</li>
-<li>The remaining robot is sent to block the enemy passer/receiver team by placing itself between them (<a class="el" href="classMeasurments.html#af5dd8dbbd3de8fcd75a96f938746cf53" title="Returns the midpoint between two points a and b using the standard 2D midpoint formula. ">Measurments::midPoint</a>).</li>
-</ul>
-<p>This strategy was designed for the Nov.26 presentation.. then Feb 13-14 Engineering Expo... then Summer '15 revival... </p>
+<dl class="section author"><dt>Author</dt><dd>JamesW, Muhaimen Shamsi </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a85265e9882901bc0773a7e9743596aee"></a>
 <div class="memitem">
@@ -187,13 +158,13 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 </div><div class="memdoc">
 
 <p>Decides How to assign behaviors to each robot on the team. </p>
-<p>This function is called when <a class="el" href="classStrategyController.html" title="Controls selection of an active strategy (play) based on the game state. ">StrategyController</a> is ran with a new command recieved from <a class="el" href="classGameModel.html" title="The GameModel class. ">GameModel</a> </p>
+<p>This function is called when <a class="el" href="classStrategyController.html" title="Controls selection of an active strategy (play) based on the game state. ">StrategyController</a> is run with a new command recieved from <a class="el" href="classGameModel.html" title="The GameModel class. ">GameModel</a> </p>
 
 <p>Implements <a class="el" href="classStrategy.html#a1d5e51d3d031c10c446e18f056ff7d7f">Strategy</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a75aa42fa522d6e19d9e45cf61ef01a57"></a>
+<a class="anchor" id="a5357d4e09a98be5103113c580e932a48"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -201,7 +172,7 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static void NormalGameStrategy::assignGoalieIfOk </td>
+          <td class="memname">void NormalGameStrategy::assignGoalieIfOk </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -214,51 +185,8 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 </table>
 </div><div class="memdoc">
 
-<p>Assigns <a class="el" href="classDefendFarFromBall.html" title="The “goalie” behavior of the game. ">DefendFarFromBall</a> to ID GOALIE_ID if it is on the team. </p>
-<p>Meant to be used outside the class, if the robot with GOALIE_ID isn't null, assigns <a class="el" href="classDefendFarFromBall.html" title="The “goalie” behavior of the game. ">DefendFarFromBall</a> to it </p>
-
-</div>
-</div>
-<a class="anchor" id="a407c42c00c98f17d6eed6d684aba31b1"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void NormalGameStrategy::moveRobotToIdleLine </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classRobot.html">Robot</a> *&#160;</td>
-          <td class="paramname"><em>robot</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>waiter</em> = <code>false</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Moves robots to an idle line, a line near the goal and spaced by ID. </p>
-<p>Meant to be used outside the class, moves the robot to a line on our side of the field. Used when that robot has no behavior </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">waiter</td><td>Possibly sends a single robot to the center to wait if true </td></tr>
-  </table>
-  </dd>
-</dl>
+<p>Assigns goalie behavior to ID GOALIE_ID if it is on the team. </p>
+<p>Meant to be used outside the class, if the robot with GOALIE_ID isn't null, assigns <a class="el" href="classGoalie.html" title="The “goalie” behavior of the game. ">Goalie</a> to it </p>
 
 </div>
 </div>
@@ -284,7 +212,7 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 </div><div class="memdoc">
 
 <p>Function (optional) that updates the <a class="el" href="classStrategy.html" title="Strategy is the abstract base class for other strategy classes. ">Strategy</a> object. </p>
-<p>This function is called when <a class="el" href="classStrategyController.html" title="Controls selection of an active strategy (play) based on the game state. ">StrategyController</a> is ran with a non-new command from <a class="el" href="classGameModel.html" title="The GameModel class. ">GameModel</a>. Return true to notify the strategy is finished and have a new one assigned, false otherwise. </p>
+<p>This function is called when <a class="el" href="classStrategyController.html" title="Controls selection of an active strategy (play) based on the game state. ">StrategyController</a> is run with a non-new command from <a class="el" href="classGameModel.html" title="The GameModel class. ">GameModel</a>. Return true to notify the strategy is finished and have a new one assigned, false otherwise. </p>
 
 <p>Reimplemented from <a class="el" href="classStrategy.html#addd5ae07531160ed360f697f98308e5b">Strategy</a>.</p>
 
@@ -297,7 +225,7 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Sep 23 2015 14:45:59 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jul 26 2016 13:40:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

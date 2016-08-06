@@ -97,39 +97,25 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define STOPSTRATEGY_H</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &quot;strategy/strategy.h&quot;</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;utilities/point.h&quot;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;utilities/edges.h&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div>
 <div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="classStopStrategy.html">   12</a></span>&#160;<span class="keyword">class </span><a class="code" href="classStopStrategy.html">StopStrategy</a>:<span class="keyword">public</span> <a class="code" href="classStrategy.html">Strategy</a></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;{</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <a class="code" href="classStopStrategy.html#aa467c6aa810894f616cb36f62369957a">StopStrategy</a>(<span class="keywordtype">float</span> <a class="code" href="classStopStrategy.html#aaf4dbf0ba9fc34a09e8efd7371d4208f">radius</a> = 1000);</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classStopStrategy.html#a7500414e0aba9e53edd9b712530ad04f">assignBeh</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classStopStrategy.html#aa971ce819885ddb2d30b10110428d8a0">update</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classStopStrategy.html#ac081e2c1a57d07d6c253f8eb69c8babc">rebuildTargetPoints</a>();</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="classStopStrategy.html#a510d5d02970ba23f72f70ff317b43a2a">   30</a></span>&#160;    <span class="keyword">static</span> <a class="code" href="classPoint.html">Point</a> <a class="code" href="classStopStrategy.html#a510d5d02970ba23f72f70ff317b43a2a">prevBallPoint</a>;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="classStopStrategy.html#a3b2df11bda4a677fea2d8a70947ec738">   34</a></span>&#160;    <a class="code" href="classPoint.html">Point</a> <a class="code" href="classStopStrategy.html#a3b2df11bda4a677fea2d8a70947ec738">robTargetPoints</a>[10];</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="classStopStrategy.html#aaf4dbf0ba9fc34a09e8efd7371d4208f">   37</a></span>&#160;    <span class="keywordtype">float</span> <a class="code" href="classStopStrategy.html#aaf4dbf0ba9fc34a09e8efd7371d4208f">radius</a>;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;};</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#endif // STOPSTRATEGY_H</span></div>
-<div class="ttc" id="classStopStrategy_html_ac081e2c1a57d07d6c253f8eb69c8babc"><div class="ttname"><a href="classStopStrategy.html#ac081e2c1a57d07d6c253f8eb69c8babc">StopStrategy::rebuildTargetPoints</a></div><div class="ttdeci">void rebuildTargetPoints()</div><div class="ttdoc">Rebuilds target points in case of ball movement or added robot. </div><div class="ttdef"><b>Definition:</b> stopstrategy.cpp:46</div></div>
-<div class="ttc" id="classStopStrategy_html_aa467c6aa810894f616cb36f62369957a"><div class="ttname"><a href="classStopStrategy.html#aa467c6aa810894f616cb36f62369957a">StopStrategy::StopStrategy</a></div><div class="ttdeci">StopStrategy(float radius=1000)</div><div class="ttdoc">Constructor. </div><div class="ttdef"><b>Definition:</b> stopstrategy.cpp:14</div></div>
-<div class="ttc" id="classStopStrategy_html_aa971ce819885ddb2d30b10110428d8a0"><div class="ttname"><a href="classStopStrategy.html#aa971ce819885ddb2d30b10110428d8a0">StopStrategy::update</a></div><div class="ttdeci">bool update() override</div><div class="ttdoc">Function (optional) that updates the Strategy object. </div><div class="ttdef"><b>Definition:</b> stopstrategy.cpp:36</div></div>
-<div class="ttc" id="classStopStrategy_html_a3b2df11bda4a677fea2d8a70947ec738"><div class="ttname"><a href="classStopStrategy.html#a3b2df11bda4a677fea2d8a70947ec738">StopStrategy::robTargetPoints</a></div><div class="ttdeci">Point robTargetPoints[10]</div><div class="ttdoc">Stored points of the target each Robot should go to. </div><div class="ttdef"><b>Definition:</b> stopstrategy.h:34</div></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <a class="code" href="classStopStrategy.html">StopStrategy</a>();</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classStopStrategy.html#a7500414e0aba9e53edd9b712530ad04f">assignBeh</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classStopStrategy.html#aa971ce819885ddb2d30b10110428d8a0">update</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;};</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#endif // STOPSTRATEGY_H</span></div>
+<div class="ttc" id="classStopStrategy_html_aa971ce819885ddb2d30b10110428d8a0"><div class="ttname"><a href="classStopStrategy.html#aa971ce819885ddb2d30b10110428d8a0">StopStrategy::update</a></div><div class="ttdeci">bool update() override</div><div class="ttdoc">Function (optional) that updates the Strategy object. </div><div class="ttdef"><b>Definition:</b> stopstrategy.cpp:21</div></div>
 <div class="ttc" id="classStrategy_html"><div class="ttname"><a href="classStrategy.html">Strategy</a></div><div class="ttdoc">Strategy is the abstract base class for other strategy classes. </div><div class="ttdef"><b>Definition:</b> strategy.h:32</div></div>
-<div class="ttc" id="classPoint_html"><div class="ttname"><a href="classPoint.html">Point</a></div><div class="ttdoc">2D Point Class </div><div class="ttdef"><b>Definition:</b> point.h:12</div></div>
-<div class="ttc" id="classStopStrategy_html_aaf4dbf0ba9fc34a09e8efd7371d4208f"><div class="ttname"><a href="classStopStrategy.html#aaf4dbf0ba9fc34a09e8efd7371d4208f">StopStrategy::radius</a></div><div class="ttdeci">float radius</div><div class="ttdoc">Radius to stay from the ball point. </div><div class="ttdef"><b>Definition:</b> stopstrategy.h:37</div></div>
-<div class="ttc" id="classStopStrategy_html_a7500414e0aba9e53edd9b712530ad04f"><div class="ttname"><a href="classStopStrategy.html#a7500414e0aba9e53edd9b712530ad04f">StopStrategy::assignBeh</a></div><div class="ttdeci">void assignBeh() override</div><div class="ttdoc">Decides How to assign behaviors to each robot on the team. </div><div class="ttdef"><b>Definition:</b> stopstrategy.cpp:18</div></div>
+<div class="ttc" id="classStopStrategy_html_a7500414e0aba9e53edd9b712530ad04f"><div class="ttname"><a href="classStopStrategy.html#a7500414e0aba9e53edd9b712530ad04f">StopStrategy::assignBeh</a></div><div class="ttdeci">void assignBeh() override</div><div class="ttdoc">Decides How to assign behaviors to each robot on the team. </div><div class="ttdef"><b>Definition:</b> stopstrategy.cpp:15</div></div>
 <div class="ttc" id="classStopStrategy_html"><div class="ttname"><a href="classStopStrategy.html">StopStrategy</a></div><div class="ttdoc">Strategy to implement the game stopped state &#39;S&#39;. </div><div class="ttdef"><b>Definition:</b> stopstrategy.h:12</div></div>
-<div class="ttc" id="classStopStrategy_html_a510d5d02970ba23f72f70ff317b43a2a"><div class="ttname"><a href="classStopStrategy.html#a510d5d02970ba23f72f70ff317b43a2a">StopStrategy::prevBallPoint</a></div><div class="ttdeci">static Point prevBallPoint</div><div class="ttdoc">Keeping track of the previous ball point. </div><div class="ttdef"><b>Definition:</b> stopstrategy.h:30</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Sep 23 2015 14:45:59 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jul 26 2016 13:40:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

@@ -29,7 +29,7 @@ void StrategyController::run()
     {
         frameBegin();
 
-        if(model->isNewCommand() || activeStrategy==nullptr) {
+        if(model->isNewCommand() || activeStrategy == nullptr) {
             gameModelUpdated();
         } else {
             gameModelContinued();
@@ -108,10 +108,10 @@ void StrategyController::gameModelContinued()
         bool clearStrategyFlag = activeStrategy->update() == true;
         char nextStrategyState = activeStrategy->getNextStrategy();
         char currentGameState  = model->getGameState();
-        //Recreate current strategy if requested
+        // Recreate current strategy if requested
         if(clearStrategyFlag)
             clearCurrentStrategy();
-        //Change the current strategy arbitrarily if requested
+        // Change the current strategy arbitrarily if requested
         else if(nextStrategyState != '\0' and
                 nextStrategyState != currentGameState)
             assignNewStrategy(nextStrategyState);

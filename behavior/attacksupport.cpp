@@ -207,8 +207,7 @@ void AttackSupport::calcDynamicProb(Robot * robot)
     genGoalShotAvoidance();
 }
 
-// Cast shadows using the entire goal post as a light source and opp
-// robots as opaque objects to rule out impossible scoring positions
+
 void AttackSupport::genGoalShadows()
 {
     // Top end of goal post
@@ -261,8 +260,7 @@ void AttackSupport::genGoalShadows()
     }
 }
 
-// Sets a dead-zone near teammates so that the support attacker
-// maintains a good distance from them to make passes meaningful
+
 void AttackSupport::genDistanceFromTeammates(Robot* robot)
 {
     // Set probabilities
@@ -282,9 +280,7 @@ void AttackSupport::genDistanceFromTeammates(Robot* robot)
     }
 }
 
-// Cast shadows with ball as light source and opponents as opaque objects
-// Rules out impossible receiving positions
-// TODO: Integrate clustering to this
+
 void AttackSupport::genBallShadows()
 {
 
@@ -434,9 +430,7 @@ std::vector<std::vector<Point>> AttackSupport::genClusters()
     return clusters;
 }
 
-// Set the probability in the triangle between the ball and the goal-post
-// to impossible so that the support attacker doesn't position in the
-// way of a shot on goal
+
 void AttackSupport::genGoalShotAvoidance()
 {
     // Top end of goal post
