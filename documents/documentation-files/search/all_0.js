@@ -18,5 +18,6 @@ var searchData=
   ['attackmain',['AttackMain',['../classAttackMain.html',1,'']]],
   ['attackmain_2eh',['attackmain.h',['../attackmain_8h.html',1,'']]],
   ['attacksupport',['AttackSupport',['../classAttackSupport.html',1,'']]],
+  ['attacksupport_2eh',['attacksupport.h',['../attacksupport_8h.html',1,'']]],
   ['axis_5fconfiguration',['axis_configuration',['../structjoystick_1_1axis__configuration.html',1,'joystick']]]
 ];

@@ -3,14 +3,11 @@
 #include "behavior/genericmovementbehavior.h"
 #include "skill/kicktopointomni.h"
 
-//! @file A general-purpose defence behavior for the game.
- 
-/************************************************************/
-/*! @brief A base class, a state in the DefendBehavior state machine.
- * @author JamesW
- * @details States are changed by returning a new
- * instance of one from `action`. Similar to the `perform` function
- */
+/*! @file
+    A base class, a state in the DefendBehavior state machine.
+    States are changed by returning a new
+    instance of one from `action`. Similar to the `perform` function
+*/
 class DefendState
 {
 public:

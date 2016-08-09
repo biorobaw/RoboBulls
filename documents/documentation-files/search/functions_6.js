@@ -2,8 +2,12 @@ var searchData=
 [
   ['gamemodelcontinued',['gameModelContinued',['../classStrategyController.html#ad08153f6336ce5d92f5d5e03df869b6c',1,'StrategyController']]],
   ['gamemodelupdated',['gameModelUpdated',['../classStrategyController.html#a24ff9339f44fa8cc160106f613f255a1',1,'StrategyController']]],
-  ['genclusters',['genClusters',['../classAttackMain.html#a931ddcec4310c57caa5edc09824e5a06',1,'AttackMain']]],
+  ['genballshadows',['genBallShadows',['../classAttackSupport.html#a04a8a2d015b76dfe47a7dd15eb6d5524',1,'AttackSupport']]],
+  ['genclusters',['genClusters',['../classAttackMain.html#a931ddcec4310c57caa5edc09824e5a06',1,'AttackMain::genClusters()'],['../classAttackSupport.html#a6dcd2ddaf1b58986ab707146ae680c35',1,'AttackSupport::genClusters()']]],
+  ['gendistancefromteammates',['genDistanceFromTeammates',['../classAttackSupport.html#ae5634b8b23c3a79e5d892005991efc37',1,'AttackSupport']]],
   ['genericmovementbehavior',['GenericMovementBehavior',['../classGenericMovementBehavior.html#a3d8bf66bd36e028bad427b211d901708',1,'GenericMovementBehavior']]],
+  ['gengoalshadows',['genGoalShadows',['../classAttackSupport.html#a9e05c414c5cf97761098b0bffda80616',1,'AttackSupport']]],
+  ['gengoalshotavoidance',['genGoalShotAvoidance',['../classAttackSupport.html#a00e15b72e7dc837fce0f17c3dfe0a72c',1,'AttackSupport']]],
   ['genpath',['genPath',['../namespaceMovement_1_1FPPA.html#ada25810b85ef32cf7c29962fa103b79e',1,'Movement::FPPA']]],
   ['getb',['getB',['../classRobot.html#a930f7896cd5a1ba3aa2fcf7d4ec0ef29',1,'Robot']]],
   ['getbackupdirection',['getBackupDirection',['../namespaceMovement_1_1Collisions.html#a022d0b27228aeb96375197145ac6b473',1,'Movement::Collisions']]],
@@ -40,9 +44,10 @@ var searchData=
   ['getremainingtime',['getRemainingTime',['../classGameModel.html#ad3a79e4caf2360b38097d83b12b7cf60',1,'GameModel']]],
   ['getrf',['getRF',['../classRobot.html#a2c7d01120e98b88d717621cc9603a25d',1,'Robot']]],
   ['getrobcomm',['getRobComm',['../classRobComm.html#a6e6cfc93296e5fa47911a329ec2a4f4c',1,'RobComm']]],
-  ['getscoreprob',['getScoreProb',['../classAttackMain.html#adb6bfa6e9e185a021faef8aae2ef7a7a',1,'AttackMain']]],
+  ['getscoreprob',['getScoreProb',['../classAttackMain.html#adb6bfa6e9e185a021faef8aae2ef7a7a',1,'AttackMain::getScoreProb()'],['../classAttackSupport.html#af372431a53fc422580b37a22abbcaa69',1,'AttackSupport::getScoreProb()']]],
   ['getspeed',['getSpeed',['../classRobot.html#ac3dc9aec2bd1f59314f97a5fbe8db988',1,'Robot']]],
   ['getvelocity',['getVelocity',['../classRobot.html#acf14631cc9e6fd8b12805241c9571081',1,'Robot']]],
+  ['getvelocityfordistance',['getVelocityforDistance',['../classSkill_1_1Kick.html#ac92ae428b28574dafc9d965131464961',1,'Skill::Kick']]],
   ['getyellowgoals',['getYellowGoals',['../classGameModel.html#aff5671c5510a6fdaab86490aa73ccc2b',1,'GameModel']]],
   ['getyellowteam',['getYellowTeam',['../classGameModel.html#ae5f87ede7065dc0c343ca1a08745dbda',1,'GameModel']]]
 ];

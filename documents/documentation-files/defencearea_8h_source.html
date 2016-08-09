@@ -93,46 +93,61 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">defencearea.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef DEFENCEAREA_H</span></div>
+<a href="defencearea_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef DEFENCEAREA_H</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define DEFENCEAREA_H</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="globals_8h.html">include/config/globals.h</a>&quot;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;rectangle.h&quot;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;sector.h&quot;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="rectangle_8h.html">rectangle.h</a>&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="sector_8h.html">sector.h</a>&quot;</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;iostream&quot;</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="team_8h.html">include/config/team.h</a>&quot;</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
-<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="classDefenceArea.html">   11</a></span>&#160;<span class="keyword">class </span><a class="code" href="classDefenceArea.html">DefenceArea</a> : <span class="keyword">public</span> <a class="code" href="classRegion.html">Region</a></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;{</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <a class="code" href="classDefenceArea.html">DefenceArea</a>(<span class="keywordtype">bool</span> team = !<a class="code" href="group__config.html#gad57ff846ba580a339228b63d060e4bf9">OUR_TEAM</a>);</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keywordtype">bool</span> contains(<span class="keyword">const</span> <a class="code" href="classPoint.html">Point</a> &amp;) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keywordtype">bool</span> contains(<span class="keyword">const</span> <a class="code" href="classPoint.html">Point</a> &amp;, <span class="keyword">const</span> <span class="keywordtype">float</span> tolerance);</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keywordtype">void</span> draw() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keywordtype">void</span> expelPoint(<a class="code" href="classPoint.html">Point</a>&amp;);</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    std::vector&lt;Point&gt; lineSegmentIntercepts(<span class="keyword">const</span> <a class="code" href="classPoint.html">Point</a>&amp; A, <span class="keyword">const</span> <a class="code" href="classPoint.html">Point</a>&amp; B);</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    std::vector&lt;Point&gt; lineIntercepts(<span class="keyword">const</span> <a class="code" href="classPoint.html">Point</a>&amp; A, <span class="keyword">const</span> <a class="code" href="classPoint.html">Point</a>&amp; B);</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="comment">// Consult SSL Rule book for clarification of the following regions</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <a class="code" href="classRectangle.html">Rectangle</a> r;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <a class="code" href="classSector.html">Sector</a> s1, s2;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keywordtype">bool</span> team;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;};</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#endif // DEFENCEAREA_H</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="classDefenceArea.html">   17</a></span>&#160;<span class="keyword">class </span><a class="code" href="classDefenceArea.html">DefenceArea</a> : <span class="keyword">public</span> <a class="code" href="classRegion.html">Region</a></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;{</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <a class="code" href="classDefenceArea.html#a8dde1aa206b27bc3a22e6d423c33b17a">DefenceArea</a>(<span class="keywordtype">bool</span> team = !<a class="code" href="group__config.html#gad57ff846ba580a339228b63d060e4bf9">OUR_TEAM</a>);</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classDefenceArea.html#a9680e8f8d4c6ec7562b16174079a1ca4">contains</a>(<span class="keyword">const</span> <a class="code" href="classPoint.html">Point</a> &amp;) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classDefenceArea.html#a9680e8f8d4c6ec7562b16174079a1ca4">contains</a>(<span class="keyword">const</span> <a class="code" href="classPoint.html">Point</a> &amp;, <span class="keyword">const</span> <span class="keywordtype">float</span> tolerance);</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classDefenceArea.html#a21ad1db2a6f887c108464ce8259ba83c">draw</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classDefenceArea.html#a427269ad4a1e9c59b4db6e841116b4d7">expelPoint</a>(<a class="code" href="classPoint.html">Point</a>&amp;);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    std::vector&lt;Point&gt; <a class="code" href="classDefenceArea.html#a46746309410d73b66d280e3cde7fed52">lineSegmentIntercepts</a>(<span class="keyword">const</span> <a class="code" href="classPoint.html">Point</a>&amp; A, <span class="keyword">const</span> <a class="code" href="classPoint.html">Point</a>&amp; B);</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    std::vector&lt;Point&gt; <a class="code" href="classDefenceArea.html#adf07d47e8808ed05a741bd07774de13a">lineIntercepts</a>(<span class="keyword">const</span> <a class="code" href="classPoint.html">Point</a>&amp; A, <span class="keyword">const</span> <a class="code" href="classPoint.html">Point</a>&amp; B);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="comment">// Consult SSL Rule book for clarification of the following regions</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <a class="code" href="classRectangle.html">Rectangle</a> r;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <a class="code" href="classSector.html">Sector</a> s1, s2;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordtype">bool</span> team;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;};</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor">#endif // DEFENCEAREA_H</span></div>
+<div class="ttc" id="classDefenceArea_html_a46746309410d73b66d280e3cde7fed52"><div class="ttname"><a href="classDefenceArea.html#a46746309410d73b66d280e3cde7fed52">DefenceArea::lineSegmentIntercepts</a></div><div class="ttdeci">std::vector&lt; Point &gt; lineSegmentIntercepts(const Point &amp;A, const Point &amp;B)</div><div class="ttdef"><b>Definition:</b> defencearea.cpp:137</div></div>
 <div class="ttc" id="team_8h_html"><div class="ttname"><a href="team_8h.html">team.h</a></div></div>
-<div class="ttc" id="group__config_html_gad57ff846ba580a339228b63d060e4bf9"><div class="ttname"><a href="group__config.html#gad57ff846ba580a339228b63d060e4bf9">OUR_TEAM</a></div><div class="ttdeci">#define OUR_TEAM</div><div class="ttdoc">The Program&#39;s Team (TEAM_BLUE or TEAM_YELLOW) </div><div class="ttdef"><b>Definition:</b> team.h:25</div></div>
+<div class="ttc" id="classDefenceArea_html_a427269ad4a1e9c59b4db6e841116b4d7"><div class="ttname"><a href="classDefenceArea.html#a427269ad4a1e9c59b4db6e841116b4d7">DefenceArea::expelPoint</a></div><div class="ttdeci">void expelPoint(Point &amp;)</div><div class="ttdef"><b>Definition:</b> defencearea.cpp:74</div></div>
+<div class="ttc" id="classDefenceArea_html_adf07d47e8808ed05a741bd07774de13a"><div class="ttname"><a href="classDefenceArea.html#adf07d47e8808ed05a741bd07774de13a">DefenceArea::lineIntercepts</a></div><div class="ttdeci">std::vector&lt; Point &gt; lineIntercepts(const Point &amp;A, const Point &amp;B)</div><div class="ttdef"><b>Definition:</b> defencearea.cpp:324</div></div>
+<div class="ttc" id="group__config_html_gad57ff846ba580a339228b63d060e4bf9"><div class="ttname"><a href="group__config.html#gad57ff846ba580a339228b63d060e4bf9">OUR_TEAM</a></div><div class="ttdeci">#define OUR_TEAM</div><div class="ttdef"><b>Definition:</b> team.h:23</div></div>
 <div class="ttc" id="classPoint_html"><div class="ttname"><a href="classPoint.html">Point</a></div><div class="ttdoc">2D Point Class </div><div class="ttdef"><b>Definition:</b> point.h:12</div></div>
 <div class="ttc" id="globals_8h_html"><div class="ttname"><a href="globals_8h.html">globals.h</a></div></div>
-<div class="ttc" id="classRegion_html"><div class="ttname"><a href="classRegion.html">Region</a></div><div class="ttdoc">Region is an abstract utility class to define a 2D region on the field. </div><div class="ttdef"><b>Definition:</b> region.h:11</div></div>
-<div class="ttc" id="classSector_html"><div class="ttname"><a href="classSector.html">Sector</a></div><div class="ttdef"><b>Definition:</b> sector.h:8</div></div>
-<div class="ttc" id="classRectangle_html"><div class="ttname"><a href="classRectangle.html">Rectangle</a></div><div class="ttdef"><b>Definition:</b> rectangle.h:12</div></div>
-<div class="ttc" id="classDefenceArea_html"><div class="ttname"><a href="classDefenceArea.html">DefenceArea</a></div><div class="ttdef"><b>Definition:</b> defencearea.h:11</div></div>
+<div class="ttc" id="classRegion_html"><div class="ttname"><a href="classRegion.html">Region</a></div><div class="ttdef"><b>Definition:</b> region.h:12</div></div>
+<div class="ttc" id="classSector_html"><div class="ttname"><a href="classSector.html">Sector</a></div><div class="ttdef"><b>Definition:</b> sector.h:12</div></div>
+<div class="ttc" id="classRectangle_html"><div class="ttname"><a href="classRectangle.html">Rectangle</a></div><div class="ttdef"><b>Definition:</b> rectangle.h:16</div></div>
+<div class="ttc" id="rectangle_8h_html"><div class="ttname"><a href="rectangle_8h.html">rectangle.h</a></div></div>
+<div class="ttc" id="classDefenceArea_html_a9680e8f8d4c6ec7562b16174079a1ca4"><div class="ttname"><a href="classDefenceArea.html#a9680e8f8d4c6ec7562b16174079a1ca4">DefenceArea::contains</a></div><div class="ttdeci">bool contains(const Point &amp;) override</div><div class="ttdef"><b>Definition:</b> defencearea.cpp:38</div></div>
+<div class="ttc" id="classDefenceArea_html"><div class="ttname"><a href="classDefenceArea.html">DefenceArea</a></div><div class="ttdef"><b>Definition:</b> defencearea.h:17</div></div>
+<div class="ttc" id="classDefenceArea_html_a21ad1db2a6f887c108464ce8259ba83c"><div class="ttname"><a href="classDefenceArea.html#a21ad1db2a6f887c108464ce8259ba83c">DefenceArea::draw</a></div><div class="ttdeci">void draw() override</div><div class="ttdef"><b>Definition:</b> defencearea.cpp:67</div></div>
+<div class="ttc" id="classDefenceArea_html_a8dde1aa206b27bc3a22e6d423c33b17a"><div class="ttname"><a href="classDefenceArea.html#a8dde1aa206b27bc3a22e6d423c33b17a">DefenceArea::DefenceArea</a></div><div class="ttdeci">DefenceArea(bool team=!OUR_TEAM)</div><div class="ttdef"><b>Definition:</b> defencearea.cpp:3</div></div>
+<div class="ttc" id="sector_8h_html"><div class="ttname"><a href="sector_8h.html">sector.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 26 2016 13:40:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Aug 9 2016 12:08:10 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

@@ -4,8 +4,11 @@
 #include "utilities/point.h"
 class Robot;
 
-/*! @brief Strategy to implement a free kick game state 'F' and 'f'
- *  @author Muhaimen Shamsi*/
+/*! @file
+    Strategy to support a free kick game state.
+    Assigns behaviors for all the robots.
+    A goal can be scored directly from a free kick.
+*/
 
 class FreeKickStrategy: public Strategy
 {

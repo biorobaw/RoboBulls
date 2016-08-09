@@ -7,6 +7,6 @@ var searchData=
   ['penaltystrategy',['PenaltyStrategy',['../classPenaltyStrategy.html',1,'']]],
   ['point',['Point',['../classPoint.html',1,'']]],
   ['predicate',['Predicate',['../classComparisons_1_1Predicate.html',1,'Comparisons']]],
-  ['probnode',['ProbNode',['../structAttackMain_1_1ProbNode.html',1,'AttackMain']]],
-  ['probnode',['ProbNode',['../structAttackSupport_1_1ProbNode.html',1,'AttackSupport']]]
+  ['probnode',['ProbNode',['../structAttackSupport_1_1ProbNode.html',1,'AttackSupport']]],
+  ['probnode',['ProbNode',['../structAttackMain_1_1ProbNode.html',1,'AttackMain']]]
 ];

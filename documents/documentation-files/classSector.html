@@ -88,6 +88,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classSector-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Sector Class Reference</div>  </div>
@@ -99,9 +100,122 @@ Inheritance diagram for Sector:</div>
  <div class="center">
   <img src="classSector.png" usemap="#Sector_map" alt=""/>
   <map id="Sector_map" name="Sector_map">
-<area href="classRegion.html" title="Region is an abstract utility class to define a 2D region on the field. " alt="Region" shape="rect" coords="0,0,51,24"/>
+<area href="classRegion.html" alt="Region" shape="rect" coords="0,0,51,24"/>
 </map>
  </div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:ab0cb74c197ae19e0324f42758d1421ad"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSector.html#ab0cb74c197ae19e0324f42758d1421ad">Sector</a> (<a class="el" href="classPoint.html">Point</a> centre, float radius, float start_angle, float end_angle)</td></tr>
+<tr class="separator:ab0cb74c197ae19e0324f42758d1421ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b8cab1893f4ee235d7a791d0b421272"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSector.html#a9b8cab1893f4ee235d7a791d0b421272">contains</a> (const <a class="el" href="classPoint.html">Point</a> &amp;) override</td></tr>
+<tr class="separator:a9b8cab1893f4ee235d7a791d0b421272"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa86962b5f50a5d09da5c55d76cf6e4e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSector.html#aa86962b5f50a5d09da5c55d76cf6e4e7">draw</a> () override</td></tr>
+<tr class="separator:aa86962b5f50a5d09da5c55d76cf6e4e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="ab0cb74c197ae19e0324f42758d1421ad"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Sector::Sector </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classPoint.html">Point</a>&#160;</td>
+          <td class="paramname"><em>centre</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>radius</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>start_angle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>end_angle</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>A <a class="el" href="classSector.html">Sector</a> is extended counter-clockwise from start_angle to end_angle. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname"><a class="el" href="classPoint.html" title="2D Point Class ">Point</a></td><td>center: Centre of the sector. </td></tr>
+    <tr><td class="paramname">float</td><td>radius: Radius of the sector. </td></tr>
+    <tr><td class="paramname">float</td><td>start_angle: Starting angle of sector in radians. </td></tr>
+    <tr><td class="paramname">float</td><td>end_angle: Ending angle of sector in radians. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a9b8cab1893f4ee235d7a791d0b421272"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Sector::contains </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classPoint.html">Point</a> &amp;&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classRegion.html#a8af9af9905ab3ea6df799eecdd8efd66">Region::contains()</a> </dd></dl>
+
+<p>Implements <a class="el" href="classRegion.html#a8af9af9905ab3ea6df799eecdd8efd66">Region</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa86962b5f50a5d09da5c55d76cf6e4e7"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Sector::draw </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classRegion.html#ac27425acc746df035cdc52bd11c49651">Region::draw()</a> </dd></dl>
+
+<p>Implements <a class="el" href="classRegion.html#ac27425acc746df035cdc52bd11c49651">Region</a>.</p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>utilities/region/<a class="el" href="sector_8h_source.html">sector.h</a></li>
 <li>utilities/region/sector.cpp</li>
@@ -109,7 +223,7 @@ Inheritance diagram for Sector:</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 26 2016 13:40:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Aug 9 2016 12:08:11 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

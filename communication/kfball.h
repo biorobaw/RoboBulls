@@ -5,8 +5,19 @@
 #include <time.h>
 #include <deque>
 
-// Set up in accordance with:
-// http://kalman.sourceforge.net/doc/example.html#expage
+/*!
+ * @file
+ * @author Muhaimen Shamsi
+ * @brief Kalman filter to reduce noise in ball detection.
+ * In addition to reducing noise, should also produce a prediction
+ * of where the ball is when it is blocked from the camera by robots.
+ *
+ * Set up in accordance with:
+ * http://kalman.sourceforge.net/doc/example.html#expage
+ *
+ * @todo Check Tigers Manheim's source code for improvemnt.
+ * @todo Allow auto-tuning.
+ */
 
 class KFBall : public Kalman::EKFilter<double,1,true,true,false>
 {

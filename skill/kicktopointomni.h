@@ -9,9 +9,8 @@
 namespace Skill
 {
 
-/*! @brief General-purpose  skill to kick the ball to a point
- *  @author JamesW
- * @details A simplified, optimized version of KTP for Omni robots.
+/*! General-purpose  skill to kick the ball to a point
+ * details A simplified, optimized version of KTP for Omni robots.
  * The ability the track a moving target is preserved with the
  * pointer constructor. The robot is asked to first move behind the ball
  * while rotating to face the ball. Then the Robot moves forwards, and finally

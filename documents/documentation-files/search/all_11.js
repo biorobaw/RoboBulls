@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['sector',['Sector',['../classSector.html',1,'']]],
+  ['sector',['Sector',['../classSector.html',1,'Sector'],['../classSector.html#ab0cb74c197ae19e0324f42758d1421ad',1,'Sector::Sector()']]],
+  ['sector_2eh',['sector.h',['../sector_8h.html',1,'']]],
   ['sendpacket',['sendPacket',['../classSimRobComm.html#a7208dbf94548fafc943fadf0ccccb867',1,'SimRobComm']]],
   ['sendreplacementpackets',['sendReplacementPackets',['../classSimRobComm.html#ac0a89a21c9550fe822d5b637d3adde65',1,'SimRobComm']]],
   ['sendvelslarge',['sendVelsLarge',['../classNXTRobComm.html#ad2d43321c2bf0b95009fb136eec0c5ac',1,'NXTRobComm::sendVelsLarge()'],['../classRobComm.html#ace6ca5e8446e4b720f4d14d517b0b3da',1,'RobComm::sendVelsLarge()'],['../classSimRobComm.html#a6c32b97ef4bfa92b48793ae92679d0eb',1,'SimRobComm::sendVelsLarge()']]],
@@ -50,6 +51,9 @@ var searchData=
   ['status',['status',['../structMovement_1_1Collisions_1_1detail_1_1RobotMoveStatus.html#a3096b154eebf420930d9de2980f8f3fe',1,'Movement::Collisions::detail::RobotMoveStatus']]],
   ['stop',['Stop',['../classSkill_1_1Stop.html',1,'Skill']]],
   ['stopstrategy',['StopStrategy',['../classStopStrategy.html',1,'']]],
+  ['stopstrategy_2eh',['stopstrategy.h',['../stopstrategy_8h.html',1,'']]],
   ['strategy',['Strategy',['../classStrategy.html',1,'']]],
-  ['strategycontroller',['StrategyController',['../classStrategyController.html',1,'']]]
+  ['strategy_2eh',['strategy.h',['../strategy_8h.html',1,'']]],
+  ['strategycontroller',['StrategyController',['../classStrategyController.html',1,'']]],
+  ['strategycontroller_2eh',['strategycontroller.h',['../strategycontroller_8h.html',1,'']]]
 ];

@@ -95,7 +95,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
-<p><a class="el" href="classStrategy.html" title="Strategy is the abstract base class for other strategy classes. ">Strategy</a> to implement the Halt game state 'H'.  
+<p><a class="el" href="classStrategy.html">Strategy</a> to implement the Halt game state 'H'.  
  <a href="classHaltStrategy.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="haltstrategy_8h_source.html">haltstrategy.h</a>&gt;</code></p>
@@ -105,28 +105,24 @@ Inheritance diagram for HaltStrategy:</div>
  <div class="center">
   <img src="classHaltStrategy.png" usemap="#HaltStrategy_map" alt=""/>
   <map id="HaltStrategy_map" name="HaltStrategy_map">
-<area href="classStrategy.html" title="Strategy is the abstract base class for other strategy classes. " alt="Strategy" shape="rect" coords="0,0,81,24"/>
+<area href="classStrategy.html" alt="Strategy" shape="rect" coords="0,0,81,24"/>
 </map>
  </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a60224086a56769bd224b168472edfd91"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classHaltStrategy.html#a60224086a56769bd224b168472edfd91">assignBeh</a> ()</td></tr>
-<tr class="memdesc:a60224086a56769bd224b168472edfd91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decides How to assign behaviors to each robot on the team.  <a href="#a60224086a56769bd224b168472edfd91">More...</a><br/></td></tr>
 <tr class="separator:a60224086a56769bd224b168472edfd91"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classStrategy"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classStrategy')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classStrategy.html">Strategy</a></td></tr>
 <tr class="memitem:addd5ae07531160ed360f697f98308e5b inherit pub_methods_classStrategy"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStrategy.html#addd5ae07531160ed360f697f98308e5b">update</a> ()</td></tr>
-<tr class="memdesc:addd5ae07531160ed360f697f98308e5b inherit pub_methods_classStrategy"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function (optional) that updates the <a class="el" href="classStrategy.html" title="Strategy is the abstract base class for other strategy classes. ">Strategy</a> object.  <a href="#addd5ae07531160ed360f697f98308e5b">More...</a><br/></td></tr>
 <tr class="separator:addd5ae07531160ed360f697f98308e5b inherit pub_methods_classStrategy"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8513b3a9660bfb58e9d9adc283135130 inherit pub_methods_classStrategy"><td class="memItemLeft" align="right" valign="top">virtual char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStrategy.html#a8513b3a9660bfb58e9d9adc283135130">getNextStrategy</a> ()</td></tr>
-<tr class="memdesc:a8513b3a9660bfb58e9d9adc283135130 inherit pub_methods_classStrategy"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function used to control strategy flow.  <a href="#a8513b3a9660bfb58e9d9adc283135130">More...</a><br/></td></tr>
 <tr class="separator:a8513b3a9660bfb58e9d9adc283135130 inherit pub_methods_classStrategy"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37c0bbdd64fd7dfcdd91578784a64775 inherit pub_methods_classStrategy"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStrategy.html#a37c0bbdd64fd7dfcdd91578784a64775">~Strategy</a> ()</td></tr>
-<tr class="memdesc:a37c0bbdd64fd7dfcdd91578784a64775 inherit pub_methods_classStrategy"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a37c0bbdd64fd7dfcdd91578784a64775">More...</a><br/></td></tr>
 <tr class="separator:a37c0bbdd64fd7dfcdd91578784a64775 inherit pub_methods_classStrategy"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="classStrategy.html" title="Strategy is the abstract base class for other strategy classes. ">Strategy</a> to implement the Halt game state 'H'. </p>
+<div class="textblock"><p><a class="el" href="classStrategy.html">Strategy</a> to implement the Halt game state 'H'. </p>
 <dl class="section author"><dt>Author</dt><dd>Narges G </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a60224086a56769bd224b168472edfd91"></a>
@@ -149,9 +145,7 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Decides How to assign behaviors to each robot on the team. </p>
-<p>This function is called when <a class="el" href="classStrategyController.html" title="Controls selection of an active strategy (play) based on the game state. ">StrategyController</a> is run with a new command recieved from <a class="el" href="classGameModel.html" title="The GameModel class. ">GameModel</a> </p>
+<p>Decides How to assign behaviors to each robot on the team. This function is called when <a class="el" href="classStrategyController.html">StrategyController</a> is run with a new command recieved from <a class="el" href="classGameModel.html">GameModel</a> </p>
 
 <p>Implements <a class="el" href="classStrategy.html#a1d5e51d3d031c10c446e18f056ff7d7f">Strategy</a>.</p>
 
@@ -164,7 +158,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 26 2016 13:40:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Aug 9 2016 12:08:11 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

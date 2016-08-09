@@ -105,7 +105,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;model/gamemodel.h&quot;</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;model/robot.h&quot;</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="simulated_8h.html">include/config/simulated.h</a>&quot;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;kfball.h&quot;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="kfball_8h.html">kfball.h</a>&quot;</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &quot;gui/guiinterface.h&quot;</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#define VEL_HIST_SIZE 20</span></div>
@@ -168,8 +168,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="ttc" id="classVisionComm_html_a05ee7dd7f091070a1eddbc5a456a12a9"><div class="ttname"><a href="classVisionComm.html#a05ee7dd7f091070a1eddbc5a456a12a9">VisionComm::prev_k_b_pos</a></div><div class="ttdeci">Point prev_k_b_pos</div><div class="ttdoc">Stores the previous state estimate of the kalman filter. </div><div class="ttdef"><b>Definition:</b> visioncomm.h:78</div></div>
 <div class="ttc" id="classVisionComm_html_a2d789794f2f6728e1e8390deab3ea56a"><div class="ttname"><a href="classVisionComm.html#a2d789794f2f6728e1e8390deab3ea56a">VisionComm::receiveIfMSPassed</a></div><div class="ttdeci">void receiveIfMSPassed(int ms_limit)</div><div class="ttdoc">Recieves a new packet only if ms_limit ms has passed since last call. </div><div class="ttdef"><b>Definition:</b> visioncomm.cpp:246</div></div>
 <div class="ttc" id="classVisionComm_html_a725727da3188777873f4e39a3318b363"><div class="ttname"><a href="classVisionComm.html#a725727da3188777873f4e39a3318b363">VisionComm::u</a></div><div class="ttdeci">KFBall::Vector u</div><div class="ttdoc">Has the kalman filter been initialized with the first measurement? </div><div class="ttdef"><b>Definition:</b> visioncomm.h:76</div></div>
-<div class="ttc" id="classGameModel_html"><div class="ttname"><a href="classGameModel.html">GameModel</a></div><div class="ttdoc">The GameModel class. </div><div class="ttdef"><b>Definition:</b> gamemodel.h:26</div></div>
-<div class="ttc" id="classKFBall_html"><div class="ttname"><a href="classKFBall.html">KFBall</a></div><div class="ttdef"><b>Definition:</b> kfball.h:11</div></div>
+<div class="ttc" id="classGameModel_html"><div class="ttname"><a href="classGameModel.html">GameModel</a></div><div class="ttdef"><b>Definition:</b> gamemodel.h:26</div></div>
+<div class="ttc" id="classKFBall_html"><div class="ttname"><a href="classKFBall.html">KFBall</a></div><div class="ttdef"><b>Definition:</b> kfball.h:22</div></div>
+<div class="ttc" id="kfball_8h_html"><div class="ttname"><a href="kfball_8h.html">kfball.h</a></div><div class="ttdoc">Kalman filter to reduce noise in ball detection. In addition to reducing noise, should also produce a...</div></div>
 <div class="ttc" id="classVisionComm_html_a535304d16f7f854661dfda9ceee3312f"><div class="ttname"><a href="classVisionComm.html#a535304d16f7f854661dfda9ceee3312f">VisionComm::kfilter_init</a></div><div class="ttdeci">bool kfilter_init</div><div class="ttdoc">Kalman filter instance. </div><div class="ttdef"><b>Definition:</b> visioncomm.h:75</div></div>
 <div class="ttc" id="classVisionComm_html_ab708102f76dfbb42b1debf2d192d6672"><div class="ttname"><a href="classVisionComm.html#ab708102f76dfbb42b1debf2d192d6672">VisionComm::resetFrames</a></div><div class="ttdeci">int resetFrames</div><div class="ttdoc">client to receive packets </div><div class="ttdef"><b>Definition:</b> visioncomm.h:67</div></div>
 <div class="ttc" id="classPoint_html"><div class="ttname"><a href="classPoint.html">Point</a></div><div class="ttdoc">2D Point Class </div><div class="ttdef"><b>Definition:</b> point.h:12</div></div>
@@ -194,7 +195,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 26 2016 13:40:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Aug 9 2016 12:08:10 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

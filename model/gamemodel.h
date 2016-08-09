@@ -10,15 +10,15 @@ class StrategyController;
 class VisionComm;
 class Robot;
 
-/** @addtogroup everydayuse Everyday Use
- * @brief Classes and functions used in everyday code
- * @{ */
+/*! @addtogroup everydayuse Everyday Use
+ * Classes and functions used in everyday code
+ * @{
+ */
 
-/**
- * @brief The GameModel class
- * @details Game model class can be considered as the heart of robobulls project
- * all the information from other classes gets updated in gamemodel
- * you can receive most up to date info about robots and ball from this class
+/*! The GameModel class
+ * Game model class can be considered as the heart of robobulls project.
+ * All the information from other classes gets updated in gamemodel.
+ * You can receive most up to date info about robots and ball from this class.
  *
  * <b>Example Everyday Usage</b>
  * @include example_gamemodel.cpp

@@ -8,6 +8,17 @@
 #include "gui/guiinterface.h"
 #include "skill/kicktopointomni.h"
 
+
+/*!
+ * @file
+ * @author Muhaimen Shamsi
+ * @brief This behavior will move the robot to a position on a wall of defenders along the defence area.
+ * Ideally, there will always be at least two robots assigned this behavior during the game to assist
+ * the goalkeeper.
+ *
+ * \i "Night gathers, and our watch begins."
+ */
+
 class Wall : public GenericMovementBehavior
 {
 public:

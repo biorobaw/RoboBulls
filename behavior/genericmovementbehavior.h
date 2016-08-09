@@ -7,9 +7,9 @@
 //! @ingroup everydayuse baseclasses
 //! @{
 
-/*! @brief Behavior to perform generic point-to-point Movement
- * @author JamesW
- * @details This class interfaces with a Movement::GoToPosition object to provide
+/*! @file
+ * Behavior to perform generic point-to-point Movement
+ * This class interfaces with a Movement::GoToPosition object to provide
  * Behaviors a simple method of moving from point to point. If a Behavior's only function
  * is to perform movement with no other actions, GenericMovementBehavior is a good baseclass.
  *

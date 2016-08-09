@@ -5,9 +5,9 @@
 #include "utilities/region/defencearea.h"
 #include "behavior/genericmovementbehavior.h"
 
-/*! @brief This strategy is meant for the ' ' gamestate (space) which means
+/*! @file
+ * This strategy is meant for the ' ' gamestate (space) which means
  * normal play.
- * @author JamesW, Muhaimen Shamsi
  */
 class NormalGameStrategy : public Strategy
 {
@@ -17,8 +17,8 @@ public:
     bool update() override;
 
 public:
-    /*! @brief Assigns goalie behavior to ID GOALIE_ID if it is on the team
-     * @details Meant to be used outside the class, if the robot with GOALIE_ID
+    /*! Assigns goalie behavior to ID GOALIE_ID if it is on the team
+     * Meant to be used outside the class, if the robot with GOALIE_ID
      * isn't null, assigns Goalie to it */
     static void assignGoalieIfOk();
 

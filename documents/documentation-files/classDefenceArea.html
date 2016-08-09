@@ -88,6 +88,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classDefenceArea-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">DefenceArea Class Reference</div>  </div>
@@ -99,9 +100,219 @@ Inheritance diagram for DefenceArea:</div>
  <div class="center">
   <img src="classDefenceArea.png" usemap="#DefenceArea_map" alt=""/>
   <map id="DefenceArea_map" name="DefenceArea_map">
-<area href="classRegion.html" title="Region is an abstract utility class to define a 2D region on the field. " alt="Region" shape="rect" coords="0,0,88,24"/>
+<area href="classRegion.html" alt="Region" shape="rect" coords="0,0,88,24"/>
 </map>
  </div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a8dde1aa206b27bc3a22e6d423c33b17a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDefenceArea.html#a8dde1aa206b27bc3a22e6d423c33b17a">DefenceArea</a> (bool team=!<a class="el" href="group__config.html#gad57ff846ba580a339228b63d060e4bf9">OUR_TEAM</a>)</td></tr>
+<tr class="separator:a8dde1aa206b27bc3a22e6d423c33b17a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9680e8f8d4c6ec7562b16174079a1ca4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDefenceArea.html#a9680e8f8d4c6ec7562b16174079a1ca4">contains</a> (const <a class="el" href="classPoint.html">Point</a> &amp;) override</td></tr>
+<tr class="separator:a9680e8f8d4c6ec7562b16174079a1ca4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32407c3320e57b37e523a23745644605"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDefenceArea.html#a32407c3320e57b37e523a23745644605">contains</a> (const <a class="el" href="classPoint.html">Point</a> &amp;, const float tolerance)</td></tr>
+<tr class="separator:a32407c3320e57b37e523a23745644605"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21ad1db2a6f887c108464ce8259ba83c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDefenceArea.html#a21ad1db2a6f887c108464ce8259ba83c">draw</a> () override</td></tr>
+<tr class="separator:a21ad1db2a6f887c108464ce8259ba83c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a427269ad4a1e9c59b4db6e841116b4d7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDefenceArea.html#a427269ad4a1e9c59b4db6e841116b4d7">expelPoint</a> (<a class="el" href="classPoint.html">Point</a> &amp;)</td></tr>
+<tr class="separator:a427269ad4a1e9c59b4db6e841116b4d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46746309410d73b66d280e3cde7fed52"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classPoint.html">Point</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDefenceArea.html#a46746309410d73b66d280e3cde7fed52">lineSegmentIntercepts</a> (const <a class="el" href="classPoint.html">Point</a> &amp;A, const <a class="el" href="classPoint.html">Point</a> &amp;B)</td></tr>
+<tr class="separator:a46746309410d73b66d280e3cde7fed52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf07d47e8808ed05a741bd07774de13a"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classPoint.html">Point</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDefenceArea.html#adf07d47e8808ed05a741bd07774de13a">lineIntercepts</a> (const <a class="el" href="classPoint.html">Point</a> &amp;A, const <a class="el" href="classPoint.html">Point</a> &amp;B)</td></tr>
+<tr class="separator:adf07d47e8808ed05a741bd07774de13a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a8dde1aa206b27bc3a22e6d423c33b17a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DefenceArea::DefenceArea </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>team</em> = <code>!<a class="el" href="group__config.html#gad57ff846ba580a339228b63d060e4bf9">OUR_TEAM</a></code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Contructor for the defence area </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">team</td><td>Passing in <code>OUR_TEAM</code> will construct the region for our goalpost. Passing in <code>!OUR_TEAM</code> will construct it for the opponent goalpost. <code>OUR_TEAM</code> is defined in "include/config/team.h". </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a9680e8f8d4c6ec7562b16174079a1ca4"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool DefenceArea::contains </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classPoint.html">Point</a> &amp;&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classRegion.html#a8af9af9905ab3ea6df799eecdd8efd66">Region::contains()</a> </dd></dl>
+
+<p>Implements <a class="el" href="classRegion.html#a8af9af9905ab3ea6df799eecdd8efd66">Region</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a32407c3320e57b37e523a23745644605"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool DefenceArea::contains </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classPoint.html">Point</a> &amp;&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>tolerance</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Modified <a class="el" href="classDefenceArea.html#a9680e8f8d4c6ec7562b16174079a1ca4">contains()</a> function that returns true if the input <a class="el" href="classPoint.html" title="2D Point Class ">Point</a> is within <code>tolerance</code> distance from the defence area. This is useful to see if <b>any</b> part of a robot is within the defence area since only the centre of the robot is checked. </p>
+
+</div>
+</div>
+<a class="anchor" id="a21ad1db2a6f887c108464ce8259ba83c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DefenceArea::draw </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classRegion.html#ac27425acc746df035cdc52bd11c49651">Region::draw()</a> </dd></dl>
+
+<p>Implements <a class="el" href="classRegion.html#ac27425acc746df035cdc52bd11c49651">Region</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a427269ad4a1e9c59b4db6e841116b4d7"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DefenceArea::expelPoint </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classPoint.html">Point</a> &amp;&#160;</td>
+          <td class="paramname"><em>point</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Given a <a class="el" href="classPoint.html" title="2D Point Class ">Point</a> (by reference) that is inside the defence area, modifies it such that it is outside the defence area while being as close as possible to the original point. Useful for path-planning. </p>
+
+</div>
+</div>
+<a class="anchor" id="adf07d47e8808ed05a741bd07774de13a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="classPoint.html">Point</a> &gt; DefenceArea::lineIntercepts </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classPoint.html">Point</a> &amp;&#160;</td>
+          <td class="paramname"><em>A</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classPoint.html">Point</a> &amp;&#160;</td>
+          <td class="paramname"><em>B</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Tests whether the input line (not segment) passes through the defence area. Note: the field edge line running along the goalpost is not considered for intersection. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">const</td><td><a class="el" href="classPoint.html" title="2D Point Class ">Point</a>&amp; A One point on the line. </td></tr>
+    <tr><td class="paramname">const</td><td><a class="el" href="classPoint.html" title="2D Point Class ">Point</a>&amp; B Another point on the line. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>std::vector&lt;Point&gt; A vector of points where the line intercepts the defence area lining. It will be empty if no intercepts exist, and will have at most 2 points. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a46746309410d73b66d280e3cde7fed52"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="classPoint.html">Point</a> &gt; DefenceArea::lineSegmentIntercepts </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classPoint.html">Point</a> &amp;&#160;</td>
+          <td class="paramname"><em>A</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classPoint.html">Point</a> &amp;&#160;</td>
+          <td class="paramname"><em>B</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Tests whether the input line segment passes through the defence area. Note: the field edge line running along the goalpost is not considered for intersection. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">const</td><td><a class="el" href="classPoint.html" title="2D Point Class ">Point</a>&amp; A The start of the line segment. </td></tr>
+    <tr><td class="paramname">const</td><td><a class="el" href="classPoint.html" title="2D Point Class ">Point</a>&amp; B The end of the line segment. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>std::vector&lt;Point&gt; A vector of points where the line segment intercepts the defence area lining. It will be empty if no intercepts exist, and will have at most 2 points. </dd></dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>utilities/region/<a class="el" href="defencearea_8h_source.html">defencearea.h</a></li>
 <li>utilities/region/defencearea.cpp</li>
@@ -109,7 +320,7 @@ Inheritance diagram for DefenceArea:</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 26 2016 13:40:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Aug 9 2016 12:08:11 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

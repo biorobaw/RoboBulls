@@ -43,7 +43,6 @@ SOURCES += main.cpp \
 	gui/robotpanel.cpp \
 	gui/selrobotpanel.cpp \
 	include/config/robot_types.cpp \
-	include/config/tolerances.cpp \
 	include/grSim_Commands.pb.cc \
 	include/grSim_Packet.pb.cc \
 	include/grSim_Replacement.pb.cc \
@@ -84,7 +83,6 @@ SOURCES += main.cpp \
 	utilities/velocitycalculator.cpp \
         behavior/defendbehavior.cpp \
         strategy/indirectkickstrategy.cpp \
-        strategy/threevthree.cpp \
         communication/kfball.cpp \
         utilities/getclassname.cpp \
     utilities/region/sector.cpp \
@@ -177,7 +175,6 @@ HEADERS += \
 	utilities/point.h \
 	utilities/velocitycalculator.h \
         strategy/indirectkickstrategy.h \
-        strategy/threevthree.h \
         communication/kfball.h \
         utilities/getclassname.h \
     utilities/region/sector.h \

@@ -7,11 +7,8 @@
 #include <algorithm>
 #include "utilities/comparisons.h"
 
-/*!
- * @file
- * @author Muhaimen Shamsi
- *
- * @brief AttackSupport tries to help score a goal by positioning a robot in an opportune position.
+/*! @file
+ * AttackSupport tries to help score a goal by positioning a robot in an opportune position.
  *
  * A robot assigned this behavior will try to move to a position that satisfies the following criteria:
  * - There are no obstacles between the position and the goal.
@@ -88,7 +85,7 @@ private:
 
     /*! Cast shadows with ball as light source and opponents as opaque objects
      * Rules out impossible receiving positions
-     * \todo Integrate clustering to this */
+     * @todo Integrate clustering to this */
     void genBallShadows();
 
     /*! Set the probability in the triangle between the ball and the goal-post to 0
@@ -107,7 +104,7 @@ private:
     /*! Given a point, returns the probability of scoring a goal from there.
      * This function assumes that probability is already calculated and stored in
      * the probability array by calcDynamicProb() and calcStaticProb().
-     * @see calcDynamicProb() and @see calcStaticProb().
+     * @see calcDynamicProb() @see calcStaticProb().
      * @param Point The point at which the probability is queried.
      * @return Probability of scoring.
      */

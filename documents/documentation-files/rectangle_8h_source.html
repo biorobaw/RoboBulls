@@ -93,9 +93,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">rectangle.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef RECTANGLE_H</span></div>
+<a href="rectangle_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef RECTANGLE_H</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define RECTANGLE_H</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &quot;region.h&quot;</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &quot;<a class="code" href="region_8h.html">region.h</a>&quot;</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;</div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;sstream&gt;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;cmath&gt;</span></div>
@@ -104,51 +104,52 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;model/robot.h&quot;</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;model/gamemodel.h&quot;</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
-<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="classRectangle.html">   12</a></span>&#160;<span class="keyword">class </span><a class="code" href="classRectangle.html">Rectangle</a> : <span class="keyword">public</span> <a class="code" href="classRegion.html">Region</a></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;{</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <a class="code" href="classRectangle.html">Rectangle</a>();</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <a class="code" href="classRectangle.html">Rectangle</a>(<span class="keywordtype">float</span> X1, <span class="keywordtype">float</span> Y1, <span class="keywordtype">float</span> X2, <span class="keywordtype">float</span> Y2);</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classRectangle.html#a2b268cf647723149286490d0143e239b">contains</a>(<span class="keyword">const</span> <a class="code" href="classPoint.html">Point</a>&amp; point) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classRectangle.html#a8339715d8e96e6968e8c25977199271d">draw</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classRectangle.html#aa78722535b65d266927da0dda5c01ce1">containsLine</a>(<span class="keyword">const</span> <a class="code" href="classPoint.html">Point</a>&amp; p0, <span class="keyword">const</span> <a class="code" href="classPoint.html">Point</a>&amp; p1);</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordtype">int</span> <a class="code" href="classRectangle.html#ad56cfed682c2e18a3b9fa1f1ca3548de">numOfRobots</a>();</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keywordtype">int</span> <a class="code" href="classRectangle.html#a1fc97318400068369afa56bea4d9b868">numOfOpponents</a>();</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordtype">int</span> <a class="code" href="classRectangle.html#a10b2826f4d361b4e2733fd884e7b3730">numOfTeammates</a>();</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keywordtype">int</span> <a class="code" href="classRectangle.html#ad56cfed682c2e18a3b9fa1f1ca3548de">numOfRobots</a>(std::vector&lt;Robot*&gt;&amp; ignoreOpponents,</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                    std::vector&lt;Robot*&gt;&amp; ignoreTeammates);</div>
+<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="classRectangle.html">   16</a></span>&#160;<span class="keyword">class </span><a class="code" href="classRectangle.html">Rectangle</a> : <span class="keyword">public</span> <a class="code" href="classRegion.html">Region</a></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;{</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <a class="code" href="classRectangle.html">Rectangle</a>();</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <a class="code" href="classRectangle.html">Rectangle</a>(<span class="keywordtype">float</span> X1, <span class="keywordtype">float</span> Y1, <span class="keywordtype">float</span> X2, <span class="keywordtype">float</span> Y2);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classRectangle.html#a2b268cf647723149286490d0143e239b">contains</a>(<span class="keyword">const</span> <a class="code" href="classPoint.html">Point</a>&amp; point) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classRectangle.html#a8339715d8e96e6968e8c25977199271d">draw</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classRectangle.html#aa78722535b65d266927da0dda5c01ce1">containsLine</a>(<span class="keyword">const</span> <a class="code" href="classPoint.html">Point</a>&amp; p0, <span class="keyword">const</span> <a class="code" href="classPoint.html">Point</a>&amp; p1);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordtype">int</span> <a class="code" href="classRectangle.html#ad56cfed682c2e18a3b9fa1f1ca3548de">numOfRobots</a>();</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordtype">int</span> <a class="code" href="classRectangle.html#a1fc97318400068369afa56bea4d9b868">numOfOpponents</a>();</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordtype">int</span> <a class="code" href="classRectangle.html#a10b2826f4d361b4e2733fd884e7b3730">numOfTeammates</a>();</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <a class="code" href="classPoint.html">Point</a> <a class="code" href="classRectangle.html#a2c295302fe95fefe13697c79e349446b">centre</a>();</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    std::string <a class="code" href="classRectangle.html#accca16de7a07c1c4ef522c13d88e0516">toString</a>();</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordtype">float</span> min_x, max_x, min_y, max_y;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;};</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#endif // RECTANGLE_H</span></div>
-<div class="ttc" id="classRectangle_html_accca16de7a07c1c4ef522c13d88e0516"><div class="ttname"><a href="classRectangle.html#accca16de7a07c1c4ef522c13d88e0516">Rectangle::toString</a></div><div class="ttdeci">std::string toString()</div><div class="ttdoc">Returns a string representation of the Region. </div><div class="ttdef"><b>Definition:</b> rectangle.cpp:156</div></div>
-<div class="ttc" id="classRectangle_html_a2c295302fe95fefe13697c79e349446b"><div class="ttname"><a href="classRectangle.html#a2c295302fe95fefe13697c79e349446b">Rectangle::centre</a></div><div class="ttdeci">Point centre()</div><div class="ttdoc">Returns the calculated center of the Region. </div><div class="ttdef"><b>Definition:</b> rectangle.cpp:151</div></div>
-<div class="ttc" id="classRectangle_html_aa78722535b65d266927da0dda5c01ce1"><div class="ttname"><a href="classRectangle.html#aa78722535b65d266927da0dda5c01ce1">Rectangle::containsLine</a></div><div class="ttdeci">bool containsLine(const Point &amp;p0, const Point &amp;p1)</div><div class="ttdoc">Returns true if the line from p0 and p1 passes through the region. </div><div class="ttdef"><b>Definition:</b> rectangle.cpp:22</div></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordtype">int</span> <a class="code" href="classRectangle.html#ad56cfed682c2e18a3b9fa1f1ca3548de">numOfRobots</a>(std::vector&lt;Robot*&gt;&amp; ignoreOpponents,</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                    std::vector&lt;Robot*&gt;&amp; ignoreTeammates);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <a class="code" href="classPoint.html">Point</a> <a class="code" href="classRectangle.html#a2c295302fe95fefe13697c79e349446b">centre</a>();</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    std::string <a class="code" href="classRectangle.html#accca16de7a07c1c4ef522c13d88e0516">toString</a>();</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">float</span> min_x, max_x, min_y, max_y;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;};</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor">#endif // RECTANGLE_H</span></div>
+<div class="ttc" id="classRectangle_html_accca16de7a07c1c4ef522c13d88e0516"><div class="ttname"><a href="classRectangle.html#accca16de7a07c1c4ef522c13d88e0516">Rectangle::toString</a></div><div class="ttdeci">std::string toString()</div><div class="ttdef"><b>Definition:</b> rectangle.cpp:156</div></div>
+<div class="ttc" id="classRectangle_html_a2c295302fe95fefe13697c79e349446b"><div class="ttname"><a href="classRectangle.html#a2c295302fe95fefe13697c79e349446b">Rectangle::centre</a></div><div class="ttdeci">Point centre()</div><div class="ttdef"><b>Definition:</b> rectangle.cpp:151</div></div>
+<div class="ttc" id="classRectangle_html_aa78722535b65d266927da0dda5c01ce1"><div class="ttname"><a href="classRectangle.html#aa78722535b65d266927da0dda5c01ce1">Rectangle::containsLine</a></div><div class="ttdeci">bool containsLine(const Point &amp;p0, const Point &amp;p1)</div><div class="ttdef"><b>Definition:</b> rectangle.cpp:22</div></div>
 <div class="ttc" id="classPoint_html"><div class="ttname"><a href="classPoint.html">Point</a></div><div class="ttdoc">2D Point Class </div><div class="ttdef"><b>Definition:</b> point.h:12</div></div>
-<div class="ttc" id="classRegion_html"><div class="ttname"><a href="classRegion.html">Region</a></div><div class="ttdoc">Region is an abstract utility class to define a 2D region on the field. </div><div class="ttdef"><b>Definition:</b> region.h:11</div></div>
-<div class="ttc" id="classRectangle_html_a10b2826f4d361b4e2733fd884e7b3730"><div class="ttname"><a href="classRectangle.html#a10b2826f4d361b4e2733fd884e7b3730">Rectangle::numOfTeammates</a></div><div class="ttdeci">int numOfTeammates()</div><div class="ttdoc">Returns number of teammates in the region. </div><div class="ttdef"><b>Definition:</b> rectangle.cpp:76</div></div>
-<div class="ttc" id="classRectangle_html_a1fc97318400068369afa56bea4d9b868"><div class="ttname"><a href="classRectangle.html#a1fc97318400068369afa56bea4d9b868">Rectangle::numOfOpponents</a></div><div class="ttdeci">int numOfOpponents()</div><div class="ttdoc">Returns number of opponents in the region. </div><div class="ttdef"><b>Definition:</b> rectangle.cpp:92</div></div>
-<div class="ttc" id="classRectangle_html"><div class="ttname"><a href="classRectangle.html">Rectangle</a></div><div class="ttdef"><b>Definition:</b> rectangle.h:12</div></div>
-<div class="ttc" id="classRectangle_html_a8339715d8e96e6968e8c25977199271d"><div class="ttname"><a href="classRectangle.html#a8339715d8e96e6968e8c25977199271d">Rectangle::draw</a></div><div class="ttdeci">void draw() override</div><div class="ttdoc">Displays the region on the GUI. </div><div class="ttdef"><b>Definition:</b> rectangle.cpp:167</div></div>
-<div class="ttc" id="classRectangle_html_ad56cfed682c2e18a3b9fa1f1ca3548de"><div class="ttname"><a href="classRectangle.html#ad56cfed682c2e18a3b9fa1f1ca3548de">Rectangle::numOfRobots</a></div><div class="ttdeci">int numOfRobots()</div><div class="ttdoc">Returns the sum of numOfOpponents and numOfTeammates. </div><div class="ttdef"><b>Definition:</b> rectangle.cpp:53</div></div>
-<div class="ttc" id="classRectangle_html_a2b268cf647723149286490d0143e239b"><div class="ttname"><a href="classRectangle.html#a2b268cf647723149286490d0143e239b">Rectangle::contains</a></div><div class="ttdeci">bool contains(const Point &amp;point) override</div><div class="ttdoc">Returns true if a point is inside the rectangular region. </div><div class="ttdef"><b>Definition:</b> rectangle.cpp:16</div></div>
+<div class="ttc" id="classRegion_html"><div class="ttname"><a href="classRegion.html">Region</a></div><div class="ttdef"><b>Definition:</b> region.h:12</div></div>
+<div class="ttc" id="classRectangle_html_a10b2826f4d361b4e2733fd884e7b3730"><div class="ttname"><a href="classRectangle.html#a10b2826f4d361b4e2733fd884e7b3730">Rectangle::numOfTeammates</a></div><div class="ttdeci">int numOfTeammates()</div><div class="ttdef"><b>Definition:</b> rectangle.cpp:76</div></div>
+<div class="ttc" id="classRectangle_html_a1fc97318400068369afa56bea4d9b868"><div class="ttname"><a href="classRectangle.html#a1fc97318400068369afa56bea4d9b868">Rectangle::numOfOpponents</a></div><div class="ttdeci">int numOfOpponents()</div><div class="ttdef"><b>Definition:</b> rectangle.cpp:92</div></div>
+<div class="ttc" id="classRectangle_html"><div class="ttname"><a href="classRectangle.html">Rectangle</a></div><div class="ttdef"><b>Definition:</b> rectangle.h:16</div></div>
+<div class="ttc" id="classRectangle_html_a8339715d8e96e6968e8c25977199271d"><div class="ttname"><a href="classRectangle.html#a8339715d8e96e6968e8c25977199271d">Rectangle::draw</a></div><div class="ttdeci">void draw() override</div><div class="ttdef"><b>Definition:</b> rectangle.cpp:167</div></div>
+<div class="ttc" id="classRectangle_html_ad56cfed682c2e18a3b9fa1f1ca3548de"><div class="ttname"><a href="classRectangle.html#ad56cfed682c2e18a3b9fa1f1ca3548de">Rectangle::numOfRobots</a></div><div class="ttdeci">int numOfRobots()</div><div class="ttdef"><b>Definition:</b> rectangle.cpp:53</div></div>
+<div class="ttc" id="classRectangle_html_a2b268cf647723149286490d0143e239b"><div class="ttname"><a href="classRectangle.html#a2b268cf647723149286490d0143e239b">Rectangle::contains</a></div><div class="ttdeci">bool contains(const Point &amp;point) override</div><div class="ttdef"><b>Definition:</b> rectangle.cpp:16</div></div>
+<div class="ttc" id="region_8h_html"><div class="ttname"><a href="region_8h.html">region.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 26 2016 13:40:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Aug 9 2016 12:08:10 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

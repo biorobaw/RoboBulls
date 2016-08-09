@@ -6,11 +6,12 @@
 #include "model/gamemodel.h"
 #include "include/config/team.h"
 
-/*! @brief Strategy to implement a penalty kick game state 'P' and 'p'
- * @details ASSUMPTION: According to RoboCup rules, the ball is already at the
- * penalty point when this is called. Therefore we just do a normal kick-to-goal
- * when this happens.
- *  @author Narges G, James W */
+/*! @file
+ * Strategy to implement a penalty kick game state 'P' and 'p'
+ * According to RoboCup rules, the ball is already at the
+ * penalty point when this is called, so we just aim at
+ * the open part of the goal-post.
+ */
 
 class PenaltyStrategy:public Strategy
 {

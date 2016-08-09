@@ -13,6 +13,6 @@ var searchData=
   ['clearcurrentstrategy',['clearCurrentStrategy',['../classStrategyController.html#a2e249743f1f181acfe041c438806edf9',1,'StrategyController']]],
   ['close',['Close',['../classserialib.html#a26ebe7608d2e4c190a54abd5b350ae0d',1,'serialib']]],
   ['closed_5floop_5fcontrol',['closed_loop_control',['../classMovement_1_1ClosedLoopBase.html#ade318f9559d7492c07bf6f0424434d25',1,'Movement::ClosedLoopBase::closed_loop_control(Robot *robot, double x_goal, double y_goal, double theta_goal=UNUSED_ANGLE_VALUE)'],['../classMovement_1_1ClosedLoopBase.html#a067086b58af07c2a2f35847d622107a0',1,'Movement::ClosedLoopBase::closed_loop_control(Robot *robot, Point goal, double theta_goal=UNUSED_ANGLE_VALUE)']]],
-  ['contains',['contains',['../classRectangle.html#a2b268cf647723149286490d0143e239b',1,'Rectangle']]],
+  ['contains',['contains',['../classDefenceArea.html#a9680e8f8d4c6ec7562b16174079a1ca4',1,'DefenceArea::contains(const Point &amp;) override'],['../classDefenceArea.html#a32407c3320e57b37e523a23745644605',1,'DefenceArea::contains(const Point &amp;, const float tolerance)'],['../classRectangle.html#a2b268cf647723149286490d0143e239b',1,'Rectangle::contains()'],['../classRegion.html#a8af9af9905ab3ea6df799eecdd8efd66',1,'Region::contains()'],['../classSector.html#a9b8cab1893f4ee235d7a791d0b421272',1,'Sector::contains()']]],
   ['containsline',['containsLine',['../classRectangle.html#aa78722535b65d266927da0dda5c01ce1',1,'Rectangle']]]
 ];

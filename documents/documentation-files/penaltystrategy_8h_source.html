@@ -93,32 +93,35 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">penaltystrategy.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef PENALTYSTRATEGY_H</span></div>
+<a href="penaltystrategy_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef PENALTYSTRATEGY_H</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define PENALTYSTRATEGY_H</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &quot;strategy/strategy.h&quot;</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;strategy/normalgamestrategy.h&quot;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;behavior/wall.h&quot;</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &quot;<a class="code" href="strategy_8h.html">strategy/strategy.h</a>&quot;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="normalgamestrategy_8h.html">strategy/normalgamestrategy.h</a>&quot;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="wall_8h.html">behavior/wall.h</a>&quot;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;model/gamemodel.h&quot;</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="team_8h.html">include/config/team.h</a>&quot;</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div>
-<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="classPenaltyStrategy.html">   15</a></span>&#160;<span class="keyword">class </span><a class="code" href="classPenaltyStrategy.html">PenaltyStrategy</a>:<span class="keyword">public</span> <a class="code" href="classStrategy.html">Strategy</a></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;{</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classPenaltyStrategy.html#aeaea58ad3c200229f299bbfc901283c2">assignBeh</a>();</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <a class="code" href="classBehavior.html">Behavior</a> * beh;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;};</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#endif // PENALTYSTRATEGY_H</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="classPenaltyStrategy.html">   16</a></span>&#160;<span class="keyword">class </span><a class="code" href="classPenaltyStrategy.html">PenaltyStrategy</a>:<span class="keyword">public</span> <a class="code" href="classStrategy.html">Strategy</a></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;{</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classPenaltyStrategy.html#aeaea58ad3c200229f299bbfc901283c2">assignBeh</a>();</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <a class="code" href="classBehavior.html">Behavior</a> * beh;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;};</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#endif // PENALTYSTRATEGY_H</span></div>
 <div class="ttc" id="team_8h_html"><div class="ttname"><a href="team_8h.html">team.h</a></div></div>
-<div class="ttc" id="classStrategy_html"><div class="ttname"><a href="classStrategy.html">Strategy</a></div><div class="ttdoc">Strategy is the abstract base class for other strategy classes. </div><div class="ttdef"><b>Definition:</b> strategy.h:32</div></div>
-<div class="ttc" id="classBehavior_html"><div class="ttname"><a href="classBehavior.html">Behavior</a></div><div class="ttdoc">Abstract Behavior class which all other behaviors inherit. </div><div class="ttdef"><b>Definition:</b> behavior.h:33</div></div>
-<div class="ttc" id="classPenaltyStrategy_html_aeaea58ad3c200229f299bbfc901283c2"><div class="ttname"><a href="classPenaltyStrategy.html#aeaea58ad3c200229f299bbfc901283c2">PenaltyStrategy::assignBeh</a></div><div class="ttdeci">void assignBeh()</div><div class="ttdoc">Decides How to assign behaviors to each robot on the team. </div><div class="ttdef"><b>Definition:</b> penaltystrategy.cpp:3</div></div>
-<div class="ttc" id="classPenaltyStrategy_html"><div class="ttname"><a href="classPenaltyStrategy.html">PenaltyStrategy</a></div><div class="ttdoc">Strategy to implement a penalty kick game state &#39;P&#39; and &#39;p&#39;. </div><div class="ttdef"><b>Definition:</b> penaltystrategy.h:15</div></div>
+<div class="ttc" id="normalgamestrategy_8h_html"><div class="ttname"><a href="normalgamestrategy_8h.html">normalgamestrategy.h</a></div></div>
+<div class="ttc" id="classStrategy_html"><div class="ttname"><a href="classStrategy.html">Strategy</a></div><div class="ttdef"><b>Definition:</b> strategy.h:33</div></div>
+<div class="ttc" id="classBehavior_html"><div class="ttname"><a href="classBehavior.html">Behavior</a></div><div class="ttdef"><b>Definition:</b> behavior.h:33</div></div>
+<div class="ttc" id="classPenaltyStrategy_html_aeaea58ad3c200229f299bbfc901283c2"><div class="ttname"><a href="classPenaltyStrategy.html#aeaea58ad3c200229f299bbfc901283c2">PenaltyStrategy::assignBeh</a></div><div class="ttdeci">void assignBeh()</div><div class="ttdef"><b>Definition:</b> penaltystrategy.cpp:3</div></div>
+<div class="ttc" id="strategy_8h_html"><div class="ttname"><a href="strategy_8h.html">strategy.h</a></div></div>
+<div class="ttc" id="classPenaltyStrategy_html"><div class="ttname"><a href="classPenaltyStrategy.html">PenaltyStrategy</a></div><div class="ttdef"><b>Definition:</b> penaltystrategy.h:16</div></div>
+<div class="ttc" id="wall_8h_html"><div class="ttname"><a href="wall_8h.html">wall.h</a></div><div class="ttdoc">This behavior will move the robot to a position on a wall of defenders along the defence area...</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 26 2016 13:40:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Aug 9 2016 12:08:10 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

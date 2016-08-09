@@ -8,6 +8,7 @@ var searchData=
   ['calculatevels',['calculateVels',['../classMovement_1_1DifferentialCalculator.html#adf2010c50765dd1889fac8fa1b032629',1,'Movement::DifferentialCalculator::calculateVels(Robot *rob, Point goalPoint, float theta_goal, Type moveType)'],['../classMovement_1_1DifferentialCalculator.html#a51e89b02cd2aa779ef04d3fc45216408',1,'Movement::DifferentialCalculator::calculateVels(Robot *rob, float x_goal, float y_goal, float theta_goal, Type moveType)'],['../classMovement_1_1FourWheelCalculator.html#a2f9b2954ab7bf28a534368fe369e9942',1,'Movement::FourWheelCalculator::calculateVels(Robot *rob, Point goalPoint, float theta_goal, Type moveType)'],['../classMovement_1_1FourWheelCalculator.html#a9022f6d994d5367c9932ddbc82e6f45b',1,'Movement::FourWheelCalculator::calculateVels(Robot *rob, float x_goal, float y_goal, float theta_goal, Movement::Type move_type)'],['../classMovement_1_1GoToPosition.html#a45efed76bb011577446ed3a232d01df8',1,'Movement::GoToPosition::calculateVels()'],['../classMovement_1_1ThreeWheelCalculator.html#afa6374f878dbc274998a8d5b3cb795c4',1,'Movement::ThreeWheelCalculator::calculateVels(Robot *rob, Point goalPoint, float theta_goal, Type moveType)'],['../classMovement_1_1ThreeWheelCalculator.html#a9fce53282173088af9d065ce193b7006',1,'Movement::ThreeWheelCalculator::calculateVels(Robot *rob, float x_goal, float y_goal, float theta_goal, Type moveType)']]],
   ['centre',['centre',['../classRectangle.html#a2c295302fe95fefe13697c79e349446b',1,'Rectangle']]],
   ['challengeballbot',['ChallengeBallBot',['../classChallengeBallBot.html',1,'']]],
+  ['challengeballbot_2eh',['challengeballbot.h',['../challengeballbot_8h.html',1,'']]],
   ['chip',['chip',['../classRobot.html#a34e0c18016f7af725960b6790c1f499c',1,'Robot']]],
   ['chip_5fpower',['chip_power',['../structNXTRobComm_1_1packet__t.html#aa435ad5762d9108a3a152cd95b8ad321',1,'NXTRobComm::packet_t']]],
   ['clamp',['clamp',['../classMeasurements.html#a7a5c34dc274744bef7ff3e07384ca824',1,'Measurements']]],
@@ -29,7 +30,7 @@ var searchData=
   ['communication_2eh',['communication.h',['../communication_8h.html',1,'']]],
   ['comparisons',['Comparisons',['../namespaceComparisons.html',1,'']]],
   ['config',['Config',['../group__config.html',1,'']]],
-  ['contains',['contains',['../classRectangle.html#a2b268cf647723149286490d0143e239b',1,'Rectangle']]],
+  ['contains',['contains',['../classDefenceArea.html#a9680e8f8d4c6ec7562b16174079a1ca4',1,'DefenceArea::contains(const Point &amp;) override'],['../classDefenceArea.html#a32407c3320e57b37e523a23745644605',1,'DefenceArea::contains(const Point &amp;, const float tolerance)'],['../classRectangle.html#a2b268cf647723149286490d0143e239b',1,'Rectangle::contains()'],['../classRegion.html#a8af9af9905ab3ea6df799eecdd8efd66',1,'Region::contains()'],['../classSector.html#a9b8cab1893f4ee235d7a791d0b421272',1,'Sector::contains()']]],
   ['containsline',['containsLine',['../classRectangle.html#aa78722535b65d266927da0dda5c01ce1',1,'Rectangle']]],
   ['counter',['counter',['../structRefComm_1_1Packet.html#a1b2e2c579a2bb7b444d4379fe5bfda8a',1,'RefComm::Packet']]]
 ];

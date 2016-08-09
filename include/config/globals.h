@@ -5,15 +5,18 @@
 //! @{
 
 //! @brief
-//! Use the dimensions of the field in the bio-robotics lab
-//! as opposed to standard SSL field dimensions
+//! Switch between various field geometries.
+//! Only one of these should be set to 1.
 #define BIO_ROB_FIELD 0
-#define GRSIM_FIELD 0
-#define ROBOCUP_FIELD 1
+#define GRSIM_FIELD 1
+#define ROBOCUP_FIELD 0
 
 /*! @brief Overall velocity for all behaviors. Change this
- * constant to slow down or speed up the whole game. */
-#define OVERALL_VELOCITY 1.5
+ * constant to slow down or speed all robot motion. */
+#define OVERALL_VELOCITY 1.0
+
+/*! @brief Approximate ball radius in millimeters.*/
+#define BALL_RADIUS 21.5
 
 #if BIO_ROB_FIELD
 //! @brief The center-to-goal-line length (X-Axis) of the field
@@ -108,8 +111,6 @@
 #define CENTER_RADIUS 500
 
 #endif
-
-#define BALL_RADIUS 21.5
 
 //! @}
 

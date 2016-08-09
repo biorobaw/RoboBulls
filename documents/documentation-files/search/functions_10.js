@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['sector',['Sector',['../classSector.html#ab0cb74c197ae19e0324f42758d1421ad',1,'Sector']]],
   ['sendpacket',['sendPacket',['../classSimRobComm.html#a7208dbf94548fafc943fadf0ccccb867',1,'SimRobComm']]],
   ['sendreplacementpackets',['sendReplacementPackets',['../classSimRobComm.html#ac0a89a21c9550fe822d5b637d3adde65',1,'SimRobComm']]],
   ['sendvelslarge',['sendVelsLarge',['../classNXTRobComm.html#ad2d43321c2bf0b95009fb136eec0c5ac',1,'NXTRobComm::sendVelsLarge()'],['../classRobComm.html#ace6ca5e8446e4b720f4d14d517b0b3da',1,'RobComm::sendVelsLarge()'],['../classSimRobComm.html#a6c32b97ef4bfa92b48793ae92679d0eb',1,'SimRobComm::sendVelsLarge()']]],

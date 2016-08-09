@@ -99,19 +99,22 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;behavior.h&quot;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="simulated_8h.html">include/config/simulated.h</a>&quot;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;skill/kicktopointomni.h&quot;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;skill/dribbletopoint.h&quot;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="dribbletopoint_8h.html">skill/dribbletopoint.h</a>&quot;</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;model/gamemodel.h&quot;</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;gui/guiinterface.h&quot;</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;utilities/region/sector.h&quot;</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;genericmovementbehavior.h&quot;</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="sector_8h.html">utilities/region/sector.h</a>&quot;</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="genericmovementbehavior_8h.html">genericmovementbehavior.h</a>&quot;</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;algorithm&quot;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;utilities/region/defencearea.h&quot;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="defencearea_8h.html">utilities/region/defencearea.h</a>&quot;</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &quot;utilities/comparisons.h&quot;</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#define PND_MAIN 30  //Distance between nodes in the probability field</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor"></span><span class="comment">// Probability Field Variables</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">// Distance between nodes in the probability field</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">// (Probability Node Distance)</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#define PND_MAIN 30</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">// Probability Field Variables</span></div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#define PF_LENGTH_MAIN (FIELD_LENGTH+1)/PND_MAIN</span></div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define PF_WIDTH_MAIN  (FIELD_WIDTH +1)/PND_MAIN</span></div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define PF_SIZE_MAIN  PF_LENGTH_MAIN * PF_WIDTH_MAIN</span></div>
@@ -121,7 +124,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <a class="code" href="classAttackMain.html">AttackMain</a>();</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;   ~<a class="code" href="classAttackMain.html">AttackMain</a>();</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordtype">void</span> perform(<a class="code" href="classRobot.html">Robot</a> *);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classAttackMain.html#a0931b81937c71a9a6990bfbf7bfc73cb">perform</a>(<a class="code" href="classRobot.html">Robot</a> *);</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classAttackMain.html#a6e6e3b0439ef19b05f0c4a1ebdfbfd62">isFinished</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">bool</span> hasKickedToGoal();</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordtype">bool</span> hasPassed();</div>
@@ -163,27 +166,32 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;};</div>
 <div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;</div>
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="preprocessor">#endif // ATTACK_MAIN_H</span></div>
-<div class="ttc" id="classSkill_1_1KickToPointOmni_html"><div class="ttname"><a href="classSkill_1_1KickToPointOmni.html">Skill::KickToPointOmni</a></div><div class="ttdoc">General-purpose skill to kick the ball to a point. </div><div class="ttdef"><b>Definition:</b> kicktopointomni.h:23</div></div>
-<div class="ttc" id="classRobot_html"><div class="ttname"><a href="classRobot.html">Robot</a></div><div class="ttdoc">The Robot class representing Robots on the field. </div><div class="ttdef"><b>Definition:</b> robot.h:22</div></div>
+<div class="ttc" id="classSkill_1_1KickToPointOmni_html"><div class="ttname"><a href="classSkill_1_1KickToPointOmni.html">Skill::KickToPointOmni</a></div><div class="ttdef"><b>Definition:</b> kicktopointomni.h:22</div></div>
+<div class="ttc" id="defencearea_8h_html"><div class="ttname"><a href="defencearea_8h.html">defencearea.h</a></div></div>
+<div class="ttc" id="classRobot_html"><div class="ttname"><a href="classRobot.html">Robot</a></div><div class="ttdef"><b>Definition:</b> robot.h:21</div></div>
 <div class="ttc" id="classPoint_html"><div class="ttname"><a href="classPoint.html">Point</a></div><div class="ttdoc">2D Point Class </div><div class="ttdef"><b>Definition:</b> point.h:12</div></div>
 <div class="ttc" id="classAttackMain_html_a05fa88c3fa04907f19328fef0b3f60c2"><div class="ttname"><a href="classAttackMain.html#a05fa88c3fa04907f19328fef0b3f60c2">AttackMain::calcStaticProb</a></div><div class="ttdeci">void calcStaticProb()</div><div class="ttdef"><b>Definition:</b> attackmain.cpp:160</div></div>
+<div class="ttc" id="classAttackMain_html_a0931b81937c71a9a6990bfbf7bfc73cb"><div class="ttname"><a href="classAttackMain.html#a0931b81937c71a9a6990bfbf7bfc73cb">AttackMain::perform</a></div><div class="ttdeci">void perform(Robot *)</div><div class="ttdoc">Perform this behavior&#39;s action on a robot Given an arbitrary roobot, The perform function of a Behavi...</div><div class="ttdef"><b>Definition:</b> attackmain.cpp:22</div></div>
 <div class="ttc" id="structAttackMain_1_1ProbNode_html"><div class="ttname"><a href="structAttackMain_1_1ProbNode.html">AttackMain::ProbNode</a></div><div class="ttdef"><b>Definition:</b> attackmain.h:64</div></div>
+<div class="ttc" id="dribbletopoint_8h_html"><div class="ttname"><a href="dribbletopoint_8h.html">dribbletopoint.h</a></div></div>
 <div class="ttc" id="classAttackMain_html_a6e6e3b0439ef19b05f0c4a1ebdfbfd62"><div class="ttname"><a href="classAttackMain.html#a6e6e3b0439ef19b05f0c4a1ebdfbfd62">AttackMain::isFinished</a></div><div class="ttdeci">bool isFinished() override</div><div class="ttdoc">Return if behavior is &quot;finished&quot; Return true when the behavior is &quot;finished,&quot; false otherwise...</div><div class="ttdef"><b>Definition:</b> attackmain.cpp:407</div></div>
-<div class="ttc" id="group__config_html_ga313353b53d609b3b2b37e1aecf98bf4c"><div class="ttname"><a href="group__config.html#ga313353b53d609b3b2b37e1aecf98bf4c">FIELD_WIDTH</a></div><div class="ttdeci">#define FIELD_WIDTH</div><div class="ttdoc">The full goal-to-goal length (Y-Axis) </div><div class="ttdef"><b>Definition:</b> globals.h:89</div></div>
+<div class="ttc" id="group__config_html_ga313353b53d609b3b2b37e1aecf98bf4c"><div class="ttname"><a href="group__config.html#ga313353b53d609b3b2b37e1aecf98bf4c">FIELD_WIDTH</a></div><div class="ttdeci">#define FIELD_WIDTH</div><div class="ttdoc">The full goal-to-goal length (Y-Axis) </div><div class="ttdef"><b>Definition:</b> globals.h:59</div></div>
 <div class="ttc" id="simulated_8h_html"><div class="ttname"><a href="simulated_8h.html">simulated.h</a></div></div>
 <div class="ttc" id="classAttackMain_html"><div class="ttname"><a href="classAttackMain.html">AttackMain</a></div><div class="ttdef"><b>Definition:</b> attackmain.h:53</div></div>
 <div class="ttc" id="classAttackMain_html_a931ddcec4310c57caa5edc09824e5a06"><div class="ttname"><a href="classAttackMain.html#a931ddcec4310c57caa5edc09824e5a06">AttackMain::genClusters</a></div><div class="ttdeci">std::vector&lt; std::vector&lt; Point &gt; &gt; genClusters()</div><div class="ttdef"><b>Definition:</b> attackmain.cpp:265</div></div>
-<div class="ttc" id="group__config_html_ga4e8ecaf2d59499a8c159ccdf7be1baec"><div class="ttname"><a href="group__config.html#ga4e8ecaf2d59499a8c159ccdf7be1baec">FIELD_LENGTH</a></div><div class="ttdeci">#define FIELD_LENGTH</div><div class="ttdoc">The full side-to-side length (X-Axis) </div><div class="ttdef"><b>Definition:</b> globals.h:83</div></div>
+<div class="ttc" id="sector_8h_html"><div class="ttname"><a href="sector_8h.html">sector.h</a></div></div>
+<div class="ttc" id="group__config_html_ga4e8ecaf2d59499a8c159ccdf7be1baec"><div class="ttname"><a href="group__config.html#ga4e8ecaf2d59499a8c159ccdf7be1baec">FIELD_LENGTH</a></div><div class="ttdeci">#define FIELD_LENGTH</div><div class="ttdoc">The full side-to-side length (X-Axis) </div><div class="ttdef"><b>Definition:</b> globals.h:53</div></div>
 <div class="ttc" id="classAttackMain_html_aeaaf6a2f3ea98210bfe055299ab8552b"><div class="ttname"><a href="classAttackMain.html#aeaaf6a2f3ea98210bfe055299ab8552b">AttackMain::calcBestGoalPoint</a></div><div class="ttdeci">std::pair&lt; bool, Point &gt; calcBestGoalPoint(Robot *)</div><div class="ttdef"><b>Definition:</b> attackmain.cpp:307</div></div>
-<div class="ttc" id="classGenericMovementBehavior_html"><div class="ttname"><a href="classGenericMovementBehavior.html">GenericMovementBehavior</a></div><div class="ttdoc">Behavior to perform generic point-to-point Movement. </div><div class="ttdef"><b>Definition:</b> genericmovementbehavior.h:19</div></div>
-<div class="ttc" id="classSkill_1_1DribbleToPoint_html"><div class="ttname"><a href="classSkill_1_1DribbleToPoint.html">Skill::DribbleToPoint</a></div><div class="ttdoc">Uses the dribbler to move the ball to a given point. </div><div class="ttdef"><b>Definition:</b> dribbletopoint.h:18</div></div>
+<div class="ttc" id="classGenericMovementBehavior_html"><div class="ttname"><a href="classGenericMovementBehavior.html">GenericMovementBehavior</a></div><div class="ttdef"><b>Definition:</b> genericmovementbehavior.h:19</div></div>
+<div class="ttc" id="classSkill_1_1DribbleToPoint_html"><div class="ttname"><a href="classSkill_1_1DribbleToPoint.html">Skill::DribbleToPoint</a></div><div class="ttdef"><b>Definition:</b> dribbletopoint.h:26</div></div>
 <div class="ttc" id="classAttackMain_html_aedc64dd2c7d413e1b6c68b0613ba570c"><div class="ttname"><a href="classAttackMain.html#aedc64dd2c7d413e1b6c68b0613ba570c">AttackMain::calcBestPassPoint</a></div><div class="ttdeci">std::pair&lt; bool, Point &gt; calcBestPassPoint(Robot *)</div><div class="ttdef"><b>Definition:</b> attackmain.cpp:370</div></div>
 <div class="ttc" id="classAttackMain_html_a6616a099b02c7c44d1c53b77520ff9da"><div class="ttname"><a href="classAttackMain.html#a6616a099b02c7c44d1c53b77520ff9da">AttackMain::calcDynamicProb</a></div><div class="ttdeci">void calcDynamicProb()</div><div class="ttdef"><b>Definition:</b> attackmain.cpp:208</div></div>
+<div class="ttc" id="genericmovementbehavior_8h_html"><div class="ttname"><a href="genericmovementbehavior_8h.html">genericmovementbehavior.h</a></div></div>
 <div class="ttc" id="classAttackMain_html_adb6bfa6e9e185a021faef8aae2ef7a7a"><div class="ttname"><a href="classAttackMain.html#adb6bfa6e9e185a021faef8aae2ef7a7a">AttackMain::getScoreProb</a></div><div class="ttdeci">float getScoreProb(const Point &amp;)</div><div class="ttdef"><b>Definition:</b> attackmain.cpp:429</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 26 2016 13:40:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Aug 9 2016 12:08:10 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

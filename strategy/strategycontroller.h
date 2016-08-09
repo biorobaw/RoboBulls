@@ -4,7 +4,8 @@ class GameModel;
 class Behavior;
 class Strategy;
 
-/*! @brief Controls selection of an active strategy (play) based on the game state
+/*! @file
+ * Controls selection of an active strategy (play) based on the game state
  *
  * The StrategyController can be seen as the main driver of the
  * robobulls2 project. It does a switch statement over the current
@@ -20,33 +21,33 @@ class StrategyController
 public:
     StrategyController(GameModel*);
 
-    /*! @brief Performs one iteration of the RoboCup Game.
+    /*! Performs one iteration of the RoboCup Game.
      * Called by GameModel, which is called by VisionComm.  */
     void run();
 
 private:
-    /*! @brief Initialization called at the beginning of a frame of the game.
-     * @details Prepares any functions or states that are needed
+    /*! Initialization called at the beginning of a frame of the game.
+     * Prepares any functions or states that are needed
      * for the frame before strategies are updated */
     void frameBegin();
 
-    /*! @brief Clean-up called at the end of a frame.
-     * @details This performs the behaviors on the robots, then
+    /*! Clean-up called at the end of a frame.
+     * This performs the behaviors on the robots, then
      * uses RobComm to send the velocities to the field */
     void frameEnd();
 
-    /*! @brief Called when GameModel receives a new command from
+    /*! Called when GameModel receives a new command from
      * the RefComm.Makes a new activeStrategy. */
     void gameModelUpdated();
 
-    /*! @brief Called when GameModel receives the same command
+    /*! Called when GameModel receives the same command
      * as the last frame. Updates current activeStrategy.  */
     void gameModelContinued();
 
-    //! @brief Switches the gamestate to assign a current strategy */
+    //! Switches the gamestate to assign a current strategy */
     void assignNewStrategy(char gameState);
 
-    /*! @brief Removes the behaviors from each robot, and calls end()
+    /*! Removes the behaviors from each robot, and calls end()
      * on the activeStrategy.  */
     void clearCurrentStrategy();
     

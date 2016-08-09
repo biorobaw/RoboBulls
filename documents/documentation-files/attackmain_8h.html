@@ -95,19 +95,16 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">attackmain.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p><a class="el" href="classAttackMain.html">AttackMain</a> tries to emulate the behavior of a striker/forward attacker in real soccer.  
-<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;behavior.h&quot;</code><br/>
 <code>#include &quot;<a class="el" href="simulated_8h_source.html">include/config/simulated.h</a>&quot;</code><br/>
 <code>#include &quot;skill/kicktopointomni.h&quot;</code><br/>
-<code>#include &quot;skill/dribbletopoint.h&quot;</code><br/>
+<code>#include &quot;<a class="el" href="dribbletopoint_8h_source.html">skill/dribbletopoint.h</a>&quot;</code><br/>
 <code>#include &quot;model/gamemodel.h&quot;</code><br/>
 <code>#include &quot;gui/guiinterface.h&quot;</code><br/>
-<code>#include &quot;utilities/region/sector.h&quot;</code><br/>
-<code>#include &quot;genericmovementbehavior.h&quot;</code><br/>
+<code>#include &quot;<a class="el" href="sector_8h_source.html">utilities/region/sector.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="genericmovementbehavior_8h_source.html">genericmovementbehavior.h</a>&quot;</code><br/>
 <code>#include &quot;algorithm&quot;</code><br/>
-<code>#include &quot;utilities/region/defencearea.h&quot;</code><br/>
+<code>#include &quot;<a class="el" href="defencearea_8h_source.html">utilities/region/defencearea.h</a>&quot;</code><br/>
 <code>#include &quot;utilities/comparisons.h&quot;</code><br/>
 <code>#include &lt;vector&gt;</code><br/>
 </div>
@@ -121,11 +118,15 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="classAttackMain.html">AttackMain</a> tries to emulate the behavior of a striker/forward attacker in real soccer. </p>
-<dl class="section author"><dt>Author</dt><dd>Muhaimen Shamsi</dd></dl>
-<p>A robot assigned this behavior will prioritize the following objectives: 1) Kicking to the goal if a clear shot is available. 2) Passing to a teammate if a clear pass is available. 3) Dribbling the ball to a position where 1) or 2) is possible.</p>
+<div class="textblock"><p><a class="el" href="classAttackMain.html">AttackMain</a> tries to emulate the behavior of a striker/forward attacker in real soccer.</p>
+<p>A robot assigned this behavior will prioritize the following objectives:</p>
+<ul>
+<li>Kicking to the goal if a clear shot is available.</li>
+<li>Passing to a teammate if a clear pass is available.</li>
+<li>Dribbling the ball to a position where 1) or 2) is possible.</li>
+</ul>
 <p>Objectives 1) and 2) are straight-forward in terms of implementation. We simply check if the path between the ball and the opponent goal post is sufficiently clear of obstacles.</p>
-<p>Objective 3) requires the calculation of a point in the field from which it is possible to score. This calculation is faciliated by a probability field which stores the probability of scoring from a each point in a sparse discrete representation of the field. A sparse represenation is used as opposed to processing every point possible within the field boundaries for performance reasons.</p>
+<p>Objective 3) requires the calculation of a point in the field from which it is possible to score. This calculation is faciliated by a probability field which stores the probability of scoring from a each point in a sparse discrete representation of the field. A sparse represenation is used, as opposed to processing every point possible within the field boundaries, for performance reasons.</p>
 <p>The points in the probability field (discrete represenation of actual field) are assigned values as follows:</p>
 <ul>
 <li>Decreasing probabilities as the points get farther from the goal post</li>
@@ -135,7 +136,7 @@ Classes</h2></td></tr>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 26 2016 13:40:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Aug 9 2016 12:08:10 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

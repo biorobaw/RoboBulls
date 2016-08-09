@@ -4,10 +4,10 @@
 class Robot;
 
 /*! @addtogroup baseclasses Base Classes
- * @brief Base classes for inherited functionality
+ * Base classes for inherited functionality
  * @{ */
 
-/*! @brief Abstract Behavior class which all other behaviors inherit.
+/*! Abstract Behavior class which all other behaviors inherit.
  * @author Orign. Narges Ghaedi; JamesW
  * @ingroup Base Classes
  *
@@ -35,18 +35,17 @@ class Behavior
 public:
     virtual ~Behavior();
     
-    /*! @brief Perform this behavior's action on a robot
+    /*! Perform this behavior's action on a robot
      * Given an arbitrary roobot, The <i>perform</i> function
      * of a Behavior defines how to run the behavior on a robot.
      * @param Robot* the robot to perform on. */
-    virtual void perform( obot*) = 0;
+    virtual void perform( Robot*) = 0;
     
-    /*! @brief Return if behavior is "finished"
-     * Return true when the behavior is "finished," false otherwise.
+    /*! Return if behavior is "finished".
      * This could be reaching a target, or whenever a derived behavior
      * is considered finished. Can be used in Stratigies to effectively
      * assign behaviors one after another.
-     * \return True if the behavior is considered finished, false otherwise. */
+     * @return True if the behavior is considered finished, false otherwise. */
     virtual bool isFinished();
 };
 

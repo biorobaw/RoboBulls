@@ -4,9 +4,10 @@
 //! @addtogroup baseclasses
 //! @{
 
-/*! @brief Strategy is the abstract base class for other strategy classes.
+/*! @file
+ * Strategy is the abstract base class for other strategy classes.
  * @ingroup Base Classes
- * @details All the strategy classes inherit from the Strategy class
+ * All the strategy classes inherit from the Strategy class
  * and override and assignBeh() (assign behavior) function
  * that assigns behaviors to robots. In addition, derived classes
  * should/can override update() which updates the strategy after
@@ -32,26 +33,26 @@
 class Strategy
 {
 public:
-    /*! @brief Decides How to assign behaviors to each robot on the team.
-     * @details This function is called when StrategyController is run with a
+    /*! Decides How to assign behaviors to each robot on the team.
+     * This function is called when StrategyController is run with a
      * new command recieved from GameModel */
     virtual void assignBeh() = 0;
 
-    /*! @brief Function (optional) that updates the Strategy object.
-     * @details This function is called when StrategyController is run with
+    /*! Function (optional) that updates the Strategy object.
+     * This function is called when StrategyController is run with
      * a non-new command from GameModel. Return true to notify the strategy
      * is finished and have a new one assigned, false otherwise. */
     virtual bool update();
 
-    /*! @brief Function used to control strategy flow.
-     * @details Allows strategies to be switched within a single game state.
+    /*! Function used to control strategy flow.
+     * Allows strategies to be switched within a single game state.
      * Return an ASCII character corresponding to a game state to switch
      * the StrategyController to. return '\0' or the current gate state
      * (via GameModel) to keep the current state. */
     virtual char getNextStrategy();
 
-    /*! @brief Destructor
-     * @details Implement a distructor for a "ending routine" when this object
+    /*! Destructor
+     * Implement a distructor for a "ending routine" when this object
      * is deleted due to an update in StrategyController */
     virtual ~Strategy();
 };

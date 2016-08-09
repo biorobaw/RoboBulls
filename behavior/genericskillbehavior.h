@@ -3,10 +3,15 @@
 #include "behavior/behavior.h"
 class Robot;
 
-/*! @brief A wrapper convenience behavior for a single skill.
+/*!
+ * @file
+ * @author James Waugh
+ *
+ * @brief A wrapper convenience behavior for a single skill.
  * @details Used in the robot's assignSkill function, this behavior simply performs
  * a single skill indefinitely, and "isFinished" is determined directly
- * from that skill. */
+ * from that skill.
+ */
 
 template<typename SkillType>
 class GenericSkillBehavior : public Behavior

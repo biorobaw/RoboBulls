@@ -88,16 +88,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classRegion-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Region Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p><code><a class="el" href="classRegion.html" title="Region is an abstract utility class to define a 2D region on the field. ">Region</a></code> is an abstract utility class to define a 2D region on the field.  
- <a href="classRegion.html#details">More...</a></p>
-
-<p><code>#include &lt;<a class="el" href="region_8h_source.html">region.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for Region:</div>
 <div class="dyncontent">
@@ -109,16 +105,75 @@ Inheritance diagram for Region:</div>
 <area href="classSector.html" alt="Sector" shape="rect" coords="196,56,284,80"/>
 </map>
  </div></div>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><code><a class="el" href="classRegion.html" title="Region is an abstract utility class to define a 2D region on the field. ">Region</a></code> is an abstract utility class to define a 2D region on the field. </p>
-<dl class="section author"><dt>Author</dt><dd>Muhaimen Shamshi Regions expose some useful information querying functions once the region is defined. </dd></dl>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a8af9af9905ab3ea6df799eecdd8efd66"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRegion.html#a8af9af9905ab3ea6df799eecdd8efd66">contains</a> (const <a class="el" href="classPoint.html">Point</a> &amp;)=0</td></tr>
+<tr class="separator:a8af9af9905ab3ea6df799eecdd8efd66"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac27425acc746df035cdc52bd11c49651"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRegion.html#ac27425acc746df035cdc52bd11c49651">draw</a> ()=0</td></tr>
+<tr class="separator:ac27425acc746df035cdc52bd11c49651"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a8af9af9905ab3ea6df799eecdd8efd66"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool Region::contains </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classPoint.html">Point</a> &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns true if the region contains the given point. </p>
+
+<p>Implemented in <a class="el" href="classDefenceArea.html#a9680e8f8d4c6ec7562b16174079a1ca4">DefenceArea</a>, <a class="el" href="classRectangle.html#a2b268cf647723149286490d0143e239b">Rectangle</a>, and <a class="el" href="classSector.html#a9b8cab1893f4ee235d7a791d0b421272">Sector</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac27425acc746df035cdc52bd11c49651"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Region::draw </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Draws the region on the GUI </p>
+
+<p>Implemented in <a class="el" href="classDefenceArea.html#a21ad1db2a6f887c108464ce8259ba83c">DefenceArea</a>, <a class="el" href="classRectangle.html#a8339715d8e96e6968e8c25977199271d">Rectangle</a>, and <a class="el" href="classSector.html#aa86962b5f50a5d09da5c55d76cf6e4e7">Sector</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>utilities/region/<a class="el" href="region_8h_source.html">region.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 26 2016 13:40:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Aug 9 2016 12:08:11 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

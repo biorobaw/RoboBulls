@@ -15,11 +15,8 @@
 
 #include <vector>
 
-/*!
- * @file
- * @author Muhaimen Shamsi
- *
- * @brief AttackMain tries to emulate the behavior of a striker/forward attacker in real soccer.
+/*! @file
+ * AttackMain tries to emulate the behavior of a striker/forward attacker in real soccer.
  *
  * A robot assigned this behavior will prioritize the following objectives:
  * - Kicking to the goal if a clear shot is available.
@@ -136,7 +133,7 @@ private:
     /*! Given a point, returns the probability of scoring a goal from there.
      * This function assumes that probability is already calculated and stored in
      * the probability array by calcDynamicProb() and calcStaticProb().
-     * @see calcDynamicProb() and @see calcStaticProb().
+     * @see calcDynamicProb() @see calcStaticProb().
      * @param Point The point at which the probability is queried.
      * @return Probability of scoring.
      */

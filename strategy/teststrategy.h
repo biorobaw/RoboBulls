@@ -3,7 +3,8 @@
 #include "strategy.h"
 class Robot;
 
-/*! @brief Class to test behaviors and other code
+/*! @file
+ * Class to test behaviors and other code
  *
  * Not part of the main game, TestStrategy exists as a sandbox
  * to test code. To use, change REFBOX_LISTEN_ENABLED to 0 in

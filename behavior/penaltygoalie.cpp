@@ -12,6 +12,7 @@ void PenaltyGoalie::perform(Robot* robot)
 
     Robot* kicker = gameModel->getHasBall();
 
+    // Determine which opponent is taking the kick
     if(!kicker)
     {
         kicker = gameModel->getOppTeam().at(0);
@@ -23,7 +24,7 @@ void PenaltyGoalie::perform(Robot* robot)
         }
     }
 
-    // Define line segment along which goalie is allowed to defend
+    // Define line segment along which goalie is allowed to move
     Point p1 = Point(-HALF_FIELD_LENGTH + ROBOT_RADIUS, -GOAL_WIDTH/2 - 50);
     Point p2 = Point(-HALF_FIELD_LENGTH + ROBOT_RADIUS,  GOAL_WIDTH/2 + 50);
 
@@ -40,18 +41,23 @@ void PenaltyGoalie::perform(Robot* robot)
         y4 = kicker->getPosition().y;
     }
     else
+    {
         x4 = gameModel->getMyGoal().x + DEF_AREA_RADIUS;
         y4 = 0;
+    }
 
+    // Px is the point at which the lines kicker->bp and p1->p2 intercept
     float Px_num = (x1*y2 - y1*x2)*(x3 - x4) - (x1 - x2)*(x3*y4 - y3*x4);
     float Py_num = (x1*y2 - y1*x2)*(y3 - y4) - (y1 - y2)*(x3*y4 - y3*x4);
     float dem = (x1-x2)*(y3-y4) - (y1-y2)*(x3-x4);
 
+    // Stay at the centre of the goalpost if the opponent is not aiming
+    // somewhere inside the goal-post.
     Point block_point = gameModel->getMyGoal() + Point(ROBOT_RADIUS, 0);
 
     if(dem != 0)    // Lines are not parallel
     {
-        // Check if intersection is within stretch
+        // Check if intersection is within defensible stretch
         float Py = Py_num/dem;
         float Px = Px_num/dem;
 
@@ -68,8 +74,8 @@ void PenaltyGoalie::perform(Robot* robot)
 
 bool PenaltyGoalie::isFinished()
 {
-    DefenceArea da1(OUR_TEAM);
-    if(gameModel->getBallSpeed() < 100 && da1.contains(gameModel->getBallPoint(), -ROBOT_RADIUS))
+    DefenceArea our_da(OUR_TEAM);
+    if(gameModel->getBallSpeed() < 100 && our_da.contains(gameModel->getBallPoint(), -ROBOT_RADIUS))
         return true;
     return false;
 }

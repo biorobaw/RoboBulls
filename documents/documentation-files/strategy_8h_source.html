@@ -93,33 +93,33 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">strategy.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef STRATEGY_H</span></div>
+<a href="strategy_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef STRATEGY_H</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define STRATEGY_H</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="classStrategy.html">   32</a></span>&#160;<span class="keyword">class </span><a class="code" href="classStrategy.html">Strategy</a></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;{</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classStrategy.html#a1d5e51d3d031c10c446e18f056ff7d7f">assignBeh</a>() = 0;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classStrategy.html#addd5ae07531160ed360f697f98308e5b">update</a>();</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">char</span> <a class="code" href="classStrategy.html#a8513b3a9660bfb58e9d9adc283135130">getNextStrategy</a>();</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="classStrategy.html#a37c0bbdd64fd7dfcdd91578784a64775">~Strategy</a>();</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;};</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#endif // STRATEGY_H</span></div>
-<div class="ttc" id="classStrategy_html"><div class="ttname"><a href="classStrategy.html">Strategy</a></div><div class="ttdoc">Strategy is the abstract base class for other strategy classes. </div><div class="ttdef"><b>Definition:</b> strategy.h:32</div></div>
-<div class="ttc" id="classStrategy_html_a37c0bbdd64fd7dfcdd91578784a64775"><div class="ttname"><a href="classStrategy.html#a37c0bbdd64fd7dfcdd91578784a64775">Strategy::~Strategy</a></div><div class="ttdeci">virtual ~Strategy()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> strategy.cpp:5</div></div>
-<div class="ttc" id="classStrategy_html_a1d5e51d3d031c10c446e18f056ff7d7f"><div class="ttname"><a href="classStrategy.html#a1d5e51d3d031c10c446e18f056ff7d7f">Strategy::assignBeh</a></div><div class="ttdeci">virtual void assignBeh()=0</div><div class="ttdoc">Decides How to assign behaviors to each robot on the team. </div></div>
-<div class="ttc" id="classStrategy_html_a8513b3a9660bfb58e9d9adc283135130"><div class="ttname"><a href="classStrategy.html#a8513b3a9660bfb58e9d9adc283135130">Strategy::getNextStrategy</a></div><div class="ttdeci">virtual char getNextStrategy()</div><div class="ttdoc">Function used to control strategy flow. </div><div class="ttdef"><b>Definition:</b> strategy.cpp:9</div></div>
-<div class="ttc" id="classStrategy_html_addd5ae07531160ed360f697f98308e5b"><div class="ttname"><a href="classStrategy.html#addd5ae07531160ed360f697f98308e5b">Strategy::update</a></div><div class="ttdeci">virtual bool update()</div><div class="ttdoc">Function (optional) that updates the Strategy object. </div><div class="ttdef"><b>Definition:</b> strategy.cpp:14</div></div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="classStrategy.html">   33</a></span>&#160;<span class="keyword">class </span><a class="code" href="classStrategy.html">Strategy</a></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;{</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classStrategy.html#a1d5e51d3d031c10c446e18f056ff7d7f">assignBeh</a>() = 0;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classStrategy.html#addd5ae07531160ed360f697f98308e5b">update</a>();</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">char</span> <a class="code" href="classStrategy.html#a8513b3a9660bfb58e9d9adc283135130">getNextStrategy</a>();</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="classStrategy.html#a37c0bbdd64fd7dfcdd91578784a64775">~Strategy</a>();</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;};</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="preprocessor">#endif // STRATEGY_H</span></div>
+<div class="ttc" id="classStrategy_html"><div class="ttname"><a href="classStrategy.html">Strategy</a></div><div class="ttdef"><b>Definition:</b> strategy.h:33</div></div>
+<div class="ttc" id="classStrategy_html_a37c0bbdd64fd7dfcdd91578784a64775"><div class="ttname"><a href="classStrategy.html#a37c0bbdd64fd7dfcdd91578784a64775">Strategy::~Strategy</a></div><div class="ttdeci">virtual ~Strategy()</div><div class="ttdef"><b>Definition:</b> strategy.cpp:5</div></div>
+<div class="ttc" id="classStrategy_html_a1d5e51d3d031c10c446e18f056ff7d7f"><div class="ttname"><a href="classStrategy.html#a1d5e51d3d031c10c446e18f056ff7d7f">Strategy::assignBeh</a></div><div class="ttdeci">virtual void assignBeh()=0</div></div>
+<div class="ttc" id="classStrategy_html_a8513b3a9660bfb58e9d9adc283135130"><div class="ttname"><a href="classStrategy.html#a8513b3a9660bfb58e9d9adc283135130">Strategy::getNextStrategy</a></div><div class="ttdeci">virtual char getNextStrategy()</div><div class="ttdef"><b>Definition:</b> strategy.cpp:9</div></div>
+<div class="ttc" id="classStrategy_html_addd5ae07531160ed360f697f98308e5b"><div class="ttname"><a href="classStrategy.html#addd5ae07531160ed360f697f98308e5b">Strategy::update</a></div><div class="ttdeci">virtual bool update()</div><div class="ttdef"><b>Definition:</b> strategy.cpp:14</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 26 2016 13:40:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Aug 9 2016 12:08:10 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

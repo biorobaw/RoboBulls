@@ -90,6 +90,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="classAttackSupport-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">AttackSupport Class Reference</div>  </div>
@@ -101,8 +102,8 @@ Inheritance diagram for AttackSupport:</div>
  <div class="center">
   <img src="classAttackSupport.png" usemap="#AttackSupport_map" alt=""/>
   <map id="AttackSupport_map" name="AttackSupport_map">
-<area href="classGenericMovementBehavior.html" title="Behavior to perform generic point-to-point Movement. " alt="GenericMovementBehavior" shape="rect" coords="0,56,166,80"/>
-<area href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. " alt="Behavior" shape="rect" coords="0,0,166,24"/>
+<area href="classGenericMovementBehavior.html" alt="GenericMovementBehavior" shape="rect" coords="0,56,166,80"/>
+<area href="classBehavior.html" alt="Behavior" shape="rect" coords="0,0,166,24"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -113,6 +114,9 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a7f63b981f2a8dd9b3a2bfe2f15bfe1bb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAttackSupport.html#a7f63b981f2a8dd9b3a2bfe2f15bfe1bb">perform</a> (<a class="el" href="classRobot.html">Robot</a> *) override</td></tr>
+<tr class="memdesc:a7f63b981f2a8dd9b3a2bfe2f15bfe1bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform this behavior's action on a robot Given an arbitrary roobot, The <em>perform</em> function of a <a class="el" href="classBehavior.html">Behavior</a> defines how to run the behavior on a robot.  <a href="#a7f63b981f2a8dd9b3a2bfe2f15bfe1bb">More...</a><br/></td></tr>
+<tr class="separator:a7f63b981f2a8dd9b3a2bfe2f15bfe1bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af236a0e130c7066b4ef32b0495715993"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAttackSupport.html#af236a0e130c7066b4ef32b0495715993">isFinished</a> () override</td></tr>
 <tr class="memdesc:af236a0e130c7066b4ef32b0495715993"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return if behavior is "finished" Return true when the behavior is "finished," false otherwise. This could be reaching a target, or whenever a derived behavior is considered finished. Can be used in Stratigies to effectively assign behaviors one after another.  <a href="#af236a0e130c7066b4ef32b0495715993">More...</a><br/></td></tr>
 <tr class="separator:af236a0e130c7066b4ef32b0495715993"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -129,10 +133,23 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGenericMovementBehavior.html#acdd16af72d03bab5727a465de853ebc0">isFinished</a> () override</td></tr>
 <tr class="memdesc:acdd16af72d03bab5727a465de853ebc0 inherit pub_methods_classGenericMovementBehavior"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return true when reached the movement targets. <br/></td></tr>
 <tr class="separator:acdd16af72d03bab5727a465de853ebc0 inherit pub_methods_classGenericMovementBehavior"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classBehavior"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classBehavior')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classBehavior.html">Behavior</a></td></tr>
-<tr class="memitem:a91b4939194ce05f10ce81ce11c564fb3 inherit pub_methods_classBehavior"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBehavior.html#a91b4939194ce05f10ce81ce11c564fb3">perform</a> (obot *)=0</td></tr>
-<tr class="memdesc:a91b4939194ce05f10ce81ce11c564fb3 inherit pub_methods_classBehavior"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform this behavior's action on a robot Given an arbitrary roobot, The <em>perform</em> function of a <a class="el" href="classBehavior.html" title="Abstract Behavior class which all other behaviors inherit. ">Behavior</a> defines how to run the behavior on a robot.  <a href="#a91b4939194ce05f10ce81ce11c564fb3">More...</a><br/></td></tr>
-<tr class="separator:a91b4939194ce05f10ce81ce11c564fb3 inherit pub_methods_classBehavior"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a98ae1f513c96d6a130024cac0a1579f4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structAttackSupport_1_1ProbNode.html">ProbNode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAttackSupport.html#a98ae1f513c96d6a130024cac0a1579f4">findMaxNode</a> ()</td></tr>
+<tr class="separator:a98ae1f513c96d6a130024cac0a1579f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e05c414c5cf97761098b0bffda80616"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAttackSupport.html#a9e05c414c5cf97761098b0bffda80616">genGoalShadows</a> ()</td></tr>
+<tr class="separator:a9e05c414c5cf97761098b0bffda80616"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5634b8b23c3a79e5d892005991efc37"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAttackSupport.html#ae5634b8b23c3a79e5d892005991efc37">genDistanceFromTeammates</a> (<a class="el" href="classRobot.html">Robot</a> *robot)</td></tr>
+<tr class="separator:ae5634b8b23c3a79e5d892005991efc37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04a8a2d015b76dfe47a7dd15eb6d5524"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAttackSupport.html#a04a8a2d015b76dfe47a7dd15eb6d5524">genBallShadows</a> ()</td></tr>
+<tr class="separator:a04a8a2d015b76dfe47a7dd15eb6d5524"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00e15b72e7dc837fce0f17c3dfe0a72c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAttackSupport.html#a00e15b72e7dc837fce0f17c3dfe0a72c">genGoalShotAvoidance</a> ()</td></tr>
+<tr class="separator:a00e15b72e7dc837fce0f17c3dfe0a72c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6dcd2ddaf1b58986ab707146ae680c35"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::vector&lt; <a class="el" href="classPoint.html">Point</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAttackSupport.html#a6dcd2ddaf1b58986ab707146ae680c35">genClusters</a> ()</td></tr>
+<tr class="separator:a6dcd2ddaf1b58986ab707146ae680c35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af372431a53fc422580b37a22abbcaa69"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAttackSupport.html#af372431a53fc422580b37a22abbcaa69">getScoreProb</a> (const <a class="el" href="classPoint.html">Point</a> &amp;)</td></tr>
+<tr class="separator:af372431a53fc422580b37a22abbcaa69"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -156,6 +173,195 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:ada69562e2cb0372b8bb0348ec876db1e inherit pro_methods_classGenericMovementBehavior"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a98ae1f513c96d6a130024cac0a1579f4"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structAttackSupport_1_1ProbNode.html">AttackSupport::ProbNode</a> AttackSupport::findMaxNode </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Iterates through the probability nodes to find the one with the maximum value (static + dynamic). Only contains points on the opponent side. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structAttackSupport_1_1ProbNode.html">ProbNode</a> The node with the max probability. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a04a8a2d015b76dfe47a7dd15eb6d5524"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AttackSupport::genBallShadows </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Cast shadows with ball as light source and opponents as opaque objects Rules out impossible receiving positions </p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>Integrate clustering to this </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a6dcd2ddaf1b58986ab707146ae680c35"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; std::vector&lt; <a class="el" href="classPoint.html">Point</a> &gt; &gt; AttackSupport::genClusters </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns information about clusters of robots. </p>
+<dl class="section return"><dt>Returns</dt><dd>A 2D vector is returned with each row representing a cluster. Each column in the returned 2D vector points to a robot in the cluster. A cluster is defined as a group of robots that are within a certain distance of each other. The clustering distance is selected so as to cluster robots that are close such that a ball could not pass between them. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ae5634b8b23c3a79e5d892005991efc37"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AttackSupport::genDistanceFromTeammates </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classRobot.html">Robot</a> *&#160;</td>
+          <td class="paramname"><em>robot</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Sets a dead-zone near teammates so that the support attacker maintains a good distance from them to make passes meaningful </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">Robot*</td><td>Needed for excluding the support attacker itself from distance calculations. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a9e05c414c5cf97761098b0bffda80616"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AttackSupport::genGoalShadows </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Cast shadows using the entire goal post as a light source and opp robots as opaque objects to rule out impossible scoring positions </p>
+
+</div>
+</div>
+<a class="anchor" id="a00e15b72e7dc837fce0f17c3dfe0a72c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AttackSupport::genGoalShotAvoidance </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set the probability in the triangle between the ball and the goal-post to 0 so that the support attacker doesn't position in the way of a shot on goal </p>
+
+</div>
+</div>
+<a class="anchor" id="af372431a53fc422580b37a22abbcaa69"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float AttackSupport::getScoreProb </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classPoint.html">Point</a> &amp;&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Given a point, returns the probability of scoring a goal from there. This function assumes that probability is already calculated and stored in the probability array by calcDynamicProb() and calcStaticProb(). </p>
+<dl class="section see"><dt>See Also</dt><dd>calcDynamicProb() and </dd>
+<dd>
+calcStaticProb(). </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname"><a class="el" href="classPoint.html" title="2D Point Class ">Point</a></td><td>The point at which the probability is queried. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Probability of scoring. </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="af236a0e130c7066b4ef32b0495715993"></a>
 <div class="memitem">
 <div class="memproto">
@@ -184,6 +390,40 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
+<a class="anchor" id="a7f63b981f2a8dd9b3a2bfe2f15bfe1bb"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AttackSupport::perform </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classRobot.html">Robot</a> *&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Perform this behavior's action on a robot Given an arbitrary roobot, The <em>perform</em> function of a <a class="el" href="classBehavior.html">Behavior</a> defines how to run the behavior on a robot. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">Robot*</td><td>the robot to perform on. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="classBehavior.html#ae9cd383ce108e38784a62896b4395169">Behavior</a>.</p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>behavior/<a class="el" href="attacksupport_8h_source.html">attacksupport.h</a></li>
 <li>behavior/attacksupport.cpp</li>
@@ -191,7 +431,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 26 2016 13:40:25 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Aug 9 2016 12:08:11 for Robobulls 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
