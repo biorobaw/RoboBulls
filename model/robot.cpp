@@ -30,6 +30,11 @@ void Robot::setLF(float left_forward){LF = left_forward;}
 void Robot::setRF(float right_forward){RF = right_forward;}
 void Robot::setLB(float left_backward){LB = left_backward;}
 void Robot::setRB(float right_backward){RB = right_backward;}
+void Robot::setVelCmd(float x, float y, float o){
+    xvel_cmd = x;
+    yvel_cmd = y;
+    angvel_cmd = o;
+}
 //! @}
 
 /*! @brief Set power in m/s for the robot to kick
@@ -58,6 +63,9 @@ int Robot::getLF() { return LF; }
 int Robot::getRF() { return RF; }
 int Robot::getLB() { return LB; }
 int Robot::getRB() { return RB; }
+int Robot::getXVel() { return xvel_cmd; }
+int Robot::getYVel() { return yvel_cmd; }
+int Robot::getAngVel() { return angvel_cmd; }
 //! @}
 
 //! @brief Get the robot's Point position on the field

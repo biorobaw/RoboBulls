@@ -7,6 +7,7 @@
 
 QT += core network widgets
 QT -= gui
+QT += serialport
 
 TARGET = RoboBulls
 CONFIG += console
@@ -98,7 +99,9 @@ SOURCES += main.cpp \
     behavior/goalie.cpp \
     behavior/markbot.cpp \
     behavior/wall.cpp \
-    behavior/penaltygoalie.cpp
+    behavior/penaltygoalie.cpp \
+    communication/yisirobcomm.cpp \
+    communication/crc.cpp
 
 HEADERS += \
 	behavior/attackmain.h \
@@ -191,7 +194,9 @@ HEADERS += \
     behavior/goalie.h \
     behavior/markbot.h \
     behavior/wall.h \
-    behavior/penaltygoalie.h
+    behavior/penaltygoalie.h \
+    communication/yisirobcomm.h \
+    communication/crc.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 

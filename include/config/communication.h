@@ -13,7 +13,7 @@
 
 //! @brief Vision listen address options
 //! @{
-#define VISION_ADDRESS_SHAMSI "224.5.23.5"
+#define VISION_ADDRESS_SHAMSI "224.5.23.4"
 #define VISION_ADDRESS_JAMES  "224.5.23.3"
 #define VISION_ADDRESS_ADRIANO "224.5.23.1"
 
@@ -32,7 +32,7 @@
 //! @brief Comunication configurations
 //! @{
 
-#define SIMULATOR_ADDRESS   SIMULATOR_ADDRESS_LOCAL
+#define SIMULATOR_ADDRESS   SIMULATOR_ADDRESS_SHAMSI
 #define SIMULATOR_PORT      20011
 
 #if SIMULATED

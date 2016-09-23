@@ -8,10 +8,19 @@ function echored() { RED='\033[0;31m'; NC='\033[0m'; printf "${RED}$1${NC}\n"; }
 
 #All preliminary libraries
 echored "Installing Preliminary libraries"
-sudo apt-get install -y git g++ make libprotobuf-dev protobuf-compiler libgtkmm-2.4-dev qt5-default qt5-qmake qtcreator libsdl2-dev minicom build-essential cmake libqt4-dev libgl1-mesa-dev libglu1-mesa-dev libprotobuf-dev libode-dev
+sudo apt-get install -y git g++ make libprotobuf-dev protobuf-compiler libgtkmm-2.4-dev qt5-default qtbase5-private-dev qt5-qmake qtcreator libsdl2-dev minicom build-essential cmake libqt4-dev libgl1-mesa-dev libglu1-mesa-dev libprotobuf-dev libode-dev
+
+# Download and install QtSerialPort library
+git clone git://code.qt.io/qt/qtserialport.git
+mkdir qtserialport-build
+cd qtserialport-build
+qmake ../qtserialport/qtserialport.pro
+make
+sudo make install
+rm -rf qtserialport qtserialport-build
 
 #Download and install Kalman filter library
-if [ ! -d $INCLUDE_PATH/kalman/ekfilter.hpp ]; then
+if [ ! -d $INCLUDE_PATH/kalman ]; then
 	echored "Kalman library not installed; installing to $INCLUDE_PATH"
 	cd /tmp
 	wget "http://downloads.sourceforge.net/project/kalman/kalman/1.3/kalman-1.3.zip?r=&ts=1462934052&use_mirror=tenet" -O kalman.zip
@@ -41,7 +50,7 @@ if [ ! -d $INSTALL_PATH/grSim ]; then
     cd vartypes-0.7 && mkdir build && cd build && cmake .. && make && sudo make install
     rm -rf vartypes-0.7
     cd $INSTALL_PATH
-    git clone https://github.com/mllofriu/grSim
+    git clone https://github.com/mllofriu/grSim.git
     cd grSim && mkdir build && cd build && cmake .. && make
 else
     echored "grSim already installed (directory exists)"

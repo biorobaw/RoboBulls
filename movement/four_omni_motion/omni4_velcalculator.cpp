@@ -97,6 +97,8 @@ fourWheelVels FourWheelCalculator::defaultCalc
     double x_vel_robot = sin(theta_current)*x_vel-cos(theta_current)*y_vel;
     double vel_robot = sqrt(x_vel_robot*x_vel_robot + y_vel_robot * y_vel_robot);
 
+    rob->setVelCmd(x_vel_robot,y_vel_robot,vel_robot);
+
     // Apply acceleration ramp
     if(vel_robot > prev_vel)
     {
