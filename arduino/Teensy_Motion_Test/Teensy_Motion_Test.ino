@@ -1,24 +1,24 @@
 // Declare motor pins
-#define enablePinLF 2
-#define dirPinLF 3
-#define brakePinLF 4
+#define enablePinLF 2   // Yellow
+#define dirPinLF 3      // Green
+#define brakePinLF 4    // Brown
 
-#define enablePinLB 5
-#define dirPinLB 6
-#define brakePinLB 7
+#define enablePinLB 5   // Yellow
+#define dirPinLB 6      // Green
+#define brakePinLB 7    // Brown
 
-#define enablePinRF 19
-#define dirPinRF 18
-#define brakePinRF 17
+#define enablePinRF 19   // Yellow
+#define dirPinRF 18      // Green
+#define brakePinRF 17    // Brown
 
-#define enablePinRB 16
-#define dirPinRB 15
-#define brakePinRB 14
+#define enablePinRB 16   // Yellow
+#define dirPinRB 15      // Green
+#define brakePinRB 14    // Brown
 
-#define speedPinLF 23
-#define speedPinLB 22
-#define speedPinRF 21
-#define speedPinRB 20
+#define speedPinLF 23   // White
+#define speedPinLB 22   // White
+#define speedPinRF 21   // White
+#define speedPinRB 20   // White
 
 // Velocities Range = {-100, 100}
 double targetLFvel = 25;

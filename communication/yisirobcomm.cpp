@@ -1,6 +1,5 @@
 #include "yisirobcomm.h"
 #include <bitset>
-#include <QtDebug>
 
 YisiRobComm::YisiRobComm()
 {
