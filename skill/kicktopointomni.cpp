@@ -109,7 +109,9 @@ bool KickToPointOmni::perform(Robot* robot)
     {
     case MOVE_BEHIND:
         {
-//            std::cout << "KTPO STATE: MOVE BEHIND" << std::endl;
+    //      std::cout << "KTPO STATE: MOVE BEHIND" << std::endl;
+            robot->setDribble(false);
+
             behindBall = bp + Point(BEHIND_RAD_AVOID * cos(targetBallAng), BEHIND_RAD_AVOID * sin(targetBallAng));
             move_skill.setVelocityMultiplier(1);
             move_skill.recreate(behindBall, ballTargetAng, true, true);
@@ -132,7 +134,7 @@ bool KickToPointOmni::perform(Robot* robot)
     case MOVE_INTERMEDIATE:
         {
 //            std::cout << "KTPO STATE: MOVE INTERMEDIATE" << std::endl;
-
+            robot->setDribble(false);
             // Move towards the ball at the angle to target
             // Motion will be straight ahead, given the completion of MOVE_BEHIND
             behindBall = bp + Point(BEHIND_RAD * cos(targetBallAng), BEHIND_RAD * sin(targetBallAng));
@@ -156,6 +158,7 @@ bool KickToPointOmni::perform(Robot* robot)
         {
 //            std::cout << "KTPO STATE: MOVE FORWARD" << std::endl;
 
+            robot->setDribble(true);
             // Move towards the ball at the angle to target (straight)
             move_skill.setVelocityMultiplier(0.2);
             move_skill.recreate(bp - Point(BEHIND_RAD * cos(targetBallAng), BEHIND_RAD * sin(targetBallAng)), ballTargetAng, false, false);
@@ -195,6 +198,7 @@ bool KickToPointOmni::perform(Robot* robot)
                 state = MOVE_BEHIND;
                 m_hasKicked = true;
                 m_kickCommandCount = 0;
+                robot->setDribble(false);
             }
         }
         break;

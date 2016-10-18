@@ -646,7 +646,7 @@ void MainWindow::on_btn_botKick_released() {
 void MainWindow::on_btn_botDrible_pressed() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botDrible->setDown(true);
-        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setChip(true);
+        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setDribble(true);
         fieldpanel->guiTeam[fieldpanel->selectedBot]->dribling = true;
     }
 }
@@ -672,6 +672,9 @@ void MainWindow::on_check_botOverride_clicked(bool checked) {
             gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setL(0);
             gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setR(0);
             gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setB(0);
+            gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setXVel(0);
+            gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setYVel(0);
+            gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setAngVel(0);
         } else {
             overriddenBots[fieldpanel->selectedBot] = false;
             robotpanel->botIcons[fieldpanel->selectedBot]->overridden = false;

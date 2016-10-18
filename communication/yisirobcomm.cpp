@@ -5,7 +5,7 @@
 YisiRobComm::YisiRobComm()
 {
     // Setup Serial Port
-    serial.setPortName("/dev/ttyUSB1");
+    serial.setPortName("/dev/ttyUSB2");
 
     if (serial.open(QIODevice::ReadWrite))	{
         std::cout << "Serial Port Connected" << std::endl;
@@ -53,11 +53,15 @@ void YisiRobComm::sendVelsLarge(std::vector<Robot*>& robots)
             transmitPacket[2]=1<<robotID;
         }
 
-        // First Robot Kick, Chip, Dribble
-        int shootMode = 0;
+        // First Robot Kick/Chip
+        int shootMode = 1;
+        int shootPowerLevel = r->getKick()? 50:0;
+        transmitPacket[3] = (shootMode << 6);
+        transmitPacket[18]=(shootMode?shootPowerLevel:0)&0x7f;
+
+        // Dribble
         int dribble = r->getDribble();
         int dribble_level = 3;
-        transmitPacket[3] = (shootMode << 6);
         transmitPacket[3] = transmitPacket[3]|(dribble?(dribble_level<<4):0);
 
         // First Robot Motion
@@ -73,6 +77,8 @@ void YisiRobComm::sendVelsLarge(std::vector<Robot*>& robots)
         if(transmitPacket[6]==char(0xff)) transmitPacket[6] = 0xfe;
 
         transmitPacket[15]=((abs(velX)&0x180)>>1)|((abs(velY)&0x180)>>3)|((abs(velR)&0x180)>>5);
+
+
     }
 
     serial.write(transmitPacket,25);
