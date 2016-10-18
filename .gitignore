@@ -1,5 +1,6 @@
 RoboBulls-build-desktop-Qt_4_8_3_in_PATH__System__Release
-RoboBulls.pro.user
+*build-desktop-Qt*
+*.user
 *.o
 *.autosave
 *.*~

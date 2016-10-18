@@ -1,5 +1,5 @@
 #include "movement/four_omni_motion/omni4_velcalculator.h"
-
+#include "gui/guiinterface.h"
 using std::abs;
 
 namespace Movement
@@ -82,7 +82,6 @@ fourWheelVels FourWheelCalculator::defaultCalc
         abs(Measurements::angleDiff(theta_goal,theta_current+theta_vel)))
         theta_vel=-theta_vel;
 
-#if !SIMULATED
     // Reduce speed near target
     if (distance_to_goal < 700)
     {
@@ -90,12 +89,28 @@ fourWheelVels FourWheelCalculator::defaultCalc
         y_vel *= 0.5;
         theta_vel *= 0.5;
     }
-#endif
 
     // Robot Frame Velocities
-    double y_vel_robot = cos(theta_current)*x_vel+sin(theta_current)*y_vel;
-    double x_vel_robot = sin(theta_current)*x_vel-cos(theta_current)*y_vel;
+    double x_vel_robot = cos(theta_current)*x_vel+sin(theta_current)*y_vel;
+    double y_vel_robot = -sin(theta_current)*x_vel+cos(theta_current)*y_vel;
     double vel_robot = sqrt(x_vel_robot*x_vel_robot + y_vel_robot * y_vel_robot);
+
+    // Normalize Robot Frame Velocities for YisiBots
+    unsigned int max_trans_spd = 50;
+    unsigned int max_ang_spd = 100;
+
+    if (abs(y_vel_robot)>max_trans_spd)
+    {
+        y_vel_robot=(max_trans_spd/abs(y_vel_robot))*y_vel_robot;
+        x_vel_robot=(max_trans_spd/abs(y_vel_robot))*x_vel_robot;
+    }
+    if (abs(x_vel_robot)>max_trans_spd)
+    {
+        y_vel_robot=(max_trans_spd/abs(x_vel_robot))*y_vel_robot;
+        x_vel_robot=(max_trans_spd/abs(x_vel_robot))*x_vel_robot;
+    }
+
+    rob->setVelCmd(x_vel_robot,-y_vel_robot,0);
 
     // Apply acceleration ramp
     if(vel_robot > prev_vel)

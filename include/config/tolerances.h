@@ -34,14 +34,14 @@
 
 #else
 
-#define ROBOT_RADIUS   = 100;
-#define DIST_TOLERANCE = 40;
-#define ROT_TOLERANCE  = 5.0*(M_PI/180);
-#define DEF_AREA_TOL = ROBOT_RADIUS + 10;
+#define ROBOT_RADIUS 100
+#define DIST_TOLERANCE 40
+#define ROT_TOLERANCE 5.0*(M_PI/180)
+#define DEF_AREA_TOL ROBOT_RADIUS + 10
 
-#define DRIBBLE_FRWD_SPD = 70;
-#define DRIBBLE_BACK_SPD = 7;
-#define DRIBBLE_TURN_RATE = 0.1;
+#define DRIBBLE_FRWD_SPD 70
+#define DRIBBLE_BACK_SPD 7
+#define DRIBBLE_TURN_RATE 0.1
 
 #endif
 //! @}

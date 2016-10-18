@@ -109,6 +109,10 @@ void printBuildInfo()
 
 int main(int argc, char *argv[])
 {
+    QApplication a(argc, argv);
+
+    // Initialize robot communication
+    //RobComm::getRobComm();
     //Initialize GameModel, StrategyController, Vision, and Ref
     GameModel* gm = GameModel::getModel();
     RefComm refCommunicator(gm);
@@ -121,7 +125,7 @@ int main(int argc, char *argv[])
     printBuildInfo();
 
     //Create the GUI and show it
-    QApplication a(argc, argv);
+
     GuiInterface::getGuiInterface()->show();
 
     //Start Vision and Refcomm and run the application

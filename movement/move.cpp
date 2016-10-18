@@ -192,6 +192,8 @@ Point Move::updatePathQueue(Robot* robot)
 
 void Move::getCollisionState(Robot* robot, bool& collided, bool& yielding) const
 {
+    // Just to get rid of build warning, doing random stuff
+    if(robot == nullptr){int x=6; x = 7-x;}
     collided = yielding = false;
 #if MOVEMENT_USE_ROB_COLLIDE
     Collisions::update();

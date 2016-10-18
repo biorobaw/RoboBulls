@@ -60,6 +60,10 @@ public:
     void setRF(float right_forward);
     void setLB(float left_backward);
     void setRB(float right_backward);
+    void setVelCmd(float xvel, float yvel, float angvel);
+    void setXVel(float x);
+    void setYVel(float y);
+    void setAngVel(float ang_vel);
     void setKick(float power = 5.0);
     void setDribble(bool);
     void setChip(bool);
@@ -74,6 +78,9 @@ public:
     int getRF();
     int getLB();
     int getRB();
+    int getXVel();
+    int getYVel();
+    int getAngVel();
     //! @}
 
     //! @name Misc information functions
@@ -96,6 +103,7 @@ private:
     Point velocity;             //!< Velocity in m/s
     float orientation;          //!< orientation of the robot
     float LF, RF, LB, RB;       //!< used for robot's movements
+    float xvel_cmd, yvel_cmd, angvel_cmd;   //!< used for yisi robot's movements
     Behavior * behavior; //!< Pointer to current behavior
     float kick = 0;                 //!< Robot kick power in m/s
     bool chip = false;                  //!< Robot chip
