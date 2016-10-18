@@ -543,6 +543,7 @@ void MainWindow::on_btn_botForward_pressed() {
         if (currentFwd <= 0) {
             gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setL(currentFwd+myVelocity);
             gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setR(currentFwd+myVelocity);
+            gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setXVel(myVelocity);
         }
     }
     ui->gView_field->scene()->update();
@@ -554,6 +555,7 @@ void MainWindow::on_btn_botForward_released() {
         ui->btn_botForward->setDown(false);
         r->setL(0);
         r->setR(0);
+        r->setXVel(0);
     }
 }
 
@@ -563,6 +565,8 @@ void MainWindow::on_btn_botTurnRight_pressed() {
         ui->btn_botTurnRight->setDown(true);
         r->setL(r->getL() + myVelocity/2);
         r->setR(r->getR() - myVelocity/2);
+//        r->setAngVel(myVelocity);
+        r->setYVel(myVelocity);
     }
 }
 
@@ -572,6 +576,8 @@ void MainWindow::on_btn_botTurnRight_released() {
         float currentFwd = objectPos->getVelocity(fieldpanel->selectedBot);
         gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setL(currentFwd);
         gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setR(currentFwd);
+        //gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setAngVel(0);
+        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setYVel(0);
     }
 }
 
@@ -581,6 +587,8 @@ void MainWindow::on_btn_botTurnLeft_pressed() {
         ui->btn_botTurnLeft->setDown(true);
         r->setL(r->getL() - myVelocity/2);
         r->setR(r->getR() + myVelocity/2);
+//        r->setAngVel(-myVelocity);
+        r->setYVel(-myVelocity);
     }
 }
 
@@ -590,6 +598,8 @@ void MainWindow::on_btn_botTurnLeft_released() {
         float currentVel = objectPos->getVelocity(fieldpanel->selectedBot);
         gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setL(currentVel);
         gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setR(currentVel);
+//        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setAngVel(0);
+        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setYVel(0);
     }
 }
 
@@ -602,6 +612,7 @@ void MainWindow::on_btn_botReverse_pressed() {
         if (currentVel >= 0) {
             gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setL(currentVel-myVelocity);
             gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setR(currentVel-myVelocity);
+            gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setXVel(-myVelocity);
         }
     }
     ui->gView_field->scene()->update();
@@ -612,6 +623,7 @@ void MainWindow::on_btn_botReverse_released() {
         ui->btn_botReverse->setDown(false);
         gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setL(0);
         gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setR(0);
+        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setXVel(0);
     }
 }
 
@@ -684,6 +696,9 @@ void MainWindow::on_btn_override_all_released() {
             robot->setL(0);
             robot->setR(0);
             robot->setB(0);
+            robot->setXVel(0);
+            robot->setYVel(0);
+            robot->setAngVel(0);
         }
     }
 }

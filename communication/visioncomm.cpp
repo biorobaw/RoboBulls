@@ -234,7 +234,7 @@ void VisionComm::recieveRobotTeam(const SSL_DetectionFrame& frame, int team)
     {
         if(isGoodDetection(robot, frame, CONF_THRESHOLD_BOTS, fourCameraMode)) {
             int robotID = robot.robot_id();
-            if(gamemodel->find(robotID, *currentTeamVector) or currentTeamCounts[robotID] >= 10) {
+            if(gamemodel->find(robotID, *currentTeamVector) or currentTeamCounts[robotID] >= 80) {
                 receiveRobot(robot, team);
             } else {
                ++currentTeamCounts[robotID];

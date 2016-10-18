@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     // Initialize robot communication
-//    RobComm::getRobComm();
+    //RobComm::getRobComm();
     //Initialize GameModel, StrategyController, Vision, and Ref
     GameModel* gm = GameModel::getModel();
     RefComm refCommunicator(gm);

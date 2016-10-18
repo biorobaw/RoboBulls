@@ -30,11 +30,16 @@ void Robot::setLF(float left_forward){LF = left_forward;}
 void Robot::setRF(float right_forward){RF = right_forward;}
 void Robot::setLB(float left_backward){LB = left_backward;}
 void Robot::setRB(float right_backward){RB = right_backward;}
-void Robot::setVelCmd(float x, float y, float o){
+void Robot::setVelCmd(float x, float y, float ang_vel){
     xvel_cmd = x;
     yvel_cmd = y;
-    angvel_cmd = o;
+    angvel_cmd = ang_vel;
 }
+
+void Robot::setXVel(float x) {xvel_cmd = x;}
+void Robot::setYVel(float y) {yvel_cmd = y;}
+void Robot::setAngVel(float ang_vel) {angvel_cmd = ang_vel;}
+
 //! @}
 
 /*! @brief Set power in m/s for the robot to kick

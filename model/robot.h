@@ -61,6 +61,9 @@ public:
     void setLB(float left_backward);
     void setRB(float right_backward);
     void setVelCmd(float xvel, float yvel, float angvel);
+    void setXVel(float x);
+    void setYVel(float y);
+    void setAngVel(float ang_vel);
     void setKick(float power = 5.0);
     void setDribble(bool);
     void setChip(bool);
