@@ -164,12 +164,12 @@ public:
         switch(state)
         {
             case pos_one:
-                setMovementTargets(target_one,ori,true,true);
+                setMovementTargets(target_one,ori,false,false);
                 if (Measurements::isClose(rp,target_one,DIST_TOLERANCE))
                 state = pos_two;
                 break;
             case pos_two:
-                setMovementTargets(target_two,ori,true,true);
+                setMovementTargets(target_two,ori,false,false);
                 if (Measurements::isClose(rp,target_two,DIST_TOLERANCE))
                 state = pos_one;
         }

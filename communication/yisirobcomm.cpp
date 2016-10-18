@@ -1,5 +1,6 @@
 #include "yisirobcomm.h"
 #include <bitset>
+#include <unistd.h>
 
 YisiRobComm::YisiRobComm()
 {
@@ -24,6 +25,7 @@ YisiRobComm::YisiRobComm()
         serial.write(sp1,25);
         serial.write(sp2,25);
         serial.flush();
+        usleep(1000000);    //us
     }
     else
         std::cout << "Unable to Open YisiBot Serial Port" << std::endl;

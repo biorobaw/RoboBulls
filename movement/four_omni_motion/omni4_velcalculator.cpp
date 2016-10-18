@@ -96,7 +96,7 @@ fourWheelVels FourWheelCalculator::defaultCalc
     double vel_robot = sqrt(x_vel_robot*x_vel_robot + y_vel_robot * y_vel_robot);
 
     // Normalize Robot Frame Velocities for YisiBots
-    unsigned int max_trans_spd = 50;
+    unsigned int max_trans_spd = 200;
     unsigned int max_ang_spd = 100;
 
     if (abs(y_vel_robot)>max_trans_spd)
@@ -110,16 +110,16 @@ fourWheelVels FourWheelCalculator::defaultCalc
         x_vel_robot=(max_trans_spd/abs(x_vel_robot))*x_vel_robot;
     }
 
-    rob->setVelCmd(x_vel_robot,-y_vel_robot,0);
-
     // Apply acceleration ramp
     if(vel_robot > prev_vel)
     {
-        x_vel_robot = x_vel_robot * (prev_vel + 2) / vel_robot;
-        y_vel_robot = y_vel_robot * (prev_vel + 2) / vel_robot;
-        vel_robot = prev_vel + 0.7;
+        x_vel_robot = x_vel_robot * (prev_vel + 40) / vel_robot;
+        y_vel_robot = y_vel_robot * (prev_vel + 40) / vel_robot;
+        vel_robot = prev_vel + 40;
     }
     prev_vel = vel_robot;
+
+    rob->setVelCmd(x_vel_robot,-y_vel_robot,0);
 
     // Wheel Velocity Calculations
     double RF =  (-sin(RF_offset) * x_vel_robot + cos(RF_offset)*y_vel_robot - trans_offset*vel_robot*cos(RF_offset) + wheel_radius*theta_vel);
