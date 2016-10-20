@@ -4,11 +4,11 @@
 INSTALL_PATH=$HOME #Where to install the folders to
 INCLUDE_PATH="/usr/local/include" #Where to install library header files
 
-function echored() { RED='\033[0;31m'; NC='\033[0m'; printf "${RED}$1${NC}\n"; }
+function echogreen() { RED='\e[32m'; NC='\033[0m'; printf "${RED}$1${NC}\n"; }
 
 #All preliminary libraries
-echored "Installing Preliminary libraries"
-sudo apt-get install -y git g++ make libprotobuf-dev protobuf-compiler libgtkmm-2.4-dev qt5-default qtbase5-private-dev qt5-qmake qtcreator libsdl2-dev minicom build-essential cmake libqt4-dev libgl1-mesa-dev libglu1-mesa-dev libprotobuf-dev libode-dev
+echogreen "Installing Preliminary libraries"
+sudo apt-get install -y git g++ make libprotobuf-dev protobuf-compiler libgtkmm-2.4-dev qt5-default qtbase5-private-dev qt5-qmake qtcreator libqt5serialport5-dev libsdl2-dev minicom build-essential cmake libqt4-dev libgl1-mesa-dev libglu1-mesa-dev libode-dev
 
 #Download and install Kalman filter library
 if [ ! -d $INCLUDE_PATH/kalman ]; then
@@ -58,4 +58,5 @@ else
 fi
 
 #We need to set up the USB rules to recognize the Xbee
-sudo cp scripts/99-usb-serial.rules /etc/udev/rules.d/99-usb-serial.rules
+sudo cp 99-usb-serial.rules /etc/udev/rules.d/99-usb-serial.rules
+sudo cp minirc.dfl /etc/minicom/minirc.dfl

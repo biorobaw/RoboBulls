@@ -6,3 +6,4 @@ pu baudrate         57600
 pu localecho        Yes
 pu addlinefeed      Yes
 pu linewrap         Yes
+
