@@ -12,11 +12,6 @@ namespace Movement
 
 void GoToPosition::calculateVels(Robot *rob, Point targetPoint, float targetAngle, Type moveType)
 {
-    //Pushes the robot away from a goalie box if it is close, for non-goalies
-    fourWheelVels fieldVels = {0,0,0,0};
-//    if(rob->getID() != GOALIE_ID)
-//        fieldVels = calculateGoalField(rob, moveType);
-
     switch(rob->type())
     {
     case differential:
@@ -43,10 +38,10 @@ void GoToPosition::calculateVels(Robot *rob, Point targetPoint, float targetAngl
             if(!IS_OMNI(moveType))
                 moveType = ::Movement::Type::Default;
             fourWheelVels vels = fwc.calculateVels(rob, targetPoint, targetAngle, moveType);
-            this->lfront = vels.LF + fieldVels.LF;
-            this->lback  = vels.LB + fieldVels.LB;
-            this->rfront = vels.RF + fieldVels.RF;
-            this->rback  = vels.RB + fieldVels.RB;
+            this->lfront = vels.LF;
+            this->lback  = vels.LB;
+            this->rfront = vels.RF;
+            this->rback  = vels.RB;
         }
         break;
     }

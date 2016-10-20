@@ -185,7 +185,7 @@ bool KickToPointOmni::perform(Robot* robot)
             Kick k(powerDistance);
             k.perform(robot);
 
-            if(m_kickCommandCount < 1)
+            if(m_kickCommandCount < 100)
             {
                 // We sent the command several times to ensure the robot receives it
                 // The robot should actuate one kick every 6 seconds regardless of

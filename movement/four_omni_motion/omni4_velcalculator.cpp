@@ -119,6 +119,7 @@ fourWheelVels FourWheelCalculator::defaultCalc
         vel_robot = prev_vel + 40;
     }
     prev_vel = vel_robot;
+
     rob->setVelCmd(x_vel_robot,-y_vel_robot,-theta_vel*5000/M_PI);
 
     // Wheel Velocity Calculations

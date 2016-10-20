@@ -24,7 +24,6 @@
 
 /************************************************************************/
 
-
 namespace Movement
 {
 
@@ -142,6 +141,7 @@ bool Move::calcRegularMovement(Robot* robot, Type moveType)
     if (Measurements::isClose(m_targetPoint, robotPos, lastDistTolerance) &&
         Measurements::isClose(m_targetAngle, robotAng, lastAngTolerance)) {
         lfront=lback=rfront=rback=left=right=back=0;
+        robot->setVelCmd(0,0,0);
         return true;
     } else {
         //In regular movement we go directly to the target point as seen here

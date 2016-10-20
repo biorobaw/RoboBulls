@@ -23,7 +23,7 @@ const float CONF_THRESHOLD_BALL = 0.8;
 #endif
 
 //! @brief Sets the minimum confidence to consider a robot as a valid reading
-const float CONF_THRESHOLD_BOTS = 0.8;
+const float CONF_THRESHOLD_BOTS = 0.90;
 
 /**
  * @brief The VisionComm class recieves information from the vision cameras
