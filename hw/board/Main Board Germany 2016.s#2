@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="7.2.0">
+<eagle version="7.6.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -13524,6 +13524,8 @@ Source: http://www.bourns.com/data/global/PDFs/3223.PDF</description>
 <part name="U$3" library="RoboBulls_relay" deviceset="PANASONIC_JS1" device=""/>
 <part name="U$4" library="RoboBulls_relay" deviceset="PANASONIC_JS1" device=""/>
 <part name="U$5" library="RoboBulls_relay" deviceset="PANASONIC_JS1" device=""/>
+<part name="TO_PWRBRD" library="SparkFun-Connectors" deviceset="M03X2" device="POGO_PINS"/>
+<part name="FROM_TEENSYBRD" library="SparkFun-Connectors" deviceset="M03X2" device="POGO_PINS"/>
 </parts>
 <sheets>
 <sheet>
@@ -13643,6 +13645,8 @@ Source: http://www.bourns.com/data/global/PDFs/3223.PDF</description>
 <instance part="U$3" gate="G$1" x="200.66" y="22.86"/>
 <instance part="U$4" gate="G$1" x="218.44" y="-99.06"/>
 <instance part="U$5" gate="G$1" x="210.82" y="-175.26"/>
+<instance part="TO_PWRBRD" gate="G$1" x="259.08" y="167.64"/>
+<instance part="FROM_TEENSYBRD" gate="G$1" x="147.32" y="-43.18"/>
 </instances>
 <busses>
 </busses>
@@ -14423,6 +14427,11 @@ Source: http://www.bourns.com/data/global/PDFs/3223.PDF</description>
 <wire x1="129.54" y1="132.08" x2="157.48" y2="132.08" width="0.1524" layer="91"/>
 <label x="142.24" y="134.62" size="1.778" layer="95" rot="R180"/>
 </segment>
+<segment>
+<pinref part="TO_PWRBRD" gate="G$1" pin="5"/>
+<wire x1="251.46" y1="165.1" x2="241.3" y2="165.1" width="0.1524" layer="91"/>
+<label x="241.3" y="165.1" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="DISCHARGE" class="0">
 <segment>
@@ -14436,6 +14445,10 @@ Source: http://www.bourns.com/data/global/PDFs/3223.PDF</description>
 <wire x1="332.74" y1="-71.12" x2="345.44" y2="-71.12" width="0.1524" layer="91"/>
 <label x="332.74" y="-71.12" size="1.778" layer="95"/>
 </segment>
+<segment>
+<wire x1="264.16" y1="170.18" x2="274.32" y2="170.18" width="0.1524" layer="91"/>
+<label x="274.32" y="170.18" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="DRIBBLE" class="0">
 <segment>
@@ -14448,6 +14461,11 @@ Source: http://www.bourns.com/data/global/PDFs/3223.PDF</description>
 <pinref part="J1" gate="G$1" pin="3"/>
 <wire x1="129.54" y1="127" x2="157.48" y2="127" width="0.1524" layer="91"/>
 <label x="142.24" y="129.54" size="1.778" layer="95" rot="R180"/>
+</segment>
+<segment>
+<pinref part="TO_PWRBRD" gate="G$1" pin="4"/>
+<wire x1="266.7" y1="167.64" x2="274.32" y2="167.64" width="0.1524" layer="91"/>
+<label x="274.32" y="167.64" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="N$15" class="0">
@@ -14482,6 +14500,11 @@ Source: http://www.bourns.com/data/global/PDFs/3223.PDF</description>
 <pinref part="J1" gate="G$1" pin="2"/>
 <wire x1="129.54" y1="124.46" x2="157.48" y2="124.46" width="0.1524" layer="91"/>
 <label x="142.24" y="127" size="1.778" layer="95" rot="R180"/>
+</segment>
+<segment>
+<pinref part="TO_PWRBRD" gate="G$1" pin="6"/>
+<wire x1="266.7" y1="165.1" x2="274.32" y2="165.1" width="0.1524" layer="91"/>
+<label x="274.32" y="165.1" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="N$24" class="0">
@@ -14608,6 +14631,11 @@ Source: http://www.bourns.com/data/global/PDFs/3223.PDF</description>
 <wire x1="198.12" y1="154.94" x2="213.36" y2="154.94" width="0.1524" layer="91"/>
 <label x="213.36" y="154.94" size="1.778" layer="95" xref="yes"/>
 </segment>
+<segment>
+<pinref part="TO_PWRBRD" gate="G$1" pin="3"/>
+<wire x1="251.46" y1="167.64" x2="241.3" y2="167.64" width="0.1524" layer="91"/>
+<label x="238.76" y="167.64" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="READ_250" class="0">
 <segment>
@@ -14624,6 +14652,11 @@ Source: http://www.bourns.com/data/global/PDFs/3223.PDF</description>
 <wire x1="190.5" y1="147.32" x2="190.5" y2="157.48" width="0.1524" layer="91"/>
 <wire x1="190.5" y1="157.48" x2="213.36" y2="157.48" width="0.1524" layer="91"/>
 <label x="213.36" y="157.48" size="1.778" layer="95" xref="yes"/>
+</segment>
+<segment>
+<pinref part="TO_PWRBRD" gate="G$1" pin="1"/>
+<wire x1="251.46" y1="170.18" x2="241.3" y2="170.18" width="0.1524" layer="91"/>
+<label x="238.76" y="170.18" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="N$5" class="0">
@@ -14698,6 +14731,48 @@ Source: http://www.bourns.com/data/global/PDFs/3223.PDF</description>
 <pinref part="R7" gate="G$1" pin="1"/>
 <wire x1="304.8" y1="-50.8" x2="302.26" y2="-50.8" width="0.1524" layer="91"/>
 <wire x1="304.8" y1="-63.5" x2="304.8" y2="-50.8" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="PWR_READ_250" class="0">
+<segment>
+<pinref part="FROM_TEENSYBRD" gate="G$1" pin="1"/>
+<wire x1="139.7" y1="-40.64" x2="129.54" y2="-40.64" width="0.1524" layer="91"/>
+<label x="121.92" y="-40.64" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="PWR_READ_CAP" class="0">
+<segment>
+<pinref part="FROM_TEENSYBRD" gate="G$1" pin="3"/>
+<wire x1="139.7" y1="-43.18" x2="129.54" y2="-43.18" width="0.1524" layer="91"/>
+<label x="119.38" y="-43.18" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="PWR_CHARGE" class="0">
+<segment>
+<pinref part="FROM_TEENSYBRD" gate="G$1" pin="5"/>
+<wire x1="139.7" y1="-45.72" x2="129.54" y2="-45.72" width="0.1524" layer="91"/>
+<label x="121.92" y="-45.72" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="PWR_DISCHARGE" class="0">
+<segment>
+<pinref part="FROM_TEENSYBRD" gate="G$1" pin="2"/>
+<wire x1="154.94" y1="-40.64" x2="165.1" y2="-40.64" width="0.1524" layer="91"/>
+<label x="160.02" y="-40.64" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="PWR_DRIBBLE" class="0">
+<segment>
+<pinref part="FROM_TEENSYBRD" gate="G$1" pin="4"/>
+<wire x1="154.94" y1="-43.18" x2="165.1" y2="-43.18" width="0.1524" layer="91"/>
+<label x="157.48" y="-43.18" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="PWR_CHIP" class="0">
+<segment>
+<pinref part="FROM_TEENSYBRD" gate="G$1" pin="6"/>
+<wire x1="154.94" y1="-45.72" x2="165.1" y2="-45.72" width="0.1524" layer="91"/>
+<label x="160.02" y="-45.72" size="1.778" layer="95"/>
 </segment>
 </net>
 </nets>
