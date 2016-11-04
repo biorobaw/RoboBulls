@@ -10450,10 +10450,11 @@ http://www.fairchildsemi.com/ds/LM/LM7805.pdf</description>
 <variantdefs>
 </variantdefs>
 <classes>
-<class number="0" name="default" width="0.4064" drill="0">
-<clearance class="0" value="0.1524"/>
+<class number="0" name="default" width="1.016" drill="0">
+<clearance class="0" value="0.508"/>
 </class>
-<class number="1" name="vcc" width="0.254" drill="0">
+<class number="1" name="vcc" width="2.032" drill="0">
+<clearance class="1" value="0.762"/>
 </class>
 </classes>
 <parts>
@@ -10605,7 +10606,7 @@ http://www.fairchildsemi.com/ds/LM/LM7805.pdf</description>
 <busses>
 </busses>
 <nets>
-<net name="GND" class="0">
+<net name="GND" class="1">
 <segment>
 <pinref part="C4" gate="G$1" pin="2"/>
 <wire x1="378.46" y1="-17.78" x2="378.46" y2="-38.1" width="0.1524" layer="91"/>
@@ -10916,7 +10917,7 @@ http://www.fairchildsemi.com/ds/LM/LM7805.pdf</description>
 <junction x="182.88" y="22.86"/>
 </segment>
 </net>
-<net name="N$13" class="0">
+<net name="N$13" class="1">
 <segment>
 <pinref part="D4" gate="1" pin="C"/>
 <pinref part="CAPACITOR" gate="-1" pin="KL"/>
@@ -10938,7 +10939,7 @@ http://www.fairchildsemi.com/ds/LM/LM7805.pdf</description>
 <junction x="284.48" y="2.54"/>
 </segment>
 </net>
-<net name="N$11" class="0">
+<net name="N$11" class="1">
 <segment>
 <pinref part="SOLENOID" gate="-1" pin="KL"/>
 <pinref part="D6" gate="1" pin="A"/>
@@ -11051,7 +11052,7 @@ http://www.fairchildsemi.com/ds/LM/LM7805.pdf</description>
 <label x="271.78" y="-200.66" size="1.778" layer="95" xref="yes"/>
 </segment>
 </net>
-<net name="VCC" class="0">
+<net name="VCC" class="1">
 <segment>
 <pinref part="TO_UPVOLT" gate="-1" pin="KL"/>
 <wire x1="398.78" y1="40.64" x2="408.94" y2="40.64" width="0.1524" layer="91"/>
@@ -11087,7 +11088,7 @@ http://www.fairchildsemi.com/ds/LM/LM7805.pdf</description>
 <junction x="378.46" y="-66.04"/>
 </segment>
 </net>
-<net name="GND_PWR" class="0">
+<net name="GND_PWR" class="1">
 <segment>
 <pinref part="UP-VOLT_REG" gate="-1" pin="KL"/>
 <pinref part="CAPACITOR" gate="-2" pin="KL"/>
