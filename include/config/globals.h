@@ -8,12 +8,12 @@
 //! Switch between various field geometries.
 //! Only one of these should be set to 1.
 #define BIO_ROB_FIELD 0
-#define GRSIM_FIELD 1
-#define ROBOCUP_FIELD 0
+#define GRSIM_FIELD 0
+#define ROBOCUP_FIELD 1
 
 /*! @brief Overall velocity for all behaviors. Change this
  * constant to slow down or speed all robot motion. */
-#define OVERALL_VELOCITY 1.0
+#define OVERALL_VELOCITY 3.0
 
 /*! @brief Approximate ball radius in millimeters.*/
 #define BALL_RADIUS 21.5
