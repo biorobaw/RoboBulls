@@ -235,6 +235,30 @@ public:
     }
 };
 
+class PassToRobot : public GenericMovementBehavior
+{
+private:
+    Skill::KickToPointOmni* ktpo;
+    Robot *targetRobot;
+public:
+    PassToRobot(Robot *targetRobot)
+    {   //constructor. Gets target robots position and
+        //set its skill to kick to that current point
+        ktpo = new Skill::KickToPointOmni(targetRobot->getPosition());
+        this->targetRobot = targetRobot;
+    }
+
+    void perform(Robot *robot) override
+    {
+        if (gameModel->getHasBall() != targetRobot){
+            setMovementTargets(gameModel->getBallPoint(), Measurements::angleBetween(robot->getPosition(),gameModel->getBallPoint()), false, false);
+
+            GenericMovementBehavior::perform(robot);
+            ktpo->perform(robot);
+        }
+    }
+};
+
 class Pusher : public GenericMovementBehavior
 {
 private:
@@ -265,7 +289,8 @@ bool TestStrategy::update()
     Robot* r5 = gameModel->findMyTeam(5);
 
     if(r1)
-        r1->assignBeh<Passer>();
+        //r1->assignBeh<Passer>();
+        r1->assignBeh<PassToRobot>(r2);
     if(r2)
         r2->assignBeh<ShamsiStrafe>(1000);
     if(r3)
