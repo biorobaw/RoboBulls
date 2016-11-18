@@ -32,7 +32,7 @@
 //! @brief Comunication configurations
 //! @{
 
-#define SIMULATOR_ADDRESS   SIMULATOR_ADDRESS_SHAMSI
+#define SIMULATOR_ADDRESS   SIMULATOR_ADDRESS_LOCAL
 #define SIMULATOR_PORT      20011
 
 #if SIMULATED

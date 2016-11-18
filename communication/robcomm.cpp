@@ -11,7 +11,7 @@ RobComm * RobComm::getRobComm()
     if (robcomm == NULL)
     {
     #if SIMULATED
-        robcomm = new YisiRobComm();
+        robcomm = new SimRobComm();
     #else
         robcomm = new YisiRobComm();
     #endif

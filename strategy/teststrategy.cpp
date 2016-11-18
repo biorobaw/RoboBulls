@@ -152,15 +152,18 @@ public:
 class ShamsiStrafe : public GenericMovementBehavior
 {
 public:
+    int verticaloff = 0;
+    ShamsiStrafe(int vertical_offset):verticaloff(vertical_offset){}
+    Robot* r1 = gameModel->findMyTeam(1);
     enum {pos_one,pos_two} state = pos_one;
     void perform(Robot *robot) override
     {
 //        GameModel * gm = GameModel::getModel();
         Point rp = robot->getPosition();
 //        Point bp = gm->getBallPoint();
-        Point target_one = Point(-2000, 0);
-        Point target_two = Point(2000, 0);
-        double ori = Measurements::angleBetween(rp,Point(0,0));
+        Point target_one = Point(r1->getPosition().x-verticaloff, 1200);
+        Point target_two = Point(r1->getPosition().x-verticaloff, -1200);
+        double ori = Measurements::angleBetween(rp,Point(5,10));
         switch(state)
         {
             case pos_one:
@@ -191,6 +194,66 @@ public:
     }
 };
 
+
+class Receiver : public GenericMovementBehavior
+{
+private:
+    Skill::KickToPointOmni* ktpi;
+    Skill::DribbleBack* dribble_skill;
+public:
+    Receiver()
+    {
+
+        Point* key = new Point(-3000,0);
+        dribble_skill = new Skill::DribbleBack(key);
+    }
+
+    void perform(Robot *robot) override
+    {
+        setMovementTargets(Point(-2000,0), 0, true, false);
+        GenericMovementBehavior::perform(robot);
+        dribble_skill->perform(robot);
+    }
+};
+
+
+class Passer : public GenericMovementBehavior
+{
+private:
+    Skill::KickToPointOmni* ktpo;
+public:
+    Passer()
+    {
+        ktpo = new Skill::KickToPointOmni(Point(-4500,0));
+    }
+
+    void perform(Robot *robot) override
+    {
+        setMovementTargets(Point(0,0), 0, false, false);
+        GenericMovementBehavior::perform(robot);
+        ktpo->perform(robot);
+    }
+};
+
+class Pusher : public GenericMovementBehavior
+{
+private:
+public:
+    Robot* r1 = gameModel->findMyTeam(1);
+    Pusher()
+    {
+
+    }
+
+    void perform(Robot *robot) override
+    {
+        setMovementTargets(Point(r1->getPosition().x-1000,r1->getPosition().y+300), 0, false, false);
+        setVelocityMultiplier(5);
+        GenericMovementBehavior::perform(robot);
+    }
+};
+
+
 bool TestStrategy::update()
 {
     //Change IDs and behaviors to be assigned here.
@@ -202,15 +265,15 @@ bool TestStrategy::update()
     Robot* r5 = gameModel->findMyTeam(5);
 
     if(r1)
-        r1->assignBeh<ShamsiStrafe>();
+        r1->assignBeh<Passer>();
     if(r2)
-        r2->assignBeh<KickBeh>();
+        r2->assignBeh<ShamsiStrafe>(1000);
     if(r3)
-        r3->assignBeh<KickBeh>();
+        r3->assignBeh<ShamsiStrafe>(1200);
     if(r4)
-        r4->assignBeh<KickBeh>();
+        r4->assignBeh<ShamsiStrafe>(800);
     if(r5)
-        r5->assignBeh<KickBeh>();
+        r5->assignBeh<Passer>();
 
     return false;
 }
