@@ -1,3 +1,5 @@
+hw/board/*.lck
+hw/board/*\#*
 RoboBulls-build-desktop-Qt_4_8_3_in_PATH__System__Release
 *build-desktop-Qt*
 *.user

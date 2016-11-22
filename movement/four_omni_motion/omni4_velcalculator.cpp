@@ -104,7 +104,10 @@ fourWheelVels FourWheelCalculator::defaultCalc
     }
     prev_vel = vel_robot;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2a5ee5ff3c883f76b24be94bd4fa7bf7eb94c2e0
     // Wheel Velocity Calculations
     double RF =  (-sin(RF_offset) * x_vel_robot + cos(RF_offset)*y_vel_robot - trans_offset*vel_robot*cos(RF_offset) + wheel_radius*theta_vel);
     double LF = -(-sin(LF_offset) * x_vel_robot + cos(LF_offset)*y_vel_robot - trans_offset*vel_robot*cos(LF_offset) + wheel_radius*theta_vel);
