@@ -222,32 +222,58 @@ class Passer : public GenericMovementBehavior
 private:
     Skill::KickToPointOmni* ktpo;
 public:
-    Passer()
+    Robot *targetRobot;
+    bool kicked = false;
+    Passer(Robot *targetRobot_)
     {
-        ktpo = new Skill::KickToPointOmni(Point(-4500,0));
+        targetRobot = targetRobot_;
+        ktpo = new Skill::KickToPointOmni(targetRobot->getPosition());
     }
 
     void perform(Robot *robot) override
     {
-        setMovementTargets(Point(0,0), 0, false, false);
-        GenericMovementBehavior::perform(robot);
-        ktpo->perform(robot);
+        while(1){
+            if(!kicked && (targetRobot->getPosition().x - (-1500) < 30 && robot->getPosition().y - (-2400) < 30)){
+                setMovementTargets(Point(0,0), 0, false, false);
+                GenericMovementBehavior::perform(robot);
+                ktpo->perform(robot);
+                kicked = true;
+                break;
+            }
+        }
+
+//        setMovementTargets(Point(0,0), 0, false, false);
+//        GenericMovementBehavior::perform(robot);
+//        ktpo->perform(robot);
     }
 };
 
 class Pusher : public GenericMovementBehavior
 {
 private:
+    Skill::KickToPointOmni* ktpo;
 public:
     Robot* r1 = gameModel->findMyTeam(1);
+    bool kicked = false;
     Pusher()
     {
-
+        ktpo = new Skill::KickToPointOmni(Point(-4500,0));
     }
 
     void perform(Robot *robot) override
     {
-        setMovementTargets(Point(r1->getPosition().x-1000,r1->getPosition().y+300), 0, false, false);
+        if(abs(robot->getPosition().x - gameModel->getBallPoint().x) < 500 && abs(robot->getPosition().y - gameModel->getBallPoint().y) < 500 && !kicked){
+            //Skill::KickToPointOmni(Point(-4500,0));
+            ktpo->perform(robot);
+        }
+
+        Point rp = robot->getPosition();
+
+            Point target_one = Point(-1500,-2400);
+            double ori = Measurements::angleBetween(rp,gameModel->getBallPoint());
+            setMovementTargets(target_one,ori,false,false);
+            if (Measurements::isClose(rp,target_one,DIST_TOLERANCE))
+
         setVelocityMultiplier(5);
         GenericMovementBehavior::perform(robot);
     }
@@ -265,15 +291,15 @@ bool TestStrategy::update()
     Robot* r5 = gameModel->findMyTeam(5);
 
     if(r1)
-        r1->assignBeh<Passer>();
+        r1->assignBeh<Pusher>();
     if(r2)
         r2->assignBeh<ShamsiStrafe>(1000);
     if(r3)
-        r3->assignBeh<ShamsiStrafe>(1200);
+        r3->assignBeh<Passer>(r1);
     if(r4)
         r4->assignBeh<ShamsiStrafe>(800);
     if(r5)
-        r5->assignBeh<Passer>();
+        r5->assignBeh<Pusher>();
 
     return false;
 }
