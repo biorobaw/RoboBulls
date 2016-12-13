@@ -53,13 +53,15 @@ if [ ! -d $INSTALL_PATH/robobulls2 ]; then
     cd $INSTALL_PATH
     git clone https://github.com/mllofriu/robobulls2.git
     cd robobulls2
-    # Regenerate protobuf files
-    cd include/
-    protoc --cpp_out=. *.proto
-    cd ..
 else
     echogreen "RoboBulls2 already installed (directory exists)"
 fi
+
+# Regenerate protobuf files
+echo Regenerating protobuf files
+cd $INSTALL_PATH/robobulls2/include/
+protoc --cpp_out=. *.proto
+cd ..
 
 #We need to set up the USB rules to recognize the Xbee
 sudo cp 99-usb-serial.rules /etc/udev/rules.d/99-xbee-serial.rules
