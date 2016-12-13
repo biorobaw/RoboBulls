@@ -53,6 +53,10 @@ if [ ! -d $INSTALL_PATH/robobulls2 ]; then
     cd $INSTALL_PATH
     git clone https://github.com/mllofriu/robobulls2.git
     cd robobulls2
+    # Regenerate protobuf files
+    cd include/
+    protoc --cpp_out=. *.proto
+    cd ..
 else
     echogreen "RoboBulls2 already installed (directory exists)"
 fi
