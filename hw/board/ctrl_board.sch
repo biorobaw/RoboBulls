@@ -6224,6 +6224,10 @@ Metric Code Size 5664</description>
 <part name="J2" library="SparkFun-Connectors" deviceset="M14" device=""/>
 <part name="TO_PWRBRD_SINGNALS" library="SparkFun-Connectors" deviceset="M03X2" device="POGO_PINS"/>
 <part name="TO_PWRBRD_PWR" library="con-wago-500" deviceset="W237-102" device=""/>
+<part name="CTRL1+" library="con-wago-500" deviceset="W237-102" device=""/>
+<part name="CTRL3" library="con-wago-500" deviceset="W237-102" device=""/>
+<part name="CTRL2" library="con-wago-500" deviceset="W237-102" device=""/>
+<part name="CTRL4" library="con-wago-500" deviceset="W237-102" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -6282,6 +6286,14 @@ Metric Code Size 5664</description>
 <instance part="TO_PWRBRD_SINGNALS" gate="G$1" x="259.08" y="167.64"/>
 <instance part="TO_PWRBRD_PWR" gate="-1" x="373.38" y="142.24"/>
 <instance part="TO_PWRBRD_PWR" gate="-2" x="373.38" y="134.62"/>
+<instance part="CTRL1+" gate="-1" x="78.74" y="104.14"/>
+<instance part="CTRL1+" gate="-2" x="78.74" y="99.06"/>
+<instance part="CTRL3" gate="-1" x="93.98" y="104.14"/>
+<instance part="CTRL3" gate="-2" x="93.98" y="99.06"/>
+<instance part="CTRL2" gate="-1" x="78.74" y="91.44"/>
+<instance part="CTRL2" gate="-2" x="78.74" y="86.36"/>
+<instance part="CTRL4" gate="-1" x="93.98" y="91.44"/>
+<instance part="CTRL4" gate="-2" x="93.98" y="86.36"/>
 </instances>
 <busses>
 </busses>
@@ -6417,6 +6429,20 @@ Metric Code Size 5664</description>
 <segment>
 <pinref part="TO_PWRBRD_PWR" gate="-2" pin="KL"/>
 <wire x1="378.46" y1="134.62" x2="388.62" y2="134.62" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="CTRL1+" gate="-2" pin="KL"/>
+<wire x1="81.28" y1="111.76" x2="83.82" y2="111.76" width="0.1524" layer="91"/>
+<wire x1="83.82" y1="111.76" x2="83.82" y2="99.06" width="0.1524" layer="91"/>
+<pinref part="CTRL2" gate="-2" pin="KL"/>
+<wire x1="83.82" y1="99.06" x2="83.82" y2="86.36" width="0.1524" layer="91"/>
+<junction x="83.82" y="99.06"/>
+<wire x1="83.82" y1="86.36" x2="81.28" y2="86.36" width="0.1524" layer="91"/>
+<junction x="83.82" y="86.36"/>
+<wire x1="83.82" y1="111.76" x2="99.06" y2="111.76" width="0.1524" layer="91"/>
+<junction x="83.82" y="111.76"/>
+<pinref part="CTRL3" gate="-2" pin="KL"/>
+<wire x1="99.06" y1="111.76" x2="99.06" y2="99.06" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="DIO4" class="0">
@@ -6970,6 +6996,17 @@ Metric Code Size 5664</description>
 <pinref part="TO_PWRBRD_PWR" gate="-1" pin="KL"/>
 <wire x1="378.46" y1="142.24" x2="388.62" y2="142.24" width="0.1524" layer="91"/>
 </segment>
+<segment>
+<wire x1="81.28" y1="116.84" x2="101.6" y2="116.84" width="0.1524" layer="91"/>
+<wire x1="101.6" y1="116.84" x2="101.6" y2="104.14" width="0.1524" layer="91"/>
+<pinref part="CTRL3" gate="-1" pin="KL"/>
+<wire x1="101.6" y1="104.14" x2="99.06" y2="104.14" width="0.1524" layer="91"/>
+<wire x1="101.6" y1="104.14" x2="101.6" y2="91.44" width="0.1524" layer="91"/>
+<junction x="101.6" y="104.14"/>
+<pinref part="CTRL4" gate="-1" pin="KL"/>
+<wire x1="101.6" y1="91.44" x2="99.06" y2="91.44" width="0.1524" layer="91"/>
+<label x="86.36" y="119.38" size="1.778" layer="95" rot="R180"/>
+</segment>
 </net>
 <net name="READ_CAP" class="0">
 <segment>
@@ -6998,6 +7035,16 @@ Metric Code Size 5664</description>
 <pinref part="TO_PWRBRD_SINGNALS" gate="G$1" pin="1"/>
 <wire x1="251.46" y1="170.18" x2="241.3" y2="170.18" width="0.1524" layer="91"/>
 <label x="238.76" y="170.18" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="N$2" class="0">
+<segment>
+<pinref part="CTRL1+" gate="-1" pin="KL"/>
+<wire x1="83.82" y1="104.14" x2="86.36" y2="104.14" width="0.1524" layer="91"/>
+<wire x1="86.36" y1="104.14" x2="86.36" y2="116.84" width="0.1524" layer="91"/>
+<wire x1="86.36" y1="104.14" x2="86.36" y2="91.44" width="0.1524" layer="91"/>
+<pinref part="CTRL2" gate="-1" pin="KL"/>
+<wire x1="86.36" y1="91.44" x2="83.82" y2="91.44" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
