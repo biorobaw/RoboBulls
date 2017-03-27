@@ -10,7 +10,7 @@
 class Robot;
 
 //! @brief Namespace containing all Movement functions and classes
-namespace Movement
+namespace Move
 {
 
 /*! @brief An interface to movement calculation algorithms and obstacle avoidance
@@ -34,7 +34,7 @@ public:
     virtual ~Move();
 
     /*! @brief Initialize the Movement object
-     * @details Provde an initial target, angle, and obstalce avoidance specifications
+     * @details Provide an initial target, angle, and obstacle avoidance specifications
      * @see recreate */
 
     Move(Point targetPoint, float targetAngle = UNUSED_ANGLE_VALUE,
@@ -83,12 +83,13 @@ public:
      * @param Type the type of movement; see Type for information
      * @see movetype.h
      * @see Type */
-    bool perform(Robot* robot, Type moveType = Type::Default);
+    bool perform(Robot* robot, MoveType moveType = MoveType::Default);
 
 protected:
     float lfront, lback, rfront, rback;  //rob->type() == fourWheelOmni
     float left, right;                   //rob->type() == differential;
     float back;                          //rob->type() == threeWheelOmni;
+
 
     /* Override this function in a derived class to provide the calculated
      * velocities to a general point targetPoint, and general angle targetAngle.
@@ -96,7 +97,7 @@ protected:
      * do not set the velocities on the robot.
      */
     virtual void calculateVels
-        (Robot* rob, Point targetPoint, float targetAngle, Type moveType) = 0;
+        (Robot* rob, Point targetPoint, float targetAngle, MoveType moveType) = 0;
         
 private:
     Point m_targetPoint;    //The requested final target point
@@ -127,12 +128,12 @@ private:
     //Obstacle avoidance functions
     Point updatePathQueue(Robot *robot);
     bool  determinePathClear(Robot *robot) const;
-    bool  calcObstacleAvoidance(Robot* rob, Type moveType);
+    bool  calcObstacleAvoidance(Robot* rob, MoveType moveType);
     void  assignNewPath(const Point& robotPoint, bool is_goalie);
     void  getCollisionState(Robot* robot, bool& collided, bool& yielding) const;
 
     //Regular movement
-    bool calcRegularMovement(Robot* rob, Type moveType);
+    bool calcRegularMovement(Robot* rob, MoveType moveType);
 
     //Utility to switch over Robot::Type and set actual velocities
     void setVels(Robot* robot);
@@ -143,7 +144,7 @@ private:
 /*
 Movement::Move* myMove;
 ...
-myMove = new Movement::GoToPosition(targetPoint, targetAngle);
+myMove = new Movement::go_to_pose(targetPoint, targetAngle);
 ...
 myMove->setVelocityMultiplier(2);
 myMove->perform(robot);

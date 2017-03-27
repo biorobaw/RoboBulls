@@ -3,7 +3,7 @@
 
 #include "skill.h"
 #include "utilities/point.h"
-#include "movement/gotoposition.h"
+#include "movement/go_to_pose.h"
 #include "model/gamemodel.h"
 
 namespace Skill
@@ -33,7 +33,7 @@ public:
 private:
     Point* target;
     Point grasp_point;
-    Movement::GoToPosition move_skill;
+    Move::GoToPose move_skill;
     enum {move_to_ball, grasp, move_back} state = move_to_ball;
     float prev_vel = 0;
 };

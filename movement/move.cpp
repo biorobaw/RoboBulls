@@ -24,9 +24,6 @@
 
 /************************************************************************/
 
-namespace Movement
-{
-
 Move::Move()
     : m_targetPoint(9999,9999)
     , m_targetAngle(UNUSED_ANGLE_VALUE)
@@ -96,7 +93,7 @@ void Move::setMovementTolerances(float distTolerance, float angleTolerance)
 }
 
 
-bool Move::perform(Robot *robot, Movement::Type moveType)
+bool Move::perform(Robot *robot, Move::MoveType moveType)
 {
     bool finished = false;
 
@@ -132,7 +129,7 @@ bool Move::perform(Robot *robot, Movement::Type moveType)
 /********************* Private Methods *********************/
 /***********************************************************/
 
-bool Move::calcRegularMovement(Robot* robot, Type moveType)
+bool Move::calcRegularMovement(Robot* robot, MoveType moveType)
 {
     Point robotPos = robot->getPosition();
     float robotAng = robot->getOrientation();
@@ -203,7 +200,7 @@ void Move::getCollisionState(Robot* robot, bool& collided, bool& yielding) const
 #endif
 }
 
-bool Move::calcObstacleAvoidance(Robot* robot, Type moveType)
+bool Move::calcObstacleAvoidance(Robot* robot, MoveType moveType)
 {
     if(!hasFoundPathEnd) {
         //Pathfinding waypoint mode.
@@ -260,16 +257,14 @@ void Move::assignNewPath(const Point& robotPoint, bool use_def_areas)
     }
 }
 
-
+/* This is the function that, after velocity is calculated above,
+ * sets the velocities on the actual robot. This then funnels down
+ * to sendVelsLarge. Thus, OVERALL_VELOCITY allows the slowing down
+ * of the entire program since all movement comes through here.
+ */
 void Move::setVels(Robot *robot)
 {
-    /* This is the function that, after velocity is calculated above,
-     * sets the velocities on the actual robot. This then funnels down
-     * to sendVelsLarge. Thus, OVERALL_VELOCITY allows the slowing down
-     * of the entire program since all movement comes through here.
-     */
-
-    /* Ryan has perpetrated this boolean check; if overrided, ignore movement signals */
+    /* If override, ignore movement signals */
     if (!GuiInterface::getGuiInterface()->isOverriddenBot()[robot->getID()]) {
         switch(robot->type()) {
         case differential:
@@ -289,8 +284,5 @@ void Move::setVels(Robot *robot)
             break;
         }
     }
-}
-
-
 }
 

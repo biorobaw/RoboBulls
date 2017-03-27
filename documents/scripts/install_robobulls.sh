@@ -3,6 +3,7 @@
 #Installs the SSL RefBox, grSim simulator, and downloads RoboBulls2
 INSTALL_PATH=$HOME #Where to install the folders to
 INCLUDE_PATH="/usr/local/include" #Where to install library header files
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"	# Path to this script
 
 function echogreen() { RED='\e[32m'; NC='\033[0m'; printf "${RED}$1${NC}\n"; }
 
@@ -36,7 +37,7 @@ fi
 if [ ! -d $INSTALL_PATH/grSim ]; then
     echo "grSim not installed; installing in $INSTALL_PATH"
     cd /tmp
-    wget http://vartypes.googlecode.com/files/vartypes-0.7.tar.gz
+    wget https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/vartypes/vartypes-0.7.tar.gz
     tar xfz vartypes-0.7.tar.gz
     cd vartypes-0.7 && mkdir build && cd build && cmake .. && make && sudo make install
     rm -rf vartypes-0.7
@@ -57,6 +58,14 @@ else
     echogreen "RoboBulls2 already installed (directory exists)"
 fi
 
+# Regenerate protobuf files
+echo Regenerating protobuf files
+cd $INSTALL_PATH/robobulls2/include/
+protoc --cpp_out=. *.proto
+cd ..
+
 #We need to set up the USB rules to recognize the Xbee
-sudo cp 99-usb-serial.rules /etc/udev/rules.d/99-usb-serial.rules
-sudo cp minirc.dfl /etc/minicom/minirc.dfl
+mkdir -p /etc/udev/rules.d
+sudo cp $DIR/99-usb-serial.rules /etc/udev/rules.d/
+mkdir -p /etc/minicom
+sudo cp $DIR/minirc.dfl /etc/minicom/

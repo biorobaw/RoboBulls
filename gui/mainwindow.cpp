@@ -87,41 +87,11 @@ MainWindow::MainWindow(QWidget *parent) :
     // Default zoom button
     connect(ui->zoom_default, SIGNAL(clicked()), fieldpanel, SLOT(defaultZoom()));
 
-    //Joystick initialization
-    joystick::listen();
+    // Start joystick thread
+    JoyStick::listen();
 
     //All rboots overridden by default
     on_btn_override_all_released();
-}
-
-void MainWindow::handleJoystickInput()
-{
-    //Joystick updating is a bit different than keyboard. The joy axises can always
-    //Be sent to the robot, so it is done here in the main loop
-    for(joystick::reading& value: joystick::joystickReadings)
-    {
-        if(value.id == -1)
-            continue;
-
-        Robot* r = gameModel->findMyTeam(value.id);
-        if(r->type() == fourWheelOmni) {
-            r->setLB(value.LB);
-            r->setRB(value.RB);
-            r->setRF(value.RF);
-            r->setLF(value.LF);
-        } else {
-            r->setR(value.RF);
-            r->setL(value.LF);
-            r->setB(value.RB);
-        }
-
-        if(value.Kick)
-            r->setKick(5);
-
-        if(value.Dribble)
-            on_btn_botDrible_pressed();
-        else on_btn_botDrible_released();
-    }
 }
 
 void MainWindow::coreLoop(int tick) {
@@ -148,8 +118,8 @@ void MainWindow::coreLoop(int tick) {
     updateBallInfo();
     clockLoop(tick);
 
-    //Joystick support here
-    handleJoystickInput();
+    // Actuate joystick commands
+    JoyStick::setCommands();
 }
 
 void MainWindow::clockLoop(int tick) {
@@ -379,8 +349,6 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
         case Qt::Key_F:
             setFocusOnField();
             break;
-
-
     }
 }
 

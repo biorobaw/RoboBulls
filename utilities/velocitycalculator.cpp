@@ -28,5 +28,5 @@ void VelocityCalculator::addNewVelocityPoint(const Point& movedPoint)
     if(velCalculations.size() == maxSize) {
         velCalculations.pop_front();
     }
-    velCalculations.emplace_back(movedPoint, clock());
+    velCalculations.emplace_back(std::make_pair(movedPoint, clock()));
 }

@@ -13,7 +13,7 @@ GenericMovementBehavior::GenericMovementBehavior
 //Override Behavior perform
 void GenericMovementBehavior::perform(Robot* robot)
 {
-    perform(robot,Movement::Type::Default);
+    perform(robot,Move::MoveType::Default);
 }
 
 /***********************************************************/
@@ -21,7 +21,7 @@ void GenericMovementBehavior::perform(Robot* robot)
 /***********************************************************/
 
 //Specialized perform function
-void GenericMovementBehavior::perform(Robot* robot, Movement::Type type)
+void GenericMovementBehavior::perform(Robot* robot, Move::MoveType type)
 {
     movementFinished = movement.perform(robot, type);
 }
@@ -39,13 +39,12 @@ void GenericMovementBehavior::setMovementTargets(Point targetPoint, float target
 void GenericMovementBehavior::setMovementTargets
     (Point targetPoint, float targetAngle, bool withObstacleAvoid, bool useAvoidBall)
 {
-   movement.recreate(targetPoint, targetAngle, withObstacleAvoid, useAvoidBall);
+   movement.updateGoal(targetPoint, targetAngle, withObstacleAvoid, useAvoidBall);
 
     /* Don't forget to re-set velocity multiplier, because this is lost with recreate.
      * It may be better to move this to the recreate function */
    movement.setVelocityMultiplier(this->velocityMultipier);
 }
-
 
 void GenericMovementBehavior::setVelocityMultiplier(float newMultiplier)
 {
@@ -57,4 +56,3 @@ void GenericMovementBehavior::setMovementTolerances(float newDistTolerance, floa
 {
     movement.setMovementTolerances(newDistTolerance, newRotTolerance);
 }
-

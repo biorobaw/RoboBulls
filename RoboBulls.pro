@@ -38,7 +38,7 @@ SOURCES += main.cpp \
 	gui/guirobot.cpp \
 	gui/guiscene.cpp \
 	gui/guisidelines.cpp \
-	gui/joystick.cpp \
+        gui/joystick.cpp \
 	gui/mainwindow.cpp \
 	gui/objectposition.cpp \
 	gui/robotpanel.cpp \
@@ -56,14 +56,10 @@ SOURCES += main.cpp \
 	include/serialib.cpp \
 	model/gamemodel.cpp \
 	model/robot.cpp \
-	movement/differential/closedloopcontrol.cpp \
-	movement/differential/differential_velcalculator.cpp \
-	movement/four_omni_motion/omni4_velcalculator.cpp \
+        movement/four_wheel_omni/four_wheel_omni_pilot.cpp \
 	movement/move_collisions.cpp \
-	movement/move.cpp \
 	movement/pathfinding/fppa_pathfinding.cpp \
-	movement/three_omni_motion/omni3_velcalculator.cpp \
-	movement/gotoposition.cpp \
+        movement/three_wheel_omni/three_wheel_omni_pilot.cpp \
 	skill/kick.cpp \
 	skill/kicktopointomni.cpp \
 	skill/stop.cpp \
@@ -86,22 +82,24 @@ SOURCES += main.cpp \
         strategy/indirectkickstrategy.cpp \
         communication/kfball.cpp \
         utilities/getclassname.cpp \
-    utilities/region/sector.cpp \
-    utilities/region/rectangle.cpp \
-    utilities/measurements.cpp \
-    utilities/region/defencearea.cpp \
-    gui/guidrawpoint.cpp \
-    gui/guidrawregion.cpp \
-    skill/dribbletopoint.cpp \
-    behavior/challengeballbot.cpp \
-    skill/dribbleback.cpp \
-    behavior/refstop.cpp \
-    behavior/goalie.cpp \
-    behavior/markbot.cpp \
-    behavior/wall.cpp \
-    behavior/penaltygoalie.cpp \
-    communication/yisirobcomm.cpp \
-    communication/crc.cpp
+        utilities/region/sector.cpp \
+        utilities/region/rectangle.cpp \
+        utilities/measurements.cpp \
+        utilities/region/defencearea.cpp \
+        gui/guidrawpoint.cpp \
+        gui/guidrawregion.cpp \
+        skill/dribbletopoint.cpp \
+        behavior/challengeballbot.cpp \
+        skill/dribbleback.cpp \
+        behavior/refstop.cpp \
+        behavior/goalie.cpp \
+        behavior/markbot.cpp \
+        behavior/wall.cpp \
+        behavior/penaltygoalie.cpp \
+        communication/yisirobcomm.cpp \
+        communication/crc.cpp \
+        movement/go_to_pose.cpp \
+        movement/differential/differential_pilot.cpp \
 
 HEADERS += \
 	behavior/attackmain.h \
@@ -126,7 +124,7 @@ HEADERS += \
 	gui/guirobot.h \
 	gui/guiscene.h \
 	gui/guisidelines.h \
-	gui/joystick.h \
+        gui/joystick.h \
 	gui/mainwindow.h \
 	gui/objectposition.h \
 	gui/robotpanel.h \
@@ -149,15 +147,10 @@ HEADERS += \
 	include/serialib.h \
 	model/gamemodel.h \
 	model/robot.h \
-	movement/differential/closedloopcontrol.h \
-	movement/differential/differential_velcalculator.h \
-	movement/four_omni_motion/omni4_velcalculator.h \
-	movement/gotoposition.h \
+	movement/go_to_pose.h \
 	movement/move_collisions.h \
-	movement/move.h \
 	movement/movetype.h \
 	movement/pathfinding/fppa_pathfinding.h \
-	movement/three_omni_motion/omni3_velcalculator.h \
 	skill/kick.h \
 	skill/kicktopointomni.h \
 	skill/skill.h \
@@ -180,23 +173,26 @@ HEADERS += \
         strategy/indirectkickstrategy.h \
         communication/kfball.h \
         utilities/getclassname.h \
-    utilities/region/sector.h \
-    utilities/region/rectangle.h \
-    utilities/region/region.h \
-    utilities/measurements.h \
-    utilities/region/defencearea.h \
-    gui/guidrawpoint.h \
-    gui/guidrawregion.h \
-    skill/dribbletopoint.h \
-    behavior/challengeballbot.h \
-    skill/dribbleback.h \
-    behavior/refstop.h \
-    behavior/goalie.h \
-    behavior/markbot.h \
-    behavior/wall.h \
-    behavior/penaltygoalie.h \
-    communication/yisirobcomm.h \
-    communication/crc.h
+        utilities/region/sector.h \
+        utilities/region/rectangle.h \
+        utilities/region/region.h \
+        utilities/measurements.h \
+        utilities/region/defencearea.h \
+        gui/guidrawpoint.h \
+        gui/guidrawregion.h \
+        skill/dribbletopoint.h \
+        behavior/challengeballbot.h \
+        skill/dribbleback.h \
+        behavior/refstop.h \
+        behavior/goalie.h \
+        behavior/markbot.h \
+        behavior/wall.h \
+        behavior/penaltygoalie.h \
+        communication/yisirobcomm.h \
+        communication/crc.h \
+        movement/differential/differential_pilot.h \
+        movement/three_wheel_omni/three_wheel_omni_pilot.h \
+        movement/four_wheel_omni/four_wheel_omni_pilot.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 

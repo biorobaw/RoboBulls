@@ -1,7 +1,7 @@
 #ifndef MOVE_TYPE_H
 #define MOVE_TYPE_H
 
-namespace Movement
+namespace Move
 {
 
 //! @file Movement Type modifiers used in calculations and perform() parameters
@@ -13,31 +13,30 @@ namespace Movement
  * differential robots have sharp turns, no slowdown, and others; the omni
  * robots have max velocity and speed versions of their default movement 
  * calculators. In the case that the modifier is not supported by the
- * robot type GoToPosition has been passed, the default movement calculation
+ * robot type go_to_pose has been passed, the default movement calculation
  * is used.
  */
-enum Type
+enum MoveType
 {
     Default = -1,
 
-    //Differential Movement Types
+    // Differential Movement Types
     SharpTurns, //Try to make more shaper curves around object
     NoSlowdown, //Attempts to not have as much of a slowdown when reaching a point
     DiffCount,  //Leave last and do not use
 
-    //Omni Movement Types
+    // Omni Movement Types
     facePoint,  //Puts more emphasis on rotation
-    dribble,    //Used when dribbling the ball
-    StayStill   //Used when the robot shoudl stay in it's current spot
+    dribble    //Used when dribbling the ball
 };
 
 
 //!< @brief Determines if a given Movement::Type is Differenetial
-#define IS_DIFFERENTIAL(type) (((type) >= 0) && ((type) < Type::DiffCount))
+#define IS_DIFFERENTIAL(type) (((type) >= 0) && ((type) < MoveType::DiffCount))
 
 //!< @brief Determines if a given Movement::Type is Omni
-#define IS_OMNI(type) ((type) > Type::DiffCount)
-	
+#define IS_OMNI(type) ((type) > MoveType::DiffCount)
+
 }
 
 #endif

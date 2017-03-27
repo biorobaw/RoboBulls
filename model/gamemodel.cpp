@@ -383,8 +383,8 @@ Robot* GameModel::find(int id, std::vector<Robot*>& team)
  * This is called when the VisionComm says a robot has been updated */
 static Point calculateRobotVelocity(Robot* robot)
 {
-    static VelocityCalculator robotVelCalcs[30];
-    int   index  = (10 * robot->isOnMyTeam()) + robot->getID();
+    static VelocityCalculator robotVelCalcs[32];
+    int   index  = (16 * robot->isOnMyTeam()) + robot->getID();
     Point newVel = robotVelCalcs[index].update(robot->getPosition());
     return newVel;
 }

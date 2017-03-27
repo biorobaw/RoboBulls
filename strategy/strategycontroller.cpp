@@ -130,7 +130,7 @@ void StrategyController::clearCurrentStrategy()
 
 void StrategyController::frameBegin()
 {
-    Movement::FPPA::update();
+    Move::FPPA::update();
 }
 
 void StrategyController::frameEnd()

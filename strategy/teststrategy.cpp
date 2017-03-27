@@ -143,40 +143,36 @@ public:
 
         std::cout << "Distance Error: " << Measurements::distance(robot->getPosition(),target) << std::endl;
         std::cout << "Angle Error in Degrees: " << robot->getOrientation()*180/M_PI << std::endl;
-        GenericMovementBehavior::perform(robot,Movement::Type::Default);
+        GenericMovementBehavior::perform(robot,Move::MoveType::Default);
     }
 };
 
 // Test behavior to move the robot from (-2000,0) to (2000,0)
 // while facing the ball
-class ShamsiStrafe : public GenericMovementBehavior
+class Strafe : public GenericMovementBehavior
 {
 public:
-    int verticaloff = 0;
-    ShamsiStrafe(int vertical_offset):verticaloff(vertical_offset){}
-    Robot* r1 = gameModel->findMyTeam(1);
+    Point A = Point(1200,0), B = Point(-1200,0);
     enum {pos_one,pos_two} state = pos_one;
+    Strafe(Point A, Point B) : A(A), B(B){}
+
     void perform(Robot *robot) override
     {
-//        GameModel * gm = GameModel::getModel();
         Point rp = robot->getPosition();
-//        Point bp = gm->getBallPoint();
-        Point target_one = Point(r1->getPosition().x-verticaloff, 1200);
-        Point target_two = Point(r1->getPosition().x-verticaloff, -1200);
-        double ori = Measurements::angleBetween(rp,Point(5,10));
+        double ori = Measurements::angleBetween(rp, gameModel->getBallPoint());
         switch(state)
         {
             case pos_one:
-                setMovementTargets(target_one,ori,false,false);
-                if (Measurements::isClose(rp,target_one,DIST_TOLERANCE))
+                setMovementTargets(A,ori,true,true);
+                if (Measurements::isClose(rp,A,DIST_TOLERANCE))
                 state = pos_two;
                 break;
             case pos_two:
-                setMovementTargets(target_two,ori,false,false);
-                if (Measurements::isClose(rp,target_two,DIST_TOLERANCE))
+                setMovementTargets(B,ori,true,true);
+                if (Measurements::isClose(rp,B,DIST_TOLERANCE))
                 state = pos_one;
         }
-        GenericMovementBehavior::perform(robot, Movement::Type::Default);
+        GenericMovementBehavior::perform(robot, Move::MoveType::Default);
     }
 };
 
@@ -185,96 +181,16 @@ public:
 class GoToBehavior : public GenericMovementBehavior
 {
 public:
-    GoToBehavior(){}
-
+    GoToBehavior(double angle)
+    {
+        offset += Point(cos(angle*M_PI/180), sin(angle*M_PI/180)) * 500;
+    }
+    Point offset;
     void perform(Robot *robot) override
     {
-        setMovementTargets(gameModel->getBallPoint()+Point(500,0),Measurements::angleBetween(robot->getPosition(),gameModel->getBallPoint()),true, true);
-        GenericMovementBehavior::perform(robot);
-    }
-};
-
-
-class Receiver : public GenericMovementBehavior
-{
-private:
-    Skill::KickToPointOmni* ktpi;
-    Skill::DribbleBack* dribble_skill;
-public:
-    Receiver()
-    {
-
-        Point* key = new Point(-3000,0);
-        dribble_skill = new Skill::DribbleBack(key);
-    }
-
-    void perform(Robot *robot) override
-    {
-        setMovementTargets(Point(-2000,0), 0, true, false);
-        GenericMovementBehavior::perform(robot);
-        dribble_skill->perform(robot);
-    }
-};
-
-
-class Passer : public GenericMovementBehavior
-{
-private:
-    Skill::KickToPointOmni* ktpo;
-public:
-    Robot *targetRobot;
-    bool kicked = false;
-    Passer(Robot *targetRobot_)
-    {
-        targetRobot = targetRobot_;
-        ktpo = new Skill::KickToPointOmni(targetRobot->getPosition());
-    }
-
-    void perform(Robot *robot) override
-    {
-        while(1){
-            if(!kicked && (targetRobot->getPosition().x - (-1500) < 30 && robot->getPosition().y - (-2400) < 30)){
-                setMovementTargets(Point(0,0), 0, false, false);
-                GenericMovementBehavior::perform(robot);
-                ktpo->perform(robot);
-                kicked = true;
-                break;
-            }
-        }
-
-//        setMovementTargets(Point(0,0), 0, false, false);
-//        GenericMovementBehavior::perform(robot);
-//        ktpo->perform(robot);
-    }
-};
-
-class Pusher : public GenericMovementBehavior
-{
-private:
-    Skill::KickToPointOmni* ktpo;
-public:
-    Robot* r1 = gameModel->findMyTeam(1);
-    bool kicked = false;
-    Pusher()
-    {
-        ktpo = new Skill::KickToPointOmni(Point(-4500,0));
-    }
-
-    void perform(Robot *robot) override
-    {
-        if(abs(robot->getPosition().x - gameModel->getBallPoint().x) < 500 && abs(robot->getPosition().y - gameModel->getBallPoint().y) < 500 && !kicked){
-            //Skill::KickToPointOmni(Point(-4500,0));
-            ktpo->perform(robot);
-        }
-
-        Point rp = robot->getPosition();
-
-            Point target_one = Point(-1500,-2400);
-            double ori = Measurements::angleBetween(rp,gameModel->getBallPoint());
-            setMovementTargets(target_one,ori,false,false);
-            if (Measurements::isClose(rp,target_one,DIST_TOLERANCE))
-
-        setVelocityMultiplier(5);
+        setMovementTargets(gameModel->getBallPoint() + offset,
+                           Measurements::angleBetween(robot->getPosition(),gameModel->getBallPoint()),
+                           true, true);
         GenericMovementBehavior::perform(robot);
     }
 };
@@ -284,22 +200,19 @@ bool TestStrategy::update()
 {
     //Change IDs and behaviors to be assigned here.
     //All robots must exists before any action is taken.
+    Robot* r0 = gameModel->findMyTeam(3);
     Robot* r1 = gameModel->findMyTeam(1);
     Robot* r2 = gameModel->findMyTeam(2);
     Robot* r3 = gameModel->findMyTeam(3);
     Robot* r4 = gameModel->findMyTeam(4);
-    Robot* r5 = gameModel->findMyTeam(5);
 
-    if(r1)
-        r1->assignBeh<Pusher>();
-    if(r2)
-        r2->assignBeh<ShamsiStrafe>(1000);
-    if(r3)
-        r3->assignBeh<Passer>(r1);
-    if(r4)
-        r4->assignBeh<ShamsiStrafe>(800);
-    if(r5)
-        r5->assignBeh<Pusher>();
+    if(r0) r0->assignBeh<GoToBehavior>(1*360/5.0);
+//    if(r1) r1->assignBeh<GoToBehavior>(2*360/5.0);
+//    if(r2) r2->assignBeh<GoToBehavior>(3*360/5.0);
+//    if(r3) r3->assignBeh<GoToBehavior>(4*360/5.0);
+//    if(r4) r4->assignBeh<GoToBehavior>(5*360/5.0);
+
+//    std::cout << std::endl << "TestStrategy::Update" << std::endl;
 
     return false;
 }
@@ -308,3 +221,4 @@ void TestStrategy::assignBeh()
 {
 
 }
+

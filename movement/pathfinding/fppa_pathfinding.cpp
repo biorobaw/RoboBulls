@@ -19,17 +19,19 @@
 
 //Print some extra debug output
 #define FPPA_DEBUG 0
+
 /* Defines the maximum recursions buildPathimpl makes(the number of segments in a path)
  * before no more serch is made
  */
 #define MAX_RECURSION_DEPTH 10
+
 /* Defines the number of calls to pathfindingBegin (to update FPPA) must be made before
  * the state of all obstacles is updated. This is for efficiency reasons
  */
 #define FRAME_UPDATE_COUNT 3
 
-/* Defines, when sub-divding a path to avoid an obstalce, the minimum perpendicular distance
- * it samples from the segment to avoid it. Reducing the search size by a factor can
+/* Defines, when sub-divding a path to avoid an obstacle, the minimum perpendicular distance
+ * from the segment it samples to avoid it. Reducing the search size by a factor can
  * help eliminate the jagged edges in the path, but risks cutting corners too close around
  * obstacles.
  */
@@ -37,7 +39,7 @@
 
 /************************************************************************/
 
-namespace Movement {
+namespace Move {
 namespace FPPA {
 namespace impl {
 
@@ -211,7 +213,6 @@ namespace impl {
             currentRobotObstacles.push_back(rob->getPosition());
         for(Robot* rob : opTeam)
             currentRobotObstacles.push_back(rob->getPosition());
-
     }
 
     /*********************************************************/
@@ -221,10 +222,9 @@ namespace impl {
         dest.x = Measurements::clamp(dest.x, -HALF_FIELD_LENGTH+100.f,  HALF_FIELD_LENGTH-100.f);
         dest.y = Measurements::clamp(dest.y, -HALF_FIELD_WIDTH +100.f,  HALF_FIELD_WIDTH -100.f);
 
+        // Push points to edge of defence areas
         DefenceArea da0(OUR_TEAM);
         DefenceArea da1(!OUR_TEAM);
-
-        // Push points to edge of defence areas
         if(def_area_on)
         {
             da0.expelPoint(dest);
@@ -244,7 +244,7 @@ namespace impl {
     Path genPath(const Point& start, Point end, bool avoidBall, bool use_def_areas)
     {
         // If the end point is not reachable, make it reachable
-        //impl::sanitizeDestination(start, end, avoidBall, use_def_areas);
+        impl::sanitizeDestination(end, use_def_areas);
 
         Path path;
         path.push_back(start);

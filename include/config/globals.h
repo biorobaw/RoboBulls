@@ -47,24 +47,24 @@
 #elif GRSIM_FIELD
 
 //! @brief The center-to-goal-line length (X-Axis) of the field
-#define HALF_FIELD_LENGTH 3000
+#define HALF_FIELD_LENGTH 4500
 
 //! @brief The full side-to-side length (X-Axis)
 #define FIELD_LENGTH  (HALF_FIELD_LENGTH*2)
 
 //! @brief The center-to-side length (Y-Axis) of the field
-#define HALF_FIELD_WIDTH 2000
+#define HALF_FIELD_WIDTH 3000
 
 //! @brief The full goal-to-goal length (Y-Axis)
 #define FIELD_WIDTH (HALF_FIELD_WIDTH*2)
 
 //! @brief Radius of circular corners of defence area
 //! Look at SSL rule book for clarification
-#define DEF_AREA_RADIUS 500
+#define DEF_AREA_RADIUS 1000
 
 //! @brief Distance from Y=0 to the centre of circular areas
 //! //! Look at SSL rule book for clarification
-#define DEF_AREA_OFFSET 100
+#define DEF_AREA_OFFSET 250
 
 //! @brief Width of Goal Post
 #define GOAL_WIDTH 1000

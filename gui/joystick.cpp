@@ -1,27 +1,18 @@
-#include <SDL2/SDL.h>
-#include <thread>
-#include "include/config/team.h"
-#include "model/gamemodel.h"
-#include "movement/four_omni_motion/omni4_velcalculator.h"
-#include "movement/three_omni_motion/omni3_velcalculator.h"
-#include "gui/guiinterface.h"
 #include "gui/joystick.h"
-#include "utilities/debug.h"
 
 //Configuration section
-namespace joystick
+namespace JoyStick
 {
 
-//A struct to hold axis movement configuration for each joystick
-struct axis_configuration
-{
-    int jAxisMoveUp;    //What is the axis to move up?
-    int jAxisMoveSide;  //What is the axis to move sideways?
-    int jAxisRotate;    //What is the axis to rotate
-};
+/*! Mapping between joysticks and robot ids */
+int robots[MAX_JOYSTICKS] = {-1};
 
-//Stores configs for all connected joysticks
-axis_configuration axisConfigs[10];
+/*! Variables to read joystick info */
+float axes[MAX_JOYSTICKS][8] = {0};      // Joystick axis readings buffer
+Uint8 buttons[MAX_JOYSTICKS][20] = {0};  // Joystick button readings buffer
+
+std::thread joystickThread;
+axis_configuration axisConfigs[MAX_JOYSTICKS]; //Stores configs for all connected joysticks
 
 bool configure(const std::string& name, axis_configuration& config_out)
 {
@@ -51,26 +42,18 @@ bool configure(const std::string& name, axis_configuration& config_out)
     return true;
 }
 
-}
-
-//Command line mapping sections
-namespace joystick
-{
-
-
-reading joystickReadings[10];
-
+// Command line mapping function. Creates entry in robots array.
 void map_joystick(const std::vector<std::string>& args)
 {
     if(args.size() != 2) {
-        std::cerr << "Usage: map_joy <joy-id> <rob-id>";
+        std::cerr << "Usage: mapjoy <joy-id> <rob-id>";
         return;
     }
 
     //Update the joystick at joy_id to point to rob_id
     int joy_id = std::atoi(args[0].c_str());
     int rob_id = std::atoi(args[1].c_str());
-    joystickReadings[joy_id].id = rob_id;
+    robots[joy_id] = rob_id;
 
     std::cout << "Joystick \"" << SDL_JoystickNameForIndex(joy_id) << "\" mapped to "
               << rob_id << std::endl;
@@ -79,23 +62,17 @@ void map_joystick(const std::vector<std::string>& args)
 void print_joymap(const std::vector<std::string>&)
 {
     SDL_JoystickID joy = 0;
-    for(; joy < 10; ++joy) {
-        const reading& r = joystickReadings[joy];
-        if(r.id != -1) {
+    for(; joy < 10; ++joy)
+    {
+        int r_id = robots[joy];
+        if(r_id != -1)
+        {
             const char* name = SDL_JoystickNameForIndex(joy);
-            std::cout << joy << ": \"" << name << "\" connected to robot " << r.id << std::endl;
+            std::cout << joy << ": \"" << name << "\" connected to robot " << r_id << std::endl;
         }
     }
 }
 
-}
-
-//Main event listener section
-namespace joystick
-{
-
-//Thread to listen for joystick inputs
-std::thread joystickThread;
 
 bool registerJoystick(SDL_JoystickID id, const std::string& name)
 {
@@ -117,60 +94,45 @@ bool registerJoystick(SDL_JoystickID id, const std::string& name)
     }
 }
 
-Movement::FourWheelCalculator fwc;
-
-Movement::ThreeWheelCalculator twc;
-
-//How big is the movement vector multiplied?
-float mult = 25;
-
-//How much is the movement vector divided by when we're in slow mode?
-float mult_div = 6;
-
-//Rotation multiplier
-float rot_mult = 5;
-
-Movement::fourWheelVels calculateRobotVelocity
-    (int robotID, SDL_JoystickID joyID, float* axes, bool slowMode)
+void setCommands()
 {
-    //Get the proper axis configurations
-    axis_configuration conf = axisConfigs[joyID];
+    // Set speed based on joystick axes
+    for(int joy_id = 0; joy_id < MAX_JOYSTICKS; ++joy_id)
+    {
+        // Get the proper axis configurations
+        axis_configuration conf = axisConfigs[joy_id];
 
-    Movement::fourWheelVels returnVal;
+        // If a robot has been mapped to this joystick
+        if(robots[joy_id] != -1)
+        {
+            // Retrieve robot pointer
+            Robot* r = gameModel->findMyTeam(robots[joy_id]);
 
-    //Find the robot, and calculate movement based on the joystick axes.
-    Robot* r = gameModel->findMyTeam(robotID);
-    if(r) {
-        Point p = r->getPosition();
-        float o = r->getOrientation();
+            // If robot exists
+            if(r)
+            {
+                // Calculate velocities to set
+                Point p = r->getPosition();
+                double o = r->getOrientation();
+                bool slow_mode = buttons[joy_id][7];
+                double trans_mult = slow_mode? MOTION_VEC_MULT*SLOW_MULT : MOTION_VEC_MULT;
+                double oPos =   o +  ROT_SPD_MULT * (M_PI/180) * axes[joy_id][conf.jAxisRotate];
+                double xPos = p.x -  trans_mult * axes[joy_id][conf.jAxisMoveSide];
+                double yPos = p.y +  trans_mult * axes[joy_id][conf.jAxisMoveUp];
 
-        //Slow down if we are in slow mode
-        float real_mult = mult;
-        if(slowMode)
-            real_mult = mult/mult_div;
+                // Set velocities on robot object through movement interface
+                Move::GoToPose go_to_pose;
+                go_to_pose.updateGoal(Point(xPos, yPos), oPos, false, false);
+                go_to_pose.perform(r, Move::MoveType::Default);
 
-        float tPos =   o +   rot_mult * (M_PI/180) * axes[conf.jAxisRotate];
-        float xPos = p.x +  real_mult * -axes[conf.jAxisMoveSide];
-        float yPos = p.y +  real_mult *  axes[conf.jAxisMoveUp];
+                // Set button inputs
+                r->setKick(buttons[joy_id][0]);
+                r->setDribble(buttons[joy_id][1]);
 
-        //Hack that should be removed quickly
-        if(gameModel->findMyTeam(robotID)->type() == fourWheelOmni) {
-            returnVal = fwc.calculateVels(r, xPos, yPos, tPos, Movement::Type::Default);
-        } else {
-            auto velocity3 = twc.calculateVels(r, xPos, yPos, tPos, Movement::Type::Default);
-            returnVal.LF = velocity3.L;
-            returnVal.RF = velocity3.R;
-            returnVal.RB = velocity3.B;
+                // GuiInterface::getGuiInterface()->drawPath(p, Point(xPos, yPos));
+            }
         }
-
-        //GuiInterface::getGuiInterface()->drawPath(p, Point(xPos, yPos));
-
-        return returnVal;
     }
-
-    //Should never get here anyway
-    std::cout << "Robot not found " << robotID << std::endl;
-    return Movement::fourWheelVels();
 }
 
 void listener()
@@ -191,10 +153,6 @@ void listener()
 //    map_joystick({"1", "5"});
 //    map_joystick({"2", "6"});
 //#endif
-
-    //Variables to read joystick info
-    float axes[10][8] = {0};      //Joystick axis readings buffer
-    Uint8 buttons[10][20] = {0};  //Joystick button readings buffer
 
     while(!quit)
     {
@@ -223,24 +181,6 @@ void listener()
                 break;
             }
         }
-
-        /* For each joystick reading, calculate the velocities for the robot it corrisponds to
-         * and fill in the structure to be read by the GUI */
-        SDL_JoystickID joy = 0;
-        for(; joy != 10; ++joy)
-        {
-            reading& value = joystickReadings[joy];
-            if(value.id != -1) {
-                bool slowmode = buttons[joy][7];
-                auto vels = calculateRobotVelocity(value.id, joy, axes[joy], slowmode);
-                value.LB = vels.LB;
-                value.LF = vels.LF;
-                value.RB = vels.RB;
-                value.RF = vels.RF;
-                value.Kick = buttons[joy][0];
-                value.Dribble = buttons[joy][1];
-            }
-        }
     }
 
     SDL_Quit();
@@ -250,10 +190,6 @@ void listen()
 {
     debug::registerFunction("mapjoy", map_joystick);
     debug::registerFunction("p", print_joymap);
-    debug::registerVariable("m", &mult);
-    debug::registerVariable("md", &mult_div);
-    debug::registerVariable("rm", &rot_mult);
-
     joystickThread = std::thread(listener);
 }
 

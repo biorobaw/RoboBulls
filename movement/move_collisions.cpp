@@ -52,7 +52,7 @@
 /************************************************************************/
 /* Implementation */
 
-namespace Movement {
+namespace Move {
 namespace Collisions {
 namespace detail {
 

@@ -2,6 +2,15 @@
 #define JOYSTICK_H
 #include <vector>
 #include <string>
+#include <unordered_map>
+#include <thread>
+#include <SDL2/SDL.h>
+
+#include "include/config/team.h"
+#include "utilities/debug.h"
+#include "model/gamemodel.h"
+#include "movement/go_to_pose.h"
+#include "gui/guiinterface.h"
 
 /*! @brief Joystick control support
  * @details *This is an internal file; it should not be used directly except to add joysticks.*
@@ -30,43 +39,36 @@
  * this information.
  */
 
-namespace joystick
+namespace JoyStick
 {
 
-//! @brief Values read in by a SDL joystick
-//! @details These values are assigned to a robot though the map_joystick
-//!  funciton, and the wheel velocities are sent to the robot at "id"
-struct reading
+const int MAX_JOYSTICKS = 10;
+
+/* Constants defining how joystick inputs translate to robot motion commands */
+const double MOTION_VEC_MULT = 25;    // Multipler of motion vector passed to movement interface
+const double ROT_SPD_MULT = 5;        // Multiplier between analog stick input and robot rotation speed
+const double SLOW_MULT = 0.2;         // Multiplier for slow-mode
+
+
+/*! Starts a new thread listening for joystick events */
+void listen();  // Runs listner on new thread
+void listener();
+
+/*! Joystick setup */
+struct axis_configuration
 {
-    //Wheel velocities for robot
-    float LB, LF, RB, RF;
-
-    //Kick+Dribble status for robot
-    bool  Kick, Dribble;
-
-    //What robot should this be for? Changed by map_joy on command line
-    int id = -1;
+    int jAxisMoveUp;    //What is the axis to move up?
+    int jAxisMoveSide;  //What is the axis to move sideways?
+    int jAxisRotate;    //What is the axis to rotate?
 };
 
-//! @brief Information from joysticks to be sent to the overridden robot (do not use directly)
-//! @{
-extern reading joystickReadings[10];
-//! @}
-
-//! @brief Starts a new thread listening for joystick events
-//! @details Updates the variables above with robot-ready parameters.
-void listen();
-
-//! @brief Query joystick support
-//! @details This function must be called after listen()
-//! @return True if a supported joystick is connected to the system
+void map_joystick(const std::vector<std::string>& args);
+bool configure(const std::string& name, axis_configuration& config_out);
 bool hasSupport();
 
-//! @brief Map a joystick to a robot.
-//! @details A command line function to make the values in "joystickmap"
-//!  go to a particular robot. [0] is joystick id, [1] is robot id.
-void map_joystick(const std::vector<std::string>& args);
+/*! Sets velocities on robot objects */
+void setCommands();
 
-}
+}   // namespace JoyStick
 
 #endif

@@ -43,7 +43,7 @@ bool DribbleBack::perform(Robot* robot)
         {
             Point move_point = bp + (*target - bp)*(ROBOT_RADIUS/Measurements::mag(*target - bp));
             move_skill.setVelocityMultiplier(1.0);
-            move_skill.recreate(move_point, ang_to_ball, false, false);
+            move_skill.updateGoal(move_point, ang_to_ball, false, false);
             move_skill.perform(robot);
         }
         break;
@@ -63,7 +63,7 @@ bool DribbleBack::perform(Robot* robot)
 
         robot->setDribble(true);
 
-        move_skill.recreate(grasp_point, ang_to_ball, false, false);
+        move_skill.updateGoal(grasp_point, ang_to_ball, false, false);
         move_skill.setVelocityMultiplier(0.2);
 
         if(move_skill.perform(robot))

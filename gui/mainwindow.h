@@ -97,7 +97,6 @@ private slots:
     // Threads
     void coreLoop(int value);
     void clockLoop(int tick);
-    void handleJoystickInput();
 // Widget slots
     void on_btn_connectGui_clicked();
     // bot controls

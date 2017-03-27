@@ -1,56 +1,34 @@
-#include "movement/four_omni_motion/omni4_velcalculator.h"
+#include "movement/four_wheel_omni/four_wheel_omni_pilot.h"
 #include "gui/guiinterface.h"
 using std::abs;
 
-namespace Movement
+namespace Move {
+
+FourWheelOmniPilot::FourWheelOmniPilot()
 {
-
-#define FOUR_WHEEL_DEBUG 0
-
-#if SIMULATED
-float xy_prop_mult = 0.25;       //Multiplier for Proportional XY
-float xy_int_mult = 0.00001;      //Multiplier for integral XY
-float theta_prop_mult = 0.5;    //Multiplier for theta proportional
-float theta_int_mult = 0.0015;  //Multiplier for theta integral
-#else
-float xy_prop_mult = .25;     //Multiplier for Proportional XY
-float xy_int_mult = 0;     //Multiplier for integral XY
-float theta_prop_mult = 0.1;    //Multiplier for theta proportional
-float theta_int_mult = 0.000;  //Multiplier for theta integral
-#endif
-
-FourWheelCalculator::FourWheelCalculator()
-{
-    //debug::registerVariable("xyp", &xy_prop_mult);
-    //debug::registerVariable("xyi", &xy_int_mult);
-    //debug::registerVariable("thp", &theta_prop_mult);
-    //debug::registerVariable("thi", &theta_int_mult);
 }
 
-fourWheelVels FourWheelCalculator::calculateVels
-    (Robot* rob, Point goalPoint, float theta_goal, Type moveType)
-{
-    return calculateVels(rob, goalPoint.x, goalPoint.y, theta_goal, moveType);
-}
-
-fourWheelVels FourWheelCalculator::calculateVels
-    (Robot* rob, float x_goal, float y_goal, float theta_goal, Type moveType)
+void FourWheelOmniPilot::drive (Robot* rob, float x_goal, float y_goal, float theta_goal, MoveType moveType)
 {
     switch (moveType)
     {
-    case Type::facePoint:
-        return facePointCalc(rob,x_goal,y_goal,theta_goal);
+    case MoveType::facePoint:
+        facePointDrive(rob,x_goal,y_goal,theta_goal);
         break;
-    case Type::dribble:
-        return dribbleCalc(rob,x_goal,y_goal,theta_goal);
+    case MoveType::dribble:
+        dribbleDrive(rob,x_goal,y_goal,theta_goal);
         break;
     default:
-        return defaultCalc(rob,x_goal,y_goal,theta_goal);
+        defaultDrive(rob,x_goal,y_goal,theta_goal);
     }
 }
 
-fourWheelVels FourWheelCalculator::defaultCalc
-    (Robot* rob, float x_goal, float y_goal, float theta_goal)
+void FourWheelOmniPilot::drive (Robot* rob, Point goalPoint, float theta_goal, MoveType moveType)
+{
+    drive(rob, goalPoint.x, goalPoint.y, theta_goal, moveType);
+}
+
+void FourWheelOmniPilot::defaultDrive (Robot* rob, float x_goal, float y_goal, float theta_goal)
 {
     //Current Position
     double x_current = rob->getPosition().x;
@@ -60,30 +38,30 @@ fourWheelVels FourWheelCalculator::defaultCalc
 
     Point rp = Point(x_current,y_current);
     Point gp = Point(x_goal,y_goal);
-    distance_to_goal = Measurements::distance(rp,gp);
+    distance_error = Measurements::distance(rp,gp);
     float angle_to_goal = Measurements::angleBetween(rp, gp);
     angle_error = Measurements::angleDiff(rob->getOrientation(), theta_goal);
 
     //Calulate error integral component
-    calc_error(x_goal, y_goal);
+    updateErrors(x_goal, y_goal);
 
     //Inertial Frame Velocities
     double x_vel =
-        (xy_prop_mult * distance_to_goal +
-         xy_int_mult  * dist_error_integral)*cos(angle_to_goal);
+        (TRANS_P_K * distance_error +
+         TRANS_I_K  * dist_error_integral)*cos(angle_to_goal);
     double y_vel =
-        (xy_prop_mult * distance_to_goal +
-         xy_int_mult  * dist_error_integral)*sin(angle_to_goal);
+        (TRANS_P_K * distance_error +
+         TRANS_I_K  * dist_error_integral)*sin(angle_to_goal);
     double theta_vel =
-         theta_prop_mult * angle_error +
-         theta_int_mult  * angle_error_integral;
+         ANGULAR_P_K * angle_error +
+         ANGULAR_I_K  * angle_error_integral;
 
     if (abs(Measurements::angleDiff(theta_goal,theta_current))<
         abs(Measurements::angleDiff(theta_goal,theta_current+theta_vel)))
         theta_vel=-theta_vel;
 
     // Reduce speed near target
-    if (distance_to_goal < 700)
+    if (distance_error < 700)
     {
         x_vel *= 0.5;
         y_vel *= 0.5;
@@ -104,15 +82,11 @@ fourWheelVels FourWheelCalculator::defaultCalc
     }
     prev_vel = vel_robot;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 2a5ee5ff3c883f76b24be94bd4fa7bf7eb94c2e0
     // Wheel Velocity Calculations
-    double RF =  (-sin(RF_offset) * x_vel_robot + cos(RF_offset)*y_vel_robot - trans_offset*vel_robot*cos(RF_offset) + wheel_radius*theta_vel);
-    double LF = -(-sin(LF_offset) * x_vel_robot + cos(LF_offset)*y_vel_robot - trans_offset*vel_robot*cos(LF_offset) + wheel_radius*theta_vel);
-    double LB = -(-sin(LB_offset) * x_vel_robot + cos(LB_offset)*y_vel_robot - trans_offset*vel_robot*cos(LB_offset) + wheel_radius*theta_vel);
-    double RB =  (-sin(RB_offset) * x_vel_robot + cos(RB_offset)*y_vel_robot - trans_offset*vel_robot*cos(RB_offset) + wheel_radius*theta_vel);
+    double RF =  (-sin(RF_OFFSET) * x_vel_robot + cos(RF_OFFSET)*y_vel_robot - TRANS_OFFSET*vel_robot*cos(RF_OFFSET) + WHEEL_RADIUS*theta_vel);
+    double LF = -(-sin(LF_OFFSET) * x_vel_robot + cos(LF_OFFSET)*y_vel_robot - TRANS_OFFSET*vel_robot*cos(LF_OFFSET) + WHEEL_RADIUS*theta_vel);
+    double LB = -(-sin(LB_OFFSET) * x_vel_robot + cos(LB_OFFSET)*y_vel_robot - TRANS_OFFSET*vel_robot*cos(LB_OFFSET) + WHEEL_RADIUS*theta_vel);
+    double RB =  (-sin(RB_OFFSET) * x_vel_robot + cos(RB_OFFSET)*y_vel_robot - TRANS_OFFSET*vel_robot*cos(RB_OFFSET) + WHEEL_RADIUS*theta_vel);
 
     // Normalize wheel velocities
     unsigned int max_mtr_spd = 100;
@@ -145,17 +119,14 @@ fourWheelVels FourWheelCalculator::defaultCalc
         RB=(max_mtr_spd/abs(RB))*RB;
     }
 
-    //Create and return result container
-    fourWheelVels vels;
-    vels.LB = LB;
-    vels.LF = LF;
-    vels.RB = RB;
-    vels.RF = RF;
-
-    return vels;
+    // Set velocities on robot object
+    rob->setLF(LF);
+    rob->setLB(LB);
+    rob->setRF(RF);
+    rob->setRB(RB);
 }
 
-fourWheelVels FourWheelCalculator::dribbleCalc
+void FourWheelOmniPilot::dribbleDrive
     (Robot* rob, float x_goal, float y_goal, float theta_goal)
 {
     //Current Position
@@ -166,23 +137,23 @@ fourWheelVels FourWheelCalculator::dribbleCalc
 
     Point rp = Point(x_current,y_current);
     Point gp = Point(x_goal,y_goal);
-    distance_to_goal = Measurements::distance(rp,gp);
+    distance_error = Measurements::distance(rp,gp);
     float angle_to_goal = Measurements::angleBetween(rp, gp);
     angle_error = Measurements::angleDiff(rob->getOrientation(), theta_goal);
 
     //Calulate error integral component
-    calc_error(x_goal, y_goal);
+    updateErrors(x_goal, y_goal);
 
     //Inertial Frame Velocities
     double x_vel =
-        (xy_prop_mult * distance_to_goal +
-         xy_int_mult  * dist_error_integral)*cos(angle_to_goal);
+        (TRANS_P_K * distance_error +
+         TRANS_I_K  * dist_error_integral)*cos(angle_to_goal);
     double y_vel =
-        (xy_prop_mult * distance_to_goal +
-         xy_int_mult  * dist_error_integral)*sin(angle_to_goal);
+        (TRANS_P_K * distance_error +
+         TRANS_I_K  * dist_error_integral)*sin(angle_to_goal);
     double theta_vel =
-         theta_prop_mult * angle_error
-       + theta_int_mult  * angle_error_integral;
+         ANGULAR_P_K * angle_error +
+         ANGULAR_I_K  * angle_error_integral;
 
     if (abs(Measurements::angleDiff(theta_goal,theta_current))<
         abs(Measurements::angleDiff(theta_goal,theta_current+theta_vel)))
@@ -213,10 +184,10 @@ fourWheelVels FourWheelCalculator::dribbleCalc
     x_vel_robot = 0;
 
     // Wheel Velocity Calculations
-    double RF =  (-sin(RF_offset) * x_vel_robot + cos(RF_offset)*y_vel_robot - trans_offset*vel_robot*cos(RF_offset) + wheel_radius*theta_vel);
-    double LF = -(-sin(LF_offset) * x_vel_robot + cos(LF_offset)*y_vel_robot - trans_offset*vel_robot*cos(LF_offset) + wheel_radius*theta_vel);
-    double LB = -(-sin(LB_offset) * x_vel_robot + cos(LB_offset)*y_vel_robot - trans_offset*vel_robot*cos(LB_offset) + wheel_radius*theta_vel);
-    double RB =  (-sin(RB_offset) * x_vel_robot + cos(RB_offset)*y_vel_robot - trans_offset*vel_robot*cos(RB_offset) + wheel_radius*theta_vel);
+    double RF =  (-sin(RF_OFFSET) * x_vel_robot + cos(RF_OFFSET)*y_vel_robot - TRANS_OFFSET*vel_robot*cos(RF_OFFSET) + WHEEL_RADIUS*theta_vel);
+    double LF = -(-sin(LF_OFFSET) * x_vel_robot + cos(LF_OFFSET)*y_vel_robot - TRANS_OFFSET*vel_robot*cos(LF_OFFSET) + WHEEL_RADIUS*theta_vel);
+    double LB = -(-sin(LB_OFFSET) * x_vel_robot + cos(LB_OFFSET)*y_vel_robot - TRANS_OFFSET*vel_robot*cos(LB_OFFSET) + WHEEL_RADIUS*theta_vel);
+    double RB =  (-sin(RB_OFFSET) * x_vel_robot + cos(RB_OFFSET)*y_vel_robot - TRANS_OFFSET*vel_robot*cos(RB_OFFSET) + WHEEL_RADIUS*theta_vel);
 
     // Normalize wheel velocities
     unsigned int max_mtr_spd = 100;
@@ -249,17 +220,14 @@ fourWheelVels FourWheelCalculator::dribbleCalc
         RB=(max_mtr_spd/abs(RB))*RB;
     }
 
-    //Create and return result container
-    fourWheelVels vels;
-    vels.LB = LB;
-    vels.LF = LF;
-    vels.RB = RB;
-    vels.RF = RF;
-
-    return vels;
+    // Set velocities on robot object
+    rob->setLF(LF);
+    rob->setLB(LB);
+    rob->setRF(RF);
+    rob->setRB(RB);
 }
 
-fourWheelVels FourWheelCalculator::facePointCalc
+void FourWheelOmniPilot::facePointDrive
     (Robot* rob, float x_goal, float y_goal, float theta_goal)
 {
     //Current Position
@@ -270,34 +238,34 @@ fourWheelVels FourWheelCalculator::facePointCalc
 
     Point rp = Point(x_current,y_current);
     Point gp = Point(x_goal,y_goal);
-    distance_to_goal = Measurements::distance(rp,gp);
+    distance_error = Measurements::distance(rp,gp);
     float angle_to_goal = Measurements::angleBetween(rp, gp);
     angle_error = Measurements::angleDiff(rob->getOrientation(), theta_goal);
 
-    //PID
-    calc_error(x_goal, y_goal);
+    // PID
+    updateErrors(x_goal, y_goal);
 
-    //Unlike defaultCalc, we always use the same XY prop/int multipliers
-    float xy_prop_used = xy_prop_mult;
-    float xy_int_used = xy_int_mult;
+    // Unlike defaultCalc, we always use the same XY prop/int multipliers
+    float xy_prop_used = TRANS_P_K;
+    float xy_int_used = TRANS_I_K;
 
     //Interial Frame Velocities
     double x_vel =
-        (xy_prop_used * distance_to_goal +
+        (xy_prop_used * distance_error +
          xy_int_used  * dist_error_integral)*cos(angle_to_goal);
     double y_vel =
-        (xy_prop_used * distance_to_goal +
+        (xy_prop_used * distance_error +
          xy_int_used  * dist_error_integral)*sin(angle_to_goal);
     double theta_vel =
-         theta_prop_mult * angle_error
-       + theta_int_mult  * angle_error_integral;
+         ANGULAR_P_K * angle_error
+       + ANGULAR_I_K  * angle_error_integral;
 
     if (abs(Measurements::angleDiff(theta_goal,theta_current))<
         abs(Measurements::angleDiff(theta_goal,theta_current+theta_vel)))
         theta_vel=-theta_vel;
 
     // Reduce speed near target
-    if (distance_to_goal < 700)
+    if (distance_error < 700)
     {
         x_vel *= 0.1;
         y_vel *= 0.1;
@@ -316,13 +284,13 @@ fourWheelVels FourWheelCalculator::facePointCalc
     double y_vel_robot = cos(theta_current)*x_vel+sin(theta_current)*y_vel;
     double x_vel_robot = sin(theta_current)*x_vel-cos(theta_current)*y_vel;
 
-    //Wheel Velocity Calculations
-    double RF =  (-sin(RF_offset) * x_vel_robot + cos(RF_offset)*y_vel_robot + wheel_radius*theta_vel);
-    double LF = -(-sin(LF_offset) * x_vel_robot + cos(LF_offset)*y_vel_robot + wheel_radius*theta_vel);
-    double LB = -(-sin(LB_offset) * x_vel_robot + cos(LB_offset)*y_vel_robot + wheel_radius*theta_vel);
-    double RB =  (-sin(RB_offset) * x_vel_robot + cos(RB_offset)*y_vel_robot + wheel_radius*theta_vel);
+    // Wheel Velocity Calculations
+    double RF =  (-sin(RF_OFFSET) * x_vel_robot + cos(RF_OFFSET)*y_vel_robot + WHEEL_RADIUS*theta_vel);
+    double LF = -(-sin(LF_OFFSET) * x_vel_robot + cos(LF_OFFSET)*y_vel_robot + WHEEL_RADIUS*theta_vel);
+    double LB = -(-sin(LB_OFFSET) * x_vel_robot + cos(LB_OFFSET)*y_vel_robot + WHEEL_RADIUS*theta_vel);
+    double RB =  (-sin(RB_OFFSET) * x_vel_robot + cos(RB_OFFSET)*y_vel_robot + WHEEL_RADIUS*theta_vel);
 
-    //Normalize wheel velocities
+    // Normalize wheel velocities
     unsigned int max_mtr_spd = 100;
     if (abs(LF)>max_mtr_spd)
     {
@@ -353,45 +321,48 @@ fourWheelVels FourWheelCalculator::facePointCalc
         RB=(max_mtr_spd/abs(RB))*RB;
     }
 
-    //Create and return result container
-    fourWheelVels vels;
-    vels.LB = LB;
-    vels.LF = LF;
-    vels.RB = RB;
-    vels.RF = RF;
-    return vels;
+    // Set velocities on robot object
+    rob->setLF(LF);
+    rob->setLB(LB);
+    rob->setRF(RF);
+    rob->setRB(RB);
 }
 
-void FourWheelCalculator::calc_error(float x_goal, float y_goal)
+void FourWheelOmniPilot::updateErrors(float x_goal, float y_goal)
 {
     //Reset queues if the target has moved
     if(Measurements::distance(Point(x_goal,y_goal), last_goal_target) > 50)
-        clear_errors();
+        clearErrors();
 
     //Integral Error for distance
-    if (dist_error_deque.size() == dist_error_maxsize) {
-        dist_error_integral -= dist_error_deque.front();
-//        std::cout << "";
+    if (dist_error_deque.size() == DIST_ERROR_MAXSIZE) {
+        double popped_integral = dist_error_integral - dist_error_deque.front();
+        double sign_popped_integral = (popped_integral > 0) - (popped_integral < 0);
+        dist_error_integral = std::min(1000000.0, fabs(popped_integral)) * sign_popped_integral;
         dist_error_deque.pop_front();
     }
-    dist_error_integral += distance_to_goal;
-    dist_error_deque.push_back(distance_to_goal);
+    double pushed_integral = dist_error_integral + distance_error;
+    double sign_pushed_integral = (pushed_integral > 0) - (pushed_integral < 0);
+    dist_error_integral = std::min(1000000.0, fabs(pushed_integral)) * sign_pushed_integral;
+    dist_error_deque.push_back(distance_error);
 
     //Integral Error for orientation
-    if (angle_error_deque.size() == angle_error_maxsize) {
+    if (angle_error_deque.size() == ANGLE_ERROR_MAXSIZE) {
         angle_error_integral -= angle_error_deque.front();
         angle_error_deque.pop_front();
     }
     angle_error_integral += angle_error;
     angle_error_deque.push_back(angle_error);
+
+    //std::cout << "DIST ERR INT: " << dist_error_integral << std::endl;
 }
 
-void FourWheelCalculator::clear_errors()
+void FourWheelOmniPilot::clearErrors()
 {
     dist_error_deque.clear();
     angle_error_deque.clear();
     dist_error_integral = angle_error_integral = 0;
 }
 
-}
+}   // namespace Move
 

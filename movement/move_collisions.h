@@ -20,7 +20,7 @@ class Point;
 //! @brief Indicates the robot has collided with another
 #define MOVE_COLLIDED  2
 
-namespace Movement
+namespace Move
 {
 
  /*! @brief Contains structures and routines for detecting and avoiding collisions

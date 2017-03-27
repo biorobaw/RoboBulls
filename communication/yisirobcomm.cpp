@@ -54,10 +54,10 @@ void YisiRobComm::sendVelsLarge(std::vector<Robot*>& robots)
         }
 
         // First Robot Kick/Chip (0/1)
-        int shootMode = 1;
+        int shootMode = 0;
         int shootPowerLevel = r->getKick()? 127:0;
         transmitPacket[3] = (shootMode << 6);
-        transmitPacket[18]=(shootMode?shootPowerLevel:0)&0x7f;
+        transmitPacket[18]=(r->getKick()?shootPowerLevel:0)&0x7f;
         r->setKick(0);
 
         // First Robot Dribble

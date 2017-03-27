@@ -1,32 +1,30 @@
 #include "include/config/tolerances.h"
-#include "movement/three_omni_motion/omni3_velcalculator.h"
+#include "movement/three_wheel_omni/three_wheel_omni_pilot.h"
 
-namespace Movement
+namespace Move
 {
 
-#define THREE_WHEEL_DEBUG 0
-
-threeWheelVels ThreeWheelCalculator::calculateVels
-    (Robot* rob, Point goalPoint, float theta_goal, Type moveType)
-{
-	return calculateVels(rob, goalPoint.x, goalPoint.y, theta_goal, moveType);
-}
-
-
-threeWheelVels ThreeWheelCalculator::calculateVels
-    (Robot* rob, float x_goal, float y_goal, float theta_goal, Type moveType)
+void ThreeWheelOmniPilot::drive
+    (Robot* rob, float x_goal, float y_goal, float theta_goal, MoveType moveType)
 {
     // Use a different calculation method depending on the moveType
     switch (moveType)
     {
-    case Type::facePoint:
-        return facePointCalc(rob,x_goal,y_goal,theta_goal);
+    case MoveType::facePoint:
+        return facePointDrive(rob,x_goal,y_goal,theta_goal);
     default:
-        return defaultCalc(rob,x_goal,y_goal,theta_goal);
+        return defaultDrive(rob,x_goal,y_goal,theta_goal);
     }
 }
 
-threeWheelVels ThreeWheelCalculator::defaultCalc
+void ThreeWheelOmniPilot::drive
+    (Robot* rob, Point goalPoint, float theta_goal, MoveType moveType)
+{
+    return drive(rob, goalPoint.x, goalPoint.y, theta_goal, moveType);
+}
+
+
+void ThreeWheelOmniPilot::defaultDrive
     (Robot* rob, float x_goal, float y_goal, float theta_goal)
 {
     //Current Position
@@ -36,12 +34,12 @@ threeWheelVels ThreeWheelCalculator::defaultCalc
 
     Point rp = Point(x_current,y_current);
     Point gp = Point(x_goal,y_goal);
-    distance_to_goal = Measurements::distance(rp,gp);
-    angle_to_goal = Measurements::angleBetween(rp,gp);
+    distance_error = Measurements::distance(rp,gp);
+    angle_error = Measurements::angleBetween(rp,gp);
 
     //Inertial Frame Velocities
-    double x_vel = (distance_to_goal)*cos(angle_to_goal);
-    double y_vel = (distance_to_goal)*sin(angle_to_goal);
+    double x_vel = (distance_error)*cos(angle_error);
+    double y_vel = (distance_error)*sin(angle_error);
     double theta_vel = Measurements::angleDiff(theta_current,theta_goal);
     if (abs(Measurements::angleDiff(theta_goal,theta_current))<abs(Measurements::angleDiff(theta_goal,theta_current+theta_vel)))
         theta_vel=-theta_vel;
@@ -55,39 +53,37 @@ threeWheelVels ThreeWheelCalculator::defaultCalc
     std::vector<double> bias = calcBias(x_vel_robot,y_vel_robot);
 
     //Wheel Velocity Calculations
-    double R = -round(-sin(M_PI/6)   * y_vel_robot + cos(M_PI/6)   *x_vel_robot + wheel_radius*theta_vel)*bias[0];
-    double L = -round(-sin(5*M_PI/6) * y_vel_robot + cos(5*M_PI/6) *x_vel_robot + wheel_radius*theta_vel)*bias[1];
-    double B = -round(-sin(9*M_PI/6) * y_vel_robot + cos(9*M_PI/6) *x_vel_robot + wheel_radius*theta_vel)*bias[2];
+    double R = -round(-sin(M_PI/6)   * y_vel_robot + cos(M_PI/6)   *x_vel_robot + WHEEL_RADIUS*theta_vel)*bias[0];
+    double L = -round(-sin(5*M_PI/6) * y_vel_robot + cos(5*M_PI/6) *x_vel_robot + WHEEL_RADIUS*theta_vel)*bias[1];
+    double B = -round(-sin(9*M_PI/6) * y_vel_robot + cos(9*M_PI/6) *x_vel_robot + WHEEL_RADIUS*theta_vel)*bias[2];
 
     //Normalize wheel velocities
-    if (abs(R)>max_mtr_spd)
+    if (abs(R)>MAX_MTR_SPD)
     {
-        L=(max_mtr_spd/abs(R))*L;
-        B=(max_mtr_spd/abs(R))*B;
-        R=(max_mtr_spd/abs(R))*R;
+        L=(MAX_MTR_SPD/abs(R))*L;
+        B=(MAX_MTR_SPD/abs(R))*B;
+        R=(MAX_MTR_SPD/abs(R))*R;
     }
-    if (abs(L)>max_mtr_spd)
+    if (abs(L)>MAX_MTR_SPD)
     {
-        R=(max_mtr_spd/abs(L))*R;
-        B=(max_mtr_spd/abs(L))*B;
-        L=(max_mtr_spd/abs(L))*L;
+        R=(MAX_MTR_SPD/abs(L))*R;
+        B=(MAX_MTR_SPD/abs(L))*B;
+        L=(MAX_MTR_SPD/abs(L))*L;
     }
-    if (abs(B)>max_mtr_spd)
+    if (abs(B)>MAX_MTR_SPD)
     {
-        L=(max_mtr_spd/abs(B))*L;
-        R=(max_mtr_spd/abs(B))*R;
-        B=(max_mtr_spd/abs(B))*B;
+        L=(MAX_MTR_SPD/abs(B))*L;
+        R=(MAX_MTR_SPD/abs(B))*R;
+        B=(MAX_MTR_SPD/abs(B))*B;
     }
 
-    //Create and return result container
-    threeWheelVels vels;
-    vels.L = L;
-    vels.R = R;
-    vels.B = B;
-    return vels;
+    // Set velocities on robot object
+    rob->setL(L);
+    rob->setR(R);
+    rob->setB(B);
 }
 
-threeWheelVels ThreeWheelCalculator::facePointCalc
+void ThreeWheelOmniPilot::facePointDrive
     (Robot* rob, float x_goal, float y_goal, float theta_goal)
 {
     //Current Position
@@ -97,18 +93,18 @@ threeWheelVels ThreeWheelCalculator::facePointCalc
 
     Point rp = Point(x_current,y_current);
     Point gp = Point(x_goal,y_goal);
-    distance_to_goal = Measurements::distance(rp,gp);
-    angle_to_goal = Measurements::angleBetween(rp,gp);
+    distance_error = Measurements::distance(rp,gp);
+    angle_error = Measurements::angleBetween(rp,gp);
 
     //Inertial Frame Velocities
-    double x_vel = (distance_to_goal)*cos(angle_to_goal);
-    double y_vel = (distance_to_goal)*sin(angle_to_goal);
+    double x_vel = (distance_error)*cos(angle_error);
+    double y_vel = (distance_error)*sin(angle_error);
     double theta_vel = Measurements::angleDiff(theta_current,theta_goal);
     if (abs(Measurements::angleDiff(theta_goal,theta_current))<abs(Measurements::angleDiff(theta_goal,theta_current+theta_vel)))
         theta_vel=-theta_vel;
 
     // Reduce speed near target
-    if (distance_to_goal < 300)
+    if (distance_error < 300)
     {
         x_vel *= 0.5;
         y_vel *= 0.5;
@@ -118,8 +114,8 @@ threeWheelVels ThreeWheelCalculator::facePointCalc
     double vel = sqrt(x_vel*x_vel+y_vel*y_vel);
     if (abs(Measurements::angleDiff(theta_goal,theta_current))>ROT_TOLERANCE*0.5 && vel > 40)
     {
-        x_vel = 40*cos(angle_to_goal);
-        y_vel = 40*sin(angle_to_goal);
+        x_vel = 40*cos(angle_error);
+        y_vel = 40*sin(angle_error);
         theta_vel*=2.5;
     }
 
@@ -131,36 +127,34 @@ threeWheelVels ThreeWheelCalculator::facePointCalc
     std::vector<double> bias = calcBias(x_vel_robot,y_vel_robot);
 
     //Wheel Velocity Calculations
-    double R = -round(-sin(M_PI/6)   * y_vel_robot + cos(M_PI/6)   *x_vel_robot + wheel_radius*theta_vel)*bias[0];
-    double L = -round(-sin(5*M_PI/6) * y_vel_robot + cos(5*M_PI/6) *x_vel_robot + wheel_radius*theta_vel)*bias[1];
-    double B = -round(-sin(9*M_PI/6) * y_vel_robot + cos(9*M_PI/6) *x_vel_robot + wheel_radius*theta_vel)*bias[2];
+    double R = -round(-sin(M_PI/6)   * y_vel_robot + cos(M_PI/6)   *x_vel_robot + WHEEL_RADIUS*theta_vel)*bias[0];
+    double L = -round(-sin(5*M_PI/6) * y_vel_robot + cos(5*M_PI/6) *x_vel_robot + WHEEL_RADIUS*theta_vel)*bias[1];
+    double B = -round(-sin(9*M_PI/6) * y_vel_robot + cos(9*M_PI/6) *x_vel_robot + WHEEL_RADIUS*theta_vel)*bias[2];
 
     //Normalize wheel velocities
-    if (abs(R)>max_mtr_spd)
+    if (abs(R)>MAX_MTR_SPD)
     {
-        L=(max_mtr_spd/abs(R))*L;
-        B=(max_mtr_spd/abs(R))*B;
-        R=(max_mtr_spd/abs(R))*R;
+        L=(MAX_MTR_SPD/abs(R))*L;
+        B=(MAX_MTR_SPD/abs(R))*B;
+        R=(MAX_MTR_SPD/abs(R))*R;
     }
-    if (abs(L)>max_mtr_spd)
+    if (abs(L)>MAX_MTR_SPD)
     {
-        R=(max_mtr_spd/abs(L))*R;
-        B=(max_mtr_spd/abs(L))*B;
-        L=(max_mtr_spd/abs(L))*L;
+        R=(MAX_MTR_SPD/abs(L))*R;
+        B=(MAX_MTR_SPD/abs(L))*B;
+        L=(MAX_MTR_SPD/abs(L))*L;
     }
-    if (abs(B)>max_mtr_spd)
+    if (abs(B)>MAX_MTR_SPD)
     {
-        L=(max_mtr_spd/abs(B))*L;
-        R=(max_mtr_spd/abs(B))*R;
-        B=(max_mtr_spd/abs(B))*B;
+        L=(MAX_MTR_SPD/abs(B))*L;
+        R=(MAX_MTR_SPD/abs(B))*R;
+        B=(MAX_MTR_SPD/abs(B))*B;
     }
 
-    //Create and return result container
-    threeWheelVels vels;
-    vels.L = L;
-    vels.R = R;
-    vels.B = B;
-    return vels;
+    // Set velocities on robot object
+    rob->setL(L);
+    rob->setR(R);
+    rob->setB(B);
 }
 
 /*! @details To approximate the bias values, the motion of the 3 wheeled robot was
@@ -172,7 +166,7 @@ threeWheelVels ThreeWheelCalculator::facePointCalc
  * This process was repeated with motion restricted to sideways motion to
  * determine the bias for the rear wheel.
  */
-std::vector<double> ThreeWheelCalculator::calcBias(double x, double y)
+std::vector<double> ThreeWheelOmniPilot::calcBias(double x, double y)
 {
     std::vector<double> bias_result;
     bias_result.push_back(1);

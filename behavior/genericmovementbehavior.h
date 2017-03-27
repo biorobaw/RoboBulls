@@ -1,7 +1,7 @@
 #ifndef MOVEMENT_BEHAVIOR_H
 #define MOVEMENT_BEHAVIOR_H
 #include "behavior/behavior.h"
-#include "movement/gotoposition.h"
+#include "movement/go_to_pose.h"
 #include "movement/movetype.h"
 
 //! @ingroup everydayuse baseclasses
@@ -9,7 +9,7 @@
 
 /*! @file
  * Behavior to perform generic point-to-point Movement
- * This class interfaces with a Movement::GoToPosition object to provide
+ * This class interfaces with a Movement::GoToPose object to provide
  * Behaviors a simple method of moving from point to point. If a Behavior's only function
  * is to perform movement with no other actions, GenericMovementBehavior is a good baseclass.
  *
@@ -36,12 +36,12 @@ protected:
 
     /*! @brief Perform movement to move to movement targets
      * @details use GenericMovementBehavior::perform(robot); */
-    void perform(Robot* robot, Movement::Type type);
+    void perform(Robot* robot, Move::MoveType type);
 
     //! @{
     /*! @brief Sets the next movement targets (Point target and angle) to move to
      * @details This is the most important function; after a derived class has calculated the points
-     * to move to, use setMovementTargets to recreate the GoToPosition object to those
+     * to move to, use setMovementTargets to recreate the GoToPose object to those
      * parameters: point, angle, and use obstacle avoidance or not */
     void setMovementTargets(Point targetPoint, float targetAngle = UNUSED_ANGLE_VALUE);
     void setMovementTargets(Point targetPoint, float targetAngle,  bool useObstacleAvoid, bool useAvoidBall = true);
@@ -54,7 +54,7 @@ protected:
     void setMovementTolerances(float newDistolerance, float newRotTolerance);
     
 private:
-    Movement::GoToPosition movement;
+    Move::GoToPose movement;
     float velocityMultipier;
     bool  useObstacleAvoid;
     bool  useAvoidBall;

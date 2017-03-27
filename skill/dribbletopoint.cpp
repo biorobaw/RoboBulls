@@ -45,7 +45,7 @@ bool DribbleToPoint::perform(Robot* robot)
         else
         {
             move_skill.setVelocityMultiplier(1.0);
-            move_skill.recreate(bp, ang_to_ball, avoid_obstacles, false);
+            move_skill.updateGoal(bp, ang_to_ball, avoid_obstacles, false);
             move_skill.perform(robot);
         }
         break;
@@ -70,7 +70,7 @@ bool DribbleToPoint::perform(Robot* robot)
 
         robot->setDribble(true);
 
-        move_skill.recreate(grasp_point, ang_to_ball, avoid_obstacles, false);
+        move_skill.updateGoal(grasp_point, ang_to_ball, avoid_obstacles, false);
         move_skill.setVelocityMultiplier(0.3);
 
         if(move_skill.perform(robot))
@@ -101,8 +101,8 @@ bool DribbleToPoint::perform(Robot* robot)
         float ang_to_target = Measurements::angleBetween(rp, *target);
 
         move_skill.setVelocityMultiplier(1.0);
-        move_skill.recreate(*target, ang_to_target, avoid_obstacles, false);
-        move_skill.perform(robot, Movement::Type::dribble);
+        move_skill.updateGoal(*target, ang_to_target, avoid_obstacles, false);
+        move_skill.perform(robot, Move::MoveType::dribble);
         break;
     }
     case adjust1:
@@ -114,7 +114,7 @@ bool DribbleToPoint::perform(Robot* robot)
                                    bp.y + ROBOT_RADIUS*2 * sin(theta));
 
         robot->setDribble(false);
-        move_skill.recreate(adjust_point, ang_to_ball, avoid_obstacles, true);
+        move_skill.updateGoal(adjust_point, ang_to_ball, avoid_obstacles, true);
         move_skill.setVelocityMultiplier(1.0);
 
         if(move_skill.perform(robot))
@@ -131,7 +131,7 @@ bool DribbleToPoint::perform(Robot* robot)
                                    bp.y + ROBOT_RADIUS*2 * sin(theta));
 
         robot->setDribble(false);
-        move_skill.recreate(adjust_point, ang_to_ball, avoid_obstacles, true);
+        move_skill.updateGoal(adjust_point, ang_to_ball, avoid_obstacles, true);
         move_skill.setVelocityMultiplier(1.0);
 
         if(move_skill.perform(robot)

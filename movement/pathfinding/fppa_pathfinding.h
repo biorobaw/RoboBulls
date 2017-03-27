@@ -3,11 +3,11 @@
 #include <vector>
 #include "utilities/point.h"
 
-namespace Movement
+namespace Move
 {
 
 /*! @brief Fast Path Planning Algorithm
- * @author JamesW
+ * @author JamesW, Muhaimen Shamsi
  * @details This namespace implements the Fast Path Planning Algorithm (FPPA)
  * as described in the [paper](http://fei.edu.br/rcs/2014/RegularPapers/robocupsymposium2014_submission_55.pdf)
  * "Fast Path Planning Algorithm for the RoboCub Small Size League" by Rodriguez S., Rojas E., Calderon J. et al.

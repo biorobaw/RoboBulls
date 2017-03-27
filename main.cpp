@@ -113,6 +113,7 @@ int main(int argc, char *argv[])
 
     // Initialize robot communication
     //RobComm::getRobComm();
+
     //Initialize GameModel, StrategyController, Vision, and Ref
     GameModel* gm = GameModel::getModel();
     RefComm refCommunicator(gm);
@@ -125,13 +126,14 @@ int main(int argc, char *argv[])
     printBuildInfo();
 
     //Create the GUI and show it
-
     GuiInterface::getGuiInterface()->show();
 
-    //Start Vision and Refcomm and run the application
+    // Start the debugger thread
     debug::listenStart();
 
+    //Start Vision and Refcomm and run the application
     visionCommunicator.start();
     refCommunicator.start();
+
     return a.exec();
 }

@@ -3,7 +3,7 @@
 #include "model/robot.h"
 #include "utilities/point.h"
 #include "skill/skill.h"
-#include "movement/gotoposition.h"
+#include "movement/go_to_pose.h"
 #include "gui/guiinterface.h"
 
 namespace Skill
@@ -45,7 +45,7 @@ public:
     bool perform(Robot* robot) override;
 
 private:
-    Movement::GoToPosition move_skill;
+    Move::GoToPose move_skill;
     Point  m_targetPoint;         //Local (static-point) target stored only by first ctor
     Point* m_targetPointer;       //Pointer to point we are kicking to (m_targetPoint for static)
       int  m_moveCompletionCount; //Number of times move_skill says we are behind ball

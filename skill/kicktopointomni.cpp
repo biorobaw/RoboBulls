@@ -114,7 +114,7 @@ bool KickToPointOmni::perform(Robot* robot)
 
             behindBall = bp + Point(BEHIND_RAD_AVOID * cos(targetBallAng), BEHIND_RAD_AVOID * sin(targetBallAng));
             move_skill.setVelocityMultiplier(1);
-            move_skill.recreate(behindBall, ballTargetAng, true, true);
+            move_skill.updateGoal(behindBall, ballTargetAng, true, true);
 
             //Make sure move_skill keeps the robot at the correct pose
             //This is done by waiting for confirmation from the movement class
@@ -140,7 +140,7 @@ bool KickToPointOmni::perform(Robot* robot)
             behindBall = bp + Point(BEHIND_RAD * cos(targetBallAng), BEHIND_RAD * sin(targetBallAng));
             move_skill.setMovementTolerances(20, 3*M_PI/180);
             move_skill.setVelocityMultiplier(1);
-            move_skill.recreate(behindBall, ballTargetAng, false, false);
+            move_skill.updateGoal(behindBall, ballTargetAng, false, false);
 
             //Make sure move_skill keeps the robot at the correct pose
             //This is done by waiting for confirmation from the movement class
@@ -161,7 +161,7 @@ bool KickToPointOmni::perform(Robot* robot)
             robot->setDribble(true);
             // Move towards the ball at the angle to target (straight)
             move_skill.setVelocityMultiplier(0.2);
-            move_skill.recreate(bp - Point(BEHIND_RAD * cos(targetBallAng), BEHIND_RAD * sin(targetBallAng)), ballTargetAng, false, false);
+            move_skill.updateGoal(bp - Point(BEHIND_RAD * cos(targetBallAng), BEHIND_RAD * sin(targetBallAng)), ballTargetAng, false, false);
             move_skill.perform(robot);
 
             /* Kick when in range, or go back to moving behind if it

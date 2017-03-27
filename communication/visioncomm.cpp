@@ -47,13 +47,6 @@ void VisionComm::receiveRobot(const SSL_DetectionRobot& robot, int detectedTeamC
     {
         // 2 5 7 8
         int id = robot.robot_id();
-        switch(id)
-        {
-        case 7:
-            id = 7;
-            break;
-        }
-
         Robot* rob = gamemodel->find(id, *currentTeam);
 
         if (rob == NULL)
@@ -76,8 +69,6 @@ void VisionComm::receiveRobot(const SSL_DetectionRobot& robot, int detectedTeamC
     #endif
         rob->setRobotPosition( positionReading );
         rob->setOrientation(rotationReading);
-
-
 
         gamemodel->onRobotUpdated(rob);
     }
@@ -113,7 +104,7 @@ static bool isGoodDetection
         (x <= 0 && y <= 0 && cam == 2) ||
         (x >  0 && y <= 0 && cam == 3);
     }
-    //isGoodSide |= SIMULATED;    //Simulated overrides anything
+    // isGoodSide = SIMULATED;    //Simulated overrides anything
 
     return isGoodConf && isGoodSide;
 }
@@ -270,20 +261,15 @@ void VisionComm::receive()
     }
 
     bool all_frames_recv = true;
+    int num_cams = fourCameraMode? 4 : 2;
 
-#if SIMULATED || FOUR_CAMERA
-    #define CAM_LOOP_INDEX 4
-#else
-    #define CAM_LOOP_INDEX 2
-#endif
-
-    for(int i = 0; i < CAM_LOOP_INDEX; ++i)
+    for(int i = 0; i < num_cams; ++i)
         if(!frames_state[i])
             all_frames_recv = false;
 
     if(all_frames_recv)
     {
-        for(int i = 0; i < CAM_LOOP_INDEX; ++i)
+        for(int i = 0; i < num_cams; ++i)
         {
             recieveBall(frames[i]);
             recieveRobotTeam(frames[i], TEAM_BLUE);
@@ -305,7 +291,6 @@ void VisionComm::receive()
         }
     }
 }
-
 
 void VisionComm::run()
 {

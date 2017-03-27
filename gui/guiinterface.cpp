@@ -6,7 +6,7 @@
 #include "guidrawline.h"
 
 /* Points of contact with main project:
- *      - move.cpp
+ *      - gotopose.cpp
  *      - strategycontroller.cpp:
  * Overriding override:
  *      - HALT command from refbox

@@ -107,6 +107,7 @@ const int grSim_Packet::kReplacementFieldNumber;
 grSim_Packet::grSim_Packet()
   : ::google::protobuf::Message() {
   SharedCtor();
+  // @@protoc_insertion_point(constructor:grSim_Packet)
 }
 
 void grSim_Packet::InitAsDefaultInstance() {
@@ -118,6 +119,7 @@ grSim_Packet::grSim_Packet(const grSim_Packet& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:grSim_Packet)
 }
 
 void grSim_Packet::SharedCtor() {
@@ -128,6 +130,7 @@ void grSim_Packet::SharedCtor() {
 }
 
 grSim_Packet::~grSim_Packet() {
+  // @@protoc_insertion_point(destructor:grSim_Packet)
   SharedDtor();
 }
 
@@ -160,7 +163,7 @@ grSim_Packet* grSim_Packet::New() const {
 }
 
 void grSim_Packet::Clear() {
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+  if (_has_bits_[0 / 32] & 3) {
     if (has_commands()) {
       if (commands_ != NULL) commands_->::grSim_Commands::Clear();
     }
@@ -174,18 +177,21 @@ void grSim_Packet::Clear() {
 
 bool grSim_Packet::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+#define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  while ((tag = input->ReadTag()) != 0) {
+  // @@protoc_insertion_point(parse_start:grSim_Packet)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // optional .grSim_Commands commands = 1;
       case 1: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+        if (tag == 10) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_commands()));
         } else {
-          goto handle_uninterpreted;
+          goto handle_unusual;
         }
         if (input->ExpectTag(18)) goto parse_replacement;
         break;
@@ -193,23 +199,23 @@ bool grSim_Packet::MergePartialFromCodedStream(
 
       // optional .grSim_Replacement replacement = 2;
       case 2: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+        if (tag == 18) {
          parse_replacement:
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_replacement()));
         } else {
-          goto handle_uninterpreted;
+          goto handle_unusual;
         }
-        if (input->ExpectAtEnd()) return true;
+        if (input->ExpectAtEnd()) goto success;
         break;
       }
 
       default: {
-      handle_uninterpreted:
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-          return true;
+          goto success;
         }
         DO_(::google::protobuf::internal::WireFormat::SkipField(
               input, tag, mutable_unknown_fields()));
@@ -217,12 +223,18 @@ bool grSim_Packet::MergePartialFromCodedStream(
       }
     }
   }
+success:
+  // @@protoc_insertion_point(parse_success:grSim_Packet)
   return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:grSim_Packet)
+  return false;
 #undef DO_
 }
 
 void grSim_Packet::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:grSim_Packet)
   // optional .grSim_Commands commands = 1;
   if (has_commands()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
@@ -239,10 +251,12 @@ void grSim_Packet::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
   }
+  // @@protoc_insertion_point(serialize_end:grSim_Packet)
 }
 
 ::google::protobuf::uint8* grSim_Packet::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:grSim_Packet)
   // optional .grSim_Commands commands = 1;
   if (has_commands()) {
     target = ::google::protobuf::internal::WireFormatLite::
@@ -261,6 +275,7 @@ void grSim_Packet::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
   }
+  // @@protoc_insertion_point(serialize_to_array_end:grSim_Packet)
   return target;
 }
 

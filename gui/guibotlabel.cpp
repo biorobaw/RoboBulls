@@ -39,7 +39,7 @@ void GuiBotLabel::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
         if(team == OUR_TEAM) {
            Robot* robot = gameModel->findMyTeam(id);
            if(robot) {
-                label = "" + QString::number(id) + "(" + QString::number(Movement::Collisions::getMoveStatus(robot)) + ")";
+                label = "" + QString::number(id) + "(" + QString::number(Move::Collisions::getMoveStatus(robot)) + ")";
            }
         } else {
            label = QString::number(id);

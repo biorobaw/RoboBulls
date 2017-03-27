@@ -3,7 +3,7 @@
 
 #include "skill.h"
 #include "utilities/point.h"
-#include "movement/gotoposition.h"
+#include "movement/go_to_pose.h"
 #include "model/gamemodel.h"
 
 namespace Skill
@@ -35,7 +35,7 @@ private:
     bool avoid_obstacles = true;
     bool prefer_forward_motion = true;
     Point grasp_point;
-    Movement::GoToPosition move_skill;
+    Move::GoToPose move_skill;
     enum {move_to_ball, grasp, move_to_target, adjust1, adjust2} state;
 
     bool targetIsAhead(const float& ang_to_ball, const Point& rp);
