@@ -10450,10 +10450,10 @@ http://www.fairchildsemi.com/ds/LM/LM7805.pdf</description>
 <variantdefs>
 </variantdefs>
 <classes>
-<class number="0" name="default" width="1.016" drill="0">
+<class number="0" name="default" width="0.508" drill="0">
 <clearance class="0" value="0.508"/>
 </class>
-<class number="1" name="vcc" width="2.032" drill="0">
+<class number="1" name="vcc" width="1.524" drill="0">
 <clearance class="1" value="0.762"/>
 </class>
 </classes>
