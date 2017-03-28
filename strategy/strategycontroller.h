@@ -26,11 +26,6 @@ public:
     void run();
 
 private:
-    /*! Initialization called at the beginning of a frame of the game.
-     * Prepares any functions or states that are needed
-     * for the frame before strategies are updated */
-    void frameBegin();
-
     /*! Clean-up called at the end of a frame.
      * This performs the behaviors on the robots, then
      * uses RobComm to send the velocities to the field */
@@ -38,7 +33,7 @@ private:
 
     /*! Called when GameModel receives a new command from
      * the RefComm.Makes a new activeStrategy. */
-    void gameModelUpdated();
+    void gameModelReset();
 
     /*! Called when GameModel receives the same command
      * as the last frame. Updates current activeStrategy.  */

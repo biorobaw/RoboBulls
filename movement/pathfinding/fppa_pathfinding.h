@@ -1,6 +1,7 @@
 #ifndef FPPA_PATHFINDING_H
 #define FPPA_PATHFINDING_H
 #include <vector>
+#include <model/robot.h>
 #include "utilities/point.h"
 
 namespace Move
@@ -16,17 +17,14 @@ namespace Move
 
 namespace FPPA
 {
-    //! @brief A vector of waypoints representing a clear path
+    //! @brief A vector of waypoints representing a path
     typedef std::vector<Point> Path;
 
-    /****************************************************************/
-
-    /*! @brief Updates currently-considered obstacles
-     * @details If FRAME_UPDATE_COUNT calls are made, re-builds the currently
-     * considered obstacles and updates the state of the field */
-    void update();
-
-    /****************************************************************/
+    /*! @brief Updates the list of points that represent robot obstacles
+     * @details Ignores the robot that is passed in when considering obstacles
+     * @param self Pointer to the robot that obstacles are being retrieved for.
+     */
+    void updateRobotObstacles(Robot* self);
 
     /*! @brief Use FPPA to find a path from Point `start` to Point `end`.
      * @details Returns a std::pair of a the path waypoint vector and a
@@ -53,11 +51,6 @@ namespace FPPA
                           const Point& end,
                           Point *obsPosOut = nullptr,
                           bool avoidBall = true);
-
-    /*! @brief Get all current considered obstacles
-     *  @details Returns a reference to the vector consisting of the positions of all
-     *  obstacles for this frame */
-    const std::vector<Point>& getCurrentObstacles();
 }
 
 }

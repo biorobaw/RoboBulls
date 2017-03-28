@@ -99,8 +99,8 @@ private:
     // Obstacle avoidance functions
     Point updatePathQueue(Robot *robot);
     bool  pathIsClear(Robot *robot) const;
-    bool  calcObstacleAvoidance(Robot* rob, MoveType moveType);
-    bool  calcRegularMovement(Robot* rob, MoveType moveType);
+    bool  performObstacleAvoidance(Robot* rob, MoveType moveType);
+    bool  performNonAvoidMovement(Robot* rob, MoveType moveType);
     void  assignNewPath(const Point& robotPoint, bool is_goalie);
     void  getCollisionState(Robot* robot, bool& collided, bool& yielding) const;
 

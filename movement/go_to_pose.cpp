@@ -36,7 +36,6 @@ GoToPose::GoToPose(Point targetPoint, float targetAngle, bool withObstacleAvoid,
 
 void GoToPose::updateGoal(Point targetPoint, float targetAngle, bool withObstacleAvoid, bool avoidBall)
 {
-    std::cout << "DEBUG: updateGoal()" << std::endl;
     /* In most cases, this is called each loop to track a possibly moving point.
      * But that is very inefficient in that basically the pathfinding is
      * remade each time, and other expensive things are done. So if the new point
@@ -48,7 +47,6 @@ void GoToPose::updateGoal(Point targetPoint, float targetAngle, bool withObstacl
         nextTargetAngle    = UNUSED_ANGLE_VALUE;
         nextDistTolerance  = 20;
         pathQueue.clear();
-        lastObstacles.clear();
         is_initialized = true;
     }
 
@@ -87,17 +85,16 @@ bool GoToPose::perform(Robot *robot, MoveType moveType)
         m_targetAngle = Measurements::angleBetween(robot, m_targetPoint);
 
     if(avoid_obstacles || avoid_ball)
-        return calcObstacleAvoidance(robot, moveType);
+        return performObstacleAvoidance(robot, moveType);
     else
-        return calcRegularMovement(robot, moveType);
+        return performNonAvoidMovement(robot, moveType);
 }
-
 
 /***********************************************************/
 /********************* Private Methods *********************/
 /***********************************************************/
 
-bool GoToPose::calcRegularMovement(Robot* rob, MoveType moveType)
+bool GoToPose::performNonAvoidMovement(Robot* rob, MoveType moveType)
 {
     Point robotPos = rob->getPosition();
     float robotAng = rob->getOrientation();
@@ -108,46 +105,6 @@ bool GoToPose::calcRegularMovement(Robot* rob, MoveType moveType)
     &&   Measurements::isClose(m_targetAngle, robotAng, lastAngTolerance))
         return true;
     return false;
-}
-
-bool GoToPose::pathIsClear(Robot* robot) const
-{
-    std::cout << "DEBUG: pathIsClear()" << std::endl;
-    //Check to see if there is an obstalce in current path
-    Point robotPoint = robot->getPosition();
-    Point obsPoint;
-    bool isNewObstacleInPath = FPPA::isObstacleInLine(robotPoint, nextPoint, &obsPoint, avoid_ball);
-
-    //Checking the next line as well for an obstacle
-    if(!isNewObstacleInPath && pathQueue.size() > 2) {
-        const Point& nextNextPoint = pathQueue[1];
-        isNewObstacleInPath = FPPA::isObstacleInLine(nextPoint, nextNextPoint, &obsPoint, avoid_ball);
-    }
-
-    //If there's an obstacle and it isn't near any recorded onces, the path is no longer clear
-    if(isNewObstacleInPath && Comparisons::isDistanceToLess(obsPoint, 20).none_of(lastObstacles))
-        return false;
-
-    return true;
-}
-
-Point GoToPose::updatePathQueue(Robot* robot)
-{
-    std::cout << "DEBUG: UdpatePathQueue()" << std::endl;
-    // Pops path queue if close to next point
-    if(Measurements::isClose(robot, nextPoint, nextDistTolerance)) {
-        pathQueue.pop_front();
-        if(pathQueue.size() == 1) {
-            nextDistTolerance = lastDistTolerance;
-            nextTargetAngle = m_targetAngle;
-        }
-    }
-
-    // If the queue is empty, we've finished the path. Otherwise return next waypoint
-    if(pathQueue.empty())
-        return m_targetPoint;
-    else
-        return pathQueue.front();
 }
 
 void GoToPose::getCollisionState(Robot* robot, bool& collided, bool& yielding) const
@@ -163,8 +120,11 @@ void GoToPose::getCollisionState(Robot* robot, bool& collided, bool& yielding) c
 #endif
 }
 
-bool GoToPose::calcObstacleAvoidance(Robot* robot, MoveType moveType)
+bool GoToPose::performObstacleAvoidance(Robot* robot, MoveType moveType)
 {
+    // Assign robots that are to be considered obstacles
+    FPPA::updateRobotObstacles(robot);
+
     // If we haven't reached the target
     if(Measurements::distance(robot, m_targetPoint) > lastDistTolerance)
     {
@@ -185,15 +145,31 @@ bool GoToPose::calcObstacleAvoidance(Robot* robot, MoveType moveType)
     return false;   // Motion not finished
 }
 
+bool GoToPose::pathIsClear(Robot* robot) const
+{
+    // Check to see if there is an obstacle in current path
+    Point robotPoint = robot->getPosition();
+    Point obsPoint;
+    bool first_segment_clear = !FPPA::isObstacleInLine(robotPoint, nextPoint, &obsPoint, avoid_ball);
+
+    // Checking the next path segment as well for an obstacle
+    bool second_segment_clear = true;
+    if(!first_segment_clear && pathQueue.size() > 2) {
+        const Point& nextNextPoint = pathQueue[1];
+        second_segment_clear = !FPPA::isObstacleInLine(nextPoint, nextNextPoint, &obsPoint, avoid_ball);
+    }
+
+    // If there's an obstacle, the path is no longer clear
+    return first_segment_clear && second_segment_clear;
+}
 
 void GoToPose::assignNewPath(const Point& robotPoint, bool use_def_areas)
 {
-    std::cout << "DEBUG: assignNewPath()";
     FPPA::Path path = FPPA::genPath(robotPoint, m_targetPoint, avoid_ball, use_def_areas);
     pathQueue.assign(path.begin(), path.end());
-    lastObstacles = FPPA::getCurrentObstacles(); //Copies
+    assert(path.size() == pathQueue.size());
 
-    //Draws path lines on iterface. Uses clock() to avoid line spam.
+    // Draws path lines on iterface. Uses clock() to avoid line spam.
     long now = clock();
     if((float)(now - lastLineDrawnTime) / CLOCKS_PER_SEC > 0.5)
     {
@@ -201,6 +177,24 @@ void GoToPose::assignNewPath(const Point& robotPoint, bool use_def_areas)
         for (unsigned int i=1; i<pathQueue.size(); i++)
             GuiInterface::getGuiInterface()->drawLine(pathQueue[i-1], pathQueue[i], 0.25*i);
     }
+}
+
+Point GoToPose::updatePathQueue(Robot* robot)
+{
+    if(pathQueue.empty())
+        return m_targetPoint;
+
+    // Pops path queue if close to next point
+    if(Measurements::isClose(robot, nextPoint, nextDistTolerance)) {
+        pathQueue.pop_front();
+        if(pathQueue.size() == 1) {
+            nextDistTolerance = lastDistTolerance;
+            nextTargetAngle = m_targetAngle;
+        }
+    }
+
+    // If the queue is empty, we've finished the path. Otherwise return next waypoint
+    return pathQueue.front();
 }
 
 void GoToPose::calcAndSetVels(Robot *rob, Point targetPoint, float targetAngle, MoveType moveType)

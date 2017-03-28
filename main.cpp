@@ -109,10 +109,10 @@ void printBuildInfo()
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    //Build message
+    printBuildInfo();
 
-    // Initialize robot communication
-    //RobComm::getRobComm();
+    QApplication a(argc, argv);
 
     //Initialize GameModel, StrategyController, Vision, and Ref
     GameModel* gm = GameModel::getModel();
@@ -121,9 +121,6 @@ int main(int argc, char *argv[])
     StrategyController sc(gm);
     gm->setStrategyController(&sc);
     registerExitSignals();
-
-    //Build message
-    printBuildInfo();
 
     //Create the GUI and show it
     GuiInterface::getGuiInterface()->show();

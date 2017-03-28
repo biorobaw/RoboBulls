@@ -13,7 +13,7 @@ VisionComm::VisionComm(GameModel *gm)
     client = new RoboCupSSLClient(VISION_PORT, VISION_ADDRESS);
     client->open(true);
     gamemodel = gm;
-    fourCameraMode = SIMULATED || FOUR_CAMERA;
+    FOUR_CAMERA_MODE = SIMULATED || FOUR_CAMERA;
     kfilter = new KFBall();
     u.resize(4);
 }
@@ -60,17 +60,17 @@ void VisionComm::receiveRobot(const SSL_DetectionRobot& robot, int detectedTeamC
         // Assumption: rob contains the robot with id == detected_id
         Point positionReading(robot.x(), robot.y());
         float rotationReading = robot.orientation();
-    #if SIDE == SIDE_POSITIVE
-        positionReading *= -1;
-        if(rotationReading > 0)
-            rotationReading = -(M_PI - rotationReading);
-        else
-            rotationReading = -(-M_PI - rotationReading);
-    #endif
+        #if SIDE == SIDE_POSITIVE
+            positionReading *= -1;
+            if(rotationReading > 0)
+                rotationReading = -(M_PI - rotationReading);
+            else
+                rotationReading = -(-M_PI - rotationReading);
+        #endif
         rob->setRobotPosition( positionReading );
         rob->setOrientation(rotationReading);
 
-        gamemodel->onRobotUpdated(rob);
+        //gamemodel->onRobotUpdated(rob);
     }
 }
 
@@ -129,7 +129,7 @@ void VisionComm::recieveBall(const SSL_DetectionFrame& frame)
                                          {return b1.confidence() < b2.confidence();});
 
     //If it is still a good detection...
-    if(isGoodDetection(*bestDetect, frame, CONF_THRESHOLD_BALL, fourCameraMode))
+    if(isGoodDetection(*bestDetect, frame, CONF_THRESHOLD_BALL, FOUR_CAMERA_MODE))
     {
         Point b_pos = Point(bestDetect->x(), bestDetect->y());
         #if SIDE == SIDE_POSITIVE
@@ -223,7 +223,7 @@ void VisionComm::recieveRobotTeam(const SSL_DetectionFrame& frame, int team)
     
     for(const SSL_DetectionRobot& robot : *currentTeamDetection)
     {
-        if(isGoodDetection(robot, frame, CONF_THRESHOLD_BOTS, fourCameraMode)) {
+        if(isGoodDetection(robot, frame, CONF_THRESHOLD_BOTS, FOUR_CAMERA_MODE)) {
             int robotID = robot.robot_id();
             if(gamemodel->find(robotID, *currentTeamVector) or currentTeamCounts[robotID] >= 80) {
                 receiveRobot(robot, team);
@@ -253,6 +253,7 @@ void VisionComm::receive()
     //receiveIfMSPassed(10);
     client->receive(packet);    //Recieve packet here
 
+    // Update arrays used for tracking frames from each quadrant/half
     if(packet.has_detection())
     {
         const SSL_DetectionFrame& frame = packet.detection();
@@ -261,8 +262,7 @@ void VisionComm::receive()
     }
 
     bool all_frames_recv = true;
-    int num_cams = fourCameraMode? 4 : 2;
-
+    int num_cams = FOUR_CAMERA_MODE? 4 : 2;
     for(int i = 0; i < num_cams; ++i)
         if(!frames_state[i])
             all_frames_recv = false;

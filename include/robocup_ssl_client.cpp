@@ -72,7 +72,7 @@ bool RoboCupSSLClient::receive(SSL_WrapperPacket & packet) {
   if (r>0) {
     fflush(stdout);
     //decode packet:
-    return packet.ParseFromArray(in_buffer,r);
+    return packet.ParsePartialFromArray(in_buffer,r);
   }
   return false;
 }

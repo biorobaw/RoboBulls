@@ -5,7 +5,7 @@ namespace JoyStick
 {
 
 /*! Mapping between joysticks and robot ids */
-int robots[MAX_JOYSTICKS] = {-1};
+int robots[MAX_JOYSTICKS] = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
 
 /*! Variables to read joystick info */
 float axes[MAX_JOYSTICKS][8] = {0};      // Joystick axis readings buffer
@@ -182,6 +182,7 @@ void listener()
             }
         }
     }
+
 
     SDL_Quit();
 }

@@ -69,7 +69,7 @@ protected:
     int blue_rob_readings[12]={0};  //! Number of detections of each blue robot
     int yell_rob_readings[12]={0};  //! Number of detections of each yelloe robot
     timeval lastRecvTime;           //! When did we last receive a packet? Used to not recieve every one
-    bool fourCameraMode = false;    //! Are we in four-camera mode (true)? Or Two-camera mode?
+    bool FOUR_CAMERA_MODE = false;    //! Are we in four-camera mode (true)? Or Two-camera mode?
 
     KFBall* kfilter;                //! Kalman filter instance
     bool kfilter_init = false;      //! Has the kalman filter been initialized with the first measurement?

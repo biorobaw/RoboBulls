@@ -154,6 +154,7 @@ class Strafe : public GenericMovementBehavior
 public:
     Point A = Point(1200,0), B = Point(-1200,0);
     enum {pos_one,pos_two} state = pos_one;
+    Strafe(){}
     Strafe(Point A, Point B) : A(A), B(B){}
 
     void perform(Robot *robot) override
@@ -181,13 +182,13 @@ public:
 class GoToBehavior : public GenericMovementBehavior
 {
 public:
-    GoToBehavior(double angle)
-    {
+    GoToBehavior(double angle) {
         offset += Point(cos(angle*M_PI/180), sin(angle*M_PI/180)) * 500;
     }
+
     Point offset;
-    void perform(Robot *robot) override
-    {
+
+    void perform(Robot *robot) override  {
         setMovementTargets(gameModel->getBallPoint() + offset,
                            Measurements::angleBetween(robot->getPosition(),gameModel->getBallPoint()),
                            true, true);
@@ -200,19 +201,17 @@ bool TestStrategy::update()
 {
     //Change IDs and behaviors to be assigned here.
     //All robots must exists before any action is taken.
-    Robot* r0 = gameModel->findMyTeam(3);
+    Robot* r0 = gameModel->findMyTeam(0);
     Robot* r1 = gameModel->findMyTeam(1);
     Robot* r2 = gameModel->findMyTeam(2);
     Robot* r3 = gameModel->findMyTeam(3);
     Robot* r4 = gameModel->findMyTeam(4);
 
-    if(r0) r0->assignBeh<GoToBehavior>(1*360/5.0);
-//    if(r1) r1->assignBeh<GoToBehavior>(2*360/5.0);
-//    if(r2) r2->assignBeh<GoToBehavior>(3*360/5.0);
-//    if(r3) r3->assignBeh<GoToBehavior>(4*360/5.0);
-//    if(r4) r4->assignBeh<GoToBehavior>(5*360/5.0);
-
-//    std::cout << std::endl << "TestStrategy::Update" << std::endl;
+    if(r0) r0->assignBeh<Strafe>();
+    if(r1) r1->assignBeh<GoToBehavior>(2*360/5.0);
+    if(r2) r2->assignBeh<GoToBehavior>(3*360/5.0);
+    if(r3) r3->assignBeh<GoToBehavior>(4*360/5.0);
+    if(r4) r4->assignBeh<GoToBehavior>(5*360/5.0);
 
     return false;
 }

@@ -246,7 +246,7 @@ void GameModel::addBallReplacement(float x, float y, float vx, float vy)
 /* Called by VisionComm */
 /* Don't overlook this function, it's more important than you think */
 /*! @brief Used by VisionComm; The main shebang; calls the run functions of the
- * StrategyController and make the project work. This also update the GUI system. */
+ * StrategyController and makes the project work. This also updates the GUI system. */
 void GameModel::notifyObservers()
 {
     setRobotHasBall();

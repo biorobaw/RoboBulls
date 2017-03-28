@@ -116,6 +116,7 @@ private:
         float x, y;
         float vx, vy;
     };
+
     //! @endcond
     //Vector of queued replacements for robots
     std::vector<RobotReplacement> robotReplacements;

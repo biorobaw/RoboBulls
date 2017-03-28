@@ -27,10 +27,8 @@ void StrategyController::run()
     //This is for the initial reading at which robots may not be detected yet
     if(!model->getMyTeam().empty())
     {
-        frameBegin();
-
         if(model->isNewCommand() || activeStrategy == nullptr) {
-            gameModelUpdated();
+            gameModelReset();
         } else {
             gameModelContinued();
         }
@@ -91,7 +89,7 @@ void StrategyController::assignNewStrategy(char gameState)
 }
 
 
-void StrategyController::gameModelUpdated()
+void StrategyController::gameModelReset()
 {
     clearCurrentStrategy();
     char newState = model->getGameState();
@@ -118,19 +116,12 @@ void StrategyController::gameModelContinued()
     }
 }
 
-
 void StrategyController::clearCurrentStrategy()
 {
     delete activeStrategy;
     activeStrategy = nullptr;
     for(Robot* robot : model->getMyTeam())
         robot->clearBehavior();
-}
-
-
-void StrategyController::frameBegin()
-{
-    Move::FPPA::update();
 }
 
 void StrategyController::frameEnd()
