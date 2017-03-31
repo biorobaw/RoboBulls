@@ -73,9 +73,9 @@ public:
     bool perform(Robot* robot, MoveType moveType = MoveType::Default);
 
 private:
-    Point m_targetPoint;    //The requested final target point
-    float m_targetAngle;    //The requested final target angle
-    float velMultiplier;    //Velocity multipler added to calculated vels
+    Point final_target_point;    //The requested final target point
+    float final_target_angle;    //The requested final target angle
+    float vel_multiplier;    //Velocity multipler added to calculated vels
 
     // States
     bool is_initialized;       //If recreate() has been called once (or ctor)
@@ -83,21 +83,20 @@ private:
     bool avoid_ball;           //Do we avoid the ball?
 
     // Obstacle Avoidance info
-    float nextTargetAngle;
-    float nextDistTolerance;
-    Point nextPoint;
-    std::deque<Point>   pathQueue;
-    std::vector<Point>  lastObstacles;
+    float next_target_angle;
+    float next_dist_tolerance;
+    Point next_point, next_next_point;
+    std::deque<Point>   path_queue;
     long  lastLineDrawnTime;
 
     // Default and user-set recreation (see recreate()) tolerances
     float recrDistTolerance  = 10;
     float recrAngleTolerance = 1*M_PI/180;
-    float lastDistTolerance  = DIST_TOLERANCE;
+    float last_dist_tolerance  = DIST_TOLERANCE;
     float lastAngTolerance   = ROT_TOLERANCE;
 
     // Obstacle avoidance functions
-    Point updatePathQueue(Robot *robot);
+    void updatePathQueue(Robot *robot);
     bool  pathIsClear(Robot *robot) const;
     bool  performObstacleAvoidance(Robot* rob, MoveType moveType);
     bool  performNonAvoidMovement(Robot* rob, MoveType moveType);
@@ -105,7 +104,8 @@ private:
     void  getCollisionState(Robot* robot, bool& collided, bool& yielding) const;
 
     // General Motion functions
-    void calcAndSetVels(Robot* rob, Point targetPoint, float targetAngle, MoveType moveType);
+    void calcAndSetVels(Robot* rob, Point targetPoint, float targetAngle,
+                        Point next_point, MoveType moveType);
 
     // Pilots
     DifferentialPilot diff_p;

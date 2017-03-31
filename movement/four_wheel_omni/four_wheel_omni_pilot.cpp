@@ -8,8 +8,7 @@ FourWheelOmniPilot::FourWheelOmniPilot()
 {
 }
 
-void FourWheelOmniPilot::drive (Robot* rob, float x_goal, float y_goal, float theta_goal, MoveType moveType)
-{
+void FourWheelOmniPilot::drive (Robot* rob, float x_goal, float y_goal, float theta_goal, float x_goal2, float y_goal2, MoveType moveType){
     switch (moveType)
     {
     case MoveType::facePoint:
@@ -19,24 +18,32 @@ void FourWheelOmniPilot::drive (Robot* rob, float x_goal, float y_goal, float th
         dribbleDrive(rob,x_goal,y_goal,theta_goal);
         break;
     default:
-        defaultDrive(rob,x_goal,y_goal,theta_goal);
+        defaultDrive(rob,x_goal,y_goal,theta_goal, x_goal2, y_goal2);
     }
 }
 
-void FourWheelOmniPilot::drive (Robot* rob, Point goalPoint, float theta_goal, MoveType moveType)
+void FourWheelOmniPilot::drive (Robot* rob, Point goalPoint, float theta_goal, Point goal2Point, MoveType moveType)
 {
-    drive(rob, goalPoint.x, goalPoint.y, theta_goal, moveType);
+    drive(rob, goalPoint.x, goalPoint.y, theta_goal, goal2Point.x, goal2Point.y, moveType);
 }
 
-void FourWheelOmniPilot::defaultDrive (Robot* rob, float x_goal, float y_goal, float theta_goal)
-{
-    //Current Position
-    double x_current = rob->getPosition().x;
-    double y_current = rob->getPosition().y;
-    double theta_current = rob->getOrientation();
-    last_goal_target = Point(x_goal, y_goal);
+void FourWheelOmniPilot::normalizeSpeeds(double& LF, double& LB, double& RF, double& RB, double max_mtr_spd) {
+    double highest_spd = std::max(fabs(LF), (std::max(fabs(LB), (std::max(fabs(RF), fabs(RB))))));
 
-    Point rp = Point(x_current,y_current);
+    if(highest_spd > max_mtr_spd){
+        LF*=max_mtr_spd/highest_spd;
+        LB*=max_mtr_spd/highest_spd;
+        RF*=max_mtr_spd/highest_spd;
+        RB*=max_mtr_spd/highest_spd;
+    }
+}
+
+void FourWheelOmniPilot::defaultDrive (Robot* rob, float x_goal, float y_goal, float theta_goal, float x_goal2, float y_goal2)
+{
+    // Used to clear accumulated errors if goal changes significantly
+    prev_goal_target = Point(x_goal, y_goal);
+
+    Point rp = rob->getPosition();
     Point gp = Point(x_goal,y_goal);
     distance_error = Measurements::distance(rp,gp);
     float angle_to_goal = Measurements::angleBetween(rp, gp);
@@ -56,12 +63,14 @@ void FourWheelOmniPilot::defaultDrive (Robot* rob, float x_goal, float y_goal, f
          ANGULAR_P_K * angle_error +
          ANGULAR_I_K  * angle_error_integral;
 
+    double theta_current = rob->getOrientation();
     if (abs(Measurements::angleDiff(theta_goal,theta_current))<
         abs(Measurements::angleDiff(theta_goal,theta_current+theta_vel)))
         theta_vel=-theta_vel;
 
     // Reduce speed near target
-    if (distance_error < 700)
+    bool is_final_target = Measurements::distance(gp, Point(x_goal2, y_goal2)) < 0.01;
+    if (is_final_target && distance_error < 700)
     {
         x_vel *= 0.5;
         y_vel *= 0.5;
@@ -89,35 +98,7 @@ void FourWheelOmniPilot::defaultDrive (Robot* rob, float x_goal, float y_goal, f
     double RB =  (-sin(RB_OFFSET) * x_vel_robot + cos(RB_OFFSET)*y_vel_robot - TRANS_OFFSET*vel_robot*cos(RB_OFFSET) + WHEEL_RADIUS*theta_vel);
 
     // Normalize wheel velocities
-    unsigned int max_mtr_spd = 100;
-    if (abs(LF)>max_mtr_spd)
-    {
-        LB=(max_mtr_spd/abs(LF))*LB;
-        RF=(max_mtr_spd/abs(LF))*RF;
-        RB=(max_mtr_spd/abs(LF))*RB;
-        LF=(max_mtr_spd/abs(LF))*LF;
-    }
-    if (abs(LB)>max_mtr_spd)
-    {
-        LF=(max_mtr_spd/abs(LB))*LF;
-        RF=(max_mtr_spd/abs(LB))*RF;
-        RB=(max_mtr_spd/abs(LB))*RB;
-        LB=(max_mtr_spd/abs(LB))*LB;
-    }
-    if (abs(RF)>max_mtr_spd)
-    {
-        LF=(max_mtr_spd/abs(RF))*LF;
-        LB=(max_mtr_spd/abs(RF))*LB;
-        RB=(max_mtr_spd/abs(RF))*RB;
-        RF=(max_mtr_spd/abs(RF))*RF;
-    }
-    if (abs(RB)>max_mtr_spd)
-    {
-        LF=(max_mtr_spd/abs(RB))*LF;
-        LB=(max_mtr_spd/abs(RB))*LB;
-        RF=(max_mtr_spd/abs(RB))*RF;
-        RB=(max_mtr_spd/abs(RB))*RB;
-    }
+    normalizeSpeeds(LF, LB, RF, RB, 100);
 
     // Set velocities on robot object
     rob->setLF(LF);
@@ -133,7 +114,7 @@ void FourWheelOmniPilot::dribbleDrive
     double x_current = rob->getPosition().x;
     double y_current = rob->getPosition().y;
     double theta_current = rob->getOrientation();
-    last_goal_target = Point(x_goal, y_goal);
+    prev_goal_target = Point(x_goal, y_goal);
 
     Point rp = Point(x_current,y_current);
     Point gp = Point(x_goal,y_goal);
@@ -190,35 +171,7 @@ void FourWheelOmniPilot::dribbleDrive
     double RB =  (-sin(RB_OFFSET) * x_vel_robot + cos(RB_OFFSET)*y_vel_robot - TRANS_OFFSET*vel_robot*cos(RB_OFFSET) + WHEEL_RADIUS*theta_vel);
 
     // Normalize wheel velocities
-    unsigned int max_mtr_spd = 100;
-    if (abs(LF)>max_mtr_spd)
-    {
-        LB=(max_mtr_spd/abs(LF))*LB;
-        RF=(max_mtr_spd/abs(LF))*RF;
-        RB=(max_mtr_spd/abs(LF))*RB;
-        LF=(max_mtr_spd/abs(LF))*LF;
-    }
-    if (abs(LB)>max_mtr_spd)
-    {
-        LF=(max_mtr_spd/abs(LB))*LF;
-        RF=(max_mtr_spd/abs(LB))*RF;
-        RB=(max_mtr_spd/abs(LB))*RB;
-        LB=(max_mtr_spd/abs(LB))*LB;
-    }
-    if (abs(RF)>max_mtr_spd)
-    {
-        LF=(max_mtr_spd/abs(RF))*LF;
-        LB=(max_mtr_spd/abs(RF))*LB;
-        RB=(max_mtr_spd/abs(RF))*RB;
-        RF=(max_mtr_spd/abs(RF))*RF;
-    }
-    if (abs(RB)>max_mtr_spd)
-    {
-        LF=(max_mtr_spd/abs(RB))*LF;
-        LB=(max_mtr_spd/abs(RB))*LB;
-        RF=(max_mtr_spd/abs(RB))*RF;
-        RB=(max_mtr_spd/abs(RB))*RB;
-    }
+    normalizeSpeeds(LF,LB,RF,RB, 100);
 
     // Set velocities on robot object
     rob->setLF(LF);
@@ -227,14 +180,13 @@ void FourWheelOmniPilot::dribbleDrive
     rob->setRB(RB);
 }
 
-void FourWheelOmniPilot::facePointDrive
-    (Robot* rob, float x_goal, float y_goal, float theta_goal)
+void FourWheelOmniPilot::facePointDrive(Robot* rob, float x_goal, float y_goal, float theta_goal)
 {
     //Current Position
     double x_current = rob->getPosition().x;
     double y_current = rob->getPosition().y;
     double theta_current = rob->getOrientation();
-    last_goal_target = Point(x_goal, y_goal);
+    prev_goal_target = Point(x_goal, y_goal);
 
     Point rp = Point(x_current,y_current);
     Point gp = Point(x_goal,y_goal);
@@ -291,35 +243,7 @@ void FourWheelOmniPilot::facePointDrive
     double RB =  (-sin(RB_OFFSET) * x_vel_robot + cos(RB_OFFSET)*y_vel_robot + WHEEL_RADIUS*theta_vel);
 
     // Normalize wheel velocities
-    unsigned int max_mtr_spd = 100;
-    if (abs(LF)>max_mtr_spd)
-    {
-        LB=(max_mtr_spd/abs(LF))*LB;
-        RF=(max_mtr_spd/abs(LF))*RF;
-        RB=(max_mtr_spd/abs(LF))*RB;
-        LF=(max_mtr_spd/abs(LF))*LF;
-    }
-    if (abs(LB)>max_mtr_spd)
-    {
-        LF=(max_mtr_spd/abs(LB))*LF;
-        RF=(max_mtr_spd/abs(LB))*RF;
-        RB=(max_mtr_spd/abs(LB))*RB;
-        LB=(max_mtr_spd/abs(LB))*LB;
-    }
-    if (abs(RF)>max_mtr_spd)
-    {
-        LF=(max_mtr_spd/abs(RF))*LF;
-        LB=(max_mtr_spd/abs(RF))*LB;
-        RB=(max_mtr_spd/abs(RF))*RB;
-        RF=(max_mtr_spd/abs(RF))*RF;
-    }
-    if (abs(RB)>max_mtr_spd)
-    {
-        LF=(max_mtr_spd/abs(RB))*LF;
-        LB=(max_mtr_spd/abs(RB))*LB;
-        RF=(max_mtr_spd/abs(RB))*RF;
-        RB=(max_mtr_spd/abs(RB))*RB;
-    }
+    normalizeSpeeds(LF,LB,RF,RB, 100);
 
     // Set velocities on robot object
     rob->setLF(LF);
@@ -330,8 +254,8 @@ void FourWheelOmniPilot::facePointDrive
 
 void FourWheelOmniPilot::updateErrors(float x_goal, float y_goal)
 {
-    //Reset queues if the target has moved
-    if(Measurements::distance(Point(x_goal,y_goal), last_goal_target) > 50)
+    // Reset queues if the target has moved
+    if(Measurements::distance(Point(x_goal,y_goal), prev_goal_target) > 50)
         clearErrors();
 
     //Integral Error for distance

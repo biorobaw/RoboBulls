@@ -32,22 +32,28 @@ public:
      * @param theta_goal The desired ending facing angle angle
      * @param moveType The Movement Type. See Type
      * @return a fourWheelVels to be sent to the robot's LB, LF, RB, and RF wheels */
-    void drive (Robot* rob, float x_goal, float y_goal, float theta_goal, MoveType move_type);
+    void drive (Robot* rob, float x_goal, float y_goal, float theta_goal,
+                float x_goal2, float y_goal2, MoveType move_type);
 
     /*! @brief Drive function with a Point target overload
      * @param goalPoint The target point
      * @see calculateVels */
-    void drive (Robot* rob, Point goalPoint, float theta_goal, MoveType moveType);
+    void drive (Robot* rob, Point goalPoint, float theta_goal,
+                Point goalPoint2, MoveType moveType);
 
 private:
     //! @brief Movement algorithm to handle Type::Default
-    void defaultDrive(Robot* rob, float x_goal, float y_goal, float theta_goal);
+    void defaultDrive(Robot* rob, float x_goal, float y_goal, float theta_goal,
+                      float x_goal2, float y_goal2);
     
     //! @brief Movement algorithm to handle Type::Dribble movement
     void dribbleDrive(Robot* rob, float x_goal, float y_goal, float theta_goal);
 
     //! @brief Movement algorithm to handle Type::facePoint movement
     void facePointDrive(Robot* rob, float x_goal, float y_goal, float angle_to_point);
+
+    //! @brief Normalizes input speeds within -max_mtr_spd and max_mtr_spd
+    void normalizeSpeeds(double& LF, double& LB, double& RF, double& RB, double max_mtr_spd);
 
     // Robot Physical Properties
     static constexpr double LF_OFFSET = 144*M_PI/180; //135 (Robot's x-Axis/right side is zero)
@@ -65,7 +71,7 @@ private:
 
     const double WHEEL_RADIUS = 27;
 
-    // Error Variables
+    // PID Error Variables
     # if SIMULATED
         const double TRANS_P_K = 0.25;       // Multiplier for Proportional XY
         const double TRANS_I_K = 0.00000;    // Multiplier for integral XY
@@ -90,7 +96,7 @@ private:
     void updateErrors(float x_goal, float y_goal);
     void clearErrors();
 
-    Point last_goal_target;
+    Point prev_goal_target;
     float prev_vel = 0;
 };
 

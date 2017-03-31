@@ -56,7 +56,7 @@ namespace impl {
         // Check robots
         for(const Point& obstacle : robotObstacles) {
             // Here we exclude obstacle points that are too close to the starting point,
-            if(Measurements::isClose(obstacle, beginPos, ROBOT_RADIUS))
+            if(Measurements::isClose(obstacle, beginPos, ROBOT_RADIUS*2+10))
                 continue;
 
             if(Measurements::lineSegmentDistance(obstacle, beginPos, endPos) <= ROBOT_RADIUS*2+10) {
@@ -209,7 +209,6 @@ namespace impl {
         for(auto it = path.begin()+1; it < path.end(); ++it)
             impl::sanitizeDestination(*it, use_def_areas);
 
-        assert(path.size() < 100);
         return path;
     }
 

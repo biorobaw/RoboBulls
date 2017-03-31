@@ -8,8 +8,8 @@
 //! Switch between various field geometries.
 //! Only one of these should be set to 1.
 #define BIO_ROB_FIELD 0
-#define GRSIM_FIELD 0
-#define ROBOCUP_FIELD 1
+#define GRSIM_FIELD 1
+#define ROBOCUP_FIELD 0
 
 /*! @brief Overall velocity for all behaviors. Change this
  * constant to slow down or speed all robot motion. */

@@ -17,9 +17,9 @@ namespace Move
 {
 
 GoToPose::GoToPose()
-    : m_targetPoint(9999,9999)
-    , m_targetAngle(UNUSED_ANGLE_VALUE)
-    , velMultiplier(1)
+    : final_target_point(9999,9999)
+    , final_target_angle(UNUSED_ANGLE_VALUE)
+    , vel_multiplier(1)
     , is_initialized(false)
     , avoid_obstacles(true)
     , avoid_ball(true)
@@ -41,16 +41,16 @@ void GoToPose::updateGoal(Point targetPoint, float targetAngle, bool withObstacl
      * remade each time, and other expensive things are done. So if the new point
      * is close enough to the last, let's not do anything
      */
-    if(Measurements::distance(m_targetPoint, targetPoint) > recrDistTolerance) {
-        m_targetPoint      = targetPoint;
-        m_targetAngle      = targetAngle;
-        nextTargetAngle    = UNUSED_ANGLE_VALUE;
-        nextDistTolerance  = 20;
-        pathQueue.clear();
+    if(Measurements::distance(final_target_point, targetPoint) > recrDistTolerance) {
+        final_target_point      = targetPoint;
+        final_target_angle      = targetAngle;
+        next_target_angle    = UNUSED_ANGLE_VALUE;
+        next_dist_tolerance  = 20;
+        path_queue.clear();
         is_initialized = true;
     }
 
-    m_targetAngle = targetAngle;
+    final_target_angle = targetAngle;
     avoid_obstacles = withObstacleAvoid;
     avoid_ball = avoidBall;
 }
@@ -58,7 +58,7 @@ void GoToPose::updateGoal(Point targetPoint, float targetAngle, bool withObstacl
 
 void GoToPose::setVelocityMultiplier(float newMultiplier)
 {
-    this->velMultiplier = newMultiplier;
+    this->vel_multiplier = newMultiplier;
 }
 
 
@@ -71,7 +71,7 @@ void GoToPose::setRecreateTolerances(float distTolerance, float angleTolerance)
 
 void GoToPose::setMovementTolerances(float distTolerance, float angleTolerance)
 {
-    this->lastDistTolerance = distTolerance;
+    this->last_dist_tolerance = distTolerance;
     this->lastAngTolerance  = angleTolerance;
 }
 
@@ -81,8 +81,8 @@ bool GoToPose::perform(Robot *robot, MoveType moveType)
     if(!is_initialized)
         return false;
 
-    if(m_targetAngle == UNUSED_ANGLE_VALUE)
-        m_targetAngle = Measurements::angleBetween(robot, m_targetPoint);
+    if(final_target_angle == UNUSED_ANGLE_VALUE)
+        final_target_angle = Measurements::angleBetween(robot, final_target_point);
 
     if(avoid_obstacles || avoid_ball)
         return performObstacleAvoidance(robot, moveType);
@@ -99,10 +99,11 @@ bool GoToPose::performNonAvoidMovement(Robot* rob, MoveType moveType)
     Point robotPos = rob->getPosition();
     float robotAng = rob->getOrientation();
 
-    calcAndSetVels(rob, m_targetPoint, m_targetAngle, moveType);
+    calcAndSetVels(rob, final_target_point, final_target_angle,
+                   final_target_point, moveType);
 
-    if (Measurements::isClose(m_targetPoint, robotPos, lastDistTolerance)
-    &&   Measurements::isClose(m_targetAngle, robotAng, lastAngTolerance))
+    if (Measurements::isClose(final_target_point, robotPos, last_dist_tolerance)
+    &&  Measurements::isClose(final_target_angle, robotAng, lastAngTolerance))
         return true;
     return false;
 }
@@ -126,21 +127,21 @@ bool GoToPose::performObstacleAvoidance(Robot* robot, MoveType moveType)
     FPPA::updateRobotObstacles(robot);
 
     // If we haven't reached the target
-    if(Measurements::distance(robot, m_targetPoint) > lastDistTolerance)
+    if(Measurements::distance(robot, final_target_point) > last_dist_tolerance)
     {
         // Assign a new path if the current path is not clear
         if(!pathIsClear(robot))
             assignNewPath(robot->getPosition(), (robot->getID() != GOALIE_ID));
 
         // Get the next way-point
-        nextPoint = updatePathQueue(robot);
+        updatePathQueue(robot);
     }
 
     // Move to next waypoint
-    calcAndSetVels(robot, nextPoint, m_targetAngle, moveType);
+    calcAndSetVels(robot, next_point, final_target_angle, next_next_point, moveType);
 
-    if (Measurements::isClose(m_targetPoint, robot, lastDistTolerance)
-    &&  Measurements::isClose(m_targetAngle, robot->getOrientation(), lastAngTolerance))
+    if (Measurements::isClose(final_target_point, robot, last_dist_tolerance)
+    &&  Measurements::isClose(final_target_angle, robot->getOrientation(), lastAngTolerance))
         return true;
     return false;   // Motion not finished
 }
@@ -150,13 +151,13 @@ bool GoToPose::pathIsClear(Robot* robot) const
     // Check to see if there is an obstacle in current path
     Point robotPoint = robot->getPosition();
     Point obsPoint;
-    bool first_segment_clear = !FPPA::isObstacleInLine(robotPoint, nextPoint, &obsPoint, avoid_ball);
+    bool first_segment_clear = !FPPA::isObstacleInLine(robotPoint, next_point, &obsPoint, avoid_ball);
 
     // Checking the next path segment as well for an obstacle
     bool second_segment_clear = true;
-    if(!first_segment_clear && pathQueue.size() > 2) {
-        const Point& nextNextPoint = pathQueue[1];
-        second_segment_clear = !FPPA::isObstacleInLine(nextPoint, nextNextPoint, &obsPoint, avoid_ball);
+    if(!first_segment_clear && path_queue.size() > 2) {
+        const Point& nextNextPoint = path_queue[1];
+        second_segment_clear = !FPPA::isObstacleInLine(next_point, nextNextPoint, &obsPoint, avoid_ball);
     }
 
     // If there's an obstacle, the path is no longer clear
@@ -165,39 +166,40 @@ bool GoToPose::pathIsClear(Robot* robot) const
 
 void GoToPose::assignNewPath(const Point& robotPoint, bool use_def_areas)
 {
-    FPPA::Path path = FPPA::genPath(robotPoint, m_targetPoint, avoid_ball, use_def_areas);
-    pathQueue.assign(path.begin(), path.end());
-    assert(path.size() == pathQueue.size());
+    FPPA::Path path = FPPA::genPath(robotPoint, final_target_point, avoid_ball, use_def_areas);
+    path_queue.assign(path.begin(), path.end());
+    assert(path.size() == path_queue.size());
 
     // Draws path lines on iterface. Uses clock() to avoid line spam.
     long now = clock();
     if((float)(now - lastLineDrawnTime) / CLOCKS_PER_SEC > 0.5)
     {
         lastLineDrawnTime = now;
-        for (unsigned int i=1; i<pathQueue.size(); i++)
-            GuiInterface::getGuiInterface()->drawLine(pathQueue[i-1], pathQueue[i], 0.25*i);
+        for (unsigned int i = 1; i<path_queue.size(); i++)
+            GuiInterface::getGuiInterface()->drawLine(path_queue[i-1], path_queue[i], 0.25*i);
     }
 }
 
-Point GoToPose::updatePathQueue(Robot* robot)
+void GoToPose::updatePathQueue(Robot* robot)
 {
-    if(pathQueue.empty())
-        return m_targetPoint;
-
-    // Pops path queue if close to next point
-    if(Measurements::isClose(robot, nextPoint, nextDistTolerance)) {
-        pathQueue.pop_front();
-        if(pathQueue.size() == 1) {
-            nextDistTolerance = lastDistTolerance;
-            nextTargetAngle = m_targetAngle;
-        }
+    if(path_queue.empty()){
+        next_point = final_target_point;
+        next_next_point = final_target_point;
+    } else if(path_queue.size() == 1) {
+        next_point = path_queue[0];
+        next_next_point = path_queue[0];
+        next_dist_tolerance = last_dist_tolerance;
+        next_target_angle = final_target_angle;
+    } else {
+        next_point = path_queue[0];
+        next_next_point = path_queue[1];
     }
 
-    // If the queue is empty, we've finished the path. Otherwise return next waypoint
-    return pathQueue.front();
+    if(!path_queue.empty() && Measurements::isClose(robot, next_point, next_dist_tolerance))
+        path_queue.pop_front();
 }
 
-void GoToPose::calcAndSetVels(Robot *rob, Point targetPoint, float targetAngle, MoveType moveType)
+void GoToPose::calcAndSetVels(Robot *rob, Point targetPoint, float targetAngle, Point nextPoint, MoveType moveType)
 {
     switch(rob->type())
     {
@@ -219,7 +221,7 @@ void GoToPose::calcAndSetVels(Robot *rob, Point targetPoint, float targetAngle, 
         {
             if(!IS_OMNI(moveType))
                 moveType = ::Move::MoveType::Default;
-            four_wheel_omni_p.drive(rob, targetPoint, targetAngle, moveType);
+            four_wheel_omni_p.drive(rob, targetPoint, targetAngle, nextPoint, moveType);
         }
         break;
     }
