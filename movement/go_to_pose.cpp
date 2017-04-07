@@ -87,14 +87,14 @@ bool GoToPose::perform(Robot *robot, MoveType moveType)
     if(avoid_obstacles || avoid_ball)
         return performObstacleAvoidance(robot, moveType);
     else
-        return performNonAvoidMovement(robot, moveType);
+        return performNoObstacleAvoidance(robot, moveType);
 }
 
 /***********************************************************/
 /********************* Private Methods *********************/
 /***********************************************************/
 
-bool GoToPose::performNonAvoidMovement(Robot* rob, MoveType moveType)
+bool GoToPose::performNoObstacleAvoidance(Robot* rob, MoveType moveType)
 {
     Point robotPos = rob->getPosition();
     float robotAng = rob->getOrientation();

@@ -99,7 +99,7 @@ private:
     void updatePathQueue(Robot *robot);
     bool  pathIsClear(Robot *robot) const;
     bool  performObstacleAvoidance(Robot* rob, MoveType moveType);
-    bool  performNonAvoidMovement(Robot* rob, MoveType moveType);
+    bool  performNoObstacleAvoidance(Robot* rob, MoveType moveType);
     void  assignNewPath(const Point& robotPoint, bool is_goalie);
     void  getCollisionState(Robot* robot, bool& collided, bool& yielding) const;
 
