@@ -72,30 +72,31 @@ void FourWheelOmniPilot::defaultDrive (Robot* rob, float x_goal, float y_goal, f
     bool is_final_target = Measurements::distance(gp, Point(x_goal2, y_goal2)) < 0.01;
     if (is_final_target && distance_error < 700)
     {
-        x_vel *= 0.5;
-        y_vel *= 0.5;
-        theta_vel *= 0.5;
+        x_vel *= 0.25;
+        y_vel *= 0.25;
+        theta_vel *= 0.25;
     }
 
     // Robot Frame Velocities
     double y_vel_robot = cos(theta_current)*x_vel+sin(theta_current)*y_vel;
     double x_vel_robot = sin(theta_current)*x_vel-cos(theta_current)*y_vel;
-    double vel_robot = sqrt(x_vel_robot*x_vel_robot + y_vel_robot * y_vel_robot);
+    double speed = rob->getSpeed();
 
     // Apply acceleration ramp
-    if(vel_robot > prev_vel)
+    const double ACC_PER_FRAME = 0.7;
+    if(speed > prev_speed)
     {
-        x_vel_robot = x_vel_robot * (prev_vel + 2) / vel_robot;
-        y_vel_robot = y_vel_robot * (prev_vel + 2) / vel_robot;
-        vel_robot = prev_vel + 0.7;
+        x_vel_robot = x_vel_robot * (prev_speed + ACC_PER_FRAME) / speed;
+        y_vel_robot = y_vel_robot * (prev_speed + ACC_PER_FRAME) / speed;
+        speed = prev_speed + ACC_PER_FRAME;
     }
-    prev_vel = vel_robot;
+    prev_speed = speed;
 
     // Wheel Velocity Calculations
-    double RF =  (-sin(RF_OFFSET) * x_vel_robot + cos(RF_OFFSET)*y_vel_robot - TRANS_OFFSET*vel_robot*cos(RF_OFFSET) + WHEEL_RADIUS*theta_vel);
-    double LF = -(-sin(LF_OFFSET) * x_vel_robot + cos(LF_OFFSET)*y_vel_robot - TRANS_OFFSET*vel_robot*cos(LF_OFFSET) + WHEEL_RADIUS*theta_vel);
-    double LB = -(-sin(LB_OFFSET) * x_vel_robot + cos(LB_OFFSET)*y_vel_robot - TRANS_OFFSET*vel_robot*cos(LB_OFFSET) + WHEEL_RADIUS*theta_vel);
-    double RB =  (-sin(RB_OFFSET) * x_vel_robot + cos(RB_OFFSET)*y_vel_robot - TRANS_OFFSET*vel_robot*cos(RB_OFFSET) + WHEEL_RADIUS*theta_vel);
+    double RF =  (-sin(RF_OFFSET) * x_vel_robot + cos(RF_OFFSET)*y_vel_robot - TRANS_OFFSET*speed*cos(RF_OFFSET) + WHEEL_RADIUS*theta_vel);
+    double LF = -(-sin(LF_OFFSET) * x_vel_robot + cos(LF_OFFSET)*y_vel_robot - TRANS_OFFSET*speed*cos(LF_OFFSET) + WHEEL_RADIUS*theta_vel);
+    double LB = -(-sin(LB_OFFSET) * x_vel_robot + cos(LB_OFFSET)*y_vel_robot - TRANS_OFFSET*speed*cos(LB_OFFSET) + WHEEL_RADIUS*theta_vel);
+    double RB =  (-sin(RB_OFFSET) * x_vel_robot + cos(RB_OFFSET)*y_vel_robot - TRANS_OFFSET*speed*cos(RB_OFFSET) + WHEEL_RADIUS*theta_vel);
 
     // Normalize wheel velocities
     normalizeSpeeds(LF, LB, RF, RB, 100);
@@ -146,13 +147,13 @@ void FourWheelOmniPilot::dribbleDrive
     double vel_robot = sqrt(x_vel_robot*x_vel_robot + y_vel_robot * y_vel_robot);
 
     // Apply acceleration ramp
-    if(vel_robot > prev_vel)
+    if(vel_robot > prev_speed)
     {
-        x_vel_robot = x_vel_robot * (prev_vel + 2) / vel_robot;
-        y_vel_robot = y_vel_robot * (prev_vel + 2) / vel_robot;
-        vel_robot = prev_vel + 2;
+        x_vel_robot = x_vel_robot * (prev_speed + 2) / vel_robot;
+        y_vel_robot = y_vel_robot * (prev_speed + 2) / vel_robot;
+        vel_robot = prev_speed + 2;
     }
-    prev_vel = vel_robot;
+    prev_speed = vel_robot;
     
     // Cap velocities for dribbling
     y_vel_robot = fmin(y_vel_robot, DRIBBLE_FRWD_SPD);

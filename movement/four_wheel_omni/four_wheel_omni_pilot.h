@@ -97,7 +97,7 @@ private:
     void clearErrors();
 
     Point prev_goal_target;
-    float prev_vel = 0;
+    float prev_speed = 0;
 };
 
 }

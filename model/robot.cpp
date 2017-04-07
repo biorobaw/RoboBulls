@@ -109,7 +109,7 @@ bool Robot::hasKicker()
 //! @brief Returns the current velocity in m/s
 //! @see getRobotPosition
 //! @see VelocityCalculator
-Point Robot::getVelocity() { return velocity; }
+Point Robot::getVelocity() { return vel_calc.getVelocity(); }
 
 //! @brief Return the speed, the magnitude of the velocity (in <b>m/s</b>)
 float Robot::getSpeed()
@@ -148,6 +148,7 @@ std::string Robot::toString()
     return ss.str();
 }
 
+
 //! @brief Return if the robot is currently dribbling
 bool Robot::getDribble(){return dribble;}
 bool Robot::getChip(){return chip;}
@@ -161,13 +162,14 @@ void Robot::setCurrentBeh(Behavior *currentBeh)
     hasBeh = true;
 }
 
-void Robot::setRobotPosition(Point rbtPoint){robotPosition = rbtPoint;}
+void Robot::setRobotPosition(Point rbtPoint){
+    robotPosition = rbtPoint;
+    vel_calc.update(rbtPoint);
+}
 
 void Robot::setOrientation(float ornt){orientation = ornt;}
 
 void Robot::setID(int ID){id = ID;}
-
-void Robot::setVelocity(Point vel) { velocity = vel; }
 
 //! @brief Sets which team the robot is on
 void Robot::setTeam(bool which) { team = which; }

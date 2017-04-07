@@ -3,6 +3,7 @@
 #include <typeinfo>
 #include <type_traits>
 #include "utilities/point.h"
+#include "utilities/velocitycalculator.h"
 #include "behavior/behavior.h"
 #include "skill/skill.h"
 #include "behavior/genericskillbehavior.h"
@@ -61,9 +62,9 @@ public:
     void setLB(float left_backward);
     void setRB(float right_backward);
     void setVelCmd(float xvel, float yvel, float angvel);
-    void setXVel(float x);
-    void setYVel(float y);
-    void setAngVel(float ang_vel);
+    void setXVel(float xvel);
+    void setYVel(float yvel);
+    void setAngVel(float angvel);
     void setKick(float power = 5.0);
     void setDribble(bool);
     void setChip(bool);
@@ -93,14 +94,13 @@ public:
 private:
     void setCurrentBeh(Behavior *);
     void setTeam(bool);
-    void setVelocity(Point);
     void setRobotPosition(Point);
     void setOrientation(float);
     void setID(int);
     
     int id;                     //!< Robot numerical ID
     Point robotPosition;        //!< X/Y Position in points
-    Point velocity;             //!< Velocity in m/s
+    VelocityCalculator vel_calc;
     float orientation;          //!< orientation of the robot
     float LF, RF, LB, RB;       //!< used for robot's movements
     float xvel_cmd, yvel_cmd, angvel_cmd;   //!< used for yisi robot's movements

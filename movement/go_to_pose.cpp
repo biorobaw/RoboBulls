@@ -78,6 +78,8 @@ void GoToPose::setMovementTolerances(float distTolerance, float angleTolerance)
 
 bool GoToPose::perform(Robot *robot, MoveType moveType)
 {
+    std::cout << next_target_angle * 180 / M_PI << std::endl;
+
     if(!is_initialized)
         return false;
 
@@ -123,13 +125,14 @@ void GoToPose::getCollisionState(Robot* robot, bool& collided, bool& yielding) c
 
 bool GoToPose::performObstacleAvoidance(Robot* robot, MoveType moveType)
 {
+
     // Assign robots that are to be considered obstacles
     FPPA::updateRobotObstacles(robot);
 
     // If we haven't reached the target
     if(Measurements::distance(robot, final_target_point) > last_dist_tolerance)
     {
-        // Assign a new path if the current path is not clear
+        // Assign a new path if e current path is not clear
         if(!pathIsClear(robot))
             assignNewPath(robot->getPosition(), (robot->getID() != GOALIE_ID));
 
@@ -138,7 +141,7 @@ bool GoToPose::performObstacleAvoidance(Robot* robot, MoveType moveType)
     }
 
     // Move to next waypoint
-    calcAndSetVels(robot, next_point, final_target_angle, next_next_point, moveType);
+    calcAndSetVels(robot, next_point, next_target_angle, next_next_point, moveType);
 
     if (Measurements::isClose(final_target_point, robot, last_dist_tolerance)
     &&  Measurements::isClose(final_target_angle, robot->getOrientation(), lastAngTolerance))
@@ -182,14 +185,15 @@ void GoToPose::assignNewPath(const Point& robotPoint, bool use_def_areas)
 
 void GoToPose::updatePathQueue(Robot* robot)
 {
+    std::cout << path_queue.size() << std::endl;
     if(path_queue.empty()){
         next_point = final_target_point;
         next_next_point = final_target_point;
+        next_dist_tolerance = last_dist_tolerance;
+        next_target_angle = final_target_angle;
     } else if(path_queue.size() == 1) {
         next_point = path_queue[0];
         next_next_point = path_queue[0];
-        next_dist_tolerance = last_dist_tolerance;
-        next_target_angle = final_target_angle;
     } else {
         next_point = path_queue[0];
         next_next_point = path_queue[1];
