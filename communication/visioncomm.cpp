@@ -67,14 +67,12 @@ void VisionComm::receiveRobot(const SSL_DetectionRobot& robot, int detectedTeamC
             else
                 rotationReading = -(-M_PI - rotationReading);
         #endif
-        rob->setRobotPosition( positionReading );
+        rob->setRobotPosition(positionReading);
         rob->setOrientation(rotationReading);
-
-        //gamemodel->onRobotUpdated(rob);
     }
 }
 
-//Used to check if a detection and its camera are on the same side of the field.
+// Used to check if a detection and its camera are on the same side of the field.
 template<typename Detection>
 static bool isGoodDetection
     (const Detection& detection, const SSL_DetectionFrame& frame, float confidence, bool fourCameraMode)

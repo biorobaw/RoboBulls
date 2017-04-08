@@ -4,7 +4,6 @@
 #include <string.h>
 #include "utilities/measurements.h"
 #include "utilities/comparisons.h"
-#include "utilities/velocitycalculator.h"
 #include "model/gamemodel.h"
 #include "model/robot.h"
 #include "movement/move_collisions.h"
@@ -190,7 +189,7 @@ bool RobotMoveStatus::robotFacingRobot(Robot* a, Robot* b)
     /* For the omni robots, they don't face each other. So we look at their
      * velocity direction to determine "facing" (TODO: Fix this) */
     if(a->type() != differential) {
-        Point vel = a->getVelocity();
+        Point vel = a->getVelocityMetersPerSecond();
         float ang = atan2(vel.y, vel.x);
         float bad = Measurements::angleBetween(a, b);
         return Measurements::isClose(ang, bad, tolerance);

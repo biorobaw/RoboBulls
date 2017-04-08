@@ -20,7 +20,6 @@ GoToPose::GoToPose()
     : final_target_point(9999,9999)
     , final_target_angle(UNUSED_ANGLE_VALUE)
     , vel_multiplier(1)
-    , is_initialized(false)
     , avoid_obstacles(true)
     , avoid_ball(true)
     , lastLineDrawnTime(0)
@@ -42,19 +41,14 @@ void GoToPose::updateGoal(Point targetPoint, float targetAngle, bool withObstacl
      * is close enough to the last, let's not do anything
      */
     if(Measurements::distance(final_target_point, targetPoint) > recrDistTolerance) {
-        final_target_point      = targetPoint;
-        final_target_angle      = targetAngle;
-        next_target_angle    = UNUSED_ANGLE_VALUE;
-        next_dist_tolerance  = 20;
-        path_queue.clear();
-        is_initialized = true;
+        final_target_point = targetPoint;
+        next_dist_tolerance = 20;
     }
 
     final_target_angle = targetAngle;
     avoid_obstacles = withObstacleAvoid;
     avoid_ball = avoidBall;
 }
-
 
 void GoToPose::setVelocityMultiplier(float newMultiplier)
 {
@@ -76,31 +70,28 @@ void GoToPose::setMovementTolerances(float distTolerance, float angleTolerance)
 }
 
 
-bool GoToPose::perform(Robot *robot, MoveType moveType)
+bool GoToPose::perform(Robot *rob, MoveType moveType)
 {
-    if(!is_initialized)
-        return false;
-
     if(final_target_angle == UNUSED_ANGLE_VALUE)
-        final_target_angle = Measurements::angleBetween(robot, final_target_point);
+        final_target_angle = Measurements::angleBetween(rob, final_target_point);
 
     if(avoid_obstacles || avoid_ball)
-        return performObstacleAvoidance(robot, moveType);
+        return performObstacleAvoidance(rob, moveType);
     else
-        return performNonAvoidMovement(robot, moveType);
+        return performNoObstacleAvoidance(rob, moveType);
 }
 
 /***********************************************************/
 /********************* Private Methods *********************/
 /***********************************************************/
 
-bool GoToPose::performNonAvoidMovement(Robot* rob, MoveType moveType)
+bool GoToPose::performNoObstacleAvoidance(Robot* rob, MoveType moveType)
 {
     Point robotPos = rob->getPosition();
     float robotAng = rob->getOrientation();
 
     calcAndSetVels(rob, final_target_point, final_target_angle,
-                   final_target_point, moveType);
+                   final_target_point, moveType);    
 
     if (Measurements::isClose(final_target_point, robotPos, last_dist_tolerance)
     &&  Measurements::isClose(final_target_angle, robotAng, lastAngTolerance))
@@ -127,11 +118,15 @@ bool GoToPose::performObstacleAvoidance(Robot* robot, MoveType moveType)
     FPPA::updateRobotObstacles(robot);
 
     // If we haven't reached the target
-    if(Measurements::distance(robot, final_target_point) > last_dist_tolerance)
+    if(Measurements::distance(robot, final_target_point) > last_dist_tolerance) {
         assignNewPath(robot->getPosition(), (robot->getID() != GOALIE_ID));
+    } else {
+        next_dist_tolerance = last_dist_tolerance;
+    }
+    next_target_angle = final_target_angle;
 
     // Move to next waypoint
-    calcAndSetVels(robot, next_point, final_target_angle, next_next_point, moveType);
+    calcAndSetVels(robot, next_point, next_target_angle, next_next_point, moveType);
 
     if (Measurements::isClose(final_target_point, robot, last_dist_tolerance)
     &&  Measurements::isClose(final_target_angle, robot->getOrientation(), lastAngTolerance))
@@ -150,8 +145,6 @@ void GoToPose::assignNewPath(const Point& robotPoint, bool use_def_areas)
     } else if(path_queue.size() == 1) {
         next_point = path_queue[0];
         next_next_point = path_queue[0];
-        next_dist_tolerance = last_dist_tolerance;
-        next_target_angle = final_target_angle;
     } else {
         next_point = path_queue[0];
         next_next_point = path_queue[1];

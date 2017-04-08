@@ -24,18 +24,19 @@ public:
      *  By default a 10 readings are stored */
     VelocityCalculator(unsigned deque_size = 10);
 
-    /*! @brief Updates the accumulator queue with a new point
-     *  @return The observed change in the point */
-    Point update(const Point& movedPoint);
+    /*! @brief Updates the accumulator queue with a new point */
+    void update(const Point& movedPoint);
 
+    /*! @brief Calculates and gets the velocity in m/s */
+    Point getVelocityMetersPerSecond();
+
+    /*! @brief Calculates and gets the velocity in millimeters/frame */
+    Point getVelocityMillimetersPerFrame();
 private:
-    //Utility function to manage deque
-    void addNewVelocityPoint(const Point&);
-
     /* Pair of Point and clock_t (time) values of size `maxSize` used to
      * store calculate velocity readings */
-    unsigned maxSize;
-    std::deque<std::pair<Point, clock_t>> velCalculations;
+    unsigned max_size;
+    std::deque<std::pair<Point, clock_t>> vel_history;
 };
 
 

@@ -73,8 +73,7 @@ private:
 
     // PID Error Variables
     # if SIMULATED
-        const float PID_DIST = 500;
-        const double TRANS_P_K = 100/PID_DIST;       // Multiplier for Proportional XY
+        const double TRANS_P_K = 1/7.0;       // Multiplier for Proportional XY
         const double TRANS_I_K = 0.00000;    // Multiplier for integral XY
         const double ANGULAR_P_K = 0.5;      // Multiplier for theta proportional
         const double ANGULAR_I_K = 0.0015;   // Multiplier for theta integral
@@ -99,7 +98,7 @@ private:
     void clearErrors();
 
     Point prev_goal_target;
-    float prev_requested_spd = 0;
+    float prev_speed = 0;
 };
 
 }

@@ -109,12 +109,24 @@ bool Robot::hasKicker()
 //! @brief Returns the current velocity in m/s
 //! @see getRobotPosition
 //! @see VelocityCalculator
-Point Robot::getVelocity() { return velocity; }
+Point Robot::getVelocityMetersPerSecond() { return vel_calc.getVelocityMetersPerSecond(); }
+
+//! @brief Returns the current velocity in millimeters/frame
+//! @see getRobotPosition
+//! @see VelocityCalculator
+Point Robot::getVelocityMillimetersPerFrame() { return vel_calc.getVelocityMillimetersPerFrame(); }
 
 //! @brief Return the speed, the magnitude of the velocity (in <b>m/s</b>)
-float Robot::getSpeed()
+float Robot::getSpeedMetersPerSecond()
 {
-    Point vel = getVelocity();
+    Point vel = getVelocityMetersPerSecond();
+    return sqrt((vel.x * vel.x) + (vel.y * vel.y));
+}
+
+//! @brief Return the speed, the magnitude of the velocity (in <b>millimeters/frame</b>)
+float Robot::getSpeedMillimetersPerFrame()
+{
+    Point vel = getVelocityMillimetersPerFrame();
     return sqrt((vel.x * vel.x) + (vel.y * vel.y));
 }
 
@@ -148,6 +160,7 @@ std::string Robot::toString()
     return ss.str();
 }
 
+
 //! @brief Return if the robot is currently dribbling
 bool Robot::getDribble(){return dribble;}
 bool Robot::getChip(){return chip;}
@@ -161,13 +174,14 @@ void Robot::setCurrentBeh(Behavior *currentBeh)
     hasBeh = true;
 }
 
-void Robot::setRobotPosition(Point rbtPoint){robotPosition = rbtPoint;}
+void Robot::setRobotPosition(Point rbtPoint){
+    robotPosition = rbtPoint;
+    vel_calc.update(rbtPoint);
+}
 
 void Robot::setOrientation(float ornt){orientation = ornt;}
 
 void Robot::setID(int ID){id = ID;}
-
-void Robot::setVelocity(Point vel) { velocity = vel; }
 
 //! @brief Sets which team the robot is on
 void Robot::setTeam(bool which) { team = which; }

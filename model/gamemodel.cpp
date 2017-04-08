@@ -5,7 +5,7 @@
 #include "include/config/simulated.h"
 #include "strategy/strategycontroller.h"
 #include "utilities/comparisons.h"
-#include "utilities/velocitycalculator.h"
+
 #include "utilities/edges.h"
 #include "utilities/debug.h"
 #include "gui/guiinterface.h"
@@ -379,21 +379,6 @@ Robot* GameModel::find(int id, std::vector<Robot*>& team)
     return NULL;
 }
 
-/*! @brief Stores a VelocityCalculator for each robot, and updates each robot's velocitiy.
- * This is called when the VisionComm says a robot has been updated */
-static Point calculateRobotVelocity(Robot* robot)
-{
-    static VelocityCalculator robotVelCalcs[32];
-    int   index  = (16 * robot->isOnMyTeam()) + robot->getID();
-    Point newVel = robotVelCalcs[index].update(robot->getPosition());
-    return newVel;
-}
-
-//! @brief Used by VisiomComm; Update the information in the specified robot on the specified team
-void GameModel::onRobotUpdated(Robot* robot)
-{
-    robot->setVelocity(calculateRobotVelocity(robot));
-}
 
 /*! @brief Removes a robot from a team
  * Should not be used directly. Used to provide an interface for utilities/debug.h

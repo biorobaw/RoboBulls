@@ -78,7 +78,6 @@ private:
     float vel_multiplier;    //Velocity multipler added to calculated vels
 
     // States
-    bool is_initialized;       //If recreate() has been called once (or ctor)
     bool avoid_obstacles;      //Do we use obstacle avoidance?
     bool avoid_ball;           //Do we avoid the ball?
 
@@ -97,7 +96,7 @@ private:
 
     // Obstacle avoidance functions
     bool performObstacleAvoidance(Robot* rob, MoveType moveType);
-    bool performNonAvoidMovement(Robot* rob, MoveType moveType);
+    bool performNoObstacleAvoidance(Robot* rob, MoveType moveType);
     void assignNewPath(const Point& robotPoint, bool is_goalie);
     void getCollisionState(Robot* robot, bool& collided, bool& yielding) const;
 

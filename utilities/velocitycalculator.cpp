@@ -3,16 +3,22 @@
 #include "utilities/velocitycalculator.h"
 
 VelocityCalculator::VelocityCalculator(unsigned deque_size)
-    : maxSize(deque_size)
+    : max_size(deque_size)
     { }
 
-Point VelocityCalculator::update(const Point& movedPoint)
+void VelocityCalculator::update(const Point& movedPoint)
 {
-    addNewVelocityPoint(movedPoint);
+    //Push back new point and remove oldest if size hit
+    if(vel_history.size() == max_size) {
+        vel_history.pop_front();
+    }
+    vel_history.emplace_back(std::make_pair(movedPoint, clock()));
+}
 
+Point VelocityCalculator::getVelocityMetersPerSecond(){
     // Difference of most recent reading and oldest
-    Point displacement = velCalculations.back().first - velCalculations.front().first;
-    clock_t time = velCalculations.back().second - velCalculations.front().second;
+    Point displacement = vel_history.back().first - vel_history.front().first;
+    clock_t time = vel_history.back().second - vel_history.front().second;
 
     // Calculate change displacement over seconds taken from above
     float changeInSec = (float)(time) / CLOCKS_PER_SEC;
@@ -22,11 +28,13 @@ Point VelocityCalculator::update(const Point& movedPoint)
     return Point(velocityX, velocityY);
 }
 
-void VelocityCalculator::addNewVelocityPoint(const Point& movedPoint)
-{
-    //Push back new point and remove oldest if size hit
-    if(velCalculations.size() == maxSize) {
-        velCalculations.pop_front();
-    }
-    velCalculations.emplace_back(std::make_pair(movedPoint, clock()));
+Point VelocityCalculator::getVelocityMillimetersPerFrame(){
+    // Difference of most recent reading and oldest
+    Point displacement = vel_history.back().first - vel_history.front().first;
+
+    // Calculate change displacement over seconds taken from above
+    float velocityX = (displacement.x) / max_size;
+    float velocityY = (displacement.y) / max_size;
+
+    return Point(velocityX, velocityY);
 }
