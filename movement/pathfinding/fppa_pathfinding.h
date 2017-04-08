@@ -1,5 +1,6 @@
 #ifndef FPPA_PATHFINDING_H
 #define FPPA_PATHFINDING_H
+#include <deque>
 #include <vector>
 #include <model/robot.h>
 #include "utilities/point.h"
@@ -18,7 +19,7 @@ namespace Move
 namespace FPPA
 {
     //! @brief A vector of waypoints representing a path
-    typedef std::vector<Point> Path;
+    typedef std::deque<Point> Path;
 
     /*! @brief Updates the list of points that represent robot obstacles
      * @details Ignores the robot that is passed in when considering obstacles

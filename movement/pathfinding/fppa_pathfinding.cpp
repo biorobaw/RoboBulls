@@ -204,6 +204,8 @@ namespace impl {
         path.push_back(start);
         path.push_back(end);
         impl::recursiveFPPA(&path, start, end, 1, avoidBall, use_def_areas);
+        path.pop_front();
+        path.pop_back();
 
         // If intermediate points in the path are not reachable, make them reachable
         for(auto it = path.begin()+1; it < path.end(); ++it)

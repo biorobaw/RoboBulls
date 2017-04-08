@@ -45,57 +45,42 @@ void FourWheelOmniPilot::defaultDrive (Robot* rob, float x_goal, float y_goal, f
 
     Point rp = rob->getPosition();
     Point gp = Point(x_goal,y_goal);
-    distance_error = Measurements::distance(rp,gp);
+    distance_error = std::min(PID_DIST, Measurements::distance(rp,gp));
     float angle_to_goal = Measurements::angleBetween(rp, gp);
     angle_error = Measurements::angleDiff(rob->getOrientation(), theta_goal);
 
-    //Calulate error integral component
+    // Calulate error integral component
     updateErrors(x_goal, y_goal);
 
-    //Inertial Frame Velocities
-    double x_vel =
-        (TRANS_P_K * distance_error +
-         TRANS_I_K  * dist_error_integral)*cos(angle_to_goal);
-    double y_vel =
-        (TRANS_P_K * distance_error +
-         TRANS_I_K  * dist_error_integral)*sin(angle_to_goal);
-    double theta_vel =
-         ANGULAR_P_K * angle_error +
-         ANGULAR_I_K  * angle_error_integral;
+    // Inertial Frame Velocities
+    double x_vel = (TRANS_P_K*distance_error + TRANS_I_K*dist_error_integral)*cos(angle_to_goal);
+    double y_vel = (TRANS_P_K*distance_error + TRANS_I_K*dist_error_integral)*sin(angle_to_goal);
+    double theta_vel = ANGULAR_P_K*angle_error + ANGULAR_I_K*angle_error_integral;
 
+    // Adjust angular velocity to traverse the minor turn angle
     double theta_current = rob->getOrientation();
-    if (abs(Measurements::angleDiff(theta_goal,theta_current))<
-        abs(Measurements::angleDiff(theta_goal,theta_current+theta_vel)))
-        theta_vel=-theta_vel;
-
-    // Reduce speed near target
-    bool is_final_target = Measurements::distance(gp, Point(x_goal2, y_goal2)) < 0.01;
-    if (is_final_target && distance_error < 700)
-    {
-        x_vel *= 0.5;
-        y_vel *= 0.5;
-        theta_vel *= 0.5;
-    }
+    if (abs(Measurements::angleDiff(theta_goal,theta_current)) <
+        abs(Measurements::angleDiff(theta_goal,theta_current + theta_vel)))
+        theta_vel = -theta_vel;
 
     // Robot Frame Velocities
     double y_vel_robot = cos(theta_current)*x_vel+sin(theta_current)*y_vel;
     double x_vel_robot = sin(theta_current)*x_vel-cos(theta_current)*y_vel;
-    double vel_robot = sqrt(x_vel_robot*x_vel_robot + y_vel_robot * y_vel_robot);
+    double requested_spd = sqrt(x_vel_robot*x_vel_robot + y_vel_robot * y_vel_robot);
 
     // Apply acceleration ramp
-    if(vel_robot > prev_vel)
-    {
-        x_vel_robot = x_vel_robot * (prev_vel + 2) / vel_robot;
-        y_vel_robot = y_vel_robot * (prev_vel + 2) / vel_robot;
-        vel_robot = prev_vel + 0.7;
+    if(requested_spd > prev_requested_spd) {
+        x_vel_robot = x_vel_robot * (prev_requested_spd + 0.8) / requested_spd;
+        y_vel_robot = y_vel_robot * (prev_requested_spd + 0.8) / requested_spd;
+        requested_spd = prev_requested_spd + 0.8;
     }
-    prev_vel = vel_robot;
+    prev_requested_spd = requested_spd;
 
     // Wheel Velocity Calculations
-    double RF =  (-sin(RF_OFFSET) * x_vel_robot + cos(RF_OFFSET)*y_vel_robot - TRANS_OFFSET*vel_robot*cos(RF_OFFSET) + WHEEL_RADIUS*theta_vel);
-    double LF = -(-sin(LF_OFFSET) * x_vel_robot + cos(LF_OFFSET)*y_vel_robot - TRANS_OFFSET*vel_robot*cos(LF_OFFSET) + WHEEL_RADIUS*theta_vel);
-    double LB = -(-sin(LB_OFFSET) * x_vel_robot + cos(LB_OFFSET)*y_vel_robot - TRANS_OFFSET*vel_robot*cos(LB_OFFSET) + WHEEL_RADIUS*theta_vel);
-    double RB =  (-sin(RB_OFFSET) * x_vel_robot + cos(RB_OFFSET)*y_vel_robot - TRANS_OFFSET*vel_robot*cos(RB_OFFSET) + WHEEL_RADIUS*theta_vel);
+    double RF =  (-sin(RF_OFFSET) * x_vel_robot + cos(RF_OFFSET)*y_vel_robot - TRANS_OFFSET*requested_spd*cos(RF_OFFSET) + WHEEL_RADIUS*theta_vel);
+    double LF = -(-sin(LF_OFFSET) * x_vel_robot + cos(LF_OFFSET)*y_vel_robot - TRANS_OFFSET*requested_spd*cos(LF_OFFSET) + WHEEL_RADIUS*theta_vel);
+    double LB = -(-sin(LB_OFFSET) * x_vel_robot + cos(LB_OFFSET)*y_vel_robot - TRANS_OFFSET*requested_spd*cos(LB_OFFSET) + WHEEL_RADIUS*theta_vel);
+    double RB =  (-sin(RB_OFFSET) * x_vel_robot + cos(RB_OFFSET)*y_vel_robot - TRANS_OFFSET*requested_spd*cos(RB_OFFSET) + WHEEL_RADIUS*theta_vel);
 
     // Normalize wheel velocities
     normalizeSpeeds(LF, LB, RF, RB, 100);
@@ -146,13 +131,13 @@ void FourWheelOmniPilot::dribbleDrive
     double vel_robot = sqrt(x_vel_robot*x_vel_robot + y_vel_robot * y_vel_robot);
 
     // Apply acceleration ramp
-    if(vel_robot > prev_vel)
+    if(vel_robot > prev_requested_spd)
     {
-        x_vel_robot = x_vel_robot * (prev_vel + 2) / vel_robot;
-        y_vel_robot = y_vel_robot * (prev_vel + 2) / vel_robot;
-        vel_robot = prev_vel + 2;
+        x_vel_robot = x_vel_robot * (prev_requested_spd + 2) / vel_robot;
+        y_vel_robot = y_vel_robot * (prev_requested_spd + 2) / vel_robot;
+        vel_robot = prev_requested_spd + 2;
     }
-    prev_vel = vel_robot;
+    prev_requested_spd = vel_robot;
     
     // Cap velocities for dribbling
     y_vel_robot = fmin(y_vel_robot, DRIBBLE_FRWD_SPD);
@@ -243,7 +228,7 @@ void FourWheelOmniPilot::facePointDrive(Robot* rob, float x_goal, float y_goal, 
     double RB =  (-sin(RB_OFFSET) * x_vel_robot + cos(RB_OFFSET)*y_vel_robot + WHEEL_RADIUS*theta_vel);
 
     // Normalize wheel velocities
-    normalizeSpeeds(LF,LB,RF,RB, 100);
+    normalizeSpeeds(LF, LB, RF, RB, 100);
 
     // Set velocities on robot object
     rob->setLF(LF);

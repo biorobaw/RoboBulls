@@ -128,14 +128,7 @@ bool GoToPose::performObstacleAvoidance(Robot* robot, MoveType moveType)
 
     // If we haven't reached the target
     if(Measurements::distance(robot, final_target_point) > last_dist_tolerance)
-    {
-        // Assign a new path if the current path is not clear
-        if(!pathIsClear(robot))
-            assignNewPath(robot->getPosition(), (robot->getID() != GOALIE_ID));
-
-        // Get the next way-point
-        updatePathQueue(robot);
-    }
+        assignNewPath(robot->getPosition(), (robot->getID() != GOALIE_ID));
 
     // Move to next waypoint
     calcAndSetVels(robot, next_point, final_target_angle, next_next_point, moveType);
@@ -146,42 +139,11 @@ bool GoToPose::performObstacleAvoidance(Robot* robot, MoveType moveType)
     return false;   // Motion not finished
 }
 
-bool GoToPose::pathIsClear(Robot* robot) const
-{
-    // Check to see if there is an obstacle in current path
-    Point robotPoint = robot->getPosition();
-    Point obsPoint;
-    bool first_segment_clear = !FPPA::isObstacleInLine(robotPoint, next_point, &obsPoint, avoid_ball);
-
-    // Checking the next path segment as well for an obstacle
-    bool second_segment_clear = true;
-    if(!first_segment_clear && path_queue.size() > 2) {
-        const Point& nextNextPoint = path_queue[1];
-        second_segment_clear = !FPPA::isObstacleInLine(next_point, nextNextPoint, &obsPoint, avoid_ball);
-    }
-
-    // If there's an obstacle, the path is no longer clear
-    return first_segment_clear && second_segment_clear;
-}
-
 void GoToPose::assignNewPath(const Point& robotPoint, bool use_def_areas)
 {
     FPPA::Path path = FPPA::genPath(robotPoint, final_target_point, avoid_ball, use_def_areas);
     path_queue.assign(path.begin(), path.end());
-    assert(path.size() == path_queue.size());
 
-    // Draws path lines on iterface. Uses clock() to avoid line spam.
-    long now = clock();
-    if((float)(now - lastLineDrawnTime) / CLOCKS_PER_SEC > 0.5)
-    {
-        lastLineDrawnTime = now;
-        for (unsigned int i = 1; i<path_queue.size(); i++)
-            GuiInterface::getGuiInterface()->drawLine(path_queue[i-1], path_queue[i], 0.25*i);
-    }
-}
-
-void GoToPose::updatePathQueue(Robot* robot)
-{
     if(path_queue.empty()){
         next_point = final_target_point;
         next_next_point = final_target_point;
@@ -195,7 +157,7 @@ void GoToPose::updatePathQueue(Robot* robot)
         next_next_point = path_queue[1];
     }
 
-    if(!path_queue.empty() && Measurements::isClose(robot, next_point, next_dist_tolerance))
+    if(!path_queue.empty() && Measurements::isClose(robotPoint, next_point, next_dist_tolerance))
         path_queue.pop_front();
 }
 

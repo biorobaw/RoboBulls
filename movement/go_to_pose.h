@@ -96,12 +96,10 @@ private:
     float lastAngTolerance   = ROT_TOLERANCE;
 
     // Obstacle avoidance functions
-    void updatePathQueue(Robot *robot);
-    bool  pathIsClear(Robot *robot) const;
-    bool  performObstacleAvoidance(Robot* rob, MoveType moveType);
-    bool  performNonAvoidMovement(Robot* rob, MoveType moveType);
-    void  assignNewPath(const Point& robotPoint, bool is_goalie);
-    void  getCollisionState(Robot* robot, bool& collided, bool& yielding) const;
+    bool performObstacleAvoidance(Robot* rob, MoveType moveType);
+    bool performNonAvoidMovement(Robot* rob, MoveType moveType);
+    void assignNewPath(const Point& robotPoint, bool is_goalie);
+    void getCollisionState(Robot* robot, bool& collided, bool& yielding) const;
 
     // General Motion functions
     void calcAndSetVels(Robot* rob, Point targetPoint, float targetAngle,
