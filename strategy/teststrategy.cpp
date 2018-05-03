@@ -57,7 +57,23 @@ public:
             wait4recharge = false;
     }
 };
+// Moves robot to the given position
+class GoToBeh : public GenericMovementBehavior
+{
+public:
+    GoToBehavior(double angle) {
+        offset += Point(cos(angle*M_PI/180), sin(angle*M_PI/180)) * 500;
+    }
 
+    Point offset;
+
+    void perform(Robot *robot) override  {
+        setMovementTargets(gameModel->getBallPoint() + offset,
+                           Measurements::angleBetween(robot->getPosition(),gameModel->getBallPoint()),
+                           true, true);
+        GenericMovementBehavior::perform(robot);
+    }
+};
 // Test behavior to dribble the ball between two points
 class DribbleToPointBeh : public Behavior
 {
@@ -207,9 +223,15 @@ bool TestStrategy::update()
     Robot* r3 = gameModel->findMyTeam(3);
     Robot* r4 = gameModel->findMyTeam(4);
 
-    if(r0) r0->assignBeh<Strafe>();
+    if(r0) r0->assignBeh<KickBeh>();
+    //if(r1) r1->assignBeh<Strafe>();
+    //if(r2) r2->assignBeh<Strafe>();
+    //if(r3) r3->assignBeh<Strafe>();
+    //if(r4) r4->assignBeh<Strafe>();
+
     if(r1) r1->assignBeh<GoToBehavior>(2*360/5.0);
     if(r2) r2->assignBeh<GoToBehavior>(3*360/5.0);
+    if(r3) r3->assignBeh<GoToBehavior>(4*360/5.0);
     if(r3) r3->assignBeh<GoToBehavior>(4*360/5.0);
     if(r4) r4->assignBeh<GoToBehavior>(5*360/5.0);
 
@@ -218,6 +240,6 @@ bool TestStrategy::update()
 
 void TestStrategy::assignBeh()
 {
-
+    //gameModel->findMyTeam(0)->assignBeh<DribbleBeh>();
+    gameModel->findMyTeam(3)->assignBeh<GoToBeh>();
 }
-
