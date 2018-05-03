@@ -22,6 +22,7 @@
  * will transmit to. XBee Channel D is for Blue, E is for Yellow */
 #define OUR_TEAM TEAM_BLUE
 
+
 /*! The currnet Side of the program's team
  * This specifies if we are playing from the negative X axis
  * or the positive X axis. It applies transformations to the camera's
