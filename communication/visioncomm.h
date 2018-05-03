@@ -19,7 +19,7 @@
 #if SIMULATED
 const float CONF_THRESHOLD_BALL = 0.9;
 #else
-const float CONF_THRESHOLD_BALL = 0.8;
+const float CONF_THRESHOLD_BALL = 0.8;//CNM
 #endif
 
 //! @brief Sets the minimum confidence to consider a robot as a valid reading

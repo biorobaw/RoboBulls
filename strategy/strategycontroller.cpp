@@ -25,18 +25,23 @@ void StrategyController::run()
 {
     //StrategyController runs only if at least one robot is on the team.
     //This is for the initial reading at which robots may not be detected yet
+//    std::cout<< "at StrategyController::run() \n";
     if(!model->getMyTeam().empty())
     {
+//        std::cout<< "at StrategyController::run() - team not empty\n";
         if(model->isNewCommand() || activeStrategy == nullptr) {
+            //std::cout<< "at StrategyController::run()  resetting\n";
             gameModelReset();
         } else {
+            //std::cout<< "at StrategyController::run() continued\n";
             gameModelContinued();
         }
-
+        //std::cout<<"model->onCommandProcessed();"<<std::endl;
         model->onCommandProcessed();
 
         frameEnd();
     }
+    //std::cout<<"OUTSIDE IF"<<std::endl; Bowu
 }
 
 void StrategyController::assignNewStrategy(char gameState)
@@ -44,6 +49,8 @@ void StrategyController::assignNewStrategy(char gameState)
     clearCurrentStrategy();
 
 #if REFBOX_LISTEN_ENABLED
+    std::cout << "Active strategy: "<<gameState<<std::endl;
+    //gameState='K';//Added by Bo Wu
     switch(gameState)
     {
     case 'S':    //stop game
@@ -73,6 +80,7 @@ void StrategyController::assignNewStrategy(char gameState)
         activeStrategy = new HaltStrategy();
         break;
     case ' ':    //Normal game play
+        std::cout << "Warning: GS \"" <<  gameState << "\" Not implemented" << std::endl;
         activeStrategy = new NormalGameStrategy();
         break;
     case 's':    //Force Start
@@ -85,6 +93,7 @@ void StrategyController::assignNewStrategy(char gameState)
 #else
     (void)(gameState);
     activeStrategy = new TestStrategy();
+    std::cout << "Active strategy: TestStrategy\n";
 #endif
 }
 
@@ -93,7 +102,6 @@ void StrategyController::gameModelReset()
 {
     clearCurrentStrategy();
     char newState = model->getGameState();
-
     this->assignNewStrategy(newState); //Updates activeStrategy
     activeStrategy->assignBeh();
 }
@@ -126,6 +134,7 @@ void StrategyController::clearCurrentStrategy()
 
 void StrategyController::frameEnd()
 {
+    //std::cout << " In StrategyController::frameEnd()" <<std::endl;
     for (unsigned int i=0; i < model->getMyTeam().size(); i++)
     {
         Robot *rob = model->getMyTeam().at(i);
@@ -136,5 +145,6 @@ void StrategyController::frameEnd()
     }
 
     RobComm * robcom = RobComm::getRobComm();
+    //std::cout<<"frameEnd() get called\n"<<std::endl;
     robcom->sendVelsLarge(model->getMyTeam());
 }

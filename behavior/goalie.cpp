@@ -158,6 +158,7 @@ bool Goalie::isBallMovingTowardsGoal(std::pair<Point,Point>& lineSegOut)
 {
     // Filter out balls not moving towards goal
     Point goal = gameModel->getMyGoal();
+    std::cout << "goal point:" << std::endl;
     Point bVel = gameModel->getBallVelocity();
     if(bVel.x > -10)
         return false;

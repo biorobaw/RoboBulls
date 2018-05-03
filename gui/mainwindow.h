@@ -104,10 +104,14 @@ private slots:
     void on_btn_botForward_released();
     void on_btn_botTurnRight_pressed();
     void on_btn_botTurnRight_released();
+    void on_btn_botRotateRight_pressed();
+    void on_btn_botRotateRight_released();
     void on_btn_botReverse_pressed();
     void on_btn_botReverse_released();
     void on_btn_botTurnLeft_pressed();
     void on_btn_botTurnLeft_released();
+    void on_btn_botRotateLeft_pressed();
+    void on_btn_botRotateLeft_released();
     void on_btn_botKick_pressed();
     void on_btn_botKick_released();
     void on_btn_botDrible_pressed();

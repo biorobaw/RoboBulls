@@ -218,6 +218,8 @@ bool TestStrategy::update()
 
 void TestStrategy::assignBeh()
 {
-
+    std::cout << "adfasdfas " << std::endl;
+    gameModel->findMyTeam(0)->assignBeh<GenericMovementBehavior>(Point(-650, 300), 0);
+     std::cout << "adfasdfas " << std::endl;
 }
 

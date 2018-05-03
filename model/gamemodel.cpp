@@ -93,6 +93,7 @@ std::vector<Robot*>& GameModel::getYellowTeam()
  * \return A Point with the ball's position */
 Point GameModel::getBallPoint()
 {
+    //std::cout<<"Ball point is at: "<<ballPoint.toString()<<std::endl;             //Added by Bo Wu for testing
     return ballPoint;
 }
 
@@ -249,6 +250,7 @@ void GameModel::addBallReplacement(float x, float y, float vx, float vy)
  * StrategyController and makes the project work. This also updates the GUI system. */
 void GameModel::notifyObservers()
 {
+    //std::cout << "at GameModel::notifyObservers()\n";
     setRobotHasBall();
     sc->run();
 }

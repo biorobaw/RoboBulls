@@ -38,6 +38,8 @@ void VisionComm::receiveRobot(const SSL_DetectionRobot& robot, int detectedTeamC
 //    std::lock_guard<std::mutex> my_team_guard(GameModel::my_team_mutex);
 //    std::lock_guard<std::mutex> opp_team_guard(GameModel::opp_team_mutex);
 
+
+    //std::cout << "VisionComm::receiveRobot\n";//Donglin
     vector<Robot*>* currentTeam = &gamemodel->getMyTeam();
 
     if (detectedTeamColor != OUR_TEAM)
@@ -45,12 +47,14 @@ void VisionComm::receiveRobot(const SSL_DetectionRobot& robot, int detectedTeamC
 
     if (robot.has_robot_id())
     {
+        //std::cout << "VisionComm::receiveRobot   has ID\n";//Donglin
         // 2 5 7 8
         int id = robot.robot_id();
         Robot* rob = gamemodel->find(id, *currentTeam);
 
         if (rob == NULL)
         {
+            //std::cout<<"Did not find.........................................."<<std::endl;//Added by Bo Wu
             rob = new Robot();
             rob->setID(id);
             rob->setTeam(detectedTeamColor == OUR_TEAM);
@@ -58,7 +62,8 @@ void VisionComm::receiveRobot(const SSL_DetectionRobot& robot, int detectedTeamC
         }
 
         // Assumption: rob contains the robot with id == detected_id
-        Point positionReading(robot.x(), robot.y());
+        //std::cout << " positionReading("<<robot.x()<<","<< robot.y()<<");\n ";
+        Point positionReading(robot.x(), robot.y());//Point
         float rotationReading = robot.orientation();
         #if SIDE == SIDE_POSITIVE
             positionReading *= -1;
@@ -84,26 +89,30 @@ static bool isGoodDetection
     bool isGoodSide = false;
     float x = detection.x();
     float y = detection.y();
-
+  //std::cout << "detection.x()"<<detection.x() <<"detection.y()"<<detection.y()<<endl;//Donglin
     // Camera Config
     // 1 | 0
     // -----
     // 2 | 3
 
     float cam = frame.camera_id();
+     //std::cout << "!!!!!cam: "<<  cam<<endl;//Donglin
     if(!fourCameraMode) {
         isGoodSide =
-        (x >= 0 && cam == 0) ||
-        (x  < 0 && cam == 1);
+        (x >= 0 && cam == 1) ||
+        (x  < 0 && cam == 0);
+        //std::cout << "HAisGoodSide: "<<  isGoodSide<<endl;//Donglin
     } else {
         isGoodSide =
         (x >  0 && y > 0 && cam == 0) ||
         (x <= 0 && y > 0  && cam == 1) ||
         (x <= 0 && y <= 0 && cam == 2) ||
         (x >  0 && y <= 0 && cam == 3);
+        //std::cout << "isGoodSide22222: "<<  isGoodSide<<endl;//Donglin
     }
     // isGoodSide = SIMULATED;    //Simulated overrides anything
 
+    //return true;
     return isGoodConf && isGoodSide;
 }
 
@@ -208,6 +217,9 @@ void VisionComm::recieveBall(const SSL_DetectionFrame& frame)
  */
 void VisionComm::recieveRobotTeam(const SSL_DetectionFrame& frame, int team)
 {
+
+    //std::cout<<"VisionComm::recieveRobotTeam\n"<<std::endl;
+
     auto* currentTeamDetection = &frame.robots_blue();
     auto* currentTeamVector    = &gamemodel->getMyTeam();
     int*  currentTeamCounts    = blue_rob_readings;
@@ -221,7 +233,11 @@ void VisionComm::recieveRobotTeam(const SSL_DetectionFrame& frame, int team)
     
     for(const SSL_DetectionRobot& robot : *currentTeamDetection)
     {
+
+        //std::cout<<"VisionComm::robot.robot_id() robot detected: "<< robot.robot_id()<<std::endl;
+
         if(isGoodDetection(robot, frame, CONF_THRESHOLD_BOTS, FOUR_CAMERA_MODE)) {
+            //std::cout<<"VisionComm::robot.robot_id() GOOD DETECTION GOOD DETECTION!!!!!!!!!!!\n"<<std::endl;
             int robotID = robot.robot_id();
             if(gamemodel->find(robotID, *currentTeamVector) or currentTeamCounts[robotID] >= 80) {
                 receiveRobot(robot, team);
@@ -247,9 +263,15 @@ void VisionComm::receiveIfMSPassed(int ms_limit)
 
 void VisionComm::receive()
 {
+
+    static unsigned long int debugCounter = 0;
+
+    //std::cout << "at VisionComm::receive() 0 "<<endl;
     //Receive a new packet if X ms has passed (0 FOR NOW)
     //receiveIfMSPassed(10);
     client->receive(packet);    //Recieve packet here
+
+    //std::cout << "at VisionComm::receive() 1 "<<endl;
 
     // Update arrays used for tracking frames from each quadrant/half
     if(packet.has_detection())
@@ -259,16 +281,22 @@ void VisionComm::receive()
         frames_state[frame.camera_id()] = true;
     }
 
+    //std::cout << "at VisionComm::receive() 2 "<<endl;
+
     bool all_frames_recv = true;
     int num_cams = FOUR_CAMERA_MODE? 4 : 2;
+    //std::cout<<"Camera numberrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:"<<num_cams<<std::endl;//Added by Bo Wu
     for(int i = 0; i < num_cams; ++i)
         if(!frames_state[i])
             all_frames_recv = false;
 
+    //std::cout << "at VisionComm::receive()"<<endl;
     if(all_frames_recv)
     {
+        //std::cout << debugCounter++<< "at VisionComm::receive()     all frames received\n"<<endl;
         for(int i = 0; i < num_cams; ++i)
         {
+            //std::cout << "at VisionComm::receive()   processing cam "<<i <<endl;
             recieveBall(frames[i]);
             recieveRobotTeam(frames[i], TEAM_BLUE);
             recieveRobotTeam(frames[i], TEAM_YELLOW);
@@ -277,8 +305,10 @@ void VisionComm::receive()
 
         /* After we have had a chance to initially recieve all robots,
          * the RoboBulls game is run with the new information here. */
-        if (++totalframes > 200)
+        if (++totalframes > 200){
+//            std::cout << "at VisionComm::notifying()"<<endl;
             gamemodel->notifyObservers();
+        }
 
         /* After 100 frames the "seen counts" of each team are set to 0. This prevents
          * ghost robots from appearing over time */
@@ -292,7 +322,9 @@ void VisionComm::receive()
 
 void VisionComm::run()
 {
+    //std::cout << "at VisionComm::run()\n";
     while(true){
         receive();
+        //std::cout << "at VisionComm::run() looping \n";
     }
 }

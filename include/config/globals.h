@@ -7,8 +7,8 @@
 //! @brief
 //! Switch between various field geometries.
 //! Only one of these should be set to 1.
-#define BIO_ROB_FIELD 0
-#define GRSIM_FIELD 1
+#define BIO_ROB_FIELD 1
+#define GRSIM_FIELD 0
 #define ROBOCUP_FIELD 0
 
 /*! @brief Overall velocity for all behaviors. Change this
@@ -20,13 +20,13 @@
 
 #if BIO_ROB_FIELD
 //! @brief The center-to-goal-line length (X-Axis) of the field
-#define HALF_FIELD_LENGTH 3000
+#define HALF_FIELD_LENGTH 2340               //Used to be 3000, Bo changed it
 
 //! @brief The full side-to-side length (X-Axis)
 #define FIELD_LENGTH  (HALF_FIELD_LENGTH*2)
 
 //! @brief The center-to-side length (Y-Axis) of the field
-#define HALF_FIELD_WIDTH 2000
+#define HALF_FIELD_WIDTH 1568                //Used to be 2000, Bo changed it
 
 //! @brief The full goal-to-goal length (Y-Axis)
 #define FIELD_WIDTH (HALF_FIELD_WIDTH*2)
@@ -38,6 +38,8 @@
 //! @brief Distance from Y=0 to the centre of circular areas
 //! //! Look at SSL rule book for clarification
 #define DEF_AREA_OFFSET 10
+
+#define POINTS_PER_METER 1000             //Added by Bo
 
 //! @brief Width of Goal Post
 #define GOAL_WIDTH 1000

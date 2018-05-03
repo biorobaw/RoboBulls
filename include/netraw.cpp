@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include "netraw.h"
+#include "iostream"
 
 namespace Net{
 
@@ -192,7 +193,9 @@ bool UDP::send(const void *data,int length,const Address &dest)
 int UDP::recv(void *data,int length,Address &src)
 {
   src.addr_len = sizeof(src.addr);
+  //std::cout<<"at UDP::recv(void *data,int length,Address &src) 0\n";
   int len = recvfrom(fd,data,length,0,&src.addr,&src.addr_len);
+  //std::cout<<"at UDP::recv(void *data,int length,Address &src) 1\n";
 
   if(len > 0){
     recv_packets++;

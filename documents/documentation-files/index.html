@@ -105,7 +105,7 @@ Configuration</h1>
 Getting Started--Running The Project</h1>
 <p>Here we are going to compile and run the project on the simulator and perform a simple <a class="el" href="classBehavior.html">Behavior</a>.<br/>
 <br/>
- 1) Open the RoboBulls.pro project in Qt Creator and compile. After running the installation script, there should be no compilation issues (Tested on Ubuntu 14.04 only)<br/>
+ 1) Open the RoboBulls.pro project in Qt Creator(4.5.0) and compile. There are some issues to notice here, before you actually build the project, make sure you updated your QT creator and QT to the latest version. The last test is based on QT creator 4.5.0 and QT 5.10.0, make sure you set the QT version in your QT creator by going into Tools->Options->Build & Run->Kits. After running the installation script, there should be no compilation issues (Tested on Ubuntu 14.04 only)<br/>
  2) Open the grSim simulator (grSim/bin/grsim) from the script's install path on your computer or any other computer<br/>
  3) Go to <b><a class="el" href="communication_8h.html" title="Address and port configurations for the communication modules. ">include/config/communication.h</a></b> and change <b>SIMULATOR_ADDRESS</b> to the IP (in quotes) of the computer running grSim (SIMULATOR_ADDRESS_LOCAL for local).<br/>
  4) Change <b>REFBOX_LISTEN_ENABLED</b> to 0&ndash;This will enable of the <a class="el" href="classTestStrategy.html">TestStrategy</a> below.<br/>
@@ -113,6 +113,7 @@ Getting Started--Running The Project</h1>
  6) Go to <b>strategy/teststrategy.cpp</b> and insert <b>gameModel-&gt;findMyTeam(0)-&gt;assignBeh&lt;GoToBeh&gt;();</b> under <b><a class="el" href="classTestStrategy.html#a46a1281ba6df12f5a680f86f2c990e1b">TestStrategy::assignBeh</a></b><br/>
  7) Making sure <b>SIMULATED</b> in include/config/simulated is 1, Run the program.</p>
 <p>If these steps are completed correctly, <a class="el" href="classRobot.html">Robot</a> 0 on TEAM should move to the center of the field. </p>
+ 8) For running the yisirobot in real world, simply change the <b>SIMULATED</b> into 0. Also make sure you connected the transmitter to your computer, the two lights flashing means that they are not successfully configured, they will turn into always lighting if they get configured. Use the command line to add robot (e.g... Add Robot:call add_robot &ltid&gt &ltteam=b|y&gt)  
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

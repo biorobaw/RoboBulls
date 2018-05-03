@@ -31,6 +31,7 @@
 #include "guiinterface.h"
 #include "guirobot.h"
 #include "joystick.h"
+#include "communication/robcomm.h"
 
 // Project classes
 #include "model/gamemodel.h"
@@ -190,11 +191,17 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
                 case Qt::Key_A:
                     on_btn_botTurnLeft_pressed();
                     break;
+                case Qt::Key_Q:
+                    on_btn_botRotateLeft_pressed();
+                    break;
                 case Qt::Key_S:
                     on_btn_botReverse_pressed();
                     break;
                 case Qt::Key_D:
                     on_btn_botTurnRight_pressed();
+                    break;
+                case Qt::Key_E:
+                    on_btn_botRotateRight_pressed();
                     break;
                 // Alternate arrow bindings. Don't seem to work :(
                 case Qt::UpArrow:
@@ -362,13 +369,18 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event) {
                 case Qt::Key_A:
                     on_btn_botTurnLeft_released();
                     break;
+                case Qt::Key_Q:
+                    on_btn_botRotateLeft_released();
+                    break;
                 case Qt::Key_S:
                     on_btn_botReverse_released();
                     break;
                 case Qt::Key_D:
                     on_btn_botTurnRight_released();
                     break;
-
+                case Qt::Key_E:
+                    on_btn_botRotateRight_released();
+                    break;
                 case Qt::Key_Up:
                     on_btn_botForward_released();
                     break;
@@ -506,9 +518,13 @@ void MainWindow::on_btn_botForward_pressed() {
         ui->btn_botForward->setDown(true);
         setMyVelocity();
         int currentFwd = objectPos->getVelocity(fieldpanel->selectedBot);
+        std::cout << "currentFwd" << currentFwd<< std::endl;
         gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setL(currentFwd);
         gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setR(currentFwd);
         if (currentFwd <= 0) {
+//            gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setL(currentFwd+myVelocity);
+//            gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setR(currentFwd+myVelocity);
+//            gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setXVel(myVelocity);
             gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setL(currentFwd+myVelocity);
             gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setR(currentFwd+myVelocity);
             gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setXVel(myVelocity);
@@ -531,13 +547,28 @@ void MainWindow::on_btn_botTurnRight_pressed() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         Robot* r = gamemodel->findMyTeam(fieldpanel->selectedBot);
         ui->btn_botTurnRight->setDown(true);
-        r->setL(r->getL() + myVelocity/2);
+        r->setL(r->getL() + myVelocity/2);//----------->>>
         r->setR(r->getR() - myVelocity/2);
 //        r->setAngVel(myVelocity);
         r->setYVel(myVelocity);
+        std::cout << "botTurnRight_pressed" << std::endl;
     }
+    //RobComm* comm =  RobComm::getRobComm();       //test
+    //comm->sendVelsLarge(gamemodel->getMyTeam()); //test
 }
-
+void MainWindow::on_btn_botRotateRight_pressed() {
+    if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
+        Robot* r = gamemodel->findMyTeam(fieldpanel->selectedBot);
+        ui->btn_botTurnRight->setDown(true);
+        r->setL(r->getL() + myVelocity/2);//----------->>>
+        r->setR(r->getR() - myVelocity/2);
+        r->setAngVel(myVelocity);
+//        r->setYVel(myVelocity);
+        std::cout << "botTurnRight_pressed" << std::endl;
+    }
+    //RobComm* comm =  RobComm::getRobComm();       //test
+    //comm->sendVelsLarge(gamemodel->getMyTeam()); //test
+}
 void MainWindow::on_btn_botTurnRight_released() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botTurnRight->setDown(false);
@@ -546,6 +577,19 @@ void MainWindow::on_btn_botTurnRight_released() {
         gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setR(currentFwd);
         //gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setAngVel(0);
         gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setYVel(0);
+        std::cout << "botTurnRight_released" << std::endl;
+    }
+}
+
+void MainWindow::on_btn_botRotateRight_released() {
+    if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
+        ui->btn_botTurnRight->setDown(false);
+        float currentFwd = objectPos->getVelocity(fieldpanel->selectedBot);
+        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setL(currentFwd);
+        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setR(currentFwd);
+        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setAngVel(0);
+        //gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setYVel(0);
+        std::cout << "botTurnRight_released" << std::endl;
     }
 }
 
@@ -558,8 +602,22 @@ void MainWindow::on_btn_botTurnLeft_pressed() {
 //        r->setAngVel(-myVelocity);
         r->setYVel(-myVelocity);
     }
+   // RobComm* comm =  RobComm::getRobComm();       //test
+    //comm->sendVelsLarge(gamemodel->getMyTeam()); //test
 }
 
+void MainWindow::on_btn_botRotateLeft_pressed() {
+    if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
+        Robot* r = gamemodel->findMyTeam(fieldpanel->selectedBot);
+        ui->btn_botTurnLeft->setDown(true);
+        r->setL(r->getL() - myVelocity/2);
+        r->setR(r->getR() + myVelocity/2);
+        r->setAngVel(-myVelocity);
+//        r->setYVel(-myVelocity);
+    }
+   // RobComm* comm =  RobComm::getRobComm();       //test
+    //comm->sendVelsLarge(gamemodel->getMyTeam()); //test
+}
 void MainWindow::on_btn_botTurnLeft_released() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botTurnLeft->setDown(false);
@@ -571,6 +629,16 @@ void MainWindow::on_btn_botTurnLeft_released() {
     }
 }
 
+void MainWindow::on_btn_botRotateLeft_released() {
+    if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
+        ui->btn_botTurnLeft->setDown(false);
+        float currentVel = objectPos->getVelocity(fieldpanel->selectedBot);
+        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setL(currentVel);
+        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setR(currentVel);
+        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setAngVel(0);
+//        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setYVel(0);
+    }
+}
 void MainWindow::on_btn_botReverse_pressed() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botReverse->setDown(true);

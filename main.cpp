@@ -130,7 +130,8 @@ int main(int argc, char *argv[])
 
     //Start Vision and Refcomm and run the application
     visionCommunicator.start();
+    //std::cout << "Open YisiBot Serial Port" << std::endl;
     refCommunicator.start();
-
+    //std::cout << "Open YisiBot1111111111111111111111 Serial Port" << std::endl;
     return a.exec();
 }

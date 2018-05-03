@@ -1,13 +1,18 @@
 #-------------------------------------------------
+
 #
 # Project created by QtCreator 2014-03-05T09:39:34
 #
 #-------------------------------------------------
 
 
+QT_SELECT=5
 QT += core network widgets
 QT -= gui
 QT += serialport
+QT += core gui
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
 
 TARGET = RoboBulls
 CONFIG += console

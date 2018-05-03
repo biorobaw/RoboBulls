@@ -1,7 +1,8 @@
 #ifndef YISIROBCOMM_H
 #define YISIROBCOMM_H
 
-#include <QtSerialPort/QSerialPort>
+//#include <QtSerialPort/QSerialPort>
+#include <QSerialPort>
 #include <iostream>
 #include "model/robot.h"
 #include "robcomm.h"

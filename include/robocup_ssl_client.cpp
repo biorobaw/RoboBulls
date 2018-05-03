@@ -19,6 +19,7 @@
 */
 //========================================================================
 #include "robocup_ssl_client.h"
+#include "iostream"
 
 RoboCupSSLClient::RoboCupSSLClient(int port,
                      string net_address,
@@ -68,8 +69,11 @@ bool RoboCupSSLClient::open(bool blocking) {
 bool RoboCupSSLClient::receive(SSL_WrapperPacket & packet) {
   Net::Address src;
   int r=0;
+  //std::cout << "at RoboCupSSLClient::receive(SSL_WrapperPacket & packet) 0 "<<endl;
   r = mc.recv(in_buffer,MaxDataGramSize,src);
+  //std::cout << "at RoboCupSSLClient::receive(SSL_WrapperPacket & packet) 1 "<<endl;
   if (r>0) {
+    //std::cout<<"Successfully received packet from vision system!!!!!!!!!!"<<std::endl;            //Added by Bo Wu
     fflush(stdout);
     //decode packet:
     return packet.ParsePartialFromArray(in_buffer,r);

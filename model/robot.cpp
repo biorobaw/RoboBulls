@@ -156,7 +156,7 @@ RobotType Robot::type()
 std::string Robot::toString()
 {
     std::stringstream ss;
-    ss << "\t" << getPosition().toString() << "\t ID: " << getID();
+    ss << "\t" << getPosition().toString() << "\t ID66666: " << getID();
     return ss.str();
 }
 
