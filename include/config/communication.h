@@ -13,10 +13,10 @@
 
 //! @brief Vision listen address options
 //! @{
-#define VISION_ADDRESS_ABDUL "224.5.23.4"
+#define VISION_ADDRESS_ABDUL "224.5.23.2"
 #define VISION_ADDRESS_JAMES  "224.5.23.3"
 #define VISION_ADDRESS_ADRIANO "224.5.23.1"
-#define VISION_ADDRESS_SHAUGHN "224.5.23.2"
+#define VISION_ADDRESS_SHAUGHN "224.5.23.4"
 
 //Should not be the same as any of the simulators
 #define VISION_ADDRESS_BIOROB "224.5.23.2"
