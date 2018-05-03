@@ -13,6 +13,7 @@
 
 //! @brief Vision listen address options
 //! @{
+#define VISION_ADDRESS_ABDUL "224.5.23.2"
 #define VISION_ADDRESS_SHAMSI "224.5.23.4"
 #define VISION_ADDRESS_JAMES  "224.5.23.3"
 #define VISION_ADDRESS_ADRIANO "224.5.23.1"
@@ -36,7 +37,7 @@
 #define SIMULATOR_PORT      20011
 
 #if SIMULATED
- #define VISION_ADDRESS     VISION_ADDRESS_SHAMSI
+ #define VISION_ADDRESS     VISION_ADDRESS_ABDUL
  #define VISION_PORT        10020
 #else
  #define VISION_ADDRESS     VISION_ADDRESS_BIOROB
