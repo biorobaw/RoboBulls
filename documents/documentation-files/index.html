@@ -53,8 +53,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
                onmouseout="return searchBox.OnSearchSelectHide()"
                alt=""/>
           <input type="text" id="MSearchField" value="Search" accesskey="S"
-               onfocus="searchBox.OnSearchFieldFocus(true)" 
-               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onfocus="searchBox.OnSearchFieldFocus(true)"
+               onblur="searchBox.OnSearchFieldFocus(false)"
                onkeyup="searchBox.OnSearchFieldChange(event)"/>
           </span><span class="right">
             <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
@@ -73,7 +73,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
-<iframe src="javascript:void(0)" frameborder="0" 
+<iframe src="javascript:void(0)" frameborder="0"
         name="MSearchResults" id="MSearchResults">
 </iframe>
 </div>
@@ -105,13 +105,15 @@ Configuration</h1>
 Getting Started--Running The Project</h1>
 <p>Here we are going to compile and run the project on the simulator and perform a simple <a class="el" href="classBehavior.html">Behavior</a>.<br/>
 <br/>
- 1) Open the RoboBulls.pro project in Qt Creator and compile. After running the installation script, there should be no compilation issues (Tested on Ubuntu 14.04 only)<br/>
- 2) Open the grSim simulator (grSim/bin/grsim) from the script's install path on your computer or any other computer<br/>
- 3) Go to <b><a class="el" href="communication_8h.html" title="Address and port configurations for the communication modules. ">include/config/communication.h</a></b> and change <b>SIMULATOR_ADDRESS</b> to the IP (in quotes) of the computer running grSim (SIMULATOR_ADDRESS_LOCAL for local).<br/>
- 4) Change <b>REFBOX_LISTEN_ENABLED</b> to 0&ndash;This will enable of the <a class="el" href="classTestStrategy.html">TestStrategy</a> below.<br/>
- 5) Change <b>VISION_ADDRESS</b> under the #if SIMULATED to the "Vision multicast address" shown on the left-hand side of the simulator<br/>
- 6) Go to <b>strategy/teststrategy.cpp</b> and insert <b>gameModel-&gt;findMyTeam(0)-&gt;assignBeh&lt;GoToBeh&gt;();</b> under <b><a class="el" href="classTestStrategy.html#a46a1281ba6df12f5a680f86f2c990e1b">TestStrategy::assignBeh</a></b><br/>
- 7) Making sure <b>SIMULATED</b> in include/config/simulated is 1, Run the program.</p>
+1) Open the RoboBulls.pro project in Qt Creator and compile. After running the installation script, there should be no compilation issues (Tested on Ubuntu 14.04 and 16.04 only with QT Creator 4.5.0 and QT 5.10.0)<br/>
+   -> Make sure you set the QT version in your QT creator by going into Tools->Options->Build & Run->Kits<br/>
+2) Open the grSim simulator (grSim/bin/grsim) from the script's install path on your computer or any other computer<br/>
+3) Go to <b><a class="el" href="communication_8h.html" title="Address and port configurations for the communication modules. ">include/config/communication.h</a></b> and change <b>SIMULATOR_ADDRESS</b> to the IP (in quotes) of the computer running grSim (SIMULATOR_ADDRESS_LOCAL for local).<br/>
+4) Change <b>REFBOX_LISTEN_ENABLED</b> to 0&ndash;This will enable of the <a class="el" href="classTestStrategy.html">TestStrategy</a> below.<br/>
+5) Change <b>VISION_ADDRESS</b> under the #if SIMULATED to the "Vision multicast address" shown on the left-hand side of the simulator<br/>
+6) Go to <b>strategy/teststrategy.cpp</b> and insert <b>gameModel-&gt;findMyTeam(0)-&gt;assignBeh&lt;GoToBehavior&gt;();</b> under <b><a class="el" href="classTestStrategy.html#a46a1281ba6df12f5a680f86f2c990e1b">TestStrategy::assignBeh</a></b><br/>
+   -> You can also assign the following functions: KickBeh, DribbleToPointBeh, DribbleBackBeh, RotBeh, DribbleBeh, MotionTestBeh, Strafe<br/>
+7) Making sure <b>SIMULATED</b> in include/config/simulated is 1, Run the program.</p>
 <p>If these steps are completed correctly, <a class="el" href="classRobot.html">Robot</a> 0 on TEAM should move to the center of the field. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
