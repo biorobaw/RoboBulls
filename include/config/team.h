@@ -20,7 +20,7 @@
 /*! The Program's Team (TEAM_BLUE or TEAM_YELLOW)
  * The player's team constant. This sets which team the program
  * will transmit to. XBee Channel D is for Blue, E is for Yellow */
-#define OUR_TEAM TEAM_BLUE
+#define OUR_TEAM TEAM_YELLOW
 
 
 /*! The currnet Side of the program's team
