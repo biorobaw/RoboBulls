@@ -36,6 +36,7 @@ extern float DEFEND_2;
 extern float ATTACK_1;
 extern float ATTACK_2;
 
+
 //! @}
 
 #endif

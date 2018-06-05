@@ -27,7 +27,7 @@
  * or the positive X axis. It applies transformations to the camera's
  * readings always making our goal on the negative X axis. The enemy's
  * goal is always at positive X. It should not be used anywhere else. */
-#define SIDE SIDE_POSITIVE
+#define SIDE SIDE_NEGATIVE
 //! @}
 
 #endif
