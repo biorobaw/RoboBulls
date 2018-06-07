@@ -5,7 +5,7 @@
 YisiRobComm::YisiRobComm()
 {
     // Setup Serial Port
-    serial.setPortName("/dev/ttyUSB2");
+    serial.setPortName("/dev/ttyUSB1");
 
     if (serial.open(QIODevice::ReadWrite))	{
         std::cout << "Serial Port Connected" << std::endl;
