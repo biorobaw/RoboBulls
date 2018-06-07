@@ -53,8 +53,10 @@ void NormalGameStrategy::assignBeh()
 
     if(wall1)
         wall1->assignBeh<Wall>();
+
     if(wall2)
         wall2->assignBeh<Wall>();
+
 
     assignGoalieIfOk();
 }
@@ -102,6 +104,7 @@ bool NormalGameStrategy::update()
             Point target = bp + Measurements::unitVector(bp-attack1->getPosition()) * 350;
             float angle = Measurements::angleBetween(kick_off_rob->getPosition(), attack1->getPosition());
             kick_off_rob->assignBeh<GenericMovementBehavior>(target, angle);
+
             state = our_kickoff_2;
         }
     }
@@ -116,6 +119,7 @@ bool NormalGameStrategy::update()
             float angle = Measurements::angleBetween(kick_off_rob->getPosition(), attack1->getPosition());
             kick_off_rob->clearBehavior();
             kick_off_rob->assignBeh<GenericMovementBehavior>(Point(ROBOT_RADIUS-50,0), angle, false, false);
+\
             state = our_kickoff_3;
         }
     }
@@ -128,6 +132,7 @@ bool NormalGameStrategy::update()
         if(!Measurements::isClose(initialBallPos, gameModel->getBallPoint(), 50))
         {
             kick_off_rob->assignBeh<Wall>();
+
             state = evaluate;
         }
     }
@@ -146,9 +151,11 @@ bool NormalGameStrategy::update()
         if(shooter)
         {
             shooter->assignBeh<AttackMain>();
+
             if(dynamic_cast<AttackMain*>(shooter->getBehavior())->hasKickedToGoal())
             {
                 shooter->assignBeh<Wall>();
+
                 state = evaluate;
             }
         }
@@ -161,6 +168,7 @@ bool NormalGameStrategy::update()
         Robot* wall1 = gameModel->findMyTeam(DEFEND_1);
         Robot* wall2 = gameModel->findMyTeam(DEFEND_2);
         goalie->assignBeh<PenaltyGoalie>();
+
 
         if(wall1)
             wall1->clearBehavior();
@@ -176,6 +184,7 @@ bool NormalGameStrategy::update()
                 wall1->assignBeh<Wall>();
             if(wall2)
                 wall2->assignBeh<Wall>();
+
         }
     }
         break;
@@ -228,7 +237,7 @@ bool NormalGameStrategy::update()
             if(Measurements::distance(attack1, gameModel->getBallPoint()) <
                Measurements::distance(attack2, gameModel->getBallPoint()))
             {
-                attack1->assignBeh<AttackMain>();
+                //attack1->assignBeh<AttackMain>();
                 main = attack1;
                 attack2->assignBeh<AttackSupport>();
                 supp = attack2;
