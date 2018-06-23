@@ -33,7 +33,7 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = RoboBulls1.0.0
-DISTDIR = /home/usr3-spring2018/robobulls2/.tmp/RoboBulls1.0.0
+DISTDIR = /home/usr6-spring2018/robobulls/.tmp/RoboBulls1.0.0
 LINK          = g++
 LFLAGS        = -m64 -Wl,-O1
 LIBS          = $(SUBLIBS) -L/usr/X11R6/lib64 -lprotobuf -lSDL2 -lQt5Network -lQt5Widgets -lQt5Gui -lQt5SerialPort -lQt5Core -lGL -lpthread 
@@ -409,7 +409,8 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		communication/crc.h \
 		movement/differential/differential_pilot.h \
 		movement/three_wheel_omni/three_wheel_omni_pilot.h \
-		movement/four_wheel_omni/four_wheel_omni_pilot.h main.cpp \
+		movement/four_wheel_omni/four_wheel_omni_pilot.h \
+		include/config/move_parameters.h main.cpp \
 		behavior/attackmain.cpp \
 		behavior/attacksupport.cpp \
 		behavior/behavior.cpp \
@@ -728,7 +729,7 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents gui/images.qrc $(DISTDIR)/
-	$(COPY_FILE) --parents behavior/attackmain.h behavior/attacksupport.h behavior/behavior.h behavior/defendbehavior.h behavior/genericmovementbehavior.h behavior/genericskillbehavior.h communication/nxtrobcomm.h communication/refcomm.h communication/robcomm.h communication/simrobcomm.h communication/visioncomm.h gui/fieldpanel.h gui/gamepanel.h gui/guiball.h gui/guibotlabel.h gui/guicomm.h gui/guidrawline.h gui/guifield.h gui/guiinterface.h gui/guirobot.h gui/guiscene.h gui/guisidelines.h gui/joystick.h gui/mainwindow.h gui/objectposition.h gui/robotpanel.h gui/selrobotpanel.h include/config/globals.h include/config/robot_types.h include/config/simulated.h include/config/team.h include/config/tolerances.h include/config/communication.h include/grSim_Commands.pb.h include/grSim_Packet.pb.h include/grSim_Replacement.pb.h include/messages_robocup_ssl_detection.pb.h include/messages_robocup_ssl_geometry.pb.h include/messages_robocup_ssl_refbox_log.pb.h include/messages_robocup_ssl_wrapper.pb.h include/netraw.h include/robocup_ssl_client.h include/serialib.h model/gamemodel.h model/robot.h movement/go_to_pose.h movement/move_collisions.h movement/movetype.h movement/pathfinding/fppa_pathfinding.h skill/kick.h skill/kicktopointomni.h skill/skill.h skill/stop.h strategy/freekickstrategy.h strategy/haltstrategy.h strategy/kickoffstrategy.h strategy/normalgamestrategy.h strategy/penaltystrategy.h strategy/stopstrategy.h strategy/strategycontroller.h strategy/strategy.h strategy/teststrategy.h strategy/videostrategies.h utilities/comparisons.h utilities/debug.h utilities/edges.h utilities/point.h utilities/velocitycalculator.h strategy/indirectkickstrategy.h communication/kfball.h utilities/getclassname.h utilities/region/sector.h utilities/region/rectangle.h utilities/region/region.h utilities/measurements.h utilities/region/defencearea.h gui/guidrawpoint.h gui/guidrawregion.h skill/dribbletopoint.h behavior/challengeballbot.h skill/dribbleback.h behavior/refstop.h behavior/goalie.h behavior/markbot.h behavior/wall.h behavior/penaltygoalie.h communication/yisirobcomm.h communication/crc.h movement/differential/differential_pilot.h movement/three_wheel_omni/three_wheel_omni_pilot.h movement/four_wheel_omni/four_wheel_omni_pilot.h $(DISTDIR)/
+	$(COPY_FILE) --parents behavior/attackmain.h behavior/attacksupport.h behavior/behavior.h behavior/defendbehavior.h behavior/genericmovementbehavior.h behavior/genericskillbehavior.h communication/nxtrobcomm.h communication/refcomm.h communication/robcomm.h communication/simrobcomm.h communication/visioncomm.h gui/fieldpanel.h gui/gamepanel.h gui/guiball.h gui/guibotlabel.h gui/guicomm.h gui/guidrawline.h gui/guifield.h gui/guiinterface.h gui/guirobot.h gui/guiscene.h gui/guisidelines.h gui/joystick.h gui/mainwindow.h gui/objectposition.h gui/robotpanel.h gui/selrobotpanel.h include/config/globals.h include/config/robot_types.h include/config/simulated.h include/config/team.h include/config/tolerances.h include/config/communication.h include/grSim_Commands.pb.h include/grSim_Packet.pb.h include/grSim_Replacement.pb.h include/messages_robocup_ssl_detection.pb.h include/messages_robocup_ssl_geometry.pb.h include/messages_robocup_ssl_refbox_log.pb.h include/messages_robocup_ssl_wrapper.pb.h include/netraw.h include/robocup_ssl_client.h include/serialib.h model/gamemodel.h model/robot.h movement/go_to_pose.h movement/move_collisions.h movement/movetype.h movement/pathfinding/fppa_pathfinding.h skill/kick.h skill/kicktopointomni.h skill/skill.h skill/stop.h strategy/freekickstrategy.h strategy/haltstrategy.h strategy/kickoffstrategy.h strategy/normalgamestrategy.h strategy/penaltystrategy.h strategy/stopstrategy.h strategy/strategycontroller.h strategy/strategy.h strategy/teststrategy.h strategy/videostrategies.h utilities/comparisons.h utilities/debug.h utilities/edges.h utilities/point.h utilities/velocitycalculator.h strategy/indirectkickstrategy.h communication/kfball.h utilities/getclassname.h utilities/region/sector.h utilities/region/rectangle.h utilities/region/region.h utilities/measurements.h utilities/region/defencearea.h gui/guidrawpoint.h gui/guidrawregion.h skill/dribbletopoint.h behavior/challengeballbot.h skill/dribbleback.h behavior/refstop.h behavior/goalie.h behavior/markbot.h behavior/wall.h behavior/penaltygoalie.h communication/yisirobcomm.h communication/crc.h movement/differential/differential_pilot.h movement/three_wheel_omni/three_wheel_omni_pilot.h movement/four_wheel_omni/four_wheel_omni_pilot.h include/config/move_parameters.h $(DISTDIR)/
 	$(COPY_FILE) --parents main.cpp behavior/attackmain.cpp behavior/attacksupport.cpp behavior/behavior.cpp behavior/genericmovementbehavior.cpp communication/nxtrobcomm.cpp communication/refcomm.cpp communication/robcomm.cpp communication/simrobcomm.cpp communication/visioncomm.cpp gui/fieldpanel.cpp gui/gamepanel.cpp gui/guiball.cpp gui/guibotlabel.cpp gui/guicomm.cpp gui/guidrawline.cpp gui/guifield.cpp gui/guiinterface.cpp gui/guirobot.cpp gui/guiscene.cpp gui/guisidelines.cpp gui/joystick.cpp gui/mainwindow.cpp gui/objectposition.cpp gui/robotpanel.cpp gui/selrobotpanel.cpp include/config/robot_types.cpp include/grSim_Commands.pb.cc include/grSim_Packet.pb.cc include/grSim_Replacement.pb.cc include/messages_robocup_ssl_detection.pb.cc include/messages_robocup_ssl_geometry.pb.cc include/messages_robocup_ssl_refbox_log.pb.cc include/messages_robocup_ssl_wrapper.pb.cc include/netraw.cpp include/robocup_ssl_client.cpp include/serialib.cpp model/gamemodel.cpp model/robot.cpp movement/four_wheel_omni/four_wheel_omni_pilot.cpp movement/move_collisions.cpp movement/pathfinding/fppa_pathfinding.cpp movement/three_wheel_omni/three_wheel_omni_pilot.cpp skill/kick.cpp skill/kicktopointomni.cpp skill/stop.cpp strategy/freekickstrategy.cpp strategy/haltstrategy.cpp strategy/kickoffstrategy.cpp strategy/normalgamestrategy.cpp strategy/penaltystrategy.cpp strategy/stopstrategy.cpp strategy/strategycontroller.cpp strategy/strategy.cpp strategy/teststrategy.cpp strategy/videostrategies.cpp utilities/comparisons.cpp utilities/debug.cpp utilities/edges.cpp utilities/point.cpp utilities/velocitycalculator.cpp behavior/defendbehavior.cpp strategy/indirectkickstrategy.cpp communication/kfball.cpp utilities/getclassname.cpp utilities/region/sector.cpp utilities/region/rectangle.cpp utilities/measurements.cpp utilities/region/defencearea.cpp gui/guidrawpoint.cpp gui/guidrawregion.cpp skill/dribbletopoint.cpp behavior/challengeballbot.cpp skill/dribbleback.cpp behavior/refstop.cpp behavior/goalie.cpp behavior/markbot.cpp behavior/wall.cpp behavior/penaltygoalie.cpp communication/yisirobcomm.cpp communication/crc.cpp movement/go_to_pose.cpp movement/differential/differential_pilot.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents gui/mainwindow.ui $(DISTDIR)/
 
@@ -786,31 +787,31 @@ moc_fieldpanel.cpp: gui/guisidelines.h \
 		gui/guidrawpoint.h \
 		gui/guidrawregion.h \
 		gui/fieldpanel.h
-	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/usr3-spring2018/robobulls2 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include gui/fieldpanel.h -o moc_fieldpanel.cpp
+	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/usr6-spring2018/robobulls -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include gui/fieldpanel.h -o moc_fieldpanel.cpp
 
 moc_gamepanel.cpp: gui/gamepanel.h
-	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/usr3-spring2018/robobulls2 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include gui/gamepanel.h -o moc_gamepanel.cpp
+	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/usr6-spring2018/robobulls -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include gui/gamepanel.h -o moc_gamepanel.cpp
 
 moc_guicomm.cpp: gui/guicomm.h
-	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/usr3-spring2018/robobulls2 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include gui/guicomm.h -o moc_guicomm.cpp
+	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/usr6-spring2018/robobulls -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include gui/guicomm.h -o moc_guicomm.cpp
 
 moc_guidrawline.cpp: utilities/point.h \
 		gui/guidrawline.h
-	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/usr3-spring2018/robobulls2 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include gui/guidrawline.h -o moc_guidrawline.cpp
+	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/usr6-spring2018/robobulls -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include gui/guidrawline.h -o moc_guidrawline.cpp
 
 moc_mainwindow.cpp: gui/mainwindow.h
-	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/usr3-spring2018/robobulls2 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include gui/mainwindow.h -o moc_mainwindow.cpp
+	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/usr6-spring2018/robobulls -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include gui/mainwindow.h -o moc_mainwindow.cpp
 
 moc_robotpanel.cpp: gui/robotpanel.h
-	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/usr3-spring2018/robobulls2 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include gui/robotpanel.h -o moc_robotpanel.cpp
+	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/usr6-spring2018/robobulls -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include gui/robotpanel.h -o moc_robotpanel.cpp
 
 moc_guidrawpoint.cpp: utilities/point.h \
 		gui/guidrawpoint.h
-	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/usr3-spring2018/robobulls2 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include gui/guidrawpoint.h -o moc_guidrawpoint.cpp
+	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/usr6-spring2018/robobulls -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include gui/guidrawpoint.h -o moc_guidrawpoint.cpp
 
 moc_guidrawregion.cpp: utilities/point.h \
 		gui/guidrawregion.h
-	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/usr3-spring2018/robobulls2 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include gui/guidrawregion.h -o moc_guidrawregion.cpp
+	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/usr6-spring2018/robobulls -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include gui/guidrawregion.h -o moc_guidrawregion.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -1196,7 +1197,8 @@ mainwindow.o: gui/mainwindow.cpp gui/robotpanel.h \
 		movement/movetype.h \
 		movement/four_wheel_omni/four_wheel_omni_pilot.h \
 		movement/three_wheel_omni/three_wheel_omni_pilot.h \
-		movement/pathfinding/fppa_pathfinding.h
+		movement/pathfinding/fppa_pathfinding.h \
+		communication/robcomm.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o gui/mainwindow.cpp
 
 objectposition.o: gui/objectposition.cpp gui/guiscene.h
@@ -1342,7 +1344,8 @@ four_wheel_omni_pilot.o: movement/four_wheel_omni/four_wheel_omni_pilot.cpp move
 		include/config/simulated.h \
 		include/config/globals.h \
 		utilities/debug.h \
-		gui/guiinterface.h
+		gui/guiinterface.h \
+		include/config/move_parameters.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o four_wheel_omni_pilot.o movement/four_wheel_omni/four_wheel_omni_pilot.cpp
 
 move_collisions.o: movement/move_collisions.cpp utilities/measurements.h \
@@ -2231,7 +2234,21 @@ yisirobcomm.o: communication/yisirobcomm.cpp communication/yisirobcomm.h \
 		behavior/genericskillbehavior.h \
 		include/config/robot_types.h \
 		communication/robcomm.h \
-		communication/crc.h
+		communication/crc.h \
+		model/gamemodel.h \
+		utilities/measurements.h \
+		include/config/tolerances.h \
+		include/config/simulated.h \
+		include/config/globals.h \
+		behavior/genericmovementbehavior.h \
+		movement/go_to_pose.h \
+		movement/differential/differential_pilot.h \
+		movement/movetype.h \
+		movement/four_wheel_omni/four_wheel_omni_pilot.h \
+		utilities/debug.h \
+		movement/three_wheel_omni/three_wheel_omni_pilot.h \
+		movement/pathfinding/fppa_pathfinding.h \
+		include/config/move_parameters.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o yisirobcomm.o communication/yisirobcomm.cpp
 
 crc.o: communication/crc.cpp communication/crc.h

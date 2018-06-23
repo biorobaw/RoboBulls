@@ -70,7 +70,7 @@ int Robot::getLB() { return LB; }
 int Robot::getRB() { return RB; }
 int Robot::getXVel() { return xvel_cmd; }
 int Robot::getYVel() { return yvel_cmd; }
-int Robot::getAngVel() { return angvel_cmd; }
+float Robot::getAngVel() { return angvel_cmd; }
 //! @}
 
 //! @brief Get the robot's Point position on the field

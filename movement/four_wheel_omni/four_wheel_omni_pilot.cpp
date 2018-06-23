@@ -1,5 +1,6 @@
 #include "movement/four_wheel_omni/four_wheel_omni_pilot.h"
 #include "gui/guiinterface.h"
+#include "include/config/move_parameters.h"
 using std::abs;
 
 namespace Move {
@@ -80,8 +81,8 @@ void FourWheelOmniPilot::defaultDrive (Robot* rob, float x_goal, float y_goal, f
     double speed = rob->getSpeedMillimetersPerFrame();
     double requested_speed = sqrt(x_vel_robot*x_vel_robot + y_vel_robot*y_vel_robot);
     if(requested_speed > speed + ACC_PER_FRAME) {
-        x_vel_robot = (speed + ACC_PER_FRAME) * 100 * x_vel_robot/requested_speed;
-        y_vel_robot = (speed + ACC_PER_FRAME) * 100 * y_vel_robot/requested_speed;
+        x_vel_robot = (speed + ACC_PER_FRAME) * 100 * x_vel_robot/requested_speed * ACCEL_MULT;
+        y_vel_robot = (speed + ACC_PER_FRAME) * 100 * y_vel_robot/requested_speed * ACCEL_MULT;
     }
 
     // Wheel Velocity Calculations
@@ -98,6 +99,12 @@ void FourWheelOmniPilot::defaultDrive (Robot* rob, float x_goal, float y_goal, f
     rob->setLB(LB);
     rob->setRF(RF);
     rob->setRB(RB);
+
+    // Set X/Y/Ang velocities to robot's data structures, used in yisicomm movement
+    rob->setXVel(x_vel_robot);
+    rob->setYVel(y_vel_robot);
+    rob->setAngVel(theta_vel);
+
 }
 
 void FourWheelOmniPilot::dribbleDrive
@@ -141,8 +148,8 @@ void FourWheelOmniPilot::dribbleDrive
     // Apply acceleration ramp
     if(vel_robot > prev_speed)
     {
-        x_vel_robot = x_vel_robot * (prev_speed + 2) / vel_robot;
-        y_vel_robot = y_vel_robot * (prev_speed + 2) / vel_robot;
+        x_vel_robot = x_vel_robot * (prev_speed + 2) / vel_robot * ACCEL_MULT;
+        y_vel_robot = y_vel_robot * (prev_speed + 2) / vel_robot * ACCEL_MULT;
         vel_robot = prev_speed + 2;
     }
     prev_speed = vel_robot;
@@ -171,6 +178,12 @@ void FourWheelOmniPilot::dribbleDrive
     rob->setLB(LB);
     rob->setRF(RF);
     rob->setRB(RB);
+
+    // Set X/Y/Ang velocities to robot's data structures, used in yisicomm movement
+    rob->setXVel(x_vel_robot);
+    rob->setYVel(y_vel_robot);
+    rob->setAngVel(theta_vel);
+
 }
 
 void FourWheelOmniPilot::facePointDrive(Robot* rob, float x_goal, float y_goal, float theta_goal)
@@ -243,6 +256,12 @@ void FourWheelOmniPilot::facePointDrive(Robot* rob, float x_goal, float y_goal, 
     rob->setLB(LB);
     rob->setRF(RF);
     rob->setRB(RB);
+
+    // Set X/Y/Ang velocities to robot's data structures, used in yisicomm movement
+    rob->setXVel(x_vel_robot);
+    rob->setYVel(y_vel_robot);
+    rob->setAngVel(theta_vel);
+
 }
 
 void FourWheelOmniPilot::updateErrors(float x_goal, float y_goal)

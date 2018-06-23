@@ -181,7 +181,7 @@ bool NormalGameStrategy::update()
         break;
     case evaluate:
     {
-        std::cout << "Evaluate" << std::endl;
+        //std::cout << "Evaluate" << std::endl;
         // Evaluate attack
         if((prev_state != attack && !clearing_ball)
         || (main != nullptr && supp != nullptr && (Measurements::distance(supp,bp) < Measurements::distance(main, bp))))

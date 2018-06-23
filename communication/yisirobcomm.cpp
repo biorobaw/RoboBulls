@@ -5,13 +5,15 @@
 #include "model/robot.h"
 #include "model/gamemodel.h"
 #include "behavior/genericmovementbehavior.h"
+#include "include/config/move_parameters.h"
+
 YisiRobComm::YisiRobComm()
 {
     // Setup Serial Port
 
     //Oroginal code
     //serial.setPortName("/dev/ttyUSB2");
-    serial.setPortName("/dev/ttyUSB0");
+    serial.setPortName("/dev/ttyUSB1");
 //    serial.setBaudRate(QSerialPort::Baud115200);
 //    serial.setDataBits(QSerialPort::Data8);
 //    serial.setParity(QSerialPort::NoParity);
@@ -88,7 +90,7 @@ std::time_t t = std::time(0);
         }
 
         // First Robot Kick/Chip (0/1)
-        int shootMode = 1;
+        int shootMode = 0;
         //std::cout << "Kick66666" << std::endl;
         int shootPowerLevel = r->getKick()? 127:0;
         transmitPacket[3] = (shootMode << 6);
@@ -101,11 +103,12 @@ std::time_t t = std::time(0);
         transmitPacket[3] = transmitPacket[3]|(dribble?(dribble_level<<4):0);
         //std::cout << "Dribble" << std::endl;
 
-        // First Robot Motion
-        int velX = r->getXVel();
-         //std::cout << "velX:"<< velX << std::endl;
-        int velY = r->getYVel();
-        int velR = r->getAngVel();
+        // Retrieve Desired Velocities & set to appropriate units
+        int velX = r->getYVel() * INITIAL_SPEED_MULT;        // Yisicomm robots expect flipped X/Y axis
+        int velY = r->getXVel() * INITIAL_SPEED_MULT;
+        int velR = -r->getAngVel() * 750 * ROTATION_MULT;        // Mult by 750 to bring vals inline with yisi units (1/40 radians/sec)
+        std::cout << "velx/y/ang  " << velX << "  " << velY << "  " << velR << std::endl;
+
         transmitPacket[4] = ((velX >= 0)?0:0x80) | (abs(velX) & 0x7f);
         transmitPacket[5] = ((velY >= 0)?0:0x80) | (abs(velY) & 0x7f);
         transmitPacket[6] = ((velR >= 0)?0:0x80) | (abs(velR) & 0x7f);

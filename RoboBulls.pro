@@ -197,7 +197,8 @@ HEADERS += \
         communication/crc.h \
         movement/differential/differential_pilot.h \
         movement/three_wheel_omni/three_wheel_omni_pilot.h \
-        movement/four_wheel_omni/four_wheel_omni_pilot.h
+        movement/four_wheel_omni/four_wheel_omni_pilot.h \
+    include/config/move_parameters.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 

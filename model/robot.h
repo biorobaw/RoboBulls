@@ -83,7 +83,7 @@ public:
     int getRB();
     int getXVel();
     int getYVel();
-    int getAngVel();
+    float getAngVel();
     //! @}
 
     //! @name Misc information functions
