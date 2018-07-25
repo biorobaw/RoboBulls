@@ -54,8 +54,8 @@ void FourWheelOmniPilot::defaultDrive (Robot* rob, float x_goal, float y_goal, f
     updateErrors(x_goal, y_goal);
 
     // Inertial Frame Velocities
-    double x_vel = (TRANS_P_K*distance_error + TRANS_I_K*dist_error_integral)*cos(angle_to_goal);
-    double y_vel = (TRANS_P_K*distance_error + TRANS_I_K*dist_error_integral)*sin(angle_to_goal);
+    double x_vel = (TRANS_P_K*distance_error + TRANS_I_K*dist_error_integral)*cos(angle_to_goal) * INITIAL_SPEED_MULT;
+    double y_vel = (TRANS_P_K*distance_error + TRANS_I_K*dist_error_integral)*sin(angle_to_goal) * INITIAL_SPEED_MULT;
     double theta_vel = ANGULAR_P_K*angle_error + ANGULAR_I_K*angle_error_integral;
 
     // Adjust angular velocity to traverse the minor turn angle
@@ -128,10 +128,10 @@ void FourWheelOmniPilot::dribbleDrive
     //Inertial Frame Velocities
     double x_vel =
         (TRANS_P_K * distance_error +
-         TRANS_I_K  * dist_error_integral)*cos(angle_to_goal);
+         TRANS_I_K  * dist_error_integral)*cos(angle_to_goal)* INITIAL_SPEED_MULT;
     double y_vel =
         (TRANS_P_K * distance_error +
-         TRANS_I_K  * dist_error_integral)*sin(angle_to_goal);
+         TRANS_I_K  * dist_error_integral)*sin(angle_to_goal)* INITIAL_SPEED_MULT;
     double theta_vel =
          ANGULAR_P_K * angle_error +
          ANGULAR_I_K  * angle_error_integral;
@@ -210,10 +210,10 @@ void FourWheelOmniPilot::facePointDrive(Robot* rob, float x_goal, float y_goal, 
     //Interial Frame Velocities
     double x_vel =
         (xy_prop_used * distance_error +
-         xy_int_used  * dist_error_integral)*cos(angle_to_goal);
+         xy_int_used  * dist_error_integral)*cos(angle_to_goal)* INITIAL_SPEED_MULT;
     double y_vel =
         (xy_prop_used * distance_error +
-         xy_int_used  * dist_error_integral)*sin(angle_to_goal);
+         xy_int_used  * dist_error_integral)*sin(angle_to_goal)* INITIAL_SPEED_MULT;
     double theta_vel =
          ANGULAR_P_K * angle_error
        + ANGULAR_I_K  * angle_error_integral;

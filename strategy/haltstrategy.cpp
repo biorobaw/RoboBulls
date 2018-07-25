@@ -14,5 +14,9 @@ void HaltStrategy::assignBeh()
         robot->setL(0);
         robot->setR(0);
         robot->setB(0);
+
+        robot->setXVel(0);
+        robot->setYVel(0);
+        robot->setAngVel(0);
     }
 }

@@ -10,6 +10,9 @@ Robot::Robot()
     RF = 0; RB = 0;
     orientation = 0;
     kick = 0;
+    xvel_cmd = 0;
+    yvel_cmd = 0;
+    angvel_cmd = 0;
     dribble = false;
     hasBeh = false;
     behavior = nullptr;

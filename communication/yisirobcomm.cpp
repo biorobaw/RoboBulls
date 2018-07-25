@@ -104,8 +104,8 @@ std::time_t t = std::time(0);
         //std::cout << "Dribble" << std::endl;
 
         // Retrieve Desired Velocities & set to appropriate units
-        int velX = r->getYVel() * INITIAL_SPEED_MULT;        // Yisicomm robots expect flipped X/Y axis
-        int velY = r->getXVel() * INITIAL_SPEED_MULT;
+        int velX = r->getYVel();        // Yisicomm robots expect flipped X/Y axis
+        int velY = r->getXVel();
         int velR = -r->getAngVel() * 750 * ROTATION_MULT;        // Mult by 750 to bring vals inline with yisi units (1/40 radians/sec)
         std::cout << "velx/y/ang  " << velX << "  " << velY << "  " << velR << std::endl;
 
