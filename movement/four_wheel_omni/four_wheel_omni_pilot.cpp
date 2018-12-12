@@ -1,6 +1,6 @@
 #include "movement/four_wheel_omni/four_wheel_omni_pilot.h"
 #include "gui/guiinterface.h"
-#include "include/config/move_parameters.h"
+#include <cmath>
 using std::abs;
 
 namespace Move {
@@ -41,21 +41,26 @@ void FourWheelOmniPilot::normalizeSpeeds(double& LF, double& LB, double& RF, dou
 
 void FourWheelOmniPilot::defaultDrive (Robot* rob, float x_goal, float y_goal, float theta_goal, float x_goal2, float y_goal2)
 {
-    // Used to clear accumulated errors if goal changes significantly
-    prev_goal_target = Point(x_goal, y_goal);
-
+/*    // Used to clear accumulated errors if goal changes significantly
+    //prev_goal_target = Point(x_goal, y_goal);
+    prev_goal_target = Point(0, 0);
+    std::cout << "prev_goal_target " << prev_goal_target.toString() << std::endl;
     Point rp = rob->getPosition();
-    Point gp = Point(x_goal,y_goal);
+    //Point gp = Point(x_goal,y_goal);
+    Point gp = Point(0,0);
+    std::cout << "rp: " << rp.toString() << std::endl;
+    std::cout << "gp: " << gp.toString() << std::endl;
     distance_error = Measurements::distance(rp,gp);
     float angle_to_goal = Measurements::angleBetween(rp, gp);
+    std::cout << "angle_to_goal: " << angle_to_goal << std::endl;
     angle_error = Measurements::angleDiff(rob->getOrientation(), theta_goal);
 
     // Calulate error integral component
     updateErrors(x_goal, y_goal);
 
     // Inertial Frame Velocities
-    double x_vel = (TRANS_P_K*distance_error + TRANS_I_K*dist_error_integral)*cos(angle_to_goal) * INITIAL_SPEED_MULT;
-    double y_vel = (TRANS_P_K*distance_error + TRANS_I_K*dist_error_integral)*sin(angle_to_goal) * INITIAL_SPEED_MULT;
+    double x_vel = (TRANS_P_K*distance_error + TRANS_I_K*dist_error_integral)*cos(angle_to_goal);
+    double y_vel = (TRANS_P_K*distance_error + TRANS_I_K*dist_error_integral)*sin(angle_to_goal);
     double theta_vel = ANGULAR_P_K*angle_error + ANGULAR_I_K*angle_error_integral;
 
     // Adjust angular velocity to traverse the minor turn angle
@@ -81,8 +86,8 @@ void FourWheelOmniPilot::defaultDrive (Robot* rob, float x_goal, float y_goal, f
     double speed = rob->getSpeedMillimetersPerFrame();
     double requested_speed = sqrt(x_vel_robot*x_vel_robot + y_vel_robot*y_vel_robot);
     if(requested_speed > speed + ACC_PER_FRAME) {
-        x_vel_robot = (speed + ACC_PER_FRAME) * 100 * x_vel_robot/requested_speed * ACCEL_MULT;
-        y_vel_robot = (speed + ACC_PER_FRAME) * 100 * y_vel_robot/requested_speed * ACCEL_MULT;
+        x_vel_robot = (speed + ACC_PER_FRAME) * 100 * x_vel_robot/requested_speed;
+        y_vel_robot = (speed + ACC_PER_FRAME) * 100 * y_vel_robot/requested_speed;
     }
 
     // Wheel Velocity Calculations
@@ -92,19 +97,111 @@ void FourWheelOmniPilot::defaultDrive (Robot* rob, float x_goal, float y_goal, f
     double RB =  (-sin(RB_OFFSET) * x_vel_robot + cos(RB_OFFSET)*y_vel_robot - TRANS_OFFSET*speed*cos(RB_OFFSET) + WHEEL_RADIUS*theta_vel);
 
     // Normalize wheel velocities
-    normalizeSpeeds(LF, LB, RF, RB, 100);
-
+    normalizeSpeeds(LF, LB, RF, RB, 10);
+    std::cout << "DefaultDrive x_vel_robot: " << x_vel_robot<< std::endl;
+    std::cout << "DefaultDrive y_vel_robot: " << y_vel_robot<< std::endl;
+    if(x_vel_robot > 30)
+    {
+        x_vel_robot = 10;
+    }
+    if(x_vel_robot < -30)
+    {
+        x_vel_robot = -10;
+    }
+    if(y_vel_robot > 30)
+    {
+        y_vel_robot = 10;
+    }
+    if(y_vel_robot < -30)
+    {
+        y_vel_robot = -10;
+    }
     // Set velocities on robot object
     rob->setLF(LF);
     rob->setLB(LB);
     rob->setRF(RF);
     rob->setRB(RB);
-
-    // Set X/Y/Ang velocities to robot's data structures, used in yisicomm movement
     rob->setXVel(x_vel_robot);
     rob->setYVel(y_vel_robot);
-    rob->setAngVel(theta_vel);
+    rob ->setAngVel(theta_vel);*/
+    //Current Position
+    double x_current = rob->getPosition().x;
+    double y_current = rob->getPosition().y;
+    double theta_current = rob->getOrientation();
+    std::cout << "getOrientation: " << theta_current << std::endl;
+    double ang_vel_robot = 0;
+//    if((theta_current>0.07)||(theta_current<-0.07))
+//    {
+//        if(theta_current<-0.07)
+//        {
+//            ang_vel_robot = -20*(-theta_current);
+//        }
+//        else
+//            ang_vel_robot = 20*theta_current;
+//    }
+    prev_goal_target =  Point(x_goal, y_goal);
 
+    Point rp = Point(x_current,y_current);
+    Point gp = Point(x_goal,y_goal);;
+    distance_error = Measurements::distance(rp,gp);
+    std::cout << "distance_error: " << distance_error << std::endl;
+    float angle_to_goal = Measurements::angleBetween(rp, gp);
+    std::cout << "angle_to_goal: " << angle_to_goal << std::endl;
+    std::cout << "rp: " << rp.toString() << std::endl;
+    std::cout << "gp: " << gp.toString() << std::endl;
+//    std::cout << "facePointDrive x_vel_robot: " << x_vel_robot<< std::endl;
+//    std::cout << "facePointDrive y_vel_robot: " << y_vel_robot<< std::endl;
+    // Set velocities on robot object
+    // face to point
+    angle_error = angle_to_goal - theta_current;
+    std::cout << "angle_error: " << angle_error << std::endl;
+    double y_vel_robot = 0;
+    double x_vel_robot = 1;
+    if((angle_error>0.07||angle_error<-0.07))
+    {
+         ang_vel_robot = -20*(angle_error);
+    }else{
+        x_vel_robot = x_vel_robot*distance_error;
+        if(x_vel_robot > 30)
+        {
+            x_vel_robot = x_vel_robot *0.1;
+        }
+        if(x_vel_robot < -30)
+        {
+            x_vel_robot =  x_vel_robot *0.1;
+        }
+        if(y_vel_robot > 30)
+        {
+            y_vel_robot = y_vel_robot*0.1;
+        }
+        if(y_vel_robot < -30)
+        {
+            y_vel_robot = y_vel_robot*0.1;
+        }
+        if(distance_error<30)
+        {
+          x_vel_robot=0;
+        }
+    }
+    if(x_vel_robot > 30)
+    {
+        x_vel_robot = 10;
+    }
+    if(x_vel_robot < -30)
+    {
+        x_vel_robot = -10;
+    }
+    if(y_vel_robot > 30)
+    {
+        y_vel_robot = 10;
+    }
+    if(y_vel_robot < -30)
+    {
+        y_vel_robot = -10;
+    }
+    rob->setXVel(x_vel_robot);
+    rob->setYVel(y_vel_robot);
+    rob ->setAngVel(ang_vel_robot);
 }
 
 void FourWheelOmniPilot::dribbleDrive
@@ -128,10 +225,10 @@ void FourWheelOmniPilot::dribbleDrive
     //Inertial Frame Velocities
     double x_vel =
         (TRANS_P_K * distance_error +
-         TRANS_I_K  * dist_error_integral)*cos(angle_to_goal)* INITIAL_SPEED_MULT;
+         TRANS_I_K  * dist_error_integral)*cos(angle_to_goal);
     double y_vel =
         (TRANS_P_K * distance_error +
-         TRANS_I_K  * dist_error_integral)*sin(angle_to_goal)* INITIAL_SPEED_MULT;
+         TRANS_I_K  * dist_error_integral)*sin(angle_to_goal);
     double theta_vel =
          ANGULAR_P_K * angle_error +
          ANGULAR_I_K  * angle_error_integral;
@@ -148,8 +245,8 @@ void FourWheelOmniPilot::dribbleDrive
     // Apply acceleration ramp
     if(vel_robot > prev_speed)
     {
-        x_vel_robot = x_vel_robot * (prev_speed + 2) / vel_robot * ACCEL_MULT;
-        y_vel_robot = y_vel_robot * (prev_speed + 2) / vel_robot * ACCEL_MULT;
+        x_vel_robot = x_vel_robot * (prev_speed + 2) / vel_robot;
+        y_vel_robot = y_vel_robot * (prev_speed + 2) / vel_robot;
         vel_robot = prev_speed + 2;
     }
     prev_speed = vel_robot;
@@ -171,19 +268,17 @@ void FourWheelOmniPilot::dribbleDrive
     double RB =  (-sin(RB_OFFSET) * x_vel_robot + cos(RB_OFFSET)*y_vel_robot - TRANS_OFFSET*vel_robot*cos(RB_OFFSET) + WHEEL_RADIUS*theta_vel);
 
     // Normalize wheel velocities
-    normalizeSpeeds(LF,LB,RF,RB, 100);
-
+    normalizeSpeeds(LF,LB,RF,RB, 10);//100
+    std::cout << "dribbleDrive x_vel_robot: " << x_vel_robot<< std::endl;
+    std::cout << "dribbleDrive y_vel_robot: " << y_vel_robot<< std::endl;
     // Set velocities on robot object
     rob->setLF(LF);
     rob->setLB(LB);
     rob->setRF(RF);
     rob->setRB(RB);
-
-    // Set X/Y/Ang velocities to robot's data structures, used in yisicomm movement
     rob->setXVel(x_vel_robot);
     rob->setYVel(y_vel_robot);
-    rob->setAngVel(theta_vel);
-
+    rob ->setAngVel(theta_vel);
 }
 
 void FourWheelOmniPilot::facePointDrive(Robot* rob, float x_goal, float y_goal, float theta_goal)
@@ -210,10 +305,10 @@ void FourWheelOmniPilot::facePointDrive(Robot* rob, float x_goal, float y_goal, 
     //Interial Frame Velocities
     double x_vel =
         (xy_prop_used * distance_error +
-         xy_int_used  * dist_error_integral)*cos(angle_to_goal)* INITIAL_SPEED_MULT;
+         xy_int_used  * dist_error_integral)*cos(angle_to_goal);
     double y_vel =
         (xy_prop_used * distance_error +
-         xy_int_used  * dist_error_integral)*sin(angle_to_goal)* INITIAL_SPEED_MULT;
+         xy_int_used  * dist_error_integral)*sin(angle_to_goal);
     double theta_vel =
          ANGULAR_P_K * angle_error
        + ANGULAR_I_K  * angle_error_integral;
@@ -249,19 +344,17 @@ void FourWheelOmniPilot::facePointDrive(Robot* rob, float x_goal, float y_goal, 
     double RB =  (-sin(RB_OFFSET) * x_vel_robot + cos(RB_OFFSET)*y_vel_robot + WHEEL_RADIUS*theta_vel);
 
     // Normalize wheel velocities
-    normalizeSpeeds(LF, LB, RF, RB, 100);
-
+    normalizeSpeeds(LF, LB, RF, RB, 10);//100
+    std::cout << "facePointDrive x_vel_robot: " << x_vel_robot<< std::endl;
+    std::cout << "facePointDrive y_vel_robot: " << y_vel_robot<< std::endl;
     // Set velocities on robot object
     rob->setLF(LF);
     rob->setLB(LB);
     rob->setRF(RF);
     rob->setRB(RB);
-
-    // Set X/Y/Ang velocities to robot's data structures, used in yisicomm movement
     rob->setXVel(x_vel_robot);
     rob->setYVel(y_vel_robot);
-    rob->setAngVel(theta_vel);
-
+     rob ->setAngVel(theta_vel);
 }
 
 void FourWheelOmniPilot::updateErrors(float x_goal, float y_goal)
