@@ -9,18 +9,19 @@
 #include "include/robocup_ssl_client.h"
 #include "model/gamemodel.h"
 #include "model/robot.h"
-#include "include/config/simulated.h"
 #include "kfball.h"
 #include "gui/guiinterface.h"
+#include "yaml-cpp/yaml.h"
+#include <atomic>
 
 #define VEL_HIST_SIZE 20
 
 //! @brief Sets the minimum confidence to consider a ball reading as valid
-#if SIMULATED
-const float CONF_THRESHOLD_BALL = 0.9;
-#else
+//#if SIMULATED
+//const float CONF_THRESHOLD_BALL = 0.9;
+//#else
 const float CONF_THRESHOLD_BALL = 0.8;//CNM
-#endif
+//#endif
 
 //! @brief Sets the minimum confidence to consider a robot as a valid reading
 const float CONF_THRESHOLD_BOTS = 0.90;
@@ -34,7 +35,7 @@ const float CONF_THRESHOLD_BOTS = 0.90;
 class VisionComm: public QThread
 {
 public:
-    VisionComm(GameModel *gm);
+    VisionComm(GameModel *gm, YAML::Node comm_node, int _side);
     ~VisionComm();
 
     //! @brief Recieves an SSL_WrapperPacket and fills in the GameModel information
@@ -42,8 +43,12 @@ public:
     
     //! @brief QThread run method
     void run();
+    void close();
 
 protected:
+
+    std::atomic_bool stop_listening = { false };
+
     //! @brief Parses an SSL_DetectionFrame and fills out GameModel
     void recieveRobotTeam(const SSL_DetectionFrame& frame, int whichTeam);
 
@@ -78,6 +83,10 @@ protected:
     Point prev_k_b_pos;
     Point vel_hist[VEL_HIST_SIZE];
     int i_vel_hist = 0;
+
+
+    int side = 0;
+
 };
 
 #endif // VISIONCOMM_H

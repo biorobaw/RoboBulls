@@ -18,7 +18,7 @@ class NXTRobComm : public RobComm
 public:
      NXTRobComm();
     ~NXTRobComm();
-    void sendVelsLarge(std::vector<Robot*>&);
+    void sendVelsLarge(std::set<Robot*>&) override;
 
 private:
     /*! @brief Field robot communication packet

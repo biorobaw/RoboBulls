@@ -1,0 +1,13 @@
+---
+BALL_RADIUS : 21.5 	# Approximate ball radius in millimeters.
+HALF_FIELD_LENGTH : 2340 # The center-to-goal-line length
+HALF_FIELD_WIDTH : 1568 # The center-to-side length
+DEF_AREA_RADIUS : 800 	# Radius of circular corners of defence area
+DEF_AREA_OFFSET : 10 	# Distance from Y=0 to the centre of circular areas, look at ssl rule book for clarification
+GOAL_WIDTH : 1000 	# Width of Goal Post, added by Bo
+CENTER_RADIUS : 500 	# Radius of circular corners of defence area
+POINTS_PER_METER : 1000 # Conversion factor from meters to field Point coordinates
+
+
+
+

@@ -7,8 +7,33 @@
 #include "behavior/behavior.h"
 #include "skill/skill.h"
 #include "behavior/genericskillbehavior.h"
-#include "include/config/robot_types.h"
 #include "iostream"
+
+
+//! @brief The type of drive the robot has
+enum DriveType
+{
+    differential,
+    threeWheelOmni,
+    fourWheelOmni
+};
+
+//TODO: Currently strategies assume 5 robots (only 2 defence and 2 attackers)
+//but robocup uses either 6 or 8 robots
+#define MAX_ROLES 8
+enum RobotRole
+{
+    GOALIE,
+    ATTACK1,
+    ATTACK2,
+    ATTACK3,
+    DEFEND1,
+    DEFEND2,
+    DEFEND3,
+    NONE
+};
+
+
 
 /*! @addtogroup everydayuse
  * @{ */
@@ -22,11 +47,11 @@
 class Robot
 {
 public:
-    //! @brief Robot Constructor (does nothing)
+//    //! @brief Robot Constructor (does nothing)
     Robot();
 
     //! @brief Robot Constructor with ID and team
-    Robot(int id, int team);
+    Robot(int id, int team, std::string robot_type, RobotRole role);
 
     //! @name Information Retrevial
     //! @{
@@ -43,7 +68,9 @@ public:
     bool  isOnMyTeam();
     bool  hasBehavior();
     bool  hasKicker();
-    RobotType type();
+    bool  isGoalie();
+    DriveType getDriveType();
+    RobotRole getRole();
     //! @}
 
     //! @name Behavior and Skill Assignment
@@ -113,6 +140,9 @@ private:
     bool team;                  //!< On myTeam? 1/0
     bool hasBall;               //!< Have the ball? 1/0
     bool hasBeh;                //!< Currently has a Behavior? 1/0
+    bool hasKickerVar;             // whether the robot has a kicker or not
+    DriveType driveType;
+    RobotRole team_role = RobotRole::ATTACK1;
 
     friend class GameModel;
     friend class VisionComm;

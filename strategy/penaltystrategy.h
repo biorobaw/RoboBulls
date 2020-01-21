@@ -4,7 +4,7 @@
 #include "strategy/normalgamestrategy.h"
 #include "behavior/wall.h"
 #include "model/gamemodel.h"
-#include "include/config/team.h"
+
 
 /*! @file
  * Strategy to implement a penalty kick game state 'P' and 'p'

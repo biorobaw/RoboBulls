@@ -1,15 +1,19 @@
 #include "communication/refcomm.h"
-#include "include/config/communication.h"
 #include <iostream>
 
 using namespace std;
 
-RefComm::RefComm(GameModel *gm)
+RefComm::RefComm(GameModel *gm, YAML::Node comm_node)
 {
-    _port=REFBOX_PORT;
-    _net_address=REFBOX_ADDRESS;
+    cout << "--REFBOX " << endl
+         << "        REFBOX_ADDR    : " << comm_node["REFBOX_ADDR"] << endl
+         << "        REFBOX_PORT    : " << comm_node["REFBOX_PORT"] << endl
+         << "        REFBOX_ENABLED : " << comm_node["REFBOX_ENABLED"] << endl;
+    _port       = comm_node["REFBOX_PORT"].as<int>();
+    _net_address= comm_node["REFBOX_ADDR"].as<string>();
     _net_interface="";
     gamemodel = gm;
+    cout << "--Refbox DONE" << endl;
 }
 
 RefComm::~RefComm()
@@ -18,11 +22,14 @@ RefComm::~RefComm()
 }
 
 void RefComm::close() {
+    std::cout << "Closing ref comm..." <<std::endl;
     mc.close();
+    stop_listening = true;
+    std::cout << "Closed ref comm" <<std::endl;
 }
 
 bool RefComm::open(bool blocking) {
-    close();
+//    close();
     if(!mc.open(_port,true,true,blocking)) {
       fprintf(stderr,"Unable to open UDP network port: %d\n",_port);
       fflush(stderr);
@@ -67,8 +74,10 @@ bool RefComm::receive()
 void RefComm::run()
 {
     open();
-    while(true){
+    while(!stop_listening){
         receive();
     }
 }
+
+
 

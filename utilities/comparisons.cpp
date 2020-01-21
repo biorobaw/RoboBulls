@@ -1,5 +1,5 @@
 #include <algorithm>
-#include "include/config/globals.h"
+#include "include/field.h"
 #include "model/gamemodel.h"
 #include "utilities/comparisons.h"
 
@@ -96,12 +96,12 @@ Predicate& Predicate::ignoreIDsNot(std::initializer_list<int> ids) {
 
 //MyTeam/OpTeam/AnyTeam helper functions
 Robot* Predicate::maxMyTeam() {
-    auto& myTeam = gameModel->getMyTeam();
+    auto& myTeam = gameModel->getMyTeam().getRobots();
     return *max(myTeam);
 }
 
 Robot* Predicate::maxOpTeam() {
-    auto& opTeam = gameModel->getOppTeam();
+    auto& opTeam = gameModel->getOppTeam().getRobots();
     return *max(opTeam);
 }
 
@@ -110,12 +110,12 @@ Robot* Predicate::maxAnyTeam() {
 }
 
 Robot* Predicate::minMyTeam() {
-    auto& myTeam = gameModel->getMyTeam();
+    auto& myTeam = gameModel->getMyTeam().getRobots();
     return *min(myTeam);
 }
 
 Robot* Predicate::minOppTeam() {
-    auto& opTeam = gameModel->getOppTeam();
+    auto& opTeam = gameModel->getOppTeam().getRobots();
     if (!opTeam.empty())
         return *min(opTeam);
     else
@@ -127,13 +127,13 @@ Robot* Predicate::minAnyTeam() {
 }
 
 Robot* Predicate::anyMyTeam() {
-    auto& myTeam = gameModel->getMyTeam();
+    auto& myTeam = gameModel->getMyTeam().getRobots();
     auto it = any(myTeam);
     return it != myTeam.end() ? *it : NULL;
 }
 
 Robot* Predicate::anyOppTeam() {
-    auto& opTeam = gameModel->getOppTeam();
+    auto& opTeam = gameModel->getOppTeam().getRobots();
     auto it = any(opTeam);
     return it != opTeam.end() ? *it : NULL;
 }

@@ -14,9 +14,9 @@ class SimRobComm : public RobComm
 {
 public:
     //! @brief Constructor sets the IP and port to send to **see .cpp**
-    SimRobComm();
+    SimRobComm(const char* addr, int port);
 
-    void sendVelsLarge(std::vector<Robot*>&) override;
+    void sendVelsLarge(std::set<Robot*>&) override;
 
 private:
     QUdpSocket udpsocket;
@@ -28,6 +28,8 @@ private:
 
     //! @brief Sends all replacement packets to the simulator
     void sendReplacementPackets();
+
+    void close() override;
 };
 
 #endif // SIMROBCOMM_H

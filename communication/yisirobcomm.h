@@ -13,10 +13,11 @@ typedef char Data8;
 class YisiRobComm : public RobComm
 {
 public:
-    YisiRobComm();
-    virtual void sendVelsLarge(std::vector<Robot*>&) override;
+    YisiRobComm(std::string usb_port, int frequency);
+    void sendVelsLarge(std::set<Robot*>&) override;
 private:
     QSerialPort	serial;
+    void close() override;
 };
 
 #endif // YISICOMM_H

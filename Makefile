@@ -15,7 +15,7 @@ CXX           = g++
 DEFINES       = -DQT_NO_DEBUG -DQT_NETWORK_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_SERIALPORT_LIB -DQT_CORE_LIB
 CFLAGS        = -m64 -pipe -O2 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -m64 -pipe -std=c++0x -O2 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtSerialPort -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64
+INCPATH       = -I. -Ilibs/yaml-cpp-0.6.3/include -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtSerialPort -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64
 QMAKE         = /usr/lib/x86_64-linux-gnu/qt5/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -33,10 +33,10 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = RoboBulls1.0.0
-DISTDIR = /home/usr6-spring2018/robobulls/.tmp/RoboBulls1.0.0
+DISTDIR = /home/vision/RoboBulls/.tmp/RoboBulls1.0.0
 LINK          = g++
 LFLAGS        = -m64 -Wl,-O1
-LIBS          = $(SUBLIBS) -L/usr/X11R6/lib64 -lprotobuf -lSDL2 -lQt5Network -lQt5Widgets -lQt5Gui -lQt5SerialPort -lQt5Core -lGL -lpthread 
+LIBS          = $(SUBLIBS) -L/usr/X11R6/lib64 -lprotobuf -lSDL2 -L/home/vision/RoboBulls/libs/yaml-cpp-0.6.3/build/ -lyaml-cpp -lQt5Network -lQt5Widgets -lQt5Gui -lQt5SerialPort -lQt5Core -lGL -lpthread 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -74,7 +74,6 @@ SOURCES       = main.cpp \
 		gui/objectposition.cpp \
 		gui/robotpanel.cpp \
 		gui/selrobotpanel.cpp \
-		include/config/robot_types.cpp \
 		include/grSim_Commands.pb.cc \
 		include/grSim_Packet.pb.cc \
 		include/grSim_Replacement.pb.cc \
@@ -130,7 +129,10 @@ SOURCES       = main.cpp \
 		communication/yisirobcomm.cpp \
 		communication/crc.cpp \
 		movement/go_to_pose.cpp \
-		movement/differential/differential_pilot.cpp qrc_images.cpp \
+		movement/differential/differential_pilot.cpp \
+		model/team.cpp \
+		include/field.cpp \
+		include/motion_parameters.cpp qrc_images.cpp \
 		moc_fieldpanel.cpp \
 		moc_gamepanel.cpp \
 		moc_guicomm.cpp \
@@ -165,7 +167,6 @@ OBJECTS       = main.o \
 		objectposition.o \
 		robotpanel.o \
 		selrobotpanel.o \
-		robot_types.o \
 		grSim_Commands.pb.o \
 		grSim_Packet.pb.o \
 		grSim_Replacement.pb.o \
@@ -222,6 +223,9 @@ OBJECTS       = main.o \
 		crc.o \
 		go_to_pose.o \
 		differential_pilot.o \
+		team.o \
+		field.o \
+		motion_parameters.o \
 		qrc_images.o \
 		moc_fieldpanel.o \
 		moc_gamepanel.o \
@@ -346,12 +350,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		gui/objectposition.h \
 		gui/robotpanel.h \
 		gui/selrobotpanel.h \
-		include/config/globals.h \
-		include/config/robot_types.h \
-		include/config/simulated.h \
-		include/config/team.h \
 		include/config/tolerances.h \
-		include/config/communication.h \
 		include/grSim_Commands.pb.h \
 		include/grSim_Packet.pb.h \
 		include/grSim_Replacement.pb.h \
@@ -410,7 +409,10 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		movement/differential/differential_pilot.h \
 		movement/three_wheel_omni/three_wheel_omni_pilot.h \
 		movement/four_wheel_omni/four_wheel_omni_pilot.h \
-		include/config/move_parameters.h main.cpp \
+		model/team.h \
+		include/game_constants.h \
+		include/field.h \
+		include/motion_parameters.h main.cpp \
 		behavior/attackmain.cpp \
 		behavior/attacksupport.cpp \
 		behavior/behavior.cpp \
@@ -436,7 +438,6 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		gui/objectposition.cpp \
 		gui/robotpanel.cpp \
 		gui/selrobotpanel.cpp \
-		include/config/robot_types.cpp \
 		include/grSim_Commands.pb.cc \
 		include/grSim_Packet.pb.cc \
 		include/grSim_Replacement.pb.cc \
@@ -492,7 +493,10 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		communication/yisirobcomm.cpp \
 		communication/crc.cpp \
 		movement/go_to_pose.cpp \
-		movement/differential/differential_pilot.cpp
+		movement/differential/differential_pilot.cpp \
+		model/team.cpp \
+		include/field.cpp \
+		include/motion_parameters.cpp
 QMAKE_TARGET  = RoboBulls
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = RoboBulls
@@ -520,7 +524,7 @@ first: all
 
 ####### Build rules
 
-$(TARGET): ui_mainwindow.h $(OBJECTS)  
+$(TARGET): /home/vision/RoboBulls/libs/yaml-cpp-0.6.3/build/libyaml-cpp.a ui_mainwindow.h $(OBJECTS)  
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
 
 Makefile: RoboBulls.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64/qmake.conf /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
@@ -729,8 +733,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents gui/images.qrc $(DISTDIR)/
-	$(COPY_FILE) --parents behavior/attackmain.h behavior/attacksupport.h behavior/behavior.h behavior/defendbehavior.h behavior/genericmovementbehavior.h behavior/genericskillbehavior.h communication/nxtrobcomm.h communication/refcomm.h communication/robcomm.h communication/simrobcomm.h communication/visioncomm.h gui/fieldpanel.h gui/gamepanel.h gui/guiball.h gui/guibotlabel.h gui/guicomm.h gui/guidrawline.h gui/guifield.h gui/guiinterface.h gui/guirobot.h gui/guiscene.h gui/guisidelines.h gui/joystick.h gui/mainwindow.h gui/objectposition.h gui/robotpanel.h gui/selrobotpanel.h include/config/globals.h include/config/robot_types.h include/config/simulated.h include/config/team.h include/config/tolerances.h include/config/communication.h include/grSim_Commands.pb.h include/grSim_Packet.pb.h include/grSim_Replacement.pb.h include/messages_robocup_ssl_detection.pb.h include/messages_robocup_ssl_geometry.pb.h include/messages_robocup_ssl_refbox_log.pb.h include/messages_robocup_ssl_wrapper.pb.h include/netraw.h include/robocup_ssl_client.h include/serialib.h model/gamemodel.h model/robot.h movement/go_to_pose.h movement/move_collisions.h movement/movetype.h movement/pathfinding/fppa_pathfinding.h skill/kick.h skill/kicktopointomni.h skill/skill.h skill/stop.h strategy/freekickstrategy.h strategy/haltstrategy.h strategy/kickoffstrategy.h strategy/normalgamestrategy.h strategy/penaltystrategy.h strategy/stopstrategy.h strategy/strategycontroller.h strategy/strategy.h strategy/teststrategy.h strategy/videostrategies.h utilities/comparisons.h utilities/debug.h utilities/edges.h utilities/point.h utilities/velocitycalculator.h strategy/indirectkickstrategy.h communication/kfball.h utilities/getclassname.h utilities/region/sector.h utilities/region/rectangle.h utilities/region/region.h utilities/measurements.h utilities/region/defencearea.h gui/guidrawpoint.h gui/guidrawregion.h skill/dribbletopoint.h behavior/challengeballbot.h skill/dribbleback.h behavior/refstop.h behavior/goalie.h behavior/markbot.h behavior/wall.h behavior/penaltygoalie.h communication/yisirobcomm.h communication/crc.h movement/differential/differential_pilot.h movement/three_wheel_omni/three_wheel_omni_pilot.h movement/four_wheel_omni/four_wheel_omni_pilot.h include/config/move_parameters.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp behavior/attackmain.cpp behavior/attacksupport.cpp behavior/behavior.cpp behavior/genericmovementbehavior.cpp communication/nxtrobcomm.cpp communication/refcomm.cpp communication/robcomm.cpp communication/simrobcomm.cpp communication/visioncomm.cpp gui/fieldpanel.cpp gui/gamepanel.cpp gui/guiball.cpp gui/guibotlabel.cpp gui/guicomm.cpp gui/guidrawline.cpp gui/guifield.cpp gui/guiinterface.cpp gui/guirobot.cpp gui/guiscene.cpp gui/guisidelines.cpp gui/joystick.cpp gui/mainwindow.cpp gui/objectposition.cpp gui/robotpanel.cpp gui/selrobotpanel.cpp include/config/robot_types.cpp include/grSim_Commands.pb.cc include/grSim_Packet.pb.cc include/grSim_Replacement.pb.cc include/messages_robocup_ssl_detection.pb.cc include/messages_robocup_ssl_geometry.pb.cc include/messages_robocup_ssl_refbox_log.pb.cc include/messages_robocup_ssl_wrapper.pb.cc include/netraw.cpp include/robocup_ssl_client.cpp include/serialib.cpp model/gamemodel.cpp model/robot.cpp movement/four_wheel_omni/four_wheel_omni_pilot.cpp movement/move_collisions.cpp movement/pathfinding/fppa_pathfinding.cpp movement/three_wheel_omni/three_wheel_omni_pilot.cpp skill/kick.cpp skill/kicktopointomni.cpp skill/stop.cpp strategy/freekickstrategy.cpp strategy/haltstrategy.cpp strategy/kickoffstrategy.cpp strategy/normalgamestrategy.cpp strategy/penaltystrategy.cpp strategy/stopstrategy.cpp strategy/strategycontroller.cpp strategy/strategy.cpp strategy/teststrategy.cpp strategy/videostrategies.cpp utilities/comparisons.cpp utilities/debug.cpp utilities/edges.cpp utilities/point.cpp utilities/velocitycalculator.cpp behavior/defendbehavior.cpp strategy/indirectkickstrategy.cpp communication/kfball.cpp utilities/getclassname.cpp utilities/region/sector.cpp utilities/region/rectangle.cpp utilities/measurements.cpp utilities/region/defencearea.cpp gui/guidrawpoint.cpp gui/guidrawregion.cpp skill/dribbletopoint.cpp behavior/challengeballbot.cpp skill/dribbleback.cpp behavior/refstop.cpp behavior/goalie.cpp behavior/markbot.cpp behavior/wall.cpp behavior/penaltygoalie.cpp communication/yisirobcomm.cpp communication/crc.cpp movement/go_to_pose.cpp movement/differential/differential_pilot.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents behavior/attackmain.h behavior/attacksupport.h behavior/behavior.h behavior/defendbehavior.h behavior/genericmovementbehavior.h behavior/genericskillbehavior.h communication/nxtrobcomm.h communication/refcomm.h communication/robcomm.h communication/simrobcomm.h communication/visioncomm.h gui/fieldpanel.h gui/gamepanel.h gui/guiball.h gui/guibotlabel.h gui/guicomm.h gui/guidrawline.h gui/guifield.h gui/guiinterface.h gui/guirobot.h gui/guiscene.h gui/guisidelines.h gui/joystick.h gui/mainwindow.h gui/objectposition.h gui/robotpanel.h gui/selrobotpanel.h include/config/tolerances.h include/grSim_Commands.pb.h include/grSim_Packet.pb.h include/grSim_Replacement.pb.h include/messages_robocup_ssl_detection.pb.h include/messages_robocup_ssl_geometry.pb.h include/messages_robocup_ssl_refbox_log.pb.h include/messages_robocup_ssl_wrapper.pb.h include/netraw.h include/robocup_ssl_client.h include/serialib.h model/gamemodel.h model/robot.h movement/go_to_pose.h movement/move_collisions.h movement/movetype.h movement/pathfinding/fppa_pathfinding.h skill/kick.h skill/kicktopointomni.h skill/skill.h skill/stop.h strategy/freekickstrategy.h strategy/haltstrategy.h strategy/kickoffstrategy.h strategy/normalgamestrategy.h strategy/penaltystrategy.h strategy/stopstrategy.h strategy/strategycontroller.h strategy/strategy.h strategy/teststrategy.h strategy/videostrategies.h utilities/comparisons.h utilities/debug.h utilities/edges.h utilities/point.h utilities/velocitycalculator.h strategy/indirectkickstrategy.h communication/kfball.h utilities/getclassname.h utilities/region/sector.h utilities/region/rectangle.h utilities/region/region.h utilities/measurements.h utilities/region/defencearea.h gui/guidrawpoint.h gui/guidrawregion.h skill/dribbletopoint.h behavior/challengeballbot.h skill/dribbleback.h behavior/refstop.h behavior/goalie.h behavior/markbot.h behavior/wall.h behavior/penaltygoalie.h communication/yisirobcomm.h communication/crc.h movement/differential/differential_pilot.h movement/three_wheel_omni/three_wheel_omni_pilot.h movement/four_wheel_omni/four_wheel_omni_pilot.h model/team.h include/game_constants.h include/field.h include/motion_parameters.h $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp behavior/attackmain.cpp behavior/attacksupport.cpp behavior/behavior.cpp behavior/genericmovementbehavior.cpp communication/nxtrobcomm.cpp communication/refcomm.cpp communication/robcomm.cpp communication/simrobcomm.cpp communication/visioncomm.cpp gui/fieldpanel.cpp gui/gamepanel.cpp gui/guiball.cpp gui/guibotlabel.cpp gui/guicomm.cpp gui/guidrawline.cpp gui/guifield.cpp gui/guiinterface.cpp gui/guirobot.cpp gui/guiscene.cpp gui/guisidelines.cpp gui/joystick.cpp gui/mainwindow.cpp gui/objectposition.cpp gui/robotpanel.cpp gui/selrobotpanel.cpp include/grSim_Commands.pb.cc include/grSim_Packet.pb.cc include/grSim_Replacement.pb.cc include/messages_robocup_ssl_detection.pb.cc include/messages_robocup_ssl_geometry.pb.cc include/messages_robocup_ssl_refbox_log.pb.cc include/messages_robocup_ssl_wrapper.pb.cc include/netraw.cpp include/robocup_ssl_client.cpp include/serialib.cpp model/gamemodel.cpp model/robot.cpp movement/four_wheel_omni/four_wheel_omni_pilot.cpp movement/move_collisions.cpp movement/pathfinding/fppa_pathfinding.cpp movement/three_wheel_omni/three_wheel_omni_pilot.cpp skill/kick.cpp skill/kicktopointomni.cpp skill/stop.cpp strategy/freekickstrategy.cpp strategy/haltstrategy.cpp strategy/kickoffstrategy.cpp strategy/normalgamestrategy.cpp strategy/penaltystrategy.cpp strategy/stopstrategy.cpp strategy/strategycontroller.cpp strategy/strategy.cpp strategy/teststrategy.cpp strategy/videostrategies.cpp utilities/comparisons.cpp utilities/debug.cpp utilities/edges.cpp utilities/point.cpp utilities/velocitycalculator.cpp behavior/defendbehavior.cpp strategy/indirectkickstrategy.cpp communication/kfball.cpp utilities/getclassname.cpp utilities/region/sector.cpp utilities/region/rectangle.cpp utilities/measurements.cpp utilities/region/defencearea.cpp gui/guidrawpoint.cpp gui/guidrawregion.cpp skill/dribbletopoint.cpp behavior/challengeballbot.cpp skill/dribbleback.cpp behavior/refstop.cpp behavior/goalie.cpp behavior/markbot.cpp behavior/wall.cpp behavior/penaltygoalie.cpp communication/yisirobcomm.cpp communication/crc.cpp movement/go_to_pose.cpp movement/differential/differential_pilot.cpp model/team.cpp include/field.cpp include/motion_parameters.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents gui/mainwindow.ui $(DISTDIR)/
 
 
@@ -787,31 +791,31 @@ moc_fieldpanel.cpp: gui/guisidelines.h \
 		gui/guidrawpoint.h \
 		gui/guidrawregion.h \
 		gui/fieldpanel.h
-	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/usr6-spring2018/robobulls -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include gui/fieldpanel.h -o moc_fieldpanel.cpp
+	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/vision/RoboBulls -I/home/vision/RoboBulls/libs/yaml-cpp-0.6.3/include -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include gui/fieldpanel.h -o moc_fieldpanel.cpp
 
 moc_gamepanel.cpp: gui/gamepanel.h
-	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/usr6-spring2018/robobulls -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include gui/gamepanel.h -o moc_gamepanel.cpp
+	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/vision/RoboBulls -I/home/vision/RoboBulls/libs/yaml-cpp-0.6.3/include -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include gui/gamepanel.h -o moc_gamepanel.cpp
 
 moc_guicomm.cpp: gui/guicomm.h
-	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/usr6-spring2018/robobulls -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include gui/guicomm.h -o moc_guicomm.cpp
+	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/vision/RoboBulls -I/home/vision/RoboBulls/libs/yaml-cpp-0.6.3/include -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include gui/guicomm.h -o moc_guicomm.cpp
 
 moc_guidrawline.cpp: utilities/point.h \
 		gui/guidrawline.h
-	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/usr6-spring2018/robobulls -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include gui/guidrawline.h -o moc_guidrawline.cpp
+	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/vision/RoboBulls -I/home/vision/RoboBulls/libs/yaml-cpp-0.6.3/include -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include gui/guidrawline.h -o moc_guidrawline.cpp
 
 moc_mainwindow.cpp: gui/mainwindow.h
-	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/usr6-spring2018/robobulls -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include gui/mainwindow.h -o moc_mainwindow.cpp
+	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/vision/RoboBulls -I/home/vision/RoboBulls/libs/yaml-cpp-0.6.3/include -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include gui/mainwindow.h -o moc_mainwindow.cpp
 
 moc_robotpanel.cpp: gui/robotpanel.h
-	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/usr6-spring2018/robobulls -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include gui/robotpanel.h -o moc_robotpanel.cpp
+	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/vision/RoboBulls -I/home/vision/RoboBulls/libs/yaml-cpp-0.6.3/include -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include gui/robotpanel.h -o moc_robotpanel.cpp
 
 moc_guidrawpoint.cpp: utilities/point.h \
 		gui/guidrawpoint.h
-	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/usr6-spring2018/robobulls -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include gui/guidrawpoint.h -o moc_guidrawpoint.cpp
+	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/vision/RoboBulls -I/home/vision/RoboBulls/libs/yaml-cpp-0.6.3/include -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include gui/guidrawpoint.h -o moc_guidrawpoint.cpp
 
 moc_guidrawregion.cpp: utilities/point.h \
 		gui/guidrawregion.h
-	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/usr6-spring2018/robobulls -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include gui/guidrawregion.h -o moc_guidrawregion.cpp
+	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/vision/RoboBulls -I/home/vision/RoboBulls/libs/yaml-cpp-0.6.3/include -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include gui/guidrawregion.h -o moc_guidrawregion.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -831,10 +835,7 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean compiler_uic_clean
 
 ####### Compile
 
-main.o: main.cpp include/config/simulated.h \
-		include/config/team.h \
-		include/config/communication.h \
-		communication/visioncomm.h \
+main.o: main.cpp communication/visioncomm.h \
 		include/netraw.h \
 		include/messages_robocup_ssl_detection.pb.h \
 		include/messages_robocup_ssl_geometry.pb.h \
@@ -845,35 +846,96 @@ main.o: main.cpp include/config/simulated.h \
 		utilities/point.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/globals.h \
 		model/robot.h \
 		utilities/velocitycalculator.h \
 		behavior/behavior.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
+		model/team.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
+		include/game_constants.h \
 		communication/kfball.h \
 		gui/guiinterface.h \
 		communication/robcomm.h \
 		communication/refcomm.h \
 		utilities/debug.h \
-		strategy/strategycontroller.h
+		strategy/strategycontroller.h \
+		include/field.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 attackmain.o: behavior/attackmain.cpp behavior/attackmain.h \
 		behavior/behavior.h \
-		include/config/simulated.h \
 		skill/kicktopointomni.h \
 		model/robot.h \
 		utilities/point.h \
 		utilities/velocitycalculator.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
 		movement/go_to_pose.h \
 		movement/differential/differential_pilot.h \
 		movement/movetype.h \
-		include/config/globals.h \
+		include/field.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
 		movement/four_wheel_omni/four_wheel_omni_pilot.h \
@@ -883,12 +945,13 @@ attackmain.o: behavior/attackmain.cpp behavior/attackmain.h \
 		gui/guiinterface.h \
 		skill/dribbletopoint.h \
 		model/gamemodel.h \
+		model/team.h \
+		include/game_constants.h \
 		utilities/region/sector.h \
 		utilities/region/region.h \
 		behavior/genericmovementbehavior.h \
 		utilities/region/defencearea.h \
 		utilities/region/rectangle.h \
-		include/config/team.h \
 		utilities/comparisons.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o attackmain.o behavior/attackmain.cpp
 
@@ -901,13 +964,42 @@ attacksupport.o: behavior/attacksupport.cpp behavior/attacksupport.h \
 		utilities/velocitycalculator.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
 		movement/differential/differential_pilot.h \
 		movement/movetype.h \
-		include/config/globals.h \
+		include/field.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
 		movement/four_wheel_omni/four_wheel_omni_pilot.h \
 		utilities/debug.h \
 		movement/three_wheel_omni/three_wheel_omni_pilot.h \
@@ -917,8 +1009,9 @@ attacksupport.o: behavior/attacksupport.cpp behavior/attacksupport.h \
 		utilities/region/region.h \
 		gui/guiinterface.h \
 		model/gamemodel.h \
+		model/team.h \
+		include/game_constants.h \
 		utilities/region/sector.h \
-		include/config/team.h \
 		utilities/comparisons.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o attacksupport.o behavior/attacksupport.cpp
 
@@ -933,13 +1026,42 @@ genericmovementbehavior.o: behavior/genericmovementbehavior.cpp behavior/generic
 		utilities/velocitycalculator.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
 		movement/differential/differential_pilot.h \
 		movement/movetype.h \
-		include/config/globals.h \
+		include/field.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
 		movement/four_wheel_omni/four_wheel_omni_pilot.h \
 		utilities/debug.h \
 		movement/three_wheel_omni/three_wheel_omni_pilot.h \
@@ -954,12 +1076,40 @@ nxtrobcomm.o: communication/nxtrobcomm.cpp communication/nxtrobcomm.h \
 		behavior/behavior.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
-		include/config/globals.h \
 		communication/robcomm.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
 		utilities/debug.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o nxtrobcomm.o communication/nxtrobcomm.cpp
 
@@ -969,32 +1119,89 @@ refcomm.o: communication/refcomm.cpp communication/refcomm.h \
 		utilities/point.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
-		include/config/globals.h \
 		model/robot.h \
 		utilities/velocitycalculator.h \
 		behavior/behavior.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
-		include/config/communication.h
+		model/team.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
+		include/game_constants.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o refcomm.o communication/refcomm.cpp
 
-robcomm.o: communication/robcomm.cpp include/config/simulated.h \
-		communication/simrobcomm.h \
+robcomm.o: communication/robcomm.cpp communication/simrobcomm.h \
 		model/robot.h \
 		utilities/point.h \
 		utilities/velocitycalculator.h \
 		behavior/behavior.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
 		communication/robcomm.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
 		communication/nxtrobcomm.h \
 		include/serialib.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/globals.h \
 		communication/yisirobcomm.h \
 		communication/crc.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o robcomm.o communication/robcomm.cpp
@@ -1002,28 +1209,53 @@ robcomm.o: communication/robcomm.cpp include/config/simulated.h \
 simrobcomm.o: communication/simrobcomm.cpp include/grSim_Packet.pb.h \
 		include/grSim_Commands.pb.h \
 		include/grSim_Replacement.pb.h \
-		include/config/team.h \
-		include/config/communication.h \
-		include/config/simulated.h \
 		model/gamemodel.h \
 		utilities/point.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/globals.h \
 		model/robot.h \
 		utilities/velocitycalculator.h \
 		behavior/behavior.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
+		model/team.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
+		include/game_constants.h \
 		communication/simrobcomm.h \
 		communication/robcomm.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o simrobcomm.o communication/simrobcomm.cpp
 
-visioncomm.o: communication/visioncomm.cpp include/config/simulated.h \
-		include/config/team.h \
-		include/config/communication.h \
-		communication/visioncomm.h \
+visioncomm.o: communication/visioncomm.cpp communication/visioncomm.h \
 		include/netraw.h \
 		include/messages_robocup_ssl_detection.pb.h \
 		include/messages_robocup_ssl_geometry.pb.h \
@@ -1034,13 +1266,44 @@ visioncomm.o: communication/visioncomm.cpp include/config/simulated.h \
 		utilities/point.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/globals.h \
 		model/robot.h \
 		utilities/velocitycalculator.h \
 		behavior/behavior.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
+		model/team.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
+		include/game_constants.h \
 		communication/kfball.h \
 		gui/guiinterface.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o visioncomm.o communication/visioncomm.cpp
@@ -1054,7 +1317,6 @@ fieldpanel.o: gui/fieldpanel.cpp gui/fieldpanel.h \
 		gui/robotpanel.h \
 		gui/selrobotpanel.h \
 		gui/mainwindow.h \
-		include/config/team.h \
 		ui_mainwindow.h \
 		gui/guiinterface.h \
 		gui/guirobot.h \
@@ -1063,17 +1325,48 @@ fieldpanel.o: gui/fieldpanel.cpp gui/fieldpanel.h \
 		gui/guibotlabel.h \
 		gui/guidrawline.h \
 		gui/guifield.h \
-		include/config/globals.h \
+		include/field.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
 		model/gamemodel.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
 		model/robot.h \
 		utilities/velocitycalculator.h \
 		behavior/behavior.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h
+		model/team.h \
+		include/game_constants.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o fieldpanel.o gui/fieldpanel.cpp
 
 gamepanel.o: gui/gamepanel.cpp gui/mainwindow.h \
@@ -1084,22 +1377,52 @@ gamepanel.o: gui/gamepanel.cpp gui/mainwindow.h \
 guiball.o: gui/guiball.cpp gui/guiball.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o guiball.o gui/guiball.cpp
 
-guibotlabel.o: gui/guibotlabel.cpp include/config/team.h \
-		model/gamemodel.h \
+guibotlabel.o: gui/guibotlabel.cpp model/gamemodel.h \
 		utilities/point.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
-		include/config/globals.h \
 		model/robot.h \
 		utilities/velocitycalculator.h \
 		behavior/behavior.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
+		model/team.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
+		include/game_constants.h \
 		gui/guibotlabel.h \
 		movement/move_collisions.h \
-		utilities/comparisons.h
+		utilities/comparisons.h \
+		include/field.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o guibotlabel.o gui/guibotlabel.cpp
 
 guicomm.o: gui/guicomm.cpp gui/guicomm.h
@@ -1110,7 +1433,38 @@ guidrawline.o: gui/guidrawline.cpp gui/guidrawline.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o guidrawline.o gui/guidrawline.cpp
 
 guifield.o: gui/guifield.cpp gui/guifield.h \
-		include/config/globals.h \
+		include/field.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
 		gui/mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o guifield.o gui/guifield.cpp
 
@@ -1136,23 +1490,53 @@ guisidelines.o: gui/guisidelines.cpp gui/guisidelines.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o guisidelines.o gui/guisidelines.cpp
 
 joystick.o: gui/joystick.cpp gui/joystick.h \
-		include/config/team.h \
 		utilities/debug.h \
 		model/gamemodel.h \
 		utilities/point.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
-		include/config/globals.h \
 		model/robot.h \
 		utilities/velocitycalculator.h \
 		behavior/behavior.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
+		model/team.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
+		include/game_constants.h \
 		movement/go_to_pose.h \
 		movement/differential/differential_pilot.h \
 		movement/movetype.h \
+		include/field.h \
 		movement/four_wheel_omni/four_wheel_omni_pilot.h \
 		movement/three_wheel_omni/three_wheel_omni_pilot.h \
 		movement/pathfinding/fppa_pathfinding.h \
@@ -1171,7 +1555,38 @@ mainwindow.o: gui/mainwindow.cpp gui/robotpanel.h \
 		gui/guidrawpoint.h \
 		gui/guidrawregion.h \
 		gui/guifield.h \
-		include/config/globals.h \
+		include/field.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
 		gui/guiball.h \
 		gui/guibotlabel.h \
 		gui/guidrawline.h \
@@ -1180,18 +1595,17 @@ mainwindow.o: gui/mainwindow.cpp gui/robotpanel.h \
 		gui/guiinterface.h \
 		gui/guirobot.h \
 		gui/joystick.h \
-		include/config/team.h \
 		utilities/debug.h \
 		model/gamemodel.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
 		model/robot.h \
 		utilities/velocitycalculator.h \
 		behavior/behavior.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
+		model/team.h \
+		include/game_constants.h \
 		movement/go_to_pose.h \
 		movement/differential/differential_pilot.h \
 		movement/movetype.h \
@@ -1218,14 +1632,44 @@ robotpanel.o: gui/robotpanel.cpp gui/robotpanel.h \
 		model/gamemodel.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
-		include/config/globals.h \
 		model/robot.h \
 		utilities/velocitycalculator.h \
 		behavior/behavior.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
+		model/team.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
+		include/game_constants.h \
 		utilities/getclassname.h \
 		gui/guirobot.h \
 		gui/guiball.h
@@ -1247,18 +1691,45 @@ selrobotpanel.o: gui/selrobotpanel.cpp gui/selrobotpanel.h \
 		model/gamemodel.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
-		include/config/globals.h \
 		model/robot.h \
 		utilities/velocitycalculator.h \
 		behavior/behavior.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h
+		model/team.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
+		include/game_constants.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o selrobotpanel.o gui/selrobotpanel.cpp
-
-robot_types.o: include/config/robot_types.cpp include/config/robot_types.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o robot_types.o include/config/robot_types.cpp
 
 grSim_Commands.pb.o: include/grSim_Commands.pb.cc include/grSim_Commands.pb.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o grSim_Commands.pb.o include/grSim_Commands.pb.cc
@@ -1300,34 +1771,62 @@ robocup_ssl_client.o: include/robocup_ssl_client.cpp include/robocup_ssl_client.
 serialib.o: include/serialib.cpp include/serialib.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o serialib.o include/serialib.cpp
 
-gamemodel.o: model/gamemodel.cpp include/config/team.h \
-		include/config/simulated.h \
-		strategy/strategycontroller.h \
+gamemodel.o: model/gamemodel.cpp strategy/strategycontroller.h \
 		utilities/comparisons.h \
 		model/gamemodel.h \
 		utilities/point.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/globals.h \
 		model/robot.h \
 		utilities/velocitycalculator.h \
 		behavior/behavior.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
+		model/team.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
+		include/game_constants.h \
+		include/field.h \
 		utilities/edges.h \
 		utilities/debug.h \
 		gui/guiinterface.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gamemodel.o model/gamemodel.cpp
 
-robot.o: model/robot.cpp include/config/simulated.h \
-		model/robot.h \
+robot.o: model/robot.cpp model/robot.h \
 		utilities/point.h \
 		utilities/velocitycalculator.h \
 		behavior/behavior.h \
 		skill/skill.h \
-		behavior/genericskillbehavior.h \
-		include/config/robot_types.h
+		behavior/genericskillbehavior.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o robot.o model/robot.cpp
 
 four_wheel_omni_pilot.o: movement/four_wheel_omni/four_wheel_omni_pilot.cpp movement/four_wheel_omni/four_wheel_omni_pilot.h \
@@ -1337,22 +1836,16 @@ four_wheel_omni_pilot.o: movement/four_wheel_omni/four_wheel_omni_pilot.cpp move
 		behavior/behavior.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
 		movement/movetype.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
-		include/config/globals.h \
 		utilities/debug.h \
-		gui/guiinterface.h \
-		include/config/move_parameters.h
+		gui/guiinterface.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o four_wheel_omni_pilot.o movement/four_wheel_omni/four_wheel_omni_pilot.cpp
 
 move_collisions.o: movement/move_collisions.cpp utilities/measurements.h \
 		utilities/point.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
-		include/config/globals.h \
 		utilities/comparisons.h \
 		model/gamemodel.h \
 		model/robot.h \
@@ -1360,13 +1853,44 @@ move_collisions.o: movement/move_collisions.cpp utilities/measurements.h \
 		behavior/behavior.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
+		model/team.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
+		include/game_constants.h \
+		include/field.h \
 		movement/move_collisions.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o move_collisions.o movement/move_collisions.cpp
 
 fppa_pathfinding.o: movement/pathfinding/fppa_pathfinding.cpp include/config/tolerances.h \
-		include/config/simulated.h \
-		include/config/globals.h \
 		utilities/measurements.h \
 		utilities/point.h \
 		utilities/comparisons.h \
@@ -1376,19 +1900,49 @@ fppa_pathfinding.o: movement/pathfinding/fppa_pathfinding.cpp include/config/tol
 		behavior/behavior.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
+		model/team.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
+		include/game_constants.h \
+		include/field.h \
 		utilities/region/defencearea.h \
 		utilities/region/rectangle.h \
 		utilities/region/region.h \
 		gui/guiinterface.h \
 		utilities/region/sector.h \
-		include/config/team.h \
 		movement/pathfinding/fppa_pathfinding.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o fppa_pathfinding.o movement/pathfinding/fppa_pathfinding.cpp
 
 three_wheel_omni_pilot.o: movement/three_wheel_omni/three_wheel_omni_pilot.cpp include/config/tolerances.h \
-		include/config/simulated.h \
-		include/config/globals.h \
 		movement/three_wheel_omni/three_wheel_omni_pilot.h \
 		model/robot.h \
 		utilities/point.h \
@@ -1396,7 +1950,6 @@ three_wheel_omni_pilot.o: movement/three_wheel_omni/three_wheel_omni_pilot.cpp i
 		behavior/behavior.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
 		movement/movetype.h \
 		utilities/measurements.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o three_wheel_omni_pilot.o movement/three_wheel_omni/three_wheel_omni_pilot.cpp
@@ -1407,8 +1960,38 @@ kick.o: skill/kick.cpp model/robot.h \
 		behavior/behavior.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
-		include/config/globals.h \
+		include/field.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
 		skill/kick.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o kick.o skill/kick.cpp
 
@@ -1416,15 +1999,46 @@ kicktopointomni.o: skill/kicktopointomni.cpp model/gamemodel.h \
 		utilities/point.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
-		include/config/globals.h \
 		model/robot.h \
 		utilities/velocitycalculator.h \
 		behavior/behavior.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
+		model/team.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
+		include/game_constants.h \
 		utilities/comparisons.h \
+		include/field.h \
 		utilities/debug.h \
 		skill/kick.h \
 		skill/kicktopointomni.h \
@@ -1443,8 +2057,7 @@ stop.o: skill/stop.cpp skill/stop.h \
 		utilities/point.h \
 		utilities/velocitycalculator.h \
 		behavior/behavior.h \
-		behavior/genericskillbehavior.h \
-		include/config/robot_types.h
+		behavior/genericskillbehavior.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o stop.o skill/stop.cpp
 
 freekickstrategy.o: strategy/freekickstrategy.cpp strategy/freekickstrategy.h \
@@ -1452,17 +2065,46 @@ freekickstrategy.o: strategy/freekickstrategy.cpp strategy/freekickstrategy.h \
 		utilities/point.h \
 		behavior/attackmain.h \
 		behavior/behavior.h \
-		include/config/simulated.h \
 		skill/kicktopointomni.h \
 		model/robot.h \
 		utilities/velocitycalculator.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
 		movement/go_to_pose.h \
 		movement/differential/differential_pilot.h \
 		movement/movetype.h \
-		include/config/globals.h \
+		include/field.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
 		movement/four_wheel_omni/four_wheel_omni_pilot.h \
@@ -1472,12 +2114,13 @@ freekickstrategy.o: strategy/freekickstrategy.cpp strategy/freekickstrategy.h \
 		gui/guiinterface.h \
 		skill/dribbletopoint.h \
 		model/gamemodel.h \
+		model/team.h \
+		include/game_constants.h \
 		utilities/region/sector.h \
 		utilities/region/region.h \
 		behavior/genericmovementbehavior.h \
 		utilities/region/defencearea.h \
 		utilities/region/rectangle.h \
-		include/config/team.h \
 		utilities/comparisons.h \
 		behavior/attacksupport.h \
 		behavior/goalie.h \
@@ -1494,19 +2137,50 @@ haltstrategy.o: strategy/haltstrategy.cpp strategy/haltstrategy.h \
 		utilities/point.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
-		include/config/globals.h \
 		model/robot.h \
 		utilities/velocitycalculator.h \
 		behavior/behavior.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
+		model/team.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
+		include/game_constants.h \
 		behavior/refstop.h \
 		behavior/genericmovementbehavior.h \
 		movement/go_to_pose.h \
 		movement/differential/differential_pilot.h \
 		movement/movetype.h \
+		include/field.h \
 		movement/four_wheel_omni/four_wheel_omni_pilot.h \
 		utilities/debug.h \
 		movement/three_wheel_omni/three_wheel_omni_pilot.h \
@@ -1516,8 +2190,7 @@ haltstrategy.o: strategy/haltstrategy.cpp strategy/haltstrategy.h \
 		utilities/region/rectangle.h \
 		utilities/region/region.h \
 		gui/guiinterface.h \
-		utilities/region/sector.h \
-		include/config/team.h
+		utilities/region/sector.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o haltstrategy.o strategy/haltstrategy.cpp
 
 kickoffstrategy.o: strategy/kickoffstrategy.cpp behavior/genericmovementbehavior.h \
@@ -1528,13 +2201,42 @@ kickoffstrategy.o: strategy/kickoffstrategy.cpp behavior/genericmovementbehavior
 		utilities/velocitycalculator.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
 		movement/differential/differential_pilot.h \
 		movement/movetype.h \
-		include/config/globals.h \
+		include/field.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
 		movement/four_wheel_omni/four_wheel_omni_pilot.h \
 		utilities/debug.h \
 		movement/three_wheel_omni/three_wheel_omni_pilot.h \
@@ -1544,18 +2246,18 @@ kickoffstrategy.o: strategy/kickoffstrategy.cpp behavior/genericmovementbehavior
 		gui/guiinterface.h \
 		skill/dribbleback.h \
 		model/gamemodel.h \
+		model/team.h \
+		include/game_constants.h \
 		utilities/region/defencearea.h \
 		utilities/region/rectangle.h \
 		utilities/region/region.h \
 		utilities/region/sector.h \
-		include/config/team.h \
 		utilities/comparisons.h \
 		strategy/kickoffstrategy.h \
 		strategy/strategy.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o kickoffstrategy.o strategy/kickoffstrategy.cpp
 
-normalgamestrategy.o: strategy/normalgamestrategy.cpp include/config/team.h \
-		behavior/genericmovementbehavior.h \
+normalgamestrategy.o: strategy/normalgamestrategy.cpp behavior/genericmovementbehavior.h \
 		behavior/behavior.h \
 		movement/go_to_pose.h \
 		model/robot.h \
@@ -1563,13 +2265,42 @@ normalgamestrategy.o: strategy/normalgamestrategy.cpp include/config/team.h \
 		utilities/velocitycalculator.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
 		movement/differential/differential_pilot.h \
 		movement/movetype.h \
-		include/config/globals.h \
+		include/field.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
 		movement/four_wheel_omni/four_wheel_omni_pilot.h \
 		utilities/debug.h \
 		movement/three_wheel_omni/three_wheel_omni_pilot.h \
@@ -1579,6 +2310,8 @@ normalgamestrategy.o: strategy/normalgamestrategy.cpp include/config/team.h \
 		gui/guiinterface.h \
 		skill/dribbleback.h \
 		model/gamemodel.h \
+		model/team.h \
+		include/game_constants.h \
 		utilities/region/defencearea.h \
 		utilities/region/rectangle.h \
 		utilities/region/region.h \
@@ -1607,18 +2340,48 @@ penaltystrategy.o: strategy/penaltystrategy.cpp strategy/penaltystrategy.h \
 		behavior/behavior.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
 		utilities/region/defencearea.h \
-		include/config/globals.h \
+		include/field.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
 		utilities/region/rectangle.h \
 		utilities/region/region.h \
 		gui/guiinterface.h \
 		model/gamemodel.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
+		model/team.h \
+		include/game_constants.h \
 		utilities/region/sector.h \
-		include/config/team.h \
 		behavior/genericmovementbehavior.h \
 		movement/go_to_pose.h \
 		movement/differential/differential_pilot.h \
@@ -1632,12 +2395,9 @@ penaltystrategy.o: strategy/penaltystrategy.cpp strategy/penaltystrategy.h \
 		skill/kicktopointomni.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o penaltystrategy.o strategy/penaltystrategy.cpp
 
-stopstrategy.o: strategy/stopstrategy.cpp include/config/team.h \
-		utilities/measurements.h \
+stopstrategy.o: strategy/stopstrategy.cpp utilities/measurements.h \
 		utilities/point.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
-		include/config/globals.h \
 		behavior/goalie.h \
 		skill/kicktopointomni.h \
 		model/robot.h \
@@ -1645,10 +2405,41 @@ stopstrategy.o: strategy/stopstrategy.cpp include/config/team.h \
 		behavior/behavior.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
 		movement/go_to_pose.h \
 		movement/differential/differential_pilot.h \
 		movement/movetype.h \
+		include/field.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
 		movement/four_wheel_omni/four_wheel_omni_pilot.h \
 		utilities/debug.h \
 		movement/three_wheel_omni/three_wheel_omni_pilot.h \
@@ -1656,6 +2447,8 @@ stopstrategy.o: strategy/stopstrategy.cpp include/config/team.h \
 		gui/guiinterface.h \
 		skill/dribbleback.h \
 		model/gamemodel.h \
+		model/team.h \
+		include/game_constants.h \
 		behavior/genericmovementbehavior.h \
 		utilities/region/defencearea.h \
 		utilities/region/rectangle.h \
@@ -1670,7 +2463,6 @@ stopstrategy.o: strategy/stopstrategy.cpp include/config/team.h \
 
 strategycontroller.o: strategy/strategycontroller.cpp strategy/strategy.h \
 		movement/move.h \
-		include/config/globals.h \
 		movement/pathfinding/fppa_pathfinding.h \
 		model/robot.h \
 		utilities/point.h \
@@ -1678,12 +2470,43 @@ strategycontroller.o: strategy/strategycontroller.cpp strategy/strategy.h \
 		behavior/behavior.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
 		movement/movetype.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
 		model/gamemodel.h \
 		utilities/measurements.h \
+		model/team.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
+		include/game_constants.h \
 		strategy/stopstrategy.h \
 		utilities/edges.h \
 		strategy/teststrategy.h \
@@ -1691,11 +2514,11 @@ strategycontroller.o: strategy/strategycontroller.cpp strategy/strategy.h \
 		strategy/freekickstrategy.h \
 		strategy/normalgamestrategy.h \
 		utilities/region/defencearea.h \
+		include/field.h \
 		utilities/region/rectangle.h \
 		utilities/region/region.h \
 		gui/guiinterface.h \
 		utilities/region/sector.h \
-		include/config/team.h \
 		behavior/genericmovementbehavior.h \
 		movement/go_to_pose.h \
 		movement/differential/differential_pilot.h \
@@ -1709,7 +2532,6 @@ strategycontroller.o: strategy/strategycontroller.cpp strategy/strategy.h \
 		strategy/indirectkickstrategy.h \
 		strategy/haltstrategy.h \
 		communication/robcomm.h \
-		include/config/communication.h \
 		strategy/strategycontroller.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o strategycontroller.o strategy/strategycontroller.cpp
 
@@ -1718,14 +2540,44 @@ strategy.o: strategy/strategy.cpp strategy/strategy.h \
 		utilities/point.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
-		include/config/globals.h \
 		model/robot.h \
 		utilities/velocitycalculator.h \
 		behavior/behavior.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h
+		model/team.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
+		include/game_constants.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o strategy.o strategy/strategy.cpp
 
 teststrategy.o: strategy/teststrategy.cpp strategy/teststrategy.h \
@@ -1737,14 +2589,43 @@ teststrategy.o: strategy/teststrategy.cpp strategy/teststrategy.h \
 		behavior/behavior.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
 		movement/go_to_pose.h \
 		movement/differential/differential_pilot.h \
 		movement/movetype.h \
-		include/config/globals.h \
+		include/field.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
 		movement/four_wheel_omni/four_wheel_omni_pilot.h \
 		utilities/debug.h \
 		movement/three_wheel_omni/three_wheel_omni_pilot.h \
@@ -1752,6 +2633,8 @@ teststrategy.o: strategy/teststrategy.cpp strategy/teststrategy.h \
 		gui/guiinterface.h \
 		skill/dribbletopoint.h \
 		model/gamemodel.h \
+		model/team.h \
+		include/game_constants.h \
 		behavior/genericmovementbehavior.h \
 		utilities/comparisons.h \
 		behavior/defendbehavior.h \
@@ -1761,7 +2644,6 @@ teststrategy.o: strategy/teststrategy.cpp strategy/teststrategy.h \
 		utilities/region/rectangle.h \
 		utilities/region/region.h \
 		utilities/region/sector.h \
-		include/config/team.h \
 		behavior/attackmain.h \
 		behavior/attacksupport.h \
 		behavior/refstop.h \
@@ -1776,18 +2658,49 @@ videostrategies.o: strategy/videostrategies.cpp behavior/genericskillbehavior.h 
 		model/robot.h \
 		utilities/point.h \
 		utilities/velocitycalculator.h \
-		include/config/robot_types.h \
 		model/gamemodel.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
-		include/config/globals.h \
+		model/team.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
+		include/game_constants.h \
 		strategy/videostrategies.h \
 		strategy/strategy.h \
 		behavior/genericmovementbehavior.h \
 		movement/go_to_pose.h \
 		movement/differential/differential_pilot.h \
 		movement/movetype.h \
+		include/field.h \
 		movement/four_wheel_omni/four_wheel_omni_pilot.h \
 		utilities/debug.h \
 		movement/three_wheel_omni/three_wheel_omni_pilot.h \
@@ -1801,22 +2714,52 @@ videostrategies.o: strategy/videostrategies.cpp behavior/genericskillbehavior.h 
 		utilities/region/defencearea.h \
 		utilities/region/rectangle.h \
 		utilities/region/region.h \
-		utilities/region/sector.h \
-		include/config/team.h
+		utilities/region/sector.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o videostrategies.o strategy/videostrategies.cpp
 
-comparisons.o: utilities/comparisons.cpp include/config/globals.h \
+comparisons.o: utilities/comparisons.cpp include/field.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
 		model/gamemodel.h \
 		utilities/point.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
 		model/robot.h \
 		utilities/velocitycalculator.h \
 		behavior/behavior.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
+		model/team.h \
+		include/game_constants.h \
 		utilities/comparisons.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o comparisons.o utilities/comparisons.cpp
 
@@ -1824,15 +2767,44 @@ debug.o: utilities/debug.cpp model/gamemodel.h \
 		utilities/point.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
-		include/config/globals.h \
 		model/robot.h \
 		utilities/velocitycalculator.h \
 		behavior/behavior.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
-		include/config/team.h \
+		model/team.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
+		include/game_constants.h \
 		utilities/debug.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug.o utilities/debug.cpp
 
@@ -1842,24 +2814,86 @@ edges.o: utilities/edges.cpp utilities/edges.h
 point.o: utilities/point.cpp utilities/point.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o point.o utilities/point.cpp
 
-velocitycalculator.o: utilities/velocitycalculator.cpp include/config/globals.h \
+velocitycalculator.o: utilities/velocitycalculator.cpp include/field.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
 		utilities/velocitycalculator.h \
 		utilities/point.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o velocitycalculator.o utilities/velocitycalculator.cpp
 
-defendbehavior.o: behavior/defendbehavior.cpp include/config/simulated.h \
-		utilities/comparisons.h \
+defendbehavior.o: behavior/defendbehavior.cpp utilities/comparisons.h \
 		model/gamemodel.h \
 		utilities/point.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/globals.h \
 		model/robot.h \
 		utilities/velocitycalculator.h \
 		behavior/behavior.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
+		model/team.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
+		include/game_constants.h \
+		include/field.h \
 		behavior/defendbehavior.h \
 		behavior/genericmovementbehavior.h \
 		movement/go_to_pose.h \
@@ -1874,8 +2908,7 @@ defendbehavior.o: behavior/defendbehavior.cpp include/config/simulated.h \
 		utilities/region/rectangle.h \
 		utilities/region/region.h \
 		utilities/region/defencearea.h \
-		utilities/region/sector.h \
-		include/config/team.h
+		utilities/region/sector.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o defendbehavior.o behavior/defendbehavior.cpp
 
 indirectkickstrategy.o: strategy/indirectkickstrategy.cpp strategy/indirectkickstrategy.h \
@@ -1884,19 +2917,49 @@ indirectkickstrategy.o: strategy/indirectkickstrategy.cpp strategy/indirectkicks
 		utilities/point.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
-		include/config/globals.h \
 		model/robot.h \
 		utilities/velocitycalculator.h \
 		behavior/behavior.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
+		model/team.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
+		include/game_constants.h \
 		utilities/region/rectangle.h \
 		utilities/region/region.h \
 		gui/guiinterface.h \
 		utilities/comparisons.h \
-		include/config/team.h \
+		include/field.h \
 		behavior/goalie.h \
 		skill/kicktopointomni.h \
 		movement/go_to_pose.h \
@@ -1924,14 +2987,44 @@ kfball.o: communication/kfball.cpp communication/kfball.h \
 		utilities/point.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
-		include/config/globals.h \
 		model/robot.h \
 		utilities/velocitycalculator.h \
 		behavior/behavior.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h
+		model/team.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
+		include/game_constants.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o kfball.o communication/kfball.cpp
 
 getclassname.o: utilities/getclassname.cpp utilities/getclassname.h
@@ -1942,9 +3035,7 @@ sector.o: utilities/region/sector.cpp utilities/region/sector.h \
 		utilities/point.h \
 		gui/guiinterface.h \
 		utilities/measurements.h \
-		include/config/tolerances.h \
-		include/config/simulated.h \
-		include/config/globals.h
+		include/config/tolerances.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o sector.o utilities/region/sector.cpp
 
 rectangle.o: utilities/region/rectangle.cpp utilities/region/rectangle.h \
@@ -1956,12 +3047,42 @@ rectangle.o: utilities/region/rectangle.cpp utilities/region/rectangle.h \
 		behavior/behavior.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
 		model/gamemodel.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
-		include/config/globals.h
+		model/team.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
+		include/game_constants.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o rectangle.o utilities/region/rectangle.cpp
 
 measurements.o: utilities/measurements.cpp model/robot.h \
@@ -1970,15 +3091,43 @@ measurements.o: utilities/measurements.cpp model/robot.h \
 		behavior/behavior.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
 		utilities/measurements.h \
-		include/config/tolerances.h \
-		include/config/simulated.h \
-		include/config/globals.h
+		include/config/tolerances.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o measurements.o utilities/measurements.cpp
 
 defencearea.o: utilities/region/defencearea.cpp utilities/region/defencearea.h \
-		include/config/globals.h \
+		include/field.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
 		utilities/region/rectangle.h \
 		utilities/region/region.h \
 		utilities/point.h \
@@ -1988,13 +3137,12 @@ defencearea.o: utilities/region/defencearea.cpp utilities/region/defencearea.h \
 		behavior/behavior.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
 		model/gamemodel.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
-		utilities/region/sector.h \
-		include/config/team.h
+		model/team.h \
+		include/game_constants.h \
+		utilities/region/sector.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o defencearea.o utilities/region/defencearea.cpp
 
 guidrawpoint.o: gui/guidrawpoint.cpp gui/guidrawpoint.h \
@@ -2013,18 +3161,49 @@ dribbletopoint.o: skill/dribbletopoint.cpp skill/dribbletopoint.h \
 		utilities/velocitycalculator.h \
 		behavior/behavior.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
 		movement/differential/differential_pilot.h \
 		movement/movetype.h \
-		include/config/globals.h \
+		include/field.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
 		movement/four_wheel_omni/four_wheel_omni_pilot.h \
 		utilities/debug.h \
 		movement/three_wheel_omni/three_wheel_omni_pilot.h \
 		movement/pathfinding/fppa_pathfinding.h \
-		model/gamemodel.h
+		model/gamemodel.h \
+		model/team.h \
+		include/game_constants.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dribbletopoint.o skill/dribbletopoint.cpp
 
 challengeballbot.o: behavior/challengeballbot.cpp behavior/challengeballbot.h \
@@ -2036,18 +3215,49 @@ challengeballbot.o: behavior/challengeballbot.cpp behavior/challengeballbot.h \
 		utilities/velocitycalculator.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
 		movement/differential/differential_pilot.h \
 		movement/movetype.h \
-		include/config/globals.h \
+		include/field.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
 		movement/four_wheel_omni/four_wheel_omni_pilot.h \
 		utilities/debug.h \
 		movement/three_wheel_omni/three_wheel_omni_pilot.h \
 		movement/pathfinding/fppa_pathfinding.h \
-		model/gamemodel.h
+		model/gamemodel.h \
+		model/team.h \
+		include/game_constants.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o challengeballbot.o behavior/challengeballbot.cpp
 
 dribbleback.o: skill/dribbleback.cpp skill/dribbleback.h \
@@ -2058,18 +3268,49 @@ dribbleback.o: skill/dribbleback.cpp skill/dribbleback.h \
 		utilities/velocitycalculator.h \
 		behavior/behavior.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
 		movement/differential/differential_pilot.h \
 		movement/movetype.h \
-		include/config/globals.h \
+		include/field.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
 		movement/four_wheel_omni/four_wheel_omni_pilot.h \
 		utilities/debug.h \
 		movement/three_wheel_omni/three_wheel_omni_pilot.h \
 		movement/pathfinding/fppa_pathfinding.h \
-		model/gamemodel.h
+		model/gamemodel.h \
+		model/team.h \
+		include/game_constants.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dribbleback.o skill/dribbleback.cpp
 
 refstop.o: behavior/refstop.cpp behavior/refstop.h \
@@ -2081,25 +3322,55 @@ refstop.o: behavior/refstop.cpp behavior/refstop.h \
 		utilities/velocitycalculator.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
 		movement/differential/differential_pilot.h \
 		movement/movetype.h \
-		include/config/globals.h \
+		include/field.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
 		movement/four_wheel_omni/four_wheel_omni_pilot.h \
 		utilities/debug.h \
 		movement/three_wheel_omni/three_wheel_omni_pilot.h \
 		movement/pathfinding/fppa_pathfinding.h \
 		utilities/comparisons.h \
 		model/gamemodel.h \
+		model/team.h \
+		include/game_constants.h \
 		utilities/region/defencearea.h \
 		utilities/region/rectangle.h \
 		utilities/region/region.h \
 		gui/guiinterface.h \
-		utilities/region/sector.h \
-		include/config/team.h
+		utilities/region/sector.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o refstop.o behavior/refstop.cpp
 
 goalie.o: behavior/goalie.cpp behavior/goalie.h \
@@ -2110,14 +3381,43 @@ goalie.o: behavior/goalie.cpp behavior/goalie.h \
 		behavior/behavior.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
 		movement/go_to_pose.h \
 		movement/differential/differential_pilot.h \
 		movement/movetype.h \
-		include/config/globals.h \
+		include/field.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
 		movement/four_wheel_omni/four_wheel_omni_pilot.h \
 		utilities/debug.h \
 		movement/three_wheel_omni/three_wheel_omni_pilot.h \
@@ -2125,12 +3425,13 @@ goalie.o: behavior/goalie.cpp behavior/goalie.h \
 		gui/guiinterface.h \
 		skill/dribbleback.h \
 		model/gamemodel.h \
+		model/team.h \
+		include/game_constants.h \
 		behavior/genericmovementbehavior.h \
 		utilities/region/defencearea.h \
 		utilities/region/rectangle.h \
 		utilities/region/region.h \
 		utilities/region/sector.h \
-		include/config/team.h \
 		utilities/comparisons.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o goalie.o behavior/goalie.cpp
 
@@ -2143,24 +3444,54 @@ markbot.o: behavior/markbot.cpp behavior/markbot.h \
 		utilities/velocitycalculator.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
 		movement/differential/differential_pilot.h \
 		movement/movetype.h \
-		include/config/globals.h \
+		include/field.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
 		movement/four_wheel_omni/four_wheel_omni_pilot.h \
 		utilities/debug.h \
 		movement/three_wheel_omni/three_wheel_omni_pilot.h \
 		movement/pathfinding/fppa_pathfinding.h \
 		model/gamemodel.h \
+		model/team.h \
+		include/game_constants.h \
 		utilities/region/defencearea.h \
 		utilities/region/rectangle.h \
 		utilities/region/region.h \
 		gui/guiinterface.h \
 		utilities/region/sector.h \
-		include/config/team.h \
 		utilities/comparisons.h \
 		skill/kicktopointomni.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o markbot.o behavior/markbot.cpp
@@ -2174,24 +3505,54 @@ wall.o: behavior/wall.cpp behavior/wall.h \
 		utilities/velocitycalculator.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
 		movement/differential/differential_pilot.h \
 		movement/movetype.h \
-		include/config/globals.h \
+		include/field.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
 		movement/four_wheel_omni/four_wheel_omni_pilot.h \
 		utilities/debug.h \
 		movement/three_wheel_omni/three_wheel_omni_pilot.h \
 		movement/pathfinding/fppa_pathfinding.h \
 		model/gamemodel.h \
+		model/team.h \
+		include/game_constants.h \
 		utilities/region/defencearea.h \
 		utilities/region/rectangle.h \
 		utilities/region/region.h \
 		gui/guiinterface.h \
 		utilities/region/sector.h \
-		include/config/team.h \
 		utilities/comparisons.h \
 		skill/kicktopointomni.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o wall.o behavior/wall.cpp
@@ -2205,13 +3566,42 @@ penaltygoalie.o: behavior/penaltygoalie.cpp behavior/penaltygoalie.h \
 		utilities/velocitycalculator.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
 		movement/differential/differential_pilot.h \
 		movement/movetype.h \
-		include/config/globals.h \
+		include/field.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
 		movement/four_wheel_omni/four_wheel_omni_pilot.h \
 		utilities/debug.h \
 		movement/three_wheel_omni/three_wheel_omni_pilot.h \
@@ -2221,8 +3611,9 @@ penaltygoalie.o: behavior/penaltygoalie.cpp behavior/penaltygoalie.h \
 		utilities/region/region.h \
 		gui/guiinterface.h \
 		model/gamemodel.h \
-		utilities/region/sector.h \
-		include/config/team.h
+		model/team.h \
+		include/game_constants.h \
+		utilities/region/sector.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o penaltygoalie.o behavior/penaltygoalie.cpp
 
 yisirobcomm.o: communication/yisirobcomm.cpp communication/yisirobcomm.h \
@@ -2232,23 +3623,53 @@ yisirobcomm.o: communication/yisirobcomm.cpp communication/yisirobcomm.h \
 		behavior/behavior.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
 		communication/robcomm.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
 		communication/crc.h \
 		model/gamemodel.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
-		include/config/globals.h \
+		model/team.h \
+		include/game_constants.h \
 		behavior/genericmovementbehavior.h \
 		movement/go_to_pose.h \
 		movement/differential/differential_pilot.h \
 		movement/movetype.h \
+		include/field.h \
 		movement/four_wheel_omni/four_wheel_omni_pilot.h \
 		utilities/debug.h \
 		movement/three_wheel_omni/three_wheel_omni_pilot.h \
-		movement/pathfinding/fppa_pathfinding.h \
-		include/config/move_parameters.h
+		movement/pathfinding/fppa_pathfinding.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o yisirobcomm.o communication/yisirobcomm.cpp
 
 crc.o: communication/crc.cpp communication/crc.h
@@ -2258,17 +3679,48 @@ go_to_pose.o: movement/go_to_pose.cpp model/gamemodel.h \
 		utilities/point.h \
 		utilities/measurements.h \
 		include/config/tolerances.h \
-		include/config/simulated.h \
-		include/config/globals.h \
 		model/robot.h \
 		utilities/velocitycalculator.h \
 		behavior/behavior.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
+		model/team.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
+		include/game_constants.h \
 		movement/movetype.h \
 		movement/go_to_pose.h \
 		movement/differential/differential_pilot.h \
+		include/field.h \
 		movement/four_wheel_omni/four_wheel_omni_pilot.h \
 		utilities/debug.h \
 		movement/three_wheel_omni/three_wheel_omni_pilot.h \
@@ -2281,18 +3733,156 @@ go_to_pose.o: movement/go_to_pose.cpp model/gamemodel.h \
 
 differential_pilot.o: movement/differential/differential_pilot.cpp movement/differential/differential_pilot.h \
 		movement/movetype.h \
-		include/config/globals.h \
+		include/field.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
 		model/robot.h \
 		utilities/point.h \
 		utilities/velocitycalculator.h \
 		behavior/behavior.h \
 		skill/skill.h \
 		behavior/genericskillbehavior.h \
-		include/config/robot_types.h \
 		utilities/measurements.h \
-		include/config/tolerances.h \
-		include/config/simulated.h
+		include/config/tolerances.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o differential_pilot.o movement/differential/differential_pilot.cpp
+
+team.o: model/team.cpp model/team.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h \
+		model/robot.h \
+		utilities/point.h \
+		utilities/velocitycalculator.h \
+		behavior/behavior.h \
+		skill/skill.h \
+		behavior/genericskillbehavior.h \
+		include/game_constants.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o team.o model/team.cpp
+
+field.o: include/field.cpp include/field.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o field.o include/field.cpp
+
+motion_parameters.o: include/motion_parameters.cpp include/motion_parameters.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/yaml.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/parser.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/dll.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/binary.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterdef.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emittermanip.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/null.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/ostream_wrapper.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/emitterstyle.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/stlemitter.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/exceptions.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/mark.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/traits.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/bool_type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator_fwd.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/ptr.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/type.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/memory.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_ref.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_data.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/node_iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/iterator.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/convert.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/detail/impl.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/parse.h \
+		libs/yaml-cpp-0.6.3/include/yaml-cpp/node/emit.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o motion_parameters.o include/motion_parameters.cpp
 
 qrc_images.o: qrc_images.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_images.o qrc_images.cpp

@@ -20,7 +20,7 @@ void RefStop::perform(Robot * robot)
         DefenceArea opp_def(1);
 
         bool reposition_invalid = Comparisons::isPointOutsideField(reposition)
-                                          || (our_def.contains(reposition) && robot->getID() != GOALIE_ID)
+                                          || (our_def.contains(reposition) && !robot->isGoalie())
                                           || opp_def.contains(reposition, 2*ROBOT_RADIUS);
 
         if(reposition_invalid)

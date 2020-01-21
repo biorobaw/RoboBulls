@@ -4,7 +4,7 @@
 
 void HaltStrategy::assignBeh()
 {
-    for(Robot* robot : gameModel->getMyTeam())
+    for(Robot* robot : gameModel->getMyTeam().getRobots())
     {
         robot->setLF(0);
         robot->setLB(0);

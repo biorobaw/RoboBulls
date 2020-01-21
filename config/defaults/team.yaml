@@ -1,0 +1,28 @@
+---
+COLOR: 0 # 0 blue or 1 yellow
+SIDE: 0 # 0  negative side, 1 positive side
+ROBOT_TYPE: yisibot # alternatives: grsim yisibot rpi_2019 
+
+# Define the roles of each robot
+ROLES:
+    GOALIE : 0
+    ATTACK1 : 3
+    ATTACK2 : 4
+    ATTACK3 : 5
+    DEFEND1 : 1
+    DEFEND2 : 2
+    DEFEND3 : 6
+
+
+# if robot type == yisibot:
+# then must specify 
+YISI_USB_PORT : /dev/ttyUSB2 # yisi usb port
+YISI_FREQUENCY: 0
+
+# if robot type == grsim:
+# then must specify:
+# GRSIM_ADDR : 127.0.0.1 # ip of grsim
+# GRSIM_PORT : 20011 # port of grsim
+
+# support for rpi_2019 is work in progress
+

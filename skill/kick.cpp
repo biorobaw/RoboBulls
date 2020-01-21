@@ -1,6 +1,5 @@
 #include "model/robot.h"
-#include "include/config/robot_types.h"
-#include "include/config/globals.h"
+#include "include/field.h"
 #include "kick.h"
 
 namespace Skill

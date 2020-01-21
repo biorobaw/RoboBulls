@@ -60,7 +60,10 @@ private:
         float dynamic_val;  // Values that change during the game
     };
 
-    ProbNode prob_field[(FIELD_LENGTH+1)/PND_SUPP][(FIELD_WIDTH+1)/PND_SUPP];
+    int prob_field_rows;
+    int prob_field_cols;
+//    ProbNode prob_field[(FIELD_LENGTH+1)/PND_SUPP][(FIELD_WIDTH+1)/PND_SUPP];
+    ProbNode** prob_field;
 
     // Fills in prob_field with scoring probabilities
     void calcStaticProb();

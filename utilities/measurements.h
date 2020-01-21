@@ -3,8 +3,9 @@
 
 #include <cmath>
 #include <vector>
+#include <set>
 #include "utilities/point.h"
-#include "include/config/tolerances.h"
+#include "include/motion_parameters.h"
 
 class Robot;
 

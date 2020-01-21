@@ -8,7 +8,7 @@
 #include "utilities/measurements.h"
 #include "utilities/comparisons.h"
 #include "gui/guiinterface.h"
-#include "include/config/team.h"
+
 
 /*! @file
  * Behavior of goal-keeper.

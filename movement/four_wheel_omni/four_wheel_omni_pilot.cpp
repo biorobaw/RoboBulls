@@ -128,7 +128,7 @@ void FourWheelOmniPilot::defaultDrive (Robot* rob, float x_goal, float y_goal, f
     double x_current = rob->getPosition().x;
     double y_current = rob->getPosition().y;
     double theta_current = rob->getOrientation();
-    std::cout << "getOrientation: " << theta_current << std::endl;
+//    std::cout << "getOrientation: " << theta_current << std::endl;
     double ang_vel_robot = 0;
 //    if((theta_current>0.07)||(theta_current<-0.07))
 //    {
@@ -144,17 +144,17 @@ void FourWheelOmniPilot::defaultDrive (Robot* rob, float x_goal, float y_goal, f
     Point rp = Point(x_current,y_current);
     Point gp = Point(x_goal,y_goal);;
     distance_error = Measurements::distance(rp,gp);
-    std::cout << "distance_error: " << distance_error << std::endl;
+//    std::cout << "distance_error: " << distance_error << std::endl;
     float angle_to_goal = Measurements::angleBetween(rp, gp);
-    std::cout << "angle_to_goal: " << angle_to_goal << std::endl;
-    std::cout << "rp: " << rp.toString() << std::endl;
-    std::cout << "gp: " << gp.toString() << std::endl;
+//    std::cout << "angle_to_goal: " << angle_to_goal << std::endl;
+//    std::cout << "rp: " << rp.toString() << std::endl;
+//    std::cout << "gp: " << gp.toString() << std::endl;
 //    std::cout << "facePointDrive x_vel_robot: " << x_vel_robot<< std::endl;
 //    std::cout << "facePointDrive y_vel_robot: " << y_vel_robot<< std::endl;
     // Set velocities on robot object
     // face to point
     angle_error = angle_to_goal - theta_current;
-    std::cout << "angle_error: " << angle_error << std::endl;
+//    std::cout << "angle_error: " << angle_error << std::endl;
     double y_vel_robot = 0;
     double x_vel_robot = 1;
     if((angle_error>0.07||angle_error<-0.07))

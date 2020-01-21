@@ -4,8 +4,8 @@
 #include "gui/guiinterface.h"
 #include <time.h>
 #include <assert.h>
-#include "include/config/tolerances.h"     //ROT/DIST Tolerance
-#include "include/config/globals.h"        //OVERALL_VELOCITY
+#include "include/motion_parameters.h"     //ROT/DIST Tolerance
+#include "include/field.h"
 #include "movement/move.h"
 #include "movement/move_collisions.h"
 #include "model/gamemodel.h"
@@ -119,7 +119,7 @@ bool GoToPose::performObstacleAvoidance(Robot* robot, MoveType moveType)
 
     // If we haven't reached the target
     if(Measurements::distance(robot, final_target_point) > last_dist_tolerance) {
-        assignNewPath(robot->getPosition(), (robot->getID() != GOALIE_ID));
+        assignNewPath(robot->getPosition(), !robot->isGoalie() );
     } else {
         next_dist_tolerance = last_dist_tolerance;
     }
@@ -156,7 +156,7 @@ void GoToPose::assignNewPath(const Point& robotPoint, bool use_def_areas)
 
 void GoToPose::calcAndSetVels(Robot *rob, Point targetPoint, float targetAngle, Point nextPoint, MoveType moveType)
 {
-    switch(rob->type())
+    switch(rob->getDriveType())
     {
     case differential:
         {

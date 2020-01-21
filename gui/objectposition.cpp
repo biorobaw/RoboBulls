@@ -13,7 +13,8 @@ ObjectPosition::ObjectPosition(MainWindow * mw) {
 
 void ObjectPosition::setupPastBotPoints() {
     for (int i=0; i<dash->teamSize_blue; i++) {
-        if (dash->gamemodel->find(i, dash->gamemodel->getMyTeam()) != NULL) {
+        auto* roboti = dash->gamemodel->getMyTeam().getRobot(i);
+        if (roboti != NULL) {
             pastBotPoints[i].x = 0;
             pastBotPoints[i].y = 0;
             // also, let's fill the oldSpeeds array
@@ -26,7 +27,8 @@ void ObjectPosition::getPastBotPoints() {
 //    if (dash->gamepanel->tick && dash->gamepanel->seconds%2 == 0) {
 //    if (dash->gamepanel->tick) {
         for (int i=0; i<dash->teamSize_blue; i++) {
-            if (dash->gamemodel->find(i, dash->gamemodel->getMyTeam()) != NULL) {
+            auto* roboti = dash->gamemodel->getMyTeam().getRobot(i);
+            if (roboti != NULL) {
                 pastBotPoints[i].x = getBotCoordX(true,i);
                 pastBotPoints[i].y = getBotCoordY(true,i);
             }
@@ -36,7 +38,8 @@ void ObjectPosition::getPastBotPoints() {
 
 void ObjectPosition::getNewBotPoints() {
     for (int i=0; i<dash->teamSize_blue; i++) {
-        if (dash->gamemodel->find(i, dash->gamemodel->getMyTeam()) != NULL) {
+        auto* roboti = dash->gamemodel->getMyTeam().getRobot(i);
+        if (roboti != NULL) {
             newBotPoints[i].x = getBotCoordX(true,i);
             newBotPoints[i].y = getBotCoordY(true,i);
         }
@@ -45,7 +48,8 @@ void ObjectPosition::getNewBotPoints() {
 
 void ObjectPosition::setupBotSpeeds() {
     for (int i=0; i<dash->teamSize_blue; i++) {
-        if (dash->gamemodel->find(i, dash->gamemodel->getMyTeam()) != NULL) {
+        auto* roboti = dash->gamemodel->getMyTeam().getRobot(i);
+        if (roboti != NULL) {
            botSpeeds.push_back(0);
         }
     }
@@ -53,7 +57,8 @@ void ObjectPosition::setupBotSpeeds() {
 
 void ObjectPosition::getBotSpeeds() {
     for (int i=0; i<dash->teamSize_blue; i++) {
-        if (dash->gamemodel->find(i, dash->gamemodel->getMyTeam()) != NULL) {
+        auto* roboti = dash->gamemodel->getMyTeam().getRobot(i);
+        if (roboti != NULL) {
             float s = 0;
             float c;
             Point currentPos;
@@ -75,7 +80,8 @@ void ObjectPosition::getBotSpeeds() {
 
 void ObjectPosition::getOldSpeeds() {
     for (int i=0; i<dash->teamSize_blue; i++) {
-        if (dash->gamemodel->find(i, dash->gamemodel->getMyTeam()) != NULL) {
+        auto* roboti = dash->gamemodel->getMyTeam().getRobot(i);
+        if (roboti != NULL) {
             oldSpeeds[i] = botSpeeds[i];
         }
     }
@@ -96,11 +102,11 @@ int ObjectPosition::getVelocity(int id) {
     int LB = 0;
     int RB = 0;
 
-    Robot* robot = dash->gamemodel->find(id, dash->gamemodel->getMyTeam());
+    auto* robot = dash->gamemodel->getMyTeam().getRobot(id);
     if(robot == NULL)
         return 0;
 
-    if (robot->type() == fourWheelOmni ) {
+    if (robot->getDriveType() == fourWheelOmni ) {
             LF = robot->getLF();
             RF = robot->getRF();
             LB = robot->getLB();
@@ -113,14 +119,14 @@ int ObjectPosition::getVelocity(int id) {
             wheels++;
             velocity += RB;
             wheels++;
-    } else if ( robot->type() == differential ) {
+    } else if ( robot->getDriveType() == differential ) {
             LF = robot->getL();
             RF = robot->getR();
             velocity += LF;
             wheels++;
             velocity += RF;
             wheels++;
-    } else if ( robot->type() == threeWheelOmni ) {
+    } else if ( robot->getDriveType() == threeWheelOmni ) {
             LF = robot->getLF();
             RF = robot->getRF();
         int b = robot->getB();
@@ -140,10 +146,10 @@ int ObjectPosition::getVelocity(int id) {
 
 QString ObjectPosition::getBotCoord(int id) {
     QString qPos    = "no connection";
-    std::vector<Robot*> team = dash->gamemodel->getMyTeam();
+    auto& team = dash->gamemodel->getMyTeam();
 
-    if (team.at(0) != NULL){
-        std::string posRob = dash->gamemodel->find(id, team)->getPosition().toString();
+    if (team.getRobots().size() > 0){
+        std::string posRob = team.getRobot(id)->getPosition().toString();
         qPos = QString::fromStdString(posRob);
     }
     return qPos;
@@ -151,27 +157,13 @@ QString ObjectPosition::getBotCoord(int id) {
 }
 
 int ObjectPosition::getBotCoordX(bool myTeam, int id) {
-    int x  = 0;
-    std::vector<Robot*>* team;
-    if (myTeam) {
-        team = &dash->gamemodel->getMyTeam();
-    } else {
-        team = &dash->gamemodel->getOppTeam();
-    }
-    x = dash->gamemodel->find(id, *team)->getPosition().x;
-    return x;
+    if (myTeam) return dash->gamemodel->getMyTeam().getRobot(id)->getPosition().x;
+    else return dash->gamemodel->getOppTeam().getRobot(id)->getPosition().x;
 }
 
 int ObjectPosition::getBotCoordY(bool myTeam, int id) {
-    int y  = 0;
-    std::vector<Robot*>* team;
-    if (myTeam) {
-        team = &dash->gamemodel->getMyTeam();
-    } else {
-        team = &dash->gamemodel->getOppTeam();
-    }
-    y = dash->gamemodel->find(id, *team)->getPosition().y;
-    return y;
+    if (myTeam) return dash->gamemodel->getMyTeam().getRobot(id)->getPosition().y;
+    else return dash->gamemodel->getOppTeam().getRobot(id)->getPosition().y;
 }
 
 QString ObjectPosition::getBotOrientString(int id) {
@@ -181,14 +173,8 @@ QString ObjectPosition::getBotOrientString(int id) {
 }
 
 double ObjectPosition::getBotOrientDouble(bool myTeam, int id) {
-    double o  = 0;
-    std::vector<Robot*>* team;
-    if (myTeam) {
-        team = &dash->gamemodel->getMyTeam();
-    } else {
-        team = &dash->gamemodel->getOppTeam();
-    }
-    o = dash->gamemodel->find(id, *team)->getOrientation();
+    double o  = myTeam ? dash->gamemodel->getMyTeam().getRobot(id)->getOrientation() :
+                         dash->gamemodel->getOppTeam().getRobot(id)->getOrientation();
     o *= (180/M_PI);
     return o;
 }

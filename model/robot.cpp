@@ -1,7 +1,6 @@
 #include <assert.h>
 #include <sstream>
 #include <cmath>
-#include "include/config/simulated.h"
 #include "robot.h"
 
 Robot::Robot()
@@ -16,12 +15,32 @@ Robot::Robot()
     dribble = false;
     hasBeh = false;
     behavior = nullptr;
+    hasKickerVar = false;
 }
 
-Robot::Robot(int id, int team) : Robot()
+Robot::Robot(int id, int team, std::string robot_type, RobotRole role) :
+    Robot()
 {
+    team_role = role;
     setID(id);
     setTeam(team);
+
+    if(robot_type == "yisibot"){
+        hasKickerVar = true;
+        driveType = DriveType::fourWheelOmni;
+
+    } else if (robot_type == "grsim") {
+        hasKickerVar = true;
+        driveType = DriveType::fourWheelOmni;
+
+    } else if (robot_type == "rpi_2019"){
+        hasKickerVar = false;
+        driveType = DriveType::differential;
+
+    } else {
+        std::cout << "ERROR in Robot contstructor, robot_type not recognized" <<std::endl;
+        exit(-1);
+    }
 }
 
 /*! @{
@@ -101,12 +120,7 @@ bool Robot::hasBehavior() { return hasBeh; }
 //! @brief Returns true if the robot has a hardware ability to kick.
 bool Robot::hasKicker()
 {
-#if SIMULATED
-    return true;
-#else
-    assert(id >= 0 && id < 10);
-    return robotHasKicker[id];
-#endif
+    return hasKickerVar;
 }
 
 //! @brief Returns the current velocity in m/s
@@ -146,13 +160,11 @@ void Robot::clearBehavior()
 /*! @brief Returns the robot wheel type.
  * @details This information is used by the velocity calculators in the Movement section of the code.
  * This function returns information specified in include/config/robot_types.h
- * @see RobotType
- * @see robotIDTypes
+ * @see DriveType
  * @return One of: (`differential`, `threeWheelOmni`, or `fourWheelOmni`). */
-RobotType Robot::type()
+DriveType Robot::getDriveType()
 {
-    assert(id >= 0 && id <= 11);
-    return robotIDTypes[id];
+    return driveType;
 }
 
 //! @brief Returns a string representation of the robot
@@ -188,3 +200,12 @@ void Robot::setID(int ID){id = ID;}
 
 //! @brief Sets which team the robot is on
 void Robot::setTeam(bool which) { team = which; }
+
+
+RobotRole Robot::getRole(){
+    return team_role;
+}
+
+bool Robot::isGoalie(){
+    return team_role == RobotRole::GOALIE;
+}

@@ -1,33 +1,56 @@
 #include <cmath>
 #include <sys/time.h>
-#include "include/config/simulated.h"
-#include "include/config/team.h"
-#include "include/config/communication.h"
+
 #include "visioncomm.h"
 #include "model/gamemodel.h"
+#include "include/game_constants.h"
 
 using namespace std;
 
-VisionComm::VisionComm(GameModel *gm)
+VisionComm::VisionComm(GameModel *gm, YAML::Node comm_node, int _side)
 {
-    client = new RoboCupSSLClient(VISION_PORT, VISION_ADDRESS);
+    std::cout << "--VISION" << endl
+              << "        VISION_ADDR : " << comm_node["VISION_ADDR"] << endl
+              << "        VISION_PORT : " << comm_node["VISION_PORT"] << endl
+              << "        FOUR_CAMERA : " << comm_node["FOUR_CAMERA"] << endl
+              << "        side chosen : " << ((side == SIDE_NEGATIVE) ? "Negative" : "Positive") << endl;
+
+    string vision_addr = comm_node["VISION_ADDR"].as<string>();
+    int vision_port = comm_node["VISION_PORT"].as<int>();
+    FOUR_CAMERA_MODE = comm_node["FOUR_CAMERA"].as<bool>();
+    side = _side;
+
+    client = new RoboCupSSLClient(vision_port, vision_addr);
     client->open(true);
     gamemodel = gm;
-    FOUR_CAMERA_MODE = SIMULATED || FOUR_CAMERA;
+
     kfilter = new KFBall();
     u.resize(4);
+
+    cout << "--Vision DONE" << endl;
 }
 
 VisionComm::~VisionComm(void)
 {
-    client->close();
-    delete client;
+    if(client !=NULL){
+
+        std::cout << "Closing vision..." <<std::endl;
+        client->close();
+        delete client;
+        client = NULL;
+
+        std::cout << "Closed vision" <<std::endl;
+    }
 }
 
 bool VisionComm::isFourCameraMode()
 {
     client->receive(packet);
     return (packet.geometry().calib_size() == 4);
+}
+
+void VisionComm::close(){
+    stop_listening = true;
 }
 
 /* This function processes a DetectionRobot from the vision system and fills
@@ -39,39 +62,30 @@ void VisionComm::receiveRobot(const SSL_DetectionRobot& robot, int detectedTeamC
 //    std::lock_guard<std::mutex> opp_team_guard(GameModel::opp_team_mutex);
 
 
-    //std::cout << "VisionComm::receiveRobot\n";//Donglin
-    vector<Robot*>* currentTeam = &gamemodel->getMyTeam();
-
-    if (detectedTeamColor != OUR_TEAM)
-        currentTeam = &gamemodel->getOppTeam();
-
     if (robot.has_robot_id())
     {
-        //std::cout << "VisionComm::receiveRobot   has ID\n";//Donglin
-        // 2 5 7 8
         int id = robot.robot_id();
-        Robot* rob = gamemodel->find(id, *currentTeam);
+
+        Team* team =  &gameModel->getTeam(detectedTeamColor);
+        Robot* rob = team->getRobot(id);
 
         if (rob == NULL)
         {
             //std::cout<<"Did not find.........................................."<<std::endl;//Added by Bo Wu
-            rob = new Robot();
-            rob->setID(id);
-            rob->setTeam(detectedTeamColor == OUR_TEAM);
-            currentTeam->push_back(rob);
+            rob = team->addRobot(id);
         }
 
         // Assumption: rob contains the robot with id == detected_id
         //std::cout << " positionReading("<<robot.x()<<","<< robot.y()<<");\n ";
         Point positionReading(robot.x(), robot.y());//Point
         float rotationReading = robot.orientation();
-        #if SIDE == SIDE_POSITIVE
+        if(side == SIDE_POSITIVE){
             positionReading *= -1;
             if(rotationReading > 0)
                 rotationReading = -(M_PI - rotationReading);
             else
                 rotationReading = -(-M_PI - rotationReading);
-        #endif
+        }
         rob->setRobotPosition(positionReading);
         rob->setOrientation(rotationReading);
     }
@@ -139,9 +153,7 @@ void VisionComm::recieveBall(const SSL_DetectionFrame& frame)
     if(isGoodDetection(*bestDetect, frame, CONF_THRESHOLD_BALL, FOUR_CAMERA_MODE))
     {
         Point b_pos = Point(bestDetect->x(), bestDetect->y());
-        #if SIDE == SIDE_POSITIVE
-            b_pos *= -1;
-        #endif
+        if(side == SIDE_POSITIVE) b_pos *= -1;
 
 //        GuiInterface* gui = GuiInterface::getGuiInterface();
 //        gui->drawPath(b_pos, b_pos, 0.1);
@@ -215,23 +227,22 @@ void VisionComm::recieveBall(const SSL_DetectionFrame& frame)
  * the information, if we're confident on the Robot detection
  * Initialized to updating blue, but changes to yellow if not updating blue
  */
-void VisionComm::recieveRobotTeam(const SSL_DetectionFrame& frame, int team)
+void VisionComm::recieveRobotTeam(const SSL_DetectionFrame& frame, int which_team)
 {
 
     //std::cout<<"VisionComm::recieveRobotTeam\n"<<std::endl;
 
-    auto* currentTeamDetection = &frame.robots_blue();
-    auto* currentTeamVector    = &gamemodel->getMyTeam();
-    int*  currentTeamCounts    = blue_rob_readings;
+    auto* team    = &gamemodel->getTeam(which_team);
 
-    if(team == TEAM_YELLOW) {
-        currentTeamDetection = &frame.robots_yellow();
-        currentTeamCounts    = yell_rob_readings;
+    auto* teamDetection = &frame.robots_blue();
+    int*  teamCounts    = blue_rob_readings;
+    if(which_team == TEAM_YELLOW) {
+        teamDetection = &frame.robots_yellow();
+        teamCounts    = yell_rob_readings;
     }
-    if(team != OUR_TEAM)
-        currentTeamVector = &gamemodel->getOppTeam();
+
     
-    for(const SSL_DetectionRobot& robot : *currentTeamDetection)
+    for(const SSL_DetectionRobot& robot : *teamDetection)
     {
 
         //std::cout<<"VisionComm::robot.robot_id() robot detected: "<< robot.robot_id()<<std::endl;
@@ -239,10 +250,10 @@ void VisionComm::recieveRobotTeam(const SSL_DetectionFrame& frame, int team)
         if(isGoodDetection(robot, frame, CONF_THRESHOLD_BOTS, FOUR_CAMERA_MODE)) {
             //std::cout<<"VisionComm::robot.robot_id() GOOD DETECTION GOOD DETECTION!!!!!!!!!!!\n"<<std::endl;
             int robotID = robot.robot_id();
-            if(gamemodel->find(robotID, *currentTeamVector) or currentTeamCounts[robotID] >= 80) {
-                receiveRobot(robot, team);
+            if(team->getRobot(robotID) or teamCounts[robotID] >= 80) {
+                receiveRobot(robot, which_team);
             } else {
-               ++currentTeamCounts[robotID];
+               ++teamCounts[robotID];
             }
         }
     }
@@ -323,7 +334,7 @@ void VisionComm::receive()
 void VisionComm::run()
 {
     //std::cout << "at VisionComm::run()\n";
-    while(true){
+    while(!stop_listening){
         receive();
         //std::cout << "at VisionComm::run() looping \n";
     }

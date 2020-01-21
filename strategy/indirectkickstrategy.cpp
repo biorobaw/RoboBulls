@@ -2,7 +2,7 @@
 #include "model/gamemodel.h"
 #include "utilities/region/rectangle.h"
 #include "utilities/comparisons.h"
-#include "include/config/team.h"
+
 #include "behavior/goalie.h"
 #include "behavior/refstop.h"
 #include "behavior/attackmain.h"
@@ -11,6 +11,7 @@
 #include "behavior/markbot.h"
 #include "normalgamestrategy.h"
 #include "behavior/markbot.h"
+#include "include/game_constants.h"
 
 IndirectKickStrategy::IndirectKickStrategy()
     :initial_bp(gameModel->getBallPoint())
@@ -22,16 +23,18 @@ void IndirectKickStrategy::assignBeh()
 {
     GameModel *gm = GameModel::getModel();
 
-    Robot* wall1 = gameModel->findMyTeam(DEFEND_1);
-    Robot* wall2 = gameModel->findMyTeam(DEFEND_2);
-    Robot* attack1 = gameModel->findMyTeam(ATTACK_1);
-    Robot* attack2 = gameModel->findMyTeam(ATTACK_2);
+    auto my_team = gameModel->getMyTeam();
+    Robot* wall1 = my_team.getRobotByRole(RobotRole::DEFEND1);
+    Robot* wall2 = my_team.getRobotByRole(RobotRole::DEFEND2);
+    Robot* attack1 = my_team.getRobotByRole(RobotRole::ATTACK1);
+    Robot* attack2 = my_team.getRobotByRole(RobotRole::ATTACK2);
+
 
     // We are kicking
-    if ((gm->getGameState() == 'I' && OUR_TEAM == TEAM_BLUE) ||
-        (gm->getGameState() == 'i' && OUR_TEAM == TEAM_YELLOW))
+    if ((gm->getGameState() == 'I' && GameModel::OUR_TEAM == TEAM_BLUE) ||
+        (gm->getGameState() == 'i' && GameModel::OUR_TEAM == TEAM_YELLOW))
     {
-        for(Robot* rob : gameModel->getMyTeam())
+        for(Robot* rob : gameModel->getMyTeam().getRobots())
             rob->clearBehavior();
 
         if(attack1)
@@ -67,8 +70,8 @@ void IndirectKickStrategy::assignBeh()
         NormalGameStrategy::assignGoalieIfOk();
     }
     // We are defending against an indirect kick
-    else if ((gm->getGameState() == 'i' && OUR_TEAM == TEAM_BLUE) ||
-             (gm->getGameState() == 'I' && OUR_TEAM == TEAM_YELLOW))
+    else if ((gm->getGameState() == 'i' && GameModel::OUR_TEAM == TEAM_BLUE) ||
+             (gm->getGameState() == 'I' && GameModel::OUR_TEAM == TEAM_YELLOW))
     {
         if(wall1)
             wall1->assignBeh<Wall>();

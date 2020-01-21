@@ -2,7 +2,6 @@
 #define ATTACK_MAIN_H
 
 #include "behavior.h"
-#include "include/config/simulated.h"
 #include "skill/kicktopointomni.h"
 #include "skill/dribbletopoint.h"
 #include "model/gamemodel.h"
@@ -12,6 +11,7 @@
 #include "algorithm"
 #include "utilities/region/defencearea.h"
 #include "utilities/comparisons.h"
+#include "include/field.h"
 
 #include <vector>
 
@@ -50,6 +50,9 @@
 #define PF_WIDTH_MAIN  (FIELD_WIDTH +1)/PND_MAIN
 #define PF_SIZE_MAIN  PF_LENGTH_MAIN * PF_WIDTH_MAIN
 
+
+
+
 class AttackMain:public GenericMovementBehavior
 {
 public:
@@ -61,6 +64,8 @@ public:
     bool hasPassed();
 
 private:
+
+
     struct ProbNode
     {
         Point point;
@@ -68,7 +73,9 @@ private:
         float dynamic_val;
     };
 
-    ProbNode prob_field[(FIELD_LENGTH+1)/PND_MAIN][(FIELD_WIDTH+1)/PND_MAIN];
+    int prob_field_rows;
+    int prob_field_cols;
+    ProbNode** prob_field;
 
     Skill::KickToPointOmni* score_skill;
     Skill::KickToPointOmni* pass_skill;
@@ -82,6 +89,11 @@ private:
     // Counters to reduce the impact of noise on the state machine
     int clear_shot_count = 0;
     int clear_pass_count = 0;
+
+    /* Angle tolerances for kicking in degrees (then converted to radians).
+     * Passing is lower because it needs to be more precise */
+    static float SCORE_ANGLE_TOLERANCE;
+    static float PASS_ANGLE_TOLERANCE;
 
     /*! Calculates the probility of scoring from each point in the field based on field geometry (fixed factors).
      *  Called only once in the constructor.

@@ -1,14 +1,8 @@
 #include "attackmain.h"
 
-/* Angle tolerances for kicking in degrees (then converted to radians).
- * Passing is lower because it needs to be more precise */
-#if SIMULATED
- #define SCORE_ANGLE_TOLERANCE  (7*M_PI/180)
- #define PASS_ANGLE_TOLERANCE   (7*M_PI/180)
-#else
- #define SCORE_ANGLE_TOLERANCE  (7*M_PI/180)
- #define PASS_ANGLE_TOLERANCE   (7*M_PI/180)
-#endif
+
+float AttackMain::SCORE_ANGLE_TOLERANCE = 7*M_PI/180;
+float AttackMain::PASS_ANGLE_TOLERANCE  = 7*M_PI/180;
 
 AttackMain::AttackMain()
 {
@@ -17,6 +11,11 @@ AttackMain::AttackMain()
     score_skill   = new Skill::KickToPointOmni(&kick_point,SCORE_ANGLE_TOLERANCE,-1,true);
     pass_skill    = new Skill::KickToPointOmni(&kick_point,PASS_ANGLE_TOLERANCE, -1,true);
     state = scoring;
+
+    prob_field_rows = (FIELD_LENGTH+1)/PND_MAIN;
+    prob_field_cols = (FIELD_WIDTH+1)/PND_MAIN;
+    prob_field = new ProbNode*[prob_field_rows];
+    for(int i=0; i<prob_field_rows; i++) prob_field[i] = new ProbNode[prob_field_cols];
 }
 
 void AttackMain::perform(Robot * robot)
@@ -166,7 +165,7 @@ void AttackMain::calcStaticProb()
     float dist = 0.0, angle = 0.0;
     float temp_p = 0.0;
 
-    DefenceArea def_area(!OUR_TEAM);
+    DefenceArea def_area(!GameModel::OUR_TEAM);
 
     for (int x = 0; x < PF_LENGTH_MAIN; ++x)
     {
@@ -268,7 +267,7 @@ std::vector<std::vector<Point>> AttackMain::genClusters()
 
     std::vector<std::vector<Point>> clusters;
 
-    for(Robot* opp: gameModel->getOppTeam())
+    for(Robot* opp: gameModel->getOppTeam().getRobots())
     {
         // Check if each opponent belongs to an existing cluster
         bool assigned = false;
@@ -308,8 +307,8 @@ std::pair<bool, Point> AttackMain::calcBestGoalPoint(Robot* r)
 {
     // Populate a vector with robot positions
     std::vector<Point> obstacles;
-    auto myTeam = gameModel->getMyTeam();
-    auto oppTeam = gameModel->getOppTeam();
+    auto myTeam = gameModel->getMyTeam().getRobots();
+    auto oppTeam = gameModel->getOppTeam().getRobots();
 
     obstacles.reserve(myTeam.size() + oppTeam.size());
 
@@ -369,12 +368,13 @@ std::pair<bool, Point> AttackMain::calcBestGoalPoint(Robot* r)
 
 std::pair<bool, Point> AttackMain::calcBestPassPoint(Robot* r)
 {
-    std::vector<Robot*> obstacles = gameModel->getOppTeam();
+    std::vector<Robot*> obstacles;
+    for(auto* r : gameModel->getOppTeam().getRobots()) obstacles.push_back(r);
     Point bp = gameModel->getBallPoint();
     Robot* best_supp = nullptr;
     float best_prob = 0;
 
-    for(Robot* teammate : gameModel->getMyTeam())
+    for(Robot* teammate : gameModel->getMyTeam().getRobots())
     {
         if(teammate->getID() != r->getID())
         {
@@ -424,6 +424,9 @@ AttackMain::~AttackMain()
     delete score_skill;
     delete pass_skill;
     delete dribble_skill;
+    for(int i=0; i < prob_field_rows; i++)
+        delete prob_field[i];
+    delete prob_field;
 }
 
 float AttackMain::getScoreProb(const Point& p)

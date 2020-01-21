@@ -1,6 +1,6 @@
 #include <iostream>
 #include <list>
-#include "include/config/team.h"
+
 #include "utilities/measurements.h"
 #include "behavior/goalie.h"
 #include "behavior/refstop.h"
@@ -14,7 +14,7 @@ StopStrategy::StopStrategy()
 
 void StopStrategy::assignBeh()
 {
-    for(Robot* robot: gameModel->getMyTeam())
+    for(Robot* robot: gameModel->getMyTeam().getRobots())
         robot->assignBeh<RefStop>();
 }
 

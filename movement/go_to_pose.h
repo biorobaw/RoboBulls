@@ -7,11 +7,12 @@
 #include "movement/three_wheel_omni/three_wheel_omni_pilot.h"
 #include "movement/pathfinding/fppa_pathfinding.h"
 #include "movement/movetype.h"
-#include "include/config/tolerances.h"
-#include "include/config/globals.h"
+#include "include/motion_parameters.h"
+#include "include/field.h"
 
 #include <deque>
 #include <math.h>
+
 
 namespace Move{
 /*! @file

@@ -2,9 +2,6 @@
 #include <csignal>
 #include <cstdlib>
 #include <iostream>
-#include "include/config/simulated.h"
-#include "include/config/team.h"
-#include "include/config/communication.h"
 #include "communication/visioncomm.h"
 #include "communication/robcomm.h"
 #include "communication/refcomm.h"
@@ -12,6 +9,11 @@
 #include "gui/guiinterface.h"
 #include "utilities/debug.h"
 #include "strategy/strategycontroller.h"
+#include "yaml-cpp/yaml.h"
+#include <string>
+#include "include/game_constants.h"
+#include "include/field.h"
+#include "include/motion_parameters.h"
 
 /*! @mainpage Welcome to the RoboBulls 2 Documentation.
  *
@@ -37,7 +39,10 @@
  *   selects to run the project on the field (ENG lab) or grSim simulator.
  * - *include/config/team.h*--Team Selection--The TEAM macro selects TEAM_BLUE or TEAM_YELLOW.
  * - *include/config/communication.h*--Network config--Sets the addresses and ports of the
- *    communication modules
+ *    communication modules DEPRECATED
+ * UPDATE: some config files are no longer header files but yaml files to avoid recompilation,
+ * files are now located in "config/*.yaml". Each file should be self explanatory. When the RoboBulls
+ * software starts, it will look for the configuration files found in folder config.
  *
  * @section start Getting Started--Running The Project
  * Here we are going to compile and run the project on the simulator and perform a simple
@@ -47,7 +52,8 @@
  *    (Tested on Ubuntu 14.04 only)<br>
  * 2) Open the grSim simulator (grSim/bin/grsim) from the script's install path
  *    on your computer or any other computer<br>
- * 3) Go to **include/config/communication.h** and change <b>SIMULATOR_ADDRESS</b> to the IP
+ * 3) Go to **include/config/communication.h** (DEPRECATED, file replaced by "config/comm.yaml")
+ *    and change <b>SIMULATOR_ADDRESS</b> to the IP
  *    (in quotes) of the computer running grSim (SIMULATOR_ADDRESS_LOCAL for local).<br>
  * 4) Change <b>REFBOX_LISTEN_ENABLED</b> to 0--This will enable of the TestStrategy below.<br>
  * 5) Change <b>VISION_ADDRESS</b> under the #if SIMULATED to the "Vision multicast address" shown on the
@@ -67,15 +73,9 @@
 //! @brief Sets robots velocities to zero and exits the program
 void exitStopRobot(int)
 {
-    for(Robot* rob : gameModel->getMyTeam()) {
-        rob->setLF(0); rob->setLB(0);
-        rob->setRF(0); rob->setRB(0);
-        rob->setB(0);
-        rob->setDribble(0);
-        rob->setKick(0);
-    }
-    RobComm::getRobComm()->sendVelsLarge(gameModel->getMyTeam());
-    exit(1);
+    //TODO: make a clean exit
+    std::cout << "This function sould be called only once, not thrice!" <<std::endl;
+    exit(0);
 }
 
 //! @brief Signature required by atexit
@@ -93,33 +93,50 @@ void registerExitSignals()
     std::set_terminate(exitStopRobot);
 }
 
-//! @brief Print a message about build time and useful config information
-void printBuildInfo()
-{
-    std::cout
-        << "RoboBulls 2 Build " << __DATE__ << " " << __TIME__ << std::endl
-        << "       Team: " << ((OUR_TEAM == TEAM_BLUE) ? "Blue" : "Yellow") << std::endl
-        << "       Side: " << ((SIDE == SIDE_NEGATIVE) ? "Negative" : "Positive") << std::endl
-        << "  Simulated: " << SIMULATED << std::endl
-        << "   Refboxed: " << REFBOX_LISTEN_ENABLED << std::endl
-        << "  Simulator: " << SIMULATOR_ADDRESS << ":" << SIMULATOR_PORT << std::endl
-        << "     Vision: " << VISION_ADDRESS    << ":" << VISION_PORT    << std::endl
-        << "     RefBox: " << REFBOX_ADDRESS    << ":" << REFBOX_PORT    << std::endl;
+
+
+//! @brief load configuration files
+void loadConfigFiles(std::string folder = "config"){
+//    YAML::Node field_yaml = YAML::LoadFile(folder + "/field.yaml");
+//    YAML::Node motion_yaml = YAML::LoadFile(folder + "/motion.yaml");
+//    YAML::Node team_yaml = YAML::LoadFile(folder + "/team.yaml");
+
 }
 
 int main(int argc, char *argv[])
 {
-    //Build message
-    printBuildInfo();
+    std::string folder = argc > 1 ? argv[1] : "config";
+
+    std::cout << "-- COMMAND ARGS (" << argc << ")" <<  std::endl;
+    for(int i=0; i < argc; i++)
+        std::cout << "        arg (" << i << ") : " << argv[i] << std::endl;
+    // Load config files:
+    YAML::Node comm_node = YAML::LoadFile(folder + "/comm.yaml");
+    YAML::Node team_node = YAML::LoadFile(folder + "/team.yaml");
+    YAML::Node field_node = YAML::LoadFile(folder + "/field.yaml");
+    YAML::Node motion_node = YAML::LoadFile(folder + "/motion.yaml");
+
 
     QApplication a(argc, argv);
 
+    // set all parameters:
+    load_field_parameters(field_node);
+    load_motion_parameters(motion_node);
+
+
+    // set robot communication:
+    RobComm::open_communication(team_node);
+
     //Initialize GameModel, StrategyController, Vision, and Ref
     GameModel* gm = GameModel::getModel();
-    RefComm refCommunicator(gm);
-    VisionComm visionCommunicator(gm);
-    StrategyController sc(gm);
+    gm->setTeams(team_node);
+
+    RefComm refCommunicator(gm, comm_node);
+    VisionComm visionCommunicator(gm, comm_node, team_node["SIDE"].as<int>());
+
+    StrategyController sc(gm, comm_node["REFBOX_ENABLED"].as<bool>());
     gm->setStrategyController(&sc);
+
     registerExitSignals();
 
     //Create the GUI and show it
@@ -130,8 +147,20 @@ int main(int argc, char *argv[])
 
     //Start Vision and Refcomm and run the application
     visionCommunicator.start();
-    //std::cout << "Open YisiBot Serial Port" << std::endl;
     refCommunicator.start();
-    //std::cout << "Open YisiBot1111111111111111111111 Serial Port" << std::endl;
-    return a.exec();
+
+    // wait for program to exit
+    int result = a.exec();
+
+    // exit program
+    visionCommunicator.close();
+    visionCommunicator.wait();
+
+    refCommunicator.close();
+    refCommunicator.wait();
+
+    RobComm::close_communication(gm->getMyTeam().getRobots());
+    return result;
+
+
 }

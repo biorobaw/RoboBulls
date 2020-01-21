@@ -2,20 +2,19 @@
 #include "include/grSim_Packet.pb.h"
 #include "include/grSim_Commands.pb.h"
 #include "include/grSim_Replacement.pb.h"
-#include "include/config/team.h"
-#include "include/config/communication.h"
 #include "model/gamemodel.h"
 #include "model/robot.h"
 #include "simrobcomm.h"
 #include <iostream>
+#include "include/game_constants.h"
 
-SimRobComm::SimRobComm()
+SimRobComm::SimRobComm(const char* addr, int port)
 {
-    _addr = SIMULATOR_ADDRESS;
-    _port = SIMULATOR_PORT;
+    _addr = addr;
+    _port = port;
 }
 
-void SimRobComm::sendVelsLarge(std::vector<Robot*>& robots)
+void SimRobComm::sendVelsLarge(std::set<Robot*>& robots)
 {
     //Send standard robot packets
     for (Robot* rob : robots)
@@ -32,7 +31,7 @@ void SimRobComm::sendVelsLarge(std::vector<Robot*>& robots)
 void SimRobComm::sendPacket(Robot* robot)
 {
     grSim_Packet packet;
-    packet.mutable_commands()->set_isteamyellow( (OUR_TEAM == TEAM_YELLOW) );
+    packet.mutable_commands()->set_isteamyellow( (GameModel::OUR_TEAM == TEAM_YELLOW) );
     packet.mutable_commands()->set_timestamp(0.0);
     grSim_Robot_Command* command = packet.mutable_commands()->add_robot_commands();
 
@@ -104,4 +103,9 @@ void SimRobComm::sendReplacementPackets()
     dgram.resize(packet.ByteSize());
     packet.SerializeToArray(dgram.data(), dgram.size());
     udpsocket.writeDatagram(dgram, _addr, _port);
+}
+
+void SimRobComm::close(){
+    // udp socket seems to close automatically if necessary when destroyed
+    // nothing to be done
 }

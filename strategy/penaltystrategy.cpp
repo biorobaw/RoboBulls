@@ -1,26 +1,28 @@
 #include "penaltystrategy.h"
+#include "include/game_constants.h"
 
 void PenaltyStrategy::assignBeh()
 {
     // If we are taking the penalty kick
     char gs = gameModel->getGameState();
-    if ((gs == 'P' && OUR_TEAM == TEAM_BLUE) || (gs == 'p' && OUR_TEAM == TEAM_YELLOW))
+    if ((gs == 'P' && GameModel::OUR_TEAM == TEAM_BLUE) || (gs == 'p' && GameModel::OUR_TEAM == TEAM_YELLOW))
     {
         // One of the defenders will take the penalty and move back
-        Robot* kicker = gameModel->findMyTeam(DEFEND_1);
+        auto my_team = gameModel->getMyTeam();
+        Robot* kicker = my_team.getRobotByRole(RobotRole::DEFEND1);
         if(kicker)
             kicker->assignBeh<GenericMovementBehavior>(Point(gameModel->getOppGoal() - Point(1300,0)), 0);
 
         // Position the usual attackers behind the 400 mm mark
-        Robot* attack1 = gameModel->findMyTeam(ATTACK_1);
-        Robot* attack2 = gameModel->findMyTeam(ATTACK_2);
+        Robot* attack1 = my_team.getRobotByRole(RobotRole::ATTACK1);
+        Robot* attack2 = my_team.getRobotByRole(RobotRole::ATTACK2);
         if(attack1)
             attack1->assignBeh<GenericMovementBehavior>(Point(-500, 1000), 0);
         if(attack2)
             attack2->assignBeh<GenericMovementBehavior>(Point(-500,-1000), 0);
 
         // The other defender walls our goal
-        Robot* def = gameModel->findMyTeam(DEFEND_2);
+        Robot* def = my_team.getRobotByRole(RobotRole::DEFEND2);
         if(def)
             def->assignBeh<Wall>();
 
@@ -32,14 +34,14 @@ void PenaltyStrategy::assignBeh()
     else
     {
         // All robots move behind the 400mm mark
-        for(Robot* robot: gameModel->getMyTeam())
+        for(Robot* robot: gameModel->getMyTeam().getRobots())
         {
             if(robot != nullptr)
                 robot->assignBeh<GenericMovementBehavior>(gameModel->getMyGoal() + Point(2000,(robot->getID() - 3)*300), 0);
 
         }
         // Position Goalie
-        Robot* goalie = gameModel->findMyTeam(GOALIE_ID);
+        Robot* goalie = gameModel->getMyTeam().getRobotByRole(RobotRole::GOALIE);
         if(goalie)
         {
             goalie->clearBehavior();

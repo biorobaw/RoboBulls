@@ -7,8 +7,9 @@
 #include "behavior/refstop.h"
 #include "behavior/wall.h"
 #include "behavior/markbot.h"
-#include "include/config/team.h"
+
 #include "skill/kicktopointomni.h"
+#include "include/game_constants.h"
 
 FreeKickStrategy::FreeKickStrategy()
     :initial_bp(gameModel->getBallPoint())
@@ -18,16 +19,17 @@ FreeKickStrategy::FreeKickStrategy()
 void FreeKickStrategy::assignBeh()
 {
     // Pointers to various robots
-    Robot* wall1 = gameModel->findMyTeam(DEFEND_1);
-    Robot* wall2 = gameModel->findMyTeam(DEFEND_2);
-    Robot* attack1 = gameModel->findMyTeam(ATTACK_1);
-    Robot* attack2 = gameModel->findMyTeam(ATTACK_2);
+    auto my_team = gameModel->getMyTeam();
+    Robot* wall1 = my_team.getRobotByRole(RobotRole::DEFEND1);
+    Robot* wall2 = my_team.getRobotByRole(RobotRole::DEFEND2);
+    Robot* attack1 = my_team.getRobotByRole(RobotRole::ATTACK1);
+    Robot* attack2 = my_team.getRobotByRole(RobotRole::ATTACK2);
 
     // We are taking the free kick
-    if ((gameModel->getGameState() == 'F' && OUR_TEAM == TEAM_BLUE) ||
-        (gameModel->getGameState() == 'f' && OUR_TEAM == TEAM_YELLOW))
+    if ((gameModel->getGameState() == 'F' && GameModel::OUR_TEAM == TEAM_BLUE) ||
+        (gameModel->getGameState() == 'f' && GameModel::OUR_TEAM == TEAM_YELLOW))
     {
-        for(Robot* rob : gameModel->getMyTeam())
+        for(Robot* rob : gameModel->getMyTeam().getRobots())
             rob->clearBehavior();
 
         if(attack1)
@@ -63,8 +65,8 @@ void FreeKickStrategy::assignBeh()
         NormalGameStrategy::assignGoalieIfOk();
     }
     // We are defending against a free kick
-    else if ((gameModel->getGameState() == 'f' && OUR_TEAM == TEAM_BLUE)
-          || (gameModel->getGameState() == 'F' && OUR_TEAM == TEAM_YELLOW))
+    else if ((gameModel->getGameState() == 'f' && GameModel::OUR_TEAM == TEAM_BLUE)
+          || (gameModel->getGameState() == 'F' && GameModel::OUR_TEAM == TEAM_YELLOW))
     {
         if(wall1)
             wall1->assignBeh<Wall>();

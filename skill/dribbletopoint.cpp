@@ -155,13 +155,13 @@ bool DribbleToPoint::targetIsAhead(const float& ang_to_ball, const Point& rp)
 
 bool DribbleToPoint::safeToAdjust(const Point& bp, const int rob_id)
 {
-    for(Robot* opp_rob : gameModel->getOppTeam())
+    for(Robot* opp_rob : gameModel->getOppTeam().getRobots())
     {
         if(Measurements::distance(bp, opp_rob->getPosition()) < 500)
             return false;
     }
 
-    for(Robot* teammate : gameModel->getMyTeam())
+    for(Robot* teammate : gameModel->getMyTeam().getRobots())
     {
         if(teammate->getID() != rob_id)
             if(Measurements::distance(bp, teammate->getPosition()) < ROBOT_RADIUS + BALL_RADIUS + 50)

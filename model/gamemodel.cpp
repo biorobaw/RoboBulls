@@ -1,8 +1,7 @@
 #include <sstream>
 #include <iostream>
 #include <fstream>
-#include "include/config/team.h"
-#include "include/config/simulated.h"
+
 #include "strategy/strategycontroller.h"
 #include "utilities/comparisons.h"
 
@@ -10,12 +9,15 @@
 #include "utilities/debug.h"
 #include "gui/guiinterface.h"
 #include "model/gamemodel.h"
+#include <assert.h>
+
 
 std::mutex GameModel::my_team_mutex;
 std::mutex GameModel::opp_team_mutex;
 
 // Global static pointer used to ensure a single instance of the class.
 GameModel* gameModel = new GameModel();
+bool GameModel::OUR_TEAM = TEAM_BLUE;
 
 /*******************************************************************/
 /************************ Public Methods ***************************/
@@ -40,7 +42,7 @@ Robot* GameModel::getHasBall()
  * \return A robot pointer if found, or NULL if not on the team */
 Robot* GameModel::findMyTeam(int id)
 {
-    return find(id, myTeam);
+    return myTeam.getRobot(id);
 }
 
 /*! @brief Look for a robot with id `id` on getOponentTeam()
@@ -48,12 +50,12 @@ Robot* GameModel::findMyTeam(int id)
  * \return A robot pointer if found, or NULL if not on the team */
 Robot* GameModel::findOpTeam(int id)
 {
-    return find(id, opTeam);
+    return opTeam.getRobot(id);
 }
 
 /*! @brief Return a vector of all robots on the opposing team
  * \return The opposing team (getBlueTeam() if Yellow, getYellowTeam() if Blue) */
-std::vector<Robot*>& GameModel::getOppTeam()
+Team& GameModel::getOppTeam()
 {
     std::lock_guard<std::mutex> opp_team_guard(opp_team_mutex);
     return opTeam;
@@ -61,33 +63,20 @@ std::vector<Robot*>& GameModel::getOppTeam()
 
 /*! @brief Return a vector of all robots on the current team
  * \return The current team (getBlueTeam() if Blue, getYellowTeam() if Yellow) */
-std::vector<Robot*>& GameModel::getMyTeam()
+Team& GameModel::getMyTeam()
 {
     std::lock_guard<std::mutex> my_team_guard(my_team_mutex);
     return myTeam;
 }
 
-/*! @brief Return a vector of all robots on the Blue team
+/*! @brief Return the team specified by the color
  * \return The Blue team */
-std::vector<Robot*>& GameModel::getBlueTeam()
+Team& GameModel::getTeam(int color)
 {
-#if OUR_TEAM == TEAM_BLUE
-    return getMyTeam();
-#else
-    return getOppTeam();
-#endif
+
+    return myTeam.color == color ? getMyTeam() : getOppTeam();
 }
 
-/*! @brief Return a vector of all robots on the Yellow team
- * \return The Yellow team */
-std::vector<Robot*>& GameModel::getYellowTeam()
-{
-#if OUR_TEAM == TEAM_BLUE
-    return getOppTeam();
-#else
-    return getMyTeam();
-#endif
-}
 
 /*! @brief Return a 2D point of the current ball location
  * \return A Point with the ball's position */
@@ -193,13 +182,15 @@ std::string GameModel::toString()
     myString << "Ball Position: " << ballPoint.toString() << std::endl;
 
     myString<<"\nMy Team Robots: \n";
-    for (auto it = myTeam.begin(); it != myTeam.end(); it++)
+    auto robots = myTeam.getRobots();
+    for (auto it = robots.begin(); it != robots.end(); it++)
     {
         myString << "\t" << (*it)->toString()<< std::endl;
     }
 
     myString<<"\nOponent Team Robots: \n";
-    for(auto it = opTeam.begin(); it != opTeam.end(); it++)
+    robots = opTeam.getRobots();
+    for(auto it = robots.begin(); it != robots.end(); it++)
     {
         myString << "\t" << (*it)->toString() << std::endl;
     }
@@ -220,7 +211,7 @@ void GameModel::addRobotReplacement(int id, int team, float x, float y, float di
 {
     //Keep orientation if left blank
     if(dir == -10) {
-        Robot* robot = gameModel->find(id, (team == TEAM_BLUE) ? getBlueTeam() : getYellowTeam());
+        Robot* robot = getTeam(team).getRobot(id);
         dir = robot->getOrientation();
     }
     RobotReplacement replacement {id, team, x, y, dir};
@@ -309,18 +300,21 @@ void GameModel::setRobotHasBall()
     static int lastSeenWithoutBallCount = 0;
 
     //Assume no robot has the ball first
-    for(Robot* robot : myTeam)
+    for(Robot* robot : myTeam.getRobots())
         robot->hasBall = false;
-    for(Robot* robot : opTeam)
+    for(Robot* robot : opTeam.getRobots())
         robot->hasBall = false;
 
     if(!hasBall(this->robotWithBall) and ++lastSeenWithoutBallCount > 10)
     {
         lastSeenWithoutBallCount = 0;
-        auto ballBot = std::find_if(myTeam.begin(), myTeam.end(), hasBall);
-        if(ballBot == myTeam.end()) {            //Not found in myTeam
-            ballBot = std::find_if(opTeam.begin(), opTeam.end(), hasBall);
-            if(ballBot == opTeam.end()) {        //Not found in opTeam
+        auto robots = myTeam.getRobots();
+        auto ballBot = std::find_if(robots.begin(), robots.end(), hasBall);
+        if(ballBot == robots.end()) {            //Not found in myTeam
+
+            robots = opTeam.getRobots();
+            ballBot = std::find_if(robots.begin(), robots.end(), hasBall);
+            if(ballBot == robots.end()) {        //Not found in opTeam
                 this->robotWithBall = NULL;
                 return;
             }
@@ -350,36 +344,36 @@ void GameModel::setYellowGoals(char goals)
     yellowGoals = goals;
 }
 
-/*! @brief General-case find function
- * Looks for a robot with id `id` in a vector of robots. Similar to std::find_if.
- * @param id The Id to look for
- * @param team The team to look in (either getMyTeam or getOponentTeam)
- * @see findMyTeam
- * @see findOpTeam
- * @return A Robot pointer pointing into `team` if found, or NULL if not found
- */
-Robot* GameModel::find(int id, std::vector<Robot*>& team)
-{
-    /* Often, the vision system (and also almost always on the simulator)
-     * seems to report robots in order anyway. So first,
-     * I think it would be reasonable to check if the team at that `id`
-     * is actually that robot first.
-     */
-    try {
-        if(team.at(id)->getID() == id)
-            return team[id];
-    }
-    catch(...) {
-    }
+///*! @brief General-case find function
+// * Looks for a robot with id `id` in a vector of robots. Similar to std::find_if.
+// * @param id The Id to look for
+// * @param team The team to look in (either getMyTeam or getOponentTeam)
+// * @see findMyTeam
+// * @see findOpTeam
+// * @return A Robot pointer pointing into `team` if found, or NULL if not found
+// */
+//Robot* GameModel::find(int id, std::vector<Robot*>& team)
+//{
+//    /* Often, the vision system (and also almost always on the simulator)
+//     * seems to report robots in order anyway. So first,
+//     * I think it would be reasonable to check if the team at that `id`
+//     * is actually that robot first.
+//     */
+//    try {
+//        if(team.at(id)->getID() == id)
+//            return team[id];
+//    }
+//    catch(...) {
+//    }
 
-    for(Robot* rob : team)
-    {
-        if(rob->getID() == id)
-            return rob;
-    }
+//    for(Robot* rob : team)
+//    {
+//        if(rob->getID() == id)
+//            return rob;
+//    }
 
-    return NULL;
-}
+//    return NULL;
+//}
 
 
 /*! @brief Removes a robot from a team
@@ -390,14 +384,28 @@ Robot* GameModel::find(int id, std::vector<Robot*>& team)
  * @see utilities/debug.h */
 void GameModel::removeRobot(int id, int team)
 {
-    auto* vector = &getMyTeam();
-    if(team != OUR_TEAM)
-        vector = &getOppTeam();
-    auto it = std::find_if(vector->begin(), vector->end(), [=](Robot* r){return r->getID()==id;});
-    if(it != vector->end()) {
-        delete *it; //Free the Robot* pointer first
-        vector->erase(it);
-    }
+    getTeam(team).removeRobot(id);
 }
+
+
+void  GameModel::setTeams(YAML::Node team_node){
+
+    myTeam = Team(team_node);
+
+    GameModel::OUR_TEAM = myTeam.color;
+    opTeam.color = 1 - myTeam.color;
+    opTeam.side = 1 - myTeam.side;
+
+}
+
+
+
+
+
+
+
+
+
+
 
 

@@ -41,8 +41,8 @@ void SelRobotPanel::guiPrintRobot(int robotID, string output) {
 }
 
 void SelRobotPanel::printBehavior(int id) {
-    if (dash->gamemodel->find(id,dash->gamemodel->getMyTeam()) != NULL) {
-       Robot * bot = dash->gamemodel->find(id, dash->gamemodel->getMyTeam());
+    auto* bot = dash->gamemodel->getMyTeam().getRobot(id);
+    if (bot != NULL) {
        std::string s = getBehaviorName(bot);
         guiPrintRobot(id, s);
         std::cout << s << "\n";
@@ -146,9 +146,10 @@ void SelRobotPanel::updateSelectedBotPanel(int id) {
             dash->ui->check_botOverride->hide();
         }
 
-        dash->guiPrint(getBehaviorName(dash->gamemodel->find(id, dash->gamemodel->getMyTeam())));
+        auto* bot = dash->gamemodel->getMyTeam().getRobot(id);
+        dash->guiPrint(getBehaviorName(bot));
         guiPrintRobot(id, "Behavior Keywords:");
-        QStringList keywords = dash->objectPos->getKeyWords(getBehaviorName(dash->gamemodel->find(id, dash->gamemodel->getMyTeam())));
+        QStringList keywords = dash->objectPos->getKeyWords(getBehaviorName(bot));
         foreach (QString word, keywords) {
             guiPrintRobot(id, word.toStdString());
         }

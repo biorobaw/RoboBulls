@@ -4,6 +4,11 @@ AttackSupport::AttackSupport()
 {
     calcStaticProb();
     state = position;
+
+    prob_field_rows = (FIELD_LENGTH+1)/PND_SUPP;
+    prob_field_cols = (FIELD_WIDTH+1)/PND_SUPP;
+    prob_field = new ProbNode*[prob_field_rows];
+    for(int i=0; i<prob_field_rows; i++) prob_field[i] = new ProbNode[prob_field_cols];
 }
 
 void AttackSupport::perform(Robot * robot)
@@ -153,7 +158,7 @@ void AttackSupport::calcStaticProb()
     float dist = 0.0, angle = 0.0;
     float temp_p = 0.0;
 
-    DefenceArea def_area(!OUR_TEAM);
+    DefenceArea def_area(!GameModel::OUR_TEAM);
 
     for (int x = 0; x < PF_LENGTH_SUPP; ++x)
     {
@@ -270,7 +275,7 @@ void AttackSupport::genDistanceFromTeammates(Robot* robot)
         {
             ProbNode& n = prob_field[x][y];
 
-            for(Robot* tmate: gameModel->getMyTeam())
+            for(Robot* tmate: gameModel->getMyTeam().getRobots())
             {
                 if(tmate->getID() != robot->getID()
                 && (Measurements::distance(tmate->getPosition(), n.point) < 2000))
@@ -288,7 +293,7 @@ void AttackSupport::genBallShadows()
 
     float R = ROBOT_RADIUS + 50;
 
-    for(Robot* opp: gameModel->getOppTeam())
+    for(Robot* opp: gameModel->getOppTeam().getRobots())
     {
         float rob_x = opp->getPosition().x;
         float rob_y = opp->getPosition().y;
@@ -394,7 +399,7 @@ std::vector<std::vector<Point>> AttackSupport::genClusters()
 
     std::vector<std::vector<Point>> clusters;
 
-    for(Robot* opp: gameModel->getOppTeam())
+    for(Robot* opp: gameModel->getOppTeam().getRobots())
     {
         // Check if each opponent belongs to an existing cluster
         bool assigned = false;
@@ -468,6 +473,9 @@ bool AttackSupport::isFinished()
 
 AttackSupport::~AttackSupport()
 {
+    for(int i=0; i < prob_field_rows; i++)
+        delete prob_field[i];
+    delete prob_field;
 }
 
 float AttackSupport::getScoreProb(const Point& p)

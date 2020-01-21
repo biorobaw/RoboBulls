@@ -36,7 +36,8 @@
 // Project classes
 #include "model/gamemodel.h"
 #include "model/robot.h"
-#include "include/config/team.h"
+
+#include "include/game_constants.h"
 
 using namespace std;
 
@@ -452,9 +453,9 @@ void MainWindow::setupKeyShortcuts() {
 }
 
 void MainWindow::checkTeamColors() {
-    if (OUR_TEAM == TEAM_BLUE) {
+    if (GameModel::OUR_TEAM == TEAM_BLUE) {
         myTeam = "Blue";
-    } else if (OUR_TEAM == TEAM_YELLOW) {
+    } else if (GameModel::OUR_TEAM == TEAM_YELLOW) {
         myTeam = "Yellow";
     }
 }
@@ -519,15 +520,16 @@ void MainWindow::on_btn_botForward_pressed() {
         setMyVelocity();
         int currentFwd = objectPos->getVelocity(fieldpanel->selectedBot);
         std::cout << "currentFwd" << currentFwd<< std::endl;
-        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setL(currentFwd);
-        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setR(currentFwd);
+        auto* selected_robot = gamemodel->getMyTeam().getRobot(fieldpanel->selectedBot);
+        selected_robot->setL(currentFwd);
+        selected_robot->setR(currentFwd);
         if (currentFwd <= 0) {
 //            gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setL(currentFwd+myVelocity);
 //            gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setR(currentFwd+myVelocity);
 //            gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setXVel(myVelocity);
-            gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setL(currentFwd+myVelocity);
-            gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setR(currentFwd+myVelocity);
-            gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setXVel(myVelocity);
+            selected_robot->setL(currentFwd+myVelocity);
+            selected_robot->setR(currentFwd+myVelocity);
+            selected_robot->setXVel(myVelocity);
         }
     }
     ui->gView_field->scene()->update();
@@ -573,10 +575,11 @@ void MainWindow::on_btn_botTurnRight_released() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botTurnRight->setDown(false);
         float currentFwd = objectPos->getVelocity(fieldpanel->selectedBot);
-        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setL(currentFwd);
-        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setR(currentFwd);
+        auto* selected_robot = gamemodel->getMyTeam().getRobot(fieldpanel->selectedBot);
+        selected_robot->setL(currentFwd);
+        selected_robot->setR(currentFwd);
         //gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setAngVel(0);
-        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setYVel(0);
+        selected_robot->setYVel(0);
         std::cout << "botTurnRight_released" << std::endl;
     }
 }
@@ -585,9 +588,10 @@ void MainWindow::on_btn_botRotateRight_released() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botTurnRight->setDown(false);
         float currentFwd = objectPos->getVelocity(fieldpanel->selectedBot);
-        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setL(currentFwd);
-        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setR(currentFwd);
-        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setAngVel(0);
+        auto* selected_robot = gamemodel->getMyTeam().getRobot(fieldpanel->selectedBot);
+        selected_robot->setL(currentFwd);
+        selected_robot->setR(currentFwd);
+        selected_robot->setAngVel(0);
         //gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setYVel(0);
         std::cout << "botTurnRight_released" << std::endl;
     }
@@ -622,10 +626,11 @@ void MainWindow::on_btn_botTurnLeft_released() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botTurnLeft->setDown(false);
         float currentVel = objectPos->getVelocity(fieldpanel->selectedBot);
-        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setL(currentVel);
-        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setR(currentVel);
+        auto* selected_robot = gamemodel->getMyTeam().getRobot(fieldpanel->selectedBot);
+        selected_robot->setL(currentVel);
+        selected_robot->setR(currentVel);
 //        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setAngVel(0);
-        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setYVel(0);
+        selected_robot->setYVel(0);
     }
 }
 
@@ -633,9 +638,10 @@ void MainWindow::on_btn_botRotateLeft_released() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botTurnLeft->setDown(false);
         float currentVel = objectPos->getVelocity(fieldpanel->selectedBot);
-        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setL(currentVel);
-        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setR(currentVel);
-        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setAngVel(0);
+        auto* selected_robot = gamemodel->getMyTeam().getRobot(fieldpanel->selectedBot);
+        selected_robot->setL(currentVel);
+        selected_robot->setR(currentVel);
+        selected_robot->setAngVel(0);
 //        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setYVel(0);
     }
 }
@@ -643,12 +649,13 @@ void MainWindow::on_btn_botReverse_pressed() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botReverse->setDown(true);
         int currentVel = objectPos->getVelocity(fieldpanel->selectedBot);
-        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setL(currentVel);
-        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setR(currentVel);
+        auto* selected_robot = gamemodel->getMyTeam().getRobot(fieldpanel->selectedBot);
+        selected_robot->setL(currentVel);
+        selected_robot->setR(currentVel);
         if (currentVel >= 0) {
-            gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setL(currentVel-myVelocity);
-            gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setR(currentVel-myVelocity);
-            gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setXVel(-myVelocity);
+            selected_robot->setL(currentVel-myVelocity);
+            selected_robot->setR(currentVel-myVelocity);
+            selected_robot->setXVel(-myVelocity);
         }
     }
     ui->gView_field->scene()->update();
@@ -657,16 +664,18 @@ void MainWindow::on_btn_botReverse_pressed() {
 void MainWindow::on_btn_botReverse_released() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botReverse->setDown(false);
-        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setL(0);
-        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setR(0);
-        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setXVel(0);
+        auto* selected_robot = gamemodel->getMyTeam().getRobot(fieldpanel->selectedBot);
+        selected_robot->setL(0);
+        selected_robot->setR(0);
+        selected_robot->setXVel(0);
     }
 }
 
 void MainWindow::on_btn_botKick_pressed() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botKick->setDown(true);
-        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setKick();
+        auto* selected_robot = gamemodel->getMyTeam().getRobot(fieldpanel->selectedBot);
+        selected_robot->setKick();
         fieldpanel->guiTeam[fieldpanel->selectedBot]->kicking = true;
     }
 }
@@ -674,7 +683,8 @@ void MainWindow::on_btn_botKick_pressed() {
 void MainWindow::on_btn_botKick_released() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botKick->setDown(false);
-        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setKick(0);
+        auto* selected_robot = gamemodel->getMyTeam().getRobot(fieldpanel->selectedBot);
+        selected_robot->setKick(0);
         fieldpanel->guiTeam[fieldpanel->selectedBot]->kicking = false;
     }
 }
@@ -682,7 +692,8 @@ void MainWindow::on_btn_botKick_released() {
 void MainWindow::on_btn_botDrible_pressed() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botDrible->setDown(true);
-        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setDribble(true);
+        auto* selected_robot = gamemodel->getMyTeam().getRobot(fieldpanel->selectedBot);
+        selected_robot->setDribble(true);
         fieldpanel->guiTeam[fieldpanel->selectedBot]->dribling = true;
     }
 }
@@ -690,7 +701,8 @@ void MainWindow::on_btn_botDrible_pressed() {
 void MainWindow::on_btn_botDrible_released() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botDrible->setDown(false);
-        gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setDribble(false);
+        auto* selected_robot = gamemodel->getMyTeam().getRobot(fieldpanel->selectedBot);
+        selected_robot->setDribble(false);
         fieldpanel->guiTeam[fieldpanel->selectedBot]->dribling = false;
     }
 }
@@ -705,12 +717,13 @@ void MainWindow::on_check_botOverride_clicked(bool checked) {
             robotpanel->botIcons[fieldpanel->selectedBot]->overridden = true;
             fieldpanel->guiTeam[fieldpanel->selectedBot]->overridden = true;
             // Stopping overridden bots in their tracks
-            gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setL(0);
-            gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setR(0);
-            gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setB(0);
-            gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setXVel(0);
-            gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setYVel(0);
-            gamemodel->find(fieldpanel->selectedBot, gamemodel->getMyTeam())->setAngVel(0);
+            auto* selected_robot = gamemodel->getMyTeam().getRobot(fieldpanel->selectedBot);
+            selected_robot->setL(0);
+            selected_robot->setR(0);
+            selected_robot->setB(0);
+            selected_robot->setXVel(0);
+            selected_robot->setYVel(0);
+            selected_robot->setAngVel(0);
         } else {
             overriddenBots[fieldpanel->selectedBot] = false;
             robotpanel->botIcons[fieldpanel->selectedBot]->overridden = false;

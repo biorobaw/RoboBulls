@@ -1,4 +1,5 @@
 #include <vector>
+#include <set>
 #include <iostream>
 #include <stdlib.h>
 #include <string.h>
@@ -110,7 +111,7 @@ currentMoveStatuses;
 /* A vector of all robots on the field. Placed here for convience. Populated
  * on a call to moveUpdateStart() and emptied on moveUpdateEnd()
  */
-static std::vector<Robot*> currentAllRobots;
+static std::set<Robot*> currentAllRobots;
 
 /****************************************************/
 //detail interface functions
@@ -118,9 +119,9 @@ static std::vector<Robot*> currentAllRobots;
 void moveUpdateStart()
 {
     //Obtains all robots on both teams in one vector; ease of updating
-    currentAllRobots = gameModel->getMyTeam();
-    for(Robot* rob : gameModel->getOppTeam())
-        currentAllRobots.push_back(rob);
+    currentAllRobots = gameModel->getMyTeam().getRobots();
+    for(Robot* rob : gameModel->getOppTeam().getRobots())
+        currentAllRobots.insert(rob);
 }
 
 void moveUpdateEnd()
@@ -188,7 +189,7 @@ bool RobotMoveStatus::robotFacingRobot(Robot* a, Robot* b)
 
     /* For the omni robots, they don't face each other. So we look at their
      * velocity direction to determine "facing" (TODO: Fix this) */
-    if(a->type() != differential) {
+    if(a->getDriveType() != differential) {
         Point vel = a->getVelocityMetersPerSecond();
         float ang = atan2(vel.y, vel.x);
         float bad = Measurements::angleBetween(a, b);

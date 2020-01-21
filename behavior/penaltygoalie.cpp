@@ -15,13 +15,9 @@ void PenaltyGoalie::perform(Robot* robot)
     // Determine which opponent is taking the kick
     if(!kicker)
     {
-        kicker = gameModel->getOppTeam().at(0);
-        if(kicker)
-        {
-            for(Robot* opp : gameModel->getOppTeam())
-                if(Measurements::distance(kicker, bp) > Measurements::distance(opp, bp))
-                    kicker = opp;
-        }
+        for(Robot* opp : gameModel->getOppTeam().getRobots())
+            if(Measurements::distance(kicker, bp) > Measurements::distance(opp, bp))
+                kicker = opp;
     }
 
     // Define line segment along which goalie is allowed to move
@@ -74,7 +70,7 @@ void PenaltyGoalie::perform(Robot* robot)
 
 bool PenaltyGoalie::isFinished()
 {
-    DefenceArea our_da(OUR_TEAM);
+    DefenceArea our_da(GameModel::OUR_TEAM);
     if(gameModel->getBallSpeed() < 100 && our_da.contains(gameModel->getBallPoint(), -ROBOT_RADIUS))
         return true;
     return false;

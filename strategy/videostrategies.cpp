@@ -29,13 +29,13 @@ static float Y_DEV = 1000;
  * WAIT_COUNT_MAX Defines the maximum for a counter in the WAITING state that, if hit,
  *        The robot will return to the waiting point.
  */
-#if SIMULATED
-static float CLOSE_DIST = 800;
-static float WAIT_COUNT_MAX = 500;
-#else
+//#if SIMULATED
+//static float CLOSE_DIST = 800;
+//static float WAIT_COUNT_MAX = 500;
+//#else
 static float CLOSE_DIST = 800;
 static float WAIT_COUNT_MAX = 2000;
-#endif
+//#endif
 
 /************************************************************************/
 /* BEHAVIORS */

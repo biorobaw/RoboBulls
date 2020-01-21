@@ -4,6 +4,8 @@
 #include <QtCore/QThread>
 #include "include/netraw.h"
 #include "model/gamemodel.h"
+#include "yaml-cpp/yaml.h"
+#include <atomic>
 
 using namespace std;
 
@@ -49,7 +51,7 @@ public:
      * @param gm The GameModel to fill with information
      * @param net_ref_address Address Refbox is broadcasting to
      * @param port The port Refbox is broadcasting to */
-    RefComm(GameModel *gm);
+    RefComm(GameModel *gm, YAML::Node comm_node);
 
    ~RefComm();
 
@@ -66,7 +68,11 @@ protected:
     string _net_interface;
     GameModel *gamemodel;
 
+
 private:
+
+    std::atomic_bool stop_listening = { false };
+
    /*! @brief The legacy Refbox packet
     * @details [RefBox legacy format](http://robocupssl.cpe.ku.ac.th/referee:legacy-protocol)
     * This is the formati of packet recieved by the RefBox. */

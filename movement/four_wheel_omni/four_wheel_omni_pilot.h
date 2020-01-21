@@ -8,8 +8,7 @@
 #include "movement/movetype.h"
 #include "utilities/measurements.h"
 #include "utilities/debug.h"
-#include "include/config/tolerances.h"
-#include "include/config/simulated.h"
+#include "include/motion_parameters.h"
 
 namespace Move
 {
@@ -63,27 +62,29 @@ private:
 
     // Real robots are not physically symmetrical so the following
     // offset value is needed when calculating velocities
-    # if SIMULATED
-        const double TRANS_OFFSET = 0;
-    # else
+    //TODO: code is robot dependent + SIMULATED is no longer a compiler tag
+//    # if SIMULATED
+//        const double TRANS_OFFSET = 0;
+//    # else
         const double TRANS_OFFSET = 0.0149;
-    # endif
+//    # endif
 
     const double WHEEL_RADIUS = 27;
 
     // PID Error Variables
-    # if SIMULATED
-        const double TRANS_P_K = 1/7.0;       // Multiplier for Proportional XY
-        const double TRANS_I_K = 0.00000;    // Multiplier for integral XY
-        const double ANGULAR_P_K = 0.5;      // Multiplier for theta proportional
-        const double ANGULAR_I_K = 0.0015;   // Multiplier for theta integral
-    # else
+    //TODO: this should depend on robot not on simulated or not
+//    # if SIMULATED
+//        const double TRANS_P_K = 1/7.0;       // Multiplier for Proportional XY
+//        const double TRANS_I_K = 0.00000;    // Multiplier for integral XY
+//        const double ANGULAR_P_K = 0.5;      // Multiplier for theta proportional
+//        const double ANGULAR_I_K = 0.0015;   // Multiplier for theta integral
+//    # else
         const float PID_DIST = 500;
         const double TRANS_P_K = 0.25;       // Multiplier for Proportional XY
         const double TRANS_I_K = 0;    // Multiplier for integral XY
         const double ANGULAR_P_K = 0.1;      // Multiplier for theta proportional
         const double ANGULAR_I_K = 0;   // Multiplier for theta integral
-    # endif
+//    # endif
 
     double distance_error, angle_error;
 

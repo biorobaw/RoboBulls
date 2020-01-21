@@ -1,4 +1,3 @@
-#include "include/config/simulated.h"
 #include "utilities/comparisons.h"
 #include "behavior/defendbehavior.h"
 #include "utilities/region/rectangle.h"
@@ -165,13 +164,16 @@ DefendState::~DefendState() {
 
 /************************************************************/
 
-#if SIMULATED
- #define LINE_DISTANCE 400  //Distance ball must be to robot to move to kick
- #define GOALIE_DIST   800  //Distance ball must be away from goal to invervene
-#else
- #define LINE_DISTANCE 1200
- #define GOALIE_DIST   300
-#endif
+
+//TODO: This kind of behavior should not depend whether it is a simulation or not. Also SIMULATED is no longer a compiler tag
+
+//#if SIMULATED
+// #define LINE_DISTANCE 400  //Distance ball must be to robot to move to kick
+// #define GOALIE_DIST   800  //Distance ball must be away from goal to invervene
+//#else
+ #define LINE_DISTANCE 1200 //Distance ball must be to robot to move to kick
+ #define GOALIE_DIST   300 //Distance ball must be away from goal to invervene
+//#endif
 
 DSIdle::DSIdle()
 {
@@ -232,7 +234,7 @@ DefendState* DSIdle::action(Robot* robot)
          * "AND the ball near the goal AND the ball is not moving away..." Kick it.
          */
         Rectangle our_half(-HALF_FIELD_LENGTH, -HALF_FIELD_WIDTH, 0, HALF_FIELD_WIDTH);
-        DefenceArea our_da(OUR_TEAM);
+        DefenceArea our_da(GameModel::OUR_TEAM);
 
         if( our_half.contains(bp)
             && our_da.contains(bp, 2000)

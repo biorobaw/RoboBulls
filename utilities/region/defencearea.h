@@ -1,11 +1,11 @@
 #ifndef DEFENCEAREA_H
 #define DEFENCEAREA_H
 
-#include "include/config/globals.h"
+#include "include/field.h"
 #include "rectangle.h"
 #include "sector.h"
 #include "iostream"
-#include "include/config/team.h"
+
 
 /*! @file
  * DefenceArea is a Region that has functions related to the area around the goalpost.
@@ -22,7 +22,8 @@ public:
      * goalpost. Passing in @c !OUR_TEAM will construct it for the opponent
      * goalpost. @c OUR_TEAM is defined in "include/config/team.h".
      */
-    DefenceArea(bool team = !OUR_TEAM);
+//    DefenceArea(bool team = !OUR_TEAM);
+    DefenceArea(bool team);
 
     /*! @see Region::contains() */
     bool contains(const Point &) override;

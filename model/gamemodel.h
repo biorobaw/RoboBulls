@@ -4,7 +4,10 @@
 #include "utilities/point.h"
 #include "utilities/measurements.h"
 #include "model/robot.h"
+#include "model/team.h"
 #include <mutex>
+#include "yaml-cpp/yaml.h"
+#include "include/game_constants.h"
 
 class StrategyController;
 class VisionComm;
@@ -28,12 +31,14 @@ class GameModel
 public:
     static GameModel* getModel();
 
+
     /*! @name Game access functions
      * @{*/
-    std::vector<Robot*>& getOppTeam();
-    std::vector<Robot*>& getMyTeam();
-    std::vector<Robot*>& getBlueTeam();
-    std::vector<Robot*>& getYellowTeam();
+    void  setTeams(YAML::Node team_node);
+    Team& getOppTeam();
+    Team& getMyTeam();
+    Team& getTeam(int color);
+
     Point  getBallPoint();
     Point  getBallVelocity();
     Point  getBallStopPoint();
@@ -49,6 +54,7 @@ public:
     Robot* getHasBall();
     Robot* findMyTeam(int);
     Robot* findOpTeam(int);
+    bool is_simulation;
     //! @}
 
     //! @name grSim Replacement functions
@@ -59,7 +65,7 @@ public:
 
     //! @name Misc. Functions
     //! @{
-    Robot* find(int, std::vector<Robot*>&);
+    //Robot* find(int, std::vector<Robot*>&);
     bool isNewCommand();
     void removeRobot(int id, int team);
     void setStrategyController(StrategyController * sc);
@@ -69,13 +75,20 @@ public:
 
     static std::mutex my_team_mutex;
     static std::mutex opp_team_mutex;
+
+    static bool OUR_TEAM;     // Added as intermediate while removing all hard coded values
+
 private:
     /* StrategyController link */
     StrategyController *sc = NULL;        //Link to strategy controller
 
     /* General Game Information */
-    std::vector<Robot*> opTeam;           //The team of Robot on my team
-    std::vector<Robot*> myTeam;           //The team of Robot on the opponent team
+//    std::vector<Robot*> opTeam;           //The team of Robot on my team
+//    std::vector<Robot*> myTeam;           //The team of Robot on the opponent team
+    Team myTeam;
+    Team opTeam;
+
+
     Robot* robotWithBall   = NULL;        //Robot currently holding the ball
     Point  ballPoint       = Point(0,0);  //The current point fo the ball on the field
     Point  ballVelocity    = Point(0,0);  //The current velocity of the ball on the field

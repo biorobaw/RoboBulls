@@ -19,7 +19,7 @@ class Strategy;
 class StrategyController
 {
 public:
-    StrategyController(GameModel*);
+    StrategyController(GameModel*, bool refbox_enabled);
 
     /*! Performs one iteration of the RoboCup Game.
      * Called by GameModel, which is called by VisionComm.  */
@@ -49,6 +49,7 @@ private:
 private:
     Strategy*  activeStrategy;
     GameModel* model;
+    bool refbox_enabled;
 };
 
 #endif // STRATEGYCONTROLLER_H

@@ -1,6 +1,15 @@
 #ifndef MOVE_TYPE_H
 #define MOVE_TYPE_H
 
+/*! @brief Unused Angle Value for skill/movement constructor code
+ * @details This is a constant used to identify, in movement and skill code, an unused
+ * angle value. This is needed because in closed loop control and the like,
+ * an angle value is required, even though in many cases no angle parameter
+ * is desired. */
+#define UNUSED_ANGLE_VALUE -10
+
+
+
 namespace Move
 {
 

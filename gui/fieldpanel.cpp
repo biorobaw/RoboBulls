@@ -3,7 +3,7 @@
 #include "robotpanel.h"
 #include "selrobotpanel.h"
 #include "mainwindow.h"
-#include "include/config/team.h"
+
 #include "ui_mainwindow.h"
 #include "guiinterface.h"
 
@@ -18,6 +18,7 @@
 #include "guifield.h"
 #include "model/gamemodel.h"
 #include <vector>
+#include "include/game_constants.h"
 
 FieldPanel::FieldPanel(MainWindow * mw) {
     dash = mw;
@@ -199,7 +200,7 @@ void FieldPanel::setupScene() {
         guiTeam[i]->setToolTip("Robot " + QString::number(i));
         guiLabels[i]->id = i;
         guiLabels[i]->setScale(2.5);
-        if (OUR_TEAM == TEAM_BLUE) {
+        if (GameModel::OUR_TEAM == TEAM_BLUE) {
             guiTeam[i]->mainTeam = true;
             guiLabels[i]->mainTeam = true;
         } else {
@@ -213,7 +214,7 @@ void FieldPanel::setupScene() {
         guiTeamY[i]->setToolTip("Robot " + QString::number(i));
         guiLabelsY[i]->id = i;
         guiLabelsY[i]->setScale(2.5);
-        if (OUR_TEAM == TEAM_YELLOW) {
+        if (GameModel::OUR_TEAM == TEAM_YELLOW) {
             guiTeamY[i]->mainTeam = true;
             guiLabelsY[i]->mainTeam = true;
         } else {
@@ -223,7 +224,7 @@ void FieldPanel::setupScene() {
     }
 
     //Set the team for the field; used only to draw goal colors correctly
-    field->myTeam = (OUR_TEAM == TEAM_BLUE) ? "Blue" : "Yellow";
+    field->myTeam = (GameModel::OUR_TEAM == TEAM_BLUE) ? "Blue" : "Yellow";
 
     // Turning on Bot IDs by default
     dash->ui->check_showIDs->setChecked(true);
@@ -286,7 +287,8 @@ void FieldPanel::updateScene() {
     // Updating objects in scene
         // Blue Team
         for (int i=0; i<dash->teamSize_blue; i++) {
-            if (dash->gamemodel->find(i, dash->gamemodel->getMyTeam()) != NULL) {
+            auto* roboti = dash->gamemodel->getMyTeam().getRobot(i);
+            if ( roboti != NULL) {
                 guiTeam[i]->show();
                 guiLabels[i]->show();
                 guiTeam[i]->setX(dash->objectPos->getBotCoordX(true, i));
@@ -300,10 +302,10 @@ void FieldPanel::updateScene() {
                 guiTeam[i]->setRotation(angle);
                 // Action colors (may be better in the button slots)
                 if (i != selectedBot) {
-                    if (dash->gamemodel->find(i, dash->gamemodel->getMyTeam())->getDribble() ) {
+                    if (roboti->getDribble() ) {
                         guiTeam[i]->dribling = true;
                     } else { guiTeam[i]->dribling = false; }
-                    if (dash->gamemodel->find(i, dash->gamemodel->getMyTeam())->getKick() == 1) {
+                    if (roboti->getKick() == 1) {
                         guiTeam[i]->kicking = true;
                     } else { guiTeam[i]->kicking = false; }
                 }
@@ -335,7 +337,8 @@ void FieldPanel::updateScene() {
 
         // Yellow Team
         for (int i=0; i<dash->teamSize_yellow; i++) {
-            if (dash->gamemodel->find(i, dash->gamemodel->getOppTeam()) != NULL) {
+            auto* roboti = dash->gamemodel->getOppTeam().getRobot(i);
+            if (roboti != NULL) {
                 guiTeamY[i]->show();
                 guiLabelsY[i]->show();
                 guiTeamY[i]->setX(dash->objectPos->getBotCoordX(false, i));
@@ -529,7 +532,7 @@ void FieldPanel::updateLineQueue() {
 void FieldPanel::doubleClickScan() {
     // Scanning for double-click selection
     for (int i=0; i<dash->teamSize_blue; i++) {
-        if (dash->gamemodel->find(i,dash->gamemodel->getMyTeam()) != NULL) {
+        if (dash->gamemodel->getMyTeam().getRobot(i) != NULL) {
             if (dash->robotpanel->botIcons[i]->doubleClicked || guiTeam[i]->doubleClicked)  {
                 dash->robotpanel->botIcons[i]->doubleClicked = false;
                 guiTeam[i]->doubleClicked = false;
@@ -547,7 +550,7 @@ void FieldPanel::cameraMoveScan() {
     // Scrolling the camera removes centeredOn but not selection
     if (justScrolled) {
         for (int i=0; i<dash->teamSize_blue; i++) {
-            if (dash->gamemodel->find(i,dash->gamemodel->getMyTeam()) != NULL) {
+            if (dash->gamemodel->getMyTeam().getRobot(i) != NULL) {
                 dash->robotpanel->botIcons[i]->doubleClicked = false;
                 guiTeam[i]->doubleClicked = false;
             }//nullcheck
@@ -568,7 +571,7 @@ bool FieldPanel::fieldClickScan() {
     }
     if (field->highlighted || sidelines->highlighted) {
         for (int i=0; i<dash->teamSize_blue; i++) {
-            if (dash->gamemodel->find(i,dash->gamemodel->getMyTeam()) != NULL) {
+            if (dash->gamemodel->getMyTeam().getRobot(i) != NULL) {
                 guiTeam[i]->highlighted = false;
                 guiTeam[i]->setSelected(false);
                 dash->robotpanel->botIcons[i]->highlighted = false;
@@ -590,7 +593,7 @@ bool FieldPanel::fieldClickScan() {
 
 bool FieldPanel::panelBotClickScan() {
     for (int i=0; i<6; i++) {
-        if (dash->gamemodel->find(i,dash->gamemodel->getMyTeam()) != NULL) {
+        if (dash->gamemodel->getMyTeam().getRobot(i) != NULL) {
             // Bots on the panel clicked
             if (dash->robotpanel->botIcons[i]->isSelected()) {
                 selectedBot = i;
@@ -620,7 +623,7 @@ bool FieldPanel::panelBotClickScan() {
 
 bool FieldPanel::fieldBotClickScan() {
     for (int i=0; i<6; i++) {
-        if (dash->gamemodel->find(i,dash->gamemodel->getMyTeam()) != NULL) {
+        if (dash->gamemodel->getMyTeam().getRobot(i) != NULL) {
             // Bots on the field clicked
             if (guiTeam[i]->isSelected()) {
                 selectedBot = i;

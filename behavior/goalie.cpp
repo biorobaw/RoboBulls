@@ -3,7 +3,7 @@
 Goalie::Goalie()
     : idlePoint(gameModel->getMyGoal() + Point(ROBOT_RADIUS+50,0))
     , kick_skill(nullptr)
-    , def_area(OUR_TEAM)
+    , def_area(GameModel::OUR_TEAM)
 {
     dribble_skill = new Skill::DribbleBack(idlePoint);
     kick_skill = new Skill::KickToPointOmni(&kickPoint);
@@ -29,7 +29,7 @@ void Goalie::perform(Robot *robot)
         retrieving_ball = false;
 
     // If there is a robot with the ball facing our goal, we move to get in it's trajectory.
-    if(ballBot && ballBot->getID() != GOALIE_ID && botOnBallIsAimedAtOurGoal(ballBot, lineSegment))
+    if(ballBot && !ballBot->isGoalie() && botOnBallIsAimedAtOurGoal(ballBot, lineSegment))
     {
 //        std::cout << "Ball Bot" << std::endl;
         Point blockPoint = Measurements::lineSegmentPoint(robot->getPosition(), lineSegment.first, lineSegment.second);
@@ -65,10 +65,12 @@ void Goalie::perform(Robot *robot)
         // Find reachable teammates
         std::vector<Robot*> candidates;
 
-        std::vector<Robot*> obstacles(gameModel->getOppTeam());
-        obstacles.insert(obstacles.end(), gameModel->getMyTeam().begin(), gameModel->getMyTeam().end());
+        std::vector<Robot*> obstacles;
+        for(Robot* r : gameModel->getOppTeam().getRobots()) obstacles.push_back(r);
+        for(Robot* r : gameModel->getMyTeam().getRobots()) obstacles.push_back(r);
 
-        for(Robot* tmate: gameModel->getMyTeam())
+
+        for(Robot* tmate: gameModel->getMyTeam().getRobots())
         {
             if (tmate->getID() != robot->getID()
             && tmate->getPosition().x > -1500)   // Ignore teammates too close to the goal

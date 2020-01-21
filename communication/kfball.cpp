@@ -1,21 +1,20 @@
 #include "communication/kfball.h"
-#include "include/config/simulated.h"
 
-#if SIMULATED
-#define ACCEL -0.03
-#define TIME_STEP 1.0/55.0
-#define QVEL 0.5
-#define QPOS 0.5
-#define RVEL 10.0
-#define RPOS 5.0
-#else
-#define ACCEL -10.0
-#define TIME_STEP 0.0112    // Determined using printTimeStep()
-#define QVEL 1.0
-#define QPOS 1.0
-#define RVEL 0.00001
-#define RPOS 0.00001
-#endif
+//#if SIMULATED
+//    #define ACCEL -0.03
+//    #define TIME_STEP 1.0/55.0
+//    #define QVEL 0.5
+//    #define QPOS 0.5
+//    #define RVEL 10.0
+//    #define RPOS 5.0
+//#else
+    #define ACCEL -10.0
+    #define TIME_STEP 0.0112    // Determined using printTimeStep()
+    #define QVEL 1.0
+    #define QPOS 1.0
+    #define RVEL 0.00001
+    #define RPOS 0.00001
+//#endif
 
 KFBall::KFBall():a(ACCEL), T(TIME_STEP)
 {

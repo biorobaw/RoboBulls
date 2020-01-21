@@ -1,7 +1,6 @@
 #include <cstring>
 #include "nxtrobcomm.h"
 #include "utilities/debug.h"
-#include "include/config/robot_types.h"
 
 //Used for testing wheels; see ROBOT_WHEEL_TEST
 float lf, lb, rf, rb;
@@ -35,7 +34,7 @@ NXTRobComm::~NXTRobComm()
 //Config to change sending individual wheels or program velocities
 #define ROBOT_WHEEL_TEST 0
 
-void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
+void NXTRobComm::sendVelsLarge(std::set<Robot*>& robots)
 {
     // Create array of packets
     packet_t teamPacketBuf[5];
@@ -44,17 +43,17 @@ void NXTRobComm::sendVelsLarge(std::vector<Robot*>& robots)
     std::memset(&teamPacketBuf, 0, sizeof(packet_t)*5);
 
     // For each robot...
-    for(unsigned i = 0; i != robots.size(); ++i)
+    int i =0;
+    for(Robot* rob : robots)
     {
         // Load information into the packet
-        packet_t* packet = &teamPacketBuf[i];
-        Robot* rob =  robots[i];
+        packet_t* packet = &teamPacketBuf[i++];
         packet->id = rob->getID();
 
 //        if(packet->id == 1)
 //            packet->id = 99;
 
-        if(rob->type() == fourWheelOmni) {
+        if(rob->getDriveType() == fourWheelOmni) {
             //Packet format with Arduino: 250 and 255 with vel*k+100
             packet->tilde = char(250);
             packet->dollar = char(255);

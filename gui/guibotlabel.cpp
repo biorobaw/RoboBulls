@@ -1,8 +1,9 @@
 #include <iostream>
-#include "include/config/team.h"
+
 #include "model/gamemodel.h"
 #include "guibotlabel.h"
 #include"movement/move_collisions.h"
+#include "include/game_constants.h"
 
 GuiBotLabel::GuiBotLabel(int team)
     : team(team)
@@ -36,7 +37,7 @@ void GuiBotLabel::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
         /* If we're on our team ,get the move status. Otherwise just
          * get the Id for the above label */
         QString label;
-        if(team == OUR_TEAM) {
+        if(team == GameModel::OUR_TEAM) {
            Robot* robot = gameModel->findMyTeam(id);
            if(robot) {
                 label = "" + QString::number(id) + "(" + QString::number(Move::Collisions::getMoveStatus(robot)) + ")";
@@ -53,7 +54,7 @@ void GuiBotLabel::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
         if(r != NULL && r->getID() == id)
         {
             painter->setBrush(QBrush(QColor::fromRgb(255,69,0,255), Qt::SolidPattern));
-            if(r->isOnMyTeam() == (OUR_TEAM == TEAM_BLUE ? mainTeam : !mainTeam)) {
+            if(r->isOnMyTeam() == (GameModel::OUR_TEAM == TEAM_BLUE ? mainTeam : !mainTeam)) {
                 QRectF b(100, 0, -50, -50);
                 painter->drawEllipse(b);
             }

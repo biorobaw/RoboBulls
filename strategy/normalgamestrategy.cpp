@@ -1,4 +1,4 @@
-#include "include/config/team.h"
+
 #include "behavior/genericmovementbehavior.h"
 #include "behavior/goalie.h"
 #include "behavior/attackmain.h"
@@ -12,32 +12,33 @@
 #include "utilities/comparisons.h"
 #include "utilities/edges.h"
 #include "strategy/normalgamestrategy.h"
+#include "include/game_constants.h"
 
 NormalGameStrategy::NormalGameStrategy()
     : initialBallPos(GameModel::getModel()->getBallPoint())
-    , our_def_area(OUR_TEAM)
-    , opp_def_area(!OUR_TEAM)
+    , our_def_area(GameModel::OUR_TEAM)
+    , opp_def_area(!GameModel::OUR_TEAM)
 {
     char prevGs = gameModel->getPreviousGameState();
 
     // Opp Kick-Off
-    if((prevGs == 'k' && OUR_TEAM == TEAM_BLUE)
-    || (prevGs == 'K' && OUR_TEAM == TEAM_YELLOW))
+    if((prevGs == 'k' && GameModel::OUR_TEAM == TEAM_BLUE)
+    || (prevGs == 'K' && GameModel::OUR_TEAM == TEAM_YELLOW))
         state = opp_kickoff;
 
     // Our Kick-Off
-    else if((prevGs == 'K' && OUR_TEAM == TEAM_BLUE)
-    ||      (prevGs == 'k' && OUR_TEAM == TEAM_YELLOW))
+    else if((prevGs == 'K' && GameModel::OUR_TEAM == TEAM_BLUE)
+    ||      (prevGs == 'k' && GameModel::OUR_TEAM == TEAM_YELLOW))
         state = our_kickoff_1;
 
     // We are shooting a penalty
-    else if((prevGs == 'p' && OUR_TEAM == TEAM_YELLOW)
-    ||      (prevGs == 'P' && OUR_TEAM == TEAM_BLUE))
+    else if((prevGs == 'p' && GameModel::OUR_TEAM == TEAM_YELLOW)
+    ||      (prevGs == 'P' && GameModel::OUR_TEAM == TEAM_BLUE))
             state = shoot_penalty;
 
     // We are receiving a penalty
-    else if((prevGs == 'P' && OUR_TEAM == TEAM_YELLOW)
-    ||      (prevGs == 'p' && OUR_TEAM == TEAM_BLUE))
+    else if((prevGs == 'P' && GameModel::OUR_TEAM == TEAM_YELLOW)
+    ||      (prevGs == 'p' && GameModel::OUR_TEAM == TEAM_BLUE))
             state = defend_penalty;
 
     // Force Start from ref-box. Previous game
@@ -48,8 +49,9 @@ NormalGameStrategy::NormalGameStrategy()
 
 void NormalGameStrategy::assignBeh()
 {
-    Robot* wall1 = gameModel->findMyTeam(DEFEND_1);
-    Robot* wall2 = gameModel->findMyTeam(DEFEND_2);
+    auto my_team = gameModel->getMyTeam();
+    Robot* wall1 = my_team.getRobotByRole(RobotRole::DEFEND1);
+    Robot* wall2 = my_team.getRobotByRole(RobotRole::DEFEND2);
 
     if(wall1)
         wall1->assignBeh<Wall>();
@@ -62,9 +64,14 @@ void NormalGameStrategy::assignBeh()
 
 bool NormalGameStrategy::update()
 {
-    Robot* attack1 = gameModel->findMyTeam(ATTACK_1);
-    Robot* attack2 = gameModel->findMyTeam(ATTACK_2);
-    Robot* kick_off_rob = gameModel->findMyTeam(DEFEND_1);
+    auto my_team = gameModel->getMyTeam();
+    Robot* deffend1 = my_team.getRobotByRole(RobotRole::DEFEND1);
+    Robot* deffend2 = my_team.getRobotByRole(RobotRole::DEFEND2);
+    Robot* attack1 = my_team.getRobotByRole(RobotRole::ATTACK1);
+    Robot* attack2 = my_team.getRobotByRole(RobotRole::ATTACK2);
+
+    Robot* kick_off_rob = deffend1;
+
 
     Point bp = gameModel->getBallPoint();
     Robot* ball_bot = gameModel->getHasBall();
@@ -73,16 +80,15 @@ bool NormalGameStrategy::update()
 
     // Update the flag indicating if the defenders are clearing the ball.
     // This is key for coordination between attack and defense.
-    if(gameModel->findMyTeam(DEFEND_1) && gameModel->findMyTeam(DEFEND_1)->hasBehavior()
-    && gameModel->findMyTeam(DEFEND_2) && gameModel->findMyTeam(DEFEND_2)->hasBehavior())
+    if(deffend1 && deffend2 && deffend1->hasBehavior() && deffend2->hasBehavior())
     {
-        clearing_ball = gameModel->findMyTeam(DEFEND_1)->getBehavior()->isFinished()
-                     || gameModel->findMyTeam(DEFEND_2)->getBehavior()->isFinished();
+        clearing_ball = deffend1->getBehavior()->isFinished()
+                     || deffend2->getBehavior()->isFinished();
     }
-    else if(gameModel->findMyTeam(DEFEND_1) && gameModel->findMyTeam(DEFEND_1)->hasBehavior())
-        clearing_ball = gameModel->findMyTeam(DEFEND_1)->getBehavior()->isFinished();
-    else if(gameModel->findMyTeam(DEFEND_2) && gameModel->findMyTeam(DEFEND_2)->hasBehavior())
-        clearing_ball = gameModel->findMyTeam(DEFEND_2)->getBehavior()->isFinished();
+    else if(deffend1 && deffend1->hasBehavior())
+        clearing_ball = deffend1->getBehavior()->isFinished();
+    else if(deffend2 && deffend2->hasBehavior())
+        clearing_ball = deffend2->getBehavior()->isFinished();
     else
         clearing_ball = false;
 
@@ -142,7 +148,7 @@ bool NormalGameStrategy::update()
     case shoot_penalty:
     {
         std::cout << "Shoot Penalty" << std::endl;
-        Robot* shooter = gameModel->findMyTeam(DEFEND_1);
+        Robot* shooter = deffend1;
         if(shooter)
         {
             shooter->assignBeh<AttackMain>();
@@ -157,9 +163,10 @@ bool NormalGameStrategy::update()
     case defend_penalty:
     {
         std::cout << "Defend Penalty" << std::endl;
-        Robot* goalie = gameModel->findMyTeam(GOALIE_ID);
-        Robot* wall1 = gameModel->findMyTeam(DEFEND_1);
-        Robot* wall2 = gameModel->findMyTeam(DEFEND_2);
+        auto my_team = gameModel->getMyTeam();
+        Robot* goalie = my_team.getRobotByRole(RobotRole::GOALIE);
+        Robot* wall1 = my_team.getRobotByRole(RobotRole::DEFEND1);
+        Robot* wall2 = my_team.getRobotByRole(RobotRole::DEFEND2);
         goalie->assignBeh<PenaltyGoalie>();
 
         if(wall1)
@@ -188,9 +195,9 @@ bool NormalGameStrategy::update()
         {
             if (ball_bot == nullptr
             || (ball_bot != nullptr && ball_bot->isOnMyTeam()
-                                    && ball_bot->getID() != GOALIE_ID
-                                    && ball_bot->getID() != DEFEND_1
-                                    && ball_bot->getID() != DEFEND_2))
+                                    && ball_bot->getRole() != RobotRole::GOALIE
+                                    && ball_bot->getRole() != RobotRole::DEFEND1
+                                    && ball_bot->getRole() != RobotRole::DEFEND2))
                 state = attack;
         }
 
@@ -305,7 +312,7 @@ bool NormalGameStrategy::update()
 // Utility function to not duplicate this code
 void NormalGameStrategy::assignGoalieIfOk()
 {
-    Robot* goalie = gameModel->findMyTeam(GOALIE_ID);
+    Robot* goalie = gameModel->getMyTeam().getRobotByRole(RobotRole::GOALIE);
     if(goalie)
         goalie->assignBeh<Goalie>();
 }

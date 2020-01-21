@@ -48,7 +48,6 @@ SOURCES += main.cpp \
 	gui/objectposition.cpp \
 	gui/robotpanel.cpp \
 	gui/selrobotpanel.cpp \
-	include/config/robot_types.cpp \
 	include/grSim_Commands.pb.cc \
 	include/grSim_Packet.pb.cc \
 	include/grSim_Replacement.pb.cc \
@@ -105,6 +104,9 @@ SOURCES += main.cpp \
         communication/crc.cpp \
         movement/go_to_pose.cpp \
         movement/differential/differential_pilot.cpp \
+    model/team.cpp \
+    include/field.cpp \
+    include/motion_parameters.cpp
 
 HEADERS += \
 	behavior/attackmain.h \
@@ -134,12 +136,7 @@ HEADERS += \
 	gui/objectposition.h \
 	gui/robotpanel.h \
 	gui/selrobotpanel.h \
-	include/config/globals.h \
-	include/config/robot_types.h \
-	include/config/simulated.h \
-	include/config/team.h \
 	include/config/tolerances.h \
-	include/config/communication.h \
 	include/grSim_Commands.pb.h \
 	include/grSim_Packet.pb.h \
 	include/grSim_Replacement.pb.h \
@@ -198,7 +195,10 @@ HEADERS += \
         movement/differential/differential_pilot.h \
         movement/three_wheel_omni/three_wheel_omni_pilot.h \
         movement/four_wheel_omni/four_wheel_omni_pilot.h \
-    include/config/move_parameters.h
+    model/team.h \
+    include/game_constants.h \
+    include/field.h \
+    include/motion_parameters.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 
@@ -229,3 +229,10 @@ RESOURCES += \
 
 FORMS += \
     gui/mainwindow.ui
+
+unix:!macx: LIBS += -L$$PWD/libs/yaml-cpp-0.6.3/build/ -lyaml-cpp
+
+INCLUDEPATH += $$PWD/libs/yaml-cpp-0.6.3/include
+DEPENDPATH += $$PWD/libs/yaml-cpp-0.6.3/include
+
+unix:!macx: PRE_TARGETDEPS += $$PWD/libs/yaml-cpp-0.6.3/build/libyaml-cpp.a

@@ -31,7 +31,7 @@ void MarkBot::perform(Robot * robot)
 void MarkBot::updateMark()
 {
     // For every opponent
-    for(Robot* opp: gameModel->getOppTeam())
+    for(Robot* opp: gameModel->getOppTeam().getRobots())
     {
         bool our_side = opp->getPosition().x < 0;
         bool has_ball = gameModel->getHasBall() != nullptr &&

@@ -6,7 +6,7 @@
 #include <thread>
 #include <SDL2/SDL.h>
 
-#include "include/config/team.h"
+
 #include "utilities/debug.h"
 #include "model/gamemodel.h"
 #include "movement/go_to_pose.h"

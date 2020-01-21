@@ -6,9 +6,9 @@
 #include <functional>
 #include <cstdlib>
 #include "model/gamemodel.h"
-#include "include/config/team.h"
-#include "include/config/robot_types.h"
+
 #include "utilities/debug.h"
+#include "include/game_constants.h"
 
 namespace debug
 {
@@ -159,9 +159,8 @@ void builtin_remove_robot(const std::vector<std::string>& args)
 void builtin_add_robot(const std::vector<std::string>& args)
 {
     buildin_robot_action(args, [&](int id, char team) {
-        Robot* robot = new Robot(id, team);
-        ((team == TEAM_BLUE) ? gameModel->getBlueTeam() :
-                               gameModel->getYellowTeam()).push_back(robot);
+
+        gameModel->getTeam(team).addRobot(id);
         std::cout << "Added robot " << id << " to team " << team << std::endl;
     });
 }
@@ -173,7 +172,8 @@ void listenStart()
     //The default builtin functions and variables are registed here
     registerFunction("remove_robot", builtin_remove_robot);
     registerFunction("add_robot", builtin_add_robot);
-    registerVariable("goalie_id", &GOALIE_ID);
+    //TODO: FIX FOLLOWING LINE (IF NECCESARY) as variable no longer exists
+//    registerVariable("goalie_id", &GOALIE_ID);
 
     std::cout
         << '\n'

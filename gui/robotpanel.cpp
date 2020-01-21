@@ -262,7 +262,8 @@ void RobotPanel::updateBotPanel() {
     for (int i=0; i<6; i++) {
         botTitle[i]->setText("Robot " + QString::number(i));
         // Nullcheck
-        if (dash->gamemodel->find(i,dash->gamemodel->getMyTeam()) != NULL) {
+        auto* roboti = dash->gamemodel->getMyTeam().getRobot(i);
+        if ( roboti != NULL) {
             botFrames[i]->setEnabled(true);
             botXcoords[i]->display(dash->objectPos->getBotCoordX(true, i));
             botYcoords[i]->display(dash->objectPos->getBotCoordY(true, i));
@@ -288,8 +289,7 @@ void RobotPanel::updateBotPanel() {
 
             //Setting the Current behavior labels for the robots
             //Find a way to fix the template error!!*********
-            Robot* robot = gameModel->findMyTeam(i);
-            currBehavior[i]->setText(QString::fromStdString(SelRobotPanel::getBehaviorName(robot)));
+            currBehavior[i]->setText(QString::fromStdString(SelRobotPanel::getBehaviorName(roboti)));
 
 
             // Speed dials disabled so that I can see how GUI is updated

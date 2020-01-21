@@ -6,7 +6,7 @@
 #include "model/gamemodel.h"
 #include "model/robot.h"
 #include "utilities/point.h"
-#include "include/config/globals.h"
+#include "include/field.h"
 
 /*! @brief Defines comparison predicates and information querying functions.
  * @details `Comparisons` is a framework for extendable, flexible

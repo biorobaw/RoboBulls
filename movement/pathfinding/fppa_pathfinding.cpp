@@ -2,7 +2,7 @@
 #include <assert.h>
 #include <algorithm>
 #include <iostream>
-#include "include/config/tolerances.h"
+#include "include/motion_parameters.h"
 #include "utilities/measurements.h"
 #include "utilities/comparisons.h"
 #include "utilities/region/defencearea.h"
@@ -98,7 +98,7 @@ namespace impl {
         // Check defence areas
         bool def_area_occupied = false;
         if(use_def_areas) {
-            DefenceArea da0(OUR_TEAM), da1(!OUR_TEAM);
+            DefenceArea da0(GameModel::OUR_TEAM), da1(!GameModel::OUR_TEAM);
             def_area_occupied = da0.contains(toCheck, DEF_AREA_TOL) || da1.contains(toCheck, DEF_AREA_TOL);
         }
 
@@ -171,8 +171,8 @@ namespace impl {
         dest.y = Measurements::clamp(dest.y, -HALF_FIELD_WIDTH +100.f,  HALF_FIELD_WIDTH -100.f);
 
         // Push points to edge of defence areas
-        DefenceArea da0(OUR_TEAM);
-        DefenceArea da1(!OUR_TEAM);
+        DefenceArea da0(GameModel::OUR_TEAM);
+        DefenceArea da1(!GameModel::OUR_TEAM);
         if(def_area_on)
         {
             da0.expelPoint(dest);
@@ -183,8 +183,8 @@ namespace impl {
 
     // Populates robot obstacle points from gamemodel
     void updateRobotObstacles(Robot* self) {
-        const auto& myTeam = gameModel->getMyTeam();
-        const auto& opTeam = gameModel->getOppTeam();
+        const auto& myTeam = gameModel->getMyTeam().getRobots();
+        const auto& opTeam = gameModel->getOppTeam().getRobots();
 
         impl::robotObstacles.clear();
         impl::robotObstacles.reserve(myTeam.size() + opTeam.size() + 1);

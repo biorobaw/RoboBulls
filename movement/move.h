@@ -2,10 +2,9 @@
 #define MOVEMENT_MOVE_H
 #include <deque>
 #include <math.h>
-#include "include/config/globals.h"
 #include "movement/pathfinding/fppa_pathfinding.h"
 #include "movement/movetype.h"
-#include "include/config/tolerances.h"
+#include "include/motion_parameters.h"
 
 class Robot;
 
