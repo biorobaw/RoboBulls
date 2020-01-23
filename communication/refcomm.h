@@ -2,7 +2,7 @@
 #define REFCOMM_H
 
 #include <QtCore/QThread>
-#include "include/netraw.h"
+#include "libs/ssl-vision/include/netraw.h"
 #include "model/gamemodel.h"
 #include "yaml-cpp/yaml.h"
 #include <atomic>

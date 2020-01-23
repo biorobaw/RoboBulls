@@ -1,4 +1,5 @@
 #include <QApplication>
+#include <QDir>
 #include <csignal>
 #include <cstdlib>
 #include <iostream>
@@ -105,7 +106,9 @@ void loadConfigFiles(std::string folder = "config"){
 
 int main(int argc, char *argv[])
 {
-    std::string folder = argc > 1 ? argv[1] : "config";
+    std::string folder = argc > 1 ? argv[1] : "./config";
+
+    std::cout << QDir::currentPath().toStdString() << std::endl;
 
     std::cout << "-- COMMAND ARGS (" << argc << ")" <<  std::endl;
     for(int i=0; i < argc; i++)

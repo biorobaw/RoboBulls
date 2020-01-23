@@ -18,15 +18,20 @@ namespace edges
 {
 
 using boolFunctionPtr = bool(*)(void);
+
 bool posedge_impl(boolFunctionPtr function);
 bool negedge_impl(boolFunctionPtr function);
 
 }
 
+//TODO: original line: edges::posedge_impl( [&](){return (expression);} )
+//TODO: the line was giving compiler errors, I removed the capture (see lambda expresion)
+//since the lambda expresion is being used to capture a static variable.
 #define posedge( expression )\
-    edges::posedge_impl( [&](){return (expression);} )
+    edges::posedge_impl( [](){return (expression);} )
 
+//TODO: same for this expression
 #define negedge( expression ) \
-    edges::negedge_impl( [&](){return (expression);} )
+    edges::negedge_impl( [](){return (expression);} )
 
 #endif
