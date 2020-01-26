@@ -154,7 +154,7 @@ void AttackSupport::calcStaticProb()
 {
     // Calculate the static probility of scoring from each point
     // in the probability field based on fixed factors
-    Point opp_goal = gameModel->getOppGoal();
+    Point opp_goal = gameState->getOppGoal();
     float w_dist = 2.0, w_ang = 1.0;    // Relative weights
     float dist = 0.0, angle = 0.0;
     float temp_p = 0.0;
@@ -217,12 +217,12 @@ void AttackSupport::calcDynamicProb(Robot * robot)
 void AttackSupport::genGoalShadows(Robot* r)
 {
     // Top end of goal post
-    float g1x = gameModel->getOppGoal().x;
-    float g1y = gameModel->getOppGoal().y + GOAL_WIDTH/2;
+    float g1x = gameState->getOppGoal().x;
+    float g1y = gameState->getOppGoal().y + GOAL_WIDTH/2;
 
     // Bottom end of goal post
-    float g2x = gameModel->getOppGoal().x;
-    float g2y = gameModel->getOppGoal().y - GOAL_WIDTH/2;
+    float g2x = gameState->getOppGoal().x;
+    float g2y = gameState->getOppGoal().y - GOAL_WIDTH/2;
 
     float R = ROBOT_RADIUS;
 
@@ -440,12 +440,12 @@ std::vector<std::vector<Point>> AttackSupport::genClusters(Robot* r)
 void AttackSupport::genGoalShotAvoidance()
 {
     // Top end of goal post
-    float g1x = gameModel->getOppGoal().x;
-    float g1y = gameModel->getOppGoal().y + GOAL_WIDTH/2 + ROBOT_RADIUS + 500;
+    float g1x = gameState->getOppGoal().x;
+    float g1y = gameState->getOppGoal().y + GOAL_WIDTH/2 + ROBOT_RADIUS + 500;
 
     // Bottom end of goal post
-    float g2x = gameModel->getOppGoal().x;
-    float g2y = gameModel->getOppGoal().y - GOAL_WIDTH/2 - ROBOT_RADIUS - 500;
+    float g2x = gameState->getOppGoal().x;
+    float g2y = gameState->getOppGoal().y - GOAL_WIDTH/2 - ROBOT_RADIUS - 500;
 
     Point bp = Ball::getPosition();
 

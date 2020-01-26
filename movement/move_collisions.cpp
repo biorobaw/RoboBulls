@@ -5,7 +5,7 @@
 #include <string.h>
 #include "utilities/measurements.h"
 #include "utilities/comparisons.h"
-#include "model/gamemodel.h"
+#include "model/game_state.h"
 #include "model/robot.h"
 #include "movement/move_collisions.h"
 

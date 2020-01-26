@@ -2,7 +2,7 @@
 #include "skill/kicktopointomni.h"
 #include "skill/dribbletopoint.h"
 #include "behavior/genericmovementbehavior.h"
-#include "model/gamemodel.h"
+#include "model/game_state.h"
 #include "utilities/comparisons.h"
 #include "behavior/defendbehavior.h"
 #include "behavior/goalie.h"

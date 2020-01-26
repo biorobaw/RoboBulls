@@ -1,4 +1,4 @@
-#include "model/gamemodel.h"
+#include "model/game_state.h"
 #include "utilities/comparisons.h"
 #include "utilities/debug.h"
 #include "skill/kick.h"

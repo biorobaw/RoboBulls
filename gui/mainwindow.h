@@ -32,7 +32,7 @@ class QGraphicsScene;
 
 
 //Main Project forwards
-class GameModel;
+class GameState;
 class Robot;
 
 namespace Ui {

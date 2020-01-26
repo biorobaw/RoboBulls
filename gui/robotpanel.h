@@ -16,7 +16,7 @@ class GuiRobot;
 class GuiBall;
 class FieldPanel;
 class MainWindow;
-class GameModel;
+class GameState;
 
 //RobotPanel is the sidebar of robot display slots
 
@@ -80,7 +80,7 @@ private:
     static RobotPanel* robotpanel;
 
 protected:
-    GameModel *gamemodel;
+    GameState *gamemodel;
     FieldPanel *fieldpanel;
 };
 

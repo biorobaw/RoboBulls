@@ -1,7 +1,7 @@
 ﻿#include "objectposition.h"
 #include "fieldpanel.h"
 #include "gamepanel.h"
-#include "model/gamemodel.h"
+#include "model/game_state.h"
 #include "mainwindow.h"
 #include "model/ball.h"
 

@@ -1,6 +1,6 @@
 #include "behavior/genericmovementbehavior.h"
 #include "behavior/goalie.h"
-#include "model/gamemodel.h"
+#include "model/game_state.h"
 #include "kickoffstrategy.h"
 
 /******************

@@ -6,7 +6,7 @@
 #include "communication/visioncomm.h"
 #include "communication/robcomm.h"
 #include "communication/refcomm.h"
-#include "model/gamemodel.h"
+#include "model/game_state.h"
 #include "gui/guiinterface.h"
 #include "utilities/debug.h"
 #include "strategy/strategycontroller.h"
@@ -96,14 +96,6 @@ void registerExitSignals()
 
 
 
-//! @brief load configuration files
-void loadConfigFiles(std::string folder = "config"){
-//    YAML::Node field_yaml = YAML::LoadFile(folder + "/field.yaml");
-//    YAML::Node motion_yaml = YAML::LoadFile(folder + "/motion.yaml");
-//    YAML::Node team_yaml = YAML::LoadFile(folder + "/team.yaml");
-
-}
-
 int main(int argc, char *argv[])
 {
     std::string folder = argc > 1 ? argv[1] : "./config";
@@ -132,11 +124,10 @@ int main(int argc, char *argv[])
 
 
     //Initialize GameModel, StrategyController, Vision, and Ref
-    GameModel* gm = GameModel::getModel();
 
-    RefComm refCommunicator(gm, comm_node);
+    RefComm refCommunicator(gameState, comm_node);
     // TODO: vision communicator should not know anything about team sides (deprecated notion of "own team")
-    VisionComm visionCommunicator(gm, comm_node, team_node["TEAM_BLUE"]["SIDE"].as<int>());
+    VisionComm visionCommunicator(gameState, comm_node, team_node["TEAM_BLUE"]["SIDE"].as<int>());
 
 
     registerExitSignals();

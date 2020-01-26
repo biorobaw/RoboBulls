@@ -1,6 +1,6 @@
 #include "strategy/strategy.h"
 #include "movement/move.h"
-#include "model/gamemodel.h"
+#include "model/game_state.h"
 #include "model/robot.h"
 #include "strategy/stopstrategy.h"
 #include "strategy/teststrategy.h"
@@ -13,7 +13,7 @@
 #include "communication/robcomm.h"
 #include "gui/guiinterface.h"
 #include "strategycontroller.h"
-#include "model/gamemodel.h"
+#include "model/game_state.h"
 
 StrategyController::StrategyController( Team* _team) : team(_team) {
 }
@@ -26,7 +26,7 @@ void StrategyController::run()
     if(!team->getRobots().empty())
     {
 //        std::cout<< "at StrategyController::run() - team not empty\n";
-        if(gameModel->isNewCommand() || activeStrategy == nullptr) {
+        if(gameState->isNewCommand() || activeStrategy == nullptr) {
             //std::cout<< "at StrategyController::run()  resetting\n";
             gameModelReset();
         } else {
@@ -34,7 +34,7 @@ void StrategyController::run()
             gameModelContinued();
         }
         //std::cout<<"model->onCommandProcessed();"<<std::endl;
-        gameModel->onCommandProcessed();
+        gameState->onCommandProcessed();
 
         frameEnd();
     }
@@ -98,7 +98,7 @@ void StrategyController::assignNewStrategy(char gameState)
 void StrategyController::gameModelReset()
 {
     clearCurrentStrategy();
-    char newState = gameModel->getGameState();
+    char newState = gameState->getState();
     this->assignNewStrategy(newState); //Updates activeStrategy
     activeStrategy->assignBeh();
 }
@@ -110,7 +110,7 @@ void StrategyController::gameModelContinued()
     {
         bool clearStrategyFlag = activeStrategy->update() == true;
         char nextStrategyState = activeStrategy->getNextStrategy();
-        char currentGameState  = gameModel->getGameState();
+        char currentGameState  = gameState->getState();
         // Recreate current strategy if requested
         if(clearStrategyFlag)
             clearCurrentStrategy();

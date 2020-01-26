@@ -3,7 +3,7 @@
 
 using namespace std;
 
-RefComm::RefComm(GameModel *gm, YAML::Node comm_node)
+RefComm::RefComm(GameState *gm, YAML::Node comm_node)
 {
     cout << "--REFBOX " << endl
          << "        REFBOX_ADDR    : " << comm_node["REFBOX_ADDR"] << endl

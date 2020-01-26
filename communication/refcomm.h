@@ -3,7 +3,7 @@
 
 #include <QtCore/QThread>
 #include "libs/ssl-vision/include/netraw.h"
-#include "model/gamemodel.h"
+#include "model/game_state.h"
 #include "yaml-cpp/yaml.h"
 #include <atomic>
 
@@ -51,7 +51,7 @@ public:
      * @param gm The GameModel to fill with information
      * @param net_ref_address Address Refbox is broadcasting to
      * @param port The port Refbox is broadcasting to */
-    RefComm(GameModel *gm, YAML::Node comm_node);
+    RefComm(GameState *gm, YAML::Node comm_node);
 
    ~RefComm();
 
@@ -66,7 +66,7 @@ protected:
     int    _port;
     string _net_address;
     string _net_interface;
-    GameModel *gamemodel;
+    GameState *gamemodel;
 
 
 private:

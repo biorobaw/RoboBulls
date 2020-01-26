@@ -1,4 +1,4 @@
-#include "model/gamemodel.h"
+#include "model/game_state.h"
 #include "movement/movetype.h"
 #include "movement/go_to_pose.h"
 #include "gui/guiinterface.h"
@@ -8,7 +8,7 @@
 #include "parameters/field.h"
 #include "movement/move.h"
 #include "movement/move_collisions.h"
-#include "model/gamemodel.h"
+#include "model/game_state.h"
 #include "utilities/comparisons.h"
 
 #include <iostream>

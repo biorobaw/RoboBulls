@@ -3,7 +3,7 @@
 #include <functional>
 #include <algorithm>
 #include <math.h>
-#include "model/gamemodel.h"
+#include "model/game_state.h"
 #include "model/robot.h"
 #include "utilities/point.h"
 #include "parameters/field.h"

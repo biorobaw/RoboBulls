@@ -1,7 +1,7 @@
 #include "freekickstrategy.h"
 #include "behavior/attackmain.h"
 #include "behavior/attacksupport.h"
-#include "model/gamemodel.h"
+#include "model/game_state.h"
 #include "behavior/goalie.h"
 #include "strategy/normalgamestrategy.h"
 #include "behavior/refstop.h"
@@ -27,30 +27,30 @@ void FreeKickStrategy::assignBeh()
     Robot* attack2 = team->getRobotByRole(RobotRole::ATTACK2);
 
     // We are taking the free kick
-    if ((gameModel->getGameState() == 'F' && team->getColor() == TEAM_BLUE) ||
-        (gameModel->getGameState() == 'f' && team->getColor() == TEAM_YELLOW))
+    if ((gameState->getState() == 'F' && team->getColor() == TEAM_BLUE) ||
+        (gameState->getState() == 'f' && team->getColor() == TEAM_YELLOW))
     {
         for(Robot* rob : team->getRobots())
             rob->clearBehavior();
 
         if(attack1)
         {
-            attack1->assignSkill<Skill::KickToPointOmni>(gameModel->getOppGoal());
+            attack1->assignSkill<Skill::KickToPointOmni>(gameState->getOppGoal());
             kicker = attack1;
         }
         else if(attack2)
         {
-            attack2->assignSkill<Skill::KickToPointOmni>(gameModel->getOppGoal());
+            attack2->assignSkill<Skill::KickToPointOmni>(gameState->getOppGoal());
             kicker = attack2;
         }
         else if(wall1)
         {
-            wall1->assignSkill<Skill::KickToPointOmni>(gameModel->getOppGoal());
+            wall1->assignSkill<Skill::KickToPointOmni>(gameState->getOppGoal());
             kicker = wall1;
         }
         else if(wall2)
         {
-            wall2->assignSkill<Skill::KickToPointOmni>(gameModel->getOppGoal());
+            wall2->assignSkill<Skill::KickToPointOmni>(gameState->getOppGoal());
             kicker = wall2;
         }
 
@@ -66,8 +66,8 @@ void FreeKickStrategy::assignBeh()
         NormalGameStrategy::assignGoalieIfOk(team);
     }
     // We are defending against a free kick
-    else if ((gameModel->getGameState() == 'f' && team->getColor() == TEAM_BLUE)
-          || (gameModel->getGameState() == 'F' && team->getColor() == TEAM_YELLOW))
+    else if ((gameState->getState() == 'f' && team->getColor() == TEAM_BLUE)
+          || (gameState->getState() == 'F' && team->getColor() == TEAM_YELLOW))
     {
         if(wall1)
             wall1->assignBeh<Wall>();

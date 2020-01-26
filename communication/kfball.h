@@ -1,7 +1,7 @@
 #ifndef KFILTER_H
 #define KFILTER_H
 #include "kalman/ekfilter.hpp"
-#include "model/gamemodel.h"
+#include "model/game_state.h"
 #include <time.h>
 #include <deque>
 

@@ -2,7 +2,7 @@
 #define MARKBOT_H
 
 #include "genericmovementbehavior.h"
-#include "model/gamemodel.h"
+#include "model/game_state.h"
 #include "utilities/region/defencearea.h"
 #include "utilities/comparisons.h"
 #include "gui/guiinterface.h"

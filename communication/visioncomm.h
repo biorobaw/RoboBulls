@@ -3,7 +3,7 @@
 #include <string>
 #include <QtCore/QThread>
 #include "libs/ssl-vision/include/robocup_ssl_client.h"
-#include "model/gamemodel.h"
+#include "model/game_state.h"
 #include "model/robot.h"
 #include "kfball.h"
 #include "gui/guiinterface.h"
@@ -31,7 +31,7 @@ const float CONF_THRESHOLD_BOTS = 0.90;
 class VisionComm: public QThread
 {
 public:
-    VisionComm(GameModel *gm, YAML::Node comm_node, int _side);
+    VisionComm(GameState *gm, YAML::Node comm_node, int _side);
     ~VisionComm();
 
     //! @brief Recieves an SSL_WrapperPacket and fills in the GameModel information

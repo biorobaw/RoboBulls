@@ -8,7 +8,7 @@
 
 
 #include "utilities/debug.h"
-#include "model/gamemodel.h"
+#include "model/game_state.h"
 #include "movement/go_to_pose.h"
 #include "gui/guiinterface.h"
 

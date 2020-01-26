@@ -9,7 +9,7 @@
 #include "guiinterface.h"
 #include "ui_mainwindow.h"
 #include "guirobot.h"
-#include "model/gamemodel.h"
+#include "model/game_state.h"
 #include <typeinfo>
 #include <typeindex>
 #ifdef __GNUC__

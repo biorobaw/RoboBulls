@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "model/gamemodel.h"
+#include "model/game_state.h"
 #include "guibotlabel.h"
 #include"movement/move_collisions.h"
 #include "parameters/game_constants.h"

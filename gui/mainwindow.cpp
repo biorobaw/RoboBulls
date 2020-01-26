@@ -34,7 +34,7 @@
 #include "communication/robcomm.h"
 
 // Project classes
-#include "model/gamemodel.h"
+#include "model/game_state.h"
 #include "model/robot.h"
 
 #include "parameters/game_constants.h"
@@ -161,7 +161,7 @@ void MainWindow::guiPrint(string output) {
 
 QString MainWindow::getRemTime() {
     QString t;  // return value
-    std::string time = std::to_string(gameModel->getRemainingTime());
+    std::string time = std::to_string(gameState->getRemainingTime());
     t = QString::fromStdString(time);
 
     return t;

@@ -123,7 +123,7 @@ void Wall::calcWallPoints(Robot* robot)
 {
     Point bp = Ball::getPosition();
     Robot* goalie = robot->getTeam()->getRobotByRole(RobotRole::GOALIE);
-    Point gp = goalie ? goalie->getPosition() : gameModel->getMyGoal();
+    Point gp = goalie ? goalie->getPosition() : gameState->getMyGoal();
 
 
     DefenceArea da(TEAM_DEFFENCE_AREA);
@@ -138,7 +138,7 @@ void Wall::calcWallPoints(Robot* robot)
         // The goalie would have to be quite out of place
         // for no intercepts, so position between the ball
         // and the center of the goal
-        std::vector<Point> temp = da.lineIntercepts(bp, gameModel->getMyGoal());
+        std::vector<Point> temp = da.lineIntercepts(bp, gameState->getMyGoal());
         if(temp.empty())
             intercept = Point (DEF_AREA_RADIUS + 3*ROBOT_RADIUS, 0);
         else

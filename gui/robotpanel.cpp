@@ -10,7 +10,7 @@
 #include "fieldpanel.h"
 #include "selrobotpanel.h"
 #include "ui_mainwindow.h"
-#include "model/gamemodel.h"
+#include "model/game_state.h"
 #include "utilities/getclassname.h"
 #include "model/robot.h"
 #include "utilities/measurements.h"
@@ -270,14 +270,14 @@ void RobotPanel::updateBotPanel() {
     dash->ui->currStrategy->setText(QString::fromStdString(getCurrStrategy()));
 
     //Populating the team info frame in robot panel
-    int blueG = gameModel->getBlueGoals();
+    int blueG = gameState->getBlueGoals();
     dash->ui->blueGoal->setText("Blue Goals: " + QString::number(blueG));
 
-    int yellG = gameModel->getYellowGoals();
+    int yellG = gameState->getYellowGoals();
     dash->ui->yellGoal->setText("Yellow Goals: " + QString::number(yellG));
 
     //Populating remaining time label
-    int time = gameModel->getRemainingTime();
+    int time = gameState->getRemainingTime();
     dash->ui->timeRem->setText("Time Left: " + QString::number(time));
 
     // Mouse point
@@ -356,9 +356,8 @@ void RobotPanel::toggleIconVisible() {
 
 const std::string RobotPanel::getCurrStrategy()
 {
-    char gameState = gameModel->getGameState();
 
-    switch(gameState)
+    switch(gameState->getState())
     {
     case 'S':    //stop game
     case 'G':    //Blue Goal
@@ -403,9 +402,8 @@ const std::string RobotPanel::getCurrStrategy()
 
 const std::string RobotPanel::getGameState()
 {
-    char gameState = gameModel->getGameState();
 
-    switch(gameState)
+    switch(gameState->getState())
     {
     case 'S':    //stop game
         return "Stop Game";

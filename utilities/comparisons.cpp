@@ -1,6 +1,6 @@
 #include <algorithm>
 #include "parameters/field.h"
-#include "model/gamemodel.h"
+#include "model/game_state.h"
 #include "utilities/comparisons.h"
 #include "model/ball.h"
 
@@ -165,10 +165,10 @@ pred_distanceBall::pred_distanceBall()
     : pred_distance(Ball::getPosition())
     { }
 pred_distanceMyGoal::pred_distanceMyGoal()
-    : pred_distance(gameModel->getMyGoal())
+    : pred_distance(gameState->getMyGoal())
     { }
 pred_distanceOpGoal::pred_distanceOpGoal()
-    : pred_distance(gameModel->getOppGoal())
+    : pred_distance(gameState->getOppGoal())
     { }
 
 /****************************************************************/

@@ -2,7 +2,7 @@
 #define INDIRECTKICKSTRATEGY_H
 
 #include "strategy/strategy.h"
-#include "model/gamemodel.h"
+#include "model/game_state.h"
 #include "model/robot.h"
 
 /*! @file

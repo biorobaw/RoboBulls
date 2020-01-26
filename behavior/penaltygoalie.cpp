@@ -39,7 +39,7 @@ void PenaltyGoalie::perform(Robot* robot)
     }
     else
     {
-        x4 = gameModel->getMyGoal().x + DEF_AREA_RADIUS;
+        x4 = gameState->getMyGoal().x + DEF_AREA_RADIUS;
         y4 = 0;
     }
 
@@ -50,7 +50,7 @@ void PenaltyGoalie::perform(Robot* robot)
 
     // Stay at the centre of the goalpost if the opponent is not aiming
     // somewhere inside the goal-post.
-    Point block_point = gameModel->getMyGoal() + Point(ROBOT_RADIUS, 0);
+    Point block_point = gameState->getMyGoal() + Point(ROBOT_RADIUS, 0);
 
     if(dem != 0)    // Lines are not parallel
     {

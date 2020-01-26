@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <ctime>
 #include "model/robot.h"
-#include "model/gamemodel.h"
+#include "model/game_state.h"
 #include "behavior/genericmovementbehavior.h"
 #include "parameters/motion_parameters.h"
 #include "model/ball.h"

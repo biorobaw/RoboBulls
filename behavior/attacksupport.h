@@ -2,7 +2,7 @@
 #define ATTACK_SUPPORT_H
 #include "behavior/genericmovementbehavior.h"
 #include "utilities/region/defencearea.h"
-#include "model/gamemodel.h"
+#include "model/game_state.h"
 #include "model/robot.h"
 #include <algorithm>
 #include "utilities/comparisons.h"

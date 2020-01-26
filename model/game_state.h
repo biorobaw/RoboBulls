@@ -25,11 +25,9 @@ class Robot;
  * <b>Example Everyday Usage</b>
  * @include example_gamemodel.cpp
  */
-class GameModel
+class GameState
 {
 public:
-    static GameModel* getModel();
-
 
     /*! @name Game access functions
      * @{*/
@@ -37,13 +35,12 @@ public:
     char   getBlueGoals();
     char   getYellowGoals();
     short  getRemainingTime();
-    char   getGameState();
-    char   getPreviousGameState();
+    char   getState();
+    char   getPreviousState();
 
     Point  getPenaltyPoint();
     Point  getOppGoal();
     Point  getMyGoal();
-    Robot* getHasBall();
     //! @}
 
     //! @name grSim Replacement functions
@@ -67,8 +64,8 @@ private:
     /* General Game Information */
 
 
-    char   gameState       = '\0';        //The current state of the game from RefComm
-    char   previousGameState = '\0';      //The previous gamestate
+    char   state           = '\0';        //The current state of the game from RefComm
+    char   previousState   = '\0';      //The previous gamestate
     bool   hasNewCommand   = false;       //True on the iteration that gameState has changed
     char   blueGoals       = 0;           //Number of scores yellow goals
     char   yellowGoals     = 0;           //Number of scores yellow goals
@@ -112,7 +109,7 @@ private:
 };
 
 //Global singleton pointer to access GameModel
-extern GameModel* gameModel;
+extern GameState* gameState;
 //! @}
 
 #endif // GAMEMODEL_H

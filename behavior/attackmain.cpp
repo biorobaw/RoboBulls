@@ -161,7 +161,7 @@ void AttackMain::calcStaticProb()
 {
     // Calculate the static probility of scoring from each point
     // in the probability field based on fixed factors
-    Point opp_goal = gameModel->getOppGoal();
+    Point opp_goal = gameState->getOppGoal();
     float w_dist = 2.0, w_ang = 1.0;    // Relative weights
     float dist = 0.0, angle = 0.0;
     float temp_p = 0.0;
@@ -213,12 +213,12 @@ void AttackMain::calcDynamicProb(Robot* r)
             prob_field[x][y].dynamic_val = 0;
 
     // Top end of goal post
-    float A1 = gameModel->getOppGoal().x;
-    float B1 = gameModel->getOppGoal().y + GOAL_WIDTH/2;
+    float A1 = gameState->getOppGoal().x;
+    float B1 = gameState->getOppGoal().y + GOAL_WIDTH/2;
 
     // Bottom end of goal post
-    float A2 = gameModel->getOppGoal().x;
-    float B2 = gameModel->getOppGoal().y - GOAL_WIDTH/2;
+    float A2 = gameState->getOppGoal().x;
+    float B2 = gameState->getOppGoal().y - GOAL_WIDTH/2;
 
     float R = ROBOT_RADIUS;
 
@@ -328,7 +328,7 @@ std::pair<bool, Point> AttackMain::calcBestGoalPoint(Robot* r)
     // Sample a number of points along opp goal and generate clusters of clear shot points
     for(int goal_y = -GOAL_WIDTH/2+BALL_RADIUS+10; goal_y <= GOAL_WIDTH/2-BALL_RADIUS-10; goal_y += 10)
     {
-        Point target = gameModel->getOppGoal() + Point(0, goal_y);
+        Point target = gameState->getOppGoal() + Point(0, goal_y);
         bool clear_shot = true;
 
         for(const Point& obstacle : obstacles)

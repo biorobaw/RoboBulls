@@ -4,7 +4,7 @@
 #include "skill.h"
 #include "utilities/point.h"
 #include "movement/go_to_pose.h"
-#include "model/gamemodel.h"
+#include "model/game_state.h"
 
 namespace Skill
 {

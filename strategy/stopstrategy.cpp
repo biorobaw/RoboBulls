@@ -4,7 +4,7 @@
 #include "utilities/measurements.h"
 #include "behavior/goalie.h"
 #include "behavior/refstop.h"
-#include "model/gamemodel.h"
+#include "model/game_state.h"
 #include "utilities/comparisons.h"
 #include "stopstrategy.h"
 

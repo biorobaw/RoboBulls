@@ -6,7 +6,7 @@
 #include "utilities/measurements.h"
 #include "utilities/comparisons.h"
 #include "utilities/region/defencearea.h"
-#include "model/gamemodel.h"
+#include "model/game_state.h"
 #include "movement/pathfinding/fppa_pathfinding.h"
 #include "model/ball.h"
 

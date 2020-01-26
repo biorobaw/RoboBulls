@@ -16,7 +16,7 @@ static bool ballIsMovingAway()
     Point bv = Ball::getVelocity();
     float bs = Ball::getSpeed();
     float ba = atan2(bv.y, bv.x);
-    float ballGoalAng = Measurements::angleBetween(bp, gameModel->getMyGoal());
+    float ballGoalAng = Measurements::angleBetween(bp, gameState->getMyGoal());
     return (bs > 0.25) && !(Measurements::isClose(ba, ballGoalAng, 90*(M_PI/180)));
 }
 
@@ -69,7 +69,7 @@ DefendState* DefendState::action(Robot* robot)
     updateCount = 0;
 
     Point bp = Ball::getPosition();
-    Point gl = gameModel->getMyGoal();
+    Point gl = gameState->getMyGoal();
 
     if(bp.x < 0)
     {
@@ -219,7 +219,7 @@ DefendState* DSIdle::action(Robot* robot)
         Point bp  = Ball::getPosition();
         Point bv  = Ball::getVelocity();
         Point bpr = Ball::getStopPosition();
-        Point gl  = gameModel->getMyGoal();
+        Point gl  = gameState->getMyGoal();
         float bs  = Ball::getSpeed();
         float velang = atan2(bv.y, bv.x);
 
@@ -258,7 +258,7 @@ DSKick::DSKick()
 #if DEFENDBEHAVIOR_DEBUG
     std::cout << "DefendStateKick Created" << std::endl;
 #endif
-    ktpo = new Skill::KickToPointOmni(gameModel->getOppGoal());
+    ktpo = new Skill::KickToPointOmni(gameState->getOppGoal());
 }
 
 DSKick::~DSKick()
@@ -304,7 +304,7 @@ DefendState* DSIntercept::action(Robot* robot)
 //    std::cout << "DefendStateIntercept" << std::endl;
 
     Point bp = Ball::getPosition();
-    Point goal = gameModel->getMyGoal();
+    Point goal = gameState->getMyGoal();
 
     if(not(chosenLinePoint)) {
         //The conditions to go to this state validate the ball is RIGHT NOW
@@ -328,7 +328,7 @@ DefendState* DSIntercept::action(Robot* robot)
                 && Comparisons::distanceBall().minInTeam(robot->getTeam()) == robot)
             {
                 kicker_ID = robot->getID();
-                ktpo = new Skill::KickToPointOmni(gameModel->getOppGoal());
+                ktpo = new Skill::KickToPointOmni(gameState->getOppGoal());
                 kickingBall = true;
             }
 
@@ -374,7 +374,7 @@ bool DSIntercept::tryGetValidLinePoint(Robot* r)
 {
     Point bp = Ball::getPosition();
     Point bpp = Ball::getStopPosition();
-    Point goal = gameModel->getMyGoal();
+    Point goal = gameState->getMyGoal();
     Point p = Measurements::lineSegmentPoint(r->getPosition(), bp, bpp);
     if(abs(goal.x - p.x) < 2500 && Measurements::distance(r, p) < LINE_DISTANCE*2) {
         linePoint = p;

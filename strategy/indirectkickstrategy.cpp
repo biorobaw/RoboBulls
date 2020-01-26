@@ -1,5 +1,5 @@
 #include "indirectkickstrategy.h"
-#include "model/gamemodel.h"
+#include "model/game_state.h"
 #include "utilities/region/rectangle.h"
 #include "utilities/comparisons.h"
 
@@ -22,7 +22,6 @@ IndirectKickStrategy::IndirectKickStrategy(Team* _team)
 
 void IndirectKickStrategy::assignBeh()
 {
-    GameModel *gm = GameModel::getModel();
 
     Robot* wall1 = team->getRobotByRole(RobotRole::DEFEND1);
     Robot* wall2 = team->getRobotByRole(RobotRole::DEFEND2);
@@ -31,30 +30,30 @@ void IndirectKickStrategy::assignBeh()
 
 
     // We are kicking
-    if ((gm->getGameState() == 'I' && team->getColor() == TEAM_BLUE) ||
-        (gm->getGameState() == 'i' && team->getColor() == TEAM_YELLOW))
+    if ((gameState->getState() == 'I' && team->getColor() == TEAM_BLUE) ||
+        (gameState->getState() == 'i' && team->getColor() == TEAM_YELLOW))
     {
         for(Robot* rob : team->getRobots())
             rob->clearBehavior();
 
         if(attack1)
         {
-            attack1->assignSkill<Skill::KickToPointOmni>(gm->getOppGoal());
+            attack1->assignSkill<Skill::KickToPointOmni>(gameState->getOppGoal());
             kicker = attack1;
         }
         else if(attack2)
         {
-            attack2->assignSkill<Skill::KickToPointOmni>(gm->getOppGoal());
+            attack2->assignSkill<Skill::KickToPointOmni>(gameState->getOppGoal());
             kicker = attack2;
         }
         else if(wall1)
         {
-            wall1->assignSkill<Skill::KickToPointOmni>(gm->getOppGoal());
+            wall1->assignSkill<Skill::KickToPointOmni>(gameState->getOppGoal());
             kicker = wall1;
         }
         else if(wall2)
         {
-            wall2->assignSkill<Skill::KickToPointOmni>(gm->getOppGoal());
+            wall2->assignSkill<Skill::KickToPointOmni>(gameState->getOppGoal());
             kicker = wall2;
         }
 
@@ -70,8 +69,8 @@ void IndirectKickStrategy::assignBeh()
         NormalGameStrategy::assignGoalieIfOk(team);
     }
     // We are defending against an indirect kick
-    else if ((gm->getGameState() == 'i' && team->getColor() == TEAM_BLUE) ||
-             (gm->getGameState() == 'I' && team->getColor() == TEAM_YELLOW))
+    else if ((gameState->getState() == 'i' && team->getColor() == TEAM_BLUE) ||
+             (gameState->getState() == 'I' && team->getColor() == TEAM_YELLOW))
     {
         if(wall1)
             wall1->assignBeh<Wall>();

@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "behavior/genericskillbehavior.h"
 #include "skill/stop.h"
-#include "model/gamemodel.h"
+#include "model/game_state.h"
 #include "strategy/videostrategies.h"
 #include "utilities/debug.h"
 #include "utilities/comparisons.h"
@@ -78,8 +78,8 @@ void OmniRandomKicker::perform(Robot* robot)
 {
     if(ktp == nullptr) {
         Point offset = Point(-X_DEV+rand()%(2*(int)X_DEV), -Y_DEV+rand()%(2*(int)Y_DEV));
-        Point myGoal = gameModel->getMyGoal();
-        Point opgoal = gameModel->getOppGoal();
+        Point myGoal = gameState->getMyGoal();
+        Point opgoal = gameState->getOppGoal();
         Point less = std::min(myGoal, opgoal, Comparisons::distance(receiver));
         ktp = new Skill::KickToPointOmni(less + offset);
     } else {
@@ -247,7 +247,7 @@ void VideoStrategy3::assignBeh()
 {
     //Start out going to the penalty point
     float ang = Measurements::angleBetween(guy, Point(0,0));
-    guy->assignBeh<GenericMovementBehavior>(gameModel->getPenaltyPoint(), ang, false, false);
+    guy->assignBeh<GenericMovementBehavior>(gameState->getPenaltyPoint(), ang, false, false);
 }
 
 bool VideoStrategy3::update()
@@ -258,7 +258,7 @@ bool VideoStrategy3::update()
     case NONE:
         //Is the ball comes on our side, go for it.
         if(bp.x > 0) {
-            guy->assignSkill<Skill::KickToPointOmni>(gameModel->getMyGoal());
+            guy->assignSkill<Skill::KickToPointOmni>(gameState->getMyGoal());
             state = KICKING;
         }
         break;

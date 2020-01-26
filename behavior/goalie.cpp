@@ -2,7 +2,7 @@
 #include "model/ball.h"
 
 Goalie::Goalie()
-    : idlePoint(gameModel->getMyGoal() + Point(ROBOT_RADIUS+50,0))
+    : idlePoint(gameState->getMyGoal() + Point(ROBOT_RADIUS+50,0))
     , kick_skill(nullptr)
     , def_area(TEAM_DEFFENCE_AREA)
 {
@@ -123,8 +123,8 @@ void Goalie::perform(Robot *robot)
 
         // This is the point along the goal-post closest to the ball
         Point goal_point = Measurements::lineSegmentPoint(Ball::getPosition(),
-                                                   Point(gameModel->getMyGoal().x, GOAL_WIDTH/2),
-                                                   Point(gameModel->getMyGoal().x, -GOAL_WIDTH/2));
+                                                   Point(gameState->getMyGoal().x, GOAL_WIDTH/2),
+                                                   Point(gameState->getMyGoal().x, -GOAL_WIDTH/2));
 
         // This is the point along the line segment ball_point->goal_point closest to the robot
         Point intercept_point = Measurements::lineSegmentPoint(robot->getPosition(),
@@ -159,7 +159,7 @@ void Goalie::perform(Robot *robot)
 bool Goalie::isBallMovingTowardsGoal(std::pair<Point,Point>& lineSegOut)
 {
     // Filter out balls not moving towards goal
-    Point goal = gameModel->getMyGoal();
+    Point goal = gameState->getMyGoal();
     std::cout << "goal point:" << std::endl;
     Point bVel = Ball::getVelocity();
     if(bVel.x > -10)
@@ -180,7 +180,7 @@ bool Goalie::botOnBallIsAimedAtOurGoal(Robot* robot, std::pair<Point,Point>& lin
 {
     /* Return false automatically if the robot's orientation is facing a direction
     opposite to that of our goal */
-    Point myGoalPos = gameModel->getMyGoal();
+    Point myGoalPos = gameState->getMyGoal();
     float orientation = robot->getOrientation();
     if (orientation > -M_PI/2 && orientation < M_PI/2)
         return false;

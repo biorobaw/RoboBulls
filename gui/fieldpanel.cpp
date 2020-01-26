@@ -16,7 +16,7 @@
 #include "guidrawpoint.h"
 #include "guidrawregion.h"
 #include "guifield.h"
-#include "model/gamemodel.h"
+#include "model/game_state.h"
 #include <vector>
 #include "parameters/game_constants.h"
 
