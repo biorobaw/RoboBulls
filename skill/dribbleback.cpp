@@ -1,4 +1,5 @@
 #include "dribbleback.h"
+#include "model/ball.h"
 
 namespace Skill
 {
@@ -17,7 +18,7 @@ bool DribbleBack::perform(Robot* robot)
 {
 //    std::cout << "Dribble Back" << std::endl;
 
-    Point bp = gameModel->getBallPoint();
+    Point bp = Ball::getPosition();
     Point rp = robot->getPosition();
     float ang_to_ball = Measurements::angleBetween(rp,bp);
     float dist_to_ball = Measurements::distance(rp,bp);

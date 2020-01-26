@@ -4,6 +4,7 @@
 #include "guibotlabel.h"
 #include"movement/move_collisions.h"
 #include "parameters/game_constants.h"
+#include "model/ball.h"
 
 GuiBotLabel::GuiBotLabel(int team, int id)
     : id(id), team(team)
@@ -43,7 +44,7 @@ void GuiBotLabel::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
                 label = "" + QString::number(id) + "(" + QString::number(Move::Collisions::getMoveStatus(robot)) + ")";
 
                 //Drawing ball indicator
-                Robot* r = gameModel->getHasBall();
+                Robot* r = Ball::getRobotWithBall();
                 if(r != NULL && r->getID() == id) // does this robot have the ball?
                 {
                     painter->setBrush(QBrush(QColor::fromRgb(255,69,0,255), Qt::SolidPattern));

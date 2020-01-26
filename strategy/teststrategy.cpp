@@ -12,6 +12,7 @@
 #include "behavior/penaltygoalie.h"
 #include "behavior/wall.h"
 #include "ctime"
+#include "model/ball.h"
 
 /************************************************************************/
 //Test Behaviors Section
@@ -117,7 +118,7 @@ class RotBeh : public GenericMovementBehavior
 {
     void perform(Robot * robot) override
     {
-        float ang = Measurements::angleBetween(robot, gameModel->getBallPoint());
+        float ang = Measurements::angleBetween(robot, Ball::getPosition());
         setMovementTargets(robot->getPosition(), ang);
         GenericMovementBehavior::perform(robot);
     }
@@ -160,7 +161,7 @@ public:
     void perform(Robot *robot) override
     {
         Point rp = robot->getPosition();
-        double ori = Measurements::angleBetween(rp, gameModel->getBallPoint());
+        double ori = Measurements::angleBetween(rp, Ball::getPosition());
         switch(state)
         {
             case pos_one:
@@ -189,8 +190,8 @@ public:
     Point offset;
 
     void perform(Robot *robot) override  {
-        setMovementTargets(gameModel->getBallPoint() + offset,
-                           Measurements::angleBetween(robot->getPosition(),gameModel->getBallPoint()),
+        setMovementTargets(Ball::getPosition() + offset,
+                           Measurements::angleBetween(robot->getPosition(),Ball::getPosition()),
                            true, true);
         GenericMovementBehavior::perform(robot);
     }

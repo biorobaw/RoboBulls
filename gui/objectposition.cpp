@@ -3,6 +3,7 @@
 #include "gamepanel.h"
 #include "model/gamemodel.h"
 #include "mainwindow.h"
+#include "model/ball.h"
 
 //Helper Classes
 #include "guiscene.h"
@@ -180,14 +181,14 @@ float ObjectPosition::getBotSpeed(int id) {
 
 int ObjectPosition::getBallCoordX() {
     int b;
-    b = gameModel->getBallPoint().x;
+    b = Ball::getPosition().x;
 
     return b;
 }
 
 int ObjectPosition::getBallCoordY() {
     int b;
-    b = gameModel->getBallPoint().y;
+    b = Ball::getPosition().y;
     return b;
 }
 

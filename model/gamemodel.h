@@ -34,11 +34,6 @@ public:
     /*! @name Game access functions
      * @{*/
 
-    Point  getBallPoint();
-    Point  getBallVelocity();
-    Point  getBallStopPoint();
-    float  getBallSpeed();
-
     char   getBlueGoals();
     char   getYellowGoals();
     short  getRemainingTime();
@@ -49,7 +44,6 @@ public:
     Point  getOppGoal();
     Point  getMyGoal();
     Robot* getHasBall();
-    bool is_simulation;
     //! @}
 
     //! @name grSim Replacement functions
@@ -70,18 +64,8 @@ public:
 
 
 private:
-    /* StrategyController link */
-
     /* General Game Information */
-//    std::vector<Robot*> opTeam;           //The team of Robot on my team
-//    std::vector<Robot*> myTeam;           //The team of Robot on the opponent team
 
-
-    Robot* robotWithBall   = NULL;        //Robot currently holding the ball
-    Point  ballPoint       = Point(0,0);  //The current point fo the ball on the field
-    Point  ballVelocity    = Point(0,0);  //The current velocity of the ball on the field
-    Point  ballStopPoint   = Point(0,0);  //The predicted stop point of the ball
-    Point  ballPrediction  = Point(0,0);  //Prediciton point of the ball
 
     char   gameState       = '\0';        //The current state of the game from RefComm
     char   previousGameState = '\0';      //The previous gamestate
@@ -97,10 +81,8 @@ private:
     friend class RefComm;
     friend class SimRobComm;
     void onRobotUpdated(Robot*);
-    void setBallPoint(Point);
-    void setBallVelocity(Point);
-    void setBallStopPoint(Point);
-    void setRobotHasBall();
+
+
     void setGameState(char);
     void setTimeLeft(short);
     void setBlueGoals(char);

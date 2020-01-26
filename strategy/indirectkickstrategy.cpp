@@ -12,9 +12,10 @@
 #include "normalgamestrategy.h"
 #include "behavior/markbot.h"
 #include "parameters/game_constants.h"
+#include "model/ball.h"
 
 IndirectKickStrategy::IndirectKickStrategy(Team* _team)
-    :Strategy(_team), initial_bp(gameModel->getBallPoint())
+    :Strategy(_team), initial_bp(Ball::getPosition())
 {
 
 }
@@ -89,7 +90,7 @@ void IndirectKickStrategy::assignBeh()
 char IndirectKickStrategy::getNextStrategy()
 {
     if ((kicker && kicker->getKick() > 0)
-    || !Measurements::isClose(initial_bp, gameModel->getBallPoint(), 70))
+    || !Measurements::isClose(initial_bp, Ball::getPosition(), 70))
         return ' '; // Go to normal game strategy
     else
         return '\0';

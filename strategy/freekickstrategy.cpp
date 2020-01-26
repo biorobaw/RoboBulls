@@ -10,9 +10,10 @@
 
 #include "skill/kicktopointomni.h"
 #include "parameters/game_constants.h"
+#include "model/ball.h"
 
 FreeKickStrategy::FreeKickStrategy(Team* _team)
-    : Strategy(_team), initial_bp(gameModel->getBallPoint())
+    : Strategy(_team), initial_bp(Ball::getPosition())
 {
 
 }
@@ -84,7 +85,7 @@ void FreeKickStrategy::assignBeh()
 char FreeKickStrategy::getNextStrategy()
 {
     if ((kicker && kicker->getKick() > 0)
-    || !Measurements::isClose(initial_bp, gameModel->getBallPoint(), 70))
+    || !Measurements::isClose(initial_bp, Ball::getPosition(), 70))
         return ' '; // Go to normal game strategy
     else
         return '\0';

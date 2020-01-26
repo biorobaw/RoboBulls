@@ -1,4 +1,5 @@
 #include "attacksupport.h"
+#include "model/ball.h"
 
 AttackSupport::AttackSupport()
 {
@@ -14,7 +15,7 @@ AttackSupport::AttackSupport()
 void AttackSupport::perform(Robot * robot)
 {
     Point rp = robot->getPosition();
-    Point bp = gameModel->getBallPoint();
+    Point bp = Ball::getPosition();
 
     // We signal that we are done supporting if:
     // - We are closest member on our team to the ball
@@ -31,8 +32,8 @@ void AttackSupport::perform(Robot * robot)
 //        std::cout << "Intercepting" << std::endl;
 
         // Evaluate transition to positioning
-        Point b_vel = gameModel->getBallVelocity();
-        Robot* ball_bot = gameModel->getHasBall();
+        Point b_vel = Ball::getVelocity();
+        Robot* ball_bot = Ball::getRobotWithBall();
 
         bool ball_bot_not_facing_us =
                 ball_bot != nullptr && ball_bot->getTeam()==robot->getTeam()
@@ -89,7 +90,7 @@ void AttackSupport::perform(Robot * robot)
 
         // Evaluate transition to intercepting by
         // Checking if a teammate with the ball is facing this robot
-        Robot* ball_bot = gameModel->getHasBall();
+        Robot* ball_bot = Ball::getRobotWithBall();
 
         if(ball_bot != nullptr &&  ball_bot->getTeam()==robot->getTeam()
         && Comparisons::isFacingPoint(ball_bot, rp, 10*M_PI/180)
@@ -289,7 +290,7 @@ void AttackSupport::genDistanceFromTeammates(Robot* robot)
 void AttackSupport::genBallShadows(Robot* r)
 {
 
-    Point bp = gameModel->getBallPoint();
+    Point bp = Ball::getPosition();
 
     float R = ROBOT_RADIUS + 50;
 
@@ -446,7 +447,7 @@ void AttackSupport::genGoalShotAvoidance()
     float g2x = gameModel->getOppGoal().x;
     float g2y = gameModel->getOppGoal().y - GOAL_WIDTH/2 - ROBOT_RADIUS - 500;
 
-    Point bp = gameModel->getBallPoint();
+    Point bp = Ball::getPosition();
 
     float min_x = bp.x;
     float max_x = g1x;

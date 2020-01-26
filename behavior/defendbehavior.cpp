@@ -2,6 +2,7 @@
 #include "behavior/defendbehavior.h"
 #include "utilities/region/rectangle.h"
 #include "utilities/region/defencearea.h"
+#include "model/ball.h"
 
 #define DEFENDBEHAVIOR_DEBUG 0
 
@@ -11,9 +12,9 @@
  */
 static bool ballIsMovingAway()
 {
-    Point bp = gameModel->getBallPoint();
-    Point bv = gameModel->getBallVelocity();
-    float bs = gameModel->getBallSpeed();
+    Point bp = Ball::getPosition();
+    Point bv = Ball::getVelocity();
+    float bs = Ball::getSpeed();
     float ba = atan2(bv.y, bv.x);
     float ballGoalAng = Measurements::angleBetween(bp, gameModel->getMyGoal());
     return (bs > 0.25) && !(Measurements::isClose(ba, ballGoalAng, 90*(M_PI/180)));
@@ -23,7 +24,7 @@ static bool ballIsMovingAway()
  */
 static bool ballIsStopped()
 {
-    return gameModel->getBallSpeed() < 0.25;
+    return Ball::getSpeed() < 0.25;
 }
 
 /************************************************************/
@@ -67,7 +68,7 @@ DefendState* DefendState::action(Robot* robot)
         return nullptr;
     updateCount = 0;
 
-    Point bp = gameModel->getBallPoint();
+    Point bp = Ball::getPosition();
     Point gl = gameModel->getMyGoal();
 
     if(bp.x < 0)
@@ -204,7 +205,7 @@ DefendState* DSIdle::action(Robot* robot)
 
         Point chosenPoint = *chosenPointPtr;
 
-        float robBallAng = Measurements::angleBetween(robot, gameModel->getBallPoint());
+        float robBallAng = Measurements::angleBetween(robot, Ball::getPosition());
         setMovementTargets(chosenPoint, robBallAng);
         GenericMovementBehavior::perform(robot);
 
@@ -215,11 +216,11 @@ DefendState* DSIdle::action(Robot* robot)
          * 3) The balls speed is significant
          * 4) the ball is heading torwards the goal
          */
-        Point bp  = gameModel->getBallPoint();
-        Point bv  = gameModel->getBallVelocity();
-        Point bpr = gameModel->getBallStopPoint();
+        Point bp  = Ball::getPosition();
+        Point bv  = Ball::getVelocity();
+        Point bpr = Ball::getStopPosition();
         Point gl  = gameModel->getMyGoal();
-        float bs  = gameModel->getBallSpeed();
+        float bs  = Ball::getSpeed();
         float velang = atan2(bv.y, bv.x);
 
         if( ( abs(bpr.x - gl.x) < 1000 ) &&
@@ -302,7 +303,7 @@ DefendState* DSIntercept::action(Robot* robot)
 {
 //    std::cout << "DefendStateIntercept" << std::endl;
 
-    Point bp = gameModel->getBallPoint();
+    Point bp = Ball::getPosition();
     Point goal = gameModel->getMyGoal();
 
     if(not(chosenLinePoint)) {
@@ -371,8 +372,8 @@ DefendState* DSIntercept::action(Robot* robot)
  */
 bool DSIntercept::tryGetValidLinePoint(Robot* r)
 {
-    Point bp = gameModel->getBallPoint();
-    Point bpp = gameModel->getBallStopPoint();
+    Point bp = Ball::getPosition();
+    Point bpp = Ball::getStopPosition();
     Point goal = gameModel->getMyGoal();
     Point p = Measurements::lineSegmentPoint(r->getPosition(), bp, bpp);
     if(abs(goal.x - p.x) < 2500 && Measurements::distance(r, p) < LINE_DISTANCE*2) {

@@ -8,6 +8,7 @@
 #include "utilities/region/defencearea.h"
 #include "model/gamemodel.h"
 #include "movement/pathfinding/fppa_pathfinding.h"
+#include "model/ball.h"
 
 /* Implementation of the Fast Path Planning Algorithm
  * In a sense, this is a mostly a generalized implementation.
@@ -45,7 +46,7 @@ namespace impl {
 
         // Check ball
         if(avoidBall) {
-            Point bp = gameModel->getBallPoint();
+            Point bp = Ball::getPosition();
 
             if(Measurements::lineSegmentDistance(bp, beginPos, endPos) <= ROBOT_RADIUS+BALL_RADIUS+10) {
                 obstacle_found = true;
@@ -93,7 +94,7 @@ namespace impl {
         // Check ball
         bool ball_in_the_way = false;
         if(avoid_ball)
-            ball_in_the_way = Measurements::isClose(toCheck, gameModel->getBallPoint(), ROBOT_RADIUS+BALL_RADIUS + 50);
+            ball_in_the_way = Measurements::isClose(toCheck, Ball::getPosition(), ROBOT_RADIUS+BALL_RADIUS + 50);
 
         // Check defence areas
         bool def_area_occupied = false;

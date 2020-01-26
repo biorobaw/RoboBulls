@@ -167,6 +167,7 @@ private:
 
     friend class GameModel;
     friend class VisionComm;
+    friend class Ball;
 
     static std::set<Robot*> all_robots;
 };

@@ -1,4 +1,5 @@
 #include "challengeballbot.h"
+#include "model/ball.h"
 
 ChallengeBallBot::ChallengeBallBot()
 {
@@ -6,13 +7,13 @@ ChallengeBallBot::ChallengeBallBot()
 
 void ChallengeBallBot::perform(Robot *robot)
 {
-    Robot* ballBot = gameModel->getHasBall();
+    Robot* ballBot = Ball::getRobotWithBall();
 
     if(ballBot && ballBot->getTeam() != robot->getTeam())
     {
 //        std::cout << "block" << std::endl;
 
-        Point bp = gameModel->getBallPoint();
+        Point bp = Ball::getPosition();
         float oppAng2Ball = Measurements::angleBetween(ballBot, bp);
         Point lead = Point(cos(oppAng2Ball), sin(oppAng2Ball)) * ROBOT_RADIUS * 3;
         Point target = bp + lead;

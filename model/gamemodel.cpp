@@ -9,6 +9,7 @@
 #include "utilities/debug.h"
 #include "gui/guiinterface.h"
 #include "model/gamemodel.h"
+#include "model/ball.h"
 #include <assert.h>
 
 
@@ -21,46 +22,6 @@ GameModel* gameModel = new GameModel();
 /*******************************************************************/
 /************************ Public Methods ***************************/
 /*******************************************************************/
-
-
-/*! @brief Returns the robot that currently has the ball
- * A robot has the ball if it is close to it and is facing it */
-Robot* GameModel::getHasBall()
-{
-    return robotWithBall;
-}
-
-
-
-/*! @brief Return a 2D point of the current ball location
- * \return A Point with the ball's position */
-Point GameModel::getBallPoint()
-{
-    //std::cout<<"Ball point is at: "<<ballPoint.toString()<<std::endl;             //Added by Bo Wu for testing
-    return ballPoint;
-}
-
-/*! @brief Return a 2D point of the X and Y component of the ball's velocity
- * \see Point
- * \see VelocityCalculator
- * \return The ball's velocity as an X/Y point in m/s*/
-Point GameModel::getBallVelocity()
-{
-    return ballVelocity;
-}
-
-/*! @brief Return a predicted stopping point for the ball
- * \return A Point with the ball's position */
-Point GameModel::getBallStopPoint()
-{
-    return ballStopPoint;
-}
-
-/*! @brief Returns the ball's <i>speed</i> (magnitude of velocity) in m/s */
-float GameModel::getBallSpeed()
-{
-    return Measurements::mag(ballVelocity);
-}
 
 
 //! @brief From the RefComm, Returns the number of Blue goals
@@ -133,7 +94,7 @@ std::string GameModel::toString()
 {
     std::stringstream myString;
 
-    myString << "Ball Position: " << ballPoint.toString() << std::endl;
+    myString << "Ball Position: " << Ball::getPosition().toString() << std::endl;
 
     myString<<"\nBlue Team Robots: \n";
     auto robots = Team::getTeam(TEAM_BLUE)->getRobots();
@@ -196,7 +157,7 @@ void GameModel::addBallReplacement(float x, float y, float vx, float vy)
 void GameModel::notifyObservers()
 {
     //std::cout << "at GameModel::notifyObservers()\n";
-    setRobotHasBall();
+    Ball::setRobotWithBall();
     Team* t = Team::getTeam(TEAM_BLUE);
     if(t->isControlled()) t->controller.run();
     t = Team::getTeam(TEAM_YELLOW);
@@ -223,59 +184,6 @@ void GameModel::onCommandProcessed()
     this->hasNewCommand = false;
 }
 
-//! @brief Sets the position of the ball
-void GameModel::setBallPoint(Point bp)
-{
-    ballPoint = bp;
-}
-
-//! @brief Sets the velocity of the ball
-void GameModel::setBallVelocity(Point vel)
-{
-    ballVelocity = vel;
-}
-
-//! @brief Sets the stopping point of the ball
-void GameModel::setBallStopPoint(Point stop_point)
-{
-    ballStopPoint = stop_point;
-}
-
-static bool hasBall(Robot* robot)
-{
-    Point bp = gameModel->getBallPoint();
-    if(!robot) 
-        return false;
-    return Comparisons::isDistanceToLess(robot, bp, 300) and
-           Comparisons::isFacingPoint(robot, bp);
-}
-
-//! @brief Sets the robot that has currently been determined to have the ball.
-void GameModel::setRobotHasBall()
-{
-    //Count of how many times `robotWithBall` has been seen without ball
-    static int lastSeenWithoutBallCount = 0;
-
-    //Assume no robot has the ball first
-    auto robots = Robot::getAllRobots();
-    for(Robot* robot : robots)
-        robot->hasBall = false;
-
-    if(!hasBall(this->robotWithBall) and ++lastSeenWithoutBallCount > 10)
-    {
-        lastSeenWithoutBallCount = 0;
-
-        auto ballBot = std::find_if(robots.begin(), robots.end(), hasBall);
-        if(ballBot == robots.end()) {            //Not found in myTeam
-            this->robotWithBall = NULL;
-            return;
-        }
-        this->robotWithBall = *ballBot;          //Robot with ball found, store in gm
-    }
-
-    if(robotWithBall)
-        this->robotWithBall->hasBall = true;
-}
 
 //! @brief Used by RefComm; Set the current game state (See RefComm reference)
 void GameModel::setTimeLeft(short time)

@@ -8,6 +8,7 @@
 #include "utilities/edges.h"
 #include "gui/guiinterface.h"
 #include "behavior/goalie.h"
+#include "model/ball.h"
 
 //! @cond
 namespace Video
@@ -98,7 +99,7 @@ void  BallReceiver::perform(Robot* robot)
 {
     static bool onMySide = false;
 
-    Point prediction = gameModel->getBallStopPoint();
+    Point prediction = Ball::getStopPosition();
     onMySide = ((prediction.x<0) == (waitPoint.x<0));
 
     /* We only consider the prediction of it is the first time the prediction
@@ -112,7 +113,7 @@ void  BallReceiver::perform(Robot* robot)
         target = waitPoint;
     }
 
-    float ang = Measurements::angleBetween(robot, gameModel->getBallPoint());
+    float ang = Measurements::angleBetween(robot, Ball::getPosition());
     setMovementTargets(target, ang);
     GenericMovementBehavior::perform(robot);
 }
@@ -193,14 +194,14 @@ void VideoStrategy2::assignBeh()
 
 bool VideoStrategy2::update()
 {
-    Point bp = gameModel->getBallPoint();
+    Point bp = Ball::getPosition();
     
     switch(state) 
     {
     case NONE:
         {
             //Advance if GameModel's ball prediciton is on the same side as the wait point
-            Point prediction = gameModel->getBallStopPoint();
+            Point prediction = Ball::getStopPosition();
             if((prediction.x < 0) == (waitPoint.x < 0)) 
             {
                 float a = Measurements::angleBetween(robot, prediction);
@@ -251,7 +252,7 @@ void VideoStrategy3::assignBeh()
 
 bool VideoStrategy3::update()
 {
-    Point bp = gameModel->getBallPoint();
+    Point bp = Ball::getPosition();
     switch(state)
     {
     case NONE:
@@ -291,8 +292,8 @@ bool VideoStrategy4::update()
     r1 = team->getRobot(r2ID);
     r2 = team->getRobot(r1ID);
 
-    bp = gameModel->getBallPoint();
-    bpPredict = gameModel->getBallStopPoint();
+    bp = Ball::getPosition();
+    bpPredict = Ball::getStopPosition();
 
     // For r1:
     if (bp.x>200)
@@ -332,7 +333,7 @@ bool VideoStrategy5::update()
     keeper = team->getRobot(keeperID);
     kicker = team->getRobot(kickerID);
 
-    bp = gameModel->getBallPoint();
+    bp = Ball::getPosition();
 
     // GK assignments
     bp.x >-2800?

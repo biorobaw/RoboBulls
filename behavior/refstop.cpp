@@ -1,4 +1,5 @@
 #include "refstop.h"
+#include "model/ball.h"
 
 RefStop::RefStop()
 {
@@ -6,7 +7,7 @@ RefStop::RefStop()
 
 void RefStop::perform(Robot * robot)
 {
-    Point bp = gameModel->getBallPoint();
+    Point bp = Ball::getPosition();
 
     if(Measurements::isClose(robot, bp, 600))
     {

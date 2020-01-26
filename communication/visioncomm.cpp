@@ -4,6 +4,7 @@
 #include "visioncomm.h"
 #include "model/gamemodel.h"
 #include "parameters/game_constants.h"
+#include "model/ball.h"
 
 using namespace std;
 
@@ -22,7 +23,7 @@ VisionComm::VisionComm(GameModel *gm, YAML::Node comm_node, int _side)
 
     client = new RoboCupSSLClient(vision_port, vision_addr);
     client->open(true);
-    gamemodel = gm;
+    gameModel = gm;
 
     kfilter = new KFBall();
     u.resize(4);
@@ -226,13 +227,13 @@ void VisionComm::recieveBall(const SSL_DetectionFrame& frame)
                 u(i) = state(i);
 
             // Update GameModel
-            gameModel->setBallPoint(Point(state(2), state(4)));
+            Ball::setPosition(Point(state(2), state(4)));
 
             double b_vel = hypot(state(1), state(3));
             if(b_vel < B_STOP_THRESH)
-                gameModel->setBallVelocity(Point(0, 0));
+                Ball::setVelocity(Point(0, 0));
             else
-                gameModel->setBallVelocity(Point(state(1), state(3)));
+                Ball::setVelocity(Point(state(1), state(3)));
         }
     }
 }
@@ -336,7 +337,7 @@ void VisionComm::receive()
          * the RoboBulls game is run with the new information here. */
         if (++totalframes > 200){
 //            std::cout << "at VisionComm::notifying()"<<endl;
-            gamemodel->notifyObservers();
+            gameModel->notifyObservers();
         }
 
         /* After 100 frames the "seen counts" of each team are set to 0. This prevents

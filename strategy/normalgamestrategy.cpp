@@ -13,10 +13,11 @@
 #include "utilities/edges.h"
 #include "strategy/normalgamestrategy.h"
 #include "parameters/game_constants.h"
+#include "model/ball.h"
 
 NormalGameStrategy::NormalGameStrategy(Team* _team)
     : Strategy(_team)
-    , initialBallPos(GameModel::getModel()->getBallPoint())
+    , initialBallPos(Ball::getPosition())
     , our_def_area(true)
     , opp_def_area(false)
 {
@@ -72,8 +73,8 @@ bool NormalGameStrategy::update()
     Robot* kick_off_rob = deffend1;
 
 
-    Point bp = gameModel->getBallPoint();
-    Robot* ball_bot = gameModel->getHasBall();
+    Point bp = Ball::getPosition();
+    Robot* ball_bot = Ball::getRobotWithBall();
 
     assignGoalieIfOk(team);
 
@@ -130,7 +131,7 @@ bool NormalGameStrategy::update()
         std::cout << "Kick Off 3" << std::endl;
         // The previous actions should nudge the ball towards attacker 1
         // and so we can begin evaluating our options for play
-        if(!Measurements::isClose(initialBallPos, gameModel->getBallPoint(), 50))
+        if(!Measurements::isClose(initialBallPos, Ball::getPosition(), 50))
         {
             kick_off_rob->assignBeh<Wall>();
             state = evaluate;
@@ -140,7 +141,7 @@ bool NormalGameStrategy::update()
     case opp_kickoff:
     {
         std::cout << "Opp Kick Off" << std::endl;
-        if(!Measurements::isClose(initialBallPos, gameModel->getBallPoint(), 50))
+        if(!Measurements::isClose(initialBallPos, Ball::getPosition(), 50))
             state = evaluate;
     }
         break;
@@ -230,8 +231,8 @@ bool NormalGameStrategy::update()
         // to the ball as the main
         if(attack1 != nullptr && attack2 != nullptr)
         {
-            if(Measurements::distance(attack1, gameModel->getBallPoint()) <
-               Measurements::distance(attack2, gameModel->getBallPoint()))
+            if(Measurements::distance(attack1, Ball::getPosition()) <
+               Measurements::distance(attack2, Ball::getPosition()))
             {
                 attack1->assignBeh<AttackMain>();
                 main = attack1;

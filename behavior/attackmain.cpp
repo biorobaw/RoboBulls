@@ -1,4 +1,5 @@
 #include "attackmain.h"
+#include "model/ball.h"
 
 
 float AttackMain::SCORE_ANGLE_TOLERANCE = 7*M_PI/180;
@@ -333,7 +334,7 @@ std::pair<bool, Point> AttackMain::calcBestGoalPoint(Robot* r)
         for(const Point& obstacle : obstacles)
         {
             // If there is an obstacle in the way
-            if(Measurements::lineSegmentDistance(obstacle, gameModel->getBallPoint(), target) <= BALL_RADIUS+ROBOT_RADIUS+50)
+            if(Measurements::lineSegmentDistance(obstacle, Ball::getPosition(), target) <= BALL_RADIUS+ROBOT_RADIUS+50)
             {
                 clear_shot = false;
                 break;
@@ -370,7 +371,7 @@ std::pair<bool, Point> AttackMain::calcBestPassPoint(Robot* r)
 {
     std::vector<Robot*> obstacles;
     for(auto* r2 : r->getOpponentTeam()->getRobots()) obstacles.push_back(r2);
-    Point bp = gameModel->getBallPoint();
+    Point bp = Ball::getPosition();
     Robot* best_supp = nullptr;
     float best_prob = 0;
 

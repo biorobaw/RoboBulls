@@ -17,6 +17,7 @@
 //Helper classes
 #include "guirobot.h"
 #include "guiball.h"
+#include "model/ball.h"
 
 
 RobotPanel::RobotPanel(MainWindow *mw) {
@@ -253,7 +254,7 @@ void RobotPanel::updateBotPanel() {
 
     //Populating the ballVel label with current ball velocity
     //Fix so that velocity reading are rounded to 2nd or 3rd decimal
-    double b_vel = gameModel->getBallSpeed();
+    double b_vel = Ball::getSpeed();
     if(b_vel == 0)
         dash->ui->ballVel->setText("Vel: 0 (Stopped)");
     else

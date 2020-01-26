@@ -2,6 +2,7 @@
 #include "parameters/field.h"
 #include "model/gamemodel.h"
 #include "utilities/comparisons.h"
+#include "model/ball.h"
 
 using namespace std::placeholders;
 
@@ -161,7 +162,7 @@ pred_distance::pred_distance(Robot* robot)
     { }
 
 pred_distanceBall::pred_distanceBall()
-    : pred_distance(gameModel->getBallPoint())
+    : pred_distance(Ball::getPosition())
     { }
 pred_distanceMyGoal::pred_distanceMyGoal()
     : pred_distance(gameModel->getMyGoal())

@@ -64,6 +64,7 @@ SOURCES += main.cpp \
     libs/ssl-vision/src/messages/messages_robocup_ssl_wrapper_tracked.pb.cc \
     libs/ssl-vision/src/netraw.cpp \
     libs/ssl-vision/src/robocup_ssl_client.cpp \
+    model/ball.cpp \
 	model/gamemodel.cpp \
 	model/robot.cpp \
         movement/four_wheel_omni/four_wheel_omni_pilot.cpp \
@@ -156,6 +157,7 @@ HEADERS += \
     libs/ssl-vision/include/messages/messages_robocup_ssl_wrapper_tracked.pb.h \
     libs/ssl-vision/include/netraw.h \
     libs/ssl-vision/include/robocup_ssl_client.h \
+    model/ball.h \
 	model/gamemodel.h \
 	model/robot.h \
 	movement/go_to_pose.h \

@@ -2,10 +2,6 @@
 #define VISIONCOMM_H
 #include <string>
 #include <QtCore/QThread>
-//#include "include/netraw.h"
-//#include "include/messages_robocup_ssl_detection.pb.h"
-//#include "include/messages_robocup_ssl_geometry.pb.h"
-//#include "include/messages_robocup_ssl_wrapper.pb.h"
 #include "libs/ssl-vision/include/robocup_ssl_client.h"
 #include "model/gamemodel.h"
 #include "model/robot.h"
@@ -64,7 +60,6 @@ protected:
     //! @brief Returns true if we are using four or two cameras.
     bool isFourCameraMode();
 
-    GameModel *gamemodel;           //! Pointer to GameModel to update
     SSL_WrapperPacket packet;       //! Packet recieved by client
     SSL_DetectionFrame frames[4];   //! Accumulates frames
     bool frames_state[4]{false};    //! Marks whether frames are dirty or clean

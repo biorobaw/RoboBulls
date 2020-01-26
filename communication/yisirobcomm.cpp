@@ -6,6 +6,7 @@
 #include "model/gamemodel.h"
 #include "behavior/genericmovementbehavior.h"
 #include "parameters/motion_parameters.h"
+#include "model/ball.h"
 
 YisiRobComm::YisiRobComm(std::string usb_port, int frequency)
 {
@@ -70,7 +71,7 @@ void YisiRobComm::sendVelsLarge(std::set<Robot*>& robots)
 
         Data8 transmitPacket[25] = {(Data8)0};
 
-        Point bp = gameModel->getBallPoint();
+        Point bp = Ball::getPosition();
 //        std::cout<<"Ball point is at: "<<bp.toString()<<std::endl;
 
         transmitPacket[0] = (Data8)0xff;

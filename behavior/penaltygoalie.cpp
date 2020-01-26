@@ -1,4 +1,5 @@
 #include "penaltygoalie.h"
+#include "model/ball.h"
 
 PenaltyGoalie::PenaltyGoalie()
 {
@@ -7,10 +8,10 @@ PenaltyGoalie::PenaltyGoalie()
 void PenaltyGoalie::perform(Robot* robot)
 {
     robot->setDribble(false);
-    Point bp = gameModel->getBallPoint();
+    Point bp = Ball::getPosition();
     float angleToBall = Measurements::angleBetween(robot, bp);
 
-    Robot* kicker = gameModel->getHasBall();
+    Robot* kicker = Ball::getRobotWithBall();
 
     // Determine which opponent is taking the kick
     if(!kicker)
@@ -71,7 +72,7 @@ void PenaltyGoalie::perform(Robot* robot)
 bool PenaltyGoalie::isFinished()
 {
     DefenceArea our_da(TEAM_DEFFENCE_AREA);
-    if(gameModel->getBallSpeed() < 100 && our_da.contains(gameModel->getBallPoint(), -ROBOT_RADIUS))
+    if(Ball::getSpeed() < 100 && our_da.contains(Ball::getPosition(), -ROBOT_RADIUS))
         return true;
     return false;
 }

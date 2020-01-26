@@ -1,4 +1,5 @@
 #include "goalie.h"
+#include "model/ball.h"
 
 Goalie::Goalie()
     : idlePoint(gameModel->getMyGoal() + Point(ROBOT_RADIUS+50,0))
@@ -18,9 +19,9 @@ Goalie::~Goalie()
 void Goalie::perform(Robot *robot)
 {
     robot->setDribble(false);
-    Point bp = gameModel->getBallPoint();
+    Point bp = Ball::getPosition();
     float angleToBall = Measurements::angleBetween(robot, bp);
-    Robot* ballBot = gameModel->getHasBall();
+    Robot* ballBot = Ball::getRobotWithBall();
 
     //Segment to hold ballOnRobotIsAimedAtOurGoal and isBallMovingTowardsGoal return
     std::pair<Point,Point> lineSegment;
@@ -121,13 +122,13 @@ void Goalie::perform(Robot *robot)
 //        std::cout << "Stray Ball" << std::endl;
 
         // This is the point along the goal-post closest to the ball
-        Point goal_point = Measurements::lineSegmentPoint(gameModel->getBallPoint(),
+        Point goal_point = Measurements::lineSegmentPoint(Ball::getPosition(),
                                                    Point(gameModel->getMyGoal().x, GOAL_WIDTH/2),
                                                    Point(gameModel->getMyGoal().x, -GOAL_WIDTH/2));
 
         // This is the point along the line segment ball_point->goal_point closest to the robot
         Point intercept_point = Measurements::lineSegmentPoint(robot->getPosition(),
-                                                        gameModel->getBallPoint(),
+                                                        Ball::getPosition(),
                                                         goal_point);
 
         if(def_area.contains(intercept_point,-ROBOT_RADIUS))
@@ -160,12 +161,12 @@ bool Goalie::isBallMovingTowardsGoal(std::pair<Point,Point>& lineSegOut)
     // Filter out balls not moving towards goal
     Point goal = gameModel->getMyGoal();
     std::cout << "goal point:" << std::endl;
-    Point bVel = gameModel->getBallVelocity();
+    Point bVel = Ball::getVelocity();
     if(bVel.x > -10)
         return false;
 
     // Calculate y position at goal point
-    Point ballPos = gameModel->getBallPoint();
+    Point ballPos = Ball::getPosition();
     float y = (bVel.y / bVel.x) * (goal.x - ballPos.x) + ballPos.y;
 
     // Set the output to a pair of Points representing the line of the ball's trajectory.
@@ -189,7 +190,7 @@ bool Goalie::botOnBallIsAimedAtOurGoal(Robot* robot, std::pair<Point,Point>& lin
      * the slope of the path will always be the robot's orientation but the ball
      * may be off center from the robot's kicker mechanism */
     float slope = tan( orientation );
-    Point ballPos = gameModel->getBallPoint();
+    Point ballPos = Ball::getPosition();
 
     // Extrapolate the line to retrieve the y-coordinate at the x-coordinate of the goal
     float yAtGoalLine = slope * ( myGoalPos.x - ballPos.x ) + ballPos.y;
@@ -205,28 +206,28 @@ bool Goalie::botOnBallIsAimedAtOurGoal(Robot* robot, std::pair<Point,Point>& lin
 
 bool Goalie::isBallReachable()
 {
-    return abs(Measurements::angleBetween(idlePoint, gameModel->getBallPoint()) <= M_PI_2);
+    return abs(Measurements::angleBetween(idlePoint, Ball::getPosition()) <= M_PI_2);
 }
 
 bool Goalie::shouldClearBall()
 {
     // We only clear the ball when it is inside the defence area
     // and moving slow enough
-    return def_area.contains(gameModel->getBallPoint()) && gameModel->getBallSpeed() <= 100;
+    return def_area.contains(Ball::getPosition()) && Ball::getSpeed() <= 100;
 }
 
 bool Goalie::shouldRetrieveBall(Robot* robot)
 {
     // We bring the ball into the defense area if it is
     // - closer than 2 robot radius outside the defense area
-    Point bp = gameModel->getBallPoint();
+    Point bp = Ball::getPosition();
     bool b0 = def_area.contains(bp, ROBOT_RADIUS*2);
 
     // - farther than ball diameter inside the defense area
     bool b1 = !def_area.contains(bp, -ROBOT_RADIUS*0.5);
 
     // - moving slow enough
-    bool b2 = (gameModel->getBallSpeed() <= 100);
+    bool b2 = (Ball::getSpeed() <= 100);
 
     // - closer to one of our robots than to an opponent robot
     Robot* nearest_opp = Comparisons::distance(bp).minInTeam(robot->getOpponentTeam());

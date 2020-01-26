@@ -1,4 +1,5 @@
 #include "markbot.h"
+#include "model/ball.h"
 
 bool MarkBot::mark_status[10] = {false};
 
@@ -9,7 +10,7 @@ MarkBot::MarkBot()
 
 void MarkBot::perform(Robot * robot)
 {
-    Point bp = gameModel->getBallPoint();
+    Point bp = Ball::getPosition();
     float ang2ball = Measurements::angleBetween(robot, bp);
 
     // Determine whether we can mark a robot
@@ -34,8 +35,8 @@ void MarkBot::updateMark(Robot* r)
     for(Robot* opp: r->getOpponentTeam()->getRobots())
     {
         bool our_side = opp->getPosition().x < 0;
-        bool has_ball = gameModel->getHasBall() != nullptr &&
-                gameModel->getHasBall()->getID() == opp->getID();
+        bool has_ball = Ball::getRobotWithBall() != nullptr &&
+                Ball::getRobotWithBall()->getID() == opp->getID();
 
         // Check if it is on our side
         if(our_side && !has_ball)

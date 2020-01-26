@@ -3,6 +3,7 @@
 #include "utilities/debug.h"
 #include "skill/kick.h"
 #include "skill/kicktopointomni.h"
+#include "model/ball.h"
 
 namespace Skill
 {
@@ -82,7 +83,7 @@ KickToPointOmni::KickToPointOmni(Point* targetPtr,
 
 bool KickToPointOmni::perform(Robot* robot)
 {
-    Point bp = gameModel->getBallPoint();
+    Point bp = Ball::getPosition();
     GuiInterface::getGuiInterface()->drawLine(bp, *m_targetPointer);
 
     // Angle between the ball and the kick target
@@ -240,11 +241,11 @@ bool KickToPointOmni::isCloseToBall(Robot *robot) {
 }
 
 bool KickToPointOmni::isVeryFarFromBall(Robot *robot) {
-    return Measurements::distance(robot, gameModel->getBallPoint()) > ROBOT_RADIUS*6;
+    return Measurements::distance(robot, Ball::getPosition()) > ROBOT_RADIUS*6;
 }
 
 bool KickToPointOmni::isFacingBall(Robot* robot) {
-    return Comparisons::isFacingPoint(robot, gameModel->getBallPoint(), M_PI/3.0);
+    return Comparisons::isFacingPoint(robot, Ball::getPosition(), M_PI/3.0);
 }
 
 bool KickToPointOmni::isFacingTarget(Robot* robot) {
@@ -254,7 +255,7 @@ bool KickToPointOmni::isFacingTarget(Robot* robot) {
 bool KickToPointOmni::isInKickLock(Robot* robot)
 {
     bool close = isCloseToBall(robot);
-    bool facingBall = Comparisons::isFacingPoint(robot, gameModel->getBallPoint(), KICK_LOCK_ANGLE);
+    bool facingBall = Comparisons::isFacingPoint(robot, Ball::getPosition(), KICK_LOCK_ANGLE);
     if(close && !facingBall) {
         if(++m_kickLockCount > KICKLOCK_COUNT) {
             m_kickLockCount = 0;
