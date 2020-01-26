@@ -39,7 +39,7 @@ private:
 
     static WallPoint wall_array[2];
     bool occupying = false;
-    void calcWallPoints();
+    void calcWallPoints(Robot*);
     bool spaceForGoalKick();
 
     // Variables for clearing the ball

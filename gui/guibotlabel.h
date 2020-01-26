@@ -12,14 +12,13 @@
 class GuiBotLabel : public QGraphicsItem
 {
 public:
-    GuiBotLabel(int team);
+    GuiBotLabel(int team, int id);
 
     QRectF boundingRect() const;    // outermost edges of the object (must be implemented with QGraphicsItem)
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     int id;
     int team;
     bool hidden = true;
-    bool mainTeam = true;
 };
 
 #endif // GUIBOTLABEL_H

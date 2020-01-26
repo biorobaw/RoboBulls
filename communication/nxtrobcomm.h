@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <vector>
 #include <stdint.h>
-#include "include/serialib.h"
+#include "communication/serialib.h"
 #include "model/robot.h"
 #include "utilities/measurements.h"
 #include "robcomm.h"

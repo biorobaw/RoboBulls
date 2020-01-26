@@ -7,6 +7,7 @@
 #include "utilities/point.h"
 #include "guidrawpoint.h"
 #include "guidrawregion.h"
+#include "model/team.h"
 
 using std::deque;
 class GuiRobot;
@@ -35,6 +36,8 @@ public:
     void updateLineQueue();
     void hidePrimeBotPanel();
 
+    void updateTeamSelected();
+
 
 //private:
     GuiScene *scene;
@@ -42,62 +45,23 @@ public:
     GuiField *field;
     GuiSidelines *sidelines;
     GuiBall *ball;
-    // Our robots
-    GuiRobot *robot0;
-    GuiRobot *robot1;
-    GuiRobot *robot2;
-    GuiRobot *robot3;
-    GuiRobot *robot4;
-    GuiRobot *robot5;
-    GuiRobot *robot6;
-    GuiRobot *robot7;
-    GuiRobot *robot8;
-    GuiRobot *robot9;
-    std::vector<GuiRobot*> guiTeam;
-    // ID labels
-    GuiBotLabel *botLabel0;
-    GuiBotLabel *botLabel1;
-    GuiBotLabel *botLabel2;
-    GuiBotLabel *botLabel3;
-    GuiBotLabel *botLabel4;
-    GuiBotLabel *botLabel5;
-    GuiBotLabel *botLabel6;
-    GuiBotLabel *botLabel7;
-    GuiBotLabel *botLabel8;
-    GuiBotLabel *botLabel9;
-    std::vector<GuiBotLabel*> guiLabels;
-    // Opponents' robots
-    GuiRobot *robot0Y;
-    GuiRobot *robot1Y;
-    GuiRobot *robot2Y;
-    GuiRobot *robot3Y;
-    GuiRobot *robot4Y;
-    GuiRobot *robot5Y;
-    GuiRobot *robot6Y;
-    GuiRobot *robot7Y;
-    GuiRobot *robot8Y;
-    GuiRobot *robot9Y;
-    std::vector<GuiRobot*> guiTeamY;
-    GuiBotLabel *botLabel0Y;
-    GuiBotLabel *botLabel1Y;
-    GuiBotLabel *botLabel2Y;
-    GuiBotLabel *botLabel3Y;
-    GuiBotLabel *botLabel4Y;
-    GuiBotLabel *botLabel5Y;
-    GuiBotLabel *botLabel6Y;
-    GuiBotLabel *botLabel7Y;
-    GuiBotLabel *botLabel8Y;
-    GuiBotLabel *botLabel9Y;
-    std::vector<GuiBotLabel*> guiLabelsY;
+
+    // gui robots : 2 teams each of at most
+    GuiRobot* gui_robots[2][MAX_ROBOTS];
+    GuiBotLabel* gui_bot_labels[2][MAX_ROBOTS];
+
+
     // "Camera" type functions for manipulating QGraphicsView
-    int centeredBotID = -1;
+    GuiRobot* centeredBotID = nullptr;
     bool refresh = true;   // set this to true whenever a change to the field is made to refresh on next frame.
     bool justScrolled = false;
     int currentFieldAngle = 0;
+
+
     // User interaction
+    // the ID of the currently selected bot
     int selectedBot= -1;
 
-    // the ID of the currently selected bot
 
     // for drawLine
     Point linePointA = Point(0,0);

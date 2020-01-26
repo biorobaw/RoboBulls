@@ -1,5 +1,5 @@
 #include <time.h>
-#include "include/field.h"
+#include "parameters/field.h"
 #include "utilities/velocitycalculator.h"
 
 VelocityCalculator::VelocityCalculator(unsigned deque_size)

@@ -34,7 +34,7 @@ void Wall::perform(Robot * robot)
             break;
         }
 
-        calcWallPoints();
+        calcWallPoints(robot);
 
         for(WallPoint& wp: wall_array)
         {
@@ -66,16 +66,15 @@ void Wall::perform(Robot * robot)
         std::vector<Robot*> candidates;
 
         std::vector<Robot*> obstacles;
-        for(Robot* r : gameModel->getOppTeam().getRobots()) obstacles.push_back(r);
-        for(Robot* r : gameModel->getMyTeam().getRobots()) obstacles.push_back(r);
+        for(Robot* r : Robot::getAllRobots()) obstacles.push_back(r);
 
-        for(Robot* tmate: gameModel->getMyTeam().getRobots())
+        for(Robot* tmate: robot->getTeam()->getRobots())
         {
             if (tmate->getID() != robot->getID())
             {
                 auto remove_it = std::remove_if(obstacles.begin(), obstacles.end(), [&](Robot* r)
                 {
-                    return r->isOnMyTeam() && (r->getID() == tmate->getID() || r->getID() == robot->getID());
+                    return (r->getTeam()==robot->getTeam()) && (r->getID() == tmate->getID() || r->getID() == robot->getID());
                 });
 
                 obstacles.erase(remove_it, obstacles.end());
@@ -119,14 +118,14 @@ void Wall::perform(Robot * robot)
     }
 }
 
-void Wall::calcWallPoints()
+void Wall::calcWallPoints(Robot* robot)
 {
     Point bp = gameModel->getBallPoint();
-    Robot* goalie = gameModel->getMyTeam().getRobotByRole(RobotRole::GOALIE);
+    Robot* goalie = robot->getTeam()->getRobotByRole(RobotRole::GOALIE);
     Point gp = goalie ? goalie->getPosition() : gameModel->getMyGoal();
 
 
-    DefenceArea da(GameModel::OUR_TEAM);
+    DefenceArea da(TEAM_DEFFENCE_AREA);
 
     // Get interception of line bp->goalie
     // with defence area edge
@@ -182,7 +181,7 @@ bool Wall::spaceForGoalKick()
 {
     // Determine if the wall should space out for a goal-kick
     Robot* possessor = gameModel->getHasBall();
-    DefenceArea da(GameModel::OUR_TEAM);
+    DefenceArea da(TEAM_DEFFENCE_AREA);
 
     // Position for a goal-kick if the goal-keeper has the ball
     // and the ball is is inside the defence area
@@ -198,12 +197,12 @@ bool Wall::shouldClear(Robot* robot)
     // and we are the nearest robot to it and the ball is
     // free or if we possess it.
     Point bp = gameModel->getBallPoint();
-    DefenceArea da(GameModel::OUR_TEAM);
+    DefenceArea da(TEAM_DEFFENCE_AREA);
     Robot* possessor = gameModel->getHasBall();
 
     bool b1 = gameModel->getBallSpeed() < 10;
     bool b2 = bp.x < -1000 && !da.contains(bp, 2*ROBOT_RADIUS);
-    bool b3 = Comparisons::distanceBall().minMyTeam()->getID() == robot->getID();
+    bool b3 = Comparisons::distanceBall().minInTeam(robot->getTeam())->getID() == robot->getID();
     bool b4 = possessor == nullptr || (possessor != nullptr  &&
                 possessor->getID() == robot->getID());
 
@@ -215,12 +214,12 @@ bool Wall::shouldStopClearing(Robot* robot)
     // We go back to other tasks if the ball is no longer
     // on our side of the field or if an opponent
     // has the ball or is too close the defence area
-    DefenceArea da(GameModel::OUR_TEAM);
+    DefenceArea da(TEAM_DEFFENCE_AREA);
     Robot* possessor = gameModel->getHasBall();
 
     bool b1 = gameModel->getBallPoint().x > -1000;
     bool b2 = gameModel->getHasBall() != nullptr
-            && !gameModel->getHasBall()->isOnMyTeam();
+            && gameModel->getHasBall()->getTeam()!=robot->getTeam();
     bool b3 = da.contains(gameModel->getBallPoint(), ROBOT_RADIUS * 2);
     bool b4 = possessor != nullptr && possessor->getID() != robot->getID();
 

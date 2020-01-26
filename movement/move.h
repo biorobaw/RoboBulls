@@ -4,7 +4,7 @@
 #include <math.h>
 #include "movement/pathfinding/fppa_pathfinding.h"
 #include "movement/movetype.h"
-#include "include/motion_parameters.h"
+#include "parameters/motion_parameters.h"
 
 class Robot;
 

@@ -2,7 +2,7 @@
 #include <assert.h>
 #include <algorithm>
 #include <iostream>
-#include "include/motion_parameters.h"
+#include "parameters/motion_parameters.h"
 #include "utilities/measurements.h"
 #include "utilities/comparisons.h"
 #include "utilities/region/defencearea.h"
@@ -69,7 +69,7 @@ namespace impl {
         // Check defence areas
         if(use_def_areas) {
             std::vector<Point> intercepts;
-            DefenceArea da0(0);
+            DefenceArea da0(OPPONENT_DEFFENCE_AREA);
             intercepts = da0.lineSegmentIntercepts(beginPos, endPos);
 
             if(!intercepts.empty()) {
@@ -77,7 +77,7 @@ namespace impl {
                 obstacle_position = (intercepts.front() + intercepts.back())*0.5;
             }
 
-            DefenceArea da1(1);
+            DefenceArea da1(TEAM_DEFFENCE_AREA);
             intercepts = da1.lineSegmentIntercepts(beginPos, endPos);
 
             if(!intercepts.empty()) {
@@ -98,7 +98,7 @@ namespace impl {
         // Check defence areas
         bool def_area_occupied = false;
         if(use_def_areas) {
-            DefenceArea da0(GameModel::OUR_TEAM), da1(!GameModel::OUR_TEAM);
+            DefenceArea da0(TEAM_DEFFENCE_AREA), da1(OPPONENT_DEFFENCE_AREA);
             def_area_occupied = da0.contains(toCheck, DEF_AREA_TOL) || da1.contains(toCheck, DEF_AREA_TOL);
         }
 
@@ -171,8 +171,8 @@ namespace impl {
         dest.y = Measurements::clamp(dest.y, -HALF_FIELD_WIDTH +100.f,  HALF_FIELD_WIDTH -100.f);
 
         // Push points to edge of defence areas
-        DefenceArea da0(GameModel::OUR_TEAM);
-        DefenceArea da1(!GameModel::OUR_TEAM);
+        DefenceArea da0(TEAM_DEFFENCE_AREA);
+        DefenceArea da1(OPPONENT_DEFFENCE_AREA);
         if(def_area_on)
         {
             da0.expelPoint(dest);
@@ -183,17 +183,14 @@ namespace impl {
 
     // Populates robot obstacle points from gamemodel
     void updateRobotObstacles(Robot* self) {
-        const auto& myTeam = gameModel->getMyTeam().getRobots();
-        const auto& opTeam = gameModel->getOppTeam().getRobots();
 
+        auto& robots = Robot::getAllRobots();
         impl::robotObstacles.clear();
-        impl::robotObstacles.reserve(myTeam.size() + opTeam.size() + 1);
+        impl::robotObstacles.reserve(robots.size() + 1);
 
-        for(Robot* rob : myTeam)
-            if(rob->getID() != self->getID())
+        for(Robot* rob : robots)
+            if(rob != self)
                 impl::robotObstacles.push_back(rob->getPosition());
-        for(Robot* rob : opTeam)
-            impl::robotObstacles.push_back(rob->getPosition());
     }
 
     Path genPath(const Point& start, Point end, bool avoidBall, bool use_def_areas) {

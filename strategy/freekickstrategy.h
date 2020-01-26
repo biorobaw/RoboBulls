@@ -13,7 +13,7 @@ class Robot;
 class FreeKickStrategy: public Strategy
 {
 public:
-    FreeKickStrategy();
+    FreeKickStrategy(Team* _team);
     void assignBeh();
     char getNextStrategy() override;
 

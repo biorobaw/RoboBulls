@@ -8,6 +8,7 @@
 class HaltStrategy : public Strategy
 {
 public:
+    HaltStrategy(Team* _team);
     void assignBeh();
 };
 

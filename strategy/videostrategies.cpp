@@ -123,8 +123,9 @@ void  BallReceiver::perform(Robot* robot)
 //Used to negate pass / receiver combo when strategy finishes
 bool vs1_oppositeRobots = false;
 
-VideoStrategy1::VideoStrategy1(int r1, int r2)
-    : r1ID(r1)
+VideoStrategy1::VideoStrategy1(Team* _team, int r1, int r2)
+    : Strategy(_team)
+    , r1ID(r1)
     , r2ID(r2)
     { }
 
@@ -140,8 +141,8 @@ Point VideoStrategy1::getSideFor(int robot)
 
 void VideoStrategy1::assignBeh() 
 {
-    Robot* r1 = gameModel->findMyTeam(r1ID);
-    Robot* r2 = gameModel->findMyTeam(r2ID);
+    Robot* r1 = team->getRobot(r1ID);
+    Robot* r2 = team->getRobot(r2ID);
 
     if(r1 and r2)  {
         //This bool is swapped on destruction, which happens when the passer kicks.
@@ -171,8 +172,9 @@ bool VideoStrategy1::update()
 /************************************************************************/
 /* VIDEO STRATEGY 2 */
 
-VideoStrategy2::VideoStrategy2(int r0, Point pointToWaitAt)
-    : robot(gameModel->findMyTeam(r0))
+VideoStrategy2::VideoStrategy2(Team* _team, int r0, Point pointToWaitAt)
+    : Strategy(_team)
+    , robot(_team->getRobot(r0))
     , waitTimer(0)
     , waitPoint(pointToWaitAt)
     , state(NONE)
@@ -236,8 +238,8 @@ bool VideoStrategy2::update()
 /************************************************************************/
 /* VIDEO STRATEGY 3 */
 
-VideoStrategy3::VideoStrategy3(int who)
-    : guy(gameModel->findMyTeam(who))
+VideoStrategy3::VideoStrategy3(Team* _team,int who)
+    : Strategy(_team), guy(_team->getRobot(who))
     { }
 
 void VideoStrategy3::assignBeh()
@@ -273,8 +275,9 @@ bool VideoStrategy3::update()
 /************************************************************************/
 /* VIDEO STRATEGY 4 */
 
-VideoStrategy4::VideoStrategy4(int r1, int r2)
-    : r1ID(r1)
+VideoStrategy4::VideoStrategy4(Team* _team, int r1, int r2)
+    : Strategy(_team)
+    , r1ID(r1)
     , r2ID(r2)
     { }
 
@@ -285,8 +288,8 @@ void VideoStrategy4::assignBeh()
 
 bool VideoStrategy4::update()
 {
-    r1 = gameModel->findMyTeam(r2ID);
-    r2 = gameModel->findMyTeam(r1ID);
+    r1 = team->getRobot(r2ID);
+    r2 = team->getRobot(r1ID);
 
     bp = gameModel->getBallPoint();
     bpPredict = gameModel->getBallStopPoint();
@@ -313,8 +316,9 @@ bool VideoStrategy4::update()
 /************************************************************************/
 /* VIDEO STRATEGY 5 */
 
-VideoStrategy5::VideoStrategy5(int keeper, int kicker)
-    : keeperID(keeper)
+VideoStrategy5::VideoStrategy5(Team* _team,int keeper, int kicker)
+    : Strategy(_team)
+    , keeperID(keeper)
     , kickerID(kicker)
     { }
 
@@ -325,8 +329,8 @@ void VideoStrategy5::assignBeh()
 
 bool VideoStrategy5::update()
 {
-    keeper = gameModel->findMyTeam(keeperID);
-    kicker = gameModel->findMyTeam(kickerID);
+    keeper = team->getRobot(keeperID);
+    kicker = team->getRobot(kickerID);
 
     bp = gameModel->getBallPoint();
 

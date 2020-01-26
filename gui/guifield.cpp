@@ -1,7 +1,7 @@
 #include "guifield.h"
 #include <QApplication>
 #include "mainwindow.h"
-
+#include "parameters/game_constants.h"
 
 GuiField::GuiField()
 {
@@ -121,7 +121,7 @@ void GuiField::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     painter->fillRect(ourGoal,goalBrush);
     painter->fillRect(oppGoal,goalBrush);
     if (coloredGoals) {
-        if (myTeam == "Blue") {
+        if (Team::getTeam(TEAM_BLUE)->getSide() == SIDE_NEGATIVE) {
             painter->setPen(QPen(QColor::fromRgb(0,0,255,255), goalThick, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
             painter->drawRect(ourGoal);
             painter->setPen(QPen(Qt::yellow, goalThick, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));

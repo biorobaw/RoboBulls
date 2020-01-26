@@ -2,9 +2,13 @@
 #include "model/gamemodel.h"
 #include "behavior/refstop.h"
 
+HaltStrategy::HaltStrategy(Team* _team) : Strategy(_team) {
+
+}
+
 void HaltStrategy::assignBeh()
 {
-    for(Robot* robot : gameModel->getMyTeam().getRobots())
+    for(Robot* robot : team->getRobots())
     {
         robot->setLF(0);
         robot->setLB(0);

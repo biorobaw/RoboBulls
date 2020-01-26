@@ -33,7 +33,7 @@ private:
      * resulting in reduntant markings.
      * Updates \c marked_opp_id with the ID of the opponent to mark.
      */
-    void updateMark();
+    void updateMark(Robot*);
 };
 
 #endif // MARKBOT_H

@@ -77,7 +77,7 @@ private:
 
     /*! Cast shadows using the entire goal post as a light source and opp
      * robots as opaque objects to rule out impossible scoring positions */
-    void genGoalShadows();
+    void genGoalShadows(Robot*);
 
     /*! Sets a dead-zone near teammates so that the support attacker
      * maintains a good distance from them to make passes meaningful
@@ -89,7 +89,7 @@ private:
     /*! Cast shadows with ball as light source and opponents as opaque objects
      * Rules out impossible receiving positions
      * @todo Integrate clustering to this */
-    void genBallShadows();
+    void genBallShadows(Robot*);
 
     /*! Set the probability in the triangle between the ball and the goal-post to 0
      * so that the support attacker doesn't position in the way of a shot on goal */
@@ -102,7 +102,7 @@ private:
      * The clustering distance is selected so as to cluster robots that are close such that
      * a ball could not pass between them.
      */
-    std::vector<std::vector<Point>> genClusters();
+    std::vector<std::vector<Point>> genClusters(Robot* );
 
     /*! Given a point, returns the probability of scoring a goal from there.
      * This function assumes that probability is already calculated and stored in

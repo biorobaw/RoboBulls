@@ -1,5 +1,5 @@
 #include <algorithm>
-#include "include/field.h"
+#include "parameters/field.h"
 #include "model/gamemodel.h"
 #include "utilities/comparisons.h"
 
@@ -94,57 +94,24 @@ Predicate& Predicate::ignoreIDsNot(std::initializer_list<int> ids) {
     return *this;
 }
 
-//MyTeam/OpTeam/AnyTeam helper functions
-Robot* Predicate::maxMyTeam() {
-    auto& myTeam = gameModel->getMyTeam().getRobots();
-    return *max(myTeam);
+
+
+Robot* Predicate::maxInSet(std::set<Robot*>& robots){
+    return *max(robots);
 }
 
-Robot* Predicate::maxOpTeam() {
-    auto& opTeam = gameModel->getOppTeam().getRobots();
-    return *max(opTeam);
+Robot* Predicate::maxInTeam(Team* team){
+    return maxInSet(team->getRobots());
 }
 
-Robot* Predicate::maxAnyTeam() {
-    return std::max(maxMyTeam(), maxOpTeam(), *this);
+Robot* Predicate::minInSet(std::set<Robot*>& robots){
+    return *min(robots);
 }
 
-Robot* Predicate::minMyTeam() {
-    auto& myTeam = gameModel->getMyTeam().getRobots();
-    return *min(myTeam);
+Robot* Predicate::minInTeam(Team* team){
+    return minInSet(team->getRobots());
 }
 
-Robot* Predicate::minOppTeam() {
-    auto& opTeam = gameModel->getOppTeam().getRobots();
-    if (!opTeam.empty())
-        return *min(opTeam);
-    else
-        return nullptr;
-}
-
-Robot* Predicate::minAnyTeam() {
-    return std::min(minMyTeam(), minMyTeam(), *this);
-}
-
-Robot* Predicate::anyMyTeam() {
-    auto& myTeam = gameModel->getMyTeam().getRobots();
-    auto it = any(myTeam);
-    return it != myTeam.end() ? *it : NULL;
-}
-
-Robot* Predicate::anyOppTeam() {
-    auto& opTeam = gameModel->getOppTeam().getRobots();
-    auto it = any(opTeam);
-    return it != opTeam.end() ? *it : NULL;
-}
-
-Robot* Predicate::anyAnyTeam() {
-    Robot* r = anyMyTeam();
-    if(r) return r;
-    r = anyOppTeam();
-    if(r) return r;
-    return NULL;
-}
 
 void Predicate::setCompareFunction() { }
 

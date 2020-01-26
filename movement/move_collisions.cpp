@@ -100,41 +100,24 @@ struct RobotMoveStatusContainer
     /*! @brief Returns a status in moveStatusesMine or moveStatusesOpponent
      * based on robot's team */
     RobotMoveStatus& operator[](Robot* robot) {
-        int id = robot->getID();
-        return robot->isOnMyTeam() ? moveStatusesMine[id] : moveStatusesOpponent[id];
+        return status[robot->getTeamId()][robot->getID()];
     }
-    RobotMoveStatus moveStatusesMine[10];
-    RobotMoveStatus moveStatusesOpponent[10];
+    RobotMoveStatus status[2][10];
 }
 currentMoveStatuses;
 
 /* A vector of all robots on the field. Placed here for convience. Populated
  * on a call to moveUpdateStart() and emptied on moveUpdateEnd()
  */
-static std::set<Robot*> currentAllRobots;
 
 /****************************************************/
 //detail interface functions
 
-void moveUpdateStart()
-{
-    //Obtains all robots on both teams in one vector; ease of updating
-    currentAllRobots = gameModel->getMyTeam().getRobots();
-    for(Robot* rob : gameModel->getOppTeam().getRobots())
-        currentAllRobots.insert(rob);
-}
-
-void moveUpdateEnd()
-{
-    currentAllRobots.clear();    //Gets rid of knowledge of all robots
-}
 
 void update()
 {
-    moveUpdateStart();
-    for(Robot* robot : currentAllRobots)
+    for(Robot* robot : Robot::getAllRobots())
         currentMoveStatuses[robot].update(robot);
-    moveUpdateEnd();
 }
 
 int getMoveStatus(Robot* robot)
@@ -229,7 +212,7 @@ void RobotMoveStatus::update(Robot* robot)
     updateIsMovingStatus(robot);
 
     //We don't keep tabs on if the opponents are yielded or collided
-    if(!robot->isOnMyTeam())
+    if(!robot->getTeam()->isControlled())
         return;
 
     switch(m_status)
@@ -265,7 +248,7 @@ void RobotMoveStatus::updateIsMovingStatus(Robot* robot)
 
 void RobotMoveStatus::updateMoveOk(Robot* robot)
 {
-    for(Robot* other : currentAllRobots)
+    for(Robot* other : Robot::getAllRobots())
     {
         if(robot == other)
             continue;

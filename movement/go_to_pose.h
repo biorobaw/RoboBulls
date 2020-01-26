@@ -7,8 +7,8 @@
 #include "movement/three_wheel_omni/three_wheel_omni_pilot.h"
 #include "movement/pathfinding/fppa_pathfinding.h"
 #include "movement/movetype.h"
-#include "include/motion_parameters.h"
-#include "include/field.h"
+#include "parameters/motion_parameters.h"
+#include "parameters/field.h"
 
 #include <deque>
 #include <math.h>

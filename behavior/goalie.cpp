@@ -3,7 +3,7 @@
 Goalie::Goalie()
     : idlePoint(gameModel->getMyGoal() + Point(ROBOT_RADIUS+50,0))
     , kick_skill(nullptr)
-    , def_area(GameModel::OUR_TEAM)
+    , def_area(TEAM_DEFFENCE_AREA)
 {
     dribble_skill = new Skill::DribbleBack(idlePoint);
     kick_skill = new Skill::KickToPointOmni(&kickPoint);
@@ -50,7 +50,7 @@ void Goalie::perform(Robot *robot)
 
     // If the ball is stopped just outside our defence area, we dribble it inside
     // the defence area if safe
-    else if ((shouldRetrieveBall() || retrieving_ball) && !clearing_ball)
+    else if ((shouldRetrieveBall(robot) || retrieving_ball) && !clearing_ball)
     {
 //        std::cout << "Retrieving" << std::endl;
         retrieving_ball = true;
@@ -66,18 +66,17 @@ void Goalie::perform(Robot *robot)
         std::vector<Robot*> candidates;
 
         std::vector<Robot*> obstacles;
-        for(Robot* r : gameModel->getOppTeam().getRobots()) obstacles.push_back(r);
-        for(Robot* r : gameModel->getMyTeam().getRobots()) obstacles.push_back(r);
+        for(Robot* r : Robot::getAllRobots()) obstacles.push_back(r);
 
 
-        for(Robot* tmate: gameModel->getMyTeam().getRobots())
+        for(Robot* tmate: robot->getTeam()->getRobots())
         {
             if (tmate->getID() != robot->getID()
             && tmate->getPosition().x > -1500)   // Ignore teammates too close to the goal
             {
                 auto remove_it = std::remove_if(obstacles.begin(), obstacles.end(), [&](Robot* r)
                 {
-                    return r->isOnMyTeam() && (r->getID() == tmate->getID() || r->getID() == robot->getID());
+                    return (r->getTeam()==robot->getTeam()) && (r->getID() == tmate->getID() || r->getID() == robot->getID());
                 });
 
                 obstacles.erase(remove_it, obstacles.end());
@@ -216,7 +215,7 @@ bool Goalie::shouldClearBall()
     return def_area.contains(gameModel->getBallPoint()) && gameModel->getBallSpeed() <= 100;
 }
 
-bool Goalie::shouldRetrieveBall()
+bool Goalie::shouldRetrieveBall(Robot* robot)
 {
     // We bring the ball into the defense area if it is
     // - closer than 2 robot radius outside the defense area
@@ -230,8 +229,8 @@ bool Goalie::shouldRetrieveBall()
     bool b2 = (gameModel->getBallSpeed() <= 100);
 
     // - closer to one of our robots than to an opponent robot
-    Robot* nearest_opp = Comparisons::distance(bp).minOppTeam();
-    Robot* nearest_teammate = Comparisons::distance(bp).minMyTeam();
+    Robot* nearest_opp = Comparisons::distance(bp).minInTeam(robot->getOpponentTeam());
+    Robot* nearest_teammate = Comparisons::distance(bp).minInTeam(robot->getTeam());
 
     bool b3;
     if(nearest_opp == nullptr

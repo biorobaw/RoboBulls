@@ -13,14 +13,14 @@ void MarkBot::perform(Robot * robot)
     float ang2ball = Measurements::angleBetween(robot, bp);
 
     // Determine whether we can mark a robot
-    updateMark();
+    updateMark(robot);
 
     Point target = Point(-1500, 0);  // Idle Point
 
     // If an opponent can be marked, move between it and the ball
     if(marked_opp_id != -1)
     {
-        Point opp_pos = gameModel->findOpTeam(marked_opp_id)->getPosition();
+        Point opp_pos = robot->getOpponentTeam()->getRobot(marked_opp_id)->getPosition();
         target = opp_pos + Measurements::unitVector(bp-opp_pos) * (2*ROBOT_RADIUS+50);
     }
 
@@ -28,10 +28,10 @@ void MarkBot::perform(Robot * robot)
     GenericMovementBehavior::perform(robot);
 }
 
-void MarkBot::updateMark()
+void MarkBot::updateMark(Robot* r)
 {
     // For every opponent
-    for(Robot* opp: gameModel->getOppTeam().getRobots())
+    for(Robot* opp: r->getOpponentTeam()->getRobots())
     {
         bool our_side = opp->getPosition().x < 0;
         bool has_ball = gameModel->getHasBall() != nullptr &&

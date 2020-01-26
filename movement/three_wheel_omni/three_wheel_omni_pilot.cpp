@@ -1,4 +1,4 @@
-#include "include/motion_parameters.h"
+#include "parameters/motion_parameters.h"
 #include "movement/three_wheel_omni/three_wheel_omni_pilot.h"
 
 namespace Move

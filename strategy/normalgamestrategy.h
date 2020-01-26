@@ -12,7 +12,7 @@
 class NormalGameStrategy : public Strategy
 {
 public:
-    NormalGameStrategy();
+    NormalGameStrategy(Team* _team);
     void assignBeh() override;
     bool update() override;
 
@@ -20,7 +20,7 @@ public:
     /*! Assigns goalie behavior to ID GOALIE_ID if it is on the team
      * Meant to be used outside the class, if the robot with GOALIE_ID
      * isn't null, assigns Goalie to it */
-    static void assignGoalieIfOk();
+    static void assignGoalieIfOk(Team* team);
 
 private:
     Point initialBallPos;

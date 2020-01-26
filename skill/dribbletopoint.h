@@ -39,7 +39,7 @@ private:
     enum {move_to_ball, grasp, move_to_target, adjust1, adjust2} state;
 
     bool targetIsAhead(const float& ang_to_ball, const Point& rp);
-    bool safeToAdjust(const Point& bp, const int rob_id);
+    bool safeToAdjust(const Point& bp, Robot* robot);
     bool adjustingIsFaster(Robot*);
 };
 

@@ -2,15 +2,17 @@
 #include "libs/grsim/include/messages/grSim_Packet.pb.h"
 #include "libs/grsim/include/messages/grSim_Commands.pb.h"
 #include "libs/grsim/include/messages/grSim_Replacement.pb.h"
-#include "model/gamemodel.h"
 #include "model/robot.h"
+#include "model/team.h"
+#include "model/gamemodel.h"
 #include "simrobcomm.h"
 #include <iostream>
-#include "include/game_constants.h"
+#include "parameters/game_constants.h"
+#include "utilities/measurements.h"
 
 SimRobComm::SimRobComm(const char* addr, int port)
 {
-    _addr = addr;
+    _addr = QHostAddress(addr);
     _port = port;
 }
 
@@ -31,7 +33,7 @@ void SimRobComm::sendVelsLarge(std::set<Robot*>& robots)
 void SimRobComm::sendPacket(Robot* robot)
 {
     grSim_Packet packet;
-    packet.mutable_commands()->set_isteamyellow( (GameModel::OUR_TEAM == TEAM_YELLOW) );
+    packet.mutable_commands()->set_isteamyellow( robot->getTeamId() == TEAM_YELLOW );
     packet.mutable_commands()->set_timestamp(0.0);
     grSim_Robot_Command* command = packet.mutable_commands()->add_robot_commands();
 

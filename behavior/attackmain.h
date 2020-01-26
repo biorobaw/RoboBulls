@@ -11,7 +11,7 @@
 #include "algorithm"
 #include "utilities/region/defencearea.h"
 #include "utilities/comparisons.h"
-#include "include/field.h"
+#include "parameters/field.h"
 
 #include <vector>
 
@@ -103,7 +103,7 @@ private:
     /*! Calculates the probility of scoring from each point in the field based on opponents, teammates, and the ball (variable factors).
      *  Called for every update to the game model.
      */
-    void calcDynamicProb();
+    void calcDynamicProb(Robot* r);
 
     /*! Returns information about clusters of robots.
      * @return A 2D vector is returned with each row representing a cluster.
@@ -112,7 +112,7 @@ private:
      * The clustering distance is selected so as to cluster robots that are close such that
      * a ball could not pass between them.
      */
-    std::vector<std::vector<Point>> genClusters();
+    std::vector<std::vector<Point>> genClusters(Robot* r);
 
     /*! Calculates the best point at which to aim in order to score a goal.
      *

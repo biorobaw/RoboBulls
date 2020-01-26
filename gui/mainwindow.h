@@ -4,6 +4,7 @@
 #include <iosfwd>
 #include <string>
 #include <QtWidgets/QMainWindow>
+#include "model/team.h"
 
 // Helper classes forward declarations
 class GuiField;
@@ -19,7 +20,6 @@ class RobotPanel;
 class FieldPanel;
 class SelRobotPanel;
 class ObjectPosition;
-class GuiRobot;
 class SelRobotPanel;
 class GamePanel;
 class GuiInterface;
@@ -29,6 +29,7 @@ class QGraphicsItem;
 class QGraphicsEllipseItem;
 class QGraphicsRectItem;
 class QGraphicsScene;
+
 
 //Main Project forwards
 class GameModel;
@@ -49,7 +50,6 @@ public:
 
     // Class pointers
     Ui::MainWindow *ui;
-    GameModel *gamemodel;
     RobotPanel * robotpanel;
     FieldPanel * fieldpanel;
     SelRobotPanel * selrobotpanel;
@@ -73,11 +73,18 @@ public:
     // manual override thing
     std::vector<bool> overriddenBots;   // keeps track of whether each bot is overridden
 
-    std::string myTeam;
+    int getSelectedTeamId();
+    void setSelectedTeamId(int team_id);
+    std::string getSelectedTeamName();
+    Team* getSelectedTeam();
+
+
 
 private:
+
+    int selected_team_id = TEAM_BLUE;
+
     void setupKeyShortcuts();
-    void checkTeamColors();
     void setFocusOnField();
 
     // my pointer

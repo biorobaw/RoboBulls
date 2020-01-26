@@ -8,13 +8,13 @@
 #include "utilities/comparisons.h"
 #include "stopstrategy.h"
 
-StopStrategy::StopStrategy()
+StopStrategy::StopStrategy(Team* _team) : Strategy(_team)
 {
 }
 
 void StopStrategy::assignBeh()
 {
-    for(Robot* robot: gameModel->getMyTeam().getRobots())
+    for(Robot* robot: team->getRobots())
         robot->assignBeh<RefStop>();
 }
 

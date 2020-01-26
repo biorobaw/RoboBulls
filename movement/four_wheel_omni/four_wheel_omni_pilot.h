@@ -8,7 +8,7 @@
 #include "movement/movetype.h"
 #include "utilities/measurements.h"
 #include "utilities/debug.h"
-#include "include/motion_parameters.h"
+#include "parameters/motion_parameters.h"
 
 namespace Move
 {

@@ -41,7 +41,7 @@ void SelRobotPanel::guiPrintRobot(int robotID, string output) {
 }
 
 void SelRobotPanel::printBehavior(int id) {
-    auto* bot = dash->gamemodel->getMyTeam().getRobot(id);
+    auto* bot = dash->getSelectedTeam()->getRobot(id);
     if (bot != NULL) {
        std::string s = getBehaviorName(bot);
         guiPrintRobot(id, s);
@@ -70,7 +70,8 @@ void SelRobotPanel::updateSelectedBotPanel(int id) {
         hide();
     } else {
         //Check for removal when selected; we hide the panel and do nothing
-        if(!dash->gamemodel->findMyTeam(id)) {
+        Robot* robot = dash->getSelectedTeam()->getRobot(id);
+        if(!robot) {
             hide();
             return;
         }
@@ -81,7 +82,7 @@ void SelRobotPanel::updateSelectedBotPanel(int id) {
         v = dash->objectPos->getVelocity(id);
         s = dash->objectPos->botSpeeds[id] * dash->objectPos->speedModifier;
 //        cout << "Robot " << id << " speed: " << s << "\n";
-        dash->ui->gView_robot_prime->setScene(dash->robotpanel->botIconSelScenes[id]);
+        dash->ui->gView_robot_prime->setScene(dash->robotpanel->scene_botIconSel[id]);
         dash->ui->gView_robot_prime->show();
         // display velocity
         dash->ui->dial_botVel_->setValue(v);
@@ -90,10 +91,10 @@ void SelRobotPanel::updateSelectedBotPanel(int id) {
         dash->ui->box_primeBot->setTitle("Robot " + QString::number(id) + " selected");
         dash->ui->dial_botSpeed_->setValue(s);
         dash->ui->lcd_botSpeed_->display(s);
-        dash->ui->lcd_orient_prime->display(dash->objectPos->getBotOrientString(id) + 90);
-        dash->ui->lcd_coordX_prime->display(dash->objectPos->getBotCoordX(true, id));
-        dash->ui->lcd_coordY_prime->display(dash->objectPos->getBotCoordY(true,id));
-        dash->ui->dial_botOrient_prime->setValue(dash->objectPos->getBotOrientDouble(true, id) + 90);
+        dash->ui->lcd_orient_prime->display(dash->objectPos->getBotOrientString(robot) + 90);
+        dash->ui->lcd_coordX_prime->display(robot->getPosition().x);
+        dash->ui->lcd_coordY_prime->display(robot->getPosition().x);
+        dash->ui->dial_botOrient_prime->setValue(dash->objectPos->getBotOrientDouble(robot) + 90);
         // Selected Bot Panel velocity dial
         if (dash->ui->dial_botVel_->value() > 0) {
             dash->ui->dial_botVel_->setStyleSheet("background-color: rgb(0, 200, 0);");
@@ -146,10 +147,9 @@ void SelRobotPanel::updateSelectedBotPanel(int id) {
             dash->ui->check_botOverride->hide();
         }
 
-        auto* bot = dash->gamemodel->getMyTeam().getRobot(id);
-        dash->guiPrint(getBehaviorName(bot));
+        dash->guiPrint(getBehaviorName(robot));
         guiPrintRobot(id, "Behavior Keywords:");
-        QStringList keywords = dash->objectPos->getKeyWords(getBehaviorName(bot));
+        QStringList keywords = dash->objectPos->getKeyWords(getBehaviorName(robot));
         foreach (QString word, keywords) {
             guiPrintRobot(id, word.toStdString());
         }

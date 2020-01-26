@@ -197,21 +197,19 @@ public:
 };
 
 
+TestStrategy::TestStrategy(Team* _team) : Strategy(_team) {
+
+}
+
 bool TestStrategy::update()
 {
     //Change IDs and behaviors to be assigned here.
     //All robots must exists before any action is taken.
-    Robot* r0 = gameModel->findMyTeam(0);
-    Robot* r1 = gameModel->findMyTeam(1);
-    Robot* r2 = gameModel->findMyTeam(2);
-    Robot* r3 = gameModel->findMyTeam(3);
-    Robot* r4 = gameModel->findMyTeam(4);
+    Robot* r[5];
+    for(int i=0; i<5; i++) r[i] = team->getRobot(i);
 
-    if(r0) r0->assignBeh<Strafe>();
-    if(r1) r1->assignBeh<GoToBehavior>(2*360/5.0);
-    if(r2) r2->assignBeh<GoToBehavior>(3*360/5.0);
-    if(r3) r3->assignBeh<GoToBehavior>(4*360/5.0);
-    if(r4) r4->assignBeh<GoToBehavior>(5*360/5.0);
+    if(r[0]) r[0]->assignBeh<Strafe>();
+    for(int i=1; i<5; i++) r[i]->assignBeh<GoToBehavior>((i+1)*360/5);
 
     return false;
 }
@@ -219,7 +217,7 @@ bool TestStrategy::update()
 void TestStrategy::assignBeh()
 {
     std::cout << "adfasdfas " << std::endl;
-    gameModel->findMyTeam(0)->assignBeh<GenericMovementBehavior>(Point(-650, 300), 0);
+    Team::getTeam(TEAM_BLUE)->getRobot(0)->assignBeh<GenericMovementBehavior>(Point(-650, 300), 0);
      std::cout << "adfasdfas " << std::endl;
 }
 

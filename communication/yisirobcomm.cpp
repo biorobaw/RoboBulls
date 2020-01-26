@@ -5,7 +5,7 @@
 #include "model/robot.h"
 #include "model/gamemodel.h"
 #include "behavior/genericmovementbehavior.h"
-#include "include/motion_parameters.h"
+#include "parameters/motion_parameters.h"
 
 YisiRobComm::YisiRobComm(std::string usb_port, int frequency)
 {

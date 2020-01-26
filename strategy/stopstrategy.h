@@ -12,7 +12,7 @@
 class StopStrategy:public Strategy
 {
 public:
-    StopStrategy();
+    StopStrategy(Team* _team);
     void assignBeh() override;
     bool update() override;
 };

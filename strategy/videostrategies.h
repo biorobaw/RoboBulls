@@ -63,7 +63,7 @@ private:
 class VideoStrategy1 : public Strategy
 {
 public:
-     VideoStrategy1(int r1, int r2);
+     VideoStrategy1(Team* _team,int r1, int r2);
     ~VideoStrategy1();
     void assignBeh();
     bool update();
@@ -81,7 +81,7 @@ private:
 class VideoStrategy2 : public Strategy
 {
 public:
-    VideoStrategy2(int r0, Point pointToWaitAt);
+    VideoStrategy2(Team* _team, int r0, Point pointToWaitAt);
     void assignBeh();
     bool update();
 private:
@@ -99,7 +99,7 @@ private:
 class VideoStrategy3 : public Strategy
 {
 public:
-    VideoStrategy3(int who);
+    VideoStrategy3(Team* _team, int who);
     void assignBeh();
     bool update();
 private:
@@ -115,7 +115,7 @@ private:
 class VideoStrategy4 : public Strategy
 {
 public:
-    VideoStrategy4(int r1, int r2);
+    VideoStrategy4(Team* _team,int r1, int r2);
     void assignBeh();
     bool update();
 private:
@@ -131,7 +131,7 @@ private:
 class VideoStrategy5 : public Strategy
 {
 public:
-    VideoStrategy5(int keeper, int kicker);
+    VideoStrategy5(Team* _team, int keeper, int kicker);
     void assignBeh();
     bool update();
 private:

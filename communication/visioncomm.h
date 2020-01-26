@@ -71,8 +71,7 @@ protected:
     RoboCupSSLClient * client;      //! client to receive packets
     int resetFrames = 0;            //! Frames passed up remove all potential robot detections
     int totalframes = 0;            //! Total frames passed since start
-    int blue_rob_readings[12]={0};  //! Number of detections of each blue robot
-    int yell_rob_readings[12]={0};  //! Number of detections of each yelloe robot
+    int rob_readings[2][MAX_ROBOTS]={{0}};  //! Number of detections of each blue robot
     timeval lastRecvTime;           //! When did we last receive a packet? Used to not recieve every one
     bool FOUR_CAMERA_MODE = false;    //! Are we in four-camera mode (true)? Or Two-camera mode?
 

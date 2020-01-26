@@ -4,7 +4,7 @@
 #include <QGraphicsPixmapItem>
 #include <QGraphicsItem>
 #include <QDebug>
-#include <include/field.h>
+#include "parameters/field.h"
 
 //GuiField is the background of the field itself, behind the FieldPanel
 
@@ -21,7 +21,7 @@ public:
     int gridScale = 100;
     bool Pressed = false;
     bool highlighted = false;
-    std::string myTeam = "Blue";
+
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);          // we want to know when the mouse is pressed...

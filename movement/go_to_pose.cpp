@@ -4,8 +4,8 @@
 #include "gui/guiinterface.h"
 #include <time.h>
 #include <assert.h>
-#include "include/motion_parameters.h"     //ROT/DIST Tolerance
-#include "include/field.h"
+#include "parameters/motion_parameters.h"     //ROT/DIST Tolerance
+#include "parameters/field.h"
 #include "movement/move.h"
 #include "movement/move_collisions.h"
 #include "model/gamemodel.h"

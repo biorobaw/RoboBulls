@@ -3,7 +3,7 @@
 
 #include "visioncomm.h"
 #include "model/gamemodel.h"
-#include "include/game_constants.h"
+#include "parameters/game_constants.h"
 
 using namespace std;
 
@@ -66,11 +66,16 @@ void VisionComm::receiveRobot(const SSL_DetectionRobot& robot, int detectedTeamC
     {
         int id = robot.robot_id();
 
-        Team* team =  &gameModel->getTeam(detectedTeamColor);
+
+        Team* team =  Team::getTeam(detectedTeamColor);
         Robot* rob = team->getRobot(id);
+
+        // cout << "--Detected: color,id: " << detectedTeamColor << " " << id << std::endl;
+
 
         if (rob == NULL)
         {
+
             //std::cout<<"Did not find.........................................."<<std::endl;//Added by Bo Wu
             rob = team->addRobot(id);
         }
@@ -104,13 +109,22 @@ static bool isGoodDetection
     float x = detection.x();
     float y = detection.y();
   //std::cout << "detection.x()"<<detection.x() <<"detection.y()"<<detection.y()<<endl;//Donglin
-    // Camera Config
-    // 1 | 0
-    // -----
-    // 2 | 3
+    // Camera Config (in ssl-vision)
+    //   y
+    // 1 | 3
+    // ----- x
+    // 0 | 2
+
+
+    // Camera config (in grsim)
+    //   y
+    // 3 | 0
+    // ----- x
+    // 2 | 1
 
     float cam = frame.camera_id();
-     //std::cout << "!!!!!cam: "<<  cam<<endl;//Donglin
+
+    //TODO: ssl-vision and grsim sort cameras differently, thus the following code is not useful
     if(!fourCameraMode) {
         isGoodSide =
         (x >= 0 && cam == 1) ||
@@ -118,10 +132,10 @@ static bool isGoodDetection
         //std::cout << "HAisGoodSide: "<<  isGoodSide<<endl;//Donglin
     } else {
         isGoodSide =
-        (x >  0 && y > 0 && cam == 0) ||
-        (x <= 0 && y > 0  && cam == 1) ||
-        (x <= 0 && y <= 0 && cam == 2) ||
-        (x >  0 && y <= 0 && cam == 3);
+        (cam == 0 && x >  -0.01 && y >  -0.01 ) ||
+        (cam == 1 && x >  -0.01 && y <=  0.01 ) ||
+        (cam == 2 && x <=  0.01 && y <=  0.01 ) ||
+        (cam == 3 && x <=  0.01 && y >  -0.01 );
         //std::cout << "isGoodSide22222: "<<  isGoodSide<<endl;//Donglin
     }
     // isGoodSide = SIMULATED;    //Simulated overrides anything
@@ -231,23 +245,26 @@ void VisionComm::recieveRobotTeam(const SSL_DetectionFrame& frame, int which_tea
 {
 
     //std::cout<<"VisionComm::recieveRobotTeam\n"<<std::endl;
+    std::cout << "t: " << which_team << std::endl;
 
-    auto* team    = &gamemodel->getTeam(which_team);
+    auto* team    = Team::getTeam(which_team);
 
-    auto* teamDetection = &frame.robots_blue();
-    int*  teamCounts    = blue_rob_readings;
-    if(which_team == TEAM_YELLOW) {
-        teamDetection = &frame.robots_yellow();
-        teamCounts    = yell_rob_readings;
-    }
+    auto* teamDetection = which_team == TEAM_YELLOW ? &frame.robots_yellow() : &frame.robots_blue();
+    int*  teamCounts    = rob_readings[which_team];
 
     
     for(const SSL_DetectionRobot& robot : *teamDetection)
     {
 
-        //std::cout<<"VisionComm::robot.robot_id() robot detected: "<< robot.robot_id()<<std::endl;
+        std::cout<<"VisionComm: (t,id) "
+                << which_team << " , "
+                << robot.robot_id() << " , " << "c: " << frame.camera_id() << " , "
+                << robot.x() << " , " << robot.y() << " , "
+                << isGoodDetection(robot, frame, CONF_THRESHOLD_BOTS, FOUR_CAMERA_MODE) << " - "
+                << std::endl;
 
         if(isGoodDetection(robot, frame, CONF_THRESHOLD_BOTS, FOUR_CAMERA_MODE)) {
+
             //std::cout<<"VisionComm::robot.robot_id() GOOD DETECTION GOOD DETECTION!!!!!!!!!!!\n"<<std::endl;
             int robotID = robot.robot_id();
             if(team->getRobot(robotID) or teamCounts[robotID] >= 80) {
@@ -282,7 +299,7 @@ void VisionComm::receive()
     //receiveIfMSPassed(10);
     client->receive(packet);    //Recieve packet here
 
-    //std::cout << "at VisionComm::receive() 1 "<<endl;
+//    std::cout << "Vision: "<<endl;
 
     // Update arrays used for tracking frames from each quadrant/half
     if(packet.has_detection())
@@ -294,12 +311,13 @@ void VisionComm::receive()
 
     //std::cout << "at VisionComm::receive() 2 "<<endl;
 
-    bool all_frames_recv = true;
     int num_cams = FOUR_CAMERA_MODE? 4 : 2;
-    //std::cout<<"Camera numberrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:"<<num_cams<<std::endl;//Added by Bo Wu
+//    std::cout<<"Camera number:"<<num_cams<<std::endl;//Added by Bo Wu
+
+    bool all_frames_recv = true;
     for(int i = 0; i < num_cams; ++i)
-        if(!frames_state[i])
-            all_frames_recv = false;
+        all_frames_recv = all_frames_recv && frames_state[i];
+
 
     //std::cout << "at VisionComm::receive()"<<endl;
     if(all_frames_recv)
@@ -325,8 +343,8 @@ void VisionComm::receive()
          * ghost robots from appearing over time */
         if(++resetFrames > 100) {
             resetFrames = 0;
-            for(int& reading : blue_rob_readings) reading = 0;
-            for(int& reading : yell_rob_readings) reading = 0;
+            for( int i=0; i <2 ; i++)
+                for(int& reading : rob_readings[i]) reading = 0;
         }
     }
 }

@@ -4,6 +4,8 @@
 #include <QString>
 #include <deque>
 #include "utilities/point.h"
+#include "model/robot.h"
+
 using std::string;
 using std::deque;
 class MainWindow;
@@ -34,12 +36,13 @@ public:
     std::deque<deque<int> > botSpeedsRecord;
 
     // position stuff
-    QString getBotCoord(int id);        // Returns the specified robot's x/y position as a QString
-    QString getBotOrientString(int id);
-    double  getBotOrientDouble(bool myTeam, int id);
-    int     getBotCoordX(bool myTeam, int id);
-    int     getBotCoordY(bool myTeam,int id);
-    float   getBotSpeed(bool myTeam, int id);
+//    QString getBotCoord(Robot* robot);        // Returns the specified robot's x/y position as a QString
+//    int     getBotCoordY(int myTeam,int id);
+//    int     getBotCoordX(int myTeam, int id);
+
+    QString getBotOrientString(Robot* robot);
+    double  getBotOrientDouble(Robot* robot);
+    float   getBotSpeed(int id);
     int     getBallCoordX();
     int     getBallCoordY();
 

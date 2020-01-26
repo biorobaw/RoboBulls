@@ -55,7 +55,7 @@ bool DribbleToPoint::perform(Robot* robot)
 //        std::cout << "Dribble: Grasp" << std::endl;
 
         if(!targetIsAhead(ang_to_ball, rp)
-        && safeToAdjust(bp, robot->getID())
+        && safeToAdjust(bp, robot)
         && prefer_forward_motion)
             state = adjust1;
 
@@ -83,7 +83,7 @@ bool DribbleToPoint::perform(Robot* robot)
 //        std::cout << "Dribble: Move" << std::endl;
 
         if(!targetIsAhead(ang_to_ball, rp)
-        && safeToAdjust(bp, robot->getID())
+        && safeToAdjust(bp, robot)
         && prefer_forward_motion)
             state = adjust1;
 
@@ -153,19 +153,16 @@ bool DribbleToPoint::targetIsAhead(const float& ang_to_ball, const Point& rp)
     return fabs(Measurements::angleDiff(ang_to_ball,ang_to_target)) < M_PI_4;
 }
 
-bool DribbleToPoint::safeToAdjust(const Point& bp, const int rob_id)
+bool DribbleToPoint::safeToAdjust(const Point& bp, Robot* robot)
 {
-    for(Robot* opp_rob : gameModel->getOppTeam().getRobots())
-    {
-        if(Measurements::distance(bp, opp_rob->getPosition()) < 500)
-            return false;
-    }
-
-    for(Robot* teammate : gameModel->getMyTeam().getRobots())
-    {
-        if(teammate->getID() != rob_id)
-            if(Measurements::distance(bp, teammate->getPosition()) < ROBOT_RADIUS + BALL_RADIUS + 50)
+    for(Robot* r : Robot::getAllRobots()){
+        if(r->getTeamId()==robot->getTeamId()){
+            if(r!=robot && Measurements::distance(bp, r->getPosition()) < ROBOT_RADIUS + BALL_RADIUS + 50)
                 return false;
+        } else {
+            if(Measurements::distance(bp, r->getPosition()) < 500)
+                return false;
+        }
     }
 
     return true;

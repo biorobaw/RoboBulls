@@ -19,7 +19,7 @@ void AttackSupport::perform(Robot * robot)
     // We signal that we are done supporting if:
     // - We are closest member on our team to the ball
     // - The ball is close to us
-    finished = Comparisons::distance(bp).minMyTeam()->getID() == robot->getID()
+    finished = Comparisons::distance(bp).minInTeam(robot->getTeam())->getID() == robot->getID()
             && Measurements::isClose(rp, bp, ROBOT_RADIUS+BALL_RADIUS+200);
 
     switch(state)
@@ -35,7 +35,7 @@ void AttackSupport::perform(Robot * robot)
         Robot* ball_bot = gameModel->getHasBall();
 
         bool ball_bot_not_facing_us =
-                ball_bot != nullptr && ball_bot->isOnMyTeam()
+                ball_bot != nullptr && ball_bot->getTeam()==robot->getTeam()
                 && Comparisons::isNotFacingPoint(ball_bot, rp, 15*M_PI/180);
 
         if(ball_bot_not_facing_us)
@@ -56,7 +56,7 @@ void AttackSupport::perform(Robot * robot)
 
         if(Measurements::mag(b_vel) < 200)
         {
-            if(ball_bot != nullptr && ball_bot->isOnMyTeam())
+            if(ball_bot != nullptr &&  ball_bot->getTeam()==robot->getTeam())
             {
                 Point ball_bot_pos = ball_bot->getPosition();
                 float ball_bot_ori = ball_bot->getOrientation();
@@ -91,7 +91,7 @@ void AttackSupport::perform(Robot * robot)
         // Checking if a teammate with the ball is facing this robot
         Robot* ball_bot = gameModel->getHasBall();
 
-        if(ball_bot != nullptr && ball_bot->isOnMyTeam()
+        if(ball_bot != nullptr &&  ball_bot->getTeam()==robot->getTeam()
         && Comparisons::isFacingPoint(ball_bot, rp, 10*M_PI/180)
         && !Measurements::isClose(rp, ball_bot, 1000))
             switch2intercept_count = std::min(30, switch2intercept_count+1);
@@ -158,7 +158,7 @@ void AttackSupport::calcStaticProb()
     float dist = 0.0, angle = 0.0;
     float temp_p = 0.0;
 
-    DefenceArea def_area(!GameModel::OUR_TEAM);
+    DefenceArea def_area(OPPONENT_DEFFENCE_AREA);
 
     for (int x = 0; x < PF_LENGTH_SUPP; ++x)
     {
@@ -206,14 +206,14 @@ void AttackSupport::calcDynamicProb(Robot * robot)
         for(int y = 0; y < PF_WIDTH_SUPP; ++y)
             prob_field[x][y].dynamic_val = 0;
 
-    genGoalShadows();
+    genGoalShadows(robot);
     genDistanceFromTeammates(robot);
-    genBallShadows();
+    genBallShadows(robot);
     genGoalShotAvoidance();
 }
 
 
-void AttackSupport::genGoalShadows()
+void AttackSupport::genGoalShadows(Robot* r)
 {
     // Top end of goal post
     float g1x = gameModel->getOppGoal().x;
@@ -226,7 +226,7 @@ void AttackSupport::genGoalShadows()
     float R = ROBOT_RADIUS;
 
     // Generate clusters of robots
-    std::vector<std::vector<Point>> clusters = genClusters();
+    std::vector<std::vector<Point>> clusters = genClusters(r);
 
     // Calculate shadow geometry for each cluster of robots
     for(std::vector<Point> cluster : clusters)
@@ -275,7 +275,7 @@ void AttackSupport::genDistanceFromTeammates(Robot* robot)
         {
             ProbNode& n = prob_field[x][y];
 
-            for(Robot* tmate: gameModel->getMyTeam().getRobots())
+            for(Robot* tmate: robot->getTeam()->getRobots())
             {
                 if(tmate->getID() != robot->getID()
                 && (Measurements::distance(tmate->getPosition(), n.point) < 2000))
@@ -286,14 +286,14 @@ void AttackSupport::genDistanceFromTeammates(Robot* robot)
 }
 
 
-void AttackSupport::genBallShadows()
+void AttackSupport::genBallShadows(Robot* r)
 {
 
     Point bp = gameModel->getBallPoint();
 
     float R = ROBOT_RADIUS + 50;
 
-    for(Robot* opp: gameModel->getOppTeam().getRobots())
+    for(Robot* opp: r->getOpponentTeam()->getRobots())
     {
         float rob_x = opp->getPosition().x;
         float rob_y = opp->getPosition().y;
@@ -393,13 +393,13 @@ void AttackSupport::genBallShadows()
 }
 
 
-std::vector<std::vector<Point>> AttackSupport::genClusters()
+std::vector<std::vector<Point>> AttackSupport::genClusters(Robot* r)
 {
     int cluster_tol = 2*ROBOT_RADIUS + 2*BALL_RADIUS + 10;
 
     std::vector<std::vector<Point>> clusters;
 
-    for(Robot* opp: gameModel->getOppTeam().getRobots())
+    for(Robot* opp: r->getOpponentTeam()->getRobots())
     {
         // Check if each opponent belongs to an existing cluster
         bool assigned = false;

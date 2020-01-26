@@ -1,8 +1,10 @@
 #ifndef STRATEGYCONTROLLER_H
 #define STRATEGYCONTROLLER_H
-class GameModel;
+
+
 class Behavior;
 class Strategy;
+class Team;
 
 /*! @file
  * Controls selection of an active strategy (play) based on the game state
@@ -19,11 +21,14 @@ class Strategy;
 class StrategyController
 {
 public:
-    StrategyController(GameModel*, bool refbox_enabled);
+    StrategyController(Team*);
 
     /*! Performs one iteration of the RoboCup Game.
      * Called by GameModel, which is called by VisionComm.  */
     void run();
+
+    Team* getTeam();
+    void setRefboxEnabled(bool _enabled);
 
 private:
     /*! Clean-up called at the end of a frame.
@@ -45,11 +50,13 @@ private:
     /*! Removes the behaviors from each robot, and calls end()
      * on the activeStrategy.  */
     void clearCurrentStrategy();
+
+
     
 private:
-    Strategy*  activeStrategy;
-    GameModel* model;
-    bool refbox_enabled;
+    Strategy*  activeStrategy = nullptr;
+    Team* team = nullptr;
+    bool refbox_enabled = false;
 };
 
 #endif // STRATEGYCONTROLLER_H

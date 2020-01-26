@@ -11,6 +11,7 @@
 class KickOffStrategy : public Strategy
 {
 public:
+    KickOffStrategy(Team* _team);
     void assignBeh();
 private:
 #define NUM_KICK_OFF_POINTS 5

@@ -32,20 +32,9 @@ public:
     /*! Returns true if the line from p0 and p1 passes through the region */
     bool containsLine(const Point& p0, const Point& p1);
 
-    /*! Returns the sum of numOfOpponents and numOfTeammates.
-     * \see numOfOpponents
-     * \see numOfTeammates */
-    int numOfRobots();
+    /*! Returns the number of robots in the set that are within the region */
+    int numOfRobots(std::set<Robot*>& robots);
 
-    /*! Returns number of opponents in the region.*/
-    int numOfOpponents();
-
-    /*! Returns number of teammates in the region. */
-    int numOfTeammates();
-
-    /*! Excludes the robots in the vectors passed passed in. */
-    int numOfRobots(std::vector<Robot*>& ignoreOpponents,
-                    std::vector<Robot*>& ignoreTeammates);
 
     /*! Returns the calculated center of the Region */
     Point centre();

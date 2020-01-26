@@ -8,7 +8,7 @@
 #include "model/gamemodel.h"
 
 #include "utilities/debug.h"
-#include "include/game_constants.h"
+#include "parameters/game_constants.h"
 
 namespace debug
 {
@@ -150,7 +150,7 @@ void buildin_robot_action(const std::vector<std::string>& args, Function callbac
 void builtin_remove_robot(const std::vector<std::string>& args)
 {
     buildin_robot_action(args, [&](int id, int team) {
-        gameModel->removeRobot(id, team);
+        Team::getTeam(team)->removeRobot(id);
         std::cout << "Removed robot " << id << " from team " << team << std::endl;
     });
 }
@@ -160,7 +160,7 @@ void builtin_add_robot(const std::vector<std::string>& args)
 {
     buildin_robot_action(args, [&](int id, char team) {
 
-        gameModel->getTeam(team).addRobot(id);
+        Team::getTeam(team)->addRobot(id);
         std::cout << "Added robot " << id << " to team " << team << std::endl;
     });
 }

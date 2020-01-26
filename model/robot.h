@@ -8,7 +8,9 @@
 #include "skill/skill.h"
 #include "behavior/genericskillbehavior.h"
 #include "iostream"
+#include <set>
 
+class Team;
 
 //! @brief The type of drive the robot has
 enum DriveType
@@ -49,28 +51,37 @@ class Robot
 public:
 //    //! @brief Robot Constructor (does nothing)
     Robot();
+    ~Robot();
+    static std::set<Robot*>& getAllRobots();
 
     //! @brief Robot Constructor with ID and team
-    Robot(int id, int team, std::string robot_type, RobotRole role);
+    Robot(int _id, int _team, std::string robot_type, RobotRole role);
 
     //! @name Information Retrevial
     //! @{
+    int getID();
+    int getTeamId();
+    Team* getTeam();
+    Team* getOpponentTeam();
+
+    RobotRole getRole();
+    DriveType getDriveType();
+
     Point getPosition();
+    float getOrientation();
     Point getVelocityMetersPerSecond();
     Point getVelocityMillimetersPerFrame();
     float getSpeedMetersPerSecond();
     float getSpeedMillimetersPerFrame();
-    float getOrientation();
-    int   getID();
+
     float getKick();
     bool  getDribble();
     bool  getChip();
-    bool  isOnMyTeam();
+
     bool  hasBehavior();
     bool  hasKicker();
     bool  isGoalie();
-    DriveType getDriveType();
-    RobotRole getRole();
+
     //! @}
 
     //! @name Behavior and Skill Assignment
@@ -83,17 +94,23 @@ public:
 
     //! @name Information Setting
     //! @{
+    // for differential and 3 wheels omni
     void setR(float);
     void setL(float);
     void setB(float);
+
+    // for 4 wheels omni
     void setLF(float left_forward);
     void setRF(float right_forward);
     void setLB(float left_backward);
     void setRB(float right_backward);
+
+    // high level set speed commands
     void setVelCmd(float xvel, float yvel, float angvel);
     void setXVel(float xvel);
     void setYVel(float yvel);
     void setAngVel(float angvel);
+
     void setKick(float power = 5.0);
     void setDribble(bool);
     void setChip(bool);
@@ -104,14 +121,18 @@ public:
     int getR();
     int getL();
     int getB();
+
     int getLF();
     int getRF();
     int getLB();
     int getRB();
+
     int getXVel();
     int getYVel();
     float getAngVel();
     //! @}
+
+
 
     //! @name Misc information functions
     //! @{
@@ -122,7 +143,7 @@ public:
 
 private:
     void setCurrentBeh(Behavior *);
-    void setTeam(bool);
+    void setTeam(int);
     void setRobotPosition(Point);
     void setOrientation(float);
     void setID(int);
@@ -137,7 +158,7 @@ private:
     float kick = 0;                 //!< Robot kick power in m/s
     bool chip = false;                  //!< Robot chip
     bool dribble = false;                //!< Robot is dribbling?
-    bool team;                  //!< On myTeam? 1/0
+    int  team;                  //!< On myTeam? 1/0
     bool hasBall;               //!< Have the ball? 1/0
     bool hasBeh;                //!< Currently has a Behavior? 1/0
     bool hasKickerVar;             // whether the robot has a kicker or not
@@ -146,6 +167,8 @@ private:
 
     friend class GameModel;
     friend class VisionComm;
+
+    static std::set<Robot*> all_robots;
 };
 
 //! @}

@@ -6,7 +6,7 @@
 #include "model/gamemodel.h"
 #include "model/robot.h"
 #include "utilities/point.h"
-#include "include/field.h"
+#include "parameters/field.h"
 
 /*! @brief Defines comparison predicates and information querying functions.
  * @details `Comparisons` is a framework for extendable, flexible
@@ -108,15 +108,10 @@ public:
     /*! @name GameModel helper functions
      * @{
      * @brief Helper functions to query the container queries on GameModel teams */
-    Robot* maxMyTeam();
-    Robot* maxOpTeam();
-    Robot* maxAnyTeam();
-    Robot* minMyTeam();
-    Robot* minOppTeam();
-    Robot* minAnyTeam();
-    Robot* anyMyTeam();
-    Robot* anyOppTeam();
-    Robot* anyAnyTeam();
+    Robot* maxInSet(std::set<Robot*>& robots);
+    Robot* maxInTeam(Team* team);
+    Robot* minInSet(std::set<Robot*>& robots);
+    Robot* minInTeam(Team* team);
     //! @}
 
     virtual void setCompareFunction();

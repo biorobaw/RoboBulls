@@ -50,20 +50,12 @@ bool Rectangle::containsLine(const Point& p0, const Point& p1)
     return false;
 }
 
-int Rectangle::numOfRobots()
+int Rectangle::numOfRobots(std::set<Robot*>& robots)
 {
-    GameModel* gm = GameModel::getModel();
 
     int number_of_robots = 0;
 
-    for (Robot * robot : gm->getOppTeam().getRobots())
-    {
-        if(Rectangle::contains(robot->getPosition()))
-        {
-           number_of_robots++;
-        }
-    }
-    for (Robot * robot : gm->getMyTeam().getRobots())
+    for (Robot * robot : robots)
     {
         if(Rectangle::contains(robot->getPosition()))
         {
@@ -73,80 +65,11 @@ int Rectangle::numOfRobots()
     return number_of_robots;
 }
 
-int Rectangle::numOfTeammates()
-{
-    GameModel* gm = GameModel::getModel();
 
-    int number_of_robots = 0;
 
-    for (Robot * robot : gm->getMyTeam().getRobots())
-    {
-        if(Rectangle::contains(robot->getPosition()))
-        {
-           number_of_robots++;
-        }
-    }
-    return number_of_robots;
-}
 
-int Rectangle::numOfOpponents()
-{
-    GameModel* gm = GameModel::getModel();
 
-    int number_of_robots = 0;
 
-    for (Robot * robot : gm->getOppTeam().getRobots())
-    {
-        if(Rectangle::contains(robot->getPosition()))
-        {
-           number_of_robots++;
-        }
-    }
-
-    return number_of_robots;
-}
-
-int Rectangle::numOfRobots(std::vector<Robot*>& ignoreOpponents, std::vector<Robot*>& ignoreTeammates)
-{
-    GameModel* gm = GameModel::getModel();
-
-    int number_of_robots = 0;
-
-    for (Robot * robotAdd : gm->getOppTeam().getRobots())
-    {
-        if( Rectangle::contains(robotAdd->getPosition()) )
-        {
-           number_of_robots++;
-        }
-        for (Robot * robotSubtract : ignoreOpponents)
-        {
-            if( Rectangle::contains(robotSubtract->getPosition())
-            &&  robotSubtract->getID() == robotAdd->getID())
-            {
-                number_of_robots--;
-            }
-        }
-    }
-
-    for (Robot * robotAdd : gm->getMyTeam().getRobots())
-    {
-        if( Rectangle::contains(robotAdd->getPosition()) )
-        {
-           number_of_robots++;
-        }
-        for (Robot * robotSubtract : ignoreTeammates)
-        {
-            if( Rectangle::contains(robotSubtract->getPosition())
-            &&  robotSubtract->getID() == robotAdd->getID())
-            {
-                number_of_robots--;
-            }
-        }
-    }
-
-    //cout << number_of_robots << endl;
-    return number_of_robots;
-}
 
 Point Rectangle::centre()
 {

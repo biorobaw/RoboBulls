@@ -12,9 +12,9 @@
 #include "strategy/strategycontroller.h"
 #include "yaml-cpp/yaml.h"
 #include <string>
-#include "include/game_constants.h"
-#include "include/field.h"
-#include "include/motion_parameters.h"
+#include "parameters/game_constants.h"
+#include "parameters/field.h"
+#include "parameters/motion_parameters.h"
 
 /*! @mainpage Welcome to the RoboBulls 2 Documentation.
  *
@@ -76,7 +76,7 @@ void exitStopRobot(int)
 {
     //TODO: make a clean exit
     std::cout << "This function sould be called only once, not thrice!" <<std::endl;
-    exit(0);
+    exit(1);
 }
 
 //! @brief Signature required by atexit
@@ -126,19 +126,18 @@ int main(int argc, char *argv[])
     load_field_parameters(field_node);
     load_motion_parameters(motion_node);
 
+    // load teams:
+    Team::load_teams(team_node);
 
-    // set robot communication:
-    RobComm::open_communication(team_node);
+
 
     //Initialize GameModel, StrategyController, Vision, and Ref
     GameModel* gm = GameModel::getModel();
-    gm->setTeams(team_node);
 
     RefComm refCommunicator(gm, comm_node);
-    VisionComm visionCommunicator(gm, comm_node, team_node["SIDE"].as<int>());
+    // TODO: vision communicator should not know anything about team sides (deprecated notion of "own team")
+    VisionComm visionCommunicator(gm, comm_node, team_node["TEAM_BLUE"]["SIDE"].as<int>());
 
-    StrategyController sc(gm, comm_node["REFBOX_ENABLED"].as<bool>());
-    gm->setStrategyController(&sc);
 
     registerExitSignals();
 
@@ -162,7 +161,8 @@ int main(int argc, char *argv[])
     refCommunicator.close();
     refCommunicator.wait();
 
-    RobComm::close_communication(gm->getMyTeam().getRobots());
+
+    RobComm::close_communication(Robot::getAllRobots());
     return result;
 
 

@@ -4,6 +4,7 @@
 #include <QObject>
 #include <vector>
 #include <string>
+#include "model/team.h"
 
 class QDial;
 class QFrame;
@@ -59,58 +60,16 @@ public:
 
     std::vector<QGraphicsView*> botIconFrames;
     // Bot individual icon scenes
-    QGraphicsScene *scene_botIcon_0;
-    QGraphicsScene *scene_botIcon_1;
-    QGraphicsScene *scene_botIcon_2;
-    QGraphicsScene *scene_botIcon_3;
-    QGraphicsScene *scene_botIcon_4;
-    QGraphicsScene *scene_botIcon_5;
-    QGraphicsScene *scene_botIcon_6;
-    QGraphicsScene *scene_botIcon_7;
-    QGraphicsScene *scene_botIcon_8;
-    QGraphicsScene *scene_botIcon_9;
+    QGraphicsScene* scene_botIcon[MAX_ROBOTS];
 
-    std::vector<QGraphicsScene*> botIconScenes;
     // Bot selected icon scenes
-    QGraphicsScene *scene_botIconSel_0;
-    QGraphicsScene *scene_botIconSel_1;
-    QGraphicsScene *scene_botIconSel_2;
-    QGraphicsScene *scene_botIconSel_3;
-    QGraphicsScene *scene_botIconSel_4;
-    QGraphicsScene *scene_botIconSel_5;
-    QGraphicsScene *scene_botIconSel_6;
-    QGraphicsScene *scene_botIconSel_7;
-    QGraphicsScene *scene_botIconSel_8;
-    QGraphicsScene *scene_botIconSel_9;
+    QGraphicsScene* scene_botIconSel[MAX_ROBOTS];
 
-    std::vector<QGraphicsScene*> botIconSelScenes;
     // Bot icons
-    GuiRobot *robotIcon0;
-    GuiRobot *robotIcon1;
-    GuiRobot *robotIcon2;
-    GuiRobot *robotIcon3;
-    GuiRobot *robotIcon4;
-    GuiRobot *robotIcon5;
-    GuiRobot *robotIcon6;
-    GuiRobot *robotIcon7;
-    GuiRobot *robotIcon8;
-    GuiRobot *robotIcon9;
+    GuiRobot* robotIcon[MAX_ROBOTS];
+    GuiRobot* robotIconSel[MAX_ROBOTS];
 
-    std::vector<GuiRobot*> botIcons;
-    // Bot icons for the selected bot panel
-    GuiRobot *robotIcon0Sel;
-    GuiRobot *robotIcon1Sel;
-    GuiRobot *robotIcon2Sel;
-    GuiRobot *robotIcon3Sel;
-    GuiRobot *robotIcon4Sel;
-    GuiRobot *robotIcon5Sel;
-    GuiRobot *robotIcon6Sel;
-    GuiRobot *robotIcon7Sel;
-    GuiRobot *robotIcon8Sel;
-    GuiRobot *robotIcon9Sel;
-
-    std::vector<GuiRobot*> botIconsSelected;
-    // Ball Icon (eventually move to diff class)
+    //TODO: Ball Icon (eventually move to diff class)
     GuiBall *ballIcon;
     QGraphicsScene *scene_ballIcon;
 

@@ -11,10 +11,10 @@
 #include "behavior/markbot.h"
 #include "normalgamestrategy.h"
 #include "behavior/markbot.h"
-#include "include/game_constants.h"
+#include "parameters/game_constants.h"
 
-IndirectKickStrategy::IndirectKickStrategy()
-    :initial_bp(gameModel->getBallPoint())
+IndirectKickStrategy::IndirectKickStrategy(Team* _team)
+    :Strategy(_team), initial_bp(gameModel->getBallPoint())
 {
 
 }
@@ -23,18 +23,17 @@ void IndirectKickStrategy::assignBeh()
 {
     GameModel *gm = GameModel::getModel();
 
-    auto my_team = gameModel->getMyTeam();
-    Robot* wall1 = my_team.getRobotByRole(RobotRole::DEFEND1);
-    Robot* wall2 = my_team.getRobotByRole(RobotRole::DEFEND2);
-    Robot* attack1 = my_team.getRobotByRole(RobotRole::ATTACK1);
-    Robot* attack2 = my_team.getRobotByRole(RobotRole::ATTACK2);
+    Robot* wall1 = team->getRobotByRole(RobotRole::DEFEND1);
+    Robot* wall2 = team->getRobotByRole(RobotRole::DEFEND2);
+    Robot* attack1 = team->getRobotByRole(RobotRole::ATTACK1);
+    Robot* attack2 = team->getRobotByRole(RobotRole::ATTACK2);
 
 
     // We are kicking
-    if ((gm->getGameState() == 'I' && GameModel::OUR_TEAM == TEAM_BLUE) ||
-        (gm->getGameState() == 'i' && GameModel::OUR_TEAM == TEAM_YELLOW))
+    if ((gm->getGameState() == 'I' && team->getColor() == TEAM_BLUE) ||
+        (gm->getGameState() == 'i' && team->getColor() == TEAM_YELLOW))
     {
-        for(Robot* rob : gameModel->getMyTeam().getRobots())
+        for(Robot* rob : team->getRobots())
             rob->clearBehavior();
 
         if(attack1)
@@ -67,11 +66,11 @@ void IndirectKickStrategy::assignBeh()
         if(attack2 && !attack2->hasBehavior())
             attack2->assignBeh<MarkBot>();
 
-        NormalGameStrategy::assignGoalieIfOk();
+        NormalGameStrategy::assignGoalieIfOk(team);
     }
     // We are defending against an indirect kick
-    else if ((gm->getGameState() == 'i' && GameModel::OUR_TEAM == TEAM_BLUE) ||
-             (gm->getGameState() == 'I' && GameModel::OUR_TEAM == TEAM_YELLOW))
+    else if ((gm->getGameState() == 'i' && team->getColor() == TEAM_BLUE) ||
+             (gm->getGameState() == 'I' && team->getColor() == TEAM_YELLOW))
     {
         if(wall1)
             wall1->assignBeh<Wall>();
@@ -82,7 +81,7 @@ void IndirectKickStrategy::assignBeh()
         if(attack2)
             attack2->assignBeh<MarkBot>();
 
-        NormalGameStrategy::assignGoalieIfOk();
+        NormalGameStrategy::assignGoalieIfOk(team);
     }
 }
 

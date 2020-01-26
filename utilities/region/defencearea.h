@@ -1,7 +1,7 @@
 #ifndef DEFENCEAREA_H
 #define DEFENCEAREA_H
 
-#include "include/field.h"
+#include "parameters/field.h"
 #include "rectangle.h"
 #include "sector.h"
 #include "iostream"
@@ -14,6 +14,9 @@
  * or @c !OUR_TEAM for the opponent defence area. @see Region.
  */
 
+#define TEAM_DEFFENCE_AREA true
+#define OPPONENT_DEFFENCE_AREA false
+
 class DefenceArea : public Region
 {
 public:
@@ -23,7 +26,7 @@ public:
      * goalpost. @c OUR_TEAM is defined in "include/config/team.h".
      */
 //    DefenceArea(bool team = !OUR_TEAM);
-    DefenceArea(bool team);
+    DefenceArea(bool our_team);
 
     /*! @see Region::contains() */
     bool contains(const Point &) override;
@@ -71,7 +74,7 @@ private:
     // Consult SSL Rule book for clarification of the following regions
     Rectangle r;
     Sector s1, s2;
-    bool team;
+    bool our_team;
 };
 
 #endif // DEFENCEAREA_H

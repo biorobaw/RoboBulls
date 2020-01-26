@@ -1,6 +1,8 @@
 #ifndef STRATEGY_H
 #define STRATEGY_H
 
+#include "model/team.h"
+
 //! @addtogroup baseclasses
 //! @{
 
@@ -33,6 +35,8 @@
 class Strategy
 {
 public:
+    Strategy(Team* _team);
+
     /*! Decides How to assign behaviors to each robot on the team.
      * This function is called when StrategyController is run with a
      * new command recieved from GameModel */
@@ -55,6 +59,11 @@ public:
      * Implement a distructor for a "ending routine" when this object
      * is deleted due to an update in StrategyController */
     virtual ~Strategy();
+
+    Team* getTeam();
+
+protected:
+    Team* team;
 };
 
 //! @}

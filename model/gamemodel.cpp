@@ -17,17 +17,11 @@ std::mutex GameModel::opp_team_mutex;
 
 // Global static pointer used to ensure a single instance of the class.
 GameModel* gameModel = new GameModel();
-bool GameModel::OUR_TEAM = TEAM_BLUE;
 
 /*******************************************************************/
 /************************ Public Methods ***************************/
 /*******************************************************************/
 
-//! @brief Sets a StrategyController to run the game with
-void GameModel::setStrategyController(StrategyController *sc)
-{
-    this->sc = sc;
-}
 
 /*! @brief Returns the robot that currently has the ball
  * A robot has the ball if it is close to it and is facing it */
@@ -36,46 +30,6 @@ Robot* GameModel::getHasBall()
     return robotWithBall;
 }
 
-/*! @brief Look for a robot with id `id` on getMyTeam()
- * @param id The id of the robot to look for
- * @see Robot class
- * \return A robot pointer if found, or NULL if not on the team */
-Robot* GameModel::findMyTeam(int id)
-{
-    return myTeam.getRobot(id);
-}
-
-/*! @brief Look for a robot with id `id` on getOponentTeam()
- * @param id The id of the robot to look for
- * \return A robot pointer if found, or NULL if not on the team */
-Robot* GameModel::findOpTeam(int id)
-{
-    return opTeam.getRobot(id);
-}
-
-/*! @brief Return a vector of all robots on the opposing team
- * \return The opposing team (getBlueTeam() if Yellow, getYellowTeam() if Blue) */
-Team& GameModel::getOppTeam()
-{
-    std::lock_guard<std::mutex> opp_team_guard(opp_team_mutex);
-    return opTeam;
-}
-
-/*! @brief Return a vector of all robots on the current team
- * \return The current team (getBlueTeam() if Blue, getYellowTeam() if Yellow) */
-Team& GameModel::getMyTeam()
-{
-    std::lock_guard<std::mutex> my_team_guard(my_team_mutex);
-    return myTeam;
-}
-
-/*! @brief Return the team specified by the color
- * \return The Blue team */
-Team& GameModel::getTeam(int color)
-{
-
-    return myTeam.color == color ? getMyTeam() : getOppTeam();
-}
 
 
 /*! @brief Return a 2D point of the current ball location
@@ -181,15 +135,15 @@ std::string GameModel::toString()
 
     myString << "Ball Position: " << ballPoint.toString() << std::endl;
 
-    myString<<"\nMy Team Robots: \n";
-    auto robots = myTeam.getRobots();
+    myString<<"\nBlue Team Robots: \n";
+    auto robots = Team::getTeam(TEAM_BLUE)->getRobots();
     for (auto it = robots.begin(); it != robots.end(); it++)
     {
         myString << "\t" << (*it)->toString()<< std::endl;
     }
 
-    myString<<"\nOponent Team Robots: \n";
-    robots = opTeam.getRobots();
+    myString<<"\nYellow Team Robots: \n";
+    robots = Team::getTeam(TEAM_YELLOW)->getRobots();
     for(auto it = robots.begin(); it != robots.end(); it++)
     {
         myString << "\t" << (*it)->toString() << std::endl;
@@ -211,7 +165,7 @@ void GameModel::addRobotReplacement(int id, int team, float x, float y, float di
 {
     //Keep orientation if left blank
     if(dir == -10) {
-        Robot* robot = getTeam(team).getRobot(id);
+        Robot* robot = Team::getTeam(team)->getRobot(id);
         dir = robot->getOrientation();
     }
     RobotReplacement replacement {id, team, x, y, dir};
@@ -243,7 +197,10 @@ void GameModel::notifyObservers()
 {
     //std::cout << "at GameModel::notifyObservers()\n";
     setRobotHasBall();
-    sc->run();
+    Team* t = Team::getTeam(TEAM_BLUE);
+    if(t->isControlled()) t->controller.run();
+    t = Team::getTeam(TEAM_YELLOW);
+    if(t->isControlled()) t->controller.run();
 }
 
 /*! @brief Used by RefComm; Set the current game state (See RefComm reference)
@@ -300,24 +257,18 @@ void GameModel::setRobotHasBall()
     static int lastSeenWithoutBallCount = 0;
 
     //Assume no robot has the ball first
-    for(Robot* robot : myTeam.getRobots())
-        robot->hasBall = false;
-    for(Robot* robot : opTeam.getRobots())
+    auto robots = Robot::getAllRobots();
+    for(Robot* robot : robots)
         robot->hasBall = false;
 
     if(!hasBall(this->robotWithBall) and ++lastSeenWithoutBallCount > 10)
     {
         lastSeenWithoutBallCount = 0;
-        auto robots = myTeam.getRobots();
+
         auto ballBot = std::find_if(robots.begin(), robots.end(), hasBall);
         if(ballBot == robots.end()) {            //Not found in myTeam
-
-            robots = opTeam.getRobots();
-            ballBot = std::find_if(robots.begin(), robots.end(), hasBall);
-            if(ballBot == robots.end()) {        //Not found in opTeam
-                this->robotWithBall = NULL;
-                return;
-            }
+            this->robotWithBall = NULL;
+            return;
         }
         this->robotWithBall = *ballBot;          //Robot with ball found, store in gm
     }
@@ -344,59 +295,7 @@ void GameModel::setYellowGoals(char goals)
     yellowGoals = goals;
 }
 
-///*! @brief General-case find function
-// * Looks for a robot with id `id` in a vector of robots. Similar to std::find_if.
-// * @param id The Id to look for
-// * @param team The team to look in (either getMyTeam or getOponentTeam)
-// * @see findMyTeam
-// * @see findOpTeam
-// * @return A Robot pointer pointing into `team` if found, or NULL if not found
-// */
-//Robot* GameModel::find(int id, std::vector<Robot*>& team)
-//{
-//    /* Often, the vision system (and also almost always on the simulator)
-//     * seems to report robots in order anyway. So first,
-//     * I think it would be reasonable to check if the team at that `id`
-//     * is actually that robot first.
-//     */
-//    try {
-//        if(team.at(id)->getID() == id)
-//            return team[id];
-//    }
-//    catch(...) {
-//    }
 
-//    for(Robot* rob : team)
-//    {
-//        if(rob->getID() == id)
-//            return rob;
-//    }
-
-//    return NULL;
-//}
-
-
-/*! @brief Removes a robot from a team
- * Should not be used directly. Used to provide an interface for utilities/debug.h
- * "remove_robot" command. Use that instead.
- * @param id The Id to remove
- * @param team The team (TEAM_YELLOW) or (TEAM_BLUE) to remove from
- * @see utilities/debug.h */
-void GameModel::removeRobot(int id, int team)
-{
-    getTeam(team).removeRobot(id);
-}
-
-
-void  GameModel::setTeams(YAML::Node team_node){
-
-    myTeam = Team(team_node);
-
-    GameModel::OUR_TEAM = myTeam.color;
-    opTeam.color = 1 - myTeam.color;
-    opTeam.side = 1 - myTeam.side;
-
-}
 
 
 

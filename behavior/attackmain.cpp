@@ -129,7 +129,7 @@ void AttackMain::perform(Robot * robot)
         }
 
         // Update dynamic probabilities
-        calcDynamicProb();
+        calcDynamicProb(robot);
 
         // Find max probability node in opponent side of field
         ProbNode max_node = prob_field[PF_LENGTH_MAIN/2][0];
@@ -165,7 +165,7 @@ void AttackMain::calcStaticProb()
     float dist = 0.0, angle = 0.0;
     float temp_p = 0.0;
 
-    DefenceArea def_area(!GameModel::OUR_TEAM);
+    DefenceArea def_area(OPPONENT_DEFFENCE_AREA);
 
     for (int x = 0; x < PF_LENGTH_MAIN; ++x)
     {
@@ -204,7 +204,7 @@ void AttackMain::calcStaticProb()
     }
 }
 
-void AttackMain::calcDynamicProb()
+void AttackMain::calcDynamicProb(Robot* r)
 {
     // Clear previous calculations
     for(int x = 0; x < PF_LENGTH_MAIN; ++x)
@@ -222,7 +222,7 @@ void AttackMain::calcDynamicProb()
     float R = ROBOT_RADIUS;
 
     // Generate clusters of robots
-    std::vector<std::vector<Point>> clusters = genClusters();
+    std::vector<std::vector<Point>> clusters = genClusters(r);
 
     // Cast shadows to clusters of robots from goal post to determine
     // unlikely scoring positions
@@ -261,13 +261,13 @@ void AttackMain::calcDynamicProb()
     }
 }
 
-std::vector<std::vector<Point>> AttackMain::genClusters()
+std::vector<std::vector<Point>> AttackMain::genClusters(Robot* r)
 {
     int cluster_tol = 2*ROBOT_RADIUS + 2*BALL_RADIUS + 10;
 
     std::vector<std::vector<Point>> clusters;
 
-    for(Robot* opp: gameModel->getOppTeam().getRobots())
+    for(Robot* opp: r->getOpponentTeam()->getRobots())
     {
         // Check if each opponent belongs to an existing cluster
         bool assigned = false;
@@ -307,8 +307,8 @@ std::pair<bool, Point> AttackMain::calcBestGoalPoint(Robot* r)
 {
     // Populate a vector with robot positions
     std::vector<Point> obstacles;
-    auto myTeam = gameModel->getMyTeam().getRobots();
-    auto oppTeam = gameModel->getOppTeam().getRobots();
+    auto myTeam = r->getTeam()->getRobots();
+    auto oppTeam = r->getOpponentTeam()->getRobots();
 
     obstacles.reserve(myTeam.size() + oppTeam.size());
 
@@ -369,12 +369,12 @@ std::pair<bool, Point> AttackMain::calcBestGoalPoint(Robot* r)
 std::pair<bool, Point> AttackMain::calcBestPassPoint(Robot* r)
 {
     std::vector<Robot*> obstacles;
-    for(auto* r : gameModel->getOppTeam().getRobots()) obstacles.push_back(r);
+    for(auto* r2 : r->getOpponentTeam()->getRobots()) obstacles.push_back(r2);
     Point bp = gameModel->getBallPoint();
     Robot* best_supp = nullptr;
     float best_prob = 0;
 
-    for(Robot* teammate : gameModel->getMyTeam().getRobots())
+    for(Robot* teammate : r->getTeam()->getRobots())
     {
         if(teammate->getID() != r->getID())
         {

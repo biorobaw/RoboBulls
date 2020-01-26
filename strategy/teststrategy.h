@@ -17,6 +17,7 @@ class Robot;
 class TestStrategy : public Strategy
 {
 public:
+    TestStrategy(Team* _team);
     void assignBeh() override;
     bool update() override;
 };

@@ -11,8 +11,6 @@ void RobComm::open_communication(YAML::Node team_node){
 
     if (robcomm == NULL){
 
-        std::cout << "--ROB_COMM " << std::endl
-                  << "        ROBOT_TYPE : " << team_node["ROBOT_TYPE"] << std::endl;
         auto robot_type = team_node["ROBOT_TYPE"].as<std::string>();
         if( robot_type == "grsim"){
             std::cout << "        GRSIM_ADDR : " <<  team_node["GRSIM_ADDR"] << std::endl
@@ -38,14 +36,14 @@ void RobComm::open_communication(YAML::Node team_node){
             exit (-1);
             //robcomm = new YisiRobComm();
 
+        } else if (robot_type == "none"){
+            // we do not control these team, do nothing
         } else {
             std::cout << "ERROR: unrecognized robot type" << std::endl;
             exit (-1);
         }
 
     }
-
-    std::cout << "--Robcomm DONE" << std::endl;
 
 }
 

@@ -49,7 +49,7 @@ private:
 
     /*! Returns true if the ball is stopped just outside the defence area
      *  We will only try to kick the ball away once this returns true */
-    bool shouldRetrieveBall();
+    bool shouldRetrieveBall(Robot* robot);
 
     Point idlePoint;                        //!< Point to sit at when no action happens
     Point kickPoint;                        //!< Point to kick the point to

@@ -8,7 +8,7 @@ void ChallengeBallBot::perform(Robot *robot)
 {
     Robot* ballBot = gameModel->getHasBall();
 
-    if(ballBot && !ballBot->isOnMyTeam())
+    if(ballBot && ballBot->getTeam() != robot->getTeam())
     {
 //        std::cout << "block" << std::endl;
 

@@ -146,7 +146,8 @@ Point* DefendState::searchClaimPoint(Robot* robot)
 
         // Here we ensure there is no other robot there physically
         Point test(p.x, p.y);
-        Robot* closest = Comparisons::distance(test).minMyTeam();
+
+        Robot* closest = Comparisons::distance(test).minInTeam(robot->getTeam());
         if(closest->getID() != robot->getID()
             && Measurements::distance(test, closest) < ROBOT_RADIUS) {
             continue;
@@ -234,12 +235,12 @@ DefendState* DSIdle::action(Robot* robot)
          * "AND the ball near the goal AND the ball is not moving away..." Kick it.
          */
         Rectangle our_half(-HALF_FIELD_LENGTH, -HALF_FIELD_WIDTH, 0, HALF_FIELD_WIDTH);
-        DefenceArea our_da(GameModel::OUR_TEAM);
+        DefenceArea our_da(TEAM_DEFFENCE_AREA);
 
         if( our_half.contains(bp)
             && our_da.contains(bp, 2000)
             && kicker_ID == -1
-            && Comparisons::distanceBall().minMyTeam() == robot)
+            && Comparisons::distanceBall().minInTeam(robot->getTeam()) == robot)
         {
             kicker_ID = robot->getID();
             return new DSKick();
@@ -323,7 +324,7 @@ DefendState* DSIntercept::action(Robot* robot)
             //and nobody else is kicking, we kick.
             if(Measurements::distance(robot, bp) < 600
                 && kicker_ID == -1
-                && Comparisons::distanceBall().minMyTeam() == robot) 
+                && Comparisons::distanceBall().minInTeam(robot->getTeam()) == robot)
             {
                 kicker_ID = robot->getID();
                 ktpo = new Skill::KickToPointOmni(gameModel->getOppGoal());

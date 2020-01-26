@@ -32,6 +32,7 @@ SOURCES += main.cpp \
 	communication/nxtrobcomm.cpp \
 	communication/refcomm.cpp \
 	communication/robcomm.cpp \
+        communication/serialib.cpp \
 	communication/simrobcomm.cpp \
 	communication/visioncomm.cpp \
 	gui/fieldpanel.cpp \
@@ -50,7 +51,6 @@ SOURCES += main.cpp \
 	gui/objectposition.cpp \
 	gui/robotpanel.cpp \
 	gui/selrobotpanel.cpp \
-	include/serialib.cpp \
     libs/grsim/src/messages/grSim_Commands.pb.cc \
     libs/grsim/src/messages/grSim_Packet.pb.cc \
     libs/grsim/src/messages/grSim_Replacement.pb.cc \
@@ -111,8 +111,8 @@ SOURCES += main.cpp \
         movement/go_to_pose.cpp \
         movement/differential/differential_pilot.cpp \
     model/team.cpp \
-    include/field.cpp \
-    include/motion_parameters.cpp
+    parameters/field.cpp \
+    parameters/motion_parameters.cpp
 
 HEADERS += \
 	behavior/attackmain.h \
@@ -124,6 +124,7 @@ HEADERS += \
 	communication/nxtrobcomm.h \
 	communication/refcomm.h \
 	communication/robcomm.h \
+        communication/serialib.h \
 	communication/simrobcomm.h \
 	communication/visioncomm.h \
 	gui/fieldpanel.h \
@@ -142,8 +143,6 @@ HEADERS += \
 	gui/objectposition.h \
 	gui/robotpanel.h \
 	gui/selrobotpanel.h \
-	include/config/tolerances.h \
-	include/serialib.h \
     libs/grsim/include/messages/grSim_Commands.pb.h \
     libs/grsim/include/messages/grSim_Packet.pb.h \
     libs/grsim/include/messages/grSim_Replacement.pb.h \
@@ -206,9 +205,9 @@ HEADERS += \
         movement/three_wheel_omni/three_wheel_omni_pilot.h \
         movement/four_wheel_omni/four_wheel_omni_pilot.h \
     model/team.h \
-    include/game_constants.h \
-    include/field.h \
-    include/motion_parameters.h
+    parameters/game_constants.h \
+    parameters/field.h \
+    parameters/motion_parameters.h
 
 
 
@@ -247,183 +246,3 @@ DEPENDPATH += $$PWD/libs/yaml-cpp-0.6.3/include
 
 #unix:!macx: PRE_TARGETDEPS += $$PWD/libs/yaml-cpp-0.6.3/build/libyaml-cpp.a
 
-DISTFILES += \
-    libs/ssl-vision/proto/compile.sh \
-    libs/ssl-vision/proto/messages_robocup_ssl_detection.proto \
-    libs/ssl-vision/proto/messages_robocup_ssl_detection_tracked.proto \
-    libs/ssl-vision/proto/messages_robocup_ssl_geometry.proto \
-    libs/ssl-vision/proto/messages_robocup_ssl_geometry_legacy.proto \
-    libs/ssl-vision/proto/messages_robocup_ssl_refbox_log.proto \
-    libs/ssl-vision/proto/messages_robocup_ssl_wrapper.proto \
-    libs/ssl-vision/proto/messages_robocup_ssl_wrapper_legacy.proto \
-    libs/ssl-vision/proto/messages_robocup_ssl_wrapper_tracked.proto \
-    libs/yaml-cpp-0.6.3/CMakeLists.txt \
-    libs/yaml-cpp-0.6.3/CONTRIBUTING.md \
-    libs/yaml-cpp-0.6.3/LICENSE \
-    libs/yaml-cpp-0.6.3/README.md \
-    libs/yaml-cpp-0.6.3/install.txt \
-    libs/yaml-cpp-0.6.3/src/contrib/yaml-cpp.natvis \
-    libs/yaml-cpp-0.6.3/src/contrib/yaml-cpp.natvis.md \
-    libs/yaml-cpp-0.6.3/test/CMakeLists.txt \
-    libs/yaml-cpp-0.6.3/test/create-emitter-tests.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/CMakeLists.txt \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/README.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/appveyor.yml \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/CHANGES \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/CMakeLists.txt \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/CONTRIBUTORS \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/LICENSE \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/README.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/configure.ac \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/docs/CheatSheet.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/docs/CookBook.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/docs/DesignDoc.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/docs/DevGuide.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/docs/Documentation.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/docs/ForDummies.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/docs/FrequentlyAskedQuestions.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/docs/KnownIssues.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/docs/v1_5/CheatSheet.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/docs/v1_5/CookBook.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/docs/v1_5/Documentation.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/docs/v1_5/ForDummies.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/docs/v1_5/FrequentlyAskedQuestions.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/docs/v1_6/CheatSheet.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/docs/v1_6/CookBook.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/docs/v1_6/Documentation.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/docs/v1_6/ForDummies.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/docs/v1_6/FrequentlyAskedQuestions.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/docs/v1_7/CheatSheet.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/docs/v1_7/CookBook.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/docs/v1_7/Documentation.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/docs/v1_7/ForDummies.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/docs/v1_7/FrequentlyAskedQuestions.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/include/gmock/gmock-generated-nice-strict.h.pump \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/msvc/2005/gmock.sln \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/msvc/2005/gmock.vcproj \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/msvc/2005/gmock_config.vsprops \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/msvc/2005/gmock_main.vcproj \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/msvc/2005/gmock_test.vcproj \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/msvc/2010/gmock.sln \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/msvc/2010/gmock.vcxproj \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/msvc/2010/gmock_config.props \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/msvc/2010/gmock_main.vcxproj \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/msvc/2010/gmock_test.vcxproj \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/msvc/2015/gmock.sln \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/msvc/2015/gmock.vcxproj \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/msvc/2015/gmock_config.props \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/msvc/2015/gmock_main.vcxproj \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/msvc/2015/gmock_test.vcxproj \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/scripts/fuse_gmock_files.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/scripts/generator/LICENSE \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/scripts/generator/README \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/scripts/generator/README.cppclean \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/scripts/generator/cpp/__init__.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/scripts/generator/cpp/ast.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/scripts/generator/cpp/gmock_class.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/scripts/generator/cpp/gmock_class_test.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/scripts/generator/cpp/keywords.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/scripts/generator/cpp/tokenize.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/scripts/generator/cpp/utils.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/scripts/generator/gmock_gen.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/scripts/gmock-config.in \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/scripts/gmock_doctor.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/scripts/upload.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/scripts/upload_gmock.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/test/gmock_leak_test.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/test/gmock_output_test.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/test/gmock_output_test_golden.txt \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googlemock/test/gmock_test_utils.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/CHANGES \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/CMakeLists.txt \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/CONTRIBUTORS \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/LICENSE \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/README.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/cmake/internal_utils.cmake \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/codegear/gtest.cbproj \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/codegear/gtest.groupproj \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/codegear/gtest_main.cbproj \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/codegear/gtest_unittest.cbproj \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/configure.ac \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/docs/AdvancedGuide.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/docs/DevGuide.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/docs/Documentation.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/docs/FAQ.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/docs/Primer.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/docs/PumpManual.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/docs/Samples.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/docs/V1_5_AdvancedGuide.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/docs/V1_5_Documentation.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/docs/V1_5_FAQ.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/docs/V1_5_Primer.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/docs/V1_5_PumpManual.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/docs/V1_5_XcodeGuide.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/docs/V1_6_AdvancedGuide.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/docs/V1_6_Documentation.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/docs/V1_6_FAQ.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/docs/V1_6_Primer.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/docs/V1_6_PumpManual.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/docs/V1_6_Samples.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/docs/V1_6_XcodeGuide.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/docs/V1_7_AdvancedGuide.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/docs/V1_7_Documentation.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/docs/V1_7_FAQ.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/docs/V1_7_Primer.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/docs/V1_7_PumpManual.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/docs/V1_7_Samples.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/docs/V1_7_XcodeGuide.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/docs/XcodeGuide.md \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/include/gtest/internal/gtest-param-util-generated.h.pump \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/include/gtest/internal/gtest-type-util.h.pump \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/m4/acx_pthread.m4 \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/m4/gtest.m4 \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/msvc/gtest-md.sln \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/msvc/gtest-md.vcproj \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/msvc/gtest.sln \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/msvc/gtest.vcproj \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/msvc/gtest_main-md.vcproj \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/msvc/gtest_main.vcproj \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/msvc/gtest_prod_test-md.vcproj \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/msvc/gtest_prod_test.vcproj \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/msvc/gtest_unittest-md.vcproj \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/msvc/gtest_unittest.vcproj \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/scripts/common.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/scripts/fuse_gtest_files.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/scripts/gen_gtest_pred_impl.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/scripts/gtest-config.in \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/scripts/pump.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/scripts/release_docs.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/scripts/upload.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/scripts/upload_gtest.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/test/gtest_break_on_failure_unittest.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/test/gtest_catch_exceptions_test.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/test/gtest_color_test.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/test/gtest_env_var_test.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/test/gtest_filter_unittest.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/test/gtest_help_test.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/test/gtest_list_tests_unittest.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/test/gtest_output_test.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/test/gtest_output_test_golden_lin.txt \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/test/gtest_shuffle_test.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/test/gtest_test_utils.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/test/gtest_throw_on_failure_test.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/test/gtest_uninitialized_test.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/test/gtest_xml_outfiles_test.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/test/gtest_xml_output_unittest.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/test/gtest_xml_test_utils.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/xcode/Config/FrameworkTarget.xcconfig \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/xcode/Config/General.xcconfig \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/xcode/Config/StaticLibraryTarget.xcconfig \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/xcode/Config/TestTarget.xcconfig \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/xcode/Resources/Info.plist \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/xcode/Samples/FrameworkSample/Info.plist \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/xcode/Samples/FrameworkSample/WidgetFramework.xcodeproj/project.pbxproj \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/xcode/Samples/FrameworkSample/runtests.sh \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/xcode/Scripts/runtests.sh \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/xcode/Scripts/versiongenerate.py \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/googletest/xcode/gtest.xcodeproj/project.pbxproj \
-    libs/yaml-cpp-0.6.3/test/gtest-1.8.0/travis.sh \
-    libs/yaml-cpp-0.6.3/util/CMakeLists.txt \
-    libs/yaml-cpp-0.6.3/yaml-cpp-config-version.cmake.in \
-    libs/yaml-cpp-0.6.3/yaml-cpp-config.cmake.in \
-    libs/yaml-cpp-0.6.3/yaml-cpp.pc.cmake

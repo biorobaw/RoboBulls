@@ -2,6 +2,9 @@
 #include <sstream>
 #include <cmath>
 #include "robot.h"
+#include "team.h"
+
+std::set<Robot*> Robot::all_robots;
 
 Robot::Robot()
 {
@@ -16,14 +19,16 @@ Robot::Robot()
     hasBeh = false;
     behavior = nullptr;
     hasKickerVar = false;
+
+    all_robots.insert(this);
 }
 
-Robot::Robot(int id, int team, std::string robot_type, RobotRole role) :
+Robot::Robot(int _id, int _team, std::string robot_type, RobotRole role) :
     Robot()
 {
+    id = _id;
+    team = _team;
     team_role = role;
-    setID(id);
-    setTeam(team);
 
     if(robot_type == "yisibot"){
         hasKickerVar = true;
@@ -32,15 +37,22 @@ Robot::Robot(int id, int team, std::string robot_type, RobotRole role) :
     } else if (robot_type == "grsim") {
         hasKickerVar = true;
         driveType = DriveType::fourWheelOmni;
-
     } else if (robot_type == "rpi_2019"){
         hasKickerVar = false;
         driveType = DriveType::differential;
 
+    } else if (robot_type == "none") {
+        // robot is not being controlled, set dummy values
+        hasKickerVar = true;
+        driveType = DriveType::fourWheelOmni;
     } else {
         std::cout << "ERROR in Robot contstructor, robot_type not recognized" <<std::endl;
         exit(-1);
     }
+}
+
+Robot::~Robot(){
+    all_robots.erase(this);
 }
 
 /*! @{
@@ -111,8 +123,6 @@ float Robot::getKick() {return kick;}
 //! @brief Returns a pointer to the robot's current behavior
 Behavior* Robot::getBehavior(){ return behavior; }
 
-//! @brief Returns true if the robot is a member of getMyTeam in GameModel
-bool Robot::isOnMyTeam() { return team; }
 
 //! @brief Returns true if the robot curently has a Behavior
 bool Robot::hasBehavior() { return hasBeh; }
@@ -199,8 +209,19 @@ void Robot::setOrientation(float ornt){orientation = ornt;}
 void Robot::setID(int ID){id = ID;}
 
 //! @brief Sets which team the robot is on
-void Robot::setTeam(bool which) { team = which; }
+void Robot::setTeam(int which) { team = which; }
 
+int Robot::getTeamId(){
+    return team;
+}
+
+Team* Robot::getTeam(){
+    return Team::getTeam(team);
+}
+
+Team* Robot::getOpponentTeam(){
+    return Team::getTeam(1-team);
+}
 
 RobotRole Robot::getRole(){
     return team_role;
@@ -208,4 +229,8 @@ RobotRole Robot::getRole(){
 
 bool Robot::isGoalie(){
     return team_role == RobotRole::GOALIE;
+}
+
+std::set<Robot*>& Robot::getAllRobots(){
+    return all_robots;
 }

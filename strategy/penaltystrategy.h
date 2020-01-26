@@ -16,6 +16,7 @@
 class PenaltyStrategy:public Strategy
 {
 public:
+    PenaltyStrategy(Team* _team);
     void assignBeh();
 private:
     Behavior * beh;

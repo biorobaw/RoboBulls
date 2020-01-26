@@ -13,7 +13,7 @@
 class IndirectKickStrategy : public Strategy
 {
 public:
-    IndirectKickStrategy();
+    IndirectKickStrategy(Team* _team);
     void assignBeh();
     char getNextStrategy() override;
 

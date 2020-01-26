@@ -16,8 +16,8 @@ void RefStop::perform(Robot * robot)
         // If the vector is unreachable send the robot
         // to the center of the field. This should eventually
         // result in a legal position that is inside the field
-        DefenceArea our_def(0);
-        DefenceArea opp_def(1);
+        DefenceArea our_def(OPPONENT_DEFFENCE_AREA);
+        DefenceArea opp_def(TEAM_DEFFENCE_AREA);
 
         bool reposition_invalid = Comparisons::isPointOutsideField(reposition)
                                           || (our_def.contains(reposition) && !robot->isGoalie())

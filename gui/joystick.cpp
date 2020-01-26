@@ -106,7 +106,10 @@ void setCommands()
         if(robots[joy_id] != -1)
         {
             // Retrieve robot pointer
-            Robot* r = gameModel->findMyTeam(robots[joy_id]);
+            //TODO: This only considers one color, we'll do temporary fix
+            Team* team = Team::getTeam(TEAM_BLUE);
+            if(!team->isControlled()) team = Team::getTeam(TEAM_YELLOW);
+            Robot* r = team->getRobot(robots[joy_id]);
 
             // If robot exists
             if(r)
