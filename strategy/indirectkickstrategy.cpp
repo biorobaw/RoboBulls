@@ -11,8 +11,9 @@
 #include "behavior/markbot.h"
 #include "normalgamestrategy.h"
 #include "behavior/markbot.h"
-#include "parameters/game_constants.h"
+
 #include "model/ball.h"
+#include "model/field.h"
 
 IndirectKickStrategy::IndirectKickStrategy(Team* _team)
     :Strategy(_team), initial_bp(Ball::getPosition())
@@ -36,24 +37,25 @@ void IndirectKickStrategy::assignBeh()
         for(Robot* rob : team->getRobots())
             rob->clearBehavior();
 
+        auto opponent_goal = Field::getGoalPosition(team->getOpponentSide());
         if(attack1)
         {
-            attack1->assignSkill<Skill::KickToPointOmni>(gameState->getOppGoal());
+            attack1->assignSkill<Skill::KickToPointOmni>(opponent_goal);
             kicker = attack1;
         }
         else if(attack2)
         {
-            attack2->assignSkill<Skill::KickToPointOmni>(gameState->getOppGoal());
+            attack2->assignSkill<Skill::KickToPointOmni>(opponent_goal);
             kicker = attack2;
         }
         else if(wall1)
         {
-            wall1->assignSkill<Skill::KickToPointOmni>(gameState->getOppGoal());
+            wall1->assignSkill<Skill::KickToPointOmni>(opponent_goal);
             kicker = wall1;
         }
         else if(wall2)
         {
-            wall2->assignSkill<Skill::KickToPointOmni>(gameState->getOppGoal());
+            wall2->assignSkill<Skill::KickToPointOmni>(opponent_goal);
             kicker = wall2;
         }
 
@@ -62,7 +64,7 @@ void IndirectKickStrategy::assignBeh()
         if(wall2 && !wall2->hasBehavior())
             wall2->assignBeh<Wall>();
         if(attack1 && !attack1->hasBehavior())
-            attack1->assignBeh<AttackSupport>();
+            attack1->assignBeh<AttackSupport>(attack1);
         if(attack2 && !attack2->hasBehavior())
             attack2->assignBeh<MarkBot>();
 

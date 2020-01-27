@@ -23,7 +23,7 @@
 class Goalie:public GenericMovementBehavior
 {
 public:
-    Goalie();
+    Goalie(Robot*);
     ~Goalie();
     void perform(Robot*);
 
@@ -51,6 +51,7 @@ private:
      *  We will only try to kick the ball away once this returns true */
     bool shouldRetrieveBall(Robot* robot);
 
+    Point goalPoint;                        //!< Center of our team goal area
     Point idlePoint;                        //!< Point to sit at when no action happens
     Point kickPoint;                        //!< Point to kick the point to
     Skill::KickToPointOmni* kick_skill;     //!< Skill to kick the ball with

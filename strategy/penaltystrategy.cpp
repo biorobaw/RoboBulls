@@ -1,5 +1,6 @@
 #include "penaltystrategy.h"
-#include "parameters/game_constants.h"
+
+#include "model/field.h"
 
 PenaltyStrategy::PenaltyStrategy(Team* _team) : Strategy(_team) {
 
@@ -13,8 +14,10 @@ void PenaltyStrategy::assignBeh()
     {
         // One of the defenders will take the penalty and move back
         Robot* kicker = team->getRobotByRole(RobotRole::DEFEND1);
-        if(kicker)
-            kicker->assignBeh<GenericMovementBehavior>(Point(gameState->getOppGoal() - Point(1300,0)), 0);
+        if(kicker){
+            auto opponent_goal = Field::getGoalPosition(team->getOpponentSide());
+            kicker->assignBeh<GenericMovementBehavior>(Point(opponent_goal - Point(1300,0)), 0);
+        }
 
         // Position the usual attackers behind the 400 mm mark
         Robot* attack1 = team->getRobotByRole(RobotRole::ATTACK1);
@@ -36,11 +39,12 @@ void PenaltyStrategy::assignBeh()
     // If we are on the receiving end of a penalty kick
     else
     {
+        auto gp = Field::getGoalPosition(team->getSide());
         // All robots move behind the 400mm mark
         for(Robot* robot: team->getRobots())
         {
             if(robot != nullptr)
-                robot->assignBeh<GenericMovementBehavior>(gameState->getMyGoal() + Point(2000,(robot->getID() - 3)*300), 0);
+                robot->assignBeh<GenericMovementBehavior>(gp + Point(2000,(robot->getID() - 3)*300), 0);
 
         }
         // Position Goalie
@@ -48,7 +52,7 @@ void PenaltyStrategy::assignBeh()
         if(goalie)
         {
             goalie->clearBehavior();
-            goalie->assignBeh<GenericMovementBehavior>(gameState->getMyGoal() + Point(ROBOT_RADIUS,0),0);
+            goalie->assignBeh<GenericMovementBehavior>(gp + Point(ROBOT_RADIUS,0),0);
         }
 
 

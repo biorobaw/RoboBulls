@@ -17,8 +17,9 @@
 #include "guidrawregion.h"
 #include "guifield.h"
 #include "model/game_state.h"
+#include "model/field.h"
 #include <vector>
-#include "parameters/game_constants.h"
+
 
 FieldPanel::FieldPanel(MainWindow * mw) {
     dash = mw;
@@ -40,8 +41,8 @@ void FieldPanel::setupScene() {
 
     // Creating the field
     field = new GuiField();
-    field->setX(-(HALF_FIELD_LENGTH-100));
-    field->setY(-(HALF_FIELD_WIDTH-100)); // Y seems to be 100 off (?)
+    field->setX(-(Field::HALF_FIELD_LENGTH-100));
+    field->setY(-(Field::HALF_FIELD_WIDTH-100)); // Y seems to be 100 off (?)
     field->setZValue(1);
     field->grid = false;
 //    field->highlighted = false;

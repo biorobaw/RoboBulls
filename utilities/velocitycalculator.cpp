@@ -1,5 +1,5 @@
 #include <time.h>
-#include "parameters/field.h"
+#include "model/field.h"
 #include "utilities/velocitycalculator.h"
 
 VelocityCalculator::VelocityCalculator(unsigned deque_size)
@@ -22,8 +22,8 @@ Point VelocityCalculator::getVelocityMetersPerSecond(){
 
     // Calculate change displacement over seconds taken from above
     float changeInSec = (float)(time) / CLOCKS_PER_SEC;
-    float velocityX = (displacement.x / POINTS_PER_METER) / changeInSec;
-    float velocityY = (displacement.y / POINTS_PER_METER) / changeInSec;
+    float velocityX = (displacement.x / Field::POINTS_PER_METER) / changeInSec;
+    float velocityY = (displacement.y / Field::POINTS_PER_METER) / changeInSec;
 
     return Point(velocityX, velocityY);
 }

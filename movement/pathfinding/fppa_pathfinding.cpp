@@ -9,6 +9,7 @@
 #include "model/game_state.h"
 #include "movement/pathfinding/fppa_pathfinding.h"
 #include "model/ball.h"
+#include "model/field.h"
 
 /* Implementation of the Fast Path Planning Algorithm
  * In a sense, this is a mostly a generalized implementation.
@@ -48,7 +49,7 @@ namespace impl {
         if(avoidBall) {
             Point bp = Ball::getPosition();
 
-            if(Measurements::lineSegmentDistance(bp, beginPos, endPos) <= ROBOT_RADIUS+BALL_RADIUS+10) {
+            if(Measurements::lineSegmentDistance(bp, beginPos, endPos) <= ROBOT_RADIUS+Field::BALL_RADIUS+10) {
                 obstacle_found = true;
                 obstacle_position = bp;
             }
@@ -94,7 +95,7 @@ namespace impl {
         // Check ball
         bool ball_in_the_way = false;
         if(avoid_ball)
-            ball_in_the_way = Measurements::isClose(toCheck, Ball::getPosition(), ROBOT_RADIUS+BALL_RADIUS + 50);
+            ball_in_the_way = Measurements::isClose(toCheck, Ball::getPosition(), ROBOT_RADIUS+Field::BALL_RADIUS + 50);
 
         // Check defence areas
         bool def_area_occupied = false;
@@ -168,8 +169,8 @@ namespace impl {
     // If the destination is inside an illegal area, push it to the nearest legal area
     void sanitizeDestination(Point& dest, bool def_area_on) {
         // Clamp points that are outside the field
-        dest.x = Measurements::clamp(dest.x, -HALF_FIELD_LENGTH+100.f,  HALF_FIELD_LENGTH-100.f);
-        dest.y = Measurements::clamp(dest.y, -HALF_FIELD_WIDTH +100.f,  HALF_FIELD_WIDTH -100.f);
+        dest.x = Measurements::clamp(dest.x, -Field::HALF_FIELD_LENGTH+100.f,  Field::HALF_FIELD_LENGTH-100.f);
+        dest.y = Measurements::clamp(dest.y, -Field::HALF_FIELD_WIDTH +100.f,  Field::HALF_FIELD_WIDTH -100.f);
 
         // Push points to edge of defence areas
         DefenceArea da0(TEAM_DEFFENCE_AREA);

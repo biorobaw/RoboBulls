@@ -1,35 +1,36 @@
 #include "defencearea.h"
+#include "model/field.h"
 
 DefenceArea::DefenceArea(bool our_team) :our_team(our_team)
 {
     if(our_team)    // Initialize our defence area
     {
-        r = Rectangle(-HALF_FIELD_LENGTH,
-                        -DEF_AREA_OFFSET,
-                        -HALF_FIELD_LENGTH + DEF_AREA_RADIUS,
-                        DEF_AREA_OFFSET);
+        r = Rectangle(-Field::HALF_FIELD_LENGTH,
+                        -Field::DEF_AREA_OFFSET,
+                        -Field::HALF_FIELD_LENGTH + Field::DEF_AREA_RADIUS,
+                        Field::DEF_AREA_OFFSET);
 
-        s1 = Sector(Point(-HALF_FIELD_LENGTH, DEF_AREA_OFFSET),
-                            DEF_AREA_RADIUS,
+        s1 = Sector(Point(-Field::HALF_FIELD_LENGTH, Field::DEF_AREA_OFFSET),
+                            Field::DEF_AREA_RADIUS,
                             0, M_PI_2);
 
-        s2 = Sector(Point(-HALF_FIELD_LENGTH, -DEF_AREA_OFFSET),
-                            DEF_AREA_RADIUS,
+        s2 = Sector(Point(-Field::HALF_FIELD_LENGTH, -Field::DEF_AREA_OFFSET),
+                            Field::DEF_AREA_RADIUS,
                             -M_PI_2, 0);
     }
     else    // initialize opponent defence area
     {
-        r = Rectangle(HALF_FIELD_LENGTH,
-                        -DEF_AREA_OFFSET,
-                        HALF_FIELD_LENGTH - DEF_AREA_RADIUS,
-                        DEF_AREA_OFFSET);
+        r = Rectangle(Field::HALF_FIELD_LENGTH,
+                        -Field::DEF_AREA_OFFSET,
+                        Field::HALF_FIELD_LENGTH - Field::DEF_AREA_RADIUS,
+                        Field::DEF_AREA_OFFSET);
 
-        s1 = Sector(Point(HALF_FIELD_LENGTH, DEF_AREA_OFFSET),
-                            DEF_AREA_RADIUS,
+        s1 = Sector(Point(Field::HALF_FIELD_LENGTH, Field::DEF_AREA_OFFSET),
+                            Field::DEF_AREA_RADIUS,
                             M_PI_2, M_PI);
 
-        s2 = Sector(Point(HALF_FIELD_LENGTH, -DEF_AREA_OFFSET),
-                            DEF_AREA_RADIUS,
+        s2 = Sector(Point(Field::HALF_FIELD_LENGTH, -Field::DEF_AREA_OFFSET),
+                            Field::DEF_AREA_RADIUS,
                             -M_PI, -M_PI_2);
     }
 }
@@ -44,22 +45,22 @@ bool DefenceArea::contains(const Point& p, const float tol)
 {
     // Expand to tolerance
     if(our_team)
-        r.max_x = -HALF_FIELD_LENGTH + DEF_AREA_RADIUS + tol;
+        r.max_x = -Field::HALF_FIELD_LENGTH + Field::DEF_AREA_RADIUS + tol;
     else
-        r.min_x = HALF_FIELD_LENGTH - DEF_AREA_RADIUS - tol;
+        r.min_x = Field::HALF_FIELD_LENGTH - Field::DEF_AREA_RADIUS - tol;
 
-    s1.r = DEF_AREA_RADIUS+tol;
-    s2.r = DEF_AREA_RADIUS+tol;
+    s1.r = Field::DEF_AREA_RADIUS+tol;
+    s2.r = Field::DEF_AREA_RADIUS+tol;
 
     bool result = r.contains(p) || s1.contains(p) || s2.contains(p);
 
-    s1.r = DEF_AREA_RADIUS;
-    s2.r = DEF_AREA_RADIUS;
+    s1.r = Field::DEF_AREA_RADIUS;
+    s2.r = Field::DEF_AREA_RADIUS;
 
     if(our_team)
-        r.max_x = -HALF_FIELD_LENGTH + DEF_AREA_RADIUS;
+        r.max_x = -Field::HALF_FIELD_LENGTH + Field::DEF_AREA_RADIUS;
     else
-        r.min_x = HALF_FIELD_LENGTH - DEF_AREA_RADIUS;
+        r.min_x = Field::HALF_FIELD_LENGTH - Field::DEF_AREA_RADIUS;
 
     return result;
 }
@@ -76,9 +77,9 @@ void DefenceArea::expelPoint(Point& point)
     if(r.contains(point))
     {
         if(our_team)
-            point.x = -FIELD_LENGTH/2 + (DEF_AREA_RADIUS+DEF_AREA_TOL);
+            point.x = -Field::FIELD_LENGTH/2 + (Field::DEF_AREA_RADIUS+DEF_AREA_TOL);
         else
-            point.x =  FIELD_LENGTH/2 - (DEF_AREA_RADIUS+DEF_AREA_TOL);
+            point.x =  Field::FIELD_LENGTH/2 - (Field::DEF_AREA_RADIUS+DEF_AREA_TOL);
     }
     else if(s1.contains(point))
     {
@@ -89,7 +90,7 @@ void DefenceArea::expelPoint(Point& point)
         float m = (point.y - q)/(point.x - p);
         if(m == 0)
         {
-            point.y = s1.c.y + DEF_AREA_RADIUS + DEF_AREA_TOL;
+            point.y = s1.c.y + Field::DEF_AREA_RADIUS + DEF_AREA_TOL;
             return;
         }
         float c = q - m*p;
@@ -115,7 +116,7 @@ void DefenceArea::expelPoint(Point& point)
         float m = (point.y - q)/(point.x - p);
         if(m == 0)
         {
-            point.y = s2.c.y - DEF_AREA_RADIUS - DEF_AREA_TOL;
+            point.y = s2.c.y - Field::DEF_AREA_RADIUS - DEF_AREA_TOL;
             return;
         }
         float c = q - m*p;
@@ -143,8 +144,8 @@ std::vector<Point> DefenceArea::lineSegmentIntercepts(const Point& PA, const Poi
     float x1 = PA.x, y1 = PA.y;
     float x2 = PB.x, y2 = PB.y;
 
-    float x3 = FIELD_LENGTH/2 - DEF_AREA_RADIUS - DEF_AREA_TOL, y3 = DEF_AREA_OFFSET;
-    float x4 = FIELD_LENGTH/2 - DEF_AREA_RADIUS - DEF_AREA_TOL, y4 = -DEF_AREA_OFFSET;
+    float x3 = Field::FIELD_LENGTH/2 - Field::DEF_AREA_RADIUS - DEF_AREA_TOL, y3 = Field::DEF_AREA_OFFSET;
+    float x4 = Field::FIELD_LENGTH/2 - Field::DEF_AREA_RADIUS - DEF_AREA_TOL, y4 = -Field::DEF_AREA_OFFSET;
 
     if (our_team)
     {
@@ -160,7 +161,7 @@ std::vector<Point> DefenceArea::lineSegmentIntercepts(const Point& PA, const Poi
     {
         // Check if intersection is within stretch
         float Py = Py_num/dem;
-        if(Py < DEF_AREA_OFFSET && Py > -DEF_AREA_OFFSET)
+        if(Py < Field::DEF_AREA_OFFSET && Py > -Field::DEF_AREA_OFFSET)
         {
             // Check if intersection is within line segment
             float Px = Px_num/dem;
@@ -201,8 +202,8 @@ std::vector<Point> DefenceArea::lineSegmentIntercepts(const Point& PA, const Poi
         // Check if within correct sector
         if(our_team)
         {
-            Rectangle rec(-HALF_FIELD_LENGTH, DEF_AREA_OFFSET,
-                        -HALF_FIELD_LENGTH+DEF_AREA_RADIUS+DEF_AREA_TOL, DEF_AREA_OFFSET+DEF_AREA_RADIUS+DEF_AREA_TOL);
+            Rectangle rec(-Field::HALF_FIELD_LENGTH, Field::DEF_AREA_OFFSET,
+                        -Field::HALF_FIELD_LENGTH+Field::DEF_AREA_RADIUS+DEF_AREA_TOL, Field::DEF_AREA_OFFSET+Field::DEF_AREA_RADIUS+DEF_AREA_TOL);
 
             // Check if within line segment
             Point PC(x1,y1);
@@ -225,8 +226,8 @@ std::vector<Point> DefenceArea::lineSegmentIntercepts(const Point& PA, const Poi
         }
         else
         {
-            Rectangle rec(HALF_FIELD_LENGTH-DEF_AREA_RADIUS-DEF_AREA_TOL, DEF_AREA_OFFSET,
-                        HALF_FIELD_LENGTH, DEF_AREA_OFFSET+DEF_AREA_RADIUS+DEF_AREA_TOL);
+            Rectangle rec(Field::HALF_FIELD_LENGTH-Field::DEF_AREA_RADIUS-DEF_AREA_TOL, Field::DEF_AREA_OFFSET,
+                        Field::HALF_FIELD_LENGTH, Field::DEF_AREA_OFFSET+Field::DEF_AREA_RADIUS+DEF_AREA_TOL);
 
             // Check if within line segment
             Point PC(x1,y1);
@@ -270,8 +271,8 @@ std::vector<Point> DefenceArea::lineSegmentIntercepts(const Point& PA, const Poi
 
         if(our_team )
         {
-            Rectangle rec(-HALF_FIELD_LENGTH, -DEF_AREA_OFFSET-DEF_AREA_RADIUS-DEF_AREA_TOL,
-                        -HALF_FIELD_LENGTH+DEF_AREA_RADIUS+DEF_AREA_TOL, -DEF_AREA_OFFSET);
+            Rectangle rec(-Field::HALF_FIELD_LENGTH, -Field::DEF_AREA_OFFSET-Field::DEF_AREA_RADIUS-DEF_AREA_TOL,
+                        -Field::HALF_FIELD_LENGTH+Field::DEF_AREA_RADIUS+DEF_AREA_TOL, -Field::DEF_AREA_OFFSET);
 
             // Check if within line segment
             Point PC(x1,y1);
@@ -294,8 +295,8 @@ std::vector<Point> DefenceArea::lineSegmentIntercepts(const Point& PA, const Poi
         }
         else
         {
-            Rectangle rec(HALF_FIELD_LENGTH-DEF_AREA_RADIUS-DEF_AREA_TOL, -DEF_AREA_OFFSET-DEF_AREA_RADIUS-DEF_AREA_TOL,
-                        HALF_FIELD_LENGTH, -DEF_AREA_OFFSET);
+            Rectangle rec(Field::HALF_FIELD_LENGTH-Field::DEF_AREA_RADIUS-DEF_AREA_TOL, -Field::DEF_AREA_OFFSET-Field::DEF_AREA_RADIUS-DEF_AREA_TOL,
+                        Field::HALF_FIELD_LENGTH, -Field::DEF_AREA_OFFSET);
 
             // Check if within line segment
             Point PC(x1,y1);
@@ -330,8 +331,8 @@ std::vector<Point> DefenceArea::lineIntercepts(const Point& PA, const Point& PB)
     float x1 = PA.x, y1 = PA.y;
     float x2 = PB.x, y2 = PB.y;
 
-    float x3 = FIELD_LENGTH/2 - DEF_AREA_RADIUS - DEF_AREA_TOL, y3 = DEF_AREA_OFFSET;
-    float x4 = FIELD_LENGTH/2 - DEF_AREA_RADIUS - DEF_AREA_TOL, y4 = -DEF_AREA_OFFSET;
+    float x3 = Field::FIELD_LENGTH/2 - Field::DEF_AREA_RADIUS - DEF_AREA_TOL, y3 = Field::DEF_AREA_OFFSET;
+    float x4 = Field::FIELD_LENGTH/2 - Field::DEF_AREA_RADIUS - DEF_AREA_TOL, y4 = -Field::DEF_AREA_OFFSET;
 
     if (our_team )
     {
@@ -348,7 +349,7 @@ std::vector<Point> DefenceArea::lineIntercepts(const Point& PA, const Point& PB)
         // Check if intersection is within stretch
         float Px = Px_num/dem;
         float Py = Py_num/dem;
-        if(Py < DEF_AREA_OFFSET && Py > -DEF_AREA_OFFSET)
+        if(Py < Field::DEF_AREA_OFFSET && Py > -Field::DEF_AREA_OFFSET)
             intercepts.push_back(Point(Px, Py));
     }
 
@@ -378,8 +379,8 @@ std::vector<Point> DefenceArea::lineIntercepts(const Point& PA, const Point& PB)
         // Check if within correct sector
         if(our_team )
         {
-            Rectangle rec(-HALF_FIELD_LENGTH, DEF_AREA_OFFSET,
-                        -HALF_FIELD_LENGTH+DEF_AREA_RADIUS+DEF_AREA_TOL, DEF_AREA_OFFSET+DEF_AREA_RADIUS+DEF_AREA_TOL);
+            Rectangle rec(-Field::HALF_FIELD_LENGTH, Field::DEF_AREA_OFFSET,
+                        -Field::HALF_FIELD_LENGTH+Field::DEF_AREA_RADIUS+DEF_AREA_TOL, Field::DEF_AREA_OFFSET+Field::DEF_AREA_RADIUS+DEF_AREA_TOL);
 
             // Check if within line segment
             Point PC(x1,y1);
@@ -392,8 +393,8 @@ std::vector<Point> DefenceArea::lineIntercepts(const Point& PA, const Point& PB)
         }
         else
         {
-            Rectangle rec(HALF_FIELD_LENGTH-DEF_AREA_RADIUS-DEF_AREA_TOL, DEF_AREA_OFFSET,
-                        HALF_FIELD_LENGTH, DEF_AREA_OFFSET+DEF_AREA_RADIUS+DEF_AREA_TOL);
+            Rectangle rec(Field::HALF_FIELD_LENGTH-Field::DEF_AREA_RADIUS-DEF_AREA_TOL, Field::DEF_AREA_OFFSET,
+                        Field::HALF_FIELD_LENGTH, Field::DEF_AREA_OFFSET+Field::DEF_AREA_RADIUS+DEF_AREA_TOL);
 
             // Check if within line segment
             Point PC(x1,y1);
@@ -427,8 +428,8 @@ std::vector<Point> DefenceArea::lineIntercepts(const Point& PA, const Point& PB)
 
         if(our_team )
         {
-            Rectangle rec(-HALF_FIELD_LENGTH, -DEF_AREA_OFFSET-DEF_AREA_RADIUS-DEF_AREA_TOL,
-                        -HALF_FIELD_LENGTH+DEF_AREA_RADIUS+DEF_AREA_TOL, -DEF_AREA_OFFSET);
+            Rectangle rec(-Field::HALF_FIELD_LENGTH, -Field::DEF_AREA_OFFSET-Field::DEF_AREA_RADIUS-DEF_AREA_TOL,
+                        -Field::HALF_FIELD_LENGTH+Field::DEF_AREA_RADIUS+DEF_AREA_TOL, -Field::DEF_AREA_OFFSET);
 
             // Check if within line segment
             Point PC(x1,y1);
@@ -441,8 +442,8 @@ std::vector<Point> DefenceArea::lineIntercepts(const Point& PA, const Point& PB)
         }
         else
         {
-            Rectangle rec(HALF_FIELD_LENGTH-DEF_AREA_RADIUS-DEF_AREA_TOL, -DEF_AREA_OFFSET-DEF_AREA_RADIUS-DEF_AREA_TOL,
-                        HALF_FIELD_LENGTH, -DEF_AREA_OFFSET);
+            Rectangle rec(Field::HALF_FIELD_LENGTH-Field::DEF_AREA_RADIUS-DEF_AREA_TOL, -Field::DEF_AREA_OFFSET-Field::DEF_AREA_RADIUS-DEF_AREA_TOL,
+                        Field::HALF_FIELD_LENGTH, -Field::DEF_AREA_OFFSET);
 
             // Check if within line segment
             Point PC(x1,y1);

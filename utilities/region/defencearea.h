@@ -1,7 +1,7 @@
 #ifndef DEFENCEAREA_H
 #define DEFENCEAREA_H
 
-#include "parameters/field.h"
+
 #include "rectangle.h"
 #include "sector.h"
 #include "iostream"

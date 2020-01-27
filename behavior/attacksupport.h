@@ -32,15 +32,15 @@
 #define PND_SUPP 30
 
 // Probability Field Variables
-#define PF_LENGTH_SUPP (FIELD_LENGTH+1)/PND_SUPP
-#define PF_WIDTH_SUPP  (FIELD_WIDTH +1)/PND_SUPP
+#define PF_LENGTH_SUPP (Field::FIELD_LENGTH+1)/PND_SUPP
+#define PF_WIDTH_SUPP  (Field::FIELD_WIDTH +1)/PND_SUPP
 #define PF_SIZE_SUPP  PF_LENGTH_SUPP * PF_WIDTH_SUPP
 
 class AttackSupport : public GenericMovementBehavior
 {
 public:
     // Fills in prob_field with scoring probabilities based on static factors
-    AttackSupport();
+    AttackSupport(Robot*);
    ~AttackSupport();
     void perform(Robot *) override;
     bool isFinished() override;
@@ -62,11 +62,11 @@ private:
 
     int prob_field_rows;
     int prob_field_cols;
-//    ProbNode prob_field[(FIELD_LENGTH+1)/PND_SUPP][(FIELD_WIDTH+1)/PND_SUPP];
+//    ProbNode prob_field[(Field::FIELD_LENGTH+1)/PND_SUPP][(Field::FIELD_WIDTH+1)/PND_SUPP];
     ProbNode** prob_field;
 
     // Fills in prob_field with scoring probabilities
-    void calcStaticProb();
+    void calcStaticProb(Robot*);
     void calcDynamicProb(Robot * robot);
 
     /*! Iterates through the probability nodes to find the one with the
@@ -93,7 +93,7 @@ private:
 
     /*! Set the probability in the triangle between the ball and the goal-post to 0
      * so that the support attacker doesn't position in the way of a shot on goal */
-    void genGoalShotAvoidance();
+    void genGoalShotAvoidance(Robot*);
 
     /*! Returns information about clusters of robots.
      * @return A 2D vector is returned with each row representing a cluster.

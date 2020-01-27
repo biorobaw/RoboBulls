@@ -9,6 +9,7 @@
 #include "gui/guiinterface.h"
 #include "behavior/goalie.h"
 #include "model/ball.h"
+#include "model/field.h"
 
 //! @cond
 namespace Video
@@ -78,8 +79,8 @@ void OmniRandomKicker::perform(Robot* robot)
 {
     if(ktp == nullptr) {
         Point offset = Point(-X_DEV+rand()%(2*(int)X_DEV), -Y_DEV+rand()%(2*(int)Y_DEV));
-        Point myGoal = gameState->getMyGoal();
-        Point opgoal = gameState->getOppGoal();
+        Point myGoal = Field::getPenaltyPosition(robot->getTeam()->getSide());
+        Point opgoal = Field::getGoalPosition(robot->getTeam()->getOpponentSide());
         Point less = std::min(myGoal, opgoal, Comparisons::distance(receiver));
         ktp = new Skill::KickToPointOmni(less + offset);
     } else {
@@ -247,7 +248,8 @@ void VideoStrategy3::assignBeh()
 {
     //Start out going to the penalty point
     float ang = Measurements::angleBetween(guy, Point(0,0));
-    guy->assignBeh<GenericMovementBehavior>(gameState->getPenaltyPoint(), ang, false, false);
+    auto pp = Field::getPenaltyPosition(team->getOpponentSide());
+    guy->assignBeh<GenericMovementBehavior>(pp, ang, false, false);
 }
 
 bool VideoStrategy3::update()
@@ -258,7 +260,8 @@ bool VideoStrategy3::update()
     case NONE:
         //Is the ball comes on our side, go for it.
         if(bp.x > 0) {
-            guy->assignSkill<Skill::KickToPointOmni>(gameState->getMyGoal());
+            auto gp = Field::getGoalPosition(team->getSide());
+            guy->assignSkill<Skill::KickToPointOmni>(gp);
             state = KICKING;
         }
         break;
@@ -337,7 +340,7 @@ bool VideoStrategy5::update()
 
     // GK assignments
     bp.x >-2800?
-        keeper->assignBeh<Goalie>():
+        keeper->assignBeh<Goalie>(keeper):
         keeper->assignBeh<GenericMovementBehavior>(Point(-2700,0),0,false,false);
 
     // Decide where the target for ATK should be based on GK position

@@ -7,7 +7,6 @@
 #include "model/game_state.h"
 #include "simrobcomm.h"
 #include <iostream>
-#include "parameters/game_constants.h"
 #include "utilities/measurements.h"
 
 SimRobComm::SimRobComm(const char* addr, int port)

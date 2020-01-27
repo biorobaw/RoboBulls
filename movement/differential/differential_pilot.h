@@ -5,7 +5,6 @@
 #include <deque>
 
 #include "movement/movetype.h"
-#include "parameters/field.h"
 #include "model/robot.h"
 #include "utilities/measurements.h"
 

@@ -1,6 +1,6 @@
 #include "model/team.h"
 #include <algorithm>
-#include "parameters/game_constants.h"
+
 #include "communication/robcomm.h"
 #include <assert.h>
 
@@ -26,7 +26,7 @@ Team::Team(YAML::Node t_node, int _color) {
     color = _color;
 
     side =  t_node["SIDE"].as<int>();
-    assert(side == SIDE_NEGATIVE || side == SIDE_POSITIVE);
+    assert(side == FIELD_SIDE_NEGATIVE || side == FIELD_SIDE_POSITIVE);
 
     robot_type = t_node["ROBOT_TYPE"].as<std::string>();
 
@@ -73,7 +73,7 @@ void Team::load_teams(YAML::Node team_nodes){
     if(teams[0]->side == teams[1]->side){
         std::cout << "WARNING: both teams were assigned the same side" << std::endl
                   << "         moving TEAM_YELLOW to other side of the field." << std::endl;
-        teams[TEAM_YELLOW]->side = 1-teams[TEAM_YELLOW]->side;
+        teams[TEAM_YELLOW]->side = teams[TEAM_YELLOW]->getOpponentSide();
     }
 }
 
@@ -128,6 +128,12 @@ std::string Team::getRobotType(){
 }
 int Team::getSide(){
     return side;
+}
+
+int Team::getOpponentSide(){
+    return side == FIELD_SIDE_NEGATIVE ?
+                FIELD_SIDE_POSITIVE :
+                FIELD_SIDE_NEGATIVE;
 }
 
 bool Team::isControlled(){

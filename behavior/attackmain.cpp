@@ -1,20 +1,20 @@
 #include "attackmain.h"
 #include "model/ball.h"
-
+#include "model/field.h"
 
 float AttackMain::SCORE_ANGLE_TOLERANCE = 7*M_PI/180;
 float AttackMain::PASS_ANGLE_TOLERANCE  = 7*M_PI/180;
 
-AttackMain::AttackMain()
+AttackMain::AttackMain(Robot* robot)
 {
-    calcStaticProb();
+    calcStaticProb(robot);
     dribble_skill = new Skill::DribbleToPoint (&kick_point);
     score_skill   = new Skill::KickToPointOmni(&kick_point,SCORE_ANGLE_TOLERANCE,-1,true);
     pass_skill    = new Skill::KickToPointOmni(&kick_point,PASS_ANGLE_TOLERANCE, -1,true);
     state = scoring;
 
-    prob_field_rows = (FIELD_LENGTH+1)/PND_MAIN;
-    prob_field_cols = (FIELD_WIDTH+1)/PND_MAIN;
+    prob_field_rows = (Field::FIELD_LENGTH+1)/PND_MAIN;
+    prob_field_cols = (Field::FIELD_WIDTH+1)/PND_MAIN;
     prob_field = new ProbNode*[prob_field_rows];
     for(int i=0; i<prob_field_rows; i++) prob_field[i] = new ProbNode[prob_field_cols];
 }
@@ -157,11 +157,11 @@ void AttackMain::perform(Robot * robot)
 }
 
 
-void AttackMain::calcStaticProb()
+void AttackMain::calcStaticProb(Robot* r)
 {
     // Calculate the static probility of scoring from each point
     // in the probability field based on fixed factors
-    Point opp_goal = gameState->getOppGoal();
+    Point opp_goal = Field::getGoalPosition(r->getTeam()->getOpponentSide());
     float w_dist = 2.0, w_ang = 1.0;    // Relative weights
     float dist = 0.0, angle = 0.0;
     float temp_p = 0.0;
@@ -174,7 +174,7 @@ void AttackMain::calcStaticProb()
         {
             ProbNode& n = prob_field[x][y];
 
-            n.point = Point(x*PND_MAIN - HALF_FIELD_LENGTH, y*PND_MAIN - HALF_FIELD_WIDTH);
+            n.point = Point(x*PND_MAIN - Field::HALF_FIELD_LENGTH, y*PND_MAIN - Field::HALF_FIELD_WIDTH);
 
             // Probability of scoring is a decreasing function of distance from
             // the goal. Anything beyond 3000 points gets a probability of zero.
@@ -212,13 +212,14 @@ void AttackMain::calcDynamicProb(Robot* r)
         for(int y = 0; y < PF_WIDTH_MAIN; ++y)
             prob_field[x][y].dynamic_val = 0;
 
+    auto gp = Field::getGoalPosition(r->getTeam()->getOpponentSide());
     // Top end of goal post
-    float A1 = gameState->getOppGoal().x;
-    float B1 = gameState->getOppGoal().y + GOAL_WIDTH/2;
+    float A1 = gp.x;
+    float B1 = gp.y + Field::GOAL_WIDTH/2;
 
     // Bottom end of goal post
-    float A2 = gameState->getOppGoal().x;
-    float B2 = gameState->getOppGoal().y - GOAL_WIDTH/2;
+    float A2 = gp.x;
+    float B2 = gp.y - Field::GOAL_WIDTH/2;
 
     float R = ROBOT_RADIUS;
 
@@ -264,7 +265,7 @@ void AttackMain::calcDynamicProb(Robot* r)
 
 std::vector<std::vector<Point>> AttackMain::genClusters(Robot* r)
 {
-    int cluster_tol = 2*ROBOT_RADIUS + 2*BALL_RADIUS + 10;
+    int cluster_tol = 2*ROBOT_RADIUS + 2*Field::BALL_RADIUS + 10;
 
     std::vector<std::vector<Point>> clusters;
 
@@ -326,15 +327,16 @@ std::pair<bool, Point> AttackMain::calcBestGoalPoint(Robot* r)
     target_clusters.push_back(empty_cluster);
 
     // Sample a number of points along opp goal and generate clusters of clear shot points
-    for(int goal_y = -GOAL_WIDTH/2+BALL_RADIUS+10; goal_y <= GOAL_WIDTH/2-BALL_RADIUS-10; goal_y += 10)
+    for(int goal_y = -Field::GOAL_WIDTH/2+Field::BALL_RADIUS+10; goal_y <= Field::GOAL_WIDTH/2-Field::BALL_RADIUS-10; goal_y += 10)
     {
-        Point target = gameState->getOppGoal() + Point(0, goal_y);
+        auto gp = Field::getGoalPosition(r->getTeam()->getOpponentSide());
+        Point target = gp + Point(0, goal_y);
         bool clear_shot = true;
 
         for(const Point& obstacle : obstacles)
         {
             // If there is an obstacle in the way
-            if(Measurements::lineSegmentDistance(obstacle, Ball::getPosition(), target) <= BALL_RADIUS+ROBOT_RADIUS+50)
+            if(Measurements::lineSegmentDistance(obstacle, Ball::getPosition(), target) <= Field::BALL_RADIUS+ROBOT_RADIUS+50)
             {
                 clear_shot = false;
                 break;
@@ -380,7 +382,7 @@ std::pair<bool, Point> AttackMain::calcBestPassPoint(Robot* r)
         if(teammate->getID() != r->getID())
         {
             Point tp = teammate->getPosition();
-            bool path_clear = Measurements::robotInPath(obstacles, bp, tp, ROBOT_RADIUS+BALL_RADIUS+20) == nullptr;
+            bool path_clear = Measurements::robotInPath(obstacles, bp, tp, ROBOT_RADIUS+Field::BALL_RADIUS+20) == nullptr;
 
             float t_prob = getScoreProb(tp);
             bool has_score_potential =  t_prob > 0.4;

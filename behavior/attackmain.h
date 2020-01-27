@@ -11,7 +11,7 @@
 #include "algorithm"
 #include "utilities/region/defencearea.h"
 #include "utilities/comparisons.h"
-#include "parameters/field.h"
+
 
 #include <vector>
 
@@ -46,8 +46,8 @@
 #define PND_MAIN 30
 
 // Probability Field Variables
-#define PF_LENGTH_MAIN (FIELD_LENGTH+1)/PND_MAIN
-#define PF_WIDTH_MAIN  (FIELD_WIDTH +1)/PND_MAIN
+#define PF_LENGTH_MAIN (Field::FIELD_LENGTH+1)/PND_MAIN
+#define PF_WIDTH_MAIN  (Field::FIELD_WIDTH +1)/PND_MAIN
 #define PF_SIZE_MAIN  PF_LENGTH_MAIN * PF_WIDTH_MAIN
 
 
@@ -56,7 +56,7 @@
 class AttackMain:public GenericMovementBehavior
 {
 public:
-    AttackMain();
+    AttackMain(Robot*);
    ~AttackMain();
     void perform(Robot *);
     bool isFinished() override;
@@ -98,7 +98,7 @@ private:
     /*! Calculates the probility of scoring from each point in the field based on field geometry (fixed factors).
      *  Called only once in the constructor.
      */
-    void calcStaticProb();
+    void calcStaticProb(Robot*);
 
     /*! Calculates the probility of scoring from each point in the field based on opponents, teammates, and the ball (variable factors).
      *  Called for every update to the game model.

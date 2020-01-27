@@ -1,5 +1,6 @@
 #include "model/robot.h"
-#include "parameters/field.h"
+#include "model/field.h"
+
 #include "kick.h"
 
 namespace Skill
@@ -35,7 +36,7 @@ bool Kick::perform(Robot * robot)
  */
 float Kick::getVelocityforDistance()
 {
-    float d = kickDistance / POINTS_PER_METER;
+    float d = kickDistance / Field::POINTS_PER_METER;
     return 0.083*(d*d*d) - 0.759*(d*d) + 2.8812*(d) + 0.3785;
 }
 

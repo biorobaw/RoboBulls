@@ -55,27 +55,6 @@ bool GameState::isNewCommand()
     return this->hasNewCommand;
 }
 
-//! @brief Returns the penalty point that penalty kicks are taken from
-Point GameState::getPenaltyPoint()
-{
-    return Point(2045, 22);
-}
-
-//! @brief Returns the opponents's goal, that we are trying to score in
-//! VisionComm transforms received info such that opponent is always
-//! on the positive side based on the SIDE global
-Point GameState::getOppGoal()
-{
-    return Point(HALF_FIELD_LENGTH, 0);
-}
-
-//! @brief Returns the goal point that we are defending
-//! //! VisionComm transforms received info such that we are always
-//! on the negative side based on the SIDE global
-Point GameState::getMyGoal()
-{
-    return Point(-HALF_FIELD_LENGTH, 0);
-}
 
 //! @brief Returns the last different game state before this one
 char GameState::getPreviousState()

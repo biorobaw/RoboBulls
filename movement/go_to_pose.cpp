@@ -5,7 +5,7 @@
 #include <time.h>
 #include <assert.h>
 #include "parameters/motion_parameters.h"     //ROT/DIST Tolerance
-#include "parameters/field.h"
+
 #include "movement/move.h"
 #include "movement/move_collisions.h"
 #include "model/game_state.h"

@@ -4,6 +4,7 @@
 #include "skill/kick.h"
 #include "skill/kicktopointomni.h"
 #include "model/ball.h"
+#include "model/field.h"
 
 namespace Skill
 {
@@ -35,16 +36,16 @@ namespace Skill
  *
  */
 //#if SIMULATED // SIMULATED is no longer a compiler tag
-//float BEHIND_RAD_AVOID = ROBOT_RADIUS + BALL_RADIUS+30;
-//float BEHIND_RAD = ROBOT_RADIUS + BALL_RADIUS;
+//float BEHIND_RAD_AVOID = ROBOT_RADIUS + Field::BALL_RADIUS+30;
+//float BEHIND_RAD = ROBOT_RADIUS + Field::BALL_RADIUS;
 //float FORWARD_WAIT_COUNT = 15;
 //float RECREATE_DIST_TOL = 25;
 //float STRICTEST_ANG_TOL = 10 * (M_PI/180);
 //float KICK_LOCK_ANGLE = 3 * (M_PI/180);
 //float KICKLOCK_COUNT = 15;
 //#else
-float BEHIND_RAD_AVOID = ROBOT_RADIUS+BALL_RADIUS + 50;
-float BEHIND_RAD = ROBOT_RADIUS+BALL_RADIUS;
+float BEHIND_RAD_AVOID = ROBOT_RADIUS+Field::BALL_RADIUS + 50;
+float BEHIND_RAD = ROBOT_RADIUS+Field::BALL_RADIUS;
 float FORWARD_WAIT_COUNT = 60;
 float RECREATE_DIST_TOL = 25;
 float STRICTEST_ANG_TOL = 40 * (M_PI/180);

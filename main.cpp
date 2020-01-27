@@ -12,8 +12,9 @@
 #include "strategy/strategycontroller.h"
 #include "yaml-cpp/yaml.h"
 #include <string>
-#include "parameters/game_constants.h"
-#include "parameters/field.h"
+#include "model/field.h"
+
+
 #include "parameters/motion_parameters.h"
 
 /*! @mainpage Welcome to the RoboBulls 2 Documentation.
@@ -115,7 +116,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     // set all parameters:
-    load_field_parameters(field_node);
+    Field::load(field_node);
     load_motion_parameters(motion_node);
 
     // load teams:

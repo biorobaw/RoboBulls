@@ -12,7 +12,7 @@
 #include "utilities/comparisons.h"
 #include "utilities/edges.h"
 #include "strategy/normalgamestrategy.h"
-#include "parameters/game_constants.h"
+
 #include "model/ball.h"
 
 NormalGameStrategy::NormalGameStrategy(Team* _team)
@@ -151,7 +151,7 @@ bool NormalGameStrategy::update()
         Robot* shooter = deffend1;
         if(shooter)
         {
-            shooter->assignBeh<AttackMain>();
+            shooter->assignBeh<AttackMain>(shooter);
             if(dynamic_cast<AttackMain*>(shooter->getBehavior())->hasKickedToGoal())
             {
                 shooter->assignBeh<Wall>();
@@ -234,28 +234,28 @@ bool NormalGameStrategy::update()
             if(Measurements::distance(attack1, Ball::getPosition()) <
                Measurements::distance(attack2, Ball::getPosition()))
             {
-                attack1->assignBeh<AttackMain>();
+                attack1->assignBeh<AttackMain>(attack1);
                 main = attack1;
-                attack2->assignBeh<AttackSupport>();
+                attack2->assignBeh<AttackSupport>(attack2);
                 supp = attack2;
             }
             else
             {
-                attack1->assignBeh<AttackSupport>();
+                attack1->assignBeh<AttackSupport>(attack1);
                 supp = attack1;
-                attack2->assignBeh<AttackMain>();
+                attack2->assignBeh<AttackMain>(attack2);
                 main = attack2;
             }
         }
         else if(attack1 != nullptr)
         {
-            attack1->assignBeh<AttackMain>();
+            attack1->assignBeh<AttackMain>(attack1);
             main = attack1;
             supp = nullptr;
         }
         else if(attack2 != nullptr)
         {
-            attack2->assignBeh<AttackMain>();
+            attack2->assignBeh<AttackMain>(attack2);
             main = attack2;
             supp = nullptr;
         }
@@ -284,7 +284,7 @@ bool NormalGameStrategy::update()
         if(attack1)
             attack1->assignBeh<MarkBot>();
         if(attack2)
-            attack2->assignBeh<AttackSupport>();
+            attack2->assignBeh<AttackSupport>(attack2);
 
         prev_state = state;
         state = evaluate;
@@ -295,9 +295,9 @@ bool NormalGameStrategy::update()
         std::cout << "Assigning Clear Behaviors" << std::endl;
 
         if(attack1)
-            attack1->assignBeh<AttackSupport>();
+            attack1->assignBeh<AttackSupport>(attack1);
         if(attack2)
-            attack2->assignBeh<AttackSupport>();
+            attack2->assignBeh<AttackSupport>(attack2);
 
         prev_state = state;
         state = evaluate;
@@ -313,6 +313,6 @@ void NormalGameStrategy::assignGoalieIfOk(Team* team)
 {
     Robot* goalie = team->getRobotByRole(RobotRole::GOALIE);
     if(goalie)
-        goalie->assignBeh<Goalie>();
+        goalie->assignBeh<Goalie>(goalie);
 }
 //! @endcond

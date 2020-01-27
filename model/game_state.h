@@ -7,7 +7,7 @@
 #include "model/team.h"
 #include <mutex>
 #include "yaml-cpp/yaml.h"
-#include "parameters/game_constants.h"
+
 
 class VisionComm;
 class Robot;
@@ -32,15 +32,12 @@ public:
     /*! @name Game access functions
      * @{*/
 
+    char   getState();
     char   getBlueGoals();
     char   getYellowGoals();
     short  getRemainingTime();
-    char   getState();
     char   getPreviousState();
 
-    Point  getPenaltyPoint();
-    Point  getOppGoal();
-    Point  getMyGoal();
     //! @}
 
     //! @name grSim Replacement functions

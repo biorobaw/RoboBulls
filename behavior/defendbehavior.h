@@ -39,6 +39,7 @@ private:
     static Point defendPoints[];   //Points to sit robots at.
     static const Point defaultPoints[];//Default points to sit at
     static int   updateCount;      //Count to delay `action` updating of points
+
 };
 
 //! @cond
@@ -63,10 +64,10 @@ private:
 /*! @brief DefendState that merely does KickToPointOmni to kick the ball away.
  * @dtails Happens when the ball stops close to a robot on our side
  */
-class DSKick: public DefendState
+class DSKick: public DefendState, public GenericMovementBehavior
 {
 public:
-    DSKick();
+    DSKick(Point opponent_goal);
    ~DSKick();
     DefendState* action(Robot* robot) override;
 private:

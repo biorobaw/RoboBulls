@@ -37,7 +37,7 @@
 #include "model/game_state.h"
 #include "model/robot.h"
 
-#include "parameters/game_constants.h"
+
 
 using namespace std;
 

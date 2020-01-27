@@ -2,6 +2,7 @@
 #define STRATEGY_H
 
 #include "model/team.h"
+#include "model/field.h"
 
 //! @addtogroup baseclasses
 //! @{

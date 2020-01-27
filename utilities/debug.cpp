@@ -8,7 +8,7 @@
 #include "model/game_state.h"
 
 #include "utilities/debug.h"
-#include "parameters/game_constants.h"
+
 
 namespace debug
 {

@@ -6,7 +6,7 @@
 #include "model/game_state.h"
 #include "model/robot.h"
 #include "utilities/point.h"
-#include "parameters/field.h"
+
 
 /*! @brief Defines comparison predicates and information querying functions.
  * @details `Comparisons` is a framework for extendable, flexible
@@ -158,12 +158,7 @@ protected:
 struct pred_distanceBall : public pred_distance {
     pred_distanceBall();
 };
-struct pred_distanceMyGoal : public pred_distance {
-    pred_distanceMyGoal();
-};
-struct pred_distanceOpGoal : public pred_distance {
-    pred_distanceOpGoal();
-};
+
 
 
 /****************************************************************/
@@ -256,8 +251,6 @@ PREDICATE_FUNCTION(pred_isDistanceToGreater, isDistanceToGreater)
 PREDICATE_FUNCTION(pred_isDistanceToLess,    isDistanceToLess)
 PREDICATE_FUNCTION(pred_distance,            distance)
 PREDICATE_FUNCTION(pred_distanceBall,        distanceBall)
-PREDICATE_FUNCTION(pred_distanceMyGoal,      distanceMyGoal)
-PREDICATE_FUNCTION(pred_distanceOpGoal,      distanceOpGoal)
 PREDICATE_FUNCTION(pred_id,                  id)
 PREDICATE_FUNCTION(pred_idNot,               idNot)
 

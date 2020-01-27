@@ -1,6 +1,6 @@
 #include "dribbletopoint.h"
 #include "model/ball.h"
-
+#include "model/field.h"
 namespace Skill {
 
 
@@ -34,7 +34,7 @@ bool DribbleToPoint::perform(Robot* robot)
 
         robot->setDribble(false);
 
-        bool dist_check = dist_to_ball < ROBOT_RADIUS + BALL_RADIUS + 50;
+        bool dist_check = dist_to_ball < ROBOT_RADIUS + Field::BALL_RADIUS + 50;
         bool ang_check = Measurements::angleDiff(ang_to_ball, robot->getOrientation()) < 5*M_PI/180;
 
         if(dist_check && ang_check)
@@ -60,7 +60,7 @@ bool DribbleToPoint::perform(Robot* robot)
         && prefer_forward_motion)
             state = adjust1;
 
-        bool dist_check = dist_to_ball < ROBOT_RADIUS + BALL_RADIUS + 75;
+        bool dist_check = dist_to_ball < ROBOT_RADIUS + Field::BALL_RADIUS + 75;
         bool ang_check = Measurements::angleDiff(ang_to_ball, robot->getOrientation()) < 20*M_PI/180;
 
         if(!dist_check || !ang_check)
@@ -88,7 +88,7 @@ bool DribbleToPoint::perform(Robot* robot)
         && prefer_forward_motion)
             state = adjust1;
 
-        bool dist_check = dist_to_ball < ROBOT_RADIUS + BALL_RADIUS + 75;
+        bool dist_check = dist_to_ball < ROBOT_RADIUS + Field::BALL_RADIUS + 75;
         bool ang_check = Measurements::angleDiff(ang_to_ball, robot->getOrientation()) < 30*M_PI/180;
 
         if(!dist_check || !ang_check)
@@ -158,7 +158,7 @@ bool DribbleToPoint::safeToAdjust(const Point& bp, Robot* robot)
 {
     for(Robot* r : Robot::getAllRobots()){
         if(r->getTeamId()==robot->getTeamId()){
-            if(r!=robot && Measurements::distance(bp, r->getPosition()) < ROBOT_RADIUS + BALL_RADIUS + 50)
+            if(r!=robot && Measurements::distance(bp, r->getPosition()) < ROBOT_RADIUS + Field::BALL_RADIUS + 50)
                 return false;
         } else {
             if(Measurements::distance(bp, r->getPosition()) < 500)

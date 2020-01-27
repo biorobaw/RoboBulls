@@ -1,5 +1,6 @@
 #include "dribbleback.h"
 #include "model/ball.h"
+#include "model/field.h"
 
 namespace Skill
 {
@@ -31,7 +32,7 @@ bool DribbleBack::perform(Robot* robot)
 
         robot->setDribble(false);
 
-        bool dist_check = dist_to_ball < ROBOT_RADIUS + BALL_RADIUS + 50;
+        bool dist_check = dist_to_ball < ROBOT_RADIUS + Field::BALL_RADIUS + 50;
         bool ang_check = Measurements::angleDiff(ang_to_ball, robot->getOrientation()) < 5*M_PI/180;
 
         if(dist_check && ang_check)
@@ -53,7 +54,7 @@ bool DribbleBack::perform(Robot* robot)
     {
 //        std::cout << "Dribble Back: Grasp" << std::endl;
 
-        bool dist_check = dist_to_ball < ROBOT_RADIUS + BALL_RADIUS + 75;
+        bool dist_check = dist_to_ball < ROBOT_RADIUS + Field::BALL_RADIUS + 75;
         bool ang_check = Measurements::angleDiff(ang_to_ball, robot->getOrientation()) < 20*M_PI/180;
 
         if(!dist_check || !ang_check)
@@ -76,7 +77,7 @@ bool DribbleBack::perform(Robot* robot)
     {
 //        std::cout << "Dribble Back: Move" << std::endl;
 
-        bool dist_check = dist_to_ball < ROBOT_RADIUS + BALL_RADIUS + 75;
+        bool dist_check = dist_to_ball < ROBOT_RADIUS + Field::BALL_RADIUS + 75;
         bool ang_check = Measurements::angleDiff(ang_to_ball, robot->getOrientation()) < 30*M_PI/180;
 
         if(!dist_check || !ang_check)

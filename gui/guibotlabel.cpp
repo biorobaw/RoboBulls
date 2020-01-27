@@ -3,7 +3,7 @@
 #include "model/game_state.h"
 #include "guibotlabel.h"
 #include"movement/move_collisions.h"
-#include "parameters/game_constants.h"
+
 #include "model/ball.h"
 
 GuiBotLabel::GuiBotLabel(int team, int id)

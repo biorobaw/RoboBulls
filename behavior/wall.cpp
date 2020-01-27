@@ -1,5 +1,6 @@
 #include "wall.h"
 #include "model/ball.h"
+#include "model/field.h"
 
 Wall::WallPoint Wall::wall_array[2];
 bool Wall::being_cleared = false;
@@ -80,7 +81,7 @@ void Wall::perform(Robot * robot)
 
                 obstacles.erase(remove_it, obstacles.end());
 
-                Robot* obst = Measurements::robotInPath(obstacles, bp, tmate->getPosition(), ROBOT_RADIUS + BALL_RADIUS + 20);
+                Robot* obst = Measurements::robotInPath(obstacles, bp, tmate->getPosition(), ROBOT_RADIUS + Field::BALL_RADIUS + 20);
 
                 obstacles.push_back(tmate);
                 obstacles.push_back(robot);
@@ -123,7 +124,8 @@ void Wall::calcWallPoints(Robot* robot)
 {
     Point bp = Ball::getPosition();
     Robot* goalie = robot->getTeam()->getRobotByRole(RobotRole::GOALIE);
-    Point gp = goalie ? goalie->getPosition() : gameState->getMyGoal();
+    Point gp = goalie ? goalie->getPosition() :
+                        Field::getGoalPosition(robot->getTeam()->getSide());
 
 
     DefenceArea da(TEAM_DEFFENCE_AREA);
@@ -138,9 +140,10 @@ void Wall::calcWallPoints(Robot* robot)
         // The goalie would have to be quite out of place
         // for no intercepts, so position between the ball
         // and the center of the goal
-        std::vector<Point> temp = da.lineIntercepts(bp, gameState->getMyGoal());
+        auto gp = Field::getGoalPosition(robot->getTeam()->getSide());
+        std::vector<Point> temp = da.lineIntercepts(bp, gp);
         if(temp.empty())
-            intercept = Point (DEF_AREA_RADIUS + 3*ROBOT_RADIUS, 0);
+            intercept = Point (Field::DEF_AREA_RADIUS + 3*ROBOT_RADIUS, 0);
         else
             intercept = temp.front();
     }

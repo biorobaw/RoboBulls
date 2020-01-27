@@ -3,8 +3,9 @@
 
 #include "visioncomm.h"
 #include "model/game_state.h"
-#include "parameters/game_constants.h"
+
 #include "model/ball.h"
+#include "model/field.h"
 
 using namespace std;
 
@@ -14,7 +15,7 @@ VisionComm::VisionComm(GameState *gm, YAML::Node comm_node, int _side)
               << "        VISION_ADDR : " << comm_node["VISION_ADDR"] << endl
               << "        VISION_PORT : " << comm_node["VISION_PORT"] << endl
               << "        FOUR_CAMERA : " << comm_node["FOUR_CAMERA"] << endl
-              << "        side chosen : " << ((side == SIDE_NEGATIVE) ? "Negative" : "Positive") << endl;
+              << "        side chosen : " << ((side == FIELD_SIDE_NEGATIVE) ? "Negative" : "Positive") << endl;
 
     string vision_addr = comm_node["VISION_ADDR"].as<string>();
     int vision_port = comm_node["VISION_PORT"].as<int>();
@@ -85,7 +86,7 @@ void VisionComm::receiveRobot(const SSL_DetectionRobot& robot, int detectedTeamC
         //std::cout << " positionReading("<<robot.x()<<","<< robot.y()<<");\n ";
         Point positionReading(robot.x(), robot.y());//Point
         float rotationReading = robot.orientation();
-        if(side == SIDE_POSITIVE){
+        if(side == FIELD_SIDE_POSITIVE){
             positionReading *= -1;
             if(rotationReading > 0)
                 rotationReading = -(M_PI - rotationReading);
@@ -168,7 +169,7 @@ void VisionComm::recieveBall(const SSL_DetectionFrame& frame)
     if(isGoodDetection(*bestDetect, frame, CONF_THRESHOLD_BALL, FOUR_CAMERA_MODE))
     {
         Point b_pos = Point(bestDetect->x(), bestDetect->y());
-        if(side == SIDE_POSITIVE) b_pos *= -1;
+        if(side == FIELD_SIDE_POSITIVE) b_pos *= -1;
 
 //        GuiInterface* gui = GuiInterface::getGuiInterface();
 //        gui->drawPath(b_pos, b_pos, 0.1);

@@ -1,5 +1,5 @@
 #include <algorithm>
-#include "parameters/field.h"
+#include "model/field.h"
 #include "model/game_state.h"
 #include "utilities/comparisons.h"
 #include "model/ball.h"
@@ -164,12 +164,7 @@ pred_distance::pred_distance(Robot* robot)
 pred_distanceBall::pred_distanceBall()
     : pred_distance(Ball::getPosition())
     { }
-pred_distanceMyGoal::pred_distanceMyGoal()
-    : pred_distance(gameState->getMyGoal())
-    { }
-pred_distanceOpGoal::pred_distanceOpGoal()
-    : pred_distance(gameState->getOppGoal())
-    { }
+
 
 /****************************************************************/
 
@@ -214,8 +209,8 @@ void pred_isNotFacingPoint::setCompareFunction() {
 
 //! @cond
 static bool pointOutsideCompareFnPt(const Point& testPoint, compareFunction f) {
-    if(f(abs(testPoint.x), HALF_FIELD_LENGTH)
-    || f(abs(testPoint.y), HALF_FIELD_WIDTH))
+    if(f(abs(testPoint.x), Field::HALF_FIELD_LENGTH)
+    || f(abs(testPoint.y), Field::HALF_FIELD_WIDTH))
         return true;
     return false;
 }

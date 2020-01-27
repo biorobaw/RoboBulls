@@ -1,7 +1,8 @@
 #include "guifield.h"
 #include <QApplication>
 #include "mainwindow.h"
-#include "parameters/game_constants.h"
+#include "model/field.h"
+
 
 GuiField::GuiField()
 {
@@ -12,7 +13,7 @@ GuiField::GuiField()
 
 QRectF GuiField::boundingRect() const
 {
-    return QRectF(0,0,FIELD_LENGTH,FIELD_WIDTH);
+    return QRectF(0,0,Field::FIELD_LENGTH,Field::FIELD_WIDTH);
 }
 
 void GuiField::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -25,7 +26,7 @@ void GuiField::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     QPen borderPen(QPen(Qt::white, 20, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
 
     // Lines
-    QLineF centerLine(HALF_FIELD_LENGTH,0,HALF_FIELD_LENGTH,FIELD_WIDTH);
+    QLineF centerLine(Field::HALF_FIELD_LENGTH,0,Field::HALF_FIELD_LENGTH,Field::FIELD_WIDTH);
 
     // Center circle
     int centerDiam = rec.height() / 4;
@@ -121,7 +122,7 @@ void GuiField::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     painter->fillRect(ourGoal,goalBrush);
     painter->fillRect(oppGoal,goalBrush);
     if (coloredGoals) {
-        if (Team::getTeam(TEAM_BLUE)->getSide() == SIDE_NEGATIVE) {
+        if (Team::getTeam(TEAM_BLUE)->getSide() == FIELD_SIDE_NEGATIVE) {
             painter->setPen(QPen(QColor::fromRgb(0,0,255,255), goalThick, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
             painter->drawRect(ourGoal);
             painter->setPen(QPen(Qt::yellow, goalThick, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));

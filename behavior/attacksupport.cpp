@@ -1,13 +1,14 @@
 #include "attacksupport.h"
 #include "model/ball.h"
+#include "model/field.h"
 
-AttackSupport::AttackSupport()
+AttackSupport::AttackSupport(Robot* robot)
 {
-    calcStaticProb();
+    calcStaticProb(robot);
     state = position;
 
-    prob_field_rows = (FIELD_LENGTH+1)/PND_SUPP;
-    prob_field_cols = (FIELD_WIDTH+1)/PND_SUPP;
+    prob_field_rows = (Field::FIELD_LENGTH+1)/PND_SUPP;
+    prob_field_cols = (Field::FIELD_WIDTH+1)/PND_SUPP;
     prob_field = new ProbNode*[prob_field_rows];
     for(int i=0; i<prob_field_rows; i++) prob_field[i] = new ProbNode[prob_field_cols];
 }
@@ -21,7 +22,7 @@ void AttackSupport::perform(Robot * robot)
     // - We are closest member on our team to the ball
     // - The ball is close to us
     finished = Comparisons::distance(bp).minInTeam(robot->getTeam())->getID() == robot->getID()
-            && Measurements::isClose(rp, bp, ROBOT_RADIUS+BALL_RADIUS+200);
+            && Measurements::isClose(rp, bp, ROBOT_RADIUS+Field::BALL_RADIUS+200);
 
     switch(state)
     {
@@ -150,11 +151,11 @@ AttackSupport::ProbNode AttackSupport::findMaxNode()
     return max_node;
 }
 
-void AttackSupport::calcStaticProb()
+void AttackSupport::calcStaticProb(Robot* r)
 {
     // Calculate the static probility of scoring from each point
     // in the probability field based on fixed factors
-    Point opp_goal = gameState->getOppGoal();
+    Point opp_goal = Field::getGoalPosition(r->getTeam()->getSide());
     float w_dist = 2.0, w_ang = 1.0;    // Relative weights
     float dist = 0.0, angle = 0.0;
     float temp_p = 0.0;
@@ -167,7 +168,7 @@ void AttackSupport::calcStaticProb()
         {
             ProbNode& n = prob_field[x][y];
 
-            n.point = Point(x*PND_SUPP - HALF_FIELD_LENGTH, y*PND_SUPP - HALF_FIELD_WIDTH);
+            n.point = Point(x*PND_SUPP - Field::HALF_FIELD_LENGTH, y*PND_SUPP - Field::HALF_FIELD_WIDTH);
 
             // Probability of scoring is a decreasing function of distance from
             // the goal. Anything beyond 3000 points gets a probability of zero.
@@ -210,19 +211,20 @@ void AttackSupport::calcDynamicProb(Robot * robot)
     genGoalShadows(robot);
     genDistanceFromTeammates(robot);
     genBallShadows(robot);
-    genGoalShotAvoidance();
+    genGoalShotAvoidance(robot);
 }
 
 
 void AttackSupport::genGoalShadows(Robot* r)
 {
+    auto gp = Field::getGoalPosition(r->getTeam()->getOpponentSide());
     // Top end of goal post
-    float g1x = gameState->getOppGoal().x;
-    float g1y = gameState->getOppGoal().y + GOAL_WIDTH/2;
+    float g1x = gp.x;
+    float g1y = gp.y + Field::GOAL_WIDTH/2;
 
     // Bottom end of goal post
-    float g2x = gameState->getOppGoal().x;
-    float g2y = gameState->getOppGoal().y - GOAL_WIDTH/2;
+    float g2x = gp.x;
+    float g2y = gp.y - Field::GOAL_WIDTH/2;
 
     float R = ROBOT_RADIUS;
 
@@ -305,17 +307,17 @@ void AttackSupport::genBallShadows(Robot* r)
         float y1 = m1*x1 - m1*bp.x + bp.y;
 
         float line1_dir = bp.y < y1? 1 : -1;
-        float y1_edge = line1_dir * HALF_FIELD_WIDTH;
+        float y1_edge = line1_dir * Field::HALF_FIELD_WIDTH;
         float x1_edge = bp.x + (y1_edge - bp.y)/m1;
 
-        if(x1_edge < -HALF_FIELD_LENGTH)
+        if(x1_edge < -Field::HALF_FIELD_LENGTH)
         {
-            x1_edge = -HALF_FIELD_LENGTH;
+            x1_edge = -Field::HALF_FIELD_LENGTH;
             y1_edge = m1*(x1_edge - bp.x) + bp.y;
         }
-        else if(x1_edge > HALF_FIELD_LENGTH)
+        else if(x1_edge > Field::HALF_FIELD_LENGTH)
         {
-            x1_edge = HALF_FIELD_LENGTH;
+            x1_edge = Field::HALF_FIELD_LENGTH;
             y1_edge = m1*(x1_edge - bp.x) + bp.y;
         }
 
@@ -325,22 +327,22 @@ void AttackSupport::genBallShadows(Robot* r)
         float y2 = m2*x2 - m2*bp.x + bp.y;
 
         float line2_dir = bp.y < y2? 1 : -1;
-        float y2_edge = line2_dir * HALF_FIELD_WIDTH;
+        float y2_edge = line2_dir * Field::HALF_FIELD_WIDTH;
         float x2_edge = bp.x + (y2_edge - bp.y)/m2;
 
-        if(x2_edge < -HALF_FIELD_LENGTH)
+        if(x2_edge < -Field::HALF_FIELD_LENGTH)
         {
-            x2_edge = -HALF_FIELD_LENGTH;
+            x2_edge = -Field::HALF_FIELD_LENGTH;
             y2_edge = m2*(x2_edge - bp.x) + bp.y;
         }
-        else if(x2_edge > HALF_FIELD_LENGTH)
+        else if(x2_edge > Field::HALF_FIELD_LENGTH)
         {
-            x2_edge = HALF_FIELD_LENGTH;
+            x2_edge = Field::HALF_FIELD_LENGTH;
             y2_edge = m2*(x2_edge - bp.x) + bp.y;
         }
 
         // Determine minimum and maximum x-values between both tangent-robot interceptions
-        float min_x = 0, max_x = HALF_FIELD_LENGTH;
+        float min_x = 0, max_x = Field::HALF_FIELD_LENGTH;
         max_x = fmin(max_x, fmax(bp.x, fmax(x1_edge, x2_edge)));
         min_x = fmax(min_x, fmin(bp.x, fmin(x1_edge, x2_edge)));
 
@@ -356,29 +358,29 @@ void AttackSupport::genBallShadows(Robot* r)
 
             if(min_y_dir == line1_dir)
             {
-                if(min_y < -HALF_FIELD_WIDTH) min_y = -HALF_FIELD_WIDTH;
-                else if(min_y > HALF_FIELD_WIDTH) min_y = HALF_FIELD_LENGTH;
+                if(min_y < -Field::HALF_FIELD_WIDTH) min_y = -Field::HALF_FIELD_WIDTH;
+                else if(min_y > Field::HALF_FIELD_WIDTH) min_y = Field::HALF_FIELD_LENGTH;
             }
             else
-                min_y = line1_dir * HALF_FIELD_WIDTH;
+                min_y = line1_dir * Field::HALF_FIELD_WIDTH;
 
             float max_y = m2*x - m2*bp.x + bp.y;
             float max_y_dir = bp.y < max_y? 1 : -1;
 
             if(max_y_dir == line2_dir)
             {
-                if(max_y < -HALF_FIELD_WIDTH) max_y = -HALF_FIELD_WIDTH;
-                else if(max_y > HALF_FIELD_WIDTH) max_y = HALF_FIELD_LENGTH;
+                if(max_y < -Field::HALF_FIELD_WIDTH) max_y = -Field::HALF_FIELD_WIDTH;
+                else if(max_y > Field::HALF_FIELD_WIDTH) max_y = Field::HALF_FIELD_LENGTH;
             }
             else
-                max_y = line2_dir * HALF_FIELD_WIDTH;
+                max_y = line2_dir * Field::HALF_FIELD_WIDTH;
 
             if(min_y > max_y) std::swap(min_y, max_y);
 
             // Vertical strokes from min_y to max_y
             for(int y = min_y; y < max_y; y+=PND_SUPP)
             {
-                if(abs(x) < HALF_FIELD_LENGTH && abs(y) < HALF_FIELD_WIDTH)
+                if(abs(x) < Field::HALF_FIELD_LENGTH && abs(y) < Field::HALF_FIELD_WIDTH)
                 {
                     ProbNode& node = prob_field[PF_LENGTH_SUPP/2 + x/PND_SUPP][PF_WIDTH_SUPP/2 + y/PND_SUPP];
 
@@ -396,7 +398,7 @@ void AttackSupport::genBallShadows(Robot* r)
 
 std::vector<std::vector<Point>> AttackSupport::genClusters(Robot* r)
 {
-    int cluster_tol = 2*ROBOT_RADIUS + 2*BALL_RADIUS + 10;
+    int cluster_tol = 2*ROBOT_RADIUS + 2*Field::BALL_RADIUS + 10;
 
     std::vector<std::vector<Point>> clusters;
 
@@ -437,15 +439,16 @@ std::vector<std::vector<Point>> AttackSupport::genClusters(Robot* r)
 }
 
 
-void AttackSupport::genGoalShotAvoidance()
+void AttackSupport::genGoalShotAvoidance(Robot* robot)
 {
+    auto gp = Field::getGoalPosition(robot->getTeam()->getOpponentSide());
     // Top end of goal post
-    float g1x = gameState->getOppGoal().x;
-    float g1y = gameState->getOppGoal().y + GOAL_WIDTH/2 + ROBOT_RADIUS + 500;
+    float g1x = gp.x;
+    float g1y = gp.y + Field::GOAL_WIDTH/2 + ROBOT_RADIUS + 500;
 
     // Bottom end of goal post
-    float g2x = gameState->getOppGoal().x;
-    float g2y = gameState->getOppGoal().y - GOAL_WIDTH/2 - ROBOT_RADIUS - 500;
+    float g2x = gp.x;
+    float g2y = gp.y - Field::GOAL_WIDTH/2 - ROBOT_RADIUS - 500;
 
     Point bp = Ball::getPosition();
 
@@ -459,7 +462,7 @@ void AttackSupport::genGoalShotAvoidance()
 
         for(int y = min_y; y < max_y; y+=PND_SUPP)
         {
-            if(abs(x) < HALF_FIELD_LENGTH && abs(y) < HALF_FIELD_WIDTH)
+            if(abs(x) < Field::HALF_FIELD_LENGTH && abs(y) < Field::HALF_FIELD_WIDTH)
                 prob_field[PF_LENGTH_SUPP/2 + x/PND_SUPP]
                           [PF_WIDTH_SUPP/2  + y/PND_SUPP].dynamic_val = -100.0;
         }

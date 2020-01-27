@@ -65,6 +65,7 @@ SOURCES += main.cpp \
     libs/ssl-vision/src/netraw.cpp \
     libs/ssl-vision/src/robocup_ssl_client.cpp \
     model/ball.cpp \
+    model/field.cpp \
     model/game_state.cpp \
 	model/robot.cpp \
         movement/four_wheel_omni/four_wheel_omni_pilot.cpp \
@@ -112,7 +113,6 @@ SOURCES += main.cpp \
         movement/go_to_pose.cpp \
         movement/differential/differential_pilot.cpp \
     model/team.cpp \
-    parameters/field.cpp \
     parameters/motion_parameters.cpp
 
 HEADERS += \
@@ -158,6 +158,7 @@ HEADERS += \
     libs/ssl-vision/include/netraw.h \
     libs/ssl-vision/include/robocup_ssl_client.h \
     model/ball.h \
+    model/field.h \
     model/game_state.h \
 	model/robot.h \
 	movement/go_to_pose.h \
@@ -207,8 +208,6 @@ HEADERS += \
         movement/three_wheel_omni/three_wheel_omni_pilot.h \
         movement/four_wheel_omni/four_wheel_omni_pilot.h \
     model/team.h \
-    parameters/game_constants.h \
-    parameters/field.h \
     parameters/motion_parameters.h
 
 

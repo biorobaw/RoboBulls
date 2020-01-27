@@ -37,6 +37,7 @@ public:
     int getColor();
     std::string getRobotType();
     int getSide();
+    int getOpponentSide();
     bool isControlled();
 
 

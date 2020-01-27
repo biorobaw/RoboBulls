@@ -1,5 +1,6 @@
 #include "penaltygoalie.h"
 #include "model/ball.h"
+#include "model/field.h"
 
 PenaltyGoalie::PenaltyGoalie()
 {
@@ -22,8 +23,8 @@ void PenaltyGoalie::perform(Robot* robot)
     }
 
     // Define line segment along which goalie is allowed to move
-    Point p1 = Point(-HALF_FIELD_LENGTH + ROBOT_RADIUS, -GOAL_WIDTH/2 - 50);
-    Point p2 = Point(-HALF_FIELD_LENGTH + ROBOT_RADIUS,  GOAL_WIDTH/2 + 50);
+    Point p1 = Point(-Field::HALF_FIELD_LENGTH + ROBOT_RADIUS, -Field::GOAL_WIDTH/2 - 50);
+    Point p2 = Point(-Field::HALF_FIELD_LENGTH + ROBOT_RADIUS,  Field::GOAL_WIDTH/2 + 50);
 
     // Line Intercept of kicker->bp and p1->p2
     // https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection
@@ -32,6 +33,9 @@ void PenaltyGoalie::perform(Robot* robot)
 
     float x3 = bp.x, y3 = bp.y;
     float x4, y4;
+
+    auto gp = Field::getGoalPosition(robot->getTeam()->getSide());
+
     if(kicker)
     {
         x4 = kicker->getPosition().x;
@@ -39,7 +43,7 @@ void PenaltyGoalie::perform(Robot* robot)
     }
     else
     {
-        x4 = gameState->getMyGoal().x + DEF_AREA_RADIUS;
+        x4 = gp.x + Field::DEF_AREA_RADIUS;
         y4 = 0;
     }
 
@@ -50,7 +54,7 @@ void PenaltyGoalie::perform(Robot* robot)
 
     // Stay at the centre of the goalpost if the opponent is not aiming
     // somewhere inside the goal-post.
-    Point block_point = gameState->getMyGoal() + Point(ROBOT_RADIUS, 0);
+    Point block_point = gp + Point(ROBOT_RADIUS, 0);
 
     if(dem != 0)    // Lines are not parallel
     {
@@ -58,7 +62,7 @@ void PenaltyGoalie::perform(Robot* robot)
         float Py = Py_num/dem;
         float Px = Px_num/dem;
 
-        if(Py < GOAL_WIDTH/2 && Py > -GOAL_WIDTH/2)
+        if(Py < Field::GOAL_WIDTH/2 && Py > -Field::GOAL_WIDTH/2)
             block_point = Point(Px, Py);
     }
 
