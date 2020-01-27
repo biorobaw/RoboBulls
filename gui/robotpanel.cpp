@@ -270,14 +270,14 @@ void RobotPanel::updateBotPanel() {
     dash->ui->currStrategy->setText(QString::fromStdString(getCurrStrategy()));
 
     //Populating the team info frame in robot panel
-    int blueG = gameState->getBlueGoals();
+    int blueG = GameState::getBlueGoals();
     dash->ui->blueGoal->setText("Blue Goals: " + QString::number(blueG));
 
-    int yellG = gameState->getYellowGoals();
+    int yellG = GameState::getYellowGoals();
     dash->ui->yellGoal->setText("Yellow Goals: " + QString::number(yellG));
 
     //Populating remaining time label
-    int time = gameState->getRemainingTime();
+    int time = GameState::getRemainingTime();
     dash->ui->timeRem->setText("Time Left: " + QString::number(time));
 
     // Mouse point
@@ -357,7 +357,7 @@ void RobotPanel::toggleIconVisible() {
 const std::string RobotPanel::getCurrStrategy()
 {
 
-    switch(gameState->getState())
+    switch(GameState::getState())
     {
     case 'S':    //stop game
     case 'G':    //Blue Goal
@@ -403,7 +403,7 @@ const std::string RobotPanel::getCurrStrategy()
 const std::string RobotPanel::getGameState()
 {
 
-    switch(gameState->getState())
+    switch(GameState::getState())
     {
     case 'S':    //stop game
         return "Stop Game";

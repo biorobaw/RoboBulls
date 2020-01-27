@@ -9,7 +9,6 @@
 #include "yaml-cpp/yaml.h"
 
 
-class VisionComm;
 class Robot;
 
 /*! @addtogroup everydayuse Everyday Use
@@ -32,41 +31,25 @@ public:
     /*! @name Game access functions
      * @{*/
 
-    char   getState();
-    char   getBlueGoals();
-    char   getYellowGoals();
-    short  getRemainingTime();
-    char   getPreviousState();
+    static char   getState();
+    static char   getBlueGoals();
+    static char   getYellowGoals();
+    static short  getRemainingTime();
+    static char   getPreviousState();
 
     //! @}
 
-    //! @name grSim Replacement functions
-    //! @{
-    void addRobotReplacement(int id, int team, float x, float y, float dir = -10);
-    void addBallReplacement(float x, float y, float vx = 0, float vy = 0);
-    //! @}
-
-    //! @name Misc. Functions
-    //! @{
-    bool isNewCommand();
-    void onCommandProcessed();
-    std::string toString();
-    //! @}
-
-    static std::mutex my_team_mutex;
-    static std::mutex opp_team_mutex;
 
 
 private:
     /* General Game Information */
 
 
-    char   state           = '\0';        //The current state of the game from RefComm
-    char   previousState   = '\0';      //The previous gamestate
-    bool   hasNewCommand   = false;       //True on the iteration that gameState has changed
-    char   blueGoals       = 0;           //Number of scores yellow goals
-    char   yellowGoals     = 0;           //Number of scores yellow goals
-    short  remainingTime   = 0;           //Remaining time in seconds
+    static char   state        ;  //The current state of the game from RefComm
+    static char   previousState;  //The previous gamestate
+    static char   blueGoals    ;  //Number of scores yellow goals
+    static char   yellowGoals  ;  //Number of scores yellow goals
+    static short  remainingTime;  //Remaining time in seconds
 
     /* Functions to update gamemodel from vision system.
      * Provides *the* link between vision detection and
@@ -74,39 +57,18 @@ private:
     friend class VisionComm;
     friend class RefComm;
     friend class SimRobComm;
-    void onRobotUpdated(Robot*);
+    static void onRobotUpdated(Robot*);
 
 
-    void setGameState(char);
-    void setTimeLeft(short);
-    void setBlueGoals(char);
-    void setYellowGoals(char);
-    void notifyObservers();
+    static void setGameState(char);
+    static void setTimeLeft(short);
+    static void setBlueGoals(char);
+    static void setYellowGoals(char);
+    static void notifyObservers();
 
-    //! @cond
-    //grSim Replacement data
-    struct RobotReplacement {
-        int id;
-        int team;
-        float x, y, dir;
-    };
-    struct BallReplacement {
-        float x, y;
-        float vx, vy;
-    };
-
-    //! @endcond
-    //Vector of queued replacements for robots
-    std::vector<RobotReplacement> robotReplacements;
-    //An optimal replacement of the ball
-    BallReplacement ballReplacement;
-    //Do the above two fields contains replacemant data?
-    bool hasRobotReplacements = false;
-    bool hasBallReplacement = false;
 };
 
 //Global singleton pointer to access GameModel
-extern GameState* gameState;
 //! @}
 
 #endif // GAMEMODEL_H

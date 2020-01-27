@@ -9,7 +9,7 @@
 
 using namespace std;
 
-VisionComm::VisionComm(GameState *gm, YAML::Node comm_node, int _side)
+VisionComm::VisionComm( YAML::Node comm_node, int _side)
 {
     std::cout << "--VISION" << endl
               << "        VISION_ADDR : " << comm_node["VISION_ADDR"] << endl
@@ -24,7 +24,6 @@ VisionComm::VisionComm(GameState *gm, YAML::Node comm_node, int _side)
 
     client = new RoboCupSSLClient(vision_port, vision_addr);
     client->open(true);
-    gameState = gm;
 
     kfilter = new KFBall();
     u.resize(4);
@@ -338,7 +337,7 @@ void VisionComm::receive()
          * the RoboBulls game is run with the new information here. */
         if (++totalframes > 200){
 //            std::cout << "at VisionComm::notifying()"<<endl;
-            gameState->notifyObservers();
+            GameState::notifyObservers();
         }
 
         /* After 100 frames the "seen counts" of each team are set to 0. This prevents

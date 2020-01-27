@@ -31,8 +31,8 @@ void IndirectKickStrategy::assignBeh()
 
 
     // We are kicking
-    if ((gameState->getState() == 'I' && team->getColor() == TEAM_BLUE) ||
-        (gameState->getState() == 'i' && team->getColor() == TEAM_YELLOW))
+    if ((GameState::getState() == 'I' && team->getColor() == TEAM_BLUE) ||
+        (GameState::getState() == 'i' && team->getColor() == TEAM_YELLOW))
     {
         for(Robot* rob : team->getRobots())
             rob->clearBehavior();
@@ -71,8 +71,8 @@ void IndirectKickStrategy::assignBeh()
         NormalGameStrategy::assignGoalieIfOk(team);
     }
     // We are defending against an indirect kick
-    else if ((gameState->getState() == 'i' && team->getColor() == TEAM_BLUE) ||
-             (gameState->getState() == 'I' && team->getColor() == TEAM_YELLOW))
+    else if ((GameState::getState() == 'i' && team->getColor() == TEAM_BLUE) ||
+             (GameState::getState() == 'I' && team->getColor() == TEAM_YELLOW))
     {
         if(wall1)
             wall1->assignBeh<Wall>();

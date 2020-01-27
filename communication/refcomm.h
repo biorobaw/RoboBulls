@@ -51,7 +51,7 @@ public:
      * @param gm The GameModel to fill with information
      * @param net_ref_address Address Refbox is broadcasting to
      * @param port The port Refbox is broadcasting to */
-    RefComm(GameState *gm, YAML::Node comm_node);
+    RefComm(YAML::Node comm_node);
 
    ~RefComm();
 

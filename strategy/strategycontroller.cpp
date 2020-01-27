@@ -26,17 +26,20 @@ void StrategyController::run()
     if(!team->getRobots().empty())
     {
 //        std::cout<< "at StrategyController::run() - team not empty\n";
-        if(gameState->isNewCommand() || activeStrategy == nullptr) {
+        if(received_new_command || activeStrategy == nullptr) {
             //std::cout<< "at StrategyController::run()  resetting\n";
-            gameModelReset();
+
+            assignNewStrategy(GameState::getState()); //Updates activeStrategy
+            activeStrategy->assignBeh();
+
         } else {
             //std::cout<< "at StrategyController::run() continued\n";
-            gameModelContinued();
+            runActiveStrategy();
         }
         //std::cout<<"model->onCommandProcessed();"<<std::endl;
-        gameState->onCommandProcessed();
+        received_new_command = false;
 
-        frameEnd();
+        sendRobotCommands();
     }
     //std::cout<<"OUTSIDE IF"<<std::endl; Bowu
 }
@@ -95,29 +98,17 @@ void StrategyController::assignNewStrategy(char gameState)
 }
 
 
-void StrategyController::gameModelReset()
-{
-    clearCurrentStrategy();
-    char newState = gameState->getState();
-    this->assignNewStrategy(newState); //Updates activeStrategy
-    activeStrategy->assignBeh();
-}
-
-
-void StrategyController::gameModelContinued()
+void StrategyController::runActiveStrategy()
 {
     if(activeStrategy != nullptr)
     {
-        bool clearStrategyFlag = activeStrategy->update() == true;
-        char nextStrategyState = activeStrategy->getNextStrategy();
-        char currentGameState  = gameState->getState();
-        // Recreate current strategy if requested
-        if(clearStrategyFlag)
-            clearCurrentStrategy();
+        bool clearStrategyFlag = activeStrategy->update();
+        char nextState = activeStrategy->getNextStrategy();
+        // Recreate current strategy if requested or
         // Change the current strategy arbitrarily if requested
-        else if(nextStrategyState != '\0' and
-                nextStrategyState != currentGameState)
-            assignNewStrategy(nextStrategyState);
+        if(clearStrategyFlag) clearCurrentStrategy();
+        else if(nextState != '\0' and nextState != GameState::getState())
+            assignNewStrategy(nextState);
     }
 }
 
@@ -129,7 +120,7 @@ void StrategyController::clearCurrentStrategy()
         robot->clearBehavior();
 }
 
-void StrategyController::frameEnd()
+void StrategyController::sendRobotCommands()
 {
     //std::cout << " In StrategyController::frameEnd()" <<std::endl;
     for (Robot *rob :  team->getRobots())
@@ -151,4 +142,8 @@ Team* StrategyController::getTeam(){
 
 void StrategyController::setRefboxEnabled(bool _enabled){
     refbox_enabled = _enabled;
+}
+
+void StrategyController::signalNewCommand(){
+    received_new_command = true;
 }

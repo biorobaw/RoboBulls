@@ -126,9 +126,9 @@ int main(int argc, char *argv[])
 
     //Initialize GameModel, StrategyController, Vision, and Ref
 
-    RefComm refCommunicator(gameState, comm_node);
+    RefComm refCommunicator( comm_node);
     // TODO: vision communicator should not know anything about team sides (deprecated notion of "own team")
-    VisionComm visionCommunicator(gameState, comm_node, team_node["TEAM_BLUE"]["SIDE"].as<int>());
+    VisionComm visionCommunicator(comm_node, team_node["TEAM_BLUE"]["SIDE"].as<int>());
 
 
     registerExitSignals();

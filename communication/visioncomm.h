@@ -31,7 +31,7 @@ const float CONF_THRESHOLD_BOTS = 0.90;
 class VisionComm: public QThread
 {
 public:
-    VisionComm(GameState *gm, YAML::Node comm_node, int _side);
+    VisionComm( YAML::Node comm_node, int _side);
     ~VisionComm();
 
     //! @brief Recieves an SSL_WrapperPacket and fills in the GameModel information

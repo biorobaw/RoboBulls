@@ -9,7 +9,7 @@ PenaltyStrategy::PenaltyStrategy(Team* _team) : Strategy(_team) {
 void PenaltyStrategy::assignBeh()
 {
     // If we are taking the penalty kick
-    char gs = gameState->getState();
+    char gs = GameState::getState();
     if ((gs == 'P' && team->getColor() == TEAM_BLUE) || (gs == 'p' && team->getColor() == TEAM_YELLOW))
     {
         // One of the defenders will take the penalty and move back

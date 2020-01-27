@@ -3,7 +3,7 @@
 
 using namespace std;
 
-RefComm::RefComm(GameState *gm, YAML::Node comm_node)
+RefComm::RefComm(YAML::Node comm_node)
 {
     cout << "--REFBOX " << endl
          << "        REFBOX_ADDR    : " << comm_node["REFBOX_ADDR"] << endl
@@ -12,7 +12,6 @@ RefComm::RefComm(GameState *gm, YAML::Node comm_node)
     _port       = comm_node["REFBOX_PORT"].as<int>();
     _net_address= comm_node["REFBOX_ADDR"].as<string>();
     _net_interface="";
-    gamemodel = gm;
     cout << "--Refbox DONE" << endl;
 }
 

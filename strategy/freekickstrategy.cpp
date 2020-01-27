@@ -28,8 +28,8 @@ void FreeKickStrategy::assignBeh()
     Robot* attack2 = team->getRobotByRole(RobotRole::ATTACK2);
 
     // We are taking the free kick
-    if ((gameState->getState() == 'F' && team->getColor() == TEAM_BLUE) ||
-        (gameState->getState() == 'f' && team->getColor() == TEAM_YELLOW))
+    if ((GameState::getState() == 'F' && team->getColor() == TEAM_BLUE) ||
+        (GameState::getState() == 'f' && team->getColor() == TEAM_YELLOW))
     {
         for(Robot* rob : team->getRobots())
             rob->clearBehavior();
@@ -68,8 +68,8 @@ void FreeKickStrategy::assignBeh()
         NormalGameStrategy::assignGoalieIfOk(team);
     }
     // We are defending against a free kick
-    else if ((gameState->getState() == 'f' && team->getColor() == TEAM_BLUE)
-          || (gameState->getState() == 'F' && team->getColor() == TEAM_YELLOW))
+    else if ((GameState::getState() == 'f' && team->getColor() == TEAM_BLUE)
+          || (GameState::getState() == 'F' && team->getColor() == TEAM_YELLOW))
     {
         if(wall1)
             wall1->assignBeh<Wall>();

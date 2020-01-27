@@ -74,30 +74,30 @@ void SimRobComm::sendReplacementPackets()
     //Fill in data if it is aviliable
     //For some reason the simulator multiplies the X and Y coordinates by 1000
     //It also takes angles in degrees
-    if(gameState->hasRobotReplacements)
-    {
-        for(GameState::RobotReplacement& data : gameState->robotReplacements) {
-            grSim_RobotReplacement* robotReplace = replacement->add_robots();
-            robotReplace->set_x(data.x / 1000.0);
-            robotReplace->set_y(data.y / 1000.0);
-            robotReplace->set_yellowteam((data.team == TEAM_YELLOW));
-            robotReplace->set_id(data.id);
-            robotReplace->set_dir(data.dir * (180.0/M_PI));
-        }
-        gameState->hasRobotReplacements = false;
-        gameState->robotReplacements.clear();
-    }
-    if(gameState->hasBallReplacement)
-    {
-        grSim_BallReplacement* ballReplace = replacement->mutable_ball();
-        const GameState::BallReplacement& data = gameState->ballReplacement;
-        ballReplace->set_x(data.x / 1000.0);
-        ballReplace->set_y(data.y / 1000.0);
-        ballReplace->set_vx(data.vx);
-        ballReplace->set_vy(data.vy);
-        gameState->hasBallReplacement = false;
-        gameState->ballReplacement = {0, 0, 0, 0};
-    }
+//    if(GameState::hasRobotReplacements)
+//    {
+//        for(GameState::RobotReplacement& data : GameState::robotReplacements) {
+//            grSim_RobotReplacement* robotReplace = replacement->add_robots();
+//            robotReplace->set_x(data.x / 1000.0);
+//            robotReplace->set_y(data.y / 1000.0);
+//            robotReplace->set_yellowteam((data.team == TEAM_YELLOW));
+//            robotReplace->set_id(data.id);
+//            robotReplace->set_dir(data.dir * (180.0/M_PI));
+//        }
+//        GameState::hasRobotReplacements = false;
+//        GameState::robotReplacements.clear();
+//    }
+//    if(GameState::hasBallReplacement)
+//    {
+//        grSim_BallReplacement* ballReplace = replacement->mutable_ball();
+//        const GameState::BallReplacement& data = GameState::ballReplacement;
+//        ballReplace->set_x(data.x / 1000.0);
+//        ballReplace->set_y(data.y / 1000.0);
+//        ballReplace->set_vx(data.vx);
+//        ballReplace->set_vy(data.vy);
+//        GameState::hasBallReplacement = false;
+//        GameState::ballReplacement = {0, 0, 0, 0};
+//    }
 
     //Send packet
     QByteArray dgram;

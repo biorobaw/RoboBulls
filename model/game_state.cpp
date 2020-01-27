@@ -13,11 +13,13 @@
 #include <assert.h>
 
 
-std::mutex GameState::my_team_mutex;
-std::mutex GameState::opp_team_mutex;
 
 // Global static pointer used to ensure a single instance of the class.
-GameState* gameState = new GameState();
+char   GameState::state           = '\0';        //The current state of the game from RefComm
+char   GameState::previousState   = '\0';      //The previous gamestate
+char   GameState::blueGoals       = 0;           //Number of scores yellow goals
+char   GameState::yellowGoals     = 0;           //Number of scores yellow goals
+short  GameState::remainingTime   = 0;
 
 /*******************************************************************/
 /************************ Public Methods ***************************/
@@ -49,75 +51,12 @@ char GameState::getState()
 }
 
 
-//! @brief Returns true id RefComm has sent a new command
-bool GameState::isNewCommand()
-{
-    return this->hasNewCommand;
-}
-
-
 //! @brief Returns the last different game state before this one
 char GameState::getPreviousState()
 {
     return previousState;
 }
 
-//! @brief Returns a string representation of the GameModel, including all robots and the ball
-std::string GameState::toString()
-{
-    std::stringstream myString;
-
-    myString << "Ball Position: " << Ball::getPosition().toString() << std::endl;
-
-    myString<<"\nBlue Team Robots: \n";
-    auto robots = Team::getTeam(TEAM_BLUE)->getRobots();
-    for (auto it = robots.begin(); it != robots.end(); it++)
-    {
-        myString << "\t" << (*it)->toString()<< std::endl;
-    }
-
-    myString<<"\nYellow Team Robots: \n";
-    robots = Team::getTeam(TEAM_YELLOW)->getRobots();
-    for(auto it = robots.begin(); it != robots.end(); it++)
-    {
-        myString << "\t" << (*it)->toString() << std::endl;
-    }
-
-    return myString.str();
-}
-
-/*! @brief Queues a robot replacement for robot with an id on a team.
- * @details [grSim_Replacement](https://github.com/roboime/ssl-sim/blob/master/protos/grSim_Replacement.proto)
- * allows for position of angle changes of simulated robots using packets. This function asks the simulator
- * to move a robot to an x and y point.
- * @param id ID of robot to move
- * @param team TEAM_BLUE or TEAM_YELLOW
- * @param x X Position to move robot to
- * @param y Y Positon to move robot to
- * @param dir Orientation to set robot at (leave blank to keep current robot orientation) */
-void GameState::addRobotReplacement(int id, int team, float x, float y, float dir)
-{
-    //Keep orientation if left blank
-    if(dir == -10) {
-        Robot* robot = Team::getTeam(team)->getRobot(id);
-        dir = robot->getOrientation();
-    }
-    RobotReplacement replacement {id, team, x, y, dir};
-    robotReplacements.push_back(replacement);
-    hasRobotReplacements = true;
-}
-
-/*! @brief Creates a ball replacement request
- * @details Like addRobotReplacement, grSim allows us to change the position of the ball with replacement packets.
- * @param x X Position to move ball to
- * @param y Y Positon to move ball to
- * @param vx X Velocity in m/s to set the ball to
- * @param vx Y Velocity in m/s to set the ball to */
-void GameState::addBallReplacement(float x, float y, float vx, float vy)
-{
-    ballReplacement = {x, y, vx, vy};
-    hasBallReplacement = true;
-}
 
 /*******************************************************************/
 /************************ Private Methods **************************/
@@ -140,21 +79,18 @@ void GameState::notifyObservers()
 /*! @brief Used by RefComm; Set the current game state (See RefComm reference)
  * @see RefComm
  * @see getGameState */
-void GameState::setGameState(char gameState)
+void GameState::setGameState(char newState)
 {
-    char lastGameState = this->state;
-    if(lastGameState != gameState)
+    if(state != newState)
     {
-        hasNewCommand = true;
-        previousState = lastGameState;
+        previousState = state;
+        state = newState;
+        //signal new state to teams:
+        for(int i=0; i<2; i++){
+            if(Team::getTeam(i)->isControlled())
+                Team::getTeam(i)->controller.signalNewCommand();
+        }
     }
-    this->state = gameState;
-}
-
-//! @brief Callback called from StrategyController when a new command is processed
-void GameState::onCommandProcessed()
-{
-    this->hasNewCommand = false;
 }
 
 

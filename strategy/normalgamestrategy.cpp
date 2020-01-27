@@ -21,7 +21,7 @@ NormalGameStrategy::NormalGameStrategy(Team* _team)
     , our_def_area(true)
     , opp_def_area(false)
 {
-    char prevGs = gameState->getPreviousState();
+    char prevGs = GameState::getPreviousState();
 
     // Opp Kick-Off
     if((prevGs == 'k' && team->getColor() == TEAM_BLUE)

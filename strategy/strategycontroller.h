@@ -30,19 +30,18 @@ public:
     Team* getTeam();
     void setRefboxEnabled(bool _enabled);
 
+    void signalNewCommand();
+
 private:
     /*! Clean-up called at the end of a frame.
      * This performs the behaviors on the robots, then
      * uses RobComm to send the velocities to the field */
-    void frameEnd();
+    void sendRobotCommands();
 
-    /*! Called when GameModel receives a new command from
-     * the RefComm.Makes a new activeStrategy. */
-    void gameModelReset();
 
     /*! Called when GameModel receives the same command
      * as the last frame. Updates current activeStrategy.  */
-    void gameModelContinued();
+    void runActiveStrategy();
 
     //! Switches the gamestate to assign a current strategy */
     void assignNewStrategy(char gameState);
@@ -57,6 +56,7 @@ private:
     Strategy*  activeStrategy = nullptr;
     Team* team = nullptr;
     bool refbox_enabled = false;
+    bool received_new_command = false;
 };
 
 #endif // STRATEGYCONTROLLER_H

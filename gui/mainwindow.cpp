@@ -161,7 +161,7 @@ void MainWindow::guiPrint(string output) {
 
 QString MainWindow::getRemTime() {
     QString t;  // return value
-    std::string time = std::to_string(gameState->getRemainingTime());
+    std::string time = std::to_string(GameState::getRemainingTime());
     t = QString::fromStdString(time);
 
     return t;
