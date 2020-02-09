@@ -24,6 +24,20 @@ QMAKE_CXX = g++
 QMAKE_CXXFLAGS += -std=c++0x
 DESTDIR = $$PWD
 
+
+
+PROTOPATH = libs/proto
+PROTOS = ssl-grsim/proto/grSim_Commands.proto \
+         ssl-grsim/proto/grSim_Packet.proto \
+         ssl-grsim/proto/grSim_Replacement.proto \
+         ssl-vision/proto/messages_robocup_ssl_detection.proto \
+         ssl-vision/proto/messages_robocup_ssl_geometry.proto \
+         ssl-vision/proto/messages_robocup_ssl_refbox_log.proto \
+         ssl-vision/proto/messages_robocup_ssl_wrapper.proto
+include(protobuf.pri)
+
+
+
 SOURCES += main.cpp \
 	behavior/attackmain.cpp \
 	behavior/attacksupport.cpp \
@@ -51,19 +65,6 @@ SOURCES += main.cpp \
 	gui/objectposition.cpp \
 	gui/robotpanel.cpp \
 	gui/selrobotpanel.cpp \
-    libs/grsim/src/messages/grSim_Commands.pb.cc \
-    libs/grsim/src/messages/grSim_Packet.pb.cc \
-    libs/grsim/src/messages/grSim_Replacement.pb.cc \
-    libs/ssl-vision/src/messages/messages_robocup_ssl_detection.pb.cc \
-    libs/ssl-vision/src/messages/messages_robocup_ssl_detection_tracked.pb.cc \
-    libs/ssl-vision/src/messages/messages_robocup_ssl_geometry.pb.cc \
-    libs/ssl-vision/src/messages/messages_robocup_ssl_geometry_legacy.pb.cc \
-    libs/ssl-vision/src/messages/messages_robocup_ssl_refbox_log.pb.cc \
-    libs/ssl-vision/src/messages/messages_robocup_ssl_wrapper.pb.cc \
-    libs/ssl-vision/src/messages/messages_robocup_ssl_wrapper_legacy.pb.cc \
-    libs/ssl-vision/src/messages/messages_robocup_ssl_wrapper_tracked.pb.cc \
-    libs/ssl-vision/src/netraw.cpp \
-    libs/ssl-vision/src/robocup_ssl_client.cpp \
     model/ball.cpp \
     model/field.cpp \
     model/game_state.cpp \
@@ -75,6 +76,9 @@ SOURCES += main.cpp \
 	skill/kick.cpp \
 	skill/kicktopointomni.cpp \
 	skill/stop.cpp \
+    ssl-vision/netraw.cpp \
+    ssl-vision/robocup_ssl_client.cpp \
+    ssl-vision/visioncomm.cpp \
 	strategy/freekickstrategy.cpp \
 	strategy/haltstrategy.cpp \
 	strategy/kickoffstrategy.cpp \
@@ -144,19 +148,6 @@ HEADERS += \
 	gui/objectposition.h \
 	gui/robotpanel.h \
 	gui/selrobotpanel.h \
-    libs/grsim/include/messages/grSim_Commands.pb.h \
-    libs/grsim/include/messages/grSim_Packet.pb.h \
-    libs/grsim/include/messages/grSim_Replacement.pb.h \
-    libs/ssl-vision/include/messages/messages_robocup_ssl_detection.pb.h \
-    libs/ssl-vision/include/messages/messages_robocup_ssl_detection_tracked.pb.h \
-    libs/ssl-vision/include/messages/messages_robocup_ssl_geometry.pb.h \
-    libs/ssl-vision/include/messages/messages_robocup_ssl_geometry_legacy.pb.h \
-    libs/ssl-vision/include/messages/messages_robocup_ssl_refbox_log.pb.h \
-    libs/ssl-vision/include/messages/messages_robocup_ssl_wrapper.pb.h \
-    libs/ssl-vision/include/messages/messages_robocup_ssl_wrapper_legacy.pb.h \
-    libs/ssl-vision/include/messages/messages_robocup_ssl_wrapper_tracked.pb.h \
-    libs/ssl-vision/include/netraw.h \
-    libs/ssl-vision/include/robocup_ssl_client.h \
     model/ball.h \
     model/field.h \
     model/game_state.h \
@@ -169,6 +160,9 @@ HEADERS += \
 	skill/kicktopointomni.h \
 	skill/skill.h \
 	skill/stop.h \
+    ssl-vision/netraw.h \
+    ssl-vision/robocup_ssl_client.h \
+    ssl-vision/visioncomm.h \
 	strategy/freekickstrategy.h \
 	strategy/haltstrategy.h \
 	strategy/kickoffstrategy.h \
@@ -246,4 +240,23 @@ INCLUDEPATH += $$PWD/libs/yaml-cpp-0.6.3/include
 DEPENDPATH += $$PWD/libs/yaml-cpp-0.6.3/include
 
 #unix:!macx: PRE_TARGETDEPS += $$PWD/libs/yaml-cpp-0.6.3/build/libyaml-cpp.a
+
+DISTFILES += \
+    ssl-game-controller/proto/ssl_game_controller_auto_ref.proto \
+    ssl-game-controller/proto/ssl_game_controller_common.proto \
+    ssl-game-controller/proto/ssl_game_controller_team.proto \
+    ssl-game-controller/proto/ssl_game_event.proto \
+    ssl-game-controller/proto/ssl_game_event_2019.proto \
+    ssl-game-controller/proto/ssl_referee.proto \
+    ssl-grsim/proto/grSim_Commands.proto \
+    ssl-grsim/proto/grSim_Packet.proto \
+    ssl-grsim/proto/grSim_Replacement.proto \
+    ssl-vision/proto/messages_robocup_ssl_detection.proto \
+    ssl-vision/proto/messages_robocup_ssl_geometry.proto \
+    ssl-vision/proto/messages_robocup_ssl_refbox_log.proto \
+    ssl-vision/proto/messages_robocup_ssl_wrapper.proto \
+    ssl-vision/proto/not used/messages_robocup_ssl_detection_tracked.proto \
+    ssl-vision/proto/not used/messages_robocup_ssl_geometry_legacy.proto \
+    ssl-vision/proto/not used/messages_robocup_ssl_wrapper_legacy.proto \
+    ssl-vision/proto/not used/messages_robocup_ssl_wrapper_tracked.proto
 

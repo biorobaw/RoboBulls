@@ -85,13 +85,14 @@ void VisionComm::receiveRobot(const SSL_DetectionRobot& robot, int detectedTeamC
         //std::cout << " positionReading("<<robot.x()<<","<< robot.y()<<");\n ";
         Point positionReading(robot.x(), robot.y());//Point
         float rotationReading = robot.orientation();
-        if(side == FIELD_SIDE_POSITIVE){
-            positionReading *= -1;
-            if(rotationReading > 0)
-                rotationReading = -(M_PI - rotationReading);
-            else
-                rotationReading = -(-M_PI - rotationReading);
-        }
+        //TODO: following lines were removed since now the software can control more than a single team
+//        if(side == FIELD_SIDE_POSITIVE){
+//            positionReading *= -1;
+//            if(rotationReading > 0)
+//                rotationReading = -(M_PI - rotationReading);
+//            else
+//                rotationReading = -(-M_PI - rotationReading);
+//        }
         rob->setRobotPosition(positionReading);
         rob->setOrientation(rotationReading);
     }

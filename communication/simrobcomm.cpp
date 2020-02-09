@@ -1,7 +1,7 @@
 #include <math.h>
-#include "libs/grsim/include/messages/grSim_Packet.pb.h"
-#include "libs/grsim/include/messages/grSim_Commands.pb.h"
-#include "libs/grsim/include/messages/grSim_Replacement.pb.h"
+#include "grSim_Packet.pb.h"
+#include "grSim_Commands.pb.h"
+#include "grSim_Replacement.pb.h"
 #include "model/robot.h"
 #include "model/team.h"
 #include "model/game_state.h"

@@ -2,7 +2,7 @@
 #define VISIONCOMM_H
 #include <string>
 #include <QtCore/QThread>
-#include "libs/ssl-vision/include/robocup_ssl_client.h"
+#include "ssl-vision/robocup_ssl_client.h"
 #include "model/game_state.h"
 #include "model/robot.h"
 #include "kfball.h"
