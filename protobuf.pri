@@ -10,13 +10,9 @@
 # PROTOS = a.proto b.proto
 # include(protobuf.pri)
 #
-# By default protoc looks for .proto files (including the imported ones) in
-# the current directory where protoc is run. If you need to include additional
-# paths specify the PROTOPATH variable
 #
 
-PROTOPATH += .
-for(p, PROTOPATH):PROTOPATHS += --proto_path=$${p}
+
 
 
 

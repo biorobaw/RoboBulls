@@ -26,207 +26,206 @@ DESTDIR = $$PWD
 
 
 
-PROTOPATH = libs/proto
-PROTOS = ssl-grsim/proto/grSim_Commands.proto \
-         ssl-grsim/proto/grSim_Packet.proto \
-         ssl-grsim/proto/grSim_Replacement.proto \
-         ssl-vision/proto/messages_robocup_ssl_detection.proto \
-         ssl-vision/proto/messages_robocup_ssl_geometry.proto \
-         ssl-vision/proto/messages_robocup_ssl_refbox_log.proto \
-         ssl-vision/proto/messages_robocup_ssl_wrapper.proto
+PROTOS = src/ssl-grsim/proto/grSim_Commands.proto \
+         src/ssl-grsim/proto/grSim_Packet.proto \
+         src/ssl-grsim/proto/grSim_Replacement.proto \
+         src/ssl-vision/proto/messages_robocup_ssl_detection.proto \
+         src/ssl-vision/proto/messages_robocup_ssl_geometry.proto \
+         src/ssl-vision/proto/messages_robocup_ssl_refbox_log.proto \
+         src/ssl-vision/proto/messages_robocup_ssl_wrapper.proto
 include(protobuf.pri)
 
 
 
-SOURCES += main.cpp \
-	behavior/attackmain.cpp \
-	behavior/attacksupport.cpp \
-	behavior/behavior.cpp \
-	behavior/genericmovementbehavior.cpp \
-	communication/nxtrobcomm.cpp \
-	communication/robcomm.cpp \
-        communication/serialib.cpp \
-	communication/simrobcomm.cpp \
-	gui/fieldpanel.cpp \
-	gui/gamepanel.cpp \
-	gui/guiball.cpp \
-	gui/guibotlabel.cpp \
-	gui/guicomm.cpp \
-	gui/guidrawline.cpp \
-	gui/guifield.cpp \
-	gui/guiinterface.cpp \
-	gui/guirobot.cpp \
-	gui/guiscene.cpp \
-	gui/guisidelines.cpp \
-        gui/joystick.cpp \
-	gui/mainwindow.cpp \
-	gui/objectposition.cpp \
-	gui/robotpanel.cpp \
-	gui/selrobotpanel.cpp \
-    model/ball.cpp \
-    model/field.cpp \
-    model/game_state.cpp \
-	model/robot.cpp \
-        movement/four_wheel_omni/four_wheel_omni_pilot.cpp \
-	movement/move_collisions.cpp \
-	movement/pathfinding/fppa_pathfinding.cpp \
-        movement/three_wheel_omni/three_wheel_omni_pilot.cpp \
-	skill/kick.cpp \
-	skill/kicktopointomni.cpp \
-	skill/stop.cpp \
-    ssl-game-controller/sss_refbox_listener.cpp \
-    ssl-vision/ssl_vision_listener.cpp \
-	strategy/freekickstrategy.cpp \
-	strategy/haltstrategy.cpp \
-	strategy/kickoffstrategy.cpp \
-	strategy/normalgamestrategy.cpp \
-	strategy/penaltystrategy.cpp \
-	strategy/stopstrategy.cpp \
-	strategy/strategycontroller.cpp \
-	strategy/strategy.cpp \
-	strategy/teststrategy.cpp \
-	strategy/videostrategies.cpp \
-	utilities/comparisons.cpp \
-	utilities/debug.cpp \
-	utilities/edges.cpp \
-	utilities/point.cpp \
-	utilities/velocitycalculator.cpp \
-        behavior/defendbehavior.cpp \
-        strategy/indirectkickstrategy.cpp \
-        communication/kfball.cpp \
-        utilities/getclassname.cpp \
-        utilities/region/sector.cpp \
-        utilities/region/rectangle.cpp \
-        utilities/measurements.cpp \
-        utilities/region/defencearea.cpp \
-        gui/guidrawpoint.cpp \
-        gui/guidrawregion.cpp \
-        skill/dribbletopoint.cpp \
-        behavior/challengeballbot.cpp \
-        skill/dribbleback.cpp \
-        behavior/refstop.cpp \
-        behavior/goalie.cpp \
-        behavior/markbot.cpp \
-        behavior/wall.cpp \
-        behavior/penaltygoalie.cpp \
-        communication/yisirobcomm.cpp \
-        communication/crc.cpp \
-        movement/go_to_pose.cpp \
-        movement/differential/differential_pilot.cpp \
-    model/team.cpp \
-    parameters/motion_parameters.cpp
+SOURCES += src/main.cpp \
+        src/behavior/attackmain.cpp \
+        src/behavior/attacksupport.cpp \
+        src/behavior/behavior.cpp \
+        src/behavior/genericmovementbehavior.cpp \
+        src/communication/nxtrobcomm.cpp \
+        src/communication/robcomm.cpp \
+        src/communication/serialib.cpp \
+        src/communication/simrobcomm.cpp \
+        src/gui/fieldpanel.cpp \
+        src/gui/gamepanel.cpp \
+        src/gui/guiball.cpp \
+        src/gui/guibotlabel.cpp \
+        src/gui/guicomm.cpp \
+        src/gui/guidrawline.cpp \
+        src/gui/guifield.cpp \
+        src/gui/guiinterface.cpp \
+        src/gui/guirobot.cpp \
+        src/gui/guiscene.cpp \
+        src/gui/guisidelines.cpp \
+        src/gui/joystick.cpp \
+        src/gui/mainwindow.cpp \
+        src/gui/objectposition.cpp \
+        src/gui/robotpanel.cpp \
+        src/gui/selrobotpanel.cpp \
+        src/model/ball.cpp \
+        src/model/field.cpp \
+        src/model/game_state.cpp \
+        src/model/robot.cpp \
+        src/movement/four_wheel_omni/four_wheel_omni_pilot.cpp \
+        src/movement/move_collisions.cpp \
+        src/movement/pathfinding/fppa_pathfinding.cpp \
+        src/movement/three_wheel_omni/three_wheel_omni_pilot.cpp \
+        src/skill/kick.cpp \
+        src/skill/kicktopointomni.cpp \
+        src/skill/stop.cpp \
+        src/ssl-game-controller/sss_refbox_listener.cpp \
+        src/ssl-vision/ssl_vision_listener.cpp \
+        src/strategy/freekickstrategy.cpp \
+        src/strategy/haltstrategy.cpp \
+        src/strategy/kickoffstrategy.cpp \
+        src/strategy/normalgamestrategy.cpp \
+        src/strategy/penaltystrategy.cpp \
+        src/strategy/stopstrategy.cpp \
+        src/strategy/strategycontroller.cpp \
+        src/strategy/strategy.cpp \
+        src/strategy/teststrategy.cpp \
+        src/strategy/videostrategies.cpp \
+        src/utilities/comparisons.cpp \
+        src/utilities/debug.cpp \
+        src/utilities/edges.cpp \
+        src/utilities/point.cpp \
+        src/utilities/velocitycalculator.cpp \
+        src/behavior/defendbehavior.cpp \
+        src/strategy/indirectkickstrategy.cpp \
+        src/communication/kfball.cpp \
+        src/utilities/getclassname.cpp \
+        src/utilities/region/sector.cpp \
+        src/utilities/region/rectangle.cpp \
+        src/utilities/measurements.cpp \
+        src/utilities/region/defencearea.cpp \
+        src/gui/guidrawpoint.cpp \
+        src/gui/guidrawregion.cpp \
+        src/skill/dribbletopoint.cpp \
+        src/behavior/challengeballbot.cpp \
+        src/skill/dribbleback.cpp \
+        src/behavior/refstop.cpp \
+        src/behavior/goalie.cpp \
+        src/behavior/markbot.cpp \
+        src/behavior/wall.cpp \
+        src/behavior/penaltygoalie.cpp \
+        src/communication/yisirobcomm.cpp \
+        src/communication/crc.cpp \
+        src/movement/go_to_pose.cpp \
+        src/movement/differential/differential_pilot.cpp \
+        src/model/team.cpp \
+        src/parameters/motion_parameters.cpp
 
 HEADERS += \
-	behavior/attackmain.h \
-	behavior/attacksupport.h \
-	behavior/behavior.h \
-	behavior/defendbehavior.h \
-	behavior/genericmovementbehavior.h \
-	behavior/genericskillbehavior.h \
-	communication/nxtrobcomm.h \
-	communication/robcomm.h \
-        communication/serialib.h \
-	communication/simrobcomm.h \
-	gui/fieldpanel.h \
-	gui/gamepanel.h \
-	gui/guiball.h \
-	gui/guibotlabel.h \
-	gui/guicomm.h \
-	gui/guidrawline.h \
-	gui/guifield.h \
-	gui/guiinterface.h \
-	gui/guirobot.h \
-	gui/guiscene.h \
-	gui/guisidelines.h \
-        gui/joystick.h \
-	gui/mainwindow.h \
-	gui/objectposition.h \
-	gui/robotpanel.h \
-	gui/selrobotpanel.h \
-    model/ball.h \
-    model/field.h \
-    model/game_state.h \
-	model/robot.h \
-	movement/go_to_pose.h \
-	movement/move_collisions.h \
-	movement/movetype.h \
-	movement/pathfinding/fppa_pathfinding.h \
-	skill/kick.h \
-	skill/kicktopointomni.h \
-	skill/skill.h \
-	skill/stop.h \
-    ssl-game-controller/sss_refbox_listener.h \
-    ssl-vision/ssl_vision_listener.h \
-	strategy/freekickstrategy.h \
-	strategy/haltstrategy.h \
-	strategy/kickoffstrategy.h \
-	strategy/normalgamestrategy.h \
-	strategy/penaltystrategy.h \
-	strategy/stopstrategy.h \
-	strategy/strategycontroller.h \
-	strategy/strategy.h \
-	strategy/teststrategy.h \
-	strategy/videostrategies.h \
-	utilities/comparisons.h \
-	utilities/debug.h \
-	utilities/edges.h \
-	utilities/point.h \
-	utilities/velocitycalculator.h \
-        strategy/indirectkickstrategy.h \
-        communication/kfball.h \
-        utilities/getclassname.h \
-        utilities/region/sector.h \
-        utilities/region/rectangle.h \
-        utilities/region/region.h \
-        utilities/measurements.h \
-        utilities/region/defencearea.h \
-        gui/guidrawpoint.h \
-        gui/guidrawregion.h \
-        skill/dribbletopoint.h \
-        behavior/challengeballbot.h \
-        skill/dribbleback.h \
-        behavior/refstop.h \
-        behavior/goalie.h \
-        behavior/markbot.h \
-        behavior/wall.h \
-        behavior/penaltygoalie.h \
-        communication/yisirobcomm.h \
-        communication/crc.h \
-        movement/differential/differential_pilot.h \
-        movement/three_wheel_omni/three_wheel_omni_pilot.h \
-        movement/four_wheel_omni/four_wheel_omni_pilot.h \
-    model/team.h \
-    parameters/motion_parameters.h
+        src/behavior/attackmain.h \
+        src/behavior/attacksupport.h \
+        src/src/behavior/behavior.h \
+        src/behavior/defendbehavior.h \
+        src/src/behavior/genericmovementbehavior.h \
+        src/src/behavior/genericskillbehavior.h \
+        src/communication/nxtrobcomm.h \
+        src/communication/robcomm.h \
+        src/src/communication/serialib.h \
+        src/communication/simrobcomm.h \
+        src/gui/fieldpanel.h \
+        src/gui/gamepanel.h \
+        src/gui/guiball.h \
+        src/gui/guibotlabel.h \
+        src/gui/guicomm.h \
+        src/gui/guidrawline.h \
+        src/gui/guifield.h \
+        src/src/gui/guiinterface.h \
+        src/gui/guirobot.h \
+        src/gui/guiscene.h \
+        src/gui/guisidelines.h \
+        src/gui/joystick.h \
+        src/gui/mainwindow.h \
+        src/gui/objectposition.h \
+        src/gui/robotpanel.h \
+        src/gui/selrobotpanel.h \
+        src/model/ball.h \
+        src/src/model/field.h \
+        src/src/model/game_state.h \
+        src/src/model/robot.h \
+        src/src/movement/go_to_pose.h \
+        src/movement/move_collisions.h \
+        src/src/movement/movetype.h \
+        src/src/movement/pathfinding/fppa_pathfinding.h \
+        src/skill/kick.h \
+        src/src/skill/kicktopointomni.h \
+        src/src/skill/skill.h \
+        src/skill/stop.h \
+        src/ssl-game-controller/sss_refbox_listener.h \
+        src/ssl-vision/ssl_vision_listener.h \
+        src/strategy/freekickstrategy.h \
+        src/strategy/haltstrategy.h \
+        src/strategy/kickoffstrategy.h \
+        src/src/strategy/normalgamestrategy.h \
+        src/strategy/penaltystrategy.h \
+        src/strategy/stopstrategy.h \
+        src/src/strategy/strategycontroller.h \
+        src/src/strategy/strategy.h \
+        src/strategy/teststrategy.h \
+        src/strategy/videostrategies.h \
+        src/src/utilities/comparisons.h \
+        src/src/utilities/debug.h \
+        src/src/utilities/edges.h \
+        src/src/utilities/point.h \
+        src/src/utilities/velocitycalculator.h \
+        src/strategy/indirectkickstrategy.h \
+        src/src/communication/kfball.h \
+        src/utilities/getclassname.h \
+        src/src/utilities/region/sector.h \
+        src/utilities/region/rectangle.h \
+        src/utilities/region/region.h \
+        src/src/utilities/measurements.h \
+        src/src/utilities/region/defencearea.h \
+        src/gui/guidrawpoint.h \
+        src/gui/guidrawregion.h \
+        src/src/skill/dribbletopoint.h \
+        src/behavior/challengeballbot.h \
+        src/src/skill/dribbleback.h \
+        src/behavior/refstop.h \
+        src/behavior/goalie.h \
+        src/behavior/markbot.h \
+        src/src/behavior/wall.h \
+        src/behavior/penaltygoalie.h \
+        src/communication/yisirobcomm.h \
+        src/communication/crc.h \
+        src/src/movement/differential/differential_pilot.h \
+        src/src/movement/three_wheel_omni/three_wheel_omni_pilot.h \
+        src/src/movement/four_wheel_omni/four_wheel_omni_pilot.h \
+        src/src/model/team.h \
+        src/src/parameters/motion_parameters.h
 
 
 
 unix|win32: LIBS +=  -lprotobuf -lSDL2
 
 OTHER_FILES += \
-    gui/images/0.png \
-    gui/images/1.png \
-    gui/images/2.png \
-    gui/images/3.png \
-    gui/images/4.png \
-    gui/images/5.png \
-    gui/images/ball.png \
-    gui/images/bot0.png \
-    gui/images/bot1.png \
-    gui/images/bot2.png \
-    gui/images/bot3.png \
-    gui/images/bot4.png \
-    gui/images/bot5.png \
-    gui/images/gear.png \
-    gui/images/gear2.png \
-    gui/images/go-next.png \
-    gui/images/slider-handle.png \
-    RoboBulls.supp
+    src/gui/images/0.png \
+    src/gui/images/1.png \
+    src/gui/images/2.png \
+    src/gui/images/3.png \
+    src/gui/images/4.png \
+    src/gui/images/5.png \
+    src/gui/images/ball.png \
+    src/gui/images/bot0.png \
+    src/gui/images/bot1.png \
+    src/gui/images/bot2.png \
+    src/gui/images/bot3.png \
+    src/gui/images/bot4.png \
+    src/gui/images/bot5.png \
+    src/gui/images/gear.png \
+    src/gui/images/gear2.png \
+    src/gui/images/go-next.png \
+    src/gui/images/slider-handle.png \
+    src/RoboBulls.supp
 
 RESOURCES += \
-    gui/images.qrc
+    src/gui/images.qrc
 
 FORMS += \
-    gui/mainwindow.ui
+    src/gui/mainwindow.ui
 
 unix:!macx: LIBS += -L$$PWD/libs/yaml-cpp-0.6.3/build/ -lyaml-cpp
 
@@ -236,21 +235,21 @@ DEPENDPATH += $$PWD/libs/yaml-cpp-0.6.3/include
 #unix:!macx: PRE_TARGETDEPS += $$PWD/libs/yaml-cpp-0.6.3/build/libyaml-cpp.a
 
 DISTFILES += \
-    ssl-game-controller/proto/ssl_game_controller_auto_ref.proto \
-    ssl-game-controller/proto/ssl_game_controller_common.proto \
-    ssl-game-controller/proto/ssl_game_controller_team.proto \
-    ssl-game-controller/proto/ssl_game_event.proto \
-    ssl-game-controller/proto/ssl_game_event_2019.proto \
-    ssl-game-controller/proto/ssl_referee.proto \
-    ssl-grsim/proto/grSim_Commands.proto \
-    ssl-grsim/proto/grSim_Packet.proto \
-    ssl-grsim/proto/grSim_Replacement.proto \
-    ssl-vision/proto/messages_robocup_ssl_detection.proto \
-    ssl-vision/proto/messages_robocup_ssl_geometry.proto \
-    ssl-vision/proto/messages_robocup_ssl_refbox_log.proto \
-    ssl-vision/proto/messages_robocup_ssl_wrapper.proto \
-    ssl-vision/proto/not used/messages_robocup_ssl_detection_tracked.proto \
-    ssl-vision/proto/not used/messages_robocup_ssl_geometry_legacy.proto \
-    ssl-vision/proto/not used/messages_robocup_ssl_wrapper_legacy.proto \
-    ssl-vision/proto/not used/messages_robocup_ssl_wrapper_tracked.proto
+    src/ssl-game-controller/proto/ssl_game_controller_auto_ref.proto \
+    src/ssl-game-controller/proto/ssl_game_controller_common.proto \
+    src/ssl-game-controller/proto/ssl_game_controller_team.proto \
+    src/ssl-game-controller/proto/ssl_game_event.proto \
+    src/ssl-game-controller/proto/ssl_game_event_2019.proto \
+    src/ssl-game-controller/proto/ssl_referee.proto \
+    src/ssl-grsim/proto/grSim_Commands.proto \
+    src/ssl-grsim/proto/grSim_Packet.proto \
+    src/ssl-grsim/proto/grSim_Replacement.proto \
+    src/ssl-vision/proto/messages_robocup_ssl_detection.proto \
+    src/ssl-vision/proto/messages_robocup_ssl_geometry.proto \
+    src/ssl-vision/proto/messages_robocup_ssl_refbox_log.proto \
+    src/ssl-vision/proto/messages_robocup_ssl_wrapper.proto \
+    src/ssl-vision/proto/not used/messages_robocup_ssl_detection_tracked.proto \
+    src/ssl-vision/proto/not used/messages_robocup_ssl_geometry_legacy.proto \
+    src/ssl-vision/proto/not used/messages_robocup_ssl_wrapper_legacy.proto \
+    src/ssl-vision/proto/not used/messages_robocup_ssl_wrapper_tracked.proto
 
