@@ -166,7 +166,7 @@ private:
     RobotRole team_role = RobotRole::ATTACK1;
 
     friend class GameModel;
-    friend class VisionComm;
+    friend class SSLVisionListener;
     friend class Ball;
 
     static std::set<Robot*> all_robots;

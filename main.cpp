@@ -3,9 +3,9 @@
 #include <csignal>
 #include <cstdlib>
 #include <iostream>
-#include "communication/visioncomm.h"
+#include "ssl-vision/ssl_vision_listener.h"
 #include "communication/robcomm.h"
-#include "communication/refcomm.h"
+#include "ssl-game-controller/sss_refbox_listener.h"
 #include "model/game_state.h"
 #include "gui/guiinterface.h"
 #include "utilities/debug.h"
@@ -126,9 +126,9 @@ int main(int argc, char *argv[])
 
     //Initialize GameModel, StrategyController, Vision, and Ref
 
-    RefComm refCommunicator( comm_node);
+    SSLRefBoxListener refCommunicator( comm_node);
     // TODO: vision communicator should not know anything about team sides (deprecated notion of "own team")
-    VisionComm visionCommunicator(comm_node, team_node["TEAM_BLUE"]["SIDE"].as<int>());
+    SSLVisionListener visionCommunicator(comm_node, team_node["TEAM_BLUE"]["SIDE"].as<int>());
 
 
     registerExitSignals();
@@ -139,19 +139,10 @@ int main(int argc, char *argv[])
     // Start the debugger thread
     debug::listenStart();
 
-    //Start Vision and Refcomm and run the application
-    visionCommunicator.start();
-    refCommunicator.start();
+
 
     // wait for program to exit
     int result = a.exec();
-
-    // exit program
-    visionCommunicator.close();
-    visionCommunicator.wait();
-
-    refCommunicator.close();
-    refCommunicator.wait();
 
 
     RobComm::close_communication(Robot::getAllRobots());

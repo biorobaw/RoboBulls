@@ -44,11 +44,9 @@ SOURCES += main.cpp \
 	behavior/behavior.cpp \
 	behavior/genericmovementbehavior.cpp \
 	communication/nxtrobcomm.cpp \
-	communication/refcomm.cpp \
 	communication/robcomm.cpp \
         communication/serialib.cpp \
 	communication/simrobcomm.cpp \
-	communication/visioncomm.cpp \
 	gui/fieldpanel.cpp \
 	gui/gamepanel.cpp \
 	gui/guiball.cpp \
@@ -76,9 +74,8 @@ SOURCES += main.cpp \
 	skill/kick.cpp \
 	skill/kicktopointomni.cpp \
 	skill/stop.cpp \
-    ssl-vision/netraw.cpp \
-    ssl-vision/robocup_ssl_client.cpp \
-    ssl-vision/visioncomm.cpp \
+    ssl-game-controller/sss_refbox_listener.cpp \
+    ssl-vision/ssl_vision_listener.cpp \
 	strategy/freekickstrategy.cpp \
 	strategy/haltstrategy.cpp \
 	strategy/kickoffstrategy.cpp \
@@ -127,11 +124,9 @@ HEADERS += \
 	behavior/genericmovementbehavior.h \
 	behavior/genericskillbehavior.h \
 	communication/nxtrobcomm.h \
-	communication/refcomm.h \
 	communication/robcomm.h \
         communication/serialib.h \
 	communication/simrobcomm.h \
-	communication/visioncomm.h \
 	gui/fieldpanel.h \
 	gui/gamepanel.h \
 	gui/guiball.h \
@@ -160,9 +155,8 @@ HEADERS += \
 	skill/kicktopointomni.h \
 	skill/skill.h \
 	skill/stop.h \
-    ssl-vision/netraw.h \
-    ssl-vision/robocup_ssl_client.h \
-    ssl-vision/visioncomm.h \
+    ssl-game-controller/sss_refbox_listener.h \
+    ssl-vision/ssl_vision_listener.h \
 	strategy/freekickstrategy.h \
 	strategy/haltstrategy.h \
 	strategy/kickoffstrategy.h \

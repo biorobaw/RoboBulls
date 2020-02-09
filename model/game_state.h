@@ -54,8 +54,8 @@ private:
     /* Functions to update gamemodel from vision system.
      * Provides *the* link between vision detection and
      * referee box with our code. */
-    friend class VisionComm;
-    friend class RefComm;
+    friend class SSLVisionListener;
+    friend class SSLRefBoxListener;
     friend class SimRobComm;
     static void onRobotUpdated(Robot*);
 
