@@ -118,13 +118,13 @@ SOURCES += src/main.cpp \
 HEADERS += \
         src/behavior/attackmain.h \
         src/behavior/attacksupport.h \
-        src/src/behavior/behavior.h \
+        src/behavior/behavior.h \
         src/behavior/defendbehavior.h \
-        src/src/behavior/genericmovementbehavior.h \
-        src/src/behavior/genericskillbehavior.h \
+        src/behavior/genericmovementbehavior.h \
+        src/behavior/genericskillbehavior.h \
         src/communication/nxtrobcomm.h \
         src/communication/robcomm.h \
-        src/src/communication/serialib.h \
+        src/communication/serialib.h \
         src/communication/simrobcomm.h \
         src/gui/fieldpanel.h \
         src/gui/gamepanel.h \
@@ -133,7 +133,7 @@ HEADERS += \
         src/gui/guicomm.h \
         src/gui/guidrawline.h \
         src/gui/guifield.h \
-        src/src/gui/guiinterface.h \
+        src/gui/guiinterface.h \
         src/gui/guirobot.h \
         src/gui/guiscene.h \
         src/gui/guisidelines.h \
@@ -143,63 +143,63 @@ HEADERS += \
         src/gui/robotpanel.h \
         src/gui/selrobotpanel.h \
         src/model/ball.h \
-        src/src/model/field.h \
-        src/src/model/game_state.h \
-        src/src/model/robot.h \
-        src/src/movement/go_to_pose.h \
+        src/model/field.h \
+        src/model/game_state.h \
+        src/model/robot.h \
+        src/movement/go_to_pose.h \
         src/movement/move_collisions.h \
-        src/src/movement/movetype.h \
-        src/src/movement/pathfinding/fppa_pathfinding.h \
+        src/movement/movetype.h \
+        src/movement/pathfinding/fppa_pathfinding.h \
         src/skill/kick.h \
-        src/src/skill/kicktopointomni.h \
-        src/src/skill/skill.h \
+        src/skill/kicktopointomni.h \
+        src/skill/skill.h \
         src/skill/stop.h \
         src/ssl-game-controller/sss_refbox_listener.h \
         src/ssl-vision/ssl_vision_listener.h \
         src/strategy/freekickstrategy.h \
         src/strategy/haltstrategy.h \
         src/strategy/kickoffstrategy.h \
-        src/src/strategy/normalgamestrategy.h \
+        src/strategy/normalgamestrategy.h \
         src/strategy/penaltystrategy.h \
         src/strategy/stopstrategy.h \
-        src/src/strategy/strategycontroller.h \
-        src/src/strategy/strategy.h \
+        src/strategy/strategycontroller.h \
+        src/strategy/strategy.h \
         src/strategy/teststrategy.h \
         src/strategy/videostrategies.h \
-        src/src/utilities/comparisons.h \
-        src/src/utilities/debug.h \
-        src/src/utilities/edges.h \
-        src/src/utilities/point.h \
-        src/src/utilities/velocitycalculator.h \
+        src/utilities/comparisons.h \
+        src/utilities/debug.h \
+        src/utilities/edges.h \
+        src/utilities/point.h \
+        src/utilities/velocitycalculator.h \
         src/strategy/indirectkickstrategy.h \
-        src/src/communication/kfball.h \
+        src/communication/kfball.h \
         src/utilities/getclassname.h \
-        src/src/utilities/region/sector.h \
+        src/utilities/region/sector.h \
         src/utilities/region/rectangle.h \
         src/utilities/region/region.h \
-        src/src/utilities/measurements.h \
-        src/src/utilities/region/defencearea.h \
+        src/utilities/measurements.h \
+        src/utilities/region/defencearea.h \
         src/gui/guidrawpoint.h \
         src/gui/guidrawregion.h \
-        src/src/skill/dribbletopoint.h \
+        src/skill/dribbletopoint.h \
         src/behavior/challengeballbot.h \
-        src/src/skill/dribbleback.h \
+        src/skill/dribbleback.h \
         src/behavior/refstop.h \
         src/behavior/goalie.h \
         src/behavior/markbot.h \
-        src/src/behavior/wall.h \
+        src/behavior/wall.h \
         src/behavior/penaltygoalie.h \
         src/communication/yisirobcomm.h \
         src/communication/crc.h \
-        src/src/movement/differential/differential_pilot.h \
-        src/src/movement/three_wheel_omni/three_wheel_omni_pilot.h \
-        src/src/movement/four_wheel_omni/four_wheel_omni_pilot.h \
-        src/src/model/team.h \
-        src/src/parameters/motion_parameters.h
+        src/movement/differential/differential_pilot.h \
+        src/movement/three_wheel_omni/three_wheel_omni_pilot.h \
+        src/movement/four_wheel_omni/four_wheel_omni_pilot.h \
+        src/model/team.h \
+        src/parameters/motion_parameters.h
 
 
 
-unix|win32: LIBS +=  -lprotobuf -lSDL2
+unix|win32: LIBS += -lSDL2
 
 OTHER_FILES += \
     src/gui/images/0.png \
@@ -253,3 +253,15 @@ DISTFILES += \
     src/ssl-vision/proto/not used/messages_robocup_ssl_wrapper_legacy.proto \
     src/ssl-vision/proto/not used/messages_robocup_ssl_wrapper_tracked.proto
 
+
+unix:!macx: LIBS += -L$$PWD/libs/kalman/bin/ -lkalman
+
+INCLUDEPATH += $$PWD/libs/kalman
+INCLUDEPATH += $$PWD/libs
+DEPENDPATH += $$PWD/libs/kalman
+DEPENDPATH += $$PWD/libs
+
+unix:!macx: PRE_TARGETDEPS += $$PWD/libs/kalman/bin/libkalman.a
+
+unix: CONFIG += link_pkgconfig
+unix: PKGCONFIG += protobuf
