@@ -25,8 +25,8 @@ GuiInterface* GuiInterface::getGuiInterface() {
     return gi;
 }
 
-const std::vector<bool>& GuiInterface::isOverriddenBot() {
-    return dash->overriddenBots;
+bool GuiInterface::isOverriddenBot(int team, int robot_id) {
+    return dash->overriddenBots[team][robot_id];
 }
 
 //Returns the robot that is overridden and selected, or -1 if none.

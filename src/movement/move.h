@@ -1,5 +1,7 @@
 #ifndef MOVEMENT_MOVE_H
 #define MOVEMENT_MOVE_H
+#define _USE_MATH_DEFINES
+#include <cmath>
 #include <deque>
 #include <math.h>
 #include "src/movement/pathfinding/fppa_pathfinding.h"

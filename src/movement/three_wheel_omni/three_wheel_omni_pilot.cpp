@@ -1,3 +1,5 @@
+#define _USE_MATH_DEFINES
+#include <cmath>
 #include "src/parameters/motion_parameters.h"
 #include "src/movement/three_wheel_omni/three_wheel_omni_pilot.h"
 

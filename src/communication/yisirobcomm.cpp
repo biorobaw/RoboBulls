@@ -1,6 +1,7 @@
 #include "yisirobcomm.h"
 #include <bitset>
-#include <unistd.h>
+#include <QThread>
+//#include <unistd.h>
 #include <ctime>
 #include "src/model/robot.h"
 #include "src/model/game_state.h"
@@ -44,7 +45,7 @@ YisiRobComm::YisiRobComm(std::string usb_port, int frequency)
         //    std::cout << "Waiting for bytes to be written" << std::endl;
         //    serial.waitForBytesWritten(1000);
         //}
-        usleep(1000000);    //us
+        QThread::msleep(1000);
 
         std::cout << "-DBG: YisiBot Serial Port configured " << std::endl;
 
@@ -121,7 +122,7 @@ void YisiRobComm::sendVelsLarge(std::set<Robot*>& robots)
         transmitPacket[15]=((abs(velX)&0x180)>>1)|((abs(velY)&0x180)>>3)|((abs(velR)&0x180)>>5);
         serial.write(transmitPacket,25);
         serial.flush();
-        usleep(4000);
+        QThread::msleep(4);
 
     }
     //std::cout << "at YisiRobComm::sendVelsLarge(std::vector<Robot*>& robots) 2 \n";

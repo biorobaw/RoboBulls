@@ -29,7 +29,7 @@ void GuiComm::run(void)
 
 void GuiComm::count(void)
 {
-    if((i >= 100) or ( i <= 0))
+    if((i >= 100) || ( i <= 0))
         inc = -inc;
 
     i += inc;

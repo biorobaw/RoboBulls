@@ -11,7 +11,6 @@
 #include "selrobotpanel.h"
 #include "ui_mainwindow.h"
 #include "src/model/game_state.h"
-#include "src/utilities/getclassname.h"
 #include "src/model/robot.h"
 #include "src/utilities/measurements.h"
 //Helper classes
@@ -162,7 +161,6 @@ void RobotPanel::setupBotPanel() {
         botIconFrames[i]->hide();
 
         velocityDials[i]->setValue(0);
-        dash->overriddenBots.push_back(false);    // creating each element, and setting to false
     }
 
     // putting ball icon into GUI

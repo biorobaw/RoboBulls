@@ -27,7 +27,7 @@ TEAM_BLUE :
     
 TEAM_YELLOW :
     SIDE: 1
-    ROBOT_TYPE: grsim # none defines we do not control this team
+    ROBOT_TYPE: none # none defines we do not control this team
     REFBOX_ENABLED: false # whether to listen to refbox state messages
     
     ROLES:  #wo don't need to define roles if we do not control the team

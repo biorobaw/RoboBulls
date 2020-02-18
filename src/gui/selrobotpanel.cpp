@@ -80,7 +80,7 @@ void SelRobotPanel::updateSelectedBotPanel(int id) {
         dash->ui->frame_primeBot->show();
 
         v = dash->objectPos->getVelocity(id);
-        s = dash->objectPos->botSpeeds[id] * dash->objectPos->speedModifier;
+        s = dash->objectPos->botSpeeds[dash->getSelectedTeamId()][id] * dash->objectPos->speedModifier;
 //        cout << "Robot " << id << " speed: " << s << "\n";
         dash->ui->gView_robot_prime->setScene(dash->robotpanel->scene_botIconSel[id]);
         dash->ui->gView_robot_prime->show();
@@ -137,7 +137,7 @@ void SelRobotPanel::updateSelectedBotPanel(int id) {
         if (dash->fieldpanel->selectedBot > -1) {
             dash->ui->check_botOverride->setEnabled(true);
             dash->ui->check_botOverride->show();
-            if (dash->overriddenBots[dash->fieldpanel->selectedBot] == true) {
+            if (dash->overriddenBots[dash->getSelectedTeamId()][dash->fieldpanel->selectedBot] == true) {
                 dash->ui->check_botOverride->setChecked(true);
             } else {
                 dash->ui->check_botOverride->setChecked(false);
@@ -173,7 +173,7 @@ const std::string& SelRobotPanel::getBehaviorName(Robot* robot)
 {
     static std::string noBehavior = "No Behavior";
 
-    if(robot == NULL or not(robot->hasBehavior())) {
+    if(robot == NULL || !robot->hasBehavior()) {
         return noBehavior;
     }
 
@@ -197,7 +197,7 @@ const std::string& SelRobotPanel::getBehaviorName(Robot* robot)
 
     return nameMemory[info];
 #else
-    return typeid(*(robot->getCurrentBeh())).name();
+    return typeid(*(robot->getBehavior())).name();
 #endif
     }
     catch(...) {

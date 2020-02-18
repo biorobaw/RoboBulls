@@ -13,6 +13,7 @@
 #include "messages_robocup_ssl_geometry.pb.h"
 #include "messages_robocup_ssl_wrapper.pb.h"
 #include "messages_robocup_ssl_refbox_log.pb.h"
+#include<atomic>
 
 #define VEL_HIST_SIZE 20
 
@@ -32,19 +33,21 @@ const float CONF_THRESHOLD_BOTS = 0.90;
  * @details Detects the robots and ball and puts each robot in the corresponding team
  * based on robot's color (Blue team/ Yellow team)
  */
-class SSLVisionListener: public QObject
+class SSLVisionListener: public QThread
 {
-    Q_OBJECT
 public:
     SSLVisionListener( YAML::Node comm_node, int _side);
-    virtual ~SSLVisionListener();
 
-public slots:
-    void readyRead();
+    void run() override;
+    void stop();
+
+private:
+    std::atomic_bool done;
+    int vision_port = 0;
+    std::string vision_addr = "";
 
 protected:
 
-    QUdpSocket* socket;
 
     //! @brief Parses an SSL_DetectionFrame and fills out GameModel
     void recieveRobotTeam(const SSL_DetectionFrame& frame, int whichTeam);

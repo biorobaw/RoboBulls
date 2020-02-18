@@ -39,7 +39,7 @@ bool Ball::hasBall(Robot* robot)
     Point bp = getPosition();
     if(!robot)
         return false;
-    return Comparisons::isDistanceToLess(robot, bp, 300) and
+    return Comparisons::isDistanceToLess(robot, bp, 300) &&
            Comparisons::isFacingPoint(robot, bp);
 }
 
@@ -53,7 +53,7 @@ void Ball::setRobotWithBall(){
     for(Robot* robot : robots)
         robot->hasBall = false;
 
-    if(!hasBall(robot_with_ball) and ++lastSeenWithoutBallCount > 10)
+    if(!hasBall(robot_with_ball) && ++lastSeenWithoutBallCount > 10)
     {
         lastSeenWithoutBallCount = 0;
         robot_with_ball = nullptr;

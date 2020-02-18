@@ -67,7 +67,6 @@ MainWindow::MainWindow(QWidget *parent) :
     robotpanel->updateTeamColors();
     setupKeyShortcuts();
     objectPos->setupPastBotPoints();
-    objectPos->setupBotSpeeds();
     ui->btn_connectGui->setEnabled(true);
     MainWindow::resize(1400,900);
     setFocusOnField();
@@ -130,7 +129,7 @@ void MainWindow::clockLoop(int tick) {
     objectPos->getBotSpeeds();
     objectPos->getOldSpeeds();
     objectPos->getPastBotPoints();
-    objectPos->updateBotSpeedsRecord();
+//    objectPos->updateBotSpeedsRecord();
 }
 
 
@@ -688,7 +687,7 @@ void MainWindow::on_check_botOverride_clicked(bool checked) {
     if (fieldpanel->selectedBot > -1) {
         if (checked) {
             // Keeping track of how many bots are overridden
-            overriddenBots[fieldpanel->selectedBot] = true;
+            overriddenBots[selected_team_id][fieldpanel->selectedBot] = true;
             // Telling robot QObjects to change color
             robotpanel->robotIcon[fieldpanel->selectedBot]->overridden = true;
             fieldpanel->gui_robots[selected_team_id][fieldpanel->selectedBot]->overridden = true;
@@ -701,7 +700,7 @@ void MainWindow::on_check_botOverride_clicked(bool checked) {
             selected_robot->setYVel(0);
             selected_robot->setAngVel(0);
         } else {
-            overriddenBots[fieldpanel->selectedBot] = false;
+            overriddenBots[selected_team_id][fieldpanel->selectedBot] = false;
             robotpanel->robotIcon[fieldpanel->selectedBot]->overridden = false;
             fieldpanel->gui_robots[selected_team_id][fieldpanel->selectedBot]->overridden = false;
         }
@@ -709,13 +708,13 @@ void MainWindow::on_check_botOverride_clicked(bool checked) {
 }
 
 void MainWindow::on_btn_override_all_released() {
-    for (unsigned int i=0; i<overriddenBots.size(); i++) {
+    for (unsigned int i=0; i< MAX_ROBOTS; i++) {
         // Keeping track of how many bots are overridden
-        overriddenBots[i] = true;
+        overriddenBots[selected_team_id][i] = true;
     }
     for (int i=0; i<teamSize_blue; i++) {
         // Telling robot QObjects to change color
-        overriddenBots[i] = true;
+        overriddenBots[selected_team_id][i] = true;
         robotpanel->robotIcon[i]->overridden = true;
         fieldpanel->gui_robots[selected_team_id][i]->overridden = true;
         // stopping all bots, so they don't fly off at their current velocities
@@ -732,8 +731,8 @@ void MainWindow::on_btn_override_all_released() {
 }
 
 void MainWindow::on_btn_override_none_released() {
-    for (unsigned int i=0; i<overriddenBots.size(); i++) {
-        overriddenBots[i] = false;
+    for (unsigned int i=0; i<MAX_ROBOTS; i++) {
+        overriddenBots[selected_team_id][i] = false;
         // Telling robot QObjects to change color
         robotpanel->robotIcon[i]->overridden = false;
         fieldpanel->gui_robots[selected_team_id][i]->overridden = false;

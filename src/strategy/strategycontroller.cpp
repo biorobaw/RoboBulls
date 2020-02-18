@@ -107,7 +107,7 @@ void StrategyController::runActiveStrategy()
         // Recreate current strategy if requested or
         // Change the current strategy arbitrarily if requested
         if(clearStrategyFlag) clearCurrentStrategy();
-        else if(nextState != '\0' and nextState != GameState::getState())
+        else if(nextState != '\0' && nextState != GameState::getState())
             assignNewStrategy(nextState);
     }
 }
@@ -125,7 +125,7 @@ void StrategyController::sendRobotCommands()
     //std::cout << " In StrategyController::frameEnd()" <<std::endl;
     for (Robot *rob :  team->getRobots())
     {
-        if (!GuiInterface::getGuiInterface()->isOverriddenBot()[rob->getID()]) {
+        if (!GuiInterface::getGuiInterface()->isOverriddenBot(team->getColor(),rob->getID())) {
             if(rob->hasBehavior())
                 rob->getBehavior()->perform(rob);
          }

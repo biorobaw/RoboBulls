@@ -146,7 +146,7 @@ void VideoStrategy1::assignBeh()
     Robot* r1 = team->getRobot(r1ID);
     Robot* r2 = team->getRobot(r2ID);
 
-    if(r1 and r2)  {
+    if(r1 && r2)  {
         //This bool is swapped on destruction, which happens when the passer kicks.
         if(vs1_oppositeRobots) {
             this->currentPasser = r1;
@@ -268,7 +268,7 @@ bool VideoStrategy3::update()
     case KICKING:
         //If the ball goes back on the other side, destroy strategy.
         //Or if we're done kicking, destroy strategy.
-        if((bp.x < 0) or guy->getBehavior()->isFinished()) {
+        if((bp.x < 0) || guy->getBehavior()->isFinished()) {
             return true;
         }
         break;

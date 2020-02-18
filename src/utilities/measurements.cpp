@@ -1,5 +1,6 @@
-#include <stdlib.h>
+#define _USE_MATH_DEFINES
 #include <cmath>
+#include <stdlib.h>
 #include "src/model/robot.h"
 #include "measurements.h"
 

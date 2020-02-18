@@ -1,4 +1,6 @@
-﻿#include "objectposition.h"
+﻿#define _USE_MATH_DEFINES
+#include <cmath>
+#include "objectposition.h"
 #include "fieldpanel.h"
 #include "gamepanel.h"
 #include "src/model/game_state.h"
@@ -47,15 +49,6 @@ void ObjectPosition::getNewBotPoints() {
     }
 }
 
-void ObjectPosition::setupBotSpeeds() {
-    for (int i=0; i<dash->teamSize_blue; i++) {
-        auto* roboti = dash->getSelectedTeam()->getRobot(i);
-        if (roboti != NULL) {
-           botSpeeds.push_back(0);
-        }
-    }
-}
-
 void ObjectPosition::getBotSpeeds() {
     for (int i=0; i<dash->teamSize_blue; i++) {
         auto* roboti = dash->getSelectedTeam()->getRobot(i);
@@ -73,7 +66,7 @@ void ObjectPosition::getBotSpeeds() {
             c = Measurements::distance(currentPos,pastPos);
 
             s = sqrt(c);
-            botSpeeds[i] = s;
+            botSpeeds[dash->getSelectedTeamId()][i] = s;
         }
     }
 
@@ -83,17 +76,17 @@ void ObjectPosition::getOldSpeeds() {
     for (int i=0; i<dash->teamSize_blue; i++) {
         auto* roboti = dash->getSelectedTeam()->getRobot(i);
         if (roboti != NULL) {
-            oldSpeeds[i] = botSpeeds[i];
+            oldSpeeds[i] = botSpeeds[dash->getSelectedTeamId()][i];
         }
     }
 }
 
-void ObjectPosition::updateBotSpeedsRecord() {
-    botSpeedsRecord.push_front(botSpeeds);
-    if (botSpeedsRecord.size() > 10) {
-        botSpeedsRecord.pop_back();
-    }
-}
+//void ObjectPosition::updateBotSpeedsRecord() {
+//    botSpeedsRecord.push_front(botSpeeds);
+//    if (botSpeedsRecord.size() > 10) {
+//        botSpeedsRecord.pop_back();
+//    }
+//}
 
 int ObjectPosition::getVelocity(int id) {
     int velocity = 0;

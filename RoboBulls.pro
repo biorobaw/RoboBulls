@@ -18,11 +18,12 @@ TARGET = RoboBulls
 CONFIG += console
 CONFIG += -j
 CONFIG -= app_bundle
+#CONFIG += static
 
 TEMPLATE = app
-QMAKE_CXX = g++
-QMAKE_CXXFLAGS += -std=c++0x
-DESTDIR = $$PWD
+#QMAKE_CXX = g++
+#QMAKE_CXXFLAGS += -std=c++0x
+DESTDIR = $$PWD/bin
 
 
 
@@ -42,9 +43,7 @@ SOURCES += src/main.cpp \
         src/behavior/attacksupport.cpp \
         src/behavior/behavior.cpp \
         src/behavior/genericmovementbehavior.cpp \
-        src/communication/nxtrobcomm.cpp \
         src/communication/robcomm.cpp \
-        src/communication/serialib.cpp \
         src/communication/simrobcomm.cpp \
         src/gui/fieldpanel.cpp \
         src/gui/gamepanel.cpp \
@@ -93,7 +92,6 @@ SOURCES += src/main.cpp \
         src/behavior/defendbehavior.cpp \
         src/strategy/indirectkickstrategy.cpp \
         src/communication/kfball.cpp \
-        src/utilities/getclassname.cpp \
         src/utilities/region/sector.cpp \
         src/utilities/region/rectangle.cpp \
         src/utilities/measurements.cpp \
@@ -122,9 +120,7 @@ HEADERS += \
         src/behavior/defendbehavior.h \
         src/behavior/genericmovementbehavior.h \
         src/behavior/genericskillbehavior.h \
-        src/communication/nxtrobcomm.h \
         src/communication/robcomm.h \
-        src/communication/serialib.h \
         src/communication/simrobcomm.h \
         src/gui/fieldpanel.h \
         src/gui/gamepanel.h \
@@ -173,7 +169,6 @@ HEADERS += \
         src/utilities/velocitycalculator.h \
         src/strategy/indirectkickstrategy.h \
         src/communication/kfball.h \
-        src/utilities/getclassname.h \
         src/utilities/region/sector.h \
         src/utilities/region/rectangle.h \
         src/utilities/region/region.h \
@@ -199,7 +194,7 @@ HEADERS += \
 
 
 
-unix|win32: LIBS += -lSDL2
+
 
 OTHER_FILES += \
     src/gui/images/0.png \
@@ -227,10 +222,7 @@ RESOURCES += \
 FORMS += \
     src/gui/mainwindow.ui
 
-unix:!macx: LIBS += -L$$PWD/libs/yaml-cpp-0.6.3/build/ -lyaml-cpp
 
-INCLUDEPATH += $$PWD/libs/yaml-cpp-0.6.3/include
-DEPENDPATH += $$PWD/libs/yaml-cpp-0.6.3/include
 
 #unix:!macx: PRE_TARGETDEPS += $$PWD/libs/yaml-cpp-0.6.3/build/libyaml-cpp.a
 
@@ -254,14 +246,80 @@ DISTFILES += \
     src/ssl-vision/proto/not used/messages_robocup_ssl_wrapper_tracked.proto
 
 
-unix:!macx: LIBS += -L$$PWD/libs/kalman/bin/ -lkalman
+#unix:!macx: LIBS += -L$$PWD/libs/kalman/bin/ -lkalman
+#unix:!macx: LIBS += -L$$PWD/libs/yaml-cpp-0.6.3/build/ -lyaml-cpp
+#unix|win32: LIBS += -lSDL2
+#unix:!macx: PRE_TARGETDEPS += $$PWD/libs/kalman/bin/libkalman.a
 
-INCLUDEPATH += $$PWD/libs/kalman
-INCLUDEPATH += $$PWD/libs
-DEPENDPATH += $$PWD/libs/kalman
-DEPENDPATH += $$PWD/libs
+#unix:!macx: INCLUDEPATH += $$PWD/libs/yaml-cpp-0.6.3/include
+#unix:!macx: DEPENDPATH += $$PWD/libs/yaml-cpp-0.6.3/include
 
-unix:!macx: PRE_TARGETDEPS += $$PWD/libs/kalman/bin/libkalman.a
 
-unix: CONFIG += link_pkgconfig
-unix: PKGCONFIG += protobuf
+#unix: CONFIG += link_pkgconfig
+#unix: PKGCONFIG += protobuf
+
+
+
+
+
+#INCLUDEPATH += $$PWD/libs/kalman
+#DEPENDPATH += $$PWD/libs/kalman
+#INCLUDEPATH += $$PWD/libs
+#DEPENDPATH += $$PWD/libs
+
+
+INCLUDEPATH += $$PWD/libs/include
+DEPENDPATH += $$PWD/libs/include
+
+
+win32{
+
+    #add libra
+    Release: LIBS += -L$$PWD/libs/windows/x64/release/lib/ -llibprotobuf -lyaml-cpp -lSDL2 # -llibKalman
+#    Release: PRE_TARGETDEPS += $$PWD/libs/windows/x64/release/lib/libKalman.lib
+
+    Debug: LIBS += -L$$PWD/libs/windows/x64/debug/lib/ -llibprotobufd -lyaml-cpp -lSDL2d -llibKalman
+#    Debug: PRE_TARGETDEPS += $$PWD/libs/windows/x64/debug/lib/libKalman.lib
+#    Debug: PRE_TARGETDEPS += $$PWD/libs/windows/x64/debug/lib/libprotobufd.lib
+
+    # copy libraries to DESTDIR folder
+    #Following lines will copy QT libraries to DESTDIT
+    TARGET_CUSTOM_EXT = .exe
+
+    ADD_QT_BIN_PATH = set PATH=$$shell_quote($$shell_path($$[QT_INSTALL_BINS]));%PATH%
+    DEPLOY_TARGET = $$shell_quote($$shell_path($${DESTDIR}/$${TARGET}$${TARGET_CUSTOM_EXT}))
+    DEPLOY_COMMAND = $$ADD_QT_BIN_PATH && $$shell_quote($$shell_path(windeployqt))
+    warning($${DEPLOY_COMMAND} $${DEPLOY_TARGET})
+    QMAKE_POST_LINK = $${DEPLOY_COMMAND} $${DEPLOY_TARGET}
+
+    #Following lines will copy dlls to DESTDITR
+    Release: install_dlls.files = $$PWD/libs/windows/x64/release/bin/yaml-cpp.dll \
+                                  $$PWD/libs/windows/x64/release/bin/SDL2.dll \
+                                  $$PWD/libs/windows/x64/release/bin/libprotobuf.dll
+    Debug: install_dlls.files = $$PWD/libs/windows/x64/debug/bin/yaml-cpp.dll \
+                                $$PWD/libs/windows/x64/debug/bin/SDL2d.dll \
+                                $$PWD/libs/windows/x64/debug/bin/libprotobufd.dll
+    install_dlls.path  = $$DESTDIR
+    INSTALLS += install_dlls
+}
+
+# copy config files to bin folder:
+install_config_files.files = $$PWD/config/comm.yaml \
+                             $$PWD/config/field.yaml \
+                             $$PWD/config/motion.yaml \
+                             $$PWD/config/team.yaml
+install_config_files.path =  $$DESTDIR/config
+INSTALLS += install_config_files
+
+
+
+
+
+#QMAKE_DISTCLEAN += $$PWD/bin/
+win32:QMAKE_DISTCLEAN += /s /f /q $$DESTDIR/* && rd /s /q $$DESTDIR/*
+#QMAKE_DISTCLEAN += -r $$DESTDIR/
+win32:QMAKE_DEL_FILE = del /q
+win32:QMAKE_DEL_DIR  = rmdir /s /q
+
+
+

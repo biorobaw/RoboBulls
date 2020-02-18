@@ -283,7 +283,7 @@ void RobotMoveStatus::updateMoveCollided(Robot* robot)
     bool maxBackupCountHit = ++m_collideCounter >= ROBOT_MOVE_BACKUP_COUNT;
     bool isFarAwayFromHit  = Comparisons::isDistanceToGreater(robot, m_collideBot, ROBOT_MOVE_BACKUP_DIST);
 
-    if(isFarAwayFromHit or maxBackupCountHit) {
+    if(isFarAwayFromHit || maxBackupCountHit) {
         m_collideCounter = 0;
         m_collideDirection = Point(0,0);
         set(MOVE_OK);

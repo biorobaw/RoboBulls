@@ -5,6 +5,7 @@
 #include <deque>
 #include "src/utilities/point.h"
 #include "src/model/robot.h"
+#include "src/model/team.h"
 
 using std::string;
 using std::deque;
@@ -20,10 +21,9 @@ public:
     void setupPastBotPoints();
     void getPastBotPoints();
     void getNewBotPoints();
-    void setupBotSpeeds();
     void getBotSpeeds();
     void getOldSpeeds();
-    void updateBotSpeedsRecord();   // holds last several botSpeeds deques
+//    void updateBotSpeedsRecord();   // holds last several botSpeeds deques
     int getVelocity(int id);
     int   threadTicker = 0;
     int   speedModifier = 100;      // multiplied with units/cycle to get units/second
@@ -32,8 +32,8 @@ public:
     Point pastBotPoints[10];
     Point newBotPoints[10];
     int   oldSpeeds[10];
-    std::deque<int> botSpeeds;
-    std::deque<deque<int> > botSpeedsRecord;
+    int botSpeeds[2][MAX_ROBOTS] = {{0}};
+//    std::deque<int* > botSpeedsRecord;
 
     // position stuff
 //    QString getBotCoord(Robot* robot);        // Returns the specified robot's x/y position as a QString

@@ -308,7 +308,7 @@ DefendState* DSIntercept::action(Robot* robot)
     Point bp = Ball::getPosition();
     Point goal = Field::getGoalPosition(robot->getTeam()->getSide());
 
-    if(not(chosenLinePoint)) {
+    if(!chosenLinePoint) {
         //The conditions to go to this state validate the ball is RIGHT NOW
         //Heading to us. We go to the closet point on the ball's path.
         if(!tryGetValidLinePoint(robot)) {
@@ -317,7 +317,7 @@ DefendState* DSIntercept::action(Robot* robot)
     }
     else {
         //Inside here we are just in the line of the ball and are waiting
-        if(not(kickingBall)) {
+        if(!kickingBall) {
             tryGetValidLinePoint(robot);
             float ballRobAng = Measurements::angleBetween(robot, bp);
             setMovementTargets(linePoint, ballRobAng);

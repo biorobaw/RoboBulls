@@ -5,6 +5,7 @@
 #include "src/model/game_state.h"
 #include "yaml-cpp/yaml.h"
 #include <QUdpSocket>
+#include <atomic>
 
 using namespace std;
 
@@ -43,30 +44,22 @@ using namespace std;
  *     Cancel               |       c        |           c
  */
 
-class SSLRefBoxListener : public QObject
+class SSLRefBoxListener : public QThread
 {
-    Q_OBJECT
 public:
     /*! @brief Constructor
      * @param gm The GameModel to fill with information
      * @param net_ref_address Address Refbox is broadcasting to
      * @param port The port Refbox is broadcasting to */
     SSLRefBoxListener(YAML::Node comm_node);
-   ~SSLRefBoxListener();
 
-public slots:
-    void readyRead();
-
-protected:
-    int    _port;
-    string _net_address;
-    GameState *gamemodel;
-
+    void run();
+    void stop();
 
 private:
-
-    QUdpSocket* socket;
-
+    std::atomic_bool done;
+    string _net_address;
+    int    _port;
 
 };
 

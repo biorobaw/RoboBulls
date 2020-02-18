@@ -89,16 +89,39 @@ void exitStopRobot()
 //! @brief Registers exit signals to stop the robots on a crash or program close
 void registerExitSignals()
 {
-    for(int bad_signal : {SIGSEGV, SIGKILL, SIGHUP, SIGABRT, SIGTERM, SIGQUIT})
+//    for(int bad_signal : {SIGSEGV, SIGKILL, SIGHUP, SIGABRT, SIGTERM, SIGQUIT})
+    for(int bad_signal : {SIGSEGV,  SIGABRT, SIGTERM }) // some signals removed so that it will also work in windows
         std::signal(bad_signal, exitStopRobot);
     std::atexit(exitStopRobot);
     std::set_terminate(exitStopRobot);
 }
 
+class MyApplication : public QApplication {
+public:
 
+    MyApplication(int argc, char* argv[]) : QApplication(argc,argv){}
+
+    bool notify(QObject* receiver, QEvent* event) override {
+        bool done = true;
+        try {
+            done = QApplication::notify(receiver, event);
+        } catch (const std::exception& ex) {
+            std::cout << " what? " << ex.what() << std::endl;
+        } catch (const std::string& ex) {
+            std::cout << " what? " << ex << std::endl;
+        } catch (...) {
+            std::cout << " what? " << "unnamed exception" << std::endl;
+        }
+        return done;
+    }
+
+
+};
 
 int main(int argc, char *argv[])
 {
+
+     std::cout << "WORKING!!!";
     std::string folder = argc > 1 ? argv[1] : "./config";
 
     std::cout << QDir::currentPath().toStdString() << std::endl;
@@ -113,7 +136,7 @@ int main(int argc, char *argv[])
     YAML::Node motion_node = YAML::LoadFile(folder + "/motion.yaml");
 
 
-    QApplication a(argc, argv);
+    MyApplication a(argc, argv);
 
     // set all parameters:
     Field::load(field_node);
@@ -141,11 +164,22 @@ int main(int argc, char *argv[])
 
 
 
-    // wait for program to exit
+    // start threads and wait for program to exit
+    visionCommunicator.start();
+    refCommunicator.start();
     int result = a.exec();
 
 
+    // stop threads
+    visionCommunicator.stop();
+    refCommunicator.stop();
     RobComm::close_communication(Robot::getAllRobots());
+
+    // wait for threads to close:
+    visionCommunicator.wait();
+    refCommunicator.wait();
+    std::cout<< "result: " << result << std::endl;
+
     return result;
 
 

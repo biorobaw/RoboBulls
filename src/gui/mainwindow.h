@@ -71,7 +71,7 @@ public:
     int teamSize_blue;
     int teamSize_yellow;
     // manual override thing
-    std::vector<bool> overriddenBots;   // keeps track of whether each bot is overridden
+    bool overriddenBots[2][MAX_ROBOTS] = {{false}};   // keeps track of whether each bot is overridden
 
     int getSelectedTeamId();
     void setSelectedTeamId(int team_id);

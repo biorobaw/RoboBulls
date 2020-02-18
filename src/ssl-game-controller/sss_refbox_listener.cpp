@@ -26,38 +26,39 @@ SSLRefBoxListener::SSLRefBoxListener(YAML::Node comm_node)
     cout << "--Refbox DONE" << endl;
 
 
-    socket = new QUdpSocket(this);
-    socket->bind(QHostAddress::AnyIPv4, _port, QUdpSocket::ShareAddress);
-    socket->joinMulticastGroup(QHostAddress(QString(  _net_address.c_str()  ) ));
-    connect(socket, SIGNAL(readyRead()), this, SLOT(readyRead()));
-
 }
 
-SSLRefBoxListener::~SSLRefBoxListener()
-{
-    socket->close();
-    delete socket;
+void SSLRefBoxListener::stop(){
+    done = true;
 }
 
-
-void SSLRefBoxListener::readyRead(){
+void SSLRefBoxListener::run(){
     QByteArray datagram;
+    done = false;
+
+    QUdpSocket socket(this);
+    socket.bind(QHostAddress::AnyIPv4, _port, QUdpSocket::ShareAddress);
+    socket.joinMulticastGroup(QHostAddress(QString(  _net_address.c_str()  ) ));
 
     // using QUdpSocket::readDatagram (API since Qt 4)
-    while (socket->hasPendingDatagrams()) {
-        datagram.resize(int(socket->pendingDatagramSize()));
-        socket->readDatagram(datagram.data(), datagram.size());
+    while(!done){
+        if (socket.hasPendingDatagrams()) {
+            datagram.resize(int(socket.pendingDatagramSize()));
+            socket.readDatagram(datagram.data(), datagram.size());
 
-        lastPacket = (Packet*)datagram.constData();
+            lastPacket = (Packet*)datagram.constData();
 
-        gamemodel->setGameState(lastPacket->command);
-        gamemodel->setTimeLeft(lastPacket->time_left);
-        gamemodel->setBlueGoals(lastPacket->goals_blue);
-        gamemodel->setYellowGoals(lastPacket->goals_yellow);
+            GameState::setGameState(lastPacket->command);
+            GameState::setTimeLeft(lastPacket->time_left);
+            GameState::setBlueGoals(lastPacket->goals_blue);
+            GameState::setYellowGoals(lastPacket->goals_yellow);
 
+        } else {
+            msleep(5);
+        }
     }
 
-
+    socket.close();
 }
 
 

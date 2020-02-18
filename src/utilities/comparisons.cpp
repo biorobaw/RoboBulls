@@ -36,7 +36,7 @@ struct idNotEqual : public idFilter {
 //Unary operators
 bool Predicate::operator()(Robot* robot) {
     try {
-        return isNotIgnored(robot) and robotCompareFn(robot, nullptr);
+        return isNotIgnored(robot) && robotCompareFn(robot, nullptr);
     } catch( ... ) {
         return isNotIgnored(robot);
     }

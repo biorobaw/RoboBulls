@@ -190,7 +190,7 @@ bool Robot::assignBeh(Args&&... args)
         "Behavior must be constructible with these arguments");
     static_assert(std::is_base_of<Behavior, BehaviorType>::value,
         "This Behavior must derive from the Behavior base class");
-    if(not(hasBeh) or typeid(*getBehavior()) != typeid(BehaviorType)) {
+    if(!hasBeh || typeid(*getBehavior()) != typeid(BehaviorType)) {
 //        std::cout << "Clearing Behavior on robot " << id << std::endl;
         clearBehavior();
         setCurrentBeh(new BehaviorType(args...));

@@ -20,7 +20,7 @@ bool edge_detect_impl(boolFunctionPtr function, bool lastResultVal, bool thisRes
     bool  thisResult = function();
     bool  ret = false;
 
-    if( (lastResult==lastResultVal) and (thisResult==thisResultVal) ) {
+    if( (lastResult==lastResultVal) && (thisResult==thisResultVal) ) {
         ret = true;
     }
 

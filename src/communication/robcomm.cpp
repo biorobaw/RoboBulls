@@ -1,5 +1,4 @@
 #include "simrobcomm.h"
-#include "nxtrobcomm.h"
 #include "yisirobcomm.h"
 #include "robcomm.h"
 

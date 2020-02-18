@@ -1,5 +1,4 @@
 #include <cmath>
-#include <sys/time.h>
 
 #include "src/ssl-vision/ssl_vision_listener.h"
 #include "src/model/game_state.h"
@@ -17,29 +16,23 @@ SSLVisionListener::SSLVisionListener( YAML::Node comm_node, int _side)
               << "        FOUR_CAMERA : " << comm_node["FOUR_CAMERA"] << endl
               << "        side chosen : " << ((side == FIELD_SIDE_NEGATIVE) ? "Negative" : "Positive") << endl;
 
-    string vision_addr = comm_node["VISION_ADDR"].as<string>();
-    int vision_port = comm_node["VISION_PORT"].as<int>();
+    vision_addr = comm_node["VISION_ADDR"].as<string>();
+    vision_port = comm_node["VISION_PORT"].as<int>();
     FOUR_CAMERA_MODE = comm_node["FOUR_CAMERA"].as<bool>();
     side = _side;
 
 //    client = new RoboCupSSLClient(vision_port, vision_addr);
 //    client->open(true);
 
-    socket = new QUdpSocket(this);
-    socket->bind(QHostAddress::AnyIPv4, vision_port, QUdpSocket::ShareAddress);
-    socket->joinMulticastGroup(QHostAddress(QString(  vision_addr.c_str()  ) ));
-    connect(socket, SIGNAL(readyRead()), this, SLOT(readyRead()));
 
     kfilter = new KFBall();
     u.resize(4);
 
     cout << "--Vision DONE" << endl;
+
 }
 
-SSLVisionListener::~SSLVisionListener(){
-    socket->close();
-    delete socket;
-}
+
 
 
 bool SSLVisionListener::isFourCameraMode()
@@ -239,8 +232,7 @@ void SSLVisionListener::recieveBall(const SSL_DetectionFrame& frame)
 void SSLVisionListener::recieveRobotTeam(const SSL_DetectionFrame& frame, int which_team)
 {
 
-    //std::cout<<"VisionComm::recieveRobotTeam\n"<<std::endl;
-    std::cout << "t: " << which_team << std::endl;
+//    std::cout << "t: " << which_team << std::endl;
 
     auto* team    = Team::getTeam(which_team);
 
@@ -251,18 +243,18 @@ void SSLVisionListener::recieveRobotTeam(const SSL_DetectionFrame& frame, int wh
     for(const SSL_DetectionRobot& robot : *teamDetection)
     {
 
-        std::cout<<"VisionComm: (t,id) "
-                << which_team << " , "
-                << robot.robot_id() << " , " << "c: " << frame.camera_id() << " , "
-                << robot.x() << " , " << robot.y() << " , "
-                << isGoodDetection(robot, frame, CONF_THRESHOLD_BOTS, FOUR_CAMERA_MODE) << " - "
-                << std::endl;
+//        std::cout<<"VisionComm: (t,id) "
+//                << which_team << " , "
+//                << robot.robot_id() << " , " << "c: " << frame.camera_id() << " , "
+//                << robot.x() << " , " << robot.y() << " , "
+//                << isGoodDetection(robot, frame, CONF_THRESHOLD_BOTS, FOUR_CAMERA_MODE) << " - "
+//                << std::endl;
 
         if(isGoodDetection(robot, frame, CONF_THRESHOLD_BOTS, FOUR_CAMERA_MODE)) {
 
             //std::cout<<"VisionComm::robot.robot_id() GOOD DETECTION GOOD DETECTION!!!!!!!!!!!\n"<<std::endl;
             int robotID = robot.robot_id();
-            if(team->getRobot(robotID) or teamCounts[robotID] >= 80) {
+            if(team->getRobot(robotID) || teamCounts[robotID] >= 80) {
                 receiveRobot(robot, which_team);
             } else {
                ++teamCounts[robotID];
@@ -271,16 +263,29 @@ void SSLVisionListener::recieveRobotTeam(const SSL_DetectionFrame& frame, int wh
     }
 }
 
+void SSLVisionListener::stop(){
+    done = true;
+}
 
+void SSLVisionListener::run(){
 
-void SSLVisionListener::readyRead(){
     QByteArray datagram;
+    done = false;
 
-    // using QUdpSocket::readDatagram (API since Qt 4)
-    while (socket->hasPendingDatagrams()) {
-        datagram.resize(int(socket->pendingDatagramSize()));
-        socket->readDatagram(datagram.data(), datagram.size());
+    QUdpSocket socket(this);
+    socket.bind(QHostAddress::AnyIPv4, vision_port, QUdpSocket::ShareAddress);
+    socket.joinMulticastGroup(QHostAddress(QString(  vision_addr.c_str()  ) ));
 
+
+
+    while(!done){
+        if(!socket.hasPendingDatagrams()) {
+            msleep(5);
+            continue;
+        }
+
+        datagram.resize(int(socket.pendingDatagramSize()));
+        socket.readDatagram(datagram.data(), datagram.size());
 
         SSL_WrapperPacket packet;
         if(packet.ParseFromArray(datagram.data(),datagram.size())){
@@ -293,23 +298,17 @@ void SSLVisionListener::readyRead(){
                 frames_state[frame.camera_id()] = true;
             }
 
-            //std::cout << "at VisionComm::receive() 2 "<<endl;
 
             int num_cams = FOUR_CAMERA_MODE? 4 : 2;
-        //    std::cout<<"Camera number:"<<num_cams<<std::endl;//Added by Bo Wu
 
             bool all_frames_recv = true;
             for(int i = 0; i < num_cams; ++i)
                 all_frames_recv = all_frames_recv && frames_state[i];
 
-
-            //std::cout << "at VisionComm::receive()"<<endl;
             if(all_frames_recv)
             {
-                //std::cout << debugCounter++<< "at VisionComm::receive()     all frames received\n"<<endl;
                 for(int i = 0; i < num_cams; ++i)
                 {
-                    //std::cout << "at VisionComm::receive()   processing cam "<<i <<endl;
                     recieveBall(frames[i]);
                     recieveRobotTeam(frames[i], TEAM_BLUE);
                     recieveRobotTeam(frames[i], TEAM_YELLOW);
@@ -319,7 +318,6 @@ void SSLVisionListener::readyRead(){
                 /* After we have had a chance to initially recieve all robots,
                  * the RoboBulls game is run with the new information here. */
                 if (++totalframes > 200){
-        //            std::cout << "at VisionComm::notifying()"<<endl;
                     GameState::notifyObservers();
                 }
 
@@ -332,12 +330,10 @@ void SSLVisionListener::readyRead(){
                 }
             }
 
-
-
-
-        }else{
-
         };
 
     }
+
+    socket.close();
+
 }

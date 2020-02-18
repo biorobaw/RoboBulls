@@ -1,3 +1,5 @@
+#define _USE_MATH_DEFINES
+#include <cmath>
 #include "defencearea.h"
 #include "src/model/field.h"
 

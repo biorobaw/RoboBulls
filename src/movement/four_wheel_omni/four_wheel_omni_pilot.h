@@ -1,5 +1,7 @@
 #ifndef FOUR_WHEEL_OMNI_PILOT_H
 #define FOUR_WHEEL_OMNI_PILOT_H
+#define _USE_MATH_DEFINES
+#include <cmath>
 #include <math.h>
 #include <limits>
 #include <deque>
@@ -9,6 +11,7 @@
 #include "src/utilities/measurements.h"
 #include "src/utilities/debug.h"
 #include "src/parameters/motion_parameters.h"
+
 
 namespace Move
 {
@@ -88,8 +91,8 @@ private:
 
     double distance_error, angle_error;
 
-    const uint DIST_ERROR_MAXSIZE = 100;
-    const uint ANGLE_ERROR_MAXSIZE = 50;
+    const unsigned int DIST_ERROR_MAXSIZE = 100;
+    const unsigned int ANGLE_ERROR_MAXSIZE = 50;
     double dist_error_integral = 0;
     double angle_error_integral = 0;
     std::deque<double> dist_error_deque;

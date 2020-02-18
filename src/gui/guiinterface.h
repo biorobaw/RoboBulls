@@ -15,7 +15,7 @@ class GuiInterface
 public:
     GuiInterface();
     static GuiInterface * getGuiInterface();
-    const std::vector<bool>& isOverriddenBot();
+    bool isOverriddenBot(int team, int robot_id);
     void show();
     void drawLine(const Point& A, const Point& B, const double seconds = 0.01);
     void setHidePaths(bool hide);

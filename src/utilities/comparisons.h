@@ -1,5 +1,7 @@
 #ifndef COMPARISONS_H
 #define COMPARISONS_H
+#define _USE_MATH_DEFINES
+#include <cmath>
 #include <functional>
 #include <algorithm>
 #include <math.h>
