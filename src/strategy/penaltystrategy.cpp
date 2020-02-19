@@ -1,6 +1,6 @@
 #include "penaltystrategy.h"
 
-#include "src/model/field.h"
+#include "model/field.h"
 
 PenaltyStrategy::PenaltyStrategy(Team* _team) : Strategy(_team) {
 

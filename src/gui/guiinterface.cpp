@@ -2,7 +2,7 @@
 #include "mainwindow.h"
 #include "selrobotpanel.h"
 #include "fieldpanel.h"
-#include "src/utilities/point.h"
+#include "utilities/point.h"
 #include "guidrawline.h"
 
 /* Points of contact with main project:

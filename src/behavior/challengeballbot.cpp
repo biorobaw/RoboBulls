@@ -1,5 +1,5 @@
 #include "challengeballbot.h"
-#include "src/model/ball.h"
+#include "model/ball.h"
 
 ChallengeBallBot::ChallengeBallBot()
 {

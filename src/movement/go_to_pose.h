@@ -1,12 +1,12 @@
 #ifndef GOTOPOSITON_H
 #define GOTOPOSITON_H
 
-#include "src/model/robot.h"
-#include "src/movement/differential/differential_pilot.h"
-#include "src/movement/four_wheel_omni/four_wheel_omni_pilot.h"
-#include "src/movement/three_wheel_omni/three_wheel_omni_pilot.h"
-#include "src/movement/pathfinding/fppa_pathfinding.h"
-#include "src/movement/movetype.h"
+#include "model/robot.h"
+#include "movement/differential/differential_pilot.h"
+#include "movement/four_wheel_omni/four_wheel_omni_pilot.h"
+#include "movement/three_wheel_omni/three_wheel_omni_pilot.h"
+#include "movement/pathfinding/fppa_pathfinding.h"
+#include "movement/movetype.h"
 
 #include <deque>
 #include <math.h>

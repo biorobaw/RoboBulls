@@ -2,15 +2,15 @@
 #define ATTACK_MAIN_H
 
 #include "behavior.h"
-#include "src/skill/kicktopointomni.h"
-#include "src/skill/dribbletopoint.h"
-#include "src/model/game_state.h"
-#include "src/gui/guiinterface.h"
-#include "src/utilities/region/sector.h"
+#include "skill/kicktopointomni.h"
+#include "skill/dribbletopoint.h"
+#include "model/game_state.h"
+#include "gui/guiinterface.h"
+#include "utilities/region/sector.h"
 #include "genericmovementbehavior.h"
 #include "algorithm"
-#include "src/utilities/region/defencearea.h"
-#include "src/utilities/comparisons.h"
+#include "utilities/region/defencearea.h"
+#include "utilities/comparisons.h"
 
 
 #include <vector>

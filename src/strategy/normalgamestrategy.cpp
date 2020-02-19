@@ -1,19 +1,19 @@
 
-#include "src/behavior/genericmovementbehavior.h"
-#include "src/behavior/goalie.h"
-#include "src/behavior/attackmain.h"
-#include "src/behavior/attacksupport.h"
-#include "src/behavior/defendbehavior.h"
-#include "src/behavior/refstop.h"
-#include "src/behavior/wall.h"
-#include "src/behavior/markbot.h"
-#include "src/behavior/challengeballbot.h"
-#include "src/behavior/penaltygoalie.h"
-#include "src/utilities/comparisons.h"
-#include "src/utilities/edges.h"
-#include "src/strategy/normalgamestrategy.h"
+#include "behavior/genericmovementbehavior.h"
+#include "behavior/goalie.h"
+#include "behavior/attackmain.h"
+#include "behavior/attacksupport.h"
+#include "behavior/defendbehavior.h"
+#include "behavior/refstop.h"
+#include "behavior/wall.h"
+#include "behavior/markbot.h"
+#include "behavior/challengeballbot.h"
+#include "behavior/penaltygoalie.h"
+#include "utilities/comparisons.h"
+#include "utilities/edges.h"
+#include "strategy/normalgamestrategy.h"
 
-#include "src/model/ball.h"
+#include "model/ball.h"
 
 NormalGameStrategy::NormalGameStrategy(Team* _team)
     : Strategy(_team)

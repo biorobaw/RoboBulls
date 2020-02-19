@@ -4,10 +4,10 @@
 #include <deque>
 #include <mutex>
 #include "guisidelines.h"
-#include "src/utilities/point.h"
+#include "utilities/point.h"
 #include "guidrawpoint.h"
 #include "guidrawregion.h"
-#include "src/model/team.h"
+#include "model/team.h"
 
 using std::deque;
 class GuiRobot;

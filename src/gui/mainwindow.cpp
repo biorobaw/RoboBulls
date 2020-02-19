@@ -31,11 +31,11 @@
 #include "guiinterface.h"
 #include "guirobot.h"
 #include "joystick.h"
-#include "src/communication/robcomm.h"
+#include "communication/robcomm.h"
 
 // Project classes
-#include "src/model/game_state.h"
-#include "src/model/robot.h"
+#include "model/game_state.h"
+#include "model/robot.h"
 
 
 

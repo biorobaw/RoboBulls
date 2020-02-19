@@ -1,13 +1,13 @@
 #ifndef Goalie_H
 #define Goalie_H
 #include <math.h>
-#include "src/skill/kicktopointomni.h"
-#include "src/skill/dribbleback.h"
-#include "src/behavior/genericmovementbehavior.h"
-#include "src/utilities/region/defencearea.h"
-#include "src/utilities/measurements.h"
-#include "src/utilities/comparisons.h"
-#include "src/gui/guiinterface.h"
+#include "skill/kicktopointomni.h"
+#include "skill/dribbleback.h"
+#include "behavior/genericmovementbehavior.h"
+#include "utilities/region/defencearea.h"
+#include "utilities/measurements.h"
+#include "utilities/comparisons.h"
+#include "gui/guiinterface.h"
 
 
 /*! @file

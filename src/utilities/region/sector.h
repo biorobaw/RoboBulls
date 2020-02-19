@@ -3,7 +3,7 @@
 #include "region.h"
 #include "vector"
 
-#include "src/utilities/measurements.h"
+#include "utilities/measurements.h"
 
 /*! @file
  * This is a sector specialization of the abstract class, Region.

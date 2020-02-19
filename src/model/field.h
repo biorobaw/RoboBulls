@@ -2,7 +2,7 @@
 #define FIELD_H
 
 #include "yaml-cpp/yaml.h"
-#include "src/utilities/point.h"
+#include "utilities/point.h"
 
 
 #define FIELD_SIDE_NEGATIVE 0

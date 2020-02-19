@@ -1,15 +1,15 @@
 #include <stdlib.h>
-#include "src/behavior/genericskillbehavior.h"
-#include "src/skill/stop.h"
-#include "src/model/game_state.h"
+#include "behavior/genericskillbehavior.h"
+#include "skill/stop.h"
+#include "model/game_state.h"
 #include "videostrategies.h"
-#include "src/utilities/debug.h"
-#include "src/utilities/comparisons.h"
-#include "src/utilities/edges.h"
-#include "src/gui/guiinterface.h"
-#include "src/behavior/goalie.h"
-#include "src/model/ball.h"
-#include "src/model/field.h"
+#include "utilities/debug.h"
+#include "utilities/comparisons.h"
+#include "utilities/edges.h"
+#include "gui/guiinterface.h"
+#include "behavior/goalie.h"
+#include "model/ball.h"
+#include "model/field.h"
 
 //! @cond
 namespace Video

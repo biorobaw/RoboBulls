@@ -6,8 +6,8 @@
 #include <cmath>
 #include <vector>
 
-#include "src/model/robot.h"
-#include "src/model/game_state.h"
+#include "model/robot.h"
+#include "model/game_state.h"
 
 /*! @file
  * This is a rectangular specialization of the abstract class Region.

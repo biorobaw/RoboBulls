@@ -1,8 +1,8 @@
 #ifndef MOVEMENT_BEHAVIOR_H
 #define MOVEMENT_BEHAVIOR_H
-#include "src/behavior/behavior.h"
-#include "src/movement/go_to_pose.h"
-#include "src/movement/movetype.h"
+#include "behavior/behavior.h"
+#include "movement/go_to_pose.h"
+#include "movement/movetype.h"
 
 //! @ingroup everydayuse baseclasses
 //! @{

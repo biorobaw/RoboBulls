@@ -1,6 +1,6 @@
 #include "goalie.h"
-#include "src/model/ball.h"
-#include "src/model/field.h"
+#include "model/ball.h"
+#include "model/field.h"
 
 Goalie::Goalie(Robot* r)
     : goalPoint(Field::getGoalPosition(r->getTeam()->getSide()))

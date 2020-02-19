@@ -5,9 +5,9 @@
 #include <functional>
 #include <algorithm>
 #include <math.h>
-#include "src/model/game_state.h"
-#include "src/model/robot.h"
-#include "src/utilities/point.h"
+#include "model/game_state.h"
+#include "model/robot.h"
+#include "utilities/point.h"
 
 
 /*! @brief Defines comparison predicates and information querying functions.

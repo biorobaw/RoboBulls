@@ -4,8 +4,8 @@
 #include "yaml-cpp/yaml.h"
 #include <set>
 #include <string>
-#include "src/model/robot.h"
-#include "src/strategy/strategycontroller.h"
+#include "model/robot.h"
+#include "strategy/strategycontroller.h"
 
 #define MAX_ROBOTS 16 // limited by vision that recognizes only 16 patterns per team
 

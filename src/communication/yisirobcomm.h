@@ -4,7 +4,7 @@
 //#include <QtSerialPort/QSerialPort>
 #include <QSerialPort>
 #include <iostream>
-#include "src/model/robot.h"
+#include "model/robot.h"
 #include "robcomm.h"
 #include "crc.h"
 

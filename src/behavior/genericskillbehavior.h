@@ -1,6 +1,6 @@
 #ifndef GENERIC_SKILL_BEHAVIOR_H
 #define GENERIC_SKILL_BEHAVIOR_H
-#include "src/behavior/behavior.h"
+#include "behavior/behavior.h"
 class Robot;
 
 /*!

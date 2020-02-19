@@ -1,5 +1,5 @@
-#include "src/movement/four_wheel_omni/four_wheel_omni_pilot.h"
-#include "src/gui/guiinterface.h"
+#include "movement/four_wheel_omni/four_wheel_omni_pilot.h"
+#include "gui/guiinterface.h"
 #include <cmath>
 using std::abs;
 

@@ -1,9 +1,9 @@
-#include "src/utilities/comparisons.h"
-#include "src/behavior/defendbehavior.h"
-#include "src/utilities/region/rectangle.h"
-#include "src/utilities/region/defencearea.h"
-#include "src/model/ball.h"
-#include "src/model/field.h"
+#include "utilities/comparisons.h"
+#include "behavior/defendbehavior.h"
+#include "utilities/region/rectangle.h"
+#include "utilities/region/defencearea.h"
+#include "model/ball.h"
+#include "model/field.h"
 
 #define DEFENDBEHAVIOR_DEBUG 0
 

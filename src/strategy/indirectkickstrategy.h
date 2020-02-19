@@ -1,9 +1,9 @@
 #ifndef INDIRECTKICKSTRATEGY_H
 #define INDIRECTKICKSTRATEGY_H
 
-#include "src/strategy/strategy.h"
-#include "src/model/game_state.h"
-#include "src/model/robot.h"
+#include "strategy/strategy.h"
+#include "model/game_state.h"
+#include "model/robot.h"
 
 /*! @file
     Strategy to support an indirect kick game state.

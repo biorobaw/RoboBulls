@@ -1,7 +1,7 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include "defencearea.h"
-#include "src/model/field.h"
+#include "model/field.h"
 
 DefenceArea::DefenceArea(bool our_team) :our_team(our_team)
 {

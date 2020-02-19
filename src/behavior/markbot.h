@@ -2,11 +2,11 @@
 #define MARKBOT_H
 
 #include "genericmovementbehavior.h"
-#include "src/model/game_state.h"
-#include "src/utilities/region/defencearea.h"
-#include "src/utilities/comparisons.h"
-#include "src/gui/guiinterface.h"
-#include "src/skill/kicktopointomni.h"
+#include "model/game_state.h"
+#include "utilities/region/defencearea.h"
+#include "utilities/comparisons.h"
+#include "gui/guiinterface.h"
+#include "skill/kicktopointomni.h"
 
 /*!
  * @file

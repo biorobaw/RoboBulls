@@ -1,4 +1,4 @@
-#include "src/ssl-game-controller/sss_refbox_listener.h"
+#include "ssl-game-controller/sss_refbox_listener.h"
 #include <iostream>
 
 using namespace std;

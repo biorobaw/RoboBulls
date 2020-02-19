@@ -5,9 +5,9 @@
 #include <thread>
 #include <functional>
 #include <cstdlib>
-#include "src/model/game_state.h"
+#include "model/game_state.h"
 
-#include "src/utilities/debug.h"
+#include "utilities/debug.h"
 
 
 namespace debug

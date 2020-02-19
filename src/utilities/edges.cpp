@@ -1,6 +1,6 @@
 #include <string>
 #include <unordered_map>
-#include "src/utilities/edges.h"
+#include "utilities/edges.h"
 
 
 /*************************************************************************/

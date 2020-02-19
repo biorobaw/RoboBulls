@@ -3,7 +3,7 @@
 #include <deque>
 #include <vector>
 #include <src/model/robot.h>
-#include "src/utilities/point.h"
+#include "utilities/point.h"
 
 namespace Move
 {

@@ -1,8 +1,8 @@
 #ifndef STRATEGY_H
 #define STRATEGY_H
 
-#include "src/model/team.h"
-#include "src/model/field.h"
+#include "model/team.h"
+#include "model/field.h"
 
 //! @addtogroup baseclasses
 //! @{

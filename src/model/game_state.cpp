@@ -2,14 +2,14 @@
 #include <iostream>
 #include <fstream>
 
-#include "src/strategy/strategycontroller.h"
-#include "src/utilities/comparisons.h"
+#include "strategy/strategycontroller.h"
+#include "utilities/comparisons.h"
 
-#include "src/utilities/edges.h"
-#include "src/utilities/debug.h"
-#include "src/gui/guiinterface.h"
-#include "src/model/game_state.h"
-#include "src/model/ball.h"
+#include "utilities/edges.h"
+#include "utilities/debug.h"
+#include "gui/guiinterface.h"
+#include "model/game_state.h"
+#include "model/ball.h"
 #include <assert.h>
 
 

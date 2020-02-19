@@ -1,10 +1,10 @@
 #include <iostream>
 
-#include "src/model/game_state.h"
+#include "model/game_state.h"
 #include "guibotlabel.h"
 #include"src/movement/move_collisions.h"
 
-#include "src/model/ball.h"
+#include "model/ball.h"
 
 GuiBotLabel::GuiBotLabel(int team, int id)
     : id(id), team(team)

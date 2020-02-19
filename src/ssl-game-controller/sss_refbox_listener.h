@@ -2,7 +2,7 @@
 #define REFCOMM_H
 
 #include <QtCore/QThread>
-#include "src/model/game_state.h"
+#include "model/game_state.h"
 #include "yaml-cpp/yaml.h"
 #include <QUdpSocket>
 #include <atomic>

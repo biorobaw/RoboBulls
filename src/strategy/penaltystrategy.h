@@ -1,9 +1,9 @@
 #ifndef PENALTYSTRATEGY_H
 #define PENALTYSTRATEGY_H
-#include "src/strategy/strategy.h"
-#include "src/strategy/normalgamestrategy.h"
-#include "src/behavior/wall.h"
-#include "src/model/game_state.h"
+#include "strategy/strategy.h"
+#include "strategy/normalgamestrategy.h"
+#include "behavior/wall.h"
+#include "model/game_state.h"
 
 
 /*! @file

@@ -3,9 +3,9 @@
 #include "objectposition.h"
 #include "fieldpanel.h"
 #include "gamepanel.h"
-#include "src/model/game_state.h"
+#include "model/game_state.h"
 #include "mainwindow.h"
-#include "src/model/ball.h"
+#include "model/ball.h"
 
 //Helper Classes
 #include "guiscene.h"

@@ -1,6 +1,6 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
-#include "src/movement/differential/differential_pilot.h"
+#include "movement/differential/differential_pilot.h"
 #include <stdexcept>
 
 namespace Move {

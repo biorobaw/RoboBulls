@@ -6,11 +6,11 @@
 #include <limits>
 #include <deque>
 #include <iostream>
-#include "src/model/robot.h"
-#include "src/movement/movetype.h"
-#include "src/utilities/measurements.h"
-#include "src/utilities/debug.h"
-#include "src/parameters/motion_parameters.h"
+#include "model/robot.h"
+#include "movement/movetype.h"
+#include "utilities/measurements.h"
+#include "utilities/debug.h"
+#include "parameters/motion_parameters.h"
 
 
 namespace Move

@@ -4,9 +4,9 @@
 #include <math.h>
 #include <deque>
 
-#include "src/movement/movetype.h"
-#include "src/model/robot.h"
-#include "src/utilities/measurements.h"
+#include "movement/movetype.h"
+#include "model/robot.h"
+#include "utilities/measurements.h"
 
 namespace Move {
     /*! @brief Constants for the differential-drive closed-loop control algorithm

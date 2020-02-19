@@ -1,4 +1,4 @@
-#include "src/gui/joystick.h"
+#include "gui/joystick.h"
 
 //Configuration section
 namespace JoyStick

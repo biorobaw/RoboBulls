@@ -1,6 +1,6 @@
 #include "penaltygoalie.h"
-#include "src/model/ball.h"
-#include "src/model/field.h"
+#include "model/ball.h"
+#include "model/field.h"
 
 PenaltyGoalie::PenaltyGoalie()
 {

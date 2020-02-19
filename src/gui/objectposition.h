@@ -3,9 +3,9 @@
 
 #include <QString>
 #include <deque>
-#include "src/utilities/point.h"
-#include "src/model/robot.h"
-#include "src/model/team.h"
+#include "utilities/point.h"
+#include "model/robot.h"
+#include "model/team.h"
 
 using std::string;
 using std::deque;

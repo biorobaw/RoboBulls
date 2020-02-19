@@ -1,7 +1,7 @@
 #ifndef DEFENDBEHAVIOR_H
 #define DEFENDBEHAVIOR_H
-#include "src/behavior/genericmovementbehavior.h"
-#include "src/skill/kicktopointomni.h"
+#include "behavior/genericmovementbehavior.h"
+#include "skill/kicktopointomni.h"
 
 /*! @file
     A base class, a state in the DefendBehavior state machine.

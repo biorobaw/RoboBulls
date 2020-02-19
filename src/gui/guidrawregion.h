@@ -4,7 +4,7 @@
 #include <QGraphicsItem>
 #include <QPainter>
 #include <QPolygon>
-#include "src/utilities/point.h"
+#include "utilities/point.h"
 
 class QPainter;
 class QStyleOptionGraphicsItem;

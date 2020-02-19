@@ -1,10 +1,10 @@
 #ifndef KTP_OMNI_H
 #define KTP_OMNI_H
-#include "src/model/robot.h"
-#include "src/utilities/point.h"
-#include "src/skill/skill.h"
-#include "src/movement/go_to_pose.h"
-#include "src/gui/guiinterface.h"
+#include "model/robot.h"
+#include "utilities/point.h"
+#include "skill/skill.h"
+#include "movement/go_to_pose.h"
+#include "gui/guiinterface.h"
 
 namespace Skill
 {

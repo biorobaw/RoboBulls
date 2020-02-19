@@ -1,4 +1,4 @@
-#include "src/behavior/genericmovementbehavior.h"
+#include "behavior/genericmovementbehavior.h"
 
 GenericMovementBehavior::GenericMovementBehavior
     (Point target, float angTarget, bool obsAvoid, bool ballAvoid)

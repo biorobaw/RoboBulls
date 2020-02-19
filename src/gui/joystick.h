@@ -7,10 +7,10 @@
 #include <SDL2/SDL.h>
 
 
-#include "src/utilities/debug.h"
-#include "src/model/game_state.h"
-#include "src/movement/go_to_pose.h"
-#include "src/gui/guiinterface.h"
+#include "utilities/debug.h"
+#include "model/game_state.h"
+#include "movement/go_to_pose.h"
+#include "gui/guiinterface.h"
 
 /*! @brief Joystick control support
  * @details *This is an internal file; it should not be used directly except to add joysticks.*

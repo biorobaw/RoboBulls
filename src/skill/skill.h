@@ -1,6 +1,6 @@
 #ifndef SKILL_H
 #define SKILL_H
-#include "src/model/field.h"
+#include "model/field.h"
 class Robot;
 
 //! @brief Namespace containing all Skills

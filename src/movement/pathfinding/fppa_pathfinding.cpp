@@ -2,14 +2,14 @@
 #include <assert.h>
 #include <algorithm>
 #include <iostream>
-#include "src/parameters/motion_parameters.h"
-#include "src/utilities/measurements.h"
-#include "src/utilities/comparisons.h"
-#include "src/utilities/region/defencearea.h"
-#include "src/model/game_state.h"
-#include "src/movement/pathfinding/fppa_pathfinding.h"
-#include "src/model/ball.h"
-#include "src/model/field.h"
+#include "parameters/motion_parameters.h"
+#include "utilities/measurements.h"
+#include "utilities/comparisons.h"
+#include "utilities/region/defencearea.h"
+#include "model/game_state.h"
+#include "movement/pathfinding/fppa_pathfinding.h"
+#include "model/ball.h"
+#include "model/field.h"
 
 /* Implementation of the Fast Path Planning Algorithm
  * In a sense, this is a mostly a generalized implementation.

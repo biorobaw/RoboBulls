@@ -2,10 +2,10 @@
 #define VISIONCOMM_H
 #include <string>
 #include <QtCore/QThread>
-#include "src/model/game_state.h"
-#include "src/model/robot.h"
+#include "model/game_state.h"
+#include "model/robot.h"
 #include "my_kalman_filter.h"
-#include "src/gui/guiinterface.h"
+#include "gui/guiinterface.h"
 #include "yaml-cpp/yaml.h"
 
 #include <QUdpSocket>

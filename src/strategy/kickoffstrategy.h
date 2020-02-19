@@ -1,6 +1,6 @@
 #ifndef KICKOFFSTRATEGY_H
 #define KICKOFFSTRATEGY_H
-#include "src/strategy/strategy.h"
+#include "strategy/strategy.h"
 
 /*! @file
  *  Strategy to implement a kickoff game state.

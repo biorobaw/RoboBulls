@@ -4,8 +4,8 @@
 #include <cmath>
 #include <vector>
 #include <set>
-#include "src/utilities/point.h"
-#include "src/parameters/motion_parameters.h"
+#include "utilities/point.h"
+#include "parameters/motion_parameters.h"
 
 class Robot;
 

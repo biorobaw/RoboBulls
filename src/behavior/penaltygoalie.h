@@ -1,10 +1,10 @@
 #ifndef PENALTYGOALIE_H
 #define PENALTYGOALIE_H
 
-#include "src/behavior/genericmovementbehavior.h"
-#include "src/utilities/region/defencearea.h"
-#include "src/model/game_state.h"
-#include "src/gui/guiinterface.h"
+#include "behavior/genericmovementbehavior.h"
+#include "utilities/region/defencearea.h"
+#include "model/game_state.h"
+#include "gui/guiinterface.h"
 
 /*!
  * @file

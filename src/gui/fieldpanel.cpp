@@ -16,8 +16,8 @@
 #include "guidrawpoint.h"
 #include "guidrawregion.h"
 #include "guifield.h"
-#include "src/model/game_state.h"
-#include "src/model/field.h"
+#include "model/game_state.h"
+#include "model/field.h"
 #include <vector>
 
 

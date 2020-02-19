@@ -1,7 +1,7 @@
-#include "src/model/ball.h"
-#include "src/model/robot.h"
-#include "src/utilities/measurements.h"
-#include "src/utilities/comparisons.h"
+#include "model/ball.h"
+#include "model/robot.h"
+#include "utilities/measurements.h"
+#include "utilities/comparisons.h"
 
 Point Ball::position = Point(0,0);
 Point Ball::velocity = Point(0,0);

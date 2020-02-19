@@ -1,7 +1,7 @@
-#include "src/model/team.h"
+#include "model/team.h"
 #include <algorithm>
 
-#include "src/communication/robcomm.h"
+#include "communication/robcomm.h"
 #include <assert.h>
 
 Team* Team::teams[2] = {NULL};

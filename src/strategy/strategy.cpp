@@ -1,6 +1,6 @@
 #include "strategy.h"
 #include <iostream>
-#include "src/model/game_state.h"
+#include "model/game_state.h"
 
 Strategy::Strategy(Team* _team) : team(_team) {
 

@@ -3,11 +3,11 @@
 #include <iostream>
 #include <stdlib.h>
 #include <string.h>
-#include "src/utilities/measurements.h"
-#include "src/utilities/comparisons.h"
-#include "src/model/game_state.h"
-#include "src/model/robot.h"
-#include "src/movement/move_collisions.h"
+#include "utilities/measurements.h"
+#include "utilities/comparisons.h"
+#include "model/game_state.h"
+#include "model/robot.h"
+#include "movement/move_collisions.h"
 
 /************************************************************************/
 /* USER CONFIGURATION */

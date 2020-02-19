@@ -26,7 +26,7 @@ TEMPLATE = app
 DESTDIR = $$PWD/bin
 
 
-
+INCLUDEPATH += src
 PROTOS = src/ssl-grsim/proto/grSim_Commands.proto \
          src/ssl-grsim/proto/grSim_Packet.proto \
          src/ssl-grsim/proto/grSim_Replacement.proto \

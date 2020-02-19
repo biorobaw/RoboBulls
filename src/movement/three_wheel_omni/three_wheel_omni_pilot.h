@@ -2,9 +2,9 @@
 #define THREE_WHEEL_OMNI_PILOT_H
 #include <cmath>
 #include <vector>
-#include "src/model/robot.h"
-#include "src/movement/movetype.h"
-#include "src/utilities/measurements.h"
+#include "model/robot.h"
+#include "movement/movetype.h"
+#include "utilities/measurements.h"
 
 namespace Move
 {

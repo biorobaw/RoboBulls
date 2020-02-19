@@ -1,10 +1,10 @@
 #ifndef GAMEMODEL_H
 #define GAMEMODEL_H
 #include <vector>
-#include "src/utilities/point.h"
-#include "src/utilities/measurements.h"
-#include "src/model/robot.h"
-#include "src/model/team.h"
+#include "utilities/point.h"
+#include "utilities/measurements.h"
+#include "model/robot.h"
+#include "model/team.h"
 #include <mutex>
 #include "yaml-cpp/yaml.h"
 

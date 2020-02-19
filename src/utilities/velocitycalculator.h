@@ -1,7 +1,7 @@
 #ifndef VEL_CALCULATOR_H
 #define VEL_CALCULATOR_H
 #include <deque>
-#include "src/utilities/point.h"
+#include "utilities/point.h"
 #include <ctime>
 
 /*! @brief Generic object to calculate velocity of a Point over time.

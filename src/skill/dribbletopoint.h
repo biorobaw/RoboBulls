@@ -2,9 +2,9 @@
 #define DRIBBLETOPOINT_H
 
 #include "skill.h"
-#include "src/utilities/point.h"
-#include "src/movement/go_to_pose.h"
-#include "src/model/game_state.h"
+#include "utilities/point.h"
+#include "movement/go_to_pose.h"
+#include "model/game_state.h"
 
 namespace Skill
 {

@@ -1,8 +1,8 @@
 #include <algorithm>
-#include "src/model/field.h"
-#include "src/model/game_state.h"
-#include "src/utilities/comparisons.h"
-#include "src/model/ball.h"
+#include "model/field.h"
+#include "model/game_state.h"
+#include "utilities/comparisons.h"
+#include "model/ball.h"
 
 using namespace std::placeholders;
 

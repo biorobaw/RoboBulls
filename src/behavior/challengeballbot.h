@@ -1,9 +1,9 @@
 #ifndef CHALLENGEBALLBOT_H
 #define CHALLENGEBALLBOT_H
 
-#include "src/behavior/genericmovementbehavior.h"
-#include "src/model/robot.h"
-#include "src/model/game_state.h"
+#include "behavior/genericmovementbehavior.h"
+#include "model/robot.h"
+#include "model/game_state.h"
 
 
 /*! @file

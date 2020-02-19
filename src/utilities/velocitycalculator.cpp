@@ -1,6 +1,6 @@
 #include <time.h>
-#include "src/model/field.h"
-#include "src/utilities/velocitycalculator.h"
+#include "model/field.h"
+#include "utilities/velocitycalculator.h"
 
 VelocityCalculator::VelocityCalculator(unsigned deque_size)
     : max_size(deque_size)

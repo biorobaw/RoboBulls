@@ -1,11 +1,11 @@
 #ifndef ATTACK_SUPPORT_H
 #define ATTACK_SUPPORT_H
-#include "src/behavior/genericmovementbehavior.h"
-#include "src/utilities/region/defencearea.h"
-#include "src/model/game_state.h"
-#include "src/model/robot.h"
+#include "behavior/genericmovementbehavior.h"
+#include "utilities/region/defencearea.h"
+#include "model/game_state.h"
+#include "model/robot.h"
 #include <algorithm>
-#include "src/utilities/comparisons.h"
+#include "utilities/comparisons.h"
 
 /*! @file
  * AttackSupport tries to help score a goal by positioning a robot in an opportune position.

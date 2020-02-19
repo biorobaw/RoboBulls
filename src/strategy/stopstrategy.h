@@ -1,8 +1,8 @@
 #ifndef STOPSTRATEGY_H
 #define STOPSTRATEGY_H
-#include "src/strategy/strategy.h"
-#include "src/utilities/point.h"
-#include "src/utilities/edges.h"
+#include "strategy/strategy.h"
+#include "utilities/point.h"
+#include "utilities/edges.h"
 
 /*! @file
  * Strategy to implement the game stopped state 'S'

@@ -1,6 +1,6 @@
 #ifndef HALTSTRATEGY_H
 #define HALTSTRATEGY_H
-#include "src/strategy/strategy.h"
+#include "strategy/strategy.h"
 
 /*! @brief Strategy to implement the Halt game state 'H'
  *  @author Narges G */

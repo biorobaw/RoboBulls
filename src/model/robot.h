@@ -2,11 +2,11 @@
 #define ROBOT_H
 #include <typeinfo>
 #include <type_traits>
-#include "src/utilities/point.h"
-#include "src/utilities/velocitycalculator.h"
-#include "src/behavior/behavior.h"
-#include "src/skill/skill.h"
-#include "src/behavior/genericskillbehavior.h"
+#include "utilities/point.h"
+#include "utilities/velocitycalculator.h"
+#include "behavior/behavior.h"
+#include "skill/skill.h"
+#include "behavior/genericskillbehavior.h"
 #include "iostream"
 #include <set>
 

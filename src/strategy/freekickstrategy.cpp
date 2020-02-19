@@ -1,17 +1,17 @@
 #include "freekickstrategy.h"
-#include "src/behavior/attackmain.h"
-#include "src/behavior/attacksupport.h"
-#include "src/model/game_state.h"
-#include "src/behavior/goalie.h"
-#include "src/strategy/normalgamestrategy.h"
-#include "src/behavior/refstop.h"
-#include "src/behavior/wall.h"
-#include "src/behavior/markbot.h"
+#include "behavior/attackmain.h"
+#include "behavior/attacksupport.h"
+#include "model/game_state.h"
+#include "behavior/goalie.h"
+#include "strategy/normalgamestrategy.h"
+#include "behavior/refstop.h"
+#include "behavior/wall.h"
+#include "behavior/markbot.h"
 
-#include "src/skill/kicktopointomni.h"
+#include "skill/kicktopointomni.h"
 
-#include "src/model/ball.h"
-#include "src/model/field.h"
+#include "model/ball.h"
+#include "model/field.h"
 
 FreeKickStrategy::FreeKickStrategy(Team* _team)
     : Strategy(_team), initial_bp(Ball::getPosition())

@@ -1,4 +1,4 @@
-#include "src/model/field.h"
+#include "model/field.h"
 #include <iostream>
 
 using namespace std;

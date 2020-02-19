@@ -2,12 +2,12 @@
 #include "grSim_Packet.pb.h"
 #include "grSim_Commands.pb.h"
 #include "grSim_Replacement.pb.h"
-#include "src/model/robot.h"
-#include "src/model/team.h"
-#include "src/model/game_state.h"
+#include "model/robot.h"
+#include "model/team.h"
+#include "model/game_state.h"
 #include "simrobcomm.h"
 #include <iostream>
-#include "src/utilities/measurements.h"
+#include "utilities/measurements.h"
 
 SimRobComm::SimRobComm(const char* addr, int port)
 {

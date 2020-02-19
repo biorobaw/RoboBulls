@@ -1,9 +1,9 @@
 #ifndef REFSTOP_H
 #define REFSTOP_H
 
-#include "src/behavior/genericmovementbehavior.h"
-#include "src/utilities/comparisons.h"
-#include "src/utilities/region/defencearea.h"
+#include "behavior/genericmovementbehavior.h"
+#include "utilities/comparisons.h"
+#include "utilities/region/defencearea.h"
 
 /*!
  * @file

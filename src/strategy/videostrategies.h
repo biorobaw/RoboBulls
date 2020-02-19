@@ -1,9 +1,9 @@
 #ifndef VIDEO_STRATEGIES_H
 #define VIDEO_STRATEGIES_H
-#include "src/strategy/strategy.h"
-#include "src/behavior/behavior.h"
-#include "src/behavior/genericmovementbehavior.h"
-#include "src/skill/kicktopointomni.h"
+#include "strategy/strategy.h"
+#include "behavior/behavior.h"
+#include "behavior/genericmovementbehavior.h"
+#include "skill/kicktopointomni.h"
 class Robot;
 
 //Constains strategies used in the RoboCup 2015 qualification Video

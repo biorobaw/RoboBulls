@@ -1,15 +1,15 @@
-#include "src/model/game_state.h"
-#include "src/movement/movetype.h"
-#include "src/movement/go_to_pose.h"
-#include "src/gui/guiinterface.h"
+#include "model/game_state.h"
+#include "movement/movetype.h"
+#include "movement/go_to_pose.h"
+#include "gui/guiinterface.h"
 #include <time.h>
 #include <assert.h>
-#include "src/parameters/motion_parameters.h"     //ROT/DIST Tolerance
+#include "parameters/motion_parameters.h"     //ROT/DIST Tolerance
 
-#include "src/movement/move.h"
-#include "src/movement/move_collisions.h"
-#include "src/model/game_state.h"
-#include "src/utilities/comparisons.h"
+#include "movement/move.h"
+#include "movement/move_collisions.h"
+#include "model/game_state.h"
+#include "utilities/comparisons.h"
 
 #include <iostream>
 

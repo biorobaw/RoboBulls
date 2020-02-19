@@ -1,6 +1,6 @@
 #ifndef KICK_H
 #define KICK_H
-#include "src/skill/skill.h"
+#include "skill/skill.h"
 
 namespace Skill
 {

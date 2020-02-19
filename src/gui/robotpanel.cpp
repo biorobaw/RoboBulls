@@ -10,13 +10,13 @@
 #include "fieldpanel.h"
 #include "selrobotpanel.h"
 #include "ui_mainwindow.h"
-#include "src/model/game_state.h"
-#include "src/model/robot.h"
-#include "src/utilities/measurements.h"
+#include "model/game_state.h"
+#include "model/robot.h"
+#include "utilities/measurements.h"
 //Helper classes
 #include "guirobot.h"
 #include "guiball.h"
-#include "src/model/ball.h"
+#include "model/ball.h"
 
 
 RobotPanel::RobotPanel(MainWindow *mw) {

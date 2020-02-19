@@ -1,5 +1,5 @@
-#include "src/model/robot.h"
-#include "src/model/field.h"
+#include "model/robot.h"
+#include "model/field.h"
 
 #include "kick.h"
 

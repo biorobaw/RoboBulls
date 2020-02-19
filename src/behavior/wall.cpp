@@ -1,6 +1,6 @@
 #include "wall.h"
-#include "src/model/ball.h"
-#include "src/model/field.h"
+#include "model/ball.h"
+#include "model/field.h"
 
 Wall::WallPoint Wall::wall_array[2];
 bool Wall::being_cleared = false;

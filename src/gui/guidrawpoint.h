@@ -3,7 +3,7 @@
 
 #include <QGraphicsItem>
 #include <QPainter>
-#include "src/utilities/point.h"
+#include "utilities/point.h"
 #include <vector>
 
 class QPainter;

@@ -2,11 +2,11 @@
 #define MOVE_COLLISIONS_H
 
 
-#include "src/utilities/measurements.h"
-#include "src/utilities/comparisons.h"
-#include "src/utilities/velocitycalculator.h"
-#include "src/model/game_state.h"
-#include "src/model/robot.h"
+#include "utilities/measurements.h"
+#include "utilities/comparisons.h"
+#include "utilities/velocitycalculator.h"
+#include "model/game_state.h"
+#include "model/robot.h"
 
 class Robot;
 class Point;

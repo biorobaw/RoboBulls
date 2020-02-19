@@ -3,19 +3,19 @@
 #include <csignal>
 #include <cstdlib>
 #include <iostream>
-#include "src/ssl-vision/ssl_vision_listener.h"
-#include "src/communication/robcomm.h"
-#include "src/ssl-game-controller/sss_refbox_listener.h"
-#include "src/model/game_state.h"
-#include "src/gui/guiinterface.h"
-#include "src/utilities/debug.h"
-#include "src/strategy/strategycontroller.h"
+#include "ssl-vision/ssl_vision_listener.h"
+#include "communication/robcomm.h"
+#include "ssl-game-controller/sss_refbox_listener.h"
+#include "model/game_state.h"
+#include "gui/guiinterface.h"
+#include "utilities/debug.h"
+#include "strategy/strategycontroller.h"
 #include "yaml-cpp/yaml.h"
 #include <string>
-#include "src/model/field.h"
+#include "model/field.h"
 
 
-#include "src/parameters/motion_parameters.h"
+#include "parameters/motion_parameters.h"
 
 /*! @mainpage Welcome to the RoboBulls 2 Documentation.
  *

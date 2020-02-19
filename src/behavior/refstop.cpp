@@ -1,5 +1,5 @@
 #include "refstop.h"
-#include "src/model/ball.h"
+#include "model/ball.h"
 
 RefStop::RefStop()
 {

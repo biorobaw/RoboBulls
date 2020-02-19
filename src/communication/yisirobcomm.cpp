@@ -3,11 +3,11 @@
 #include <QThread>
 //#include <unistd.h>
 #include <ctime>
-#include "src/model/robot.h"
-#include "src/model/game_state.h"
-#include "src/behavior/genericmovementbehavior.h"
-#include "src/parameters/motion_parameters.h"
-#include "src/model/ball.h"
+#include "model/robot.h"
+#include "model/game_state.h"
+#include "behavior/genericmovementbehavior.h"
+#include "parameters/motion_parameters.h"
+#include "model/ball.h"
 
 YisiRobComm::YisiRobComm(std::string usb_port, int frequency)
 {

@@ -5,7 +5,7 @@
 #include <QTimer>
 #include <QPainter>
 #include <iostream>
-#include "src/utilities/point.h"
+#include "utilities/point.h"
 
 class QPainter;
 class QStyleOptionGraphicsItem;

@@ -4,7 +4,7 @@
 #include <iosfwd>
 #include <string>
 #include <QtWidgets/QMainWindow>
-#include "src/model/team.h"
+#include "model/team.h"
 
 // Helper classes forward declarations
 class GuiField;
