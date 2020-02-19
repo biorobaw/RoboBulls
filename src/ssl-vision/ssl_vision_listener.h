@@ -4,7 +4,7 @@
 #include <QtCore/QThread>
 #include "src/model/game_state.h"
 #include "src/model/robot.h"
-#include "src/communication/kfball.h"
+#include "my_kalman_filter.h"
 #include "src/gui/guiinterface.h"
 #include "yaml-cpp/yaml.h"
 
@@ -15,7 +15,7 @@
 #include "messages_robocup_ssl_refbox_log.pb.h"
 #include<atomic>
 
-#define VEL_HIST_SIZE 20
+
 
 //! @brief Sets the minimum confidence to consider a ball reading as valid
 //#if SIMULATED
@@ -70,13 +70,7 @@ protected:
     int rob_readings[2][MAX_ROBOTS]={{0}};  //! Number of detections of each blue robot
     bool FOUR_CAMERA_MODE = false;    //! Are we in four-camera mode (true)? Or Two-camera mode?
 
-    KFBall* kfilter;                //! Kalman filter instance
-    bool kfilter_init = false;      //! Has the kalman filter been initialized with the first measurement?
-    KFBall::Vector u;               //! Stores the previous state estimate of the kalman filter
-
-    Point prev_k_b_pos;
-    Point vel_hist[VEL_HIST_SIZE];
-    int i_vel_hist = 0;
+    MyKalmanFilter kfilter = MyKalmanFilter();                //! Kalman filter instance
 
 
     int side = 0;

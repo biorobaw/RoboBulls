@@ -1,6 +1,6 @@
 #include <cmath>
 
-#include "src/ssl-vision/ssl_vision_listener.h"
+#include "ssl_vision_listener.h"
 #include "src/model/game_state.h"
 
 #include "src/model/ball.h"
@@ -21,13 +21,6 @@ SSLVisionListener::SSLVisionListener( YAML::Node comm_node, int _side)
     FOUR_CAMERA_MODE = comm_node["FOUR_CAMERA"].as<bool>();
     side = _side;
 
-//    client = new RoboCupSSLClient(vision_port, vision_addr);
-//    client->open(true);
-
-
-    kfilter = new KFBall();
-    u.resize(4);
-
     cout << "--Vision DONE" << endl;
 
 }
@@ -45,10 +38,6 @@ bool SSLVisionListener::isFourCameraMode()
  */
 void SSLVisionListener::receiveRobot(const SSL_DetectionRobot& robot, int detectedTeamColor)
 {
-//    std::lock_guard<std::mutex> my_team_guard(GameModel::my_team_mutex);
-//    std::lock_guard<std::mutex> opp_team_guard(GameModel::opp_team_mutex);
-
-
     if (robot.has_robot_id())
     {
         int id = robot.robot_id();
@@ -60,25 +49,14 @@ void SSLVisionListener::receiveRobot(const SSL_DetectionRobot& robot, int detect
         // cout << "--Detected: color,id: " << detectedTeamColor << " " << id << std::endl;
 
 
-        if (rob == NULL)
-        {
+        if (rob == NULL) rob = team->addRobot(id);
 
-            //std::cout<<"Did not find.........................................."<<std::endl;//Added by Bo Wu
-            rob = team->addRobot(id);
-        }
 
         // Assumption: rob contains the robot with id == detected_id
         //std::cout << " positionReading("<<robot.x()<<","<< robot.y()<<");\n ";
         Point positionReading(robot.x(), robot.y());//Point
         float rotationReading = robot.orientation();
-        //TODO: following lines were removed since now the software can control more than a single team
-//        if(side == FIELD_SIDE_POSITIVE){
-//            positionReading *= -1;
-//            if(rotationReading > 0)
-//                rotationReading = -(M_PI - rotationReading);
-//            else
-//                rotationReading = -(-M_PI - rotationReading);
-//        }
+
         rob->setRobotPosition(positionReading);
         rob->setOrientation(rotationReading);
     }
@@ -132,8 +110,7 @@ static bool isGoodDetection
     return isGoodConf && isGoodSide;
 }
 
-// Movement distance between detections within which the ball is said to be stationary
-#define B_STOP_THRESH 5.0
+
 
 /* Looks at all detected balls in the frame detection, and chooses
  * the best one based on confidence. Sets the GameModel's ballpoint
@@ -143,8 +120,7 @@ static bool isGoodDetection
 void SSLVisionListener::recieveBall(const SSL_DetectionFrame& frame)
 {
     //Stop if no balls present
-    if(frame.balls_size() <= 0)
-        return;
+    if(frame.balls_size() <= 0) return;
 
     //Choose the best ball based on confidence
     auto bestDetect = std::max_element(frame.balls().begin(), frame.balls().end(),
@@ -154,74 +130,9 @@ void SSLVisionListener::recieveBall(const SSL_DetectionFrame& frame)
     //If it is still a good detection...
     if(isGoodDetection(*bestDetect, frame, CONF_THRESHOLD_BALL, FOUR_CAMERA_MODE))
     {
-        Point b_pos = Point(bestDetect->x(), bestDetect->y());
-        if(side == FIELD_SIDE_POSITIVE) b_pos *= -1;
-
-//        GuiInterface* gui = GuiInterface::getGuiInterface();
-//        gui->drawPath(b_pos, b_pos, 0.1);
-
-        // Record velocity history
-        Point k_b_pos = Point(u(2), u(4));
-        vel_hist[i_vel_hist] = k_b_pos - prev_k_b_pos;
-        i_vel_hist = (i_vel_hist + 1) % (VEL_HIST_SIZE - 1);
-        prev_k_b_pos = k_b_pos;
-
-        // Calculate Average Velocity from history
-        Point avg_vel = Point(0,0);
-        for(Point v: vel_hist)
-            avg_vel += v;
-
-        avg_vel /= (VEL_HIST_SIZE * 0.0193);
-        // 0.0193 is the seconds between frames
-
-        // Kalman Filter
-        if(!kfilter_init)
-        {
-            // Initialize Filter
-            KFBall::Matrix P0;
-            P0.resize(4,4);
-            P0(1,1) = 500;
-            P0(2,2) = 100;
-            P0(3,3) = 500;
-            P0(4,4) = 100;
-
-            KFBall::Vector x(4);
-            x(1) = 0.0;
-            x(2) = b_pos.x;
-            x(3) = 0.0;
-            x(4) = b_pos.y;
-
-            kfilter->init(x, P0);
-            kfilter_init = true;
-        }
-        else
-        {
-            // Update Filter
-            KFBall::Vector z(4);
-            z(1) = avg_vel.x;
-            z(2) = b_pos.x;
-            z(3) = avg_vel.y;
-            z(4) = b_pos.y;
-
-            kfilter->step(u, z);
-
-            KFBall::Vector state = kfilter->getX();
-
-//            GuiInterface* gui = GuiInterface::getGuiInterface();
-//            gui->drawPath(b_pos, b_pos + avg_vel, 0.1);
-
-            for(int i = 1; i <= 4; ++i)
-                u(i) = state(i);
-
-            // Update GameModel
-            Ball::setPosition(Point(state(2), state(4)));
-
-            double b_vel = hypot(state(1), state(3));
-            if(b_vel < B_STOP_THRESH)
-                Ball::setVelocity(Point(0, 0));
-            else
-                Ball::setVelocity(Point(state(1), state(3)));
-        }
+        kfilter.newObservation(Point(bestDetect->x(),bestDetect->y()));
+        Ball::setPosition(kfilter.getPosition());
+        Ball::setVelocity(kfilter.getVelocity());
     }
 }
 

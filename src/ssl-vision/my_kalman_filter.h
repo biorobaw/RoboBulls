@@ -1,9 +1,12 @@
 #ifndef KFILTER_H
 #define KFILTER_H
 #include "kalman/ekfilter.hpp"
-#include "src/model/game_state.h"
 #include <time.h>
 #include <deque>
+#include <src/utilities/circular_buffer.h>
+#include <src/utilities/point.h>
+
+#define VEL_HIST_SIZE 20
 
 /*!
  * @file
@@ -19,10 +22,18 @@
  * @todo Allow auto-tuning.
  */
 
-class KFBall : public Kalman::EKFilter<double,1,true,true,false>
+class MyKalmanFilter : public Kalman::EKFilter<double,1,true,true,false>
 {
 public:
-    KFBall();
+    MyKalmanFilter();
+    void newObservation(Point p);
+    Point getPosition();
+    Point getVelocity();
+private:
+     CircularBuffer<Point> velocity_history = CircularBuffer<Point>(VEL_HIST_SIZE,Point(0,0));
+     Point velocity_average = Point(0,0);
+     Point last_filtered_position = Point(0,0);
+
 protected:
     void makeA();
     void makeH();

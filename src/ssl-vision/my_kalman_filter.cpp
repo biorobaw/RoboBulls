@@ -1,4 +1,8 @@
-#include "src/communication/kfball.h"
+#include "my_kalman_filter.h"
+
+// Movement distance between detections within which the ball is said to be stationary
+#define B_STOP_THRESH 5.0
+
 
 //#if SIMULATED
 //    #define ACCEL -0.03
@@ -16,10 +20,27 @@
     #define RPOS 0.00001
 //#endif
 
-KFBall::KFBall():a(ACCEL), T(TIME_STEP)
+MyKalmanFilter::MyKalmanFilter():a(ACCEL), T(TIME_STEP)
 {
     // setDim(x, u, w, z, v)
     setDim(4, 4, 4, 4, 4);
+
+    MyKalmanFilter::Matrix P0;
+    P0.resize(4,4);
+    P0(1,1) = 500;
+    P0(2,2) = 100;
+    P0(3,3) = 500;
+    P0(4,4) = 100;
+
+    MyKalmanFilter::Vector x(4);
+    x(1) = 0.0;
+    x(2) = 0;
+    x(3) = 0.0;
+    x(4) = 0;
+
+    init(x,P0);
+
+
 }
 
 int sign(double x)
@@ -33,7 +54,7 @@ int sign(double x)
 }
 
 // State Vector
-void KFBall::makeProcess()
+void MyKalmanFilter::makeProcess()
 {
     Vector x_(x.size());
 
@@ -61,7 +82,7 @@ void KFBall::makeProcess()
 }
 
 // Measurements
-void KFBall::makeMeasure()
+void MyKalmanFilter::makeMeasure()
 {
     z(1)= x(1);
     z(2)= x(2);
@@ -70,7 +91,7 @@ void KFBall::makeMeasure()
 }
 
 // State Vector Jacobian
-void KFBall::makeA()
+void MyKalmanFilter::makeA()
 {
     A(1,1) = 1.0;
     A(1,2) = 0.0;
@@ -94,7 +115,7 @@ void KFBall::makeA()
 }
 
 // Measurement Noise derivative
-void KFBall::makeW()
+void MyKalmanFilter::makeW()
 {
     for (size_t i = 1; i <= W.ncol(); ++i)
         for (size_t j = 1; j <= W.nrow(); ++j)
@@ -107,7 +128,7 @@ void KFBall::makeW()
 }
 
 // Process Noise derivatives
-void KFBall::makeH()
+void MyKalmanFilter::makeH()
 {
     for (size_t i = 1; i <= H.ncol(); ++i)
         for (size_t j = 1; j <= H.nrow(); ++j)
@@ -120,7 +141,7 @@ void KFBall::makeH()
 }
 
 // Measurement Noise derivatives
-void KFBall::makeV()
+void MyKalmanFilter::makeV()
 {
     V(1,1) = 1.0;
     V(2,2) = 1.0;
@@ -129,7 +150,7 @@ void KFBall::makeV()
 }
 
 // Process Noise Covariance
-void KFBall::makeQ()
+void MyKalmanFilter::makeQ()
 {
     Q(1,1) = QVEL;
     Q(2,2) = QPOS;
@@ -138,7 +159,7 @@ void KFBall::makeQ()
 }
 
 // Measurement Noise Covariance
-void KFBall::makeR()
+void MyKalmanFilter::makeR()
 {
     R(1,1) = RVEL;
     R(2,2) = RPOS;
@@ -146,7 +167,7 @@ void KFBall::makeR()
     R(4,4) = RPOS;
 }
 
-void KFBall::printTimeStep()
+void MyKalmanFilter::printTimeStep()
 {
     // Store the time steps in a deque
     time_t curr_clock = clock();
@@ -165,4 +186,55 @@ void KFBall::printTimeStep()
     time_step /= n_records;
 
     std::cout << "Time Step: " << time_step/(double)CLOCKS_PER_SEC << std::endl;
+}
+
+
+void MyKalmanFilter::newObservation(Point new_position){
+
+    //TODO: verify if the required velocity is the last filtered average
+    Vector z(4);
+    z(1) = velocity_average.x;
+    z(2) = new_position.x;
+    z(3) = velocity_average.y;
+    z(4) = new_position.y;
+
+    Vector state = getX(); // get current state
+    step(state,z);         // update state
+    state = getX();        // get state after update
+
+
+    Point new_filtered_position = Point(state(2),state(4));
+
+
+    // GuiInterface* gui = GuiInterface::getGuiInterface();
+    // gui->drawPath(b_pos, b_pos + avg_vel, 0.1);
+
+    // calculate velocity since last observation, why do we do this?, see previous comment
+    // old code assumed 0.0193s between message
+    // TODO: get actual delta T between measurements insteaad of assumed value
+    Point v = (new_filtered_position - last_filtered_position)/0.0193;
+
+    // recalculate average velocity (incremental method)
+    Point oldest_v = velocity_history[-1];
+    velocity_average += ( v - oldest_v )/velocity_history.getSize();
+
+    // push new velocity to the list
+    velocity_history.push(v);
+    last_filtered_position = new_filtered_position;
+
+
+
+
+
+}
+
+Point MyKalmanFilter::getPosition(){
+    return last_filtered_position;
+}
+
+Point MyKalmanFilter::getVelocity(){
+    Vector state = getX();
+    double b_vel = hypot(state(1), state(3));
+    Point v = Point(state(1),state(3));
+    return b_vel < B_STOP_THRESH ? Point(0, 0) : Point(state(1), state(3));
 }

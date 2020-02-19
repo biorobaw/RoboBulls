@@ -73,6 +73,7 @@ SOURCES += src/main.cpp \
         src/skill/kicktopointomni.cpp \
         src/skill/stop.cpp \
         src/ssl-game-controller/sss_refbox_listener.cpp \
+        src/ssl-vision/my_kalman_filter.cpp \
         src/ssl-vision/ssl_vision_listener.cpp \
         src/strategy/freekickstrategy.cpp \
         src/strategy/haltstrategy.cpp \
@@ -91,7 +92,6 @@ SOURCES += src/main.cpp \
         src/utilities/velocitycalculator.cpp \
         src/behavior/defendbehavior.cpp \
         src/strategy/indirectkickstrategy.cpp \
-        src/communication/kfball.cpp \
         src/utilities/region/sector.cpp \
         src/utilities/region/rectangle.cpp \
         src/utilities/measurements.cpp \
@@ -151,6 +151,7 @@ HEADERS += \
         src/skill/skill.h \
         src/skill/stop.h \
         src/ssl-game-controller/sss_refbox_listener.h \
+        src/ssl-vision/my_kalman_filter.h \
         src/ssl-vision/ssl_vision_listener.h \
         src/strategy/freekickstrategy.h \
         src/strategy/haltstrategy.h \
@@ -162,13 +163,13 @@ HEADERS += \
         src/strategy/strategy.h \
         src/strategy/teststrategy.h \
         src/strategy/videostrategies.h \
+        src/utilities/circular_buffer.h \
         src/utilities/comparisons.h \
         src/utilities/debug.h \
         src/utilities/edges.h \
         src/utilities/point.h \
         src/utilities/velocitycalculator.h \
         src/strategy/indirectkickstrategy.h \
-        src/communication/kfball.h \
         src/utilities/region/sector.h \
         src/utilities/region/rectangle.h \
         src/utilities/region/region.h \
