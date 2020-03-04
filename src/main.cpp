@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <iostream>
 #include "ssl-vision/ssl_vision_listener.h"
-#include "communication/robcomm.h"
+#include "robot/robcomm.h"
 #include "ssl-game-controller/sss_refbox_listener.h"
 #include "model/game_state.h"
 #include "gui/guiinterface.h"
@@ -171,13 +171,16 @@ int main(int argc, char *argv[])
 
 
     // stop threads
-    visionCommunicator.stop();
     refCommunicator.stop();
-    RobComm::close_communication(Robot::getAllRobots());
+    refCommunicator.wait();
+
+    visionCommunicator.stop();
+    visionCommunicator.wait();
+
+    for(int i=0;i<2;i++)
+        Team::getTeam(i)->closeCommunication();
 
     // wait for threads to close:
-    visionCommunicator.wait();
-    refCommunicator.wait();
     std::cout<< "result: " << result << std::endl;
 
     return result;

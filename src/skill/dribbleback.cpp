@@ -1,3 +1,5 @@
+#define _USE_MATH_DEFINES
+#include <cmath>
 #include "dribbleback.h"
 #include "model/ball.h"
 #include "model/field.h"
@@ -44,9 +46,10 @@ bool DribbleBack::perform(Robot* robot)
         else
         {
             Point move_point = bp + (*target - bp)*(ROBOT_RADIUS/Measurements::mag(*target - bp));
-            move_skill.setVelocityMultiplier(1.0);
-            move_skill.updateGoal(move_point, ang_to_ball, false, false);
-            move_skill.perform(robot);
+            cmd.velocity_multiplier = 1;
+            cmd.setTarget(move_point,ang_to_ball);
+            cmd.avoidBall = cmd.avoidObstacles = false;
+            robot->getPilot()->goToPose(cmd);
         }
         break;
     }
@@ -65,10 +68,12 @@ bool DribbleBack::perform(Robot* robot)
 
         robot->setDribble(true);
 
-        move_skill.updateGoal(grasp_point, ang_to_ball, false, false);
-        move_skill.setVelocityMultiplier(0.2);
+        cmd.setTarget(grasp_point,ang_to_ball);
+        cmd.avoidBall = cmd.avoidObstacles = false;
+        cmd.velocity_multiplier = 0.2;
+        robot->getPilot()->goToPose(cmd);
 
-        if(move_skill.perform(robot))
+        if(robot->getPilot()->finisedLastCommand())
             state = move_back;
 
         break;
@@ -92,10 +97,8 @@ bool DribbleBack::perform(Robot* robot)
         float vel = fmax(-3, prev_vel - 0.05);
         prev_vel = vel;
 
-        robot->setLF(vel);
-        robot->setLB(vel);
-        robot->setRF(vel);
-        robot->setRB(vel);
+        robot->getPilot()->setManualVelocity(Point(0,0),vel/4);
+
     }
 
     }

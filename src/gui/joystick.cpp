@@ -1,4 +1,7 @@
+#define _USE_MATH_DEFINES
+#include <cmath>
 #include "gui/joystick.h"
+#include "robot/navigation/commands/CmdGoToPose.h"
 
 //Configuration section
 namespace JoyStick
@@ -124,9 +127,8 @@ void setCommands()
                 double yPos = p.y +  trans_mult * axes[joy_id][conf.jAxisMoveUp];
 
                 // Set velocities on robot object through movement interface
-                Move::GoToPose go_to_pose;
-                go_to_pose.updateGoal(Point(xPos, yPos), oPos, false, false);
-                go_to_pose.perform(r, Move::MoveType::Default);
+                CmdGoToPose cmd(Point(xPos, yPos), oPos, false, false);
+                r->getPilot()->goToPose(cmd);
 
                 // Set button inputs
                 r->setKick(buttons[joy_id][0]);

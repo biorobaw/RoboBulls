@@ -68,8 +68,9 @@ void PenaltyGoalie::perform(Robot* robot)
 
     GuiInterface::getGuiInterface()->drawLine(block_point, bp);
 
-    setVelocityMultiplier(1.5);
-    setMovementTargets(block_point, angleToBall, false, false);
+    cmd.velocity_multiplier = 1.5;
+    cmd.setTarget(block_point, angleToBall);
+    cmd.avoidBall = cmd.avoidObstacles = false;
     GenericMovementBehavior::perform(robot);
 }
 

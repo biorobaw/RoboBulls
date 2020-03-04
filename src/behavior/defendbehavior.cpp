@@ -207,7 +207,7 @@ DefendState* DSIdle::action(Robot* robot)
         Point chosenPoint = *chosenPointPtr;
 
         float robBallAng = Measurements::angleBetween(robot, Ball::getPosition());
-        setMovementTargets(chosenPoint, robBallAng);
+        cmd.setTarget(chosenPoint, robBallAng);
         GenericMovementBehavior::perform(robot);
 
         /* If the ball is coming to us, and we are certain, we want to kick the ball.
@@ -292,7 +292,8 @@ DSIntercept::DSIntercept()
 #if DEFENDBEHAVIOR_DEBUG
     std::cout << "DefendStateKick Created" << std::endl;
 #endif
-    setMovementTolerances(DIST_TOLERANCE/10, ROT_TOLERANCE);
+    cmd.distance_tolerance = DIST_TOLERANCE/10;
+    cmd.angle_tolerance = ROT_TOLERANCE;
 }
 
 DSIntercept::~DSIntercept()
@@ -320,7 +321,7 @@ DefendState* DSIntercept::action(Robot* robot)
         if(!kickingBall) {
             tryGetValidLinePoint(robot);
             float ballRobAng = Measurements::angleBetween(robot, bp);
-            setMovementTargets(linePoint, ballRobAng);
+            cmd.setTarget(linePoint, ballRobAng);
             GenericMovementBehavior::perform(robot);
 
             //If the ball is close, and we are the closet to the ball,

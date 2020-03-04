@@ -6,7 +6,7 @@
 #include <cmath>
 #include <vector>
 
-#include "model/robot.h"
+#include "robot/robot.h"
 #include "model/game_state.h"
 
 /*! @file

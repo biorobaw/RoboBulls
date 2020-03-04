@@ -45,10 +45,7 @@ public:
         {
             wait4recharge = true;
             start = std::clock();
-            robot->setLF(0);
-            robot->setLB(0);
-            robot->setRF(0);
-            robot->setRB(0);
+            robot->getPilot()->setManualVelocity(Point(0,0),0);
         }
 
         // If 6 seconds have passed since starting recharge,
@@ -119,7 +116,7 @@ class RotBeh : public GenericMovementBehavior
     void perform(Robot * robot) override
     {
         float ang = Measurements::angleBetween(robot, Ball::getPosition());
-        setMovementTargets(robot->getPosition(), ang);
+        cmd.setTarget(robot->getPosition(),ang);
         GenericMovementBehavior::perform(robot);
     }
 };
@@ -140,11 +137,12 @@ public:
     void perform(Robot * robot) override
     {
         Point target = Point(1500,0);
-        setMovementTargets(target,0, false, false);
+        cmd.setTarget(target,0);
+        cmd.avoidBall = cmd.avoidObstacles = false;
 
         std::cout << "Distance Error: " << Measurements::distance(robot->getPosition(),target) << std::endl;
         std::cout << "Angle Error in Degrees: " << robot->getOrientation()*180/M_PI << std::endl;
-        GenericMovementBehavior::perform(robot,Move::MoveType::Default);
+        GenericMovementBehavior::perform(robot);
     }
 };
 
@@ -165,16 +163,18 @@ public:
         switch(state)
         {
             case pos_one:
-                setMovementTargets(A,ori,true,true);
+                cmd.setTarget(A,ori);
+                cmd.avoidBall = cmd.avoidObstacles = true;
                 if (Measurements::isClose(rp,A,DIST_TOLERANCE))
                 state = pos_two;
                 break;
             case pos_two:
-                setMovementTargets(B,ori,true,true);
+                cmd.setTarget(B,ori);
+                cmd.avoidBall = cmd.avoidObstacles = true;
                 if (Measurements::isClose(rp,B,DIST_TOLERANCE))
                 state = pos_one;
         }
-        GenericMovementBehavior::perform(robot, Move::MoveType::Default);
+        GenericMovementBehavior::perform(robot);
     }
 };
 
@@ -190,9 +190,9 @@ public:
     Point offset;
 
     void perform(Robot *robot) override  {
-        setMovementTargets(Ball::getPosition() + offset,
-                           Measurements::angleBetween(robot->getPosition(),Ball::getPosition()),
-                           true, true);
+        cmd.setTarget(Ball::getPosition() + offset,
+                     Measurements::angleBetween(robot->getPosition(),Ball::getPosition()));
+        cmd.avoidBall = cmd.avoidObstacles = true;
         GenericMovementBehavior::perform(robot);
     }
 };

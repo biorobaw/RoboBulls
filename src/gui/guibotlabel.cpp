@@ -2,7 +2,7 @@
 
 #include "model/game_state.h"
 #include "guibotlabel.h"
-#include"src/movement/move_collisions.h"
+#include"robot/navigation/path_planning/move_collisions.h"
 
 #include "model/ball.h"
 
@@ -41,7 +41,7 @@ void GuiBotLabel::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
         if(Team::getTeam(team)->isControlled()) {
            Robot* robot = Team::getTeam(team)->getRobot(id);
            if(robot) {
-                label = "" + QString::number(id) + "(" + QString::number(Move::Collisions::getMoveStatus(robot)) + ")";
+                label = "" + QString::number(id) + "(" + QString::number(Collisions::getMoveStatus(robot)) + ")";
 
                 //Drawing ball indicator
                 Robot* r = Ball::getRobotWithBall();

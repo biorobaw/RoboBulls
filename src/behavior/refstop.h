@@ -21,7 +21,7 @@ class RefStop : public GenericMovementBehavior
 public:
     RefStop();
     void perform(Robot*) override;
-    bool isFinished();
+    bool isFinished() override;
 private:
     bool finished;
 };

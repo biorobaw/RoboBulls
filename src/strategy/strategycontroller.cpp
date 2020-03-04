@@ -1,7 +1,6 @@
 #include "strategy/strategy.h"
-#include "movement/move.h"
 #include "model/game_state.h"
-#include "model/robot.h"
+#include "robot/robot.h"
 #include "strategy/stopstrategy.h"
 #include "strategy/teststrategy.h"
 #include "strategy/kickoffstrategy.h"
@@ -10,7 +9,7 @@
 #include "strategy/penaltystrategy.h"
 #include "strategy/indirectkickstrategy.h"
 #include "strategy/haltstrategy.h"
-#include "communication/robcomm.h"
+#include "robot/robcomm.h"
 #include "gui/guiinterface.h"
 #include "strategycontroller.h"
 #include "model/game_state.h"
@@ -131,7 +130,7 @@ void StrategyController::sendRobotCommands()
          }
     }
 
-    RobComm::sendVels(team->getRobots());
+    team->sendVels();
     //std::cout<<"frameEnd() get called\n"<<std::endl;
 }
 

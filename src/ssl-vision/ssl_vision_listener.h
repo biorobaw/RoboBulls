@@ -3,7 +3,7 @@
 #include <string>
 #include <QtCore/QThread>
 #include "model/game_state.h"
-#include "model/robot.h"
+#include "robot/robot.h"
 #include "my_kalman_filter.h"
 #include "gui/guiinterface.h"
 #include "yaml-cpp/yaml.h"

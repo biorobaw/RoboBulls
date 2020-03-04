@@ -43,8 +43,6 @@ SOURCES += src/main.cpp \
         src/behavior/attacksupport.cpp \
         src/behavior/behavior.cpp \
         src/behavior/genericmovementbehavior.cpp \
-        src/communication/robcomm.cpp \
-        src/communication/simrobcomm.cpp \
         src/gui/fieldpanel.cpp \
         src/gui/gamepanel.cpp \
         src/gui/guiball.cpp \
@@ -64,11 +62,23 @@ SOURCES += src/main.cpp \
         src/model/ball.cpp \
         src/model/field.cpp \
         src/model/game_state.cpp \
-        src/model/robot.cpp \
-        src/movement/four_wheel_omni/four_wheel_omni_pilot.cpp \
-        src/movement/move_collisions.cpp \
-        src/movement/pathfinding/fppa_pathfinding.cpp \
-        src/movement/three_wheel_omni/three_wheel_omni_pilot.cpp \
+        src/robot/navigation/commands/CmdGoToPose.cpp \
+        src/robot/navigation/drives/differential.cpp \
+        src/robot/navigation/drives/omni_drive.cpp \
+        src/robot/navigation/path_planning/fppa_pathfinding.cpp \
+        src/robot/navigation/path_planning/move_collisions.cpp \
+        src/robot/navigation/pilots/pilot_differential.cpp \
+        src/robot/navigation/pilots/pilot_dummy.cpp \
+        src/robot/navigation/pilots/pilot_omni.cpp \
+        src/robot/navigation/robot_pilot.cpp \
+        src/robot/robcomm.cpp \
+        src/robot/robot.cpp \
+        src/robot/robots/grsim/robcomm_grsim.cpp \
+        src/robot/robots/grsim/robot_grsim.cpp \
+        src/robot/robots/none/robotnone.cpp \
+        src/robot/robots/yisibot/robcomm_yisibot.cpp \
+        src/robot/robots/yisibot/robot_yisibot.cpp \
+        src/robot/robots/yisibot/crc.cpp \
         src/skill/kick.cpp \
         src/skill/kicktopointomni.cpp \
         src/skill/stop.cpp \
@@ -106,10 +116,6 @@ SOURCES += src/main.cpp \
         src/behavior/markbot.cpp \
         src/behavior/wall.cpp \
         src/behavior/penaltygoalie.cpp \
-        src/communication/yisirobcomm.cpp \
-        src/communication/crc.cpp \
-        src/movement/go_to_pose.cpp \
-        src/movement/differential/differential_pilot.cpp \
         src/model/team.cpp \
         src/parameters/motion_parameters.cpp
 
@@ -120,8 +126,6 @@ HEADERS += \
         src/behavior/defendbehavior.h \
         src/behavior/genericmovementbehavior.h \
         src/behavior/genericskillbehavior.h \
-        src/communication/robcomm.h \
-        src/communication/simrobcomm.h \
         src/gui/fieldpanel.h \
         src/gui/gamepanel.h \
         src/gui/guiball.h \
@@ -141,11 +145,23 @@ HEADERS += \
         src/model/ball.h \
         src/model/field.h \
         src/model/game_state.h \
-        src/model/robot.h \
-        src/movement/go_to_pose.h \
-        src/movement/move_collisions.h \
-        src/movement/movetype.h \
-        src/movement/pathfinding/fppa_pathfinding.h \
+        src/robot/navigation/commands/CmdGoToPose.h \
+        src/robot/navigation/drives/differential.h \
+        src/robot/navigation/drives/omni_drive.h \
+        src/robot/navigation/path_planning/fppa_pathfinding.h \
+        src/robot/navigation/path_planning/move_collisions.h \
+        src/robot/navigation/pilots/pilot_differential.h \
+        src/robot/navigation/pilots/pilot_dummy.h \
+        src/robot/navigation/pilots/pilot_omni.h \
+        src/robot/navigation/robot_pilot.h \
+        src/robot/robcomm.h \
+        src/robot/robot.h \
+        src/robot/robots/grsim/robcomm_grsim.h \
+        src/robot/robots/grsim/robot_grsim.h \
+        src/robot/robots/none/robotnone.h \
+        src/robot/robots/yisibot/robcomm_yisibot.h \
+        src/robot/robots/yisibot/robot_yisibot.h \
+        src/robot/robots/yisibot/crc.h \
         src/skill/kick.h \
         src/skill/kicktopointomni.h \
         src/skill/skill.h \
@@ -185,11 +201,6 @@ HEADERS += \
         src/behavior/markbot.h \
         src/behavior/wall.h \
         src/behavior/penaltygoalie.h \
-        src/communication/yisirobcomm.h \
-        src/communication/crc.h \
-        src/movement/differential/differential_pilot.h \
-        src/movement/three_wheel_omni/three_wheel_omni_pilot.h \
-        src/movement/four_wheel_omni/four_wheel_omni_pilot.h \
         src/model/team.h \
         src/parameters/motion_parameters.h
 

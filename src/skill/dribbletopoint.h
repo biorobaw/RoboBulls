@@ -3,7 +3,7 @@
 
 #include "skill.h"
 #include "utilities/point.h"
-#include "movement/go_to_pose.h"
+#include "robot/navigation/commands/CmdGoToPose.h"
 #include "model/game_state.h"
 
 namespace Skill
@@ -31,11 +31,11 @@ public:
     bool perform(Robot*) override;
 
 private:
+
     Point* target;
-    bool avoid_obstacles = true;
     bool prefer_forward_motion = true;
     Point grasp_point;
-    Move::GoToPose move_skill;
+    CmdGoToPose cmd = CmdGoToPose(Point(0,0),0,true,false);
     enum {move_to_ball, grasp, move_to_target, adjust1, adjust2} state;
 
     bool targetIsAhead(const float& ang_to_ball, const Point& rp);

@@ -11,7 +11,7 @@
 #include "selrobotpanel.h"
 #include "ui_mainwindow.h"
 #include "model/game_state.h"
-#include "model/robot.h"
+#include "robot/robot.h"
 #include "utilities/measurements.h"
 //Helper classes
 #include "guirobot.h"

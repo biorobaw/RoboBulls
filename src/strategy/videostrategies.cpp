@@ -115,7 +115,7 @@ void  BallReceiver::perform(Robot* robot)
     }
 
     float ang = Measurements::angleBetween(robot, Ball::getPosition());
-    setMovementTargets(target, ang);
+    cmd.setTarget(target,ang);
     GenericMovementBehavior::perform(robot);
 }
 

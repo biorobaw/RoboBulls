@@ -53,7 +53,7 @@ void Wall::perform(Robot * robot)
 
                 // If we are occupying it, move to it
                 if(wp.id == robot->getID())
-                    setMovementTargets(wp.position, ang2ball);
+                    cmd.setTarget(wp.position, ang2ball);
             }
         }
 

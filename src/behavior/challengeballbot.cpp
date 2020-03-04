@@ -19,14 +19,20 @@ void ChallengeBallBot::perform(Robot *robot)
         Point target = bp + lead;
 
         float myAng2Opp = Measurements::angleBetween(robot, ballBot);
-        setMovementTargets(target, myAng2Opp);
+        auto cmd = CmdGoToPose(target,myAng2Opp);
+        robot->getPilot()->goToPose(cmd);
     }
     else
     {
         //Case to stop robot from floating
 //        std::cout << "stop" << std::endl;
-        setMovementTargets(robot->getPosition());
+        auto cmd = CmdGoToPose(robot->getPosition());
+        robot->getPilot()->goToPose(cmd);
     }
-
-    GenericMovementBehavior::perform(robot);
+    done = robot->getPilot()->finisedLastCommand();
 }
+
+bool ChallengeBallBot::isFinished() {
+    return done;
+}
+

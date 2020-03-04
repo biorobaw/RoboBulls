@@ -27,13 +27,13 @@ void RefStop::perform(Robot * robot)
         if(reposition_invalid)
             reposition = Point(0,0);
 
-        setVelocityMultiplier(1);
-        setMovementTargets(reposition, Measurements::angleBetween(robot->getPosition(), bp));
+        cmd.velocity_multiplier = 1;
+        cmd.setTarget(reposition, Measurements::angleBetween(robot->getPosition(), bp));
 
         finished  = false;
     }
     else
-        setVelocityMultiplier(0);
+        cmd.velocity_multiplier = 0;
 
     GenericMovementBehavior::perform(robot);
 

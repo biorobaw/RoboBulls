@@ -1,3 +1,5 @@
+#define _USE_MATH_DEFINES
+#include <cmath>
 #include "dribbletopoint.h"
 #include "model/ball.h"
 #include "model/field.h"
@@ -11,10 +13,10 @@ DribbleToPoint::DribbleToPoint(Point& target, bool avoid_obstacles, bool prefer_
 
 DribbleToPoint::DribbleToPoint(Point* target, bool avoid_obstacles, bool prefer_forward_motion)
     : target(target)
-    , avoid_obstacles(avoid_obstacles)
     , prefer_forward_motion(prefer_forward_motion)
     , state(move_to_ball)
 {
+    cmd.avoidObstacles = avoid_obstacles;
 }
 
 bool DribbleToPoint::perform(Robot* robot)
@@ -45,9 +47,9 @@ bool DribbleToPoint::perform(Robot* robot)
         }
         else
         {
-            move_skill.setVelocityMultiplier(1.0);
-            move_skill.updateGoal(bp, ang_to_ball, avoid_obstacles, false);
-            move_skill.perform(robot);
+            cmd.setTarget(bp,ang_to_ball);
+            cmd.avoidBall = false;
+            robot->getPilot()->goToPose(cmd);
         }
         break;
     }
@@ -71,10 +73,11 @@ bool DribbleToPoint::perform(Robot* robot)
 
         robot->setDribble(true);
 
-        move_skill.updateGoal(grasp_point, ang_to_ball, avoid_obstacles, false);
-        move_skill.setVelocityMultiplier(0.3);
-
-        if(move_skill.perform(robot))
+        cmd.setTarget(grasp_point,ang_to_ball);
+        cmd.avoidBall = false;
+        cmd.velocity_multiplier = 0.3;
+        robot->getPilot()->goToPose(cmd);
+        if(robot->getPilot()->finisedLastCommand())
             state = move_to_target;
 
         break;
@@ -101,9 +104,10 @@ bool DribbleToPoint::perform(Robot* robot)
 
         float ang_to_target = Measurements::angleBetween(rp, *target);
 
-        move_skill.setVelocityMultiplier(1.0);
-        move_skill.updateGoal(*target, ang_to_target, avoid_obstacles, false);
-        move_skill.perform(robot, Move::MoveType::dribble);
+        cmd.velocity_multiplier = 1;
+        cmd.setTarget(*target, ang_to_target);
+        cmd.avoidBall = false;
+        robot->getPilot()->goToPose(cmd);
         break;
     }
     case adjust1:
@@ -115,10 +119,13 @@ bool DribbleToPoint::perform(Robot* robot)
                                    bp.y + ROBOT_RADIUS*2 * sin(theta));
 
         robot->setDribble(false);
-        move_skill.updateGoal(adjust_point, ang_to_ball, avoid_obstacles, true);
-        move_skill.setVelocityMultiplier(1.0);
+        cmd.velocity_multiplier = 1;
+        cmd.setTarget(adjust_point, ang_to_ball);
+        cmd.avoidBall = true;
+        robot->getPilot()->goToPose(cmd);
 
-        if(move_skill.perform(robot))
+
+        if(robot->getPilot()->finisedLastCommand())
             state = adjust2;
 
         break;
@@ -132,10 +139,13 @@ bool DribbleToPoint::perform(Robot* robot)
                                    bp.y + ROBOT_RADIUS*2 * sin(theta));
 
         robot->setDribble(false);
-        move_skill.updateGoal(adjust_point, ang_to_ball, avoid_obstacles, true);
-        move_skill.setVelocityMultiplier(1.0);
+        cmd.velocity_multiplier = 1;
+        cmd.setTarget(adjust_point, ang_to_ball);
+        cmd.avoidBall = true;
+        robot->getPilot()->goToPose(cmd);
 
-        if(move_skill.perform(robot)
+
+        if(robot->getPilot()->finisedLastCommand()
         || Measurements::distance(rp, bp) > ROBOT_RADIUS*3)
             state = move_to_ball;
 

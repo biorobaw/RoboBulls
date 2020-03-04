@@ -89,53 +89,14 @@ void ObjectPosition::getOldSpeeds() {
 //}
 
 int ObjectPosition::getVelocity(int id) {
-    int velocity = 0;
-    int wheels = 0;
-    int LF = 0;
-    int RF = 0;
-    int LB = 0;
-    int RB = 0;
 
     auto* robot = dash->getSelectedTeam()->getRobot(id);
     if(robot == NULL)
         return 0;
 
-    if (robot->getDriveType() == fourWheelOmni ) {
-            LF = robot->getLF();
-            RF = robot->getRF();
-            LB = robot->getLB();
-            RB = robot->getRB();
-            velocity += LF;
-            wheels++;
-            velocity += RF;
-            wheels++;
-            velocity += LB;
-            wheels++;
-            velocity += RB;
-            wheels++;
-    } else if ( robot->getDriveType() == differential ) {
-            LF = robot->getL();
-            RF = robot->getR();
-            velocity += LF;
-            wheels++;
-            velocity += RF;
-            wheels++;
-    } else if ( robot->getDriveType() == threeWheelOmni ) {
-            LF = robot->getLF();
-            RF = robot->getRF();
-        int b = robot->getB();
-            velocity += LF;
-            wheels++;
-            velocity += RF;
-            wheels++;
-            velocity += b;
-            wheels++;
-    }
+    auto v = robot->getPilot()->getVel();
 
-    if (velocity != 0 && wheels != 0)
-        velocity /= wheels;
-
-    return velocity;
+    return sqrt(v.x*v.x+v.y*v.y);
 }
 
 

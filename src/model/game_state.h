@@ -3,7 +3,7 @@
 #include <vector>
 #include "utilities/point.h"
 #include "utilities/measurements.h"
-#include "model/robot.h"
+#include "robot/robot.h"
 #include "model/team.h"
 #include <mutex>
 #include "yaml-cpp/yaml.h"

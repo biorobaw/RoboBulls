@@ -46,17 +46,16 @@ void SSLVisionListener::receiveRobot(const SSL_DetectionRobot& robot, int detect
         Team* team =  Team::getTeam(detectedTeamColor);
         Robot* rob = team->getRobot(id);
 
-        // cout << "--Detected: color,id: " << detectedTeamColor << " " << id << std::endl;
+//         cout << "--Detected: color,id: " << detectedTeamColor << " " << id << std::endl;
 
 
         if (rob == NULL) rob = team->addRobot(id);
 
 
         // Assumption: rob contains the robot with id == detected_id
-        //std::cout << " positionReading("<<robot.x()<<","<< robot.y()<<");\n ";
+//        std::cout << " positionReading("<<robot.x()<<","<< robot.y()<<");\n ";
         Point positionReading(robot.x(), robot.y());//Point
         float rotationReading = robot.orientation();
-
         rob->setRobotPosition(positionReading);
         rob->setOrientation(rotationReading);
     }
@@ -223,7 +222,6 @@ void SSLVisionListener::run(){
                     recieveBall(frames[i]);
                     recieveRobotTeam(frames[i], TEAM_BLUE);
                     recieveRobotTeam(frames[i], TEAM_YELLOW);
-                    frames_state[i] = false;
                 }
 
                 /* After we have had a chance to initially recieve all robots,

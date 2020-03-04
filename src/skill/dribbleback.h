@@ -3,7 +3,7 @@
 
 #include "skill.h"
 #include "utilities/point.h"
-#include "movement/go_to_pose.h"
+#include "robot/navigation/commands/CmdGoToPose.h"
 #include "model/game_state.h"
 
 namespace Skill
@@ -33,7 +33,7 @@ public:
 private:
     Point* target;
     Point grasp_point;
-    Move::GoToPose move_skill;
+    CmdGoToPose cmd = CmdGoToPose(Point(0,0),0,true,false);
     enum {move_to_ball, grasp, move_back} state = move_to_ball;
     float prev_vel = 0;
 };

@@ -114,12 +114,14 @@ bool KickToPointOmni::perform(Robot* robot)
             robot->setDribble(false);
 
             behindBall = bp + Point(BEHIND_RAD_AVOID * cos(targetBallAng), BEHIND_RAD_AVOID * sin(targetBallAng));
-            move_skill.setVelocityMultiplier(1);
-            move_skill.updateGoal(behindBall, ballTargetAng, true, true);
+            cmd.velocity_multiplier =1;
+            cmd.setTarget(behindBall, ballTargetAng);
+            cmd.avoidBall = cmd.avoidObstacles = true;
+            robot->getPilot()->goToPose(cmd);
 
             //Make sure move_skill keeps the robot at the correct pose
             //This is done by waiting for confirmation from the movement class
-            if(move_skill.perform(robot))
+            if(robot->getPilot()->finisedLastCommand())
                 ++m_moveCompletionCount;
             if(m_moveCompletionCount > FORWARD_WAIT_COUNT) {
                 state = MOVE_INTERMEDIATE;
@@ -139,13 +141,16 @@ bool KickToPointOmni::perform(Robot* robot)
             // Move towards the ball at the angle to target
             // Motion will be straight ahead, given the completion of MOVE_BEHIND
             behindBall = bp + Point(BEHIND_RAD * cos(targetBallAng), BEHIND_RAD * sin(targetBallAng));
-            move_skill.setMovementTolerances(20, 3*M_PI/180);
-            move_skill.setVelocityMultiplier(1);
-            move_skill.updateGoal(behindBall, ballTargetAng, false, false);
+            cmd.distance_tolerance = 20;
+            cmd.angle_tolerance = 3*M_PI/180;
+            cmd.velocity_multiplier = 1;
+            cmd.setTarget(behindBall, ballTargetAng);
+            cmd.avoidBall = cmd.avoidObstacles = false;
+            robot->getPilot()->goToPose(cmd);
 
             //Make sure move_skill keeps the robot at the correct pose
             //This is done by waiting for confirmation from the movement class
-            if(move_skill.perform(robot))
+            if(robot->getPilot()->finisedLastCommand())
                 ++m_moveCompletionCount;
             if(m_moveCompletionCount > FORWARD_WAIT_COUNT) {
                 state = MOVE_FORWARD;
@@ -161,9 +166,10 @@ bool KickToPointOmni::perform(Robot* robot)
 
             robot->setDribble(true);
             // Move towards the ball at the angle to target (straight)
-            move_skill.setVelocityMultiplier(0.2);
-            move_skill.updateGoal(bp - Point(BEHIND_RAD * cos(targetBallAng), BEHIND_RAD * sin(targetBallAng)), ballTargetAng, false, false);
-            move_skill.perform(robot);
+            cmd.velocity_multiplier = 0.2;
+            cmd.setTarget(bp - Point(BEHIND_RAD * cos(targetBallAng), BEHIND_RAD * sin(targetBallAng)), ballTargetAng);
+            cmd.avoidBall = cmd.avoidObstacles = false;
+            robot->getPilot()->goToPose(cmd);
 
             /* Kick when in range, or go back to moving behind if it
              * moves too far or we are in kick lock */

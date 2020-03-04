@@ -73,11 +73,11 @@ void AttackSupport::perform(Robot * robot)
         // Move to intercept only if the intercept point is near
         if(Measurements::isClose(robot, intercept_pt, 200))
         {
-            float ang2ball = Measurements::angleBetween(rp, bp);
-            setMovementTolerances(1, 0.001);
-            setVelocityMultiplier(1.5);
-            setMovementTargets(intercept_pt, ang2ball, true, false);
-            GenericMovementBehavior::perform(robot);
+            auto cmd = CmdGoToPose(intercept_pt,Measurements::angleBetween(rp, bp),true,false);
+            cmd.distance_tolerance = 1;
+            cmd.angle_tolerance = 0.001;
+            cmd.velocity_multiplier = 1.5;
+            robot->getPilot()->goToPose(cmd);
         }
         else
             state = position;
@@ -110,13 +110,13 @@ void AttackSupport::perform(Robot * robot)
         // Move towards node with highest prob of scoring while facing ball
         calcDynamicProb(robot);
 
-        ProbNode max_node = findMaxNode();
-        float ang2ball = Measurements::angleBetween(rp, bp);
 
-        setMovementTolerances(DIST_TOLERANCE, ROT_TOLERANCE);
-        setVelocityMultiplier(1.0);
-        setMovementTargets(max_node.point, ang2ball, true, false);
-        GenericMovementBehavior::perform(robot);
+        auto cmd = CmdGoToPose(findMaxNode().point,Measurements::angleBetween(rp, bp),true,false);
+        cmd.distance_tolerance = DIST_TOLERANCE;
+        cmd.angle_tolerance = ROT_TOLERANCE;
+        cmd.velocity_multiplier = 1.0;
+        robot->getPilot()->goToPose(cmd);
+
     }
     }
 

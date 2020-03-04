@@ -36,8 +36,9 @@ void Goalie::perform(Robot *robot)
     {
 //        std::cout << "Ball Bot" << std::endl;
         Point blockPoint = Measurements::lineSegmentPoint(robot->getPosition(), lineSegment.first, lineSegment.second);
-        setVelocityMultiplier(1.5);
-        setMovementTargets(blockPoint, angleToBall, false, false);
+        cmd.velocity_multiplier = 1.5;
+        cmd.setTarget(blockPoint,angleToBall);
+        cmd.avoidBall = cmd.avoidObstacles = false;
         GenericMovementBehavior::perform(robot);
     }
 
@@ -46,8 +47,9 @@ void Goalie::perform(Robot *robot)
     {
 //        std::cout << "Ball Moving Towards Goal" << std::endl;
         Point blockPoint = Measurements::lineSegmentPoint(robot->getPosition(), lineSegment.first, lineSegment.second);
-        setVelocityMultiplier(1.5);
-        setMovementTargets(blockPoint, angleToBall, false, false);
+        cmd.velocity_multiplier = 1.5;
+        cmd.setTarget(blockPoint,angleToBall);
+        cmd.avoidBall = cmd.avoidObstacles = false;
         GenericMovementBehavior::perform(robot);
     }
 
@@ -135,13 +137,15 @@ void Goalie::perform(Robot *robot)
 
         if(def_area.contains(intercept_point,-ROBOT_RADIUS))
         {
-            setVelocityMultiplier(1.5);
-            setMovementTargets(intercept_point, angleToBall, false, false);
+            cmd.velocity_multiplier = 1.5;
+            cmd.setTarget(intercept_point, angleToBall);
+            cmd.avoidBall = cmd.avoidObstacles = false;
         }
         else
         {
-            setVelocityMultiplier(1);
-            setMovementTargets(idlePoint, Measurements::angleBetween(robot, Point(0,0)),false,false);
+            cmd.velocity_multiplier = 1;
+            cmd.setTarget(idlePoint, Measurements::angleBetween(robot, Point(0,0)));
+            cmd.avoidBall = cmd.avoidObstacles = false;
         }
         GenericMovementBehavior::perform(robot);
     }
@@ -152,8 +156,9 @@ void Goalie::perform(Robot *robot)
     else
     {
 //        std::cout << "Ball Out of Bounds" << std::endl;
-        setVelocityMultiplier(1);
-        setMovementTargets(idlePoint, Measurements::angleBetween(robot, Point(0,0)));
+        cmd.velocity_multiplier = 1;
+        cmd.setTarget(idlePoint, Measurements::angleBetween(robot, Point(0,0)));
+        cmd.avoidBall = cmd.avoidObstacles = false;
         GenericMovementBehavior::perform(robot);
     }
 }

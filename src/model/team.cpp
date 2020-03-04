@@ -1,7 +1,14 @@
 #include "model/team.h"
 #include <algorithm>
 
-#include "communication/robcomm.h"
+
+#include "robot/robots/grsim/robot_grsim.h"
+#include "robot/robots/grsim/robcomm_grsim.h"
+//#include "robot/robots/rpi_2019/"
+#include "robot/robots/yisibot/robot_yisibot.h"
+#include "robot/robots/yisibot/robcomm_yisibot.h"
+#include "robot/robots/none/robotnone.h"
+
 #include <assert.h>
 
 Team* Team::teams[2] = {NULL};
@@ -54,8 +61,19 @@ Team::Team(YAML::Node t_node, int _color) {
     teams[color] = this;
 
     // set robot communication:
-    RobComm::open_communication(t_node);
-
+    if( robot_type == "grsim"){
+        comm = new RobCommGrsim(t_node);
+    } else if (robot_type == "yisibot"){
+        comm = new YisiRobComm(t_node);
+    } else if (robot_type == "rpi_2019"){
+        std::cout << "ERROR: rpi_2019 is not yet supported" << std::endl;
+        exit (-1);
+    } else if (robot_type == "none"){
+        // we do not control these team, do nothing
+    } else {
+        std::cout << "ERROR: unrecognized robot type" << std::endl;
+        exit (-1);
+    }
 
     std::cout << "--Team_" << (_color == TEAM_BLUE ? "blue" : "yellow") << " DONE" <<std::endl;
 
@@ -63,6 +81,11 @@ Team::Team(YAML::Node t_node, int _color) {
 
 Team::~Team(){
     if(teams[color] == this) teams[color] = NULL;
+    closeCommunication();
+    if(comm!=nullptr) {
+        delete comm;
+        comm=nullptr;
+    }
 }
 
 
@@ -83,8 +106,20 @@ Team* Team::getTeam(int id){
 
 
 Robot* Team::addRobot(int id){
-    std::cout << robot_type << " type\n";
-    auto* aux = new Robot(id, color, robot_type, idToRole[id]);
+//    std::cout << robot_type << " type\n";
+    auto role = idToRole[id];
+    Robot* aux = nullptr;
+    if(robot_type == "grsim"){
+        aux = new RobotGrsim(id,color,role);
+    } else if (robot_type == "yisibot") {
+        aux = new RobotYisibot(id,color,role);
+    } else if (robot_type == "pi32019") {
+        //TODO: to be implemented in the future
+    } else if (robot_type == "none") {
+        // assign a dummy robot
+        aux = new RobotNone(id,color,role);
+    }
+
     robotById[id] = aux;
     robotByRoles[idToRole[id]] = aux;
     all_robots.insert(aux);
@@ -140,5 +175,16 @@ bool Team::isControlled(){
     return robot_type != "none";
 }
 
+void Team::closeCommunication(){
+    if(comm!=nullptr){
+        comm->close_communication(all_robots);
+    }
+}
+
+void Team::sendVels(){
+    if(comm!=nullptr){
+        comm->sendVels(all_robots);
+    }
+}
 
 

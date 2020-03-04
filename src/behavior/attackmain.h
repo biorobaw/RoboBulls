@@ -53,12 +53,12 @@
 
 
 
-class AttackMain:public GenericMovementBehavior
+class AttackMain : public Behavior//:public GenericMovementBehavior
 {
 public:
     AttackMain(Robot*);
    ~AttackMain();
-    void perform(Robot *);
+    void perform(Robot *) override;
     bool isFinished() override;
     bool hasKickedToGoal();
     bool hasPassed();

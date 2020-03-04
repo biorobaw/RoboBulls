@@ -1,7 +1,7 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <stdlib.h>
-#include "model/robot.h"
+#include "robot/robot.h"
 #include "measurements.h"
 
 float Measurements::mag(const Point& p)

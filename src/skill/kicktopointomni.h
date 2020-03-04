@@ -1,9 +1,9 @@
 #ifndef KTP_OMNI_H
 #define KTP_OMNI_H
-#include "model/robot.h"
+#include "robot/robot.h"
 #include "utilities/point.h"
 #include "skill/skill.h"
-#include "movement/go_to_pose.h"
+#include "robot/navigation/commands/CmdGoToPose.h"
 #include "gui/guiinterface.h"
 
 namespace Skill
@@ -45,7 +45,7 @@ public:
     bool perform(Robot* robot) override;
 
 private:
-    Move::GoToPose move_skill;
+    CmdGoToPose cmd = CmdGoToPose(Point(0,0),0,true,false);
     Point  m_targetPoint;         //Local (static-point) target stored only by first ctor
     Point* m_targetPointer;       //Pointer to point we are kicking to (m_targetPoint for static)
       int  m_moveCompletionCount; //Number of times move_skill says we are behind ball

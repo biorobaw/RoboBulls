@@ -25,7 +25,7 @@ void MarkBot::perform(Robot * robot)
         target = opp_pos + Measurements::unitVector(bp-opp_pos) * (2*ROBOT_RADIUS+50);
     }
 
-    setMovementTargets(target, ang2ball);
+    cmd.setTarget(target, ang2ball);
     GenericMovementBehavior::perform(robot);
 }
 

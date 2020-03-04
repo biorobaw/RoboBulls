@@ -2,7 +2,7 @@
 #define CHALLENGEBALLBOT_H
 
 #include "behavior/genericmovementbehavior.h"
-#include "model/robot.h"
+#include "robot/robot.h"
 #include "model/game_state.h"
 
 
@@ -13,11 +13,17 @@
  * @todo Make it so that the robot tries to knock the ball away from the opponent.
  */
 
-class ChallengeBallBot : public GenericMovementBehavior
+class ChallengeBallBot : public Behavior//public GenericMovementBehavior
 {
 public:
     ChallengeBallBot();
     void perform(Robot*) override;
+
+    bool isFinished() override;
+
+private:
+    bool done = false;
+
 };
 
 #endif // CHALLENGEBALLBOT_H

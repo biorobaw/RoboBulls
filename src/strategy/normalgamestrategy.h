@@ -1,6 +1,6 @@
 #ifndef NORMALGAMESTRATEGY_H
 #define NORMALGAMESTRATEGY_H
-#include "model/robot.h"
+#include "robot/robot.h"
 #include "strategy/strategy.h"
 #include "utilities/region/defencearea.h"
 #include "behavior/genericmovementbehavior.h"

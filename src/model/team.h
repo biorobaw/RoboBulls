@@ -4,7 +4,8 @@
 #include "yaml-cpp/yaml.h"
 #include <set>
 #include <string>
-#include "model/robot.h"
+#include "robot/robot.h"
+#include "robot/robcomm.h"
 #include "strategy/strategycontroller.h"
 
 #define MAX_ROBOTS 16 // limited by vision that recognizes only 16 patterns per team
@@ -34,6 +35,7 @@ public:
 
 
 
+
     int getColor();
     std::string getRobotType();
     int getSide();
@@ -42,6 +44,8 @@ public:
 
 
     StrategyController controller = StrategyController(this);
+    void closeCommunication();
+    void sendVels();
 
 
 private:
@@ -55,7 +59,10 @@ private:
     Robot* robotById[MAX_ROBOTS] = { NULL };
     RobotRole idToRole[MAX_ROBOTS] = {RobotRole::NONE}; // defined by user
 
+
+
     static Team* teams[2];
+    RobComm* comm;
 
 
 };

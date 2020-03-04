@@ -31,11 +31,11 @@
 #include "guiinterface.h"
 #include "guirobot.h"
 #include "joystick.h"
-#include "communication/robcomm.h"
+#include "robot/robcomm.h"
 
 // Project classes
 #include "model/game_state.h"
-#include "model/robot.h"
+#include "robot/robot.h"
 
 
 
@@ -507,26 +507,38 @@ void MainWindow::on_btn_botForward_pressed() {
         ui->btn_botForward->setDown(true);
         setMyVelocity();
         auto* selected_robot = getSelectedTeam()->getRobot(fieldpanel->selectedBot);
-        int currentFwd = objectPos->getVelocity(fieldpanel->selectedBot);
-        std::cout << "currentFwd" << currentFwd<< std::endl;
-        selected_robot->setL(currentFwd);
-        selected_robot->setR(currentFwd);
-        if (currentFwd <= 0) {
-            selected_robot->setL(currentFwd+myVelocity);
-            selected_robot->setR(currentFwd+myVelocity);
-            selected_robot->setXVel(myVelocity);
-        }
+        std::cout << "currentFwd" << myVelocity<< std::endl;
+        selected_robot->getPilot()->setManualVelocity(Point(250,0),0);
+
     }
     ui->gView_field->scene()->update();
 }
 
-void MainWindow::on_btn_botForward_released() {
+void MainWindow::on_btn_botReverse_pressed() {
+    if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
+        ui->btn_botReverse->setDown(true);
+        int currentVel = objectPos->getVelocity(fieldpanel->selectedBot);
+        auto* selected_robot = getSelectedTeam()->getRobot(fieldpanel->selectedBot);
+        selected_robot->getPilot()->setManualVelocity(Point(-250,0),0);
+    }
+    ui->gView_field->scene()->update();
+}
+
+void MainWindow::on_btn_botRotateRight_pressed() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         Robot* r = getSelectedTeam()->getRobot(fieldpanel->selectedBot);
-        ui->btn_botForward->setDown(false);
-        r->setL(0);
-        r->setR(0);
-        r->setXVel(0);
+        ui->btn_botTurnRight->setDown(true);
+        r->getPilot()->setManualVelocity(Point(0,0),-M_PI/2);
+//        r->setYVel(myVelocity);
+        std::cout << "botTurnRight_pressed" << std::endl;
+    }
+}
+
+void MainWindow::on_btn_botRotateLeft_pressed() {
+    if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
+        Robot* r = getSelectedTeam()->getRobot(fieldpanel->selectedBot);
+        ui->btn_botTurnLeft->setDown(true);
+        r->getPilot()->setManualVelocity(Point(0,0),M_PI/2);
     }
 }
 
@@ -534,79 +546,62 @@ void MainWindow::on_btn_botTurnRight_pressed() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         Robot* r = getSelectedTeam()->getRobot(fieldpanel->selectedBot);
         ui->btn_botTurnRight->setDown(true);
-        r->setL(r->getL() + myVelocity/2);//----------->>>
-        r->setR(r->getR() - myVelocity/2);
-//        r->setAngVel(myVelocity);
-        r->setYVel(myVelocity);
+        r->getPilot()->setManualVelocity(Point(0,0),-M_PI/2);
         std::cout << "botTurnRight_pressed" << std::endl;
     }
 
 }
-void MainWindow::on_btn_botRotateRight_pressed() {
+
+
+void MainWindow::on_btn_botTurnLeft_pressed() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         Robot* r = getSelectedTeam()->getRobot(fieldpanel->selectedBot);
-        ui->btn_botTurnRight->setDown(true);
-        r->setL(r->getL() + myVelocity/2);//----------->>>
-        r->setR(r->getR() - myVelocity/2);
-        r->setAngVel(myVelocity);
-//        r->setYVel(myVelocity);
-        std::cout << "botTurnRight_pressed" << std::endl;
+        ui->btn_botTurnLeft->setDown(true);
+        r->getPilot()->setManualVelocity(Point(0,0),M_PI/2);
     }
+
 }
-void MainWindow::on_btn_botTurnRight_released() {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void MainWindow::on_btn_botForward_released() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
-        ui->btn_botTurnRight->setDown(false);
-        float currentFwd = objectPos->getVelocity(fieldpanel->selectedBot);
-        auto* selected_robot = getSelectedTeam()->getRobot(fieldpanel->selectedBot);
-        selected_robot->setL(currentFwd);
-        selected_robot->setR(currentFwd);
-        selected_robot->setYVel(0);
-        std::cout << "botTurnRight_released" << std::endl;
+        Robot* r = getSelectedTeam()->getRobot(fieldpanel->selectedBot);
+        ui->btn_botForward->setDown(false);
+        r->getPilot()->setManualVelocity(Point(0,0),0);
     }
 }
+
+
+void MainWindow::on_btn_botReverse_released() {
+    if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
+        ui->btn_botReverse->setDown(false);
+        auto* selected_robot = getSelectedTeam()->getRobot(fieldpanel->selectedBot);
+        selected_robot->getPilot()->setManualVelocity(Point(0,0),0);
+    }
+}
+
+
 
 void MainWindow::on_btn_botRotateRight_released() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botTurnRight->setDown(false);
         float currentFwd = objectPos->getVelocity(fieldpanel->selectedBot);
         auto* selected_robot = getSelectedTeam()->getRobot(fieldpanel->selectedBot);
-        selected_robot->setL(currentFwd);
-        selected_robot->setR(currentFwd);
-        selected_robot->setAngVel(0);
+        selected_robot->getPilot()->setManualVelocity(Point(currentFwd,0),0);
         std::cout << "botTurnRight_released" << std::endl;
-    }
-}
-
-void MainWindow::on_btn_botTurnLeft_pressed() {
-    if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
-        Robot* r = getSelectedTeam()->getRobot(fieldpanel->selectedBot);
-        ui->btn_botTurnLeft->setDown(true);
-        r->setL(r->getL() - myVelocity/2);
-        r->setR(r->getR() + myVelocity/2);
-//        r->setAngVel(-myVelocity);
-        r->setYVel(-myVelocity);
-    }
-
-}
-
-void MainWindow::on_btn_botRotateLeft_pressed() {
-    if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
-        Robot* r = getSelectedTeam()->getRobot(fieldpanel->selectedBot);
-        ui->btn_botTurnLeft->setDown(true);
-        r->setL(r->getL() - myVelocity/2);
-        r->setR(r->getR() + myVelocity/2);
-        r->setAngVel(-myVelocity);
-//        r->setYVel(-myVelocity);
-    }
-}
-void MainWindow::on_btn_botTurnLeft_released() {
-    if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
-        ui->btn_botTurnLeft->setDown(false);
-        float currentVel = objectPos->getVelocity(fieldpanel->selectedBot);
-        auto* selected_robot = getSelectedTeam()->getRobot(fieldpanel->selectedBot);
-        selected_robot->setL(currentVel);
-        selected_robot->setR(currentVel);
-        selected_robot->setYVel(0);
     }
 }
 
@@ -615,36 +610,47 @@ void MainWindow::on_btn_botRotateLeft_released() {
         ui->btn_botTurnLeft->setDown(false);
         float currentVel = objectPos->getVelocity(fieldpanel->selectedBot);
         auto* selected_robot = getSelectedTeam()->getRobot(fieldpanel->selectedBot);
-        selected_robot->setL(currentVel);
-        selected_robot->setR(currentVel);
-        selected_robot->setAngVel(0);
+        selected_robot->getPilot()->setManualVelocity(Point(currentVel,0),0);
     }
-}
-void MainWindow::on_btn_botReverse_pressed() {
-    if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
-        ui->btn_botReverse->setDown(true);
-        int currentVel = objectPos->getVelocity(fieldpanel->selectedBot);
-        auto* selected_robot = getSelectedTeam()->getRobot(fieldpanel->selectedBot);
-        selected_robot->setL(currentVel);
-        selected_robot->setR(currentVel);
-        if (currentVel >= 0) {
-            selected_robot->setL(currentVel-myVelocity);
-            selected_robot->setR(currentVel-myVelocity);
-            selected_robot->setXVel(-myVelocity);
-        }
-    }
-    ui->gView_field->scene()->update();
 }
 
-void MainWindow::on_btn_botReverse_released() {
+void MainWindow::on_btn_botTurnRight_released() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
-        ui->btn_botReverse->setDown(false);
+        ui->btn_botTurnRight->setDown(false);
+        float currentFwd = objectPos->getVelocity(fieldpanel->selectedBot);
         auto* selected_robot = getSelectedTeam()->getRobot(fieldpanel->selectedBot);
-        selected_robot->setL(0);
-        selected_robot->setR(0);
-        selected_robot->setXVel(0);
+        selected_robot->getPilot()->setManualVelocity(Point(currentFwd,0),0);
     }
 }
+
+
+void MainWindow::on_btn_botTurnLeft_released() {
+    if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
+        ui->btn_botTurnLeft->setDown(false);
+        float currentVel = objectPos->getVelocity(fieldpanel->selectedBot);
+        auto* selected_robot = getSelectedTeam()->getRobot(fieldpanel->selectedBot);
+        selected_robot->getPilot()->setManualVelocity(Point(currentVel,0),0);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 void MainWindow::on_btn_botKick_pressed() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
@@ -693,12 +699,7 @@ void MainWindow::on_check_botOverride_clicked(bool checked) {
             fieldpanel->gui_robots[selected_team_id][fieldpanel->selectedBot]->overridden = true;
             // Stopping overridden bots in their tracks
             auto* selected_robot = getSelectedTeam()->getRobot(fieldpanel->selectedBot);
-            selected_robot->setL(0);
-            selected_robot->setR(0);
-            selected_robot->setB(0);
-            selected_robot->setXVel(0);
-            selected_robot->setYVel(0);
-            selected_robot->setAngVel(0);
+            selected_robot->getPilot()->setManualVelocity(Point(0,0),0);
         } else {
             overriddenBots[selected_team_id][fieldpanel->selectedBot] = false;
             robotpanel->robotIcon[fieldpanel->selectedBot]->overridden = false;
@@ -720,12 +721,7 @@ void MainWindow::on_btn_override_all_released() {
         // stopping all bots, so they don't fly off at their current velocities
         Robot* robot = getSelectedTeam()->getRobot(i);
         if(robot != NULL) {
-            robot->setL(0);
-            robot->setR(0);
-            robot->setB(0);
-            robot->setXVel(0);
-            robot->setYVel(0);
-            robot->setAngVel(0);
+            robot->getPilot()->setManualVelocity(Point(0,0),0);
         }
     }
 }

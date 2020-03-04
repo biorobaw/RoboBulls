@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <math.h>
 #include "model/game_state.h"
-#include "model/robot.h"
+#include "robot/robot.h"
 #include "utilities/point.h"
 
 

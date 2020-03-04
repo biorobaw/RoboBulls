@@ -4,7 +4,7 @@
 #include <QString>
 #include <deque>
 #include "utilities/point.h"
-#include "model/robot.h"
+#include "robot/robot.h"
 #include "model/team.h"
 
 using std::string;

@@ -2,6 +2,7 @@
 #include "behavior/goalie.h"
 #include "model/game_state.h"
 #include "kickoffstrategy.h"
+#include "robot/navigation/commands/CmdGoToPose.h"
 
 /******************
  *             *
