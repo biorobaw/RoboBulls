@@ -1,6 +1,6 @@
 #ifndef TESTSTRATEGY_H
 #define TESTSTRATEGY_H
-#include "strategy.h"
+#include "../strategy.h"
 class Robot;
 
 /*! @file

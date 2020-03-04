@@ -1,6 +1,6 @@
 #ifndef FREEKICKSTRATEGY_H
 #define FREEKICKSTRATEGY_H
-#include "strategy/strategy.h"
+#include "../strategy.h"
 #include "utilities/point.h"
 class Robot;
 

@@ -1,6 +1,6 @@
 #ifndef STOPSTRATEGY_H
 #define STOPSTRATEGY_H
-#include "strategy/strategy.h"
+#include "../strategy.h"
 #include "utilities/point.h"
 #include "utilities/edges.h"
 

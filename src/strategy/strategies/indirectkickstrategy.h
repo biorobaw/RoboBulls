@@ -1,7 +1,7 @@
 #ifndef INDIRECTKICKSTRATEGY_H
 #define INDIRECTKICKSTRATEGY_H
 
-#include "strategy/strategy.h"
+#include "../strategy.h"
 #include "model/game_state.h"
 #include "robot/robot.h"
 

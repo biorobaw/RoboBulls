@@ -1,6 +1,6 @@
 #include "haltstrategy.h"
 #include "model/game_state.h"
-#include "behavior/refstop.h"
+#include "../behaviors/refstop.h"
 
 HaltStrategy::HaltStrategy(Team* _team) : Strategy(_team) {
 

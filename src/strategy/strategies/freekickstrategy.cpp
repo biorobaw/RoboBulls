@@ -1,38 +1,35 @@
-#include "indirectkickstrategy.h"
+#include "freekickstrategy.h"
+#include "../behaviors/attackmain.h"
+#include "../behaviors/attacksupport.h"
 #include "model/game_state.h"
-#include "utilities/region/rectangle.h"
-#include "utilities/comparisons.h"
-
-#include "behavior/goalie.h"
-#include "behavior/refstop.h"
-#include "behavior/attackmain.h"
-#include "behavior/attacksupport.h"
-#include "behavior/wall.h"
-#include "behavior/markbot.h"
+#include "../behaviors/goalie.h"
 #include "normalgamestrategy.h"
-#include "behavior/markbot.h"
+#include "../behaviors/refstop.h"
+#include "../behaviors/wall.h"
+#include "../behaviors/markbot.h"
+
+#include "../skills/kicktopointomni.h"
 
 #include "model/ball.h"
 #include "model/field.h"
 
-IndirectKickStrategy::IndirectKickStrategy(Team* _team)
-    :Strategy(_team), initial_bp(Ball::getPosition())
+FreeKickStrategy::FreeKickStrategy(Team* _team)
+    : Strategy(_team), initial_bp(Ball::getPosition())
 {
 
 }
 
-void IndirectKickStrategy::assignBeh()
+void FreeKickStrategy::assignBeh()
 {
-
+    // Pointers to various robots
     Robot* wall1 = team->getRobotByRole(RobotRole::DEFEND1);
     Robot* wall2 = team->getRobotByRole(RobotRole::DEFEND2);
     Robot* attack1 = team->getRobotByRole(RobotRole::ATTACK1);
     Robot* attack2 = team->getRobotByRole(RobotRole::ATTACK2);
 
-
-    // We are kicking
-    if ((GameState::getState() == 'I' && team->getColor() == TEAM_BLUE) ||
-        (GameState::getState() == 'i' && team->getColor() == TEAM_YELLOW))
+    // We are taking the free kick
+    if ((GameState::getState() == 'F' && team->getColor() == TEAM_BLUE) ||
+        (GameState::getState() == 'f' && team->getColor() == TEAM_YELLOW))
     {
         for(Robot* rob : team->getRobots())
             rob->clearBehavior();
@@ -64,15 +61,15 @@ void IndirectKickStrategy::assignBeh()
         if(wall2 && !wall2->hasBehavior())
             wall2->assignBeh<Wall>();
         if(attack1 && !attack1->hasBehavior())
-            attack1->assignBeh<AttackSupport>(attack1);
+            attack1->assignBeh<AttackMain>(attack1);
         if(attack2 && !attack2->hasBehavior())
-            attack2->assignBeh<MarkBot>();
+            attack2->assignBeh<AttackSupport>(attack2);
 
         NormalGameStrategy::assignGoalieIfOk(team);
     }
-    // We are defending against an indirect kick
-    else if ((GameState::getState() == 'i' && team->getColor() == TEAM_BLUE) ||
-             (GameState::getState() == 'I' && team->getColor() == TEAM_YELLOW))
+    // We are defending against a free kick
+    else if ((GameState::getState() == 'f' && team->getColor() == TEAM_BLUE)
+          || (GameState::getState() == 'F' && team->getColor() == TEAM_YELLOW))
     {
         if(wall1)
             wall1->assignBeh<Wall>();
@@ -87,8 +84,7 @@ void IndirectKickStrategy::assignBeh()
     }
 }
 
-
-char IndirectKickStrategy::getNextStrategy()
+char FreeKickStrategy::getNextStrategy()
 {
     if ((kicker && kicker->getKick() > 0)
     || !Measurements::isClose(initial_bp, Ball::getPosition(), 70))
