@@ -7,7 +7,7 @@
 
 
 QT_SELECT=5
-QT += core network widgets
+QT += core network widgets concurrent
 QT -= gui
 QT += serialport
 QT += core gui
@@ -18,6 +18,7 @@ TARGET = RoboBulls
 CONFIG += console
 CONFIG += -j
 CONFIG -= app_bundle
+CONFIG += c++17
 #CONFIG += static
 
 TEMPLATE = app
@@ -27,22 +28,24 @@ DESTDIR = $$PWD/bin
 
 
 INCLUDEPATH += src
-PROTOS = src/ssl-grsim/proto/grSim_Commands.proto \
-         src/ssl-grsim/proto/grSim_Packet.proto \
-         src/ssl-grsim/proto/grSim_Replacement.proto \
+PROTOS = src/robot/robots/grsim/proto/grSim_Commands.proto \
+         src/robot/robots/grsim/proto/grSim_Packet.proto \
+         src/robot/robots/grsim/proto/grSim_Replacement.proto \
          src/ssl-vision/proto/messages_robocup_ssl_detection.proto \
          src/ssl-vision/proto/messages_robocup_ssl_geometry.proto \
          src/ssl-vision/proto/messages_robocup_ssl_refbox_log.proto \
-         src/ssl-vision/proto/messages_robocup_ssl_wrapper.proto
+         src/ssl-vision/proto/messages_robocup_ssl_wrapper.proto \
+         src/ssl-game-controller/proto/ssl_game_controller_common.proto \
+         src/ssl-game-controller/proto/ssl_game_event.proto \
+         src/ssl-game-controller/proto/ssl_game_event_2019.proto \
+         src/ssl-game-controller/proto/ssl_referee.proto \
+         src/ssl-game-controller/proto/ssl_game_controller_auto_ref.proto \
+         src/ssl-game-controller/proto/ssl_game_controller_team.proto
 include(protobuf.pri)
 
 
 
 SOURCES += src/main.cpp \
-        src/behavior/attackmain.cpp \
-        src/behavior/attacksupport.cpp \
-        src/behavior/behavior.cpp \
-        src/behavior/genericmovementbehavior.cpp \
         src/gui/fieldpanel.cpp \
         src/gui/gamepanel.cpp \
         src/gui/guiball.cpp \
@@ -54,7 +57,6 @@ SOURCES += src/main.cpp \
         src/gui/guirobot.cpp \
         src/gui/guiscene.cpp \
         src/gui/guisidelines.cpp \
-        src/gui/joystick.cpp \
         src/gui/mainwindow.cpp \
         src/gui/objectposition.cpp \
         src/gui/robotpanel.cpp \
@@ -79,53 +81,54 @@ SOURCES += src/main.cpp \
         src/robot/robots/yisibot/robcomm_yisibot.cpp \
         src/robot/robots/yisibot/robot_yisibot.cpp \
         src/robot/robots/yisibot/crc.cpp \
-        src/skill/kick.cpp \
-        src/skill/kicktopointomni.cpp \
-        src/skill/stop.cpp \
         src/ssl-game-controller/sss_refbox_listener.cpp \
         src/ssl-vision/my_kalman_filter.cpp \
         src/ssl-vision/ssl_vision_listener.cpp \
-        src/strategy/freekickstrategy.cpp \
-        src/strategy/haltstrategy.cpp \
-        src/strategy/kickoffstrategy.cpp \
-        src/strategy/normalgamestrategy.cpp \
-        src/strategy/penaltystrategy.cpp \
-        src/strategy/stopstrategy.cpp \
-        src/strategy/strategycontroller.cpp \
+        src/strategy/behavior.cpp \
+        src/strategy/controllers/joystick/joystick.cpp \
+        src/strategy/controllers/joystick/scontroller_joystick.cpp \
+        src/strategy/controllers/scontroller_normal_game.cpp \
+        src/strategy/controllers/strategy_tester/scontroller_strategy_tester.cpp \
+        src/strategy/controllers/strategy_tester/strategies/test_strategy.cpp \
         src/strategy/strategy.cpp \
-        src/strategy/teststrategy.cpp \
-        src/strategy/videostrategies.cpp \
+        src/strategy/strategycontroller.cpp \
+        src/strategy/behaviors/attackmain.cpp \
+        src/strategy/behaviors/attacksupport.cpp \
+        src/strategy/behaviors/genericmovementbehavior.cpp \
+        src/strategy/behaviors/challengeballbot.cpp \
+        src/strategy/behaviors/defendbehavior.cpp \
+        src/strategy/behaviors/goalie.cpp \
+        src/strategy/behaviors/markbot.cpp \
+        src/strategy/behaviors/penaltygoalie.cpp \
+        src/strategy/behaviors/refstop.cpp \
+        src/strategy/behaviors/wall.cpp \
+        src/strategy/skills/dribbletopoint.cpp \
+        src/strategy/skills/dribbleback.cpp \
+        src/strategy/skills/kick.cpp \
+        src/strategy/skills/kicktopointomni.cpp \
+        src/strategy/skills/stop.cpp \
+        src/strategy/strategies/freekickstrategy.cpp \
+        src/strategy/strategies/haltstrategy.cpp \
+        src/strategy/strategies/indirectkickstrategy.cpp \
+        src/strategy/strategies/kickoffstrategy.cpp \
+        src/strategy/strategies/normalgamestrategy.cpp \
+        src/strategy/strategies/penaltystrategy.cpp \
+        src/strategy/strategies/stopstrategy.cpp \
         src/utilities/comparisons.cpp \
         src/utilities/debug.cpp \
         src/utilities/edges.cpp \
         src/utilities/point.cpp \
         src/utilities/velocitycalculator.cpp \
-        src/behavior/defendbehavior.cpp \
-        src/strategy/indirectkickstrategy.cpp \
         src/utilities/region/sector.cpp \
         src/utilities/region/rectangle.cpp \
         src/utilities/measurements.cpp \
         src/utilities/region/defencearea.cpp \
         src/gui/guidrawpoint.cpp \
         src/gui/guidrawregion.cpp \
-        src/skill/dribbletopoint.cpp \
-        src/behavior/challengeballbot.cpp \
-        src/skill/dribbleback.cpp \
-        src/behavior/refstop.cpp \
-        src/behavior/goalie.cpp \
-        src/behavior/markbot.cpp \
-        src/behavior/wall.cpp \
-        src/behavior/penaltygoalie.cpp \
         src/model/team.cpp \
         src/parameters/motion_parameters.cpp
 
 HEADERS += \
-        src/behavior/attackmain.h \
-        src/behavior/attacksupport.h \
-        src/behavior/behavior.h \
-        src/behavior/defendbehavior.h \
-        src/behavior/genericmovementbehavior.h \
-        src/behavior/genericskillbehavior.h \
         src/gui/fieldpanel.h \
         src/gui/gamepanel.h \
         src/gui/guiball.h \
@@ -137,14 +140,16 @@ HEADERS += \
         src/gui/guirobot.h \
         src/gui/guiscene.h \
         src/gui/guisidelines.h \
-        src/gui/joystick.h \
         src/gui/mainwindow.h \
         src/gui/objectposition.h \
         src/gui/robotpanel.h \
         src/gui/selrobotpanel.h \
+        src/gui/guidrawpoint.h \
+        src/gui/guidrawregion.h \
         src/model/ball.h \
         src/model/field.h \
         src/model/game_state.h \
+        src/model/team.h \
         src/robot/navigation/commands/CmdGoToPose.h \
         src/robot/navigation/drives/differential.h \
         src/robot/navigation/drives/omni_drive.h \
@@ -162,46 +167,52 @@ HEADERS += \
         src/robot/robots/yisibot/robcomm_yisibot.h \
         src/robot/robots/yisibot/robot_yisibot.h \
         src/robot/robots/yisibot/crc.h \
-        src/skill/kick.h \
-        src/skill/kicktopointomni.h \
-        src/skill/skill.h \
-        src/skill/stop.h \
+        src/strategy/behavior.h \
+        src/strategy/controllers/joystick/joystick.h \
+        src/strategy/controllers/joystick/scontroller_joystick.h \
+        src/strategy/controllers/scontroller_normal_game.h \
+        src/strategy/controllers/strategy_tester/scontroller_strategy_tester.h \
+        src/strategy/controllers/strategy_tester/strategies/test_strategy.h \
+        src/strategy/skill.h \
+        src/strategy/strategy.h \
+        src/strategy/strategycontroller.h \
+        src/strategy/behaviors/attackmain.h \
+        src/strategy/behaviors/attacksupport.h \
+        src/strategy/behaviors/challengeballbot.h \
+        src/strategy/behaviors/defendbehavior.h \
+        src/strategy/behaviors/genericmovementbehavior.h \
+        src/strategy/behaviors/genericskillbehavior.h \
+        src/strategy/behaviors/goalie.h \
+        src/strategy/behaviors/markbot.h \
+        src/strategy/behaviors/penaltygoalie.h \
+        src/strategy/behaviors/refstop.h \
+        src/strategy/behaviors/wall.h \
+        src/strategy/skills/dribbleback.h \
+        src/strategy/skills/dribbletopoint.h \
+        src/strategy/skills/kick.h \
+        src/strategy/skills/kicktopointomni.h \
+        src/strategy/skills/stop.h \
+        src/strategy/strategies/freekickstrategy.h \
+        src/strategy/strategies/haltstrategy.h \
+        src/strategy/strategies/indirectkickstrategy.h \
+        src/strategy/strategies/kickoffstrategy.h \
+        src/strategy/strategies/normalgamestrategy.h \
+        src/strategy/strategies/penaltystrategy.h \
+        src/strategy/strategies/stopstrategy.h \
         src/ssl-game-controller/sss_refbox_listener.h \
         src/ssl-vision/my_kalman_filter.h \
         src/ssl-vision/ssl_vision_listener.h \
-        src/strategy/freekickstrategy.h \
-        src/strategy/haltstrategy.h \
-        src/strategy/kickoffstrategy.h \
-        src/strategy/normalgamestrategy.h \
-        src/strategy/penaltystrategy.h \
-        src/strategy/stopstrategy.h \
-        src/strategy/strategycontroller.h \
-        src/strategy/strategy.h \
-        src/strategy/teststrategy.h \
-        src/strategy/videostrategies.h \
         src/utilities/circular_buffer.h \
         src/utilities/comparisons.h \
         src/utilities/debug.h \
         src/utilities/edges.h \
         src/utilities/point.h \
         src/utilities/velocitycalculator.h \
-        src/strategy/indirectkickstrategy.h \
         src/utilities/region/sector.h \
         src/utilities/region/rectangle.h \
         src/utilities/region/region.h \
         src/utilities/measurements.h \
         src/utilities/region/defencearea.h \
-        src/gui/guidrawpoint.h \
-        src/gui/guidrawregion.h \
-        src/skill/dribbletopoint.h \
-        src/behavior/challengeballbot.h \
-        src/skill/dribbleback.h \
-        src/behavior/refstop.h \
-        src/behavior/goalie.h \
-        src/behavior/markbot.h \
-        src/behavior/wall.h \
-        src/behavior/penaltygoalie.h \
-        src/model/team.h \
         src/parameters/motion_parameters.h
 
 
@@ -239,15 +250,15 @@ FORMS += \
 #unix:!macx: PRE_TARGETDEPS += $$PWD/libs/yaml-cpp-0.6.3/build/libyaml-cpp.a
 
 DISTFILES += \
+    src/robot/robots/grsim/proto/grSim_Commands.proto \
+    src/robot/robots/grsim/proto/grSim_Packet.proto \
+    src/robot/robots/grsim/proto/grSim_Replacement.proto \
     src/ssl-game-controller/proto/ssl_game_controller_auto_ref.proto \
     src/ssl-game-controller/proto/ssl_game_controller_common.proto \
     src/ssl-game-controller/proto/ssl_game_controller_team.proto \
     src/ssl-game-controller/proto/ssl_game_event.proto \
     src/ssl-game-controller/proto/ssl_game_event_2019.proto \
     src/ssl-game-controller/proto/ssl_referee.proto \
-    src/ssl-grsim/proto/grSim_Commands.proto \
-    src/ssl-grsim/proto/grSim_Packet.proto \
-    src/ssl-grsim/proto/grSim_Replacement.proto \
     src/ssl-vision/proto/messages_robocup_ssl_detection.proto \
     src/ssl-vision/proto/messages_robocup_ssl_geometry.proto \
     src/ssl-vision/proto/messages_robocup_ssl_refbox_log.proto \

@@ -1,9 +1,6 @@
 ---
 TEAM_BLUE :
     SIDE: 0 # 0  negative side, 1 positive side
-    ROBOT_TYPE: grsim # alternatives: grsim yisibot rpi_2019 none
-    REFBOX_ENABLED: false # whether to listen to refbox state messages
-
     # Define the roles of each robot
     ROLES:
         GOALIE : 0
@@ -15,27 +12,41 @@ TEAM_BLUE :
         DEFEND3 : 6
 
 
-    # if robot type == yisibot, then must specify 
-    # YISI_USB_PORT : /dev/ttyUSB1 # yisi usb port
-    # YISI_FREQUENCY: 0
+    # ROBOT_TYPE: yisibot
+    # ROB_COMM:
+      # YISI_USB_PORT : /dev/ttyUSB1 # yisi usb port
+      # YISI_FREQUENCY: 0
 
     # if robot type == grsim, then must specify:
-    GRSIM_ADDR : 127.0.0.1 # ip of grsim
-    GRSIM_PORT : 20011 # port of grsim
+    ROBOT_TYPE: grsim # alternatives: grsim yisibot rpi_2019 none
+    ROB_COMM:
+      GRSIM_ADDR : 127.0.0.1 # ip of grsim
+      GRSIM_PORT : 20011 # port of grsim
+      
+    STRATEGY_CONTROLLER:
+      ID: NORMAL_GAME # options: NORMAL_GAME or STRATEGY_TESTER or JOYSTICK
+      # JOY_TO_ROBOT_MAP :
+      #  - ROBOT : 2
+      #    JOY   : 0
+      #  - ROBOT : 1
+      #    JOY   : 1
 
     # support for rpi_2019 is work in progress
     
 TEAM_YELLOW :
     SIDE: 1
     ROBOT_TYPE: none # none defines we do not control this team
-    REFBOX_ENABLED: false # whether to listen to refbox state messages
     
-    ROLES:  #wo don't need to define roles if we do not control the team
-        GOALIE : 0
-        ATTACK1 : 3
-        ATTACK2 : 4
-        ATTACK3 : 5
-        DEFEND1 : 1
-        DEFEND2 : 2
-        DEFEND3 : 6
+    # STRATEGY_CONTROLLER:
+    #   ID: STRATEGY_TESTER
+    
+    # ROLES:  #wo don't need to define roles if we do not control the team
+        # GOALIE : 0
+        # ATTACK1 : 3
+        # ATTACK2 : 4
+        # ATTACK3 : 5
+        # DEFEND1 : 1
+        # DEFEND2 : 2
+        # DEFEND3 : 6
         
+    
