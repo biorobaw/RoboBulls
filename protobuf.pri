@@ -18,10 +18,14 @@
 
 message("Generating protocol buffer classes from .proto files.")
  
+
+win32:PROTOC_CMD = $$PWD/libs/windows/x64/tools/protoc
+unix:!macx: PROTOC_CMD = protoc
+
 protobuf_decl.name = protobuf headers
 protobuf_decl.input = PROTOS
 protobuf_decl.output = ${QMAKE_FILE_BASE}.pb.h
-protobuf_decl.commands = $$PWD/libs/windows/x64/tools/protoc --cpp_out=. --proto_path=${QMAKE_FILE_IN_PATH} ${QMAKE_FILE_NAME}
+protobuf_decl.commands = $$PROTOC_CMD --cpp_out=. --proto_path=${QMAKE_FILE_IN_PATH} ${QMAKE_FILE_NAME}
 protobuf_decl.variable_out = HEADERS
 QMAKE_EXTRA_COMPILERS += protobuf_decl
  

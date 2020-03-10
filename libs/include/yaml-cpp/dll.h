@@ -16,7 +16,7 @@
 // being exported.
 #undef YAML_CPP_API
 
-#if 1      // Using or Building YAML-CPP DLL (definition defined
+#ifdef YAML_CPP_DLL      // Using or Building YAML-CPP DLL (definition defined
                          // manually)
 #ifdef yaml_cpp_EXPORTS  // Building YAML-CPP DLL (definition created by CMake
                          // or defined manually)

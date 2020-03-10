@@ -2,7 +2,7 @@
 #define STRATEGYCONTROLLER_H
 #include <string>
 #include "yaml-cpp/yaml.h"
-#include "ssl_referee.pb.h"
+#include "ssl-game-controller/ssl_referee_includes.h"
 
 
 

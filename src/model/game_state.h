@@ -1,7 +1,7 @@
 #ifndef GAMEMODEL_H
 #define GAMEMODEL_H
 #include <vector>
-#include "ssl_referee.pb.h"
+#include "ssl-game-controller/ssl_referee_includes.h"
 #include "utilities/point.h"
 #include "utilities/measurements.h"
 #include "robot/robot.h"

@@ -1,4 +1,5 @@
 #include "my_kalman_filter.h"
+#include <cmath>
 
 // Movement distance between detections within which the ball is said to be stationary
 #define B_STOP_THRESH 5.0

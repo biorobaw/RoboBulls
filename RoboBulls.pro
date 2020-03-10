@@ -7,40 +7,36 @@
 
 
 QT_SELECT=5
-QT += core network widgets concurrent
-QT -= gui
-QT += serialport
-QT += core gui
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-
+QT += core gui network widgets concurrent serialport
 
 TARGET = RoboBulls
 CONFIG += console
 CONFIG += -j
 CONFIG -= app_bundle
 CONFIG += c++17
-#CONFIG += static
+CONFIG += static
 
 TEMPLATE = app
 #QMAKE_CXX = g++
-#QMAKE_CXXFLAGS += -std=c++0x
+#QMAKE_CXXFLAGS += -std=c++17
 DESTDIR = $$PWD/bin
-
-
 INCLUDEPATH += src
-PROTOS = src/robot/robots/grsim/proto/grSim_Commands.proto \
+
+
+
+PROTOS += src/robot/robots/grsim/proto/grSim_Commands.proto \
          src/robot/robots/grsim/proto/grSim_Packet.proto \
          src/robot/robots/grsim/proto/grSim_Replacement.proto \
-         src/ssl-vision/proto/messages_robocup_ssl_detection.proto \
+         src/ssl-vision/proto/messages_robocup_ssl_detection.proto \ #sss
          src/ssl-vision/proto/messages_robocup_ssl_geometry.proto \
          src/ssl-vision/proto/messages_robocup_ssl_refbox_log.proto \
          src/ssl-vision/proto/messages_robocup_ssl_wrapper.proto \
-         src/ssl-game-controller/proto/ssl_game_controller_common.proto \
-         src/ssl-game-controller/proto/ssl_game_event.proto \
-         src/ssl-game-controller/proto/ssl_game_event_2019.proto \
-         src/ssl-game-controller/proto/ssl_referee.proto \
+         src/ssl-game-controller/proto/ssl_referee.proto \ #sss
          src/ssl-game-controller/proto/ssl_game_controller_auto_ref.proto \
-         src/ssl-game-controller/proto/ssl_game_controller_team.proto
+         src/ssl-game-controller/proto/ssl_game_controller_team.proto \
+         src/ssl-game-controller/proto/ssl_game_event_2019.proto \
+         src/ssl-game-controller/proto/ssl_game_event.proto \ #no deps
+         src/ssl-game-controller/proto/ssl_game_controller_common.proto # no deps
 include(protobuf.pri)
 
 
@@ -167,6 +163,7 @@ HEADERS += \
         src/robot/robots/yisibot/robcomm_yisibot.h \
         src/robot/robots/yisibot/robot_yisibot.h \
         src/robot/robots/yisibot/crc.h \
+        src/ssl-game-controller/ssl_referee_includes.h \
         src/strategy/behavior.h \
         src/strategy/controllers/joystick/joystick.h \
         src/strategy/controllers/joystick/scontroller_joystick.h \
@@ -247,8 +244,6 @@ FORMS += \
 
 
 
-#unix:!macx: PRE_TARGETDEPS += $$PWD/libs/yaml-cpp-0.6.3/build/libyaml-cpp.a
-
 DISTFILES += \
     src/robot/robots/grsim/proto/grSim_Commands.proto \
     src/robot/robots/grsim/proto/grSim_Packet.proto \
@@ -269,13 +264,7 @@ DISTFILES += \
     src/ssl-vision/proto/not used/messages_robocup_ssl_wrapper_tracked.proto
 
 
-#unix:!macx: LIBS += -L$$PWD/libs/kalman/bin/ -lkalman
-#unix:!macx: LIBS += -L$$PWD/libs/yaml-cpp-0.6.3/build/ -lyaml-cpp
-#unix|win32: LIBS += -lSDL2
-#unix:!macx: PRE_TARGETDEPS += $$PWD/libs/kalman/bin/libkalman.a
 
-#unix:!macx: INCLUDEPATH += $$PWD/libs/yaml-cpp-0.6.3/include
-#unix:!macx: DEPENDPATH += $$PWD/libs/yaml-cpp-0.6.3/include
 
 
 #unix: CONFIG += link_pkgconfig
@@ -324,7 +313,39 @@ win32{
                                 $$PWD/libs/windows/x64/debug/bin/libprotobufd.dll
     install_dlls.path  = $$DESTDIR
     INSTALLS += install_dlls
+
+
+    # clean step:
+    QMAKE_DISTCLEAN += /s /f /q $$DESTDIR/* && rd /s /q $$DESTDIR/*
+    QMAKE_DEL_FILE = del /q
+    QMAKE_DEL_DIR  = rmdir /s /q
+
 }
+
+
+#Debug: LIBS += -L$$PWD/libs/linux/lib -llibprotobufd -lyaml-cpp -lSDL2d
+#unix:!macx:
+#unix:!macx: INCLUDEPATH += $$PWD/libs/yaml-cpp-0.6.3/
+
+#INCLUDEPATH += $$PWD/libs/yaml-cpp-old/include
+#DEPENDPATH += $$PWD/libs/yaml-cpp-old/include
+#LIBS += -L$$PWD/libs/yaml-cpp/build/ -lyaml-cpp
+#INCLUDEPATH += /home/vision/Downloads/yaml-cpp-0.6.3/include
+#DEPENDPATH += $$PWD/libs/yaml-cpp-old/include
+
+
+
+
+
+unix:!macx {
+
+    LIBS += -L$$PWD/libs/linux/lib/ -lyaml-cpp -lprotobuf -lSDL2
+    CONFIG += link_pkgconfig
+    PKGCONFIG += protobuf
+
+}
+
+
 
 # copy config files to bin folder:
 install_config_files.files = $$PWD/config/comm.yaml \
@@ -339,10 +360,9 @@ INSTALLS += install_config_files
 
 
 #QMAKE_DISTCLEAN += $$PWD/bin/
-win32:QMAKE_DISTCLEAN += /s /f /q $$DESTDIR/* && rd /s /q $$DESTDIR/*
 #QMAKE_DISTCLEAN += -r $$DESTDIR/
-win32:QMAKE_DEL_FILE = del /q
-win32:QMAKE_DEL_DIR  = rmdir /s /q
+
+
 
 
 

@@ -1,4 +1,4 @@
-#include "ssl_referee.pb.h"
+#include "ssl-game-controller/ssl_referee_includes.h"
 #include "ssl-game-controller/sss_refbox_listener.h"
 #include <iostream>
 
