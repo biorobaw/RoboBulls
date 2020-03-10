@@ -1,7 +1,7 @@
 #ifndef PENALTYSTRATEGY_H
 #define PENALTYSTRATEGY_H
 #include "../strategy.h"
-#include "normalgamestrategy.h"
+//#include "normalgamestrategy.h"
 #include "../behaviors/wall.h"
 #include "model/game_state.h"
 
@@ -16,8 +16,8 @@
 class PenaltyStrategy:public Strategy
 {
 public:
-    PenaltyStrategy(Team* _team);
-    void assignBeh();
+    PenaltyStrategy(RobotTeam* _team);
+    void assignBehaviors();
 private:
     Behavior * beh;
 };

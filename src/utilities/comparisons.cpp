@@ -101,7 +101,7 @@ Robot* Predicate::maxInSet(std::set<Robot*>& robots){
     return *max(robots);
 }
 
-Robot* Predicate::maxInTeam(Team* team){
+Robot* Predicate::maxInTeam(RobotTeam* team){
     return maxInSet(team->getRobots());
 }
 
@@ -109,7 +109,7 @@ Robot* Predicate::minInSet(std::set<Robot*>& robots){
     return *min(robots);
 }
 
-Robot* Predicate::minInTeam(Team* team){
+Robot* Predicate::minInTeam(RobotTeam* team){
     return minInSet(team->getRobots());
 }
 

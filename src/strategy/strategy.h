@@ -33,38 +33,39 @@
  * to ignore the RefBox’s commands to test only one strategy. Here, you
  * can add your own strategy in. */
 
+#define STATUS_RUNNING 0
+
 class Strategy
 {
 public:
-    Strategy(Team* _team);
+    Strategy(RobotTeam* _team);
+    virtual ~Strategy();
 
     /*! Decides How to assign behaviors to each robot on the team.
      * This function is called when StrategyController is run with a
      * new command recieved from GameModel */
-    virtual void assignBeh() = 0;
+    virtual void assignBehaviors() = 0;
 
     /*! Function (optional) that updates the Strategy object.
      * This function is called when StrategyController is run with
      * a non-new command from GameModel. Return true to notify the strategy
      * is finished and have a new one assigned, false otherwise. */
-    virtual bool update();
+    virtual void update();
 
-    /*! Function used to control strategy flow.
-     * Allows strategies to be switched within a single game state.
-     * Return an ASCII character corresponding to a game state to switch
-     * the StrategyController to. return '\0' or the current gate state
-     * (via GameModel) to keep the current state. */
-    virtual char getNextStrategy();
 
-    /*! Destructor
-     * Implement a distructor for a "ending routine" when this object
-     * is deleted due to an update in StrategyController */
-    virtual ~Strategy();
+    /*!
+     * \brief Return the status of the strategy. The value 0 is
+     * reserved for indicating the strategy is running. Other values
+     * (defined by each strategy) are used by the strategy contoller
+     * to switch strategies.
+     * \return
+     */
+    virtual int getStatus();
 
-    Team* getTeam();
+
 
 protected:
-    Team* team;
+    RobotTeam* team;
 };
 
 //! @}

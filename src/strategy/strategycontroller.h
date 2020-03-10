@@ -1,10 +1,13 @@
 #ifndef STRATEGYCONTROLLER_H
 #define STRATEGYCONTROLLER_H
+#include <string>
+#include "yaml-cpp/yaml.h"
+#include "ssl_referee.pb.h"
 
 
-class Behavior;
+
 class Strategy;
-class Team;
+class RobotTeam;
 
 /*! @file
  * Controls selection of an active strategy (play) based on the game state
@@ -21,42 +24,27 @@ class Team;
 class StrategyController
 {
 public:
-    StrategyController(Team*);
+    static StrategyController* loadController(RobotTeam* team, YAML::Node);
 
-    /*! Performs one iteration of the RoboCup Game.
-     * Called by GameModel, which is called by VisionComm.  */
+    StrategyController(RobotTeam*, YAML::Node);
+    virtual ~StrategyController();
+
+    /*! Runs the team controller updating the current game strategy.
+     * Called by SSL Vision when next frame of each camera is available.  */
     void run();
-
-    Team* getTeam();
-    void setRefboxEnabled(bool _enabled);
-
     void signalNewCommand();
 
-private:
-    /*! Clean-up called at the end of a frame.
-     * This performs the behaviors on the robots, then
-     * uses RobComm to send the velocities to the field */
-    void sendRobotCommands();
+protected:
+    virtual int getControllerState(Referee_Command command) = 0;
+    virtual int getNextControllerState(int current_state,int last_strategy_return_code) = 0;
+    virtual Strategy* loadStateStrategy(int state) = 0;
 
-
-    /*! Called when GameModel receives the same command
-     * as the last frame. Updates current activeStrategy.  */
-    void runActiveStrategy();
-
-    //! Switches the gamestate to assign a current strategy */
-    void assignNewStrategy(char gameState);
-
-    /*! Removes the behaviors from each robot, and calls end()
-     * on the activeStrategy.  */
-    void clearCurrentStrategy();
-
-
+    RobotTeam* team = nullptr;
     
 private:
     Strategy*  activeStrategy = nullptr;
-    Team* team = nullptr;
-    bool refbox_enabled = false;
     bool received_new_command = false;
+    int controller_state = 0;
 };
 
 #endif // STRATEGYCONTROLLER_H

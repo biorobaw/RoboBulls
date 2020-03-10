@@ -123,13 +123,13 @@ void GuiRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     int selected_color = dash->getSelectedTeamId();
 
     if (highlighted) {
-        if (selected_color == TEAM_BLUE) {
+        if (selected_color == ROBOT_TEAM_BLUE) {
             painter->setBrush(QBrush(Qt::cyan, Qt::SolidPattern));
-        } else if   (selected_color == TEAM_YELLOW) {
+        } else if   (selected_color == ROBOT_TEAM_YELLOW) {
             painter->setBrush(QBrush(QColor::fromRgb(255,215,0,255), Qt::SolidPattern));
         }
 
-        auto c = team == TEAM_BLUE ? Qt::cyan : QColor::fromRgb(255,215,0,255);
+        auto c = team == ROBOT_TEAM_BLUE ? Qt::cyan : QColor::fromRgb(255,215,0,255);
         painter->setBrush(QBrush(c, Qt::SolidPattern));
     }
     if (overridden && highlighted) {
@@ -150,7 +150,7 @@ void GuiRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
         painter->drawEllipse(lowLtCircle);
     // Center circle
 
-    auto c = team == TEAM_BLUE ? Qt::blue : Qt::yellow;
+    auto c = team == ROBOT_TEAM_BLUE ? Qt::blue : Qt::yellow;
     painter->setBrush(QBrush(c, Qt::SolidPattern));
 
     painter->drawEllipse(centerCircle);

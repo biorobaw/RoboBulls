@@ -3,7 +3,6 @@
 #include "../behaviors/attacksupport.h"
 #include "model/game_state.h"
 #include "../behaviors/goalie.h"
-#include "normalgamestrategy.h"
 #include "../behaviors/refstop.h"
 #include "../behaviors/wall.h"
 #include "../behaviors/markbot.h"
@@ -13,13 +12,15 @@
 #include "model/ball.h"
 #include "model/field.h"
 
-FreeKickStrategy::FreeKickStrategy(Team* _team)
+
+
+FreeKickStrategy::FreeKickStrategy(RobotTeam* _team)
     : Strategy(_team), initial_bp(Ball::getPosition())
 {
 
 }
 
-void FreeKickStrategy::assignBeh()
+void FreeKickStrategy::assignBehaviors()
 {
     // Pointers to various robots
     Robot* wall1 = team->getRobotByRole(RobotRole::DEFEND1);
@@ -28,8 +29,8 @@ void FreeKickStrategy::assignBeh()
     Robot* attack2 = team->getRobotByRole(RobotRole::ATTACK2);
 
     // We are taking the free kick
-    if ((GameState::getState() == 'F' && team->getColor() == TEAM_BLUE) ||
-        (GameState::getState() == 'f' && team->getColor() == TEAM_YELLOW))
+    if ((GameState::getRefereeCommand() == 'F' && team->getColor() == ROBOT_TEAM_BLUE) ||
+        (GameState::getRefereeCommand() == 'f' && team->getColor() == ROBOT_TEAM_YELLOW))
     {
         for(Robot* rob : team->getRobots())
             rob->clearBehavior();
@@ -65,11 +66,13 @@ void FreeKickStrategy::assignBeh()
         if(attack2 && !attack2->hasBehavior())
             attack2->assignBeh<AttackSupport>(attack2);
 
-        NormalGameStrategy::assignGoalieIfOk(team);
+        Robot* goalie = team->getRobotByRole(RobotRole::GOALIE);
+        if(goalie) goalie->assignBeh<Goalie>(goalie);
+
     }
     // We are defending against a free kick
-    else if ((GameState::getState() == 'f' && team->getColor() == TEAM_BLUE)
-          || (GameState::getState() == 'F' && team->getColor() == TEAM_YELLOW))
+    else if ((GameState::getRefereeCommand() == 'f' && team->getColor() == ROBOT_TEAM_BLUE)
+          || (GameState::getRefereeCommand() == 'F' && team->getColor() == ROBOT_TEAM_YELLOW))
     {
         if(wall1)
             wall1->assignBeh<Wall>();
@@ -80,15 +83,16 @@ void FreeKickStrategy::assignBeh()
         if(attack2)
             attack2->assignBeh<MarkBot>();
 
-        NormalGameStrategy::assignGoalieIfOk(team);
+        Robot* goalie = team->getRobotByRole(RobotRole::GOALIE);
+        if(goalie) goalie->assignBeh<Goalie>(goalie);
     }
 }
 
-char FreeKickStrategy::getNextStrategy()
+int FreeKickStrategy::getStatus()
 {
     if ((kicker && kicker->getKick() > 0)
     || !Measurements::isClose(initial_bp, Ball::getPosition(), 70))
-        return ' '; // Go to normal game strategy
+        return KICKING; // Go to normal game strategy
     else
-        return '\0';
+        return KICKED;
 }

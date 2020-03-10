@@ -1,16 +1,16 @@
-#include "teststrategy.h"
-#include "../skills/kicktopointomni.h"
-#include "../skills/dribbletopoint.h"
-#include "../behaviors/genericmovementbehavior.h"
+#include "test_strategy.h"
+#include "strategy/skills/kicktopointomni.h"
+#include "strategy/skills/dribbletopoint.h"
+#include "strategy/behaviors/genericmovementbehavior.h"
 #include "model/game_state.h"
 #include "utilities/comparisons.h"
-#include "../behaviors/defendbehavior.h"
-#include "../behaviors/goalie.h"
-#include "../behaviors/attackmain.h"
-#include "../behaviors/attacksupport.h"
-#include "../behaviors/refstop.h"
-#include "../behaviors/penaltygoalie.h"
-#include "../behaviors/wall.h"
+#include "strategy/behaviors/defendbehavior.h"
+#include "strategy/behaviors/goalie.h"
+#include "strategy/behaviors/attackmain.h"
+#include "strategy/behaviors/attacksupport.h"
+#include "strategy/behaviors/refstop.h"
+#include "strategy/behaviors/penaltygoalie.h"
+#include "strategy/behaviors/wall.h"
 #include "ctime"
 #include "model/ball.h"
 
@@ -198,27 +198,29 @@ public:
 };
 
 
-TestStrategy::TestStrategy(Team* _team) : Strategy(_team) {
+TestStrategy::TestStrategy(RobotTeam* _team) : Strategy(_team) {
 
 }
 
-bool TestStrategy::update()
+
+
+void TestStrategy::assignBehaviors()
 {
-    //Change IDs and behaviors to be assigned here.
-    //All robots must exists before any action is taken.
-    Robot* r[5];
-    for(int i=0; i<5; i++) r[i] = team->getRobot(i);
+    std::cout << "Assigning test strategy behaviors " << std::endl;
+    RobotTeam::getTeam(ROBOT_TEAM_BLUE)->getRobot(0)->assignBeh<GenericMovementBehavior>(Point(-650, 300), 0);
 
-    if(r[0]) r[0]->assignBeh<Strafe>();
-    for(int i=1; i<5; i++) r[i]->assignBeh<GoToBehavior>((i+1)*360/5);
+    auto robots = team->getRobots();
+    int num_robots = robots.size();
+    int i = 0;
+    for(auto r : robots){
+        if(i++ ==0) r->assignBeh<Strafe>();
+        else r->assignBeh<GoToBehavior>(i*360/num_robots);
 
-    return false;
+    }
+
 }
 
-void TestStrategy::assignBeh()
+int TestStrategy::getStatus()
 {
-    std::cout << "adfasdfas " << std::endl;
-    Team::getTeam(TEAM_BLUE)->getRobot(0)->assignBeh<GenericMovementBehavior>(Point(-650, 300), 0);
-     std::cout << "adfasdfas " << std::endl;
+    return STATUS_RUNNING;
 }
-

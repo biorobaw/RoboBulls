@@ -15,11 +15,11 @@
 
 
 // Global static pointer used to ensure a single instance of the class.
-char   GameState::state           = '\0';        //The current state of the game from RefComm
-char   GameState::previousState   = '\0';      //The previous gamestate
+Referee_Command GameState::refereeCommand    = Referee_Command_HALT; //The current state of the game from RefComm
+Referee_Command   GameState::previousCommand = Referee_Command_HALT; //The previous gamestate
 char   GameState::blueGoals       = 0;           //Number of scores yellow goals
 char   GameState::yellowGoals     = 0;           //Number of scores yellow goals
-short  GameState::remainingTime   = 0;
+int    GameState::remainingTime   = 0;
 
 /*******************************************************************/
 /************************ Public Methods ***************************/
@@ -39,22 +39,22 @@ char GameState::getYellowGoals()
 }
 
 //! @brief Returns the remaining time in seconds
-short GameState::getRemainingTime()
+int GameState::getRemainingTime()
 {
     return remainingTime;
 }
 
 //! @brief Returns the current game state, used by StrategyController
-char GameState::getState()
+Referee_Command GameState::getRefereeCommand()
 {
-    return state;
+    return refereeCommand;
 }
 
 
 //! @brief Returns the last different game state before this one
-char GameState::getPreviousState()
+Referee_Command GameState::getPreviousCommand()
 {
-    return previousState;
+    return previousCommand;
 }
 
 
@@ -70,32 +70,32 @@ void GameState::notifyObservers()
 {
     //std::cout << "at GameModel::notifyObservers()\n";
     Ball::setRobotWithBall();
-    Team* t = Team::getTeam(TEAM_BLUE);
-    if(t->isControlled()) t->controller.run();
-    t = Team::getTeam(TEAM_YELLOW);
-    if(t->isControlled()) t->controller.run();
+    RobotTeam* t = RobotTeam::getTeam(ROBOT_TEAM_BLUE);
+    if(t->isControlled()) t->controller->run();
+    t = RobotTeam::getTeam(ROBOT_TEAM_YELLOW);
+    if(t->isControlled()) t->controller->run();
 }
 
 /*! @brief Used by RefComm; Set the current game state (See RefComm reference)
  * @see RefComm
  * @see getGameState */
-void GameState::setGameState(char newState)
+void GameState::setRefereeCommand(Referee_Command new_cmd)
 {
-    if(state != newState)
+    if(refereeCommand != new_cmd)
     {
-        previousState = state;
-        state = newState;
+        previousCommand = refereeCommand;
+        refereeCommand = new_cmd;
         //signal new state to teams:
         for(int i=0; i<2; i++){
-            if(Team::getTeam(i)->isControlled())
-                Team::getTeam(i)->controller.signalNewCommand();
+            if(RobotTeam::getTeam(i)->isControlled())
+                RobotTeam::getTeam(i)->controller->signalNewCommand();
         }
     }
 }
 
 
 //! @brief Used by RefComm; Set the current game state (See RefComm reference)
-void GameState::setTimeLeft(short time)
+void GameState::setTimeLeft(int time)
 {
     remainingTime = time;
 }

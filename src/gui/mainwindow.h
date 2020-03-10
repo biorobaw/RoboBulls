@@ -76,13 +76,13 @@ public:
     int getSelectedTeamId();
     void setSelectedTeamId(int team_id);
     std::string getSelectedTeamName();
-    Team* getSelectedTeam();
+    RobotTeam* getSelectedTeam();
 
 
 
 private:
 
-    int selected_team_id = TEAM_BLUE;
+    int selected_team_id = ROBOT_TEAM_BLUE;
 
     void setupKeyShortcuts();
     void setFocusOnField();

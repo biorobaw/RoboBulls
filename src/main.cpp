@@ -10,6 +10,7 @@
 #include "gui/guiinterface.h"
 #include "utilities/debug.h"
 #include "strategy/strategycontroller.h"
+#include "strategy/controllers/joystick/scontroller_joystick.h"
 #include "yaml-cpp/yaml.h"
 #include <string>
 #include "model/field.h"
@@ -118,10 +119,11 @@ public:
 
 };
 
+#undef main // this is to prevent multiple definitions of main from external modules like SDL
 int main(int argc, char *argv[])
 {
 
-     std::cout << "WORKING!!!";
+    std::cout << "WORKING!!!";
     std::string folder = argc > 1 ? argv[1] : "./config";
 
     std::cout << QDir::currentPath().toStdString() << std::endl;
@@ -137,13 +139,14 @@ int main(int argc, char *argv[])
 
 
     MyApplication a(argc, argv);
+    SControllerJoystick::init_module(); // init joystick listener module
 
     // set all parameters:
     Field::load(field_node);
     load_motion_parameters(motion_node);
 
     // load teams:
-    Team::load_teams(team_node);
+    RobotTeam::load_teams(team_node);
 
 
 
@@ -151,7 +154,7 @@ int main(int argc, char *argv[])
 
     SSLRefBoxListener refCommunicator( comm_node);
     // TODO: vision communicator should not know anything about team sides (deprecated notion of "own team")
-    SSLVisionListener visionCommunicator(comm_node, team_node["TEAM_BLUE"]["SIDE"].as<int>());
+    SSLVisionListener visionCommunicator(comm_node);
 
 
     registerExitSignals();
@@ -171,6 +174,7 @@ int main(int argc, char *argv[])
 
 
     // stop threads
+    SControllerJoystick::stop_module();
     refCommunicator.stop();
     refCommunicator.wait();
 
@@ -178,7 +182,7 @@ int main(int argc, char *argv[])
     visionCommunicator.wait();
 
     for(int i=0;i<2;i++)
-        Team::getTeam(i)->closeCommunication();
+        RobotTeam::getTeam(i)->closeCommunication();
 
     // wait for threads to close:
     std::cout<< "result: " << result << std::endl;

@@ -1,6 +1,6 @@
 #ifndef TESTSTRATEGY_H
 #define TESTSTRATEGY_H
-#include "../strategy.h"
+#include "../../../strategy.h"
 class Robot;
 
 /*! @file
@@ -17,9 +17,9 @@ class Robot;
 class TestStrategy : public Strategy
 {
 public:
-    TestStrategy(Team* _team);
-    void assignBeh() override;
-    bool update() override;
+    TestStrategy(RobotTeam* _team);
+    void assignBehaviors() override;
+    int getStatus() override;
 };
 
 #endif // TESTSTRATEGY_H

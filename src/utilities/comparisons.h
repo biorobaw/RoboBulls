@@ -111,9 +111,9 @@ public:
      * @{
      * @brief Helper functions to query the container queries on GameModel teams */
     Robot* maxInSet(std::set<Robot*>& robots);
-    Robot* maxInTeam(Team* team);
+    Robot* maxInTeam(RobotTeam* team);
     Robot* minInSet(std::set<Robot*>& robots);
-    Robot* minInTeam(Team* team);
+    Robot* minInTeam(RobotTeam* team);
     //! @}
 
     virtual void setCompareFunction();

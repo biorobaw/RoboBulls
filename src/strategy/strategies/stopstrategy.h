@@ -12,9 +12,8 @@
 class StopStrategy:public Strategy
 {
 public:
-    StopStrategy(Team* _team);
-    void assignBeh() override;
-    bool update() override;
+    StopStrategy(RobotTeam* _team);
+    void assignBehaviors() override;
 };
 
 #endif // STOPSTRATEGY_H

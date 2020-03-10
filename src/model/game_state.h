@@ -1,6 +1,7 @@
 #ifndef GAMEMODEL_H
 #define GAMEMODEL_H
 #include <vector>
+#include "ssl_referee.pb.h"
 #include "utilities/point.h"
 #include "utilities/measurements.h"
 #include "robot/robot.h"
@@ -31,11 +32,11 @@ public:
     /*! @name Game access functions
      * @{*/
 
-    static char   getState();
+    static Referee_Command getRefereeCommand();
+    static Referee_Command getPreviousCommand();
     static char   getBlueGoals();
     static char   getYellowGoals();
-    static short  getRemainingTime();
-    static char   getPreviousState();
+    static int    getRemainingTime();
 
     //! @}
 
@@ -45,11 +46,11 @@ private:
     /* General Game Information */
 
 
-    static char   state        ;  //The current state of the game from RefComm
-    static char   previousState;  //The previous gamestate
-    static char   blueGoals    ;  //Number of scores yellow goals
-    static char   yellowGoals  ;  //Number of scores yellow goals
-    static short  remainingTime;  //Remaining time in seconds
+    static Referee_Command refereeCommand;  //The last referee command received
+    static Referee_Command previousCommand ;  //The previous gamestate
+    static char   blueGoals     ;  //Number of scores yellow goals
+    static char   yellowGoals   ;  //Number of scores yellow goals
+    static int    remainingTime ;  //Remaining time in seconds
 
     /* Functions to update gamemodel from vision system.
      * Provides *the* link between vision detection and
@@ -60,8 +61,8 @@ private:
     static void onRobotUpdated(Robot*);
 
 
-    static void setGameState(char);
-    static void setTimeLeft(short);
+    static void setRefereeCommand(Referee_Command);
+    static void setTimeLeft(int);
     static void setBlueGoals(char);
     static void setYellowGoals(char);
     static void notifyObservers();

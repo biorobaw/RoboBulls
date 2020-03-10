@@ -139,7 +139,7 @@ void buildin_robot_action(const std::vector<std::string>& args, Function callbac
     if(args.size() == 2 && (args[1] == "b" || args[1] == "y")) {
         int  id  = args[0][0] - '0';
         char tm  = args[1][0];
-        int team = (tm == 'b') ? TEAM_BLUE : TEAM_YELLOW;
+        int team = (tm == 'b') ? ROBOT_TEAM_BLUE : ROBOT_TEAM_YELLOW;
         callback(id, team);
     } else {
         std::cout << "Usage: <id> <team=b|y>" << std::endl;
@@ -150,7 +150,7 @@ void buildin_robot_action(const std::vector<std::string>& args, Function callbac
 void builtin_remove_robot(const std::vector<std::string>& args)
 {
     buildin_robot_action(args, [&](int id, int team) {
-        Team::getTeam(team)->removeRobot(id);
+        RobotTeam::getTeam(team)->removeRobot(id);
         std::cout << "Removed robot " << id << " from team " << team << std::endl;
     });
 }
@@ -160,7 +160,7 @@ void builtin_add_robot(const std::vector<std::string>& args)
 {
     buildin_robot_action(args, [&](int id, char team) {
 
-        Team::getTeam(team)->addRobot(id);
+        RobotTeam::getTeam(team)->addRobot(id);
         std::cout << "Added robot " << id << " to team " << team << std::endl;
     });
 }

@@ -30,7 +30,7 @@
 #include "guiscene.h"
 #include "guiinterface.h"
 #include "guirobot.h"
-#include "joystick.h"
+#include "strategy/controllers/joystick/joystick.h"
 #include "robot/robcomm.h"
 
 // Project classes
@@ -85,9 +85,6 @@ MainWindow::MainWindow(QWidget *parent) :
     // Default zoom button
     connect(ui->zoom_default, SIGNAL(clicked()), fieldpanel, SLOT(defaultZoom()));
 
-    // Start joystick thread
-    JoyStick::listen();
-
     //All rboots overridden by default
     on_btn_override_all_released();
 }
@@ -116,8 +113,6 @@ void MainWindow::coreLoop(int tick) {
     updateBallInfo();
     clockLoop(tick);
 
-    // Actuate joystick commands
-    JoyStick::setCommands();
 }
 
 void MainWindow::clockLoop(int tick) {
@@ -771,8 +766,8 @@ void MainWindow::setSelectedTeamId(int team_id){
     selected_team_id = team_id;
 }
 std::string MainWindow::getSelectedTeamName(){
-    return selected_team_id == TEAM_BLUE ? "Blue" : "Yellow";
+    return selected_team_id == ROBOT_TEAM_BLUE ? "Blue" : "Yellow";
 }
-Team* MainWindow::getSelectedTeam(){
-    return Team::getTeam(selected_team_id);
+RobotTeam* MainWindow::getSelectedTeam(){
+    return RobotTeam::getTeam(selected_team_id);
 }

@@ -10,12 +10,14 @@
     Assigns behaviors for all the robots.
     A goal cannot be scored directly from a free kick.
 */
+
 class IndirectKickStrategy : public Strategy
 {
 public:
-    IndirectKickStrategy(Team* _team);
-    void assignBeh();
-    char getNextStrategy() override;
+    enum Status {KICKING, KICKED};
+    IndirectKickStrategy(RobotTeam* _team);
+    void assignBehaviors() override;
+    int getStatus() override;
 
 private:
     Robot* kicker; // Robot recieving pass to kick ball

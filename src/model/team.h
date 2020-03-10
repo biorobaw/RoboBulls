@@ -11,19 +11,19 @@
 #define MAX_ROBOTS 16 // limited by vision that recognizes only 16 patterns per team
 
 //! Tags for possible team colors
-#define TEAM_BLUE 0
-#define TEAM_YELLOW 1
+#define ROBOT_TEAM_BLUE 0
+#define ROBOT_TEAM_YELLOW 1
 
 
-class Team {
+class RobotTeam {
 
 public:
 
-    Team(YAML::Node t_node, int _color);
-    ~Team();
+    RobotTeam(YAML::Node t_node, int _color);
+    ~RobotTeam();
 
     static void load_teams(YAML::Node team_nodes);
-    static Team* getTeam(int id);
+    static RobotTeam* getTeam(int id);
 
 
     Robot* addRobot(int id);
@@ -43,7 +43,7 @@ public:
     bool isControlled();
 
 
-    StrategyController controller = StrategyController(this);
+    StrategyController* controller = nullptr;
     void closeCommunication();
     void sendVels();
 
@@ -61,7 +61,7 @@ private:
 
 
 
-    static Team* teams[2];
+    static RobotTeam* teams[2];
     RobComm* comm;
 
 

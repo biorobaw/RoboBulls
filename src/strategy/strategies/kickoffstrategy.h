@@ -11,8 +11,8 @@
 class KickOffStrategy : public Strategy
 {
 public:
-    KickOffStrategy(Team* _team);
-    void assignBeh();
+    KickOffStrategy(RobotTeam* _team);
+    void assignBehaviors();
 private:
 #define NUM_KICK_OFF_POINTS 5
     static Point myKickoffPoints[NUM_KICK_OFF_POINTS];

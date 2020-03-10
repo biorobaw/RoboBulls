@@ -1,148 +1,84 @@
+#include "strategycontroller.h"
 #include "strategy/strategy.h"
 #include "model/game_state.h"
 #include "robot/robot.h"
-#include "strategies/stopstrategy.h"
-#include "strategies/teststrategy.h"
-#include "strategies/kickoffstrategy.h"
-#include "strategies/freekickstrategy.h"
-#include "strategies/normalgamestrategy.h"
-#include "strategies/penaltystrategy.h"
-#include "strategies/indirectkickstrategy.h"
-#include "strategies/haltstrategy.h"
-#include "robot/robcomm.h"
 #include "gui/guiinterface.h"
-#include "strategycontroller.h"
-#include "model/game_state.h"
 
-StrategyController::StrategyController( Team* _team) : team(_team) {
+#include "controllers/scontroller_normal_game.h"
+#include "controllers/strategy_tester/scontroller_strategy_tester.h"
+#include "controllers/joystick/scontroller_joystick.h"
+#include "strategies/haltstrategy.h"
+
+#include <string>
+#include <iostream>
+using std::cerr, std::endl, std::string;
+
+StrategyController::StrategyController( RobotTeam* _team, YAML::Node n)
+  : team(_team),
+    activeStrategy(new HaltStrategy(_team))
+{
+    (void)n;
 }
+StrategyController::~StrategyController(){}
 
 void StrategyController::run()
 {
-    //StrategyController runs only if at least one robot is on the team.
-    //This is for the initial reading at which robots may not be detected yet
-//    std::cout<< "at StrategyController::run() \n";
-    if(!team->getRobots().empty())
-    {
-//        std::cout<< "at StrategyController::run() - team not empty\n";
-        if(received_new_command || activeStrategy == nullptr) {
-            //std::cout<< "at StrategyController::run()  resetting\n";
-
-            assignNewStrategy(GameState::getState()); //Updates activeStrategy
-            activeStrategy->assignBeh();
-
-        } else {
-            //std::cout<< "at StrategyController::run() continued\n";
-            runActiveStrategy();
+    // update strategy if necessary
+    if(int strategy_result; received_new_command ||
+            (strategy_result = 0) != 0){ //activeStrategy.getResult()
+        // new command received from game controller
+        int new_state = received_new_command ?
+                                getControllerState(GameState::getRefereeCommand()) :
+                                getNextControllerState(controller_state, strategy_result);
+        if(new_state!=controller_state){
+            delete activeStrategy;
+            for(Robot* r : team->getRobots()) r->clearBehavior();
+            activeStrategy = loadStateStrategy(controller_state);
+            activeStrategy->assignBehaviors();
+            received_new_command = false;
         }
-        //std::cout<<"model->onCommandProcessed();"<<std::endl;
-        received_new_command = false;
 
-        sendRobotCommands();
     }
-    //std::cout<<"OUTSIDE IF"<<std::endl; Bowu
-}
 
-void StrategyController::assignNewStrategy(char gameState)
-{
-    clearCurrentStrategy();
+    // update strategy
+    activeStrategy->getStatus();
 
-    if(refbox_enabled){
-        std::cout << "Active strategy: "<<gameState<<std::endl;
-        //gameState='K';//Added by Bo Wu
-        switch(gameState) {
-            case 'S':    //stop game
-            case 'G':    //Blue Goal
-            case 'g':    //Yellow Goal
-                activeStrategy = new StopStrategy(team);
-                break;
-            case 'p':   //Yellow Penalty Kick
-            case 'P':   //Blue Penalty Kick
-                activeStrategy = new PenaltyStrategy(team);
-                break;
-            case 'k':   //Yellow Kickoff
-            case 'K':   //Blue Kickoff
-                activeStrategy = new KickOffStrategy(team);
-                break;
-            case 'f':   //Yellow Free Kick
-            case 'F':   //Blue Free Kick
-                activeStrategy = new FreeKickStrategy(team);
-                break;
-            case 'i':   //Yellow Indirect Kick
-            case 'I':   //Blue Indirect kick
-                activeStrategy = new IndirectKickStrategy(team);
-                break;
-            case 'T':
-            case 't':
-            case 'H':    //Halt
-                activeStrategy = new HaltStrategy(team);
-                break;
-            case ' ':    //Normal game play
-                std::cout << "Warning: GS \"" <<  gameState << "\" Not implemented" << std::endl;
-                activeStrategy = new NormalGameStrategy(team);
-                break;
-            case 's':    //Force Start
-                activeStrategy = new NormalGameStrategy(team);
-                break;
-            default:    //Anything Else
-                std::cout << "Warning: GS \"" <<  gameState << "\" Not implemented" << std::endl;
-                activeStrategy = new StopStrategy(team);
-        };
-    }
-    else {
-        (void)(gameState);
-        activeStrategy = new TestStrategy(team);
-        std::cout << "Active strategy: TestStrategy\n";
-    }
-}
-
-
-void StrategyController::runActiveStrategy()
-{
-    if(activeStrategy != nullptr)
-    {
-        bool clearStrategyFlag = activeStrategy->update();
-        char nextState = activeStrategy->getNextStrategy();
-        // Recreate current strategy if requested or
-        // Change the current strategy arbitrarily if requested
-        if(clearStrategyFlag) clearCurrentStrategy();
-        else if(nextState != '\0' && nextState != GameState::getState())
-            assignNewStrategy(nextState);
-    }
-}
-
-void StrategyController::clearCurrentStrategy()
-{
-    delete activeStrategy;
-    activeStrategy = nullptr;
-    for(Robot* robot : team->getRobots())
-        robot->clearBehavior();
-}
-
-void StrategyController::sendRobotCommands()
-{
-    //std::cout << " In StrategyController::frameEnd()" <<std::endl;
+    // perform robot behaviors
     for (Robot *rob :  team->getRobots())
-    {
         if (!GuiInterface::getGuiInterface()->isOverriddenBot(team->getColor(),rob->getID())) {
             if(rob->hasBehavior())
                 rob->getBehavior()->perform(rob);
          }
-    }
 
+    // send velocities to the robots
     team->sendVels();
-    //std::cout<<"frameEnd() get called\n"<<std::endl;
+
 }
 
-
-Team* StrategyController::getTeam(){
-    return team;
-}
-
-void StrategyController::setRefboxEnabled(bool _enabled){
-    refbox_enabled = _enabled;
-}
 
 void StrategyController::signalNewCommand(){
     received_new_command = true;
+}
+
+
+
+StrategyController* StrategyController::loadController(RobotTeam* team, YAML::Node c_node){
+
+    std::cout << "        STRATEGY_CONTROLLER  : " <<std::endl;
+    std::cout << "            ID : " <<  c_node["ID"] << std::endl;
+    auto id = c_node["ID"].as<string>();
+
+    if(id == "NORMAL_GAME"){
+        return new SControllerNormalGame(team,c_node);
+    } else if( id == "STRATEGY_TESTER"){
+        return new SControllerStrategyTester(team,c_node);
+    } else if ( id == "JOYSTICK" ) {
+        return new SControllerJoystick(team,c_node);
+    }else {
+        cerr << "ERROR : controller '" << id << "' not recognized" <<endl
+             << "\tHalting execution...";
+        exit(-1);
+    }
+
+
 }

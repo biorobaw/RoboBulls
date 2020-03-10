@@ -1,28 +1,17 @@
+#include "ssl_referee.pb.h"
 #include "ssl-game-controller/sss_refbox_listener.h"
 #include <iostream>
 
 using namespace std;
-
-/*! @brief The legacy Refbox packet
- * @details [RefBox legacy format](http://robocupssl.cpe.ku.ac.th/referee:legacy-protocol)
- * This is the formati of packet recieved by the RefBox. */
- struct Packet {
-     char command;               //!<ASCII chatacter sent as the current comment
-     unsigned char counter;      //!<Incremented when a new command is sent
-     unsigned char goals_blue;   //!<Number of Blue goals
-     unsigned char goals_yellow; //!<Number of Yellow goals
-     unsigned short time_left;   //!<Remaining time (Seconds)?
- } *lastPacket;
 
 
 SSLRefBoxListener::SSLRefBoxListener(YAML::Node comm_node)
 {
     cout << "--REFBOX " << endl
          << "        REFBOX_ADDR    : " << comm_node["REFBOX_ADDR"] << endl
-         << "        REFBOX_PORT    : " << comm_node["REFBOX_PORT"] << endl
-         << "        REFBOX_ENABLED : " << comm_node["REFBOX_ENABLED"] << endl;
-    _port       = comm_node["REFBOX_PORT"].as<int>();
-    _net_address= comm_node["REFBOX_ADDR"].as<string>();
+         << "        REFBOX_PORT    : " << comm_node["REFBOX_PORT"] << endl;
+    net_address= comm_node["REFBOX_ADDR"].as<string>();
+    port       = comm_node["REFBOX_PORT"].as<int>();
     cout << "--Refbox DONE" << endl;
 
 
@@ -36,26 +25,58 @@ void SSLRefBoxListener::run(){
     QByteArray datagram;
     done = false;
 
-    QUdpSocket socket(this);
-    socket.bind(QHostAddress::AnyIPv4, _port, QUdpSocket::ShareAddress);
-    socket.joinMulticastGroup(QHostAddress(QString(  _net_address.c_str()  ) ));
+    cout << "Binding: " << net_address << " " << port <<endl;
+    QUdpSocket socket;
+    if(!socket.bind(QHostAddress::AnyIPv4, port, QUdpSocket::ShareAddress)){
+        cerr << "ERROR: could not bind refbox port " << port << endl;
+        exit(-1);
+    }
+    if(!socket.joinMulticastGroup(QHostAddress(QString(  net_address.c_str()  ) ))){
+        cerr << "ERROR: ssl-refbox could not join multicast group "<<  net_address <<endl;
+        exit(-1);
+    }
 
     // using QUdpSocket::readDatagram (API since Qt 4)
     while(!done){
-        if (socket.hasPendingDatagrams()) {
-            datagram.resize(int(socket.pendingDatagramSize()));
-            socket.readDatagram(datagram.data(), datagram.size());
 
-            lastPacket = (Packet*)datagram.constData();
-
-            GameState::setGameState(lastPacket->command);
-            GameState::setTimeLeft(lastPacket->time_left);
-            GameState::setBlueGoals(lastPacket->goals_blue);
-            GameState::setYellowGoals(lastPacket->goals_yellow);
-
-        } else {
+        if(!socket.hasPendingDatagrams()) {
             msleep(5);
+            continue;
         }
+
+//        cout << "pending: " << socket.hasPendingDatagrams() << endl;
+        datagram.resize(int(socket.pendingDatagramSize()));
+        socket.readDatagram(datagram.data(), datagram.size());
+
+        Referee referee;
+//        datagram.data()
+        if(referee.ParseFromArray(datagram.data(),datagram.size())){
+
+
+            cout << "Refbox: ";
+            if(referee.has_command()) cout << "C: " << referee.command() << " ";
+            if(referee.has_stage_time_left()) cout << "T: " << referee.stage_time_left() << " ";
+            if(referee.has_blue() &&
+               referee.blue().has_score()) cout << "B: " << referee.blue().score() << " ";
+            if(referee.has_yellow() &&
+               referee.yellow().has_score()) cout << "Y: " << referee.yellow().score() << " ";
+            cout << endl;
+
+            if(referee.has_command())
+                GameState::setRefereeCommand(referee.command());
+            if(referee.has_stage_time_left())
+                GameState::setTimeLeft( referee.stage_time_left() );
+            if(referee.has_blue() && referee.blue().has_score())
+                // seems to be in micro seconds
+                GameState::setBlueGoals(referee.blue().score());
+            if(referee.has_yellow() && referee.yellow().has_score())
+                GameState::setYellowGoals(referee.yellow().score());
+
+        }
+
+
+
+
     }
 
     socket.close();

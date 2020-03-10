@@ -135,7 +135,7 @@ void FieldPanel::updateScene() {
 
                 auto* gui_r = gui_robots[team][robot_id];
                 auto* gui_l = gui_bot_labels[team][robot_id];
-                auto* roboti = Team::getTeam(team)->getRobot(robot_id);
+                auto* roboti = RobotTeam::getTeam(team)->getRobot(robot_id);
 
                 if ( roboti != NULL) {
                     gui_r->show();

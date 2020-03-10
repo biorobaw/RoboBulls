@@ -2,7 +2,7 @@
 #include <iostream>
 #include "model/game_state.h"
 
-Strategy::Strategy(Team* _team) : team(_team) {
+Strategy::Strategy(RobotTeam* _team) : team(_team) {
 
 }
 
@@ -10,16 +10,14 @@ Strategy::~Strategy()
 {
 }
 
-char Strategy::getNextStrategy()
+void Strategy::update()
 {
-    return '\0';
+
 }
 
-bool Strategy::update()
-{
-    return false;
+int Strategy::getStatus(){
+    return STATUS_RUNNING;
 }
 
-Team* Strategy::getTeam(){
-    return team;
-}
+
+

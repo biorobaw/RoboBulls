@@ -8,8 +8,8 @@
 class HaltStrategy : public Strategy
 {
 public:
-    HaltStrategy(Team* _team);
-    void assignBeh();
+    HaltStrategy(RobotTeam* _team);
+    void assignBehaviors();
 };
 
 #endif // HALTSTRATEGY_H

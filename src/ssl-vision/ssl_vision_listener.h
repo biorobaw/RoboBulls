@@ -36,7 +36,7 @@ const float CONF_THRESHOLD_BOTS = 0.90;
 class SSLVisionListener: public QThread
 {
 public:
-    SSLVisionListener( YAML::Node comm_node, int _side);
+    SSLVisionListener( YAML::Node comm_node);
 
     void run() override;
     void stop();
@@ -72,8 +72,6 @@ protected:
 
     MyKalmanFilter kfilter = MyKalmanFilter();                //! Kalman filter instance
 
-
-    int side = 0;
 
 };
 

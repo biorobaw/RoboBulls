@@ -290,7 +290,7 @@ void RobotPanel::scrollToSelBot(int id) {
 }
 
 void RobotPanel::updateTeamColors() {
-    if  (dash->getSelectedTeamId() == TEAM_YELLOW) {
+    if  (dash->getSelectedTeamId() == ROBOT_TEAM_YELLOW) {
         // button color
         dash->ui->btn_toggleTeamColor->setStyleSheet("background-color: yellow;" "color: black");
         // robot panel colors
@@ -305,7 +305,7 @@ void RobotPanel::updateTeamColors() {
 //            botXcoords[i]->setStyleSheet("background-color: rgb(100, 100, 0);");
 //            botYcoords[i]->setStyleSheet("background-color: rgb(100, 100, 0);");
         }
-    } else if (dash->getSelectedTeamId() == TEAM_BLUE){
+    } else if (dash->getSelectedTeamId() == ROBOT_TEAM_BLUE){
         // button color
         dash->ui->btn_toggleTeamColor->setStyleSheet("background-color: blue;" "color: white");
         // robot panel colors
@@ -355,7 +355,7 @@ void RobotPanel::toggleIconVisible() {
 const std::string RobotPanel::getCurrStrategy()
 {
 
-    switch(GameState::getState())
+    switch(GameState::getRefereeCommand())
     {
     case 'S':    //stop game
     case 'G':    //Blue Goal
@@ -401,7 +401,7 @@ const std::string RobotPanel::getCurrStrategy()
 const std::string RobotPanel::getGameState()
 {
 
-    switch(GameState::getState())
+    switch(GameState::getRefereeCommand())
     {
     case 'S':    //stop game
         return "Stop Game";

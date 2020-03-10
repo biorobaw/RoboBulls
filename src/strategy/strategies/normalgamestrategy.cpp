@@ -15,32 +15,32 @@
 
 #include "model/ball.h"
 
-NormalGameStrategy::NormalGameStrategy(Team* _team)
+NormalGameStrategy::NormalGameStrategy(RobotTeam* _team)
     : Strategy(_team)
     , initialBallPos(Ball::getPosition())
     , our_def_area(true)
     , opp_def_area(false)
 {
-    char prevGs = GameState::getPreviousState();
+    auto prev_cmd = GameState::getPreviousCommand();
 
     // Opp Kick-Off
-    if((prevGs == 'k' && team->getColor() == TEAM_BLUE)
-    || (prevGs == 'K' && team->getColor() == TEAM_YELLOW))
+    if((prev_cmd == Referee_Command_PREPARE_KICKOFF_YELLOW && team->getColor() == ROBOT_TEAM_BLUE)
+    || (prev_cmd == Referee_Command_PREPARE_KICKOFF_BLUE && team->getColor() == ROBOT_TEAM_YELLOW))
         state = opp_kickoff;
 
     // Our Kick-Off
-    else if((prevGs == 'K' && team->getColor() == TEAM_BLUE)
-    ||      (prevGs == 'k' && team->getColor() == TEAM_YELLOW))
+    else if((prev_cmd == Referee_Command_PREPARE_KICKOFF_BLUE && team->getColor() == ROBOT_TEAM_BLUE)
+    ||      (prev_cmd == Referee_Command_PREPARE_KICKOFF_YELLOW && team->getColor() == ROBOT_TEAM_YELLOW))
         state = our_kickoff_1;
 
     // We are shooting a penalty
-    else if((prevGs == 'p' && team->getColor() == TEAM_YELLOW)
-    ||      (prevGs == 'P' && team->getColor() == TEAM_BLUE))
+    else if((prev_cmd == Referee_Command_PREPARE_PENALTY_YELLOW && team->getColor() == ROBOT_TEAM_YELLOW)
+    ||      (prev_cmd == Referee_Command_PREPARE_PENALTY_BLUE && team->getColor() == ROBOT_TEAM_BLUE))
             state = shoot_penalty;
 
     // We are receiving a penalty
-    else if((prevGs == 'P' && team->getColor() == TEAM_YELLOW)
-    ||      (prevGs == 'p' && team->getColor() == TEAM_BLUE))
+    else if((prev_cmd == Referee_Command_PREPARE_PENALTY_BLUE && team->getColor() == ROBOT_TEAM_YELLOW)
+    ||      (prev_cmd == Referee_Command_PREPARE_PENALTY_YELLOW && team->getColor() == ROBOT_TEAM_BLUE))
             state = defend_penalty;
 
     // Force Start from ref-box. Previous game
@@ -49,7 +49,7 @@ NormalGameStrategy::NormalGameStrategy(Team* _team)
         state = evaluate;
 }
 
-void NormalGameStrategy::assignBeh()
+void NormalGameStrategy::assignBehaviors()
 {
     Robot* wall1 = team->getRobotByRole(RobotRole::DEFEND1);
     Robot* wall2 = team->getRobotByRole(RobotRole::DEFEND2);
@@ -63,7 +63,7 @@ void NormalGameStrategy::assignBeh()
 }
 
 
-bool NormalGameStrategy::update()
+void NormalGameStrategy::update()
 {
     Robot* deffend1 = team->getRobotByRole(RobotRole::DEFEND1);
     Robot* deffend2 = team->getRobotByRole(RobotRole::DEFEND2);
@@ -305,11 +305,10 @@ bool NormalGameStrategy::update()
         break;
     }
 
-    return false;
 }
 
 // Utility function to not duplicate this code
-void NormalGameStrategy::assignGoalieIfOk(Team* team)
+void NormalGameStrategy::assignGoalieIfOk(RobotTeam* team)
 {
     Robot* goalie = team->getRobotByRole(RobotRole::GOALIE);
     if(goalie)

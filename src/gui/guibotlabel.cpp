@@ -31,15 +31,15 @@ void GuiBotLabel::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
     if (!hidden)
     {
         //Setting color of drawn ID
-        auto color = team == TEAM_BLUE ? QColor::fromRgb(0,255,255) : QColor::fromRgb(255,215,0);
+        auto color = team == ROBOT_TEAM_BLUE ? QColor::fromRgb(0,255,255) : QColor::fromRgb(255,215,0);
 
         painter->setPen(QPen(color, 12, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
 
         /* If the robots are being controllerd by our software, get the move status. Otherwise just
          * get the Id for the above label and draw ball if in possession */
         QString label;
-        if(Team::getTeam(team)->isControlled()) {
-           Robot* robot = Team::getTeam(team)->getRobot(id);
+        if(RobotTeam::getTeam(team)->isControlled()) {
+           Robot* robot = RobotTeam::getTeam(team)->getRobot(id);
            if(robot) {
                 label = "" + QString::number(id) + "(" + QString::number(Collisions::getMoveStatus(robot)) + ")";
 

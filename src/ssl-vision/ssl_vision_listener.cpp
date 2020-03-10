@@ -6,20 +6,19 @@
 #include "model/ball.h"
 #include "model/field.h"
 
+
 using namespace std;
 
-SSLVisionListener::SSLVisionListener( YAML::Node comm_node, int _side)
+SSLVisionListener::SSLVisionListener( YAML::Node comm_node)
 {
     std::cout << "--VISION" << endl
               << "        VISION_ADDR : " << comm_node["VISION_ADDR"] << endl
               << "        VISION_PORT : " << comm_node["VISION_PORT"] << endl
-              << "        FOUR_CAMERA : " << comm_node["FOUR_CAMERA"] << endl
-              << "        side chosen : " << ((side == FIELD_SIDE_NEGATIVE) ? "Negative" : "Positive") << endl;
+              << "        FOUR_CAMERA : " << comm_node["FOUR_CAMERA"] << endl;
 
     vision_addr = comm_node["VISION_ADDR"].as<string>();
     vision_port = comm_node["VISION_PORT"].as<int>();
     FOUR_CAMERA_MODE = comm_node["FOUR_CAMERA"].as<bool>();
-    side = _side;
 
     cout << "--Vision DONE" << endl;
 
@@ -43,7 +42,7 @@ void SSLVisionListener::receiveRobot(const SSL_DetectionRobot& robot, int detect
         int id = robot.robot_id();
 
 
-        Team* team =  Team::getTeam(detectedTeamColor);
+        RobotTeam* team =  RobotTeam::getTeam(detectedTeamColor);
         Robot* rob = team->getRobot(id);
 
 //         cout << "--Detected: color,id: " << detectedTeamColor << " " << id << std::endl;
@@ -144,9 +143,9 @@ void SSLVisionListener::recieveRobotTeam(const SSL_DetectionFrame& frame, int wh
 
 //    std::cout << "t: " << which_team << std::endl;
 
-    auto* team    = Team::getTeam(which_team);
+    auto* team    = RobotTeam::getTeam(which_team);
 
-    auto* teamDetection = which_team == TEAM_YELLOW ? &frame.robots_yellow() : &frame.robots_blue();
+    auto* teamDetection = which_team == ROBOT_TEAM_YELLOW ? &frame.robots_yellow() : &frame.robots_blue();
     int*  teamCounts    = rob_readings[which_team];
 
     
@@ -182,10 +181,9 @@ void SSLVisionListener::run(){
     QByteArray datagram;
     done = false;
 
-    QUdpSocket socket(this);
+    QUdpSocket socket;
     socket.bind(QHostAddress::AnyIPv4, vision_port, QUdpSocket::ShareAddress);
     socket.joinMulticastGroup(QHostAddress(QString(  vision_addr.c_str()  ) ));
-
 
 
     while(!done){
@@ -220,8 +218,8 @@ void SSLVisionListener::run(){
                 for(int i = 0; i < num_cams; ++i)
                 {
                     recieveBall(frames[i]);
-                    recieveRobotTeam(frames[i], TEAM_BLUE);
-                    recieveRobotTeam(frames[i], TEAM_YELLOW);
+                    recieveRobotTeam(frames[i], ROBOT_TEAM_BLUE);
+                    recieveRobotTeam(frames[i], ROBOT_TEAM_YELLOW);
                 }
 
                 /* After we have had a chance to initially recieve all robots,

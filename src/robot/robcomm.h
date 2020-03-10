@@ -15,6 +15,8 @@ class RobComm
 {
 public:
 
+    static RobComm* loadRobComm(std::string robot_type,YAML::Node comm_node);
+
     /*! @brief Required; send velocities to the entire team at once
      * @details Given a vector of Robot, RobComms implementing this funciton
      * are to send out packets to these robots, sending their information such

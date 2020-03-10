@@ -122,7 +122,7 @@ void GuiField::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     painter->fillRect(ourGoal,goalBrush);
     painter->fillRect(oppGoal,goalBrush);
     if (coloredGoals) {
-        if (Team::getTeam(TEAM_BLUE)->getSide() == FIELD_SIDE_NEGATIVE) {
+        if (RobotTeam::getTeam(ROBOT_TEAM_BLUE)->getSide() == FIELD_SIDE_NEGATIVE) {
             painter->setPen(QPen(QColor::fromRgb(0,0,255,255), goalThick, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
             painter->drawRect(ourGoal);
             painter->setPen(QPen(Qt::yellow, goalThick, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));

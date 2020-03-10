@@ -2,7 +2,7 @@
 #define FPPA_PATHFINDING_H
 #include <deque>
 #include <vector>
-#include <src/model/robot.h>
+#include <src/robot/robot.h>
 #include "utilities/point.h"
 
 

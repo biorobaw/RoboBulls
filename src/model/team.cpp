@@ -11,13 +11,12 @@
 
 #include <assert.h>
 
-Team* Team::teams[2] = {NULL};
+RobotTeam* RobotTeam::teams[2] = {NULL};
 
-Team::Team(YAML::Node t_node, int _color) {
+RobotTeam::RobotTeam(YAML::Node t_node, int _color) {
 
-    std::cout << "--TEAM_" << (_color == TEAM_BLUE ? "BLUE" : "YELLOW") << std::endl;
+    std::cout << "--TEAM_" << (_color == ROBOT_TEAM_BLUE ? "BLUE" : "YELLOW") << std::endl;
     std::cout << "        SIDE        : " << t_node["SIDE"] <<std::endl;
-    std::cout << "        ROBOT_TYPE  : " << t_node["ROBOT_TYPE"] <<std::endl;
     if(t_node["ROLES"].IsDefined()){
         std::cout << "        ROLES : " << std::endl;
         std::cout << "            GOALIE  : " << t_node["ROLES"]["GOALIE" ] << std::endl;
@@ -31,102 +30,92 @@ Team::Team(YAML::Node t_node, int _color) {
 
 
     color = _color;
-
     side =  t_node["SIDE"].as<int>();
     assert(side == FIELD_SIDE_NEGATIVE || side == FIELD_SIDE_POSITIVE);
 
-    robot_type = t_node["ROBOT_TYPE"].as<std::string>();
-
-    assert( robot_type == "grsim" ||
-            robot_type == "yisibot" ||
-            robot_type == "pi32019" ||
-            robot_type == "none" );
-
-    if( robot_type != "none"){
-
-        std::cout << "        REFBOX_ENABLED  : " << t_node["REFBOX_ENABLED"] <<std::endl;
-        controller.setRefboxEnabled(t_node["REFBOX_ENABLED"].as<bool>());
-    }
-
     if(t_node["ROLES"].IsDefined()){
-        idToRole[t_node["ROLES"]["GOALIE" ].as<int>()] = RobotRole::GOALIE;
-        idToRole[t_node["ROLES"]["ATTACK1"].as<int>()] = RobotRole::ATTACK1;
-        idToRole[t_node["ROLES"]["ATTACK2"].as<int>()] = RobotRole::ATTACK2;
-        idToRole[t_node["ROLES"]["ATTACK3"].as<int>()] = RobotRole::ATTACK3;
-        idToRole[t_node["ROLES"]["DEFEND1"].as<int>()] = RobotRole::DEFEND1;
-        idToRole[t_node["ROLES"]["DEFEND2"].as<int>()] = RobotRole::DEFEND2;
-        idToRole[t_node["ROLES"]["DEFEND3"].as<int>()] = RobotRole::DEFEND3;
+        if(t_node["ROLES"]["GOALIE" ].IsDefined())
+            idToRole[t_node["ROLES"]["GOALIE" ].as<int>()] = RobotRole::GOALIE;
+
+        if(t_node["ROLES"]["ATTACK1" ].IsDefined())
+            idToRole[t_node["ROLES"]["ATTACK1"].as<int>()] = RobotRole::ATTACK1;
+
+        if(t_node["ROLES"]["ATTACK2" ].IsDefined())
+            idToRole[t_node["ROLES"]["ATTACK2"].as<int>()] = RobotRole::ATTACK2;
+
+        if(t_node["ROLES"]["ATTACK3" ].IsDefined())
+            idToRole[t_node["ROLES"]["ATTACK3"].as<int>()] = RobotRole::ATTACK3;
+
+        if(t_node["ROLES"]["DEFEND1" ].IsDefined())
+            idToRole[t_node["ROLES"]["DEFEND1"].as<int>()] = RobotRole::DEFEND1;
+
+        if(t_node["ROLES"]["DEFEND2" ].IsDefined())
+            idToRole[t_node["ROLES"]["DEFEND2"].as<int>()] = RobotRole::DEFEND2;
+
+        if(t_node["ROLES"]["DEFEND3" ].IsDefined())
+            idToRole[t_node["ROLES"]["DEFEND3"].as<int>()] = RobotRole::DEFEND3;
     }
+
+
+
+    std::cout << "        ROBOT_TYPE  : " << t_node["ROBOT_TYPE"] <<std::endl;
+    robot_type = t_node["ROBOT_TYPE"].as<std::string>();
+    comm = RobComm::loadRobComm(robot_type,t_node["ROB_COMM"]);
+
+    if(robot_type != "none")
+        controller = StrategyController::loadController(this,t_node["STRATEGY_CONTROLLER"]);
+
+
+
 
     teams[color] = this;
-
-    // set robot communication:
-    if( robot_type == "grsim"){
-        comm = new RobCommGrsim(t_node);
-    } else if (robot_type == "yisibot"){
-        comm = new YisiRobComm(t_node);
-    } else if (robot_type == "rpi_2019"){
-        std::cout << "ERROR: rpi_2019 is not yet supported" << std::endl;
-        exit (-1);
-    } else if (robot_type == "none"){
-        // we do not control these team, do nothing
-    } else {
-        std::cout << "ERROR: unrecognized robot type" << std::endl;
-        exit (-1);
-    }
-
-    std::cout << "--Team_" << (_color == TEAM_BLUE ? "blue" : "yellow") << " DONE" <<std::endl;
+    std::cout << "--Team_" << (_color == ROBOT_TEAM_BLUE ? "blue" : "yellow") << " DONE" <<std::endl;
 
 }
 
-Team::~Team(){
+RobotTeam::~RobotTeam(){
     if(teams[color] == this) teams[color] = NULL;
     closeCommunication();
     if(comm!=nullptr) {
         delete comm;
         comm=nullptr;
     }
+    if(controller!=nullptr){
+        delete controller;
+        controller = nullptr;
+
+    }
 }
 
 
-void Team::load_teams(YAML::Node team_nodes){
-    teams[TEAM_BLUE] = new Team(team_nodes["TEAM_BLUE"], TEAM_BLUE);
-    teams[TEAM_YELLOW] = new Team(team_nodes["TEAM_YELLOW"], TEAM_YELLOW);
+void RobotTeam::load_teams(YAML::Node team_nodes){
+    teams[ROBOT_TEAM_BLUE] = new RobotTeam(team_nodes["TEAM_BLUE"], ROBOT_TEAM_BLUE);
+    teams[ROBOT_TEAM_YELLOW] = new RobotTeam(team_nodes["TEAM_YELLOW"], ROBOT_TEAM_YELLOW);
 
     if(teams[0]->side == teams[1]->side){
         std::cout << "WARNING: both teams were assigned the same side" << std::endl
                   << "         moving TEAM_YELLOW to other side of the field." << std::endl;
-        teams[TEAM_YELLOW]->side = teams[TEAM_YELLOW]->getOpponentSide();
+        teams[ROBOT_TEAM_YELLOW]->side = teams[ROBOT_TEAM_YELLOW]->getOpponentSide();
     }
 }
 
-Team* Team::getTeam(int id){
+RobotTeam* RobotTeam::getTeam(int id){
     return teams[id];
 }
 
 
-Robot* Team::addRobot(int id){
+Robot* RobotTeam::addRobot(int id){
 //    std::cout << robot_type << " type\n";
     auto role = idToRole[id];
-    Robot* aux = nullptr;
-    if(robot_type == "grsim"){
-        aux = new RobotGrsim(id,color,role);
-    } else if (robot_type == "yisibot") {
-        aux = new RobotYisibot(id,color,role);
-    } else if (robot_type == "pi32019") {
-        //TODO: to be implemented in the future
-    } else if (robot_type == "none") {
-        // assign a dummy robot
-        aux = new RobotNone(id,color,role);
-    }
+    auto r = Robot::loadRobot(robot_type,id,color,role);
 
-    robotById[id] = aux;
-    robotByRoles[idToRole[id]] = aux;
-    all_robots.insert(aux);
-    return aux;
+    robotById[id] = r;
+    robotByRoles[idToRole[id]] = r;
+    all_robots.insert(r);
+    return r;
 }
 
-void Team::removeRobot(int id){
+void RobotTeam::removeRobot(int id){
     Robot* aux = robotById[id];
     robotById[id] = NULL;
     robotByRoles[aux->getRole()] = NULL;
@@ -141,47 +130,47 @@ void Team::removeRobot(int id){
  * @param id The id of the robot to look for
  * @see Robot class
  * \return A robot pointer if found, or NULL if not on the team */
-Robot* Team::getRobot(int id)
+Robot* RobotTeam::getRobot(int id)
 {
     return robotById[id];
 }
 
-Robot* Team::getRobotByRole(RobotRole role){
+Robot* RobotTeam::getRobotByRole(RobotRole role){
     return robotByRoles[role];
 }
 
-std::set<Robot*>& Team::getRobots(){
+std::set<Robot*>& RobotTeam::getRobots(){
     return all_robots;
 }
 
 
-int Team::getColor(){
+int RobotTeam::getColor(){
     return color;
 }
-std::string Team::getRobotType(){
+std::string RobotTeam::getRobotType(){
     return robot_type;
 }
-int Team::getSide(){
+int RobotTeam::getSide(){
     return side;
 }
 
-int Team::getOpponentSide(){
+int RobotTeam::getOpponentSide(){
     return side == FIELD_SIDE_NEGATIVE ?
                 FIELD_SIDE_POSITIVE :
                 FIELD_SIDE_NEGATIVE;
 }
 
-bool Team::isControlled(){
+bool RobotTeam::isControlled(){
     return robot_type != "none";
 }
 
-void Team::closeCommunication(){
+void RobotTeam::closeCommunication(){
     if(comm!=nullptr){
         comm->close_communication(all_robots);
     }
 }
 
-void Team::sendVels(){
+void RobotTeam::sendVels(){
     if(comm!=nullptr){
         comm->sendVels(all_robots);
     }

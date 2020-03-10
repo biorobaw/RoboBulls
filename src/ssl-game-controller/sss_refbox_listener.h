@@ -53,13 +53,13 @@ public:
      * @param port The port Refbox is broadcasting to */
     SSLRefBoxListener(YAML::Node comm_node);
 
-    void run();
+    void run() override;
     void stop();
 
 private:
     std::atomic_bool done;
-    string _net_address;
-    int    _port;
+    string net_address;
+    int    port;
 
 };
 

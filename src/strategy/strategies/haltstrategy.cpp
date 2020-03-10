@@ -2,11 +2,11 @@
 #include "model/game_state.h"
 #include "../behaviors/refstop.h"
 
-HaltStrategy::HaltStrategy(Team* _team) : Strategy(_team) {
+HaltStrategy::HaltStrategy(RobotTeam* _team) : Strategy(_team) {
 
 }
 
-void HaltStrategy::assignBeh()
+void HaltStrategy::assignBehaviors()
 {
     for(Robot* robot : team->getRobots())
     {

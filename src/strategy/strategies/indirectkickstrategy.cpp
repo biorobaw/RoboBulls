@@ -9,19 +9,18 @@
 #include "../behaviors/attacksupport.h"
 #include "../behaviors/wall.h"
 #include "../behaviors/markbot.h"
-#include "normalgamestrategy.h"
 #include "../behaviors/markbot.h"
 
 #include "model/ball.h"
 #include "model/field.h"
 
-IndirectKickStrategy::IndirectKickStrategy(Team* _team)
+IndirectKickStrategy::IndirectKickStrategy(RobotTeam* _team)
     :Strategy(_team), initial_bp(Ball::getPosition())
 {
 
 }
 
-void IndirectKickStrategy::assignBeh()
+void IndirectKickStrategy::assignBehaviors()
 {
 
     Robot* wall1 = team->getRobotByRole(RobotRole::DEFEND1);
@@ -31,8 +30,8 @@ void IndirectKickStrategy::assignBeh()
 
 
     // We are kicking
-    if ((GameState::getState() == 'I' && team->getColor() == TEAM_BLUE) ||
-        (GameState::getState() == 'i' && team->getColor() == TEAM_YELLOW))
+    if ((GameState::getRefereeCommand() == 'I' && team->getColor() == ROBOT_TEAM_BLUE) ||
+        (GameState::getRefereeCommand() == 'i' && team->getColor() == ROBOT_TEAM_YELLOW))
     {
         for(Robot* rob : team->getRobots())
             rob->clearBehavior();
@@ -68,11 +67,12 @@ void IndirectKickStrategy::assignBeh()
         if(attack2 && !attack2->hasBehavior())
             attack2->assignBeh<MarkBot>();
 
-        NormalGameStrategy::assignGoalieIfOk(team);
+        Robot* goalie = team->getRobotByRole(RobotRole::GOALIE);
+        if(goalie) goalie->assignBeh<Goalie>(goalie);
     }
     // We are defending against an indirect kick
-    else if ((GameState::getState() == 'i' && team->getColor() == TEAM_BLUE) ||
-             (GameState::getState() == 'I' && team->getColor() == TEAM_YELLOW))
+    else if ((GameState::getRefereeCommand() == 'i' && team->getColor() == ROBOT_TEAM_BLUE) ||
+             (GameState::getRefereeCommand() == 'I' && team->getColor() == ROBOT_TEAM_YELLOW))
     {
         if(wall1)
             wall1->assignBeh<Wall>();
@@ -83,16 +83,17 @@ void IndirectKickStrategy::assignBeh()
         if(attack2)
             attack2->assignBeh<MarkBot>();
 
-        NormalGameStrategy::assignGoalieIfOk(team);
+        Robot* goalie = team->getRobotByRole(RobotRole::GOALIE);
+        if(goalie) goalie->assignBeh<Goalie>(goalie);
     }
 }
 
 
-char IndirectKickStrategy::getNextStrategy()
+int IndirectKickStrategy::getStatus()
 {
     if ((kicker && kicker->getKick() > 0)
     || !Measurements::isClose(initial_bp, Ball::getPosition(), 70))
-        return ' '; // Go to normal game strategy
+        return KICKING; // Go to normal game strategy
     else
-        return '\0';
+        return KICKED;
 }

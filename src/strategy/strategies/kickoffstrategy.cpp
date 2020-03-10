@@ -14,11 +14,11 @@
  *             *
  ******************/
 
-KickOffStrategy::KickOffStrategy(Team* _team) : Strategy(_team) {
+KickOffStrategy::KickOffStrategy(RobotTeam* _team) : Strategy(_team) {
 
 }
 
-void KickOffStrategy::assignBeh()
+void KickOffStrategy::assignBehaviors()
 {
     Robot* wall1 = team->getRobotByRole(RobotRole::DEFEND1);
     Robot* wall2 = team->getRobotByRole(RobotRole::DEFEND2);
@@ -36,6 +36,5 @@ void KickOffStrategy::assignBeh()
 
     // Goalie is a special case
     Robot* goalie = team->getRobotByRole(RobotRole::GOALIE);
-    if(goalie)
-        goalie->assignBeh<Goalie>(goalie);
+    if(goalie) goalie->assignBeh<Goalie>(goalie);
 }

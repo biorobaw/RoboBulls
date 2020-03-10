@@ -4,16 +4,16 @@
 #include <type_traits>
 #include "utilities/point.h"
 #include "utilities/velocitycalculator.h"
-#include "behavior/behavior.h"
-#include "skill/skill.h"
-#include "behavior/genericskillbehavior.h"
+#include "strategy/behavior.h"
+#include "strategy/skill.h"
+#include "strategy/behaviors/genericskillbehavior.h"
 #include "iostream"
 #include <set>
 
 #include "navigation/robot_pilot.h"
 
 
-class Team;
+class RobotTeam;
 
 //TODO: Currently strategies assume 5 robots (only 2 defence and 2 attackers)
 //but robocup uses either 6 or 8 robots
@@ -46,6 +46,9 @@ class Robot
 public:
 //    //! @brief Robot Constructor (does nothing)
 //    Robot();
+
+    static Robot* loadRobot(std::string type,int id, int color, RobotRole role);
+
     virtual ~Robot();
     static std::set<Robot*>& getAllRobots();
 
@@ -62,10 +65,10 @@ public:
     int getTeamId();
 
     //! @brief Get a pointer to the team that the robot belongs to
-    Team* getTeam();
+    RobotTeam* getTeam();
 
     //! @brief Get a pointer to the robot's opponent team
-    Team* getOpponentTeam();
+    RobotTeam* getOpponentTeam();
 
     //! @brief Get the role of the robot in the team
     RobotRole getRole();

@@ -3,7 +3,15 @@
 #include <cmath>
 #include "robot.h"
 #include "model/team.h"
+#include <iostream>
+#include "robots/grsim/robot_grsim.h"
+#include "robots/none/robotnone.h"
+#include "robots/yisibot/robot_yisibot.h"
+//#include "robots/rpi_2019/robot_rpi_2019"
+#include "strategy/behaviors/refstop.h"
 
+
+using std::cerr, std::cout, std::endl;
 std::set<Robot*> Robot::all_robots;
 
 
@@ -17,14 +25,8 @@ Robot::Robot(int id, int team, RobotRole role) :
     dribble(false)
 {
     all_robots.insert(this);
+    assignBeh<RefStop>();
 
-//    if(robot_type == "yisibot"){
-
-//    } else if (robot_type == "grsim") {
-//    } else if (robot_type == "rpi_2019"){
-//    } else if (robot_type == "none") {
-//    } else exit(-1);
-//    }
 }
 
 Robot::~Robot(){
@@ -141,12 +143,12 @@ int Robot::getTeamId(){
     return team;
 }
 
-Team* Robot::getTeam(){
-    return Team::getTeam(team);
+RobotTeam* Robot::getTeam(){
+    return RobotTeam::getTeam(team);
 }
 
-Team* Robot::getOpponentTeam(){
-    return Team::getTeam(1-team);
+RobotTeam* Robot::getOpponentTeam(){
+    return RobotTeam::getTeam(1-team);
 }
 
 RobotRole Robot::getRole(){
@@ -164,3 +166,24 @@ std::set<Robot*>& Robot::getAllRobots(){
 bool  Robot::hasKicker(){
     return false;
 };
+
+Robot* Robot::loadRobot(std::string type,int id, int color, RobotRole role){
+
+    if(type == "grsim"){
+        return new RobotGrsim(id,color,role);
+    } else if (type == "yisibot") {
+        return new RobotYisibot(id,color,role);
+    } else if (type == "rpi_2019") {
+        //TODO: to be implemented in the future
+        cerr << "ERROR - cannot load robot. Type '" << type <<"' is not yet implemented." <<endl
+             << "Halting executin..." <<endl;
+        exit(-1);
+    } else if (type == "none") {
+        // assign a dummy robot
+        return new RobotNone(id,color,role);
+    } else {
+        cerr << "ERROR - cannot load robot. Type '" << type <<"' is not recognized." <<endl
+             << "Halting executin..." <<endl;
+        exit(-1);
+    }
+}

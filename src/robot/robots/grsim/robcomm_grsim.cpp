@@ -40,7 +40,7 @@ void RobCommGrsim::sendVels(std::set<Robot*>& robots)
 void RobCommGrsim::sendPacket(Robot* robot)
 {
     grSim_Packet packet;
-    packet.mutable_commands()->set_isteamyellow( robot->getTeamId() == TEAM_YELLOW );
+    packet.mutable_commands()->set_isteamyellow( robot->getTeamId() == ROBOT_TEAM_YELLOW );
     packet.mutable_commands()->set_timestamp(0.0);
     grSim_Robot_Command* command = packet.mutable_commands()->add_robot_commands();
 
