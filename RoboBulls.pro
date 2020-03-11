@@ -287,6 +287,8 @@ DEPENDPATH += $$PWD/libs/include
 win32{
 
     #add libra
+    INCLUDEPATH += $$PWD/libs/windows/include
+    DEPENDPATH += $$PWD/libs/windows/include
     Release: LIBS += -L$$PWD/libs/windows/x64/release/lib/ -llibprotobuf -lyaml-cpp -lSDL2 # -llibKalman
 #    Release: PRE_TARGETDEPS += $$PWD/libs/windows/x64/release/lib/libKalman.lib
 
@@ -339,6 +341,8 @@ win32{
 
 unix:!macx {
 
+    INCLUDEPATH += $$PWD/libs/linux/include
+    DEPENDPATH += $$PWD/libs/linux/include
     LIBS += -L$$PWD/libs/linux/lib/ -lyaml-cpp -lprotobuf -lSDL2
     CONFIG += link_pkgconfig
     PKGCONFIG += protobuf
