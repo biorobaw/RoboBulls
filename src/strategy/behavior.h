@@ -33,13 +33,14 @@ class Robot;
 class Behavior
 {
 public:
+    Behavior(Robot*);
     virtual ~Behavior();
     
-    /*! Perform this behavior's action on a robot
-     * Given an arbitrary roobot, The <i>perform</i> function
-     * of a Behavior defines how to run the behavior on a robot.
-     * @param Robot* the robot to perform on. */
-    virtual void perform( Robot*) = 0;
+    /*! Perform this behavior's action
+     * The <i>perform</i> function
+     * of a Behavior defines how to
+     * run the behavior on its robot. */
+    virtual void perform() = 0;
     
     /*! Return if behavior is "finished".
      * This could be reaching a target, or whenever a derived behavior
@@ -47,6 +48,9 @@ public:
      * assign behaviors one after another.
      * @return True if the behavior is considered finished, false otherwise. */
     virtual bool isFinished();
+
+protected:
+    Robot* robot;
 };
 
 //! @}

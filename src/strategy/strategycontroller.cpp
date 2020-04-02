@@ -24,31 +24,31 @@ StrategyController::~StrategyController(){}
 void StrategyController::run()
 {
     // update strategy if necessary
-    if(int strategy_result; received_new_command ||
-            (strategy_result = 0) != 0){ //activeStrategy.getResult()
-        // new command received from game controller
-        int new_state = received_new_command ?
-                                getControllerState(GameState::getRefereeCommand()) :
-                                getNextControllerState(controller_state, strategy_result);
-        if(new_state!=controller_state){
-            delete activeStrategy;
-            for(Robot* r : team->getRobots()) r->clearBehavior();
-            activeStrategy = loadStateStrategy(controller_state);
-            activeStrategy->assignBehaviors();
-            received_new_command = false;
-        }
+    int new_state = received_new_command ?
+                            getControllerState(GameState::getRefereeCommand()) :
+                            getNextControllerState(controller_state, activeStrategy->getStatus());
+    received_new_command = false;
 
+    if(new_state!=controller_state){
+        controller_state = new_state;
+        delete activeStrategy;
+        for(Robot* r : team->getRobots()) r->clearBehavior();
+        activeStrategy = loadStateStrategy(controller_state);
+        activeStrategy->assignBehaviors();
     }
 
+
     // update strategy
-    activeStrategy->getStatus();
+    activeStrategy->update();
 
     // perform robot behaviors
     for (Robot *rob :  team->getRobots())
         if (!GuiInterface::getGuiInterface()->isOverriddenBot(team->getColor(),rob->getID())) {
-            if(rob->hasBehavior())
-                rob->getBehavior()->perform(rob);
+            std::cout << "R" << rob->getID() << " not overriden, has beh? " << rob->hasBehavior() << std::endl;
+            rob->performBehavior();
+
          }
+
 
     // send velocities to the robots
     team->sendVels();

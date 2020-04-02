@@ -1,11 +1,11 @@
 #include "refstop.h"
 #include "model/ball.h"
 
-RefStop::RefStop()
+RefStop::RefStop(Robot* robot) : GenericMovementBehavior(robot)
 {
 }
 
-void RefStop::perform(Robot * robot)
+void RefStop::perform()
 {
     Point bp = Ball::getPosition();
 
@@ -35,7 +35,7 @@ void RefStop::perform(Robot * robot)
     else
         cmd.velocity_multiplier = 0;
 
-    GenericMovementBehavior::perform(robot);
+    GenericMovementBehavior::perform();
 
     finished = true;
 }

@@ -8,6 +8,7 @@
 
 class Strategy;
 class RobotTeam;
+#define UNINITIALIZED_STATE -1
 
 /*! @file
  * Controls selection of an active strategy (play) based on the game state
@@ -36,7 +37,7 @@ public:
 
 protected:
     virtual int getControllerState(Referee_Command command) = 0;
-    virtual int getNextControllerState(int current_state,int last_strategy_return_code) = 0;
+    virtual int getNextControllerState(int current_state,int strategy_status) = 0;
     virtual Strategy* loadStateStrategy(int state) = 0;
 
     RobotTeam* team = nullptr;
@@ -44,7 +45,7 @@ protected:
 private:
     Strategy*  activeStrategy = nullptr;
     bool received_new_command = false;
-    int controller_state = 0;
+    int controller_state = UNINITIALIZED_STATE;
 };
 
 #endif // STRATEGYCONTROLLER_H

@@ -2,9 +2,9 @@
 #include "model/ball.h"
 #include "model/field.h"
 
-AttackSupport::AttackSupport(Robot* robot)
+AttackSupport::AttackSupport(Robot* robot)  : Behavior(robot)
 {
-    calcStaticProb(robot);
+    calcStaticProb();
     state = position;
 
     prob_field_rows = (Field::FIELD_LENGTH+1)/PND_SUPP;
@@ -13,7 +13,7 @@ AttackSupport::AttackSupport(Robot* robot)
     for(int i=0; i<prob_field_rows; i++) prob_field[i] = new ProbNode[prob_field_cols];
 }
 
-void AttackSupport::perform(Robot * robot)
+void AttackSupport::perform()
 {
     Point rp = robot->getPosition();
     Point bp = Ball::getPosition();
@@ -108,7 +108,7 @@ void AttackSupport::perform(Robot * robot)
         }
 
         // Move towards node with highest prob of scoring while facing ball
-        calcDynamicProb(robot);
+        calcDynamicProb();
 
 
         auto cmd = CmdGoToPose(findMaxNode().point,Measurements::angleBetween(rp, bp),true,false);
@@ -151,11 +151,11 @@ AttackSupport::ProbNode AttackSupport::findMaxNode()
     return max_node;
 }
 
-void AttackSupport::calcStaticProb(Robot* r)
+void AttackSupport::calcStaticProb()
 {
     // Calculate the static probility of scoring from each point
     // in the probability field based on fixed factors
-    Point opp_goal = Field::getGoalPosition(r->getTeam()->getSide());
+    Point opp_goal = Field::getGoalPosition(robot->getTeam()->getSide());
     float w_dist = 2.0, w_ang = 1.0;    // Relative weights
     float dist = 0.0, angle = 0.0;
     float temp_p = 0.0;
@@ -201,23 +201,23 @@ void AttackSupport::calcStaticProb(Robot* r)
     }
 }
 
-void AttackSupport::calcDynamicProb(Robot * robot)
+void AttackSupport::calcDynamicProb()
 {
     // Clear previous calculations
     for(int x = 0; x < PF_LENGTH_SUPP; ++x)
         for(int y = 0; y < PF_WIDTH_SUPP; ++y)
             prob_field[x][y].dynamic_val = 0;
 
-    genGoalShadows(robot);
-    genDistanceFromTeammates(robot);
-    genBallShadows(robot);
-    genGoalShotAvoidance(robot);
+    genGoalShadows();
+    genDistanceFromTeammates();
+    genBallShadows();
+    genGoalShotAvoidance();
 }
 
 
-void AttackSupport::genGoalShadows(Robot* r)
+void AttackSupport::genGoalShadows()
 {
-    auto gp = Field::getGoalPosition(r->getTeam()->getOpponentSide());
+    auto gp = Field::getGoalPosition(robot->getTeam()->getOpponentSide());
     // Top end of goal post
     float g1x = gp.x;
     float g1y = gp.y + Field::GOAL_WIDTH/2;
@@ -229,7 +229,7 @@ void AttackSupport::genGoalShadows(Robot* r)
     float R = ROBOT_RADIUS;
 
     // Generate clusters of robots
-    std::vector<std::vector<Point>> clusters = genClusters(r);
+    std::vector<std::vector<Point>> clusters = genClusters();
 
     // Calculate shadow geometry for each cluster of robots
     for(std::vector<Point> cluster : clusters)
@@ -269,7 +269,7 @@ void AttackSupport::genGoalShadows(Robot* r)
 }
 
 
-void AttackSupport::genDistanceFromTeammates(Robot* robot)
+void AttackSupport::genDistanceFromTeammates()
 {
     // Set probabilities
     for(int x = PF_LENGTH_SUPP/2; x < PF_LENGTH_SUPP; ++x)
@@ -289,14 +289,14 @@ void AttackSupport::genDistanceFromTeammates(Robot* robot)
 }
 
 
-void AttackSupport::genBallShadows(Robot* r)
+void AttackSupport::genBallShadows()
 {
 
     Point bp = Ball::getPosition();
 
     float R = ROBOT_RADIUS + 50;
 
-    for(Robot* opp: r->getOpponentTeam()->getRobots())
+    for(Robot* opp: robot->getOpponentTeam()->getRobots())
     {
         float rob_x = opp->getPosition().x;
         float rob_y = opp->getPosition().y;
@@ -396,13 +396,13 @@ void AttackSupport::genBallShadows(Robot* r)
 }
 
 
-std::vector<std::vector<Point>> AttackSupport::genClusters(Robot* r)
+std::vector<std::vector<Point>> AttackSupport::genClusters()
 {
     int cluster_tol = 2*ROBOT_RADIUS + 2*Field::BALL_RADIUS + 10;
 
     std::vector<std::vector<Point>> clusters;
 
-    for(Robot* opp: r->getOpponentTeam()->getRobots())
+    for(Robot* opp: robot->getOpponentTeam()->getRobots())
     {
         // Check if each opponent belongs to an existing cluster
         bool assigned = false;
@@ -439,7 +439,7 @@ std::vector<std::vector<Point>> AttackSupport::genClusters(Robot* r)
 }
 
 
-void AttackSupport::genGoalShotAvoidance(Robot* robot)
+void AttackSupport::genGoalShotAvoidance()
 {
     auto gp = Field::getGoalPosition(robot->getTeam()->getOpponentSide());
     // Top end of goal post

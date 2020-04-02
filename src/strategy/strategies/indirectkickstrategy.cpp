@@ -63,12 +63,12 @@ void IndirectKickStrategy::assignBehaviors()
         if(wall2 && !wall2->hasBehavior())
             wall2->assignBeh<Wall>();
         if(attack1 && !attack1->hasBehavior())
-            attack1->assignBeh<AttackSupport>(attack1);
+            attack1->assignBeh<AttackSupport>();
         if(attack2 && !attack2->hasBehavior())
             attack2->assignBeh<MarkBot>();
 
         Robot* goalie = team->getRobotByRole(RobotRole::GOALIE);
-        if(goalie) goalie->assignBeh<Goalie>(goalie);
+        if(goalie) goalie->assignBeh<Goalie>();
     }
     // We are defending against an indirect kick
     else if ((GameState::getRefereeCommand() == 'i' && team->getColor() == ROBOT_TEAM_BLUE) ||
@@ -84,7 +84,7 @@ void IndirectKickStrategy::assignBehaviors()
             attack2->assignBeh<MarkBot>();
 
         Robot* goalie = team->getRobotByRole(RobotRole::GOALIE);
-        if(goalie) goalie->assignBeh<Goalie>(goalie);
+        if(goalie) goalie->assignBeh<Goalie>();
     }
 }
 

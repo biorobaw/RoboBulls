@@ -62,12 +62,12 @@ void FreeKickStrategy::assignBehaviors()
         if(wall2 && !wall2->hasBehavior())
             wall2->assignBeh<Wall>();
         if(attack1 && !attack1->hasBehavior())
-            attack1->assignBeh<AttackMain>(attack1);
+            attack1->assignBeh<AttackMain>();
         if(attack2 && !attack2->hasBehavior())
-            attack2->assignBeh<AttackSupport>(attack2);
+            attack2->assignBeh<AttackSupport>();
 
         Robot* goalie = team->getRobotByRole(RobotRole::GOALIE);
-        if(goalie) goalie->assignBeh<Goalie>(goalie);
+        if(goalie) goalie->assignBeh<Goalie>();
 
     }
     // We are defending against a free kick
@@ -84,7 +84,7 @@ void FreeKickStrategy::assignBehaviors()
             attack2->assignBeh<MarkBot>();
 
         Robot* goalie = team->getRobotByRole(RobotRole::GOALIE);
-        if(goalie) goalie->assignBeh<Goalie>(goalie);
+        if(goalie) goalie->assignBeh<Goalie>();
     }
 }
 

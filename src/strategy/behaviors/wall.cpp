@@ -5,7 +5,7 @@
 Wall::WallPoint Wall::wall_array[2];
 bool Wall::being_cleared = false;
 
-Wall::Wall()
+Wall::Wall(Robot* robot) : GenericMovementBehavior(robot)
 {
     kick_skill = new Skill::KickToPointOmni(&kickPoint);
 }
@@ -19,7 +19,7 @@ Wall::~Wall()
     delete kick_skill;
 }
 
-void Wall::perform(Robot * robot)
+void Wall::perform()
 {
     id = robot->getID();
     Point bp = Ball::getPosition();
@@ -58,7 +58,7 @@ void Wall::perform(Robot * robot)
         }
 
         if(occupying)
-            GenericMovementBehavior::perform(robot);
+            GenericMovementBehavior::perform();
     }
     break;
 

@@ -19,7 +19,7 @@ RobotGrsim::RobotGrsim(int id, int team, RobotRole role) :
     Robot(id,team,role),
     drive(OmniDrive(ROBOT_RADIUS, WHEEL_RADIUS,
                     LF_OFFSET, LB_OFFSET, RB_OFFSET, RF_OFFSET)),
-    pilot(PilotOmni(this,1.0/7, 0, 0.5, 0.0015))
+    pilot(PilotOmni(this,10.0/7, 0, 0.5, 0.0015))
 {
 
 }

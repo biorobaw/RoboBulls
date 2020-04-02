@@ -29,9 +29,9 @@ int SControllerJoystick::getControllerState(Referee_Command game_command){
     (void)game_command;
     return 0; // this controller only has one state;
 }
-int SControllerJoystick::getNextControllerState(int current_state,int last_strategy_return_code){
+int SControllerJoystick::getNextControllerState(int current_state,int strategy_status){
     (void) current_state;
-    (void) last_strategy_return_code;
+    (void) strategy_status;
     return 0; // we only have one state
 }
 Strategy* SControllerJoystick::loadStateStrategy(int state){

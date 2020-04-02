@@ -20,13 +20,14 @@
 class GenericMovementBehavior : public Behavior
 {
 public:
-    GenericMovementBehavior(Point targetPose=Point(0,0),
+    GenericMovementBehavior(Robot* robot,
+                            Point targetPose=Point(0,0),
                             float targetAngle = UNUSED_ANGLE_VALUE,
                             bool avoidObstacles = true,
                             bool avoidBall = false);
 
    //! @brief Performs the movement after setMovementTargets is set */
-   void perform(Robot* robot) override;
+   void perform() override;
    
    //! @brief Return true when reached the movement targets
    bool isFinished() override;

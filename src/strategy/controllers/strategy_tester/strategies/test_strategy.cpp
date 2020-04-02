@@ -13,7 +13,7 @@
 #include "strategy/behaviors/wall.h"
 #include "ctime"
 #include "model/ball.h"
-
+using std::endl, std::cout;
 /************************************************************************/
 //Test Behaviors Section
 
@@ -25,14 +25,14 @@ class KickBeh : public Behavior
     std::clock_t start;
     bool wait4recharge;
 public:
-    KickBeh() {
+    KickBeh(Robot* robot) : Behavior(robot) {
         ktpo = new Skill::KickToPointOmni(Point(0,0),-1,-1,false);
         wait4recharge = false;
     }
     ~KickBeh() {
         delete ktpo;
     }
-    void perform(Robot * robot) override {
+    void perform() override {
         bool finished = false;
 
         // Perform the kick skill as long as we are not recharging
@@ -64,7 +64,7 @@ class DribbleToPointBeh : public Behavior
     Point B = Point(-1500, 0);
     Point* target;
 public:
-    DribbleToPointBeh()
+    DribbleToPointBeh(Robot* robot) : Behavior(robot)
     {
         target = &A;
         skill = new Skill::DribbleToPoint(target, false, false);
@@ -75,7 +75,7 @@ public:
         delete skill;
     }
 
-    void perform(Robot * robot) override
+    void perform() override
     {
         if(skill->perform(robot))
         {
@@ -93,7 +93,7 @@ class DribbleBackBeh : public Behavior
     Skill::DribbleBack* skill;
     Point target;
 public:
-    DribbleBackBeh()
+    DribbleBackBeh(Robot* robot) : Behavior(robot)
     {
         target = Point(0,0);
         skill = new Skill::DribbleBack(target);
@@ -104,7 +104,7 @@ public:
         delete skill;
     }
 
-    void perform(Robot * robot) override
+    void perform() override
     {
         skill->perform(robot);
     }
@@ -113,18 +113,26 @@ public:
 // Test behavior to rotate to the ball
 class RotBeh : public GenericMovementBehavior
 {
-    void perform(Robot * robot) override
+    RotBeh(Robot* robot) : GenericMovementBehavior(robot) {
+
+    }
+
+    void perform() override
     {
         float ang = Measurements::angleBetween(robot, Ball::getPosition());
         cmd.setTarget(robot->getPosition(),ang);
-        GenericMovementBehavior::perform(robot);
+        GenericMovementBehavior::perform();
     }
 };
 
 // Test behavior to dribble when ball is close
 class DribbleBeh : public Behavior
 {
-    void perform(Robot* robot) override
+    DribbleBeh(Robot* robot) : Behavior(robot) {
+
+    }
+
+    void perform() override
     {
         robot->setDribble(true);
     }
@@ -134,7 +142,12 @@ class DribbleBeh : public Behavior
 class MotionTestBeh : public GenericMovementBehavior
 {
 public:
-    void perform(Robot * robot) override
+
+    MotionTestBeh(Robot* robot) : GenericMovementBehavior(robot) {
+
+    }
+
+    void perform() override
     {
         Point target = Point(1500,0);
         cmd.setTarget(target,0);
@@ -142,7 +155,7 @@ public:
 
         std::cout << "Distance Error: " << Measurements::distance(robot->getPosition(),target) << std::endl;
         std::cout << "Angle Error in Degrees: " << robot->getOrientation()*180/M_PI << std::endl;
-        GenericMovementBehavior::perform(robot);
+        GenericMovementBehavior::perform();
     }
 };
 
@@ -153,10 +166,11 @@ class Strafe : public GenericMovementBehavior
 public:
     Point A = Point(1200,0), B = Point(-1200,0);
     enum {pos_one,pos_two} state = pos_one;
-    Strafe(){}
-    Strafe(Point A, Point B) : A(A), B(B){}
+    Strafe(Robot* robot) : GenericMovementBehavior(robot){}
+    Strafe(Robot* robot, Point A, Point B) :
+        GenericMovementBehavior(robot), A(A), B(B){}
 
-    void perform(Robot *robot) override
+    void perform() override
     {
         Point rp = robot->getPosition();
         double ori = Measurements::angleBetween(rp, Ball::getPosition());
@@ -174,7 +188,7 @@ public:
                 if (Measurements::isClose(rp,B,DIST_TOLERANCE))
                 state = pos_one;
         }
-        GenericMovementBehavior::perform(robot);
+        GenericMovementBehavior::perform();
     }
 };
 
@@ -183,17 +197,22 @@ public:
 class GoToBehavior : public GenericMovementBehavior
 {
 public:
-    GoToBehavior(double angle) {
+    GoToBehavior(Robot* robot, double angle):
+        GenericMovementBehavior(robot)
+    {
         offset += Point(cos(angle*M_PI/180), sin(angle*M_PI/180)) * 500;
     }
 
     Point offset;
 
-    void perform(Robot *robot) override  {
-        cmd.setTarget(Ball::getPosition() + offset,
-                     Measurements::angleBetween(robot->getPosition(),Ball::getPosition()));
-        cmd.avoidBall = cmd.avoidObstacles = true;
-        GenericMovementBehavior::perform(robot);
+    void perform() override  {
+        cout<< "performing: r"<< robot->getID() << endl;
+        auto b = Ball::getPosition();
+        cout<< "ball: " << b.x << "," << b.y << endl;
+        cmd.setTarget( Point(-500,-500), 0);// Ball::getPosition() + offset,
+                     // Measurements::angleBetween(robot->getPosition(),Ball::getPosition()));
+        cmd.avoidBall = cmd.avoidObstacles = false;
+        GenericMovementBehavior::perform();
     }
 };
 
@@ -203,20 +222,23 @@ TestStrategy::TestStrategy(RobotTeam* _team) : Strategy(_team) {
 }
 
 
-
+#include "robot/navigation/commands/CmdGoToPose.h"
 void TestStrategy::assignBehaviors()
 {
     std::cout << "Assigning test strategy behaviors " << std::endl;
-    RobotTeam::getTeam(ROBOT_TEAM_BLUE)->getRobot(0)->assignBeh<GenericMovementBehavior>(Point(-650, 300), 0);
+    //team->getRobot(0)->assignBeh<GenericMovementBehavior>(Point(-650, 300), 0);
 
     auto robots = team->getRobots();
+    auto r = team->getRobot(3);
+    //r->getPilot()->goToPose(CmdGoToPose(Point(-500,-500),0,true,false));
+    r->assignBeh<GoToBehavior>(0);
     int num_robots = robots.size();
     int i = 0;
-    for(auto r : robots){
-        if(i++ ==0) r->assignBeh<Strafe>();
-        else r->assignBeh<GoToBehavior>(i*360/num_robots);
+//    for(auto r : robots){
+//        if(i++ ==0) r->assignBeh<Strafe>();
+//        else r->assignBeh<GoToBehavior>(i*360.0/num_robots);
 
-    }
+//    }
 
 }
 

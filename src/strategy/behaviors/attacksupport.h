@@ -42,7 +42,7 @@ public:
     // Fills in prob_field with scoring probabilities based on static factors
     AttackSupport(Robot*);
    ~AttackSupport();
-    void perform(Robot *) override;
+    void perform() override;
     bool isFinished() override;
 
 private:
@@ -66,8 +66,8 @@ private:
     ProbNode** prob_field;
 
     // Fills in prob_field with scoring probabilities
-    void calcStaticProb(Robot*);
-    void calcDynamicProb(Robot * robot);
+    void calcStaticProb();
+    void calcDynamicProb();
 
     /*! Iterates through the probability nodes to find the one with the
      * maximum value (static + dynamic). Only contains points on the opponent side.
@@ -77,23 +77,23 @@ private:
 
     /*! Cast shadows using the entire goal post as a light source and opp
      * robots as opaque objects to rule out impossible scoring positions */
-    void genGoalShadows(Robot*);
+    void genGoalShadows();
 
     /*! Sets a dead-zone near teammates so that the support attacker
      * maintains a good distance from them to make passes meaningful
      * @param Robot* Needed for excluding the support attacker itself from distance calculations.
      */
 
-    void genDistanceFromTeammates(Robot* robot);
+    void genDistanceFromTeammates();
 
     /*! Cast shadows with ball as light source and opponents as opaque objects
      * Rules out impossible receiving positions
      * @todo Integrate clustering to this */
-    void genBallShadows(Robot*);
+    void genBallShadows();
 
     /*! Set the probability in the triangle between the ball and the goal-post to 0
      * so that the support attacker doesn't position in the way of a shot on goal */
-    void genGoalShotAvoidance(Robot*);
+    void genGoalShotAvoidance();
 
     /*! Returns information about clusters of robots.
      * @return A 2D vector is returned with each row representing a cluster.
@@ -102,7 +102,7 @@ private:
      * The clustering distance is selected so as to cluster robots that are close such that
      * a ball could not pass between them.
      */
-    std::vector<std::vector<Point>> genClusters(Robot* );
+    std::vector<std::vector<Point>> genClusters( );
 
     /*! Given a point, returns the probability of scoring a goal from there.
      * This function assumes that probability is already calculated and stored in

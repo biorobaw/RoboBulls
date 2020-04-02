@@ -3,12 +3,12 @@
 
 bool MarkBot::mark_status[10] = {false};
 
-MarkBot::MarkBot()
+MarkBot::MarkBot(Robot* robot) : GenericMovementBehavior(robot)
 {
 
 }
 
-void MarkBot::perform(Robot * robot)
+void MarkBot::perform()
 {
     Point bp = Ball::getPosition();
     float ang2ball = Measurements::angleBetween(robot, bp);
@@ -26,7 +26,7 @@ void MarkBot::perform(Robot * robot)
     }
 
     cmd.setTarget(target, ang2ball);
-    GenericMovementBehavior::perform(robot);
+    GenericMovementBehavior::perform();
 }
 
 void MarkBot::updateMark(Robot* r)

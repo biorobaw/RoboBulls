@@ -61,8 +61,6 @@ void DefendState::clearClaimedPoints()
 
 DefendState* DefendState::action(Robot* robot)
 {
-    (void)(robot);
-
     //Because every robot is going to call this; but it only
     //needs to happen once per game loop.
     if(++updateCount < 5)
@@ -178,7 +176,7 @@ DefendState::~DefendState() {
  #define GOALIE_DIST   300 //Distance ball must be away from goal to invervene
 //#endif
 
-DSIdle::DSIdle()
+DSIdle::DSIdle(Robot* robot) : GenericMovementBehavior(robot)
 {
 #if DEFENDBEHAVIOR_DEBUG
     std::cout << "DefendStateIdle Created" << std::endl;
@@ -208,7 +206,7 @@ DefendState* DSIdle::action(Robot* robot)
 
         float robBallAng = Measurements::angleBetween(robot, Ball::getPosition());
         cmd.setTarget(chosenPoint, robBallAng);
-        GenericMovementBehavior::perform(robot);
+        GenericMovementBehavior::perform();
 
         /* If the ball is coming to us, and we are certain, we want to kick the ball.
          * Conditions checked are:
@@ -229,7 +227,7 @@ DefendState* DSIdle::action(Robot* robot)
             ( bs > 0.2 ) &&
             ( Measurements::isClose(velang, Measurements::angleBetween(bp, gl), 90*(M_PI/180))))
         {
-           return new DSIntercept();
+           return new DSIntercept(robot);
         }
 
         /* And here, we check if the ball is sitting near us. If it is, kick it back.
@@ -246,7 +244,7 @@ DefendState* DSIdle::action(Robot* robot)
         {
             kicker_ID = robot->getID();
             auto gp = Field::getGoalPosition(robot->getTeam()->getOpponentSide());
-            return new DSKick(gp);
+            return new DSKick(robot,gp);
         }
     }
 
@@ -255,7 +253,7 @@ DefendState* DSIdle::action(Robot* robot)
 
 
 /************************************************************/
-DSKick::DSKick(Point opponent_goal)
+DSKick::DSKick(Robot* robot, Point opponent_goal) : GenericMovementBehavior(robot)
 {
 #if DEFENDBEHAVIOR_DEBUG
     std::cout << "DefendStateKick Created" << std::endl;
@@ -274,7 +272,7 @@ DefendState* DSKick::action(Robot* robot)
     auto goal = Field::getGoalPosition(robot->getTeam()->getSide());
     if(ktpo->perform(robot) || ballIsMovingAway(goal)) {
         kicker_ID = -1;
-        return new DSIdle();
+        return new DSIdle(robot);
     }
     return this;
 }
@@ -283,8 +281,9 @@ DefendState* DSKick::action(Robot* robot)
 /************************************************************/
 
 
-DSIntercept::DSIntercept()
-    : ktpo(nullptr)
+DSIntercept::DSIntercept(Robot* robot)
+    : GenericMovementBehavior(robot)
+    , ktpo(nullptr)
     , chosenLinePoint(false)
     , kickingBall(false)
     , kickBallTimeout(0)
@@ -312,17 +311,17 @@ DefendState* DSIntercept::action(Robot* robot)
     if(!chosenLinePoint) {
         //The conditions to go to this state validate the ball is RIGHT NOW
         //Heading to us. We go to the closet point on the ball's path.
-        if(!tryGetValidLinePoint(robot)) {
-            return new DSIdle();
+        if(!tryGetValidLinePoint()) {
+            return new DSIdle(robot);
         }
     }
     else {
         //Inside here we are just in the line of the ball and are waiting
         if(!kickingBall) {
-            tryGetValidLinePoint(robot);
+            tryGetValidLinePoint();
             float ballRobAng = Measurements::angleBetween(robot, bp);
             cmd.setTarget(linePoint, ballRobAng);
-            GenericMovementBehavior::perform(robot);
+            GenericMovementBehavior::perform();
 
             //If the ball is close, and we are the closet to the ball,
             //and nobody else is kicking, we kick.
@@ -338,7 +337,7 @@ DefendState* DSIntercept::action(Robot* robot)
 
             //If the ball is coming and it stops, go back to idle.
             if(ballIsStopped()) {
-                return new DSIdle();
+                return new DSIdle(robot);
             }
         }
         else {
@@ -349,7 +348,7 @@ DefendState* DSIntercept::action(Robot* robot)
 
             //Second condition to return to idle. Stop if it moves too far away
             if(Measurements::distance(robot, bp) > LINE_DISTANCE*3) {
-                return new DSIdle();
+                return new DSIdle(robot);
             }
         }
 
@@ -362,7 +361,7 @@ DefendState* DSIntercept::action(Robot* robot)
         #if DEFENDBEHAVIOR_DEBUG
             std::cout << "DefendStateKick Timeout " << robot->getID() << std::endl;
         #endif
-            return new DSIdle();
+            return new DSIdle(robot);
         }
         robot->setDribble(true);
     }
@@ -374,13 +373,13 @@ DefendState* DSIntercept::action(Robot* robot)
  * If it finds one, sets this->chosenLinePoint to it and
  * returns true.
  */
-bool DSIntercept::tryGetValidLinePoint(Robot* r)
+bool DSIntercept::tryGetValidLinePoint()
 {
     Point bp = Ball::getPosition();
     Point bpp = Ball::getStopPosition();
-    Point goal = Field::getGoalPosition(r->getTeam()->getSide());
-    Point p = Measurements::lineSegmentPoint(r->getPosition(), bp, bpp);
-    if(abs(goal.x - p.x) < 2500 && Measurements::distance(r, p) < LINE_DISTANCE*2) {
+    Point goal = Field::getGoalPosition(robot->getTeam()->getSide());
+    Point p = Measurements::lineSegmentPoint(robot->getPosition(), bp, bpp);
+    if(abs(goal.x - p.x) < 2500 && Measurements::distance(robot, p) < LINE_DISTANCE*2) {
         linePoint = p;
         chosenLinePoint = true;
         return true;
@@ -392,8 +391,8 @@ bool DSIntercept::tryGetValidLinePoint(Robot* r)
 
 int DefendBehavior::currentUsers = 0;
 
-DefendBehavior::DefendBehavior()
-    : state(new DSIdle())
+DefendBehavior::DefendBehavior(Robot* robot)
+    : Behavior(robot), state(new DSIdle(robot))
 { 
     if(currentUsers == 0) {
         DefendState::setupClaimedPoints();
@@ -411,7 +410,7 @@ DefendBehavior::~DefendBehavior()
     delete state;
 }
 
-void DefendBehavior::perform(Robot* robot)
+void DefendBehavior::perform()
 {
     if(state != nullptr)
     {

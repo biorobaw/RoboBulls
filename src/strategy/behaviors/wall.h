@@ -22,9 +22,9 @@
 class Wall : public GenericMovementBehavior
 {
 public:
-    Wall();
+    Wall(Robot* robot);
     ~Wall();
-    void perform(Robot *) override;
+    void perform() override;
     bool isFinished() override;
 private:
     enum {wall, clear} state = wall;

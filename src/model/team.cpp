@@ -161,7 +161,7 @@ int RobotTeam::getOpponentSide(){
 }
 
 bool RobotTeam::isControlled(){
-    return robot_type != "none";
+    return controller != nullptr;
 }
 
 void RobotTeam::closeCommunication(){

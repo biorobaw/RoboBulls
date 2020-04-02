@@ -25,7 +25,7 @@ class Goalie:public GenericMovementBehavior
 public:
     Goalie(Robot*);
     ~Goalie();
-    void perform(Robot*);
+    void perform() override;
 
 private:
     /*! Returns true if the ball is moving with non-zero velocity torwards the goal.

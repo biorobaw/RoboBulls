@@ -36,5 +36,5 @@ void KickOffStrategy::assignBehaviors()
 
     // Goalie is a special case
     Robot* goalie = team->getRobotByRole(RobotRole::GOALIE);
-    if(goalie) goalie->assignBeh<Goalie>(goalie);
+    if(goalie) goalie->assignBeh<Goalie>();
 }

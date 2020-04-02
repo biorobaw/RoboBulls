@@ -35,7 +35,7 @@ void PenaltyStrategy::assignBehaviors()
 
         // Goalie
         Robot* goalie = team->getRobotByRole(RobotRole::GOALIE);
-        if(goalie) goalie->assignBeh<Goalie>(goalie);
+        if(goalie) goalie->assignBeh<Goalie>();
 
     }
     // If we are on the receiving end of a penalty kick

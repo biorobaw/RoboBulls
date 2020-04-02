@@ -1,6 +1,7 @@
 #include "robot_pilot.h"
 #include "utilities/measurements.h"
 #include "path_planning/fppa_pathfinding.h"
+using std::cout, std::endl;
 
 Pilot::Pilot(Robot* robot) : robot(robot){
 
@@ -22,10 +23,13 @@ void Pilot::setManualVelocity(Point _vel,float _angular){
     angular = _angular;
 }
 
+#define DD if(false)
+
 void Pilot::goToPose(CmdGoToPose newCommand){
     if(cmdGoToPose != nullptr) *cmdGoToPose = newCommand;
     else cmdGoToPose = new CmdGoToPose(newCommand);
 
+    DD cout << "-cmd has angle: " << newCommand.hasTargetAngle() << " " << newCommand.targetAngle << endl;
     if(!cmdGoToPose->hasTargetAngle())
         cmdGoToPose->targetAngle = Measurements::angleBetween(robot, cmdGoToPose->targetPose);
 }
@@ -54,6 +58,8 @@ bool Pilot::executeCmdGoToPose(CmdGoToPose *cmd){
     if( ( cmd->avoidObstacles || cmd->avoidBall) &&
             Measurements::distance(r_pos, cmd->targetPose) > cmd->distance_tolerance){
 
+        std::cout << "---doing path planning\n";
+
         // Assign robots that are to be considered obstacles
         FPPA::updateRobotObstacles(robot);
 
@@ -66,6 +72,9 @@ bool Pilot::executeCmdGoToPose(CmdGoToPose *cmd){
     }
 
     // drive to the next position
+    DD cout << "---next point: (" << nextPoint.x << "," << nextPoint.y << "), "
+         << cmd->targetAngle << " , ("
+         << nextNextPoint.x  << "," << nextNextPoint.y << ")" << std::endl;
     driveTo(nextPoint, cmd->targetAngle,nextNextPoint);
 
     // return whether action cempleted or not

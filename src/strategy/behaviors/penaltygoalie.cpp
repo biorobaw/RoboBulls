@@ -2,11 +2,11 @@
 #include "model/ball.h"
 #include "model/field.h"
 
-PenaltyGoalie::PenaltyGoalie()
+PenaltyGoalie::PenaltyGoalie(Robot* robot) : GenericMovementBehavior(robot)
 {
 }
 
-void PenaltyGoalie::perform(Robot* robot)
+void PenaltyGoalie::perform()
 {
     robot->setDribble(false);
     Point bp = Ball::getPosition();
@@ -71,7 +71,7 @@ void PenaltyGoalie::perform(Robot* robot)
     cmd.velocity_multiplier = 1.5;
     cmd.setTarget(block_point, angleToBall);
     cmd.avoidBall = cmd.avoidObstacles = false;
-    GenericMovementBehavior::perform(robot);
+    GenericMovementBehavior::perform();
 }
 
 bool PenaltyGoalie::isFinished()

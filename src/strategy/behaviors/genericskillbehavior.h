@@ -18,12 +18,12 @@ class GenericSkillBehavior : public Behavior
 {
 public:
     template<typename... Args>
-    GenericSkillBehavior(Args&&... args);
+    GenericSkillBehavior(Robot* robot, Args&&... args);
 
     ~GenericSkillBehavior();
 
      //!< @brief Perform the skill
-    void perform(Robot* robot);
+    void perform() override;
 
     //!< @brief The isFinished returns the result from <i>perform</i> of the Skill
     bool isFinished() override;
@@ -34,8 +34,9 @@ private:
 
 template<typename SkillType>
 template<typename... Args>
-GenericSkillBehavior<SkillType>::GenericSkillBehavior(Args&&... args)
-    : skill(new SkillType(args...))
+GenericSkillBehavior<SkillType>::GenericSkillBehavior(Robot*, Args&&... args)
+    : Behavior(robot),
+      skill(new SkillType(args...))
     , skillFinished(false)
     { }
 
@@ -52,7 +53,7 @@ bool GenericSkillBehavior<SkillType>::isFinished()
 }
 
 template<typename SkillType>
-void GenericSkillBehavior<SkillType>::perform(Robot* robot)
+void GenericSkillBehavior<SkillType>::perform()
 {
     skillFinished = skill->perform(robot);
 }

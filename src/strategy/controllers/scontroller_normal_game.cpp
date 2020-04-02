@@ -87,12 +87,14 @@ int SControllerNormalGame::getControllerState(Referee_Command game_command) {
 }
 
 
-int SControllerNormalGame::getNextControllerState(int current_state,int last_strategy_return_code){
+int SControllerNormalGame::getNextControllerState(int current_state,int strategy_status){
+    if (current_state == UNINITIALIZED_STATE) return UNINITIALIZED_STATE; // state gets initialized by refbox
+
     auto state_map = state_transitions.find(current_state)->second;
-    auto result = state_map.find(last_strategy_return_code);
+    auto result = state_map.find(strategy_status);
     if(result == state_map.end()){
         cout<< "ERROR: Strategy controller did not define transition: ("
-            << current_state << "," << last_strategy_return_code <<")" <<endl;
+            << current_state << "," << strategy_status <<")" <<endl;
     }
     return result->second;
 }

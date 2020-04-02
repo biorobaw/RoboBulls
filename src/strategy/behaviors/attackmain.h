@@ -58,7 +58,7 @@ class AttackMain : public Behavior//:public GenericMovementBehavior
 public:
     AttackMain(Robot*);
    ~AttackMain();
-    void perform(Robot *) override;
+    void perform() override;
     bool isFinished() override;
     bool hasKickedToGoal();
     bool hasPassed();
@@ -98,12 +98,12 @@ private:
     /*! Calculates the probility of scoring from each point in the field based on field geometry (fixed factors).
      *  Called only once in the constructor.
      */
-    void calcStaticProb(Robot*);
+    void calcStaticProb();
 
     /*! Calculates the probility of scoring from each point in the field based on opponents, teammates, and the ball (variable factors).
      *  Called for every update to the game model.
      */
-    void calcDynamicProb(Robot* r);
+    void calcDynamicProb();
 
     /*! Returns information about clusters of robots.
      * @return A 2D vector is returned with each row representing a cluster.
@@ -112,7 +112,7 @@ private:
      * The clustering distance is selected so as to cluster robots that are close such that
      * a ball could not pass between them.
      */
-    std::vector<std::vector<Point>> genClusters(Robot* r);
+    std::vector<std::vector<Point>> genClusters();
 
     /*! Calculates the best point at which to aim in order to score a goal.
      *
@@ -126,7 +126,7 @@ private:
      * @param Robot* The robot that is taking the kick.
      * @return A boolean and a point, contained in a C++ pair.
      */
-    std::pair<bool, Point> calcBestGoalPoint(Robot*);
+    std::pair<bool, Point> calcBestGoalPoint();
 
     /*! Calculates the best point to pass to a teammate.
      *
@@ -140,7 +140,7 @@ private:
      * @param Robot* The robot that is sending the pass.
      * @return A boolean and a point, contained in a C++ pair.
      */
-    std::pair<bool, Point> calcBestPassPoint(Robot*);
+    std::pair<bool, Point> calcBestPassPoint();
 
     /*! Given a point, returns the probability of scoring a goal from there.
      * This function assumes that probability is already calculated and stored in

@@ -19,9 +19,9 @@ int SControllerStrategyTester::getControllerState(Referee_Command game_command){
 }
 
 
-int SControllerStrategyTester::getNextControllerState(int current_state,int last_strategy_return_code){
+int SControllerStrategyTester::getNextControllerState(int current_state,int strategy_status){
     (void)current_state;
-    (void)last_strategy_return_code;
+    (void)strategy_status;
     return 0;
 }
 

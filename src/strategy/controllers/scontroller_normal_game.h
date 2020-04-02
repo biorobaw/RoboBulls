@@ -13,7 +13,7 @@ public:
 
 
     int getControllerState(Referee_Command command) override;
-    int getNextControllerState(int current_state,int last_strategy_return_code) override;
+    int getNextControllerState(int current_state,int strategy_status) override;
     Strategy* loadStateStrategy(int state) override;
 
 private:

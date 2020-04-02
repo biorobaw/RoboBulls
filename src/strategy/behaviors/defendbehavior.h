@@ -52,7 +52,7 @@ private:
 class DSIdle : public DefendState, public GenericMovementBehavior
 {
 public:
-     DSIdle();
+     DSIdle(Robot* robot);
      DefendState* action(Robot* robot) override;
 private:
     bool activeKicking;
@@ -67,7 +67,7 @@ private:
 class DSKick: public DefendState, public GenericMovementBehavior
 {
 public:
-    DSKick(Point opponent_goal);
+    DSKick(Robot* robot,Point opponent_goal);
    ~DSKick();
     DefendState* action(Robot* robot) override;
 private:
@@ -82,7 +82,7 @@ private:
 class DSIntercept : public DefendState, public GenericMovementBehavior
 {
 public:
-    DSIntercept();
+    DSIntercept(Robot* robot);
    ~DSIntercept();
     DefendState* action(Robot* robot) override;
 private:
@@ -91,7 +91,7 @@ private:
     bool  kickingBall;
     int   kickBallTimeout;
     Point linePoint;
-    bool  tryGetValidLinePoint(Robot*);
+    bool  tryGetValidLinePoint();
 };
 
 //! @endcond
@@ -111,9 +111,9 @@ private:
 class DefendBehavior : public Behavior
 {
 public:
-     DefendBehavior();
+     DefendBehavior(Robot*);
     ~DefendBehavior();
-    void perform(Robot *) override;
+    void perform() override;
 private:
     static int currentUsers;    //Number of robots currently using this behavior
     DefendState* state;         //Current state (one of the above)

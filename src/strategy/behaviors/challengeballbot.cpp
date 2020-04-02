@@ -1,11 +1,11 @@
 #include "challengeballbot.h"
 #include "model/ball.h"
 
-ChallengeBallBot::ChallengeBallBot()
+ChallengeBallBot::ChallengeBallBot(Robot* robot) : Behavior(robot)
 {
 }
 
-void ChallengeBallBot::perform(Robot *robot)
+void ChallengeBallBot::perform()
 {
     Robot* ballBot = Ball::getRobotWithBall();
 

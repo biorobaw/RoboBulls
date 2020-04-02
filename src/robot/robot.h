@@ -83,6 +83,7 @@ public:
 
 
     bool  hasBehavior();
+    void  performBehavior();
     bool  isGoalie();
 
     float getKick();
@@ -168,14 +169,14 @@ private:
 template<typename BehaviorType, typename... Args>
 bool Robot::assignBeh(Args&&... args)
 {
-    static_assert(std::is_constructible<BehaviorType, Args...>::value,
+    static_assert(std::is_constructible<BehaviorType, Robot*, Args...>::value,
         "Behavior must be constructible with these arguments");
     static_assert(std::is_base_of<Behavior, BehaviorType>::value,
         "This Behavior must derive from the Behavior base class");
     if( !hasBehavior() || typeid(*getBehavior()) != typeid(BehaviorType)) {
 //        std::cout << "Clearing Behavior on robot " << id << std::endl;
         clearBehavior();
-        setCurrentBeh(new BehaviorType(args...));
+        setCurrentBeh(new BehaviorType(this, args...));
         return true;
     }
     return false;

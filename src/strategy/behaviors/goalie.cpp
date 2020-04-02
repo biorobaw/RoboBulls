@@ -3,7 +3,8 @@
 #include "model/field.h"
 
 Goalie::Goalie(Robot* r)
-    : goalPoint(Field::getGoalPosition(r->getTeam()->getSide()))
+    : GenericMovementBehavior(robot)
+    , goalPoint(Field::getGoalPosition(r->getTeam()->getSide()))
     , idlePoint(goalPoint + Point(ROBOT_RADIUS+50,0))
     , kick_skill(nullptr)
     , def_area(TEAM_DEFFENCE_AREA)
@@ -18,7 +19,7 @@ Goalie::~Goalie()
     delete dribble_skill;
 }
 
-void Goalie::perform(Robot *robot)
+void Goalie::perform()
 {
     robot->setDribble(false);
     Point bp = Ball::getPosition();
@@ -39,7 +40,7 @@ void Goalie::perform(Robot *robot)
         cmd.velocity_multiplier = 1.5;
         cmd.setTarget(blockPoint,angleToBall);
         cmd.avoidBall = cmd.avoidObstacles = false;
-        GenericMovementBehavior::perform(robot);
+        GenericMovementBehavior::perform();
     }
 
     // If the ball is moving towards goal, we move to get into the line of trajectory.
@@ -50,7 +51,7 @@ void Goalie::perform(Robot *robot)
         cmd.velocity_multiplier = 1.5;
         cmd.setTarget(blockPoint,angleToBall);
         cmd.avoidBall = cmd.avoidObstacles = false;
-        GenericMovementBehavior::perform(robot);
+        GenericMovementBehavior::perform();
     }
 
     // If the ball is stopped just outside our defence area, we dribble it inside
@@ -147,7 +148,7 @@ void Goalie::perform(Robot *robot)
             cmd.setTarget(idlePoint, Measurements::angleBetween(robot, Point(0,0)));
             cmd.avoidBall = cmd.avoidObstacles = false;
         }
-        GenericMovementBehavior::perform(robot);
+        GenericMovementBehavior::perform();
     }
 
     // TODO: Insert ball is moving condition to defend against deflections
@@ -159,7 +160,7 @@ void Goalie::perform(Robot *robot)
         cmd.velocity_multiplier = 1;
         cmd.setTarget(idlePoint, Measurements::angleBetween(robot, Point(0,0)));
         cmd.avoidBall = cmd.avoidObstacles = false;
-        GenericMovementBehavior::perform(robot);
+        GenericMovementBehavior::perform();
     }
 }
 
