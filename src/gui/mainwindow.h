@@ -11,7 +11,6 @@
 class GuiField;
 class GuiBotLabel;
 class GuiDrawLine;
-class GuiComm;
 class GuiInterface;
 
 //Dashboard Forward declarations
@@ -85,7 +84,6 @@ private:
 
     // my pointer
     static MainWindow *mw;
-    GuiComm* guimodel;
     QTimer timer;
 
     // Keeps track of latest string received by guiPrint()

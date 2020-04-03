@@ -2,6 +2,7 @@
 #include <QLCDNumber>
 #include <QDial>
 #include <QLabel>
+#include <QCursor>
 
 #include "robotpanel.h"
 #include "gui/mainwindow.h"
@@ -16,7 +17,6 @@
 #include "gui/utils/gui_robot_drawer.h"
 #include "gui/data/guiball.h"
 #include "model/ball.h"
-#include "gui/guiscene.h"
 
 
 
@@ -290,8 +290,11 @@ void RobotPanel::updateBotPanel() {
     dash->ui->timeRem->setText("Time Left: " + QString::number(time));
 
     // Mouse point
-    dash->ui->lcd_coordX_cursor->display(dash->fieldpanel->scene->mousePoint.x()-100);
-    dash->ui->lcd_coordY_cursor->display(dash->fieldpanel->scene->mousePoint.y()-100);
+    // get mouse coordinates relative to the scene:
+    auto mouse = dash->ui->gView_field->mapFromGlobal(QCursor::pos());
+    auto mouse_relative = dash->ui->gView_field->mapToScene(mouse);
+    dash->ui->lcd_coordX_cursor->display(mouse_relative.rx()-100); // mouse coords are slightly off, thus fixed by 100
+    dash->ui->lcd_coordY_cursor->display(mouse_relative.ry()-100);
 
 
 }

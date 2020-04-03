@@ -9,7 +9,6 @@
 //Helper classes
 #include "gui/utils/gui_robot_drawer.h"
 #include "gui/data/guiball.h"
-#include "gui/guiscene.h"
 #include "gui/data/guibotlabel.h"
 #include "gui/utils/guidrawline.h"
 //#include "gui/utils/guidrawpoint.h"
@@ -30,7 +29,7 @@ void FieldPanel::setupScene() {
 
     dash->ui->gView_field->setBackgroundBrush(QColor::fromRgb(30,30,30,255));
 
-    scene = new GuiScene();
+    scene = new QGraphicsScene();
 
     // Creating the sidelines
     sidelines = new GuiSidelines();

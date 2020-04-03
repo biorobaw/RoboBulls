@@ -28,8 +28,6 @@
 #include "gui/utils/gui_robot_drawer.h"
 #include "gui/data/gui_robot.h"
 #include "gui/utils/guidrawline.h"
-#include "guicomm.h"
-#include "guiscene.h"
 #include "guiinterface.h"
 #include "strategy/controllers/joystick/joystick.h"
 #include "robot/robcomm.h"

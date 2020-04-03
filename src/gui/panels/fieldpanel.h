@@ -12,7 +12,6 @@
 using std::deque;
 class GuiRobotDrawer;
 class GuiSidelines;
-class GuiScene;
 class GuiBotLabel;
 class GuiField;
 class GuiDrawLine;
@@ -39,7 +38,7 @@ public:
 
 
 //private:
-    GuiScene *scene;
+    QGraphicsScene *scene;
 // Objects in scene
     GuiField *field;
     GuiSidelines *sidelines;
