@@ -1,7 +1,7 @@
 #include "guifield.h"
 #include <QApplication>
-#include "mainwindow.h"
 #include "model/field.h"
+#include "model/team.h"
 
 
 GuiField::GuiField()

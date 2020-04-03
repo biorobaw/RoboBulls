@@ -27,6 +27,8 @@ public:
 
     //!< @brief The isFinished returns the result from <i>perform</i> of the Skill
     bool isFinished() override;
+
+    string getName() override;
 private:
     SkillType* skill;
     bool skillFinished;
@@ -56,6 +58,11 @@ template<typename SkillType>
 void GenericSkillBehavior<SkillType>::perform()
 {
     skillFinished = skill->perform(robot);
+}
+
+template<typename SkillType>
+string GenericSkillBehavior<SkillType>::getName() {
+    return "GenericSkill";
 }
 
 #endif

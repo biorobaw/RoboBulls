@@ -3,15 +3,14 @@
 
 #include <deque>
 #include <mutex>
-#include "guisidelines.h"
+#include "gui/guisidelines.h"
 #include "utilities/point.h"
-#include "guidrawpoint.h"
-#include "guidrawregion.h"
+#include "gui/utils/guidrawpoint.h"
+#include "gui/utils/guidrawregion.h"
 #include "model/team.h"
 
 using std::deque;
-class GuiRobot;
-class GuiBall;
+class GuiRobotDrawer;
 class GuiSidelines;
 class GuiScene;
 class GuiBotLabel;
@@ -44,15 +43,14 @@ public:
 // Objects in scene
     GuiField *field;
     GuiSidelines *sidelines;
-    GuiBall *ball;
 
     // gui robots : 2 teams each of at most
-    GuiRobot* gui_robots[2][MAX_ROBOTS];
-    GuiBotLabel* gui_bot_labels[2][MAX_ROBOTS];
+    GuiBotLabel* gui_bot_labels[2][MAX_ROBOTS_PER_TEAM];
+    GuiRobotDrawer* robot_drawers[2][MAX_ROBOTS_PER_TEAM];
 
 
     // "Camera" type functions for manipulating QGraphicsView
-    GuiRobot* centeredBotID = nullptr;
+    GuiRobotDrawer* centeredBotID = nullptr;
     bool refresh = true;   // set this to true whenever a change to the field is made to refresh on next frame.
     bool justScrolled = false;
     int currentFieldAngle = 0;
@@ -92,7 +90,7 @@ private:
     bool fieldClickScan();
     bool panelBotClickScan();
     bool fieldBotClickScan();
-
+    bool selectRobot(int team, int robot);
 
 public slots:
     void zoomField(int scale);

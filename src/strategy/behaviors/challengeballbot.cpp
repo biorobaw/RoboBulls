@@ -36,3 +36,7 @@ bool ChallengeBallBot::isFinished() {
     return done;
 }
 
+string ChallengeBallBot::getName() {
+    return "ChallengeBallBot";
+}
+

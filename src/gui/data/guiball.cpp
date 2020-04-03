@@ -1,10 +1,23 @@
 #include "guiball.h"
+#include "model/ball.h"
+
+
+GuiBall GuiBall::ball;
+
+void  GuiBall::updateBall(){
+    ball.position = Ball::getPosition();
+}
+
+Point GuiBall::getPosition(){
+    return ball.position;
+}
 
 GuiBall::GuiBall()
 {
     Pressed = false;
     int radius = boundingRect().width() / 2;
     setTransformOriginPoint(radius,radius);   // sets center point, around which it rotates
+    setToolTip("Ball");
 }
 
 QRectF GuiBall::boundingRect() const

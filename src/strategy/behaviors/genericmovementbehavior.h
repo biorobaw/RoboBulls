@@ -31,6 +31,8 @@ public:
    
    //! @brief Return true when reached the movement targets
    bool isFinished() override;
+
+   virtual string getName() override;
     
 protected:
     CmdGoToPose cmd;

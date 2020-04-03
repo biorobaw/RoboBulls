@@ -3,10 +3,9 @@
 
 #include "yaml-cpp/yaml.h"
 #include "utilities/point.h"
+#include "constants.h"
 
 
-#define FIELD_SIDE_NEGATIVE 0
-#define FIELD_SIDE_POSITIVE 1
 
 class Field {
 

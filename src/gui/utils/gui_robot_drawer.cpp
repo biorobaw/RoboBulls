@@ -1,26 +1,34 @@
-#include "guirobot.h"
+#define _USE_MATH_DEFINES
+#include "gui_robot_drawer.h"
+#include "model/team.h"
+#include "utilities/measurements.h"
 #include <QLabel>
-#include "mainwindow.h"
 #include <QString>
 
-GuiRobot::GuiRobot(MainWindow* dash, int team, int id) : id(id), team(team), dash(dash)
-{
-    Pressed = false;
-    setToolTip("Robot " + QString::number(id));
+GuiRobotDrawer::GuiRobotDrawer(int team, int id) : robot(&GuiRobot::proxies[team][id]) {
+    setToolTip("Robot " + QString::number(robot->id));
     setFlag(ItemIsSelectable);
+    icon = false;
 
     int radius = boundingRect().width() / 2;
-    setTransformOriginPoint(radius,radius);   // sets center point, around which it rotates
+    setTransformOriginPoint(radius,radius);
 }
 
-QRectF GuiRobot::boundingRect() const
+
+
+
+
+
+QRectF GuiRobotDrawer::boundingRect() const
 {
     int diameter = 200;
 //    int radius = diameter/2;
     return QRectF(0,0,diameter,diameter);
 }
 
-void GuiRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+
+
+void GuiRobotDrawer::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(widget);
     Q_UNUSED(option);
@@ -58,37 +66,37 @@ void GuiRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     lowLtCircle.moveCenter(lowLtpt);
     centerCircle.moveCenter(centerpt);
 
-    if(Pressed) {
+    if(robot->Pressed) {
         //brush.setColor(Qt::red);
     } else {
         //brush.setColor(Qt::magenta);
     }
     // Setting ID circles' colors
-    if (id == 0) {
+    if (robot->id == 0) {
         lowLtBrush.setColor(Qt::green);
-    } else if (id == 1) {
+    } else if (robot->id == 1) {
         lowLtBrush.setColor(Qt::green);
         topLtBrush.setColor(Qt::green);
-    } else if (id == 2) {
+    } else if (robot->id == 2) {
         lowLtBrush.setColor(Qt::green);
         topLtBrush.setColor(Qt::green);
         topRtBrush.setColor(Qt::green);
-    } else if (id == 3) {
+    } else if (robot->id == 3) {
         topRtBrush.setColor(Qt::green);
         lowLtBrush.setColor(Qt::green);
-    } else if (id == 4) {
+    } else if (robot->id == 4) {
         lowRtBrush.setColor(Qt::green);
-    } else if (id == 5) {
+    } else if (robot->id == 5) {
         topLtBrush.setColor(Qt::green);
         lowRtBrush.setColor(Qt::green);
-    } else if (id == 6) {
+    } else if (robot->id == 6) {
         topLtBrush.setColor(Qt::green);
         lowRtBrush.setColor(Qt::green);
         topRtBrush.setColor(Qt::green);
-    } else if (id == 7) {
+    } else if (robot->id == 7) {
         lowRtBrush.setColor(Qt::green);
         topRtBrush.setColor(Qt::green);
-    } else if (id == 8) {
+    } else if (robot->id == 8) {
         lowLtBrush.setColor(Qt::green);
         topLtBrush.setColor(Qt::green);
         topRtBrush.setColor(Qt::green);
@@ -97,17 +105,17 @@ void GuiRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     painter->setRenderHint(QPainter::Antialiasing, true);
 
     // Robot body
-    if (kicking) {
+    if (robot->isKicking()) {
         painter->setPen(QPen(Qt::gray, 0, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
         painter->setBrush(QBrush(Qt::red, Qt::SolidPattern));
-    } else if (dribling) {
+    } else if (robot->isDribbling()) {
         painter->setPen(QPen(Qt::gray, 0, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
         painter->setBrush(QBrush(QColor::fromRgb(255,153,0,255), Qt::SolidPattern));
     } else {
         painter->setPen(QPen(Qt::gray, 0, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
         painter->setBrush(QBrush(Qt::gray, Qt::SolidPattern));
     }
-    if (enabled) {
+    if (robot->enabled) {
         painter->drawRoundedRect(base,15,15);
     }
 
@@ -115,24 +123,16 @@ void GuiRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     painter->setPen(QPen(Qt::black, 0, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
     painter->setBrush(QBrush(Qt::black, Qt::SolidPattern));
 
-    if (overridden){
+    if (robot->overridden){
         painter->setBrush(QBrush(Qt::darkRed, Qt::SolidPattern));
     }
 
-    //get the color of the team selected in the dash (button my team)
-    int selected_color = dash->getSelectedTeamId();
+    if (robot->highlighted) {
+        auto color = robot->team == ROBOT_TEAM_BLUE ? Qt::cyan : QColor::fromRgb(255,215,0,255);
+        painter->setBrush(QBrush(color, Qt::SolidPattern));
 
-    if (highlighted) {
-        if (selected_color == ROBOT_TEAM_BLUE) {
-            painter->setBrush(QBrush(Qt::cyan, Qt::SolidPattern));
-        } else if   (selected_color == ROBOT_TEAM_YELLOW) {
-            painter->setBrush(QBrush(QColor::fromRgb(255,215,0,255), Qt::SolidPattern));
-        }
-
-        auto c = team == ROBOT_TEAM_BLUE ? Qt::cyan : QColor::fromRgb(255,215,0,255);
-        painter->setBrush(QBrush(c, Qt::SolidPattern));
     }
-    if (overridden && highlighted) {
+    if (robot->overridden && robot->highlighted) {
         painter->setBrush(QBrush(Qt::red, Qt::SolidPattern));
     }
     int startAngle = 50 * 16;
@@ -150,7 +150,7 @@ void GuiRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
         painter->drawEllipse(lowLtCircle);
     // Center circle
 
-    auto c = team == ROBOT_TEAM_BLUE ? Qt::blue : Qt::yellow;
+    auto c = robot->team == ROBOT_TEAM_BLUE ? Qt::blue : Qt::yellow;
     painter->setBrush(QBrush(c, Qt::SolidPattern));
 
     painter->drawEllipse(centerCircle);
@@ -159,23 +159,26 @@ void GuiRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 }
 
 
-void GuiRobot::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void GuiRobotDrawer::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    Pressed = true;
+    robot->Pressed = true;
     update();
     QGraphicsItem::mousePressEvent(event);
 }
 
-void GuiRobot::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+void GuiRobotDrawer::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    Pressed = false;
+    robot->Pressed = false;
     update();
     QGraphicsItem::mouseReleaseEvent(event);
 }
 
-void GuiRobot::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+void GuiRobotDrawer::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
-    doubleClicked = true;
+    robot->doubleClicked = true;
     update();
     QGraphicsItem::mouseDoubleClickEvent(event);
 }
+
+
+

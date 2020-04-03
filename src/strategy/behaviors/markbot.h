@@ -21,7 +21,7 @@ public:
     MarkBot(Robot*);
     void perform() override;
     bool isFinished() override;
-
+    string getName() override;
 private:
     // Variables for tracking marked/markable opponents
     static bool mark_status[10];

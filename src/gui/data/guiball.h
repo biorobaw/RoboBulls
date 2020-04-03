@@ -5,13 +5,18 @@
 #include <QDebug>
 #include <QPixmap>
 #include <QLabel>
+#include "utilities/point.h"
 
 //GuiBall isthe ball on the field (FieldPanel)
 
 class GuiBall : public QGraphicsItem
 {
 public:
-    GuiBall();
+    static GuiBall ball;
+    static void updateBall();
+    static Point getPosition();
+
+
 
     QRectF boundingRect() const;    // outermost edges of the object (must be implemented with QGraphicsItem)
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
@@ -19,10 +24,15 @@ public:
     QString color;
 
 
+
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);          // we want to know when the mouse is pressed...
     void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);       // ..and released
 
+    Point position = Point(0,0);
+
+private:
+    GuiBall();
 
 };
 

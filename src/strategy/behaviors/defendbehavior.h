@@ -54,6 +54,7 @@ class DSIdle : public DefendState, public GenericMovementBehavior
 public:
      DSIdle(Robot* robot);
      DefendState* action(Robot* robot) override;
+     string getName() override;
 private:
     bool activeKicking;
 };
@@ -70,6 +71,7 @@ public:
     DSKick(Robot* robot,Point opponent_goal);
    ~DSKick();
     DefendState* action(Robot* robot) override;
+    string getName() override;
 private:
     Skill::KickToPointOmni* ktpo;
 };
@@ -85,6 +87,7 @@ public:
     DSIntercept(Robot* robot);
    ~DSIntercept();
     DefendState* action(Robot* robot) override;
+    string getName() override;
 private:
     Skill::KickToPointOmni* ktpo;
     bool  chosenLinePoint;
@@ -114,6 +117,7 @@ public:
      DefendBehavior(Robot*);
     ~DefendBehavior();
     void perform() override;
+    string getName() override;
 private:
     static int currentUsers;    //Number of robots currently using this behavior
     DefendState* state;         //Current state (one of the above)

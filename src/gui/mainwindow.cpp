@@ -15,21 +15,22 @@
 #include <QtWidgets/QMainWindow>
 
 // Helper classes
-#include "robotpanel.h"
-#include "selrobotpanel.h"
-#include "objectposition.h"
+#include "panels/robotpanel.h"
+#include "panels/selrobotpanel.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "gamepanel.h"
-#include "fieldpanel.h"
-#include "guifield.h"
-#include "guiball.h"
-#include "guibotlabel.h"
-#include "guidrawline.h"
+#include "panels/gamepanel.h"
+#include "panels/fieldpanel.h"
+#include "data/guiball.h"
+#include "gui/data/guifield.h"
+#include "gui/data/guiball.h"
+#include "gui/data/guibotlabel.h"
+#include "gui/utils/gui_robot_drawer.h"
+#include "gui/data/gui_robot.h"
+#include "gui/utils/guidrawline.h"
 #include "guicomm.h"
 #include "guiscene.h"
 #include "guiinterface.h"
-#include "guirobot.h"
 #include "strategy/controllers/joystick/joystick.h"
 #include "robot/robcomm.h"
 
@@ -51,7 +52,6 @@ MainWindow::MainWindow(QWidget *parent) :
     // Setting up GUI; not enabling thread until we're done
     ui->btn_connectGui->setEnabled(false);
     // Creating helper classes (order is important)
-    objectPos       = new ObjectPosition(this);
     selrobotpanel   = new SelRobotPanel(this);
     robotpanel      = new RobotPanel(this);
     fieldpanel      = new FieldPanel(this);
@@ -66,7 +66,7 @@ MainWindow::MainWindow(QWidget *parent) :
     selrobotpanel->setupSelRobotPanel();
     robotpanel->updateTeamColors();
     setupKeyShortcuts();
-    objectPos->setupPastBotPoints();
+    GuiRobot::init_static_data();
     ui->btn_connectGui->setEnabled(true);
     MainWindow::resize(1400,900);
     setFocusOnField();
@@ -110,7 +110,6 @@ void MainWindow::coreLoop(int tick) {
     setMyVelocity();
     fieldpanel->updateScene();
     robotpanel->updateBotPanel();
-    updateBallInfo();
     clockLoop(tick);
 
 }
@@ -120,11 +119,10 @@ void MainWindow::clockLoop(int tick) {
     gamepanel->guiClock(tick);
     // These three functions are used for bot speed getting;
     // ...their order is VERY important
-    objectPos->getNewBotPoints();
-    objectPos->getBotSpeeds();
-    objectPos->getOldSpeeds();
-    objectPos->getPastBotPoints();
-//    objectPos->updateBotSpeedsRecord();
+    GuiBall::updateBall();
+    updateBallInfo();
+    GuiRobot::updateRobots();
+
 }
 
 
@@ -162,10 +160,11 @@ QString MainWindow::getRemTime() {
 }
 
 void MainWindow::updateBallInfo() {
-    ui->lcd_coordX_ball->display(objectPos->getBallCoordX());
-    ui->lcd_coordY_ball->display(objectPos->getBallCoordY());
+    ui->lcd_coordX_ball->display(GuiBall::getPosition().x);
+    ui->lcd_coordY_ball->display(GuiBall::getPosition().y);
 
-    robotpanel->ballIcon->color = ui->combo_ballColor->currentText();
+    GuiBall::ball.color = ui->combo_ballColor->currentText();
+//    robotpanel->ballIcon->color =
     ui->gView_ball->update();
     // Displaying ball icon
     if (ui->gView_ball->isHidden()) {
@@ -219,93 +218,30 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
 
         // Number bindings
         case Qt::Key_QuoteLeft:
-            fieldpanel->gui_robots[selected_team_id][0]->setSelected(true);
-            robotpanel->robotIcon[0]->setSelected(true);
+            //GuiRobotProxy::proxies[selected_team_id][0].setSelected(true);
             robotpanel->scrollToSelBot(0);
             if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
-                fieldpanel->gui_robots[selected_team_id][0]->doubleClicked = true; }
-            break;
-
-        case Qt::Key_1:
-            fieldpanel->gui_robots[selected_team_id][1]->setSelected(true);
-            robotpanel->robotIcon[1]->setSelected(true);
-            robotpanel->scrollToSelBot(1);
-            if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
-                fieldpanel->gui_robots[selected_team_id][1]->doubleClicked = true; }
-            break;
-
-        case Qt::Key_2:
-            fieldpanel->gui_robots[selected_team_id][2]->setSelected(true);
-            robotpanel->robotIcon[2]->setSelected(true);
-            robotpanel->scrollToSelBot(2);
-            if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
-                fieldpanel->gui_robots[selected_team_id][2]->doubleClicked = true; }
-            break;
-
-        case Qt::Key_3:
-            fieldpanel->gui_robots[selected_team_id][3]->setSelected(true);
-            robotpanel->robotIcon[3]->setSelected(true);
-            robotpanel->scrollToSelBot(3);
-            if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
-                fieldpanel->gui_robots[selected_team_id][3]->doubleClicked = true; }
-            break;
-
-        case Qt::Key_4:
-            fieldpanel->gui_robots[selected_team_id][4]->setSelected(true);
-            robotpanel->robotIcon[4]->setSelected(true);
-            robotpanel->scrollToSelBot(4);
-            if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
-                fieldpanel->gui_robots[selected_team_id][4]->doubleClicked = true; }
-            break;
-
-        case Qt::Key_5:
-            fieldpanel->gui_robots[selected_team_id][5]->setSelected(true);
-            robotpanel->robotIcon[5]->setSelected(true);
-            robotpanel->scrollToSelBot(5);
-            if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
-                fieldpanel->gui_robots[selected_team_id][5]->doubleClicked = true; }
-            break;
-
-        case Qt::Key_6:
-            fieldpanel->gui_robots[selected_team_id][6]->setSelected(true);
-            robotpanel->robotIcon[6]->setSelected(true);
-            robotpanel->scrollToSelBot(6);
-            if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
-                fieldpanel->gui_robots[selected_team_id][6]->doubleClicked = true; }
-            break;
-
-        case Qt::Key_7:
-            fieldpanel->gui_robots[selected_team_id][7]->setSelected(true);
-            robotpanel->robotIcon[7]->setSelected(true);
-            robotpanel->scrollToSelBot(7);
-            if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
-                fieldpanel->gui_robots[selected_team_id][7]->doubleClicked = true; }
-            break;
-
-        case Qt::Key_8:
-            fieldpanel->gui_robots[selected_team_id][8]->setSelected(true);
-            robotpanel->robotIcon[8]->setSelected(true);
-            robotpanel->scrollToSelBot(8);
-            if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
-                fieldpanel->gui_robots[selected_team_id][8]->doubleClicked = true; }
-            break;
-
-        case Qt::Key_9:
-            fieldpanel->gui_robots[selected_team_id][9]->setSelected(true);
-            robotpanel->robotIcon[9]->setSelected(true);
-            robotpanel->scrollToSelBot(9);
-            if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
-                fieldpanel->gui_robots[selected_team_id][9]->doubleClicked = true; }
+                GuiRobot::proxies[selected_team_id][0].doubleClicked = true; }
             break;
 
         case Qt::Key_0:
-            fieldpanel->gui_robots[selected_team_id][0]->setSelected(true);
-            robotpanel->robotIcon[0]->setSelected(true);
-            robotpanel->scrollToSelBot(0);
-            if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
-                fieldpanel->gui_robots[selected_team_id][0]->doubleClicked = true; }
+        case Qt::Key_1:
+        case Qt::Key_2:
+        case Qt::Key_3:
+        case Qt::Key_4:
+        case Qt::Key_5:
+        case Qt::Key_6:
+        case Qt::Key_7:
+        case Qt::Key_8:
+        case Qt::Key_9: {
+            int robot_id = event->key() - Qt::Key_0;
+            auto& r = GuiRobot::proxies[selected_team_id][robot_id];
+            //r.setSelected(true);
+            robotpanel->scrollToSelBot(robot_id);
+            if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier))
+                r.doubleClicked = true;
             break;
-
+        }
         // Camera bindings
         case Qt::Key_Z:
             if (QApplication::keyboardModifiers().testFlag(Qt::AltModifier)) {
@@ -501,9 +437,10 @@ void MainWindow::on_btn_botForward_pressed() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botForward->setDown(true);
         setMyVelocity();
-        auto* selected_robot = getSelectedTeam()->getRobot(fieldpanel->selectedBot);
-        std::cout << "currentFwd" << myVelocity<< std::endl;
-        selected_robot->getPilot()->setManualVelocity(Point(250,0),0);
+
+        auto& robot = GuiRobot::proxies[selected_team_id][fieldpanel->selectedBot];
+        robot.setManualVelocity(Point(250,0),0);
+
 
     }
     ui->gView_field->scene()->update();
@@ -512,37 +449,40 @@ void MainWindow::on_btn_botForward_pressed() {
 void MainWindow::on_btn_botReverse_pressed() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botReverse->setDown(true);
-        int currentVel = objectPos->getVelocity(fieldpanel->selectedBot);
-        auto* selected_robot = getSelectedTeam()->getRobot(fieldpanel->selectedBot);
-        selected_robot->getPilot()->setManualVelocity(Point(-250,0),0);
+        auto& robot = GuiRobot::proxies[selected_team_id][fieldpanel->selectedBot];
+        robot.setManualVelocity(Point(-250,0),0);
+
     }
     ui->gView_field->scene()->update();
 }
 
 void MainWindow::on_btn_botRotateRight_pressed() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
-        Robot* r = getSelectedTeam()->getRobot(fieldpanel->selectedBot);
         ui->btn_botTurnRight->setDown(true);
-        r->getPilot()->setManualVelocity(Point(0,0),-M_PI/2);
-//        r->setYVel(myVelocity);
-        std::cout << "botTurnRight_pressed" << std::endl;
+
+        auto& robot = GuiRobot::proxies[selected_team_id][fieldpanel->selectedBot];
+        robot.setManualVelocity(Point(0,0),-M_PI/2);
+
     }
 }
 
 void MainWindow::on_btn_botRotateLeft_pressed() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
-        Robot* r = getSelectedTeam()->getRobot(fieldpanel->selectedBot);
         ui->btn_botTurnLeft->setDown(true);
-        r->getPilot()->setManualVelocity(Point(0,0),M_PI/2);
+
+        auto& robot = GuiRobot::proxies[selected_team_id][fieldpanel->selectedBot];
+        robot.setManualVelocity(Point(0,0),M_PI/2);
+
     }
 }
 
 void MainWindow::on_btn_botTurnRight_pressed() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
-        Robot* r = getSelectedTeam()->getRobot(fieldpanel->selectedBot);
         ui->btn_botTurnRight->setDown(true);
-        r->getPilot()->setManualVelocity(Point(0,0),-M_PI/2);
-        std::cout << "botTurnRight_pressed" << std::endl;
+
+        auto& robot = GuiRobot::proxies[selected_team_id][fieldpanel->selectedBot];
+        robot.setManualVelocity(Point(0,0),-M_PI/2);
+
     }
 
 }
@@ -550,9 +490,11 @@ void MainWindow::on_btn_botTurnRight_pressed() {
 
 void MainWindow::on_btn_botTurnLeft_pressed() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
-        Robot* r = getSelectedTeam()->getRobot(fieldpanel->selectedBot);
         ui->btn_botTurnLeft->setDown(true);
-        r->getPilot()->setManualVelocity(Point(0,0),M_PI/2);
+
+        auto& robot = GuiRobot::proxies[selected_team_id][fieldpanel->selectedBot];
+        robot.setManualVelocity(Point(0,0),M_PI/2);
+
     }
 
 }
@@ -573,9 +515,11 @@ void MainWindow::on_btn_botTurnLeft_pressed() {
 
 void MainWindow::on_btn_botForward_released() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
-        Robot* r = getSelectedTeam()->getRobot(fieldpanel->selectedBot);
         ui->btn_botForward->setDown(false);
-        r->getPilot()->setManualVelocity(Point(0,0),0);
+
+        auto& robot = GuiRobot::proxies[selected_team_id][fieldpanel->selectedBot];
+        robot.setManualVelocity(Point(0,0),0);
+
     }
 }
 
@@ -583,8 +527,10 @@ void MainWindow::on_btn_botForward_released() {
 void MainWindow::on_btn_botReverse_released() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botReverse->setDown(false);
-        auto* selected_robot = getSelectedTeam()->getRobot(fieldpanel->selectedBot);
-        selected_robot->getPilot()->setManualVelocity(Point(0,0),0);
+
+        auto& robot = GuiRobot::proxies[selected_team_id][fieldpanel->selectedBot];
+        robot.setManualVelocity(Point(0,0),0);
+
     }
 }
 
@@ -593,28 +539,31 @@ void MainWindow::on_btn_botReverse_released() {
 void MainWindow::on_btn_botRotateRight_released() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botTurnRight->setDown(false);
-        float currentFwd = objectPos->getVelocity(fieldpanel->selectedBot);
-        auto* selected_robot = getSelectedTeam()->getRobot(fieldpanel->selectedBot);
-        selected_robot->getPilot()->setManualVelocity(Point(currentFwd,0),0);
-        std::cout << "botTurnRight_released" << std::endl;
+
+        auto& robot = GuiRobot::proxies[selected_team_id][fieldpanel->selectedBot];
+        float currentFwd = robot.getSpeedCommand();
+        robot.setManualVelocity(Point(currentFwd,0),0);
+
     }
 }
 
 void MainWindow::on_btn_botRotateLeft_released() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botTurnLeft->setDown(false);
-        float currentVel = objectPos->getVelocity(fieldpanel->selectedBot);
-        auto* selected_robot = getSelectedTeam()->getRobot(fieldpanel->selectedBot);
-        selected_robot->getPilot()->setManualVelocity(Point(currentVel,0),0);
+        auto& robot = GuiRobot::proxies[selected_team_id][fieldpanel->selectedBot];
+        robot.setManualVelocity(Point(0,0),0);
+
     }
 }
 
 void MainWindow::on_btn_botTurnRight_released() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botTurnRight->setDown(false);
-        float currentFwd = objectPos->getVelocity(fieldpanel->selectedBot);
-        auto* selected_robot = getSelectedTeam()->getRobot(fieldpanel->selectedBot);
-        selected_robot->getPilot()->setManualVelocity(Point(currentFwd,0),0);
+
+        auto& robot = GuiRobot::proxies[selected_team_id][fieldpanel->selectedBot];
+        float currentFwd = robot.getSpeedCommand();
+        robot.setManualVelocity(Point(currentFwd,0),0);
+
     }
 }
 
@@ -622,9 +571,9 @@ void MainWindow::on_btn_botTurnRight_released() {
 void MainWindow::on_btn_botTurnLeft_released() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botTurnLeft->setDown(false);
-        float currentVel = objectPos->getVelocity(fieldpanel->selectedBot);
-        auto* selected_robot = getSelectedTeam()->getRobot(fieldpanel->selectedBot);
-        selected_robot->getPilot()->setManualVelocity(Point(currentVel,0),0);
+        auto& robot = GuiRobot::proxies[selected_team_id][fieldpanel->selectedBot];
+        robot.setManualVelocity(Point(0,0),0);
+
     }
 }
 
@@ -650,83 +599,61 @@ void MainWindow::on_btn_botTurnLeft_released() {
 void MainWindow::on_btn_botKick_pressed() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botKick->setDown(true);
-        auto* selected_robot = getSelectedTeam()->getRobot(fieldpanel->selectedBot);
-        selected_robot->setKick();
-        fieldpanel->gui_robots[selected_team_id][fieldpanel->selectedBot]->kicking = true;
+
+        auto& robot = GuiRobot::proxies[selected_team_id][fieldpanel->selectedBot];
+        robot.setKick();
     }
 }
 
 void MainWindow::on_btn_botKick_released() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botKick->setDown(false);
-        auto* selected_robot = getSelectedTeam()->getRobot(fieldpanel->selectedBot);
-        selected_robot->setKick(0);
-        fieldpanel->gui_robots[selected_team_id][fieldpanel->selectedBot]->kicking = false;
+        auto& robot = GuiRobot::proxies[selected_team_id][fieldpanel->selectedBot];
+        robot.setKick(0);
     }
 }
 
 void MainWindow::on_btn_botDrible_pressed() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botDrible->setDown(true);
-        auto* selected_robot = getSelectedTeam()->getRobot(fieldpanel->selectedBot);
-        selected_robot->setDribble(true);
-        fieldpanel->gui_robots[selected_team_id][fieldpanel->selectedBot]->dribling = true;
+        auto& robot = GuiRobot::proxies[selected_team_id][fieldpanel->selectedBot];
+        robot.setDribble(true);
     }
 }
 
 void MainWindow::on_btn_botDrible_released() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {
         ui->btn_botDrible->setDown(false);
-        auto* selected_robot = getSelectedTeam()->getRobot(fieldpanel->selectedBot);
-        selected_robot->setDribble(false);
-        fieldpanel->gui_robots[selected_team_id][fieldpanel->selectedBot]->dribling = false;
+        auto& robot = GuiRobot::proxies[selected_team_id][fieldpanel->selectedBot];
+        robot.setDribble(false);
     }
 }
 
 
 void MainWindow::on_check_botOverride_clicked(bool checked) {
     if (fieldpanel->selectedBot > -1) {
-        if (checked) {
-            // Keeping track of how many bots are overridden
-            overriddenBots[selected_team_id][fieldpanel->selectedBot] = true;
-            // Telling robot QObjects to change color
-            robotpanel->robotIcon[fieldpanel->selectedBot]->overridden = true;
-            fieldpanel->gui_robots[selected_team_id][fieldpanel->selectedBot]->overridden = true;
-            // Stopping overridden bots in their tracks
-            auto* selected_robot = getSelectedTeam()->getRobot(fieldpanel->selectedBot);
-            selected_robot->getPilot()->setManualVelocity(Point(0,0),0);
-        } else {
-            overriddenBots[selected_team_id][fieldpanel->selectedBot] = false;
-            robotpanel->robotIcon[fieldpanel->selectedBot]->overridden = false;
-            fieldpanel->gui_robots[selected_team_id][fieldpanel->selectedBot]->overridden = false;
-        }
+
+        auto& robot = GuiRobot::proxies[selected_team_id][fieldpanel->selectedBot];
+        robot.overridden = checked;
+        if (checked) robot.setManualVelocity(Point(0,0),0);
+
     }// nullcheck
 }
 
 void MainWindow::on_btn_override_all_released() {
-    for (unsigned int i=0; i< MAX_ROBOTS; i++) {
-        // Keeping track of how many bots are overridden
-        overriddenBots[selected_team_id][i] = true;
-    }
+
     for (int i=0; i<teamSize_blue; i++) {
         // Telling robot QObjects to change color
-        overriddenBots[selected_team_id][i] = true;
-        robotpanel->robotIcon[i]->overridden = true;
-        fieldpanel->gui_robots[selected_team_id][i]->overridden = true;
-        // stopping all bots, so they don't fly off at their current velocities
-        Robot* robot = getSelectedTeam()->getRobot(i);
-        if(robot != NULL) {
-            robot->getPilot()->setManualVelocity(Point(0,0),0);
-        }
+        auto& robot = GuiRobot::proxies[selected_team_id][i];
+        robot.overridden = true;
+        robot.setManualVelocity(Point(0,0),0);
     }
 }
 
 void MainWindow::on_btn_override_none_released() {
-    for (unsigned int i=0; i<MAX_ROBOTS; i++) {
-        overriddenBots[selected_team_id][i] = false;
+    for (unsigned int i=0; i<MAX_ROBOTS_PER_TEAM; i++) {
         // Telling robot QObjects to change color
-        robotpanel->robotIcon[i]->overridden = false;
-        fieldpanel->gui_robots[selected_team_id][i]->overridden = false;
+        GuiRobot::proxies[selected_team_id][i].overridden = false;
     }
 }
 

@@ -28,6 +28,7 @@ public:
     PenaltyGoalie(Robot*);
     void perform() override;
     bool isFinished() override;
+    string getName() override;
 private:
 
 };

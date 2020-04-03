@@ -42,21 +42,23 @@ include(protobuf.pri)
 
 
 SOURCES += src/main.cpp \
-        src/gui/fieldpanel.cpp \
-        src/gui/gamepanel.cpp \
-        src/gui/guiball.cpp \
-        src/gui/guibotlabel.cpp \
+        src/gui/data/gui_robot.cpp \
+        src/gui/data/guiball.cpp \
+        src/gui/data/guibotlabel.cpp \
+        src/gui/data/guifield.cpp \
         src/gui/guicomm.cpp \
-        src/gui/guidrawline.cpp \
-        src/gui/guifield.cpp \
         src/gui/guiinterface.cpp \
-        src/gui/guirobot.cpp \
         src/gui/guiscene.cpp \
         src/gui/guisidelines.cpp \
         src/gui/mainwindow.cpp \
-        src/gui/objectposition.cpp \
-        src/gui/robotpanel.cpp \
-        src/gui/selrobotpanel.cpp \
+        src/gui/panels/fieldpanel.cpp \
+        src/gui/panels/gamepanel.cpp \
+        src/gui/panels/robotpanel.cpp \
+        src/gui/panels/selrobotpanel.cpp \
+        src/gui/utils/gui_robot_drawer.cpp \
+        src/gui/utils/guidrawline.cpp \
+        src/gui/utils/guidrawpoint.cpp \
+        src/gui/utils/guidrawregion.cpp \
         src/model/ball.cpp \
         src/model/field.cpp \
         src/model/game_state.cpp \
@@ -119,30 +121,29 @@ SOURCES += src/main.cpp \
         src/utilities/region/rectangle.cpp \
         src/utilities/measurements.cpp \
         src/utilities/region/defencearea.cpp \
-        src/gui/guidrawpoint.cpp \
-        src/gui/guidrawregion.cpp \
         src/model/team.cpp \
         src/parameters/motion_parameters.cpp
 
 HEADERS += \
-        src/gui/fieldpanel.h \
-        src/gui/gamepanel.h \
-        src/gui/guiball.h \
-        src/gui/guibotlabel.h \
+        src/gui/data/gui_robot.h \
+        src/gui/data/guiball.h \
+        src/gui/data/guibotlabel.h \
+        src/gui/data/guifield.h \
         src/gui/guicomm.h \
-        src/gui/guidrawline.h \
-        src/gui/guifield.h \
         src/gui/guiinterface.h \
-        src/gui/guirobot.h \
         src/gui/guiscene.h \
         src/gui/guisidelines.h \
         src/gui/mainwindow.h \
-        src/gui/objectposition.h \
-        src/gui/robotpanel.h \
-        src/gui/selrobotpanel.h \
-        src/gui/guidrawpoint.h \
-        src/gui/guidrawregion.h \
+        src/gui/panels/fieldpanel.h \
+        src/gui/panels/gamepanel.h \
+        src/gui/panels/robotpanel.h \
+        src/gui/panels/selrobotpanel.h \
+        src/gui/utils/gui_robot_drawer.h \
+        src/gui/utils/guidrawline.h \
+        src/gui/utils/guidrawpoint.h \
+        src/gui/utils/guidrawregion.h \
         src/model/ball.h \
+        src/model/constants.h \
         src/model/field.h \
         src/model/game_state.h \
         src/model/team.h \

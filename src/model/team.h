@@ -7,12 +7,9 @@
 #include "robot/robot.h"
 #include "robot/robcomm.h"
 #include "strategy/strategycontroller.h"
+#include "constants.h"
+ // limited by vision that recognizes only 16 patterns per team
 
-#define MAX_ROBOTS 16 // limited by vision that recognizes only 16 patterns per team
-
-//! Tags for possible team colors
-#define ROBOT_TEAM_BLUE 0
-#define ROBOT_TEAM_YELLOW 1
 
 
 class RobotTeam {
@@ -56,8 +53,8 @@ private:
 
     std::set<Robot*> all_robots;
     Robot* robotByRoles[MAX_ROLES] = { NULL }; // maps roles to robots
-    Robot* robotById[MAX_ROBOTS] = { NULL };
-    RobotRole idToRole[MAX_ROBOTS] = {RobotRole::NONE}; // defined by user
+    Robot* robotById[MAX_ROBOTS_PER_TEAM] = { NULL };
+    RobotRole idToRole[MAX_ROBOTS_PER_TEAM] = {RobotRole::NONE}; // defined by user
 
 
 

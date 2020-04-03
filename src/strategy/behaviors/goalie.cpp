@@ -250,3 +250,7 @@ bool Goalie::shouldRetrieveBall(Robot* robot)
     return b0 && b1 && b2 && b3;
 }
 
+string Goalie::getName() {
+    return "Goalie";
+}
+

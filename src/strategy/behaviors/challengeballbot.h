@@ -20,6 +20,7 @@ public:
     void perform() override;
 
     bool isFinished() override;
+    string getName() override;
 
 private:
     bool done = false;

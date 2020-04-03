@@ -12,8 +12,7 @@ class QLabel;
 class QLCDNumber;
 class QGraphicsView;
 class QGraphicsScene;
-class GuiRobot;
-class GuiBall;
+class GuiRobotDrawer;
 class FieldPanel;
 class MainWindow;
 class GameState;
@@ -60,17 +59,16 @@ public:
 
     std::vector<QGraphicsView*> botIconFrames;
     // Bot individual icon scenes
-    QGraphicsScene* scene_botIcon[MAX_ROBOTS];
+    QGraphicsScene* scene_botIcon[MAX_ROBOTS_PER_TEAM];
 
     // Bot selected icon scenes
-    QGraphicsScene* scene_botIconSel[MAX_ROBOTS];
+    QGraphicsScene* scene_botIconSel[MAX_ROBOTS_PER_TEAM];
 
     // Bot icons
-    GuiRobot* robotIcon[MAX_ROBOTS];
-    GuiRobot* robotIconSel[MAX_ROBOTS];
+    GuiRobotDrawer* robotIcon[MAX_ROBOTS_PER_TEAM];
+    GuiRobotDrawer* robotIconSel[MAX_ROBOTS_PER_TEAM];
 
     //TODO: Ball Icon (eventually move to diff class)
-    GuiBall *ballIcon;
     QGraphicsScene *scene_ballIcon;
 
 public slots:

@@ -2,7 +2,6 @@
 #define SELROBOTPANEL_H
 #include <QString>
 
-class Robot;
 class MainWindow;
 
 //The panel at the top left when a robot is selected
@@ -19,7 +18,7 @@ public:
     void setupSelRobotPanel();
     void hide();    //Hides the selected bot panel and resets selected/overridden bot
     //Returns name for a robot behavior
-    const static std::string& getBehaviorName(Robot* robot);
+    static QStringList getKeyWords(std::string behavior);
 
 public slots:
     void updateSelectedBotPanel(int id);

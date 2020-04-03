@@ -1,21 +1,20 @@
 #include "fieldpanel.h"
-#include "objectposition.h"
 #include "robotpanel.h"
 #include "selrobotpanel.h"
-#include "mainwindow.h"
+#include "gui/mainwindow.h"
 
 #include "ui_mainwindow.h"
-#include "guiinterface.h"
+#include "gui/guiinterface.h"
 
 //Helper classes
-#include "guirobot.h"
-#include "guiscene.h"
-#include "guiball.h"
-#include "guibotlabel.h"
-#include "guidrawline.h"
-#include "guidrawpoint.h"
-#include "guidrawregion.h"
-#include "guifield.h"
+#include "gui/utils/gui_robot_drawer.h"
+#include "gui/data/guiball.h"
+#include "gui/guiscene.h"
+#include "gui/data/guibotlabel.h"
+#include "gui/utils/guidrawline.h"
+//#include "gui/utils/guidrawpoint.h"
+//#include "gui/utils/guidrawregion.h"
+#include "gui/data/guifield.h"
 #include "model/game_state.h"
 #include "model/field.h"
 #include <vector>
@@ -48,17 +47,13 @@ void FieldPanel::setupScene() {
 //    field->highlighted = false;
 //    field->Pressed = false;
 
-    // Creating the ball
-    ball = new GuiBall;
-    ball->setToolTip("Ball");
-
 
 
     //Bot Labels - blue team
     for(int team=0; team<2; team++)
-        for(int robot_id=0; robot_id<MAX_ROBOTS; robot_id++){
-            gui_robots[team][robot_id] = new GuiRobot(dash, team, robot_id);
+        for(int robot_id=0; robot_id<MAX_ROBOTS_PER_TEAM; robot_id++){
             gui_bot_labels[team][robot_id] = new GuiBotLabel(team, robot_id );
+            robot_drawers[team][robot_id] = new GuiRobotDrawer(team,robot_id);
 
         }
 
@@ -67,13 +62,13 @@ void FieldPanel::setupScene() {
     scene->addItem(field);
     // add bots and then bot labels
     for(int color=0; color<2; color++)
-        for(int robot_id=0; robot_id<MAX_ROBOTS; robot_id++)
-            scene->addItem(gui_robots[color][robot_id]);
+        for(int robot_id=0; robot_id<MAX_ROBOTS_PER_TEAM; robot_id++)
+            scene->addItem(robot_drawers[color][robot_id]);
     for(int color=0; color<2; color++)
-        for(int robot_id=0; robot_id<MAX_ROBOTS; robot_id++)
+        for(int robot_id=0; robot_id<MAX_ROBOTS_PER_TEAM; robot_id++)
             scene->addItem(gui_bot_labels[color][robot_id]);
     scene->addItem(sidelines);
-    scene->addItem(ball);
+    scene->addItem(&GuiBall::ball);
 
 
     // Turning on Bot IDs by default
@@ -113,8 +108,7 @@ void FieldPanel::updateScene() {
     field->colorScheme = dash->ui->combo_fieldColor->currentText();
 
     // updating the ball
-        ball->setX(dash->objectPos->getBallCoordX());
-        ball->setY(dash->objectPos->getBallCoordY());
+        auto ball = &GuiBall::ball;
         ball->setZValue(2);
 
         // Ball Scale
@@ -123,7 +117,6 @@ void FieldPanel::updateScene() {
         else if (ball_scale == "120%") ball->setScale(.5);
         else if (ball_scale == "150%") ball->setScale(.8);
 
-        ball->color = dash->ui->combo_ballColor->currentText();
 
         // Tranformation matrix for robot ID labels
         QTransform flipLabel;
@@ -131,29 +124,24 @@ void FieldPanel::updateScene() {
 
     // Updating objects in scene
         for(int team=0 ; team < 2; team++)
-            for(int robot_id=0; robot_id < MAX_ROBOTS; robot_id++){
+            for(int robot_id=0; robot_id < MAX_ROBOTS_PER_TEAM; robot_id++){
 
-                auto* gui_r = gui_robots[team][robot_id];
+                auto& gui_r = robot_drawers[team][robot_id];
                 auto* gui_l = gui_bot_labels[team][robot_id];
-                auto* roboti = RobotTeam::getTeam(team)->getRobot(robot_id);
+//                auto* roboti = RobotTeam::getTeam(team)->getRobot(robot_id);
 
-                if ( roboti != NULL) {
+                if ( gui_r->robot->hasProxy()) {
                     gui_r->show();
 
-                    gui_r->setX(roboti->getPosition().x);
-                    gui_r->setY(roboti->getPosition().y);
+                    gui_r->setX(gui_r->robot->getCurrentPosition().x);
+                    gui_r->setY(gui_r->robot->getCurrentPosition().y);
                     gui_r->setZValue(1);
-                    gui_r->setRotation(dash->objectPos->getBotOrientDouble(roboti));
+                    gui_r->setRotation(gui_r->robot->getOrientation());
 
-                    // Action colors (may be better in the button slots)
-                    if (robot_id != selectedBot) {
-                        gui_r->dribling = roboti->getDribble();
-                        gui_r->kicking = roboti->getKick() == 1;
-                    }
 
                     // Robot Scale
                     auto bot_scale = dash->ui->combo_botScale->currentText();
-                    if ( bot_scale == "100%") gui_r->setScale(1);
+                    if ( bot_scale == "100%")     gui_r->setScale(1);
                     else if (bot_scale == "120%") gui_r->setScale(1.2);
                     else if (bot_scale == "150%") gui_r->setScale(1.5);
 
@@ -162,8 +150,8 @@ void FieldPanel::updateScene() {
                     gui_l->setTransform(flipLabel, false);
                     gui_l->setRotation(currentFieldAngle);
                     gui_l->setZValue(4);
-                    gui_l->setX(roboti->getPosition().x);
-                    gui_l->setY(roboti->getPosition().y);
+                    gui_l->setX(gui_r->robot->getCurrentPosition().x);
+                    gui_l->setY(gui_r->robot->getCurrentPosition().y);
                     gui_l->hidden = !dash->ui->check_showIDs->isChecked();
 
                 } else {
@@ -337,11 +325,12 @@ void FieldPanel::doubleClickScan() {
     // Scanning for double-click selection
     int team_id = dash->getSelectedTeamId();
     for (int i=0; i<dash->teamSize_blue; i++) {
-        if (dash->getSelectedTeam()->getRobot(i) != NULL) {
-            if (dash->robotpanel->robotIcon[i]->doubleClicked || gui_robots[team_id][i]->doubleClicked)  {
-                dash->robotpanel->robotIcon[i]->doubleClicked = false;
-                gui_robots[team_id][i]->doubleClicked = false;
-                centeredBotID = gui_robots[team_id][i];
+        auto drawer = robot_drawers[team_id][i];
+        auto r = drawer->robot;
+        if (r->hasProxy()) {
+            if (r->doubleClicked)  {
+                r->doubleClicked = false;
+                centeredBotID = drawer;
                 centerViewOnBot();
                 zoomField(20);
                 dash->guiPrint("Focused on Robot " + std::to_string(i));
@@ -356,10 +345,8 @@ void FieldPanel::cameraMoveScan() {
     int team_id = dash->getSelectedTeamId();
     if (justScrolled) {
         for (int i=0; i<dash->teamSize_blue; i++) {
-            if (dash->getSelectedTeam()->getRobot(i) != NULL) {
-                dash->robotpanel->robotIcon[i]->doubleClicked = false;
-                gui_robots[team_id][i]->doubleClicked = false;
-            }//nullcheck
+            robot_drawers[team_id][i]->robot->doubleClicked = false;
+
         }
         centeredBotID = nullptr;
     }
@@ -376,16 +363,14 @@ bool FieldPanel::fieldClickScan() {
         sidelines->Pressed = false;
     }
 
-    int team_id = dash->getSelectedTeamId();
     if (field->highlighted || sidelines->highlighted) {
+        int team_id = dash->getSelectedTeamId();
         for (int i=0; i<dash->teamSize_blue; i++) {
-            if (dash->getSelectedTeam()->getRobot(i) != NULL) {
-                gui_robots[team_id][i]->highlighted = false;
-                gui_robots[team_id][i]->setSelected(false);
-                dash->robotpanel->robotIcon[i]->highlighted = false;
-                dash->robotpanel->robotIcon[i]->setSelected(false);
-                dash->robotpanel->robotIcon[i]->doubleClicked = false;
-                gui_robots[team_id][i]->doubleClicked = false;
+            auto r = robot_drawers[team_id][i]->robot;
+            if (r->hasProxy()) {
+                r->highlighted = false;
+                r->doubleClicked = false;
+                // r->setSelected(false);
             }//nullcheck
         }
         field->highlighted = false;
@@ -400,63 +385,47 @@ bool FieldPanel::fieldClickScan() {
 bool FieldPanel::panelBotClickScan() {
     int team_id = dash->getSelectedTeamId();
     for (int i=0; i<6; i++) {
-        if (dash->getSelectedTeam()->getRobot(i) != NULL) {
-            // Bots on the panel clicked
-            if (dash->robotpanel->robotIcon[i]->isSelected()) {
-                selectedBot = i;
-                for (int j=0; j<dash->teamSize_blue; j++) {
-                    gui_robots[team_id][j]->highlighted = false;
-                    gui_robots[team_id][j]->setSelected(false);
-                    dash->robotpanel->robotIcon[j]->highlighted = false;
-                    dash->robotpanel->robotIcon[j]->setSelected(false);
-
-                }
-                dash->robotpanel->robotIcon[i]->highlighted = true;
-                gui_robots[team_id][i]->highlighted = true;
-                refresh = true;
-                // Refresh GUI
-                for (int r=0; r<6; r++) {
-                    dash->robotpanel->botIconFrames[i]->update();
-                }
-                dash->ui->gView_robot_prime->hide();
-                dash->ui->gView_robot_prime->show();
-//                newSelection = true;
-                return true;
-            }
+        auto drawer = dash->robotpanel->robotIcon[i];
+        if (drawer->isSelected()) {
+            drawer->setSelected(false);
+            if(selectRobot(team_id,i)) return true;
         }
     }
-     return true;
+     return false;
 }
 
 bool FieldPanel::fieldBotClickScan() {
     int team_id = dash->getSelectedTeamId();
     for (int i=0; i<6; i++) {
-        if (dash->getSelectedTeam()->getRobot(i) != NULL) {
-            // Bots on the field clicked
-            if (gui_robots[team_id][i]->isSelected()) {
-                selectedBot = i;
-                dash->robotpanel->scrollToSelBot(i);
-                for (int j=0; j<dash->teamSize_blue; j++) {
-                    gui_robots[team_id][j]->highlighted = false;
-                    gui_robots[team_id][j]->setSelected(false);
-                    dash->robotpanel->robotIcon[j]->highlighted = false;
-                    dash->robotpanel->robotIcon[j]->setSelected(false);
-                }
-                dash->robotpanel->robotIcon[i]->highlighted = true;
-                gui_robots[team_id][i]->highlighted = true;
-                refresh = true;
-                // Refresh GUI
-                for (int r=0; r<dash->teamSize_blue; r++) {
-                    dash->robotpanel->botIconFrames[i]->update();
-                }
-                dash->ui->gView_robot_prime->hide();
-                dash->ui->gView_robot_prime->show();
-//                newSelection = true;
-                return true;
-            }
+        auto drawer = robot_drawers[team_id][i];
+        if(drawer->isSelected()){
+            drawer->setSelected(false);
+            if(selectRobot(team_id,i)) return true;
         }
     }
-     return true;
+     return false;
+}
+
+bool FieldPanel::selectRobot(int team, int robot){
+    auto& r = robot_drawers[team][robot]->robot;
+    if (r->hasProxy()) {
+        selectedBot = robot;
+        dash->robotpanel->scrollToSelBot(robot);
+        for (int j=0; j<dash->teamSize_blue; j++) {
+            auto r_j = robot_drawers[team][j]->robot;
+            r_j->highlighted = false;
+        }
+        r->highlighted = true;
+        refresh = true;
+        // Refresh GUI
+        for (int r=0; r<dash->teamSize_blue; r++) {
+            dash->robotpanel->botIconFrames[robot]->update();
+        }
+        dash->ui->gView_robot_prime->hide();
+        dash->ui->gView_robot_prime->show();
+        return true;
+    }
+    return false;
 }
 
 void FieldPanel::zoomField(int zoom) {
@@ -490,8 +459,8 @@ void FieldPanel::updateTeamSelected(){
     int team_id = dash->getSelectedTeamId();
 
     // deselect bot in old team, select bot in new team
-    gui_robots[1-team_id][selectedBot]->highlighted =false;
-    gui_robots[team_id][selectedBot]->highlighted =true;
+    robot_drawers[1-team_id][selectedBot]->robot->highlighted =false;
+    robot_drawers[team_id][selectedBot]->robot->highlighted =true;
 
 
 }

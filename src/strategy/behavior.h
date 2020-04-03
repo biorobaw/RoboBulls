@@ -1,6 +1,7 @@
 #ifndef BEHAVIOR_H
 #define BEHAVIOR_H
-
+#include <string>
+using std::string;
 class Robot;
 
 /*! @addtogroup baseclasses Base Classes
@@ -48,6 +49,9 @@ public:
      * assign behaviors one after another.
      * @return True if the behavior is considered finished, false otherwise. */
     virtual bool isFinished();
+
+
+    virtual string getName() = 0;
 
 protected:
     Robot* robot;

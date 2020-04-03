@@ -26,6 +26,9 @@ public:
     ~Wall();
     void perform() override;
     bool isFinished() override;
+
+    string getName() override;
+
 private:
     enum {wall, clear} state = wall;
     int id = -1;

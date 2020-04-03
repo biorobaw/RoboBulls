@@ -81,3 +81,7 @@ bool PenaltyGoalie::isFinished()
         return true;
     return false;
 }
+
+string PenaltyGoalie::getName() {
+    return "Penalty Goalie";
+}

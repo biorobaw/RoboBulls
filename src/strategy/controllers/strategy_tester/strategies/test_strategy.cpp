@@ -54,6 +54,10 @@ public:
         if(duration >= 6)
             wait4recharge = false;
     }
+
+    string getName() override{
+        return "Kick";
+    }
 };
 
 // Test behavior to dribble the ball between two points
@@ -85,6 +89,10 @@ public:
                 target = &A;
         }
     }
+
+    string getName() override {
+        return "Dribble to point";
+    }
 };
 
 // Test behavior to dribble the ball between two points
@@ -108,6 +116,9 @@ public:
     {
         skill->perform(robot);
     }
+    string getName() override {
+        return "Dribble Back";
+    }
 };
 
 // Test behavior to rotate to the ball
@@ -123,6 +134,11 @@ class RotBeh : public GenericMovementBehavior
         cmd.setTarget(robot->getPosition(),ang);
         GenericMovementBehavior::perform();
     }
+
+    string getName() override {
+        return "Rot";
+    }
+
 };
 
 // Test behavior to dribble when ball is close
@@ -135,6 +151,10 @@ class DribbleBeh : public Behavior
     void perform() override
     {
         robot->setDribble(true);
+    }
+
+    string getName() override {
+        return "Dribble";
     }
 };
 
@@ -156,6 +176,10 @@ public:
         std::cout << "Distance Error: " << Measurements::distance(robot->getPosition(),target) << std::endl;
         std::cout << "Angle Error in Degrees: " << robot->getOrientation()*180/M_PI << std::endl;
         GenericMovementBehavior::perform();
+    }
+
+    string getName() override {
+        return "Motion Test";
     }
 };
 
@@ -190,6 +214,10 @@ public:
         }
         GenericMovementBehavior::perform();
     }
+
+    string getName() override {
+        return "Strafe";
+    }
 };
 
 
@@ -214,6 +242,10 @@ public:
         cmd.avoidBall = cmd.avoidObstacles = false;
         GenericMovementBehavior::perform();
     }
+
+    string getName() override {
+        return "GoTo";
+    }
 };
 
 
@@ -225,20 +257,20 @@ TestStrategy::TestStrategy(RobotTeam* _team) : Strategy(_team) {
 #include "robot/navigation/commands/CmdGoToPose.h"
 void TestStrategy::assignBehaviors()
 {
-    std::cout << "Assigning test strategy behaviors " << std::endl;
-    //team->getRobot(0)->assignBeh<GenericMovementBehavior>(Point(-650, 300), 0);
+//    std::cout << "Assigning test strategy behaviors " << std::endl;
+//    //team->getRobot(0)->assignBeh<GenericMovementBehavior>(Point(-650, 300), 0);
 
-    auto robots = team->getRobots();
-    auto r = team->getRobot(3);
-    //r->getPilot()->goToPose(CmdGoToPose(Point(-500,-500),0,true,false));
-    r->assignBeh<GoToBehavior>(0);
-    int num_robots = robots.size();
-    int i = 0;
-//    for(auto r : robots){
-//        if(i++ ==0) r->assignBeh<Strafe>();
-//        else r->assignBeh<GoToBehavior>(i*360.0/num_robots);
+//    auto robots = team->getRobots();
+//    auto r = team->getRobot(3);
+//    //r->getPilot()->goToPose(CmdGoToPose(Point(-500,-500),0,true,false));
+//    r->assignBeh<GoToBehavior>(0);
+//    int num_robots = robots.size();
+//    int i = 0;
+////    for(auto r : robots){
+////        if(i++ ==0) r->assignBeh<Strafe>();
+////        else r->assignBeh<GoToBehavior>(i*360.0/num_robots);
 
-//    }
+////    }
 
 }
 

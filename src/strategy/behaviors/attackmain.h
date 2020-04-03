@@ -63,6 +63,8 @@ public:
     bool hasKickedToGoal();
     bool hasPassed();
 
+    string getName() override;
+
 private:
 
 

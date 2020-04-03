@@ -475,6 +475,10 @@ bool AttackSupport::isFinished()
     return finished;
 }
 
+string AttackSupport::getName() {
+    return "Attack Support";
+}
+
 AttackSupport::~AttackSupport()
 {
     for(int i=0; i < prob_field_rows; i++)

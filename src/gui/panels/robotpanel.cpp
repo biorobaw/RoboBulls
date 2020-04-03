@@ -4,8 +4,7 @@
 #include <QLabel>
 
 #include "robotpanel.h"
-#include "mainwindow.h"
-#include "objectposition.h"
+#include "gui/mainwindow.h"
 #include "gamepanel.h"
 #include "fieldpanel.h"
 #include "selrobotpanel.h"
@@ -14,9 +13,11 @@
 #include "robot/robot.h"
 #include "utilities/measurements.h"
 //Helper classes
-#include "guirobot.h"
-#include "guiball.h"
+#include "gui/utils/gui_robot_drawer.h"
+#include "gui/data/guiball.h"
 #include "model/ball.h"
+#include "gui/guiscene.h"
+
 
 
 RobotPanel::RobotPanel(MainWindow *mw) {
@@ -131,22 +132,23 @@ void RobotPanel::setupBotPanel() {
 
 
     // Icons vector
-    for(int i=0; i<MAX_ROBOTS; i++){
-        robotIcon[i] = new GuiRobot(dash,0,i);
-        robotIcon[i]->icon = true;
+    for(int team=0; team<2; team++)
+        for(int i=0; i<MAX_ROBOTS_PER_TEAM; i++){
+            robotIcon[i] = new GuiRobotDrawer(0,i);
+            robotIcon[i]->icon = true;
 
-        robotIconSel[i] = new GuiRobot(dash,0,0);
-        robotIconSel[i]->icon = true;
+            robotIconSel[i] = new GuiRobotDrawer(0,0);
+            robotIconSel[i]->icon = true;
 
-        scene_botIcon[i] = new QGraphicsScene;
-        scene_botIcon[i]->addItem(robotIcon[i]);
+            scene_botIcon[i] = new QGraphicsScene;
+            scene_botIcon[i]->addItem(robotIcon[i]);
 
-        scene_botIconSel[i] = new QGraphicsScene;
-        scene_botIconSel[i]->addItem(robotIconSel[i]);
-    }
+
+            scene_botIconSel[i] = new QGraphicsScene;
+            scene_botIconSel[i]->addItem(robotIconSel[i]);
+        }
 
     // Ball GUI icon
-    ballIcon = new GuiBall();
     scene_ballIcon = new QGraphicsScene;
 
     // relevant vectors filled & connected; initial details added to GUI
@@ -164,7 +166,7 @@ void RobotPanel::setupBotPanel() {
     }
 
     // putting ball icon into GUI
-    scene_ballIcon->addItem(ballIcon);
+    scene_ballIcon->addItem(&GuiBall::ball);
     dash->ui->gView_ball->setScene(scene_ballIcon);
     dash->ui->gView_ball->scale(.2, .2);
     dash->ui->gView_ball->scale(1, -1);
@@ -184,15 +186,23 @@ void RobotPanel::setupBotPanel() {
 void RobotPanel::updateBotPanel() {
 
     // Printing current bot info to Robot Panels
+    int slected_team_id = dash->getSelectedTeamId();
     for (int i=0; i<6; i++) {
+
+
         botTitle[i]->setText("Robot " + QString::number(i));
         // Nullcheck
-        auto* roboti = dash->getSelectedTeam()->getRobot(i);
-        if ( roboti != NULL) {
+        auto& roboti = GuiRobot::proxies[slected_team_id][i]; //dash->getSelectedTeam()->getRobot(i);
+        if ( roboti.hasProxy() ) {
+            robotIcon[i]->robot = robotIconSel[i]->robot = &roboti;
+
+//            botIconFrames[i]->setScene(scene_botIcon[slected_team_id][i]);
+
+
             botFrames[i]->setEnabled(true);
-            botXcoords[i]->display(roboti->getPosition().x);
-            botYcoords[i]->display(roboti->getPosition().y);
-            botOrients[i]->setValue(dash->objectPos->getBotOrientDouble(roboti) +90 );
+            botXcoords[i]->display(roboti.getCurrentPosition().x);
+            botYcoords[i]->display(roboti.getCurrentPosition().y);
+            botOrients[i]->setValue(roboti.getOrientation() +90 );
             robotIcon[i]->setX(0);
             robotIcon[i]->setY(0);
             robotIcon[i]->setZValue(2);
@@ -201,7 +211,7 @@ void RobotPanel::updateBotPanel() {
             if (!botIconFrames[i]->isVisible())  botIconFrames[i]->show();
 
             // Velocity dials
-            velocityDials[i]->setValue(dash->objectPos->getVelocity(i));
+            velocityDials[i]->setValue(roboti.getSpeedCommand());
             // dynamic velocity dial colors
             if (velocityDials[i]->value() > 0) {            // forward
                 velocityDials[i]->setStyleSheet("background-color: rgb(0, 200, 0);");
@@ -215,7 +225,8 @@ void RobotPanel::updateBotPanel() {
 
             //Setting the Current behavior labels for the robots
             //Find a way to fix the template error!!*********
-            currBehavior[i]->setText(QString::fromStdString(SelRobotPanel::getBehaviorName(roboti)));
+//            std::cout << "beh " << slected_team_id << " " << i << " " << roboti.getBehaviorName() << std::endl;
+            currBehavior[i]->setText(QString::fromStdString(roboti.getBehaviorName()));
 
 
             // Speed dials disabled so that I can see how GUI is updated
@@ -258,7 +269,7 @@ void RobotPanel::updateBotPanel() {
     else
     {
         dash->ui->ballVel->setText("Vel: " +
-        QString::fromStdString(std::to_string(b_vel)) );
+            QString::fromStdString(std::to_string(b_vel)) );
     }
 
     //Populating the ballAccel label with curent ball acceleration
@@ -279,8 +290,8 @@ void RobotPanel::updateBotPanel() {
     dash->ui->timeRem->setText("Time Left: " + QString::number(time));
 
     // Mouse point
-    dash->ui->lcd_coordX_cursor->display(dash->objectPos->getMouseCoordX());
-    dash->ui->lcd_coordY_cursor->display(dash->objectPos->getMouseCoordY());
+    dash->ui->lcd_coordX_cursor->display(dash->fieldpanel->scene->mousePoint.x()-100);
+    dash->ui->lcd_coordY_cursor->display(dash->fieldpanel->scene->mousePoint.y()-100);
 
 
 }
@@ -334,20 +345,20 @@ void RobotPanel::updateTeamColors() {
 void RobotPanel::toggleIconVisible() {
     int id = dash->fieldpanel->selectedBot;
     int team_id = dash->getSelectedTeamId();
-    GuiRobot *thisBot = dash->fieldpanel->gui_robots[team_id][id];
-    GuiRobot *thisIcon = robotIcon[id];
+    auto& thisBot = GuiRobot::proxies[team_id][id];
+    GuiRobotDrawer *thisIcon = robotIcon[id];
 
     if (dash->fieldpanel->selectedBot > -1) {
-        if (thisBot->enabled) {
-            thisBot->enabled = false;
-            thisIcon->enabled = false;
+        if (thisBot.enabled) {
+            thisBot.enabled = false;
+//            thisIcon->enabled = false;
             thisIcon->setOpacity(.3);
-            thisBot->setOpacity(.3);
+//            thisBot.setOpacity(.3);
         } else {
-            thisBot->enabled = true;
-            thisIcon->enabled = true;
+            thisBot.enabled = true;
+//            thisIcon->enabled = true;
             thisIcon->setOpacity(1);
-            thisBot->setOpacity(1);
+//            thisBot.setOpacity(1);
         }
     }
 }

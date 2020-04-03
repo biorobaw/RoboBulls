@@ -234,3 +234,7 @@ bool Wall::isFinished()
 {
     return being_cleared;
 }
+
+string Wall::getName() {
+    return "Wall";
+}

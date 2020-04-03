@@ -183,6 +183,10 @@ DSIdle::DSIdle(Robot* robot) : GenericMovementBehavior(robot)
 #endif
 }
 
+string DSIdle::getName() {
+    return "DSIdle";
+}
+
 DefendState* DSIdle::action(Robot* robot)
 {
 //    std::cout << "DefendStateIdle" << std::endl;
@@ -266,6 +270,10 @@ DSKick::~DSKick()
     delete ktpo;
 }
 
+string DSKick::getName() {
+    return "DSKick";
+}
+
 DefendState* DSKick::action(Robot* robot)
 {
 //    std::cout << "DefendStateKick" << std::endl;
@@ -299,6 +307,10 @@ DSIntercept::~DSIntercept()
 {
     delete ktpo;
     kicker_ID = -1;
+}
+
+string DSIntercept::getName() {
+    return "DSIntercept";
 }
 
 DefendState* DSIntercept::action(Robot* robot)
@@ -408,6 +420,10 @@ DefendBehavior::~DefendBehavior()
         DefendState::clearClaimedPoints();
     }
     delete state;
+}
+
+string DefendBehavior::getName() {
+    return "Defend";
 }
 
 void DefendBehavior::perform()

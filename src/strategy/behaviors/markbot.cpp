@@ -65,3 +65,7 @@ bool MarkBot::isFinished()
 {
     return false;
 }
+
+string MarkBot::getName() {
+    return "MarkBot";
+}

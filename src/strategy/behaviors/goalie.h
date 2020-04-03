@@ -26,6 +26,7 @@ public:
     Goalie(Robot*);
     ~Goalie();
     void perform() override;
+    string getName() override;
 
 private:
     /*! Returns true if the ball is moving with non-zero velocity torwards the goal.

@@ -1,0 +1,13 @@
+#ifndef CONSTANTS_H
+#define CONSTANTS_H
+
+    // TEAM CONSTANTS
+    #define MAX_ROBOTS_PER_TEAM 16
+    #define ROBOT_TEAM_BLUE 0
+    #define ROBOT_TEAM_YELLOW 1
+
+    // FIELD CONSTANTS
+    #define FIELD_SIDE_NEGATIVE 0
+    #define FIELD_SIDE_POSITIVE 1
+
+#endif // CONSTANTS_H

@@ -8,18 +8,15 @@
 
 // Helper classes forward declarations
 class GuiField;
-class GuiBall;
 class GuiBotLabel;
 class GuiDrawLine;
 class GuiComm;
-class GuiScene;
 class GuiInterface;
 
 //Dashboard Forward declarations
 class RobotPanel;
 class FieldPanel;
 class SelRobotPanel;
-class ObjectPosition;
 class SelRobotPanel;
 class GamePanel;
 class GuiInterface;
@@ -53,7 +50,6 @@ public:
     RobotPanel * robotpanel;
     FieldPanel * fieldpanel;
     SelRobotPanel * selrobotpanel;
-    ObjectPosition * objectPos;
     GamePanel *gamepanel;
     GuiDrawLine *guidrawline;
 
@@ -70,8 +66,7 @@ public:
     // team sizes; used all over the place
     int teamSize_blue;
     int teamSize_yellow;
-    // manual override thing
-    bool overriddenBots[2][MAX_ROBOTS] = {{false}};   // keeps track of whether each bot is overridden
+
 
     int getSelectedTeamId();
     void setSelectedTeamId(int team_id);

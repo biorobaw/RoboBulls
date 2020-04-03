@@ -441,3 +441,7 @@ float AttackMain::getScoreProb(const Point& p)
     }
     return 0;
 }
+
+string AttackMain::getName() {
+    return "Attack Main";
+}

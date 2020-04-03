@@ -29,3 +29,7 @@ bool GenericMovementBehavior::isFinished()
 {
     return done;
 }
+
+string GenericMovementBehavior::getName() {
+    return "GenericMovement";
+}

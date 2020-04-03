@@ -1,9 +1,10 @@
 #include "guiinterface.h"
 #include "mainwindow.h"
-#include "selrobotpanel.h"
-#include "fieldpanel.h"
+#include "panels/selrobotpanel.h"
+#include "panels/fieldpanel.h"
 #include "utilities/point.h"
-#include "guidrawline.h"
+#include "gui/utils/guidrawline.h"
+#include "data/gui_robot.h"
 
 /* Points of contact with main project:
  *      - gotopose.cpp
@@ -26,7 +27,7 @@ GuiInterface* GuiInterface::getGuiInterface() {
 }
 
 bool GuiInterface::isOverriddenBot(int team, int robot_id) {
-    return dash->overriddenBots[team][robot_id];
+    return GuiRobot::proxies[team][robot_id].overridden;
 }
 
 //Returns the robot that is overridden and selected, or -1 if none.

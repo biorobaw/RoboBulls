@@ -44,3 +44,7 @@ bool RefStop::isFinished()
 {
     return finished;
 }
+
+string RefStop::getName() {
+    return "RefStop";
+}

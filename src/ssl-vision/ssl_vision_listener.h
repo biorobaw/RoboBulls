@@ -67,7 +67,7 @@ protected:
     bool frames_state[4]{false};    //! Marks whether frames are dirty or clean
     int resetFrames = 0;            //! Frames passed up remove all potential robot detections
     int totalframes = 0;            //! Total frames passed since start
-    int rob_readings[2][MAX_ROBOTS]={{0}};  //! Number of detections of each blue robot
+    int rob_readings[2][MAX_ROBOTS_PER_TEAM]={{0}};  //! Number of detections of each blue robot
     bool FOUR_CAMERA_MODE = false;    //! Are we in four-camera mode (true)? Or Two-camera mode?
 
     MyKalmanFilter kfilter = MyKalmanFilter();                //! Kalman filter instance
