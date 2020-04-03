@@ -74,10 +74,10 @@ MainWindow::MainWindow(QWidget *parent) :
     // Time, in milliseconds, before GUI autoconnects to project; increase value if needed
     QTimer::singleShot(1000, this, SLOT(on_btn_connectGui_clicked()));
 
-    guimodel = new GuiComm(50,this);
 
     // coreLoop
-    connect(guimodel, SIGNAL(valueChanged(int)), this, SLOT(coreLoop(int)));
+    timer.start(50);
+    connect(&timer,SIGNAL(timeout()),this, SLOT(coreLoop()));
 
     // Zoom slider
     connect(ui->zoom_slider, SIGNAL(valueChanged(int)), fieldpanel, SLOT(zoomField(int)));
@@ -89,7 +89,7 @@ MainWindow::MainWindow(QWidget *parent) :
     on_btn_override_all_released();
 }
 
-void MainWindow::coreLoop(int tick) {
+void MainWindow::coreLoop() {
     /* Top function of the GUI's loop
      */
     // Ctrl override
@@ -110,13 +110,13 @@ void MainWindow::coreLoop(int tick) {
     setMyVelocity();
     fieldpanel->updateScene();
     robotpanel->updateBotPanel();
-    clockLoop(tick);
+    clockLoop();
 
 }
 
-void MainWindow::clockLoop(int tick) {
+void MainWindow::clockLoop() {
     // Clock-dependent stuff
-    gamepanel->guiClock(tick);
+    gamepanel->guiClock();
     // These three functions are used for bot speed getting;
     // ...their order is VERY important
     GuiBall::updateBall();
@@ -406,10 +406,8 @@ MainWindow::~MainWindow()
 void MainWindow::on_btn_connectGui_clicked() {
     if(ui->btn_connectGui->text() == "Connect") {
         ui->btn_connectGui->setText("Disconnect");
-        guimodel->start();
     } else {
         ui->btn_connectGui->setText("Connect");
-        guimodel->exit(0);
     }
 }
 

@@ -4,6 +4,7 @@
 #include <iosfwd>
 #include <string>
 #include <QtWidgets/QMainWindow>
+#include <QTimer>
 #include "model/team.h"
 
 // Helper classes forward declarations
@@ -85,6 +86,7 @@ private:
     // my pointer
     static MainWindow *mw;
     GuiComm* guimodel;
+    QTimer timer;
 
     // Keeps track of latest string received by guiPrint()
     QString guiOutput = "...";
@@ -97,8 +99,8 @@ private:
 
 private slots:
     // Threads
-    void coreLoop(int value);
-    void clockLoop(int tick);
+    void coreLoop();
+    void clockLoop();
 // Widget slots
     void on_btn_connectGui_clicked();
     // bot controls

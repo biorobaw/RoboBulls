@@ -46,7 +46,6 @@ SOURCES += src/main.cpp \
         src/gui/data/guiball.cpp \
         src/gui/data/guibotlabel.cpp \
         src/gui/data/guifield.cpp \
-        src/gui/guicomm.cpp \
         src/gui/guiinterface.cpp \
         src/gui/guiscene.cpp \
         src/gui/guisidelines.cpp \
@@ -129,7 +128,6 @@ HEADERS += \
         src/gui/data/guiball.h \
         src/gui/data/guibotlabel.h \
         src/gui/data/guifield.h \
-        src/gui/guicomm.h \
         src/gui/guiinterface.h \
         src/gui/guiscene.h \
         src/gui/guisidelines.h \
