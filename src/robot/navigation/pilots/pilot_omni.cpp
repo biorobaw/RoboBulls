@@ -3,6 +3,7 @@
 #include "robot/robot.h"
 
 #include <cmath>
+#include <algorithm>
 using std::abs, std::cout, std::endl;
 
 

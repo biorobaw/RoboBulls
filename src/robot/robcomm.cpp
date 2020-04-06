@@ -17,7 +17,7 @@ void RobComm::close_communication(std::set<Robot*>& robots){
 }
 
 
-RobComm* RobComm::loadRobComm(std::string robot_type,YAML::Node comm_node){
+RobComm* RobComm::loadRobComm(std::string robot_type,YAML::Node* comm_node){
     // set robot communication:
 
     if( robot_type == "grsim"){

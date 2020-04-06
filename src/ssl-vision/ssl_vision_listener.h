@@ -6,7 +6,10 @@
 #include "robot/robot.h"
 #include "my_kalman_filter.h"
 #include "gui/guiinterface.h"
-#include "yaml-cpp/yaml.h"
+
+namespace YAML {
+    class Node;
+}
 
 #include <QUdpSocket>
 #include "messages_robocup_ssl_detection.pb.h"
@@ -36,7 +39,7 @@ const float CONF_THRESHOLD_BOTS = 0.90;
 class SSLVisionListener: public QThread
 {
 public:
-    SSLVisionListener( YAML::Node comm_node);
+    SSLVisionListener( YAML::Node* comm_node);
 
     void run() override;
     void stop();

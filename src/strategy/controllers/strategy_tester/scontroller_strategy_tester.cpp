@@ -7,7 +7,7 @@ namespace  {
                          };
 }
 
-SControllerStrategyTester::SControllerStrategyTester(RobotTeam* team, YAML::Node node)
+SControllerStrategyTester::SControllerStrategyTester(RobotTeam* team, YAML::Node* node)
     : StrategyController(team,node)
 {
 

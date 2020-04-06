@@ -9,15 +9,16 @@
 #include "robot_grsim.h"
 #include <iostream>
 #include "utilities/measurements.h"
+#include "yaml-cpp/yaml.h"
 
-RobCommGrsim::RobCommGrsim(YAML::Node t_node)
+RobCommGrsim::RobCommGrsim(YAML::Node* t_node)
 {
 
-    std::cout << "        GRSIM_ADDR : " <<  t_node["GRSIM_ADDR"] << std::endl
-              << "        GRSIM_PORT : " << t_node["GRSIM_PORT"] << std::endl;
+    std::cout << "        GRSIM_ADDR : " <<  (*t_node)["GRSIM_ADDR"] << std::endl
+              << "        GRSIM_PORT : " <<  (*t_node)["GRSIM_PORT"] << std::endl;
 
-    std::string ip = t_node["GRSIM_ADDR"].as<std::string>();
-    int port = t_node["GRSIM_PORT"].as<int>();
+    std::string ip = (*t_node)["GRSIM_ADDR"].as<std::string>();
+    int port = (*t_node)["GRSIM_PORT"].as<int>();
 
     _addr = QHostAddress(ip.c_str());
     _port = port;

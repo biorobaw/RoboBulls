@@ -21,7 +21,7 @@ public:
     static void init_module();
     static void stop_module();
 
-    SControllerJoystick(RobotTeam* _team,  YAML::Node n);
+    SControllerJoystick(RobotTeam* _team,  YAML::Node* n);
 
 
 private:

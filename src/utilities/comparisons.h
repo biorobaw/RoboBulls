@@ -8,6 +8,7 @@
 #include "model/game_state.h"
 #include "robot/robot.h"
 #include "utilities/point.h"
+#include <array>
 
 
 /*! @brief Defines comparison predicates and information querying functions.

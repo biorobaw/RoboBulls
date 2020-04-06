@@ -8,14 +8,15 @@
 #include "strategy/behaviors/genericmovementbehavior.h"
 #include "parameters/motion_parameters.h"
 #include "model/ball.h"
+#include "yaml-cpp/yaml.h"
 
-YisiRobComm::YisiRobComm(YAML::Node t_node)
+YisiRobComm::YisiRobComm(YAML::Node* t_node)
 {
-    std::cout << "        YISI_USB_PORT  : " <<  t_node["YISI_USB_PORT"] << std::endl
-              << "        YISI_FREQUENCY : " <<  t_node["YISI_FREQUENCY"] << std::endl;
+    std::cout << "        YISI_USB_PORT  : " <<  (*t_node)["YISI_USB_PORT"] << std::endl
+              << "        YISI_FREQUENCY : " <<  (*t_node)["YISI_FREQUENCY"] << std::endl;
 
-    std::string usb_port = t_node["YISI_USB_PORT"].as<std::string>();
-    int frequency = t_node["YISI_FREQUENCY"].as<int>();
+    std::string usb_port = (*t_node)["YISI_USB_PORT"].as<std::string>();
+    int frequency = (*t_node)["YISI_FREQUENCY"].as<int>();
 
 
     // Setup Serial Port

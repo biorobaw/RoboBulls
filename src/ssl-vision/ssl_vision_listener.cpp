@@ -5,20 +5,21 @@
 
 #include "model/ball.h"
 #include "model/field.h"
-
+#include "yaml-cpp/yaml.h"
 
 using namespace std;
 
-SSLVisionListener::SSLVisionListener( YAML::Node comm_node)
+
+SSLVisionListener::SSLVisionListener( YAML::Node* comm_node)
 {
     std::cout << "--VISION" << endl
-              << "        VISION_ADDR : " << comm_node["VISION_ADDR"] << endl
-              << "        VISION_PORT : " << comm_node["VISION_PORT"] << endl
-              << "        FOUR_CAMERA : " << comm_node["FOUR_CAMERA"] << endl;
+              << "        VISION_ADDR : " << (*comm_node)["VISION_ADDR"] << endl
+              << "        VISION_PORT : " << (*comm_node)["VISION_PORT"] << endl
+              << "        FOUR_CAMERA : " << (*comm_node)["FOUR_CAMERA"] << endl;
 
-    vision_addr = comm_node["VISION_ADDR"].as<string>();
-    vision_port = comm_node["VISION_PORT"].as<int>();
-    FOUR_CAMERA_MODE = comm_node["FOUR_CAMERA"].as<bool>();
+    vision_addr = (*comm_node)["VISION_ADDR"].as<string>();
+    vision_port = (*comm_node)["VISION_PORT"].as<int>();
+    FOUR_CAMERA_MODE = (*comm_node)["FOUR_CAMERA"].as<bool>();
 
     cout << "--Vision DONE" << endl;
 

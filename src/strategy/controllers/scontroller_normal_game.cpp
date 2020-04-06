@@ -24,7 +24,7 @@ namespace  {
                          };
 }
 
-SControllerNormalGame::SControllerNormalGame(RobotTeam* team, YAML::Node c_node)
+SControllerNormalGame::SControllerNormalGame(RobotTeam* team, YAML::Node* c_node)
  : StrategyController(team,c_node)
 {
     // assign a state for the controller for eash refbox command

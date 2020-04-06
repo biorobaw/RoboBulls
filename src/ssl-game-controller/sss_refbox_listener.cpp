@@ -1,17 +1,17 @@
 #include "ssl-game-controller/ssl_referee_includes.h"
 #include "ssl-game-controller/sss_refbox_listener.h"
+#include "yaml-cpp/yaml.h"
 #include <iostream>
-
 using namespace std;
 
 
-SSLRefBoxListener::SSLRefBoxListener(YAML::Node comm_node)
+SSLRefBoxListener::SSLRefBoxListener(YAML::Node* comm_node)
 {
     cout << "--REFBOX " << endl
-         << "        REFBOX_ADDR    : " << comm_node["REFBOX_ADDR"] << endl
-         << "        REFBOX_PORT    : " << comm_node["REFBOX_PORT"] << endl;
-    net_address= comm_node["REFBOX_ADDR"].as<string>();
-    port       = comm_node["REFBOX_PORT"].as<int>();
+         << "        REFBOX_ADDR    : " << (*comm_node)["REFBOX_ADDR"] << endl
+         << "        REFBOX_PORT    : " << (*comm_node)["REFBOX_PORT"] << endl;
+    net_address= (*comm_node)["REFBOX_ADDR"].as<string>();
+    port       = (*comm_node)["REFBOX_PORT"].as<int>();
     cout << "--Refbox DONE" << endl;
 
 

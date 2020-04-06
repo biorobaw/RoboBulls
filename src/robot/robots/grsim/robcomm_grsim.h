@@ -15,7 +15,7 @@ class RobCommGrsim : public RobComm
 {
 public:
     //! @brief Constructor sets the IP and port to send to **see .cpp**
-    RobCommGrsim(YAML::Node t_node);
+    RobCommGrsim(YAML::Node* t_node);
 
     void sendVels(std::set<Robot*>&) override;
 

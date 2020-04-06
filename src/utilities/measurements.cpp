@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "robot/robot.h"
 #include "measurements.h"
+#include <algorithm>
 
 float Measurements::mag(const Point& p)
 {

@@ -1,13 +1,15 @@
 #ifndef STRATEGYCONTROLLER_H
 #define STRATEGYCONTROLLER_H
 #include <string>
-#include "yaml-cpp/yaml.h"
 #include "ssl-game-controller/ssl_referee_includes.h"
 
-
+namespace YAML {
+    class Node;
+}
 
 class Strategy;
 class RobotTeam;
+
 #define UNINITIALIZED_STATE -1
 
 /*! @file
@@ -25,9 +27,9 @@ class RobotTeam;
 class StrategyController
 {
 public:
-    static StrategyController* loadController(RobotTeam* team, YAML::Node);
+    static StrategyController* loadController(RobotTeam* team, YAML::Node*);
 
-    StrategyController(RobotTeam*, YAML::Node);
+    StrategyController(RobotTeam*, YAML::Node*);
     virtual ~StrategyController();
 
     /*! Runs the team controller updating the current game strategy.

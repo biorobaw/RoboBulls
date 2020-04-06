@@ -7,10 +7,9 @@
 #include "robot/robot.h"
 #include "model/team.h"
 #include <mutex>
-#include "yaml-cpp/yaml.h"
-
 
 class Robot;
+
 
 /*! @addtogroup everydayuse Everyday Use
  * Classes and functions used in everyday code

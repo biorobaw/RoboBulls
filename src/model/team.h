@@ -1,7 +1,6 @@
 #ifndef TEAM_H
 #define TEAM_H
 
-#include "yaml-cpp/yaml.h"
 #include <set>
 #include <string>
 #include "robot/robot.h"
@@ -10,16 +9,19 @@
 #include "constants.h"
  // limited by vision that recognizes only 16 patterns per team
 
+namespace YAML {
+    class Node;
+}
 
 
 class RobotTeam {
 
 public:
 
-    RobotTeam(YAML::Node t_node, int _color);
+    RobotTeam(YAML::Node* t_node, int _color);
     ~RobotTeam();
 
-    static void load_teams(YAML::Node team_nodes);
+    static void load_teams(YAML::Node* team_nodes);
     static RobotTeam* getTeam(int id);
 
 

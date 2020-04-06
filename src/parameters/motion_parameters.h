@@ -1,8 +1,9 @@
 #ifndef MOTION_PARAMETERS
 #define MOTION_PARAMETERS
 
-#include "yaml-cpp/yaml.h"
-
+namespace YAML {
+    class Node;
+}
 
 //! The robot's radius in program points.
 extern float ROBOT_RADIUS;
@@ -27,6 +28,6 @@ extern float DRIBBLE_BACK_SPD;
 extern float DRIBBLE_TURN_RATE;
 
 
-void load_motion_parameters(YAML::Node motion_node);
+void load_motion_parameters(YAML::Node* motion_node);
 
 #endif // MOTION_PARAMETERS

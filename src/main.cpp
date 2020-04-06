@@ -141,19 +141,19 @@ int main(int argc, char *argv[])
     SControllerJoystick::init_module(); // init joystick listener module
 
     // set all parameters:
-    Field::load(field_node);
-    load_motion_parameters(motion_node);
+    Field::load(&field_node);
+    load_motion_parameters(&motion_node);
 
     // load teams:
-    RobotTeam::load_teams(team_node);
+    RobotTeam::load_teams(&team_node);
 
 
 
     //Initialize GameModel, StrategyController, Vision, and Ref
 
-    SSLRefBoxListener refCommunicator( comm_node);
+    SSLRefBoxListener refCommunicator( &comm_node);
     // TODO: vision communicator should not know anything about team sides (deprecated notion of "own team")
-    SSLVisionListener visionCommunicator(comm_node);
+    SSLVisionListener visionCommunicator(&comm_node);
 
 
     registerExitSignals();

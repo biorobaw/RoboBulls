@@ -2,14 +2,17 @@
 #define SCONTROLLERNORMALGAME_H
 
 #include "../strategycontroller.h"
-#include "yaml-cpp/yaml.h"
 #include <map>
 using std::map;
+
+namespace YAML {
+    class Node;
+}
 
 class SControllerNormalGame : public StrategyController
 {
 public:
-    SControllerNormalGame(RobotTeam* team, YAML::Node c_node);
+    SControllerNormalGame(RobotTeam* team, YAML::Node* c_node);
 
 
     int getControllerState(Referee_Command command) override;

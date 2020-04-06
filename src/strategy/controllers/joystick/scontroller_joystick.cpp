@@ -1,6 +1,7 @@
 #include "scontroller_joystick.h"
 #include "../../strategies/haltstrategy.h"
 #include <QtConcurrent/QtConcurrent>
+#include "yaml-cpp/yaml.h"
 #include <iostream>
 using std::cout, std::endl, std::cerr;
 
@@ -12,10 +13,10 @@ using std::cout, std::endl, std::cerr;
 set<SControllerJoystick::MapEntry*> SControllerJoystick::map = set<SControllerJoystick::MapEntry*>();
 std::atomic_bool SControllerJoystick::done = true;
 
-SControllerJoystick::SControllerJoystick(RobotTeam* _team, YAML::Node n)
+SControllerJoystick::SControllerJoystick(RobotTeam* _team, YAML::Node* n)
   : StrategyController(_team, n)
 {
-    auto node_map = n["JOY_TO_ROBOT_MAP"];
+    auto node_map = (*n)["JOY_TO_ROBOT_MAP"];
     std::cout << "            JOY_TO_ROBOT_MAP  : " <<std::endl;
     for(auto it : node_map){
         cout << "                - ROBOT : " << it["ROBOT"] << endl

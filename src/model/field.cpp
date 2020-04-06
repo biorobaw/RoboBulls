@@ -1,6 +1,6 @@
 #include "model/field.h"
 #include <iostream>
-
+#include "yaml-cpp/yaml.h"
 using namespace std;
 
 float Field::BALL_RADIUS = 21.5;
@@ -36,29 +36,29 @@ float Field::METERS_PER_POINT = (1.0 / POINTS_PER_METER);
 
 int Field::CENTER_RADIUS = 500;
 
-void Field::load(YAML::Node field_node){
+void Field::load(YAML::Node* field_node){
 
     cout<< "--FIELD PARAMS" <<endl;
-    cout<< "        BALL_RADIUS       - " << field_node["BALL_RADIUS"]       <<endl;
-    cout<< "        HALF_FIELD_LENGTH - " << field_node["HALF_FIELD_LENGTH"] <<endl;
-    cout<< "        HALF_FIELD_WIDTH  - " << field_node["HALF_FIELD_WIDTH"]  <<endl;
-    cout<< "        DEF_AREA_RADIUS   - " << field_node["DEF_AREA_RADIUS"]   <<endl;
-    cout<< "        DEF_AREA_OFFSET   - " << field_node["DEF_AREA_OFFSET"]   <<endl;
-    cout<< "        GOAL_WIDTH        - " << field_node["GOAL_WIDTH"]        <<endl;
-    cout<< "        CENTER_RADIUS     - " << field_node["CENTER_RADIUS"]     <<endl;
-    cout<< "        POINTS_PER_METER  - " << field_node["POINTS_PER_METER"]  <<endl;
+    cout<< "        BALL_RADIUS       - " << (*field_node)["BALL_RADIUS"]       <<endl;
+    cout<< "        HALF_FIELD_LENGTH - " << (*field_node)["HALF_FIELD_LENGTH"] <<endl;
+    cout<< "        HALF_FIELD_WIDTH  - " << (*field_node)["HALF_FIELD_WIDTH"]  <<endl;
+    cout<< "        DEF_AREA_RADIUS   - " << (*field_node)["DEF_AREA_RADIUS"]   <<endl;
+    cout<< "        DEF_AREA_OFFSET   - " << (*field_node)["DEF_AREA_OFFSET"]   <<endl;
+    cout<< "        GOAL_WIDTH        - " << (*field_node)["GOAL_WIDTH"]        <<endl;
+    cout<< "        CENTER_RADIUS     - " << (*field_node)["CENTER_RADIUS"]     <<endl;
+    cout<< "        POINTS_PER_METER  - " << (*field_node)["POINTS_PER_METER"]  <<endl;
 
 
-    BALL_RADIUS       = field_node["BALL_RADIUS"].as<float>();
-    HALF_FIELD_LENGTH = field_node["HALF_FIELD_LENGTH"].as<int>();
+    BALL_RADIUS       = (*field_node)["BALL_RADIUS"].as<float>();
+    HALF_FIELD_LENGTH = (*field_node)["HALF_FIELD_LENGTH"].as<int>();
     FIELD_LENGTH      = 2*HALF_FIELD_LENGTH;
-    HALF_FIELD_WIDTH  = field_node["HALF_FIELD_WIDTH"].as<int>();
+    HALF_FIELD_WIDTH  = (*field_node)["HALF_FIELD_WIDTH"].as<int>();
     FIELD_WIDTH       = 2*HALF_FIELD_WIDTH;
-    DEF_AREA_RADIUS   = field_node["DEF_AREA_RADIUS"].as<int>();
-    DEF_AREA_OFFSET   = field_node["DEF_AREA_OFFSET"].as<int>();
-    GOAL_WIDTH        = field_node["GOAL_WIDTH"].as<int>();
-    CENTER_RADIUS     = field_node["CENTER_RADIUS"].as<int>();
-    POINTS_PER_METER  = field_node["POINTS_PER_METER"].as<int>();
+    DEF_AREA_RADIUS   = (*field_node)["DEF_AREA_RADIUS"].as<int>();
+    DEF_AREA_OFFSET   = (*field_node)["DEF_AREA_OFFSET"].as<int>();
+    GOAL_WIDTH        = (*field_node)["GOAL_WIDTH"].as<int>();
+    CENTER_RADIUS     = (*field_node)["CENTER_RADIUS"].as<int>();
+    POINTS_PER_METER  = (*field_node)["POINTS_PER_METER"].as<int>();
     METERS_PER_POINT  = 1.0 / POINTS_PER_METER;
 
     cout << "--Field Parameters DONE" << endl;

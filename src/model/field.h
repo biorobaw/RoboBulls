@@ -1,10 +1,12 @@
 #ifndef FIELD_H
 #define FIELD_H
 
-#include "yaml-cpp/yaml.h"
 #include "utilities/point.h"
 #include "constants.h"
 
+namespace YAML {
+    class Node;
+}
 
 
 class Field {
@@ -12,7 +14,7 @@ class Field {
 public:
 
 
-    static void load(YAML::Node field_node);
+    static void load(YAML::Node* field_node);
 
     static Point  getPenaltyPosition(int on_field);
     static Point  getGoalPosition(int on_field);

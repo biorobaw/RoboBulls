@@ -3,10 +3,11 @@
 
 #include "../../strategycontroller.h"
 
+
 class SControllerStrategyTester : public StrategyController
 {
 public:
-    SControllerStrategyTester(RobotTeam* team, YAML::Node node);
+    SControllerStrategyTester(RobotTeam* team, YAML::Node* node);
 
 protected:
     int getControllerState(Referee_Command game_command) override;

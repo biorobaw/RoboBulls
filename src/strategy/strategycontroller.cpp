@@ -8,12 +8,13 @@
 #include "controllers/strategy_tester/scontroller_strategy_tester.h"
 #include "controllers/joystick/scontroller_joystick.h"
 #include "strategies/haltstrategy.h"
+#include "yaml-cpp/yaml.h"
 
 #include <string>
 #include <iostream>
 using std::cerr, std::endl, std::string;
 
-StrategyController::StrategyController( RobotTeam* _team, YAML::Node n)
+StrategyController::StrategyController( RobotTeam* _team, YAML::Node* n)
   : team(_team),
     activeStrategy(new HaltStrategy(_team))
 {
@@ -62,11 +63,11 @@ void StrategyController::signalNewCommand(){
 
 
 
-StrategyController* StrategyController::loadController(RobotTeam* team, YAML::Node c_node){
+StrategyController* StrategyController::loadController(RobotTeam* team, YAML::Node* c_node){
 
     std::cout << "        STRATEGY_CONTROLLER  : " <<std::endl;
-    std::cout << "            ID : " <<  c_node["ID"] << std::endl;
-    auto id = c_node["ID"].as<string>();
+    std::cout << "            ID : " <<  (*c_node)["ID"] << std::endl;
+    auto id = (*c_node)["ID"].as<string>();
 
     if(id == "NORMAL_GAME"){
         return new SControllerNormalGame(team,c_node);

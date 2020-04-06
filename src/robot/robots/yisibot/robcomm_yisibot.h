@@ -13,7 +13,7 @@ typedef char Data8;
 class YisiRobComm : public RobComm
 {
 public:
-    YisiRobComm(YAML::Node t_node);
+    YisiRobComm(YAML::Node* t_node);
     void sendVels(std::set<Robot*>&) override;
 private:
     QSerialPort	serial;

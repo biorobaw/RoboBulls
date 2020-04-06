@@ -1,8 +1,12 @@
 #ifndef ROBCOMM_H
 #define ROBCOMM_H
 #include <set>
-#include "yaml-cpp/yaml.h"
 class Robot;
+
+namespace YAML {
+    class Node;
+}
+
 
  /*! @brief RobComm is a base class used to send signals to robots.
  * @details RobComm requires one virtual function be imeplemented which
@@ -15,7 +19,7 @@ class RobComm
 {
 public:
 
-    static RobComm* loadRobComm(std::string robot_type,YAML::Node comm_node);
+    static RobComm* loadRobComm(std::string robot_type,YAML::Node* comm_node);
 
     /*! @brief Required; send velocities to the entire team at once
      * @details Given a vector of Robot, RobComms implementing this funciton
