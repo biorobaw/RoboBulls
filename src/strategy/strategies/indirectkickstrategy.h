@@ -3,7 +3,8 @@
 
 #include "../strategy.h"
 #include "model/game_state.h"
-#include "robot/robot.h"
+
+class Robot;
 
 /*! @file
     Strategy to support an indirect kick game state.

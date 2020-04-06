@@ -12,8 +12,8 @@
 #include "utilities/comparisons.h"
 #include "utilities/edges.h"
 #include "normalgamestrategy.h"
-
 #include "model/ball.h"
+#include "robot/robot.h"
 
 NormalGameStrategy::NormalGameStrategy(RobotTeam* _team)
     : Strategy(_team)

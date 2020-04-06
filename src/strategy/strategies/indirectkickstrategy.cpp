@@ -10,6 +10,7 @@
 #include "../behaviors/wall.h"
 #include "../behaviors/markbot.h"
 #include "../behaviors/markbot.h"
+#include "robot/robot.h"
 
 #include "model/ball.h"
 #include "model/field.h"

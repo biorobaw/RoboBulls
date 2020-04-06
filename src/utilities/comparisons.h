@@ -6,9 +6,10 @@
 #include <algorithm>
 #include <math.h>
 #include "model/game_state.h"
-#include "robot/robot.h"
 #include "utilities/point.h"
 #include <array>
+
+class Robot;
 
 
 /*! @brief Defines comparison predicates and information querying functions.

@@ -1,7 +1,6 @@
 #ifndef STOP_SKILL_H
 #define STOP_SKILL_H
 #include "../skill.h"
-#include "robot/robot.h"
 
 namespace Skill
 {

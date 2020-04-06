@@ -6,6 +6,7 @@
 #include "model/ball.h"
 #include "model/field.h"
 #include "yaml-cpp/yaml.h"
+#include "robot/robot.h"
 
 using namespace std;
 

@@ -1,4 +1,5 @@
 #include "rectangle.h"
+#include "robot/robot.h"
 
 Rectangle::Rectangle()
 {

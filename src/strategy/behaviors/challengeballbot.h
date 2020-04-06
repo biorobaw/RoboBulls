@@ -2,7 +2,6 @@
 #define CHALLENGEBALLBOT_H
 
 #include "genericmovementbehavior.h"
-#include "robot/robot.h"
 #include "model/game_state.h"
 
 

@@ -1,6 +1,5 @@
 #ifndef KTP_OMNI_H
 #define KTP_OMNI_H
-#include "robot/robot.h"
 #include "utilities/point.h"
 #include "../skill.h"
 #include "robot/navigation/commands/CmdGoToPose.h"

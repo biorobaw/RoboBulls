@@ -8,6 +8,7 @@
 
 #include "robot/robot.h"
 #include "model/game_state.h"
+class Robot;
 
 /*! @file
  * This is a rectangular specialization of the abstract class Region.

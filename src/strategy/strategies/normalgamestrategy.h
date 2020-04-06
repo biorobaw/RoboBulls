@@ -1,9 +1,10 @@
 #ifndef NORMALGAMESTRATEGY_H
 #define NORMALGAMESTRATEGY_H
-#include "robot/robot.h"
 #include "../strategy.h"
 #include "utilities/region/defencearea.h"
 #include "../behaviors/genericmovementbehavior.h"
+class Robot;
+
 
 /*! @file
  * This strategy is meant for the ' ' gamestate (space) which means
