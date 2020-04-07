@@ -2,6 +2,7 @@
 #include "strategy/strategy.h"
 #include "model/game_state.h"
 #include "robot/robot.h"
+#include "model/team.h"
 #include "gui/guiinterface.h"
 
 #include "controllers/scontroller_normal_game.h"

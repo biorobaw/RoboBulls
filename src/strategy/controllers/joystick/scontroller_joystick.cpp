@@ -3,6 +3,7 @@
 #include <QtConcurrent/QtConcurrent>
 #include "yaml-cpp/yaml.h"
 #include <iostream>
+#include "model/team.h"
 using std::cout, std::endl, std::cerr;
 
 #define SLOW_MULT 0.2    // Multiplier for slow-mode

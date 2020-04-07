@@ -2,7 +2,6 @@
 #define ATTACK_SUPPORT_H
 #include "genericmovementbehavior.h"
 #include "utilities/region/defencearea.h"
-#include "model/game_state.h"
 #include <algorithm>
 #include "utilities/comparisons.h"
 

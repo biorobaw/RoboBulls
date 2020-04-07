@@ -2,7 +2,8 @@
 #define INDIRECTKICKSTRATEGY_H
 
 #include "../strategy.h"
-#include "model/game_state.h"
+#include "utilities/point.h"
+
 
 class Robot;
 

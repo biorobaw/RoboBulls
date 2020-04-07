@@ -2,6 +2,7 @@
 #include "ssl-game-controller/sss_refbox_listener.h"
 #include "yaml-cpp/yaml.h"
 #include <iostream>
+#include "model/game_state.h"
 using namespace std;
 
 

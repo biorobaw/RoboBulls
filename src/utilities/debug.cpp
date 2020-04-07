@@ -6,7 +6,7 @@
 #include <functional>
 #include <cstdlib>
 #include "model/game_state.h"
-
+#include "model/team.h"
 #include "utilities/debug.h"
 
 

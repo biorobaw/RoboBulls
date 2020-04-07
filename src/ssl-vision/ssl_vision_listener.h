@@ -2,7 +2,7 @@
 #define VISIONCOMM_H
 #include <string>
 #include <QtCore/QThread>
-#include "model/game_state.h"
+
 #include "my_kalman_filter.h"
 #include "gui/guiinterface.h"
 
@@ -15,6 +15,7 @@ namespace YAML {
 #include "messages_robocup_ssl_geometry.pb.h"
 #include "messages_robocup_ssl_wrapper.pb.h"
 #include "messages_robocup_ssl_refbox_log.pb.h"
+#include "model/constants.h"
 #include<atomic>
 
 

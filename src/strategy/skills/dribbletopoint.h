@@ -4,7 +4,6 @@
 #include "../skill.h"
 #include "utilities/point.h"
 #include "robot/navigation/commands/CmdGoToPose.h"
-#include "model/game_state.h"
 
 namespace Skill
 {

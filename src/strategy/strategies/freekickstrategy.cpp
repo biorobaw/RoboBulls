@@ -6,7 +6,7 @@
 #include "../behaviors/refstop.h"
 #include "../behaviors/wall.h"
 #include "../behaviors/markbot.h"
-
+#include "model/team.h"
 #include "../skills/kicktopointomni.h"
 
 #include "model/ball.h"

@@ -8,6 +8,7 @@
 #include "model/game_state.h"
 #include "robot/robot.h"
 #include "move_collisions.h"
+#include "model/team.h"
 
 /************************************************************************/
 /* USER CONFIGURATION */

@@ -14,7 +14,7 @@
 #include "yaml-cpp/yaml.h"
 #include <string>
 #include "model/field.h"
-
+#include "model/team.h"
 #include "parameters/motion_parameters.h"
 
 /*! @mainpage Welcome to the RoboBulls 2 Documentation.

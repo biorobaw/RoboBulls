@@ -2,6 +2,8 @@
 
 #include "model/field.h"
 #include "../behaviors/goalie.h"
+#include "model/game_state.h"
+#include "model/team.h"
 
 PenaltyStrategy::PenaltyStrategy(RobotTeam* _team) : Strategy(_team) {
 

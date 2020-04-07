@@ -14,6 +14,7 @@
 
 #include "model/ball.h"
 #include "model/field.h"
+#include "model/team.h"
 
 IndirectKickStrategy::IndirectKickStrategy(RobotTeam* _team)
     :Strategy(_team), initial_bp(Ball::getPosition())

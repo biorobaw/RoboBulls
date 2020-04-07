@@ -7,6 +7,7 @@
 #include "model/game_state.h"
 #include "utilities/comparisons.h"
 #include "stopstrategy.h"
+#include "model/team.h"
 
 StopStrategy::StopStrategy(RobotTeam* _team) : Strategy(_team)
 {

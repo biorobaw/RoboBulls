@@ -2,7 +2,6 @@
 #define REFCOMM_H
 
 #include <QtCore/QThread>
-#include "model/game_state.h"
 #include <QUdpSocket>
 #include <atomic>
 

@@ -4,6 +4,7 @@
 #include "utilities/region/defencearea.h"
 #include "model/ball.h"
 #include "model/field.h"
+#include "model/team.h"
 
 #define DEFENDBEHAVIOR_DEBUG 0
 

@@ -7,7 +7,6 @@
 #include <vector>
 
 #include "robot/robot.h"
-#include "model/game_state.h"
 class Robot;
 
 /*! @file

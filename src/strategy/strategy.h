@@ -1,8 +1,7 @@
 #ifndef STRATEGY_H
 #define STRATEGY_H
 
-#include "model/team.h"
-#include "model/field.h"
+class RobotTeam;
 
 //! @addtogroup baseclasses
 //! @{

@@ -4,7 +4,7 @@
 #include <QObject>
 #include <vector>
 #include <string>
-#include "model/team.h"
+#include "model/constants.h"
 
 class QDial;
 class QFrame;

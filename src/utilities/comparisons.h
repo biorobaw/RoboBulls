@@ -5,11 +5,12 @@
 #include <functional>
 #include <algorithm>
 #include <math.h>
-#include "model/game_state.h"
 #include "utilities/point.h"
 #include <array>
+#include <set>
 
 class Robot;
+class RobotTeam;
 
 
 /*! @brief Defines comparison predicates and information querying functions.

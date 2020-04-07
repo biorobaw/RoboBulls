@@ -1,5 +1,6 @@
 #include "rectangle.h"
 #include "robot/robot.h"
+#include <algorithm>
 
 Rectangle::Rectangle()
 {

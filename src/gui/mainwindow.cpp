@@ -13,7 +13,7 @@
 #include <QMouseEvent>
 #include <QScrollBar>
 #include <QtWidgets/QMainWindow>
-
+#include "model/team.h"
 // Helper classes
 #include "panels/robotpanel.h"
 #include "panels/selrobotpanel.h"

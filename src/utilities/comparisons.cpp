@@ -4,6 +4,7 @@
 #include "utilities/comparisons.h"
 #include "model/ball.h"
 #include "robot/robot.h"
+#include "model/team.h"
 
 using namespace std::placeholders;
 

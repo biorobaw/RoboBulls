@@ -1,6 +1,5 @@
 #define _USE_MATH_DEFINES
 #include "gui_robot_drawer.h"
-#include "model/team.h"
 #include "utilities/measurements.h"
 #include <QLabel>
 #include <QString>

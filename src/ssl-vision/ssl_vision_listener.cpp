@@ -7,6 +7,8 @@
 #include "model/field.h"
 #include "yaml-cpp/yaml.h"
 #include "robot/robot.h"
+#include "model/game_state.h"
+#include "model/team.h"
 
 using namespace std;
 

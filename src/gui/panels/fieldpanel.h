@@ -7,7 +7,7 @@
 #include "utilities/point.h"
 #include "gui/utils/guidrawpoint.h"
 #include "gui/utils/guidrawregion.h"
-#include "model/team.h"
+#include "model/constants.h"
 
 using std::deque;
 class GuiRobotDrawer;

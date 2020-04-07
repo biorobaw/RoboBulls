@@ -14,6 +14,8 @@
 #include "normalgamestrategy.h"
 #include "model/ball.h"
 #include "robot/robot.h"
+#include "model/game_state.h"
+#include "model/team.h"
 
 NormalGameStrategy::NormalGameStrategy(RobotTeam* _team)
     : Strategy(_team)

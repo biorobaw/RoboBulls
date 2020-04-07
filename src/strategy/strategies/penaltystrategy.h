@@ -3,7 +3,6 @@
 #include "../strategy.h"
 //#include "normalgamestrategy.h"
 #include "../behaviors/wall.h"
-#include "model/game_state.h"
 
 
 /*! @file

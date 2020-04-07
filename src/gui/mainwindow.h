@@ -5,7 +5,7 @@
 #include <string>
 #include <QtWidgets/QMainWindow>
 #include <QTimer>
-#include "model/team.h"
+#include "model/constants.h"
 
 // Helper classes forward declarations
 class GuiField;
@@ -26,6 +26,7 @@ class QGraphicsItem;
 class QGraphicsEllipseItem;
 class QGraphicsRectItem;
 class QGraphicsScene;
+class RobotTeam;
 
 
 //Main Project forwards

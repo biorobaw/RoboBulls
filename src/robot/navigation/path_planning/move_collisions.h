@@ -5,7 +5,6 @@
 #include "utilities/measurements.h"
 #include "utilities/comparisons.h"
 #include "utilities/velocitycalculator.h"
-#include "model/game_state.h"
 #include "robot/robot.h"
 
 class Robot;

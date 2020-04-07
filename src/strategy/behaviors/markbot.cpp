@@ -1,5 +1,6 @@
 #include "markbot.h"
 #include "model/ball.h"
+#include "model/team.h"
 
 bool MarkBot::mark_status[10] = {false};
 

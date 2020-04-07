@@ -5,6 +5,8 @@
 #include"robot/navigation/path_planning/move_collisions.h"
 
 #include "model/ball.h"
+#include "model/constants.h"
+#include "model/team.h"
 
 GuiBotLabel::GuiBotLabel(int team, int id)
     : id(id), team(team)

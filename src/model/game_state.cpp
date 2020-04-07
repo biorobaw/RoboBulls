@@ -10,6 +10,7 @@
 #include "gui/guiinterface.h"
 #include "model/game_state.h"
 #include "model/ball.h"
+#include "model/team.h"
 #include <assert.h>
 
 

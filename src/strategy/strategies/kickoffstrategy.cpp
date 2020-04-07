@@ -3,6 +3,7 @@
 #include "model/game_state.h"
 #include "kickoffstrategy.h"
 #include "robot/navigation/commands/CmdGoToPose.h"
+#include "model/team.h"
 
 /******************
  *             *
