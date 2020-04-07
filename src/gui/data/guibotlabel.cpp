@@ -7,6 +7,7 @@
 #include "model/ball.h"
 #include "model/constants.h"
 #include "model/team.h"
+#include "robot/robot.h"
 
 GuiBotLabel::GuiBotLabel(int team, int id)
     : id(id), team(team)

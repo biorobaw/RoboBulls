@@ -9,6 +9,8 @@
 #include "parameters/motion_parameters.h"
 #include "model/ball.h"
 #include "yaml-cpp/yaml.h"
+#include "crc.h"
+#include "robot/navigation/robot_pilot.h"
 
 YisiRobComm::YisiRobComm(YAML::Node* t_node)
 {

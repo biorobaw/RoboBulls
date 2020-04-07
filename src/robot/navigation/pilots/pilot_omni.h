@@ -8,7 +8,6 @@
 #include <iostream>
 #include "utilities/measurements.h"
 #include "utilities/debug.h"
-#include "parameters/motion_parameters.h"
 #include "../robot_pilot.h"
 
 

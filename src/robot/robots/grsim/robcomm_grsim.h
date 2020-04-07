@@ -1,7 +1,6 @@
 #ifndef SIMROBCOMM_H
 #define SIMROBCOMM_H
 #include <QtNetwork/QUdpSocket>
-#include "robot/robot.h"
 #include "robot/robcomm.h"
 
 

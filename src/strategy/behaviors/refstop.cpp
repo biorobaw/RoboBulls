@@ -1,5 +1,6 @@
 #include "refstop.h"
 #include "model/ball.h"
+#include "robot/robot.h"
 
 RefStop::RefStop(Robot* robot) : GenericMovementBehavior(robot)
 {

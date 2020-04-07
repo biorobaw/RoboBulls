@@ -8,6 +8,7 @@
 #include "utilities/comparisons.h"
 #include "stopstrategy.h"
 #include "model/team.h"
+#include "robot/robot.h"
 
 StopStrategy::StopStrategy(RobotTeam* _team) : Strategy(_team)
 {

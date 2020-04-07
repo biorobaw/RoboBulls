@@ -9,28 +9,13 @@
 #include "strategy/behaviors/genericskillbehavior.h"
 #include "iostream"
 #include <set>
+#include "model/constants.h"
 
-#include "navigation/robot_pilot.h"
+
 
 
 class RobotTeam;
-
-//TODO: Currently strategies assume 5 robots (only 2 defence and 2 attackers)
-//but robocup uses either 6 or 8 robots
-#define MAX_ROLES 8
-enum RobotRole
-{
-    GOALIE,
-    ATTACK1,
-    ATTACK2,
-    ATTACK3,
-    DEFEND1,
-    DEFEND2,
-    DEFEND3,
-    NONE
-};
-
-
+class Pilot;
 
 /*! @addtogroup everydayuse
  * @{ */

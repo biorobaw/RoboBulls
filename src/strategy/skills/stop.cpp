@@ -1,5 +1,6 @@
 #include "stop.h"
 #include "robot/robot.h"
+#include "robot/navigation/robot_pilot.h"
 
 namespace Skill
 {

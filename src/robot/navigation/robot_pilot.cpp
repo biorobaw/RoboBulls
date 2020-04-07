@@ -1,6 +1,9 @@
 #include "robot_pilot.h"
 #include "utilities/measurements.h"
 #include "path_planning/fppa_pathfinding.h"
+#include "robot/robot.h"
+#include "commands/CmdGoToPose.h"
+#include <iostream>
 using std::cout, std::endl;
 
 Pilot::Pilot(Robot* robot) : robot(robot){

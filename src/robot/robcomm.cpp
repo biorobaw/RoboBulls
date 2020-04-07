@@ -1,6 +1,8 @@
 #include "robots/grsim/robcomm_grsim.h"
 #include "robots/yisibot/robcomm_yisibot.h"
 #include "robcomm.h"
+#include "robot/robot.h"
+#include "robot/navigation/robot_pilot.h"
 
 RobComm::~RobComm(){
 }

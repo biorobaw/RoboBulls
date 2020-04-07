@@ -4,7 +4,8 @@
 #include "model/ball.h"
 #include "model/field.h"
 #include "model/game_state.h"
-
+#include "robot/robot.h"
+#include "robot/navigation/robot_pilot.h"
 namespace Skill
 {
 

@@ -5,6 +5,7 @@
 #include "model/ball.h"
 #include "model/field.h"
 #include "model/team.h"
+#include "robot/robot.h"
 
 #define DEFENDBEHAVIOR_DEBUG 0
 

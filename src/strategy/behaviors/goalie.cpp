@@ -2,6 +2,7 @@
 #include "model/ball.h"
 #include "model/field.h"
 #include "model/team.h"
+#include "robot/robot.h"
 
 Goalie::Goalie(Robot* r)
     : GenericMovementBehavior(robot)

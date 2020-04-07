@@ -13,6 +13,9 @@
 #include "strategy/behaviors/wall.h"
 #include "ctime"
 #include "model/ball.h"
+#include "robot/robot.h"
+#include "robot/navigation/robot_pilot.h"
+
 using std::endl, std::cout;
 /************************************************************************/
 //Test Behaviors Section

@@ -2,6 +2,8 @@
 #include "gui_robot.h"
 #include "model/team.h"
 #include "utilities/measurements.h"
+#include "robot/robot.h"
+#include "robot/navigation/robot_pilot.h"
 
 GuiRobot GuiRobot::proxies[2][MAX_ROBOTS_PER_TEAM];
 

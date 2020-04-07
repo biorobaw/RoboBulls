@@ -2,6 +2,7 @@
 #include "model/ball.h"
 #include "model/field.h"
 #include "model/team.h"
+#include "robot/robot.h"
 
 float AttackMain::SCORE_ANGLE_TOLERANCE = 7*M_PI/180;
 float AttackMain::PASS_ANGLE_TOLERANCE  = 7*M_PI/180;

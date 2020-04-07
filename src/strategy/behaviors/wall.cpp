@@ -2,6 +2,7 @@
 #include "model/ball.h"
 #include "model/field.h"
 #include "model/team.h"
+#include "robot/robot.h"
 
 Wall::WallPoint Wall::wall_array[2];
 bool Wall::being_cleared = false;

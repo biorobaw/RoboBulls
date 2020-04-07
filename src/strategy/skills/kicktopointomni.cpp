@@ -5,7 +5,8 @@
 #include "kicktopointomni.h"
 #include "model/ball.h"
 #include "model/field.h"
-
+#include "robot/robot.h"
+#include "robot/navigation/robot_pilot.h"
 namespace Skill
 {
 

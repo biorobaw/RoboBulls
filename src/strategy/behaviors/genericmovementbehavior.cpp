@@ -1,5 +1,6 @@
 #include "genericmovementbehavior.h"
 #include "robot/robot.h"
+#include "robot/navigation/robot_pilot.h"
 
 GenericMovementBehavior::GenericMovementBehavior(Robot* robot,
                                                  Point targetPose,

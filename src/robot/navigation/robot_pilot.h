@@ -2,9 +2,10 @@
 #define DRIVER_H
 
 #include "utilities/point.h"
-#include "commands/CmdGoToPose.h"
+
 
 class Robot;
+class CmdGoToPose;
 
 class Pilot
 {

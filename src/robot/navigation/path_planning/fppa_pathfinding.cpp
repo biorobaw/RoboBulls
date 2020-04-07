@@ -10,6 +10,7 @@
 #include "fppa_pathfinding.h"
 #include "model/ball.h"
 #include "model/field.h"
+#include "robot/robot.h"
 
 /* Implementation of the Fast Path Planning Algorithm
  * In a sense, this is a mostly a generalized implementation.

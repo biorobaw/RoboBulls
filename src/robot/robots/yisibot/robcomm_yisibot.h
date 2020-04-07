@@ -5,7 +5,7 @@
 #include <QSerialPort>
 #include <iostream>
 #include "robot/robcomm.h"
-#include "crc.h"
+
 
 typedef char Data8;
 

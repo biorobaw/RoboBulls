@@ -1,6 +1,8 @@
 #include "challengeballbot.h"
 #include "model/ball.h"
 #include "model/game_state.h"
+#include "robot/robot.h"
+#include "robot/navigation/robot_pilot.h"
 
 ChallengeBallBot::ChallengeBallBot(Robot* robot) : Behavior(robot)
 {

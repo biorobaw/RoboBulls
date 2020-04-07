@@ -3,12 +3,12 @@
 
 #include <set>
 #include <string>
-#include "robot/robot.h"
-#include "robot/robcomm.h"
 #include "strategy/strategycontroller.h"
 #include "constants.h"
  // limited by vision that recognizes only 16 patterns per team
 
+class Robot;
+class RobComm;
 namespace YAML {
     class Node;
 }

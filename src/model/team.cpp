@@ -1,16 +1,11 @@
-#include "model/team.h"
 #include <algorithm>
-
-
-#include "robot/robots/grsim/robot_grsim.h"
-#include "robot/robots/grsim/robcomm_grsim.h"
-//#include "robot/robots/rpi_2019/"
-#include "robot/robots/yisibot/robot_yisibot.h"
-#include "robot/robots/yisibot/robcomm_yisibot.h"
-#include "robot/robots/none/robotnone.h"
-#include "yaml-cpp/yaml.h"
-
 #include <assert.h>
+
+
+#include "model/team.h"
+#include "yaml-cpp/yaml.h"
+#include "robot/robcomm.h"
+#include "robot/robot.h"
 
 RobotTeam* RobotTeam::teams[2] = {NULL};
 

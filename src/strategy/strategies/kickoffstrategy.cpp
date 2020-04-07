@@ -4,6 +4,7 @@
 #include "kickoffstrategy.h"
 #include "robot/navigation/commands/CmdGoToPose.h"
 #include "model/team.h"
+#include "robot/robot.h"
 
 /******************
  *             *

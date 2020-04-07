@@ -5,8 +5,8 @@
 #include <sstream>
 #include <cmath>
 #include <vector>
+#include <set>
 
-#include "robot/robot.h"
 class Robot;
 
 /*! @file

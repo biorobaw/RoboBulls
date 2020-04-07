@@ -11,7 +11,7 @@
 
 #include "model/ball.h"
 #include "model/field.h"
-
+#include "robot/robot.h"
 
 
 FreeKickStrategy::FreeKickStrategy(RobotTeam* _team)

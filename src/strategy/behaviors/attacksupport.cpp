@@ -2,6 +2,8 @@
 #include "model/ball.h"
 #include "model/field.h"
 #include "model/team.h"
+#include "robot/robot.h"
+#include "robot/navigation/robot_pilot.h"
 
 AttackSupport::AttackSupport(Robot* robot)  : Behavior(robot)
 {
