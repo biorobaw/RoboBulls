@@ -1,4 +1,9 @@
-#include "ssl-game-controller/ssl_referee_includes.h"
+// WARNING: We need to import all ssl_ files, in some systems, the order seems to be important
+#include "ssl_game_event.pb.h"
+#include "ssl_game_controller_common.pb.h"
+#include "ssl_game_event_2019.pb.h"
+#include "ssl_referee.pb.h"
+
 #include "ssl-game-controller/sss_refbox_listener.h"
 #include "yaml-cpp/yaml.h"
 #include <iostream>
@@ -63,8 +68,9 @@ void SSLRefBoxListener::run(){
                referee.yellow().has_score()) cout << "Y: " << referee.yellow().score() << " ";
             cout << endl;
 
-            if(referee.has_command())
+            if(referee.has_command()){
                 GameState::setRefereeCommand(referee.command());
+            }
             if(referee.has_stage_time_left())
                 GameState::setTimeLeft( referee.stage_time_left() );
             if(referee.has_blue() && referee.blue().has_score())

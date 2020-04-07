@@ -16,6 +16,7 @@
 #include "robot/robot.h"
 #include "model/game_state.h"
 #include "model/team.h"
+#include "ssl_referee.pb.h"
 
 NormalGameStrategy::NormalGameStrategy(RobotTeam* _team)
     : Strategy(_team)

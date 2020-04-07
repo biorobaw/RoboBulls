@@ -7,6 +7,7 @@
 #include "../strategies/penaltystrategy.h"
 #include "../strategies/indirectkickstrategy.h"
 #include "../strategies/haltstrategy.h"
+#include "ssl_referee.pb.h"
 
 using std::cout;
 using std::endl;

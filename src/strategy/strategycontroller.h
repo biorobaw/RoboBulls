@@ -1,7 +1,6 @@
 #ifndef STRATEGYCONTROLLER_H
 #define STRATEGYCONTROLLER_H
 #include <string>
-#include "ssl-game-controller/ssl_referee_includes.h"
 
 namespace YAML {
     class Node;
@@ -9,6 +8,7 @@ namespace YAML {
 
 class Strategy;
 class RobotTeam;
+enum Referee_Command : int;
 
 #define UNINITIALIZED_STATE -1
 

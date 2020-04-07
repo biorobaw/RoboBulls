@@ -12,15 +12,15 @@
 #include "model/ball.h"
 #include "model/team.h"
 #include <assert.h>
-
+#include "ssl_referee.pb.h"
 
 
 // Global static pointer used to ensure a single instance of the class.
-Referee_Command GameState::refereeCommand    = Referee_Command_HALT; //The current state of the game from RefComm
-Referee_Command   GameState::previousCommand = Referee_Command_HALT; //The previous gamestate
-char   GameState::blueGoals       = 0;           //Number of scores yellow goals
-char   GameState::yellowGoals     = 0;           //Number of scores yellow goals
-int    GameState::remainingTime   = 0;
+Referee_Command  GameState::refereeCommand  = Referee_Command_HALT; //The current state of the game from RefComm
+Referee_Command  GameState::previousCommand = Referee_Command_HALT; //The previous gamestate
+char GameState::blueGoals       = 0;           //Number of scores yellow goals
+char GameState::yellowGoals     = 0;           //Number of scores yellow goals
+int  GameState::remainingTime   = 0;
 
 /*******************************************************************/
 /************************ Public Methods ***************************/

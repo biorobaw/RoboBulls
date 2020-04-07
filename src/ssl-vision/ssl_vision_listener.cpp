@@ -2,7 +2,7 @@
 
 #include "ssl_vision_listener.h"
 #include "model/game_state.h"
-
+#include "my_kalman_filter.h"
 #include "model/ball.h"
 #include "model/field.h"
 #include "yaml-cpp/yaml.h"
@@ -25,7 +25,14 @@ SSLVisionListener::SSLVisionListener( YAML::Node* comm_node)
     FOUR_CAMERA_MODE = (*comm_node)["FOUR_CAMERA"].as<bool>();
 
     cout << "--Vision DONE" << endl;
+    kfilter = new MyKalmanFilter();
+}
 
+SSLVisionListener::~SSLVisionListener(){
+    if(kfilter!=nullptr) {
+        delete kfilter;
+        kfilter = nullptr;
+    }
 }
 
 
@@ -132,9 +139,9 @@ void SSLVisionListener::recieveBall(const SSL_DetectionFrame& frame)
     //If it is still a good detection...
     if(isGoodDetection(*bestDetect, frame, CONF_THRESHOLD_BALL, FOUR_CAMERA_MODE))
     {
-        kfilter.newObservation(Point(bestDetect->x(),bestDetect->y()));
-        Ball::setPosition(kfilter.getPosition());
-        Ball::setVelocity(kfilter.getVelocity());
+        kfilter->newObservation(Point(bestDetect->x(),bestDetect->y()));
+        Ball::setPosition(kfilter->getPosition());
+        Ball::setVelocity(kfilter->getVelocity());
     }
 }
 

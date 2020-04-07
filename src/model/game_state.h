@@ -1,13 +1,12 @@
 #ifndef GAMEMODEL_H
 #define GAMEMODEL_H
 #include <vector>
-#include "ssl-game-controller/ssl_referee_includes.h"
 #include "utilities/point.h"
 #include "utilities/measurements.h"
 #include <mutex>
 
 class Robot;
-
+enum Referee_Command : int;
 
 /*! @addtogroup everydayuse Everyday Use
  * Classes and functions used in everyday code

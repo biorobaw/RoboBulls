@@ -160,7 +160,6 @@ HEADERS += \
         src/robot/robots/yisibot/robcomm_yisibot.h \
         src/robot/robots/yisibot/robot_yisibot.h \
         src/robot/robots/yisibot/crc.h \
-        src/ssl-game-controller/ssl_referee_includes.h \
         src/strategy/behavior.h \
         src/strategy/controllers/joystick/joystick.h \
         src/strategy/controllers/joystick/scontroller_joystick.h \

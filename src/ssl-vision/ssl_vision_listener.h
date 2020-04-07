@@ -3,12 +3,8 @@
 #include <string>
 #include <QtCore/QThread>
 
-#include "my_kalman_filter.h"
 #include "gui/guiinterface.h"
 
-namespace YAML {
-    class Node;
-}
 
 #include <QUdpSocket>
 #include "messages_robocup_ssl_detection.pb.h"
@@ -18,7 +14,10 @@ namespace YAML {
 #include "model/constants.h"
 #include<atomic>
 
-
+class MyKalmanFilter;
+namespace YAML {
+    class Node;
+}
 
 //! @brief Sets the minimum confidence to consider a ball reading as valid
 //#if SIMULATED
@@ -40,6 +39,7 @@ class SSLVisionListener: public QThread
 {
 public:
     SSLVisionListener( YAML::Node* comm_node);
+    ~SSLVisionListener();
 
     void run() override;
     void stop();
@@ -73,7 +73,7 @@ protected:
     int rob_readings[2][MAX_ROBOTS_PER_TEAM]={{0}};  //! Number of detections of each blue robot
     bool FOUR_CAMERA_MODE = false;    //! Are we in four-camera mode (true)? Or Two-camera mode?
 
-    MyKalmanFilter kfilter = MyKalmanFilter();                //! Kalman filter instance
+    MyKalmanFilter* kfilter;        //! Kalman filter instance
 
 
 };
