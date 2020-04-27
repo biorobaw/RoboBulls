@@ -17,7 +17,7 @@
 #include "gui/utils/gui_robot_drawer.h"
 #include "gui/data/guiball.h"
 #include "model/ball.h"
-
+#include "panel_select_robot/frame_robot.h"
 
 
 RobotPanel::RobotPanel(MainWindow *mw) {
@@ -25,6 +25,9 @@ RobotPanel::RobotPanel(MainWindow *mw) {
 }
 
 void RobotPanel::setupBotPanel() {
+
+//    for(int i=0; i<MAX_ROBOTS_PER_TEAM; i++)
+        dash->ui->layout_robots->insertWidget(0,new FrameRobot(dash));
 
     // Bot Frames
     botFrames.push_back(dash->ui->frame_robot_0);

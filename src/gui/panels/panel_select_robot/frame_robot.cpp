@@ -2,13 +2,12 @@
 #include "ui_frame_robot.h"
 
 FrameRobot::FrameRobot(QWidget *parent) :
-    QFrame(parent),
-    ui(new Ui::FrameRobot)
+    QFrame(parent)
 {
-    ui->setupUi(this);
+    setupUi(this);
 }
 
 FrameRobot::~FrameRobot()
 {
-    delete ui;
+
 }

@@ -2,12 +2,9 @@
 #define FRAME_ROBOT_H
 
 #include <QFrame>
+#include "ui_frame_robot.h"
 
-namespace Ui {
-class FrameRobot;
-}
-
-class FrameRobot : public QFrame
+class FrameRobot : public QFrame , public Ui::FrameRobot
 {
     Q_OBJECT
 
@@ -15,8 +12,6 @@ public:
     explicit FrameRobot(QWidget *parent = nullptr);
     ~FrameRobot();
 
-private:
-    Ui::FrameRobot *ui;
 };
 
 #endif // FRAME_ROBOT_H

@@ -5,7 +5,6 @@
 #include "utilities/point.h"
 #include "utilities/velocitycalculator.h"
 #include "strategy/behavior.h"
-#include "strategy/skill.h"
 #include "strategy/behaviors/genericskillbehavior.h"
 #include "iostream"
 #include <set>

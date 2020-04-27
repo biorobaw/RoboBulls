@@ -2,7 +2,6 @@
 #define NORMALGAMESTRATEGY_H
 #include "../strategy.h"
 #include "utilities/region/defencearea.h"
-#include "../behaviors/genericmovementbehavior.h"
 class Robot;
 
 

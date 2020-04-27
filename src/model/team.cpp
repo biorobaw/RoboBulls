@@ -6,6 +6,8 @@
 #include "yaml-cpp/yaml.h"
 #include "robot/robcomm.h"
 #include "robot/robot.h"
+#include "strategy/strategycontroller.h"
+
 
 RobotTeam* RobotTeam::teams[2] = {NULL};
 
