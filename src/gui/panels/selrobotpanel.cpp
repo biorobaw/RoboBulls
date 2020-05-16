@@ -3,7 +3,6 @@
 #include "selrobotpanel.h"
 #include "gui/mainwindow.h"
 #include "robotpanel.h"
-#include "gamepanel.h"
 #include "panel_field/fieldpanel.h"
 #include "gui/guiinterface.h"
 #include "ui_mainwindow.h"

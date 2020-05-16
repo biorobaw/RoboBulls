@@ -19,7 +19,6 @@
 #include "panels/selrobotpanel.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "panels/gamepanel.h"
 #include "panels/panel_field/fieldpanel.h"
 #include "data/guiball.h"
 #include "gui/data/guifield.h"
@@ -48,12 +47,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     // Setting up GUI; not enabling thread until we're done
-    ui->btn_connectGui->setEnabled(false);
     // Creating helper classes (order is important)
     selrobotpanel   = new SelRobotPanel(this);
     robotpanel      = new RobotPanel(this);
     fieldpanel      = new FieldPanel(this);
-    gamepanel       = new GamePanel(this);
 
     // Generating GUI
     teamSize_blue = 10;
@@ -65,12 +62,12 @@ MainWindow::MainWindow(QWidget *parent) :
     robotpanel->updateTeamColors();
     setupKeyShortcuts();
     GuiRobot::init_static_data();
-    ui->btn_connectGui->setEnabled(true);
+    ui->panel_game_info->btn_connectGui->setEnabled(true);
     MainWindow::resize(1400,900);
     setFocusOnField();
 
     // Time, in milliseconds, before GUI autoconnects to project; increase value if needed
-    QTimer::singleShot(1000, this, SLOT(on_btn_connectGui_clicked()));
+    QTimer::singleShot(1000, ui->panel_game_info, SLOT(on_btn_connectGui_clicked()));
 
 
     // coreLoop
@@ -114,7 +111,7 @@ void MainWindow::coreLoop() {
 
 void MainWindow::clockLoop() {
     // Clock-dependent stuff
-    gamepanel->guiClock();
+    ui->panel_game_info->update_clock();
     // These three functions are used for bot speed getting;
     // ...their order is VERY important
     GuiBall::updateBall();
@@ -146,16 +143,9 @@ QString MainWindow::getRemTime() {
 }
 
 void MainWindow::updateBallInfo() {
-    ui->lcd_coordX_ball->display(GuiBall::getPosition().x);
-    ui->lcd_coordY_ball->display(GuiBall::getPosition().y);
-
     GuiBall::ball.color = ui->combo_ballColor->currentText();
-//    robotpanel->ballIcon->color =
-    ui->gView_ball->update();
-    // Displaying ball icon
-    if (ui->gView_ball->isHidden()) {
-        ui->gView_ball->show();
-    }
+    ui->panel_game_info->update_ball_position();
+
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {
@@ -354,8 +344,8 @@ void MainWindow::setupKeyShortcuts() {
     i->setKey(Qt::Key_I);
 
     // Connecting key signals to their respective slots
-    connect(enter, SIGNAL(activated()), this, SLOT(on_btn_connectGui_clicked()));
-    connect(backspace, SIGNAL(activated()), this, SLOT(on_btn_connectGui_clicked()));
+    connect(enter, SIGNAL(activated()), ui->panel_game_info , SLOT(on_btn_connectGui_clicked()));
+    connect(backspace, SIGNAL(activated()), ui->panel_game_info, SLOT(on_btn_connectGui_clicked()));
     connect(o, SIGNAL(activated()), ui->check_botOverride, SLOT(click()));
     connect(delKey, SIGNAL(activated()), robotpanel, SLOT(toggleIconVisible()));
     // Team override
@@ -389,13 +379,7 @@ MainWindow::~MainWindow()
     //TODO: Actually cleanup things.
 }
 
-void MainWindow::on_btn_connectGui_clicked() {
-    if(ui->btn_connectGui->text() == "Connect") {
-        ui->btn_connectGui->setText("Disconnect");
-    } else {
-        ui->btn_connectGui->setText("Connect");
-    }
-}
+
 
 void MainWindow::on_btn_rotateField_right_clicked() {
     int rAngle = -45;
@@ -409,13 +393,6 @@ void MainWindow::on_btn_rotateField_left_clicked() {
     fieldpanel->currentFieldAngle += lAngle;
 }
 
-void MainWindow::on_btn_multithread_clicked() {
-    if(ui->btn_multithread->text() == "Enabled") {
-        ui->btn_multithread->setText("Disabled");
-    } else {
-        ui->btn_multithread->setText("Enabled");
-    }
-}
 
 void MainWindow::on_btn_botForward_pressed() {
     if (fieldpanel->selectedBot > -1 && ui->check_botOverride->isChecked()) {

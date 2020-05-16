@@ -6,7 +6,6 @@
 
 #include "robotpanel.h"
 #include "gui/mainwindow.h"
-#include "gamepanel.h"
 #include "panel_field/fieldpanel.h"
 #include "selrobotpanel.h"
 #include "ui_mainwindow.h"
@@ -151,8 +150,6 @@ void RobotPanel::setupBotPanel() {
             scene_botIconSel[i]->addItem(robotIconSel[i]);
         }
 
-    // Ball GUI icon
-    scene_ballIcon = new QGraphicsScene;
 
     // relevant vectors filled & connected; initial details added to GUI
     for (int i=0; i<6; i++) {
@@ -168,12 +165,6 @@ void RobotPanel::setupBotPanel() {
         velocityDials[i]->setValue(0);
     }
 
-    // putting ball icon into GUI
-    scene_ballIcon->addItem(&GuiBall::ball);
-    dash->ui->gView_ball->setScene(scene_ballIcon);
-    dash->ui->gView_ball->scale(.2, .2);
-    dash->ui->gView_ball->scale(1, -1);
-    dash->ui->gView_ball->hide();
 
     // Formatting selected bot panel
     dash->ui->gView_robot_prime->scale(.4, .4);
@@ -296,8 +287,8 @@ void RobotPanel::updateBotPanel() {
     // get mouse coordinates relative to the scene:
     auto mouse = dash->ui->gView_field->mapFromGlobal(QCursor::pos());
     auto mouse_relative = dash->ui->gView_field->mapToScene(mouse);
-    dash->ui->lcd_coordX_cursor->display(mouse_relative.rx()-100); // mouse coords are slightly off, thus fixed by 100
-    dash->ui->lcd_coordY_cursor->display(mouse_relative.ry()-100);
+
+    dash->ui->panel_game_info->update_mouse_position(mouse_relative);
 
 
 }

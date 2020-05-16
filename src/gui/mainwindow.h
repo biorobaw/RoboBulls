@@ -51,7 +51,6 @@ public:
     RobotPanel * robotpanel;
     FieldPanel * fieldpanel;
     SelRobotPanel * selrobotpanel;
-    GamePanel *gamepanel;
     GuiDrawLine *guidrawline;
 
     QString getRemTime();
@@ -98,7 +97,6 @@ private slots:
     void coreLoop();
     void clockLoop();
 // Widget slots
-    void on_btn_connectGui_clicked();
     // bot controls
     void on_btn_botForward_pressed();
     void on_btn_botForward_released();
@@ -128,7 +126,6 @@ private slots:
     void on_combo_botScale_currentIndexChanged(int index);
     void on_btn_rotateField_right_clicked();
     void on_btn_rotateField_left_clicked();
-    void on_btn_multithread_clicked();
     void on_btn_toggleTeamColor_clicked();
 };
 
