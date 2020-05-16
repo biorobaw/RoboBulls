@@ -20,7 +20,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "panels/gamepanel.h"
-#include "panels/fieldpanel.h"
+#include "panels/panel_field/fieldpanel.h"
 #include "data/guiball.h"
 #include "gui/data/guifield.h"
 #include "gui/data/guiball.h"
@@ -134,19 +134,7 @@ void MainWindow::drawLine(int originX, int originY, int endX, int endY) {
 
 void MainWindow::guiPrint(string output) {
 //    guiOutput.insert(0, QString::fromStdString(output));
-    ui->text_guiPrint->setTextColor(Qt::white);
-    if (guiOutput.toStdString() == output) {
-
-    } else {
-        // recording this string
-        guiOutput = QString::fromStdString(output);
-        // converting received string to QString for printing
-        QString msg = QString::fromStdString(output);
-        ui->text_guiPrint->append(msg);
-        // Scrolling to bottom of text box
-        QScrollBar *sb = ui->text_guiPrint->verticalScrollBar();
-        sb->setValue(sb->maximum());
-    }
+    ui->panel_output->print_output(output);
 }
 
 QString MainWindow::getRemTime() {

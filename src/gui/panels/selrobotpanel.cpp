@@ -4,7 +4,7 @@
 #include "gui/mainwindow.h"
 #include "robotpanel.h"
 #include "gamepanel.h"
-#include "fieldpanel.h"
+#include "panel_field/fieldpanel.h"
 #include "gui/guiinterface.h"
 #include "ui_mainwindow.h"
 #include "gui/data/gui_robot.h"

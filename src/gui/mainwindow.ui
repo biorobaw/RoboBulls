@@ -619,7 +619,7 @@
          </widget>
         </item>
         <item row="0" column="2">
-         <widget class="QFrame" name="frame_gameStatus_2">
+         <widget class="PanelOutput" name="panel_output">
           <property name="minimumSize">
            <size>
             <width>200</width>
@@ -644,85 +644,6 @@
           <property name="lineWidth">
            <number>3</number>
           </property>
-          <widget class="QLabel" name="label_10">
-           <property name="geometry">
-            <rect>
-             <x>12</x>
-             <y>12</y>
-             <width>141</width>
-             <height>15</height>
-            </rect>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>15</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <family>Courier 10 Pitch</family>
-             <pointsize>11</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>Program Output</string>
-           </property>
-           <property name="indent">
-            <number>1</number>
-           </property>
-          </widget>
-          <widget class="QTextBrowser" name="text_guiPrint">
-           <property name="geometry">
-            <rect>
-             <x>12</x>
-             <y>33</y>
-             <width>454</width>
-             <height>84</height>
-            </rect>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>84</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>800</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <family>DejaVu Sans</family>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="toolTip">
-            <string>GuiInterface::getGuiInterface()-&gt;guiPrintTerminal()</string>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">background-color: rgb(59, 59, 59);</string>
-           </property>
-           <property name="frameShape">
-            <enum>QFrame::Panel</enum>
-           </property>
-           <property name="frameShadow">
-            <enum>QFrame::Sunken</enum>
-           </property>
-           <property name="lineWidth">
-            <number>3</number>
-           </property>
-           <property name="midLineWidth">
-            <number>0</number>
-           </property>
-          </widget>
          </widget>
         </item>
         <item row="1" column="1" colspan="2">
@@ -5553,6 +5474,14 @@ color: rgb(255, 255, 255);</string>
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PanelOutput</class>
+   <extends>QFrame</extends>
+   <header>gui/panels/panel_output/panel_output.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>scrollArea</tabstop>
   <tabstop>combo_ballScale</tabstop>

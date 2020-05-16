@@ -7,7 +7,7 @@
 #include "robotpanel.h"
 #include "gui/mainwindow.h"
 #include "gamepanel.h"
-#include "fieldpanel.h"
+#include "panel_field/fieldpanel.h"
 #include "selrobotpanel.h"
 #include "ui_mainwindow.h"
 #include "model/game_state.h"
@@ -17,7 +17,7 @@
 #include "gui/utils/gui_robot_drawer.h"
 #include "gui/data/guiball.h"
 #include "model/ball.h"
-#include "panel_select_robot/frame_robot.h"
+#include "panel_team/frame_robot.h"
 
 
 RobotPanel::RobotPanel(MainWindow *mw) {

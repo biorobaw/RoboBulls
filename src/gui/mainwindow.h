@@ -87,9 +87,6 @@ private:
     static MainWindow *mw;
     QTimer timer;
 
-    // Keeps track of latest string received by guiPrint()
-    QString guiOutput = "...";
-
     // pointer to MainWindow
     static MainWindow* window;
 

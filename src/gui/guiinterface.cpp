@@ -1,7 +1,7 @@
 #include "guiinterface.h"
 #include "mainwindow.h"
 #include "panels/selrobotpanel.h"
-#include "panels/fieldpanel.h"
+#include "panels/panel_field/fieldpanel.h"
 #include "utilities/point.h"
 #include "gui/utils/guidrawline.h"
 #include "data/gui_robot.h"
