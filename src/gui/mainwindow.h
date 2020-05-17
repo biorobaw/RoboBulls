@@ -33,11 +33,9 @@ class RobotTeam;
 class GameState;
 class Robot;
 
-namespace Ui {
-    class MainWindow;
-}
+#include "ui_mainwindow.h"
 
-class MainWindow : public QMainWindow
+class MainWindow : public QMainWindow, public Ui_MainWindow
 {
     Q_OBJECT
 
@@ -47,10 +45,8 @@ public:
     ~MainWindow();
 
     // Class pointers
-    Ui::MainWindow *ui;
     RobotPanel * robotpanel;
     FieldPanel * fieldpanel;
-    SelRobotPanel * selrobotpanel;
     GuiDrawLine *guidrawline;
 
     QString getRemTime();

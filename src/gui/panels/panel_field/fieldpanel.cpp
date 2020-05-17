@@ -27,7 +27,7 @@ FieldPanel::FieldPanel(MainWindow * mw) {
 
 void FieldPanel::setupScene() {
 
-    dash->ui->gView_field->setBackgroundBrush(QColor::fromRgb(30,30,30,255));
+    dash->gView_field->setBackgroundBrush(QColor::fromRgb(30,30,30,255));
 
     scene = new QGraphicsScene();
 
@@ -71,47 +71,47 @@ void FieldPanel::setupScene() {
 
 
     // Turning on Bot IDs by default
-    dash->ui->check_showIDs->setChecked(true);
+    dash->check_showIDs->setChecked(true);
 
     // Raising the curtains...
-    dash->ui->gView_field->setScene(scene);
+    dash->gView_field->setScene(scene);
 
     // Refreshes graphics view to eliminate glitchiness
-    dash->ui->gView_field->hide();
-    dash->ui->gView_field->show();
+    dash->gView_field->hide();
+    dash->gView_field->show();
 
 
 }// setupScene
 
 void FieldPanel::updateScene() {
     if (refresh) {
-        dash->ui->gView_field->hide();
-        dash->ui->gView_field->show();
+        dash->gView_field->hide();
+        dash->gView_field->show();
         refresh = false;
     }
 
     // Grid
-    field->grid = dash->ui->check_fieldGrid->isChecked();
+    field->grid = dash->check_fieldGrid->isChecked();
 
-    auto scale = dash->ui->combo_gridScale->currentText();
+    auto scale = dash->combo_gridScale->currentText();
     if ( scale == "200²")      field->gridScale = 100;
     else if (scale == "500²")  field->gridScale = 250;
     else if (scale == "1000²") field->gridScale = 500; // 1000x1000 unit sectors
 
 
     // Colored Goals
-    field->coloredGoals = dash->ui->check_coloredGoals->isChecked();
+    field->coloredGoals = dash->check_coloredGoals->isChecked();
 
     // Updating field/sideline colors
-    sidelines->colorScheme = dash->ui->combo_fieldColor->currentText();
-    field->colorScheme = dash->ui->combo_fieldColor->currentText();
+    sidelines->colorScheme = dash->combo_fieldColor->currentText();
+    field->colorScheme = dash->combo_fieldColor->currentText();
 
     // updating the ball
         auto ball = &GuiBall::ball;
         ball->setZValue(2);
 
         // Ball Scale
-        auto ball_scale = dash->ui->combo_ballScale->currentText();
+        auto ball_scale = dash->combo_ballScale->currentText();
         if (ball_scale == "100%")      ball->setScale(.3);
         else if (ball_scale == "120%") ball->setScale(.5);
         else if (ball_scale == "150%") ball->setScale(.8);
@@ -139,7 +139,7 @@ void FieldPanel::updateScene() {
 
 
                     // Robot Scale
-                    auto bot_scale = dash->ui->combo_botScale->currentText();
+                    auto bot_scale = dash->combo_botScale->currentText();
                     if ( bot_scale == "100%")     gui_r->setScale(1);
                     else if (bot_scale == "120%") gui_r->setScale(1.2);
                     else if (bot_scale == "150%") gui_r->setScale(1.5);
@@ -151,7 +151,7 @@ void FieldPanel::updateScene() {
                     gui_l->setZValue(4);
                     gui_l->setX(gui_r->robot->getCurrentPosition().x);
                     gui_l->setY(gui_r->robot->getCurrentPosition().y);
-                    gui_l->hidden = !dash->ui->check_showIDs->isChecked();
+                    gui_l->hidden = !dash->check_showIDs->isChecked();
 
                 } else {
                     //If there is no robot, we need to hide it.
@@ -170,7 +170,7 @@ void FieldPanel::updateScene() {
     drawRegion();
     updateLineQueue();
 
-    dash->ui->gView_field->update();
+    dash->gView_field->update();
 }
 
 void FieldPanel::scanForSelection() {
@@ -183,7 +183,7 @@ void FieldPanel::scanForSelection() {
     fieldBotClickScan();
 
     if (newSelection) {
-        dash->selrobotpanel->updateSelectedBotPanel(selectedBot);
+        dash->panel_selected_robot->update_selected_robot(dash->getSelectedTeamId(),selectedBot);
     } else { return; }
 
 }
@@ -191,17 +191,17 @@ void FieldPanel::scanForSelection() {
 void FieldPanel::centerViewOnBot() {
     // Centering camera on double-clicked bot
     if (centeredBotID!=nullptr) {
-        dash->ui->gView_field->centerOn(centeredBotID);
+        dash->gView_field->centerOn(centeredBotID);
     }
 }
 
 void FieldPanel::scanForScrollModifier() {
     // CTRL modifer for field scrolling
     if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier) == true) {
-        dash->ui->gView_field->setDragMode(QGraphicsView::ScrollHandDrag);
+        dash->gView_field->setDragMode(QGraphicsView::ScrollHandDrag);
         justScrolled = true;
     } else {
-        dash->ui->gView_field->setDragMode(QGraphicsView::NoDrag);
+        dash->gView_field->setDragMode(QGraphicsView::NoDrag);
         if (justScrolled) {
             justScrolled = false;
             refresh = true;
@@ -420,19 +420,18 @@ bool FieldPanel::selectRobot(int team, int robot){
         for (int r=0; r<dash->teamSize_blue; r++) {
             dash->robotpanel->botIconFrames[robot]->update();
         }
-        dash->ui->gView_robot_prime->hide();
-        dash->ui->gView_robot_prime->show();
+        dash->panel_selected_robot->update_selected_robot(team,robot);
         return true;
     }
     return false;
 }
 
 void FieldPanel::zoomField(int zoom) {
-    dash->ui->zoom_slider->setValue(zoom);
+    dash->zoom_slider->setValue(zoom);
     double zoomScale = zoom *.01;
-    dash->ui->gView_field->setTransform(QTransform::fromScale(zoomScale, zoomScale));
-    dash->ui->gView_field->scale(1, -1);
-    dash->ui->gView_field->rotate(currentFieldAngle);
+    dash->gView_field->setTransform(QTransform::fromScale(zoomScale, zoomScale));
+    dash->gView_field->scale(1, -1);
+    dash->gView_field->rotate(currentFieldAngle);
 }
 
 void FieldPanel::defaultZoom() {
@@ -441,14 +440,14 @@ void FieldPanel::defaultZoom() {
 
     currentFieldAngle = 0;
     zoomField(11);
-    dash->ui->zoom_slider->setValue(11);
-//    dash->ui->gView_field->hide();
-    dash->ui->gView_field->centerOn(sidelines);
+    dash->zoom_slider->setValue(11);
+//    dash->gView_field->hide();
+    dash->gView_field->centerOn(sidelines);
 }
 
 void FieldPanel::hidePrimeBotPanel()
 {
-    dash->ui->frame_primeBot->hide();
+    dash->panel_selected_robot->hidePanel();
     selectedBot = -1;
 }
 

@@ -49,7 +49,7 @@ void GuiInterface::setHidePaths(bool hide) {
 }
 
 void GuiInterface::guiPrintRobot(int robotID, std::string output) {
-    dash->selrobotpanel->guiPrintRobot(robotID, output);
+    dash->panel_selected_robot->guiPrintRobot(robotID, output);
 }
 
 void GuiInterface::guiPrintTerminal(std::string output) {

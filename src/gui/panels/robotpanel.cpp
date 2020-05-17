@@ -26,111 +26,111 @@ RobotPanel::RobotPanel(MainWindow *mw) {
 void RobotPanel::setupBotPanel() {
 
 //    for(int i=0; i<MAX_ROBOTS_PER_TEAM; i++)
-        dash->ui->layout_robots->insertWidget(0,new FrameRobot(dash));
+        dash->layout_robots->insertWidget(0,new FrameRobot(dash));
 
     // Bot Frames
-    botFrames.push_back(dash->ui->frame_robot_0);
-    botFrames.push_back(dash->ui->frame_robot_1);
-    botFrames.push_back(dash->ui->frame_robot_2);
-    botFrames.push_back(dash->ui->frame_robot_3);
-    botFrames.push_back(dash->ui->frame_robot_4);
-    botFrames.push_back(dash->ui->frame_robot_5);
-    botFrames.push_back(dash->ui->frame_robot_6);
-    botFrames.push_back(dash->ui->frame_robot_7);
-    botFrames.push_back(dash->ui->frame_robot_8);
-    botFrames.push_back(dash->ui->frame_robot_9);
+    botFrames.push_back(dash->frame_robot_0);
+    botFrames.push_back(dash->frame_robot_1);
+    botFrames.push_back(dash->frame_robot_2);
+    botFrames.push_back(dash->frame_robot_3);
+    botFrames.push_back(dash->frame_robot_4);
+    botFrames.push_back(dash->frame_robot_5);
+    botFrames.push_back(dash->frame_robot_6);
+    botFrames.push_back(dash->frame_robot_7);
+    botFrames.push_back(dash->frame_robot_8);
+    botFrames.push_back(dash->frame_robot_9);
 
     // Title label vector
-    botTitle.push_back(dash->ui->title_robPanel_0);
-    botTitle.push_back(dash->ui->title_robPanel_1);
-    botTitle.push_back(dash->ui->title_robPanel_2);
-    botTitle.push_back(dash->ui->title_robPanel_3);
-    botTitle.push_back(dash->ui->title_robPanel_4);
-    botTitle.push_back(dash->ui->title_robPanel_5);
-    botTitle.push_back(dash->ui->title_robPanel_6);
-    botTitle.push_back(dash->ui->title_robPanel_7);
-    botTitle.push_back(dash->ui->title_robPanel_8);
-    botTitle.push_back(dash->ui->title_robPanel_9);
+    botTitle.push_back(dash->title_robPanel_0);
+    botTitle.push_back(dash->title_robPanel_1);
+    botTitle.push_back(dash->title_robPanel_2);
+    botTitle.push_back(dash->title_robPanel_3);
+    botTitle.push_back(dash->title_robPanel_4);
+    botTitle.push_back(dash->title_robPanel_5);
+    botTitle.push_back(dash->title_robPanel_6);
+    botTitle.push_back(dash->title_robPanel_7);
+    botTitle.push_back(dash->title_robPanel_8);
+    botTitle.push_back(dash->title_robPanel_9);
 
     // Velocity dials
-    velocityDials.push_back(dash->ui->dial_botVel_0);
-    velocityDials.push_back(dash->ui->dial_botVel_1);
-    velocityDials.push_back(dash->ui->dial_botVel_2);
-    velocityDials.push_back(dash->ui->dial_botVel_3);
-    velocityDials.push_back(dash->ui->dial_botVel_4);
-    velocityDials.push_back(dash->ui->dial_botVel_5);
-//    velocityDials.push_back(dash->ui->dial_botVel_6);
-//    velocityDials.push_back(dash->ui->dial_botVel_7);
-//    velocityDials.push_back(dash->ui->dial_botVel_8);
-//    velocityDials.push_back(dash->ui->dial_botVel_9);
+    velocityDials.push_back(dash->dial_botVel_0);
+    velocityDials.push_back(dash->dial_botVel_1);
+    velocityDials.push_back(dash->dial_botVel_2);
+    velocityDials.push_back(dash->dial_botVel_3);
+    velocityDials.push_back(dash->dial_botVel_4);
+    velocityDials.push_back(dash->dial_botVel_5);
+//    velocityDials.push_back(dash->dial_botVel_6);
+//    velocityDials.push_back(dash->dial_botVel_7);
+//    velocityDials.push_back(dash->dial_botVel_8);
+//    velocityDials.push_back(dash->dial_botVel_9);
 
     //Current Behavior Labels
-    currBehavior.push_back(dash->ui->currBehavior_0);
-    currBehavior.push_back(dash->ui->currBehavior_1);
-    currBehavior.push_back(dash->ui->currBehavior_2);
-    currBehavior.push_back(dash->ui->currBehavior_3);
-    currBehavior.push_back(dash->ui->currBehavior_4);
-    currBehavior.push_back(dash->ui->currBehavior_5);
+    currBehavior.push_back(dash->currBehavior_0);
+    currBehavior.push_back(dash->currBehavior_1);
+    currBehavior.push_back(dash->currBehavior_2);
+    currBehavior.push_back(dash->currBehavior_3);
+    currBehavior.push_back(dash->currBehavior_4);
+    currBehavior.push_back(dash->currBehavior_5);
 
  /*   // Speed dials disabled so that I can see GUI changes
-    speedDials.push_back(dash->ui->dial_botSpeed_0);
-    speedDials.push_back(dash->ui->dial_botSpeed_1);
-    speedDials.push_back(dash->ui->dial_botSpeed_2);
-    speedDials.push_back(dash->ui->dial_botSpeed_3);
-    speedDials.push_back(dash->ui->dial_botSpeed_4);
-    speedDials.push_back(dash->ui->dial_botSpeed_5);
-    speedDials.push_back(dash->ui->dial_botSpeed_6);
-    speedDials.push_back(dash->ui->dial_botSpeed_7);
-    speedDials.push_back(dash->ui->dial_botSpeed_8);
-    speedDials.push_back(dash->ui->dial_botSpeed_9);
+    speedDials.push_back(dash->dial_botSpeed_0);
+    speedDials.push_back(dash->dial_botSpeed_1);
+    speedDials.push_back(dash->dial_botSpeed_2);
+    speedDials.push_back(dash->dial_botSpeed_3);
+    speedDials.push_back(dash->dial_botSpeed_4);
+    speedDials.push_back(dash->dial_botSpeed_5);
+    speedDials.push_back(dash->dial_botSpeed_6);
+    speedDials.push_back(dash->dial_botSpeed_7);
+    speedDials.push_back(dash->dial_botSpeed_8);
+    speedDials.push_back(dash->dial_botSpeed_9);
 */
     // X Coordinate vector
-    botXcoords.push_back(dash->ui->lcd_coordX_0);
-    botXcoords.push_back(dash->ui->lcd_coordX_1);
-    botXcoords.push_back(dash->ui->lcd_coordX_2);
-    botXcoords.push_back(dash->ui->lcd_coordX_3);
-    botXcoords.push_back(dash->ui->lcd_coordX_4);
-    botXcoords.push_back(dash->ui->lcd_coordX_5);
-//    botXcoords.push_back(dash->ui->lcd_coordX_6);
-//    botXcoords.push_back(dash->ui->lcd_coordX_7);
-//    botXcoords.push_back(dash->ui->lcd_coordX_8);
-//    botXcoords.push_back(dash->ui->lcd_coordX_9);
+    botXcoords.push_back(dash->lcd_coordX_0);
+    botXcoords.push_back(dash->lcd_coordX_1);
+    botXcoords.push_back(dash->lcd_coordX_2);
+    botXcoords.push_back(dash->lcd_coordX_3);
+    botXcoords.push_back(dash->lcd_coordX_4);
+    botXcoords.push_back(dash->lcd_coordX_5);
+//    botXcoords.push_back(dash->lcd_coordX_6);
+//    botXcoords.push_back(dash->lcd_coordX_7);
+//    botXcoords.push_back(dash->lcd_coordX_8);
+//    botXcoords.push_back(dash->lcd_coordX_9);
 
     // Y Coordinate vector
-    botYcoords.push_back(dash->ui->lcd_coordY_0);
-    botYcoords.push_back(dash->ui->lcd_coordY_1);
-    botYcoords.push_back(dash->ui->lcd_coordY_2);
-    botYcoords.push_back(dash->ui->lcd_coordY_3);
-    botYcoords.push_back(dash->ui->lcd_coordY_4);
-    botYcoords.push_back(dash->ui->lcd_coordY_5);
-//    botYcoords.push_back(dash->ui->lcd_coordY_6);
-//    botYcoords.push_back(dash->ui->lcd_coordY_7);
-//    botYcoords.push_back(dash->ui->lcd_coordY_8);
-//    botYcoords.push_back(dash->ui->lcd_coordY_9);
+    botYcoords.push_back(dash->lcd_coordY_0);
+    botYcoords.push_back(dash->lcd_coordY_1);
+    botYcoords.push_back(dash->lcd_coordY_2);
+    botYcoords.push_back(dash->lcd_coordY_3);
+    botYcoords.push_back(dash->lcd_coordY_4);
+    botYcoords.push_back(dash->lcd_coordY_5);
+//    botYcoords.push_back(dash->lcd_coordY_6);
+//    botYcoords.push_back(dash->lcd_coordY_7);
+//    botYcoords.push_back(dash->lcd_coordY_8);
+//    botYcoords.push_back(dash->lcd_coordY_9);
 
     // Orientation vector
-    botOrients.push_back(dash->ui->dial_botOrient_0);
-    botOrients.push_back(dash->ui->dial_botOrient_1);
-    botOrients.push_back(dash->ui->dial_botOrient_2);
-    botOrients.push_back(dash->ui->dial_botOrient_3);
-    botOrients.push_back(dash->ui->dial_botOrient_4);
-    botOrients.push_back(dash->ui->dial_botOrient_5);
-//    botOrients.push_back(dash->ui->dial_botOrient_6);
-//    botOrients.push_back(dash->ui->dial_botOrient_7);
-//    botOrients.push_back(dash->ui->dial_botOrient_8);
-//    botOrients.push_back(dash->ui->dial_botOrient_9);
+    botOrients.push_back(dash->dial_botOrient_0);
+    botOrients.push_back(dash->dial_botOrient_1);
+    botOrients.push_back(dash->dial_botOrient_2);
+    botOrients.push_back(dash->dial_botOrient_3);
+    botOrients.push_back(dash->dial_botOrient_4);
+    botOrients.push_back(dash->dial_botOrient_5);
+//    botOrients.push_back(dash->dial_botOrient_6);
+//    botOrients.push_back(dash->dial_botOrient_7);
+//    botOrients.push_back(dash->dial_botOrient_8);
+//    botOrients.push_back(dash->dial_botOrient_9);
 
     // Icon frames vector
-    botIconFrames.push_back(dash->ui->gView_robot_0);
-    botIconFrames.push_back(dash->ui->gView_robot_1);
-    botIconFrames.push_back(dash->ui->gView_robot_2);
-    botIconFrames.push_back(dash->ui->gView_robot_3);
-    botIconFrames.push_back(dash->ui->gView_robot_4);
-    botIconFrames.push_back(dash->ui->gView_robot_5);
-//    botIconFrames.push_back(dash->ui->gView_robot_6);
-//    botIconFrames.push_back(dash->ui->gView_robot_7);
-//    botIconFrames.push_back(dash->ui->gView_robot_8);
-//    botIconFrames.push_back(dash->ui->gView_robot_9);
+    botIconFrames.push_back(dash->gView_robot_0);
+    botIconFrames.push_back(dash->gView_robot_1);
+    botIconFrames.push_back(dash->gView_robot_2);
+    botIconFrames.push_back(dash->gView_robot_3);
+    botIconFrames.push_back(dash->gView_robot_4);
+    botIconFrames.push_back(dash->gView_robot_5);
+//    botIconFrames.push_back(dash->gView_robot_6);
+//    botIconFrames.push_back(dash->gView_robot_7);
+//    botIconFrames.push_back(dash->gView_robot_8);
+//    botIconFrames.push_back(dash->gView_robot_9);
 
 
     // Icons vector
@@ -166,13 +166,10 @@ void RobotPanel::setupBotPanel() {
     }
 
 
-    // Formatting selected bot panel
-    dash->ui->gView_robot_prime->scale(.4, .4);
-    dash->ui->gView_robot_prime->scale(1,-1);
-    dash->ui->gView_robot_prime->rotate(90);
+
 
     // Formatting robots panel
-//    dash->ui->layout_robots->setContentsMargins(QMargins(0,0,0,0));
+//    dash->layout_robots->setContentsMargins(QMargins(0,0,0,0));
 
 }//setupBotPanel
 
@@ -253,76 +250,64 @@ void RobotPanel::updateBotPanel() {
     }
 
     //Populating the gameState label with the current refbox command
-    dash->ui->gState->setText(QString::fromStdString(getGameState()));
+    dash->gState->setText(QString::fromStdString(getGameState()));
 
     //Populating the ballVel label with current ball velocity
     //Fix so that velocity reading are rounded to 2nd or 3rd decimal
     double b_vel = Ball::getSpeed();
     if(b_vel == 0)
-        dash->ui->ballVel->setText("Vel: 0 (Stopped)");
+        dash->ballVel->setText("Vel: 0 (Stopped)");
     else
     {
-        dash->ui->ballVel->setText("Vel: " +
+        dash->ballVel->setText("Vel: " +
             QString::fromStdString(std::to_string(b_vel)) );
     }
 
     //Populating the ballAccel label with curent ball acceleration
-    dash->ui->ballAccel->setText("Accel: Constant");
+    dash->ballAccel->setText("Accel: Constant");
 
     //Populating the currStrategy label with the current strategy
-    dash->ui->currStrategy->setText(QString::fromStdString(getCurrStrategy()));
+    dash->currStrategy->setText(QString::fromStdString(getCurrStrategy()));
 
     //Populating the team info frame in robot panel
     int blueG = GameState::getBlueGoals();
-    dash->ui->blueGoal->setText("Blue Goals: " + QString::number(blueG));
+    dash->blueGoal->setText("Blue Goals: " + QString::number(blueG));
 
     int yellG = GameState::getYellowGoals();
-    dash->ui->yellGoal->setText("Yellow Goals: " + QString::number(yellG));
+    dash->yellGoal->setText("Yellow Goals: " + QString::number(yellG));
 
     //Populating remaining time label
     int time = GameState::getRemainingTime();
-    dash->ui->timeRem->setText("Time Left: " + QString::number(time));
+    dash->timeRem->setText("Time Left: " + QString::number(time));
 
     // Mouse point
     // get mouse coordinates relative to the scene:
-    auto mouse = dash->ui->gView_field->mapFromGlobal(QCursor::pos());
-    auto mouse_relative = dash->ui->gView_field->mapToScene(mouse);
+    auto mouse = dash->gView_field->mapFromGlobal(QCursor::pos());
+    auto mouse_relative = dash->gView_field->mapToScene(mouse);
 
-    dash->ui->panel_game_info->update_mouse_position(mouse_relative);
+    dash->panel_game_info->update_mouse_position(mouse_relative);
 
 
 }
 
 void RobotPanel::scrollToSelBot(int id) {
-    dash->ui->scroll_robots->ensureVisible(0,91*id,50,50);
+    dash->scroll_robots->ensureVisible(0,91*id,50,50);
 }
 
 void RobotPanel::updateTeamColors() {
     if  (dash->getSelectedTeamId() == ROBOT_TEAM_YELLOW) {
         // button color
-        dash->ui->btn_toggleTeamColor->setStyleSheet("background-color: yellow;" "color: black");
-        // robot panel colors
-        dash->ui->frame_robotsPanel->setStyleSheet("background-color: rgb(250, 250, 220);");
-        dash->ui->text_primeBot->setStyleSheet("background-color: rgb(100, 100, 0);");
-        dash->ui->dial_botOrient_prime->setStyleSheet("background-color: rgb(255, 255, 0);");
-        dash->ui->lcd_orient_prime->setStyleSheet("background-color: rgb(0, 0, 150);");
-        dash->ui->lcd_coordX_prime->setStyleSheet("background-color: rgb(100, 100, 0);");
-        dash->ui->lcd_coordY_prime->setStyleSheet("background-color: rgb(100, 100, 0);");
+        dash->btn_toggleTeamColor->setStyleSheet("background-color: yellow;" "color: black");
         for (int i=0; i<dash->teamSize_blue; i++) {
-//            botOrients[i]->setStyleSheet("background-color: rgb(0, 0, 150);");
-//            botXcoords[i]->setStyleSheet("background-color: rgb(100, 100, 0);");
-//            botYcoords[i]->setStyleSheet("background-color: rgb(100, 100, 0);");
+            botOrients[i]->setStyleSheet("background-color: rgb(0, 0, 150);");
+            botXcoords[i]->setStyleSheet("background-color: rgb(100, 100, 0);");
+            botYcoords[i]->setStyleSheet("background-color: rgb(100, 100, 0);");
         }
     } else if (dash->getSelectedTeamId() == ROBOT_TEAM_BLUE){
         // button color
-        dash->ui->btn_toggleTeamColor->setStyleSheet("background-color: blue;" "color: white");
+        dash->btn_toggleTeamColor->setStyleSheet("background-color: blue;" "color: white");
         // robot panel colors
-        dash->ui->frame_robotsPanel->setStyleSheet("background-color: rgb(225, 225, 255);");
-        dash->ui->text_primeBot->setStyleSheet("background-color: rgb(0, 0, 100);");
-        dash->ui->dial_botOrient_prime->setStyleSheet("background-color: rgb(255, 255, 0);");
-        dash->ui->lcd_orient_prime->setStyleSheet("background-color: rgb(100, 100, 0);");
-        dash->ui->lcd_coordX_prime->setStyleSheet("background-color: rgb(0, 0, 100);");
-        dash->ui->lcd_coordY_prime->setStyleSheet("background-color: rgb(0, 0, 100);");
+
         for (int i=0; i<6; i++) {
             botOrients[i]->setStyleSheet("background-color: rgb(255, 255, 0);");
             botXcoords[i]->setStyleSheet("background-color: rgb(0, 0, 150);");
@@ -333,9 +318,9 @@ void RobotPanel::updateTeamColors() {
     }
 
     // rerendering affected objects that aren't regularly updated
-    dash->ui->gView_field->scene()->update();
+    dash->gView_field->scene()->update();
     if (dash->fieldpanel->selectedBot > -1) {
-        dash->ui->gView_robot_prime->scene()->update();
+        dash->panel_selected_robot->gView_robot->scene()->update();
     }
 }
 

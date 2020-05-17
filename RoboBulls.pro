@@ -52,6 +52,7 @@ SOURCES += src/main.cpp \
         src/gui/panels/panel_field/fieldpanel.cpp \
         src/gui/panels/panel_game_info/panel_game_info.cpp \
         src/gui/panels/panel_output/panel_output.cpp \
+        src/gui/panels/panel_selected_robot/panel_selected_robot.cpp \
         src/gui/panels/panel_team/frame_robot.cpp \
         src/gui/panels/robotpanel.cpp \
         src/gui/panels/selrobotpanel.cpp \
@@ -135,9 +136,9 @@ HEADERS += \
         src/gui/panels/panel_field/fieldpanel.h \
         src/gui/panels/panel_game_info/panel_game_info.h \
         src/gui/panels/panel_output/panel_output.h \
+        src/gui/panels/panel_selected_robot/panel_selected_robot.h \
         src/gui/panels/panel_team/frame_robot.h \
         src/gui/panels/robotpanel.h \
-        src/gui/panels/selrobotpanel.h \
         src/gui/utils/gui_robot_drawer.h \
         src/gui/utils/guidrawline.h \
         src/gui/utils/guidrawpoint.h \
@@ -243,6 +244,7 @@ FORMS += \
     src/gui/mainwindow.ui \
     src/gui/panels/panel_game_info/panel_game_info.ui \
     src/gui/panels/panel_output/panel_output.ui \
+    src/gui/panels/panel_selected_robot/panel_selected_robot.ui \
     src/gui/panels/panel_team/frame_robot.ui
 
 
