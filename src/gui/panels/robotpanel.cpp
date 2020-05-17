@@ -15,7 +15,7 @@
 #include "gui/utils/gui_robot_drawer.h"
 #include "gui/data/guiball.h"
 #include "model/ball.h"
-#include "panel_team/frame_robot.h"
+#include "panel_teams/frame_robot.h"
 
 
 RobotPanel::RobotPanel(MainWindow *mw) {
@@ -281,8 +281,8 @@ void RobotPanel::updateBotPanel() {
 
     // Mouse point
     // get mouse coordinates relative to the scene:
-    auto mouse = dash->gView_field->mapFromGlobal(QCursor::pos());
-    auto mouse_relative = dash->gView_field->mapToScene(mouse);
+    auto mouse = dash->panel_field->gView_field->mapFromGlobal(QCursor::pos());
+    auto mouse_relative = dash->panel_field->gView_field->mapToScene(mouse);
 
     dash->panel_game_info->update_mouse_position(mouse_relative);
 
@@ -317,19 +317,19 @@ void RobotPanel::updateTeamColors() {
     }
 
     // rerendering affected objects that aren't regularly updated
-    dash->gView_field->scene()->update();
-    if (dash->fieldpanel->selectedBot > -1) {
+    dash->panel_field->gView_field->scene()->update();
+    if (dash->panel_field->selectedBot > -1) {
         dash->panel_selected_robot->gView_robot->scene()->update();
     }
 }
 
 void RobotPanel::toggleIconVisible() {
-    int id = dash->fieldpanel->selectedBot;
+    int id = dash->panel_field->selectedBot;
     int team_id = dash->getSelectedTeamId();
     auto& thisBot = GuiRobot::proxies[team_id][id];
     GuiRobotDrawer *thisIcon = robotIcon[id];
 
-    if (dash->fieldpanel->selectedBot > -1) {
+    if (dash->panel_field->selectedBot > -1) {
         if (thisBot.enabled) {
             thisBot.enabled = false;
 //            thisIcon->enabled = false;

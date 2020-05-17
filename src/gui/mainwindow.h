@@ -15,7 +15,7 @@ class GuiInterface;
 
 //Dashboard Forward declarations
 class RobotPanel;
-class FieldPanel;
+class PanelField;
 class SelRobotPanel;
 class SelRobotPanel;
 class GamePanel;
@@ -46,7 +46,6 @@ public:
 
     // Class pointers
     RobotPanel * robotpanel;
-    FieldPanel * fieldpanel;
     GuiDrawLine *guidrawline;
 
     QString getRemTime();

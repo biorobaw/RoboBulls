@@ -13,7 +13,6 @@ class QLCDNumber;
 class QGraphicsView;
 class QGraphicsScene;
 class GuiRobotDrawer;
-class FieldPanel;
 class MainWindow;
 class GameState;
 
@@ -79,7 +78,6 @@ private:
 
 protected:
     GameState *gamemodel;
-    FieldPanel *fieldpanel;
 };
 
 #endif // ROBOTPANEL_H

@@ -8,7 +8,6 @@
 class MainWindow;
 class Point;
 class SelRobotPanel;
-class FieldPanel;
 
 class GuiInterface
 {

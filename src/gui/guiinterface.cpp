@@ -32,7 +32,7 @@ bool GuiInterface::isOverriddenBot(int team, int robot_id) {
 //Returns the robot that is overridden and selected, or -1 if none.
 int  GuiInterface::getSelOverBot()
 {
-    return dash->fieldpanel->selectedBot;
+    return dash->panel_field->selectedBot;
 }
 
 void GuiInterface::show() {
@@ -40,11 +40,11 @@ void GuiInterface::show() {
 }
 
 void GuiInterface::drawLine(const Point& A, const Point& B, const double seconds) {
-    dash->fieldpanel->setupLine(A, B, seconds);
+    dash->panel_field->setupLine(A, B, seconds);
 }
 
 void GuiInterface::setHidePaths(bool hide) {
-    dash->fieldpanel->hidePaths = hide;
+    dash->panel_field->hidePaths = hide;
 }
 
 void GuiInterface::guiPrintRobot(int robotID, std::string output) {
@@ -57,10 +57,10 @@ void GuiInterface::guiPrintTerminal(std::string output) {
 
 void GuiInterface::drawPoint(const Point& p)
 {
-    dash->fieldpanel->setupPoint(p);
+    dash->panel_field->setupPoint(p);
 }
 
 void GuiInterface::drawRegion(const std::vector<Point> p_vec)
 {
-    dash->fieldpanel->setupRegion(p_vec);
+    dash->panel_field->setupRegion(p_vec);
 }
