@@ -1,6 +1,5 @@
 #include "fieldpanel.h"
 #include "../robotpanel.h"
-#include "../selrobotpanel.h"
 #include "gui/mainwindow.h"
 
 #include "ui_mainwindow.h"

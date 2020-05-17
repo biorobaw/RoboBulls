@@ -16,7 +16,6 @@
 #include "model/team.h"
 // Helper classes
 #include "panels/robotpanel.h"
-#include "panels/selrobotpanel.h"
 #include "mainwindow.h"
 #include "panels/panel_field/fieldpanel.h"
 #include "data/guiball.h"

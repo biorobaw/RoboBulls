@@ -7,7 +7,6 @@
 #include "robotpanel.h"
 #include "gui/mainwindow.h"
 #include "panel_field/fieldpanel.h"
-#include "selrobotpanel.h"
 #include "ui_mainwindow.h"
 #include "model/game_state.h"
 #include "robot/robot.h"

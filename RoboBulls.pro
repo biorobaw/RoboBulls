@@ -55,7 +55,6 @@ SOURCES += src/main.cpp \
         src/gui/panels/panel_selected_robot/panel_selected_robot.cpp \
         src/gui/panels/panel_team/frame_robot.cpp \
         src/gui/panels/robotpanel.cpp \
-        src/gui/panels/selrobotpanel.cpp \
         src/gui/utils/gui_robot_drawer.cpp \
         src/gui/utils/guidrawline.cpp \
         src/gui/utils/guidrawpoint.cpp \
