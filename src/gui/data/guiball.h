@@ -15,6 +15,8 @@ public:
     static GuiBall ball;
     static void updateBall();
     static Point getPosition();
+    static Point getVelocity();
+    static float getSpeed();
 
 
 
@@ -30,6 +32,8 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);       // ..and released
 
     Point position = Point(0,0);
+    Point velocity = Point(0,0);
+    float speed = 0;
 
 private:
     GuiBall();

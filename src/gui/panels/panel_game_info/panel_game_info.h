@@ -22,6 +22,6 @@ public slots:
 
 private:
     QElapsedTimer timer;
+    const std::string getGameState();
 };
-
 #endif // PANEL_GAME_INFO_H

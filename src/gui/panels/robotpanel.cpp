@@ -33,8 +33,6 @@ void RobotPanel::setupBotPanel() {
     botFrames.push_back(dash->frame_robot_3);
     botFrames.push_back(dash->frame_robot_4);
     botFrames.push_back(dash->frame_robot_5);
-    botFrames.push_back(dash->frame_robot_6);
-    botFrames.push_back(dash->frame_robot_7);
     botFrames.push_back(dash->frame_robot_8);
 
     // Title label vector
@@ -44,8 +42,6 @@ void RobotPanel::setupBotPanel() {
     botTitle.push_back(dash->title_robPanel_3);
     botTitle.push_back(dash->title_robPanel_4);
     botTitle.push_back(dash->title_robPanel_5);
-    botTitle.push_back(dash->title_robPanel_6);
-    botTitle.push_back(dash->title_robPanel_7);
     botTitle.push_back(dash->title_robPanel_8);
 
     // Velocity dials
@@ -245,23 +241,6 @@ void RobotPanel::updateBotPanel() {
         }
     }
 
-    //Populating the gameState label with the current refbox command
-    dash->gState->setText(QString::fromStdString(getGameState()));
-
-    //Populating the ballVel label with current ball velocity
-    //Fix so that velocity reading are rounded to 2nd or 3rd decimal
-    double b_vel = Ball::getSpeed();
-    if(b_vel == 0)
-        dash->ballVel->setText("Vel: 0 (Stopped)");
-    else
-    {
-        dash->ballVel->setText("Vel: " +
-            QString::fromStdString(std::to_string(b_vel)) );
-    }
-
-    //Populating the ballAccel label with curent ball acceleration
-    dash->ballAccel->setText("Accel: Constant");
-
     //Populating the currStrategy label with the current strategy
     dash->currStrategy->setText(QString::fromStdString(getCurrStrategy()));
 
@@ -371,58 +350,5 @@ const std::string RobotPanel::getCurrStrategy()
 
 }
 
-const std::string RobotPanel::getGameState()
-{
 
-    switch(GameState::getRefereeCommand())
-    {
-    case 'S':    //stop game
-        return "Stop Game";
-        break;
-    case 'G':    //Blue Goal
-        return "Blue Goal";
-        break;
-    case 'g':    //Yellow Goal
-        return "Yellow Goal";
-        break;
-    case 'p':   //Yellow Penalty Kick
-        return "Yellow Penalty Kick";
-        break;
-    case 'P':   //Blue Penalty Kick
-        return "Blue Penalty Kick";
-        break;
-    case 'k':   //Yellow Kickoff
-        return "Yellow Kickoff";
-        break;
-    case 'K':   //Blue Kickoff
-        return "Blue Kickoff";
-        break;
-    case 'f':   //Yellow Free Kick
-        return "Yellow Free Kick";
-        break;
-    case 'F':   //Blue Free Kick
-        return "Blue Free Kick";
-        break;
-    case 'i':   //Yellow Indirect Kick
-        return "Yellow Indirect Kick";
-        break;
-    case 'I':   //Blue Indirect kick
-        return "Blue Indirect Kick";
-        break;
-    case 'T':
-    case 't':
-    case 'H':    //Halt
-        return "Halt";
-        break;
-    case ' ':    //Normal game play
-        return "Normal game play";
-        break;
-    case 's':    //Force Start
-        return "Force Start";
-        break;
-    default:    //Anything Else
-        return "Defaul GameState";
-        break;
-    };
-}
 

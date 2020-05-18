@@ -30,7 +30,6 @@ public:
     void updateBotPanel();
     void scrollToSelBot(int id);
     void updateTeamColors();
-    const std::string getGameState();
     const std::string getCurrStrategy();
 
 
