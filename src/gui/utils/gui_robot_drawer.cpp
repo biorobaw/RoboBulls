@@ -114,7 +114,7 @@ void GuiRobotDrawer::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
         painter->setPen(QPen(Qt::gray, 0, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
         painter->setBrush(QBrush(Qt::gray, Qt::SolidPattern));
     }
-    if (robot->enabled) {
+    if (robot->visible) {
         painter->drawRoundedRect(base,15,15);
     }
 

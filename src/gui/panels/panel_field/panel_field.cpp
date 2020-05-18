@@ -10,13 +10,17 @@
 #include "gui/utils/guidrawline.h"
 #include "gui/utils/guidrawpoint.h"
 #include "gui/utils/guidrawregion.h"
-
+#include <QScrollBar>
 #include "model/field.h"
 
 PanelField::PanelField(QWidget *parent) :
     QFrame(parent)
 {
     setupUi(this);
+
+    gView_field->verticalScrollBar()->installEventFilter(this);
+
+
     region_drawer = nullptr;
     point_drawer = nullptr;
     dash = (MainWindow*)parent;
@@ -27,6 +31,7 @@ PanelField::PanelField(QWidget *parent) :
 
     gView_field->setBackgroundBrush(QColor::fromRgb(30,30,30,255));
     scene = new QGraphicsScene();
+    scene->installEventFilter(this);
 
     // Creating the sidelines
     sidelines = new GuiSidelines();
@@ -64,6 +69,7 @@ PanelField::PanelField(QWidget *parent) :
 
     gView_field->setScene(scene);
 
+
     connect(zoom_slider, SIGNAL(valueChanged(int)), this, SLOT(zoomField(int)));
     connect(zoom_default, SIGNAL(clicked()), this, SLOT(defaultZoom()));
 
@@ -71,6 +77,8 @@ PanelField::PanelField(QWidget *parent) :
     // Refreshes graphics view to eliminate glitchiness
     gView_field->hide();
     gView_field->show();
+
+    defaultZoom(); // set default zoom after finishing initialization
 
 }
 
@@ -317,64 +325,65 @@ void PanelField::updateLineQueue() {
 }
 
 void PanelField::doubleClickScan() {
-    // Scanning for double-click selection
-    int team_id = dash->getSelectedTeamId();
-    for (int i=0; i<dash->teamSize_blue; i++) {
-        auto drawer = robot_drawers[team_id][i];
-        auto r = drawer->robot;
-        if (r->hasProxy()) {
-            if (r->doubleClicked)  {
-                r->doubleClicked = false;
-                centeredBotID = drawer;
-                centerViewOnBot();
-                zoomField(20);
-                dash->guiPrint("Focused on Robot " + std::to_string(i));
-                break;
-            }
-        }//nullcheck
-    }//end for
+//    // Scanning for double-click selection
+//    int team_id = dash->getSelectedTeamId();
+//    for (int i=0; i<dash->teamSize_blue; i++) {
+//        auto drawer = robot_drawers[team_id][i];
+//        auto r = drawer->robot;
+//        if (r->hasProxy()) {
+//            if (r->doubleClicked)  {
+//                r->doubleClicked = false;
+//                centeredBotID = drawer;
+//                centerViewOnBot();
+//                zoomField(20);
+//                // dash->guiPrint("Focused on Robot " + std::to_string(i));
+//                break;
+//            }
+//        }//nullcheck
+//    }//end for
 }
 
 void PanelField::cameraMoveScan() {
-    // Scrolling the camera removes centeredOn but not selection
-    int team_id = dash->getSelectedTeamId();
-    if (justScrolled) {
-        for (int i=0; i<dash->teamSize_blue; i++) {
-            robot_drawers[team_id][i]->robot->doubleClicked = false;
+//    // Scrolling the camera removes centeredOn but not selection
+//    int team_id = dash->getSelectedTeamId();
+//    if (justScrolled) {
+//        for (int i=0; i<dash->teamSize_blue; i++) {
+//            robot_drawers[team_id][i]->robot->doubleClicked = false;
 
-        }
-        centeredBotID = nullptr;
-    }
+//        }
+//        centeredBotID = nullptr;
+//    }
 }
 
 bool PanelField::fieldClickScan() {
-    // Field/Sidelines clicked removes centeredOn and selection
-    if (field->Pressed == true) {
-        field->highlighted = true;
-        field->Pressed = false;
-    }
-    if (sidelines->Pressed == true) {
-        sidelines->highlighted = true;
-        sidelines->Pressed = false;
-    }
+//    // Field/Sidelines clicked removes centeredOn and selection
+//    if (field->Pressed == true) {
+//        field->highlighted = true;
+//        field->Pressed = false;
+//    }
+//    if (sidelines->Pressed == true) {
+//        sidelines->highlighted = true;
+//        sidelines->Pressed = false;
+//    }
 
-    if (field->highlighted || sidelines->highlighted) {
-        int team_id = dash->getSelectedTeamId();
-        for (int i=0; i<dash->teamSize_blue; i++) {
-            auto r = robot_drawers[team_id][i]->robot;
-            if (r->hasProxy()) {
-                r->highlighted = false;
-                r->doubleClicked = false;
-                // r->setSelected(false);
-            }//nullcheck
-        }
-        field->highlighted = false;
-        sidelines->highlighted = false;
-        selectedBot = -1;
-        centeredBotID = nullptr;
+//    if (field->highlighted || sidelines->highlighted) {
+//        int team_id = dash->getSelectedTeamId();
+//        for (int i=0; i<dash->teamSize_blue; i++) {
+//            auto r = robot_drawers[team_id][i]->robot;
+//            if (r->hasProxy()) {
+//                r->highlighted = false;
+//                r->doubleClicked = false;
+//                // r->setSelected(false);
+//            }//nullcheck
+//        }
+//        field->highlighted = false;
+//        sidelines->highlighted = false;
+//        selectedBot = -1;
+//        centeredBotID = nullptr;
 
-    }
-     return true;
+//    }
+//     return true;
+    return true;
 }
 using std::cout;
 bool PanelField::panelBotClickScan() {
@@ -405,23 +414,24 @@ bool PanelField::fieldBotClickScan() {
 }
 
 bool PanelField::selectRobot(int team, int robot){
-    auto& r = robot_drawers[team][robot]->robot;
-    if (r->hasProxy()) {
-        selectedBot = robot;
-        dash->robotpanel->scrollToSelBot(robot);
-        for (int j=0; j<dash->teamSize_blue; j++) {
-            auto r_j = robot_drawers[team][j]->robot;
-            r_j->highlighted = false;
-        }
-        r->highlighted = true;
-        refresh = true;
-        // Refresh GUI
-        for (int r=0; r<dash->teamSize_blue; r++) {
-            dash->robotpanel->botIconFrames[robot]->update();
-        }
-        dash->panel_selected_robot->update_selected_robot(team,robot);
-        return true;
-    }
+//    auto& r = robot_drawers[team][robot]->robot;
+//    if (r->hasProxy()) {
+//        selectedBot = robot;
+//        dash->robotpanel->scrollToSelBot(robot);
+//        for (int j=0; j<dash->teamSize_blue; j++) {
+//            auto r_j = robot_drawers[team][j]->robot;
+//            r_j->highlighted = false;
+//        }
+//        r->highlighted = true;
+//        refresh = true;
+//        // Refresh GUI
+//        for (int r=0; r<dash->teamSize_blue; r++) {
+//            dash->robotpanel->botIconFrames[robot]->update();
+//        }
+//        dash->panel_selected_robot->update_selected_robot(team,robot);
+//        return true;
+//    }
+//    return false;
     return false;
 }
 
@@ -439,16 +449,11 @@ void PanelField::defaultZoom() {
 
     currentFieldAngle = 0;
     zoomField(11);
-    zoom_slider->setValue(11);
+//    zoom_slider->setValue(11);
 //    dash->gView_field->hide();
     gView_field->centerOn(sidelines);
 }
 
-void PanelField::hidePrimeBotPanel()
-{
-    dash->panel_selected_robot->hidePanel();
-    selectedBot = -1;
-}
 
 void PanelField::updateTeamSelected(){
     if(selectedBot==-1) return;
@@ -461,3 +466,27 @@ void PanelField::updateTeamSelected(){
 
 
 }
+
+
+bool PanelField::eventFilter(QObject* obj, QEvent* e){
+    if( obj == gView_field->verticalScrollBar() &&
+            e->type() == QEvent::Wheel &&
+            QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)){
+
+//        auto mouse = gView_field->mapFromGlobal(QCursor::pos());
+//        auto mouse_relative = gView_field->mapToScene(mouse);
+//        gView_field->centerOn(mouse_relative.rx(), mouse_relative.ry());
+
+        int delta = ((QWheelEvent*)e)->delta() > 0 ? 2 : -2;
+        zoom_slider->setValue(zoom_slider->value()+delta);
+
+        return true;
+    } else if ( obj == scene && e->type() == QEvent::GraphicsSceneMouseMove ){
+        auto mouse = gView_field->mapFromGlobal(QCursor::pos());
+        emit field_mouse_moved(gView_field->mapToScene(mouse) - QPointF(100,100));
+    }
+
+    return false;
+}
+
+

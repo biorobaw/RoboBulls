@@ -14,13 +14,11 @@ public:
     explicit PanelGameInfo(QWidget *parent = nullptr);
     ~PanelGameInfo();
 
-    void update_data();
-    void update_mouse_position(QPointF pos);
-    void update_ball_position();
-    void update_clock();
+    void update_panel();
 
 public slots:
     void on_btn_connectGui_clicked();
+    void update_mouse_pos(QPointF mousePos);
 
 private:
     QElapsedTimer timer;

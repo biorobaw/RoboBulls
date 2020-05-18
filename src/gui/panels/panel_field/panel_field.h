@@ -34,7 +34,6 @@ public:
     void centerViewOnBot();
     void scanForScrollModifier();
     void updateLineQueue();
-    void hidePrimeBotPanel();
 
     void updateTeamSelected();
 
@@ -94,6 +93,8 @@ public slots:
     void setupPoint(Point p);
     void setupRegion(std::vector<Point>);
 
+signals:
+    void field_mouse_moved(QPointF);
 
 private:
     MainWindow * dash;
@@ -107,6 +108,7 @@ private:
     bool fieldBotClickScan();
     bool selectRobot(int team, int robot);
 
+    bool eventFilter(QObject* obj, QEvent* e);
 
 };
 

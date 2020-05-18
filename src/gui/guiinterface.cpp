@@ -1,6 +1,5 @@
 #include "guiinterface.h"
 #include "mainwindow.h"
-#include "panels/panel_field/fieldpanel.h"
 #include "utilities/point.h"
 #include "gui/utils/guidrawline.h"
 #include "data/gui_robot.h"
@@ -48,11 +47,13 @@ void GuiInterface::setHidePaths(bool hide) {
 }
 
 void GuiInterface::guiPrintRobot(int robotID, std::string output) {
-    dash->panel_selected_robot->guiPrintRobot(robotID, output);
+    // TODO: reimplement functionality
+    //dash->panel_selected_robot->guiPrintRobot(robotID, output);
 }
 
 void GuiInterface::guiPrintTerminal(std::string output) {
-    dash->guiPrint(output);
+    dash->panel_output->print_output(output);
+    // dash->guiOutput.insert(0, QString::fromStdString(output));
 }
 
 void GuiInterface::drawPoint(const Point& p)

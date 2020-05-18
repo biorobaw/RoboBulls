@@ -6,7 +6,6 @@
 
 #include "robotpanel.h"
 #include "gui/mainwindow.h"
-#include "panel_field/fieldpanel.h"
 #include "ui_mainwindow.h"
 #include "model/game_state.h"
 #include "robot/robot.h"
@@ -37,7 +36,6 @@ void RobotPanel::setupBotPanel() {
     botFrames.push_back(dash->frame_robot_6);
     botFrames.push_back(dash->frame_robot_7);
     botFrames.push_back(dash->frame_robot_8);
-    botFrames.push_back(dash->frame_robot_9);
 
     // Title label vector
     botTitle.push_back(dash->title_robPanel_0);
@@ -49,7 +47,6 @@ void RobotPanel::setupBotPanel() {
     botTitle.push_back(dash->title_robPanel_6);
     botTitle.push_back(dash->title_robPanel_7);
     botTitle.push_back(dash->title_robPanel_8);
-    botTitle.push_back(dash->title_robPanel_9);
 
     // Velocity dials
     velocityDials.push_back(dash->dial_botVel_0);
@@ -268,23 +265,7 @@ void RobotPanel::updateBotPanel() {
     //Populating the currStrategy label with the current strategy
     dash->currStrategy->setText(QString::fromStdString(getCurrStrategy()));
 
-    //Populating the team info frame in robot panel
-    int blueG = GameState::getBlueGoals();
-    dash->blueGoal->setText("Blue Goals: " + QString::number(blueG));
 
-    int yellG = GameState::getYellowGoals();
-    dash->yellGoal->setText("Yellow Goals: " + QString::number(yellG));
-
-    //Populating remaining time label
-    int time = GameState::getRemainingTime();
-    dash->timeRem->setText("Time Left: " + QString::number(time));
-
-    // Mouse point
-    // get mouse coordinates relative to the scene:
-    auto mouse = dash->panel_field->gView_field->mapFromGlobal(QCursor::pos());
-    auto mouse_relative = dash->panel_field->gView_field->mapToScene(mouse);
-
-    dash->panel_game_info->update_mouse_position(mouse_relative);
 
 
 }
@@ -297,11 +278,11 @@ void RobotPanel::updateTeamColors() {
     if  (dash->getSelectedTeamId() == ROBOT_TEAM_YELLOW) {
         // button color
         dash->btn_toggleTeamColor->setStyleSheet("background-color: yellow;" "color: black");
-        for (int i=0; i<dash->teamSize_blue; i++) {
-            botOrients[i]->setStyleSheet("background-color: rgb(0, 0, 150);");
-            botXcoords[i]->setStyleSheet("background-color: rgb(100, 100, 0);");
-            botYcoords[i]->setStyleSheet("background-color: rgb(100, 100, 0);");
-        }
+//        for (int i=0; i<dash->teamSize_blue; i++) {
+//            botOrients[i]->setStyleSheet("background-color: rgb(0, 0, 150);");
+//            botXcoords[i]->setStyleSheet("background-color: rgb(100, 100, 0);");
+//            botYcoords[i]->setStyleSheet("background-color: rgb(100, 100, 0);");
+//        }
     } else if (dash->getSelectedTeamId() == ROBOT_TEAM_BLUE){
         // button color
         dash->btn_toggleTeamColor->setStyleSheet("background-color: blue;" "color: white");
@@ -319,7 +300,7 @@ void RobotPanel::updateTeamColors() {
     // rerendering affected objects that aren't regularly updated
     dash->panel_field->gView_field->scene()->update();
     if (dash->panel_field->selectedBot > -1) {
-        dash->panel_selected_robot->gView_robot->scene()->update();
+        // dash->panel_selected_robot->gView_robot->scene()->update();
     }
 }
 
@@ -330,13 +311,13 @@ void RobotPanel::toggleIconVisible() {
     GuiRobotDrawer *thisIcon = robotIcon[id];
 
     if (dash->panel_field->selectedBot > -1) {
-        if (thisBot.enabled) {
-            thisBot.enabled = false;
+        if (thisBot.visible) {
+            thisBot.visible = false;
 //            thisIcon->enabled = false;
             thisIcon->setOpacity(.3);
 //            thisBot.setOpacity(.3);
         } else {
-            thisBot.enabled = true;
+            thisBot.visible = true;
 //            thisIcon->enabled = true;
             thisIcon->setOpacity(1);
 //            thisBot.setOpacity(1);

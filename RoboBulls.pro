@@ -49,7 +49,6 @@ SOURCES += src/main.cpp \
         src/gui/guiinterface.cpp \
         src/gui/guisidelines.cpp \
         src/gui/mainwindow.cpp \
-        src/gui/panels/panel_field/fieldpanel.cpp \
         src/gui/panels/panel_field/panel_field.cpp \
         src/gui/panels/panel_game_info/panel_game_info.cpp \
         src/gui/panels/panel_output/panel_output.cpp \
@@ -134,7 +133,6 @@ HEADERS += \
         src/gui/guiinterface.h \
         src/gui/guisidelines.h \
         src/gui/mainwindow.h \
-        src/gui/panels/panel_field/fieldpanel.h \
         src/gui/panels/panel_field/panel_field.h \
         src/gui/panels/panel_game_info/panel_game_info.h \
         src/gui/panels/panel_output/panel_output.h \

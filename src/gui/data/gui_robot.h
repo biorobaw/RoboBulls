@@ -14,6 +14,9 @@ public:
     static void init_static_data();
     static void updateRobots();
 
+    static int selected_robot;
+    static int selected_team;
+    static GuiRobot* get_selected_robot();
 
     Point getCurrentPosition();
     float getOrientation();
@@ -38,7 +41,7 @@ public:
     bool Pressed        = false;
     bool highlighted    = false;
     bool doubleClicked  = false;
-    bool enabled        = true;
+    bool visible        = true;
     bool overridden     = false;
     bool selected       = false;
 

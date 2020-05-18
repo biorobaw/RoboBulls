@@ -42,325 +42,211 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
     setupUi(this);
+    GuiRobot::init_static_data();
+    on_btn_override_all_released(); // override all robots
 
 
-    // Setting up GUI; not enabling thread until we're done
-    // Creating helper classes (order is important)
-    robotpanel      = new RobotPanel(this);
-
-    // Generating GUI
-    teamSize_blue = 10;
-    teamSize_yellow = 10;
-    panel_field->defaultZoom();
+    // Set panels
+    robotpanel = new RobotPanel(this);
     robotpanel->setupBotPanel();
     robotpanel->updateTeamColors();
+
+    // Set keyboard shorcuts and connect slots
     setupKeyShortcuts();
-    GuiRobot::init_static_data();
-    panel_game_info->btn_connectGui->setEnabled(true);
+    connect_slots();
+
+    // resize window, and start main loop
     MainWindow::resize(1400,900);
-    setFocusOnField();
+    QTimer* timer = new QTimer(this);
+    connect(timer,SIGNAL(timeout()),this, SLOT(coreLoop()));
+    timer->start(25);
 
     // Time, in milliseconds, before GUI autoconnects to project; increase value if needed
     QTimer::singleShot(1000, panel_game_info, SLOT(on_btn_connectGui_clicked()));
 
 
-    // coreLoop
-    timer.start(50);
-    connect(&timer,SIGNAL(timeout()),this, SLOT(coreLoop()));
+}
 
-
-
-    //All rboots overridden by default
-    on_btn_override_all_released();
+void MainWindow::connect_slots(){
+    connect(panel_field,SIGNAL(field_mouse_moved(QPointF)),panel_game_info,SLOT(update_mouse_pos(QPointF)));
 }
 
 void MainWindow::coreLoop() {
-    /* Top function of the GUI's loop
-     */
-    // Ctrl override
-    if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
-        scrollArea->verticalScrollBar()->setEnabled(false);
-        panel_field->gView_field->verticalScrollBar()->setEnabled(false);
-    }
-    // Wiping values at beginning of cycle
-    // prevents crash caused by (I think) the appended strings getting too long
-    for (int i=0; i<teamSize_blue; i++) {
-        panel_selected_robot->botBehavior[i] = "";
-    }
 
-    // Interaction scanners
-    panel_field->scanForScrollModifier();
-//    panel_field->scanForSelection();
+    /* Top function of the GUI's loop */
 
-    setMyVelocity();
-    panel_field->updateScene();
-    robotpanel->updateBotPanel();
-    clockLoop();
-
-}
-
-void MainWindow::clockLoop() {
-    // Clock-dependent stuff
-    panel_game_info->update_clock();
-    // These three functions are used for bot speed getting;
-    // ...their order is VERY important
+    // Update game data:
     GuiBall::updateBall();
-    updateBallInfo();
     GuiRobot::updateRobots();
 
+    // process user input:
+    process_user_input();
+
+    // update panels
+    panel_field->updateScene();
+    robotpanel->updateBotPanel();
+    panel_game_info->update_panel();
+    panel_selected_robot->update_panel();
+
 }
 
+void MainWindow::process_user_input(){
+    // Process user input
 
-void MainWindow::drawLine(int originX, int originY, int endX, int endY) {
-    guidrawline->x1 = originX;
-    guidrawline->y1 = originY;
-    guidrawline->x2 = endX;
-    guidrawline->y2 = endY;
-    panel_field->gView_field->update();
-}
-
-void MainWindow::guiPrint(string output) {
-//    guiOutput.insert(0, QString::fromStdString(output));
-    panel_output->print_output(output);
-}
-
-QString MainWindow::getRemTime() {
-    QString t;  // return value
-    std::string time = std::to_string(GameState::getRemainingTime());
-    t = QString::fromStdString(time);
-
-    return t;
-}
-
-void MainWindow::updateBallInfo() {
+    // Interaction scanners
+//    panel_field->scanForScrollModifier();
+//    panel_field->scanForSelection();
     GuiBall::ball.color = panel_field->combo_ballColor->currentText();
-    panel_game_info->update_ball_position();
 
 }
+
+
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {
     // Robot binds
-        switch(event->key()) {
-            if (panel_field->selectedBot > -1) {
-                case Qt::Key_W:
-                    on_btn_botForward_pressed();
-                    break;
-                case Qt::Key_A:
-                    on_btn_botTurnLeft_pressed();
-                    break;
-                case Qt::Key_Q:
-                    on_btn_botRotateLeft_pressed();
-                    break;
-                case Qt::Key_S:
-                    on_btn_botReverse_pressed();
-                    break;
-                case Qt::Key_D:
-                    on_btn_botTurnRight_pressed();
-                    break;
-                case Qt::Key_E:
-                    on_btn_botRotateRight_pressed();
-                    break;
-                // Alternate arrow bindings. Don't seem to work :(
-                case Qt::UpArrow:
-                    on_btn_botForward_pressed();
-                    break;
-                case Qt::LeftArrow:
-                    on_btn_botTurnLeft_pressed();
-                    break;
-                case Qt::DownArrow:
-                    on_btn_botReverse_pressed();
-                    break;
-                case Qt::RightArrow:
-                    on_btn_botTurnRight_pressed();
-                    break;
-
-                case Qt::Key_Space:
-                    on_btn_botKick_pressed();
-                    break;
-                case Qt::Key_J:
-                    on_btn_botDrible_pressed();
-                    break;
-            }
-
-        // Number bindings
-        case Qt::Key_QuoteLeft:
-            //GuiRobotProxy::proxies[selected_team_id][0].setSelected(true);
-            robotpanel->scrollToSelBot(0);
-            if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
-                GuiRobot::proxies[selected_team_id][0].doubleClicked = true; }
-            break;
-
-        case Qt::Key_0:
-        case Qt::Key_1:
-        case Qt::Key_2:
-        case Qt::Key_3:
-        case Qt::Key_4:
-        case Qt::Key_5:
-        case Qt::Key_6:
-        case Qt::Key_7:
-        case Qt::Key_8:
-        case Qt::Key_9: {
-            int robot_id = event->key() - Qt::Key_0;
-            auto& r = GuiRobot::proxies[selected_team_id][robot_id];
-            //r.setSelected(true);
-            robotpanel->scrollToSelBot(robot_id);
-            if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier))
-                r.doubleClicked = true;
-            break;
+    bool control = QApplication::keyboardModifiers().testFlag(Qt::ControlModifier);
+    bool alt = QApplication::keyboardModifiers().testFlag(Qt::AltModifier);
+    switch(event->key()) {
+        // Robot control bindings
+        if (GuiRobot::selected_robot > -1) {
+            case Qt::Key_W:
+            case Qt::UpArrow:
+                control_selected_robot(250,0,0);
+                break;
+            case Qt::Key_S:
+            case Qt::DownArrow:
+                control_selected_robot(-250,0,0);
+                break;
+            case Qt::Key_A:
+            case Qt::LeftArrow:
+                control_selected_robot(0,0,M_PI/2);
+                break;
+            case Qt::Key_D:
+            case Qt::RightArrow:
+                control_selected_robot(0,0,-M_PI/2);
+                break;
+            case Qt::Key_Q:
+                control_selected_robot(0,0,M_PI/2);
+                break;
+            case Qt::Key_E:
+                control_selected_robot(0,0,-M_PI/2);
+                break;
+            case Qt::Key_Space:
+                kick_selected_robot();
+                break;
+            case Qt::Key_Shift:
+                kick_selected_robot(true);
+                break;
+            // Remove selection from bot
+            case Qt::Key_Escape:
+                select_robot(0,-1);
+                break;
         }
-        // Camera bindings
-        case Qt::Key_Z:
-            if (QApplication::keyboardModifiers().testFlag(Qt::AltModifier)) {
-                panel_field->zoom_slider->setValue(panel_field->zoom_slider->value()-5);
-            } else {
-                panel_field->zoom_slider->setValue(panel_field->zoom_slider->value()+5);
+
+        // Number bindings -
+        {
+            case Qt::Key_QuoteLeft:
+            case Qt::Key_0:
+            case Qt::Key_1:
+            case Qt::Key_2:
+            case Qt::Key_3:
+            case Qt::Key_4:
+            case Qt::Key_5:
+            case Qt::Key_6:
+            case Qt::Key_7:
+            case Qt::Key_8:
+            case Qt::Key_9:
+                int robot_id = event->key() - Qt::Key_0;
+                if(robot_id < 0 || robot_id >9) robot_id = 0;
+                select_robot(0,robot_id);
+                break;
+
+
+        }
+
+
+        // Camera bindings -
+        {
+            case Qt::Key_Z:
+                if (alt) panel_field->defaultZoom();
+                else {
+                    int zoom = control ? -5 : 5;
+                    panel_field->zoom_slider->setValue(panel_field->zoom_slider->value()+zoom);
+                }
+                break;
+
+            case Qt::Key_Plus:
+            case Qt::Key_Minus:{
+                int zoom = event->key() == Qt::Key_Plus ? 5 : -5;
+                panel_field->zoom_slider->setValue(panel_field->zoom_slider->value()+zoom);
+                break;
             }
-            if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
-                panel_field->defaultZoom();
-            }
-            break;
+        }
 
-        case Qt::Key_Plus:
-            panel_field->zoom_slider->setValue(panel_field->zoom_slider->value()+5);
-            break;
-        case Qt::Key_Minus:
-            panel_field->zoom_slider->setValue(panel_field->zoom_slider->value()-5);
-            break;
 
-        case Qt::Key_R:
-            if (QApplication::keyboardModifiers().testFlag(Qt::AltModifier)) {
-                on_btn_rotateField_left_clicked();
-            } else {
-                on_btn_rotateField_right_clicked();
-            }
-            break;
-
-        // Remove selection from bot
-        case Qt::Key_Escape:
-            if (panel_field->selectedBot > -1)
-                panel_field->sidelines->Pressed = true;
-            break;
-
-        // Field bindings
-        case Qt::Key_G:
-            panel_field->check_fieldGrid->click();
-            break;
-
-        // center window on field
-        case Qt::Key_F:
-            setFocusOnField();
-            break;
     }
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent *event) {
     // Robot binds
         switch(event->key()) {
-            if (panel_field->selectedBot > -1) {
+            if (GuiRobot::selected_robot > -1) {
                 case Qt::Key_W:
-                    on_btn_botForward_released();
-                    break;
                 case Qt::Key_A:
-                    on_btn_botTurnLeft_released();
-                    break;
-                case Qt::Key_Q:
-                    on_btn_botRotateLeft_released();
-                    break;
                 case Qt::Key_S:
-                    on_btn_botReverse_released();
-                    break;
                 case Qt::Key_D:
-                    on_btn_botTurnRight_released();
-                    break;
                 case Qt::Key_E:
-                    on_btn_botRotateRight_released();
-                    break;
+                case Qt::Key_Q:
                 case Qt::Key_Up:
-                    on_btn_botForward_released();
-                    break;
                 case Qt::Key_Left:
-                    on_btn_botTurnLeft_released();
-                    break;
                 case Qt::Key_Down:
-                    on_btn_botReverse_released();
-                    break;
                 case Qt::Key_Right:
-                    on_btn_botTurnRight_released();
+                    control_selected_robot(0,0,0);
                     break;
-
                 case Qt::Key_Space:
-                    on_btn_botKick_released();
+                    kick_selected_robot(0);
                     break;
                 case Qt::Key_J:
-                    on_btn_botDrible_released();
+                    dribble_selected_robot(false);
                     break;
             }
         }
 }
 
-void MainWindow::wheelEvent(QWheelEvent *event) {
-    if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
-//        gView_field->centerOn(objectPos->getMouseCoordX(), objectPos->getMouseCoordY());
-
-        if (event->delta() > 0) {
-            panel_field->zoom_slider->setValue(panel_field->zoom_slider->value()+2);
-        } else {
-            panel_field->zoom_slider->setValue(panel_field->zoom_slider->value()-2);
-        }
-
-    } else {
-        scrollArea->verticalScrollBar()->setDisabled(false);
-        panel_field->gView_field->verticalScrollBar()->setDisabled(false);
-    }
-}
 
 void MainWindow::setupKeyShortcuts() {
-    QShortcut *enter = new QShortcut(this);
-    enter->setKey(Qt::Key_Enter);
+    // enter -> connect gui
+    connect(new QShortcut(Qt::Key_Enter,this), SIGNAL(activated()),
+            panel_game_info , SLOT(on_btn_connectGui_clicked()));
 
-    QShortcut *backspace = new QShortcut(this);
-    backspace->setKey(Qt::Key_Backspace);
+    //backspace -> connect gui
+    connect(new QShortcut(Qt::Key_Backspace,this), SIGNAL(activated()),
+            panel_game_info, SLOT(on_btn_connectGui_clicked()));
 
-    QShortcut *o = new QShortcut(this);
-    o->setKey(Qt::Key_O);
+    //o -> override selected robot
+    connect(new QShortcut(Qt::Key_O,this), SIGNAL(activated()),
+            panel_selected_robot->check_override, SLOT(click()));
 
-    QShortcut *delKey = new QShortcut(this);
-    delKey->setKey(Qt::Key_Delete);
+    //delete -> toggle icon visible
+    connect(new QShortcut(Qt::Key_Delete, this), SIGNAL(activated()),
+            robotpanel, SLOT(toggleIconVisible()));
 
-    QShortcut *teamOverride = new QShortcut(QKeySequence("Ctrl+O"), this);
-    QShortcut *teamLiberate = new QShortcut(QKeySequence("Alt+O"), this);
+    // Ctrl+o -> Override team
+    connect(new QShortcut(QKeySequence("Ctrl+O"), this), SIGNAL(activated()),
+            this, SLOT(on_btn_override_all_released()));
 
-    QShortcut *i = new QShortcut(this);
-    i->setKey(Qt::Key_I);
+    // Alt+o -> Release overrided team
+    connect(new QShortcut(QKeySequence("Alt+O"), this), SIGNAL(activated()),
+            this, SLOT(on_btn_override_none_released()));
 
-    // Connecting key signals to their respective slots
-    connect(enter, SIGNAL(activated()), panel_game_info , SLOT(on_btn_connectGui_clicked()));
-    connect(backspace, SIGNAL(activated()), panel_game_info, SLOT(on_btn_connectGui_clicked()));
-    connect(o, SIGNAL(activated()), panel_selected_robot->check_override, SLOT(click()));
-    connect(delKey, SIGNAL(activated()), robotpanel, SLOT(toggleIconVisible()));
-    // Team override
-    connect(teamOverride, SIGNAL(activated()), this, SLOT(on_btn_override_all_released()));
-    connect(teamLiberate, SIGNAL(activated()), this, SLOT(on_btn_override_none_released()));
+    // i -> toggle show ids
+    connect(new QShortcut(Qt::Key_I,this), SIGNAL(activated()),
+            panel_field->check_showIDs, SLOT(click()));
 
-    connect(i, SIGNAL(activated()), panel_field->check_showIDs, SLOT(click()));
-}
+    // Field bindings -
+    connect(new QShortcut(Qt::Key_G,this), SIGNAL(activated()),
+            panel_field->check_fieldGrid, SLOT(click()));
 
-void MainWindow::setFocusOnField() {
-    scrollArea->ensureWidgetVisible(panel_field->gView_field,0,0);
-    scrollArea->verticalScrollBar()->setValue(205);
-    scrollArea->horizontalScrollBar()->setValue(315);
-}
-
-void MainWindow::setMyVelocity() {
-    if (QApplication::keyboardModifiers().testFlag(Qt::ShiftModifier) == true) {
-//        cout << "Shift \n";
-        myVelocity = 100;
-    } else if (QApplication::keyboardModifiers().testFlag(Qt::AltModifier) == true) {
-//        cout << "Alt \n";
-        myVelocity = 25;
-    } else {
-        myVelocity = 50;
-    }
 }
 
 
@@ -369,216 +255,21 @@ MainWindow::~MainWindow()
     //TODO: Actually cleanup things.
 }
 
-
-
-void MainWindow::on_btn_rotateField_right_clicked() {
-    int rAngle = -45;
-    panel_field->gView_field->rotate(rAngle);
-    panel_field->currentFieldAngle += rAngle;
+void MainWindow::control_selected_robot(float vx, float vy, float w){
+    auto robot = GuiRobot::get_selected_robot();
+    if(robot) robot->setManualVelocity(Point(vx,vy),w);
 }
 
-void MainWindow::on_btn_rotateField_left_clicked() {
-    int lAngle = 45;
-    panel_field->gView_field->rotate(lAngle);
-    panel_field->currentFieldAngle += lAngle;
+void MainWindow::dribble_selected_robot(bool dribble){
+    auto robot = GuiRobot::get_selected_robot();
+    if(robot) robot->setDribble(dribble);
 }
 
-
-void MainWindow::on_btn_botForward_pressed() {
-    if (panel_field->selectedBot > -1 && panel_selected_robot->check_override->isChecked()) {
-        panel_field->btn_botForward->setDown(true);
-        setMyVelocity();
-
-        auto& robot = GuiRobot::proxies[selected_team_id][panel_field->selectedBot];
-        robot.setManualVelocity(Point(250,0),0);
-
-
-    }
-    panel_field->gView_field->scene()->update();
+void MainWindow::kick_selected_robot(float kick){
+    auto robot = GuiRobot::get_selected_robot();
+    if(robot) robot->setKick(kick);
 }
 
-void MainWindow::on_btn_botReverse_pressed() {
-    if (panel_field->selectedBot > -1 && panel_selected_robot->check_override->isChecked()) {
-        panel_field->btn_botReverse->setDown(true);
-        auto& robot = GuiRobot::proxies[selected_team_id][panel_field->selectedBot];
-        robot.setManualVelocity(Point(-250,0),0);
-
-    }
-    panel_field->gView_field->scene()->update();
-}
-
-void MainWindow::on_btn_botRotateRight_pressed() {
-    if (panel_field->selectedBot > -1 && panel_selected_robot->check_override->isChecked()) {
-        panel_field->btn_botTurnRight->setDown(true);
-
-        auto& robot = GuiRobot::proxies[selected_team_id][panel_field->selectedBot];
-        robot.setManualVelocity(Point(0,0),-M_PI/2);
-
-    }
-}
-
-void MainWindow::on_btn_botRotateLeft_pressed() {
-    if (panel_field->selectedBot > -1 && panel_selected_robot->check_override->isChecked()) {
-        panel_field->btn_botTurnLeft->setDown(true);
-
-        auto& robot = GuiRobot::proxies[selected_team_id][panel_field->selectedBot];
-        robot.setManualVelocity(Point(0,0),M_PI/2);
-
-    }
-}
-
-void MainWindow::on_btn_botTurnRight_pressed() {
-    if (panel_field->selectedBot > -1 && panel_selected_robot->check_override->isChecked()) {
-        panel_field->btn_botTurnRight->setDown(true);
-
-        auto& robot = GuiRobot::proxies[selected_team_id][panel_field->selectedBot];
-        robot.setManualVelocity(Point(0,0),-M_PI/2);
-
-    }
-
-}
-
-
-void MainWindow::on_btn_botTurnLeft_pressed() {
-    if (panel_field->selectedBot > -1 && panel_selected_robot->check_override->isChecked()) {
-        panel_field->btn_botTurnLeft->setDown(true);
-
-        auto& robot = GuiRobot::proxies[selected_team_id][panel_field->selectedBot];
-        robot.setManualVelocity(Point(0,0),M_PI/2);
-
-    }
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-void MainWindow::on_btn_botForward_released() {
-    if (panel_field->selectedBot > -1 && panel_selected_robot->check_override->isChecked()) {
-        panel_field->btn_botForward->setDown(false);
-
-        auto& robot = GuiRobot::proxies[selected_team_id][panel_field->selectedBot];
-        robot.setManualVelocity(Point(0,0),0);
-
-    }
-}
-
-
-void MainWindow::on_btn_botReverse_released() {
-    if (panel_field->selectedBot > -1 && panel_selected_robot->check_override->isChecked()) {
-        panel_field->btn_botReverse->setDown(false);
-
-        auto& robot = GuiRobot::proxies[selected_team_id][panel_field->selectedBot];
-        robot.setManualVelocity(Point(0,0),0);
-
-    }
-}
-
-
-
-void MainWindow::on_btn_botRotateRight_released() {
-    if (panel_field->selectedBot > -1 && panel_selected_robot->check_override->isChecked()) {
-        panel_field->btn_botTurnRight->setDown(false);
-
-        auto& robot = GuiRobot::proxies[selected_team_id][panel_field->selectedBot];
-        float currentFwd = robot.getSpeedCommand();
-        robot.setManualVelocity(Point(currentFwd,0),0);
-
-    }
-}
-
-void MainWindow::on_btn_botRotateLeft_released() {
-    if (panel_field->selectedBot > -1 && panel_selected_robot->check_override->isChecked()) {
-        panel_field->btn_botTurnLeft->setDown(false);
-        auto& robot = GuiRobot::proxies[selected_team_id][panel_field->selectedBot];
-        robot.setManualVelocity(Point(0,0),0);
-
-    }
-}
-
-void MainWindow::on_btn_botTurnRight_released() {
-    if (panel_field->selectedBot > -1 && panel_selected_robot->check_override->isChecked()) {
-        panel_field->btn_botTurnRight->setDown(false);
-
-        auto& robot = GuiRobot::proxies[selected_team_id][panel_field->selectedBot];
-        float currentFwd = robot.getSpeedCommand();
-        robot.setManualVelocity(Point(currentFwd,0),0);
-
-    }
-}
-
-
-void MainWindow::on_btn_botTurnLeft_released() {
-    if (panel_field->selectedBot > -1 && panel_selected_robot->check_override->isChecked()) {
-        panel_field->btn_botTurnLeft->setDown(false);
-        auto& robot = GuiRobot::proxies[selected_team_id][panel_field->selectedBot];
-        robot.setManualVelocity(Point(0,0),0);
-
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-void MainWindow::on_btn_botKick_pressed() {
-    if (panel_field->selectedBot > -1 && panel_selected_robot->check_override->isChecked()) {
-        panel_field->btn_botKick->setDown(true);
-
-        auto& robot = GuiRobot::proxies[selected_team_id][panel_field->selectedBot];
-        robot.setKick();
-    }
-}
-
-void MainWindow::on_btn_botKick_released() {
-    if (panel_field->selectedBot > -1 && panel_selected_robot->check_override->isChecked()) {
-        panel_field->btn_botKick->setDown(false);
-        auto& robot = GuiRobot::proxies[selected_team_id][panel_field->selectedBot];
-        robot.setKick(0);
-    }
-}
-
-void MainWindow::on_btn_botDrible_pressed() {
-    if (panel_field->selectedBot > -1 && panel_selected_robot->check_override->isChecked()) {
-        panel_field->btn_botDrible->setDown(true);
-        auto& robot = GuiRobot::proxies[selected_team_id][panel_field->selectedBot];
-        robot.setDribble(true);
-    }
-}
-
-void MainWindow::on_btn_botDrible_released() {
-    if (panel_field->selectedBot > -1 && panel_selected_robot->check_override->isChecked()) {
-        panel_field->btn_botDrible->setDown(false);
-        auto& robot = GuiRobot::proxies[selected_team_id][panel_field->selectedBot];
-        robot.setDribble(false);
-    }
-}
 
 
 void MainWindow::on_check_botOverride_clicked(bool checked) {
@@ -593,7 +284,7 @@ void MainWindow::on_check_botOverride_clicked(bool checked) {
 
 void MainWindow::on_btn_override_all_released() {
 
-    for (int i=0; i<teamSize_blue; i++) {
+    for (int i=0; i<MAX_ROBOTS_PER_TEAM; i++) {
         // Telling robot QObjects to change color
         auto& robot = GuiRobot::proxies[selected_team_id][i];
         robot.overridden = true;
@@ -648,4 +339,18 @@ std::string MainWindow::getSelectedTeamName(){
 }
 RobotTeam* MainWindow::getSelectedTeam(){
     return RobotTeam::getTeam(selected_team_id);
+}
+
+void MainWindow::select_robot(int team, int robot){
+    // if currently controlling a robot
+    if(GuiRobot::selected_robot!=-1)
+        GuiRobot::get_selected_robot()->setManualVelocity(Point(0,0),0);
+
+    GuiRobot::selected_team = team;
+    GuiRobot::selected_robot = robot;
+
+
+    robotpanel->scrollToSelBot(0);
+    panel_selected_robot->update_selected_robot(team,robot);
+
 }

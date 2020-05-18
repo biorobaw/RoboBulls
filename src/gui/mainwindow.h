@@ -46,27 +46,21 @@ public:
 
     // Class pointers
     RobotPanel * robotpanel;
-    GuiDrawLine *guidrawline;
 
-    QString getRemTime();
     // Debug functions
-    void drawLine( int originX, int originY, int endX, int endY );
-    void guiPrint(std::string output);
-    void updateBallInfo();
     // Key Bindings
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
-    void wheelEvent(QWheelEvent *event);
-    void setMyVelocity();
-    // team sizes; used all over the place
-    int teamSize_blue;
-    int teamSize_yellow;
 
 
     int getSelectedTeamId();
     void setSelectedTeamId(int team_id);
     std::string getSelectedTeamName();
     RobotTeam* getSelectedTeam();
+
+    void control_selected_robot(float vx, float vy, float w);
+    void dribble_selected_robot(bool dribble);
+    void kick_selected_robot(float kick=5.0);
 
 
 
@@ -75,40 +69,22 @@ private:
     int selected_team_id = ROBOT_TEAM_BLUE;
 
     void setupKeyShortcuts();
-    void setFocusOnField();
 
     // my pointer
     static MainWindow *mw;
-    QTimer timer;
 
     // pointer to MainWindow
     static MainWindow* window;
 
-    // For controlling bots manually
-    int myVelocity;
+    void process_user_input();
+
+    void connect_slots();
 
 private slots:
     // Threads
     void coreLoop();
-    void clockLoop();
 // Widget slots
     // bot controls
-    void on_btn_botForward_pressed();
-    void on_btn_botForward_released();
-    void on_btn_botTurnRight_pressed();
-    void on_btn_botTurnRight_released();
-    void on_btn_botRotateRight_pressed();
-    void on_btn_botRotateRight_released();
-    void on_btn_botReverse_pressed();
-    void on_btn_botReverse_released();
-    void on_btn_botTurnLeft_pressed();
-    void on_btn_botTurnLeft_released();
-    void on_btn_botRotateLeft_pressed();
-    void on_btn_botRotateLeft_released();
-    void on_btn_botKick_pressed();
-    void on_btn_botKick_released();
-    void on_btn_botDrible_pressed();
-    void on_btn_botDrible_released();
     void on_check_botOverride_clicked(bool checked);
     void on_btn_override_all_released();
     void on_btn_override_none_released();
@@ -119,9 +95,10 @@ private slots:
     void on_combo_fieldColor_currentIndexChanged(int index);
     void on_check_showIDs_stateChanged(int arg1);
     void on_combo_botScale_currentIndexChanged(int index);
-    void on_btn_rotateField_right_clicked();
-    void on_btn_rotateField_left_clicked();
     void on_btn_toggleTeamColor_clicked();
+
+    void select_robot(int team, int robot);
+
 };
 
 #endif // MAINWINDOW_H

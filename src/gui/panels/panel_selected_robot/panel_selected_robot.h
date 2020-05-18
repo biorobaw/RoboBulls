@@ -13,17 +13,7 @@ public:
     explicit PanelSelectedRobot(QWidget *parent = nullptr);
     ~PanelSelectedRobot();
 
-    void hidePanel();
-
-
-    //Returns name for a robot behavior
-    static QStringList getKeyWords(std::string behavior);
-    void guiPrintRobot(int robotID, std::string output);
-    void printBehavior(int team_id, int robot_id);
-    void setupSelRobotPanel();
-
-
-    QString botBehavior[10] = {""};
+    void update_panel();
 
 public slots:
     void update_selected_robot(int team, int robot);
@@ -34,6 +24,7 @@ private:
     int selected_robot = -1;
 
     void update_team_color();
+    static QStringList getKeyWords(std::string behavior);
 
 };
 

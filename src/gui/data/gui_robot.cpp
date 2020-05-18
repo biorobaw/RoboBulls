@@ -6,7 +6,8 @@
 #include "robot/navigation/robot_pilot.h"
 
 GuiRobot GuiRobot::proxies[2][MAX_ROBOTS_PER_TEAM];
-
+int GuiRobot::selected_robot = -1;
+int GuiRobot::selected_team  = ROBOT_TEAM_BLUE;
 
 GuiRobot::GuiRobot(){}
 
@@ -117,4 +118,8 @@ bool GuiRobot::isDribbling(){
 }
 bool GuiRobot::isKicking(){
     return kicking;
+}
+
+GuiRobot* GuiRobot::get_selected_robot(){
+    return selected_robot == -1 ? nullptr : &proxies[selected_team][selected_robot];
 }

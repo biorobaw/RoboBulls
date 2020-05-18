@@ -1,5 +1,6 @@
 #include "panel_game_info.h"
 #include "gui/data/guiball.h"
+#include "model/game_state.h"
 
 PanelGameInfo::PanelGameInfo(QWidget *parent) :
     QFrame(parent)
@@ -30,35 +31,14 @@ void PanelGameInfo::on_btn_connectGui_clicked() {
     }
 }
 
-
-
-void PanelGameInfo::update_clock() {
-    // TODO: knowing the time since the start of the program doesn't seem to useful
-    // it might be better replacing this widget with something else
-    auto milli_seconds = timer.elapsed();
-    int seconds = ( milli_seconds / ( 1000 )      ) % 60;
-    int minutes = ( milli_seconds / ( 1000*60 )   ) % 60;
-    int hours   = ( milli_seconds / ( 1000*60*60) );
-    if(hours > 99) hours = 99;
-
-
-    // assembling string and printing to GUI
-    QString time =  QString::number(hours).rightJustified(2, '0')
-            + ":" + QString::number(minutes).rightJustified(2,'0')
-            + ":" + QString::number(seconds).rightJustified(2,'0');
-    lcd_clock->display(time);
+void PanelGameInfo::update_mouse_pos(QPointF mousePos){
+    lcd_coordX_cursor->display(mousePos.rx());
+    lcd_coordY_cursor->display(mousePos.ry());
 }
 
-void PanelGameInfo::update_data(){
+void PanelGameInfo::update_panel(){
 
-}
-
-void PanelGameInfo::update_mouse_position(QPointF pos){
-    lcd_coordX_cursor->display(pos.rx()-100); // mouse coords are slightly off, thus fixed by 100
-    lcd_coordY_cursor->display(pos.ry()-100);
-}
-
-void PanelGameInfo::update_ball_position(){\
+    // update ball position
     lcd_coordX_ball->display(GuiBall::getPosition().x);
     lcd_coordY_ball->display(GuiBall::getPosition().y);
 
@@ -70,7 +50,30 @@ void PanelGameInfo::update_ball_position(){\
     if (gView_ball->isHidden()) {
         gView_ball->show();
     }
+
+    // Update score and time remaining
+    label_blue_goals->setText(QString::number(GameState::getBlueGoals()));
+    label_yellow_goals->setText(QString::number(GameState::getYellowGoals()));
+    label_time_remaining->setText("Time Left: " + QString::number(GameState::getRemainingTime()));
+
+
+    // TODO: knowing the time since the start of the program doesn't seem to useful
+    // it might be better replacing this widget with something else
+    auto milli_seconds = timer.elapsed();
+    int seconds = ( milli_seconds / ( 1000 )      ) % 60;
+    int minutes = ( milli_seconds / ( 1000*60 )   ) % 60;
+    int hours   = ( milli_seconds / ( 1000*60*60) );
+    if(hours > 99) hours = 99;
+
+    // assembling string and printing to GUI
+    QString time =  QString::number(hours).rightJustified(2, '0')
+            + ":" + QString::number(minutes).rightJustified(2,'0')
+            + ":" + QString::number(seconds).rightJustified(2,'0');
+    lcd_clock->display(time);
+
 }
+
+
 
 
 

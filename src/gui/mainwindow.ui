@@ -2830,120 +2830,6 @@ color: rgb(255, 255, 255);</string>
                   </widget>
                  </widget>
                 </item>
-                <item>
-                 <widget class="QFrame" name="frame_robot_9">
-                  <property name="enabled">
-                   <bool>true</bool>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>16777215</width>
-                    <height>80</height>
-                   </size>
-                  </property>
-                  <property name="font">
-                   <font>
-                    <pointsize>8</pointsize>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="mouseTracking">
-                   <bool>false</bool>
-                  </property>
-                  <property name="focusPolicy">
-                   <enum>Qt::NoFocus</enum>
-                  </property>
-                  <property name="accessibleName">
-                   <string>Robot 0</string>
-                  </property>
-                  <property name="autoFillBackground">
-                   <bool>false</bool>
-                  </property>
-                  <property name="frameShape">
-                   <enum>QFrame::Panel</enum>
-                  </property>
-                  <property name="frameShadow">
-                   <enum>QFrame::Sunken</enum>
-                  </property>
-                  <property name="lineWidth">
-                   <number>3</number>
-                  </property>
-                  <property name="midLineWidth">
-                   <number>0</number>
-                  </property>
-                  <widget class="QLabel" name="title_robPanel_9">
-                   <property name="geometry">
-                    <rect>
-                     <x>5</x>
-                     <y>5</y>
-                     <width>241</width>
-                     <height>21</height>
-                    </rect>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <family>Courier 10 Pitch</family>
-                     <pointsize>10</pointsize>
-                     <weight>75</weight>
-                     <bold>true</bold>
-                     <underline>true</underline>
-                    </font>
-                   </property>
-                   <property name="autoFillBackground">
-                    <bool>false</bool>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
-                   </property>
-                   <property name="text">
-                    <string>Team Info</string>
-                   </property>
-                   <property name="alignment">
-                    <set>Qt::AlignHCenter|Qt::AlignTop</set>
-                   </property>
-                  </widget>
-                  <widget class="QLabel" name="blueGoal">
-                   <property name="geometry">
-                    <rect>
-                     <x>10</x>
-                     <y>20</y>
-                     <width>231</width>
-                     <height>17</height>
-                    </rect>
-                   </property>
-                   <property name="text">
-                    <string>Blue Goals</string>
-                   </property>
-                  </widget>
-                  <widget class="QLabel" name="yellGoal">
-                   <property name="geometry">
-                    <rect>
-                     <x>10</x>
-                     <y>40</y>
-                     <width>231</width>
-                     <height>17</height>
-                    </rect>
-                   </property>
-                   <property name="text">
-                    <string>Yellow Goals</string>
-                   </property>
-                  </widget>
-                  <widget class="QLabel" name="timeRem">
-                   <property name="geometry">
-                    <rect>
-                     <x>10</x>
-                     <y>60</y>
-                     <width>231</width>
-                     <height>17</height>
-                    </rect>
-                   </property>
-                   <property name="text">
-                    <string>Time Remaining</string>
-                   </property>
-                  </widget>
-                 </widget>
-                </item>
                </layout>
               </widget>
              </widget>
@@ -3004,6 +2890,9 @@ color: rgb(255, 255, 255);</string>
    <extends>QFrame</extends>
    <header>gui/panels/panel_game_info/panel_game_info.h</header>
    <container>1</container>
+   <slots>
+    <slot>update_mouse_pos(QPointF)</slot>
+   </slots>
   </customwidget>
   <customwidget>
    <class>PanelSelectedRobot</class>
@@ -3016,6 +2905,9 @@ color: rgb(255, 255, 255);</string>
    <extends>QFrame</extends>
    <header>gui/panels/panel_field/panel_field.h</header>
    <container>1</container>
+   <slots>
+    <signal>field_mouse_moved(QPointF)</signal>
+   </slots>
   </customwidget>
  </customwidgets>
  <tabstops>
