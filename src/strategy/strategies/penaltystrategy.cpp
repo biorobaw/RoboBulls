@@ -63,3 +63,7 @@ void PenaltyStrategy::assignBehaviors()
 
     }
 }
+
+std::string PenaltyStrategy::getName(){
+    return "Penalty";
+}

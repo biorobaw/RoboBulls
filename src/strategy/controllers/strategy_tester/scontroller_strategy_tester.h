@@ -9,6 +9,7 @@ class SControllerStrategyTester : public StrategyController
 public:
     SControllerStrategyTester(RobotTeam* team, YAML::Node* node);
 
+    std::string getName();
 protected:
     int getControllerState(Referee_Command game_command) override;
     int getNextControllerState(int current_state,int strategy_status) override;

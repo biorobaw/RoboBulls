@@ -37,6 +37,8 @@ public:
     void run();
     void signalNewCommand();
 
+    std::string getStrategyName();
+
 protected:
     virtual int getControllerState(Referee_Command command) = 0;
     virtual int getNextControllerState(int current_state,int strategy_status) = 0;

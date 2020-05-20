@@ -3,7 +3,7 @@
 #include "model/game_state.h"
 #include "robot/robot.h"
 #include "model/team.h"
-#include "gui/guiinterface.h"
+#include "gui/gui_interface.h"
 
 #include "controllers/scontroller_normal_game.h"
 #include "controllers/strategy_tester/scontroller_strategy_tester.h"
@@ -83,4 +83,8 @@ StrategyController* StrategyController::loadController(RobotTeam* team, YAML::No
     }
 
 
+}
+
+std::string StrategyController::getStrategyName(){
+    return activeStrategy == nullptr ? "null" : activeStrategy->getName();
 }

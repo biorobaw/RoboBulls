@@ -67,6 +67,7 @@ public:
 
 
     bool  hasBehavior();
+    bool  hasBall();
     void  performBehavior();
     bool  isGoalie();
 
@@ -130,7 +131,7 @@ private:
     bool  dribble = false;                //!< Robot is dribbling?
 
 
-    bool hasBall;               //!< Have the ball? 1/0
+    bool has_ball = false;               //!< Have the ball? 1/0
 
     friend class GameModel;
     friend class SSLVisionListener;

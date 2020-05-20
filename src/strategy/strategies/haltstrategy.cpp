@@ -17,3 +17,9 @@ void HaltStrategy::assignBehaviors()
 
     }
 }
+
+
+std::string HaltStrategy::getName(){
+    return "Halt";
+}
+

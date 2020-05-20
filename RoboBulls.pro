@@ -42,24 +42,27 @@ include(protobuf.pri)
 
 
 SOURCES += src/main.cpp \
+        src/gui/data/gui_ball.cpp \
         src/gui/data/gui_robot.cpp \
-        src/gui/data/guiball.cpp \
-        src/gui/data/guibotlabel.cpp \
-        src/gui/data/guifield.cpp \
-        src/gui/guiinterface.cpp \
-        src/gui/guisidelines.cpp \
-        src/gui/mainwindow.cpp \
-        src/gui/panels/panel_field/panel_field.cpp \
-        src/gui/panels/panel_game_info/panel_game_info.cpp \
-        src/gui/panels/panel_output/panel_output.cpp \
-        src/gui/panels/panel_selected_robot/panel_selected_robot.cpp \
+        src/gui/data/gui_teams.cpp \
+        src/gui/gui_interface.cpp \
+        src/gui/main_window.cpp \
+        src/gui/panels/panel_field.cpp \
+        src/gui/panels/panel_game_info.cpp \
+        src/gui/panels/panel_output.cpp \
+        src/gui/panels/panel_selected_robot.cpp \
+        src/gui/panels/panel_teams.cpp \
         src/gui/panels/panel_teams/frame_robot.cpp \
-        src/gui/panels/panel_teams/panel_teams.cpp \
-        src/gui/panels/robotpanel.cpp \
-        src/gui/utils/gui_robot_drawer.cpp \
-        src/gui/utils/guidrawline.cpp \
-        src/gui/utils/guidrawpoint.cpp \
-        src/gui/utils/guidrawregion.cpp \
+        src/gui/panels/panel_teams/tab_team.cpp \
+        src/gui/style_sheets/color_palettes.cpp \
+        src/gui/graphics/graphics_ball.cpp \
+        src/gui/graphics/graphics_field.cpp \
+        src/gui/graphics/graphics_line.cpp \
+        src/gui/graphics/graphics_outter_field.cpp \
+        src/gui/graphics/graphics_points.cpp \
+        src/gui/graphics/graphics_polygon.cpp \
+        src/gui/graphics/graphics_robot.cpp \
+        src/gui/graphics/graphics_robot_label.cpp \
         src/model/ball.cpp \
         src/model/field.cpp \
         src/model/game_state.cpp \
@@ -126,24 +129,27 @@ SOURCES += src/main.cpp \
         src/parameters/motion_parameters.cpp
 
 HEADERS += \
+        src/gui/data/gui_ball.h \
         src/gui/data/gui_robot.h \
-        src/gui/data/guiball.h \
-        src/gui/data/guibotlabel.h \
-        src/gui/data/guifield.h \
-        src/gui/guiinterface.h \
-        src/gui/guisidelines.h \
-        src/gui/mainwindow.h \
-        src/gui/panels/panel_field/panel_field.h \
-        src/gui/panels/panel_game_info/panel_game_info.h \
-        src/gui/panels/panel_output/panel_output.h \
-        src/gui/panels/panel_selected_robot/panel_selected_robot.h \
+        src/gui/data/gui_teams.h \
+        src/gui/gui_interface.h \
+        src/gui/main_window.h \
+        src/gui/panels/panel_field.h \
+        src/gui/panels/panel_game_info.h \
+        src/gui/panels/panel_output.h \
+        src/gui/panels/panel_selected_robot.h \
+        src/gui/panels/panel_teams.h \
         src/gui/panels/panel_teams/frame_robot.h \
-        src/gui/panels/panel_teams/panel_teams.h \
-        src/gui/panels/robotpanel.h \
-        src/gui/utils/gui_robot_drawer.h \
-        src/gui/utils/guidrawline.h \
-        src/gui/utils/guidrawpoint.h \
-        src/gui/utils/guidrawregion.h \
+        src/gui/panels/panel_teams/tab_team.h \
+        src/gui/style_sheets/color_palettes.h \
+        src/gui/graphics/graphics_ball.h \
+        src/gui/graphics/graphics_field.h \
+        src/gui/graphics/graphics_line.h \
+        src/gui/graphics/graphics_outter_field.h \
+        src/gui/graphics/graphics_points.h \
+        src/gui/graphics/graphics_polygon.h \
+        src/gui/graphics/graphics_robot.h \
+        src/gui/graphics/graphics_robot_label.h \
         src/model/ball.h \
         src/model/constants.h \
         src/model/field.h \
@@ -242,13 +248,14 @@ RESOURCES += \
     src/gui/images.qrc
 
 FORMS += \
-    src/gui/mainwindow.ui \
-    src/gui/panels/panel_field/panel_field.ui \
-    src/gui/panels/panel_game_info/panel_game_info.ui \
-    src/gui/panels/panel_output/panel_output.ui \
-    src/gui/panels/panel_selected_robot/panel_selected_robot.ui \
+    src/gui/main_window.ui \
+    src/gui/panels/panel_field.ui \
+    src/gui/panels/panel_game_info.ui \
+    src/gui/panels/panel_output.ui \
+    src/gui/panels/panel_selected_robot.ui \
+    src/gui/panels/panel_teams.ui \
     src/gui/panels/panel_teams/frame_robot.ui \
-    src/gui/panels/panel_teams/panel_teams.ui
+    src/gui/panels/panel_teams/tab_team.ui
 
 
 

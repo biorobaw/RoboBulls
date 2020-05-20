@@ -29,3 +29,7 @@ Strategy* SControllerStrategyTester::loadStateStrategy(int state){
     (void) state;
     return new TestStrategy(team);
 }
+
+std::string TestStrategy::getName(){
+    return "Test";
+}

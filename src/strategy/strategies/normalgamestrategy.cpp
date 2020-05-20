@@ -318,3 +318,7 @@ void NormalGameStrategy::assignGoalieIfOk(RobotTeam* team)
         goalie->assignBeh<Goalie>();
 }
 //! @endcond
+
+std::string NormalGameStrategy::getName(){
+    return "normal game";
+}

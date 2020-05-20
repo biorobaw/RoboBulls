@@ -37,6 +37,8 @@ public:
 
     int getColor();
     std::string getRobotType();
+    std::string getControllerName();
+    std::string getStrategyName();
     int getSide();
     int getOpponentSide();
     bool isControlled();
@@ -51,6 +53,7 @@ private:
 
     int color;
     std::string robot_type = "";
+    std::string controller_name = "none";
     int side;
 
     std::set<Robot*> all_robots;

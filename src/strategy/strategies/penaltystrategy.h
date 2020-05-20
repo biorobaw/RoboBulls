@@ -17,6 +17,7 @@ class PenaltyStrategy:public Strategy
 public:
     PenaltyStrategy(RobotTeam* _team);
     void assignBehaviors();
+    virtual std::string getName() override;
 private:
     Behavior * beh;
 };

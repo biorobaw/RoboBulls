@@ -19,6 +19,7 @@ public:
     FreeKickStrategy(RobotTeam* _team);
     void assignBehaviors() override;
     int getStatus() override;
+    virtual std::string getName() override;
 
 private:
     // Robot that is sent to kick the ball

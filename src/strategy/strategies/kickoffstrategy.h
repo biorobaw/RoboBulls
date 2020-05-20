@@ -13,6 +13,7 @@ class KickOffStrategy : public Strategy
 public:
     KickOffStrategy(RobotTeam* _team);
     void assignBehaviors();
+    virtual std::string getName() override;
 private:
 #define NUM_KICK_OFF_POINTS 5
     static Point myKickoffPoints[NUM_KICK_OFF_POINTS];

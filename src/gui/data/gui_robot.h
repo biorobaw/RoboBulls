@@ -14,40 +14,54 @@ public:
     static void init_static_data();
     static void updateRobots();
 
-    static int selected_robot;
-    static int selected_team;
+
     static GuiRobot* get_selected_robot();
 
-    Point getCurrentPosition();
-    float getOrientation();
-    int   getCurrentSpeed();
-    Point getVelocityCommand();
-    int   getSpeedCommand();
+    // function related to robot measurments
+    bool    isInField(); // indicates whether a robot is in the field (independently if it is controlled)
+    bool    isControlled(); // indicates whether we control the robot
+    bool    hasBall();
+    int     getMoveStatus();
+    string  getBehaviorName();
+    Point   getCurrentPosition();
+    float   getOrientation();
     QString getOrientationAsString();
-    string getBehaviorName();
+    int     getCurrentSpeed();     // actual speed
+    Point   getVelocityCommand();  // target velocity
+    int     getSpeedCommand();     // target speed
+    bool    isDribbling();
+    bool    isKicking();
 
 
 
+    // functions to control the robot from the gui
     void  setManualVelocity(Point vxy, float angular);
     void  setKick(float power = 5.0);
     void  setDribble(bool dribble);
-    bool  hasProxy();
 
-    bool isDribbling();
-    bool isKicking();
+
+    // functions related to user input
+    bool selected();
+    bool doubleClicked();
+    bool select(bool signal); // returns true if it could be selected
+    void doubleClick();
+    static void clearSelected(bool signal);
+
 
     int id;
     int team;
-    bool Pressed        = false;
-    bool highlighted    = false;
-    bool doubleClicked  = false;
     bool visible        = true;
-    bool overridden     = false;
-    bool selected       = false;
+    bool overridden     = true;
 
 private:
 
-    bool  is_in_field = false;
+    static GuiRobot* selected_robot;
+    static GuiRobot* double_clicked_robot;
+
+    bool  is_in_field   = false;
+    bool  is_controlled = false; // whether we are controlling the robot
+    bool  has_ball      = false;
+    int   move_status   = -1;
     Point previous_pos = Point(0,0);
     Point current_pos  = Point(0,0);
     int   previous_speed = 0; // actually, its delta distance

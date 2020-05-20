@@ -40,3 +40,7 @@ void KickOffStrategy::assignBehaviors()
     Robot* goalie = team->getRobotByRole(RobotRole::GOALIE);
     if(goalie) goalie->assignBeh<Goalie>();
 }
+
+std::string KickOffStrategy::getName(){
+    return "kick off";
+}

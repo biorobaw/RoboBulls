@@ -4,10 +4,14 @@
 #include "utilities/measurements.h"
 #include "robot/robot.h"
 #include "robot/navigation/robot_pilot.h"
+#include "gui/main_window.h"
+#include "robot/navigation/path_planning/move_collisions.h"
+#include "model/ball.h"
+
 
 GuiRobot GuiRobot::proxies[2][MAX_ROBOTS_PER_TEAM];
-int GuiRobot::selected_robot = -1;
-int GuiRobot::selected_team  = ROBOT_TEAM_BLUE;
+GuiRobot* GuiRobot::selected_robot       =nullptr;
+GuiRobot* GuiRobot::double_clicked_robot =nullptr;
 
 GuiRobot::GuiRobot(){}
 
@@ -36,6 +40,9 @@ void GuiRobot::updateRobots(){
         r.is_in_field = proxy != nullptr;
 
         if(r.is_in_field){
+            r.is_controlled = proxy->getTeam()->isControlled();
+            r.has_ball = proxy->hasBall();
+            r.move_status = Collisions::getMoveStatus(proxy);
             r.previous_pos = r.current_pos;
             r.previous_speed = r.current_speed;
 
@@ -59,8 +66,55 @@ void GuiRobot::updateRobots(){
 
 }
 
-bool GuiRobot::hasProxy(){
+bool GuiRobot::isInField(){
     return is_in_field;
+}
+
+bool GuiRobot::isControlled(){
+    return is_controlled;
+}
+
+bool GuiRobot::hasBall(){
+    return has_ball;
+}
+
+int GuiRobot::getMoveStatus(){
+    return move_status;
+}
+
+bool GuiRobot::selected(){
+    return this == selected_robot;
+}
+
+bool GuiRobot::doubleClicked(){
+    return this == double_clicked_robot;
+}
+
+bool GuiRobot::select(bool signal){
+    if(isInField()){
+        if(selected_robot!=this){
+            clearSelected(false);
+            selected_robot = this;
+        }
+        if(signal) MainWindow::dash->signal_new_robot_selected(this);
+        return true;
+    }
+    return false;
+}
+
+void GuiRobot::clearSelected(bool signal){
+    if(selected_robot!=nullptr){
+        selected_robot->setManualVelocity(Point(0,0),0);
+        selected_robot->setDribble(0);
+        selected_robot->setKick(0);
+        selected_robot = nullptr;
+        double_clicked_robot = nullptr;
+        if(signal) MainWindow::dash->signal_new_robot_selected(nullptr);
+    }
+}
+
+void GuiRobot::doubleClick(){
+    if(select(true)) double_clicked_robot = this;
 }
 
 Point GuiRobot::getCurrentPosition(){
@@ -121,5 +175,5 @@ bool GuiRobot::isKicking(){
 }
 
 GuiRobot* GuiRobot::get_selected_robot(){
-    return selected_robot == -1 ? nullptr : &proxies[selected_team][selected_robot];
+    return selected_robot;
 }

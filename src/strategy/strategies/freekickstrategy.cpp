@@ -96,3 +96,7 @@ int FreeKickStrategy::getStatus()
     else
         return KICKED;
 }
+
+std::string FreeKickStrategy::getName(){
+    return "free kick";
+}

@@ -2,6 +2,8 @@
 #include "robot/robot.h"
 #include "utilities/measurements.h"
 #include "utilities/comparisons.h"
+#include <iostream>
+using std::cout, std::endl;
 
 Point Ball::position = Point(0,0);
 Point Ball::velocity = Point(0,0);
@@ -36,9 +38,8 @@ void Ball::setStopPosition(Point p){
 
 bool Ball::hasBall(Robot* robot)
 {
+    if(!robot) return false;
     Point bp = getPosition();
-    if(!robot)
-        return false;
     return Comparisons::isDistanceToLess(robot, bp, 300) &&
            Comparisons::isFacingPoint(robot, bp);
 }
@@ -51,21 +52,22 @@ void Ball::setRobotWithBall(){
     //Assume no robot has the ball first
     auto robots = Robot::getAllRobots();
     for(Robot* robot : robots)
-        robot->hasBall = false;
+        robot->has_ball = false;
 
-    if(!hasBall(robot_with_ball) && ++lastSeenWithoutBallCount > 10)
+    if(!robot_with_ball || (!hasBall(robot_with_ball) && ++lastSeenWithoutBallCount > 10))
     {
         lastSeenWithoutBallCount = 0;
         robot_with_ball = nullptr;
         for(Robot* r : robots){
             if(hasBall(r)){
                 robot_with_ball = r;
-                break;
+                robot_with_ball->has_ball = true;
+                return;
             }
         }
-    }
+    } else robot_with_ball->has_ball = true;
 
-    if(robot_with_ball) robot_with_ball->hasBall = true;
+
 }
 
 Robot* Ball::getRobotWithBall(){

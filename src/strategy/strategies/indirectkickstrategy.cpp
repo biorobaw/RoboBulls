@@ -99,3 +99,7 @@ int IndirectKickStrategy::getStatus()
     else
         return KICKED;
 }
+
+std::string IndirectKickStrategy::getName(){
+    return "indirect kick";
+}

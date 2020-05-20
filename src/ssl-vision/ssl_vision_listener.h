@@ -3,7 +3,7 @@
 #include <string>
 #include <QtCore/QThread>
 
-#include "gui/guiinterface.h"
+#include "gui/gui_interface.h"
 
 
 #include <QUdpSocket>

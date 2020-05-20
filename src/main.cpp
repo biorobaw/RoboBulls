@@ -7,7 +7,7 @@
 #include "robot/robcomm.h"
 #include "ssl-game-controller/sss_refbox_listener.h"
 #include "model/game_state.h"
-#include "gui/guiinterface.h"
+#include "gui/gui_interface.h"
 #include "utilities/debug.h"
 #include "strategy/strategycontroller.h"
 #include "strategy/controllers/joystick/scontroller_joystick.h"

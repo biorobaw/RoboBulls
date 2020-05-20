@@ -69,6 +69,7 @@ float Robot::getKick() {return kick;}
 //! @brief Returns a pointer to the robot's current behavior
 Behavior* Robot::getBehavior(){ return behavior; }
 
+bool Robot::hasBall(){ return has_ball; }
 
 //! @brief Returns true if the robot curently has a Behavior
 bool Robot::hasBehavior() { return behavior != nullptr ; }

@@ -1,6 +1,6 @@
 #ifndef STRATEGY_H
 #define STRATEGY_H
-
+#include <string>
 class RobotTeam;
 
 //! @addtogroup baseclasses
@@ -60,6 +60,8 @@ public:
      * \return
      */
     virtual int getStatus();
+
+    virtual std::string getName() = 0;
 
 
 

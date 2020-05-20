@@ -7,13 +7,13 @@
 
 #include "utilities/edges.h"
 #include "utilities/debug.h"
-#include "gui/guiinterface.h"
+#include "gui/gui_interface.h"
 #include "model/game_state.h"
 #include "model/ball.h"
 #include "model/team.h"
 #include <assert.h>
 #include "ssl_referee.pb.h"
-
+using std::cout, std::endl;
 
 // Global static pointer used to ensure a single instance of the class.
 Referee_Command  GameState::refereeCommand  = Referee_Command_HALT; //The current state of the game from RefComm

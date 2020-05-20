@@ -62,8 +62,10 @@ RobotTeam::RobotTeam(YAML::Node* t_node, int _color) {
     comm = RobComm::loadRobComm(robot_type,&rob_comm);
 
     auto s_controller = (*t_node)["STRATEGY_CONTROLLER"];
-    if(robot_type != "none")
+    if(robot_type != "none"){
         controller = StrategyController::loadController(this,&s_controller);
+        controller_name = s_controller["ID"].as<string>();
+    }
 
 
 
@@ -151,6 +153,15 @@ int RobotTeam::getColor(){
 std::string RobotTeam::getRobotType(){
     return robot_type;
 }
+
+std::string RobotTeam::getControllerName(){
+    return controller_name;
+}
+
+std::string RobotTeam::getStrategyName(){
+    return controller!=nullptr ? controller->getStrategyName() : "none";
+}
+
 int RobotTeam::getSide(){
     return side;
 }

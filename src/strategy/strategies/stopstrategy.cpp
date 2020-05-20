@@ -20,3 +20,7 @@ void StopStrategy::assignBehaviors()
         robot->assignBeh<RefStop>();
 }
 
+
+std::string StopStrategy::getName(){
+    return "Stop";
+}

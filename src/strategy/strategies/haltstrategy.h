@@ -10,6 +10,7 @@ class HaltStrategy : public Strategy
 public:
     HaltStrategy(RobotTeam* _team);
     void assignBehaviors();
+    virtual std::string getName() override;
 };
 
 #endif // HALTSTRATEGY_H

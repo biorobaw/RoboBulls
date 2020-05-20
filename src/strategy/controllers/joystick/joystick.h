@@ -5,7 +5,7 @@
 
 
 #include "utilities/debug.h"
-#include "gui/guiinterface.h"
+#include "gui/gui_interface.h"
 
 
 /*! @brief Joystick control support
