@@ -18,7 +18,7 @@ PanelField::PanelField(QWidget *parent) :
 
     gView_field->verticalScrollBar()->installEventFilter(this);
     gView_field->setBackgroundBrush(QColor::fromRgb(30,30,30,255));
-    check_showIDs->setChecked(true);
+    check_show_ids->setChecked(true);
 
 
     region_drawer = nullptr;
@@ -60,8 +60,8 @@ PanelField::PanelField(QWidget *parent) :
 
 
     // connect signals
-    connect(zoom_slider, SIGNAL(valueChanged(int)), this, SLOT(zoomField(int)));
-    connect(zoom_default, SIGNAL(clicked()), this, SLOT(defaultZoom()));
+    connect(slider_zoom, SIGNAL(valueChanged(int)), this, SLOT(zoomField(int)));
+    connect(btn_zoom_default, SIGNAL(clicked()), this, SLOT(defaultZoom()));
 
 
     // Refreshes graphics view to eliminate glitchiness
@@ -81,8 +81,8 @@ PanelField::~PanelField()
 void PanelField::updateScene() {
 
     // Grid
-    field->grid = check_fieldGrid->isChecked();
-    auto scale = combo_gridScale->currentText();
+    field->grid = check_field_grid->isChecked();
+    auto scale = combo_grid_scale->currentText();
     field->gridScale = scale == "200²" ? 100 : scale == "500²" ? 250 : 500;
 //    field->coloredGoals = check_coloredGoals->isChecked();
 
@@ -90,11 +90,11 @@ void PanelField::updateScene() {
     // Colored Goals
 
     // Updating field/sideline colors
-    sidelines->colorScheme = combo_fieldColor->currentText();
-    field->colorScheme = combo_fieldColor->currentText();
+    sidelines->colorScheme = combo_field_color->currentText();
+    field->colorScheme = combo_field_color->currentText();
 
     // Ball Scale
-    auto bs_str = combo_ballScale->currentText();
+    auto bs_str = combo_ball_scale->currentText();
     ball_drawer->setScale(bs_str == "150%" ? 1.5 : bs_str == "120%" ? 1.2 : 1.0);
 
 
@@ -102,7 +102,7 @@ void PanelField::updateScene() {
 
 //    flipLabel.setMatrix();
 
-    auto s_str = combo_botScale->currentText();
+    auto s_str = combo_robot_scale->currentText();
     float robot_scale = s_str == "150%" ? 1.5 : s_str == "120%" ? 1.2 : 1.0;
 
     // Updating objects in scene
@@ -115,7 +115,7 @@ void PanelField::updateScene() {
 
             auto* gui_l = gui_bot_labels[team][robot_id];
 
-            gui_l->hidden = !check_showIDs->isChecked();
+            gui_l->hidden = !check_show_ids->isChecked();
 
         }
 
@@ -393,7 +393,7 @@ void PanelField::selectRobot(int team, int robot){
 }
 
 void PanelField::zoomField(int zoom) {
-    zoom_slider->setValue(zoom);
+    slider_zoom->setValue(zoom);
     double zoomScale = zoom *.01;
     gView_field->setTransform(QTransform::fromScale(zoomScale, zoomScale));
     gView_field->scale(1, -1);
@@ -423,7 +423,7 @@ bool PanelField::eventFilter(QObject* obj, QEvent* e){
 //        gView_field->centerOn(mouse_relative.rx(), mouse_relative.ry());
 
         int delta = ((QWheelEvent*)e)->delta() > 0 ? 2 : -2;
-        zoom_slider->setValue(zoom_slider->value()+delta);
+        slider_zoom->setValue(slider_zoom->value()+delta);
 
         return true;
     } else if ( obj == scene && e->type() == QEvent::GraphicsSceneMouseMove ){

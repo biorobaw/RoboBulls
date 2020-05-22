@@ -1,5 +1,5 @@
-#ifndef GUIBOTLABEL_H
-#define GUIBOTLABEL_H
+#ifndef _GRAPHICS_ROBOT_LABEL_
+#define _GRAPHICS_ROBOT_LABEL_
 #include <QPainter>
 #include <QGraphicsItem>
 #include <QDebug>
@@ -24,5 +24,5 @@ private:
     GuiRobot* robot = nullptr;
 };
 
-#endif // GUIBOTLABEL_H
+#endif // _GRAPHICS_ROBOT_LABEL_
 

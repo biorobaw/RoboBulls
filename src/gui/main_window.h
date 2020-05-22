@@ -1,5 +1,5 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef MAIN_WINDOW_H
+#define MAIN_WINDOW_H
 
 #include <iosfwd>
 #include <string>
@@ -29,7 +29,7 @@ class GuiRobot;
 class GameState;
 class Robot;
 
-#include "ui_mainwindow.h"
+#include "ui_main_window.h"
 
 class MainWindow : public QMainWindow, public Ui_MainWindow
 {
@@ -49,26 +49,12 @@ public:
     void keyReleaseEvent(QKeyEvent *event);
 
 
-    int getSelectedTeamId();
-    void setSelectedTeamId(int team_id);
-    std::string getSelectedTeamName();
-    RobotTeam* getSelectedTeam();
-
     void signal_new_robot_selected(GuiRobot* robot);
 
 
 private:
 
-    int selected_team_id = ROBOT_TEAM_BLUE;
-
     void setupKeyShortcuts();
-
-    // my pointer
-    static MainWindow *mw;
-
-    // pointer to MainWindow
-    static MainWindow* window;
-
     void process_user_input();
 
     void connect_slots();
@@ -81,4 +67,4 @@ private slots:
 
 };
 
-#endif // MAINWINDOW_H
+#endif // MAIN_WINDOW_H

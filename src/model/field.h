@@ -55,6 +55,9 @@ public:
     static int CENTER_RADIUS;
 
 
+    static int NEGATIVE_SIDE_TEAM;
+
+
 
 
 };

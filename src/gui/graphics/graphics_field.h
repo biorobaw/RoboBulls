@@ -1,5 +1,5 @@
-#ifndef GUIFIELD_H
-#define GUIFIELD_H
+#ifndef _GRAPHICS_FIELD_
+#define _GRAPHICS_FIELD_
 #include <QPainter>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsItem>
@@ -23,4 +23,4 @@ public:
 
 };
 
-#endif // GUIFIELD_H
+#endif // _GRAPHICS_FIELD_

@@ -8,12 +8,11 @@
 #include "robot/navigation/path_planning/move_collisions.h"
 #include "model/ball.h"
 
-
 GuiRobot GuiRobot::proxies[2][MAX_ROBOTS_PER_TEAM];
 GuiRobot* GuiRobot::selected_robot       =nullptr;
 GuiRobot* GuiRobot::double_clicked_robot =nullptr;
 
-GuiRobot::GuiRobot(){}
+GuiRobot::GuiRobot(QObject* parent){}
 
 #define FOR_TEAM_ROBOT for(int team=0 ; team<2; team++) \
     for(int robot=0; robot<MAX_ROBOTS_PER_TEAM; robot++)

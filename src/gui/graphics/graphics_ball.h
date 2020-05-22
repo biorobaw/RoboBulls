@@ -1,4 +1,4 @@
-#ifndef GUIBALLDRAWER_H
+#ifndef _GRAPHICS_BALL_
 #define GUIBALLDRAWER_H
 
 #include <QGraphicsItem>
@@ -25,4 +25,4 @@ private:
 
 };
 
-#endif
+#endif // _GRAPHICS_BALL_

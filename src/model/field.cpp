@@ -36,6 +36,9 @@ float Field::METERS_PER_POINT = (1.0 / POINTS_PER_METER);
 
 int Field::CENTER_RADIUS = 500;
 
+
+int Field::NEGATIVE_SIDE_TEAM = ROBOT_TEAM_BLUE;
+
 void Field::load(YAML::Node* field_node){
 
     cout<< "--FIELD PARAMS" <<endl;

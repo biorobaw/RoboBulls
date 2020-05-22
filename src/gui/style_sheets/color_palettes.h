@@ -1,5 +1,5 @@
-#ifndef COLOR_PALLETS_H
-#define COLOR_PALLETS_H
+#ifndef COLOR_PALETTES_H
+#define COLOR_PALETTES_H
 
 
 #include "model/constants.h"
@@ -17,6 +17,7 @@
 extern const QPen blueLinePen;
 extern const QPen yellowLinePen;
 extern const QPen blackLinePen;
+extern const QBrush goal_area_brush;
 
 struct FieldPallete {
     QBrush brush;
@@ -27,6 +28,15 @@ struct FieldPallete {
 
 extern const QMap<QString, FieldPallete> field_pallete_maps;
 
+
+// ================ BALL COLORS ===========================
+// ========================================================
+
+struct BallPallete {
+    QBrush brush;
+    QPen   pen;
+};
+extern const QMap<QString, BallPallete> ball_pallete_maps;
 
 // ====== PANEL SELECTED ROBOT COLORS & ROBOT FRAMES ======
 // ========================================================
@@ -62,5 +72,15 @@ struct TeamColors {
 extern const TeamColors team_colors[2];
 
 
+// ==================== GRAPHICS LINE =====================
+// ========================================================
 
-#endif // COLOR_PALLETS_H
+struct LineAgeColors {
+    QPen pen;
+    QBrush brush;
+};
+
+extern const LineAgeColors line_age_colors[];
+extern const QPen graphics_line_ellipse_pen;
+
+#endif // COLOR_PALETTES_H

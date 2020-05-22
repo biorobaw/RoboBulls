@@ -1,19 +1,26 @@
-#ifndef GUI_ROBOT_PROXY_H
-#define GUI_ROBOT_PROXY_H
+#ifndef GUI_ROBOT_H
+#define GUI_ROBOT_H
 
 #include "utilities/point.h"
 #include "model/constants.h"
 #include <QString>
+#include <QObject>
 #include <string>
+#include <QtCore>
 using std::string;
 
-class GuiRobot
+class GuiRobot : public QObject
 {
+    Q_OBJECT
+//    Q_PROPERTY(bool overriden READ isOverriden WRITE setOverride)
 public:
     static GuiRobot proxies[2][MAX_ROBOTS_PER_TEAM];
     static void init_static_data();
     static void updateRobots();
 
+    bool overriden = true;
+    bool isOverriden(){return overriden;}
+    void setOverride(bool val){overriden=true;}
 
     static GuiRobot* get_selected_robot();
 
@@ -51,7 +58,7 @@ public:
     int id;
     int team;
     bool visible        = true;
-    bool overridden     = true;
+
 
 private:
 
@@ -74,9 +81,13 @@ private:
     bool dribling = false;
     bool kicking = false;
 
-    GuiRobot();
+    GuiRobot(QObject* parent = 0);
     void initProxy(int team, int id);
+
+
+//signals:
+//    void overridenChanged(bool new_value);
 
 };
 
-#endif // GUI_ROBOT_PROXY_H
+#endif // GUI_ROBOT_H

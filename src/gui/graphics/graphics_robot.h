@@ -1,5 +1,5 @@
-#ifndef GUIROBOT_H
-#define GUIROBOT_H
+#ifndef _GRAPHICS_ROBOT_
+#define _GRAPHICS_ROBOT_
 #include <QPainter>
 #include <QGraphicsItem>
 #include <QDebug>
@@ -44,4 +44,4 @@ private:
 
 };
 
-#endif // GUIROBOT_H
+#endif // _GRAPHICS_ROBOT_

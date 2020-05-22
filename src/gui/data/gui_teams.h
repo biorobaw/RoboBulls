@@ -1,5 +1,5 @@
-#ifndef GUITEAMS_H
-#define GUITEAMS_H
+#ifndef GUI_TEAMS_H
+#define GUI_TEAMS_H
 
 #include <string>
 using std::string;
@@ -7,7 +7,7 @@ using std::string;
 class GuiTeams
 {
 public:
-    static void update();
+    static void updateTeams();
     static string get_robot_type(int team_id);
     static string get_controller(int team_id);
     static string get_strategy(int team_id);
@@ -19,4 +19,4 @@ private:
 
 };
 
-#endif // GUITEAMS_H
+#endif // GUI_TEAMS_H

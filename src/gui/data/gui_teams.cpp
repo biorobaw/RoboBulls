@@ -17,7 +17,7 @@ string GuiTeams::get_strategy(int team_id){
     return strategy[team_id];
 }
 
-void GuiTeams::update(){
+void GuiTeams::updateTeams(){
     for(int i=0;i<2;i++){
         auto team = RobotTeam::getTeam(i);
         robot_type[i] = team->getRobotType();

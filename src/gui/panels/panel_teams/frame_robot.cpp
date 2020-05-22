@@ -25,7 +25,7 @@ void FrameRobot::set_robot(int robot_id, int team_id){
     this->robot_id = robot_id;
     this->team_id = team_id;
 
-    label_robot_id->setText("Robot " + QString::number(robot_id).rightJustified(2,' '));
+    check_robot->setText("Robot " + QString::number(robot_id).rightJustified(2,' '));
 
     gView_icon->setToolTip("Robot " + QString::number(robot_id));
     gView_icon->setScene(&icon_robot);
@@ -45,6 +45,7 @@ void FrameRobot::set_robot(int robot_id, int team_id){
     lcd_y->setStyleSheet           (t_colors.text_background);
 
 
+    check_robot->setCheckState(Qt::CheckState::Checked);
 
 //    connect(this,SIGNAL(CLI))
 
@@ -85,4 +86,10 @@ void FrameRobot::update_frame(){
 
     } else hide();
 
+}
+
+void FrameRobot::on_check_robot_stateChanged(int arg1)
+{
+    auto& robot = GuiRobot::proxies[team_id][robot_id];
+    cout << "State changed!";
 }

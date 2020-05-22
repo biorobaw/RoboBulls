@@ -1,7 +1,7 @@
 #include "graphics_field.h"
 #include <QApplication>
-#include "model/field.h"
-#include "model/team.h"
+#include "gui/data/gui_field.h"
+#include "gui/data/gui_teams.h"
 
 
 #include "gui/style_sheets/color_palettes.h"
@@ -9,16 +9,17 @@
 GraphicsField::GraphicsField()
 {
 
+
     // default values
-    setX(-(Field::HALF_FIELD_LENGTH-100));
-    setY(-(Field::HALF_FIELD_WIDTH-100)); // Y seems to be 100 off (?)
+    setX(-( GuiField::fieldHalfLength()-100));
+    setY(-(GuiField::fieldHalfWidth()-100)); // Y seems to be 100 off (?)
     setZValue(1);
     grid = false;
 }
 
 QRectF GraphicsField::boundingRect() const
 {
-    return QRectF(0,0,Field::FIELD_LENGTH,Field::FIELD_WIDTH);
+    return QRectF(0,0,GuiField::fieldLength(),GuiField::fieldWidth());
 }
 
 
@@ -40,8 +41,8 @@ void GraphicsField::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
     painter->fillRect(rec, pallete.brush);
 
 
-    // Lines
-    QLineF centerLine(Field::HALF_FIELD_LENGTH,0,Field::HALF_FIELD_LENGTH,Field::FIELD_WIDTH);
+    // Mid line
+    QLineF centerLine(GuiField::fieldHalfLength(),0,GuiField::fieldHalfLength(),GuiField::fieldWidth());
 
     // Center circle
     int centerDiam    = rec.height() / 4;
@@ -56,9 +57,6 @@ void GraphicsField::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
     int yellBoxX = rec.width()-boxWidth;
     QRectF blueBox(0,BoxY, boxWidth,boxHeight);
     QRectF yellBox(yellBoxX,BoxY,boxWidth,boxHeight);
-
-
-
 
 
     // Drawing field lines
@@ -89,12 +87,11 @@ void GraphicsField::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
     QRectF left_goal(blueGoalX,goalY, goalWidth,goalHeight);
     QRectF right_goal(rec.width(),goalY, goalWidth,goalHeight);
 
-    // Drawing goals
-    QBrush goalBrush(Qt::white, Qt::DiagCrossPattern);
-    painter->fillRect(left_goal,goalBrush);
-    painter->fillRect(right_goal,goalBrush);
+    // Drawing goals first backgorund, then lines
+    painter->fillRect(left_goal,goal_area_brush);
+    painter->fillRect(right_goal,goal_area_brush);
 
-    bool left_is_blue = RobotTeam::getTeam(ROBOT_TEAM_BLUE)->getSide() == FIELD_SIDE_NEGATIVE;
+    bool left_is_blue = GuiField::getTeamOnSide(FIELD_SIDE_NEGATIVE) == ROBOT_TEAM_BLUE;
     painter->setPen(left_is_blue ? blueLinePen : yellowLinePen);
     painter->drawRect(left_goal);
     painter->setPen(!left_is_blue ? blueLinePen : yellowLinePen);

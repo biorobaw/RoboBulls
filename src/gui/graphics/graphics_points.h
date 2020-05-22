@@ -1,5 +1,5 @@
-#ifndef GUIDRAWPOINT_H
-#define GUIDRAWPOINT_H
+#ifndef _GRAPHICS_POINTS_
+#define _GRAPHICS_POINTS_
 
 #include <QGraphicsItem>
 #include <QPainter>
@@ -20,4 +20,4 @@ public:
     std::vector<Point> points;
 };
 
-#endif // GUIDRAWPOINT_H
+#endif // _GRAPHICS_POINTS_

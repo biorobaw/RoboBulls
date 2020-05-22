@@ -1,5 +1,5 @@
-#ifndef GUISIDELINES_H
-#define GUISIDELINES_H
+#ifndef _GRAPHICS_OUTTER_FIELD_
+#define _GRAPHICS_OUTTER_FIELD_
 #include <QPainter>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsItem>
@@ -20,4 +20,4 @@ public:
 //    void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);       // ..and released
 };
 
-#endif // GUISIDELINES_H
+#endif // _GRAPHICS_OUTTER_FIELD_

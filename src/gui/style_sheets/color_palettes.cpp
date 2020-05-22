@@ -4,6 +4,83 @@
 #include "model/constants.h"
 
 
+// ================ BALL COLORS ===========================
+// ========================================================
+
+const QMap<QString, BallPallete> ball_pallete_maps = {
+    {
+        "Red-Orange", {
+            QBrush(QColor::fromRgb(255,69,0,255), Qt::SolidPattern),
+            QPen(Qt::black, 10, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin)
+        }
+
+    },
+    {
+         "Red", {
+            QBrush(Qt::red, Qt::SolidPattern),
+            QPen(Qt::black, 10, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin)
+        }
+
+    },
+    {
+        "Green", {
+            QBrush(Qt::green, Qt::SolidPattern),
+             QPen(Qt::black, 10, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin)
+        }
+
+    },
+    {
+        "White", {
+            QBrush(Qt::white, Qt::Dense1Pattern),
+             QPen(Qt::black, 10, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin)
+        }
+
+    },
+    {
+        "Orange", {
+            QBrush(QColor::fromRgb(255,165,0,255), Qt::SolidPattern),
+             QPen(Qt::black, 10, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin)
+        }
+
+    },
+    {
+        "Blue", {
+            QBrush(Qt::blue, Qt::SolidPattern),
+             QPen(Qt::white, 10, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin)
+        }
+
+    },
+    {
+        "Black", {
+            QBrush(Qt::black, Qt::SolidPattern),
+             QPen(Qt::white, 10, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin)
+        }
+
+    },
+    {
+
+        "Yellow", {
+            QBrush(Qt::yellow, Qt::SolidPattern),
+            QPen(Qt::white, 10, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin)
+        }
+    },
+    {
+        "Purple", {
+            QBrush(QColor::fromRgb(160,32,240,255), Qt::SolidPattern),
+             QPen(Qt::white, 10, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin)
+        }
+
+    },
+    {
+        "Hello Kitty!", {
+             QBrush(QColor::fromRgb(255,20,147,255), Qt::SolidPattern),
+             QPen(Qt::white, 10, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin)
+        }
+
+    },
+};
+
+
 
 
 // =============== FIELD COLORS ===========================
@@ -13,7 +90,7 @@
 const QPen blueLinePen(QColor::fromRgb(0,0,255,255), LINE_THICKNESS, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin);
 const QPen yellowLinePen(Qt::yellow, LINE_THICKNESS, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin);
 const QPen blackLinePen(Qt::black, 5, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin);
-
+const QBrush goal_area_brush = QBrush(Qt::white, Qt::DiagCrossPattern);
 
 const QMap<QString, FieldPallete> field_pallete_maps = {
     {"Default",   {QBrush(Qt::darkGreen, Qt::SolidPattern),
@@ -114,5 +191,40 @@ const TeamColors team_colors[2] = {
     }
 };
 
+
+
+// ==================== GRAPHICS LINE =====================
+// ========================================================
+
+
+const LineAgeColors line_age_colors[6] = {
+    {
+        QPen(QColor::fromRgb(255,0,0,5), 20, Qt::DotLine, Qt::RoundCap, Qt::MiterJoin),
+        QBrush(QColor::fromRgb(255,0,0,5), Qt::SolidPattern)
+    },
+    {
+        QPen(QColor::fromRgb(255,69,0,55), 20, Qt::DotLine, Qt::RoundCap, Qt::MiterJoin),
+        QBrush(QColor::fromRgb(255,69,0,55), Qt::SolidPattern)
+    },
+    {
+        QPen(QColor::fromRgb(255,165,0,100), 20, Qt::DotLine, Qt::RoundCap, Qt::MiterJoin),
+        QBrush(QColor::fromRgb(255,165,0,100), Qt::SolidPattern)
+    },
+    {
+        QPen(QColor::fromRgb(255,255,0,155), 20, Qt::DotLine, Qt::RoundCap, Qt::MiterJoin),
+        QBrush(QColor::fromRgb(255,255,0,155), Qt::SolidPattern)
+    },
+    {
+        QPen(QColor::fromRgb(173,255,47,200), 20, Qt::DotLine, Qt::RoundCap, Qt::MiterJoin),
+        QBrush(QColor::fromRgb(173,255,47,200), Qt::SolidPattern)
+    },
+    {
+        QPen(QColor::fromRgb(0,255,0,255), 20, Qt::DotLine, Qt::RoundCap, Qt::MiterJoin),
+        QBrush(QColor::fromRgb(0,255,0,255), Qt::SolidPattern)
+    }
+};
+
+
+const QPen graphics_line_ellipse_pen = QPen(QColor::fromRgb(255,0,0,0), 0, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin);
 
 

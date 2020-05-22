@@ -43,6 +43,7 @@ include(protobuf.pri)
 
 SOURCES += src/main.cpp \
         src/gui/data/gui_ball.cpp \
+        src/gui/data/gui_field.cpp \
         src/gui/data/gui_robot.cpp \
         src/gui/data/gui_teams.cpp \
         src/gui/gui_interface.cpp \
@@ -130,6 +131,7 @@ SOURCES += src/main.cpp \
 
 HEADERS += \
         src/gui/data/gui_ball.h \
+        src/gui/data/gui_field.h \
         src/gui/data/gui_robot.h \
         src/gui/data/gui_teams.h \
         src/gui/gui_interface.h \

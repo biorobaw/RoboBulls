@@ -16,6 +16,9 @@ public:
     void set_robot(int robot_id, int team_id);
 
 
+private slots:
+    void on_check_robot_stateChanged(int arg1);
+
 private:
     int robot_id=0;
     int team_id=0;

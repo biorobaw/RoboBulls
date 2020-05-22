@@ -1,5 +1,5 @@
-#ifndef GUIINTERFACE_H
-#define GUIINTERFACE_H
+#ifndef GUI_INTERFACE_H
+#define GUI_INTERFACE_H
 
 #include <vector>
 #include <iosfwd>
@@ -29,7 +29,7 @@ private:
     MainWindow * dash;
 };
 
-#endif // GUIINTERFACE_H
+#endif // GUI_INTERFACE_H
 
 
 

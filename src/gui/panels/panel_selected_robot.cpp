@@ -41,7 +41,7 @@ void PanelSelectedRobot::update_panel(){
     auto robot = GuiRobot::get_selected_robot();
 
     // set override checkbox
-    check_override->setChecked(robot->overridden);
+    check_override->setChecked(robot->isOverriden());
 
     // print behavior and scroll text
     text_robot_output->setText(("Behavior Keywords:\n" +
@@ -160,7 +160,7 @@ void PanelSelectedRobot::update_team_color(int team){
 
 void PanelSelectedRobot::on_check_botOverride_clicked(bool checked) {
     auto robot = GuiRobot::get_selected_robot();
-    robot->overridden = checked;
+    robot->setOverride(checked);
     if(checked) robot->setManualVelocity(Point(0,0),0);
 
 

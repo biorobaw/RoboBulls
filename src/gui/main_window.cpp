@@ -13,27 +13,16 @@
 #include <QMouseEvent>
 #include <QScrollBar>
 #include <QtWidgets/QMainWindow>
-#include "model/team.h"
+
 // Helper classes
 #include "main_window.h"
-#include "data/gui_ball.h"
-#include "gui/graphics/graphics_field.h"
-#include "gui/data/gui_ball.h"
-#include "gui/graphics/graphics_robot_label.h"
-#include "gui/graphics/graphics_robot.h"
-#include "gui/data/gui_robot.h"
-#include "gui/graphics/graphics_line.h"
-#include "gui_interface.h"
-#include "strategy/controllers/joystick/joystick.h"
-#include "robot/robcomm.h"
-#include "panels/panel_field.h"
-#include "gui/graphics/graphics_outter_field.h"
 
-// Project classes
-#include "model/game_state.h"
-#include "robot/robot.h"
-#include "data/gui_teams.h"
-#include "graphics/graphics_ball.h"
+#include "data/gui_ball.h"
+#include "gui/data/gui_ball.h"
+#include "gui/data/gui_field.h"
+#include "gui/data/gui_robot.h"
+#include "gui/data/gui_teams.h"
+#include "gui/graphics/graphics_ball.h"
 
 
 using namespace std;
@@ -74,7 +63,8 @@ void MainWindow::coreLoop() {
     // Update game data:
     GuiBall::updateBall();
     GuiRobot::updateRobots();
-    GuiTeams::update();
+    GuiTeams::updateTeams();
+    GuiField::updateField();
 
     // process user input:
     process_user_input();
@@ -93,7 +83,7 @@ void MainWindow::process_user_input(){
     // Interaction scanners
 //    panel_field->scanForScrollModifier();
 //    panel_field->scanForSelection();
-    GraphicsBall::setColor(panel_field->combo_ballColor->currentText());
+    GraphicsBall::setColor(panel_field->combo_ball_color->currentText());
 
 }
 
@@ -123,12 +113,6 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
             case Qt::RightArrow:
                 robot->setManualVelocity(Point(0,0),-M_PI/2);
                 break;
-            case Qt::Key_Q:
-                robot->setManualVelocity(Point(0,0),M_PI/2);
-                break;
-            case Qt::Key_E:
-                robot->setManualVelocity(Point(0,0),-M_PI/2);
-                break;
             case Qt::Key_Space:
                 robot->setKick();
                 break;
@@ -156,7 +140,8 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
             case Qt::Key_9:
                 int robot_id = event->key() - Qt::Key_0;
                 if(robot_id < 0 || robot_id >9) robot_id = 0;
-                GuiRobot::proxies[0][robot_id].select(true);
+                int team = control ? ROBOT_TEAM_YELLOW : ROBOT_TEAM_BLUE;
+                GuiRobot::proxies[team][robot_id].select(true);
                 break;
 
 
@@ -169,14 +154,14 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
                 if (alt) panel_field->defaultZoom();
                 else {
                     int zoom = control ? -5 : 5;
-                    panel_field->zoom_slider->setValue(panel_field->zoom_slider->value()+zoom);
+                    panel_field->slider_zoom->setValue(panel_field->slider_zoom->value()+zoom);
                 }
                 break;
 
             case Qt::Key_Plus:
             case Qt::Key_Minus:{
                 int zoom = event->key() == Qt::Key_Plus ? 5 : -5;
-                panel_field->zoom_slider->setValue(panel_field->zoom_slider->value()+zoom);
+                panel_field->slider_zoom->setValue(panel_field->slider_zoom->value()+zoom);
                 break;
             }
         }
@@ -242,13 +227,14 @@ void MainWindow::setupKeyShortcuts() {
 
     // i -> toggle show ids
     connect(new QShortcut(Qt::Key_I,this), SIGNAL(activated()),
-            panel_field->check_showIDs, SLOT(click()));
+            panel_field->check_show_ids, SLOT(click()));
 
     // Field bindings -
     connect(new QShortcut(Qt::Key_G,this), SIGNAL(activated()),
-            panel_field->check_fieldGrid, SLOT(click()));
+            panel_field->check_field_grid, SLOT(click()));
 
 }
+
 
 
 MainWindow::~MainWindow()
@@ -256,20 +242,6 @@ MainWindow::~MainWindow()
     //TODO: Actually cleanup things.
 }
 
-
-
-int MainWindow::getSelectedTeamId(){
-    return selected_team_id;
-}
-void MainWindow::setSelectedTeamId(int team_id){
-    selected_team_id = team_id;
-}
-std::string MainWindow::getSelectedTeamName(){
-    return selected_team_id == ROBOT_TEAM_BLUE ? "Blue" : "Yellow";
-}
-RobotTeam* MainWindow::getSelectedTeam(){
-    return RobotTeam::getTeam(selected_team_id);
-}
 
 void MainWindow::signal_new_robot_selected(GuiRobot* robot){
     panel_teams->show_robot(robot->team,robot->id);

@@ -1,5 +1,5 @@
-#ifndef GUIDRAWREGION_H
-#define GUIDRAWREGION_H
+#ifndef _GRAPHICS_POLYGON_
+#define _GRAPHICS_POLYGON_
 
 #include <QGraphicsItem>
 #include <QPainter>
@@ -20,4 +20,4 @@ public:
     QPolygon Q_polygon;
 };
 
-#endif // GUIDRAWREGION_H
+#endif // _GRAPHICS_POLYGON_

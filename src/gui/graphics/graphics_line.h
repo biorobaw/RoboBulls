@@ -1,5 +1,5 @@
-#ifndef GUIDRAWLINE_H
-#define GUIDRAWLINE_H
+#ifndef _GRAPHICS_LINE_
+#define _GRAPHICS_LINE_
 
 #include <QGraphicsItem>
 #include <QTimer>
@@ -34,4 +34,4 @@ public slots:
 
 };
 
-#endif // GUIDRAWLINE_H
+#endif // _GRAPHICS_LINE_

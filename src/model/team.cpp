@@ -2,12 +2,13 @@
 #include <assert.h>
 
 
-#include "model/team.h"
-#include "yaml-cpp/yaml.h"
-#include "robot/robcomm.h"
+#include "team.h"
 #include "robot/robot.h"
+#include "robot/robcomm.h"
 #include "strategy/strategycontroller.h"
+#include "field.h"
 
+#include "yaml-cpp/yaml.h"
 
 RobotTeam* RobotTeam::teams[2] = {NULL};
 
@@ -100,6 +101,9 @@ void RobotTeam::load_teams(YAML::Node* team_nodes){
                   << "         moving TEAM_YELLOW to other side of the field." << std::endl;
         teams[ROBOT_TEAM_YELLOW]->side = teams[ROBOT_TEAM_YELLOW]->getOpponentSide();
     }
+    auto blue_side = teams[ROBOT_TEAM_BLUE]->side;
+    Field::NEGATIVE_SIDE_TEAM = blue_side == FIELD_SIDE_NEGATIVE ? ROBOT_TEAM_BLUE : ROBOT_TEAM_YELLOW;
+
 }
 
 RobotTeam* RobotTeam::getTeam(int id){

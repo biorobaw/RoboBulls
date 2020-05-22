@@ -1,5 +1,5 @@
-#ifndef GUIBALL_H
-#define GUIBALL_H
+#ifndef GUI_BALL_H
+#define GUI_BALL_H
 #include <QPainter>
 #include <QGraphicsItem>
 #include <QDebug>
@@ -30,4 +30,4 @@ private:
 
 };
 
-#endif // GUIBALL_H
+#endif // GUI_BALL_H

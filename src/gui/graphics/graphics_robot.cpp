@@ -130,7 +130,7 @@ void GraphicsRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
     painter->setPen(QPen(Qt::black, 0, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
     painter->setBrush(QBrush(Qt::black, Qt::SolidPattern));
 
-    if (robot->overridden){
+    if (robot->isOverriden()){
         painter->setBrush(QBrush(Qt::darkRed, Qt::SolidPattern));
     }
 
@@ -139,7 +139,7 @@ void GraphicsRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         painter->setBrush(QBrush(color, Qt::SolidPattern));
 
     }
-    if (robot->overridden && robot->selected()) {
+    if (robot->isOverriden() && robot->selected()) {
         painter->setBrush(QBrush(Qt::red, Qt::SolidPattern));
     }
     int startAngle = 50 * 16;

@@ -1,4 +1,5 @@
 #include "graphics_line.h"
+#include "gui/style_sheets/color_palettes.h"
 
 GraphicsLine::GraphicsLine() {
 
@@ -18,35 +19,14 @@ void GraphicsLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     QPointF A(x1, y1);
     QPointF B(x2, y2);
 
-    if (age == 5) {
-        painter->setPen(QPen(QColor::fromRgb(0,255,0,255), 20, Qt::DotLine, Qt::RoundCap, Qt::MiterJoin));
-        brush = (QBrush(QColor::fromRgb(0,255,0,255), Qt::SolidPattern));
-    }
-    if (age == 4) {
-        painter->setPen(QPen(QColor::fromRgb(173,255,47,200), 20, Qt::DotLine, Qt::RoundCap, Qt::MiterJoin));
-        brush = (QBrush(QColor::fromRgb(173,255,47,200), Qt::SolidPattern));
-    }
-    if (age == 3) {
-        painter->setPen(QPen(QColor::fromRgb(255,255,0,155), 20, Qt::DotLine, Qt::RoundCap, Qt::MiterJoin));
-        brush = (QBrush(QColor::fromRgb(255,255,0,155), Qt::SolidPattern));
-    }
-    if (age == 2) {
-        painter->setPen(QPen(QColor::fromRgb(255,165,0,100), 20, Qt::DotLine, Qt::RoundCap, Qt::MiterJoin));
-        brush = (QBrush(QColor::fromRgb(255,165,0,100), Qt::SolidPattern));
-    }
-    if (age == 1) {
-        painter->setPen(QPen(QColor::fromRgb(255,69,0,55), 20, Qt::DotLine, Qt::RoundCap, Qt::MiterJoin));
-        brush = (QBrush(QColor::fromRgb(255,69,0,55), Qt::SolidPattern));
-    }
-    if (age == 0) {
-        painter->setPen(QPen(QColor::fromRgb(255,0,0,5), 20, Qt::DotLine, Qt::RoundCap, Qt::MiterJoin));
-        brush = (QBrush(QColor::fromRgb(255,0,0,5), Qt::SolidPattern));
-    }
+    painter->setPen(line_age_colors[age].pen);
+    brush = line_age_colors[age].brush;
+
 
 //    if (draw) {
     painter->drawLine(A, B);
     painter->setBrush(brush);
-    painter->setPen(QPen(QColor::fromRgb(255,0,0,0), 0, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
+    painter->setPen(graphics_line_ellipse_pen);
     painter->drawEllipse(B,10,10);
 //    }
 }
