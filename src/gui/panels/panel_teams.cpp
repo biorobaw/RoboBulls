@@ -1,5 +1,5 @@
 #include "panel_teams.h"
-
+#include "gui/data/gui_robot.h"
 #include "panel_teams/frame_robot.h"
 #include <iostream>
 using std::cout, std::endl;
@@ -17,6 +17,11 @@ PanelTeams::PanelTeams(QWidget *parent) :
 
     tab_yellow->setStyleSheet("background-color: blue;" "color: white");
     tab_yellow->setStyleSheet("background-color: yellow;" "color: black");
+    for(int i=0; i<2; i++)
+        for(int j=0; j<MAX_ROBOTS_PER_TEAM; j++)
+            connect(GuiRobot::get(i,j), SIGNAL(selectedChanged(GuiRobot*)),
+                    this, SLOT(scroll_to_selected(GuiRobot*)));
+
 
 }
 
@@ -31,35 +36,14 @@ void PanelTeams::update_panel(){
     else tab_yellow->update_tab();
 }
 
-void PanelTeams::show_robot(int team, int id){
-
-    tabWidget->setCurrentIndex(team);
-    (team == ROBOT_TEAM_BLUE ? tab_blue : tab_yellow)->show_robot(id);
+void PanelTeams::scroll_to_selected(GuiRobot* robot){
+    if(robot==nullptr || !robot->selected()) return;
+    tabWidget->setCurrentIndex(robot->team);
+    (robot->team == ROBOT_TEAM_BLUE ? tab_blue : tab_yellow)
+            ->show_robot(robot);
 
 }
 
-
-//    USELESS, THUS NOT REIMPLEMENTED
-//void RobotPanel::toggleIconVisible() {
-//    int id = dash->panel_field->selectedBot;
-//    int team_id = dash->getSelectedTeamId();
-//    auto& thisBot = GuiRobot::proxies[team_id][id];
-//    GuiRobotDrawer *thisIcon = robotIcon[id];
-
-//    if (dash->panel_field->selectedBot > -1) {
-//        if (thisBot.visible) {
-//            thisBot.visible = false;
-////            thisIcon->enabled = false;
-//            thisIcon->setOpacity(.3);
-////            thisBot.setOpacity(.3);
-//        } else {
-//            thisBot.visible = true;
-////            thisIcon->enabled = true;
-//            thisIcon->setOpacity(1);
-////            thisBot.setOpacity(1);
-//        }
-//    }
-//}
 
 
 

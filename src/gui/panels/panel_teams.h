@@ -4,6 +4,7 @@
 #include <QFrame>
 #include "ui_panel_teams.h"
 
+class GuiRobot;
 
 class PanelTeams : public QFrame, public Ui::PanelTeams
 {
@@ -15,11 +16,10 @@ public:
 
     void update_panel();
 
-    void show_robot(int team, int id);
+public slots:
+    void scroll_to_selected(GuiRobot* robot);
 
-//    void PanelTeams::scroll_to_robot(int robot);
 
-private:
 };
 
 #endif // PANEL_TEAMS_H

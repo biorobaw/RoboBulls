@@ -1,17 +1,21 @@
 #define _USE_MATH_DEFINES
 #include "graphics_robot.h"
-#include "utilities/measurements.h"
-#include <QLabel>
-#include <QString>
+#include "gui/data/gui_robot.h"
+#include <QPainter>
 
-GraphicsRobot::GraphicsRobot(int team, int id, bool is_icon) :
-    robot(&GuiRobot::proxies[team][id]), is_icon(is_icon)
+
+GraphicsRobot::GraphicsRobot(QObject* parent, int team, int id, bool is_icon) :
+    QObject(parent), robot(GuiRobot::get(team,id)), is_icon(is_icon)
 {
     setToolTip("Robot " + QString::number(robot->id));
     setFlag(ItemIsSelectable);
 
     int radius = boundingRect().width() / 2;
     setTransformOriginPoint(radius,radius);
+
+    setZValue(1);
+    show();
+
 }
 
 
@@ -122,9 +126,7 @@ void GraphicsRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         painter->setPen(QPen(Qt::gray, 0, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
         painter->setBrush(QBrush(Qt::gray, Qt::SolidPattern));
     }
-    if (robot->visible) {
-        painter->drawRoundedRect(base,15,15);
-    }
+    painter->drawRoundedRect(base,15,15);
 
     // Robot hat
     painter->setPen(QPen(Qt::black, 0, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
@@ -167,22 +169,16 @@ void GraphicsRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
 
 void GraphicsRobot::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    robot->select(true);
-    update();
+    robot->select();
     QGraphicsItem::mousePressEvent(event);
 }
 
-void GraphicsRobot::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-{
-    update();
-    QGraphicsItem::mouseReleaseEvent(event);
-}
 
 void GraphicsRobot::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
-    robot->doubleClick();
-    update();
+    robot->select();
     QGraphicsItem::mouseDoubleClickEvent(event);
+    emit robot->doubleClicked(robot);
 }
 
 

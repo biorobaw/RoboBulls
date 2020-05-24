@@ -46,7 +46,7 @@ void StrategyController::run()
     // perform robot behaviors
     for (Robot *rob :  team->getRobots())
         if (!GuiInterface::getGuiInterface()->isOverriddenBot(team->getColor(),rob->getID())) {
-            std::cout << "R" << rob->getID() << " not overriden, has beh? " << rob->hasBehavior() << std::endl;
+//            std::cout << "R" << rob->getID() << " not overriden, has beh? " << rob->hasBehavior() << std::endl;
             rob->performBehavior();
 
          }

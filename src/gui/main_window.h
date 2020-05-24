@@ -49,9 +49,6 @@ public:
     void keyReleaseEvent(QKeyEvent *event);
 
 
-    void signal_new_robot_selected(GuiRobot* robot);
-
-
 private:
 
     void setupKeyShortcuts();
@@ -59,9 +56,12 @@ private:
 
     void connect_slots();
 
+    bool gui_connected = true;
+
 private slots:
     // Threads
     void coreLoop();
+    void toggle_connect_gui();
 
 
 

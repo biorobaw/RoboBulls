@@ -1,6 +1,7 @@
 #include "graphics_ball.h"
 #include "gui/data/gui_ball.h"
 #include "gui/style_sheets/color_palettes.h"
+#include <QPainter>
 
 QBrush GraphicsBall::brush = ball_pallete_maps["Red-Orange"].brush;
 QPen   GraphicsBall::pen   = ball_pallete_maps["Red-Orange"].pen;
@@ -13,6 +14,7 @@ GraphicsBall::GraphicsBall(bool is_icon) :
     int radius = boundingRect().width() / 2;
     setTransformOriginPoint(radius,radius);   // sets center point, around which it rotates
     setToolTip("Ball");
+    setZValue(2);
     show();
 }
 

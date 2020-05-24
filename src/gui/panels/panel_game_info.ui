@@ -154,9 +154,9 @@
   <widget class="QPushButton" name="btn_connectGui">
    <property name="geometry">
     <rect>
-     <x>335</x>
+     <x>324</x>
      <y>91</y>
-     <width>80</width>
+     <width>91</width>
      <height>27</height>
     </rect>
    </property>
@@ -170,7 +170,7 @@
     <string notr="true">background-color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
-    <string>Connect</string>
+    <string>Disconnect Gui</string>
    </property>
   </widget>
   <widget class="QLCDNumber" name="lcd_mouse_coordX">

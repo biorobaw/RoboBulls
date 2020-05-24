@@ -9,65 +9,69 @@
 #include "gui/graphics/graphics_points.h"
 #include "gui/graphics/graphics_polygon.h"
 #include <QScrollBar>
+#include <QWheelEvent>
 #include "gui/graphics/graphics_ball.h"
+#include <iostream>
+#include <QDebug>
+#include <QGraphicsSceneDragDropEvent>
+#include "gui/data/gui_robot.h"
+
+using std::cout, std::endl;
 
 PanelField::PanelField(QWidget *parent) :
     QFrame(parent)
 {
     setupUi(this);
 
-    gView_field->verticalScrollBar()->installEventFilter(this);
-    gView_field->setBackgroundBrush(QColor::fromRgb(30,30,30,255));
-    check_show_ids->setChecked(true);
 
-
+    // FIRST CREATE SCENE AND GRAPHICS
     region_drawer = nullptr;
     point_drawer = nullptr;
-    dash = (MainWindow*)parent;
 
-
-
-    // create a scene and set it in the graphics view
-    scene = new QGraphicsScene();
-    scene->installEventFilter(this);
+    scene = new QGraphicsScene;
     gView_field->setScene(scene);
+    gView_field->setBackgroundBrush(QColor::fromRgb(30,30,30,255));
 
-    // Create field, sideline, and ball graphics
-    scene->addItem(field = new GraphicsField());
-    scene->addItem(sidelines = new GraphicsOutterField());
+    scene->addItem(outter_field_drawer = new GraphicsOutterField());
+    scene->addItem(field_drawer = new GraphicsField());
     scene->addItem(ball_drawer = new GraphicsBall(false));
-    ball_drawer->setZValue(2);
-    ball_drawer->show();
 
-
-    // create robot graphics
+    // create robot graphics and their labels
     for(int team=0; team<2; team++)
         for(int robot_id=0; robot_id<MAX_ROBOTS_PER_TEAM; robot_id++){
             auto label = new GraphicsLabel(team, robot_id );
-            gui_bot_labels[team][robot_id] = label;
-            label->setZValue(4);
-            label->setTransform(QTransform(1,0,0,0,-1,0,0,200,1), false);
-            label->show();
-            scene->addItem(label);
+            scene->addItem(robot_labels_drawers[team][robot_id] = label);
 
-            auto robot = new GraphicsRobot(team,robot_id,false);
-            robot_drawers[team][robot_id] = robot;
-            robot->setZValue(1);
-            robot->show();
-            scene->addItem(robot);
+            auto robot = new GraphicsRobot(this,team,robot_id,false);
+            scene->addItem(robot_drawers[team][robot_id] = robot);
 
         }
 
 
-    // connect signals
+
+
+    // THEN CONNECT ALL SIGNALS AND EVENT MANAGERS
+
+    gView_field->verticalScrollBar()->installEventFilter(this);
+    scene->installEventFilter(this);
+    for(int team=0; team<2; team++)
+        for(int robot_id=0; robot_id<MAX_ROBOTS_PER_TEAM; robot_id++){
+            connect(GuiRobot::get(team,robot_id),SIGNAL(doubleClicked(GuiRobot*)),this,SLOT(setFollowingRobot(GuiRobot*)));
+        }
+
     connect(slider_zoom, SIGNAL(valueChanged(int)), this, SLOT(zoomField(int)));
     connect(btn_zoom_default, SIGNAL(clicked()), this, SLOT(defaultZoom()));
+    connect(gView_field->verticalScrollBar(),SIGNAL(actionTriggered(int)),this,SLOT(clearFollowing()));
+    connect(gView_field->horizontalScrollBar(),SIGNAL(actionTriggered(int)),this,SLOT(clearFollowing()));
 
 
-    // Refreshes graphics view to eliminate glitchiness
+    // FINALLY SET DEFAULT VALUES AND SHOW PANEL
+//    check_show_ids->setChecked(true);
+    defaultZoom(); // set default zoom after finishing initialization
     gView_field->show();
 
-    defaultZoom(); // set default zoom after finishing initialization
+
+
 
 }
 
@@ -80,95 +84,29 @@ PanelField::~PanelField()
 
 void PanelField::updateScene() {
 
-    // Grid
-    field->grid = check_field_grid->isChecked();
-    auto scale = combo_grid_scale->currentText();
-    field->gridScale = scale == "200²" ? 100 : scale == "500²" ? 250 : 500;
-//    field->coloredGoals = check_coloredGoals->isChecked();
-
-
-    // Colored Goals
-
-    // Updating field/sideline colors
-    sidelines->colorScheme = combo_field_color->currentText();
-    field->colorScheme = combo_field_color->currentText();
-
-    // Ball Scale
-    auto bs_str = combo_ball_scale->currentText();
-    ball_drawer->setScale(bs_str == "150%" ? 1.5 : bs_str == "120%" ? 1.2 : 1.0);
-
-
-    // Tranformation matrix for robot ID labels
-
-//    flipLabel.setMatrix();
-
-    auto s_str = combo_robot_scale->currentText();
-    float robot_scale = s_str == "150%" ? 1.5 : s_str == "120%" ? 1.2 : 1.0;
-
-    // Updating objects in scene
-    for(int team=0 ; team < 2; team++)
-        for(int robot_id=0; robot_id < MAX_ROBOTS_PER_TEAM; robot_id++){
-
-            auto& gui_r = robot_drawers[team][robot_id];
-            gui_r->setScale(robot_scale);
-
-
-            auto* gui_l = gui_bot_labels[team][robot_id];
-
-            gui_l->hidden = !check_show_ids->isChecked();
-
-        }
-
 
     // Keeping camera centered
     // Centering camera on double-clicked bot
-    if (centeredBotID!=nullptr) gView_field->centerOn(centeredBotID);
+
     // Printing debug lines
     drawLine();
     drawPoint();
     drawRegion();
     updateLineQueue();
 
-    gView_field->update();
-
-
-    // TODO:
-    // there where issues with the conditional refresh, thus we are refreshing all
-    // then we will improve it
-    if (refresh || true) {
-        gView_field->hide();
-        gView_field->show();
-        refresh = false;
+    // the following robot doesn't match the selected robot, it has been deselected:
+    // else, if following a robot center the camera
+    if(followingRobot && GuiRobot::get_selected_robot() != followingRobot->robot){
+        clearFollowing();
+    } else if(followingRobot!=nullptr) {
+        gView_field->centerOn(followingRobot);
     }
 
-}
-void PanelField::scanForSelection() {
-    bool newSelection = true;   // possibly pointless
-//    doubleClickScan();
-//    cameraMoveScan();
-    // booleans (possibly uneccessarily)
-//    fieldClickScan();
-//    panelBotClickScan();
-//    fieldBotClickScan();
-
-    if (newSelection) {
-        dash->panel_selected_robot->update_selected_robot();
-    } else { return; }
-}
+    // here we invalidate whole scene, ideally we should only invalidate
+    // areas around objects that are changing (like robot)
+    gView_field->invalidateScene();
 
 
-void PanelField::scanForScrollModifier() {
-    // CTRL modifer for field scrolling
-    if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier) == true) {
-        gView_field->setDragMode(QGraphicsView::ScrollHandDrag);
-        justScrolled = true;
-    } else {
-        gView_field->setDragMode(QGraphicsView::NoDrag);
-        if (justScrolled) {
-            justScrolled = false;
-            refresh = true;
-        }
-    }
 }
 
 void PanelField::setupLine(Point start, Point stop, double seconds) {
@@ -195,7 +133,7 @@ void PanelField::drawLine() {
     // Creating a new line based on received specs
     if (lineAPoints.size() > 0) {
         int startIter = 0;
-        int newLines = lineAPoints.size() - lineQueue.size();
+        int newLines = lineAPoints.size() - line_drawers.size();
         if (newLines > 0) {
             startIter = lineAPoints.size() - newLines;
         }
@@ -214,7 +152,7 @@ void PanelField::drawLine() {
 
             // adding our line to the scene and to the aging queue
             scene->addItem(newLine);
-            lineQueue.push_front(newLine);
+            line_drawers.push_front(newLine);
         }
     }
 }
@@ -262,16 +200,16 @@ void PanelField::drawRegion() {
 
 void PanelField::updateLineQueue() {
     // Refreshing the field if there are lines to draw
-    if (lineQueue.size() > 0) {
-        for (unsigned int i=0; i<lineQueue.size(); i++) {
-            if (lineQueue[i] != NULL) {
+    if (line_drawers.size() > 0) {
+        for (unsigned int i=0; i<line_drawers.size(); i++) {
+            if (line_drawers[i] != NULL) {
                 // refreshing scene to prevent visual glitches
                 refresh = true;
                 // Deleting old lines
-                if (lineQueue[i]->age == 0) {
-                    lineQueue[i]->hide();
-                    delete lineQueue[i];
-                    lineQueue.erase(lineQueue.begin()+i);
+                if (line_drawers[i]->age == 0) {
+                    line_drawers[i]->hide();
+                    delete line_drawers[i];
+                    line_drawers.erase(line_drawers.begin()+i);
                 }
             }
         }
@@ -282,114 +220,83 @@ void PanelField::updateLineQueue() {
     }
 }
 
-//void PanelField::doubleClickScan() {
-//    // Scanning for double-click selection
-//    int team_id = dash->getSelectedTeamId();
-//    for (int i=0; i<dash->teamSize_blue; i++) {
-//        auto drawer = robot_drawers[team_id][i];
-//        auto r = drawer->robot;
-//        if (r->hasProxy()) {
-//            if (r->doubleClicked)  {
-//                r->doubleClicked = false;
-//                centeredBotID = drawer;
-//                centerViewOnBot();
-//                zoomField(20);
-//                // dash->guiPrint("Focused on Robot " + std::to_string(i));
-//                break;
-//            }
-//        }//nullcheck
-//    }//end for
-//}
 
-//void PanelField::cameraMoveScan() {
-//    // Scrolling the camera removes centeredOn but not selection
-//    int team_id = dash->getSelectedTeamId();
-//    if (justScrolled) {
-//        for (int i=0; i<dash->teamSize_blue; i++) {
-//            robot_drawers[team_id][i]->robot->doubleClicked = false;
+void PanelField::setHidePaths(bool val){
+    hide_paths = val;
+}
 
-//        }
-//        centeredBotID = nullptr;
-//    }
-//}
 
-//bool PanelField::fieldClickScan() {
-//    // Field/Sidelines clicked removes centeredOn and selection
-//    if (field->Pressed == true) {
-//        field->highlighted = true;
-//        field->Pressed = false;
-//    }
-//    if (sidelines->Pressed == true) {
-//        sidelines->highlighted = true;
-//        sidelines->Pressed = false;
-//    }
 
-//    if (field->highlighted || sidelines->highlighted) {
-//        int team_id = dash->getSelectedTeamId();
-//        for (int i=0; i<dash->teamSize_blue; i++) {
-//            auto r = robot_drawers[team_id][i]->robot;
-//            if (r->hasProxy()) {
-//                r->highlighted = false;
-//                r->doubleClicked = false;
-//                // r->setSelected(false);
-//            }//nullcheck
-//        }
-//        field->highlighted = false;
-//        sidelines->highlighted = false;
-//        selectedBot = -1;
-//        centeredBotID = nullptr;
 
-//    }
-//     return true;
-//    return true;
-//}
-//using std::cout;
-//bool PanelField::panelBotClickScan() {
-//    int team_id = dash->getSelectedTeamId();
-//    cout << "scan2 - 1\n";
-//    for (int i=0; i<6; i++) {
-//        cout << "scan2 - 2 - " << i << std::endl;
-//        auto drawer = dash->robotpanel->robotIcon[i];
-//        if (drawer->isSelected()) {
-//            drawer->setSelected(false);
-//            if(selectRobot(team_id,i)) return true;
-//        }
-//    }
-//    cout << "scan2 - 3\n";
-//     return false;
-//}
 
-//bool PanelField::fieldBotClickScan() {
-//    int team_id = dash->getSelectedTeamId();
-//    for (int i=0; i<6; i++) {
-//        auto drawer = robot_drawers[team_id][i];
-//        if(drawer->isSelected()){
-//            drawer->setSelected(false);
-//            if(selectRobot(team_id,i)) return true;
-//        }
-//    }
-//     return false;
-//}
+// =================== EVENT PROCESSING ================================
+// =====================================================================
 
-void PanelField::selectRobot(int team, int robot){
-//    auto& r = robot_drawers[team][robot]->robot;
-//    if (r->hasProxy()) {
-//        selectedBot = robot;
-//        dash->robotpanel->scrollToSelBot(robot);
-//        for (int j=0; j<dash->teamSize_blue; j++) {
-//            auto r_j = robot_drawers[team][j]->robot;
-//            r_j->highlighted = false;
-//        }
-//        r->highlighted = true;
-//        refresh = true;
-//        // Refresh GUI
-//        for (int r=0; r<dash->teamSize_blue; r++) {
-//            dash->robotpanel->botIconFrames[robot]->update();
-//        }
-//        dash->panel_selected_robot->update_selected_robot(team,robot);
-//        return true;
-//    }
-//    return false;
+void PanelField::setDragMode(QGraphicsView::DragMode mode){
+    gView_field->setDragMode(mode);
+
+}
+
+
+bool PanelField::eventFilter(QObject* obj, QEvent* e){
+
+
+
+    if( obj == gView_field->verticalScrollBar() ){
+        // control + wheel = zoom (instead of scroll, thus we filter the event)
+        if(e->type() == QEvent::Wheel && QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)){
+
+            int delta = ((QWheelEvent*)e)->delta() > 0 ? 2 : -2;
+            slider_zoom->setValue(slider_zoom->value()+delta);
+            return true; // return true to filter the event and prevent scrolling
+
+        }
+
+    } else if ( obj == scene ) {
+        // mouse moves = signal current scene coordinates
+        if(e->type() == QEvent::GraphicsSceneMouseMove){
+            auto mouse = gView_field->mapFromGlobal(QCursor::pos());
+            emit field_mouse_moved(gView_field->mapToScene(mouse) - QPointF(100,100));
+
+        // if mouse press
+        } else if(e->type()==QEvent::GraphicsSceneMousePress){
+
+            // if control: clear only following robot, otherwise clear selected robot
+            if(QApplication::keyboardModifiers().testFlag(Qt::ControlModifier))
+                clearFollowing();
+            else GuiRobot::clearSelected();
+        }
+
+    }
+
+
+    return false;
+}
+
+
+
+
+
+
+
+// =================== OBJECT SLOTS ====================================
+// =====================================================================
+
+
+void PanelField::setFollowingRobot(GuiRobot* robot){
+    cout << (robot == nullptr ? "Stop following robot..." : "Start following robot...") <<endl;
+    if(robot){
+        auto drawer = robot_drawers[robot->team][robot->id];
+        if( followingRobot != drawer){
+            zoomField(20);
+            followingRobot = drawer;
+        }
+
+    } else followingRobot=nullptr;
+}
+
+void PanelField::clearFollowing(){
+    setFollowingRobot(nullptr);
 }
 
 void PanelField::zoomField(int zoom) {
@@ -401,67 +308,125 @@ void PanelField::zoomField(int zoom) {
 }
 
 void PanelField::defaultZoom() {
-    // Removing robot focus
-    centeredBotID = nullptr;
-
     currentFieldAngle = 0;
     zoomField(11);
-//    zoom_slider->setValue(11);
-//    dash->gView_field->hide();
-    gView_field->centerOn(sidelines);
+    gView_field->centerOn(outter_field_drawer);
 }
 
 
 
-bool PanelField::eventFilter(QObject* obj, QEvent* e){
-    if( obj == gView_field->verticalScrollBar() &&
-            e->type() == QEvent::Wheel &&
-            QApplication::keyboardModifiers().testFlag(Qt::ControlModifier)){
 
-//        auto mouse = gView_field->mapFromGlobal(QCursor::pos());
-//        auto mouse_relative = gView_field->mapToScene(mouse);
-//        gView_field->centerOn(mouse_relative.rx(), mouse_relative.ry());
 
-        int delta = ((QWheelEvent*)e)->delta() > 0 ? 2 : -2;
-        slider_zoom->setValue(slider_zoom->value()+delta);
+// ================ COMPONENT SLOTS ====================================
+// =====================================================================
 
-        return true;
-    } else if ( obj == scene && e->type() == QEvent::GraphicsSceneMouseMove ){
-        auto mouse = gView_field->mapFromGlobal(QCursor::pos());
-        emit field_mouse_moved(gView_field->mapToScene(mouse) - QPointF(100,100));
-    }
 
-    return false;
+
+// ROBOT RELATED
+
+void PanelField::on_check_show_ids_stateChanged(int arg1)
+{
+    cout <<" SHOW ID: " << arg1 <<endl;
+    for(int team=0 ; team < 2; team++)
+        for(int robot_id=0; robot_id < MAX_ROBOTS_PER_TEAM; robot_id++)
+            robot_labels_drawers[team][robot_id]->hidden = arg1==0;
+}
+
+void PanelField::on_combo_robot_scale_currentIndexChanged(const QString &arg1)
+{
+    float robot_scale = arg1 == "150%" ? 1.5 : arg1 == "120%" ? 1.2 : 1.0;
+    for(int team=0 ; team < 2; team++)
+        for(int robot_id=0; robot_id < MAX_ROBOTS_PER_TEAM; robot_id++)
+            robot_drawers[team][robot_id]->setScale(robot_scale);
+}
+
+// BALL RELATED
+
+void PanelField::on_combo_ball_color_currentIndexChanged(const QString &arg1)
+{
+    ball_drawer->setColor(arg1);
+}
+
+void PanelField::on_combo_ball_scale_currentIndexChanged(const QString &arg1)
+{
+    ball_drawer->setScale(arg1 == "150%" ? 1.5 : arg1 == "120%" ? 1.2 : 1.0);
 }
 
 
-void PanelField::setHidePaths(bool val){
-    hide_paths = val;
+// FIELD RELATED
+
+void PanelField::on_check_field_grid_stateChanged(int arg1)
+{
+    field_drawer->grid = arg1 != 0;
+}
+
+void PanelField::on_combo_grid_scale_currentIndexChanged(const QString &arg1)
+{
+    field_drawer->gridScale = arg1 == "200²" ? 100 : arg1 == "500²" ? 250 : 500;
 }
 
 
 
-// Field graphical settings which need to be refreshed when changed
-void PanelField::on_check_fieldGrid_clicked(){
-    refresh = true;
-}
-void PanelField::on_combo_gridScale_currentIndexChanged(int index){
-    Q_UNUSED(index);
-    refresh = true;
-}
-void PanelField::on_check_coloredGoals_clicked(){
-    refresh = true;
-}
-void PanelField::on_combo_fieldColor_currentIndexChanged(int index){
-    Q_UNUSED(index);
-    refresh = true;
-}
-void PanelField::on_check_showIDs_stateChanged(int arg1){
-    Q_UNUSED(arg1);
-    refresh = true;
-}
-void PanelField::on_combo_botScale_currentIndexChanged(int index){
-    Q_UNUSED(index);
-    refresh = true;
+void PanelField::on_combo_field_color_currentIndexChanged(const QString &arg1)
+{
+    outter_field_drawer->colorScheme = arg1;
+    field_drawer->colorScheme = arg1;
 }
 
+
+
+
+//    if(e->type() == QGraphicsSceneDragDropEvent::){
+//        cout << "drag enter scene\n";
+//    }
+
+//    QString name = obj == gView_field ? "gview" :
+//                   obj == scene ? "scene" :
+//                   obj == gView_field->verticalScrollBar() ? "scroll bar" :
+//                   obj == gView_field->viewport() ? "view port" : "other";
+
+//    auto t = e->type();
+//    if(t != QEvent::Hide & t!= QEvent::MetaCall & t!= QEvent::Paint & t!= QEvent::WindowActivate &&
+//            obj == scene)
+//        print_event(name,e);
+
+
+
+
+
+//void print_event(QString base, QEvent* e){
+
+//    qDebug() << "BASE: " << base << endl;
+//    qDebug() << "Event: " << e << " " << e->type() << endl;
+
+//    if(e->type() == QEvent::DragEnter){
+//        qDebug() << "drag enter scene\n";
+//    }
+//    if(e->type() == QEvent::DragMove){
+//        qDebug() << "drag move scene\n";
+//    }
+//    if(e->type() == QEvent::Drop){
+//        qDebug() << "drag drop scene\n";
+//    }
+//    if(e->type() == QEvent::DragLeave){
+//        qDebug() << "drag leave scene\n";
+//    }
+
+//    if(e->type() == QEvent::GraphicsSceneDragEnter){
+//        qDebug() << "drag g enter scene\n";
+//    }
+//    if(e->type() == QEvent::GraphicsSceneDragMove){
+//        qDebug() << "drag g move scene\n";
+//    }
+//    if(e->type() == QEvent::GraphicsSceneDragLeave){
+//        qDebug() << "drag g leave scene\n";
+//    }
+//    if(e->type() == QEvent::DragResponse){
+//        qDebug() << "drag response scene\n";
+//    }
+//    if(e->type()==QEvent::MouseButtonPress){
+//        qDebug() << "Mouse press!!" << endl;
+//    }
+
+
+//}

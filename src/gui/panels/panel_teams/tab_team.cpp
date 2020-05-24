@@ -14,6 +14,7 @@ TabTeam::TabTeam(QWidget *parent) :
     for(int i=0; i<MAX_ROBOTS_PER_TEAM; i++){
         robot_frames[i] = new FrameRobot(this);
         layout_team->insertWidget(2+i,robot_frames[i]);
+
     }
 
 }
@@ -38,8 +39,9 @@ void TabTeam::update_tab(){
         robot_frames[i]->update_frame();
 }
 
-void TabTeam::show_robot(int id){
-    scrollArea->ensureWidgetVisible(robot_frames[id]);
+void TabTeam::show_robot(GuiRobot* robot){
+    if(robot->team == team_id && robot->selected())
+        scrollArea->ensureWidgetVisible(robot_frames[robot->id]);
     //    dash->scroll_robots->ensureVisible(0,91*(id+2),50,50);
 }
 
@@ -59,4 +61,18 @@ void TabTeam::on_btn_override_none_released() {
 //        // Telling robot QObjects to change color
 //        GuiRobot::proxies[selected_team_id][i].overridden = false;
 //    }
+}
+
+void TabTeam::on_button_release_clicked()
+{
+    for(int i=0;i<MAX_ROBOTS_PER_TEAM;i++){
+        GuiRobot::get(team_id,i)->setOverriden(false);
+    }
+}
+
+void TabTeam::on_button_override_clicked()
+{
+    for(int i=0;i<MAX_ROBOTS_PER_TEAM;i++){
+        GuiRobot::get(team_id,i)->setOverriden(true);
+    }
 }

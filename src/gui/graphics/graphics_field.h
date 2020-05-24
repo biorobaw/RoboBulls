@@ -18,8 +18,7 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     QString colorScheme = "Default";
     bool grid = false;
-    int gridScale = 100;
-
+    int gridScale = 250; // default value (250% = 0.5m)
 
 };
 

@@ -33,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
     setupUi(this);
-    GuiRobot::init_static_data();
+//    GuiRobot::init_static_data();
     dash = this;
 
     // Set keyboard shorcuts and connect slots
@@ -54,10 +54,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::connect_slots(){
     connect(panel_field,SIGNAL(field_mouse_moved(QPointF)),panel_game_info,SLOT(update_mouse_pos(QPointF)));
+    connect(panel_game_info,SIGNAL(toggle_connect_gui()),this,SLOT(toggle_connect_gui()));
 }
 
 void MainWindow::coreLoop() {
 
+    if(!gui_connected) return;
     /* Top function of the GUI's loop */
 
     // Update game data:
@@ -77,6 +79,24 @@ void MainWindow::coreLoop() {
 
 }
 
+
+void MainWindow::toggle_connect_gui(){
+    if(gui_connected){
+        //disable  components
+        panel_field->setEnabled(false);
+        panel_selected_robot->setEnabled(false);
+        panel_teams->setEnabled(false);
+        panel_output->setEnabled(false);
+    } else {
+        // re enable components
+        panel_field->setEnabled(true);
+        panel_selected_robot->setEnabled(true);
+        panel_teams->setEnabled(true);
+        panel_output->setEnabled(true);
+    }
+    gui_connected=!gui_connected;
+}
+
 void MainWindow::process_user_input(){
     // Process user input
 
@@ -94,9 +114,11 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
     bool control = QApplication::keyboardModifiers().testFlag(Qt::ControlModifier);
     bool alt = QApplication::keyboardModifiers().testFlag(Qt::AltModifier);
     auto robot = GuiRobot::get_selected_robot();
-    switch(event->key()) {
-        // Robot control bindings
-        if (robot != nullptr) {
+
+    if (robot != nullptr) {
+
+        switch(event->key()) {
+            // Robot control bindings
             case Qt::Key_W:
             case Qt::UpArrow:
                 robot->setManualVelocity(Point(250,0),0);
@@ -117,14 +139,18 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
                 robot->setKick();
                 break;
             case Qt::Key_Shift:
+                cout << "Dribbling!!!\n";
                 robot->setDribble(true);
+                cout << "Dribbling done!!!\n";
                 break;
             // Remove selection from bot
             case Qt::Key_Escape:
-                GuiRobot::clearSelected(true);
+                GuiRobot::clearSelected();
                 break;
         }
+    }
 
+    switch(event->key()) {
         // Number bindings -
         {
             case Qt::Key_QuoteLeft:
@@ -141,10 +167,8 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
                 int robot_id = event->key() - Qt::Key_0;
                 if(robot_id < 0 || robot_id >9) robot_id = 0;
                 int team = control ? ROBOT_TEAM_YELLOW : ROBOT_TEAM_BLUE;
-                GuiRobot::proxies[team][robot_id].select(true);
+                GuiRobot::get(team,robot_id)->select();
                 break;
-
-
         }
 
 
@@ -164,8 +188,10 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
                 panel_field->slider_zoom->setValue(panel_field->slider_zoom->value()+zoom);
                 break;
             }
+            case Qt::Key_Control:
+                panel_field->setDragMode(QGraphicsView::DragMode::ScrollHandDrag);
+                break;
         }
-
 
     }
 }
@@ -174,8 +200,8 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event) {
     // Robot binds
     auto robot = GuiRobot::get_selected_robot();
 
-    switch(event->key()) {
-        if ( robot != nullptr) {
+    if ( robot != nullptr) {
+        switch(event->key()) {
             case Qt::Key_W:
             case Qt::Key_A:
             case Qt::Key_S:
@@ -196,6 +222,9 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event) {
                 break;
         }
     }
+
+    if(event->key() == Qt::Key_Control)
+        panel_field->setDragMode(QGraphicsView::DragMode::NoDrag);
 }
 
 
@@ -212,10 +241,6 @@ void MainWindow::setupKeyShortcuts() {
     connect(new QShortcut(Qt::Key_O,this), SIGNAL(activated()),
             panel_selected_robot->check_override, SLOT(click()));
 
-    //TODO: reimplement
-    //delete -> toggle icon visible
-//    connect(new QShortcut(Qt::Key_Delete, this), SIGNAL(activated()),
-//            robotpanel, SLOT(toggleIconVisible()));
 
     // Ctrl+o -> Override team
     connect(new QShortcut(QKeySequence("Ctrl+O"), this), SIGNAL(activated()),
@@ -240,11 +265,4 @@ void MainWindow::setupKeyShortcuts() {
 MainWindow::~MainWindow()
 {
     //TODO: Actually cleanup things.
-}
-
-
-void MainWindow::signal_new_robot_selected(GuiRobot* robot){
-    panel_teams->show_robot(robot->team,robot->id);
-    panel_selected_robot->update_selected_robot();
-
 }

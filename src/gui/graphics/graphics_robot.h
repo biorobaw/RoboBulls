@@ -1,27 +1,17 @@
 #ifndef _GRAPHICS_ROBOT_
 #define _GRAPHICS_ROBOT_
-#include <QPainter>
 #include <QGraphicsItem>
-#include <QDebug>
-#include <QPixmap>
-#include <QLabel>
-#include <QPaintEvent>
-#include <QGraphicsView>
-#include "utilities/point.h"
-#include "model/constants.h"
-#include <string>
-#include "gui/data/gui_robot.h"
-using std::string;
 
 
 class MainWindow;
+class GuiRobot;
 //A GuiRobot is a robot on the field (FieldPanel)
 
-class GraphicsRobot : public QGraphicsItem   // inheriting QGraphicsItem
+class GraphicsRobot : public QObject, public QGraphicsItem    // inheriting QGraphicsItem
 {
-//    Q_OBJECT
+    Q_OBJECT
 public:
-    GraphicsRobot(int team, int id, bool is_icon);
+    GraphicsRobot(QObject* parent, int team, int id, bool is_icon);
     GuiRobot* robot;
 
     QRectF boundingRect() const;    // outermost edges of the object (must be implemented with QGraphicsItem)
@@ -34,7 +24,6 @@ public:
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);          // we want to know when the mouse is pressed...
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);       // ..and released
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
 
 

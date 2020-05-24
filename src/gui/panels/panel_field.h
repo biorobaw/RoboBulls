@@ -10,6 +10,7 @@
 #include <mutex>
 
 
+
 using std::deque;
 class GraphicsRobot;
 class GraphicsField;
@@ -20,6 +21,7 @@ class GraphicsPoints;
 class GraphicsPolygon;
 class GraphicsBall;
 class MainWindow;
+class GuiRobot;
 
 class PanelField : public QFrame, public Ui::PanelField
 {
@@ -33,12 +35,10 @@ public:
     void updateScene();
     void setHidePaths(bool val);
 
+    void setDragMode(QGraphicsView::DragMode mode);
 
-
-    void scanForSelection();
-    void scanForScrollModifier();
+//    void scanForSelection();
     void updateLineQueue();
-
 
 
 public slots:
@@ -55,19 +55,18 @@ signals:
     void field_mouse_moved(QPointF);
 
 private:
-    MainWindow * dash;
+//    MainWindow * dash;
 
     // scene and graphic objects
-    QGraphicsScene*     scene;
-    GraphicsRobot*     robot_drawers[2][MAX_ROBOTS_PER_TEAM];
-    GraphicsLabel*        gui_bot_labels[2][MAX_ROBOTS_PER_TEAM];
-    GraphicsOutterField*       sidelines;
-    GraphicsField*           field;
-    GraphicsPolygon*      region_drawer;
+    QGraphicsScene*       scene;
+    GraphicsBall*         ball_drawer;
+    GraphicsRobot*        robot_drawers[2][MAX_ROBOTS_PER_TEAM];
+    GraphicsLabel*        robot_labels_drawers[2][MAX_ROBOTS_PER_TEAM];
+    GraphicsField*        field_drawer;
+    GraphicsOutterField*  outter_field_drawer;
     GraphicsPoints*       point_drawer;
-    GraphicsBall*      ball_drawer;
-    deque<GraphicsLine*> lineQueue;
-
+    deque<GraphicsLine*>  line_drawers;
+    GraphicsPolygon*      region_drawer;
 
 
 
@@ -93,16 +92,13 @@ private:
 
 
     // "Camera" type functions for manipulating QGraphicsView
-    GraphicsRobot* centeredBotID = nullptr;
+    GraphicsRobot* followingRobot = nullptr;
     bool refresh = true;   // set this to true whenever a change to the field is made to refresh on next frame.
     bool justScrolled = false;
     int currentFieldAngle = 0;
 
 
     // User interaction
-    // the ID of the currently selected bot
-    int selectedBot= -1;
-
 
     //    void doubleClickScan();
 //    void cameraMoveScan();
@@ -112,21 +108,23 @@ private:
 
 
 
-
-    void selectRobot(int team, int robot);
-
     bool eventFilter(QObject* obj, QEvent* e);
 
 
 private slots:
-    void on_check_fieldGrid_clicked();
-    void on_combo_gridScale_currentIndexChanged(int index);
-    void on_check_coloredGoals_clicked();
-    void on_combo_fieldColor_currentIndexChanged(int index);
-    void on_check_showIDs_stateChanged(int arg1);
-    void on_combo_botScale_currentIndexChanged(int index);
+
+    void setFollowingRobot(GuiRobot* robot);
+    void clearFollowing();
 
 
+
+    void on_combo_robot_scale_currentIndexChanged(const QString &arg1);
+    void on_combo_ball_scale_currentIndexChanged(const QString &arg1);
+    void on_check_show_ids_stateChanged(int arg1);
+    void on_combo_ball_color_currentIndexChanged(const QString &arg1);
+    void on_check_field_grid_stateChanged(int arg1);
+    void on_combo_grid_scale_currentIndexChanged(const QString &arg1);
+    void on_combo_field_color_currentIndexChanged(const QString &arg1);
 
 };
 

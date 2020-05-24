@@ -22,14 +22,12 @@ public slots:
 
 private:
 
-    void update_team_color(int team);
+    void update_colors(int team);
     QGraphicsScene icon_robot;
     GraphicsRobot* robot_drawer;
 
 private slots:
-    void on_check_botOverride_clicked(bool check);
-
-
+    void on_check_override_stateChanged(int arg1);
 };
 
 #endif // PANEL_SELECTED_ROBOT_H

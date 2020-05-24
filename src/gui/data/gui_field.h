@@ -1,6 +1,7 @@
 #ifndef GUI_FIELD_H
 #define GUI_FIELD_H
 
+//Proxy between the gui and the field class
 
 class GuiField
 {

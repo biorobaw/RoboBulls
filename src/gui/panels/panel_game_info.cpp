@@ -9,7 +9,6 @@ PanelGameInfo::PanelGameInfo(QWidget *parent) :
 {
     setupUi(this);
     timer.start();
-    btn_connectGui->setEnabled(false);
 
     // putting ball icon into GUI
     QGraphicsScene *scene_ballIcon = new QGraphicsScene;
@@ -26,13 +25,6 @@ PanelGameInfo::~PanelGameInfo()
 {
 }
 
-void PanelGameInfo::on_btn_connectGui_clicked() {
-    if(btn_connectGui->text() == "Connect") {
-        btn_connectGui->setText("Disconnect");
-    } else {
-        btn_connectGui->setText("Connect");
-    }
-}
 
 void PanelGameInfo::update_mouse_pos(QPointF mousePos){
     lcd_mouse_coordX->display((int)mousePos.rx());
@@ -145,3 +137,12 @@ const std::string PanelGameInfo::getGameState()
 
 
 
+
+void PanelGameInfo::on_btn_connectGui_pressed()
+{
+    static bool gui_connected = true;
+    gui_connected = !gui_connected;
+    if(gui_connected) btn_connectGui->setText("Disconnect Gui");
+    else btn_connectGui->setText("Connect Gui");
+    emit toggle_connect_gui();
+}

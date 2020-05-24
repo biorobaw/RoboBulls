@@ -6,10 +6,15 @@
 using std::cout, std::endl;
 
 
-GraphicsLabel::GraphicsLabel(int team, int id) : robot(&GuiRobot::proxies[team][id]) {
+GraphicsLabel::GraphicsLabel(int team, int id) : robot(GuiRobot::get(team,id)) {
     int radius = boundingRect().width() / 2;
     setTransformOriginPoint(radius,radius);
     setScale(2.5);
+
+    setZValue(4);
+    setTransform(QTransform(1,0,0,0,-1,0,0,200,1), false);
+    show();
+
 }
 
 
@@ -24,16 +29,12 @@ void GraphicsLabel::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
     Q_UNUSED(widget);
     Q_UNUSED(option);
 
-    if( !robot->isInField()) return;
+    if( !robot->isInField() || hidden) return;
 
-//    gui_l->setRotation(currentFieldAngle);
-//    gui_l->show();
 
 //    setTransform(flipLabel, false);
     setX(robot->getCurrentPosition().x);
     setY(robot->getCurrentPosition().y);
-    //    gui_l->setY(gui_r->robot->getCurrentPosition().y);
-    //    gui_l->hidden = !check_showIDs->isChecked();
 
 
     if(robot->hasBall()) // does this robot have the ball?

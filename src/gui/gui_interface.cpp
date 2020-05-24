@@ -25,7 +25,7 @@ GuiInterface* GuiInterface::getGuiInterface() {
 }
 
 bool GuiInterface::isOverriddenBot(int team, int robot_id) {
-    return GuiRobot::proxies[team][robot_id].isOverriden();
+    return GuiRobot::get(team,robot_id)->isOverriden();
 }
 
 

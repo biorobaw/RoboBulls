@@ -18,12 +18,18 @@ public:
     void update_panel();
 
 public slots:
-    void on_btn_connectGui_clicked();
     void update_mouse_pos(QPointF mousePos);
+
+private slots:
+    void on_btn_connectGui_pressed();
 
 private:
     QElapsedTimer timer;
     const std::string getGameState();
     GraphicsBall* ball_drawer;
+
+signals:
+    void toggle_connect_gui();
+
 };
 #endif // PANEL_GAME_INFO_H
