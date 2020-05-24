@@ -38,10 +38,6 @@ GuiRobot::GuiRobot(QObject* parent,int team, int robot_id) :
 
 }
 
-// Macro for eac
-#define FOR_TEAM_ROBOT for(int team=0 ; team<2; team++) \
-    for(int robot=0; robot<MAX_ROBOTS_PER_TEAM; robot++)
-
 
 // function to update robot data from the game
 void GuiRobot::updateRobots(){

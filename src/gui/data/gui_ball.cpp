@@ -7,7 +7,7 @@ GuiBall GuiBall::ball;
 void  GuiBall::updateBall(){
     ball.position = Ball::getPosition();
     ball.velocity = Ball::getVelocity();
-    ball.speed = Ball::getSpeed();
+    ball.speed    = Ball::getSpeed();
 }
 
 Point GuiBall::getPosition(){

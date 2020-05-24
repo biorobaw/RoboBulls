@@ -1,11 +1,9 @@
 #ifndef GUI_ROBOT_H
 #define GUI_ROBOT_H
 
-#include "utilities/point.h"
-#include "model/constants.h"
-#include <QString>
 #include <QObject>
-#include <QtCore>
+#include "model/constants.h"
+#include "utilities/point.h"
 
 //Proxy between the gui and the ball
 
@@ -87,15 +85,15 @@ private:
     static GuiRobot* selected_robot; // pointer to the robot selected by the gui
 
     // Array of gui robots + initializer and constructor
-    static GuiRobot*** robots;  // Statically initialized to size [2][MAX_ROBOTS_PER_TEAM][1]
-    static GuiRobot*** init_robots();
-    GuiRobot(QObject* parent, int team, int id);
+    static GuiRobot*** robots;          // Table of gui robots of size [2][MAX_ROBOTS_PER_TEAM]
+    static GuiRobot*** init_robots();   // Function used to statically initialize the variable robots
+    GuiRobot(QObject* parent, int team, int id); // private constructor
 
 
 signals:
-    void overridenChanged(bool new_value);
-    void selectedChanged(GuiRobot*);
-    void doubleClicked(GuiRobot*);
+    void overridenChanged(bool new_value); // signal emitted when the variable overriden changes value
+    void selectedChanged(GuiRobot*);       // signal emitted when a robot becomes selected or deselected
+    void doubleClicked(GuiRobot*);         // signal emitted when a the graphics of a gui robot is double clicked
 
 
 };

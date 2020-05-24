@@ -1,21 +1,22 @@
 #ifndef GUI_TEAMS_H
 #define GUI_TEAMS_H
 
-#include <string>
-using std::string;
+#include <QString>
+
+//Proxy between the gui and the ball
 
 class GuiTeams
 {
 public:
-    static void updateTeams();
-    static string get_robot_type(int team_id);
-    static string get_controller(int team_id);
-    static string get_strategy(int team_id);
+    static void updateTeams();  // function to update the data of the teams
+    static QString get_robot_type(int team_id); // returns the robot type used by the team
+    static QString get_controller(int team_id); // returns the controller used by the team
+    static QString get_strategy(int team_id);   // returns the current strategy of the team
 
 private:
-    static string robot_type[2];
-    static string controller[2];
-    static string strategy[2];
+    static QString robot_type[2]; // stores the robot types used by each team
+    static QString controller[2]; // stores the controllers used by each team
+    static QString strategy[2];   // stores the current strategy of each team
 
 };
 

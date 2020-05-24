@@ -31,9 +31,9 @@ void TabTeam::set_team(int id){
 }
 
 void TabTeam::update_tab(){
-    label_strategy->setText(GuiTeams::get_strategy(team_id).c_str());
-    label_controller->setText(GuiTeams::get_controller(team_id).c_str());
-    label_robot_type->setText(GuiTeams::get_robot_type(team_id).c_str());
+    label_strategy->setText(GuiTeams::get_strategy(team_id));
+    label_controller->setText(GuiTeams::get_controller(team_id));
+    label_robot_type->setText(GuiTeams::get_robot_type(team_id));
 
     for(int i=0; i< MAX_ROBOTS_PER_TEAM; i++)
         robot_frames[i]->update_frame();

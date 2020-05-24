@@ -8,19 +8,19 @@
 class GuiBall
 {
 public:
-    static GuiBall ball;
-    static void updateBall();
+    static GuiBall ball;      // singleton instance of the ball
+    static void updateBall(); // function to update the ball information
 
-    static Point getPosition();
-    static Point getVelocity();
-    static float getSpeed();
+    static Point getPosition(); // returns the current position of the ball
+    static Point getVelocity(); // returns the current velocity of the ball
+    static float getSpeed();    // returns the current speed of the ball
 
 
 protected:
 
-    Point position = Point(0,0);
-    Point velocity = Point(0,0);
-    float speed    = 0;
+    Point position = Point(0,0); // current position of the ball
+    Point velocity = Point(0,0); // current velocity of the ball
+    float speed    = 0;          // current speed of the ball
 
 private:
     GuiBall();
