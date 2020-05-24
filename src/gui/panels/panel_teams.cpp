@@ -1,6 +1,5 @@
 #include "panel_teams.h"
 #include "gui/data/gui_robot.h"
-#include "panel_teams/frame_robot.h"
 #include <iostream>
 using std::cout, std::endl;
 
@@ -42,6 +41,16 @@ void PanelTeams::scroll_to_selected(GuiRobot* robot){
     (robot->team == ROBOT_TEAM_BLUE ? tab_blue : tab_yellow)
             ->show_robot(robot);
 
+}
+
+void PanelTeams::override_team(){
+    auto tab = tabWidget->currentIndex() == ROBOT_TEAM_BLUE ? tab_blue : tab_yellow;
+    tab->on_button_override_clicked();
+}
+
+void PanelTeams::release_team(){
+    auto tab = tabWidget->currentIndex() == ROBOT_TEAM_BLUE ? tab_blue : tab_yellow;
+    tab->on_button_release_clicked();
 }
 
 

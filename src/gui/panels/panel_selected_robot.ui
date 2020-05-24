@@ -686,9 +686,9 @@ background-color: rgba(255, 0, 0, 100);</string>
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>42</y>
+           <y>32</y>
            <width>80</width>
-           <height>21</height>
+           <height>41</height>
           </rect>
          </property>
          <property name="font">
@@ -703,13 +703,14 @@ background-color: rgba(255, 0, 0, 100);</string>
           <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
          </property>
          <property name="text">
-          <string>Velocity</string>
+          <string>Speed
+Cmd</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
          </property>
         </widget>
-        <widget class="QDial" name="dial_velocity">
+        <widget class="QDial" name="dial_speed_cmd">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -743,10 +744,10 @@ background-color: rgba(255, 0, 0, 100);</string>
           <string notr="true">background-color: rgb(150, 150, 150);</string>
          </property>
          <property name="minimum">
-          <number>-100</number>
+          <number>-1000</number>
          </property>
          <property name="maximum">
-          <number>100</number>
+          <number>1000</number>
          </property>
          <property name="singleStep">
           <number>1</number>
@@ -777,9 +778,9 @@ background-color: rgba(255, 0, 0, 100);</string>
          <property name="geometry">
           <rect>
            <x>80</x>
-           <y>105</y>
+           <y>90</y>
            <width>80</width>
-           <height>21</height>
+           <height>41</height>
           </rect>
          </property>
          <property name="font">
@@ -794,13 +795,14 @@ background-color: rgba(255, 0, 0, 100);</string>
           <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
          </property>
          <property name="text">
-          <string>Speed</string>
+          <string>Speed
+Measured</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
          </property>
         </widget>
-        <widget class="QDial" name="dial_sepeed">
+        <widget class="QDial" name="dial_speed_measured">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -1051,6 +1053,16 @@ background-color: rgba(255, 0, 0, 100);</string>
           <bool>true</bool>
          </property>
         </widget>
+        <zorder>dial_speed_measured</zorder>
+        <zorder>lcd_orientation</zorder>
+        <zorder>lcd_velocity</zorder>
+        <zorder>label_10</zorder>
+        <zorder>dial_speed_cmd</zorder>
+        <zorder>label_13</zorder>
+        <zorder>lcd_speed</zorder>
+        <zorder>dial_orientation</zorder>
+        <zorder>label_14</zorder>
+        <zorder>label_15</zorder>
        </widget>
       </item>
      </layout>

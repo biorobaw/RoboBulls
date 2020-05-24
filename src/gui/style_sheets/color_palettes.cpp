@@ -180,14 +180,14 @@ const ColorsDial colors_dial_value[6] = {
 // OBS: BLUE = 0 , YELLOW = 1
 const TeamColors team_colors[2] = {
     {
-        "background-color: rgb(250, 250, 220);",
-        "background-color: rgb(225, 225, 0);",
-        "background-color: rgb(0, 0, 100);"
+        "background-color: rgb(150, 150, 255);", // frame
+        "background-color: rgb(255, 255, 0);",   // dial
+        "background-color: rgb(100, 100, 100);"    // text
     },
     {
-        "background-color: rgb(225, 225, 255);",
-        "background-color: rgb(255, 255, 0);",
-        "background-color: rgb(100, 100, 0);"
+        "background-color: rgb(255, 255, 150);",
+        "background-color: rgb(225, 225, 0);",
+        "background-color: rgb(100, 100, 100);"
     }
 };
 

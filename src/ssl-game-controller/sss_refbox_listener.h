@@ -18,32 +18,6 @@ namespace YAML {
  * [SSL Referee Box](http://robocupssl.cpe.ku.ac.th/referee:start),
  * and fills out the GameModel.<br><br>
  * <b>Referee Box Command Quick Reference:</b>
- * Command Type                 |   Command
- * -----------------------------|----------
- *     Halt                     |   H
- *     Stop                     |   S
- *     Ready                    |   ' ' (space)
- *     Start                    |   s
- *     Begin first half         |   1
- *     Begin half time          |   h
- *     Begin second half        |   2
- *     Begin overtime half 1    |   o
- *     Begin overtime half 2    |   O
- *     Begin penalty shootout   |   a
- *
- * Command Type  |   Yellow Team Command     |  Blue Team Command
- * --------------|---------------------------|-------------------
- *     Kick off             |       k        |           K
- *     Penalty              |       p        |           P
- *     Direct Free kick     |       f        |           F
- *     Indirect Free kick   |       i        |           I
- *     Timeout              |       t        |           T
- *     Timeout end          |       z        |           z
- *     Goal scored          |       g        |           G
- *     decrease Goal score  |       d        |           D
- *     Yellow Card          |       y        |           Y
- *     Red Card             |       r        |           R
- *     Cancel               |       c        |           c
  */
 
 class SSLRefBoxListener : public QThread

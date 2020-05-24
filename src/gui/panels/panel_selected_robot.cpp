@@ -1,9 +1,10 @@
 #include "panel_selected_robot.h"
 #include "gui/data/gui_robot.h"
-#include <QScrollBar>
-#include <iostream>
 #include "gui/graphics/graphics_robot.h"
 #include "gui/style_sheets/color_palettes.h"
+
+#include <QScrollBar>
+#include <iostream>
 using std::endl,std::cout;
 
 // SPEED SHOULD BE MEASURED IN mm/s (millimeter per second)
@@ -56,23 +57,23 @@ void PanelSelectedRobot::update_panel(){
     lcd_orientation->display(robot->getOrientationAsString() + 90);
     dial_orientation->setValue(robot->getOrientation() + 90);
 
-    // display velocity, dial color changes according to sign
+    // display speed cmd, dial color changes according to sign
     int v = robot->getSpeedCommand();
-    dial_velocity->setValue(v);
+    dial_speed_cmd->setValue(v);
     lcd_velocity->display(v);
     auto dial_colors = colors_dial_sign[SIGN(v)];
-    dial_velocity->setStyleSheet(dial_colors.dial_background);
+    dial_speed_cmd->setStyleSheet(dial_colors.dial_background);
     lcd_velocity->setStyleSheet (dial_colors.lcd_background);
 
 
     // display speed, dial color changes according to speed value
     int s = robot->getCurrentSpeed() * SPEED_MODIFIER;
-    dial_sepeed->setValue(s);
+    dial_speed_measured->setValue(s);
     lcd_speed->display(s);
 
-    int index = PERCENTAGE_INDEX(dial_sepeed->value(), MOVEMENT_MIN, dial_sepeed->maximum());
+    int index = PERCENTAGE_INDEX(dial_speed_measured->value(), MOVEMENT_MIN, dial_speed_measured->maximum());
     dial_colors = colors_dial_value[index];
-    dial_sepeed->setStyleSheet(dial_colors.dial_background);
+    dial_speed_measured->setStyleSheet(dial_colors.dial_background);
     lcd_speed->setStyleSheet  (dial_colors.lcd_background);
 
 }
@@ -108,57 +109,6 @@ void PanelSelectedRobot::update_selected_robot(){
 
 
 
-//QStringList PanelSelectedRobot::getKeyWords(std::string behavior){
-//    /** Takes a behavior title, parses it for keywords, and returns a list of them
-//     * */
-
-//    QStringList keywords;
-//    QString title = QString::fromStdString(behavior);
-
-//    if (title.contains("no behavior", Qt::CaseInsensitive)) {
-//        keywords.push_back("no behavior");
-//    }
-//    if (title.contains("ball", Qt::CaseInsensitive)) {
-//        keywords.push_back("ball");
-//    }
-//    if (title.contains("mov", Qt::CaseInsensitive)) {
-//        keywords.push_back("moving");
-//    }
-//    if (title.contains("pass", Qt::CaseInsensitive)) {
-//        keywords.push_back("passing");
-//    }
-//    if (title.contains("send", Qt::CaseInsensitive)) {
-//        keywords.push_back("sending");
-//    }
-//    if (title.contains("receiv", Qt::CaseInsensitive)) {
-//        keywords.push_back("receiving");
-//    }
-//    if (title.contains("defend", Qt::CaseInsensitive)) {
-//        keywords.push_back("defending");
-//    }
-//    if (title.contains("attack", Qt::CaseInsensitive)) {
-//        keywords.push_back("attacking");
-//    }
-//    if (title.contains("farfrom", Qt::CaseInsensitive)) {
-//        keywords.push_back("far from");
-//    }
-//    if (title.contains("nearto", Qt::CaseInsensitive)) {
-//        keywords.push_back("near to");
-//    }
-//    if (title.contains("penalty", Qt::CaseInsensitive)) {
-//        keywords.push_back("penalty");
-//    }
-//    if (title.contains("simple", Qt::CaseInsensitive)) {
-//        keywords.push_back("simple");
-//    }
-
-
-
-//    return keywords;
-//}
-
-
-
 void PanelSelectedRobot::update_colors(int team){
     auto& colors = team_colors[team];
     setStyleSheet(colors.frame_background);
@@ -174,6 +124,8 @@ void PanelSelectedRobot::update_colors(int team){
 void PanelSelectedRobot::on_check_override_stateChanged(int arg1)
 {
     auto robot = GuiRobot::get_selected_robot();
-    robot->setOverriden(arg1);
-    gView_robot->repaint();
+    if(robot ){
+        robot->setOverriden(arg1);
+        gView_robot->repaint();
+    }
 }

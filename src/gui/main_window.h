@@ -1,35 +1,12 @@
 #ifndef MAIN_WINDOW_H
 #define MAIN_WINDOW_H
 
-#include <iosfwd>
-#include <string>
 #include <QtWidgets/QMainWindow>
-#include <QTimer>
-#include "model/constants.h"
-
-// Helper classes forward declarations
-class GraphicsField;
-class GraphicsLabel;
-class GraphicsLine;
-class GuiInterface;
-
-//Dashboard Forward declarations
-class GuiInterface;
-class GraphicsLine;
-class QMainWindow;
-class QGraphicsItem;
-class QGraphicsEllipseItem;
-class QGraphicsRectItem;
-class QGraphicsScene;
-class RobotTeam;
-class GuiRobot;
-
-
-//Main Project forwards
-class GameState;
-class Robot;
-
 #include "ui_main_window.h"
+
+
+// This class defines the gui's main window, it's composed of the panels under the folder panels
+// The class extends the frame defined in main_window.ui
 
 class MainWindow : public QMainWindow, public Ui_MainWindow
 {
@@ -45,23 +22,22 @@ public:
 
     // Debug functions
     // Key Bindings
-    void keyPressEvent(QKeyEvent *event);
-    void keyReleaseEvent(QKeyEvent *event);
+    void keyPressEvent(QKeyEvent *event) override; // function to process key press events
+    void keyReleaseEvent(QKeyEvent *event) override; // function to process key release events
 
 
 private:
 
-    void setupKeyShortcuts();
-    void process_user_input();
+    void setupKeyShortcuts();  // set's up shortcut keys
 
-    void connect_slots();
+    void connect_slots(); // connects signals with slots
 
-    bool gui_connected = true;
+    bool gui_connected = true; // defines whether the gui is enabled or disabled
 
 private slots:
     // Threads
-    void coreLoop();
-    void toggle_connect_gui();
+    void coreLoop(); // function called by a timer to update the gui
+    void toggle_connect_gui(); // toggles whether the gui is enabled or disabled
 
 
 

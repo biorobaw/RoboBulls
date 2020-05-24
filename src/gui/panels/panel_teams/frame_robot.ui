@@ -232,10 +232,10 @@
             <string notr="true">background-color: rgb(150, 150, 150);</string>
            </property>
            <property name="minimum">
-            <number>-100</number>
+            <number>-1000</number>
            </property>
            <property name="maximum">
-            <number>100</number>
+            <number>1000</number>
            </property>
            <property name="singleStep">
             <number>1</number>

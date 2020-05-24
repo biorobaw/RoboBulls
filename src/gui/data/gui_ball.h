@@ -1,12 +1,14 @@
 #ifndef GUI_BALL_H
 #define GUI_BALL_H
 
+#include <QObject>
 #include "utilities/point.h"
 
 //Proxy between the gui and the ball
 
-class GuiBall
+class GuiBall : public QObject
 {
+    Q_OBJECT
 public:
     static GuiBall ball;      // singleton instance of the ball
     static void updateBall(); // function to update the ball information
@@ -15,6 +17,8 @@ public:
     static Point getVelocity(); // returns the current velocity of the ball
     static float getSpeed();    // returns the current speed of the ball
 
+signals:
+    void color_changed();
 
 protected:
 

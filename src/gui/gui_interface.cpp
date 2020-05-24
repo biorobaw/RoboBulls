@@ -1,15 +1,8 @@
 #include "gui_interface.h"
 #include "main_window.h"
-#include "utilities/point.h"
-#include "gui/graphics/graphics_line.h"
 #include "data/gui_robot.h"
+#include <QDebug>
 
-/* Points of contact with main project:
- *      - gotopose.cpp
- *      - strategycontroller.cpp:
- * Overriding override:
- *      - HALT command from refbox
- */
 
 GuiInterface * GuiInterface::gi = NULL;
 
@@ -43,7 +36,7 @@ void GuiInterface::setHidePaths(bool val) {
 
 void GuiInterface::guiPrintRobot(int robotID, std::string output) {
     // TODO: reimplement functionality
-    //dash->panel_selected_robot->guiPrintRobot(robotID, output);
+//    dash->panel_selected_robot->guiPrintRobot(robotID, output);
 }
 
 void GuiInterface::guiPrintTerminal(std::string output) {

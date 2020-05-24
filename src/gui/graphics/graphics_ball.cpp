@@ -48,5 +48,6 @@ void GraphicsBall::setColor(QString color){
     auto& pallete = ball_pallete_maps[color];
     brush = pallete.brush;
     pen = pallete.pen;
+    emit GuiBall::ball.color_changed();
 
 }

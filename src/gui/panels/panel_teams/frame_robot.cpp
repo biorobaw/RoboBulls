@@ -1,5 +1,4 @@
 #include "frame_robot.h"
-#include "ui_frame_robot.h"
 #include "gui/data/gui_robot.h"
 #include "gui/graphics/graphics_robot.h"
 #include "gui/style_sheets/color_palettes.h"
@@ -10,7 +9,7 @@ FrameRobot::FrameRobot(QWidget *parent) :
     QFrame(parent)
 {
     setupUi(this);
-    //hide();
+    hide();
 }
 
 FrameRobot::~FrameRobot()
@@ -25,48 +24,40 @@ void FrameRobot::set_robot(int robot_id, int team_id){
     this->robot_id = robot_id;
     this->team_id = team_id;
 
+    // sets the check box text that identifies the robot
     check_robot->setText("Robot " + QString::number(robot_id).rightJustified(2,' '));
 
+    // set the robot icon graphics view
     gView_icon->setToolTip("Robot " + QString::number(robot_id));
     gView_icon->setScene(&icon_robot);
     gView_icon->scale(.2, .2);
     gView_icon->scale(1,-1);
     gView_icon->rotate(90);
-    auto robot_drawer = new GraphicsRobot(this,team_id,robot_id, true);
-    robot_drawer->setX(0);
-    robot_drawer->setY(0);
-    robot_drawer->setZValue(2);
-    icon_robot.addItem(robot_drawer);
+    icon_robot.addItem(new GraphicsRobot(this,team_id,robot_id, true));
 
     // set colors widget colors based on team
     auto& t_colors = team_colors[team_id];
     dial_orientation->setStyleSheet(t_colors.dial_orientation_background);
     lcd_x->setStyleSheet           (t_colors.text_background);
     lcd_y->setStyleSheet           (t_colors.text_background);
+    setStyleSheet(t_colors.frame_background);
 
 
+    // robots iniialized overriden
     check_robot->setCheckState(Qt::CheckState::Checked);
 
+    // connect the overriden signal to the robot overriden checkbox
+    // connect the signal that indicates a new robot has been selected with the reapint signal of the icon
     connect(GuiRobot::get(team_id,robot_id),SIGNAL(overridenChanged(bool)), check_robot,SLOT(setChecked(bool)));
     connect(GuiRobot::get(team_id,robot_id),SIGNAL(selectedChanged(GuiRobot*)), gView_icon,SLOT(repaint()));
-//    connect(this,SIGNAL(CLI))
 
-//    setEnabled(true);
-
-//    auto scene = new QGraphicsScene;
-//    scene->addItem(robot_drawer);
-
-//    auto robot_icon_sel = new GuiRobotDrawer(0,0);
-//    robot_icon_sel->icon = true;
-
-//    auto scene_selec = new QGraphicsScene;
 
 
 }
 
 
 void FrameRobot::update_frame(){
-    auto robot = GuiRobot::get(team_id,robot_id); //dash->getSelectedTeam()->getRobot(i);
+    auto robot = GuiRobot::get(team_id,robot_id);
     if ( robot->isInField() ) {
 
         // set behavior

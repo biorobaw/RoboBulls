@@ -22,7 +22,7 @@ float GuiBall::getSpeed(){
     return ball.speed;
 }
 
-GuiBall::GuiBall()
+GuiBall::GuiBall() : QObject(nullptr)
 {
 
 }

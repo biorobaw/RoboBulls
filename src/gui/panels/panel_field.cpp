@@ -1,20 +1,21 @@
 #include "panel_field.h"
-#include "gui/main_window.h"
-#include "gui/graphics/graphics_outter_field.h"
-#include "gui/graphics/graphics_field.h"
-#include "gui/graphics/graphics_robot_label.h"
 #include "gui/data/gui_ball.h"
-#include "gui/graphics/graphics_robot.h"
+#include "gui/data/gui_robot.h"
+
+#include "gui/graphics/graphics_ball.h"
+#include "gui/graphics/graphics_field.h"
 #include "gui/graphics/graphics_line.h"
+#include "gui/graphics/graphics_outter_field.h"
 #include "gui/graphics/graphics_points.h"
 #include "gui/graphics/graphics_polygon.h"
+#include "gui/graphics/graphics_robot.h"
+#include "gui/graphics/graphics_robot_label.h"
+
+#include <QGraphicsSceneDragDropEvent>
 #include <QScrollBar>
 #include <QWheelEvent>
-#include "gui/graphics/graphics_ball.h"
-#include <iostream>
 #include <QDebug>
-#include <QGraphicsSceneDragDropEvent>
-#include "gui/data/gui_robot.h"
+#include <iostream>
 
 using std::cout, std::endl;
 
@@ -204,7 +205,6 @@ void PanelField::updateLineQueue() {
         for (unsigned int i=0; i<line_drawers.size(); i++) {
             if (line_drawers[i] != NULL) {
                 // refreshing scene to prevent visual glitches
-                refresh = true;
                 // Deleting old lines
                 if (line_drawers[i]->age == 0) {
                     line_drawers[i]->hide();

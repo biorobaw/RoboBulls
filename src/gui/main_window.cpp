@@ -1,30 +1,17 @@
-#define _USE_MATH_DEFINES
-// to not generate gamemodel: comment out contents of strategy/strategycontroller.cpp->gameModelUpdated()
-// collision notification
-// different field & robot scales based on SIMULATED
-
-// Tool classes
-#include <math.h>
-#include <time.h>
-#include <iostream>
-#include <QGraphicsView>
-#include <QShortcut>
-#include <QKeyEvent>
-#include <QMouseEvent>
-#include <QScrollBar>
-#include <QtWidgets/QMainWindow>
-
-// Helper classes
 #include "main_window.h"
 
-#include "data/gui_ball.h"
+#include <QShortcut>
+#include <QKeyEvent>
+#include <QTimer>
+
 #include "gui/data/gui_ball.h"
 #include "gui/data/gui_field.h"
+#include "gui/data/gui_game_state.h"
 #include "gui/data/gui_robot.h"
 #include "gui/data/gui_teams.h"
 #include "gui/graphics/graphics_ball.h"
 
-
+#include <iostream>
 using namespace std;
 
 MainWindow* MainWindow::dash = nullptr;
@@ -32,9 +19,8 @@ MainWindow* MainWindow::dash = nullptr;
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
-    setupUi(this);
-//    GuiRobot::init_static_data();
     dash = this;
+    setupUi(this);
 
     // Set keyboard shorcuts and connect slots
     setupKeyShortcuts();
@@ -44,10 +30,8 @@ MainWindow::MainWindow(QWidget *parent) :
     MainWindow::resize(1400,900);
     QTimer* timer = new QTimer(this);
     connect(timer,SIGNAL(timeout()),this, SLOT(coreLoop()));
-    timer->start(25);
+    timer->start(25); // gui refreshes every 25ms
 
-    // Time, in milliseconds, before GUI autoconnects to project; increase value if needed
-    QTimer::singleShot(1000, panel_game_info, SLOT(on_btn_connectGui_clicked()));
 
 
 }
@@ -67,9 +51,7 @@ void MainWindow::coreLoop() {
     GuiRobot::updateRobots();
     GuiTeams::updateTeams();
     GuiField::updateField();
-
-    // process user input:
-    process_user_input();
+    GuiGameState::updateData();
 
     // update panels
     panel_field->updateScene();
@@ -97,23 +79,14 @@ void MainWindow::toggle_connect_gui(){
     gui_connected=!gui_connected;
 }
 
-void MainWindow::process_user_input(){
-    // Process user input
-
-    // Interaction scanners
-//    panel_field->scanForScrollModifier();
-//    panel_field->scanForSelection();
-    GraphicsBall::setColor(panel_field->combo_ball_color->currentText());
-
-}
 
 
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {
     // Robot binds
     bool control = QApplication::keyboardModifiers().testFlag(Qt::ControlModifier);
-    bool alt = QApplication::keyboardModifiers().testFlag(Qt::AltModifier);
-    auto robot = GuiRobot::get_selected_robot();
+    bool alt     = QApplication::keyboardModifiers().testFlag(Qt::AltModifier);
+    auto robot   = GuiRobot::get_selected_robot();
 
     if (robot != nullptr) {
 
@@ -129,19 +102,17 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
                 break;
             case Qt::Key_A:
             case Qt::LeftArrow:
-                robot->setManualVelocity(Point(0,0),M_PI/2);
+                robot->setManualVelocity(Point(0,0),3.1415/2);
                 break;
             case Qt::Key_D:
             case Qt::RightArrow:
-                robot->setManualVelocity(Point(0,0),-M_PI/2);
+                robot->setManualVelocity(Point(0,0),-3.1415/2);
                 break;
             case Qt::Key_Space:
                 robot->setKick();
                 break;
             case Qt::Key_Shift:
-                cout << "Dribbling!!!\n";
                 robot->setDribble(true);
-                cout << "Dribbling done!!!\n";
                 break;
             // Remove selection from bot
             case Qt::Key_Escape:
@@ -231,11 +202,11 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event) {
 void MainWindow::setupKeyShortcuts() {
     // enter -> connect gui
     connect(new QShortcut(Qt::Key_Enter,this), SIGNAL(activated()),
-            panel_game_info , SLOT(on_btn_connectGui_clicked()));
+            panel_game_info , SLOT(on_btn_connectGui_pressed()));
 
     //backspace -> connect gui
     connect(new QShortcut(Qt::Key_Backspace,this), SIGNAL(activated()),
-            panel_game_info, SLOT(on_btn_connectGui_clicked()));
+            panel_game_info, SLOT(on_btn_connectGui_pressed()));
 
     //o -> override selected robot
     connect(new QShortcut(Qt::Key_O,this), SIGNAL(activated()),
@@ -244,11 +215,11 @@ void MainWindow::setupKeyShortcuts() {
 
     // Ctrl+o -> Override team
     connect(new QShortcut(QKeySequence("Ctrl+O"), this), SIGNAL(activated()),
-            this, SLOT(on_btn_override_all_released()));
+            panel_teams, SLOT(override_team()));
 
     // Alt+o -> Release overrided team
     connect(new QShortcut(QKeySequence("Alt+O"), this), SIGNAL(activated()),
-            this, SLOT(on_btn_override_none_released()));
+            panel_teams, SLOT(release_team()));
 
     // i -> toggle show ids
     connect(new QShortcut(Qt::Key_I,this), SIGNAL(activated()),

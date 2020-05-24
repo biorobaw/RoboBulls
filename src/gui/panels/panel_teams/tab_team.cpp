@@ -1,10 +1,11 @@
 #include "tab_team.h"
-#include "gui/data/gui_teams.h"
 #include "frame_robot.h"
-#include <iostream>
-#include "gui/data/gui_robot.h"
 
+#include "gui/data/gui_teams.h"
+#include "gui/data/gui_robot.h"
+#include <iostream>
 using std::cout, std::endl;
+
 
 TabTeam::TabTeam(QWidget *parent) :
     QFrame(parent)
@@ -13,7 +14,7 @@ TabTeam::TabTeam(QWidget *parent) :
 
     for(int i=0; i<MAX_ROBOTS_PER_TEAM; i++){
         robot_frames[i] = new FrameRobot(this);
-        layout_team->insertWidget(2+i,robot_frames[i]);
+        layout_team->insertWidget(2+i,robot_frames[i]); // inserts robots at the end of the list before the vertical spacer
 
     }
 
@@ -42,26 +43,9 @@ void TabTeam::update_tab(){
 void TabTeam::show_robot(GuiRobot* robot){
     if(robot->team == team_id && robot->selected())
         scrollArea->ensureWidgetVisible(robot_frames[robot->id]);
-    //    dash->scroll_robots->ensureVisible(0,91*(id+2),50,50);
 }
 
 
-void TabTeam::on_btn_override_all_released() {
-
-//    for (int i=0; i<MAX_ROBOTS_PER_TEAM; i++) {
-//        // Telling robot QObjects to change color
-//        auto& robot = GuiRobot::proxies[selected_team_id][i];
-//        robot.overridden = true;
-//        robot.setManualVelocity(Point(0,0),0);
-//    }
-}
-
-void TabTeam::on_btn_override_none_released() {
-//    for (unsigned int i=0; i<MAX_ROBOTS_PER_TEAM; i++) {
-//        // Telling robot QObjects to change color
-//        GuiRobot::proxies[selected_team_id][i].overridden = false;
-//    }
-}
 
 void TabTeam::on_button_release_clicked()
 {
