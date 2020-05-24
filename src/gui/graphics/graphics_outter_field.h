@@ -1,23 +1,23 @@
 #ifndef _GRAPHICS_OUTTER_FIELD_
 #define _GRAPHICS_OUTTER_FIELD_
-#include <QPainter>
-#include <QGraphicsPixmapItem>
 #include <QGraphicsItem>
-#include <QDebug>
+
+
+// Graphics element to draw the outter field
 
 class GraphicsOutterField : public QGraphicsItem
 {
 public:
-    GraphicsOutterField();
-    QRectF boundingRect() const;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-    QString colorScheme = "Default";
-//    bool Pressed = false;
-//    bool highlighted = false;
 
-//protected:
-//    void mousePressEvent(QGraphicsSceneMouseEvent *event);          // we want to know when the mouse is pressed...
-//    void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);       // ..and released
+    GraphicsOutterField();
+
+    // required QGraphicsItem functions
+    QRectF boundingRect() const override;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+
+
+    QString colorScheme = "Default"; // defines the color palette to be used
+
 };
 
 #endif // _GRAPHICS_OUTTER_FIELD_

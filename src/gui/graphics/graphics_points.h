@@ -2,21 +2,24 @@
 #define _GRAPHICS_POINTS_
 
 #include <QGraphicsItem>
-#include <QPainter>
 #include "utilities/point.h"
-#include <vector>
 
-class QPainter;
-class QStyleOptionGraphicsItem;
-class QWidget;
+
+
+// Graphics element to draw points defined by gui_interface
 
 class GraphicsPoints : public QGraphicsObject
 {
     Q_OBJECT
 public:
     GraphicsPoints();
-    QRectF boundingRect() const;    // outermost edges of the object
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+
+    // required QGraphicsItem functions
+    QRectF boundingRect() const override;    // outermost edges of the object
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+
+
+
     std::vector<Point> points;
 };
 

@@ -2,14 +2,10 @@
 #define _GRAPHICS_LINE_
 
 #include <QGraphicsItem>
-#include <QTimer>
-#include <QPainter>
-#include <iostream>
 #include "utilities/point.h"
 
-class QPainter;
-class QStyleOptionGraphicsItem;
-class QWidget;
+
+// Graphics element to draw lines defined using the gui interface
 
 class GraphicsLine : public QGraphicsObject
 {
@@ -17,9 +13,17 @@ class GraphicsLine : public QGraphicsObject
 
 public:
     GraphicsLine();
-    QRectF boundingRect() const;    // outermost edges of the object
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+
+    // required QGraphicsItem functions
+    QRectF boundingRect() const override;    // outermost edges of the object
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+
+
+    // TODO: comment what the function does
     void ageLine();
+
+
+
 //    bool newLine = false;
     int x1 = 0;
     int y1 = 0;

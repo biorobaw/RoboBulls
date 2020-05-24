@@ -1,27 +1,22 @@
 #ifndef _GRAPHICS_ROBOT_LABEL_
 #define _GRAPHICS_ROBOT_LABEL_
-#include <QPainter>
 #include <QGraphicsItem>
-#include <QDebug>
-#include <QPixmap>
-#include <QLabel>
-
-//GuiBotLabel is the ID and ball indication label on the robot on the field.
-//(GuiRobot on the FieldPanel)
-
 class GuiRobot;
+
+// Graphics element that draws robot labels (id of robot + has ball indicator)
 
 class GraphicsLabel : public QGraphicsItem
 {
 public:
     GraphicsLabel(int team, int id);
 
-    QRectF boundingRect() const;    // outermost edges of the object (must be implemented with QGraphicsItem)
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    // required QGraphicsItem functions
+    QRectF boundingRect() const override;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
-    bool hidden = true;
+    bool hidden = true; // defines whether to draw or not the label
 private:
-    GuiRobot* robot = nullptr;
+    GuiRobot* robot = nullptr; // pointer to the robot represented by this graphics item
 };
 
 #endif // _GRAPHICS_ROBOT_LABEL_

@@ -1,8 +1,8 @@
-#include <iostream>
-
 #include "graphics_robot_label.h"
-#include "model/constants.h"
+#include <QPainter>
+
 #include "gui/data/gui_robot.h"
+#include <iostream>
 using std::cout, std::endl;
 
 
@@ -32,7 +32,6 @@ void GraphicsLabel::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
     if( !robot->isInField() || hidden) return;
 
 
-//    setTransform(flipLabel, false);
     setX(robot->getCurrentPosition().x);
     setY(robot->getCurrentPosition().y);
 

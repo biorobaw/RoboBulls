@@ -8,8 +8,7 @@ QPen   GraphicsBall::pen   = ball_pallete_maps["Red-Orange"].pen;
 
 
 
-GraphicsBall::GraphicsBall(bool is_icon) :
-    ball(&GuiBall::ball), is_icon(is_icon)
+GraphicsBall::GraphicsBall(bool is_icon) : draw_at_origin(is_icon)
 {
     int radius = boundingRect().width() / 2;
     setTransformOriginPoint(radius,radius);   // sets center point, around which it rotates
@@ -30,8 +29,8 @@ void GraphicsBall::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     (void)widget;
     QRectF rec = boundingRect();
 
-    if(!is_icon){
-        auto pos = ball->getPosition();
+    if(!draw_at_origin){
+        auto pos = GuiBall::getPosition();
         setX(pos.x);
         setY(pos.y);
     }

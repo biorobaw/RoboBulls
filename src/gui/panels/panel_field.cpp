@@ -96,7 +96,7 @@ void PanelField::updateScene() {
 
     // the following robot doesn't match the selected robot, it has been deselected:
     // else, if following a robot center the camera
-    if(followingRobot && GuiRobot::get_selected_robot() != followingRobot->robot){
+    if(followingRobot && GuiRobot::get_selected_robot() != followingRobot->getRobot()){
         clearFollowing();
     } else if(followingRobot!=nullptr) {
         gView_field->centerOn(followingRobot);

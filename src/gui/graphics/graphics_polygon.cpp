@@ -1,5 +1,7 @@
 #include "graphics_polygon.h"
 
+#include <QPainter>
+
 GraphicsPolygon::GraphicsPolygon()
 {
 }

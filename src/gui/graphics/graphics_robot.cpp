@@ -5,7 +5,7 @@
 
 
 GraphicsRobot::GraphicsRobot(QObject* parent, int team, int id, bool is_icon) :
-    QObject(parent), robot(GuiRobot::get(team,id)), is_icon(is_icon)
+    QObject(parent), robot(GuiRobot::get(team,id)), draw_at_origin(is_icon)
 {
     setToolTip("Robot " + QString::number(robot->id));
     setFlag(ItemIsSelectable);
@@ -35,6 +35,10 @@ void GraphicsRobot::setRobot(GuiRobot *robot){
     setToolTip("Robot " + QString::number(robot->id));
 }
 
+GuiRobot* GraphicsRobot::getRobot(){
+    return robot;
+}
+
 
 void GraphicsRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
@@ -43,7 +47,7 @@ void GraphicsRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
 
     if(!robot->isInField()) return;
 
-    if(!is_icon){
+    if(!draw_at_origin){
         setX(robot->getCurrentPosition().x);
         setY(robot->getCurrentPosition().y);
         setRotation(robot->getOrientation());

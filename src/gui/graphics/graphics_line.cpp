@@ -1,4 +1,7 @@
 #include "graphics_line.h"
+#include <QPainter>
+#include <QTimer>
+
 #include "gui/style_sheets/color_palettes.h"
 
 GraphicsLine::GraphicsLine() {

@@ -2,21 +2,23 @@
 #define _GRAPHICS_POLYGON_
 
 #include <QGraphicsItem>
-#include <QPainter>
-#include <QPolygon>
-#include "utilities/point.h"
 
-class QPainter;
-class QStyleOptionGraphicsItem;
-class QWidget;
+
+// Graphics element to draw a polygon defined by bui_interface
+// TODO: does this class have any point? it's just a wrapper but doesn't do anythin special
 
 class GraphicsPolygon : public QGraphicsObject
 {
     Q_OBJECT
 public:
     GraphicsPolygon();
-    QRectF boundingRect() const;    // outermost edges of the object
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+
+    // required QGraphicsItem functions
+    QRectF boundingRect() const override;    // outermost edges of the object
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+
+
+
     QPolygon Q_polygon;
 };
 

@@ -1,10 +1,9 @@
 #include "graphics_field.h"
-#include <QApplication>
+#include <QPainter>
+
 #include "gui/data/gui_field.h"
-#include "gui/data/gui_teams.h"
-
-
 #include "gui/style_sheets/color_palettes.h"
+
 
 GraphicsField::GraphicsField()
 {
@@ -97,8 +96,7 @@ void GraphicsField::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
     painter->setPen(!left_is_blue ? blueLinePen : yellowLinePen);
     painter->drawRect(right_goal);
 
-
-
+    // draw outter lines
     painter->setPen(pallete.borderPen);
     painter->drawRect(rec);
 }

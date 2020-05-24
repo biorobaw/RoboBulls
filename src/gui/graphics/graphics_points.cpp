@@ -1,5 +1,5 @@
 #include "graphics_points.h"
-
+#include <QPainter>
 
 GraphicsPoints::GraphicsPoints()
 {

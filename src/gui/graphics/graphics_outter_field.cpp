@@ -1,5 +1,6 @@
 #include "graphics_outter_field.h"
-#include <QApplication>
+#include <QPainter>
+
 
 GraphicsOutterField::GraphicsOutterField()
 {
@@ -58,21 +59,4 @@ void GraphicsOutterField::paint(QPainter *painter, const QStyleOptionGraphicsIte
         painter->drawRect(rec);
 }
 
-//void GuiSidelines::mousePressEvent(QGraphicsSceneMouseEvent *event)
-//{
-//    if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier) == false) {
-//        Pressed = true;
-//    }
-//    update();
-//    QGraphicsItem::mousePressEvent(event);
-//}
-
-//void GuiSidelines::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-//{
-//    if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier) == false) {
-//        Pressed = false;
-//    }
-//    update();
-//    QGraphicsItem::mouseReleaseEvent(event);
-//}
 
