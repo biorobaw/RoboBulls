@@ -4,14 +4,14 @@
 #include "ssl_game_event_2019.pb.h"
 #include "ssl_referee.pb.h"
 
-#include "ssl-game-controller/sss_refbox_listener.h"
+#include "ssl_game_controller_listener.h"
 #include "yaml-cpp/yaml.h"
 #include <iostream>
 #include "model/game_state.h"
 using namespace std;
 
 
-SSLRefBoxListener::SSLRefBoxListener(YAML::Node* comm_node)
+SSLGameControllerListener::SSLGameControllerListener(YAML::Node* comm_node)
 {
     cout << "--REFBOX " << endl
          << "        REFBOX_ADDR    : " << (*comm_node)["REFBOX_ADDR"] << endl
@@ -23,11 +23,11 @@ SSLRefBoxListener::SSLRefBoxListener(YAML::Node* comm_node)
 
 }
 
-void SSLRefBoxListener::stop(){
+void SSLGameControllerListener::stop(){
     done = true;
 }
 
-void SSLRefBoxListener::run(){
+void SSLGameControllerListener::run(){
     QByteArray datagram;
     done = false;
 

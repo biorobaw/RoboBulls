@@ -27,16 +27,16 @@ INCLUDEPATH += src
 PROTOS += src/robot/robots/grsim/proto/grSim_Commands.proto \
          src/robot/robots/grsim/proto/grSim_Packet.proto \
          src/robot/robots/grsim/proto/grSim_Replacement.proto \
-         src/ssl-vision/proto/messages_robocup_ssl_detection.proto \ #sss
-         src/ssl-vision/proto/messages_robocup_ssl_geometry.proto \
-         src/ssl-vision/proto/messages_robocup_ssl_refbox_log.proto \
-         src/ssl-vision/proto/messages_robocup_ssl_wrapper.proto \
-         src/ssl-game-controller/proto/ssl_referee.proto \ #sss
-         src/ssl-game-controller/proto/ssl_game_controller_auto_ref.proto \
-         src/ssl-game-controller/proto/ssl_game_controller_team.proto \
-         src/ssl-game-controller/proto/ssl_game_event_2019.proto \
-         src/ssl-game-controller/proto/ssl_game_event.proto \ #no deps
-         src/ssl-game-controller/proto/ssl_game_controller_common.proto # no deps
+         src/ssl/proto/messages_robocup_ssl_detection.proto \ #sss
+         src/ssl/proto/messages_robocup_ssl_geometry.proto \
+         src/ssl/proto/messages_robocup_ssl_refbox_log.proto \
+         src/ssl/proto/messages_robocup_ssl_wrapper.proto \
+         src/ssl/proto/ssl_referee.proto \ #sss
+         src/ssl/proto/ssl_game_controller_auto_ref.proto \
+         src/ssl/proto/ssl_game_controller_team.proto \
+         src/ssl/proto/ssl_game_event_2019.proto \
+         src/ssl/proto/ssl_game_event.proto \ #no deps
+         src/ssl/proto/ssl_game_controller_common.proto # no deps
 include(protobuf.pri)
 
 
@@ -85,9 +85,8 @@ SOURCES += src/main.cpp \
         src/robot/robots/yisibot/robcomm_yisibot.cpp \
         src/robot/robots/yisibot/robot_yisibot.cpp \
         src/robot/robots/yisibot/crc.cpp \
-        src/ssl-game-controller/sss_refbox_listener.cpp \
-        src/ssl-vision/my_kalman_filter.cpp \
-        src/ssl-vision/ssl_vision_listener.cpp \
+        src/ssl/ssl_game_controller_listener.cpp \
+        src/ssl/ssl_vision_listener.cpp \
         src/strategy/behavior.cpp \
         src/strategy/controllers/joystick/joystick.cpp \
         src/strategy/controllers/joystick/scontroller_joystick.cpp \
@@ -121,6 +120,7 @@ SOURCES += src/main.cpp \
         src/utilities/comparisons.cpp \
         src/utilities/debug.cpp \
         src/utilities/edges.cpp \
+        src/utilities/my_kalman_filter.cpp \
         src/utilities/point.cpp \
         src/utilities/velocitycalculator.cpp \
         src/utilities/region/sector.cpp \
@@ -176,6 +176,8 @@ HEADERS += \
         src/robot/robots/yisibot/robcomm_yisibot.h \
         src/robot/robots/yisibot/robot_yisibot.h \
         src/robot/robots/yisibot/crc.h \
+        src/ssl/ssl_game_controller_listener.h \
+        src/ssl/ssl_vision_listener.h \
         src/strategy/behavior.h \
         src/strategy/controllers/joystick/joystick.h \
         src/strategy/controllers/joystick/scontroller_joystick.h \
@@ -208,13 +210,11 @@ HEADERS += \
         src/strategy/strategies/normalgamestrategy.h \
         src/strategy/strategies/penaltystrategy.h \
         src/strategy/strategies/stopstrategy.h \
-        src/ssl-game-controller/sss_refbox_listener.h \
-        src/ssl-vision/my_kalman_filter.h \
-        src/ssl-vision/ssl_vision_listener.h \
         src/utilities/circular_buffer.h \
         src/utilities/comparisons.h \
         src/utilities/debug.h \
         src/utilities/edges.h \
+        src/utilities/my_kalman_filter.h \
         src/utilities/point.h \
         src/utilities/velocitycalculator.h \
         src/utilities/region/sector.h \
@@ -267,20 +267,20 @@ DISTFILES += \
     src/robot/robots/grsim/proto/grSim_Commands.proto \
     src/robot/robots/grsim/proto/grSim_Packet.proto \
     src/robot/robots/grsim/proto/grSim_Replacement.proto \
-    src/ssl-game-controller/proto/ssl_game_controller_auto_ref.proto \
-    src/ssl-game-controller/proto/ssl_game_controller_common.proto \
-    src/ssl-game-controller/proto/ssl_game_controller_team.proto \
-    src/ssl-game-controller/proto/ssl_game_event.proto \
-    src/ssl-game-controller/proto/ssl_game_event_2019.proto \
-    src/ssl-game-controller/proto/ssl_referee.proto \
-    src/ssl-vision/proto/messages_robocup_ssl_detection.proto \
-    src/ssl-vision/proto/messages_robocup_ssl_geometry.proto \
-    src/ssl-vision/proto/messages_robocup_ssl_refbox_log.proto \
-    src/ssl-vision/proto/messages_robocup_ssl_wrapper.proto \
-    src/ssl-vision/proto/not used/messages_robocup_ssl_detection_tracked.proto \
-    src/ssl-vision/proto/not used/messages_robocup_ssl_geometry_legacy.proto \
-    src/ssl-vision/proto/not used/messages_robocup_ssl_wrapper_legacy.proto \
-    src/ssl-vision/proto/not used/messages_robocup_ssl_wrapper_tracked.proto
+    src/ssl/proto/not used/messages_robocup_ssl_detection_tracked.proto \
+    src/ssl/proto/not used/messages_robocup_ssl_geometry_legacy.proto \
+    src/ssl/proto/not used/messages_robocup_ssl_wrapper_legacy.proto \
+    src/ssl/proto/not used/messages_robocup_ssl_wrapper_tracked.proto \
+    src/ssl/proto/messages_robocup_ssl_detection.proto \
+    src/ssl/proto/messages_robocup_ssl_geometry.proto \
+    src/ssl/proto/messages_robocup_ssl_refbox_log.proto \
+    src/ssl/proto/messages_robocup_ssl_wrapper.proto \
+    src/ssl/proto/ssl_game_controller_auto_ref.proto \
+    src/ssl/proto/ssl_game_controller_common.proto \
+    src/ssl/proto/ssl_game_controller_team.proto \
+    src/ssl/proto/ssl_game_event.proto \
+    src/ssl/proto/ssl_game_event_2019.proto \
+    src/ssl/proto/ssl_referee.proto
 
 
 

@@ -20,14 +20,14 @@ namespace YAML {
  * <b>Referee Box Command Quick Reference:</b>
  */
 
-class SSLRefBoxListener : public QThread
+class SSLGameControllerListener : public QThread
 {
 public:
     /*! @brief Constructor
      * @param gm The GameModel to fill with information
      * @param net_ref_address Address Refbox is broadcasting to
      * @param port The port Refbox is broadcasting to */
-    SSLRefBoxListener(YAML::Node* comm_node);
+    SSLGameControllerListener(YAML::Node* comm_node);
 
     void run() override;
     void stop();

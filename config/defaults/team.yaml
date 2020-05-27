@@ -1,28 +1,62 @@
 ---
-COLOR: 0 # 0 blue or 1 yellow
-SIDE: 0 # 0  negative side, 1 positive side
-ROBOT_TYPE: yisibot # alternatives: grsim yisibot rpi_2019 
+TEAM_BLUE :
+    SIDE: 0 # 0 for negative field side, 1 for positive side
+    # Assign a robot to each role
+    # The number must match the robot's color ids
+    ROLES:
+        GOALIE  : 0
+        ATTACK1 : 3
+        ATTACK2 : 4
+        ATTACK3 : 5
+        DEFEND1 : 1
+        DEFEND2 : 2
+        DEFEND3 : 6
 
-# Define the roles of each robot
-ROLES:
-    GOALIE : 0
-    ATTACK1 : 3
-    ATTACK2 : 4
-    ATTACK3 : 5
-    DEFEND1 : 1
-    DEFEND2 : 2
-    DEFEND3 : 6
 
+    # if robot type == grsim, then we must specify the following
+    # ROBOT_TYPE: yisibot # alternatives: grsim yisibot rpi_2019 none
+    # ROB_COMM:
+      # YISI_USB_PORT : /dev/ttyUSB1 # usb port connected to the yisi transciver 
+      # YISI_FREQUENCY: 0 # frequency of the transciver must be different on each team
 
-# if robot type == yisibot:
-# then must specify 
-YISI_USB_PORT : /dev/ttyUSB2 # yisi usb port
-YISI_FREQUENCY: 0
+    # if robot type == grsim (simulated), then must specify:
+    ROBOT_TYPE: grsim # alternatives: grsim yisibot rpi_2019 none
+    ROB_COMM:
+      GRSIM_ADDR : 127.0.0.1 # ip of grsim
+      GRSIM_PORT : 20011 # port of grsim
 
-# if robot type == grsim:
-# then must specify:
-# GRSIM_ADDR : 127.0.0.1 # ip of grsim
-# GRSIM_PORT : 20011 # port of grsim
+    # support for rpi_2019 is work in progress
+      
+    STRATEGY_CONTROLLER:
+      # to use the strategy tester controller:
+      ID: STRATEGY_TESTER # options: NORMAL_GAME or STRATEGY_TESTER or JOYSTICK
+      
+      # to use the normal game controller:
+      # ID: NORMAL_GAME # options: NORMAL_GAME or STRATEGY_TESTER or JOYSTICK
+      
+      # to control the team using joysticks:
+      # ID : JOYSTICK  #  options: NORMAL_GAME or STRATEGY_TESTER or JOYSTICK
+      # JOY_TO_ROBOT_MAP : # map
+      #  - ROBOT : 2
+      #    JOY   : 0
+      #  - ROBOT : 1
+      #    JOY   : 1
 
-# support for rpi_2019 is work in progress
-
+    
+TEAM_YELLOW :
+    SIDE: 1
+    ROBOT_TYPE: none # none defines we do not control this team, by specifying none, we do not need to configure the other variables
+    
+    # STRATEGY_CONTROLLER:
+    #   ID: STRATEGY_TESTER
+    
+    # ROLES:  #wo don't need to define roles if we do not control the team
+        # GOALIE : 0
+        # ATTACK1 : 3
+        # ATTACK2 : 4
+        # ATTACK3 : 5
+        # DEFEND1 : 1
+        # DEFEND2 : 2
+        # DEFEND3 : 6
+        
+    

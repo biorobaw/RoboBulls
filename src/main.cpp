@@ -3,9 +3,9 @@
 #include <csignal>
 #include <cstdlib>
 #include <iostream>
-#include "ssl-vision/ssl_vision_listener.h"
+#include "ssl/ssl_vision_listener.h"
 #include "robot/robcomm.h"
-#include "ssl-game-controller/sss_refbox_listener.h"
+#include "ssl/ssl_game_controller_listener.h"
 #include "model/game_state.h"
 #include "gui/gui_interface.h"
 #include "utilities/debug.h"
@@ -151,7 +151,7 @@ int main(int argc, char *argv[])
 
     //Initialize GameModel, StrategyController, Vision, and Ref
 
-    SSLRefBoxListener refCommunicator( &comm_node);
+    SSLGameControllerListener refCommunicator( &comm_node);
     // TODO: vision communicator should not know anything about team sides (deprecated notion of "own team")
     SSLVisionListener visionCommunicator(&comm_node);
 

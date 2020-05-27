@@ -284,7 +284,6 @@ bool PanelField::eventFilter(QObject* obj, QEvent* e){
 
 
 void PanelField::setFollowingRobot(GuiRobot* robot){
-    cout << (robot == nullptr ? "Stop following robot..." : "Start following robot...") <<endl;
     if(robot){
         auto drawer = robot_drawers[robot->team][robot->id];
         if( followingRobot != drawer){
@@ -326,7 +325,6 @@ void PanelField::defaultZoom() {
 
 void PanelField::on_check_show_ids_stateChanged(int arg1)
 {
-    cout <<" SHOW ID: " << arg1 <<endl;
     for(int team=0 ; team < 2; team++)
         for(int robot_id=0; robot_id < MAX_ROBOTS_PER_TEAM; robot_id++)
             robot_labels_drawers[team][robot_id]->hidden = arg1==0;

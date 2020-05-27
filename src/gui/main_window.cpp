@@ -177,18 +177,12 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event) {
             case Qt::Key_A:
             case Qt::Key_S:
             case Qt::Key_D:
-            case Qt::Key_E:
-            case Qt::Key_Q:
-            case Qt::Key_Up:
-            case Qt::Key_Left:
-            case Qt::Key_Down:
-            case Qt::Key_Right:
                 robot->setManualVelocity(Point(0,0),0);
                 break;
             case Qt::Key_Space:
                 robot->setKick(0);
                 break;
-            case Qt::Key_J:
+            case Qt::Key_Shift:
                 robot->setDribble(false);
                 break;
         }

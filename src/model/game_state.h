@@ -52,8 +52,7 @@ private:
      * Provides *the* link between vision detection and
      * referee box with our code. */
     friend class SSLVisionListener;
-    friend class SSLRefBoxListener;
-    friend class SimRobComm;
+    friend class SSLGameControllerListener;
     static void onRobotUpdated(Robot*);
 
 

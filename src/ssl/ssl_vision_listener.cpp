@@ -2,7 +2,7 @@
 
 #include "ssl_vision_listener.h"
 #include "model/game_state.h"
-#include "my_kalman_filter.h"
+#include "utilities/my_kalman_filter.h"
 #include "model/ball.h"
 #include "model/field.h"
 #include "yaml-cpp/yaml.h"

@@ -1,11 +1,10 @@
 ---
-VISION_ADDR : 224.5.23.2 # vision: 224.5.23.2,  simulation: 127.0.0.1
-VISION_PORT : 10006      # vision: 10006,       simulation: 20011
-FOUR_CAMERA : false
+VISION_ADDR : 224.5.23.2 # for ssl vision: 224.5.23.2,  for grSim: 127.0.0.1
+VISION_PORT : 10006      # for ssl vision: 10006,       for grSim: 20011
+FOUR_CAMERA : true       # false if using ssl vision on the lab, otherwise it is usually true, currently the software only supports 2 and 4 camera setups
 
-REFBOX_ADDR : 224.5.23.1
-REFBOX_PORT : 10001
-REFBOX_ENABLED : true
+REFBOX_ADDR : 224.5.23.1 # multicast ip of ssl-game-controller
+REFBOX_PORT : 10003      # port of ssl-game-controller
 
 
 
