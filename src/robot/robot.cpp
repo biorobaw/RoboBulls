@@ -77,8 +77,8 @@ bool Robot::hasBehavior() { return behavior != nullptr ; }
 void Robot::performBehavior(){
     if(behavior!=nullptr) {
         behavior->perform();
-        getPilot()->executeCommands();
     }
+    getPilot()->executeCommands();
 }
 
 //! @brief Returns the current velocity in m/s

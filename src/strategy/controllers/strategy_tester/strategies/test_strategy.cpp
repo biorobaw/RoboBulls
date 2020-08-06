@@ -15,6 +15,7 @@
 #include "model/ball.h"
 #include "robot/robot.h"
 #include "robot/navigation/robot_pilot.h"
+#include "model/team.h"
 
 using std::endl, std::cout;
 /************************************************************************/
@@ -260,12 +261,15 @@ TestStrategy::TestStrategy(RobotTeam* _team) : Strategy(_team) {
 #include "robot/navigation/commands/CmdGoToPose.h"
 void TestStrategy::assignBehaviors()
 {
-//    std::cout << "Assigning test strategy behaviors " << std::endl;
+    std::cout << "Assigning test strategy behaviors " << std::endl;
 //    //team->getRobot(0)->assignBeh<GenericMovementBehavior>(Point(-650, 300), 0);
 
 //    auto robots = team->getRobots();
-//    auto r = team->getRobot(3);
-//    //r->getPilot()->goToPose(CmdGoToPose(Point(-500,-500),0,true,false));
+    auto r = team->getRobot(3);
+    if(r){
+        std::cout << "Go to pose" << endl;
+        r->getPilot()->goToPose(CmdGoToPose(Point(800,-850),0,false,false));
+    }
 //    r->assignBeh<GoToBehavior>(0);
 //    int num_robots = robots.size();
 //    int i = 0;
