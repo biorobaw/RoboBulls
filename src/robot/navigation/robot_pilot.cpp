@@ -61,7 +61,7 @@ bool Pilot::executeCmdGoToPose(CmdGoToPose *cmd){
     if( ( cmd->avoidObstacles || cmd->avoidBall) &&
             Measurements::distance(r_pos, cmd->targetPose) > cmd->distance_tolerance){
 
-        std::cout << "---doing path planning\n";
+        //std::cout << "---doing path planning\n";
 
         // Assign robots that are to be considered obstacles
         FPPA::updateRobotObstacles(robot);
