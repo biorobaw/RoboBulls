@@ -10,7 +10,8 @@
 #include "fppa_pathfinding.h"
 #include "model/ball.h"
 #include "model/field.h"
-#include "robot/robot.h"
+#include "robot/robot.h" 
+using std::cout , std::endl;
 
 /* Implementation of the Fast Path Planning Algorithm
  * In a sense, this is a mostly a generalized implementation.
@@ -203,12 +204,14 @@ namespace impl {
         path.push_back(start);
         path.push_back(end);
         impl::recursiveFPPA(&path, start, end, 1, avoidBall, use_def_areas);
-        path.pop_front();
-        path.pop_back();
+        if(path.size()>0) path.pop_front();
+        if(path.size()>0) path.pop_back();
 
         // If intermediate points in the path are not reachable, make them reachable
-        for(auto it = path.begin()+1; it < path.end(); ++it)
-            impl::sanitizeDestination(*it, use_def_areas);
+        if(path.size()>0)
+            for(auto it = path.begin()+1; it < path.end(); ++it){
+                impl::sanitizeDestination(*it, use_def_areas);
+            }
 
         return path;
     }
