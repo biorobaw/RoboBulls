@@ -6,6 +6,7 @@
 #include "model/field.h"
 #include "model/team.h"
 #include "robot/robot.h"
+#include "model/game_state.h"
 
 #define DEFENDBEHAVIOR_DEBUG 0
 
@@ -13,11 +14,11 @@
  * It happens when the ball has high velocity that is not facing
  * our goal. This means one of us kicked.
  */
-static bool ballIsMovingAway(Point my_goal)
+static bool ballIsMovingAway(Point my_goal, Ball* ball)
 {
-    Point bp = Ball::getPosition();
-    Point bv = Ball::getVelocity();
-    float bs = Ball::getSpeed();
+    Point bp = ball->getPosition();
+    Point bv = ball->getVelocity();
+    float bs = ball->getSpeed();
     float ba = atan2(bv.y, bv.x);
     float ballGoalAng = Measurements::angleBetween(bp, my_goal);
     return (bs > 0.25) && !(Measurements::isClose(ba, ballGoalAng, 90*(M_PI/180)));
@@ -25,9 +26,9 @@ static bool ballIsMovingAway(Point my_goal)
 
 /* Return true when we think the ball is stopped or moving slow
  */
-static bool ballIsStopped()
+static bool ballIsStopped(Ball* ball)
 {
-    return Ball::getSpeed() < 0.25;
+    return ball->getSpeed() < 0.25;
 }
 
 /************************************************************/
@@ -69,7 +70,7 @@ DefendState* DefendState::action(Robot* robot)
         return nullptr;
     updateCount = 0;
 
-    Point bp = Ball::getPosition();
+    Point bp = robot->getTeam()->getGameState()->getBall()->getPosition();
     Point gl = Field::getGoalPosition(robot->getTeam()->getSide());
 
     if(bp.x < 0)
@@ -210,7 +211,7 @@ DefendState* DSIdle::action(Robot* robot)
 
         Point chosenPoint = *chosenPointPtr;
 
-        float robBallAng = Measurements::angleBetween(robot, Ball::getPosition());
+        float robBallAng = Measurements::angleBetween(robot, robot->getTeam()->getGameState()->getBall()->getPosition());
         cmd.setTarget(chosenPoint, robBallAng);
         GenericMovementBehavior::perform();
 
@@ -221,11 +222,11 @@ DefendState* DSIdle::action(Robot* robot)
          * 3) The balls speed is significant
          * 4) the ball is heading torwards the goal
          */
-        Point bp  = Ball::getPosition();
-        Point bv  = Ball::getVelocity();
-        Point bpr = Ball::getStopPosition();
+        Point bp  = robot->getTeam()->getGameState()->getBall()->getPosition();
+        Point bv  = robot->getTeam()->getGameState()->getBall()->getVelocity();
+        Point bpr = robot->getTeam()->getGameState()->getBall()->getStopPosition();
         Point gl  = Field::getGoalPosition(robot->getTeam()->getSide());
-        float bs  = Ball::getSpeed();
+        float bs  = robot->getTeam()->getGameState()->getBall()->getSpeed();
         float velang = atan2(bv.y, bv.x);
 
         if( ( abs(bpr.x - gl.x) < 1000 ) &&
@@ -246,7 +247,7 @@ DefendState* DSIdle::action(Robot* robot)
         if( our_half.contains(bp)
             && our_da.contains(bp, 2000)
             && kicker_ID == -1
-            && Comparisons::distanceBall().minInTeam(robot->getTeam()) == robot)
+            && Comparisons::distanceBall(bp).minInTeam(robot->getTeam()) == robot)
         {
             kicker_ID = robot->getID();
             auto gp = Field::getGoalPosition(robot->getTeam()->getOpponentSide());
@@ -280,7 +281,7 @@ DefendState* DSKick::action(Robot* robot)
 {
 //    std::cout << "DefendStateKick" << std::endl;
     auto goal = Field::getGoalPosition(robot->getTeam()->getSide());
-    if(ktpo->perform(robot) || ballIsMovingAway(goal)) {
+    if(ktpo->perform(robot) || ballIsMovingAway(goal, robot->getTeam()->getGameState()->getBall())) {
         kicker_ID = -1;
         return new DSIdle(robot);
     }
@@ -319,7 +320,7 @@ DefendState* DSIntercept::action(Robot* robot)
 {
 //    std::cout << "DefendStateIntercept" << std::endl;
 
-    Point bp = Ball::getPosition();
+    Point bp = robot->getTeam()->getGameState()->getBall()->getPosition();
     Point goal = Field::getGoalPosition(robot->getTeam()->getSide());
 
     if(!chosenLinePoint) {
@@ -341,7 +342,7 @@ DefendState* DSIntercept::action(Robot* robot)
             //and nobody else is kicking, we kick.
             if(Measurements::distance(robot, bp) < 600
                 && kicker_ID == -1
-                && Comparisons::distanceBall().minInTeam(robot->getTeam()) == robot)
+                && Comparisons::distanceBall(bp).minInTeam(robot->getTeam()) == robot)
             {
                 kicker_ID = robot->getID();
                 auto gp = Field::getGoalPosition(robot->getTeam()->getOpponentSide());
@@ -350,7 +351,7 @@ DefendState* DSIntercept::action(Robot* robot)
             }
 
             //If the ball is coming and it stops, go back to idle.
-            if(ballIsStopped()) {
+            if(ballIsStopped(robot->getTeam()->getGameState()->getBall())) {
                 return new DSIdle(robot);
             }
         }
@@ -370,7 +371,7 @@ DefendState* DSIntercept::action(Robot* robot)
         //is too close to the goal, we go back to idle.
         if(++kickBallTimeout > 400
             || Measurements::distance(goal, bp) < GOALIE_DIST //Goalie action distance
-            || ballIsMovingAway(goal))
+            || ballIsMovingAway(goal, robot->getTeam()->getGameState()->getBall()))
         {
         #if DEFENDBEHAVIOR_DEBUG
             std::cout << "DefendStateKick Timeout " << robot->getID() << std::endl;
@@ -389,8 +390,8 @@ DefendState* DSIntercept::action(Robot* robot)
  */
 bool DSIntercept::tryGetValidLinePoint()
 {
-    Point bp = Ball::getPosition();
-    Point bpp = Ball::getStopPosition();
+    Point bp = robot->getTeam()->getGameState()->getBall()->getPosition();
+    Point bpp = robot->getTeam()->getGameState()->getBall()->getStopPosition();
     Point goal = Field::getGoalPosition(robot->getTeam()->getSide());
     Point p = Measurements::lineSegmentPoint(robot->getPosition(), bp, bpp);
     if(abs(goal.x - p.x) < 2500 && Measurements::distance(robot, p) < LINE_DISTANCE*2) {

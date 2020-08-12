@@ -1,6 +1,9 @@
 #ifndef MOTION_PARAMETERS
 #define MOTION_PARAMETERS
 
+// TODO: review this file and place parameters where they correspond, not here
+
+
 namespace YAML {
     class Node;
 }

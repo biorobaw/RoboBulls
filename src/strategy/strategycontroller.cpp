@@ -1,14 +1,14 @@
 #include "strategycontroller.h"
-#include "strategy/strategy.h"
+#include "strategy.h"
+
+#include "model/team.h"
 #include "model/game_state.h"
 #include "robot/robot.h"
-#include "model/team.h"
 #include "gui/gui_interface.h"
 
-#include "controllers/scontroller_normal_game.h"
+#include "controllers/normal_game/scontroller_normal_game.h"
 #include "controllers/strategy_tester/scontroller_strategy_tester.h"
 #include "controllers/joystick/scontroller_joystick.h"
-#include "strategies/haltstrategy.h"
 #include "yaml-cpp/yaml.h"
 
 #include <string>
@@ -17,7 +17,7 @@ using std::cerr, std::endl, std::string;
 
 StrategyController::StrategyController( RobotTeam* _team, YAML::Node* n)
   : team(_team),
-    activeStrategy(new HaltStrategy(_team))
+    activeStrategy(new Strategy(_team))
 {
     (void)n;
 }
@@ -26,10 +26,13 @@ StrategyController::~StrategyController(){}
 void StrategyController::run()
 {
     // update strategy if necessary
-    int new_state = received_new_command ?
-                            getControllerState(GameState::getRefereeCommand()) :
+    const auto& game_state = team->getGameState();
+
+    int new_state = game_state->hasRefereeCommandChanged() ?
+                            getControllerState(game_state->getRefereeCommand()) :
                             getNextControllerState(controller_state, activeStrategy->getStatus());
-    received_new_command = false;
+
+    game_state->clearRefereeCommandChanged();
 
     if(new_state!=controller_state){
         controller_state = new_state;
@@ -45,12 +48,11 @@ void StrategyController::run()
 
     // perform robot behaviors
     for (Robot *rob :  team->getRobots())
-        if (!GuiInterface::getGuiInterface()->isOverriddenBot(team->getColor(),rob->getID())) {
+        if (!GuiInterface::getGuiInterface()->controlRobotIfOverriden(rob)) {
 //            std::cout << "R" << rob->getID() << " not overriden, has beh? " << rob->hasBehavior() << std::endl;
             rob->performBehavior();
 
          }
-
 
     // send velocities to the robots
     team->sendVels();

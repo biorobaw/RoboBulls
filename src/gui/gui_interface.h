@@ -7,6 +7,7 @@
 
 class MainWindow;
 class Point;
+class Robot;
 
 // This class provides an interface to use the gui
 // It is meant to be used by the main program to control the gui
@@ -17,7 +18,7 @@ public:
     GuiInterface();
     static GuiInterface * getGuiInterface();
     void show(); // commands the gui to start showing
-    bool isOverriddenBot(int team, int robot_id); // returns whether the gui wants to override a robot
+    bool controlRobotIfOverriden(Robot* robot); // returns whether the gui wants to override a robot
     void drawPoint(const Point& p); // adds a point to be drawn by the gui
     void drawLine(const Point& A, const Point& B, const double seconds = 0.01); // adds a line to be drawn by the gui
     void drawRegion(const std::vector<Point>); // sets a regon to be drawn by the gui

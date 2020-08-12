@@ -54,8 +54,8 @@ void PilotOmni::driveTo (Point goalPoint, float theta_goal, Point nextGoalPoint)
     DD cout << endl;
     // Inertial Frame Velocities
 
-    double linear  = TRANS_P_K*distance_error + TRANS_I_K*dist_error_integral;
-    angular = ANGULAR_P_K*angle_error + ANGULAR_I_K*angle_error_integral;
+    double linear  =   TRANS_P_K * distance_error +   TRANS_I_K *  dist_error_integral;
+    float angular  = ANGULAR_P_K *    angle_error + ANGULAR_I_K * angle_error_integral;
     double x_vel = linear*cos(angle_to_goal);
     double y_vel = linear*sin(angle_to_goal);
 
@@ -110,8 +110,7 @@ void PilotOmni::driveTo (Point goalPoint, float theta_goal, Point nextGoalPoint)
 //            y_vel_robot = (speed + ACC_PER_FRAME) * 100 * y_vel_robot/requested_speed;
 //        }
 //    }
-
-    vel = Point(x_vel_robot, y_vel_robot);
+    setTargetVelocity(Point(x_vel_robot, y_vel_robot), angular);
 }
 
 void PilotOmni::normalizeSpeeds(double& LF, double& LB, double& RF, double& RB, double max_mtr_spd) {

@@ -37,8 +37,8 @@ void PanelTeams::update_panel(){
 
 void PanelTeams::scroll_to_selected(GuiRobot* robot){
     if(robot==nullptr || !robot->selected()) return;
-    tabWidget->setCurrentIndex(robot->team);
-    (robot->team == ROBOT_TEAM_BLUE ? tab_blue : tab_yellow)
+    tabWidget->setCurrentIndex(robot->getTeamId());
+    (robot->getTeamId() == ROBOT_TEAM_BLUE ? tab_blue : tab_yellow)
             ->show_robot(robot);
 
 }

@@ -5,13 +5,26 @@
 #include "robot/robot.h"
 #include "model/team.h"
 #include "model/game_state.h"
-#include "robcomm_grsim.h"
-#include "robot_grsim.h"
+#include "proxy_grsim.h"
 #include <iostream>
 #include "utilities/measurements.h"
 #include "yaml-cpp/yaml.h"
+#include "robot/navigation/pilots/pilot_omni.h"
 
-RobCommGrsim::RobCommGrsim(YAML::Node* t_node)
+
+
+// dimensions of grsim robot define in grsim project in file srd/configwidget (search for robot_settings)
+#define WHEEL_RADIUS 32.5        // 32.5mm
+#define ROBOT_RADIUS 90          // 90 mm
+#define LF_OFFSET ( 60*M_PI/180) // 60 degrees
+#define LB_OFFSET (135*M_PI/180) // 135 degrees
+#define RB_OFFSET (225*M_PI/180) // 225 degrees
+#define RF_OFFSET (300*M_PI/180) // 300 degrees
+
+
+
+ProxyGrsim::ProxyGrsim(YAML::Node* t_node) :
+    drive(ROBOT_RADIUS, WHEEL_RADIUS, LF_OFFSET, LB_OFFSET, RB_OFFSET, RF_OFFSET)
 {
 
     std::cout << "        GRSIM_ADDR : " <<  (*t_node)["GRSIM_ADDR"] << std::endl
@@ -24,13 +37,13 @@ RobCommGrsim::RobCommGrsim(YAML::Node* t_node)
     _port = port;
 }
 
-void RobCommGrsim::sendVels(std::set<Robot*>& robots)
+void ProxyGrsim::sendVels(const QSet<Robot*>& robots)
 {
     //Send standard robot packets
     for (Robot* rob : robots)
     {
         sendPacket(rob);
-        rob->setKick(0);
+        rob->setKickSpeed(0);
         //rob->setDrible(0);
     }
 
@@ -38,26 +51,25 @@ void RobCommGrsim::sendVels(std::set<Robot*>& robots)
     sendReplacementPackets();
 }
 
-void RobCommGrsim::sendPacket(Robot* robot)
+void ProxyGrsim::sendPacket(Robot* r)
 {
     grSim_Packet packet;
-    packet.mutable_commands()->set_isteamyellow( robot->getTeamId() == ROBOT_TEAM_YELLOW );
+    packet.mutable_commands()->set_isteamyellow( r->getTeamId() == ROBOT_TEAM_YELLOW );
     packet.mutable_commands()->set_timestamp(0.0);
     grSim_Robot_Command* command = packet.mutable_commands()->add_robot_commands();
 
     //Retrive robot information
-    RobotGrsim* r = (RobotGrsim*)robot;
-    int id = robot->getID();
-    float kick = robot->getKick();
-    bool  dribble = robot->getDribble();
+    int id = r->getID();
+    float kick = r->getKickSpeed();
+    bool  dribble = r->getDribble();
     command->set_id(id);
     command->set_kickspeedx(kick);
     command->set_kickspeedz(0); // No chipper
     command->set_spinner(dribble ? 300 : 0);
 
 
-    auto v = r->getPilot()->getVel(); // in what value? m/s? mm/s? we assume mm/s
-    auto w = r->getPilot()->getAngular(); // we assume rad/s
+    auto v = r->getTargetVelocity(); // in what value? m/s? mm/s? we assume mm/s
+    auto w = r->getTargetAngularSpeed(); // we assume rad/s
     command->set_veltangent(v.x / 1000.0); // set_veltangent expect m/s units
     command->set_velnormal(v.y / 1000.0);  // set_velnormal expect m/s units
     command->set_velangular(w); // set vel angular expects rad/s
@@ -93,7 +105,7 @@ void RobCommGrsim::sendPacket(Robot* robot)
 //        auto rv = r->getVelocityMetersPerSecond();
 //        std::cout<<"Moving at: "<< rv.x*1000 << " " <<rv.y*1000 << " " <<std::endl;
 //        std::cout<<"R: " << r->getTeamId() << " " << r->getID() <<std::endl;
-//        std::cout<< r->getPilot()->getVel().x << " " << r->getPilot()->getVel().y<< " " << r->getPilot()->getAngular() <<std::endl;
+//        std::cout<< r->getTargetVelocity().x << " " << r->getTargetVelocity().y<< " " << r->getTargetAngularSpeed() <<std::endl;
 //        std::cout<<"Sending: " << LF << " " << LB << " " << RB << " " << RF << std::endl;
 //    }
 
@@ -110,7 +122,7 @@ void RobCommGrsim::sendPacket(Robot* robot)
 
 }
 
-void RobCommGrsim::sendReplacementPackets()
+void ProxyGrsim::sendReplacementPackets()
 {
     grSim_Packet packet;
     grSim_Replacement* replacement = packet.mutable_replacement();
@@ -151,7 +163,24 @@ void RobCommGrsim::sendReplacementPackets()
     udpsocket.writeDatagram(dgram, _addr, _port);
 }
 
-void RobCommGrsim::close(){
+void ProxyGrsim::close(){
     // udp socket seems to close automatically if necessary when destroyed
     // nothing to be done
+}
+
+
+bool  ProxyGrsim::hasKicker() {
+    return true;
+}
+bool  ProxyGrsim::isHolonomic() {
+    return true;
+}
+Pilot* ProxyGrsim::createPilot(Robot* robot) {
+    return new PilotOmni(robot,10.0/7, 0, 0.5, 0.0015);
+}
+
+void ProxyGrsim::getWheelSpeeds(Point velocity, float angular_speed, double wheelSpeeds[4]){
+    auto res = drive.getWheelSpeeds(velocity.x, velocity.y, angular_speed);
+    for(int i=0; i<4; i++)
+        wheelSpeeds[i] = res[i];
 }

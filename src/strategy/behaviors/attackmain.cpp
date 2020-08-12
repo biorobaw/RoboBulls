@@ -3,6 +3,7 @@
 #include "model/field.h"
 #include "model/team.h"
 #include "robot/robot.h"
+#include "model/game_state.h"
 
 float AttackMain::SCORE_ANGLE_TOLERANCE = 7*M_PI/180;
 float AttackMain::PASS_ANGLE_TOLERANCE  = 7*M_PI/180;
@@ -271,7 +272,7 @@ std::vector<std::vector<Point>> AttackMain::genClusters()
 
     std::vector<std::vector<Point>> clusters;
 
-    for(Robot* opp: robot->getOpponentTeam()->getRobots())
+    for(Robot* opp: robot->getOpponentRobots())
     {
         // Check if each opponent belongs to an existing cluster
         bool assigned = false;
@@ -312,7 +313,7 @@ std::pair<bool, Point> AttackMain::calcBestGoalPoint()
     // Populate a vector with robot positions
     std::vector<Point> obstacles;
     auto myTeam = robot->getTeam()->getRobots();
-    auto oppTeam = robot->getOpponentTeam()->getRobots();
+    auto oppTeam = robot->getOpponentRobots();
 
     obstacles.reserve(myTeam.size() + oppTeam.size());
 
@@ -338,7 +339,7 @@ std::pair<bool, Point> AttackMain::calcBestGoalPoint()
         for(const Point& obstacle : obstacles)
         {
             // If there is an obstacle in the way
-            if(Measurements::lineSegmentDistance(obstacle, Ball::getPosition(), target) <= Field::BALL_RADIUS+ROBOT_RADIUS+50)
+            if(Measurements::lineSegmentDistance(obstacle, robot->getTeam()->getGameState()->getBall()->getPosition(), target) <= Field::BALL_RADIUS+ROBOT_RADIUS+50)
             {
                 clear_shot = false;
                 break;
@@ -374,8 +375,8 @@ std::pair<bool, Point> AttackMain::calcBestGoalPoint()
 std::pair<bool, Point> AttackMain::calcBestPassPoint()
 {
     std::vector<Robot*> obstacles;
-    for(auto* r2 : robot->getOpponentTeam()->getRobots()) obstacles.push_back(r2);
-    Point bp = Ball::getPosition();
+    for(auto* r2 : robot->getOpponentRobots()) obstacles.push_back(r2);
+    Point bp = robot->getTeam()->getGameState()->getBall()->getPosition();
     Robot* best_supp = nullptr;
     float best_prob = 0;
 

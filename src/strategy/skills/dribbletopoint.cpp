@@ -6,6 +6,9 @@
 #include "model/game_state.h"
 #include "robot/robot.h"
 #include "robot/navigation/robot_pilot.h"
+#include "model/team.h"
+#include "model/game_state.h"
+#include "utilities/measurements.h"
 namespace Skill {
 
 
@@ -26,7 +29,7 @@ bool DribbleToPoint::perform(Robot* robot)
 {
 //    std::cout << "Dribbling" << std::endl;
 
-    Point bp = Ball::getPosition();
+    Point bp = robot->getTeam()->getGameState()->getBall()->getPosition();
     Point rp = robot->getPosition();
     float ang_to_ball = Measurements::angleBetween(rp,bp);
     float dist_to_ball = Measurements::distance(rp,bp);
@@ -52,7 +55,7 @@ bool DribbleToPoint::perform(Robot* robot)
         {
             cmd.setTarget(bp,ang_to_ball);
             cmd.avoidBall = false;
-            robot->getPilot()->goToPose(cmd);
+            robot->getPilot()->setNewCommand(cmd);
         }
         break;
     }
@@ -79,8 +82,8 @@ bool DribbleToPoint::perform(Robot* robot)
         cmd.setTarget(grasp_point,ang_to_ball);
         cmd.avoidBall = false;
         cmd.velocity_multiplier = 0.3;
-        robot->getPilot()->goToPose(cmd);
-        if(robot->getPilot()->finisedLastCommand())
+        robot->getPilot()->setNewCommand(cmd);
+        if(robot->getPilot()->finishedCommand())
             state = move_to_target;
 
         break;
@@ -110,7 +113,7 @@ bool DribbleToPoint::perform(Robot* robot)
         cmd.velocity_multiplier = 1;
         cmd.setTarget(*target, ang_to_target);
         cmd.avoidBall = false;
-        robot->getPilot()->goToPose(cmd);
+        robot->getPilot()->setNewCommand(cmd);
         break;
     }
     case adjust1:
@@ -125,10 +128,10 @@ bool DribbleToPoint::perform(Robot* robot)
         cmd.velocity_multiplier = 1;
         cmd.setTarget(adjust_point, ang_to_ball);
         cmd.avoidBall = true;
-        robot->getPilot()->goToPose(cmd);
+        robot->getPilot()->setNewCommand(cmd);
 
 
-        if(robot->getPilot()->finisedLastCommand())
+        if(robot->getPilot()->finishedCommand())
             state = adjust2;
 
         break;
@@ -145,10 +148,10 @@ bool DribbleToPoint::perform(Robot* robot)
         cmd.velocity_multiplier = 1;
         cmd.setTarget(adjust_point, ang_to_ball);
         cmd.avoidBall = true;
-        robot->getPilot()->goToPose(cmd);
+        robot->getPilot()->setNewCommand(cmd);
 
 
-        if(robot->getPilot()->finisedLastCommand()
+        if(robot->getPilot()->finishedCommand()
         || Measurements::distance(rp, bp) > ROBOT_RADIUS*3)
             state = move_to_ball;
 
@@ -169,7 +172,7 @@ bool DribbleToPoint::targetIsAhead(const float& ang_to_ball, const Point& rp)
 
 bool DribbleToPoint::safeToAdjust(const Point& bp, Robot* robot)
 {
-    for(Robot* r : Robot::getAllRobots()){
+    for(Robot* r : robot->getTeam()->getGameState()->getFieldRobots()){
         if(r->getTeamId()==robot->getTeamId()){
             if(r!=robot && Measurements::distance(bp, r->getPosition()) < ROBOT_RADIUS + Field::BALL_RADIUS + 50)
                 return false;

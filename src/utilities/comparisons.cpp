@@ -5,6 +5,7 @@
 #include "model/ball.h"
 #include "robot/robot.h"
 #include "model/team.h"
+#include "utilities/measurements.h"
 
 using namespace std::placeholders;
 
@@ -99,7 +100,7 @@ Predicate& Predicate::ignoreIDsNot(std::initializer_list<int> ids) {
 
 
 
-Robot* Predicate::maxInSet(std::set<Robot*>& robots){
+Robot* Predicate::maxInSet(QSet<Robot*>& robots){
     return *max(robots);
 }
 
@@ -107,7 +108,7 @@ Robot* Predicate::maxInTeam(RobotTeam* team){
     return maxInSet(team->getRobots());
 }
 
-Robot* Predicate::minInSet(std::set<Robot*>& robots){
+Robot* Predicate::minInSet(QSet<Robot*>& robots){
     return *min(robots);
 }
 
@@ -163,8 +164,8 @@ pred_distance::pred_distance(Robot* robot)
     : pred_distance(robot->getPosition())
     { }
 
-pred_distanceBall::pred_distanceBall()
-    : pred_distance(Ball::getPosition())
+pred_distanceBall::pred_distanceBall(Point ball_pos)
+    : pred_distance(ball_pos)
     { }
 
 

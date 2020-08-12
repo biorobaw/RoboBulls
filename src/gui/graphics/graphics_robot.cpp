@@ -7,7 +7,7 @@
 GraphicsRobot::GraphicsRobot(QObject* parent, int team, int id, bool is_icon) :
     QObject(parent), robot(GuiRobot::get(team,id)), draw_at_origin(is_icon)
 {
-    setToolTip("Robot " + QString::number(robot->id));
+    setToolTip("Robot " + QString::number(robot->getID()));
     setFlag(ItemIsSelectable);
 
     int radius = boundingRect().width() / 2;
@@ -32,7 +32,7 @@ QRectF GraphicsRobot::boundingRect() const
 
 void GraphicsRobot::setRobot(GuiRobot *robot){
     this->robot = robot;
-    setToolTip("Robot " + QString::number(robot->id));
+    setToolTip("Robot " + QString::number(robot->getID()));
 }
 
 GuiRobot* GraphicsRobot::getRobot(){
@@ -48,9 +48,9 @@ void GraphicsRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
     if(!robot->isInField()) return;
 
     if(!draw_at_origin){
-        setX(robot->getCurrentPosition().x);
-        setY(robot->getCurrentPosition().y);
-        setRotation(robot->getOrientation());
+        setX(robot->getPosition().x);
+        setY(robot->getPosition().y);
+        setRotation(robot->getOrientationInDegrees());
     }
 
     QRectF rec = boundingRect();
@@ -87,31 +87,32 @@ void GraphicsRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
 
 
     // Setting ID circles' colors
-    if (robot->id == 0) {
+    int id = robot->getID();
+    if (id == 0) {
         lowLtBrush.setColor(Qt::green);
-    } else if (robot->id == 1) {
+    } else if (id == 1) {
         lowLtBrush.setColor(Qt::green);
         topLtBrush.setColor(Qt::green);
-    } else if (robot->id == 2) {
+    } else if (id == 2) {
         lowLtBrush.setColor(Qt::green);
         topLtBrush.setColor(Qt::green);
         topRtBrush.setColor(Qt::green);
-    } else if (robot->id == 3) {
+    } else if (id == 3) {
         topRtBrush.setColor(Qt::green);
         lowLtBrush.setColor(Qt::green);
-    } else if (robot->id == 4) {
+    } else if (id == 4) {
         lowRtBrush.setColor(Qt::green);
-    } else if (robot->id == 5) {
+    } else if (id == 5) {
         topLtBrush.setColor(Qt::green);
         lowRtBrush.setColor(Qt::green);
-    } else if (robot->id == 6) {
+    } else if (id == 6) {
         topLtBrush.setColor(Qt::green);
         lowRtBrush.setColor(Qt::green);
         topRtBrush.setColor(Qt::green);
-    } else if (robot->id == 7) {
+    } else if (id == 7) {
         lowRtBrush.setColor(Qt::green);
         topRtBrush.setColor(Qt::green);
-    } else if (robot->id == 8) {
+    } else if (id == 8) {
         lowLtBrush.setColor(Qt::green);
         topLtBrush.setColor(Qt::green);
         topRtBrush.setColor(Qt::green);
@@ -120,10 +121,10 @@ void GraphicsRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
     painter->setRenderHint(QPainter::Antialiasing, true);
 
     // Robot body
-    if (robot->isKicking()) {
+    if (robot->getKickSpeed()>0) {
         painter->setPen(QPen(Qt::gray, 0, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
         painter->setBrush(QBrush(Qt::red, Qt::SolidPattern));
-    } else if (robot->isDribbling()) {
+    } else if (robot->getDribble()) {
         painter->setPen(QPen(Qt::gray, 0, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
         painter->setBrush(QBrush(QColor::fromRgb(255,153,0,255), Qt::SolidPattern));
     } else {
@@ -141,7 +142,7 @@ void GraphicsRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
     }
 
     if (robot->selected()) {
-        auto color = robot->team == ROBOT_TEAM_BLUE ? Qt::cyan : QColor::fromRgb(255,215,0,255);
+        auto color = robot->getTeamId() == ROBOT_TEAM_BLUE ? Qt::cyan : QColor::fromRgb(255,215,0,255);
         painter->setBrush(QBrush(color, Qt::SolidPattern));
 
     }
@@ -163,7 +164,7 @@ void GraphicsRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         painter->drawEllipse(lowLtCircle);
     // Center circle
 
-    auto c = robot->team == ROBOT_TEAM_BLUE ? Qt::blue : Qt::yellow;
+    auto c = robot->getTeamId() == ROBOT_TEAM_BLUE ? Qt::blue : Qt::yellow;
     painter->setBrush(QBrush(c, Qt::SolidPattern));
 
     painter->drawEllipse(centerCircle);

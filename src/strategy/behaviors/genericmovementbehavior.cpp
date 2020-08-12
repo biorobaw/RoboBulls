@@ -17,8 +17,8 @@ GenericMovementBehavior::GenericMovementBehavior(Robot* robot,
 void GenericMovementBehavior::perform()
 {
     std::cout << "generic movement - robot " <<robot->getID() <<std::endl;
-    robot->getPilot()->goToPose(cmd);
-    done = robot->getPilot()->finisedLastCommand();
+    robot->getPilot()->setNewCommand(cmd);
+    done = robot->getPilot()->finishedCommand();
 }
 
 /***********************************************************/

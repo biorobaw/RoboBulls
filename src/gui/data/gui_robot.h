@@ -4,48 +4,41 @@
 #include <QObject>
 #include "model/constants.h"
 #include "utilities/point.h"
+#include "robot/robot.h"
 
 //Proxy between the gui and the ball
 
-class GuiRobot : public QObject
+class GuiRobot : public QObject, public Robot
 {
     Q_OBJECT
 public:
 
-    // Static functions to get the robots and to update their values
-    static GuiRobot* get(int team, int robot);
-    static void updateRobots();
+    static GuiRobot* get(int team_id, int robot_id);
 
-
-
-    // ID of team/robot being controlled
-    const int id;
-    const int team;
-
+    GuiRobot(QObject* parent, int id, int team); // private constructor
+    void update();
 
     // functions for reading game related information
-    bool    isInField();    // indicates whether a robot is in the field (independently if it is controlled)
-    bool    isControlled(); // indicates whether our software controls the robot
-    bool    hasBall();
     int     getMoveStatus();
-    QString  getBehaviorName();
-    Point   getCurrentPosition();
-    float   getOrientation();
-    QString getOrientationAsString();  // TODO: review usage of this function
-    int     getCurrentSpeed();     // actual  speed
-    int     getSpeedCommand();     // desired speed
-    Point   getVelocityCommand();  // desired velocity
-    bool    isDribbling();         // indicates whether the bot is dribbling
-    bool    isKicking();           // indicates whether the bot is kicking
+    QString getBehaviorName();
+    bool isControlled();
 
+    float getOrientationInDegrees();
+    QString getOrientationAsString();  // TODO: review usage of this function
 
 
     // functions to control the robot from the gui
     void setOverriden(bool new_value); // overrides the robot controller so that it can be controlled by the gui
+    void setGuiTargetVelocity(Point vxy, float angular);
+    void setGuiKickSpeed(int speed = 5000);
+    void setGuiDribble(bool dribble);
+
     bool isOverriden();                // indicates whether the robot is being controlled by the gui
-    void  setManualVelocity(Point vxy, float angular);
-    void  setKick(float power = 5.0);
-    void  setDribble(bool dribble);
+    Point getGuiTargetVelocity();
+    int   getGuiTargetSpeed();
+    float getGuiTargetAngularSpeed();
+    int   getGuiKickSpeed();
+    bool  getGuiDribble();
 
 
     // gui related functions to user input
@@ -60,34 +53,23 @@ public:
 
 private:
 
-
     // data storing game related information
-    bool  is_in_field   = false;     // stores whether the robot is the field
-    bool  is_controlled = false;     // stores whether our software controlls the robot
-    bool  has_ball      = false;     // stores whether the robot is in possesion of the ball
-    int   move_status   = -1;        // stores the current movement status
+    int     move_status   = -1;        // stores the current movement status
     QString behaviorName = "";       // stores the current behavior of the robot
-    Point previous_pos = Point(0,0); // stores the previous position of the robot
-    Point current_pos  = Point(0,0); // stores the current position of the robot
-    float current_orientation = 0;   // stores the current orientation of the robot
-    int   previous_speed = 0;        // stores previous delta distance
-    int   current_speed  = 0;        // stores current delta distance
-    Point velocity_command = Point(0,0); // stores the desired velocity of the robot
-    int   speed_command = 0;         // stores the desired speed of the robot
 
-    // data to control the robot from the gui
-    bool dribling = false;
-    bool kicking = false;
-    bool overriden = true;
+    // variables to control the robot from the gui
+    Point gui_target_velocity = Point(0,0); // stores the desired velocity of the robot
+    float gui_target_angular_speed = 0;
+    int   gui_kick_speed = 0;
+    bool  gui_dribble = false;
+    bool  overriden = true;
 
 
     // data related to gui functions
     static GuiRobot* selected_robot; // pointer to the robot selected by the gui
 
-    // Array of gui robots + initializer and constructor
-    static GuiRobot*** robots;          // Table of gui robots of size [2][MAX_ROBOTS_PER_TEAM]
-    static GuiRobot*** init_robots();   // Function used to statically initialize the variable robots
-    GuiRobot(QObject* parent, int team, int id); // private constructor
+
+    Robot* getProxy();
 
 
 signals:

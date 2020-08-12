@@ -150,7 +150,7 @@ void buildin_robot_action(const std::vector<std::string>& args, Function callbac
 void builtin_remove_robot(const std::vector<std::string>& args)
 {
     buildin_robot_action(args, [&](int id, int team) {
-        RobotTeam::getTeam(team)->removeRobot(id);
+//        RobotTeam::getTeam(team)->removeRobot(id);
         std::cout << "Removed robot " << id << " from team " << team << std::endl;
     });
 }
@@ -160,7 +160,7 @@ void builtin_add_robot(const std::vector<std::string>& args)
 {
     buildin_robot_action(args, [&](int id, char team) {
 
-        RobotTeam::getTeam(team)->addRobot(id);
+//        RobotTeam::getTeam(team)->addRobot(id);
         std::cout << "Added robot " << id << " to team " << team << std::endl;
     });
 }

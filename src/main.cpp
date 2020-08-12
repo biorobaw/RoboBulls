@@ -1,21 +1,18 @@
 #include <QApplication>
+#include <QThread>
 #include <QDir>
 #include <csignal>
-#include <cstdlib>
-#include <iostream>
-#include "ssl/ssl_vision_listener.h"
-#include "robot/robcomm.h"
-#include "ssl/ssl_game_controller_listener.h"
-#include "model/game_state.h"
+
 #include "gui/gui_interface.h"
-#include "utilities/debug.h"
-#include "strategy/strategycontroller.h"
+#include "ssl/ssl_vision_listener.h"
+#include "ssl/ssl_game_controller_listener.h"
 #include "strategy/controllers/joystick/scontroller_joystick.h"
-#include "yaml-cpp/yaml.h"
-#include <string>
+
+#include "parameters/motion_parameters.h"
 #include "model/field.h"
 #include "model/team.h"
-#include "parameters/motion_parameters.h"
+#include "yaml-cpp/yaml.h"
+
 
 /*! @mainpage Welcome to the RoboBulls 2 Documentation.
  *
@@ -96,21 +93,24 @@ void registerExitSignals()
     std::set_terminate(exitStopRobot);
 }
 
+
 class MyApplication : public QApplication {
+//    Q_OBJECT
 public:
 
     MyApplication(int argc, char* argv[]) : QApplication(argc,argv){}
+
 
     bool notify(QObject* receiver, QEvent* event) override {
         bool done = true;
         try {
             done = QApplication::notify(receiver, event);
         } catch (const std::exception& ex) {
-            std::cout << " what? " << ex.what() << std::endl;
+            qInfo() << " what? " << ex.what();
         } catch (const std::string& ex) {
-            std::cout << " what? " << ex << std::endl;
+            qInfo() << " what? " << ex.c_str();
         } catch (...) {
-            std::cout << " what? " << "unnamed exception" << std::endl;
+            qInfo() << " what? " << "unnamed exception";
         }
         return done;
     }
@@ -122,71 +122,87 @@ public:
 int main(int argc, char *argv[])
 {
 
-    std::cout << "WORKING!!!";
+    // We need the application to be created before we can connnect slots
+    // thus the following line should run first to initialize the system
+    MyApplication a(argc, argv);
+
+    // set pattern for qDebug messages
+//    qSetMessagePattern("[%{type}] %{appname} (%{file}:%{line}) - %{message}");
+    qInfo() << "WORKING!!!";
     std::string folder = argc > 1 ? argv[1] : "./config";
 
-    std::cout << QDir::currentPath().toStdString() << std::endl;
+    qInfo() << QDir::currentPath();
 
-    std::cout << "-- COMMAND ARGS (" << argc << ")" <<  std::endl;
+    qInfo() << "-- COMMAND ARGS (" << argc << ")";
     for(int i=0; i < argc; i++)
-        std::cout << "        arg (" << i << ") : " << argv[i] << std::endl;
+        qInfo() << "        arg (" << i << ") : " << argv[i] ;
     // Load config files:
+
     YAML::Node comm_node = YAML::LoadFile(folder + "/comm.yaml");
     YAML::Node team_node = YAML::LoadFile(folder + "/team.yaml");
     YAML::Node field_node = YAML::LoadFile(folder + "/field.yaml");
     YAML::Node motion_node = YAML::LoadFile(folder + "/motion.yaml");
 
 
-    MyApplication a(argc, argv);
-    SControllerJoystick::init_module(); // init joystick listener module
 
     // set all parameters:
     Field::load(&field_node);
     load_motion_parameters(&motion_node);
 
     // load teams:
-    RobotTeam::load_teams(&team_node);
+    auto teams = RobotTeam::load_teams(&team_node);
+    SControllerJoystick::init_module(teams); // init joystick listener module
 
 
+    // Create objects to communicate with SSL
+//    QThread* game_controller_thread = new QThread;
+//    SSLGameControllerListener ssl_game_controller( &comm_node);
+//    ssl_game_controller.moveToThread(game_controller_thread);
+//    game_controller_thread->start();
 
-    //Initialize GameModel, StrategyController, Vision, and Ref
+    QThread* vision_thread = new QThread;
+    SSLVisionListener* ssl_vision = new SSLVisionListener(&comm_node);
+    ssl_vision->moveToThread(vision_thread);
+    vision_thread->start();
 
-    SSLGameControllerListener refCommunicator( &comm_node);
-    // TODO: vision communicator should not know anything about team sides (deprecated notion of "own team")
-    SSLVisionListener visionCommunicator(&comm_node);
 
+    // Start debugger thread
+//    debug::listenStart();
 
-    registerExitSignals();
-
-    //Create the GUI and show it
+    // start gui
     GuiInterface::getGuiInterface()->show();
+    registerExitSignals();
+    int result = a.exec(); // starts main loop event
 
-    // Start the debugger thread
-    debug::listenStart();
-
-
-
-    // start threads and wait for program to exit
-    visionCommunicator.start();
-    refCommunicator.start();
-    int result = a.exec();
 
 
     // stop threads
-    SControllerJoystick::stop_module();
-    refCommunicator.stop();
-    refCommunicator.wait();
+//    SControllerJoystick::stop_module();
+//    game_controller_thread->exit();
+//    game_controller_thread->wait();
 
-    visionCommunicator.stop();
-    visionCommunicator.wait();
 
-    for(int i=0;i<2;i++)
-        RobotTeam::getTeam(i)->closeCommunication();
+//    emit ssl_vision->kill();
+//    vision_thread->exit();
+//    vision_thread->quit();
+//    vision_thread->terminate();
+//    cout << "emitted signal" << endl;
 
-    // wait for threads to close:
-    std::cout<< "result: " << result << std::endl;
+//    QThread::currentThread()->
 
+//    cout << "done" <<endl;
+//    while(vision_thread->isRunning()){
+//        cout << vision_thread->isRunning() << " "
+//             << vision_thread->isFinished() << endl;
+//        QThread::sleep(1);
+//    }
+//    vision_thread->wait();
+
+
+//    for(int i=0;i<2;i++)
+//        teams[i]->closeCommunication();
+
+    cout << "Done, you can now quit!";
     return result;
-
 
 }

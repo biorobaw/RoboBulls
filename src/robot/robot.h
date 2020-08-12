@@ -3,18 +3,21 @@
 #include <typeinfo>
 #include <type_traits>
 #include "utilities/point.h"
-#include "utilities/velocitycalculator.h"
 #include "strategy/behavior.h"
 #include "strategy/behaviors/genericskillbehavior.h"
 #include "iostream"
 #include <set>
 #include "model/constants.h"
+#include "model/moving_object.h"
+#include "navigation/commands/CmdGoToPose.h"
 
-
-
+#include <QSet>
 
 class RobotTeam;
+class RobotProxy;
 class Pilot;
+
+#define ROLE_GOALIE 0
 
 /*! @addtogroup everydayuse
  * @{ */
@@ -25,119 +28,108 @@ class Pilot;
  * These are usually returned by a GameModel function. They should not be created
  * directly under normal circumstances
  */
-class Robot
+class Robot : public MovingObject
 {
 public:
-//    //! @brief Robot Constructor (does nothing)
-//    Robot();
 
-    static Robot* loadRobot(std::string type,int id, int color, RobotRole role);
+    // ====== Constructor and basic info ==========================
 
-    virtual ~Robot();
-    static std::set<Robot*>& getAllRobots();
+    Robot(int _id, int _team);
+    ~Robot();
 
-    //! @brief Robot Constructor with ID and team
-    Robot(int _id, int _team, RobotRole role);
+    int  getID();
+    std::string  toString();
 
-    //! @name Information Retrevial
-    //! @{
+    // ======= IMPLEMENTATION SPECIFIC FUNCTIONS ===================
 
-    //! @brief Get robot id, note that ids are unique only within robot team
-    int getID();
+    void setRobotProxy(RobotProxy* proxy);
+    bool hasKicker();
+    bool isHolonomic();
 
-    //! @brief Get the id of the team that the robot belongs to
-    int getTeamId();
+    // ================ TEAM RELATED ==============================
 
-    //! @brief Get a pointer to the team that the robot belongs to
+    void       setRole(int role); // role 0 is reserved for the goalie
+    int        getRole(); // get the role of the robot in the team
+    bool       isGoalie();
+    int        getTeamId();
     RobotTeam* getTeam();
+    QSet<Robot*>& getOpponentRobots();
+    Robot* getOpponentRobot(int id);
 
-    //! @brief Get a pointer to the robot's opponent team
-    RobotTeam* getOpponentTeam();
+    // =============== High Level Control =========================
 
-    //! @brief Get the role of the robot in the team
-    RobotRole getRole();
-
-
-    Point getPosition();
-    float getOrientation();
-    Point getVelocityMetersPerSecond();
-    Point getVelocityMillimetersPerFrame();
-    float getSpeedMetersPerSecond();
-    float getSpeedMillimetersPerFrame();
+    Pilot*    getPilot();
+    bool      hasBehavior();
+    Behavior* getBehavior();
+    void      performBehavior();
+    void      clearBehavior();
 
 
-    bool  hasBehavior();
-    bool  hasBall();
-    void  performBehavior();
-    bool  isGoalie();
+    void goToPose(CmdGoToPose& newCommand);
+    bool completedGoToPoseCmd();
 
-    float getKick();
+    bool      hasBall();
+
+    template<typename BehaviorType, typename... Args>
+    bool assignBeh(Args&&... args);
+
+    template<typename SkillType, typename... Args>
+    bool assignSkill(Args&&... args);
+
+
+    // ============= Low Level Control ============================
+
+    float getTargetAngularSpeed();
+    Point getTargetVelocity();
+    float getTargetSpeed();
+    int   getKickSpeed();
     bool  getDribble();
     bool  getChip();
 
-    virtual Pilot* getPilot() = 0;
-    virtual bool hasKicker() = 0;
+    /*! @brief Set speed ath which the ball should be kicked in mm/s
+     * @details *Do not use;* use Skil::Kick instead
+     */
+    void  setTargetVelocity(Point velocity, float angular_speed);
+    void  setKickSpeed(int speed = 5000);
+    void  setDribble(bool); // TODO: dribble speed can be set in the simulator
+    void  setChip(bool);
 
 
 
 
+protected:
 
-    //! @}
-
-    //! @name Behavior and Skill Assignment
-    //! @{
-    template<typename BehaviorType, typename... Args>
-    bool assignBeh(Args&&... args);
-    template<typename SkillType, typename... Args>
-    bool assignSkill(Args&&... args);
-    //! @}
-
-    //! @name Information Setting
-    //! @{
-
-    void setKick(float power = 5.0);
-    void setDribble(bool);
-    void setChip(bool);
-    //! @}
-
-
-
-    //! @name Misc information functions
-    //! @{
-    Behavior* getBehavior();
-    void clearBehavior();
-    std::string toString();
-    //! @}
-
-private:
-    void setCurrentBeh(Behavior *);
-    void setTeam(int);
-    void setRobotPosition(Point);
-    void setOrientation(float);
+    // =============== PRIVATE FUNCTION ==========================
     void setID(int);
+    void setTeam(int);
+    void setCurrentBeh(Behavior *);
     
-    int id;                     //!< Robot numerical ID
-    int team;                  //!< On myTeam? 1/0
-    RobotRole team_role = RobotRole::NONE;
-    Point robotPosition;        //!< X/Y Position in points
-    float orientation;          //!< orientation of the robot
-    VelocityCalculator vel_calc;
-    Behavior * behavior; //!< Pointer to current behavior
 
+    // =========== BASIC PRIVATE DATA ============================
+    int id;
+    int team_id;
+    int team_role = -1; // robot has nor role until assigned
 
+    // ====== HIGH LEVEL CONTROL =================================
+    Behavior * behavior;
+    bool has_ball = false;
 
-    float kick = 0;                 //!< Robot kick power in m/s
-    bool  chip = false;                  //!< Robot chip
-    bool  dribble = false;                //!< Robot is dribbling?
+    // ====== LOW LEVEL CONTROL ==================================
+    int  kick_speed = 0;
+    bool dribble = false;
+    bool chip = false;
+    Point target_velocity = Point(0,0);
+    float target_angular_speed = 0;
 
+    // ====== IMPLEMENTATION DEPENDENT VARIABLES =================
+    bool has_kicker = false;
+    bool is_holonomic = true;
+    Pilot* pilot = nullptr;
 
-    bool has_ball = false;               //!< Have the ball? 1/0
+    // ====== Friend classes =====================================
 
-    friend class GameModel;
-    friend class SSLVisionListener;
-    friend class Ball;
+    friend class Pilot;
 
-    static std::set<Robot*> all_robots;
 };
 
 //! @}

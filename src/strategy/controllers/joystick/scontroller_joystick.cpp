@@ -1,10 +1,11 @@
 #include "scontroller_joystick.h"
-#include "../../strategies/haltstrategy.h"
+#include "strategy/strategy.h"
+
 #include <QtConcurrent/QtConcurrent>
 #include "yaml-cpp/yaml.h"
 #include "model/team.h"
 #include "robot/robot.h"
-#include "robot/navigation/robot_pilot.h"
+
 #include <iostream>
 using std::cout, std::endl, std::cerr;
 
@@ -15,6 +16,7 @@ using std::cout, std::endl, std::cerr;
 
 set<SControllerJoystick::MapEntry*> SControllerJoystick::map = set<SControllerJoystick::MapEntry*>();
 std::atomic_bool SControllerJoystick::done = true;
+RobotTeam* SControllerJoystick::teams[2] = {nullptr};
 
 SControllerJoystick::SControllerJoystick(RobotTeam* _team, YAML::Node* n)
   : StrategyController(_team, n)
@@ -40,7 +42,7 @@ int SControllerJoystick::getNextControllerState(int current_state,int strategy_s
 }
 Strategy* SControllerJoystick::loadStateStrategy(int state){
     (void) state;
-    return new HaltStrategy(team); // this strategy will not really be used
+    return new Strategy(team); // this strategy will not really be used
 }
 
 
@@ -105,9 +107,11 @@ void SControllerJoystick::print_joymap(const std::vector<std::string>& args)
 }
 
 
-void SControllerJoystick::init_module(){
+void SControllerJoystick::init_module(RobotTeam* teams[2]){
     SDL_Init(SDL_INIT_TIMER | SDL_INIT_JOYSTICK | SDL_INIT_NOPARACHUTE);
     SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
+    SControllerJoystick::teams[0] = teams[0];
+    SControllerJoystick::teams[1] = teams[1];
     debug::registerFunction("mapjoy", map_joystick_fun);
     debug::registerFunction("p", print_joymap);
     QtConcurrent::run(listen_commands);
@@ -138,13 +142,10 @@ void SControllerJoystick::stop_module(){
 
 
 void SControllerJoystick::perform_commands(){
-    // check whether teams have already been created
-    if(!RobotTeam::getTeam(0) || !RobotTeam::getTeam(1))
-        return;
 
     // perform joy commands for each robot
     for(MapEntry* entry : map){
-        auto r = RobotTeam::getTeam(entry->team_id)->getRobot(entry->robot_id);
+        auto r = teams[entry->team_id]->getRobot(entry->robot_id);
         if(r==nullptr) continue;
 
 //        cerr << "joy: " << joy->getSlowMode() << " " << joy->getKick() << " "
@@ -166,8 +167,8 @@ void SControllerJoystick::perform_commands(){
 
 
         // Set velocities on robot object through movement interface
-        r->getPilot()->setManualVelocity(Point(v, 0), w);
-        if(joy->getKick()) r->setKick();
+        r->setTargetVelocity(Point(v, 0), w);
+        if(joy->getKick()) r->setKickSpeed();
         r->setDribble(joy->getDribble());
     }
 }

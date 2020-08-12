@@ -1,9 +1,8 @@
 #ifndef SCONTROLLERNORMALGAME_H
 #define SCONTROLLERNORMALGAME_H
 
-#include "../strategycontroller.h"
-#include <map>
-using std::map;
+#include "../../strategycontroller.h"
+#include <QMap>
 
 namespace YAML {
     class Node;
@@ -20,8 +19,9 @@ public:
     Strategy* loadStateStrategy(int state) override;
 
 private:
-    map<Referee_Command,int> cmd_to_state;
-    map<int , map<int, int>> state_transitions;
+    QMap<Referee_Command,int> cmd_to_state;
+    QMap<int , QMap<int, int>> state_transitions;
+    QMap<int,int> idToRole; // user assigned map of roles
 
 };
 

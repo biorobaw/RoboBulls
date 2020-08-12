@@ -30,6 +30,8 @@ public:
     Point   operator/(float rhs) const;
     //! @}
 	
+    float norm();  // returns the norm of the vector
+    float norm2(); // returns the norm squared
     std::string toString() const;
 public:
     float x;    //!< The X coordinate

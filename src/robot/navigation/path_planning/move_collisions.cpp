@@ -173,7 +173,7 @@ namespace Collisions {
             /* For the omni robots, they don't face each other. So we look at their
              * velocity direction to determine "facing" (TODO: Fix this) */
 //            if(a->getDriveType() != differential) {
-                Point vel = a->getVelocityMetersPerSecond();
+                Point vel = a->getVelocity();
                 float ang = atan2(vel.y, vel.x);
                 float bad = Measurements::angleBetween(a, b);
                 return Measurements::isClose(ang, bad, tolerance);
@@ -212,8 +212,8 @@ namespace Collisions {
             updateIsMovingStatus(robot);
 
             //We don't keep tabs on if the opponents are yielded or collided
-            if(!robot->getTeam()->isControlled())
-                return;
+//            if(!robot->getTeam()->isControlled())
+//                return;
 
             switch(m_status)
             {
@@ -248,7 +248,7 @@ namespace Collisions {
 
         void RobotMoveStatus::updateMoveOk(Robot* robot)
         {
-            for(Robot* other : Robot::getAllRobots())
+            for(Robot* other : robot->getTeam()->getGameState()->getFieldRobots())
             {
                 if(robot == other)
                     continue;

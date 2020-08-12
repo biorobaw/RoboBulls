@@ -1,14 +1,24 @@
-#include "robotnone.h"
+#include "proxy_none.h"
 
-RobotNone::RobotNone(int _id, int _team, RobotRole role) :
-    Robot(_id,_team,role)
+ProxyNone::ProxyNone()
 {
 
 }
 
-bool RobotNone::hasKicker(){
+void ProxyNone::sendVels(const QSet<Robot*>&){
+
+};
+
+bool ProxyNone::hasKicker(){
     return false;
 }
-Pilot* RobotNone::getPilot(){
-    return &dummyPilot;
+
+
+
+bool ProxyNone::isHolonomic() {
+    return true;
+}
+
+Pilot* ProxyNone::createPilot(Robot* robot){
+    return new PilotDummy(robot);
 }

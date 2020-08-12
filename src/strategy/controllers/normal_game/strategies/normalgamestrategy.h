@@ -1,6 +1,6 @@
 #ifndef NORMALGAMESTRATEGY_H
 #define NORMALGAMESTRATEGY_H
-#include "../strategy.h"
+#include "strategy/strategy.h"
 #include "utilities/region/defencearea.h"
 class Robot;
 

@@ -4,6 +4,7 @@
 #include "robot/robot.h"
 #include "commands/CmdGoToPose.h"
 #include <iostream>
+#include "model/team.h"
 using std::cout, std::endl;
 
 Pilot::Pilot(Robot* robot) : robot(robot){
@@ -17,18 +18,10 @@ Pilot::~Pilot(){
     }
 }
 
-void Pilot::setManualVelocity(Point _vel,float _angular){
-    if(cmdGoToPose != nullptr) {
-        delete cmdGoToPose;
-        cmdGoToPose = nullptr;
-    }
-    vel = _vel;
-    angular = _angular;
-}
 
 #define DD if(false)
 
-void Pilot::goToPose(CmdGoToPose newCommand){
+void Pilot::setNewCommand(CmdGoToPose& newCommand){
     if(cmdGoToPose != nullptr) *cmdGoToPose = newCommand;
     else cmdGoToPose = new CmdGoToPose(newCommand);
 
@@ -37,8 +30,12 @@ void Pilot::goToPose(CmdGoToPose newCommand){
         cmdGoToPose->targetAngle = Measurements::angleBetween(robot, cmdGoToPose->targetPose);
 }
 
+void Pilot::cancelCommand(){
+    delete cmdGoToPose;
+    cmdGoToPose = nullptr;
+}
 
-bool Pilot::finisedLastCommand(){
+bool Pilot::finishedCommand(){
     return cmdGoToPose == nullptr || cmdGoToPose->completed(robot->getPosition(),robot->getOrientation());
 }
 
@@ -64,10 +61,10 @@ bool Pilot::executeCmdGoToPose(CmdGoToPose *cmd){
         //std::cout << "---doing path planning\n";
 
         // Assign robots that are to be considered obstacles
-        FPPA::updateRobotObstacles(robot);
+        FPPA::updateRobotObstacles(robot, robot->getTeam()->getGameState());
 
         //TODO: ideally we should not recompute the path each time
-        FPPA::Path path = FPPA::genPath(r_pos, cmd->targetPose, cmd->avoidBall, robot->isGoalie());
+        FPPA::Path path = FPPA::genPath(robot->getTeam()->getGameState(), r_pos, cmd->targetPose, cmd->avoidBall, robot->isGoalie());
         if(path.size()>0){
             nextPoint = path[0];
             nextNextPoint = path[ path.size()>1 ? 1 : 0];
@@ -85,9 +82,7 @@ bool Pilot::executeCmdGoToPose(CmdGoToPose *cmd){
 }
 
 
-Point Pilot::getVel(){
-    return vel;
-}
-float Pilot::getAngular(){
-    return angular;
+void Pilot::setTargetVelocity(Point velocity, float angular){
+    robot->target_velocity = velocity;
+    robot->target_angular_speed = angular;
 }

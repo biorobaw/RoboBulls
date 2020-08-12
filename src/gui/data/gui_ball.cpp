@@ -1,30 +1,24 @@
 #include "gui_ball.h"
 #include "model/ball.h"
+#include "ssl/ssl_vision_listener.h"
+#include "gui_game_state.h"
 
+GuiBall* GuiBall::gui_ball = new GuiBall();
 
-GuiBall GuiBall::ball;
+GuiBall::GuiBall(){
 
-void  GuiBall::updateBall(){
-    ball.position = Ball::getPosition();
-    ball.velocity = Ball::getVelocity();
-    ball.speed    = Ball::getSpeed();
 }
 
 Point GuiBall::getPosition(){
-    return ball.position;
+    return GuiGameState::get()->getBall()->getPosition();
 }
 
 Point GuiBall::getVelocity(){
-    return ball.velocity;
+    return GuiGameState::get()->getBall()->getVelocity();
 }
 
 float GuiBall::getSpeed(){
-    return ball.speed;
-}
-
-GuiBall::GuiBall() : QObject(nullptr)
-{
-
+    return GuiGameState::get()->getBall()->getSpeed();
 }
 
 

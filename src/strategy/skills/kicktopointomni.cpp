@@ -7,6 +7,10 @@
 #include "model/field.h"
 #include "robot/robot.h"
 #include "robot/navigation/robot_pilot.h"
+#include "model/game_state.h"
+#include "model/team.h"
+#include "utilities/measurements.h"
+
 namespace Skill
 {
 
@@ -85,7 +89,7 @@ KickToPointOmni::KickToPointOmni(Point* targetPtr,
 
 bool KickToPointOmni::perform(Robot* robot)
 {
-    Point bp = Ball::getPosition();
+    Point bp = robot->getTeam()->getGameState()->getBall()->getPosition();
     GuiInterface::getGuiInterface()->drawLine(bp, *m_targetPointer);
 
     // Angle between the ball and the kick target
@@ -118,11 +122,11 @@ bool KickToPointOmni::perform(Robot* robot)
             cmd.velocity_multiplier =1;
             cmd.setTarget(behindBall, ballTargetAng);
             cmd.avoidBall = cmd.avoidObstacles = true;
-            robot->getPilot()->goToPose(cmd);
+            robot->getPilot()->setNewCommand(cmd);
 
             //Make sure move_skill keeps the robot at the correct pose
             //This is done by waiting for confirmation from the movement class
-            if(robot->getPilot()->finisedLastCommand())
+            if(robot->getPilot()->finishedCommand())
                 ++m_moveCompletionCount;
             if(m_moveCompletionCount > FORWARD_WAIT_COUNT) {
                 state = MOVE_INTERMEDIATE;
@@ -147,11 +151,11 @@ bool KickToPointOmni::perform(Robot* robot)
             cmd.velocity_multiplier = 1;
             cmd.setTarget(behindBall, ballTargetAng);
             cmd.avoidBall = cmd.avoidObstacles = false;
-            robot->getPilot()->goToPose(cmd);
+            robot->getPilot()->setNewCommand(cmd);
 
             //Make sure move_skill keeps the robot at the correct pose
             //This is done by waiting for confirmation from the movement class
-            if(robot->getPilot()->finisedLastCommand())
+            if(robot->getPilot()->finishedCommand())
                 ++m_moveCompletionCount;
             if(m_moveCompletionCount > FORWARD_WAIT_COUNT) {
                 state = MOVE_FORWARD;
@@ -170,7 +174,7 @@ bool KickToPointOmni::perform(Robot* robot)
             cmd.velocity_multiplier = 0.2;
             cmd.setTarget(bp - Point(BEHIND_RAD * cos(targetBallAng), BEHIND_RAD * sin(targetBallAng)), ballTargetAng);
             cmd.avoidBall = cmd.avoidObstacles = false;
-            robot->getPilot()->goToPose(cmd);
+            robot->getPilot()->setNewCommand(cmd);
 
             /* Kick when in range, or go back to moving behind if it
              * moves too far or we are in kick lock */
@@ -249,11 +253,11 @@ bool KickToPointOmni::isCloseToBall(Robot *robot) {
 }
 
 bool KickToPointOmni::isVeryFarFromBall(Robot *robot) {
-    return Measurements::distance(robot, Ball::getPosition()) > ROBOT_RADIUS*6;
+    return Measurements::distance(robot, robot->getTeam()->getGameState()->getBall()->getPosition()) > ROBOT_RADIUS*6;
 }
 
 bool KickToPointOmni::isFacingBall(Robot* robot) {
-    return Comparisons::isFacingPoint(robot, Ball::getPosition(), M_PI/3.0);
+    return Comparisons::isFacingPoint(robot, robot->getTeam()->getGameState()->getBall()->getPosition(), M_PI/3.0);
 }
 
 bool KickToPointOmni::isFacingTarget(Robot* robot) {
@@ -263,7 +267,7 @@ bool KickToPointOmni::isFacingTarget(Robot* robot) {
 bool KickToPointOmni::isInKickLock(Robot* robot)
 {
     bool close = isCloseToBall(robot);
-    bool facingBall = Comparisons::isFacingPoint(robot, Ball::getPosition(), KICK_LOCK_ANGLE);
+    bool facingBall = Comparisons::isFacingPoint(robot, robot->getTeam()->getGameState()->getBall()->getPosition(), KICK_LOCK_ANGLE);
     if(close && !facingBall) {
         if(++m_kickLockCount > KICKLOCK_COUNT) {
             m_kickLockCount = 0;

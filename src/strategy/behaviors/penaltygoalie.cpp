@@ -3,6 +3,7 @@
 #include "model/field.h"
 #include "model/team.h"
 #include "robot/robot.h"
+#include "model/game_state.h"
 
 PenaltyGoalie::PenaltyGoalie(Robot* robot) : GenericMovementBehavior(robot)
 {
@@ -11,15 +12,15 @@ PenaltyGoalie::PenaltyGoalie(Robot* robot) : GenericMovementBehavior(robot)
 void PenaltyGoalie::perform()
 {
     robot->setDribble(false);
-    Point bp = Ball::getPosition();
+    Point bp = robot->getTeam()->getGameState()->getBall()->getPosition();
     float angleToBall = Measurements::angleBetween(robot, bp);
 
-    Robot* kicker = Ball::getRobotWithBall();
+    Robot* kicker = robot->getTeam()->getGameState()->getRobotWithBall();
 
     // Determine which opponent is taking the kick
     if(!kicker)
     {
-        for(Robot* opp : robot->getOpponentTeam()->getRobots())
+        for(Robot* opp : robot->getOpponentRobots())
             if(Measurements::distance(kicker, bp) > Measurements::distance(opp, bp))
                 kicker = opp;
     }
@@ -79,7 +80,7 @@ void PenaltyGoalie::perform()
 bool PenaltyGoalie::isFinished()
 {
     DefenceArea our_da(TEAM_DEFFENCE_AREA);
-    if(Ball::getSpeed() < 100 && our_da.contains(Ball::getPosition(), -ROBOT_RADIUS))
+    if(robot->getTeam()->getGameState()->getBall()->getSpeed() < 100 && our_da.contains(robot->getTeam()->getGameState()->getBall()->getPosition(), -ROBOT_RADIUS))
         return true;
     return false;
 }

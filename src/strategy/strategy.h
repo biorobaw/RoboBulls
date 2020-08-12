@@ -43,7 +43,7 @@ public:
     /*! Decides How to assign behaviors to each robot on the team.
      * This function is called when StrategyController is run with a
      * new command recieved from GameModel */
-    virtual void assignBehaviors() = 0;
+    virtual void assignBehaviors();
 
     /*! Function (optional) that updates the Strategy object.
      * This function is called when StrategyController is run with
@@ -61,7 +61,7 @@ public:
      */
     virtual int getStatus();
 
-    virtual std::string getName() = 0;
+    virtual std::string getName();
 
 
 

@@ -1,7 +1,9 @@
 #ifndef ROBCOMM_H
 #define ROBCOMM_H
 #include <set>
+#include <QList>
 class Robot;
+class Pilot;
 
 namespace YAML {
     class Node;
@@ -15,20 +17,26 @@ namespace YAML {
  * @author Narges Ghaedi
  */
 
-class RobComm
+class RobotProxy
 {
 public:
 
-    static RobComm* loadRobComm(std::string robot_type,YAML::Node* comm_node);
+    // === CONSTRUCTORS AND DESTRUCTORS =============================
 
-    /*! @brief Required; send velocities to the entire team at once
-     * @details Given a vector of Robot, RobComms implementing this funciton
-     * are to send out packets to these robots, sending their information such
-     * as their wheel velocities and kick/dribble status */
+    static RobotProxy* load(QString robot_type,YAML::Node* comm_node);
+    virtual ~RobotProxy();
 
-    virtual ~RobComm();
-    void close_communication(std::set<Robot*>& robots);
-    virtual void sendVels(std::set<Robot*>& robots) = 0;
+    // === COMMUNICATION WITH ROBOTS ================================
+
+    void close_communication(const QSet<Robot*>& robots);
+    virtual void sendVels(const QSet<Robot*>& robots) = 0;
+
+    // === FUNCTIONS THAT DEPEND ON THE CAPABILITIES OF THE ROBOT ===
+
+    virtual bool hasKicker() = 0;
+    virtual bool isHolonomic() = 0;
+    virtual Pilot* createPilot(Robot* robot) = 0;
+
 
 private:
     virtual void close() = 0;

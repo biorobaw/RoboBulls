@@ -6,6 +6,10 @@
 #include "model/game_state.h"
 #include "robot/robot.h"
 #include "robot/navigation/robot_pilot.h"
+#include "model/team.h"
+#include "model/game_state.h"
+#include "utilities/measurements.h"
+
 namespace Skill
 {
 
@@ -23,7 +27,7 @@ bool DribbleBack::perform(Robot* robot)
 {
 //    std::cout << "Dribble Back" << std::endl;
 
-    Point bp = Ball::getPosition();
+    Point bp = robot->getTeam()->getGameState()->getBall()->getPosition();
     Point rp = robot->getPosition();
     float ang_to_ball = Measurements::angleBetween(rp,bp);
     float dist_to_ball = Measurements::distance(rp,bp);
@@ -51,7 +55,7 @@ bool DribbleBack::perform(Robot* robot)
             cmd.velocity_multiplier = 1;
             cmd.setTarget(move_point,ang_to_ball);
             cmd.avoidBall = cmd.avoidObstacles = false;
-            robot->getPilot()->goToPose(cmd);
+            robot->getPilot()->setNewCommand(cmd);
         }
         break;
     }
@@ -73,9 +77,9 @@ bool DribbleBack::perform(Robot* robot)
         cmd.setTarget(grasp_point,ang_to_ball);
         cmd.avoidBall = cmd.avoidObstacles = false;
         cmd.velocity_multiplier = 0.2;
-        robot->getPilot()->goToPose(cmd);
+        robot->getPilot()->setNewCommand(cmd);
 
-        if(robot->getPilot()->finisedLastCommand())
+        if(robot->getPilot()->finishedCommand())
             state = move_back;
 
         break;
@@ -99,7 +103,7 @@ bool DribbleBack::perform(Robot* robot)
         float vel = fmax(-3, prev_vel - 0.05);
         prev_vel = vel;
 
-        robot->getPilot()->setManualVelocity(Point(0,0),vel/4);
+        robot->setTargetVelocity(Point(0,0),vel/4);
 
     }
 

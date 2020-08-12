@@ -17,9 +17,20 @@ GuiInterface* GuiInterface::getGuiInterface() {
     return gi;
 }
 
-bool GuiInterface::isOverriddenBot(int team, int robot_id) {
-    return GuiRobot::get(team,robot_id)->isOverriden();
+bool GuiInterface::controlRobotIfOverriden(Robot* robot) {
+    auto gui_robot = GuiRobot::get(robot->getTeamId(), robot->getID());
+    bool overriden = gui_robot->isOverriden();
+    if(overriden){
+
+        robot->setTargetVelocity(gui_robot->getGuiTargetVelocity(),
+                                 gui_robot->getGuiTargetAngularSpeed());
+        robot->setKickSpeed(gui_robot->getGuiKickSpeed());
+        robot->setDribble(gui_robot->getGuiDribble());
+    }
+
+    return overriden;
 }
+
 
 
 void GuiInterface::show() {

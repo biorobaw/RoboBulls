@@ -2,13 +2,15 @@
 #define TEAM_H
 
 #include <set>
+#include <map>
+#include <QMap>
 #include <string>
 #include "constants.h"
- // limited by vision that recognizes only 16 patterns per team
-
-class Robot;
-class RobComm;
+#include "robot/robot.h"
+//class Robot;
+class RobotProxy;
 class StrategyController;
+class GameState;
 namespace YAML {
     class Node;
 }
@@ -18,54 +20,64 @@ class RobotTeam {
 
 public:
 
+     // ======= STATIC FUNCTIONS ===================================
+
+    static RobotTeam** load_teams(YAML::Node* team_nodes);
+
+
+     // ======= Constructor and destructors ========================
+
     RobotTeam(YAML::Node* t_node, int _color);
     ~RobotTeam();
 
-    static void load_teams(YAML::Node* team_nodes);
-    static RobotTeam* getTeam(int id);
-
-
-    Robot* addRobot(int id);
-    void removeRobot(int id);
+    // ======= Robot Getter functions ==============================
 
     Robot* getRobot(int id);
-    Robot* getRobotByRole(RobotRole role);
-    std::set<Robot*>& getRobots();
+    Robot* getRobotByRole(int role);
+    QSet<Robot*>& getRobots();
 
-
-
+    // ======= Getter and predicate functions ======================
 
     int getColor();
-    std::string getRobotType();
-    std::string getControllerName();
-    std::string getStrategyName();
     int getSide();
     int getOpponentSide();
-    bool isControlled();
 
 
-    StrategyController* controller = nullptr;
+    // ======= Functions required for the gui ======================
+
+    QString getRobotType();
+    std::string getTeamControllerName();
+    std::string getStrategyName();
+
+
+    // ======= Communication functions =============================
+
     void closeCommunication();
     void sendVels();
 
+    GameState* getGameState();
 
 private:
 
+    static RobotTeam* teams[2];
+
+    StrategyController* controller = nullptr; // controller to control the team
+    RobotProxy* robot_proxy; // proxy to communicate with robots and create new pilots for them
+    GameState* game_state; // game state as seen by the team (each team has its own view)
+
     int color;
-    std::string robot_type = "";
-    std::string controller_name = "none";
     int side;
 
-    std::set<Robot*> all_robots;
-    Robot* robotByRoles[MAX_ROLES] = { NULL }; // maps roles to robots
-    Robot* robotById[MAX_ROBOTS_PER_TEAM] = { NULL };
-    RobotRole idToRole[MAX_ROBOTS_PER_TEAM] = {RobotRole::NONE}; // defined by user
+    QString robot_type = "";
+    std::string team_controller_name = "none";
+
+    // robot mappings
+    QMap<int,Robot*> robotsByRoles; // maps robots to roles, defined by the team controller
 
 
 
-    static RobotTeam* teams[2];
-    RobComm* comm;
-
+    // Friend functions
+    friend RobotTeam* Robot::getTeam();
 
 };
 

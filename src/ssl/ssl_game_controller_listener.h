@@ -1,11 +1,13 @@
 #ifndef REFCOMM_H
 #define REFCOMM_H
 
-#include <QtCore/QThread>
 #include <QUdpSocket>
-#include <atomic>
+#include <QMutex>
 
 using namespace std;
+
+enum Referee_Command : int;
+class GameState;
 
 namespace YAML {
     class Node;
@@ -20,22 +22,37 @@ namespace YAML {
  * <b>Referee Box Command Quick Reference:</b>
  */
 
-class SSLGameControllerListener : public QThread
+class SSLGameControllerListener : public QObject
 {
+    Q_OBJECT
 public:
-    /*! @brief Constructor
-     * @param gm The GameModel to fill with information
-     * @param net_ref_address Address Refbox is broadcasting to
-     * @param port The port Refbox is broadcasting to */
     SSLGameControllerListener(YAML::Node* comm_node);
 
-    void run() override;
-    void stop();
+    static void copyState(GameState*);
+
+//public slots:
+//    void run();
+
+private slots:
+    void process_package();
 
 private:
-    std::atomic_bool done;
-    string net_address;
+
+    static SSLGameControllerListener* instance;
+
+    QString net_address;
     int    port;
+
+    Referee_Command command;
+    Referee_Command command_previous;
+    int time_left = 0;
+    int goals[2] = {0};
+
+    QMutex mutex;
+
+
+    QUdpSocket* socket = new QUdpSocket(this);
+    void restart_socket();
 
 };
 

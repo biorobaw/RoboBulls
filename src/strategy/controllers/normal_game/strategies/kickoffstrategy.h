@@ -1,6 +1,7 @@
 #ifndef KICKOFFSTRATEGY_H
 #define KICKOFFSTRATEGY_H
-#include "../strategy.h"
+#include "strategy/strategy.h"
+#include "utilities/point.h"
 
 /*! @file
  *  Strategy to implement a kickoff game state.
@@ -12,7 +13,7 @@ class KickOffStrategy : public Strategy
 {
 public:
     KickOffStrategy(RobotTeam* _team);
-    void assignBehaviors();
+    void assignBehaviors() override;
     virtual std::string getName() override;
 private:
 #define NUM_KICK_OFF_POINTS 5

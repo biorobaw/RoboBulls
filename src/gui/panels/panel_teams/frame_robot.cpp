@@ -64,13 +64,13 @@ void FrameRobot::update_frame(){
         label_behavior->setText(robot->getBehaviorName());
 
         // set x, y coords and orientation:
-        auto pos = robot->getCurrentPosition();
+        auto pos = robot->getPosition();
         lcd_x->display((int)pos.x);
         lcd_y->display((int)pos.y);
         dial_orientation->setValue(robot->getOrientation() + 90);
 
         // set dial speed and choose its color according to sign
-        float s_cmd = robot->getSpeedCommand();
+        float s_cmd = robot->getTargetSpeed();
         dial_velocity->setValue(s_cmd);
         auto& color = colors_dial_sign[SIGN(s_cmd)].dial_background;
         dial_velocity->setStyleSheet(color);

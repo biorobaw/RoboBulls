@@ -1,33 +1,30 @@
 #ifndef VISIONCOMM_H
 #define VISIONCOMM_H
 #include <string>
-#include <QtCore/QThread>
 
-#include "gui/gui_interface.h"
+//#include "gui/gui_interface.h"
 
-
-#include <QUdpSocket>
 #include "messages_robocup_ssl_detection.pb.h"
 #include "messages_robocup_ssl_geometry.pb.h"
 #include "messages_robocup_ssl_wrapper.pb.h"
 #include "messages_robocup_ssl_refbox_log.pb.h"
-#include "model/constants.h"
-#include<atomic>
 
+#include <QThread>
+#include <QUdpSocket>
+#include <QMutex>
+#include "model/moving_object.h"
+#include "model/constants.h"
+
+
+class GameState;
 class MyKalmanFilter;
+
 namespace YAML {
     class Node;
 }
 
-//! @brief Sets the minimum confidence to consider a ball reading as valid
-//#if SIMULATED
-//const float CONF_THRESHOLD_BALL = 0.9;
-//#else
-const float CONF_THRESHOLD_BALL = 0.8;//CNM
-//#endif
 
-//! @brief Sets the minimum confidence to consider a robot as a valid reading
-const float CONF_THRESHOLD_BOTS = 0.90;
+
 
 /**
  * @brief The VisionComm class recieves information from the vision cameras
@@ -35,21 +32,39 @@ const float CONF_THRESHOLD_BOTS = 0.90;
  * @details Detects the robots and ball and puts each robot in the corresponding team
  * based on robot's color (Blue team/ Yellow team)
  */
-class SSLVisionListener: public QThread
+class SSLVisionListener: public QObject
 {
+    Q_OBJECT
 public:
     SSLVisionListener( YAML::Node* comm_node);
     ~SSLVisionListener();
 
-    void run() override;
-    void stop();
+    static void copyState(GameState* state);
+
+    QUdpSocket* socket = new QUdpSocket(this);
+    QMutex game_state_mutex;
+
+
+private slots:
+    void process_package();
+    void restart_socket();
 
 private:
-    std::atomic_bool done;
-    int vision_port = 0;
-    std::string vision_addr = "";
 
-protected:
+    static SSLVisionListener* instance;
+
+    QString vision_addr;
+    int     vision_port;
+
+    MovingObject robots[2][MAX_ROBOTS_PER_TEAM];
+    MovingObject ball;
+    MyKalmanFilter* kfilter;        //! Kalman filter instance
+
+    int num_frame_detected = 0; //! Number of frames detected by vision, used in algorithm to remove false positive detections
+    int robot_detection_counts[2][MAX_ROBOTS_PER_TEAM]={{0}};  //! Number of detections of each blue robot
+    int num_cameras = 4; // Currently we only support 2 or 4 cameras
+
+
 
 
     //! @brief Parses an SSL_DetectionFrame and fills out GameModel
@@ -58,22 +73,8 @@ protected:
     //! @brief Parses an SSL_DetectionFrame and fills out GameModel
     void recieveBall(const SSL_DetectionFrame& frame);
 
-    //! @brief Updates GameModel information to fill out a robot
-    void receiveRobot(const SSL_DetectionRobot& robot, int detectedTeamColor);
-
-
-    //! @brief Returns true if we are using four or two cameras.
-    bool isFourCameraMode();
-
-    SSL_WrapperPacket packet;       //! Packet recieved by client
-    SSL_DetectionFrame frames[4];   //! Accumulates frames
-    bool frames_state[4]{false};    //! Marks whether frames are dirty or clean
-    int resetFrames = 0;            //! Frames passed up remove all potential robot detections
-    int totalframes = 0;            //! Total frames passed since start
-    int rob_readings[2][MAX_ROBOTS_PER_TEAM]={{0}};  //! Number of detections of each blue robot
-    bool FOUR_CAMERA_MODE = false;    //! Are we in four-camera mode (true)? Or Two-camera mode?
-
-    MyKalmanFilter* kfilter;        //! Kalman filter instance
+    // checks if coordinate (x,y) is within the cam's field of view
+    bool isGoodDetection(float x, float y, int cam);
 
 
 };

@@ -1,70 +1,77 @@
 #ifndef GAMEMODEL_H
 #define GAMEMODEL_H
-#include <vector>
+
+#include <QSet>
 #include "utilities/point.h"
-#include "utilities/measurements.h"
-#include <mutex>
+#include "constants.h"
 
-class Robot;
 enum Referee_Command : int;
+class Robot;
+class Ball;
 
-/*! @addtogroup everydayuse Everyday Use
- * Classes and functions used in everyday code
- * @{
- */
 
-/*! The GameModel class
- * Game model class can be considered as the heart of robobulls project.
- * All the information from other classes gets updated in gamemodel.
- * You can receive most up to date info about robots and ball from this class.
- *
- * <b>Example Everyday Usage</b>
- * @include example_gamemodel.cpp
- */
 class GameState
 {
 public:
 
-    /*! @name Game access functions
-     * @{*/
-
-    static Referee_Command getRefereeCommand();
-    static Referee_Command getPreviousCommand();
-    static char   getBlueGoals();
-    static char   getYellowGoals();
-    static int    getRemainingTime();
-
-    //! @}
+    GameState();
+    ~GameState();
+    void update();
 
 
+    // ========= GETTER FUNCTIONS ==============
+    QSet<Robot*>& getFieldRobots(int team_id);
+    QSet<Robot*>& getFieldRobots();
 
-private:
-    /* General Game Information */
+    Robot* getRobot(int team_id, int robot_id);
+    Robot* getBlueRobot(int id);
+    Robot* getYellowRobot(int id);
+    Ball*  getBall();
+
+    Robot* getRobotWithBall();
+
+    Referee_Command getRefereeCommand();
+    Referee_Command getRefereePreviousCommand();
+
+    char getGoals(int team_id);
+    char getBlueGoals();
+    char getYellowGoals();
+    int  getRemainingTime();
+
+    bool hasRefereeCommandChanged();
+    void clearRefereeCommandChanged();
 
 
-    static Referee_Command refereeCommand;  //The last referee command received
-    static Referee_Command previousCommand ;  //The previous gamestate
-    static char   blueGoals     ;  //Number of scores yellow goals
-    static char   yellowGoals   ;  //Number of scores yellow goals
-    static int    remainingTime ;  //Remaining time in seconds
+protected:
 
-    /* Functions to update gamemodel from vision system.
-     * Provides *the* link between vision detection and
-     * referee box with our code. */
     friend class SSLVisionListener;
     friend class SSLGameControllerListener;
-    static void onRobotUpdated(Robot*);
+
+    // Field objects
+    Robot* robots[2][MAX_ROBOTS_PER_TEAM];
+    QSet<Robot*> team_robots_in_field[2];
+    QSet<Robot*> all_robots_in_field;
+    Ball*  ball;
+
+    // state of objects
+    Robot* robot_with_ball = nullptr;
+
+    // Game state
+    Referee_Command referee_command;         //The last referee command received
+    Referee_Command referee_command_previous; //The previous gamestate
+    bool referee_command_changed = false;
+
+    char   goals[2]      ;  //Number of scores yellow goals // TODO: is it correct that it is a char???
+    int    remaining_time ;  //Remaining time in seconds
 
 
-    static void setRefereeCommand(Referee_Command);
-    static void setTimeLeft(int);
-    static void setBlueGoals(char);
-    static void setYellowGoals(char);
-    static void notifyObservers();
+    void setRobotWithBall();
+    bool hasBall(Robot* robot);
+
+
 
 };
 
-//Global singleton pointer to access GameModel
 //! @}
 
 #endif // GAMEMODEL_H

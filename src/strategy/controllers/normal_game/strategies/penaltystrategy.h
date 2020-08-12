@@ -1,8 +1,6 @@
 #ifndef PENALTYSTRATEGY_H
 #define PENALTYSTRATEGY_H
-#include "../strategy.h"
-//#include "normalgamestrategy.h"
-#include "../behaviors/wall.h"
+#include "strategy/strategy.h"
 
 
 /*! @file
@@ -12,11 +10,13 @@
  * the open part of the goal-post.
  */
 
+class Behavior;
+
 class PenaltyStrategy:public Strategy
 {
 public:
     PenaltyStrategy(RobotTeam* _team);
-    void assignBehaviors();
+    void assignBehaviors() override;
     virtual std::string getName() override;
 private:
     Behavior * beh;

@@ -12,7 +12,7 @@ Kick::Kick(float kickDistance)
 
 bool Kick::perform(Robot * robot)
 {
-    robot->setKick(getVelocityforDistance());
+    robot->setKickSpeed(getVelocityforDistance());
 	return true;
 }
 
@@ -37,7 +37,7 @@ bool Kick::perform(Robot * robot)
 float Kick::getVelocityforDistance()
 {
     float d = kickDistance / Field::POINTS_PER_METER;
-    return 0.083*(d*d*d) - 0.759*(d*d) + 2.8812*(d) + 0.3785;
+    return (0.083*(d*d*d) - 0.759*(d*d) + 2.8812*(d) + 0.3785)*1000;
 }
 
 }

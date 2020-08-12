@@ -1,15 +1,17 @@
 #include "indirectkickstrategy.h"
+#include "../normal_game_roles.h"
+
 #include "model/game_state.h"
 #include "utilities/region/rectangle.h"
 #include "utilities/comparisons.h"
 
-#include "../behaviors/goalie.h"
-#include "../behaviors/refstop.h"
-#include "../behaviors/attackmain.h"
-#include "../behaviors/attacksupport.h"
-#include "../behaviors/wall.h"
-#include "../behaviors/markbot.h"
-#include "../behaviors/markbot.h"
+#include "strategy/behaviors/goalie.h"
+#include "strategy/behaviors/refstop.h"
+#include "strategy/behaviors/attackmain.h"
+#include "strategy/behaviors/attacksupport.h"
+#include "strategy/behaviors/wall.h"
+#include "strategy/behaviors/markbot.h"
+#include "strategy/behaviors/markbot.h"
 #include "robot/robot.h"
 
 #include "model/ball.h"
@@ -17,7 +19,7 @@
 #include "model/team.h"
 
 IndirectKickStrategy::IndirectKickStrategy(RobotTeam* _team)
-    :Strategy(_team), initial_bp(Ball::getPosition())
+    :Strategy(_team), initial_bp(_team->getGameState()->getBall()->getPosition())
 {
 
 }
@@ -32,8 +34,8 @@ void IndirectKickStrategy::assignBehaviors()
 
 
     // We are kicking
-    if ((GameState::getRefereeCommand() == 'I' && team->getColor() == ROBOT_TEAM_BLUE) ||
-        (GameState::getRefereeCommand() == 'i' && team->getColor() == ROBOT_TEAM_YELLOW))
+    if ((team->getGameState()->getRefereeCommand() == 'I' && team->getColor() == ROBOT_TEAM_BLUE) ||
+        (team->getGameState()->getRefereeCommand() == 'i' && team->getColor() == ROBOT_TEAM_YELLOW))
     {
         for(Robot* rob : team->getRobots())
             rob->clearBehavior();
@@ -73,8 +75,8 @@ void IndirectKickStrategy::assignBehaviors()
         if(goalie) goalie->assignBeh<Goalie>();
     }
     // We are defending against an indirect kick
-    else if ((GameState::getRefereeCommand() == 'i' && team->getColor() == ROBOT_TEAM_BLUE) ||
-             (GameState::getRefereeCommand() == 'I' && team->getColor() == ROBOT_TEAM_YELLOW))
+    else if ((team->getGameState()->getRefereeCommand() == 'i' && team->getColor() == ROBOT_TEAM_BLUE) ||
+             (team->getGameState()->getRefereeCommand() == 'I' && team->getColor() == ROBOT_TEAM_YELLOW))
     {
         if(wall1)
             wall1->assignBeh<Wall>();
@@ -93,8 +95,8 @@ void IndirectKickStrategy::assignBehaviors()
 
 int IndirectKickStrategy::getStatus()
 {
-    if ((kicker && kicker->getKick() > 0)
-    || !Measurements::isClose(initial_bp, Ball::getPosition(), 70))
+    if ((kicker && kicker->getKickSpeed() > 0)
+    || !Measurements::isClose(initial_bp, team->getGameState()->getBall()->getPosition(), 70))
         return KICKING; // Go to normal game strategy
     else
         return KICKED;

@@ -1,10 +1,13 @@
 #include "penaltystrategy.h"
-
-#include "model/field.h"
-#include "../behaviors/goalie.h"
+#include "../normal_game_roles.h"
+#include "strategy/behaviors/wall.h"
+#include "strategy/behaviors/goalie.h"
 #include "model/game_state.h"
+#include "model/field.h"
 #include "model/team.h"
-#include "robot/robot.h"
+
+
+
 
 PenaltyStrategy::PenaltyStrategy(RobotTeam* _team) : Strategy(_team) {
 
@@ -13,7 +16,7 @@ PenaltyStrategy::PenaltyStrategy(RobotTeam* _team) : Strategy(_team) {
 void PenaltyStrategy::assignBehaviors()
 {
     // If we are taking the penalty kick
-    char gs = GameState::getRefereeCommand();
+    char gs = team->getGameState()->getRefereeCommand();
     if ((gs == 'P' && team->getColor() == ROBOT_TEAM_BLUE) || (gs == 'p' && team->getColor() == ROBOT_TEAM_YELLOW))
     {
         // One of the defenders will take the penalty and move back

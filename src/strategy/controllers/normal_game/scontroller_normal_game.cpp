@@ -1,17 +1,21 @@
 #include "scontroller_normal_game.h"
-#include <iostream>
-#include "../strategies/stopstrategy.h"
-#include "../strategies/kickoffstrategy.h"
-#include "../strategies/freekickstrategy.h"
-#include "../strategies/normalgamestrategy.h"
-#include "../strategies/penaltystrategy.h"
-#include "../strategies/indirectkickstrategy.h"
-#include "../strategies/haltstrategy.h"
+#include "normal_game_roles.h"
+
+#include "strategies/stopstrategy.h"
+#include "strategies/kickoffstrategy.h"
+#include "strategies/freekickstrategy.h"
+#include "strategies/normalgamestrategy.h"
+#include "strategies/penaltystrategy.h"
+#include "strategies/indirectkickstrategy.h"
+#include "strategies/haltstrategy.h"
 #include "ssl_referee.pb.h"
+
+#include "yaml-cpp/yaml.h"
+#include <iostream>
+
 
 using std::cout;
 using std::endl;
-using std::make_pair;
 
 namespace  {
     enum ControllerState { INITIAL,
@@ -28,6 +32,31 @@ namespace  {
 SControllerNormalGame::SControllerNormalGame(RobotTeam* team, YAML::Node* c_node)
  : StrategyController(team,c_node)
 {
+
+    if((*c_node)["ROLES"].IsDefined()){
+        if((*c_node)["ROLES"]["GOALIE" ].IsDefined())
+            idToRole[(*c_node)["ROLES"]["GOALIE" ].as<int>()] = RobotRole::GOALIE;
+
+        if((*c_node)["ROLES"]["ATTACK1" ].IsDefined())
+            idToRole[(*c_node)["ROLES"]["ATTACK1"].as<int>()] = RobotRole::ATTACK1;
+
+        if((*c_node)["ROLES"]["ATTACK2" ].IsDefined())
+            idToRole[(*c_node)["ROLES"]["ATTACK2"].as<int>()] = RobotRole::ATTACK2;
+
+        if((*c_node)["ROLES"]["ATTACK3" ].IsDefined())
+            idToRole[(*c_node)["ROLES"]["ATTACK3"].as<int>()] = RobotRole::ATTACK3;
+
+        if((*c_node)["ROLES"]["DEFEND1" ].IsDefined())
+            idToRole[(*c_node)["ROLES"]["DEFEND1"].as<int>()] = RobotRole::DEFEND1;
+
+        if((*c_node)["ROLES"]["DEFEND2" ].IsDefined())
+            idToRole[(*c_node)["ROLES"]["DEFEND2"].as<int>()] = RobotRole::DEFEND2;
+
+        if((*c_node)["ROLES"]["DEFEND3" ].IsDefined())
+            idToRole[(*c_node)["ROLES"]["DEFEND3"].as<int>()] = RobotRole::DEFEND3;
+    }
+
+
     // assign a state for the controller for eash refbox command
     cmd_to_state[Referee_Command_STOP] = STOP; // stop game
     cmd_to_state[Referee_Command_GOAL_YELLOW] = STOP; // Yellow goal
@@ -58,13 +87,13 @@ SControllerNormalGame::SControllerNormalGame(RobotTeam* team, YAML::Node* c_node
 
     // assign controller state transitions for each state
     // first create empty maps
-    state_transitions[HALT] = map<int,int>();
-    state_transitions[STOP] = map<int,int>();
-    state_transitions[PENALTY] = map<int,int>();
-    state_transitions[KICK_OFF] = map<int,int>();
-    state_transitions[FREE_KICK] = map<int,int>();
-    state_transitions[INDIRECT_KICK] = map<int,int>();
-    state_transitions[NORMAL_GAME] = map<int,int>();
+    state_transitions[HALT] = QMap<int,int>();
+    state_transitions[STOP] = QMap<int,int>();
+    state_transitions[PENALTY] = QMap<int,int>();
+    state_transitions[KICK_OFF] = QMap<int,int>();
+    state_transitions[FREE_KICK] = QMap<int,int>();
+    state_transitions[INDIRECT_KICK] = QMap<int,int>();
+    state_transitions[NORMAL_GAME] = QMap<int,int>();
 
 
     // now define the state transitions
@@ -83,21 +112,20 @@ SControllerNormalGame::SControllerNormalGame(RobotTeam* team, YAML::Node* c_node
 
 
 int SControllerNormalGame::getControllerState(Referee_Command game_command) {
-    auto it = cmd_to_state.find(game_command);
-    return it != cmd_to_state.end() ? it->second : STOP;
+    return cmd_to_state.value(game_command, STOP); // convert command to state, if not defined default to STOP
 }
 
 
 int SControllerNormalGame::getNextControllerState(int current_state,int strategy_status){
     if (current_state == UNINITIALIZED_STATE) return UNINITIALIZED_STATE; // state gets initialized by refbox
 
-    auto state_map = state_transitions.find(current_state)->second;
-    auto result = state_map.find(strategy_status);
-    if(result == state_map.end()){
+    auto state_map = state_transitions[current_state];
+    if(!state_map.contains(strategy_status)){
         cout<< "ERROR: Strategy controller did not define transition: ("
             << current_state << "," << strategy_status <<")" <<endl;
+        exit(-1);
     }
-    return result->second;
+    return state_map[strategy_status];
 }
 
 

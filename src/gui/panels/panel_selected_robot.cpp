@@ -52,13 +52,13 @@ void PanelSelectedRobot::update_panel(){
     text_robot_output->verticalScrollBar()->setValue(sb->maximum());
 
     // display position and orientation
-    lcd_pos_x->display((int)robot->getCurrentPosition().x);
-    lcd_pos_y->display((int)robot->getCurrentPosition().y);
+    lcd_pos_x->display((int)robot->getPosition().x);
+    lcd_pos_y->display((int)robot->getPosition().y);
     lcd_orientation->display(robot->getOrientationAsString() + 90);
-    dial_orientation->setValue(robot->getOrientation() + 90);
+    dial_orientation->setValue(robot->getOrientationInDegrees() + 90);
 
     // display speed cmd, dial color changes according to sign
-    int v = robot->getSpeedCommand();
+    int v = robot->getTargetSpeed();
     dial_speed_cmd->setValue(v);
     lcd_velocity->display(v);
     auto dial_colors = colors_dial_sign[SIGN(v)];
@@ -67,7 +67,7 @@ void PanelSelectedRobot::update_panel(){
 
 
     // display speed, dial color changes according to speed value
-    int s = robot->getCurrentSpeed() * SPEED_MODIFIER;
+    int s = robot->getSpeed() * SPEED_MODIFIER;
     dial_speed_measured->setValue(s);
     lcd_speed->display(s);
 
@@ -92,9 +92,9 @@ void PanelSelectedRobot::update_selected_robot(){
         hide();
     } else {
 
-        box_selected->setTitle("Robot " + QString::number(robot->id) + " selected");
+        box_selected->setTitle("Robot " + QString::number(robot->getID()) + " selected");
         check_override->setChecked(robot->isOverriden());
-        update_colors(robot->team);
+        update_colors(robot->getTeamId());
         robot_drawer->setRobot(robot);
         show();
 

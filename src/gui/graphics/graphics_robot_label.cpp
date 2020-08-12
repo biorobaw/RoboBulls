@@ -32,8 +32,8 @@ void GraphicsLabel::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
     if( !robot->isInField() || hidden) return;
 
 
-    setX(robot->getCurrentPosition().x);
-    setY(robot->getCurrentPosition().y);
+    setX(robot->getPosition().x);
+    setY(robot->getPosition().y);
 
 
     if(robot->hasBall()) // does this robot have the ball?
@@ -48,11 +48,11 @@ void GraphicsLabel::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
     //Setting color of drawn ID
     static auto c_blue  = QColor::fromRgb(0,255,255);
     static auto c_yellow = QColor::fromRgb(255,215,0);
-    auto color = robot->team == ROBOT_TEAM_BLUE ? c_blue : c_yellow;
+    auto color = robot->getTeamId() == ROBOT_TEAM_BLUE ? c_blue : c_yellow;
     painter->setPen(QPen(color, 12, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin));
 
 
-    QString label = QString::number(robot->id);
+    QString label = QString::number(robot->getID());
     if(robot->isControlled())
         label += "(" + QString::number(robot->getMoveStatus()) + ")";
 

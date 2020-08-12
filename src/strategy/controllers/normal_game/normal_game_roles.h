@@ -1,4 +1,17 @@
 #ifndef NORMAL_GAME_ROLES_H
 #define NORMAL_GAME_ROLES_H
 
+enum RobotRole
+{
+    GOALIE, // ROLE 0 MUST ALWAYS BE THE GOALIE
+    ATTACK1,
+    ATTACK2,
+    ATTACK3,
+    DEFEND1,
+    DEFEND2,
+    DEFEND3,
+    NONE
+};
+
+
 #endif // NORMAL_GAME_ROLES_H

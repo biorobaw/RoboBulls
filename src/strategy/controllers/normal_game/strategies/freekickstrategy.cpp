@@ -1,21 +1,21 @@
 #include "freekickstrategy.h"
-#include "../behaviors/attackmain.h"
-#include "../behaviors/attacksupport.h"
-#include "model/game_state.h"
-#include "../behaviors/goalie.h"
-#include "../behaviors/refstop.h"
-#include "../behaviors/wall.h"
-#include "../behaviors/markbot.h"
-#include "model/team.h"
-#include "../skills/kicktopointomni.h"
+#include "../normal_game_roles.h"
 
+#include "strategy/behaviors/attackmain.h"
+#include "strategy/behaviors/attacksupport.h"
+#include "strategy/behaviors/goalie.h"
+#include "strategy/behaviors/wall.h"
+#include "strategy/behaviors/markbot.h"
+
+#include "model/game_state.h"
+#include "model/team.h"
 #include "model/ball.h"
 #include "model/field.h"
 #include "robot/robot.h"
 
 
 FreeKickStrategy::FreeKickStrategy(RobotTeam* _team)
-    : Strategy(_team), initial_bp(Ball::getPosition())
+    : Strategy(_team), initial_bp(_team->getGameState()->getBall()->getPosition())
 {
 
 }
@@ -29,8 +29,9 @@ void FreeKickStrategy::assignBehaviors()
     Robot* attack2 = team->getRobotByRole(RobotRole::ATTACK2);
 
     // We are taking the free kick
-    if ((GameState::getRefereeCommand() == 'F' && team->getColor() == ROBOT_TEAM_BLUE) ||
-        (GameState::getRefereeCommand() == 'f' && team->getColor() == ROBOT_TEAM_YELLOW))
+
+    if ((team->getGameState()->getRefereeCommand() == 'F' && team->getColor() == ROBOT_TEAM_BLUE) ||
+        (team->getGameState()->getRefereeCommand() == 'f' && team->getColor() == ROBOT_TEAM_YELLOW))
     {
         for(Robot* rob : team->getRobots())
             rob->clearBehavior();
@@ -71,8 +72,8 @@ void FreeKickStrategy::assignBehaviors()
 
     }
     // We are defending against a free kick
-    else if ((GameState::getRefereeCommand() == 'f' && team->getColor() == ROBOT_TEAM_BLUE)
-          || (GameState::getRefereeCommand() == 'F' && team->getColor() == ROBOT_TEAM_YELLOW))
+    else if ((team->getGameState()->getRefereeCommand() == 'f' && team->getColor() == ROBOT_TEAM_BLUE)
+          || (team->getGameState()->getRefereeCommand() == 'F' && team->getColor() == ROBOT_TEAM_YELLOW))
     {
         if(wall1)
             wall1->assignBeh<Wall>();
@@ -90,8 +91,8 @@ void FreeKickStrategy::assignBehaviors()
 
 int FreeKickStrategy::getStatus()
 {
-    if ((kicker && kicker->getKick() > 0)
-    || !Measurements::isClose(initial_bp, Ball::getPosition(), 70))
+    if ((kicker && kicker->getKickSpeed() > 0)
+    || !Measurements::isClose(initial_bp, team->getGameState()->getBall()->getPosition(), 70))
         return KICKING; // Go to normal game strategy
     else
         return KICKED;

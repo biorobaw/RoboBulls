@@ -10,28 +10,25 @@ class CmdGoToPose;
 class Pilot
 {
 public:
+
     Pilot(Robot* robot);
     virtual ~Pilot();
 
-    void setManualVelocity(Point _vel,float _angular);
-    void goToPose(CmdGoToPose newCommand);
-    bool finisedLastCommand();
-
+    void setNewCommand(CmdGoToPose& newCommand);
+    void cancelCommand();
+    bool finishedCommand();
     bool executeCommands();
 
-    Point getVel();
-    float getAngular();
+
 
 protected:
     Robot* robot;
-    Point vel = Point(0,0);
-    float angular = 0;
 
     CmdGoToPose* cmdGoToPose = nullptr;
 
     bool executeCmdGoToPose(CmdGoToPose* cmd);
-    virtual void driveTo(Point targetPose, float targetAngle, Point nextPose) = 0;
-
+    virtual void driveTo(Point targetPose, float targetAngle, Point nextPose) = 0; // function to drive from current position to target position
+    void setTargetVelocity(Point velocity, float angular);
 };
 
 #endif // DRIVER_H

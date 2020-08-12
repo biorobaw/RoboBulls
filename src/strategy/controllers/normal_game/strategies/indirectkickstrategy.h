@@ -1,7 +1,7 @@
 #ifndef INDIRECTKICKSTRATEGY_H
 #define INDIRECTKICKSTRATEGY_H
 
-#include "../strategy.h"
+#include "strategy/strategy.h"
 #include "utilities/point.h"
 
 

@@ -1,4 +1,4 @@
-#include "robcomm_yisibot.h"
+#include "proxy_yisibot.h"
 #include <bitset>
 #include <QThread>
 //#include <unistd.h>
@@ -10,9 +10,9 @@
 #include "model/ball.h"
 #include "yaml-cpp/yaml.h"
 #include "crc.h"
-#include "robot/navigation/robot_pilot.h"
+#include "robot/navigation/pilots/pilot_omni.h"
 
-YisiRobComm::YisiRobComm(YAML::Node* t_node)
+ProxyYisi::ProxyYisi(YAML::Node* t_node)
 {
     std::cout << "        YISI_USB_PORT  : " <<  (*t_node)["YISI_USB_PORT"] << std::endl
               << "        YISI_FREQUENCY : " <<  (*t_node)["YISI_FREQUENCY"] << std::endl;
@@ -59,7 +59,7 @@ YisiRobComm::YisiRobComm(YAML::Node* t_node)
 }
 
 std::time_t t_old = 0;
-void YisiRobComm::sendVels(std::set<Robot*>& robots)
+void ProxyYisi::sendVels(const QSet<Robot*>& robots)
 {
     if(!serial.isOpen()){
         std::cout << "WARNING: speeds not sent, yisibot serial comm is closed" << std::endl;
@@ -77,13 +77,8 @@ void YisiRobComm::sendVels(std::set<Robot*>& robots)
 
         Data8 transmitPacket[25] = {(Data8)0};
 
-        Point bp = Ball::getPosition();
-//        std::cout<<"Ball point is at: "<<bp.toString()<<std::endl;
-
         transmitPacket[0] = (Data8)0xff;
-        // First Robot ID
         int robotID = r->getID();
-//        std::cout<< "-YISI: sending to " << r->getID() << std::endl;
 
 
         if(robotID > 7) {
@@ -98,10 +93,10 @@ void YisiRobComm::sendVels(std::set<Robot*>& robots)
         // First Robot Kick/Chip (0/1)
         int shootMode = 0;
         //std::cout << "Kick66666" << std::endl;
-        int shootPowerLevel = r->getKick()? 127:0;
+        int shootPowerLevel = r->getKickSpeed()? 127:0;
         transmitPacket[3] = (shootMode << 6);
-        transmitPacket[18]=(r->getKick()?shootPowerLevel:0)&0x7f;
-        r->setKick(0);
+        transmitPacket[18]=(r->getKickSpeed()?shootPowerLevel:0)&0x7f;
+        r->setKickSpeed(0);
 
         // First Robot Dribble
         int dribble = r->getDribble();
@@ -110,10 +105,10 @@ void YisiRobComm::sendVels(std::set<Robot*>& robots)
         //std::cout << "Dribble" << std::endl;
 
         // Retrieve Desired Velocities & set to appropriate units
-        auto vel = r->getPilot()->getVel();
+        auto vel = r->getTargetVelocity();
         int velX = vel.y;        // Yisicomm robots expect flipped X/Y axis
         int velY = vel.y;
-        int velR = -r->getPilot()->getAngular() * 750 ;        // Mult by 750 to bring vals inline with yisi units (1/40 radians/sec)
+        int velR = -r->getTargetAngularSpeed() * 750 ;        // Mult by 750 to bring vals inline with yisi units (1/40 radians/sec)
 //        std::cout << "velx/y/ang  " << velX << "  " << velY << "  " << velR << std::endl;
 
         transmitPacket[4] = ((velX >= 0)?0:0x80) | (abs(velX) & 0x7f);
@@ -128,17 +123,23 @@ void YisiRobComm::sendVels(std::set<Robot*>& robots)
         QThread::msleep(4);
 
     }
-    //std::cout << "at YisiRobComm::sendVelsLarge(std::vector<Robot*>& robots) 2 \n";
 
-    //std::cout << "at YisiRobComm::sendVelsLarge(std::vector<Robot*>& robots) 3 \n";
-
-    //std::cout << "at YisiRobComm::sendVelsLarge(std::vector<Robot*>& robots) 4 \n";
-    //std::cout << "Sent" << std::endl;
 }
 
 
-void YisiRobComm::close(){
+void ProxyYisi::close(){
     std::cout << " closing yisi serial port..." << std::endl;
     serial.close();
     std::cout << " closed yisi serial port" << std::endl;
+}
+
+
+bool ProxyYisi::hasKicker() {
+    return true;
+}
+bool ProxyYisi::isHolonomic() {
+    return true;
+}
+Pilot* ProxyYisi::createPilot(Robot* robot) {
+    return new PilotOmni(robot, 0.25, 0, 0.1, 0);
 }

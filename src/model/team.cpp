@@ -4,9 +4,10 @@
 
 #include "team.h"
 #include "robot/robot.h"
-#include "robot/robcomm.h"
+#include "robot/robot_proxy.h"
 #include "strategy/strategycontroller.h"
 #include "field.h"
+#include "model/game_state.h"
 
 #include "yaml-cpp/yaml.h"
 
@@ -32,43 +33,19 @@ RobotTeam::RobotTeam(YAML::Node* t_node, int _color) {
     side =  (*t_node)["SIDE"].as<int>();
     assert(side == FIELD_SIDE_NEGATIVE || side == FIELD_SIDE_POSITIVE);
 
-    if((*t_node)["ROLES"].IsDefined()){
-        if((*t_node)["ROLES"]["GOALIE" ].IsDefined())
-            idToRole[(*t_node)["ROLES"]["GOALIE" ].as<int>()] = RobotRole::GOALIE;
-
-        if((*t_node)["ROLES"]["ATTACK1" ].IsDefined())
-            idToRole[(*t_node)["ROLES"]["ATTACK1"].as<int>()] = RobotRole::ATTACK1;
-
-        if((*t_node)["ROLES"]["ATTACK2" ].IsDefined())
-            idToRole[(*t_node)["ROLES"]["ATTACK2"].as<int>()] = RobotRole::ATTACK2;
-
-        if((*t_node)["ROLES"]["ATTACK3" ].IsDefined())
-            idToRole[(*t_node)["ROLES"]["ATTACK3"].as<int>()] = RobotRole::ATTACK3;
-
-        if((*t_node)["ROLES"]["DEFEND1" ].IsDefined())
-            idToRole[(*t_node)["ROLES"]["DEFEND1"].as<int>()] = RobotRole::DEFEND1;
-
-        if((*t_node)["ROLES"]["DEFEND2" ].IsDefined())
-            idToRole[(*t_node)["ROLES"]["DEFEND2"].as<int>()] = RobotRole::DEFEND2;
-
-        if((*t_node)["ROLES"]["DEFEND3" ].IsDefined())
-            idToRole[(*t_node)["ROLES"]["DEFEND3"].as<int>()] = RobotRole::DEFEND3;
-    }
-
-
 
     std::cout << "        ROBOT_TYPE  : " << (*t_node)["ROBOT_TYPE"] <<std::endl;
-    robot_type = (*t_node)["ROBOT_TYPE"].as<std::string>();
+    robot_type = (*t_node)["ROBOT_TYPE"].as<std::string>().c_str();
     auto rob_comm = (*t_node)["ROB_COMM"];
-    comm = RobComm::loadRobComm(robot_type,&rob_comm);
+    robot_proxy = RobotProxy::load(robot_type, &rob_comm);
 
     auto s_controller = (*t_node)["STRATEGY_CONTROLLER"];
     if(robot_type != "none"){
         controller = StrategyController::loadController(this,&s_controller);
-        controller_name = s_controller["ID"].as<string>();
+        team_controller_name = s_controller["ID"].as<string>();
     }
 
-
+    game_state = new GameState();
 
 
     teams[color] = this;
@@ -79,9 +56,9 @@ RobotTeam::RobotTeam(YAML::Node* t_node, int _color) {
 RobotTeam::~RobotTeam(){
     if(teams[color] == this) teams[color] = NULL;
     closeCommunication();
-    if(comm!=nullptr) {
-        delete comm;
-        comm=nullptr;
+    if(robot_proxy!=nullptr) {
+        delete robot_proxy;
+        robot_proxy=nullptr;
     }
     if(controller!=nullptr){
         delete controller;
@@ -91,7 +68,7 @@ RobotTeam::~RobotTeam(){
 }
 
 
-void RobotTeam::load_teams(YAML::Node* team_nodes){
+RobotTeam** RobotTeam::load_teams(YAML::Node* team_nodes){
     auto tb = (*team_nodes)["TEAM_BLUE"], ty = (*team_nodes)["TEAM_YELLOW"];
     teams[ROBOT_TEAM_BLUE] = new RobotTeam(&tb, ROBOT_TEAM_BLUE);
     teams[ROBOT_TEAM_YELLOW] = new RobotTeam(&ty, ROBOT_TEAM_YELLOW);
@@ -103,34 +80,8 @@ void RobotTeam::load_teams(YAML::Node* team_nodes){
     }
     auto blue_side = teams[ROBOT_TEAM_BLUE]->side;
     Field::NEGATIVE_SIDE_TEAM = blue_side == FIELD_SIDE_NEGATIVE ? ROBOT_TEAM_BLUE : ROBOT_TEAM_YELLOW;
-
+    return teams;
 }
-
-RobotTeam* RobotTeam::getTeam(int id){
-    return teams[id];
-}
-
-
-Robot* RobotTeam::addRobot(int id){
-//    std::cout << robot_type << " type\n";
-    auto role = idToRole[id];
-    auto r = Robot::loadRobot(robot_type,id,color,role);
-
-    robotById[id] = r;
-    robotByRoles[idToRole[id]] = r;
-    all_robots.insert(r);
-    return r;
-}
-
-void RobotTeam::removeRobot(int id){
-    Robot* aux = robotById[id];
-    robotById[id] = NULL;
-    robotByRoles[aux->getRole()] = NULL;
-    all_robots.erase(aux);
-    delete aux;
-
-}
-
 
 
 /*! @brief Look for a robot in the team with id `id`
@@ -139,27 +90,27 @@ void RobotTeam::removeRobot(int id){
  * \return A robot pointer if found, or NULL if not on the team */
 Robot* RobotTeam::getRobot(int id)
 {
-    return robotById[id];
+    return game_state->getRobot(color,id);
 }
 
-Robot* RobotTeam::getRobotByRole(RobotRole role){
-    return robotByRoles[role];
+Robot* RobotTeam::getRobotByRole(int role){
+    return robotsByRoles[role];
 }
 
-std::set<Robot*>& RobotTeam::getRobots(){
-    return all_robots;
+QSet<Robot*>& RobotTeam::getRobots(){
+    return game_state->getFieldRobots(color);
 }
 
 
 int RobotTeam::getColor(){
     return color;
 }
-std::string RobotTeam::getRobotType(){
+QString RobotTeam::getRobotType(){
     return robot_type;
 }
 
-std::string RobotTeam::getControllerName(){
-    return controller_name;
+std::string RobotTeam::getTeamControllerName(){
+    return team_controller_name;
 }
 
 std::string RobotTeam::getStrategyName(){
@@ -176,20 +127,20 @@ int RobotTeam::getOpponentSide(){
                 FIELD_SIDE_NEGATIVE;
 }
 
-bool RobotTeam::isControlled(){
-    return controller != nullptr;
-}
-
 void RobotTeam::closeCommunication(){
-    if(comm!=nullptr){
-        comm->close_communication(all_robots);
+    if(robot_proxy!=nullptr){
+        robot_proxy->close_communication(game_state->getFieldRobots(color));
     }
 }
 
 void RobotTeam::sendVels(){
-    if(comm!=nullptr){
-        comm->sendVels(all_robots);
+    if(robot_proxy!=nullptr){
+        robot_proxy->sendVels(game_state->getFieldRobots(color));
     }
+}
+
+GameState* RobotTeam::getGameState(){
+    return game_state;
 }
 
 

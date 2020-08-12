@@ -8,9 +8,11 @@
 #include "utilities/point.h"
 #include <array>
 #include <set>
+#include <QSet>
 
 class Robot;
 class RobotTeam;
+class Ball;
 
 
 /*! @brief Defines comparison predicates and information querying functions.
@@ -113,9 +115,9 @@ public:
     /*! @name GameModel helper functions
      * @{
      * @brief Helper functions to query the container queries on GameModel teams */
-    Robot* maxInSet(std::set<Robot*>& robots);
+    Robot* maxInSet(QSet<Robot*>& robots);
     Robot* maxInTeam(RobotTeam* team);
-    Robot* minInSet(std::set<Robot*>& robots);
+    Robot* minInSet(QSet<Robot*>& robots);
     Robot* minInTeam(RobotTeam* team);
     //! @}
 
@@ -161,7 +163,7 @@ protected:
 };
 
 struct pred_distanceBall : public pred_distance {
-    pred_distanceBall();
+    pred_distanceBall(Point ball_point);
 };
 
 

@@ -68,6 +68,7 @@ SOURCES += src/main.cpp \
         src/model/ball.cpp \
         src/model/field.cpp \
         src/model/game_state.cpp \
+        src/model/moving_object.cpp \
         src/robot/navigation/commands/CmdGoToPose.cpp \
         src/robot/navigation/drives/differential.cpp \
         src/robot/navigation/drives/omni_drive.cpp \
@@ -77,20 +78,25 @@ SOURCES += src/main.cpp \
         src/robot/navigation/pilots/pilot_dummy.cpp \
         src/robot/navigation/pilots/pilot_omni.cpp \
         src/robot/navigation/robot_pilot.cpp \
-        src/robot/robcomm.cpp \
         src/robot/robot.cpp \
-        src/robot/robots/grsim/robcomm_grsim.cpp \
-        src/robot/robots/grsim/robot_grsim.cpp \
-        src/robot/robots/none/robotnone.cpp \
-        src/robot/robots/yisibot/robcomm_yisibot.cpp \
-        src/robot/robots/yisibot/robot_yisibot.cpp \
+        src/robot/robot_proxy.cpp \
+        src/robot/robots/grsim/proxy_grsim.cpp \
+        src/robot/robots/none/proxy_none.cpp \
+        src/robot/robots/yisibot/proxy_yisibot.cpp \
         src/robot/robots/yisibot/crc.cpp \
         src/ssl/ssl_game_controller_listener.cpp \
         src/ssl/ssl_vision_listener.cpp \
         src/strategy/behavior.cpp \
         src/strategy/controllers/joystick/joystick.cpp \
         src/strategy/controllers/joystick/scontroller_joystick.cpp \
-        src/strategy/controllers/scontroller_normal_game.cpp \
+        src/strategy/controllers/normal_game/scontroller_normal_game.cpp \
+        src/strategy/controllers/normal_game/strategies/freekickstrategy.cpp \
+        src/strategy/controllers/normal_game/strategies/haltstrategy.cpp \
+        src/strategy/controllers/normal_game/strategies/indirectkickstrategy.cpp \
+        src/strategy/controllers/normal_game/strategies/kickoffstrategy.cpp \
+        src/strategy/controllers/normal_game/strategies/normalgamestrategy.cpp \
+        src/strategy/controllers/normal_game/strategies/penaltystrategy.cpp \
+        src/strategy/controllers/normal_game/strategies/stopstrategy.cpp \
         src/strategy/controllers/strategy_tester/scontroller_strategy_tester.cpp \
         src/strategy/controllers/strategy_tester/strategies/test_strategy.cpp \
         src/strategy/strategy.cpp \
@@ -110,19 +116,11 @@ SOURCES += src/main.cpp \
         src/strategy/skills/kick.cpp \
         src/strategy/skills/kicktopointomni.cpp \
         src/strategy/skills/stop.cpp \
-        src/strategy/strategies/freekickstrategy.cpp \
-        src/strategy/strategies/haltstrategy.cpp \
-        src/strategy/strategies/indirectkickstrategy.cpp \
-        src/strategy/strategies/kickoffstrategy.cpp \
-        src/strategy/strategies/normalgamestrategy.cpp \
-        src/strategy/strategies/penaltystrategy.cpp \
-        src/strategy/strategies/stopstrategy.cpp \
         src/utilities/comparisons.cpp \
         src/utilities/debug.cpp \
         src/utilities/edges.cpp \
         src/utilities/my_kalman_filter.cpp \
         src/utilities/point.cpp \
-        src/utilities/velocitycalculator.cpp \
         src/utilities/region/sector.cpp \
         src/utilities/region/rectangle.cpp \
         src/utilities/measurements.cpp \
@@ -158,6 +156,7 @@ HEADERS += \
         src/model/constants.h \
         src/model/field.h \
         src/model/game_state.h \
+        src/model/moving_object.h \
         src/model/team.h \
         src/robot/navigation/commands/CmdGoToPose.h \
         src/robot/navigation/drives/differential.h \
@@ -168,20 +167,26 @@ HEADERS += \
         src/robot/navigation/pilots/pilot_dummy.h \
         src/robot/navigation/pilots/pilot_omni.h \
         src/robot/navigation/robot_pilot.h \
-        src/robot/robcomm.h \
         src/robot/robot.h \
-        src/robot/robots/grsim/robcomm_grsim.h \
-        src/robot/robots/grsim/robot_grsim.h \
-        src/robot/robots/none/robotnone.h \
-        src/robot/robots/yisibot/robcomm_yisibot.h \
-        src/robot/robots/yisibot/robot_yisibot.h \
+        src/robot/robot_proxy.h \
+        src/robot/robots/grsim/proxy_grsim.h \
+        src/robot/robots/none/proxy_none.h \
+        src/robot/robots/yisibot/proxy_yisibot.h \
         src/robot/robots/yisibot/crc.h \
         src/ssl/ssl_game_controller_listener.h \
         src/ssl/ssl_vision_listener.h \
         src/strategy/behavior.h \
         src/strategy/controllers/joystick/joystick.h \
         src/strategy/controllers/joystick/scontroller_joystick.h \
-        src/strategy/controllers/scontroller_normal_game.h \
+        src/strategy/controllers/normal_game/normal_game_roles.h \
+        src/strategy/controllers/normal_game/scontroller_normal_game.h \
+        src/strategy/controllers/normal_game/strategies/freekickstrategy.h \
+        src/strategy/controllers/normal_game/strategies/haltstrategy.h \
+        src/strategy/controllers/normal_game/strategies/indirectkickstrategy.h \
+        src/strategy/controllers/normal_game/strategies/kickoffstrategy.h \
+        src/strategy/controllers/normal_game/strategies/normalgamestrategy.h \
+        src/strategy/controllers/normal_game/strategies/penaltystrategy.h \
+        src/strategy/controllers/normal_game/strategies/stopstrategy.h \
         src/strategy/controllers/strategy_tester/scontroller_strategy_tester.h \
         src/strategy/controllers/strategy_tester/strategies/test_strategy.h \
         src/strategy/skill.h \
@@ -203,20 +208,12 @@ HEADERS += \
         src/strategy/skills/kick.h \
         src/strategy/skills/kicktopointomni.h \
         src/strategy/skills/stop.h \
-        src/strategy/strategies/freekickstrategy.h \
-        src/strategy/strategies/haltstrategy.h \
-        src/strategy/strategies/indirectkickstrategy.h \
-        src/strategy/strategies/kickoffstrategy.h \
-        src/strategy/strategies/normalgamestrategy.h \
-        src/strategy/strategies/penaltystrategy.h \
-        src/strategy/strategies/stopstrategy.h \
         src/utilities/circular_buffer.h \
         src/utilities/comparisons.h \
         src/utilities/debug.h \
         src/utilities/edges.h \
         src/utilities/my_kalman_filter.h \
         src/utilities/point.h \
-        src/utilities/velocitycalculator.h \
         src/utilities/region/sector.h \
         src/utilities/region/rectangle.h \
         src/utilities/region/region.h \

@@ -1,14 +1,10 @@
 #include <iostream>
 #include <list>
 
-#include "utilities/measurements.h"
-#include "../behaviors/goalie.h"
-#include "../behaviors/refstop.h"
-#include "model/game_state.h"
-#include "utilities/comparisons.h"
 #include "stopstrategy.h"
 #include "model/team.h"
-#include "robot/robot.h"
+#include "strategy/behaviors/refstop.h"
+
 
 StopStrategy::StopStrategy(RobotTeam* _team) : Strategy(_team)
 {

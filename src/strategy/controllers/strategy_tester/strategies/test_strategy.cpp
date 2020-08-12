@@ -49,7 +49,7 @@ public:
         {
             wait4recharge = true;
             start = std::clock();
-            robot->getPilot()->setManualVelocity(Point(0,0),0);
+            robot->setTargetVelocity(Point(0,0),0);
         }
 
         // If 6 seconds have passed since starting recharge,
@@ -134,7 +134,7 @@ class RotBeh : public GenericMovementBehavior
 
     void perform() override
     {
-        float ang = Measurements::angleBetween(robot, Ball::getPosition());
+        float ang = Measurements::angleBetween(robot, robot->getTeam()->getGameState()->getBall()->getPosition());
         cmd.setTarget(robot->getPosition(),ang);
         GenericMovementBehavior::perform();
     }
@@ -201,7 +201,7 @@ public:
     void perform() override
     {
         Point rp = robot->getPosition();
-        double ori = Measurements::angleBetween(rp, Ball::getPosition());
+        double ori = Measurements::angleBetween(rp, robot->getTeam()->getGameState()->getBall()->getPosition());
         switch(state)
         {
             case pos_one:
@@ -239,10 +239,10 @@ public:
 
     void perform() override  {
         cout<< "performing: r"<< robot->getID() << endl;
-        auto b = Ball::getPosition();
+        auto b = robot->getTeam()->getGameState()->getBall()->getPosition();
         cout<< "ball: " << b.x << "," << b.y << endl;
-        cmd.setTarget( Point(-500,-500), 0);// Ball::getPosition() + offset,
-                     // Measurements::angleBetween(robot->getPosition(),Ball::getPosition()));
+        cmd.setTarget( Point(-500,-500), 0);// robot->getTeam()->getGameState()->getBall()->getPosition() + offset,
+                     // Measurements::angleBetween(robot->getPosition(),robot->getTeam()->getGameState()->getBall()->getPosition()));
         cmd.avoidBall = cmd.avoidObstacles = false;
         GenericMovementBehavior::perform();
     }
@@ -264,20 +264,21 @@ void TestStrategy::assignBehaviors()
     std::cout << "Assigning test strategy behaviors " << std::endl;
 //    //team->getRobot(0)->assignBeh<GenericMovementBehavior>(Point(-650, 300), 0);
 
-//    auto robots = team->getRobots();
-    auto r = team->getRobot(3);
-    if(r){
-        std::cout << "Go to pose" << endl;
-        r->getPilot()->goToPose(CmdGoToPose(Point(800,-850),0,false,false));
-    }
+//    auto r = team->getRobot(3);
+//    if(r){
+//        std::cout << "Go to pose" << endl;
+//        r->getPilot()->goToPose(CmdGoToPose(Point(800,-850),0,false,false));
+//    }
 //    r->assignBeh<GoToBehavior>(0);
-//    int num_robots = robots.size();
-//    int i = 0;
-////    for(auto r : robots){
-////        if(i++ ==0) r->assignBeh<Strafe>();
-////        else r->assignBeh<GoToBehavior>(i*360.0/num_robots);
 
-////    }
+    auto robots = team->getRobots();
+    int num_robots = robots.size();
+    int i = 0;
+    for(auto r : robots){
+        if(i++ ==0) r->assignBeh<Strafe>();
+        else r->assignBeh<GoToBehavior>(i*360.0/num_robots);
+
+    }
 
 }
 

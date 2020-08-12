@@ -1,9 +1,9 @@
 #include "panel_game_info.h"
 #include "gui/data/gui_ball.h"
-#include "model/game_state.h"
 #include "gui/data/gui_ball.h"
 #include "gui/graphics/graphics_ball.h"
 #include "gui/data/gui_game_state.h"
+#include "model/constants.h"
 
 PanelGameInfo::PanelGameInfo(QWidget *parent) :
     QFrame(parent)
@@ -21,7 +21,7 @@ PanelGameInfo::PanelGameInfo(QWidget *parent) :
     gView_ball->hide();
     gView_ball->show();
 
-    connect(&GuiBall::ball,SIGNAL(color_changed()),gView_ball,SLOT(repaint()));
+    connect(GuiBall::gui_ball,SIGNAL(color_changed()),gView_ball,SLOT(repaint()));
 
 }
 
@@ -44,9 +44,10 @@ void PanelGameInfo::update_panel(){
     label_ball_acc->setText("a= TODO");
 
     // Update score and time remaining
-    label_blue_goals->setText(QString::number(GameState::getBlueGoals()));
-    label_yellow_goals->setText(QString::number(GameState::getYellowGoals()));
-    label_time_remaining->setText("Time Left: " + QString::number(GameState::getRemainingTime()));
+    auto game_state = GuiGameState::get();
+    label_blue_goals->setText(QString::number(game_state->getGoals(ROBOT_TEAM_BLUE)));
+    label_yellow_goals->setText(QString::number(game_state->getGoals(ROBOT_TEAM_YELLOW)));
+    label_time_remaining->setText("Time Left: " + QString::number(game_state->getRemainingTime()));
 
 
     // TODO: knowing the time since the start of the program doesn't seem to useful
@@ -66,7 +67,7 @@ void PanelGameInfo::update_panel(){
 
 
     //Populating the gameState label with the current refbox command
-    label_game_state->setText(GuiGameState::getRefereeCommand());
+    label_game_state->setText(game_state->getRefereeCommandAsStr());
 
 
 

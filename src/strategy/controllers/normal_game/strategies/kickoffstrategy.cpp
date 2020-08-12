@@ -1,7 +1,9 @@
-#include "../behaviors/genericmovementbehavior.h"
-#include "../behaviors/goalie.h"
-#include "model/game_state.h"
 #include "kickoffstrategy.h"
+#include "../normal_game_roles.h"
+
+#include "strategy/behaviors/genericmovementbehavior.h"
+#include "strategy/behaviors/goalie.h"
+#include "model/game_state.h"
 #include "robot/navigation/commands/CmdGoToPose.h"
 #include "model/team.h"
 #include "robot/robot.h"

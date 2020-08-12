@@ -11,6 +11,7 @@
 #include "model/ball.h"
 #include "model/field.h"
 #include "robot/robot.h" 
+#include "model/game_state.h"
 using std::cout , std::endl;
 
 /* Implementation of the Fast Path Planning Algorithm
@@ -42,13 +43,13 @@ namespace impl {
     int framesUntilUpdate = 0;
     std::vector<Point> robotObstacles;
 
-    std::pair<bool, Point> isObstacleinLine(const Point& beginPos, const Point& endPos, bool avoidBall, bool use_def_areas) {
+    std::pair<bool, Point> isObstacleinLine(const Point& beginPos, const Point& endPos, bool avoidBall, bool use_def_areas, GameState* game_state) {
         bool  obstacle_found = false;
         Point obstacle_position;
 
         // Check ball
         if(avoidBall) {
-            Point bp = Ball::getPosition();
+            Point bp = game_state->getBall()->getPosition();
 
             if(Measurements::lineSegmentDistance(bp, beginPos, endPos) <= ROBOT_RADIUS+Field::BALL_RADIUS+10) {
                 obstacle_found = true;
@@ -92,11 +93,11 @@ namespace impl {
         return std::pair<bool, Point>(obstacle_found, obstacle_position);
     }
 
-    bool isObstacleAtPoint(const Point& toCheck, bool avoid_ball, bool use_def_areas) {
+    bool isObstacleAtPoint(const Point& toCheck, bool avoid_ball, bool use_def_areas, GameState* game_state) {
         // Check ball
         bool ball_in_the_way = false;
         if(avoid_ball)
-            ball_in_the_way = Measurements::isClose(toCheck, Ball::getPosition(), ROBOT_RADIUS+Field::BALL_RADIUS + 50);
+            ball_in_the_way = Measurements::isClose(toCheck, game_state->getBall()->getPosition(), ROBOT_RADIUS+Field::BALL_RADIUS + 50);
 
         // Check defence areas
         bool def_area_occupied = false;
@@ -118,13 +119,13 @@ namespace impl {
         return Point(dx,dy);
     }
 
-    void recursiveFPPA(Path* results, const Point& beginPos, const Point& endPos, int depth, bool avoidBall, bool use_def_areas) {
+    void recursiveFPPA(Path* results, const Point& beginPos, const Point& endPos, int depth, bool avoidBall, bool use_def_areas, GameState* game_state) {
         if(depth >= MAX_RECURSION_DEPTH)
             return;
 
         // Determine if the robot we are planning for is the goalie
         // and hence whether the def_areas are to be considered obstacles
-        auto obstacle_info = isObstacleinLine(beginPos, endPos, avoidBall, use_def_areas);
+        auto obstacle_info = isObstacleinLine(beginPos, endPos, avoidBall, use_def_areas, game_state);
 
         if(obstacle_info.first == true) {   // Obstacle was found
             Point nearest_to_obstacle = Measurements::lineSegmentPoint(obstacle_info.second, beginPos, endPos);
@@ -138,7 +139,7 @@ namespace impl {
             while(subGoal0_obstructed) {
                 i0 += SRCH_INCR;
                 subGoal0 = nearest_to_obstacle + (srch_vctr * i0);
-                subGoal0_obstructed = isObstacleAtPoint(subGoal0, avoidBall, use_def_areas);
+                subGoal0_obstructed = isObstacleAtPoint(subGoal0, avoidBall, use_def_areas, game_state);
             }
 
             // Check along other direction
@@ -146,7 +147,7 @@ namespace impl {
             while(subGoal1_obstructed) {
                 i1 += SRCH_INCR;
                 subGoal1 = nearest_to_obstacle - (srch_vctr * i1);
-                subGoal1_obstructed = isObstacleAtPoint(subGoal1, avoidBall, use_def_areas);
+                subGoal1_obstructed = isObstacleAtPoint(subGoal1, avoidBall, use_def_areas, game_state);
             }
 
             // Choose less deviant sub_goal
@@ -162,8 +163,8 @@ namespace impl {
 
             // Recursively test the paths from the beginning to the subGoal and from
             // the subGoal to the end
-            recursiveFPPA(results, beginPos, subGoal, depth + 1, avoidBall, use_def_areas);
-            recursiveFPPA(results, subGoal,  endPos, depth + 1, avoidBall, use_def_areas);
+            recursiveFPPA(results, beginPos, subGoal, depth + 1, avoidBall, use_def_areas, game_state);
+            recursiveFPPA(results, subGoal,  endPos, depth + 1, avoidBall, use_def_areas, game_state);
         }
     }    
 
@@ -185,9 +186,9 @@ namespace impl {
 } //namespace impl
 
     // Populates robot obstacle points from gamemodel
-    void updateRobotObstacles(Robot* self) {
+    void updateRobotObstacles(Robot* self, GameState* game_state) {
 
-        auto& robots = Robot::getAllRobots();
+        auto& robots = game_state->getFieldRobots();
         impl::robotObstacles.clear();
         impl::robotObstacles.reserve(robots.size() + 1);
 
@@ -196,14 +197,14 @@ namespace impl {
                 impl::robotObstacles.push_back(rob->getPosition());
     }
 
-    Path genPath(const Point& start, Point end, bool avoidBall, bool use_def_areas) {
+    Path genPath(GameState* game_state, const Point& start, Point end, bool avoidBall, bool use_def_areas) {
         // If the end point is not reachable, make it reachable
         impl::sanitizeDestination(end, use_def_areas);
 
         Path path;
         path.push_back(start);
         path.push_back(end);
-        impl::recursiveFPPA(&path, start, end, 1, avoidBall, use_def_areas);
+        impl::recursiveFPPA(&path, start, end, 1, avoidBall, use_def_areas, game_state);
         if(path.size()>0) path.pop_front();
         if(path.size()>0) path.pop_back();
 
@@ -216,8 +217,8 @@ namespace impl {
         return path;
     }
 
-    bool isObstacleInLine(const Point& start, const Point& end, Point* obsPosOut, bool avoidBall) {
-        auto obstacle_info = impl::isObstacleinLine(start, end, avoidBall, false);
+    bool isObstacleInLine(GameState* game_state, const Point& start, const Point& end, Point* obsPosOut, bool avoidBall) {
+        auto obstacle_info = impl::isObstacleinLine(start, end, avoidBall, false, game_state);
 
         if(obstacle_info.first) {
             if(obsPosOut != nullptr)

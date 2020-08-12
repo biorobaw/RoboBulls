@@ -47,11 +47,9 @@ void MainWindow::coreLoop() {
     /* Top function of the GUI's loop */
 
     // Update game data:
-    GuiBall::updateBall();
-    GuiRobot::updateRobots();
-    GuiTeams::updateTeams();
     GuiField::updateField();
-    GuiGameState::updateData();
+    GuiTeams::updateTeams();
+    GuiGameState::get()->update();
 
     // update panels
     panel_field->updateScene();
@@ -94,25 +92,25 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
             // Robot control bindings
             case Qt::Key_W:
             case Qt::UpArrow:
-                robot->setManualVelocity(Point(250,0),0);
+                robot->setGuiTargetVelocity(Point(250,0),0);
                 break;
             case Qt::Key_S:
             case Qt::DownArrow:
-                robot->setManualVelocity(Point(-250,0),0);
+                robot->setGuiTargetVelocity(Point(-250,0),0);
                 break;
             case Qt::Key_A:
             case Qt::LeftArrow:
-                robot->setManualVelocity(Point(0,0),3.1415/2);
+                robot->setGuiTargetVelocity(Point(0,0),3.1415/2);
                 break;
             case Qt::Key_D:
             case Qt::RightArrow:
-                robot->setManualVelocity(Point(0,0),-3.1415/2);
+                robot->setGuiTargetVelocity(Point(0,0),-3.1415/2);
                 break;
             case Qt::Key_Space:
-                robot->setKick();
+                robot->setGuiKickSpeed();
                 break;
             case Qt::Key_Shift:
-                robot->setDribble(true);
+                robot->setGuiDribble(true);
                 break;
             // Remove selection from bot
             case Qt::Key_Escape:
@@ -177,13 +175,13 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event) {
             case Qt::Key_A:
             case Qt::Key_S:
             case Qt::Key_D:
-                robot->setManualVelocity(Point(0,0),0);
+                robot->setGuiTargetVelocity(Point(0,0),0);
                 break;
             case Qt::Key_Space:
-                robot->setKick(0);
+                robot->setGuiKickSpeed(0);
                 break;
             case Qt::Key_Shift:
-                robot->setDribble(false);
+                robot->setGuiDribble(false);
                 break;
         }
     }

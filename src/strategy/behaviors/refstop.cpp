@@ -1,6 +1,8 @@
 #include "refstop.h"
 #include "model/ball.h"
 #include "robot/robot.h"
+#include "model/game_state.h"
+#include "model/team.h"
 
 RefStop::RefStop(Robot* robot) : GenericMovementBehavior(robot)
 {
@@ -8,7 +10,7 @@ RefStop::RefStop(Robot* robot) : GenericMovementBehavior(robot)
 
 void RefStop::perform()
 {
-    Point bp = Ball::getPosition();
+    Point bp = robot->getTeam()->getGameState()->getBall()->getPosition();
 
     if(Measurements::isClose(robot, bp, 600))
     {

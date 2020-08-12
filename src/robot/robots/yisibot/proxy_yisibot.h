@@ -4,16 +4,21 @@
 //#include <QtSerialPort/QSerialPort>
 #include <QSerialPort>
 #include <iostream>
-#include "robot/robcomm.h"
+#include "robot/robot_proxy.h"
 
 
 typedef char Data8;
 
-class YisiRobComm : public RobComm
+class ProxyYisi : public RobotProxy
 {
 public:
-    YisiRobComm(YAML::Node* t_node);
-    void sendVels(std::set<Robot*>&) override;
+    ProxyYisi(YAML::Node* t_node);
+    void sendVels(const QSet<Robot*>&) override;
+
+    bool hasKicker() override;
+    bool isHolonomic() override;
+    Pilot* createPilot(Robot* robot) override;
+
 private:
     QSerialPort	serial;
     void close() override;

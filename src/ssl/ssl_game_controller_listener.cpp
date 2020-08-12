@@ -8,85 +8,102 @@
 #include "yaml-cpp/yaml.h"
 #include <iostream>
 #include "model/game_state.h"
+
+
+
 using namespace std;
 
+SSLGameControllerListener* SSLGameControllerListener::instance = nullptr;
 
-SSLGameControllerListener::SSLGameControllerListener(YAML::Node* comm_node)
+SSLGameControllerListener::SSLGameControllerListener(YAML::Node* comm_node) :
+    QObject(nullptr)
 {
-    cout << "--REFBOX " << endl
-         << "        REFBOX_ADDR    : " << (*comm_node)["REFBOX_ADDR"] << endl
-         << "        REFBOX_PORT    : " << (*comm_node)["REFBOX_PORT"] << endl;
-    net_address= (*comm_node)["REFBOX_ADDR"].as<string>();
+    qInfo() << "--REFBOX ";
+    qInfo() << "        REFBOX_ADDR    : " << (*comm_node)["REFBOX_ADDR"].Scalar().c_str();
+    qInfo() << "        REFBOX_PORT    : " << (*comm_node)["REFBOX_PORT"].Scalar().c_str();
+
+    command = Referee_Command_HALT;
+    command_previous = Referee_Command_HALT;
+    net_address= (*comm_node)["REFBOX_ADDR"].as<string>().c_str();
     port       = (*comm_node)["REFBOX_PORT"].as<int>();
-    cout << "--Refbox DONE" << endl;
 
+    restart_socket();
+
+    instance = this;
+    qInfo() << "--Refbox DONE";
+}
+
+
+void SSLGameControllerListener::restart_socket(){
+    if(socket->isOpen()) socket->close();
+
+    if(!socket->bind(QHostAddress::AnyIPv4, port, QUdpSocket::ShareAddress)){
+        qFatal("ERROR: could not bind refbox port %d", port);
+    }
+
+    if(!socket->joinMulticastGroup(QHostAddress(net_address ))){
+        qFatal("ERROR: ssl-refbox could not join multicast group %s", net_address.toUtf8().constData());
+    }
+
+    connect(socket,&QUdpSocket::readyRead, this , &SSLGameControllerListener::process_package);
 
 }
 
-void SSLGameControllerListener::stop(){
-    done = true;
+
+void SSLGameControllerListener::copyState(GameState* game_state){
+    if(instance == nullptr) return;
+    instance->mutex.lock();
+        game_state->referee_command_changed = game_state->referee_command != instance->command;
+        game_state->referee_command = instance->command;
+        game_state->referee_command_previous = instance->command_previous;
+        game_state->remaining_time = instance->time_left;
+        game_state->goals[0] = instance->goals[0];
+        game_state->goals[1] = instance->goals[1];
+    instance->mutex.unlock();
+
 }
 
-void SSLGameControllerListener::run(){
+
+void SSLGameControllerListener::process_package(){
     QByteArray datagram;
-    done = false;
 
-    cout << "Binding: " << net_address << " " << port <<endl;
-    QUdpSocket socket;
-    if(!socket.bind(QHostAddress::AnyIPv4, port, QUdpSocket::ShareAddress)){
-        cerr << "ERROR: could not bind refbox port " << port << endl;
-        exit(-1);
-    }
-    if(!socket.joinMulticastGroup(QHostAddress(QString(  net_address.c_str()  ) ))){
-        cerr << "ERROR: ssl-refbox could not join multicast group "<<  net_address <<endl;
-        exit(-1);
-    }
+    while(socket->hasPendingDatagrams()){
 
-    // using QUdpSocket::readDatagram (API since Qt 4)
-    while(!done){
-
-        if(!socket.hasPendingDatagrams()) {
-            msleep(5);
-            continue;
-        }
-
-//        cout << "pending: " << socket.hasPendingDatagrams() << endl;
-        datagram.resize(int(socket.pendingDatagramSize()));
-        socket.readDatagram(datagram.data(), datagram.size());
+        datagram.resize(int(socket->pendingDatagramSize()));
+        socket->readDatagram(datagram.data(), datagram.size());
 
         Referee referee;
-//        datagram.data()
-        if(referee.ParseFromArray(datagram.data(),datagram.size())){
+        if(!referee.ParseFromArray(datagram.data(),datagram.size())) continue;
 
 
-            cout << "Refbox: ";
-            if(referee.has_command()) cout << "C: " << referee.command() << " ";
-            if(referee.has_stage_time_left()) cout << "T: " << referee.stage_time_left() << " ";
-            if(referee.has_blue() &&
-               referee.blue().has_score()) cout << "B: " << referee.blue().score() << " ";
-            if(referee.has_yellow() &&
-               referee.yellow().has_score()) cout << "Y: " << referee.yellow().score() << " ";
-            cout << endl;
+//        cout << "Refbox: ";
+//        if(referee.has_command()) cout << "C: " << referee.command() << " ";
+//        if(referee.has_stage_time_left()) cout << "T: " << referee.stage_time_left() << " ";
+//        if(referee.has_blue() &&
+//           referee.blue().has_score()) cout << "B: " << referee.blue().score() << " ";
+//        if(referee.has_yellow() &&
+//           referee.yellow().has_score()) cout << "Y: " << referee.yellow().score() << " ";
+//        cout << endl;
 
-            if(referee.has_command()){
-                GameState::setRefereeCommand(referee.command());
+        mutex.lock();
+            if(referee.has_command() && referee.command() != command ) {
+                command_previous = command;
+                command = referee.command();
             }
-            if(referee.has_stage_time_left())
-                GameState::setTimeLeft( referee.stage_time_left() );
+            if(referee.has_stage_time_left()) time_left = referee.stage_time_left();
             if(referee.has_blue() && referee.blue().has_score())
-                // seems to be in micro seconds
-                GameState::setBlueGoals(referee.blue().score());
+                goals[ROBOT_TEAM_BLUE] = referee.blue().score();
             if(referee.has_yellow() && referee.yellow().has_score())
-                GameState::setYellowGoals(referee.yellow().score());
-
-        }
-
-
+                goals[ROBOT_TEAM_YELLOW] = referee.yellow().score();
+        mutex.unlock();
 
 
     }
 
-    socket.close();
+}
+
+void run(){
+
 }
 
 

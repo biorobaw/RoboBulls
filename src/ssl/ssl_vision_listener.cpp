@@ -9,81 +9,70 @@
 #include "robot/robot.h"
 #include "model/game_state.h"
 #include "model/team.h"
+#include <QThread>
+#include <QCoreApplication>
 
 using namespace std;
 
 
+// Sets the minimum confidence to consider a ball reading as valid
+#define CONF_THRESHOLD_BALL 0.8
+#define ROBOT_CONFIDENCE_THRESHOLD 0.90
+
+SSLVisionListener* SSLVisionListener::instance = nullptr;
+
+
 SSLVisionListener::SSLVisionListener( YAML::Node* comm_node)
 {
-    std::cout << "--VISION" << endl
-              << "        VISION_ADDR : " << (*comm_node)["VISION_ADDR"] << endl
-              << "        VISION_PORT : " << (*comm_node)["VISION_PORT"] << endl
-              << "        FOUR_CAMERA : " << (*comm_node)["FOUR_CAMERA"] << endl;
 
-    vision_addr = (*comm_node)["VISION_ADDR"].as<string>();
+    qInfo() << "--VISION";
+    qInfo() << "        VISION_ADDR : " << (*comm_node)["VISION_ADDR"].Scalar().c_str();
+    qInfo() << "        VISION_PORT : " << (*comm_node)["VISION_PORT"].Scalar().c_str();
+    qInfo() << "        FOUR_CAMERA : " << (*comm_node)["FOUR_CAMERA"].Scalar().c_str();
+
+    vision_addr = (*comm_node)["VISION_ADDR"].as<string>().c_str();
     vision_port = (*comm_node)["VISION_PORT"].as<int>();
-    FOUR_CAMERA_MODE = (*comm_node)["FOUR_CAMERA"].as<bool>();
+    num_cameras = (*comm_node)["FOUR_CAMERA"].as<bool>() ? 4 : 2;
 
-    cout << "--Vision DONE" << endl;
     kfilter = new MyKalmanFilter();
+
+    restart_socket();
+
+    instance = this;
+    qInfo() << "--Vision DONE";
+
+
 }
+
+void SSLVisionListener::restart_socket(){
+    if(socket->isOpen()) socket->close();
+
+    if(!socket->bind(QHostAddress::AnyIPv4, vision_port, QUdpSocket::ShareAddress)){
+        qFatal("ERROR: could not bind refbox port %d", vision_port);
+    }
+
+    if(!socket->joinMulticastGroup(QHostAddress(vision_addr ))){
+        qFatal("ERROR: ssl-refbox could not join multicast group %s", vision_addr.toUtf8().constData());
+    }
+
+    connect(socket, &QUdpSocket::readyRead, this, &SSLVisionListener::process_package);
+
+
+}
+
 
 SSLVisionListener::~SSLVisionListener(){
     if(kfilter!=nullptr) {
         delete kfilter;
         kfilter = nullptr;
     }
+    instance == nullptr;
 }
 
-
-
-
-bool SSLVisionListener::isFourCameraMode()
-{
-    return FOUR_CAMERA_MODE;
-}
-
-/* This function processes a DetectionRobot from the vision system and fills
- * out the information in the GameModel
- */
-void SSLVisionListener::receiveRobot(const SSL_DetectionRobot& robot, int detectedTeamColor)
-{
-    if (robot.has_robot_id())
-    {
-        int id = robot.robot_id();
-
-
-        RobotTeam* team =  RobotTeam::getTeam(detectedTeamColor);
-        Robot* rob = team->getRobot(id);
-
-//         cout << "--Detected: color,id: " << detectedTeamColor << " " << id << std::endl;
-
-
-        if (rob == NULL) rob = team->addRobot(id);
-
-
-        // Assumption: rob contains the robot with id == detected_id
-//        std::cout << " positionReading("<<robot.x()<<","<< robot.y()<<");\n ";
-        Point positionReading(robot.x(), robot.y());//Point
-        float rotationReading = robot.orientation();
-        rob->setRobotPosition(positionReading);
-        rob->setOrientation(rotationReading);
-    }
-}
 
 // Used to check if a detection and its camera are on the same side of the field.
-template<typename Detection>
-static bool isGoodDetection
-    (const Detection& detection, const SSL_DetectionFrame& frame, float confidence, bool fourCameraMode)
+bool SSLVisionListener::isGoodDetection(float x, float y, int cam)
 {
-    bool isGoodConf = detection.confidence() > confidence;
-
-    // For correct side, we look at the X and Y readings and the camera that
-    // reported them. This is to help prevent duplicated readings on the edges
-    bool isGoodSide = false;
-    float x = detection.x();
-    float y = detection.y();
-  //std::cout << "detection.x()"<<detection.x() <<"detection.y()"<<detection.y()<<endl;//Donglin
     // Camera Config (in ssl-vision)
     //   y
     // 1 | 3
@@ -97,26 +86,19 @@ static bool isGoodDetection
     // ----- x
     // 2 | 1
 
-    float cam = frame.camera_id();
-
     //TODO: ssl-vision and grsim sort cameras differently, thus the following code is not useful
-    if(!fourCameraMode) {
-        isGoodSide =
-        (x >= 0 && cam == 1) ||
-        (x  < 0 && cam == 0);
-        //std::cout << "HAisGoodSide: "<<  isGoodSide<<endl;//Donglin
-    } else {
-        isGoodSide =
-        (cam == 0 && x >  -0.01 && y >  -0.01 ) ||
-        (cam == 1 && x >  -0.01 && y <=  0.01 ) ||
-        (cam == 2 && x <=  0.01 && y <=  0.01 ) ||
-        (cam == 3 && x <=  0.01 && y >  -0.01 );
-        //std::cout << "isGoodSide22222: "<<  isGoodSide<<endl;//Donglin
-    }
-    // isGoodSide = SIMULATED;    //Simulated overrides anything
+    if(num_cameras == 2) {
 
-    //return true;
-    return isGoodConf && isGoodSide;
+        return  (x >= 0 && cam == 1) ||
+                (x  < 0 && cam == 0);
+    } else {
+
+        return  (cam == 0 && x >  -0.01 && y >  -0.01 ) ||
+                (cam == 1 && x >  -0.01 && y <=  0.01 ) ||
+                (cam == 2 && x <=  0.01 && y <=  0.01 ) ||
+                (cam == 3 && x <=  0.01 && y >  -0.01 );
+    }
+
 }
 
 
@@ -132,16 +114,23 @@ void SSLVisionListener::recieveBall(const SSL_DetectionFrame& frame)
     if(frame.balls_size() <= 0) return;
 
     //Choose the best ball based on confidence
-    auto bestDetect = std::max_element(frame.balls().begin(), frame.balls().end(),
+    auto detection = std::max_element(frame.balls().begin(), frame.balls().end(),
                                        [](const SSL_DetectionBall& b1, const SSL_DetectionBall& b2)
                                          {return b1.confidence() < b2.confidence();});
 
     //If it is still a good detection...
-    if(isGoodDetection(*bestDetect, frame, CONF_THRESHOLD_BALL, FOUR_CAMERA_MODE))
+
+    if( detection->confidence() > CONF_THRESHOLD_BALL &&
+        isGoodDetection(detection->x(),detection->y(),frame.camera_id()))
     {
-        kfilter->newObservation(Point(bestDetect->x(),bestDetect->y()));
-        Ball::setPosition(kfilter->getPosition());
-        Ball::setVelocity(kfilter->getVelocity());
+        kfilter->newObservation(Point(detection->x(),detection->y()));
+        game_state_mutex.lock();
+            ball.position = kfilter->getPosition();
+            ball.velocity = kfilter->getVelocity();
+            ball.in_field = true;
+            ball.time_stamp = frame.t_capture();
+        game_state_mutex.unlock();
+
     }
 }
 
@@ -151,107 +140,98 @@ void SSLVisionListener::recieveBall(const SSL_DetectionFrame& frame)
  */
 void SSLVisionListener::recieveRobotTeam(const SSL_DetectionFrame& frame, int which_team)
 {
-
-//    std::cout << "t: " << which_team << std::endl;
-
-    auto* team    = RobotTeam::getTeam(which_team);
-
+//    static int f = frame.frame_number();
+    // get robot dection of team and detection counts
     auto* teamDetection = which_team == ROBOT_TEAM_YELLOW ? &frame.robots_yellow() : &frame.robots_blue();
-    int*  teamCounts    = rob_readings[which_team];
-
+    int*  num_detections    = robot_detection_counts[which_team];
+    float time = frame.t_capture();
     
-    for(const SSL_DetectionRobot& robot : *teamDetection)
+//    cout << "frame number, time: "<< frame.frame_number() - f << " , " << time << endl;
+
+    for(const SSL_DetectionRobot& detection : *teamDetection)
     {
+        if( detection.confidence() > ROBOT_CONFIDENCE_THRESHOLD &&
+            isGoodDetection(detection.x(),detection.y(), frame.camera_id()))
+        {
+            int robotID = detection.robot_id();
 
-//        std::cout<<"VisionComm: (t,id) "
-//                << which_team << " , "
-//                << robot.robot_id() << " , " << "c: " << frame.camera_id() << " , "
-//                << robot.x() << " , " << robot.y() << " , "
-//                << isGoodDetection(robot, frame, CONF_THRESHOLD_BOTS, FOUR_CAMERA_MODE) << " - "
-//                << std::endl;
 
-        if(isGoodDetection(robot, frame, CONF_THRESHOLD_BOTS, FOUR_CAMERA_MODE)) {
+            game_state_mutex.lock();
 
-            //std::cout<<"VisionComm::robot.robot_id() GOOD DETECTION GOOD DETECTION!!!!!!!!!!!\n"<<std::endl;
-            int robotID = robot.robot_id();
-            if(team->getRobot(robotID) || teamCounts[robotID] >= 80) {
-                receiveRobot(robot, which_team);
-            } else {
-               ++teamCounts[robotID];
-            }
+                auto& robot =  robots[which_team][robotID];
+
+                // check if robot is considered to be in the field, if it is, track its position
+                bool was_in_field = robot.in_field;
+                if(num_detections)
+                robot.in_field = was_in_field || ++num_detections[robotID] >= 80;
+                if(robot.in_field){
+                    auto newPosition = Point(detection.x(), detection.y());
+
+                    // if robot was already in field, calculate time derivatives
+                    if(was_in_field){
+                        float delta_t = time - robot.time_stamp;
+                        if(delta_t > 0){
+                            robot.velocity = (newPosition - robot.position)/delta_t;
+                            robot.angular_speed = (detection.orientation()-robot.orientation)/delta_t;
+                        }
+                    }
+
+                    robot.position = newPosition;
+                    robot.orientation = detection.orientation();
+                    robot.time_stamp = time;
+                }
+            game_state_mutex.unlock();
         }
     }
+
 }
 
-void SSLVisionListener::stop(){
-    done = true;
-}
 
-void SSLVisionListener::run(){
-
+void SSLVisionListener::process_package(){
+//    if(socket == nullptr || socket->isOpen()) { // should be !socket->isOpen(), but doesnt work if negating
+//        return;
+//    }
     QByteArray datagram;
-    done = false;
 
-    QUdpSocket socket;
-    socket.bind(QHostAddress::AnyIPv4, vision_port, QUdpSocket::ShareAddress);
-    socket.joinMulticastGroup(QHostAddress(QString(  vision_addr.c_str()  ) ));
+    while(socket->hasPendingDatagrams()){
 
+        datagram.resize(int(socket->pendingDatagramSize()));
+        socket->readDatagram(datagram.data(), datagram.size());
 
-    while(!done){
-        if(!socket.hasPendingDatagrams()) {
-            msleep(5);
-            continue;
-        }
-
-        datagram.resize(int(socket.pendingDatagramSize()));
-        socket.readDatagram(datagram.data(), datagram.size());
-
+        // read datagram and process it if it has a detection
         SSL_WrapperPacket packet;
-        if(packet.ParseFromArray(datagram.data(),datagram.size())){
-
-            // Update arrays used for tracking frames from each quadrant/half
-            if(packet.has_detection())
-            {
-                const SSL_DetectionFrame& frame = packet.detection();
-                frames[frame.camera_id()] = frame;
-                frames_state[frame.camera_id()] = true;
-            }
+        if( !packet.ParseFromArray(datagram.data(),datagram.size()) ||
+            !packet.has_detection()) continue;
 
 
-            int num_cams = FOUR_CAMERA_MODE? 4 : 2;
+        auto& detection = packet.detection();
+        recieveBall(detection);
+        recieveRobotTeam(detection, ROBOT_TEAM_BLUE);
+        recieveRobotTeam(detection, ROBOT_TEAM_YELLOW);
 
-            bool all_frames_recv = true;
-            for(int i = 0; i < num_cams; ++i)
-                all_frames_recv = all_frames_recv && frames_state[i];
-
-            if(all_frames_recv)
-            {
-                for(int i = 0; i < num_cams; ++i)
-                {
-                    recieveBall(frames[i]);
-                    recieveRobotTeam(frames[i], ROBOT_TEAM_BLUE);
-                    recieveRobotTeam(frames[i], ROBOT_TEAM_YELLOW);
-                }
-
-                /* After we have had a chance to initially recieve all robots,
-                 * the RoboBulls game is run with the new information here. */
-                if (++totalframes > 200){
-                    GameState::notifyObservers();
-                }
-
-                /* After 100 frames the "seen counts" of each team are set to 0. This prevents
-                 * ghost robots from appearing over time */
-                if(++resetFrames > 100) {
-                    resetFrames = 0;
-                    for( int i=0; i <2 ; i++)
-                        for(int& reading : rob_readings[i]) reading = 0;
-                }
-            }
-
+        if(++num_frame_detected > 100*num_cameras) {
+            num_frame_detected = 0;
+            for( int i=0; i <2 ; i++)
+                for(int& reading : robot_detection_counts[i])
+                    reading = 0;
         };
-
     }
-
-    socket.close();
-
 }
+
+
+void SSLVisionListener::copyState(GameState* state){
+    if(instance==nullptr) return;
+    instance->game_state_mutex.lock();
+        // copy ball state
+        *(MovingObject*)state->ball = instance->ball;
+
+        //copy robot states
+        for(int i=0; i<2; i++)
+            for(int j=0; j<MAX_ROBOTS_PER_TEAM; j++)
+                *(MovingObject*)state->robots[i][j] = instance->robots[i][j];
+
+    instance->game_state_mutex.unlock();
+}
+
+
+

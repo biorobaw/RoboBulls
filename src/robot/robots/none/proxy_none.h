@@ -1,17 +1,18 @@
 #ifndef ROBOTNONE_H
 #define ROBOTNONE_H
 
-#include "../../robot.h"
+#include "../../robot_proxy.h"
 #include "../../navigation/pilots/pilot_dummy.h"
 
-class RobotNone : public Robot
+class ProxyNone : public RobotProxy
 {
 public:
-    RobotNone(int _id, int _team, RobotRole role);
+    ProxyNone();
+    void sendVels(const QSet<Robot*>&) override;
+
     bool hasKicker() override;
-    Pilot* getPilot() override;
-private:
-    PilotDummy dummyPilot = PilotDummy(this);
+    bool isHolonomic() override;
+    Pilot* createPilot(Robot* robot) override;
 
 };
 

@@ -4,6 +4,7 @@
 #include "model/team.h"
 #include "robot/robot.h"
 #include "robot/navigation/robot_pilot.h"
+#include "model/game_state.h"
 
 AttackSupport::AttackSupport(Robot* robot)  : Behavior(robot)
 {
@@ -19,7 +20,7 @@ AttackSupport::AttackSupport(Robot* robot)  : Behavior(robot)
 void AttackSupport::perform()
 {
     Point rp = robot->getPosition();
-    Point bp = Ball::getPosition();
+    Point bp = robot->getTeam()->getGameState()->getBall()->getPosition();
 
     // We signal that we are done supporting if:
     // - We are closest member on our team to the ball
@@ -36,8 +37,8 @@ void AttackSupport::perform()
 //        std::cout << "Intercepting" << std::endl;
 
         // Evaluate transition to positioning
-        Point b_vel = Ball::getVelocity();
-        Robot* ball_bot = Ball::getRobotWithBall();
+        Point b_vel = robot->getTeam()->getGameState()->getBall()->getVelocity();
+        Robot* ball_bot = robot->getTeam()->getGameState()->getRobotWithBall();
 
         bool ball_bot_not_facing_us =
                 ball_bot != nullptr && ball_bot->getTeam()==robot->getTeam()
@@ -80,7 +81,7 @@ void AttackSupport::perform()
             cmd.distance_tolerance = 1;
             cmd.angle_tolerance = 0.001;
             cmd.velocity_multiplier = 1.5;
-            robot->getPilot()->goToPose(cmd);
+            robot->getPilot()->setNewCommand(cmd);
         }
         else
             state = position;
@@ -94,7 +95,7 @@ void AttackSupport::perform()
 
         // Evaluate transition to intercepting by
         // Checking if a teammate with the ball is facing this robot
-        Robot* ball_bot = Ball::getRobotWithBall();
+        Robot* ball_bot = robot->getTeam()->getGameState()->getRobotWithBall();
 
         if(ball_bot != nullptr &&  ball_bot->getTeam()==robot->getTeam()
         && Comparisons::isFacingPoint(ball_bot, rp, 10*M_PI/180)
@@ -118,7 +119,7 @@ void AttackSupport::perform()
         cmd.distance_tolerance = DIST_TOLERANCE;
         cmd.angle_tolerance = ROT_TOLERANCE;
         cmd.velocity_multiplier = 1.0;
-        robot->getPilot()->goToPose(cmd);
+        robot->getPilot()->setNewCommand(cmd);
 
     }
     }
@@ -295,11 +296,11 @@ void AttackSupport::genDistanceFromTeammates()
 void AttackSupport::genBallShadows()
 {
 
-    Point bp = Ball::getPosition();
+    Point bp = robot->getTeam()->getGameState()->getBall()->getPosition();
 
     float R = ROBOT_RADIUS + 50;
 
-    for(Robot* opp: robot->getOpponentTeam()->getRobots())
+    for(Robot* opp: robot->getOpponentRobots())
     {
         float rob_x = opp->getPosition().x;
         float rob_y = opp->getPosition().y;
@@ -405,7 +406,7 @@ std::vector<std::vector<Point>> AttackSupport::genClusters()
 
     std::vector<std::vector<Point>> clusters;
 
-    for(Robot* opp: robot->getOpponentTeam()->getRobots())
+    for(Robot* opp: robot->getOpponentRobots())
     {
         // Check if each opponent belongs to an existing cluster
         bool assigned = false;
@@ -453,7 +454,7 @@ void AttackSupport::genGoalShotAvoidance()
     float g2x = gp.x;
     float g2y = gp.y - Field::GOAL_WIDTH/2 - ROBOT_RADIUS - 500;
 
-    Point bp = Ball::getPosition();
+    Point bp = robot->getTeam()->getGameState()->getBall()->getPosition();
 
     float min_x = bp.x;
     float max_x = g1x;

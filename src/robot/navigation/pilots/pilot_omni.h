@@ -11,12 +11,6 @@
 #include "../robot_pilot.h"
 
 
-
-/*! @brief Wheel velocity calculator for four-wheel (Ardino) robots
- * @author Muhaimen Shamsi
- * @details This class exists to provide wheel velocities for a the main
- * RoboBulls arsenal of four-wheel robots, or the standard Robocup SSL robot.
-*/
 class PilotOmni : public Pilot
 {
 public:
@@ -26,6 +20,7 @@ public:
      * @param goalPoint The target point
      * @see calculateVels */
     void driveTo (Point goalPoint, float theta_goal, Point nextGoalPoint) override;
+
 
 private:
     

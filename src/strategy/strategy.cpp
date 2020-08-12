@@ -21,3 +21,10 @@ int Strategy::getStatus(){
 
 
 
+std::string Strategy::getName(){
+    return "Default dummy";
+}
+
+void Strategy::assignBehaviors(){
+
+}

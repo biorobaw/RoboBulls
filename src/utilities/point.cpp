@@ -1,6 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include "point.h"
+#include <math.h>
 
 bool Point::operator==(const Point& rhs)
 {
@@ -69,6 +70,14 @@ Point Point::operator/(float rhs) const
 {
     Point ret(x / rhs, y / rhs);
     return ret;
+}
+
+float Point::norm2(){
+    return x*x+y*y;
+}
+
+float Point::norm(){
+    return sqrt(x*x+y*y);
 }
 
 /*! @brief Returns a string representation of the Point

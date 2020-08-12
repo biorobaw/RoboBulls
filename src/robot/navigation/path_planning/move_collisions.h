@@ -4,7 +4,6 @@
 
 #include "utilities/measurements.h"
 #include "utilities/comparisons.h"
-#include "utilities/velocitycalculator.h"
 
 class Robot;
 class Point;
