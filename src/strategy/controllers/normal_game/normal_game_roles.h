@@ -1,0 +1,4 @@
+#ifndef NORMAL_GAME_ROLES_H
+#define NORMAL_GAME_ROLES_H
+
+#endif // NORMAL_GAME_ROLES_H
