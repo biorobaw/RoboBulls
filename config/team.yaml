@@ -1,52 +1,53 @@
 ---
 TEAM_BLUE :
-    SIDE: 0 # 0  negative side, 1 positive side
+    SIDE: 1 # 0  negative side, 1 positive side
     # Define the roles of each robot
-    ROLES:
-        GOALIE : 0
-        ATTACK1 : 3
-        ATTACK2 : 4
-        ATTACK3 : 5
-        DEFEND1 : 1
-        DEFEND2 : 2
-        DEFEND3 : 6
 
 
-    # ROBOT_TYPE: yisibot
-    # ROB_COMM:
-      # YISI_USB_PORT : /dev/ttyUSB1 # yisi usb port
-      # YISI_FREQUENCY: 0
+
+    # ROBOT_PROXY
+      # TYPE: yisibot           # alternatives: grsim yisibot rpi_2019 none
+      # USB_PORT : /dev/ttyUSB1 # yisi usb port
+      # FREQUENCY: 0            # radio frequency channel at which robots are communicating 
 
     # if robot type == grsim, then must specify:
-    ROBOT_TYPE: grsim # alternatives: grsim yisibot rpi_2019 none
-    ROB_COMM:
-      GRSIM_ADDR : 127.0.0.1 # ip of grsim
-      GRSIM_PORT : 20011 # port of grsim
+    ROBOT_PROXY:
+      TYPE : grsim # alternatives: grsim yisibot rpi_2019 none
+      ADDR : 127.0.0.1 # ip of grsim
+      PORT : 20011     # port of grsim
       
     STRATEGY_CONTROLLER:
-      ID: STRATEGY_TESTER # options: NORMAL_GAME or STRATEGY_TESTER or JOYSTICK
-      # JOY_TO_ROBOT_MAP :
-      #  - ROBOT : 2
+      ID: STRATEGY_TESTER # options: NORMAL_GAME or STRATEGY_TESTER or JOYSTICK or none
+      # define your own 'key : value' pairs to load on your test strategies
+
+
+      # ID : JOY_TO_ROBOT_MAP : # options: NORMAL_GAME or STRATEGY_TESTER or JOYSTICK
+      #  - ROBOT : 2d
       #    JOY   : 0
       #  - ROBOT : 1
       #    JOY   : 1
 
+      # ID: NORMAL_GAME # options: NORMAL_GAME or STRATEGY_TESTER or JOYSTICK
+      # ROLES:
+      #   GOALIE : 0
+      #   ATTACK1 : 3
+      #   ATTACK2 : 4
+      #   ATTACK3 : 5
+      #   DEFEND1 : 1
+      #   DEFEND2 : 2
+      #   DEFEND3 : 6
+
     # support for rpi_2019 is work in progress
     
 TEAM_YELLOW :
-    SIDE: 1
-    ROBOT_TYPE: none # none defines we do not control this team
+    SIDE: 0
+
+    ROBOT_PROXY: 
+      TYPE : none 
+
+    STRATEGY_CONTROLLER:
+      ID: none
     
-    # STRATEGY_CONTROLLER:
-    #   ID: STRATEGY_TESTER
-    
-    # ROLES:  #wo don't need to define roles if we do not control the team
-        # GOALIE : 0
-        # ATTACK1 : 3
-        # ATTACK2 : 4
-        # ATTACK3 : 5
-        # DEFEND1 : 1
-        # DEFEND2 : 2
-        # DEFEND3 : 6
+
         
     

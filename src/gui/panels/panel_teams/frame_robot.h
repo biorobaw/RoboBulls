@@ -16,7 +16,7 @@ public:
     ~FrameRobot();
 
     void update_frame(); // updates the frames information
-    void set_robot(int robot_id, int team_id); // sets the robot of the frame
+    void set_robot(int team_id, int robot_id); // sets the robot of the frame
 
 
 private slots:

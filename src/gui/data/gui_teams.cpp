@@ -7,7 +7,7 @@ QString GuiTeams::controller[2] = {""};
 QString GuiTeams::strategy[2]   = {""};
 
 namespace  {
-    Robot team_proxy[2] = {Robot(0,0), Robot(0,1)};
+    Robot team_proxy[2] = {Robot(0,0), Robot(1,0)};
 }
 
 QString GuiTeams::get_robot_type(int team_id){
@@ -30,7 +30,7 @@ void GuiTeams::updateTeams(){
     for(int i=0;i<2;i++){
         auto team = team_proxy[i].getTeam();
         robot_type[i] = team->getRobotType();
-        controller[i] = team->getTeamControllerName().c_str();
-        strategy[i]   = team->getStrategyName().c_str();
+        controller[i] = team->getTeamControllerName();
+        strategy[i]   = team->getStrategyName();
     }
 }

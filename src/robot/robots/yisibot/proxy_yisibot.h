@@ -11,6 +11,7 @@ typedef char Data8;
 
 class ProxyYisi : public RobotProxy
 {
+    Q_OBJECT
 public:
     ProxyYisi(YAML::Node* t_node);
     void sendVels(const QSet<Robot*>&) override;
@@ -19,8 +20,12 @@ public:
     bool isHolonomic() override;
     Pilot* createPilot(Robot* robot) override;
 
+    QString getName() override;
+
 private:
     QSerialPort	serial;
+
+protected:
     void close() override;
 };
 

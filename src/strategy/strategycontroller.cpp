@@ -9,31 +9,48 @@
 #include "controllers/normal_game/scontroller_normal_game.h"
 #include "controllers/strategy_tester/scontroller_strategy_tester.h"
 #include "controllers/joystick/scontroller_joystick.h"
-#include "yaml-cpp/yaml.h"
+#include "controllers/none/scontroller_none.h"
+#include "utilities/my_yaml.h"
 
-#include <string>
-#include <iostream>
-using std::cerr, std::endl, std::string;
+#include <QDebug>
+
 
 StrategyController::StrategyController( RobotTeam* _team, YAML::Node* n)
-  : team(_team),
-    activeStrategy(new Strategy(_team))
+  : QObject(_team),
+    team(_team),
+    activeStrategy(new Strategy(_team)) // set dummy strategy be default
 {
     (void)n;
 }
-StrategyController::~StrategyController(){}
 
-void StrategyController::run()
+
+
+
+StrategyController::~StrategyController(){
+
+}
+
+void StrategyController::setPause(bool pause){
+    is_paused = pause;
+}
+
+void StrategyController::resume(){
+    is_paused = false;
+}
+
+void StrategyController::runControlCycle(GameState* game_state)
 {
-    // update strategy if necessary
-    const auto& game_state = team->getGameState();
+    if(is_paused) return; // if the controller is paused, dont do anything
 
+    // update controller state
     int new_state = game_state->hasRefereeCommandChanged() ?
                             getControllerState(game_state->getRefereeCommand()) :
                             getNextControllerState(controller_state, activeStrategy->getStatus());
 
+    // clear flag
     game_state->clearRefereeCommandChanged();
 
+    // if state changed, update strategy
     if(new_state!=controller_state){
         controller_state = new_state;
         delete activeStrategy;
@@ -47,29 +64,18 @@ void StrategyController::run()
     activeStrategy->update();
 
     // perform robot behaviors
-    for (Robot *rob :  team->getRobots())
-        if (!GuiInterface::getGuiInterface()->controlRobotIfOverriden(rob)) {
-//            std::cout << "R" << rob->getID() << " not overriden, has beh? " << rob->hasBehavior() << std::endl;
-            rob->performBehavior();
-
-         }
-
-    // send velocities to the robots
-    team->sendVels();
+//    qInfo() << "updated";
 
 }
 
 
-void StrategyController::signalNewCommand(){
-    received_new_command = true;
-}
+
 
 
 
 StrategyController* StrategyController::loadController(RobotTeam* team, YAML::Node* c_node){
-
-    std::cout << "        STRATEGY_CONTROLLER  : " <<std::endl;
-    std::cout << "            ID : " <<  (*c_node)["ID"] << std::endl;
+    qInfo() << "        STRATEGY_CONTROLLER";
+    qInfo() << "            ID            -" <<  (*c_node)["ID"];
     auto id = (*c_node)["ID"].as<string>();
 
     if(id == "NORMAL_GAME"){
@@ -78,15 +84,18 @@ StrategyController* StrategyController::loadController(RobotTeam* team, YAML::No
         return new SControllerStrategyTester(team,c_node);
     } else if ( id == "JOYSTICK" ) {
         return new SControllerJoystick(team,c_node);
-    }else {
-        cerr << "ERROR : controller '" << id << "' not recognized" <<endl
-             << "\tHalting execution...";
+    } else if(id == "none") {
+        return new SControllerNone(team,c_node);
+    } else {
+        qCritical().nospace()
+            << "ERROR : controller '" << id.c_str() << "' not recognized" <<endl
+            << "\tHalting execution...";
         exit(-1);
     }
 
 
 }
 
-std::string StrategyController::getStrategyName(){
-    return activeStrategy == nullptr ? "null" : activeStrategy->getName();
+QString StrategyController::getStrategyName(){
+    return activeStrategy == nullptr ? "null" : activeStrategy->getName().c_str();
 }

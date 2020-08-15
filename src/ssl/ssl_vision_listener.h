@@ -36,25 +36,27 @@ class SSLVisionListener: public QObject
 {
     Q_OBJECT
 public:
-    SSLVisionListener( YAML::Node* comm_node);
-    ~SSLVisionListener();
 
+    SSLVisionListener( YAML::Node* comm_node);
     static void copyState(GameState* state);
 
-    QUdpSocket* socket = new QUdpSocket(this);
-    QMutex game_state_mutex;
+    ~SSLVisionListener();
 
 
+public slots:
+    void restart_socket();
 private slots:
     void process_package();
-    void restart_socket();
 
 private:
 
     static SSLVisionListener* instance;
+    static QThread* thread;
+    QUdpSocket* socket = new QUdpSocket(this);
+    QMutex mutex;
 
-    QString vision_addr;
-    int     vision_port;
+    QString net_addr;
+    int     net_port;
 
     MovingObject robots[2][MAX_ROBOTS_PER_TEAM];
     MovingObject ball;

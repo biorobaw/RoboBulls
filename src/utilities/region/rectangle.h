@@ -35,6 +35,14 @@ public:
     /*! Returns the number of robots in the set that are within the region */
     int numOfRobots(std::set<Robot*>& robots);
 
+    /*! cohen sutherland algorithm for clipping a line with a rectangle
+        source: https://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm
+    */
+    std::vector<Point> intersectSegment(Point PA, Point PB);
+
+    /* algorithm that returns the intersection of the line with the rectangle */
+    std::vector<Point> intersectLine(Point PA, Point PB);
+
 
     /*! Returns the calculated center of the Region */
     Point centre();
@@ -43,6 +51,7 @@ public:
     std::string toString();
 
     float min_x, max_x, min_y, max_y;
+
 };
 
 #endif // RECTANGLE_H

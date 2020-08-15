@@ -17,19 +17,6 @@ GuiInterface* GuiInterface::getGuiInterface() {
     return gi;
 }
 
-bool GuiInterface::controlRobotIfOverriden(Robot* robot) {
-    auto gui_robot = GuiRobot::get(robot->getTeamId(), robot->getID());
-    bool overriden = gui_robot->isOverriden();
-    if(overriden){
-
-        robot->setTargetVelocity(gui_robot->getGuiTargetVelocity(),
-                                 gui_robot->getGuiTargetAngularSpeed());
-        robot->setKickSpeed(gui_robot->getGuiKickSpeed());
-        robot->setDribble(gui_robot->getGuiDribble());
-    }
-
-    return overriden;
-}
 
 
 
@@ -37,7 +24,7 @@ void GuiInterface::show() {
     dash->show();
 }
 
-void GuiInterface::drawLine(const Point& A, const Point& B, const double seconds) {
+void GuiInterface::drawLine(Point A, Point B, const double seconds) {
     dash->panel_field->setupLine(A, B, seconds);
 }
 
@@ -55,7 +42,7 @@ void GuiInterface::guiPrintTerminal(std::string output) {
     // dash->guiOutput.insert(0, QString::fromStdString(output));
 }
 
-void GuiInterface::drawPoint(const Point& p)
+void GuiInterface::drawPoint(Point p)
 {
     dash->panel_field->setupPoint(p);
 }

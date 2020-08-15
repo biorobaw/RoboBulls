@@ -218,11 +218,11 @@ void AttackMain::calcDynamicProb()
     auto gp = Field::getGoalPosition(robot->getTeam()->getOpponentSide());
     // Top end of goal post
     float A1 = gp.x;
-    float B1 = gp.y + Field::GOAL_WIDTH/2;
+    float B1 = gp.y + Field::GOAL_LENGTH/2;
 
     // Bottom end of goal post
     float A2 = gp.x;
-    float B2 = gp.y - Field::GOAL_WIDTH/2;
+    float B2 = gp.y - Field::GOAL_LENGTH/2;
 
     float R = ROBOT_RADIUS;
 
@@ -330,7 +330,7 @@ std::pair<bool, Point> AttackMain::calcBestGoalPoint()
     target_clusters.push_back(empty_cluster);
 
     // Sample a number of points along opp goal and generate clusters of clear shot points
-    for(int goal_y = -Field::GOAL_WIDTH/2+Field::BALL_RADIUS+10; goal_y <= Field::GOAL_WIDTH/2-Field::BALL_RADIUS-10; goal_y += 10)
+    for(int goal_y = -Field::GOAL_LENGTH/2+Field::BALL_RADIUS+10; goal_y <= Field::GOAL_LENGTH/2-Field::BALL_RADIUS-10; goal_y += 10)
     {
         auto gp = Field::getGoalPosition(robot->getTeam()->getOpponentSide());
         Point target = gp + Point(0, goal_y);

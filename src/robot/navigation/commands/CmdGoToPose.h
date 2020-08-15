@@ -26,7 +26,7 @@ public:
     //! target angle is not required. Optionally specify wheter to avoid obstacles and/or the ball
     CmdGoToPose(Point targetPose,bool avoidObstacles = true, bool avoidBall = false);
 
-    CmdGoToPose(const CmdGoToPose& cmd);
+    CmdGoToPose(CmdGoToPose& cmd);
 
     void setTarget(Point targetPose,float targetAngle = UNUSED_ANGLE_VALUE);
     bool hasTargetAngle();

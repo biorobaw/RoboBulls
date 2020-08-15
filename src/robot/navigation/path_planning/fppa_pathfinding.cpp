@@ -74,7 +74,7 @@ namespace impl {
         if(use_def_areas) {
             std::vector<Point> intercepts;
             DefenceArea da0(OPPONENT_DEFFENCE_AREA);
-            intercepts = da0.lineSegmentIntercepts(beginPos, endPos);
+            intercepts = da0.intersectSegment(beginPos, endPos);
 
             if(!intercepts.empty()) {
                 obstacle_found = true;
@@ -82,7 +82,7 @@ namespace impl {
             }
 
             DefenceArea da1(TEAM_DEFFENCE_AREA);
-            intercepts = da1.lineSegmentIntercepts(beginPos, endPos);
+            intercepts = da1.intersectSegment(beginPos, endPos);
 
             if(!intercepts.empty()) {
                 obstacle_found = true;

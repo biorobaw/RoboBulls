@@ -1,17 +1,18 @@
 #ifndef ROBOT_H
 #define ROBOT_H
+
 #include <typeinfo>
 #include <type_traits>
-#include "utilities/point.h"
-#include "strategy/behavior.h"
-#include "strategy/behaviors/genericskillbehavior.h"
-#include "iostream"
-#include <set>
+
 #include "model/constants.h"
 #include "model/moving_object.h"
+#include "robot/robot_low_level_controls.h"
 #include "navigation/commands/CmdGoToPose.h"
+#include "strategy/behaviors/genericskillbehavior.h"
+#include "strategy/behavior.h"
 
 #include <QSet>
+#include <QObject>
 
 class RobotTeam;
 class RobotProxy;
@@ -28,13 +29,14 @@ class Pilot;
  * These are usually returned by a GameModel function. They should not be created
  * directly under normal circumstances
  */
-class Robot : public MovingObject
+class Robot : public RobotLowLevelControls, public MovingObject
 {
+    Q_OBJECT
 public:
 
     // ====== Constructor and basic info ==========================
 
-    Robot(int _id, int _team);
+    Robot(int _team_id, int _robot_id);
     ~Robot();
 
     int  getID();
@@ -58,17 +60,18 @@ public:
 
     // =============== High Level Control =========================
 
-    Pilot*    getPilot();
     bool      hasBehavior();
     Behavior* getBehavior();
     void      performBehavior();
     void      clearBehavior();
+    bool      ignoreController();
 
 
     void goToPose(CmdGoToPose& newCommand);
     bool completedGoToPoseCmd();
 
     bool      hasBall();
+    void      setHasBall(bool new_value);
 
     template<typename BehaviorType, typename... Args>
     bool assignBeh(Args&&... args);
@@ -76,33 +79,19 @@ public:
     template<typename SkillType, typename... Args>
     bool assignSkill(Args&&... args);
 
+    // ============= LOW LEVEL CONTROL ==========================
+    RobotLowLevelControls* getOverridenController();
+    RobotLowLevelControls* getActiveController();
 
-    // ============= Low Level Control ============================
-
-    float getTargetAngularSpeed();
-    Point getTargetVelocity();
-    float getTargetSpeed();
-    int   getKickSpeed();
-    bool  getDribble();
-    bool  getChip();
-
-    /*! @brief Set speed ath which the ball should be kicked in mm/s
-     * @details *Do not use;* use Skil::Kick instead
-     */
-    void  setTargetVelocity(Point velocity, float angular_speed);
-    void  setKickSpeed(int speed = 5000);
-    void  setDribble(bool); // TODO: dribble speed can be set in the simulator
-    void  setChip(bool);
-
-
-
+public slots:
+    void  useOverridenControls(bool);
 
 protected:
 
     // =============== PRIVATE FUNCTION ==========================
     void setID(int);
     void setTeam(int);
-    void setCurrentBeh(Behavior *);
+    void setBehavior(Behavior *);
     
 
     // =========== BASIC PRIVATE DATA ============================
@@ -114,12 +103,10 @@ protected:
     Behavior * behavior;
     bool has_ball = false;
 
-    // ====== LOW LEVEL CONTROL ==================================
-    int  kick_speed = 0;
-    bool dribble = false;
-    bool chip = false;
-    Point target_velocity = Point(0,0);
-    float target_angular_speed = 0;
+    // ====== LOW LEVEL CONTROLS ================================
+    RobotLowLevelControls* overriden_controls = new RobotLowLevelControls(this);
+    bool use_overriden_controls = true;
+
 
     // ====== IMPLEMENTATION DEPENDENT VARIABLES =================
     bool has_kicker = false;
@@ -153,7 +140,7 @@ bool Robot::assignBeh(Args&&... args)
     if( !hasBehavior() || typeid(*getBehavior()) != typeid(BehaviorType)) {
 //        std::cout << "Clearing Behavior on robot " << id << std::endl;
         clearBehavior();
-        setCurrentBeh(new BehaviorType(this, args...));
+        setBehavior(new BehaviorType(this, args...));
         return true;
     }
     return false;

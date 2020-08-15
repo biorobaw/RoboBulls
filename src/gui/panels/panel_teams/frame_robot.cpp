@@ -19,7 +19,7 @@ FrameRobot::~FrameRobot()
 
 
 
-void FrameRobot::set_robot(int robot_id, int team_id){
+void FrameRobot::set_robot(int team_id, int robot_id){
 
     this->robot_id = robot_id;
     this->team_id = team_id;

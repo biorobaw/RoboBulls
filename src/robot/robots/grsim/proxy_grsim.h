@@ -11,13 +11,14 @@
 #include <math.h>
 
 
-
+class RobotLowLevelControls;
 
 /*! @brief RobComm to send to the grSim simulator
  * @details uses ProtoBuf and QT to send to a computer running a grSim simulator */
 
 class ProxyGrsim : public RobotProxy
 {
+    Q_OBJECT
 public:
     //! @brief Constructor sets the IP and port to send to **see .cpp**
     ProxyGrsim(YAML::Node* t_node);
@@ -28,9 +29,11 @@ public:
     bool isHolonomic() override;
     Pilot* createPilot(Robot* robot) override;
 
+    QString getName() override;
+
 private:
     OmniDrive drive;
-    QUdpSocket udpsocket;
+    QUdpSocket* udpsocket = new QUdpSocket(this);
     QHostAddress _addr;
     quint16 _port;
 
@@ -40,9 +43,11 @@ private:
     //! @brief Sends all replacement packets to the simulator
     void sendReplacementPackets();
 
-    void close() override;
 
     void getWheelSpeeds(Point velocity, float angular_speed, double wheelSpeeds[4]);
+
+protected:
+    void close() override;
 };
 
 #endif // SIMROBCOMM_H

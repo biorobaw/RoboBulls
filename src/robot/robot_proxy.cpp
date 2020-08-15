@@ -1,8 +1,11 @@
 #include "robots/grsim/proxy_grsim.h"
 #include "robots/yisibot/proxy_yisibot.h"
+#include "robots/none/proxy_none.h"
 #include "robot_proxy.h"
 #include "robot/robot.h"
 #include "robot/navigation/robot_pilot.h"
+#include <QDebug>
+#include "utilities/my_yaml.h"
 
 RobotProxy::~RobotProxy(){
 }
@@ -19,24 +22,28 @@ void RobotProxy::close_communication(const QSet<Robot*>& robots){
 }
 
 
-RobotProxy* RobotProxy::load(QString robot_type,YAML::Node* comm_node){
+RobotProxy* RobotProxy::load(YAML::Node* proxy_node){
     // set robot communication:
 
+    qInfo() << "        ROBOT_PROXY";
+    qInfo() << "            TYPE          -" << (*proxy_node)["TYPE"];
+
+    auto robot_type = (*proxy_node)["TYPE"].as<string>();
+
     if( robot_type == "grsim"){
-        return new ProxyGrsim(comm_node);
+        return new ProxyGrsim(proxy_node);
 
     } else if (robot_type == "yisibot"){
-        return new ProxyYisi(comm_node);
+        return new ProxyYisi(proxy_node);
 
     } else if (robot_type == "rpi_2019"){
-        std::cout << "ERROR: rpi_2019 is not yet supported" << std::endl;
+        qCritical() << "ERROR: rpi_2019 is not yet supported" ;
         exit (-1);
 
     } else if (robot_type == "none"){
-        return nullptr;
-
+        return new ProxyNone();
     } else {
-        std::cout << "ERROR: unrecognized robot type" << std::endl;
+        qCritical() << "ERROR: unrecognized robot type";
         exit (-1);
     }
 }

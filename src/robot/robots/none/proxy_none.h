@@ -6,6 +6,7 @@
 
 class ProxyNone : public RobotProxy
 {
+    Q_OBJECT
 public:
     ProxyNone();
     void sendVels(const QSet<Robot*>&) override;
@@ -13,6 +14,11 @@ public:
     bool hasKicker() override;
     bool isHolonomic() override;
     Pilot* createPilot(Robot* robot) override;
+
+    QString getName() override;
+
+protected:
+    void close() override;
 
 };
 

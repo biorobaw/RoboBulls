@@ -18,15 +18,13 @@ using std::cerr, std::cout, std::endl;
 // ============================================================
 
 
-Robot::Robot(int id, int team) :
+Robot::Robot(int team, int id) :
+    RobotLowLevelControls(nullptr),
     id(id),
     team_id(team),
     behavior(nullptr),
-    kick_speed(0),
-    dribble(false),
     pilot(new PilotDummy(this))
 {
-    assignBeh<RefStop>();
 
 }
 
@@ -45,7 +43,7 @@ void Robot::setRobotProxy(RobotProxy* proxy){
 int Robot::getID() { return id; }
 
 bool  Robot::hasKicker(){
-    return false;
+    return has_kicker;
 };
 
 
@@ -95,56 +93,46 @@ bool Robot::isGoalie(){
 // ============= Low Level Control ============================
 // ============================================================
 
-float Robot::getTargetAngularSpeed(){
-    return  target_angular_speed;
-}
-Point Robot::getTargetVelocity(){
-    return target_velocity;
-}
-float Robot::getTargetSpeed(){
-    return target_velocity.norm();
-}
-int   Robot::getKickSpeed() {
-    return kick_speed;
-}
-bool  Robot::getDribble(){
-    return dribble;
-}
-bool  Robot::getChip(){
-    return chip;
-}
 
-/*! @brief Set power in m/s for the robot to kick
- * @details *Do not use;* use Skil::Kick instead
- * Sets the initial kick velocity for the robot in m/s
- * @see setDrible */
-void Robot::setTargetVelocity(Point velocity, float angular_speed){
-    target_velocity = velocity;
-    target_angular_speed = angular_speed;
-}
-void Robot::setKickSpeed(int speed){
-    kick_speed = speed;
-}
-void Robot::setDribble(bool on){
-    dribble = on; }
-void Robot::setChip(bool on){
-    chip = on;
+
+
+
+void Robot::useOverridenControls(bool ignore){
+    use_overriden_controls = ignore;
 }
 
 // ============================================================
 // ============= HIGH Level Control ===========================
 // ============================================================
 
-Pilot* Robot::getPilot(){ return pilot;}
 
-Behavior* Robot::getBehavior(){ return behavior; }
-bool Robot::hasBehavior() { return behavior != nullptr ; }
+bool Robot::ignoreController(){
+    return use_overriden_controls;
+}
+
+
+
+Behavior* Robot::getBehavior(){
+    return behavior;
+}
+
+void Robot::setBehavior(Behavior *currentBeh)
+{
+    behavior = currentBeh;
+}
+
+bool Robot::hasBehavior() {
+    return behavior != nullptr ;
+}
+
 void Robot::performBehavior(){
-    if(behavior!=nullptr) {
+    if(use_overriden_controls) return;
+    if(behavior != nullptr) {
         behavior->perform();
     }
-    getPilot()->executeCommands();
+    pilot->executeCommands();
 }
+
 void Robot::clearBehavior()
 {
     if(behavior != nullptr) {
@@ -154,9 +142,15 @@ void Robot::clearBehavior()
 }
 
 
+
+//Pilot* Robot::getPilot(){
+//    return pilot;
+//}
+
 void Robot::goToPose(CmdGoToPose& newCommand){
     pilot->setNewCommand(newCommand);
 }
+
 bool Robot::completedGoToPoseCmd(){
     return pilot->finishedCommand();
 }
@@ -166,9 +160,25 @@ bool Robot::hasBall(){
     return has_ball;
 }
 
+void Robot::setHasBall(bool val){
+    has_ball = val;
+}
+
 
 // ============================================================
-// =============== PRIVATE FUNCTIONS =========================
+// ============= LOE Level Control ============================
+// ============================================================
+
+
+RobotLowLevelControls* Robot::getOverridenController(){
+    return overriden_controls;
+}
+RobotLowLevelControls* Robot::getActiveController(){
+    return use_overriden_controls ? overriden_controls : this;
+}
+
+// ============================================================
+// =============== PRIVATE FUNCTIONS ==========================
 // ============================================================
 
 
@@ -177,10 +187,7 @@ void Robot::setID(int ID){id = ID;}
 
 void Robot::setTeam(int which) { team_id = which; }
 
-void Robot::setCurrentBeh(Behavior *currentBeh)
-{
-    behavior = currentBeh;
-}
+
 
 
 

@@ -10,13 +10,12 @@ public:
 
 //    static Ball ball;
 
-    /*! @brief Return a predicted stopping point for the ball
-     * \return A Point with the ball's position */
+    /*! @brief TODO: implement this (currently not implemented)
+     * Return a predicted stopping point for the ball
+     * \return A Point with the ball's position*/
     Point  getStopPosition();
     void   setStopPosition(Point);
 
-
-    bool hasBall(Robot*);
 
 private:
 

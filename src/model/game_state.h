@@ -1,6 +1,7 @@
 #ifndef GAMEMODEL_H
 #define GAMEMODEL_H
 
+#include <QObject>
 #include <QSet>
 #include "utilities/point.h"
 #include "constants.h"
@@ -10,13 +11,14 @@ class Robot;
 class Ball;
 
 
-class GameState
+class GameState : public QObject
 {
+    Q_OBJECT
 public:
 
-    GameState();
+    GameState(QObject* parent=nullptr);
     ~GameState();
-    void update();
+    void update(bool flip_x_coordinates=false);
 
 
     // ========= GETTER FUNCTIONS ==============
@@ -42,6 +44,12 @@ public:
     void clearRefereeCommandChanged();
 
 
+    /*! setFlipXCoordinates is used to simplify team control logic assuming
+        teams are in the negative side of the field
+        if theyr are not, coordinates are flipped for the logic and then
+        fixed again before sending the speeds to the robots */
+    void setFlipXCoorinates(bool flip_x);
+
 protected:
 
     friend class SSLVisionListener;
@@ -61,8 +69,8 @@ protected:
     Referee_Command referee_command_previous; //The previous gamestate
     bool referee_command_changed = false;
 
-    char   goals[2]      ;  //Number of scores yellow goals // TODO: is it correct that it is a char???
-    int    remaining_time ;  //Remaining time in seconds
+    char   goals[2]      = {0};  //Number of scores yellow goals // TODO: is it correct that it is a char???
+    int    remaining_time = 0;  //Remaining time in seconds
 
 
     void setRobotWithBall();

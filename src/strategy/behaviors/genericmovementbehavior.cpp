@@ -16,9 +16,9 @@ GenericMovementBehavior::GenericMovementBehavior(Robot* robot,
 //Override Behavior perform
 void GenericMovementBehavior::perform()
 {
-    std::cout << "generic movement - robot " <<robot->getID() <<std::endl;
-    robot->getPilot()->setNewCommand(cmd);
-    done = robot->getPilot()->finishedCommand();
+//    std::cout << "generic movement - robot " <<robot->getID() <<std::endl;
+    robot->goToPose(cmd);
+    done = robot->completedGoToPoseCmd();
 }
 
 /***********************************************************/

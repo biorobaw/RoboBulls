@@ -22,3 +22,11 @@ bool ProxyNone::isHolonomic() {
 Pilot* ProxyNone::createPilot(Robot* robot){
     return new PilotDummy(robot);
 }
+
+QString ProxyNone::getName(){
+    return "none";
+}
+
+void ProxyNone::close(){
+
+}

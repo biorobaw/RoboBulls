@@ -10,12 +10,9 @@
 #include "strategies/haltstrategy.h"
 #include "ssl_referee.pb.h"
 
-#include "yaml-cpp/yaml.h"
-#include <iostream>
+#include "utilities/my_yaml.h"
+#include <QDebug>
 
-
-using std::cout;
-using std::endl;
 
 namespace  {
     enum ControllerState { INITIAL,
@@ -32,6 +29,21 @@ namespace  {
 SControllerNormalGame::SControllerNormalGame(RobotTeam* team, YAML::Node* c_node)
  : StrategyController(team,c_node)
 {
+
+
+        if((*c_node)["ROLES"].IsDefined()){
+
+            qInfo() << "        ROLES : ";
+            qInfo() << "            GOALIE  :" << (*c_node)["ROLES"]["GOALIE" ];
+            qInfo() << "            ATTACK1 :" << (*c_node)["ROLES"]["ATTACK1"];
+            qInfo() << "            ATTACK2 :" << (*c_node)["ROLES"]["ATTACK2"];
+            qInfo() << "            ATTACK3 :" << (*c_node)["ROLES"]["ATTACK3"];
+            qInfo() << "            DEFEND1 :" << (*c_node)["ROLES"]["DEFEND1"];
+            qInfo() << "            DEFEND2 :" << (*c_node)["ROLES"]["DEFEND2"];
+            qInfo() << "            DEFEND3 :" << (*c_node)["ROLES"]["DEFEND3"];
+        }
+
+
 
     if((*c_node)["ROLES"].IsDefined()){
         if((*c_node)["ROLES"]["GOALIE" ].IsDefined())
@@ -121,7 +133,8 @@ int SControllerNormalGame::getNextControllerState(int current_state,int strategy
 
     auto state_map = state_transitions[current_state];
     if(!state_map.contains(strategy_status)){
-        cout<< "ERROR: Strategy controller did not define transition: ("
+        qCritical().nospace()
+            << "ERROR: Strategy controller did not define transition: ("
             << current_state << "," << strategy_status <<")" <<endl;
         exit(-1);
     }

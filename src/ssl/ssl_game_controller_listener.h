@@ -1,6 +1,7 @@
 #ifndef REFCOMM_H
 #define REFCOMM_H
 
+#include <QThread>
 #include <QUdpSocket>
 #include <QMutex>
 
@@ -27,32 +28,30 @@ class SSLGameControllerListener : public QObject
     Q_OBJECT
 public:
     SSLGameControllerListener(YAML::Node* comm_node);
-
     static void copyState(GameState*);
 
-//public slots:
-//    void run();
+    ~SSLGameControllerListener();
 
+
+public slots:
+    void restart_socket();
 private slots:
     void process_package();
 
 private:
 
     static SSLGameControllerListener* instance;
+    static QThread* thread;
+    QUdpSocket* socket = new QUdpSocket(this);
+    QMutex mutex;
 
     QString net_address;
-    int    port;
+    int    net_port;
 
     Referee_Command command;
     Referee_Command command_previous;
     int time_left = 0;
     int goals[2] = {0};
-
-    QMutex mutex;
-
-
-    QUdpSocket* socket = new QUdpSocket(this);
-    void restart_socket();
 
 };
 

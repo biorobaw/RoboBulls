@@ -81,7 +81,7 @@ void AttackSupport::perform()
             cmd.distance_tolerance = 1;
             cmd.angle_tolerance = 0.001;
             cmd.velocity_multiplier = 1.5;
-            robot->getPilot()->setNewCommand(cmd);
+            robot->goToPose(cmd);
         }
         else
             state = position;
@@ -119,7 +119,7 @@ void AttackSupport::perform()
         cmd.distance_tolerance = DIST_TOLERANCE;
         cmd.angle_tolerance = ROT_TOLERANCE;
         cmd.velocity_multiplier = 1.0;
-        robot->getPilot()->setNewCommand(cmd);
+        robot->goToPose(cmd);
 
     }
     }
@@ -224,11 +224,11 @@ void AttackSupport::genGoalShadows()
     auto gp = Field::getGoalPosition(robot->getTeam()->getOpponentSide());
     // Top end of goal post
     float g1x = gp.x;
-    float g1y = gp.y + Field::GOAL_WIDTH/2;
+    float g1y = gp.y + Field::GOAL_LENGTH/2;
 
     // Bottom end of goal post
     float g2x = gp.x;
-    float g2y = gp.y - Field::GOAL_WIDTH/2;
+    float g2y = gp.y - Field::GOAL_LENGTH/2;
 
     float R = ROBOT_RADIUS;
 
@@ -448,11 +448,11 @@ void AttackSupport::genGoalShotAvoidance()
     auto gp = Field::getGoalPosition(robot->getTeam()->getOpponentSide());
     // Top end of goal post
     float g1x = gp.x;
-    float g1y = gp.y + Field::GOAL_WIDTH/2 + ROBOT_RADIUS + 500;
+    float g1y = gp.y + Field::GOAL_LENGTH/2 + ROBOT_RADIUS + 500;
 
     // Bottom end of goal post
     float g2x = gp.x;
-    float g2y = gp.y - Field::GOAL_WIDTH/2 - ROBOT_RADIUS - 500;
+    float g2y = gp.y - Field::GOAL_LENGTH/2 - ROBOT_RADIUS - 500;
 
     Point bp = robot->getTeam()->getGameState()->getBall()->getPosition();
 

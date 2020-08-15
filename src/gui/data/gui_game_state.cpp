@@ -16,7 +16,7 @@ GuiGameState::GuiGameState()
     for(int i=0; i<2; i++)
         for(int j=0; j<MAX_ROBOTS_PER_TEAM; j++){
             delete robots[i][j];
-            gui_robots[i][j] = new GuiRobot(nullptr,j,i); // do not delete this, it will be deleted by parent destructor
+            gui_robots[i][j] = new GuiRobot(nullptr,i,j); // do not delete this, it will be deleted by parent destructor
             robots[i][j] = gui_robots[i][j];
         }
 }

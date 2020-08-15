@@ -5,40 +5,44 @@
 #include "ssl_referee.pb.h"
 
 #include "ssl_game_controller_listener.h"
-#include "yaml-cpp/yaml.h"
-#include <iostream>
+#include "utilities/my_yaml.h"
 #include "model/game_state.h"
 
 
 
-using namespace std;
 
 SSLGameControllerListener* SSLGameControllerListener::instance = nullptr;
+QThread* SSLGameControllerListener::thread = nullptr;
 
 SSLGameControllerListener::SSLGameControllerListener(YAML::Node* comm_node) :
     QObject(nullptr)
 {
     qInfo() << "--REFBOX ";
-    qInfo() << "        REFBOX_ADDR    : " << (*comm_node)["REFBOX_ADDR"].Scalar().c_str();
-    qInfo() << "        REFBOX_PORT    : " << (*comm_node)["REFBOX_PORT"].Scalar().c_str();
+    qInfo() << "        REFBOX_ADDR    :" << (*comm_node)["REFBOX_ADDR"].Scalar().c_str();
+    qInfo() << "        REFBOX_PORT    :" << (*comm_node)["REFBOX_PORT"].Scalar().c_str();
+
+    net_address= (*comm_node)["REFBOX_ADDR"].as<string>().c_str();
+    net_port       = (*comm_node)["REFBOX_PORT"].as<int>();
 
     command = Referee_Command_HALT;
     command_previous = Referee_Command_HALT;
-    net_address= (*comm_node)["REFBOX_ADDR"].as<string>().c_str();
-    port       = (*comm_node)["REFBOX_PORT"].as<int>();
 
     restart_socket();
 
+    thread = new QThread;
+    this->moveToThread(thread);
+    connect(thread, &QThread::finished, this, &QObject::deleteLater);
+
     instance = this;
-    qInfo() << "--Refbox DONE";
+    qInfo() << "--Refbox DONE - thread: " << thread;
 }
 
 
 void SSLGameControllerListener::restart_socket(){
     if(socket->isOpen()) socket->close();
 
-    if(!socket->bind(QHostAddress::AnyIPv4, port, QUdpSocket::ShareAddress)){
-        qFatal("ERROR: could not bind refbox port %d", port);
+    if(!socket->bind(QHostAddress::AnyIPv4, net_port, QUdpSocket::ShareAddress)){
+        qFatal("ERROR: could not bind refbox port %d", net_port);
     }
 
     if(!socket->joinMulticastGroup(QHostAddress(net_address ))){
@@ -49,6 +53,11 @@ void SSLGameControllerListener::restart_socket(){
 
 }
 
+SSLGameControllerListener::~SSLGameControllerListener(){
+    thread->exit();
+    thread->wait();
+    instance = nullptr;
+}
 
 void SSLGameControllerListener::copyState(GameState* game_state){
     if(instance == nullptr) return;
@@ -75,15 +84,6 @@ void SSLGameControllerListener::process_package(){
         Referee referee;
         if(!referee.ParseFromArray(datagram.data(),datagram.size())) continue;
 
-
-//        cout << "Refbox: ";
-//        if(referee.has_command()) cout << "C: " << referee.command() << " ";
-//        if(referee.has_stage_time_left()) cout << "T: " << referee.stage_time_left() << " ";
-//        if(referee.has_blue() &&
-//           referee.blue().has_score()) cout << "B: " << referee.blue().score() << " ";
-//        if(referee.has_yellow() &&
-//           referee.yellow().has_score()) cout << "Y: " << referee.yellow().score() << " ";
-//        cout << endl;
 
         mutex.lock();
             if(referee.has_command() && referee.command() != command ) {

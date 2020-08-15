@@ -3,9 +3,9 @@
 #include "path_planning/fppa_pathfinding.h"
 #include "robot/robot.h"
 #include "commands/CmdGoToPose.h"
-#include <iostream>
 #include "model/team.h"
-using std::cout, std::endl;
+
+#include <QDebug>
 
 Pilot::Pilot(Robot* robot) : robot(robot){
 
@@ -19,15 +19,20 @@ Pilot::~Pilot(){
 }
 
 
-#define DD if(false)
+#define DD if(true)
 
 void Pilot::setNewCommand(CmdGoToPose& newCommand){
     if(cmdGoToPose != nullptr) *cmdGoToPose = newCommand;
     else cmdGoToPose = new CmdGoToPose(newCommand);
 
-    DD cout << "-cmd has angle: " << newCommand.hasTargetAngle() << " " << newCommand.targetAngle << endl;
     if(!cmdGoToPose->hasTargetAngle())
         cmdGoToPose->targetAngle = Measurements::angleBetween(robot, cmdGoToPose->targetPose);
+
+    DD qDebug() << "T: " << newCommand.targetPose
+                << newCommand.targetAngle
+                << newCommand.avoidBall
+                << newCommand.avoidObstacles
+                << newCommand.velocity_multiplier;
 }
 
 void Pilot::cancelCommand(){
@@ -65,6 +70,11 @@ bool Pilot::executeCmdGoToPose(CmdGoToPose *cmd){
 
         //TODO: ideally we should not recompute the path each time
         FPPA::Path path = FPPA::genPath(robot->getTeam()->getGameState(), r_pos, cmd->targetPose, cmd->avoidBall, robot->isGoalie());
+
+        qDebug().nospace() << "P: ";
+        for(auto p : path)//int i=0; i<path.size(); i++)
+            qDebug().nospace() << p << "->";
+        qDebug();
         if(path.size()>0){
             nextPoint = path[0];
             nextNextPoint = path[ path.size()>1 ? 1 : 0];
@@ -72,9 +82,10 @@ bool Pilot::executeCmdGoToPose(CmdGoToPose *cmd){
     }
 
     // drive to the next position
-    DD cout << "---next point: (" << nextPoint.x << "," << nextPoint.y << "), "
+    DD qDebug().nospace()
+         << "---next point: (" << nextPoint.x << "," << nextPoint.y << "), "
          << cmd->targetAngle << " , ("
-         << nextNextPoint.x  << "," << nextNextPoint.y << ")" << std::endl;
+         << nextNextPoint.x  << "," << nextNextPoint.y << ")" << endl;
     driveTo(nextPoint, cmd->targetAngle,nextNextPoint);
 
     // return whether action cempleted or not
@@ -83,6 +94,6 @@ bool Pilot::executeCmdGoToPose(CmdGoToPose *cmd){
 
 
 void Pilot::setTargetVelocity(Point velocity, float angular){
-    robot->target_velocity = velocity;
-    robot->target_angular_speed = angular;
+    robot->target_velocity = velocity * cmdGoToPose->velocity_multiplier;
+    robot->target_angular_speed = angular * cmdGoToPose->velocity_multiplier;
 }

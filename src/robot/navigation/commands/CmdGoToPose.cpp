@@ -24,7 +24,7 @@ CmdGoToPose::CmdGoToPose(Point targetPose,bool avoidObstacles, bool avoidBall) :
     CmdGoToPose(targetPose,UNUSED_ANGLE_VALUE,avoidObstacles,avoidBall)
 {}
 
-CmdGoToPose::CmdGoToPose(const CmdGoToPose& cmd) :
+CmdGoToPose::CmdGoToPose(CmdGoToPose& cmd) :
     targetPose(cmd.targetPose),
     targetAngle(cmd.targetAngle),
     avoidObstacles(cmd.avoidObstacles),
@@ -35,11 +35,11 @@ CmdGoToPose::CmdGoToPose(const CmdGoToPose& cmd) :
 {}
 
 
-bool CmdGoToPose::hasTargetAngle(){
+bool CmdGoToPose::hasTargetAngle()  {
     return targetAngle != UNUSED_ANGLE_VALUE;
 }
 
-bool CmdGoToPose::completed(Point currentPosition, float currentAngle){
+bool CmdGoToPose::completed(Point currentPosition, float currentAngle) {
     return Measurements::isClose(currentPosition, targetPose, distance_tolerance) &&
       (!hasTargetAngle() || Measurements::isClose(currentAngle, targetAngle, angle_tolerance));
 }

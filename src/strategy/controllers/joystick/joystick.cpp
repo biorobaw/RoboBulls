@@ -116,7 +116,11 @@ float JoyStick::removeDeadZone(float value){
 }
 
 
-
+//QObject::connect(gui_robot,&GuiRobot::overridenChanged     ,proxy,&Robot::setIgnoreController);
+//QObject::connect(gui_robot,&GuiRobot::setGuiTargetVelocity ,proxy,&Robot::setTargetVelocity  );
+//QObject::connect(gui_robot,&GuiRobot::setGuiKickSpeed      ,proxy,&Robot::setKickSpeed       );
+//QObject::connect(gui_robot,&GuiRobot::setGuiDribble        ,proxy,&Robot::setDribble         );
+//QObject::connect(gui_robot,&GuiRobot::setChip              ,proxy,&Robot::setChip            );
 
 
 

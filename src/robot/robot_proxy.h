@@ -1,7 +1,8 @@
 #ifndef ROBCOMM_H
 #define ROBCOMM_H
-#include <set>
-#include <QList>
+
+#include <QObject>
+
 class Robot;
 class Pilot;
 
@@ -17,13 +18,14 @@ namespace YAML {
  * @author Narges Ghaedi
  */
 
-class RobotProxy
+class RobotProxy : public QObject
 {
+    Q_OBJECT
 public:
 
     // === CONSTRUCTORS AND DESTRUCTORS =============================
 
-    static RobotProxy* load(QString robot_type,YAML::Node* comm_node);
+    static RobotProxy* load(YAML::Node* comm_node);
     virtual ~RobotProxy();
 
     // === COMMUNICATION WITH ROBOTS ================================
@@ -37,8 +39,9 @@ public:
     virtual bool isHolonomic() = 0;
     virtual Pilot* createPilot(Robot* robot) = 0;
 
+    virtual QString getName() =0;
 
-private:
+protected:
     virtual void close() = 0;
 
 };

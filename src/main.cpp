@@ -4,6 +4,7 @@
 #include <csignal>
 
 #include "gui/gui_interface.h"
+#include "gui/data/gui_robot.h"
 #include "ssl/ssl_vision_listener.h"
 #include "ssl/ssl_game_controller_listener.h"
 #include "strategy/controllers/joystick/scontroller_joystick.h"
@@ -11,7 +12,7 @@
 #include "parameters/motion_parameters.h"
 #include "model/field.h"
 #include "model/team.h"
-#include "yaml-cpp/yaml.h"
+#include "utilities/my_yaml.h"
 
 
 /*! @mainpage Welcome to the RoboBulls 2 Documentation.
@@ -73,7 +74,7 @@
 void exitStopRobot(int)
 {
     //TODO: make a clean exit
-    std::cout << "This function sould be called only once, not thrice!" <<std::endl;
+    qDebug() << "This function sould be called only once, not thrice!" << endl;
     exit(1);
 }
 
@@ -125,6 +126,7 @@ int main(int argc, char *argv[])
     // We need the application to be created before we can connnect slots
     // thus the following line should run first to initialize the system
     MyApplication a(argc, argv);
+    qRegisterMetaType<Point>();
 
     // set pattern for qDebug messages
 //    qSetMessagePattern("[%{type}] %{appname} (%{file}:%{line}) - %{message}");
@@ -154,16 +156,14 @@ int main(int argc, char *argv[])
     SControllerJoystick::init_module(teams); // init joystick listener module
 
 
-    // Create objects to communicate with SSL
-//    QThread* game_controller_thread = new QThread;
-//    SSLGameControllerListener ssl_game_controller( &comm_node);
-//    ssl_game_controller.moveToThread(game_controller_thread);
-//    game_controller_thread->start();
 
-    QThread* vision_thread = new QThread;
-    SSLVisionListener* ssl_vision = new SSLVisionListener(&comm_node);
-    ssl_vision->moveToThread(vision_thread);
-    vision_thread->start();
+
+    // Start ssl software
+    // obs: object will be destroyed automatically when the thread ends
+    new SSLVisionListener(&comm_node);
+    new SSLGameControllerListener( &comm_node);
+
+    qDebug() << "\nMain thread: " << QThread::currentThread() <<endl;
 
 
     // Start debugger thread
@@ -171,38 +171,18 @@ int main(int argc, char *argv[])
 
     // start gui
     GuiInterface::getGuiInterface()->show();
+    GuiRobot::connectWithModel();
+
     registerExitSignals();
     int result = a.exec(); // starts main loop event
 
 
 
     // stop threads
-//    SControllerJoystick::stop_module();
-//    game_controller_thread->exit();
-//    game_controller_thread->wait();
+    SControllerJoystick::stop_module();
 
 
-//    emit ssl_vision->kill();
-//    vision_thread->exit();
-//    vision_thread->quit();
-//    vision_thread->terminate();
-//    cout << "emitted signal" << endl;
 
-//    QThread::currentThread()->
-
-//    cout << "done" <<endl;
-//    while(vision_thread->isRunning()){
-//        cout << vision_thread->isRunning() << " "
-//             << vision_thread->isFinished() << endl;
-//        QThread::sleep(1);
-//    }
-//    vision_thread->wait();
-
-
-//    for(int i=0;i<2;i++)
-//        teams[i]->closeCommunication();
-
-    cout << "Done, you can now quit!";
     return result;
 
 }

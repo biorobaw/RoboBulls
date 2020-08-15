@@ -1,69 +1,65 @@
-#include <algorithm>
-#include <assert.h>
-
-
 #include "team.h"
+
+#include "field.h"
+#include "game_state.h"
 #include "robot/robot.h"
 #include "robot/robot_proxy.h"
 #include "strategy/strategycontroller.h"
-#include "field.h"
-#include "model/game_state.h"
+#include "utilities/my_yaml.h"
 
-#include "yaml-cpp/yaml.h"
+#include "gui/gui_interface.h"
+
+#include <algorithm>
+#include <assert.h>
+#include <QDebug>
+
+
 
 RobotTeam* RobotTeam::teams[2] = {NULL};
 
-RobotTeam::RobotTeam(YAML::Node* t_node, int _color) {
+RobotTeam::RobotTeam(YAML::Node* t_node, int _color)
+{
 
-    std::cout << "--TEAM_" << (_color == ROBOT_TEAM_BLUE ? "BLUE" : "YELLOW") << std::endl;
-    std::cout << "        SIDE        : " << (*t_node)["SIDE"] <<std::endl;
-    if((*t_node)["ROLES"].IsDefined()){
-        std::cout << "        ROLES : " << std::endl;
-        std::cout << "            GOALIE  : " << (*t_node)["ROLES"]["GOALIE" ] << std::endl;
-        std::cout << "            ATTACK1 : " << (*t_node)["ROLES"]["ATTACK1"] << std::endl;
-        std::cout << "            ATTACK2 : " << (*t_node)["ROLES"]["ATTACK2"] << std::endl;
-        std::cout << "            ATTACK3 : " << (*t_node)["ROLES"]["ATTACK3"] << std::endl;
-        std::cout << "            DEFEND1 : " << (*t_node)["ROLES"]["DEFEND1"] << std::endl;
-        std::cout << "            DEFEND2 : " << (*t_node)["ROLES"]["DEFEND2"] << std::endl;
-        std::cout << "            DEFEND3 : " << (*t_node)["ROLES"]["DEFEND3"] << std::endl;
-    }
+
+    qInfo() << "--TEAM" << (_color == ROBOT_TEAM_BLUE ? "BLUE" : "YELLOW");
+    qInfo() << "        SIDE              -" << (*t_node)["SIDE"];
 
 
     color = _color;
     side =  (*t_node)["SIDE"].as<int>();
     assert(side == FIELD_SIDE_NEGATIVE || side == FIELD_SIDE_POSITIVE);
 
+    // load robot proxy
+    auto proxy_node = (*t_node)["ROBOT_PROXY"];
+    robot_proxy = RobotProxy::load(&proxy_node);
+    robot_proxy->setParent(this);
+    robot_type = robot_proxy->getName();
 
-    std::cout << "        ROBOT_TYPE  : " << (*t_node)["ROBOT_TYPE"] <<std::endl;
-    robot_type = (*t_node)["ROBOT_TYPE"].as<std::string>().c_str();
-    auto rob_comm = (*t_node)["ROB_COMM"];
-    robot_proxy = RobotProxy::load(robot_type, &rob_comm);
-
+    // load team controller
     auto s_controller = (*t_node)["STRATEGY_CONTROLLER"];
-    if(robot_type != "none"){
-        controller = StrategyController::loadController(this,&s_controller);
-        team_controller_name = s_controller["ID"].as<string>();
-    }
+    controller = StrategyController::loadController(this, &s_controller);
+    team_controller_name = s_controller["ID"].as<string>().c_str();
 
-    game_state = new GameState();
+    game_state = new GameState(this);
+    game_state->setFlipXCoorinates(side!=FIELD_SIDE_NEGATIVE);
+
+    for(int i=0; i<MAX_ROBOTS_PER_TEAM; i++)
+        game_state->getRobot(color,i)->setRobotProxy(robot_proxy);
 
 
     teams[color] = this;
-    std::cout << "--Team_" << (_color == ROBOT_TEAM_BLUE ? "blue" : "yellow") << " DONE" <<std::endl;
+    qInfo() << "--Team_" << (_color == ROBOT_TEAM_BLUE ? "blue" : "yellow") << " DONE";
 
 }
 
 RobotTeam::~RobotTeam(){
-    if(teams[color] == this) teams[color] = NULL;
-    closeCommunication();
-    if(robot_proxy!=nullptr) {
-        delete robot_proxy;
-        robot_proxy=nullptr;
-    }
-    if(controller!=nullptr){
-        delete controller;
-        controller = nullptr;
 
+    if(robot_proxy)
+        robot_proxy->close_communication(getRobots());
+
+    if(thread){
+        thread->exit();
+        thread->wait();
     }
 }
 
@@ -73,13 +69,19 @@ RobotTeam** RobotTeam::load_teams(YAML::Node* team_nodes){
     teams[ROBOT_TEAM_BLUE] = new RobotTeam(&tb, ROBOT_TEAM_BLUE);
     teams[ROBOT_TEAM_YELLOW] = new RobotTeam(&ty, ROBOT_TEAM_YELLOW);
 
+    // Check sides are correct, if not fix it, but give warning
     if(teams[0]->side == teams[1]->side){
-        std::cout << "WARNING: both teams were assigned the same side" << std::endl
-                  << "         moving TEAM_YELLOW to other side of the field." << std::endl;
-        teams[ROBOT_TEAM_YELLOW]->side = teams[ROBOT_TEAM_YELLOW]->getOpponentSide();
+        qCritical().nospace()
+                << "ERROR: Both teams were assigned the same field side." << endl
+                << "       Fix, teams.yaml and reload the program." << endl;
+        exit(-1);
     }
     auto blue_side = teams[ROBOT_TEAM_BLUE]->side;
     Field::NEGATIVE_SIDE_TEAM = blue_side == FIELD_SIDE_NEGATIVE ? ROBOT_TEAM_BLUE : ROBOT_TEAM_YELLOW;
+
+    // start the controllers:
+    for(auto t : teams) t->startControlLoop();
+
     return teams;
 }
 
@@ -109,11 +111,11 @@ QString RobotTeam::getRobotType(){
     return robot_type;
 }
 
-std::string RobotTeam::getTeamControllerName(){
+QString RobotTeam::getTeamControllerName(){
     return team_controller_name;
 }
 
-std::string RobotTeam::getStrategyName(){
+QString RobotTeam::getStrategyName(){
     return controller!=nullptr ? controller->getStrategyName() : "none";
 }
 
@@ -127,20 +129,43 @@ int RobotTeam::getOpponentSide(){
                 FIELD_SIDE_NEGATIVE;
 }
 
-void RobotTeam::closeCommunication(){
-    if(robot_proxy!=nullptr){
-        robot_proxy->close_communication(game_state->getFieldRobots(color));
-    }
-}
-
-void RobotTeam::sendVels(){
-    if(robot_proxy!=nullptr){
-        robot_proxy->sendVels(game_state->getFieldRobots(color));
-    }
-}
 
 GameState* RobotTeam::getGameState(){
     return game_state;
 }
 
+void RobotTeam::startControlLoop(){
+    // create a thread
+    thread = new QThread;
+    qInfo().nospace() << "controller thread (" << getColor() << ") " << thread ;
 
+    // create a timer to run the control loop
+    // connect timeout to control cycle
+    // and thread start to timer start
+    timer = new QTimer(this); // timer must be created before moving controller to thread
+    timer->setInterval(30); // run control loop every 30 ms
+    connect(timer, &QTimer::timeout, this, &RobotTeam::runControlCycle);
+    connect(thread, SIGNAL(started()), timer, SLOT(start()));
+    connect(thread, &QThread::finished, this, &QObject::deleteLater);
+    QTimer::singleShot(7000,controller, &StrategyController::resume);
+
+    // move QObject to thread and then start it
+    moveToThread(thread);
+    thread->start();
+}
+
+void RobotTeam::runControlCycle(){
+
+    // first update game state:
+    game_state->update();
+
+    // then, run controller (assigns behaviors to each robot in the field)
+    controller->runControlCycle(game_state);
+
+    // then run robot behaviors for all robots that are not overriden by the gui
+    for (Robot *rob :  getRobots())
+        rob->performBehavior();
+
+    robot_proxy->sendVels(game_state->getFieldRobots(color));
+
+}

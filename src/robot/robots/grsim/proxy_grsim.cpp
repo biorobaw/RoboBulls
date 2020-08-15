@@ -1,16 +1,18 @@
-#include <math.h>
+#include "proxy_grsim.h"
+
+
 #include "grSim_Packet.pb.h"
 #include "grSim_Commands.pb.h"
 #include "grSim_Replacement.pb.h"
+
 #include "robot/robot.h"
+#include "robot/navigation/pilots/pilot_omni.h"
 #include "model/team.h"
 #include "model/game_state.h"
-#include "proxy_grsim.h"
-#include <iostream>
 #include "utilities/measurements.h"
-#include "yaml-cpp/yaml.h"
-#include "robot/navigation/pilots/pilot_omni.h"
+#include "utilities/my_yaml.h"
 
+#include <math.h>
 
 
 // dimensions of grsim robot define in grsim project in file srd/configwidget (search for robot_settings)
@@ -27,13 +29,13 @@ ProxyGrsim::ProxyGrsim(YAML::Node* t_node) :
     drive(ROBOT_RADIUS, WHEEL_RADIUS, LF_OFFSET, LB_OFFSET, RB_OFFSET, RF_OFFSET)
 {
 
-    std::cout << "        GRSIM_ADDR : " <<  (*t_node)["GRSIM_ADDR"] << std::endl
-              << "        GRSIM_PORT : " <<  (*t_node)["GRSIM_PORT"] << std::endl;
+    qInfo() << "            ADDR          -" <<  (*t_node)["ADDR"];
+    qInfo() << "            PORT          -" <<  (*t_node)["PORT"] ;
 
-    std::string ip = (*t_node)["GRSIM_ADDR"].as<std::string>();
-    int port = (*t_node)["GRSIM_PORT"].as<int>();
+    QString ip = (*t_node)["ADDR"].Scalar().c_str();
+    int port = (*t_node)["PORT"].as<int>();
 
-    _addr = QHostAddress(ip.c_str());
+    _addr = QHostAddress(ip);
     _port = port;
 }
 
@@ -53,42 +55,46 @@ void ProxyGrsim::sendVels(const QSet<Robot*>& robots)
 
 void ProxyGrsim::sendPacket(Robot* r)
 {
+
+    // Retrive robot information
+    int id = r->getID();
+    auto controls = r->getActiveController();
+    float kick = controls->getKickSpeed();
+    bool  dribble = controls->getDribble();
+    auto v = controls->getTargetVelocity(); // in what value? m/s? mm/s? we assume mm/s
+    auto w = controls->getTargetAngularSpeed(); // we assume rad/s
+    int flip_x = r->getFlipXCoordinates();
+    v.x*=flip_x;
+    w*=flip_x;
+
+    // prepare command package
     grSim_Packet packet;
     packet.mutable_commands()->set_isteamyellow( r->getTeamId() == ROBOT_TEAM_YELLOW );
     packet.mutable_commands()->set_timestamp(0.0);
     grSim_Robot_Command* command = packet.mutable_commands()->add_robot_commands();
-
-    //Retrive robot information
-    int id = r->getID();
-    float kick = r->getKickSpeed();
-    bool  dribble = r->getDribble();
     command->set_id(id);
-    command->set_kickspeedx(kick);
+    command->set_kickspeedx(kick); // is the unit correct? robobulls is mm/s
     command->set_kickspeedz(0); // No chipper
     command->set_spinner(dribble ? 300 : 0);
-
-
-    auto v = r->getTargetVelocity(); // in what value? m/s? mm/s? we assume mm/s
-    auto w = r->getTargetAngularSpeed(); // we assume rad/s
     command->set_veltangent(v.x / 1000.0); // set_veltangent expect m/s units
     command->set_velnormal(v.y / 1000.0);  // set_velnormal expect m/s units
     command->set_velangular(w); // set vel angular expects rad/s
 
-
-//    if(v.x!=0 || v.y !=0 || w!=0 || r->getID() ==3){
-//        auto rv = r->getVelocityMetersPerSecond();
-//        std::cout<<"Moving at: "<< rv.x << " " <<rv.y << " " <<std::endl;
-//        std::cout<< "Sending: " << id << "," << r->getTeamId() << " "
-//                 << v.x/1000 << "," << v.y/1000 << "," << w <<std::endl;
-//    }
-
     // Fill in simulator packet
+    command->set_wheelsspeed(false); // change if you want to control each wheel
+//    command->set_wheel1( 0 );    //Left Forward
+//    command->set_wheel2( 0 );    //Left Backward
+//    command->set_wheel3( 0 );    //Right Backward
+//    command->set_wheel4( 0 );    //Right Forward
 
-    command->set_wheelsspeed(false);
-    command->set_wheel1( 0 );    //Left Forward
-    command->set_wheel2( 0 );    //Left Backward
-    command->set_wheel3( 0 );    //Right Backward
-    command->set_wheel4( 0 );    //Right Forward
+
+
+    //    if(v.x!=0 || v.y !=0 || w!=0 || r->getID() ==3){
+    //        auto rv = r->getVelocityMetersPerSecond();
+    //        std::cout<<"Moving at: "<< rv.x << " " <<rv.y << " " <<std::endl;
+    //        std::cout<< "Sending: " << id << "," << r->getTeamId() << " "
+    //                 << v.x/1000 << "," << v.y/1000 << "," << w <<std::endl;
+    //    }
 
 
 //    double wheelSpeeds[4];
@@ -114,11 +120,7 @@ void ProxyGrsim::sendPacket(Robot* r)
     QByteArray dgram;
     dgram.resize(packet.ByteSizeLong());
     packet.SerializeToArray(dgram.data(), dgram.size());
-    udpsocket.writeDatagram(dgram, _addr, _port);
-
-
-
-
+    udpsocket->writeDatagram(dgram, _addr, _port);
 
 }
 
@@ -160,7 +162,7 @@ void ProxyGrsim::sendReplacementPackets()
     QByteArray dgram;
     dgram.resize(packet.ByteSizeLong());
     packet.SerializeToArray(dgram.data(), dgram.size());
-    udpsocket.writeDatagram(dgram, _addr, _port);
+    udpsocket->writeDatagram(dgram, _addr, _port);
 }
 
 void ProxyGrsim::close(){
@@ -183,4 +185,8 @@ void ProxyGrsim::getWheelSpeeds(Point velocity, float angular_speed, double whee
     auto res = drive.getWheelSpeeds(velocity.x, velocity.y, angular_speed);
     for(int i=0; i<4; i++)
         wheelSpeeds[i] = res[i];
+}
+
+QString ProxyGrsim::getName(){
+    return "grsim";
 }

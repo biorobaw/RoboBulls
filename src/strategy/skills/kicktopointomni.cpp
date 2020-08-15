@@ -90,7 +90,7 @@ KickToPointOmni::KickToPointOmni(Point* targetPtr,
 bool KickToPointOmni::perform(Robot* robot)
 {
     Point bp = robot->getTeam()->getGameState()->getBall()->getPosition();
-    GuiInterface::getGuiInterface()->drawLine(bp, *m_targetPointer);
+//    GuiInterface::getGuiInterface()->drawLine(bp, *m_targetPointer);
 
     // Angle between the ball and the kick target
     float ballTargetAng = Measurements::angleBetween(bp, *m_targetPointer);
@@ -122,11 +122,11 @@ bool KickToPointOmni::perform(Robot* robot)
             cmd.velocity_multiplier =1;
             cmd.setTarget(behindBall, ballTargetAng);
             cmd.avoidBall = cmd.avoidObstacles = true;
-            robot->getPilot()->setNewCommand(cmd);
+            robot->goToPose(cmd);
 
             //Make sure move_skill keeps the robot at the correct pose
             //This is done by waiting for confirmation from the movement class
-            if(robot->getPilot()->finishedCommand())
+            if(robot->completedGoToPoseCmd())
                 ++m_moveCompletionCount;
             if(m_moveCompletionCount > FORWARD_WAIT_COUNT) {
                 state = MOVE_INTERMEDIATE;
@@ -151,11 +151,11 @@ bool KickToPointOmni::perform(Robot* robot)
             cmd.velocity_multiplier = 1;
             cmd.setTarget(behindBall, ballTargetAng);
             cmd.avoidBall = cmd.avoidObstacles = false;
-            robot->getPilot()->setNewCommand(cmd);
+            robot->goToPose(cmd);
 
             //Make sure move_skill keeps the robot at the correct pose
             //This is done by waiting for confirmation from the movement class
-            if(robot->getPilot()->finishedCommand())
+            if(robot->completedGoToPoseCmd())
                 ++m_moveCompletionCount;
             if(m_moveCompletionCount > FORWARD_WAIT_COUNT) {
                 state = MOVE_FORWARD;
@@ -174,7 +174,7 @@ bool KickToPointOmni::perform(Robot* robot)
             cmd.velocity_multiplier = 0.2;
             cmd.setTarget(bp - Point(BEHIND_RAD * cos(targetBallAng), BEHIND_RAD * sin(targetBallAng)), ballTargetAng);
             cmd.avoidBall = cmd.avoidObstacles = false;
-            robot->getPilot()->setNewCommand(cmd);
+            robot->goToPose(cmd);
 
             /* Kick when in range, or go back to moving behind if it
              * moves too far or we are in kick lock */

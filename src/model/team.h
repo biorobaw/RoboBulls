@@ -1,13 +1,13 @@
 #ifndef TEAM_H
 #define TEAM_H
 
-#include <set>
-#include <map>
+#include <QObject>
+#include <QThread>
+#include <QTimer>
 #include <QMap>
-#include <string>
 #include "constants.h"
 #include "robot/robot.h"
-//class Robot;
+
 class RobotProxy;
 class StrategyController;
 class GameState;
@@ -16,8 +16,9 @@ namespace YAML {
 }
 
 
-class RobotTeam {
-
+class RobotTeam : public QObject
+{
+    Q_OBJECT
 public:
 
      // ======= STATIC FUNCTIONS ===================================
@@ -46,20 +47,24 @@ public:
     // ======= Functions required for the gui ======================
 
     QString getRobotType();
-    std::string getTeamControllerName();
-    std::string getStrategyName();
+    QString getTeamControllerName();
+    QString getStrategyName();
 
 
-    // ======= Communication functions =============================
+    // ======= Control Related function ===========================
 
-    void closeCommunication();
-    void sendVels();
-
+    void startControlLoop();
     GameState* getGameState();
+
+private slots:
+    void runControlCycle();
 
 private:
 
     static RobotTeam* teams[2];
+
+    QThread* thread;
+    QTimer* timer;
 
     StrategyController* controller = nullptr; // controller to control the team
     RobotProxy* robot_proxy; // proxy to communicate with robots and create new pilots for them
@@ -69,12 +74,13 @@ private:
     int side;
 
     QString robot_type = "";
-    std::string team_controller_name = "none";
+    QString team_controller_name = "none";
 
     // robot mappings
     QMap<int,Robot*> robotsByRoles; // maps robots to roles, defined by the team controller
 
 
+    //
 
     // Friend functions
     friend RobotTeam* Robot::getTeam();

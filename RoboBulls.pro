@@ -79,6 +79,7 @@ SOURCES += src/main.cpp \
         src/robot/navigation/pilots/pilot_omni.cpp \
         src/robot/navigation/robot_pilot.cpp \
         src/robot/robot.cpp \
+        src/robot/robot_low_level_control.cpp \
         src/robot/robot_proxy.cpp \
         src/robot/robots/grsim/proxy_grsim.cpp \
         src/robot/robots/none/proxy_none.cpp \
@@ -89,6 +90,7 @@ SOURCES += src/main.cpp \
         src/strategy/behavior.cpp \
         src/strategy/controllers/joystick/joystick.cpp \
         src/strategy/controllers/joystick/scontroller_joystick.cpp \
+        src/strategy/controllers/none/scontroller_none.cpp \
         src/strategy/controllers/normal_game/scontroller_normal_game.cpp \
         src/strategy/controllers/normal_game/strategies/freekickstrategy.cpp \
         src/strategy/controllers/normal_game/strategies/haltstrategy.cpp \
@@ -120,6 +122,7 @@ SOURCES += src/main.cpp \
         src/utilities/debug.cpp \
         src/utilities/edges.cpp \
         src/utilities/my_kalman_filter.cpp \
+        src/utilities/my_yaml.cpp \
         src/utilities/point.cpp \
         src/utilities/region/sector.cpp \
         src/utilities/region/rectangle.cpp \
@@ -168,6 +171,7 @@ HEADERS += \
         src/robot/navigation/pilots/pilot_omni.h \
         src/robot/navigation/robot_pilot.h \
         src/robot/robot.h \
+        src/robot/robot_low_level_controls.h \
         src/robot/robot_proxy.h \
         src/robot/robots/grsim/proxy_grsim.h \
         src/robot/robots/none/proxy_none.h \
@@ -178,6 +182,7 @@ HEADERS += \
         src/strategy/behavior.h \
         src/strategy/controllers/joystick/joystick.h \
         src/strategy/controllers/joystick/scontroller_joystick.h \
+        src/strategy/controllers/none/scontroller_none.h \
         src/strategy/controllers/normal_game/normal_game_roles.h \
         src/strategy/controllers/normal_game/scontroller_normal_game.h \
         src/strategy/controllers/normal_game/strategies/freekickstrategy.h \
@@ -213,6 +218,7 @@ HEADERS += \
         src/utilities/debug.h \
         src/utilities/edges.h \
         src/utilities/my_kalman_filter.h \
+        src/utilities/my_yaml.h \
         src/utilities/point.h \
         src/utilities/region/sector.h \
         src/utilities/region/rectangle.h \

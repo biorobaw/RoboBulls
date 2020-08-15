@@ -27,7 +27,7 @@ TabTeam::~TabTeam()
 void TabTeam::set_team(int id){
     team_id = id;
     for(int i=0; i<MAX_ROBOTS_PER_TEAM;i++){
-        robot_frames[i]->set_robot(i,team_id);
+        robot_frames[i]->set_robot(team_id,i);
     }
 }
 

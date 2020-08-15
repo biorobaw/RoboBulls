@@ -1,12 +1,8 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include "parameters/motion_parameters.h"
-#include <iostream>
-#include "yaml-cpp/yaml.h"
-using namespace std;
-
-
-
+#include <QDebug>
+#include "utilities/my_yaml.h"
 
 
 float ROBOT_RADIUS      = 100;
@@ -20,13 +16,13 @@ float DRIBBLE_TURN_RATE = 0.1;
 
 void load_motion_parameters(YAML::Node* motion_node){
 
-    cout << "--Motion Parameters: " << endl;
-    cout << "        ROBOT_RADIUS      - " << (*motion_node)["ROBOT_RADIUS"]     << endl;
-    cout << "        DIST_TOLERANCE    - " << (*motion_node)["DIST_TOLERANCE"]   << endl;
-    cout << "        ROT_TOLERANCE     - " << (*motion_node)["ROT_TOLERANCE"]    << endl;
-    cout << "        DRIBBLE_FRWD_SPD  - " << (*motion_node)["DRIBBLE_FRWD_SPD"] << endl;
-    cout << "        DRIBBLE_BACK_SPD  - " << (*motion_node)["DRIBBLE_BACK_SPD"] << endl;
-    cout << "        DRIBBLE_TURN_RATE - " << (*motion_node)["DRIBBLE_TURN_RATE"]<< endl;
+    qInfo() << "--Motion Parameters: ";
+    qInfo() << "        ROBOT_RADIUS      -" << (*motion_node)["ROBOT_RADIUS"]     ;
+    qInfo() << "        DIST_TOLERANCE    -" << (*motion_node)["DIST_TOLERANCE"]   ;
+    qInfo() << "        ROT_TOLERANCE     -" << (*motion_node)["ROT_TOLERANCE"]    ;
+    qInfo() << "        DRIBBLE_FRWD_SPD  -" << (*motion_node)["DRIBBLE_FRWD_SPD"] ;
+    qInfo() << "        DRIBBLE_BACK_SPD  -" << (*motion_node)["DRIBBLE_BACK_SPD"] ;
+    qInfo() << "        DRIBBLE_TURN_RATE -" << (*motion_node)["DRIBBLE_TURN_RATE"];
 
     ROBOT_RADIUS      = (*motion_node)["ROBOT_RADIUS"].as<float>();
     DEF_AREA_TOL      = ROBOT_RADIUS + 10;
@@ -36,7 +32,7 @@ void load_motion_parameters(YAML::Node* motion_node){
     DRIBBLE_BACK_SPD  = (*motion_node)["DRIBBLE_BACK_SPD"].as<float>() ;
     DRIBBLE_TURN_RATE = (*motion_node)["DRIBBLE_TURN_RATE"].as<float>();
 
-    cout << "--Motion Parameters DONE" << endl;
+    qInfo() << "--Motion Parameters DONE";
 
 
 }

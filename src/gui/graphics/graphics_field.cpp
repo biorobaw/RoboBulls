@@ -10,15 +10,15 @@ GraphicsField::GraphicsField()
 
 
     // default values
-    setX(-( GuiField::fieldHalfLength()-100));
-    setY(-(GuiField::fieldHalfWidth()-100)); // Y seems to be 100 off (?)
+    setX(-( GuiField::halfLength()-100));
+    setY(-(GuiField::halfWidth()-100)); // Y seems to be 100 off (?)
     setZValue(1);
     grid = false;
 }
 
 QRectF GraphicsField::boundingRect() const
 {
-    return QRectF(0,0,GuiField::fieldLength(),GuiField::fieldWidth());
+    return QRectF(0,0,GuiField::length(),GuiField::width());
 }
 
 
@@ -41,7 +41,7 @@ void GraphicsField::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
 
 
     // Mid line
-    QLineF centerLine(GuiField::fieldHalfLength(),0,GuiField::fieldHalfLength(),GuiField::fieldWidth());
+    QLineF centerLine(GuiField::halfLength(),0,GuiField::halfLength(),GuiField::width());
 
     // Center circle
     int centerDiam    = rec.height() / 4;

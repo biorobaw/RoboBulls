@@ -21,22 +21,18 @@ class DefenceArea : public Region
 {
 public:
     /*! Contructor for the defence area
-     * @param team Passing in @c OUR_TEAM will construct the region for our
-     * goalpost. Passing in @c !OUR_TEAM will construct it for the opponent
-     * goalpost. @c OUR_TEAM is defined in "include/config/team.h".
      */
-//    DefenceArea(bool team = !OUR_TEAM);
-    DefenceArea(bool our_team);
+    DefenceArea(int side);
 
     /*! @see Region::contains() */
-    bool contains(const Point &) override;
+    bool contains(const Point&) override;
 
     /*! Modified contains() function that returns true if the input Point
      *  is within @c tolerance distance from the defence area. This is
      *  useful to see if @b any part of a robot is within the defence area
      *  since only the centre of the robot is checked.
      */
-    bool contains(const Point &, const float tolerance);
+    bool contains(Point, const float tolerance);
 
     /*! @see Region::draw() */
     void draw() override;
@@ -56,7 +52,7 @@ public:
      * intercepts the defence area lining. It will be empty if no intercepts
      * exist, and will have at most 2 points.
      */
-    std::vector<Point> lineSegmentIntercepts(const Point& A, const Point& B);
+    std::vector<Point> intersectSegment(Point A, Point B);
 
 
     /*! Tests whether the input line (not segment) passes through the defence area.
@@ -68,13 +64,12 @@ public:
      * intercepts the defence area lining. It will be empty if no intercepts
      * exist, and will have at most 2 points.
      */
-    std::vector<Point> lineIntercepts(const Point& A, const Point& B);
+    std::vector<Point> intersectLine(Point A, Point B);
 
 private:
-    // Consult SSL Rule book for clarification of the following regions
-    Rectangle r;
-    Sector s1, s2;
-    bool our_team;
+    int side_sign; // sign of x coordinates: 1 for positive -1 for negative
+    Rectangle positive_area; // note: storing both areas simplifies some calculations
+    Rectangle area;
 };
 
 #endif // DEFENCEAREA_H

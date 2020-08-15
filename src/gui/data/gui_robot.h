@@ -8,20 +8,21 @@
 
 //Proxy between the gui and the ball
 
-class GuiRobot : public QObject, public Robot
+class GuiRobot : public Robot
 {
     Q_OBJECT
 public:
 
     static GuiRobot* get(int team_id, int robot_id);
+    static void connectWithModel();
 
-    GuiRobot(QObject* parent, int id, int team); // private constructor
+    GuiRobot(QObject* parent, int team, int id); // private constructor
     void update();
 
     // functions for reading game related information
     int     getMoveStatus();
     QString getBehaviorName();
-    bool isControlled();
+    bool    isControlled();
 
     float getOrientationInDegrees();
     QString getOrientationAsString();  // TODO: review usage of this function
@@ -29,16 +30,9 @@ public:
 
     // functions to control the robot from the gui
     void setOverriden(bool new_value); // overrides the robot controller so that it can be controlled by the gui
-    void setGuiTargetVelocity(Point vxy, float angular);
-    void setGuiKickSpeed(int speed = 5000);
-    void setGuiDribble(bool dribble);
-
     bool isOverriden();                // indicates whether the robot is being controlled by the gui
-    Point getGuiTargetVelocity();
-    int   getGuiTargetSpeed();
-    float getGuiTargetAngularSpeed();
-    int   getGuiKickSpeed();
-    bool  getGuiDribble();
+
+
 
 
     // gui related functions to user input
@@ -47,9 +41,7 @@ public:
     static void clearSelected(); // clears the selection
     static GuiRobot* get_selected_robot(); // returns the robot selected by the gui, null if none
 
-
-
-
+    int getFlipXCoordinates();
 
 private:
 
@@ -58,12 +50,7 @@ private:
     QString behaviorName = "";       // stores the current behavior of the robot
 
     // variables to control the robot from the gui
-    Point gui_target_velocity = Point(0,0); // stores the desired velocity of the robot
-    float gui_target_angular_speed = 0;
-    int   gui_kick_speed = 0;
-    bool  gui_dribble = false;
     bool  overriden = true;
-
 
     // data related to gui functions
     static GuiRobot* selected_robot; // pointer to the robot selected by the gui
@@ -71,9 +58,17 @@ private:
 
     Robot* getProxy();
 
+    // redefinition of variable in moving_object.h
+    int flip_x = 1;
+
 
 signals:
     void overridenChanged(bool new_value); // signal emitted when the variable overriden changes value
+    void setGuiTargetVelocity(Point velocity, float angular);
+    void setGuiKickSpeed(int speed = 5000);
+    void setGuiDribble(bool dribble);
+    void setChip(bool chip);
+
     void selectedChanged(GuiRobot*);       // signal emitted when a robot becomes selected or deselected
     void doubleClicked(GuiRobot*);         // signal emitted when a the graphics of a gui robot is double clicked
 

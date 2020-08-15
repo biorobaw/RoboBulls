@@ -131,8 +131,8 @@ void Goalie::perform()
 
         // This is the point along the goal-post closest to the ball
         Point goal_point = Measurements::lineSegmentPoint(robot->getTeam()->getGameState()->getBall()->getPosition(),
-                                                   Point(goalPoint.x, Field::GOAL_WIDTH/2),
-                                                   Point(goalPoint.x, -Field::GOAL_WIDTH/2));
+                                                   Point(goalPoint.x, Field::GOAL_LENGTH/2),
+                                                   Point(goalPoint.x, -Field::GOAL_LENGTH/2));
 
         // This is the point along the line segment ball_point->goal_point closest to the robot
         Point intercept_point = Measurements::lineSegmentPoint(robot->getPosition(),
@@ -183,7 +183,7 @@ bool Goalie::isBallMovingTowardsGoal(std::pair<Point,Point>& lineSegOut)
     lineSegOut = {ballPos, Point(goalPoint.x+ROBOT_RADIUS,y)};
 
     // Is the Y position within the goalie box?
-    return (y > -Field::GOAL_WIDTH/2) && (y < Field::GOAL_WIDTH/2);
+    return (y > -Field::GOAL_LENGTH/2) && (y < Field::GOAL_LENGTH/2);
 }
 
 bool Goalie::botOnBallIsAimedAtOurGoal(Robot* robot, std::pair<Point,Point>& lineSegOut)
@@ -210,7 +210,7 @@ bool Goalie::botOnBallIsAimedAtOurGoal(Robot* robot, std::pair<Point,Point>& lin
     lineSegOut = std::make_pair(ballPos, endPoint);
 
     // If the y coordinate is within the range of the goal then return true
-    return yAtGoalLine > -Field::GOAL_WIDTH/2 && yAtGoalLine < Field::GOAL_WIDTH/2;
+    return yAtGoalLine > -Field::GOAL_LENGTH/2 && yAtGoalLine < Field::GOAL_LENGTH/2;
 }
 
 bool Goalie::isBallReachable()

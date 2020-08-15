@@ -5,10 +5,10 @@ class GuiRobot;
 
 // Graphics element that draws robot labels (id of robot + has ball indicator)
 
-class GraphicsLabel : public QGraphicsItem
+class GraphicsRobotLabel : public QGraphicsItem
 {
 public:
-    GraphicsLabel(int team, int id);
+    GraphicsRobotLabel(int team, int id);
 
     // required QGraphicsItem functions
     QRectF boundingRect() const override;

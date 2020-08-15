@@ -40,7 +40,7 @@ PanelField::PanelField(QWidget *parent) :
     // create robot graphics and their labels
     for(int team=0; team<2; team++)
         for(int robot_id=0; robot_id<MAX_ROBOTS_PER_TEAM; robot_id++){
-            auto label = new GraphicsLabel(team, robot_id );
+            auto label = new GraphicsRobotLabel(team, robot_id );
             scene->addItem(robot_labels_drawers[team][robot_id] = label);
 
             auto robot = new GraphicsRobot(this,team,robot_id,false);

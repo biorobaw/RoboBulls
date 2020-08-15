@@ -55,7 +55,7 @@ bool DribbleBack::perform(Robot* robot)
             cmd.velocity_multiplier = 1;
             cmd.setTarget(move_point,ang_to_ball);
             cmd.avoidBall = cmd.avoidObstacles = false;
-            robot->getPilot()->setNewCommand(cmd);
+            robot->goToPose(cmd);
         }
         break;
     }
@@ -77,9 +77,9 @@ bool DribbleBack::perform(Robot* robot)
         cmd.setTarget(grasp_point,ang_to_ball);
         cmd.avoidBall = cmd.avoidObstacles = false;
         cmd.velocity_multiplier = 0.2;
-        robot->getPilot()->setNewCommand(cmd);
+        robot->goToPose(cmd);
 
-        if(robot->getPilot()->finishedCommand())
+        if(robot->completedGoToPoseCmd())
             state = move_back;
 
         break;

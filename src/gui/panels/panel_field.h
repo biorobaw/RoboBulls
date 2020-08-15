@@ -13,7 +13,7 @@ using std::deque;
 class GraphicsRobot;
 class GraphicsField;
 class GraphicsOutterField;
-class GraphicsLabel;
+class GraphicsRobotLabel;
 class GraphicsLine;
 class GraphicsPoints;
 class GraphicsPolygon;
@@ -56,7 +56,7 @@ private:
     QGraphicsScene*       scene;
     GraphicsBall*         ball_drawer;
     GraphicsRobot*        robot_drawers[2][MAX_ROBOTS_PER_TEAM];
-    GraphicsLabel*        robot_labels_drawers[2][MAX_ROBOTS_PER_TEAM];
+    GraphicsRobotLabel*        robot_labels_drawers[2][MAX_ROBOTS_PER_TEAM];
     GraphicsField*        field_drawer;
     GraphicsOutterField*  outter_field_drawer;
     GraphicsPoints*       point_drawer;

@@ -9,10 +9,10 @@ public:
     GuiField();
     static void updateField();
 
-    static int fieldWidth();
-    static int fieldHalfWidth();
-    static int fieldLength();
-    static int fieldHalfLength();
+    static int width();
+    static int halfWidth();
+    static int length();
+    static int halfLength();
     static int getTeamOnSide(int side);
 
 };

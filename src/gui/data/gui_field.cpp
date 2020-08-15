@@ -8,16 +8,16 @@ GuiField::GuiField()
 
 }
 
-int GuiField::fieldWidth(){
+int GuiField::width(){
     return Field::FIELD_WIDTH;
 }
-int GuiField::fieldHalfWidth(){
+int GuiField::halfWidth(){
     return Field::HALF_FIELD_WIDTH;
 }
-int GuiField::fieldLength(){
+int GuiField::length(){
     return Field::FIELD_LENGTH;
 }
-int GuiField::fieldHalfLength(){
+int GuiField::halfLength(){
     return Field::HALF_FIELD_LENGTH;
 }
 

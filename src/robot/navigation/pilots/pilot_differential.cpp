@@ -3,6 +3,7 @@
 #include "pilot_differential.h"
 #include "robot/robot.h"
 #include <stdexcept>
+#include <QDebug>
 
 PilotDifferential::PilotDifferential(Robot* robot) : Pilot(robot) {
 
@@ -137,7 +138,7 @@ void PilotDifferential::updateIntegralError(Point newTarget)
             sumErrOfQ -= errorQ.front();
             sumErrOfQ += newValues[i];
             if (errorQ.empty())
-                std::cout << "errorQ is empty" << std::endl;
+                qWarning() << "errorQ is empty";
             errorQ.pop_front();
             errorQ.push_back(newValues[i]);
         }

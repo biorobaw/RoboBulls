@@ -26,16 +26,16 @@ void ChallengeBallBot::perform()
 
         float myAng2Opp = Measurements::angleBetween(robot, ballBot);
         auto cmd = CmdGoToPose(target,myAng2Opp);
-        robot->getPilot()->setNewCommand(cmd);
+        robot->goToPose(cmd);
     }
     else
     {
         //Case to stop robot from floating
 //        std::cout << "stop" << std::endl;
         auto cmd = CmdGoToPose(robot->getPosition());
-        robot->getPilot()->setNewCommand(cmd);
+        robot->goToPose(cmd);
     }
-    done = robot->getPilot()->finishedCommand();
+    done = robot->completedGoToPoseCmd();
 }
 
 bool ChallengeBallBot::isFinished() {

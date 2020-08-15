@@ -2,17 +2,14 @@
 
 #include "ssl_vision_listener.h"
 #include "model/game_state.h"
-#include "utilities/my_kalman_filter.h"
 #include "model/ball.h"
 #include "model/field.h"
-#include "yaml-cpp/yaml.h"
-#include "robot/robot.h"
-#include "model/game_state.h"
 #include "model/team.h"
-#include <QThread>
-#include <QCoreApplication>
+#include "robot/robot.h"
 
-using namespace std;
+#include <QThread>
+#include "utilities/my_yaml.h"
+#include "utilities/my_kalman_filter.h"
 
 
 // Sets the minimum confidence to consider a ball reading as valid
@@ -20,26 +17,31 @@ using namespace std;
 #define ROBOT_CONFIDENCE_THRESHOLD 0.90
 
 SSLVisionListener* SSLVisionListener::instance = nullptr;
-
+QThread* SSLVisionListener::thread = nullptr;
 
 SSLVisionListener::SSLVisionListener( YAML::Node* comm_node)
 {
 
     qInfo() << "--VISION";
-    qInfo() << "        VISION_ADDR : " << (*comm_node)["VISION_ADDR"].Scalar().c_str();
-    qInfo() << "        VISION_PORT : " << (*comm_node)["VISION_PORT"].Scalar().c_str();
-    qInfo() << "        FOUR_CAMERA : " << (*comm_node)["FOUR_CAMERA"].Scalar().c_str();
+    qInfo() << "        VISION_ADDR :" << (*comm_node)["VISION_ADDR"].Scalar().c_str();
+    qInfo() << "        VISION_PORT :" << (*comm_node)["VISION_PORT"].Scalar().c_str();
+    qInfo() << "        FOUR_CAMERA :" << (*comm_node)["FOUR_CAMERA"].Scalar().c_str();
 
-    vision_addr = (*comm_node)["VISION_ADDR"].as<string>().c_str();
-    vision_port = (*comm_node)["VISION_PORT"].as<int>();
+    net_addr = (*comm_node)["VISION_ADDR"].as<string>().c_str();
+    net_port = (*comm_node)["VISION_PORT"].as<int>();
     num_cameras = (*comm_node)["FOUR_CAMERA"].as<bool>() ? 4 : 2;
 
     kfilter = new MyKalmanFilter();
 
     restart_socket();
 
+    thread = new QThread;
+    this->moveToThread(thread);
+    connect(thread, &QThread::finished, this, &QObject::deleteLater);
+
     instance = this;
-    qInfo() << "--Vision DONE";
+    qInfo() << "--Vision DONE - thread: " << thread;
+    thread->start();
 
 
 }
@@ -47,12 +49,12 @@ SSLVisionListener::SSLVisionListener( YAML::Node* comm_node)
 void SSLVisionListener::restart_socket(){
     if(socket->isOpen()) socket->close();
 
-    if(!socket->bind(QHostAddress::AnyIPv4, vision_port, QUdpSocket::ShareAddress)){
-        qFatal("ERROR: could not bind refbox port %d", vision_port);
+    if(!socket->bind(QHostAddress::AnyIPv4, net_port, QUdpSocket::ShareAddress)){
+        qFatal("ERROR: could not bind refbox port %d", net_port);
     }
 
-    if(!socket->joinMulticastGroup(QHostAddress(vision_addr ))){
-        qFatal("ERROR: ssl-refbox could not join multicast group %s", vision_addr.toUtf8().constData());
+    if(!socket->joinMulticastGroup(QHostAddress(net_addr ))){
+        qFatal("ERROR: ssl-refbox could not join multicast group %s", net_addr.toUtf8().constData());
     }
 
     connect(socket, &QUdpSocket::readyRead, this, &SSLVisionListener::process_package);
@@ -66,7 +68,9 @@ SSLVisionListener::~SSLVisionListener(){
         delete kfilter;
         kfilter = nullptr;
     }
-    instance == nullptr;
+    thread->exit();
+    thread->wait();
+    instance = nullptr;
 }
 
 
@@ -124,12 +128,12 @@ void SSLVisionListener::recieveBall(const SSL_DetectionFrame& frame)
         isGoodDetection(detection->x(),detection->y(),frame.camera_id()))
     {
         kfilter->newObservation(Point(detection->x(),detection->y()));
-        game_state_mutex.lock();
-            ball.position = kfilter->getPosition();
+        mutex.lock();
+            ball = kfilter->getPosition();
             ball.velocity = kfilter->getVelocity();
             ball.in_field = true;
             ball.time_stamp = frame.t_capture();
-        game_state_mutex.unlock();
+        mutex.unlock();
 
     }
 }
@@ -146,8 +150,6 @@ void SSLVisionListener::recieveRobotTeam(const SSL_DetectionFrame& frame, int wh
     int*  num_detections    = robot_detection_counts[which_team];
     float time = frame.t_capture();
     
-//    cout << "frame number, time: "<< frame.frame_number() - f << " , " << time << endl;
-
     for(const SSL_DetectionRobot& detection : *teamDetection)
     {
         if( detection.confidence() > ROBOT_CONFIDENCE_THRESHOLD &&
@@ -156,7 +158,7 @@ void SSLVisionListener::recieveRobotTeam(const SSL_DetectionFrame& frame, int wh
             int robotID = detection.robot_id();
 
 
-            game_state_mutex.lock();
+            mutex.lock();
 
                 auto& robot =  robots[which_team][robotID];
 
@@ -171,16 +173,16 @@ void SSLVisionListener::recieveRobotTeam(const SSL_DetectionFrame& frame, int wh
                     if(was_in_field){
                         float delta_t = time - robot.time_stamp;
                         if(delta_t > 0){
-                            robot.velocity = (newPosition - robot.position)/delta_t;
+                            robot.velocity = (newPosition - robot)/delta_t;
                             robot.angular_speed = (detection.orientation()-robot.orientation)/delta_t;
                         }
                     }
 
-                    robot.position = newPosition;
+                    robot = newPosition;
                     robot.orientation = detection.orientation();
                     robot.time_stamp = time;
                 }
-            game_state_mutex.unlock();
+            mutex.unlock();
         }
     }
 
@@ -188,9 +190,6 @@ void SSLVisionListener::recieveRobotTeam(const SSL_DetectionFrame& frame, int wh
 
 
 void SSLVisionListener::process_package(){
-//    if(socket == nullptr || socket->isOpen()) { // should be !socket->isOpen(), but doesnt work if negating
-//        return;
-//    }
     QByteArray datagram;
 
     while(socket->hasPendingDatagrams()){
@@ -221,16 +220,16 @@ void SSLVisionListener::process_package(){
 
 void SSLVisionListener::copyState(GameState* state){
     if(instance==nullptr) return;
-    instance->game_state_mutex.lock();
+    instance->mutex.lock();
         // copy ball state
-        *(MovingObject*)state->ball = instance->ball;
+        state->ball->copyFromSSLVision(&instance->ball);
 
         //copy robot states
         for(int i=0; i<2; i++)
             for(int j=0; j<MAX_ROBOTS_PER_TEAM; j++)
-                *(MovingObject*)state->robots[i][j] = instance->robots[i][j];
+                state->robots[i][j]->copyFromSSLVision(&instance->robots[i][j]);
 
-    instance->game_state_mutex.unlock();
+    instance->mutex.unlock();
 }
 
 

@@ -22,25 +22,25 @@ using std::cout, std::endl;
 
 // ======= CONSTRUCTOR AND DATA UPDATER =====================
 
-GameState::GameState(){
-    referee_command  = Referee_Command_HALT; //The current state of the game from RefComm
-    referee_command_previous  = Referee_Command_HALT;
-
+GameState::GameState(QObject* parent) :
+    QObject(parent),
+    ball(new Ball),
+    referee_command(Referee_Command_HALT),
+    referee_command_previous(Referee_Command_HALT)
+{
     for(int i=0; i<2; i++)
-        for(int j=0; j<MAX_ROBOTS_PER_TEAM; j++)
+        for(int j=0; j<MAX_ROBOTS_PER_TEAM; j++){
             robots[i][j] = new Robot(i,j);
-    ball = new Ball();
+            robots[i][j]->setParent(this);
+        }
 
 }
 
 GameState::~GameState(){
-    for(int i=0; i<2; i++)
-        for(int j=0; j<MAX_ROBOTS_PER_TEAM; j++)
-            delete robots[i][j];
     delete ball;
 }
 
-void GameState::update(){
+void GameState::update(bool flip_x_coordinates){
     SSLVisionListener::copyState(this);
     SSLGameControllerListener::copyState(this);
 
@@ -113,10 +113,12 @@ void GameState::setRobotWithBall(){
         if(!robot_with_ball || (!hasBall(robot_with_ball) && ++lastSeenWithoutBallCount > 10))
         {
             lastSeenWithoutBallCount = 0;
+            if(robot_with_ball) robot_with_ball->setHasBall(false);
             robot_with_ball = nullptr;
             for(Robot* r : all_robots_in_field){
                 if(hasBall(r)){
                     robot_with_ball = r;
+                    r->setHasBall(true);
                     return;
                 }
             }
@@ -138,5 +140,12 @@ void GameState::clearRefereeCommandChanged(){
 
 bool GameState::hasRefereeCommandChanged(){
     return referee_command_changed;
+}
+
+void GameState::setFlipXCoorinates(bool flip_x){
+    ball->setFlipXCoordinates(flip_x);
+    for(int i=0; i<2; i++)
+        for(int j=0; j<MAX_ROBOTS_PER_TEAM; j++)
+            robots[i][j]->setFlipXCoordinates(flip_x);
 }
 

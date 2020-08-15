@@ -6,7 +6,7 @@
 using std::cout, std::endl;
 
 
-GraphicsLabel::GraphicsLabel(int team, int id) : robot(GuiRobot::get(team,id)) {
+GraphicsRobotLabel::GraphicsRobotLabel(int team, int id) : robot(GuiRobot::get(team,id)) {
     int radius = boundingRect().width() / 2;
     setTransformOriginPoint(radius,radius);
     setScale(2.5);
@@ -18,13 +18,13 @@ GraphicsLabel::GraphicsLabel(int team, int id) : robot(GuiRobot::get(team,id)) {
 }
 
 
-QRectF GraphicsLabel::boundingRect() const
+QRectF GraphicsRobotLabel::boundingRect() const
 {
     const int diameter = 200;
     return QRectF(0,0,diameter,diameter);
 }
 
-void GraphicsLabel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void GraphicsRobotLabel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(widget);
     Q_UNUSED(option);

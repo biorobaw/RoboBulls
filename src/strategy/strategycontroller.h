@@ -1,6 +1,8 @@
 #ifndef STRATEGYCONTROLLER_H
 #define STRATEGYCONTROLLER_H
-#include <string>
+
+#include <QObject>
+
 
 namespace YAML {
     class Node;
@@ -8,6 +10,7 @@ namespace YAML {
 
 class Strategy;
 class RobotTeam;
+class GameState;
 enum Referee_Command : int;
 
 #define UNINITIALIZED_STATE -1
@@ -24,22 +27,26 @@ enum Referee_Command : int;
  * each robot’s current Behavior, and is the routine that actually
  * uses the RobComm to sent the velocities to the robots for a frame. */
 
-class StrategyController
-{
-public:
-    static StrategyController* loadController(RobotTeam* team, YAML::Node*);
 
-    StrategyController(RobotTeam*, YAML::Node*);
+class StrategyController : public QObject
+{
+    Q_OBJECT
+public:
+
+    static StrategyController* loadController(RobotTeam* team, YAML::Node*);
     virtual ~StrategyController();
 
-    /*! Runs the team controller updating the current game strategy.
-     * Called by SSL Vision when next frame of each camera is available.  */
-    void run();
-    void signalNewCommand();
+    QString getStrategyName();
 
-    std::string getStrategyName();
+    void runControlCycle(GameState* game_state);
+
+public slots:
+    void setPause(bool pause = true);
+    void resume();
+
 
 protected:
+    StrategyController(RobotTeam*, YAML::Node*);
     virtual int getControllerState(Referee_Command command) = 0;
     virtual int getNextControllerState(int current_state,int strategy_status) = 0;
     virtual Strategy* loadStateStrategy(int state) = 0;
@@ -48,8 +55,9 @@ protected:
     
 private:
     Strategy*  activeStrategy = nullptr;
-    bool received_new_command = false;
     int controller_state = UNINITIALIZED_STATE;
+    bool is_paused = true;
+
 };
 
 #endif // STRATEGYCONTROLLER_H

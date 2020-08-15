@@ -2,6 +2,24 @@
 #include <sstream>
 #include "point.h"
 #include <math.h>
+#include <QDebug>
+
+
+QDebug operator<<(QDebug debug, const Point& p){
+    QDebugStateSaver saver(debug);
+    debug.nospace() << "(" << p.x << "," << p.y << ")";
+    return debug;
+}
+
+
+Point::Point(const Point& p){
+    x = p.x;
+    y = p.y;
+}
+
+Point::~Point(){
+
+}
 
 bool Point::operator==(const Point& rhs)
 {
@@ -79,6 +97,19 @@ float Point::norm2(){
 float Point::norm(){
     return sqrt(x*x+y*y);
 }
+
+
+float Point::dot(const Point& rhs){
+    return x*rhs.x + y*rhs.y;
+}
+float Point::wedge(const Point& rhs){
+    return x*rhs.y - y*rhs.x;
+}
+
+Point Point::perpen(){
+    return Point(-y,x);
+}
+
 
 /*! @brief Returns a string representation of the Point
  *  Example: "(x, y) = (543.0, -1123.8)" */

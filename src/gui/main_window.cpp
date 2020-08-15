@@ -88,35 +88,35 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
 
     if (robot != nullptr) {
 
-        switch(event->key()) {
+        int flip_x = robot->getFlipXCoordinates();
+        if(robot->isOverriden()) switch(event->key()) {
             // Robot control bindings
             case Qt::Key_W:
             case Qt::UpArrow:
-                robot->setGuiTargetVelocity(Point(250,0),0);
+                emit robot->setGuiTargetVelocity(Point(flip_x*250,0),0);
                 break;
             case Qt::Key_S:
             case Qt::DownArrow:
-                robot->setGuiTargetVelocity(Point(-250,0),0);
+                emit robot->setGuiTargetVelocity(Point(-flip_x*250,0),0);
                 break;
             case Qt::Key_A:
             case Qt::LeftArrow:
-                robot->setGuiTargetVelocity(Point(0,0),3.1415/2);
+                emit robot->setGuiTargetVelocity(Point(0,0),flip_x*3.1415/2);
                 break;
             case Qt::Key_D:
             case Qt::RightArrow:
-                robot->setGuiTargetVelocity(Point(0,0),-3.1415/2);
+                emit robot->setGuiTargetVelocity(Point(0,0),-flip_x*3.1415/2);
                 break;
             case Qt::Key_Space:
-                robot->setGuiKickSpeed();
+                emit robot->setGuiKickSpeed();
                 break;
             case Qt::Key_Shift:
-                robot->setGuiDribble(true);
-                break;
-            // Remove selection from bot
-            case Qt::Key_Escape:
-                GuiRobot::clearSelected();
+                emit robot->setGuiDribble(true);
                 break;
         }
+
+        if(event->key() == Qt::Key_Escape)
+            GuiRobot::clearSelected();
     }
 
     switch(event->key()) {
@@ -169,19 +169,19 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event) {
     // Robot binds
     auto robot = GuiRobot::get_selected_robot();
 
-    if ( robot != nullptr) {
+    if ( robot != nullptr && robot->isOverriden()) {
         switch(event->key()) {
             case Qt::Key_W:
             case Qt::Key_A:
             case Qt::Key_S:
             case Qt::Key_D:
-                robot->setGuiTargetVelocity(Point(0,0),0);
+                emit robot->setGuiTargetVelocity(Point(0,0),0);
                 break;
             case Qt::Key_Space:
-                robot->setGuiKickSpeed(0);
+                emit robot->setGuiKickSpeed(0);
                 break;
             case Qt::Key_Shift:
-                robot->setGuiDribble(false);
+                emit robot->setGuiDribble(false);
                 break;
         }
     }

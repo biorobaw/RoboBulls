@@ -19,10 +19,6 @@ GraphicsRobot::GraphicsRobot(QObject* parent, int team, int id, bool is_icon) :
 }
 
 
-
-
-
-
 QRectF GraphicsRobot::boundingRect() const
 {
     int diameter = 200;

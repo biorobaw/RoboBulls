@@ -88,7 +88,7 @@ DefendState* DefendState::action(Robot* robot)
          * always point torwards the middle. (Not really though)
          */
         static const float dAngle = 10 * (M_PI/180);
-        static int coeffs[] = {Field::DEF_AREA_RADIUS+5*ROBOT_RADIUS, Field::DEF_AREA_RADIUS+3*ROBOT_RADIUS, Field::DEF_AREA_RADIUS+3*ROBOT_RADIUS};
+        static int coeffs[] = {Field::DEF_AREA_WIDTH+5*ROBOT_RADIUS, Field::DEF_AREA_WIDTH+3*ROBOT_RADIUS, Field::DEF_AREA_WIDTH+3*ROBOT_RADIUS};
         static int o_coeffs[] = {0, 1, -1};
         float a = Measurements::angleBetween(gl, bp);
 
@@ -241,7 +241,9 @@ DefendState* DSIdle::action(Robot* robot)
          * "If the ball is close AND nobody is kicking AND I'm closest to ball...
          * "AND the ball near the goal AND the ball is not moving away..." Kick it.
          */
-        Rectangle our_half(-Field::HALF_FIELD_LENGTH, -Field::HALF_FIELD_WIDTH, 0, Field::HALF_FIELD_WIDTH);
+        int goal_x = robot->getTeam()->getSide() == FIELD_SIDE_POSITIVE ?
+                    Field::HALF_FIELD_LENGTH : -Field::HALF_FIELD_LENGTH;
+        Rectangle our_half(goal_x, -Field::HALF_FIELD_WIDTH, 0, Field::HALF_FIELD_WIDTH);
         DefenceArea our_da(TEAM_DEFFENCE_AREA);
 
         if( our_half.contains(bp)

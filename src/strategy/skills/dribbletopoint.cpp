@@ -55,7 +55,7 @@ bool DribbleToPoint::perform(Robot* robot)
         {
             cmd.setTarget(bp,ang_to_ball);
             cmd.avoidBall = false;
-            robot->getPilot()->setNewCommand(cmd);
+            robot->goToPose(cmd);
         }
         break;
     }
@@ -82,8 +82,8 @@ bool DribbleToPoint::perform(Robot* robot)
         cmd.setTarget(grasp_point,ang_to_ball);
         cmd.avoidBall = false;
         cmd.velocity_multiplier = 0.3;
-        robot->getPilot()->setNewCommand(cmd);
-        if(robot->getPilot()->finishedCommand())
+        robot->goToPose(cmd);
+        if(robot->completedGoToPoseCmd())
             state = move_to_target;
 
         break;
@@ -113,7 +113,7 @@ bool DribbleToPoint::perform(Robot* robot)
         cmd.velocity_multiplier = 1;
         cmd.setTarget(*target, ang_to_target);
         cmd.avoidBall = false;
-        robot->getPilot()->setNewCommand(cmd);
+        robot->goToPose(cmd);
         break;
     }
     case adjust1:
@@ -128,10 +128,10 @@ bool DribbleToPoint::perform(Robot* robot)
         cmd.velocity_multiplier = 1;
         cmd.setTarget(adjust_point, ang_to_ball);
         cmd.avoidBall = true;
-        robot->getPilot()->setNewCommand(cmd);
+        robot->goToPose(cmd);
 
 
-        if(robot->getPilot()->finishedCommand())
+        if(robot->completedGoToPoseCmd())
             state = adjust2;
 
         break;
@@ -148,10 +148,10 @@ bool DribbleToPoint::perform(Robot* robot)
         cmd.velocity_multiplier = 1;
         cmd.setTarget(adjust_point, ang_to_ball);
         cmd.avoidBall = true;
-        robot->getPilot()->setNewCommand(cmd);
+        robot->goToPose(cmd);
 
 
-        if(robot->getPilot()->finishedCommand()
+        if(robot->completedGoToPoseCmd()
         || Measurements::distance(rp, bp) > ROBOT_RADIUS*3)
             state = move_to_ball;
 

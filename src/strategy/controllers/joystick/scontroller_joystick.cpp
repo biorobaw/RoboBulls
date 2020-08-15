@@ -2,12 +2,11 @@
 #include "strategy/strategy.h"
 
 #include <QtConcurrent/QtConcurrent>
-#include "yaml-cpp/yaml.h"
+#include "utilities/my_yaml.h"
 #include "model/team.h"
 #include "robot/robot.h"
 
-#include <iostream>
-using std::cout, std::endl, std::cerr;
+#include <QDebug>
 
 #define SLOW_MULT 0.2    // Multiplier for slow-mode
 #define MAX_ANGUAR 3.14  // 2pi radians per second
@@ -22,10 +21,10 @@ SControllerJoystick::SControllerJoystick(RobotTeam* _team, YAML::Node* n)
   : StrategyController(_team, n)
 {
     auto node_map = (*n)["JOY_TO_ROBOT_MAP"];
-    std::cout << "            JOY_TO_ROBOT_MAP  : " <<std::endl;
+    qInfo() << "            JOY_TO_ROBOT_MAP  : ";
     for(auto it : node_map){
-        cout << "                - ROBOT : " << it["ROBOT"] << endl
-             << "                  JOY   : " << it["JOY"] << endl;
+        qInfo() << "                - ROBOT :" << it["ROBOT"];
+        qInfo() << "                  JOY   :" << it["JOY"]  ;
         map_joystick(it["JOY"].as<int>(),team->getColor(),it["ROBOT"].as<int>());
     }
 
@@ -65,8 +64,8 @@ void SControllerJoystick::map_joystick(int joy_id, int team_id, int robot_id)
 {
     // make sure we got a valid team_id
     if(team_id!=ROBOT_TEAM_BLUE && team_id!=ROBOT_TEAM_YELLOW){
-        cerr << "ERROR: team can only be " << ROBOT_TEAM_BLUE << " for the blue team" << endl
-             << "                     or " << ROBOT_TEAM_YELLOW << " for the yellow team" << endl;
+        qWarning() << "ERROR: team can only be" << ROBOT_TEAM_BLUE << " for the blue team";
+        qWarning() << "                     or" << ROBOT_TEAM_YELLOW << " for the yellow team";
         return;
     }
 
@@ -74,8 +73,9 @@ void SControllerJoystick::map_joystick(int joy_id, int team_id, int robot_id)
     JoyStick* aux = JoyStick::load_joystick(joy_id);
     if(aux!= nullptr) {
         map.insert(new MapEntry(team_id,robot_id,aux));
-        cerr << "Joystick \"" << SDL_JoystickNameForIndex(joy_id) << "\" mapped to "
-                  << robot_id << " from team " << team_id <<std::endl;
+        qWarning().nospace()
+                << "Joystick \"" << SDL_JoystickNameForIndex(joy_id) << "\" mapped to "
+                << robot_id << " from team " << team_id << endl;
     }
 
 }
@@ -83,7 +83,7 @@ void SControllerJoystick::map_joystick(int joy_id, int team_id, int robot_id)
 void SControllerJoystick::map_joystick_fun(const std::vector<std::string>& args)
 {
     if(args.size() != 3) {
-        std::cerr << "Usage: mapjoy <joy-id> <team> <rob-id>";
+        qWarning() << "Usage: mapjoy <joy-id> <team> <rob-id>";
         return;
     }
 
@@ -100,9 +100,10 @@ void SControllerJoystick::print_joymap(const std::vector<std::string>& args)
 {
     (void) args;
     for(auto& entry : map){
-        cout << entry->joy->getJoyId() << ": \"" << entry->joy->getJoyName()
-             << "\" connected to robot " << entry->robot_id
-             << " from team " <<entry->team_id << endl;
+        qInfo().nospace()
+            << entry->joy->getJoyId() << ": \"" << entry->joy->getJoyName().c_str()
+            << "\" connected to robot " << entry->robot_id
+            << " from team " <<entry->team_id << endl;
     }
 }
 
@@ -147,10 +148,6 @@ void SControllerJoystick::perform_commands(){
     for(MapEntry* entry : map){
         auto r = teams[entry->team_id]->getRobot(entry->robot_id);
         if(r==nullptr) continue;
-
-//        cerr << "joy: " << joy->getSlowMode() << " " << joy->getKick() << " "
-//             << joy->getDribble() << " "
-//             << joy->getAxisUp() << " " << joy->getAxisSide() << " " << joy->getAxisRotate() << endl;
 
         // Calculate velocities to set
         JoyStick* joy = entry->joy;

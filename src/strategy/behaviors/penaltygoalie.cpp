@@ -26,8 +26,10 @@ void PenaltyGoalie::perform()
     }
 
     // Define line segment along which goalie is allowed to move
-    Point p1 = Point(-Field::HALF_FIELD_LENGTH + ROBOT_RADIUS, -Field::GOAL_WIDTH/2 - 50);
-    Point p2 = Point(-Field::HALF_FIELD_LENGTH + ROBOT_RADIUS,  Field::GOAL_WIDTH/2 + 50);
+    int goalie_x = Field::HALF_FIELD_LENGTH - ROBOT_RADIUS;
+    if(robot->getTeam()->getSide() == FIELD_SIDE_NEGATIVE) goalie_x = - goalie_x;
+    Point p1 = Point(goalie_x, -Field::GOAL_LENGTH/2 - 50);
+    Point p2 = Point(goalie_x,  Field::GOAL_LENGTH/2 + 50);
 
     // Line Intercept of kicker->bp and p1->p2
     // https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection
@@ -46,7 +48,7 @@ void PenaltyGoalie::perform()
     }
     else
     {
-        x4 = gp.x + Field::DEF_AREA_RADIUS;
+        x4 = gp.x + Field::DEF_AREA_WIDTH;
         y4 = 0;
     }
 
@@ -65,11 +67,11 @@ void PenaltyGoalie::perform()
         float Py = Py_num/dem;
         float Px = Px_num/dem;
 
-        if(Py < Field::GOAL_WIDTH/2 && Py > -Field::GOAL_WIDTH/2)
+        if(Py < Field::GOAL_LENGTH/2 && Py > -Field::GOAL_LENGTH/2)
             block_point = Point(Px, Py);
     }
 
-    GuiInterface::getGuiInterface()->drawLine(block_point, bp);
+//    GuiInterface::getGuiInterface()->drawLine(block_point, bp);
 
     cmd.velocity_multiplier = 1.5;
     cmd.setTarget(block_point, angleToBall);
