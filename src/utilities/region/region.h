@@ -1,7 +1,7 @@
 #ifndef REGION_H
 #define REGION_H
 #include "utilities/point.h"
-#include "gui/gui_interface.h"
+#include "gui/interface/gui_interface.h"
 
 /*! @file
  * Region is an abstract class to define a 2D region on the field.

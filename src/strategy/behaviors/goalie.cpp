@@ -7,7 +7,7 @@
 
 Goalie::Goalie(Robot* r)
     : GenericMovementBehavior(robot)
-    , goalPoint(Field::getGoalPosition(r->getTeam()->getSide()))
+    , goalPoint(Field::getGoalPosition(OUR_SIDE))
     , idlePoint(goalPoint + Point(ROBOT_RADIUS+50,0))
     , kick_skill(nullptr)
     , def_area(TEAM_DEFFENCE_AREA)

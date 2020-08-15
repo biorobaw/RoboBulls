@@ -40,7 +40,7 @@ void IndirectKickStrategy::assignBehaviors()
         for(Robot* rob : team->getRobots())
             rob->clearBehavior();
 
-        auto opponent_goal = Field::getGoalPosition(team->getOpponentSide());
+        auto opponent_goal = Field::getGoalPosition(OPPONENT_SIDE);
         if(attack1)
         {
             attack1->assignSkill<Skill::KickToPointOmni>(opponent_goal);

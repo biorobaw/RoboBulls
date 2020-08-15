@@ -159,7 +159,7 @@ void AttackSupport::calcStaticProb()
 {
     // Calculate the static probility of scoring from each point
     // in the probability field based on fixed factors
-    Point opp_goal = Field::getGoalPosition(robot->getTeam()->getSide());
+    Point opp_goal = Field::getGoalPosition(OPPONENT_SIDE);
     float w_dist = 2.0, w_ang = 1.0;    // Relative weights
     float dist = 0.0, angle = 0.0;
     float temp_p = 0.0;
@@ -221,7 +221,7 @@ void AttackSupport::calcDynamicProb()
 
 void AttackSupport::genGoalShadows()
 {
-    auto gp = Field::getGoalPosition(robot->getTeam()->getOpponentSide());
+    auto gp = Field::getGoalPosition(OPPONENT_SIDE);
     // Top end of goal post
     float g1x = gp.x;
     float g1y = gp.y + Field::GOAL_LENGTH/2;
@@ -445,7 +445,7 @@ std::vector<std::vector<Point>> AttackSupport::genClusters()
 
 void AttackSupport::genGoalShotAvoidance()
 {
-    auto gp = Field::getGoalPosition(robot->getTeam()->getOpponentSide());
+    auto gp = Field::getGoalPosition(OPPONENT_SIDE);
     // Top end of goal post
     float g1x = gp.x;
     float g1y = gp.y + Field::GOAL_LENGTH/2 + ROBOT_RADIUS + 500;

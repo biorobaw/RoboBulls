@@ -6,6 +6,7 @@ class MovingObject : public Point // inherits x y coordinates + all operations w
 {
 public:
     MovingObject();
+    virtual ~MovingObject();
     void copyFromSSLVision(MovingObject* object); // use this only from ssl vision
 
     bool isInField();

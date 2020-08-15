@@ -16,6 +16,10 @@ MovingObject::MovingObject()
 
 }
 
+MovingObject::~MovingObject(){
+
+}
+
 
 void MovingObject::copyFromSSLVision(MovingObject* object){
     in_field      = object->in_field;

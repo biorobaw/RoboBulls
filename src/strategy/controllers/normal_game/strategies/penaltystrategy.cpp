@@ -22,7 +22,7 @@ void PenaltyStrategy::assignBehaviors()
         // One of the defenders will take the penalty and move back
         Robot* kicker = team->getRobotByRole(RobotRole::DEFEND1);
         if(kicker){
-            auto opponent_goal = Field::getGoalPosition(team->getOpponentSide());
+            auto opponent_goal = Field::getGoalPosition(OPPONENT_SIDE);
             kicker->assignBeh<GenericMovementBehavior>(Point(opponent_goal - Point(1300,0)), 0);
         }
 
@@ -47,7 +47,7 @@ void PenaltyStrategy::assignBehaviors()
     // If we are on the receiving end of a penalty kick
     else
     {
-        auto gp = Field::getGoalPosition(team->getSide());
+        auto gp = Field::getGoalPosition(OUR_SIDE);
         // All robots move behind the 400mm mark
         for(Robot* robot: team->getRobots())
         {

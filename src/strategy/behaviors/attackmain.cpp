@@ -164,7 +164,7 @@ void AttackMain::calcStaticProb()
 {
     // Calculate the static probility of scoring from each point
     // in the probability field based on fixed factors
-    Point opp_goal = Field::getGoalPosition(robot->getTeam()->getOpponentSide());
+    Point opp_goal = Field::getGoalPosition(OPPONENT_SIDE);
     float w_dist = 2.0, w_ang = 1.0;    // Relative weights
     float dist = 0.0, angle = 0.0;
     float temp_p = 0.0;
@@ -215,7 +215,7 @@ void AttackMain::calcDynamicProb()
         for(int y = 0; y < PF_WIDTH_MAIN; ++y)
             prob_field[x][y].dynamic_val = 0;
 
-    auto gp = Field::getGoalPosition(robot->getTeam()->getOpponentSide());
+    auto gp = Field::getGoalPosition(OPPONENT_SIDE);
     // Top end of goal post
     float A1 = gp.x;
     float B1 = gp.y + Field::GOAL_LENGTH/2;
@@ -332,7 +332,7 @@ std::pair<bool, Point> AttackMain::calcBestGoalPoint()
     // Sample a number of points along opp goal and generate clusters of clear shot points
     for(int goal_y = -Field::GOAL_LENGTH/2+Field::BALL_RADIUS+10; goal_y <= Field::GOAL_LENGTH/2-Field::BALL_RADIUS-10; goal_y += 10)
     {
-        auto gp = Field::getGoalPosition(robot->getTeam()->getOpponentSide());
+        auto gp = Field::getGoalPosition(OPPONENT_SIDE);
         Point target = gp + Point(0, goal_y);
         bool clear_shot = true;
 

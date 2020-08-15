@@ -4,7 +4,7 @@
 #include "genericmovementbehavior.h"
 #include "utilities/region/defencearea.h"
 #include "utilities/comparisons.h"
-#include "gui/gui_interface.h"
+#include "gui/interface/gui_interface.h"
 #include "../skills/kicktopointomni.h"
 
 /*!

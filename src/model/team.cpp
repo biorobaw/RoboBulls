@@ -7,7 +7,7 @@
 #include "strategy/strategycontroller.h"
 #include "utilities/my_yaml.h"
 
-#include "gui/gui_interface.h"
+#include "gui/interface/gui_interface.h"
 
 #include <algorithm>
 #include <assert.h>
@@ -117,16 +117,6 @@ QString RobotTeam::getTeamControllerName(){
 
 QString RobotTeam::getStrategyName(){
     return controller!=nullptr ? controller->getStrategyName() : "none";
-}
-
-int RobotTeam::getSide(){
-    return side;
-}
-
-int RobotTeam::getOpponentSide(){
-    return side == FIELD_SIDE_NEGATIVE ?
-                FIELD_SIDE_POSITIVE :
-                FIELD_SIDE_NEGATIVE;
 }
 
 

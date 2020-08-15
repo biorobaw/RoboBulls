@@ -9,6 +9,7 @@ class Ball : public MovingObject {
 public:
 
 //    static Ball ball;
+    virtual ~Ball();
 
     /*! @brief TODO: implement this (currently not implemented)
      * Return a predicted stopping point for the ball

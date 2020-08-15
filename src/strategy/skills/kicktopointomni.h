@@ -3,7 +3,7 @@
 #include "utilities/point.h"
 #include "../skill.h"
 #include "robot/navigation/commands/CmdGoToPose.h"
-#include "gui/gui_interface.h"
+#include "gui/interface/gui_interface.h"
 
 namespace Skill
 {

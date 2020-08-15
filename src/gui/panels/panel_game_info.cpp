@@ -1,8 +1,7 @@
 #include "panel_game_info.h"
-#include "gui/data/gui_ball.h"
-#include "gui/data/gui_ball.h"
+#include "gui/interface/data/gui_ball.h"
 #include "gui/graphics/graphics_ball.h"
-#include "gui/data/gui_game_state.h"
+#include "gui/interface/data/gui_game_state.h"
 #include "model/constants.h"
 
 PanelGameInfo::PanelGameInfo(QWidget *parent) :

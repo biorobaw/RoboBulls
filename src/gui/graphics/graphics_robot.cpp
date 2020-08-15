@@ -1,6 +1,6 @@
 #define _USE_MATH_DEFINES
 #include "graphics_robot.h"
-#include "gui/data/gui_robot.h"
+#include "gui/interface/data/gui_robot.h"
 #include <QPainter>
 
 

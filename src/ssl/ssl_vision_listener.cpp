@@ -132,7 +132,7 @@ void SSLVisionListener::recieveBall(const SSL_DetectionFrame& frame)
             ball = kfilter->getPosition();
             ball.velocity = kfilter->getVelocity();
             ball.in_field = true;
-            ball.time_stamp = frame.t_capture();
+            ball.time_stamp = time_stamp;
         mutex.unlock();
 
     }
@@ -148,7 +148,7 @@ void SSLVisionListener::recieveRobotTeam(const SSL_DetectionFrame& frame, int wh
     // get robot dection of team and detection counts
     auto* teamDetection = which_team == ROBOT_TEAM_YELLOW ? &frame.robots_yellow() : &frame.robots_blue();
     int*  num_detections    = robot_detection_counts[which_team];
-    float time = frame.t_capture();
+
     
     for(const SSL_DetectionRobot& detection : *teamDetection)
     {
@@ -171,7 +171,7 @@ void SSLVisionListener::recieveRobotTeam(const SSL_DetectionFrame& frame, int wh
 
                     // if robot was already in field, calculate time derivatives
                     if(was_in_field){
-                        float delta_t = time - robot.time_stamp;
+                        float delta_t = time_stamp - robot.time_stamp;
                         if(delta_t > 0){
                             robot.velocity = (newPosition - robot)/delta_t;
                             robot.angular_speed = (detection.orientation()-robot.orientation)/delta_t;
@@ -180,7 +180,7 @@ void SSLVisionListener::recieveRobotTeam(const SSL_DetectionFrame& frame, int wh
 
                     robot = newPosition;
                     robot.orientation = detection.orientation();
-                    robot.time_stamp = time;
+                    robot.time_stamp = time_stamp;
                 }
             mutex.unlock();
         }
@@ -204,6 +204,7 @@ void SSLVisionListener::process_package(){
 
 
         auto& detection = packet.detection();
+        time_stamp = detection.t_capture();
         recieveBall(detection);
         recieveRobotTeam(detection, ROBOT_TEAM_BLUE);
         recieveRobotTeam(detection, ROBOT_TEAM_YELLOW);
@@ -229,6 +230,7 @@ void SSLVisionListener::copyState(GameState* state){
             for(int j=0; j<MAX_ROBOTS_PER_TEAM; j++)
                 state->robots[i][j]->copyFromSSLVision(&instance->robots[i][j]);
 
+        state->time_stamp = instance->time_stamp;
     instance->mutex.unlock();
 }
 

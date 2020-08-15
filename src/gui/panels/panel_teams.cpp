@@ -1,5 +1,5 @@
 #include "panel_teams.h"
-#include "gui/data/gui_robot.h"
+#include "gui/interface/data/gui_robot.h"
 #include <iostream>
 using std::cout, std::endl;
 

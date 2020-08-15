@@ -1,8 +1,8 @@
 #include "tab_team.h"
 #include "frame_robot.h"
 
-#include "gui/data/gui_teams.h"
-#include "gui/data/gui_robot.h"
+#include "gui/interface/data/gui_teams.h"
+#include "gui/interface/data/gui_robot.h"
 #include <iostream>
 using std::cout, std::endl;
 
@@ -32,9 +32,9 @@ void TabTeam::set_team(int id){
 }
 
 void TabTeam::update_tab(){
-    label_strategy->setText(GuiTeams::get_strategy(team_id));
-    label_controller->setText(GuiTeams::get_controller(team_id));
-    label_robot_type->setText(GuiTeams::get_robot_type(team_id));
+    label_strategy->setText(GuiTeams::getStrategy(team_id));
+    label_controller->setText(GuiTeams::getController(team_id));
+    label_robot_type->setText(GuiTeams::getRobotType(team_id));
 
     for(int i=0; i< MAX_ROBOTS_PER_TEAM; i++)
         robot_frames[i]->update_frame();

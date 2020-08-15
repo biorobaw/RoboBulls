@@ -17,7 +17,7 @@ public:
     Point() : x(0), y(0) { }
     Point(const Point&);
     Point(float nx, float ny) : x(nx), y(ny) { }
-    ~Point();
+    virtual ~Point();
 
 
     //! @name Operator Overloads

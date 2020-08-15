@@ -18,7 +18,7 @@ public:
 
     GameState(QObject* parent=nullptr);
     ~GameState();
-    void update(bool flip_x_coordinates=false);
+    void update();
 
 
     // ========= GETTER FUNCTIONS ==============
@@ -62,15 +62,17 @@ protected:
     Ball*  ball;
 
     // state of objects
-    Robot* robot_with_ball = nullptr;
+    Robot* robot_with_ball     = nullptr;
+    double last_time_with_ball = -10000;
 
     // Game state
     Referee_Command referee_command;         //The last referee command received
     Referee_Command referee_command_previous; //The previous gamestate
     bool referee_command_changed = false;
 
-    char   goals[2]      = {0};  //Number of scores yellow goals // TODO: is it correct that it is a char???
-    int    remaining_time = 0;  //Remaining time in seconds
+    char   goals[2]       = {0};  // Number of scores yellow goals // TODO: is it correct that it is a char???
+    int    remaining_time =  0;   // Remaining time in seconds
+    double time_stamp     =  0;   // simulted time stamp of last update
 
 
     void setRobotWithBall();

@@ -4,7 +4,7 @@
 #include "../behavior.h"
 #include "../skills/kicktopointomni.h"
 #include "../skills/dribbletopoint.h"
-#include "gui/gui_interface.h"
+#include "gui/interface/gui_interface.h"
 #include "utilities/region/sector.h"
 #include "genericmovementbehavior.h"
 #include "algorithm"

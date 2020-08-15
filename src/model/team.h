@@ -40,9 +40,6 @@ public:
     // ======= Getter and predicate functions ======================
 
     int getColor();
-    int getSide();
-    int getOpponentSide();
-
 
     // ======= Functions required for the gui ======================
 

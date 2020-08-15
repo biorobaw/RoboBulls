@@ -1,6 +1,6 @@
 #include "panel_field.h"
-#include "gui/data/gui_ball.h"
-#include "gui/data/gui_robot.h"
+#include "gui/interface/data/gui_ball.h"
+#include "gui/interface/data/gui_robot.h"
 
 #include "gui/graphics/graphics_ball.h"
 #include "gui/graphics/graphics_field.h"

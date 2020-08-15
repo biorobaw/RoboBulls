@@ -1,5 +1,5 @@
 #include "graphics_ball.h"
-#include "gui/data/gui_ball.h"
+#include "gui/interface/data/gui_ball.h"
 #include "gui/style_sheets/color_palettes.h"
 #include <QPainter>
 

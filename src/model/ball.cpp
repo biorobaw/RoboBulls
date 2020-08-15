@@ -5,6 +5,9 @@
 #include <iostream>
 using std::cout, std::endl;
 
+Ball::~Ball(){
+
+}
 
 Point  Ball::getStopPosition(){
     return stopPosition;

@@ -1,6 +1,7 @@
 #include "gui_interface.h"
-#include "main_window.h"
-#include "data/gui_robot.h"
+#include "../main_window.h"
+#include "gui/interface/data/gui_robot.h"
+#include "gui/interface/data/gui_teams.h"
 #include <QDebug>
 
 
@@ -8,6 +9,8 @@ GuiInterface * GuiInterface::gi = NULL;
 
 GuiInterface::GuiInterface() {
     dash = new MainWindow();
+    GuiRobot::connectWithModel();
+    GuiTeams::initData();
 }
 
 GuiInterface* GuiInterface::getGuiInterface() {

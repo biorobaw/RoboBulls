@@ -26,8 +26,7 @@ void PenaltyGoalie::perform()
     }
 
     // Define line segment along which goalie is allowed to move
-    int goalie_x = Field::HALF_FIELD_LENGTH - ROBOT_RADIUS;
-    if(robot->getTeam()->getSide() == FIELD_SIDE_NEGATIVE) goalie_x = - goalie_x;
+    int goalie_x = -(Field::HALF_FIELD_LENGTH - ROBOT_RADIUS);
     Point p1 = Point(goalie_x, -Field::GOAL_LENGTH/2 - 50);
     Point p2 = Point(goalie_x,  Field::GOAL_LENGTH/2 + 50);
 
@@ -39,7 +38,7 @@ void PenaltyGoalie::perform()
     float x3 = bp.x, y3 = bp.y;
     float x4, y4;
 
-    auto gp = Field::getGoalPosition(robot->getTeam()->getSide());
+    auto gp = Field::getGoalPosition(OUR_SIDE);
 
     if(kicker)
     {

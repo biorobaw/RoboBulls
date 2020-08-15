@@ -1,7 +1,7 @@
 #include "graphics_field.h"
 #include <QPainter>
 
-#include "gui/data/gui_field.h"
+#include "gui/interface/data/gui_field.h"
 #include "gui/style_sheets/color_palettes.h"
 
 

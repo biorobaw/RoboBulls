@@ -4,11 +4,11 @@
 #include <QKeyEvent>
 #include <QTimer>
 
-#include "gui/data/gui_ball.h"
-#include "gui/data/gui_field.h"
-#include "gui/data/gui_game_state.h"
-#include "gui/data/gui_robot.h"
-#include "gui/data/gui_teams.h"
+#include "gui/interface/data/gui_ball.h"
+#include "gui/interface/data/gui_field.h"
+#include "gui/interface/data/gui_game_state.h"
+#include "gui/interface/data/gui_robot.h"
+#include "gui/interface/data/gui_teams.h"
 #include "gui/graphics/graphics_ball.h"
 
 #include <iostream>

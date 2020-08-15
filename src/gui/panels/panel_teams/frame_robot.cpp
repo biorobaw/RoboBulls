@@ -1,5 +1,5 @@
 #include "frame_robot.h"
-#include "gui/data/gui_robot.h"
+#include "gui/interface/data/gui_robot.h"
 #include "gui/graphics/graphics_robot.h"
 #include "gui/style_sheets/color_palettes.h"
 #include <iostream>

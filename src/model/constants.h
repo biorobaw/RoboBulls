@@ -10,11 +10,14 @@
     #define FIELD_SIDE_NEGATIVE 0
     #define FIELD_SIDE_POSITIVE 1
 
+    // constants to be used in team control logic
+    // a controller assumes the opponent is always
+    // in the positive field side
+    #define OPPONENT_SIDE   FIELD_SIDE_POSITIVE
+    #define OUR_SIDE        FIELD_SIDE_NEGATIVE
 
-    // TEAM CONSTANTS
-    //TODO: Currently strategies assume 5 robots (only 2 defence and 2 attackers)
-    //but robocup uses either 6 or 8 robots
-    #define MAX_ROLES 8
+
+
 
 
 #endif // CONSTANTS_H

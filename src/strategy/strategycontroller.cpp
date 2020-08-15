@@ -4,7 +4,7 @@
 #include "model/team.h"
 #include "model/game_state.h"
 #include "robot/robot.h"
-#include "gui/gui_interface.h"
+#include "gui/interface/gui_interface.h"
 
 #include "controllers/normal_game/scontroller_normal_game.h"
 #include "controllers/strategy_tester/scontroller_strategy_tester.h"

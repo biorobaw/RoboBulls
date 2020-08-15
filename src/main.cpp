@@ -3,8 +3,8 @@
 #include <QDir>
 #include <csignal>
 
-#include "gui/gui_interface.h"
-#include "gui/data/gui_robot.h"
+#include "gui/interface/gui_interface.h"
+#include "gui/interface/data/gui_robot.h"
 #include "ssl/ssl_vision_listener.h"
 #include "ssl/ssl_game_controller_listener.h"
 #include "strategy/controllers/joystick/scontroller_joystick.h"
@@ -12,7 +12,7 @@
 #include "parameters/motion_parameters.h"
 #include "model/field.h"
 #include "model/team.h"
-#include "utilities/my_yaml.h"
+#include "model/configuration.h"
 
 
 /*! @mainpage Welcome to the RoboBulls 2 Documentation.
@@ -131,28 +131,25 @@ int main(int argc, char *argv[])
     // set pattern for qDebug messages
 //    qSetMessagePattern("[%{type}] %{appname} (%{file}:%{line}) - %{message}");
     qInfo() << "WORKING!!!";
-    std::string folder = argc > 1 ? argv[1] : "./config";
-
     qInfo() << QDir::currentPath();
+
+
 
     qInfo() << "-- COMMAND ARGS (" << argc << ")";
     for(int i=0; i < argc; i++)
         qInfo() << "        arg (" << i << ") : " << argv[i] ;
-    // Load config files:
 
-    YAML::Node comm_node = YAML::LoadFile(folder + "/comm.yaml");
-    YAML::Node team_node = YAML::LoadFile(folder + "/team.yaml");
-    YAML::Node field_node = YAML::LoadFile(folder + "/field.yaml");
-    YAML::Node motion_node = YAML::LoadFile(folder + "/motion.yaml");
+    // Load config files:
+    Configuration& config = *new Configuration(argc > 1 ? argv[1] : "./config");
 
 
 
     // set all parameters:
-    Field::load(&field_node);
-    load_motion_parameters(&motion_node);
+    Field::load(&config["field"]);
+    load_motion_parameters(&config["motion"]); // TODO: deprecate
 
     // load teams:
-    auto teams = RobotTeam::load_teams(&team_node);
+    auto teams = RobotTeam::load_teams(&config["teams"]);
     SControllerJoystick::init_module(teams); // init joystick listener module
 
 
@@ -160,8 +157,8 @@ int main(int argc, char *argv[])
 
     // Start ssl software
     // obs: object will be destroyed automatically when the thread ends
-    new SSLVisionListener(&comm_node);
-    new SSLGameControllerListener( &comm_node);
+    new SSLVisionListener(&config["comm"]);
+    new SSLGameControllerListener( &config["comm"]);
 
     qDebug() << "\nMain thread: " << QThread::currentThread() <<endl;
 
@@ -169,9 +166,10 @@ int main(int argc, char *argv[])
     // Start debugger thread
 //    debug::listenStart();
 
-    // start gui
+    // create gui last, only after creating model
+    // since the gui assumes the existance of the model
     GuiInterface::getGuiInterface()->show();
-    GuiRobot::connectWithModel();
+
 
     registerExitSignals();
     int result = a.exec(); // starts main loop event

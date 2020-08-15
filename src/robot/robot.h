@@ -37,7 +37,7 @@ public:
     // ====== Constructor and basic info ==========================
 
     Robot(int _team_id, int _robot_id);
-    ~Robot();
+    virtual ~Robot();
 
     int  getID();
     std::string  toString();

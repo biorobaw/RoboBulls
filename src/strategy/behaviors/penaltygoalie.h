@@ -3,7 +3,7 @@
 
 #include "genericmovementbehavior.h"
 #include "utilities/region/defencearea.h"
-#include "gui/gui_interface.h"
+#include "gui/interface/gui_interface.h"
 
 /*!
  * @file

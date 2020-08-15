@@ -1,5 +1,5 @@
 #include "pilot_omni.h"
-#include "gui/gui_interface.h"
+#include "gui/interface/gui_interface.h"
 #include "robot/robot.h"
 
 #include <cmath>

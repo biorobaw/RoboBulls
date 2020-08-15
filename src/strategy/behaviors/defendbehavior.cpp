@@ -71,7 +71,7 @@ DefendState* DefendState::action(Robot* robot)
     updateCount = 0;
 
     Point bp = robot->getTeam()->getGameState()->getBall()->getPosition();
-    Point gl = Field::getGoalPosition(robot->getTeam()->getSide());
+    Point gl = Field::getGoalPosition(OUR_SIDE);
 
     if(bp.x < 0)
     {
@@ -225,7 +225,7 @@ DefendState* DSIdle::action(Robot* robot)
         Point bp  = robot->getTeam()->getGameState()->getBall()->getPosition();
         Point bv  = robot->getTeam()->getGameState()->getBall()->getVelocity();
         Point bpr = robot->getTeam()->getGameState()->getBall()->getStopPosition();
-        Point gl  = Field::getGoalPosition(robot->getTeam()->getSide());
+        Point gl  = Field::getGoalPosition(OUR_SIDE);
         float bs  = robot->getTeam()->getGameState()->getBall()->getSpeed();
         float velang = atan2(bv.y, bv.x);
 
@@ -241,9 +241,7 @@ DefendState* DSIdle::action(Robot* robot)
          * "If the ball is close AND nobody is kicking AND I'm closest to ball...
          * "AND the ball near the goal AND the ball is not moving away..." Kick it.
          */
-        int goal_x = robot->getTeam()->getSide() == FIELD_SIDE_POSITIVE ?
-                    Field::HALF_FIELD_LENGTH : -Field::HALF_FIELD_LENGTH;
-        Rectangle our_half(goal_x, -Field::HALF_FIELD_WIDTH, 0, Field::HALF_FIELD_WIDTH);
+        Rectangle our_half(-Field::HALF_FIELD_LENGTH, -Field::HALF_FIELD_WIDTH, 0, Field::HALF_FIELD_WIDTH);
         DefenceArea our_da(TEAM_DEFFENCE_AREA);
 
         if( our_half.contains(bp)
@@ -252,7 +250,7 @@ DefendState* DSIdle::action(Robot* robot)
             && Comparisons::distanceBall(bp).minInTeam(robot->getTeam()) == robot)
         {
             kicker_ID = robot->getID();
-            auto gp = Field::getGoalPosition(robot->getTeam()->getOpponentSide());
+            auto gp = Field::getGoalPosition(OPPONENT_SIDE);
             return new DSKick(robot,gp);
         }
     }
@@ -282,7 +280,7 @@ string DSKick::getName() {
 DefendState* DSKick::action(Robot* robot)
 {
 //    std::cout << "DefendStateKick" << std::endl;
-    auto goal = Field::getGoalPosition(robot->getTeam()->getSide());
+    auto goal = Field::getGoalPosition(OUR_SIDE);
     if(ktpo->perform(robot) || ballIsMovingAway(goal, robot->getTeam()->getGameState()->getBall())) {
         kicker_ID = -1;
         return new DSIdle(robot);
@@ -323,7 +321,7 @@ DefendState* DSIntercept::action(Robot* robot)
 //    std::cout << "DefendStateIntercept" << std::endl;
 
     Point bp = robot->getTeam()->getGameState()->getBall()->getPosition();
-    Point goal = Field::getGoalPosition(robot->getTeam()->getSide());
+    Point goal = Field::getGoalPosition(OUR_SIDE);
 
     if(!chosenLinePoint) {
         //The conditions to go to this state validate the ball is RIGHT NOW
@@ -347,7 +345,7 @@ DefendState* DSIntercept::action(Robot* robot)
                 && Comparisons::distanceBall(bp).minInTeam(robot->getTeam()) == robot)
             {
                 kicker_ID = robot->getID();
-                auto gp = Field::getGoalPosition(robot->getTeam()->getOpponentSide());
+                auto gp = Field::getGoalPosition(OPPONENT_SIDE);
                 ktpo = new Skill::KickToPointOmni(gp);
                 kickingBall = true;
             }
@@ -394,7 +392,7 @@ bool DSIntercept::tryGetValidLinePoint()
 {
     Point bp = robot->getTeam()->getGameState()->getBall()->getPosition();
     Point bpp = robot->getTeam()->getGameState()->getBall()->getStopPosition();
-    Point goal = Field::getGoalPosition(robot->getTeam()->getSide());
+    Point goal = Field::getGoalPosition(OUR_SIDE);
     Point p = Measurements::lineSegmentPoint(robot->getPosition(), bp, bpp);
     if(abs(goal.x - p.x) < 2500 && Measurements::distance(robot, p) < LINE_DISTANCE*2) {
         linePoint = p;

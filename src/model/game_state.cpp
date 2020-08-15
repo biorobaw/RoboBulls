@@ -7,7 +7,7 @@
 
 #include "utilities/edges.h"
 #include "utilities/debug.h"
-#include "gui/gui_interface.h"
+#include "gui/interface/gui_interface.h"
 #include "model/game_state.h"
 #include "model/ball.h"
 #include "model/team.h"
@@ -17,6 +17,8 @@
 #include "ssl/ssl_game_controller_listener.h"
 #include "robot/robot.h"
 #include "ball.h"
+
+#include "gui/interface/data/gui_robot.h"
 
 using std::cout, std::endl;
 
@@ -40,7 +42,7 @@ GameState::~GameState(){
     delete ball;
 }
 
-void GameState::update(bool flip_x_coordinates){
+void GameState::update(){
     SSLVisionListener::copyState(this);
     SSLGameControllerListener::copyState(this);
 
@@ -104,25 +106,25 @@ int  GameState::getRemainingTime(){
 
 
 void GameState::setRobotWithBall(){
-        // TODO: the function returns first match, not best match
-        //Count of how many times `robotWithBall` has been seen without ball
-        static int lastSeenWithoutBallCount = 0;
 
-        // recompute which robot has the ball if no robot was in pocesion of the ball last cycle
-        // or the previous holder has not been seen with the ball for 10 cycles
-        if(!robot_with_ball || (!hasBall(robot_with_ball) && ++lastSeenWithoutBallCount > 10))
-        {
-            lastSeenWithoutBallCount = 0;
-            if(robot_with_ball) robot_with_ball->setHasBall(false);
-            robot_with_ball = nullptr;
-            for(Robot* r : all_robots_in_field){
-                if(hasBall(r)){
-                    robot_with_ball = r;
-                    r->setHasBall(true);
-                    return;
-                }
+    // TODO: the function returns first match, not best match
+    // recompute which robot has the ball if no robot was in pocession
+    // for at least 150ms to avoid false negatives
+
+    if(robot_with_ball) if(hasBall(robot_with_ball)) last_time_with_ball = time_stamp;
+    if(time_stamp - last_time_with_ball > 0.15) // 150ms
+    {
+        if(robot_with_ball) robot_with_ball->setHasBall(false);
+        robot_with_ball = nullptr;
+        for(Robot* r : all_robots_in_field){
+            if(hasBall(r)){
+                last_time_with_ball = time_stamp;
+                robot_with_ball = r;
+                r->setHasBall(true);
+                return;
             }
         }
+    }
 
 
 }

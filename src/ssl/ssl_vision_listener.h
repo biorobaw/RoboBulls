@@ -2,7 +2,7 @@
 #define VISIONCOMM_H
 #include <string>
 
-//#include "gui/gui_interface.h"
+//#include "gui/interface/gui_interface.h"
 
 #include "messages_robocup_ssl_detection.pb.h"
 #include "messages_robocup_ssl_geometry.pb.h"
@@ -78,6 +78,7 @@ private:
     // checks if coordinate (x,y) is within the cam's field of view
     bool isGoodDetection(float x, float y, int cam);
 
+    double time_stamp = 0;
 
 };
 

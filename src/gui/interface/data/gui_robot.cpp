@@ -84,7 +84,7 @@ QString GuiRobot::getBehaviorName(){
 }
 
 bool GuiRobot::isControlled(){
-    return GuiTeams::is_controlled(team_id);
+    return GuiTeams::isControlled(team_id);
 }
 
 float GuiRobot::getOrientationInDegrees(){

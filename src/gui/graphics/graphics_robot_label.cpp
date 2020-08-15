@@ -1,7 +1,7 @@
 #include "graphics_robot_label.h"
 #include <QPainter>
 
-#include "gui/data/gui_robot.h"
+#include "gui/interface/data/gui_robot.h"
 #include <iostream>
 using std::cout, std::endl;
 

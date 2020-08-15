@@ -42,12 +42,12 @@ include(protobuf.pri)
 
 
 SOURCES += src/main.cpp \
-        src/gui/data/gui_ball.cpp \
-        src/gui/data/gui_field.cpp \
-        src/gui/data/gui_game_state.cpp \
-        src/gui/data/gui_robot.cpp \
-        src/gui/data/gui_teams.cpp \
-        src/gui/gui_interface.cpp \
+        src/gui/interface/data/gui_ball.cpp \
+        src/gui/interface/data/gui_field.cpp \
+        src/gui/interface/data/gui_game_state.cpp \
+        src/gui/interface/data/gui_robot.cpp \
+        src/gui/interface/data/gui_teams.cpp \
+        src/gui/interface/gui_interface.cpp \
         src/gui/main_window.cpp \
         src/gui/panels/panel_field.cpp \
         src/gui/panels/panel_game_info.cpp \
@@ -66,6 +66,7 @@ SOURCES += src/main.cpp \
         src/gui/graphics/graphics_robot.cpp \
         src/gui/graphics/graphics_robot_label.cpp \
         src/model/ball.cpp \
+        src/model/configuration.cpp \
         src/model/field.cpp \
         src/model/game_state.cpp \
         src/model/moving_object.cpp \
@@ -132,12 +133,12 @@ SOURCES += src/main.cpp \
         src/parameters/motion_parameters.cpp
 
 HEADERS += \
-        src/gui/data/gui_ball.h \
-        src/gui/data/gui_field.h \
-        src/gui/data/gui_game_state.h \
-        src/gui/data/gui_robot.h \
-        src/gui/data/gui_teams.h \
-        src/gui/gui_interface.h \
+        src/gui/interface/data/gui_ball.h \
+        src/gui/interface/data/gui_field.h \
+        src/gui/interface/data/gui_game_state.h \
+        src/gui/interface/data/gui_robot.h \
+        src/gui/interface/data/gui_teams.h \
+        src/gui/interface/gui_interface.h \
         src/gui/main_window.h \
         src/gui/panels/panel_field.h \
         src/gui/panels/panel_game_info.h \
@@ -156,6 +157,7 @@ HEADERS += \
         src/gui/graphics/graphics_robot.h \
         src/gui/graphics/graphics_robot_label.h \
         src/model/ball.h \
+        src/model/configuration.h \
         src/model/constants.h \
         src/model/field.h \
         src/model/game_state.h \
