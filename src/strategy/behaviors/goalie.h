@@ -25,7 +25,7 @@ class Goalie:public GenericMovementBehavior
 public:
     Goalie(Robot*);
     ~Goalie();
-    void perform() override;
+    bool perform() override;
     string getName() override;
 
 private:
@@ -55,8 +55,10 @@ private:
     Point goalPoint;                        //!< Center of our team goal area
     Point idlePoint;                        //!< Point to sit at when no action happens
     Point kickPoint;                        //!< Point to kick the point to
-    Skill::KickToPointOmni* kick_skill;     //!< Skill to kick the ball with
-    Skill::DribbleBack* dribble_skill;      //!< Skill to kick the ball with
+
+    KickToPointOmni* kick_skill;     //!< Skill to kick the ball with
+    DribbleBack* dribble_skill;      //!< Skill to kick the ball with
+
     bool retrieving_ball = false;           //!< Indicates that the ball is being retrieved
     bool clearing_ball = false;             //!< Indicates that the ball is being retrieved
     DefenceArea def_area;

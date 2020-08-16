@@ -23,7 +23,7 @@ class Wall : public GenericMovementBehavior
 public:
     Wall(Robot* robot);
     ~Wall();
-    void perform() override;
+    bool perform() override;
     bool isFinished() override;
 
     string getName() override;
@@ -47,7 +47,7 @@ private:
     // Variables for clearing the ball
     static bool being_cleared;
     Point kickPoint;
-    Skill::KickToPointOmni* kick_skill;
+    KickToPointOmni* kick_skill;
     bool shouldClear(Robot*);
     bool shouldStopClearing(Robot*);
 };

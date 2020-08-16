@@ -20,7 +20,7 @@ class RefStop : public GenericMovementBehavior
 {
 public:
     RefStop(Robot* robot);
-    void perform() override;
+    bool perform() override;
     bool isFinished() override;
     string getName() override;
 private:

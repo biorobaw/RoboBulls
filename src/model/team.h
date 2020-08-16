@@ -34,9 +34,12 @@ public:
 
     // ======= Robot Getter functions ==============================
 
-    Robot* getRobot(int id);
+    Robot* getRobot(int robot_id);
     Robot* getRobotByRole(int role);
     QSet<Robot*>& getRobots();
+
+    Robot* getOpponent(int robot_id);
+    QSet<Robot*>& getOpponents();
 
     // ======= Control Related function ===========================
 
@@ -63,7 +66,8 @@ private:
     GameState*          game_state; // game state as seen by the team (each team has its own view)
     QMap<int,Robot*> robotsByRoles; // maps robots to roles, defined by the team controller
 
-    int id;
+    int team_id;
+    int opponent_id;
     int side;
 
     // Friend functions

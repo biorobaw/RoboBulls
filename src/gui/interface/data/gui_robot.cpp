@@ -28,7 +28,7 @@ void GuiRobot::connectWithModel(){
             QObject::connect(gui_robot, &GuiRobot::setGuiTargetVelocity ,controls, &RobotLowLevelControls::setTargetVelocity  );
             QObject::connect(gui_robot, &GuiRobot::setGuiKickSpeed      ,controls, &RobotLowLevelControls::setKickSpeed       );
             QObject::connect(gui_robot, &GuiRobot::setGuiDribble        ,controls, &RobotLowLevelControls::setDribble         );
-            QObject::connect(gui_robot, &GuiRobot::setChip              ,controls, &RobotLowLevelControls::setChip            );
+            QObject::connect(gui_robot, &GuiRobot::setGuiChip           ,controls, &RobotLowLevelControls::setChip            );
 
         }
 }

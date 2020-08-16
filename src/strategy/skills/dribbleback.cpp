@@ -10,20 +10,19 @@
 #include "model/game_state.h"
 #include "utilities/measurements.h"
 
-namespace Skill
-{
 
-DribbleBack::DribbleBack(Point& target)
-    : DribbleBack(&target)
-{
-}
 
-DribbleBack::DribbleBack(Point* target)
-    : target(target)
+DribbleBack::DribbleBack(Robot* robot, Point& target)
+    : DribbleBack(robot, &target)
 {
 }
 
-bool DribbleBack::perform(Robot* robot)
+DribbleBack::DribbleBack(Robot* robot, Point* target)
+    : Behavior(robot), target(target)
+{
+}
+
+bool DribbleBack::perform()
 {
 //    std::cout << "Dribble Back" << std::endl;
 
@@ -109,9 +108,16 @@ bool DribbleBack::perform(Robot* robot)
 
     }
 
-    if(Measurements::distance(bp, *target) < 300)
-        return true;
-    return false;
+
+    return isFinished();
 }
 
+bool DribbleBack::isFinished(){
+    return Measurements::distance(*game_state->getBall(), *target) < 300;
 }
+string DribbleBack::getName(){
+    return "Dribble back";
+}
+
+
+

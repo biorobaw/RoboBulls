@@ -9,23 +9,24 @@
 #include "model/team.h"
 #include "model/game_state.h"
 #include "utilities/measurements.h"
-namespace Skill {
 
 
-DribbleToPoint::DribbleToPoint(Point& target, bool avoid_obstacles, bool prefer_forward_motion)
-    : DribbleToPoint(&target, avoid_obstacles, prefer_forward_motion)
+
+DribbleToPoint::DribbleToPoint(Robot* robot, Point& target, bool avoid_obstacles, bool prefer_forward_motion)
+    : DribbleToPoint(robot, &target, avoid_obstacles, prefer_forward_motion)
 {
 }
 
-DribbleToPoint::DribbleToPoint(Point* target, bool avoid_obstacles, bool prefer_forward_motion)
-    : target(target)
+DribbleToPoint::DribbleToPoint(Robot* robot, Point* target, bool avoid_obstacles, bool prefer_forward_motion)
+    : Behavior(robot)
+    , target(target)
     , prefer_forward_motion(prefer_forward_motion)
     , state(move_to_ball)
 {
     cmd.avoidObstacles = avoid_obstacles;
 }
 
-bool DribbleToPoint::perform(Robot* robot)
+bool DribbleToPoint::perform()
 {
 //    std::cout << "Dribbling" << std::endl;
 
@@ -159,9 +160,7 @@ bool DribbleToPoint::perform(Robot* robot)
     }
     }
 
-    if(Measurements::distance(bp, *target) < 300)
-        return true;
-    return false;
+    return isFinished();
 }
 
 bool DribbleToPoint::targetIsAhead(const float& ang_to_ball, const Point& rp)
@@ -185,4 +184,12 @@ bool DribbleToPoint::safeToAdjust(const Point& bp, Robot* robot)
     return true;
 }
 
+
+bool DribbleToPoint::isFinished(){
+    return Measurements::distance(*game_state->getBall(), *target) < 300;
 }
+string DribbleToPoint::getName(){
+    return "Dribble to point";
+}
+
+

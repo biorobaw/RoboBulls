@@ -1,12 +1,11 @@
 #ifndef DRIBBLEBACK_H
 #define DRIBBLEBACK_H
 
-#include "../skill.h"
+#include "../behavior.h"
 #include "utilities/point.h"
 #include "robot/navigation/commands/CmdGoToPose.h"
 
-namespace Skill
-{
+
 
 /*! @file
  * Uses the dribbler to move the ball to a given point while driving
@@ -23,12 +22,14 @@ namespace Skill
  * is able to achive the same functionality through input parameters.
  */
 
-class DribbleBack : public Skill
+class DribbleBack : public Behavior
 {
 public:
-    DribbleBack(Point& target);
-    DribbleBack(Point* target);
-    bool perform(Robot*) override;
+    DribbleBack(Robot* robot, Point& target);
+    DribbleBack(Robot* robot, Point* target);
+    bool perform() override;
+    bool isFinished() override;
+    string getName() override;
 private:
     Point* target;
     Point grasp_point;
@@ -37,7 +38,7 @@ private:
     float prev_vel = 0;
 };
 
-}
+
 
 
 #endif // DRIBBLEBACK_H

@@ -32,12 +32,12 @@ Robot::~Robot(){
 }
 
 
-void Robot::setRobotProxy(RobotProxy* proxy){
+Robot* Robot::setRobotProxy(RobotProxy* proxy){
    has_kicker = proxy->hasKicker();
    is_holonomic = proxy->isHolonomic();
    delete pilot; // delete old pilot
    pilot = proxy->createPilot(this);
-
+   return this;
 }
 
 int Robot::getID() { return id; }
@@ -80,8 +80,9 @@ int Robot::getRole(){
     return team_role;
 }
 
-void Robot::setRole(int role){
+Robot* Robot::setRole(int role){
     team_role = role;
+    return this;
 }
 
 bool Robot::isGoalie(){
@@ -106,8 +107,16 @@ void Robot::useOverridenControls(bool ignore){
 // ============================================================
 
 
-bool Robot::ignoreController(){
+bool Robot::ignoresController(){
     return use_overriden_controls;
+}
+
+GameState* Robot::getGameState(){
+    return game_state;
+}
+Robot* Robot::setGameState(GameState* state){
+    game_state = state;
+    return this;
 }
 
 
@@ -116,29 +125,32 @@ Behavior* Robot::getBehavior(){
     return behavior;
 }
 
-void Robot::setBehavior(Behavior *currentBeh)
+Robot* Robot::setBehavior(Behavior *currentBeh)
 {
     behavior = currentBeh;
+    return this;
 }
 
 bool Robot::hasBehavior() {
     return behavior != nullptr ;
 }
 
-void Robot::performBehavior(){
-    if(use_overriden_controls) return;
+Robot* Robot::performBehavior(){
+    if(use_overriden_controls) return this;
     if(behavior != nullptr) {
         behavior->perform();
     }
     pilot->executeCommands();
+    return this;
 }
 
-void Robot::clearBehavior()
+Robot* Robot::clearBehavior()
 {
     if(behavior != nullptr) {
         delete behavior;
         this->behavior = nullptr;
     }
+    return this;
 }
 
 
@@ -147,8 +159,9 @@ void Robot::clearBehavior()
 //    return pilot;
 //}
 
-void Robot::goToPose(CmdGoToPose& newCommand){
+Robot* Robot::goToPose(CmdGoToPose& newCommand){
     pilot->setNewCommand(newCommand);
+    return this;
 }
 
 bool Robot::completedGoToPoseCmd(){
@@ -160,8 +173,9 @@ bool Robot::hasBall(){
     return has_ball;
 }
 
-void Robot::setHasBall(bool val){
+Robot* Robot::setHasBall(bool val){
     has_ball = val;
+    return this;
 }
 
 
@@ -177,15 +191,6 @@ RobotLowLevelControls* Robot::getActiveController(){
     return use_overriden_controls ? overriden_controls : this;
 }
 
-// ============================================================
-// =============== PRIVATE FUNCTIONS ==========================
-// ============================================================
-
-
-
-void Robot::setID(int ID){id = ID;}
-
-void Robot::setTeam(int which) { team_id = which; }
 
 
 

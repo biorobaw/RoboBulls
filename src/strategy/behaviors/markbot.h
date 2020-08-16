@@ -18,7 +18,7 @@ class MarkBot : public GenericMovementBehavior
 {
 public:
     MarkBot(Robot*);
-    void perform() override;
+    bool perform() override;
     bool isFinished() override;
     string getName() override;
 private:

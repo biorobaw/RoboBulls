@@ -8,6 +8,17 @@
 #include "robot/robot.h"
 #include "model/game_state.h"
 
+
+// ================ OBSERVATION =====================================
+//
+// THIS CLASS SEEMS DEPRECATED, IT'S NOT USED IN THE REST OF THE CODE
+// THE CLASS HAS ISSUES THAT NEED SOLVING BEFORE IT CAN BE USED
+// In particular it assumes only one team, and assumes exactly 5 robots
+//
+// ===================================================================
+
+
+
 #define DEFENDBEHAVIOR_DEBUG 0
 
 /* Check to see if kicking is done or not.
@@ -62,7 +73,7 @@ void DefendState::clearClaimedPoints()
         i = -1;
 }
 
-DefendState* DefendState::action(Robot* robot)
+DefendState* DefendState::action()
 {
     //Because every robot is going to call this; but it only
     //needs to happen once per game loop.
@@ -70,7 +81,7 @@ DefendState* DefendState::action(Robot* robot)
         return nullptr;
     updateCount = 0;
 
-    Point bp = robot->getTeam()->getGameState()->getBall()->getPosition();
+    Point bp = *game_state->getBall();
     Point gl = Field::getGoalPosition(OUR_SIDE);
 
     if(bp.x < 0)
@@ -88,7 +99,7 @@ DefendState* DefendState::action(Robot* robot)
          * always point torwards the middle. (Not really though)
          */
         static const float dAngle = 10 * (M_PI/180);
-        static int coeffs[] = {Field::DEF_AREA_WIDTH+5*ROBOT_RADIUS, Field::DEF_AREA_WIDTH+3*ROBOT_RADIUS, Field::DEF_AREA_WIDTH+3*ROBOT_RADIUS};
+        static int coeffs[] = {Field::DEF_AREA_WIDTH+(int)(5*ROBOT_RADIUS), Field::DEF_AREA_WIDTH+int(3*ROBOT_RADIUS), Field::DEF_AREA_WIDTH+int(3*ROBOT_RADIUS)};
         static int o_coeffs[] = {0, 1, -1};
         float a = Measurements::angleBetween(gl, bp);
 
@@ -109,9 +120,9 @@ DefendState* DefendState::action(Robot* robot)
     return nullptr;
 }
 
-Point* DefendState::getClaimedPoint(Robot* robot)
+Point* DefendState::getClaimedPoint(int robot_id)
 {
-    int index = claimed[robot->getID()];
+    int index = claimed[robot_id];
     if(index != -1)
         return &defendPoints[index];
     return nullptr;
@@ -126,7 +137,7 @@ void DefendState::setupClaimedPoints()
     }
 }
 
-Point* DefendState::searchClaimPoint(Robot* robot)
+Point* DefendState::searchClaimPoint(Robot* robot, RobotTeam* team)
 {
     for(int i = 0; i != 3; ++i)
     {
@@ -150,7 +161,7 @@ Point* DefendState::searchClaimPoint(Robot* robot)
         // Here we ensure there is no other robot there physically
         Point test(p.x, p.y);
 
-        Robot* closest = Comparisons::distance(test).minInTeam(robot->getTeam());
+        Robot* closest = Comparisons::distance(test).minInTeam(team);
         if(closest->getID() != robot->getID()
             && Measurements::distance(test, closest) < ROBOT_RADIUS) {
             continue;
@@ -159,7 +170,11 @@ Point* DefendState::searchClaimPoint(Robot* robot)
         break;
     }
 
-    return getClaimedPoint(robot);
+    return getClaimedPoint(robot->getID());
+}
+
+DefendState::DefendState()  {
+
 }
 
 DefendState::~DefendState() {
@@ -179,7 +194,7 @@ DefendState::~DefendState() {
  #define GOALIE_DIST   300 //Distance ball must be away from goal to invervene
 //#endif
 
-DSIdle::DSIdle(Robot* robot) : GenericMovementBehavior(robot)
+DSIdle::DSIdle(Robot* robot) :  Behavior(robot), GenericMovementBehavior(robot)
 {
 #if DEFENDBEHAVIOR_DEBUG
     std::cout << "DefendStateIdle Created" << std::endl;
@@ -190,28 +205,28 @@ string DSIdle::getName() {
     return "DSIdle";
 }
 
-DefendState* DSIdle::action(Robot* robot)
+DefendState* DSIdle::action()
 {
 //    std::cout << "DefendStateIdle" << std::endl;
 
     // Base class's `action` updates claimed points to rotate the formation
     // to face the ball (does not return anything)
-    DefendState::action(robot);
+    DefendState::action();
 
     robot->setDribble(false);
 
-    if(getClaimedPoint(robot) == nullptr)
-        searchClaimPoint(robot);
+    if(getClaimedPoint(robot->getID()) == nullptr)
+        searchClaimPoint(robot, team);
     else {
         //Idle at the point, facing the ball
-        Point* chosenPointPtr = getClaimedPoint(robot);
+        Point* chosenPointPtr = getClaimedPoint(robot->getID());
 
         if(chosenPointPtr == nullptr)
             abort();
 
         Point chosenPoint = *chosenPointPtr;
 
-        float robBallAng = Measurements::angleBetween(robot, robot->getTeam()->getGameState()->getBall()->getPosition());
+        float robBallAng = Measurements::angleBetween(robot, *game_state->getBall());
         cmd.setTarget(chosenPoint, robBallAng);
         GenericMovementBehavior::perform();
 
@@ -222,11 +237,12 @@ DefendState* DSIdle::action(Robot* robot)
          * 3) The balls speed is significant
          * 4) the ball is heading torwards the goal
          */
-        Point bp  = robot->getTeam()->getGameState()->getBall()->getPosition();
-        Point bv  = robot->getTeam()->getGameState()->getBall()->getVelocity();
-        Point bpr = robot->getTeam()->getGameState()->getBall()->getStopPosition();
+        auto ball = game_state->getBall();
+        Point bp  = *ball;
+        Point bv  = ball->getVelocity();
+        Point bpr = ball->getStopPosition();
         Point gl  = Field::getGoalPosition(OUR_SIDE);
-        float bs  = robot->getTeam()->getGameState()->getBall()->getSpeed();
+        float bs  = ball->getSpeed();
         float velang = atan2(bv.y, bv.x);
 
         if( ( abs(bpr.x - gl.x) < 1000 ) &&
@@ -247,7 +263,7 @@ DefendState* DSIdle::action(Robot* robot)
         if( our_half.contains(bp)
             && our_da.contains(bp, 2000)
             && kicker_ID == -1
-            && Comparisons::distanceBall(bp).minInTeam(robot->getTeam()) == robot)
+            && Comparisons::distanceBall(bp).minInTeam(team) == robot)
         {
             kicker_ID = robot->getID();
             auto gp = Field::getGoalPosition(OPPONENT_SIDE);
@@ -260,12 +276,12 @@ DefendState* DSIdle::action(Robot* robot)
 
 
 /************************************************************/
-DSKick::DSKick(Robot* robot, Point opponent_goal) : GenericMovementBehavior(robot)
+DSKick::DSKick(Robot* robot, Point opponent_goal) : Behavior(robot), GenericMovementBehavior(robot)
 {
 #if DEFENDBEHAVIOR_DEBUG
     std::cout << "DefendStateKick Created" << std::endl;
 #endif
-    ktpo = new Skill::KickToPointOmni(opponent_goal);
+    ktpo = new KickToPointOmni(robot, opponent_goal);
 }
 
 DSKick::~DSKick()
@@ -277,11 +293,11 @@ string DSKick::getName() {
     return "DSKick";
 }
 
-DefendState* DSKick::action(Robot* robot)
+DefendState* DSKick::action()
 {
 //    std::cout << "DefendStateKick" << std::endl;
     auto goal = Field::getGoalPosition(OUR_SIDE);
-    if(ktpo->perform(robot) || ballIsMovingAway(goal, robot->getTeam()->getGameState()->getBall())) {
+    if(ktpo->perform() || ballIsMovingAway(goal, game_state->getBall())) {
         kicker_ID = -1;
         return new DSIdle(robot);
     }
@@ -293,7 +309,7 @@ DefendState* DSKick::action(Robot* robot)
 
 
 DSIntercept::DSIntercept(Robot* robot)
-    : GenericMovementBehavior(robot)
+    : Behavior(robot), GenericMovementBehavior(robot)
     , ktpo(nullptr)
     , chosenLinePoint(false)
     , kickingBall(false)
@@ -316,11 +332,11 @@ string DSIntercept::getName() {
     return "DSIntercept";
 }
 
-DefendState* DSIntercept::action(Robot* robot)
+DefendState* DSIntercept::action()
 {
 //    std::cout << "DefendStateIntercept" << std::endl;
 
-    Point bp = robot->getTeam()->getGameState()->getBall()->getPosition();
+    Point bp = *game_state->getBall();
     Point goal = Field::getGoalPosition(OUR_SIDE);
 
     if(!chosenLinePoint) {
@@ -342,23 +358,23 @@ DefendState* DSIntercept::action(Robot* robot)
             //and nobody else is kicking, we kick.
             if(Measurements::distance(robot, bp) < 600
                 && kicker_ID == -1
-                && Comparisons::distanceBall(bp).minInTeam(robot->getTeam()) == robot)
+                && Comparisons::distanceBall(bp).minInTeam(team) == robot)
             {
                 kicker_ID = robot->getID();
                 auto gp = Field::getGoalPosition(OPPONENT_SIDE);
-                ktpo = new Skill::KickToPointOmni(gp);
+                ktpo = new KickToPointOmni(robot, gp);
                 kickingBall = true;
             }
 
             //If the ball is coming and it stops, go back to idle.
-            if(ballIsStopped(robot->getTeam()->getGameState()->getBall())) {
+            if(ballIsStopped(game_state->getBall())) {
                 return new DSIdle(robot);
             }
         }
         else {
             //Here we are actually kicking the ball away.
             //Timeout is reset if a kick is made.
-            if(ktpo->perform(robot))
+            if(ktpo->perform())
                 kickBallTimeout = 0;
 
             //Second condition to return to idle. Stop if it moves too far away
@@ -371,7 +387,7 @@ DefendState* DSIntercept::action(Robot* robot)
         //is too close to the goal, we go back to idle.
         if(++kickBallTimeout > 400
             || Measurements::distance(goal, bp) < GOALIE_DIST //Goalie action distance
-            || ballIsMovingAway(goal, robot->getTeam()->getGameState()->getBall()))
+            || ballIsMovingAway(goal, game_state->getBall()))
         {
         #if DEFENDBEHAVIOR_DEBUG
             std::cout << "DefendStateKick Timeout " << robot->getID() << std::endl;
@@ -390,8 +406,8 @@ DefendState* DSIntercept::action(Robot* robot)
  */
 bool DSIntercept::tryGetValidLinePoint()
 {
-    Point bp = robot->getTeam()->getGameState()->getBall()->getPosition();
-    Point bpp = robot->getTeam()->getGameState()->getBall()->getStopPosition();
+    Point bp = *game_state->getBall();
+    Point bpp = game_state->getBall()->getStopPosition();
     Point goal = Field::getGoalPosition(OUR_SIDE);
     Point p = Measurements::lineSegmentPoint(robot->getPosition(), bp, bpp);
     if(abs(goal.x - p.x) < 2500 && Measurements::distance(robot, p) < LINE_DISTANCE*2) {
@@ -429,14 +445,15 @@ string DefendBehavior::getName() {
     return "Defend";
 }
 
-void DefendBehavior::perform()
+bool DefendBehavior::perform()
 {
     if(state != nullptr)
     {
-        DefendState* nextState = state->action(robot);
+        DefendState* nextState = state->action();
         if(nextState != state) {
             delete state;
             state = nextState;
         }
     }
+    return isFinished();
 }

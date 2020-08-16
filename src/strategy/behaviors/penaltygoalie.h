@@ -25,7 +25,7 @@ class PenaltyGoalie : public GenericMovementBehavior
 {
 public:
     PenaltyGoalie(Robot*);
-    void perform() override;
+    bool perform() override;
     bool isFinished() override;
     string getName() override;
 private:

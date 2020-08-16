@@ -17,7 +17,7 @@
  * <b>Example Everyday Usage</b>
  * @include example_genericmovement.cpp */
 
-class GenericMovementBehavior : public Behavior
+class GenericMovementBehavior : virtual public Behavior
 {
 public:
     GenericMovementBehavior(Robot* robot,
@@ -27,7 +27,7 @@ public:
                             bool avoidBall = false);
 
    //! @brief Performs the movement after setMovementTargets is set */
-   void perform() override;
+   bool perform() override;
    
    //! @brief Return true when reached the movement targets
    bool isFinished() override;

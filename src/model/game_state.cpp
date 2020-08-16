@@ -33,7 +33,8 @@ GameState::GameState(QObject* parent) :
     for(int i=0; i<2; i++)
         for(int j=0; j<MAX_ROBOTS_PER_TEAM; j++){
             robots[i][j] = new Robot(i,j);
-            robots[i][j]->setParent(this);
+            robots[i][j]->setGameState(this)
+                        ->setParent(this);
         }
 
 }
@@ -76,12 +77,7 @@ QSet<Robot*>& GameState::getFieldRobots(){
 Robot* GameState::getRobot(int team_id, int robot_id){
     return robots[team_id][robot_id];
 }
-Robot* GameState::getBlueRobot(int id){
-    return robots[ROBOT_TEAM_BLUE][id];
-}
-Robot* GameState::getYellowRobot(int id){
-    return robots[ROBOT_TEAM_YELLOW][id];
-}
+
 Ball* GameState::getBall(){
     return ball;
 }

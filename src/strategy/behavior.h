@@ -3,6 +3,8 @@
 #include <string>
 using std::string;
 class Robot;
+class RobotTeam;
+class GameState;
 
 /*! @addtogroup baseclasses Base Classes
  * Base classes for inherited functionality
@@ -41,7 +43,7 @@ public:
      * The <i>perform</i> function
      * of a Behavior defines how to
      * run the behavior on its robot. */
-    virtual void perform() = 0;
+    virtual bool perform() = 0;
     
     /*! Return if behavior is "finished".
      * This could be reaching a target, or whenever a derived behavior
@@ -55,6 +57,8 @@ public:
 
 protected:
     Robot* robot;
+    RobotTeam* team;
+    GameState* game_state;
 };
 
 //! @}

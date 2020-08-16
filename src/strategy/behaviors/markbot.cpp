@@ -6,14 +6,14 @@
 
 bool MarkBot::mark_status[10] = {false};
 
-MarkBot::MarkBot(Robot* robot) : GenericMovementBehavior(robot)
+MarkBot::MarkBot(Robot* robot) : Behavior(robot), GenericMovementBehavior(robot)
 {
 
 }
 
-void MarkBot::perform()
+bool MarkBot::perform()
 {
-    Point bp = robot->getTeam()->getGameState()->getBall()->getPosition();
+    Point bp = *game_state->getBall();
     float ang2ball = Measurements::angleBetween(robot, bp);
 
     // Determine whether we can mark a robot
@@ -30,6 +30,7 @@ void MarkBot::perform()
 
     cmd.setTarget(target, ang2ball);
     GenericMovementBehavior::perform();
+    return isFinished();
 }
 
 void MarkBot::updateMark(Robot* r)
@@ -38,8 +39,8 @@ void MarkBot::updateMark(Robot* r)
     for(Robot* opp: r->getOpponentRobots())
     {
         bool our_side = opp->getPosition().x < 0;
-        bool has_ball = robot->getTeam()->getGameState()->getRobotWithBall() != nullptr &&
-                robot->getTeam()->getGameState()->getRobotWithBall()->getID() == opp->getID();
+        bool has_ball = game_state->getRobotWithBall()  &&
+                        game_state->getRobotWithBall()->getID() == opp->getID();
 
         // Check if it is on our side
         if(our_side && !has_ball)

@@ -30,8 +30,8 @@ void FreeKickStrategy::assignBehaviors()
 
     // We are taking the free kick
 
-    if ((team->getGameState()->getRefereeCommand() == 'F' && team->getColor() == ROBOT_TEAM_BLUE) ||
-        (team->getGameState()->getRefereeCommand() == 'f' && team->getColor() == ROBOT_TEAM_YELLOW))
+    if ((team->getGameState()->getRefereeCommand() == 'F' && team->getID() == ROBOT_TEAM_BLUE) ||
+        (team->getGameState()->getRefereeCommand() == 'f' && team->getID() == ROBOT_TEAM_YELLOW))
     {
         for(Robot* rob : team->getRobots())
             rob->clearBehavior();
@@ -39,22 +39,22 @@ void FreeKickStrategy::assignBehaviors()
         auto opponent_goal = Field::getGoalPosition(OPPONENT_SIDE);
         if(attack1)
         {
-            attack1->assignSkill<Skill::KickToPointOmni>(opponent_goal);
+            attack1->assignBeh<KickToPointOmni>(opponent_goal);
             kicker = attack1;
         }
         else if(attack2)
         {
-            attack2->assignSkill<Skill::KickToPointOmni>(opponent_goal);
+            attack2->assignBeh<KickToPointOmni>(opponent_goal);
             kicker = attack2;
         }
         else if(wall1)
         {
-            wall1->assignSkill<Skill::KickToPointOmni>(opponent_goal);
+            wall1->assignBeh<KickToPointOmni>(opponent_goal);
             kicker = wall1;
         }
         else if(wall2)
         {
-            wall2->assignSkill<Skill::KickToPointOmni>(opponent_goal);
+            wall2->assignBeh<KickToPointOmni>(opponent_goal);
             kicker = wall2;
         }
 
@@ -72,8 +72,8 @@ void FreeKickStrategy::assignBehaviors()
 
     }
     // We are defending against a free kick
-    else if ((team->getGameState()->getRefereeCommand() == 'f' && team->getColor() == ROBOT_TEAM_BLUE)
-          || (team->getGameState()->getRefereeCommand() == 'F' && team->getColor() == ROBOT_TEAM_YELLOW))
+    else if ((team->getGameState()->getRefereeCommand() == 'f' && team->getID() == ROBOT_TEAM_BLUE)
+          || (team->getGameState()->getRefereeCommand() == 'F' && team->getID() == ROBOT_TEAM_YELLOW))
     {
         if(wall1)
             wall1->assignBeh<Wall>();

@@ -3,18 +3,62 @@
 #include "genericmovementbehavior.h"
 #include "../skills/kicktopointomni.h"
 
+
+// ================ OBSERVATION =====================================
+//
+// THIS CLASS SEEMS DEPRECATED, IT'S NOT USED IN THE REST OF THE CODE
+// THE CLASS HAS ISSUES THAT NEED SOLVING BEFORE IT CAN BE USED
+// In particular it assumes only one team, and assumes exactly 5 robots
+//
+// ===================================================================
+
+
+
+class DefendState;
+
+/*! @brief DefendBehavior is the next iteration of a defense mode (circa May 2015).
+ * @author JamesW
+ * @details DefendBehavior sets robots to sit at points around the goal, and get in the
+ * line of motion of the ball and kick it back if it is coming torwards the goal. In addition,
+ * if the ball is stopped on our side a robot will break to kick it, and also
+ * the robots sway formation to face the ball if it on our side.
+ * This also serves as a first iteration of an "intelligent agents" type of behavior,
+ * where each robot independently runs the same behavior to without the need for a
+ * strategy. This is made up of `DefendStates` which link to one another. */
+
+class DefendBehavior : public Behavior
+{
+public:
+     DefendBehavior(Robot*);
+    ~DefendBehavior();
+    bool perform() override;
+    string getName() override;
+private:
+    static int currentUsers;    //Number of robots currently using this behavior
+    DefendState* state;         //Current state (one of the above)
+};
+
+
+
 /*! @file
     A base class, a state in the DefendBehavior state machine.
     States are changed by returning a new
     instance of one from `action`. Similar to the `perform` function
 */
-class DefendState
+class DefendState : virtual public Behavior
 {
 public:
+    DefendState();
     virtual ~DefendState();
 
     //! @brief Perform a state and return a new one Returns `this` if no transition is made */
-    virtual DefendState* action(Robot* robot);
+    virtual DefendState* action();
+
+
+
+
+
+
 
     //! @brief Initializes all claimed points to initial positions
     static void setupClaimedPoints();
@@ -27,10 +71,10 @@ public:
 protected:
     //Returns the point pointer this robot should go to, or nullptr if the
     //robot has none. Use searchClaimPoint to claim a point first.
-    static Point* getClaimedPoint(Robot*);
+    static Point* getClaimedPoint(int robot_id);
 
     //Loops through, looks, and sets the point internally for this robot to claim
-    static Point* searchClaimPoint(Robot*);
+    static Point* searchClaimPoint(Robot*, RobotTeam* team);
 
     static int   kicker_ID;     //Who is moving to kick the ball?
 
@@ -53,7 +97,7 @@ class DSIdle : public DefendState, public GenericMovementBehavior
 {
 public:
      DSIdle(Robot* robot);
-     DefendState* action(Robot* robot) override;
+     DefendState* action() override;
      string getName() override;
 private:
     bool activeKicking;
@@ -70,10 +114,10 @@ class DSKick: public DefendState, public GenericMovementBehavior
 public:
     DSKick(Robot* robot,Point opponent_goal);
    ~DSKick();
-    DefendState* action(Robot* robot) override;
+    DefendState* action() override;
     string getName() override;
 private:
-    Skill::KickToPointOmni* ktpo;
+    KickToPointOmni* ktpo;
 };
 
 
@@ -86,10 +130,10 @@ class DSIntercept : public DefendState, public GenericMovementBehavior
 public:
     DSIntercept(Robot* robot);
    ~DSIntercept();
-    DefendState* action(Robot* robot) override;
+    DefendState* action() override;
     string getName() override;
 private:
-    Skill::KickToPointOmni* ktpo;
+    KickToPointOmni* ktpo;
     bool  chosenLinePoint;
     bool  kickingBall;
     int   kickBallTimeout;
@@ -101,26 +145,6 @@ private:
 
 /************************************************************/
 
-/*! @brief DefendBehavior is the next iteration of a defense mode (circa May 2015).
- * @author JamesW
- * @details DefendBehavior sets robots to sit at points around the goal, and get in the
- * line of motion of the ball and kick it back if it is coming torwards the goal. In addition,
- * if the ball is stopped on our side a robot will break to kick it, and also
- * the robots sway formation to face the ball if it on our side.
- * This also serves as a first iteration of an "intelligent agents" type of behavior,
- * where each robot independently runs the same behavior to without the need for a
- * strategy. This is made up of `DefendStates` which link to one another. */
 
-class DefendBehavior : public Behavior
-{
-public:
-     DefendBehavior(Robot*);
-    ~DefendBehavior();
-    void perform() override;
-    string getName() override;
-private:
-    static int currentUsers;    //Number of robots currently using this behavior
-    DefendState* state;         //Current state (one of the above)
-};
 
 #endif // DEFENDBEHAVIOR_H

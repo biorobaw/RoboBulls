@@ -24,6 +24,7 @@ public slots:
      */
     void  setTargetVelocity(Point velocity, float angular_speed);
     void  setKickSpeed(int speed = 5000);
+    void  setKickDistance(int distance = 6000); // sets kick speed based on desired distance
     void  setDribble(bool); // TODO: dribble speed can be set in the simulator
     void  setChip(bool);
 

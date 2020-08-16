@@ -5,17 +5,17 @@
 #include "robot/robot.h"
 #include "model/game_state.h"
 
-PenaltyGoalie::PenaltyGoalie(Robot* robot) : GenericMovementBehavior(robot)
+PenaltyGoalie::PenaltyGoalie(Robot* robot) : Behavior(robot), GenericMovementBehavior(robot)
 {
 }
 
-void PenaltyGoalie::perform()
+bool PenaltyGoalie::perform()
 {
     robot->setDribble(false);
-    Point bp = robot->getTeam()->getGameState()->getBall()->getPosition();
+    Point bp = *game_state->getBall();
     float angleToBall = Measurements::angleBetween(robot, bp);
 
-    Robot* kicker = robot->getTeam()->getGameState()->getRobotWithBall();
+    Robot* kicker = game_state->getRobotWithBall();
 
     // Determine which opponent is taking the kick
     if(!kicker)
@@ -76,12 +76,15 @@ void PenaltyGoalie::perform()
     cmd.setTarget(block_point, angleToBall);
     cmd.avoidBall = cmd.avoidObstacles = false;
     GenericMovementBehavior::perform();
+    return isFinished();
 }
 
 bool PenaltyGoalie::isFinished()
 {
     DefenceArea our_da(TEAM_DEFFENCE_AREA);
-    if(robot->getTeam()->getGameState()->getBall()->getSpeed() < 100 && our_da.contains(robot->getTeam()->getGameState()->getBall()->getPosition(), -ROBOT_RADIUS))
+    auto ball = game_state->getBall();
+    if(ball->getSpeed() < 100 &&
+       our_da.contains(*ball, -ROBOT_RADIUS))
         return true;
     return false;
 }

@@ -25,7 +25,8 @@ RobotTeam::RobotTeam(YAML::Node* t_node, int _color)
     qInfo() << "        SIDE              -" << (*t_node)["SIDE"];
 
 
-    color = _color;
+    team_id = _color;
+    opponent_id = 1-team_id;
     side =  (*t_node)["SIDE"].as<int>();
     assert(side == FIELD_SIDE_NEGATIVE || side == FIELD_SIDE_POSITIVE);
 
@@ -42,10 +43,10 @@ RobotTeam::RobotTeam(YAML::Node* t_node, int _color)
     game_state->setFlipXCoorinates(side!=FIELD_SIDE_NEGATIVE);
 
     for(int i=0; i<MAX_ROBOTS_PER_TEAM; i++)
-        game_state->getRobot(color,i)->setRobotProxy(robot_proxy);
+        game_state->getRobot(team_id,i)->setRobotProxy(robot_proxy);
 
 
-    teams[color] = this;
+    teams[team_id] = this;
     qInfo() << "--Team_" << (_color == ROBOT_TEAM_BLUE ? "blue" : "yellow") << " DONE";
 
 }
@@ -88,9 +89,9 @@ RobotTeam** RobotTeam::load_teams(YAML::Node* team_nodes){
  * @param id The id of the robot to look for
  * @see Robot class
  * \return A robot pointer if found, or NULL if not on the team */
-Robot* RobotTeam::getRobot(int id)
+Robot* RobotTeam::getRobot(int robot_id)
 {
-    return game_state->getRobot(color,id);
+    return game_state->getRobot(team_id,robot_id);
 }
 
 Robot* RobotTeam::getRobotByRole(int role){
@@ -98,12 +99,19 @@ Robot* RobotTeam::getRobotByRole(int role){
 }
 
 QSet<Robot*>& RobotTeam::getRobots(){
-    return game_state->getFieldRobots(color);
+    return game_state->getFieldRobots(team_id);
+}
+
+Robot* RobotTeam::getOpponent(int robot_id){
+    return game_state->getRobot(opponent_id,robot_id);
+}
+QSet<Robot*>& RobotTeam::getOpponents(){
+    return game_state->getFieldRobots(opponent_id);
 }
 
 
-int RobotTeam::getColor(){
-    return color;
+int RobotTeam::getID(){
+    return team_id;
 }
 
 
@@ -115,7 +123,7 @@ GameState* RobotTeam::getGameState(){
 void RobotTeam::startControlLoop(){
     // create a thread
     thread = new QThread;
-    qInfo().nospace() << "controller thread (" << getColor() << ") " << thread ;
+    qInfo().nospace() << "controller thread (" << getID() << ") " << thread ;
 
     // create a timer to run the control loop
     // connect timeout to control cycle
@@ -144,6 +152,6 @@ void RobotTeam::runControlCycle(){
     for (Robot *rob :  getRobots())
         rob->performBehavior();
 
-    robot_proxy->sendVels(game_state->getFieldRobots(color));
+    robot_proxy->sendVels(game_state->getFieldRobots(team_id));
 
 }

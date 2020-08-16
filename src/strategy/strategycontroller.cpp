@@ -58,7 +58,7 @@ void StrategyController::runControlCycle(GameState* game_state)
         activeStrategy = loadStateStrategy(controller_state);
         activeStrategy->assignBehaviors();
 
-        emit team->strategyChanged(team->getColor(), activeStrategy->getName());
+        emit team->strategyChanged(team->getID(), activeStrategy->getName());
     }
 
 

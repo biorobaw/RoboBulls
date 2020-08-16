@@ -15,7 +15,7 @@ class ChallengeBallBot : public Behavior//public GenericMovementBehavior
 {
 public:
     ChallengeBallBot(Robot*);
-    void perform() override;
+    bool perform() override;
 
     bool isFinished() override;
     string getName() override;

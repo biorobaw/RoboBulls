@@ -25,23 +25,23 @@ using std::endl, std::cout;
 // Waits 6 seconds between kicks
 class KickBeh : public Behavior
 {
-    Skill::KickToPointOmni* ktpo;
+    KickToPointOmni* ktpo;
     std::clock_t start;
     bool wait4recharge;
 public:
     KickBeh(Robot* robot) : Behavior(robot) {
-        ktpo = new Skill::KickToPointOmni(Point(0,0),-1,-1,false);
+        ktpo = new KickToPointOmni(robot,Point(0,0),-1,-1,false);
         wait4recharge = false;
     }
     ~KickBeh() {
         delete ktpo;
     }
-    void perform() override {
+    bool perform() override {
         bool finished = false;
 
         // Perform the kick skill as long as we are not recharging
         if(!wait4recharge)
-            finished = ktpo->perform(robot);
+            finished = ktpo->perform();
 
         // If finished with kicking, we must recharge for 6 seconds
         // So do nothing
@@ -67,7 +67,7 @@ public:
 // Test behavior to dribble the ball between two points
 class DribbleToPointBeh : public Behavior
 {
-    Skill::DribbleToPoint* skill;
+    DribbleToPoint* skill;
     Point A = Point(1500, 0);
     Point B = Point(-1500, 0);
     Point* target;
@@ -75,7 +75,7 @@ public:
     DribbleToPointBeh(Robot* robot) : Behavior(robot)
     {
         target = &A;
-        skill = new Skill::DribbleToPoint(target, false, false);
+        skill = new DribbleToPoint(robot,target, false, false);
     }
 
     ~DribbleToPointBeh()
@@ -83,9 +83,9 @@ public:
         delete skill;
     }
 
-    void perform() override
+    bool perform() override
     {
-        if(skill->perform(robot))
+        if(skill->perform())
         {
             if((*target) == A)
                 target = &B;
@@ -102,13 +102,13 @@ public:
 // Test behavior to dribble the ball between two points
 class DribbleBackBeh : public Behavior
 {
-    Skill::DribbleBack* skill;
+    DribbleBack* skill;
     Point target;
 public:
     DribbleBackBeh(Robot* robot) : Behavior(robot)
     {
         target = Point(0,0);
-        skill = new Skill::DribbleBack(target);
+        skill = new DribbleBack(robot,target);
     }
 
     ~DribbleBackBeh()
@@ -116,9 +116,9 @@ public:
         delete skill;
     }
 
-    void perform() override
+    bool perform() override
     {
-        skill->perform(robot);
+        skill->perform();
     }
     string getName() override {
         return "Dribble Back";
@@ -128,13 +128,13 @@ public:
 // Test behavior to rotate to the ball
 class RotBeh : public GenericMovementBehavior
 {
-    RotBeh(Robot* robot) : GenericMovementBehavior(robot) {
+    RotBeh(Robot* robot) : Behavior(robot), GenericMovementBehavior(robot) {
 
     }
 
-    void perform() override
+    bool perform() override
     {
-        float ang = Measurements::angleBetween(robot, robot->getTeam()->getGameState()->getBall()->getPosition());
+        float ang = Measurements::angleBetween(robot, *game_state->getBall());
         cmd.setTarget(robot->getPosition(),ang);
         GenericMovementBehavior::perform();
     }
@@ -152,7 +152,7 @@ class DribbleBeh : public Behavior
 
     }
 
-    void perform() override
+    bool perform() override
     {
         robot->setDribble(true);
     }
@@ -167,11 +167,11 @@ class MotionTestBeh : public GenericMovementBehavior
 {
 public:
 
-    MotionTestBeh(Robot* robot) : GenericMovementBehavior(robot) {
+    MotionTestBeh(Robot* robot) : Behavior(robot), GenericMovementBehavior(robot) {
 
     }
 
-    void perform() override
+    bool perform() override
     {
         Point target = Point(1500,0);
         cmd.setTarget(target,0);
@@ -194,14 +194,14 @@ class Strafe : public GenericMovementBehavior
 public:
     Point A = Point(1200,0), B = Point(-1200,0);
     enum {pos_one,pos_two} state = pos_one;
-    Strafe(Robot* robot) : GenericMovementBehavior(robot){}
+    Strafe(Robot* robot) : Behavior(robot), GenericMovementBehavior(robot){}
     Strafe(Robot* robot, Point A, Point B) :
-        GenericMovementBehavior(robot), A(A), B(B){}
+        Behavior(robot), GenericMovementBehavior(robot), A(A), B(B){}
 
-    void perform() override
+    bool perform() override
     {
         Point rp = robot->getPosition();
-        double ori = Measurements::angleBetween(rp, robot->getTeam()->getGameState()->getBall()->getPosition());
+        double ori = Measurements::angleBetween(rp, *game_state->getBall());
         switch(state)
         {
             case pos_one:
@@ -230,17 +230,16 @@ class GoToBehavior : public GenericMovementBehavior
 {
 public:
     GoToBehavior(Robot* robot, double angle):
-        GenericMovementBehavior(robot)
+        Behavior(robot), GenericMovementBehavior(robot)
     {
         offset += Point(cos(angle*M_PI/180), sin(angle*M_PI/180)) * 500;
     }
 
     Point offset;
 
-    void perform() override  {
+    bool perform() override  {
         cout<< "/*performing*/: r"<< robot->getID() << endl;
-        auto b = robot->getTeam()->getGameState()->getBall()->getPosition();
-//        cout<< "ball: " << b.x << "," << b.y << endl;
+        Point b = *game_state->getBall();
         cmd.setTarget( b + offset, 0);
                      // Measurements::angleBetween(robot->getPosition(),robot->getTeam()->getGameState()->getBall()->getPosition()));
         cmd.avoidBall = cmd.avoidObstacles = false;

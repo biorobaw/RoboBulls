@@ -1,12 +1,11 @@
 #ifndef DRIBBLETOPOINT_H
 #define DRIBBLETOPOINT_H
 
-#include "../skill.h"
+#include "../behavior.h"
 #include "utilities/point.h"
 #include "robot/navigation/commands/CmdGoToPose.h"
 
-namespace Skill
-{
+
 
 /*! @file
  * Uses the dribbler to move the ball to a given point
@@ -22,12 +21,14 @@ namespace Skill
  * the target.
  */
 
-class DribbleToPoint: public Skill
+class DribbleToPoint: public Behavior
 {
 public:
-    DribbleToPoint(Point& target, bool avoid_obstacles = true, bool prefer_forward_motion = true);
-    DribbleToPoint(Point* target, bool avoid_obstacles = true, bool prefer_forward_motion = true);
-    bool perform(Robot*) override;
+    DribbleToPoint(Robot* robot, Point& target, bool avoid_obstacles = true, bool prefer_forward_motion = true);
+    DribbleToPoint(Robot* robot, Point* target, bool avoid_obstacles = true, bool prefer_forward_motion = true);
+    bool perform() override;
+    bool isFinished() override;
+    string getName() override;
 
 private:
 
@@ -42,6 +43,6 @@ private:
     bool adjustingIsFaster(Robot*);
 };
 
-}
+
 
 #endif // DRIBBLETOPOINT_H

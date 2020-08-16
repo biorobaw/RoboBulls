@@ -116,9 +116,7 @@ SOURCES += src/main.cpp \
         src/strategy/behaviors/wall.cpp \
         src/strategy/skills/dribbletopoint.cpp \
         src/strategy/skills/dribbleback.cpp \
-        src/strategy/skills/kick.cpp \
         src/strategy/skills/kicktopointomni.cpp \
-        src/strategy/skills/stop.cpp \
         src/utilities/comparisons.cpp \
         src/utilities/debug.cpp \
         src/utilities/edges.cpp \
@@ -204,7 +202,6 @@ HEADERS += \
         src/strategy/behaviors/challengeballbot.h \
         src/strategy/behaviors/defendbehavior.h \
         src/strategy/behaviors/genericmovementbehavior.h \
-        src/strategy/behaviors/genericskillbehavior.h \
         src/strategy/behaviors/goalie.h \
         src/strategy/behaviors/markbot.h \
         src/strategy/behaviors/penaltygoalie.h \
@@ -212,9 +209,7 @@ HEADERS += \
         src/strategy/behaviors/wall.h \
         src/strategy/skills/dribbleback.h \
         src/strategy/skills/dribbletopoint.h \
-        src/strategy/skills/kick.h \
         src/strategy/skills/kicktopointomni.h \
-        src/strategy/skills/stop.h \
         src/utilities/circular_buffer.h \
         src/utilities/comparisons.h \
         src/utilities/debug.h \

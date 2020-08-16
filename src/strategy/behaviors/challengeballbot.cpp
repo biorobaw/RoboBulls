@@ -11,15 +11,15 @@ ChallengeBallBot::ChallengeBallBot(Robot* robot) : Behavior(robot)
 {
 }
 
-void ChallengeBallBot::perform()
+bool ChallengeBallBot::perform()
 {
-    Robot* ballBot = robot->getTeam()->getGameState()->getRobotWithBall();
+    Robot* ballBot = game_state->getRobotWithBall();
 
-    if(ballBot && ballBot->getTeam() != robot->getTeam())
+    if(ballBot && ballBot->getTeamId() != robot->getTeamId())
     {
 //        std::cout << "block" << std::endl;
 
-        Point bp = robot->getTeam()->getGameState()->getBall()->getPosition();
+        Point bp = *game_state->getBall();
         float oppAng2Ball = Measurements::angleBetween(ballBot, bp);
         Point lead = Point(cos(oppAng2Ball), sin(oppAng2Ball)) * ROBOT_RADIUS * 3;
         Point target = bp + lead;
@@ -36,6 +36,7 @@ void ChallengeBallBot::perform()
         robot->goToPose(cmd);
     }
     done = robot->completedGoToPoseCmd();
+    return done;
 }
 
 bool ChallengeBallBot::isFinished() {

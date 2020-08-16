@@ -11,9 +11,9 @@ float AttackMain::PASS_ANGLE_TOLERANCE  = 7*M_PI/180;
 AttackMain::AttackMain(Robot* robot) : Behavior(robot)
 {
     calcStaticProb();
-    dribble_skill = new Skill::DribbleToPoint (&kick_point);
-    score_skill   = new Skill::KickToPointOmni(&kick_point,SCORE_ANGLE_TOLERANCE,-1,true);
-    pass_skill    = new Skill::KickToPointOmni(&kick_point,PASS_ANGLE_TOLERANCE, -1,true);
+    dribble_skill = new DribbleToPoint (robot, &kick_point);
+    score_skill   = new KickToPointOmni(robot, &kick_point,SCORE_ANGLE_TOLERANCE,-1,true);
+    pass_skill    = new KickToPointOmni(robot, &kick_point,PASS_ANGLE_TOLERANCE, -1,true);
     state = scoring;
 
     prob_field_rows = (Field::FIELD_LENGTH+1)/PND_MAIN;
@@ -22,7 +22,7 @@ AttackMain::AttackMain(Robot* robot) : Behavior(robot)
     for(int i=0; i<prob_field_rows; i++) prob_field[i] = new ProbNode[prob_field_cols];
 }
 
-void AttackMain::perform()
+bool AttackMain::perform()
 {
 //    auto clusters = genClusters();
 //    for(std::vector<Point> cluster : clusters)
@@ -60,7 +60,7 @@ void AttackMain::perform()
         else
             clear_shot_count--;
 
-        has_kicked_to_goal = score_skill->perform(robot);
+        has_kicked_to_goal = score_skill->perform();
 
         if(clear_shot_count < 0)
         {
@@ -87,7 +87,7 @@ void AttackMain::perform()
         else
             clear_pass_count--;
 
-        has_passed = pass_skill->perform(robot);
+        has_passed = pass_skill->perform();
 
         if(clear_pass_count < 0)
         {
@@ -151,12 +151,13 @@ void AttackMain::perform()
 
         // Dribble Towards Max Node
         kick_point = max_node.point;
-        dribble_skill->perform(robot);
+        dribble_skill->perform();
 
         has_kicked_to_goal = false;
         has_passed = false;
     }
     }
+    return isFinished();
 }
 
 
@@ -312,7 +313,7 @@ std::pair<bool, Point> AttackMain::calcBestGoalPoint()
 {
     // Populate a vector with robot positions
     std::vector<Point> obstacles;
-    auto myTeam = robot->getTeam()->getRobots();
+    auto myTeam = team->getRobots();
     auto oppTeam = robot->getOpponentRobots();
 
     obstacles.reserve(myTeam.size() + oppTeam.size());
@@ -339,7 +340,7 @@ std::pair<bool, Point> AttackMain::calcBestGoalPoint()
         for(const Point& obstacle : obstacles)
         {
             // If there is an obstacle in the way
-            if(Measurements::lineSegmentDistance(obstacle, robot->getTeam()->getGameState()->getBall()->getPosition(), target) <= Field::BALL_RADIUS+ROBOT_RADIUS+50)
+            if(Measurements::lineSegmentDistance(obstacle, *game_state->getBall(), target) <= Field::BALL_RADIUS+ROBOT_RADIUS+50)
             {
                 clear_shot = false;
                 break;
@@ -376,13 +377,13 @@ std::pair<bool, Point> AttackMain::calcBestPassPoint()
 {
     std::vector<Robot*> obstacles;
     for(auto* r2 : robot->getOpponentRobots()) obstacles.push_back(r2);
-    Point bp = robot->getTeam()->getGameState()->getBall()->getPosition();
+    Point bp = *game_state->getBall();
     Robot* best_supp = nullptr;
     float best_prob = 0;
 
-    for(Robot* teammate : robot->getTeam()->getRobots())
+    for(Robot* teammate : team->getRobots())
     {
-        if(teammate->getID() != robot->getID())
+        if(teammate != robot )
         {
             Point tp = teammate->getPosition();
             bool path_clear = Measurements::robotInPath(obstacles, bp, tp, ROBOT_RADIUS+Field::BALL_RADIUS+20) == nullptr;

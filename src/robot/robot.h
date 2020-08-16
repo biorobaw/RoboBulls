@@ -17,6 +17,7 @@
 class RobotTeam;
 class RobotProxy;
 class Pilot;
+class GameState;
 
 #define ROLE_GOALIE 0
 
@@ -44,40 +45,45 @@ public:
 
     // ======= IMPLEMENTATION SPECIFIC FUNCTIONS ===================
 
-    void setRobotProxy(RobotProxy* proxy);
+    Robot* setRobotProxy(RobotProxy* proxy);
     bool hasKicker();
     bool isHolonomic();
 
     // ================ TEAM RELATED ==============================
 
-    void       setRole(int role); // role 0 is reserved for the goalie
-    int        getRole(); // get the role of the robot in the team
-    bool       isGoalie();
     int        getTeamId();
     RobotTeam* getTeam();
+
     QSet<Robot*>& getOpponentRobots();
+    QSet<Robot*>& getOutRobots();
     Robot* getOpponentRobot(int id);
+
+
+    int        getRole(); // get the role of the robot in the team
+    Robot*     setRole(int role); // role 0 is reserved for the goalie
+    bool       isGoalie();
 
     // =============== High Level Control =========================
 
-    bool      hasBehavior();
-    Behavior* getBehavior();
-    void      performBehavior();
-    void      clearBehavior();
-    bool      ignoreController();
+    bool       hasBehavior();
+    Behavior*  getBehavior();
+    Robot*     performBehavior();
+    Robot*     clearBehavior();
+    bool       ignoresController();
+
+    GameState* getGameState();
+    Robot*     setGameState(GameState* state);
 
 
-    void goToPose(CmdGoToPose& newCommand);
-    bool completedGoToPoseCmd();
+    Robot* goToPose(CmdGoToPose& newCommand);
+    bool   completedGoToPoseCmd();
 
     bool      hasBall();
-    void      setHasBall(bool new_value);
+    Robot*    setHasBall(bool new_value);
 
     template<typename BehaviorType, typename... Args>
     bool assignBeh(Args&&... args);
 
-    template<typename SkillType, typename... Args>
-    bool assignSkill(Args&&... args);
 
     // ============= LOW LEVEL CONTROL ==========================
     RobotLowLevelControls* getOverridenController();
@@ -89,9 +95,7 @@ public slots:
 protected:
 
     // =============== PRIVATE FUNCTION ==========================
-    void setID(int);
-    void setTeam(int);
-    void setBehavior(Behavior *);
+    Robot* setBehavior(Behavior *);
     
 
     // =========== BASIC PRIVATE DATA ============================
@@ -102,6 +106,8 @@ protected:
     // ====== HIGH LEVEL CONTROL =================================
     Behavior * behavior;
     bool has_ball = false;
+
+    GameState* game_state;
 
     // ====== LOW LEVEL CONTROLS ================================
     RobotLowLevelControls* overriden_controls = new RobotLowLevelControls(this);
@@ -146,18 +152,5 @@ bool Robot::assignBeh(Args&&... args)
     return false;
 }
 
-/*! @brief Assign a single Skill to a robot
- * @details assignSkill can be used to assign a single skill to a robot.
- * This is done by assigning a transparent behavior (GenericSkillBehavior)
- * that performs a single skill. Use this exactly like assignBeh,
- * and passing the Skill’s arguments instead
- * @see assignBeh
- * @see Skill
- * @see GenericSkillBehavior */
-template<typename SkillType, typename... Args>
-bool Robot::assignSkill(Args&&... args)
-{
-    return assignBeh<GenericSkillBehavior<SkillType>>(args...);
-}
 
 #endif // ROBOT_H

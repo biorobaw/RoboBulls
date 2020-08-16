@@ -1,7 +1,6 @@
 #include "model/game_state.h"
 #include "utilities/comparisons.h"
 #include "utilities/debug.h"
-#include "kick.h"
 #include "kicktopointomni.h"
 #include "model/ball.h"
 #include "model/field.h"
@@ -11,8 +10,7 @@
 #include "model/team.h"
 #include "utilities/measurements.h"
 
-namespace Skill
-{
+
 
 /************************************************************************/
 /* USER CONFIGURATION */
@@ -61,16 +59,17 @@ float KICKLOCK_COUNT = 15;
 
 /************************************************************************/
 
-KickToPointOmni::KickToPointOmni(const Point& target,
+KickToPointOmni::KickToPointOmni(Robot* robot, const Point& target,
                                  float targetTolerance, float kickDistance, bool useFullPower)
-    : KickToPointOmni(&m_targetPoint, targetTolerance, kickDistance, useFullPower)
+    : KickToPointOmni(robot, &m_targetPoint, targetTolerance, kickDistance, useFullPower)
 {
     m_targetPoint = target;
 }
 
-KickToPointOmni::KickToPointOmni(Point* targetPtr,
+KickToPointOmni::KickToPointOmni(Robot* robot, Point* targetPtr,
                                  float targetTolerance, float kickDistance, bool useFullPower)
-    : m_targetPointer(targetPtr)
+    : Behavior(robot)
+    , m_targetPointer(targetPtr)
     , m_moveCompletionCount(0)
     , m_targetTolerance((targetTolerance < 0) ? STRICTEST_ANG_TOL : targetTolerance)
     , m_kickDistance(kickDistance)
@@ -87,7 +86,7 @@ KickToPointOmni::KickToPointOmni(Point* targetPtr,
     //debug::registerVariable("ktpo_rc", &RECREATE_DIST_TOL);
 }
 
-bool KickToPointOmni::perform(Robot* robot)
+bool KickToPointOmni::perform()
 {
     Point bp = robot->getTeam()->getGameState()->getBall()->getPosition();
 //    GuiInterface::getGuiInterface()->drawLine(bp, *m_targetPointer);
@@ -190,12 +189,8 @@ bool KickToPointOmni::perform(Robot* robot)
 
             // Are we using full power? Otherwise, use distance-based power
             float powerDistance = Measurements::distance(robot, *m_targetPointer);
-            if(m_useFullPower)
-                powerDistance = Kick::defaultKickDistance;
-
-            // Perform the kick with the power and record that we did
-            Kick k(powerDistance);
-            k.perform(robot);
+            if(m_useFullPower) robot->setKickDistance();
+            else robot->setKickDistance(powerDistance);
 
             if(m_kickCommandCount < 100)
             {
@@ -278,4 +273,11 @@ bool KickToPointOmni::isInKickLock(Robot* robot)
     return false;
 }
 
+bool KickToPointOmni::isFinished(){
+    return m_hasKicked; // TODO: Actually this will always return false, needs to be fixed
 }
+string KickToPointOmni::getName(){
+    return "Kick 2 point omni";
+}
+
+

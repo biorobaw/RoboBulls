@@ -17,7 +17,7 @@ void PenaltyStrategy::assignBehaviors()
 {
     // If we are taking the penalty kick
     char gs = team->getGameState()->getRefereeCommand();
-    if ((gs == 'P' && team->getColor() == ROBOT_TEAM_BLUE) || (gs == 'p' && team->getColor() == ROBOT_TEAM_YELLOW))
+    if ((gs == 'P' && team->getID() == ROBOT_TEAM_BLUE) || (gs == 'p' && team->getID() == ROBOT_TEAM_YELLOW))
     {
         // One of the defenders will take the penalty and move back
         Robot* kicker = team->getRobotByRole(RobotRole::DEFEND1);

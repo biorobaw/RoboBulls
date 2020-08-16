@@ -25,7 +25,7 @@ SControllerJoystick::SControllerJoystick(RobotTeam* _team, YAML::Node* n)
     for(auto it : node_map){
         qInfo() << "                - ROBOT :" << it["ROBOT"];
         qInfo() << "                  JOY   :" << it["JOY"]  ;
-        map_joystick(it["JOY"].as<int>(),team->getColor(),it["ROBOT"].as<int>());
+        map_joystick(it["JOY"].as<int>(),team->getID(),it["ROBOT"].as<int>());
     }
 
 }

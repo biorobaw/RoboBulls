@@ -1,12 +1,11 @@
 #ifndef KTP_OMNI_H
 #define KTP_OMNI_H
 #include "utilities/point.h"
-#include "../skill.h"
+#include "../behavior.h"
 #include "robot/navigation/commands/CmdGoToPose.h"
 #include "gui/interface/gui_interface.h"
 
-namespace Skill
-{
+
 
 /*! General-purpose  skill to kick the ball to a point
  * details A simplified, optimized version of KTP for Omni robots.
@@ -18,7 +17,7 @@ namespace Skill
  * KTPO supports both a <b>static point</b> and <b>variable point</b> constructors.
  *
  */
-class KickToPointOmni : public Skill
+class KickToPointOmni : public Behavior
 {
 public:
     /*! @brief <b>Static-point</b> constructor, for kicking to a static point
@@ -28,7 +27,7 @@ public:
     * @param kickDistance: How close should the robot be to the target before kicking.
     * leave blank to kick as soon as possible
     * @param useFullPower: Use a full-power kick instead of a variable power one to the target */
-    KickToPointOmni(const Point& target,
+    KickToPointOmni(Robot* robot, const Point& target,
                     float targetTolerance = -1,
                     float kickDistance = -1,
                     bool  useFullPower = false);
@@ -36,12 +35,14 @@ public:
     /*! @brief <b>variable-point</b> constructor, for kicking to a changing point
      * @param targetPtr Pointer to a point to kick to. Can change while skill is created
      * @see KickToPointOmni */
-    KickToPointOmni(Point* targetPtr,
+    KickToPointOmni(Robot* robot, Point* targetPtr,
                     float  targetTolerance = -1,
                     float  kickDistance = -1,
                      bool  useFullPower = false);
 
-    bool perform(Robot* robot) override;
+    bool perform() override;
+    bool isFinished() override;
+    string getName() override;
 
 private:
     CmdGoToPose cmd = CmdGoToPose(Point(0,0),0,true,false);
@@ -76,6 +77,6 @@ private:
     bool canKick(Robot *robot);
 };
 
-}
+
 
 #endif

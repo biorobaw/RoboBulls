@@ -28,23 +28,23 @@ NormalGameStrategy::NormalGameStrategy(RobotTeam* _team)
     auto prev_cmd = _team->getGameState()->getRefereePreviousCommand();
 
     // Opp Kick-Off
-    if((prev_cmd == Referee_Command_PREPARE_KICKOFF_YELLOW && team->getColor() == ROBOT_TEAM_BLUE)
-    || (prev_cmd == Referee_Command_PREPARE_KICKOFF_BLUE && team->getColor() == ROBOT_TEAM_YELLOW))
+    if((prev_cmd == Referee_Command_PREPARE_KICKOFF_YELLOW && team->getID() == ROBOT_TEAM_BLUE)
+    || (prev_cmd == Referee_Command_PREPARE_KICKOFF_BLUE && team->getID() == ROBOT_TEAM_YELLOW))
         state = opp_kickoff;
 
     // Our Kick-Off
-    else if((prev_cmd == Referee_Command_PREPARE_KICKOFF_BLUE && team->getColor() == ROBOT_TEAM_BLUE)
-    ||      (prev_cmd == Referee_Command_PREPARE_KICKOFF_YELLOW && team->getColor() == ROBOT_TEAM_YELLOW))
+    else if((prev_cmd == Referee_Command_PREPARE_KICKOFF_BLUE && team->getID() == ROBOT_TEAM_BLUE)
+    ||      (prev_cmd == Referee_Command_PREPARE_KICKOFF_YELLOW && team->getID() == ROBOT_TEAM_YELLOW))
         state = our_kickoff_1;
 
     // We are shooting a penalty
-    else if((prev_cmd == Referee_Command_PREPARE_PENALTY_YELLOW && team->getColor() == ROBOT_TEAM_YELLOW)
-    ||      (prev_cmd == Referee_Command_PREPARE_PENALTY_BLUE && team->getColor() == ROBOT_TEAM_BLUE))
+    else if((prev_cmd == Referee_Command_PREPARE_PENALTY_YELLOW && team->getID() == ROBOT_TEAM_YELLOW)
+    ||      (prev_cmd == Referee_Command_PREPARE_PENALTY_BLUE && team->getID() == ROBOT_TEAM_BLUE))
             state = shoot_penalty;
 
     // We are receiving a penalty
-    else if((prev_cmd == Referee_Command_PREPARE_PENALTY_BLUE && team->getColor() == ROBOT_TEAM_YELLOW)
-    ||      (prev_cmd == Referee_Command_PREPARE_PENALTY_YELLOW && team->getColor() == ROBOT_TEAM_BLUE))
+    else if((prev_cmd == Referee_Command_PREPARE_PENALTY_BLUE && team->getID() == ROBOT_TEAM_YELLOW)
+    ||      (prev_cmd == Referee_Command_PREPARE_PENALTY_YELLOW && team->getID() == ROBOT_TEAM_BLUE))
             state = defend_penalty;
 
     // Force Start from ref-box. Previous game
@@ -197,7 +197,7 @@ void NormalGameStrategy::update()
         || (main != nullptr && supp != nullptr && (Measurements::distance(supp,bp) < Measurements::distance(main, bp))))
         {
             if (ball_bot == nullptr
-            || (ball_bot != nullptr && ball_bot->getTeam() == team
+            || (ball_bot != nullptr && ball_bot->getTeamId() == team->getID()
                                     && ball_bot->getRole() != RobotRole::GOALIE
                                     && ball_bot->getRole() != RobotRole::DEFEND1
                                     && ball_bot->getRole() != RobotRole::DEFEND2))
@@ -207,7 +207,7 @@ void NormalGameStrategy::update()
         // Evaluate defend
         if(prev_state != defend)
         {
-            if(ball_bot != nullptr && ball_bot->getTeam()!=team)
+            if(ball_bot != nullptr && ball_bot->getTeamId()!=team->getID())
                 state = defend;
         }
 

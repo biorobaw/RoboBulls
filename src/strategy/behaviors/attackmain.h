@@ -57,7 +57,7 @@ class AttackMain : public Behavior//:public GenericMovementBehavior
 public:
     AttackMain(Robot*);
    ~AttackMain();
-    void perform() override;
+    bool perform() override;
     bool isFinished() override;
     bool hasKickedToGoal();
     bool hasPassed();
@@ -78,9 +78,10 @@ private:
     int prob_field_cols;
     ProbNode** prob_field;
 
-    Skill::KickToPointOmni* score_skill;
-    Skill::KickToPointOmni* pass_skill;
-    Skill::DribbleToPoint* dribble_skill;
+    KickToPointOmni* score_skill;
+    KickToPointOmni* pass_skill;
+    DribbleToPoint* dribble_skill;
+
     Point kick_point;
     bool has_kicked_to_goal = false;
     bool has_passed = false;

@@ -67,7 +67,7 @@ signals:
     void setGuiTargetVelocity(Point velocity, float angular);
     void setGuiKickSpeed(int speed = 5000);
     void setGuiDribble(bool dribble);
-    void setChip(bool chip);
+    void setGuiChip(bool chip);
 
     void selectedChanged(GuiRobot*);       // signal emitted when a robot becomes selected or deselected
     void doubleClicked(GuiRobot*);         // signal emitted when a the graphics of a gui robot is double clicked

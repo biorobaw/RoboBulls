@@ -4,13 +4,13 @@
 #include "model/game_state.h"
 #include "model/team.h"
 
-RefStop::RefStop(Robot* robot) : GenericMovementBehavior(robot)
+RefStop::RefStop(Robot* robot) : Behavior(robot), GenericMovementBehavior(robot)
 {
 }
 
-void RefStop::perform()
+bool RefStop::perform()
 {
-    Point bp = robot->getTeam()->getGameState()->getBall()->getPosition();
+    Point bp = *game_state->getBall();
 
     if(Measurements::isClose(robot, bp, 600))
     {
@@ -41,6 +41,7 @@ void RefStop::perform()
     GenericMovementBehavior::perform();
 
     finished = true;
+    return isFinished();
 }
 
 bool RefStop::isFinished()

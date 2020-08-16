@@ -40,7 +40,7 @@ public:
     // Fills in prob_field with scoring probabilities based on static factors
     AttackSupport(Robot*);
    ~AttackSupport();
-    void perform() override;
+    bool perform() override;
     bool isFinished() override;
     string getName() override;
 

@@ -17,15 +17,15 @@ AttackSupport::AttackSupport(Robot* robot)  : Behavior(robot)
     for(int i=0; i<prob_field_rows; i++) prob_field[i] = new ProbNode[prob_field_cols];
 }
 
-void AttackSupport::perform()
+bool AttackSupport::perform()
 {
     Point rp = robot->getPosition();
-    Point bp = robot->getTeam()->getGameState()->getBall()->getPosition();
+    Point bp = *game_state->getBall();
 
     // We signal that we are done supporting if:
     // - We are closest member on our team to the ball
     // - The ball is close to us
-    finished = Comparisons::distance(bp).minInTeam(robot->getTeam())->getID() == robot->getID()
+    finished = Comparisons::distance(bp).minInTeam(team)->getID() == robot->getID()
             && Measurements::isClose(rp, bp, ROBOT_RADIUS+Field::BALL_RADIUS+200);
 
     switch(state)
@@ -37,11 +37,11 @@ void AttackSupport::perform()
 //        std::cout << "Intercepting" << std::endl;
 
         // Evaluate transition to positioning
-        Point b_vel = robot->getTeam()->getGameState()->getBall()->getVelocity();
-        Robot* ball_bot = robot->getTeam()->getGameState()->getRobotWithBall();
+        Point b_vel = game_state->getBall()->getVelocity();
+        Robot* ball_bot = game_state->getRobotWithBall();
 
         bool ball_bot_not_facing_us =
-                ball_bot != nullptr && ball_bot->getTeam()==robot->getTeam()
+                ball_bot != nullptr && ball_bot->getTeamId()==robot->getTeamId()
                 && Comparisons::isNotFacingPoint(ball_bot, rp, 15*M_PI/180);
 
         if(ball_bot_not_facing_us)
@@ -62,7 +62,7 @@ void AttackSupport::perform()
 
         if(Measurements::mag(b_vel) < 200)
         {
-            if(ball_bot != nullptr &&  ball_bot->getTeam()==robot->getTeam())
+            if(ball_bot != nullptr &&  ball_bot->getTeamId()==robot->getTeamId())
             {
                 Point ball_bot_pos = ball_bot->getPosition();
                 float ball_bot_ori = ball_bot->getOrientation();
@@ -95,9 +95,9 @@ void AttackSupport::perform()
 
         // Evaluate transition to intercepting by
         // Checking if a teammate with the ball is facing this robot
-        Robot* ball_bot = robot->getTeam()->getGameState()->getRobotWithBall();
+        Robot* ball_bot = game_state->getRobotWithBall();
 
-        if(ball_bot != nullptr &&  ball_bot->getTeam()==robot->getTeam()
+        if(ball_bot != nullptr &&  ball_bot->getTeamId()==robot->getTeamId()
         && Comparisons::isFacingPoint(ball_bot, rp, 10*M_PI/180)
         && !Measurements::isClose(rp, ball_bot, 1000))
             switch2intercept_count = std::min(30, switch2intercept_count+1);
@@ -134,6 +134,7 @@ void AttackSupport::perform()
                 GuiInterface::getGuiInterface()->drawPoint(curr.point);
         }
     }
+    return isFinished();
 }
 
 AttackSupport::ProbNode AttackSupport::findMaxNode()
@@ -282,7 +283,7 @@ void AttackSupport::genDistanceFromTeammates()
         {
             ProbNode& n = prob_field[x][y];
 
-            for(Robot* tmate: robot->getTeam()->getRobots())
+            for(Robot* tmate: team->getRobots())
             {
                 if(tmate->getID() != robot->getID()
                 && (Measurements::distance(tmate->getPosition(), n.point) < 2000))
@@ -296,7 +297,7 @@ void AttackSupport::genDistanceFromTeammates()
 void AttackSupport::genBallShadows()
 {
 
-    Point bp = robot->getTeam()->getGameState()->getBall()->getPosition();
+    Point bp = *game_state->getBall();
 
     float R = ROBOT_RADIUS + 50;
 
@@ -454,7 +455,7 @@ void AttackSupport::genGoalShotAvoidance()
     float g2x = gp.x;
     float g2y = gp.y - Field::GOAL_LENGTH/2 - ROBOT_RADIUS - 500;
 
-    Point bp = robot->getTeam()->getGameState()->getBall()->getPosition();
+    Point bp = *game_state->getBall();
 
     float min_x = bp.x;
     float max_x = g1x;
