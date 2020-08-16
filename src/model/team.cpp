@@ -33,12 +33,10 @@ RobotTeam::RobotTeam(YAML::Node* t_node, int _color)
     auto proxy_node = (*t_node)["ROBOT_PROXY"];
     robot_proxy = RobotProxy::load(&proxy_node);
     robot_proxy->setParent(this);
-    robot_type = robot_proxy->getName();
 
     // load team controller
     auto s_controller = (*t_node)["STRATEGY_CONTROLLER"];
     controller = StrategyController::loadController(this, &s_controller);
-    team_controller_name = s_controller["ID"].as<string>().c_str();
 
     game_state = new GameState(this);
     game_state->setFlipXCoorinates(side!=FIELD_SIDE_NEGATIVE);
@@ -107,17 +105,7 @@ QSet<Robot*>& RobotTeam::getRobots(){
 int RobotTeam::getColor(){
     return color;
 }
-QString RobotTeam::getRobotType(){
-    return robot_type;
-}
 
-QString RobotTeam::getTeamControllerName(){
-    return team_controller_name;
-}
-
-QString RobotTeam::getStrategyName(){
-    return controller!=nullptr ? controller->getStrategyName() : "none";
-}
 
 
 GameState* RobotTeam::getGameState(){

@@ -102,6 +102,6 @@ int IndirectKickStrategy::getStatus()
         return KICKED;
 }
 
-std::string IndirectKickStrategy::getName(){
+QString IndirectKickStrategy::getName(){
     return "indirect kick";
 }

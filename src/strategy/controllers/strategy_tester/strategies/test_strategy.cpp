@@ -287,3 +287,8 @@ int TestStrategy::getStatus()
 {
     return STATUS_RUNNING;
 }
+
+
+QString TestStrategy::getName(){
+    return "Test";
+}

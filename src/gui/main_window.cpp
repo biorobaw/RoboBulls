@@ -48,7 +48,6 @@ void MainWindow::coreLoop() {
 
     // Update game data:
     GuiField::updateField();
-    GuiTeams::updateTeams();
     GuiGameState::get()->update();
 
     // update panels

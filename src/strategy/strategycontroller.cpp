@@ -57,6 +57,8 @@ void StrategyController::runControlCycle(GameState* game_state)
         for(Robot* r : team->getRobots()) r->clearBehavior();
         activeStrategy = loadStateStrategy(controller_state);
         activeStrategy->assignBehaviors();
+
+        emit team->strategyChanged(team->getColor(), activeStrategy->getName());
     }
 
 
@@ -97,5 +99,5 @@ StrategyController* StrategyController::loadController(RobotTeam* team, YAML::No
 }
 
 QString StrategyController::getStrategyName(){
-    return activeStrategy == nullptr ? "null" : activeStrategy->getName().c_str();
+    return activeStrategy ? activeStrategy->getName() : "null";
 }

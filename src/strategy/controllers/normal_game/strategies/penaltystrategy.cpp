@@ -67,6 +67,6 @@ void PenaltyStrategy::assignBehaviors()
     }
 }
 
-std::string PenaltyStrategy::getName(){
+QString PenaltyStrategy::getName(){
     return "Penalty";
 }

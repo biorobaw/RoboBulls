@@ -17,6 +17,6 @@ void StopStrategy::assignBehaviors()
 }
 
 
-std::string StopStrategy::getName(){
+QString StopStrategy::getName(){
     return "Stop";
 }

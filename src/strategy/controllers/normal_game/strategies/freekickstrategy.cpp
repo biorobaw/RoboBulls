@@ -98,6 +98,6 @@ int FreeKickStrategy::getStatus()
         return KICKED;
 }
 
-std::string FreeKickStrategy::getName(){
+QString FreeKickStrategy::getName(){
     return "free kick";
 }

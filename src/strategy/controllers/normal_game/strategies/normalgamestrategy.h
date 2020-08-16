@@ -15,7 +15,7 @@ public:
     NormalGameStrategy(RobotTeam* _team);
     void assignBehaviors() override;
     void update() override;
-    virtual std::string getName() override;
+    virtual QString getName() override;
 
 public:
     /*! Assigns goalie behavior to ID GOALIE_ID if it is on the team

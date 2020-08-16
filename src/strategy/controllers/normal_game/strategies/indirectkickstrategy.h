@@ -20,7 +20,7 @@ public:
     IndirectKickStrategy(RobotTeam* _team);
     void assignBehaviors() override;
     int getStatus() override;
-    virtual std::string getName() override;
+    virtual QString getName() override;
 
 private:
     Robot* kicker; // Robot recieving pass to kick ball

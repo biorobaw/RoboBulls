@@ -16,7 +16,7 @@ void HaltStrategy::assignBehaviors()
 }
 
 
-std::string HaltStrategy::getName(){
+QString HaltStrategy::getName(){
     return "Halt";
 }
 

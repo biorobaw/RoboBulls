@@ -10,7 +10,7 @@ class HaltStrategy : public Strategy
 public:
     HaltStrategy(RobotTeam* _team);
     void assignBehaviors() override;
-    virtual std::string getName() override;
+    virtual QString getName() override;
 };
 
 #endif // HALTSTRATEGY_H

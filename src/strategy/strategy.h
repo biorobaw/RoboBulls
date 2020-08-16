@@ -34,6 +34,8 @@ class RobotTeam;
 
 #define STATUS_RUNNING 0
 
+#include <QString>
+
 class Strategy
 {
 public:
@@ -61,7 +63,7 @@ public:
      */
     virtual int getStatus();
 
-    virtual std::string getName();
+    virtual QString getName();
 
 
 

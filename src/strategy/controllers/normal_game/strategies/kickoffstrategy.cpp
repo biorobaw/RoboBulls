@@ -43,6 +43,6 @@ void KickOffStrategy::assignBehaviors()
     if(goalie) goalie->assignBeh<Goalie>();
 }
 
-std::string KickOffStrategy::getName(){
+QString KickOffStrategy::getName(){
     return "kick off";
 }

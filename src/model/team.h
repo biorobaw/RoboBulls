@@ -26,27 +26,17 @@ public:
     static RobotTeam** load_teams(YAML::Node* team_nodes);
 
 
-     // ======= Constructor and destructors ========================
+     // ======= Constructor and basic info ========================
 
     RobotTeam(YAML::Node* t_node, int _color);
     ~RobotTeam();
+    int getID();
 
     // ======= Robot Getter functions ==============================
 
     Robot* getRobot(int id);
     Robot* getRobotByRole(int role);
     QSet<Robot*>& getRobots();
-
-    // ======= Getter and predicate functions ======================
-
-    int getColor();
-
-    // ======= Functions required for the gui ======================
-
-    QString getRobotType();
-    QString getTeamControllerName();
-    QString getStrategyName();
-
 
     // ======= Control Related function ===========================
 
@@ -56,6 +46,10 @@ public:
 private slots:
     void runControlCycle();
 
+    // signals for gui
+signals:
+    void strategyChanged(int team_id, QString new_strategy);
+
 private:
 
     static RobotTeam* teams[2];
@@ -64,24 +58,16 @@ private:
     QTimer* timer;
 
     StrategyController* controller = nullptr; // controller to control the team
-    RobotProxy* robot_proxy; // proxy to communicate with robots and create new pilots for them
-    GameState* game_state; // game state as seen by the team (each team has its own view)
+    RobotProxy*         robot_proxy; // proxy to communicate with robots and create new pilots for them
 
-    int color;
-    int side;
-
-    QString robot_type = "";
-    QString team_controller_name = "none";
-
-    // robot mappings
+    GameState*          game_state; // game state as seen by the team (each team has its own view)
     QMap<int,Robot*> robotsByRoles; // maps robots to roles, defined by the team controller
 
-
-    //
+    int id;
+    int side;
 
     // Friend functions
     friend RobotTeam* Robot::getTeam();
-
 };
 
 

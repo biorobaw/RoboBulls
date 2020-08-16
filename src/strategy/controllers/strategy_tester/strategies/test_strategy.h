@@ -20,7 +20,7 @@ public:
     TestStrategy(RobotTeam* _team);
     void assignBehaviors() override;
     int getStatus() override;
-    virtual std::string getName() override;
+    virtual QString getName() override;
 };
 
 #endif // TESTSTRATEGY_H

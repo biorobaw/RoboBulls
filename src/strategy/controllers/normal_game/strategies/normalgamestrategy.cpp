@@ -320,6 +320,6 @@ void NormalGameStrategy::assignGoalieIfOk(RobotTeam* team)
 }
 //! @endcond
 
-std::string NormalGameStrategy::getName(){
+QString NormalGameStrategy::getName(){
     return "normal game";
 }

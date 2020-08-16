@@ -21,8 +21,8 @@ int Strategy::getStatus(){
 
 
 
-std::string Strategy::getName(){
-    return "Default dummy";
+QString Strategy::getName(){
+    return "none";
 }
 
 void Strategy::assignBehaviors(){

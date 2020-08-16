@@ -13,7 +13,7 @@ class StopStrategy:public Strategy
 public:
     StopStrategy(RobotTeam* _team);
     void assignBehaviors() override;
-    virtual std::string getName() override;
+    virtual QString getName() override;
 };
 
 #endif // STOPSTRATEGY_H
