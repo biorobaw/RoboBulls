@@ -26,8 +26,8 @@ bool DribbleBack::perform()
 {
 //    std::cout << "Dribble Back" << std::endl;
 
-    Point bp = robot->getTeam()->getGameState()->getBall()->getPosition();
-    Point rp = robot->getPosition();
+    Point bp = *ball;
+    Point rp = *robot;
     float ang_to_ball = Measurements::angleBetween(rp,bp);
     float dist_to_ball = Measurements::distance(rp,bp);
 
@@ -113,7 +113,7 @@ bool DribbleBack::perform()
 }
 
 bool DribbleBack::isFinished(){
-    return Measurements::distance(*game_state->getBall(), *target) < 300;
+    return Measurements::distance(*ball, *target) < 300;
 }
 string DribbleBack::getName(){
     return "Dribble back";

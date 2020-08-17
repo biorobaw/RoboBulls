@@ -168,7 +168,7 @@ int main(int argc, char *argv[])
 
     // create gui last, only after creating model
     // since the gui assumes the existance of the model
-    GuiInterface::getGuiInterface()->show();
+    (new GuiInterface(teams))->show(); // singleton -> no need to save reference
 
 
     registerExitSignals();

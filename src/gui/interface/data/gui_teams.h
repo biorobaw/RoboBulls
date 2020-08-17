@@ -5,7 +5,7 @@
 #include <QString>
 
 //Proxy between the gui and the ball
-
+class RobotTeam;
 class GuiTeams : public QObject
 {
     Q_OBJECT
@@ -16,7 +16,7 @@ public:
     static QString getStrategy(int team_id);   // returns the current strategy of the team
 
     static bool isControlled(int team_id);
-    static void initData();
+    static void initData(RobotTeam* teams[]);
 
 public slots:
     void updateRobotType(int team, QString type);

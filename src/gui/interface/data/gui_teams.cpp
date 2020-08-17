@@ -3,12 +3,7 @@
 #include "robot/robot.h"
 #include "model/configuration.h"
 
-
 GuiTeams* GuiTeams::instance = new GuiTeams;
-
-namespace  {
-    Robot team_proxy[2] = {Robot(0,0), Robot(1,0)};
-}
 
 GuiTeams::GuiTeams(){
 
@@ -45,7 +40,7 @@ void GuiTeams::updateStrategy(int team, QString s){
     strategy[team]   = s;
 }
 
-void GuiTeams::initData(){
+void GuiTeams::initData(RobotTeam* teams[]){
     auto& c = *Configuration::get();
     auto team_b = c["teams"]["TEAM_BLUE"];
     auto team_y = c["teams"]["TEAM_YELLOW"];
@@ -56,8 +51,7 @@ void GuiTeams::initData(){
     instance->controller[ROBOT_TEAM_YELLOW] = team_y["STRATEGY_CONTROLLER"]["ID"].Scalar().c_str();
 
     for(int i=0; i<2; i++){
-        auto t = team_proxy->getTeam();
-        connect(t, &RobotTeam::strategyChanged, instance, &GuiTeams::updateStrategy);
+        connect(teams[i], &RobotTeam::strategyChanged, instance, &GuiTeams::updateStrategy);
     }
 
 

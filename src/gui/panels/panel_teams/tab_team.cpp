@@ -42,7 +42,7 @@ void TabTeam::update_tab(){
 
 void TabTeam::show_robot(GuiRobot* robot){
     if(robot->getTeamId() == team_id && robot->selected())
-        scrollArea->ensureWidgetVisible(robot_frames[robot->getID()]);
+        scrollArea->ensureWidgetVisible(robot_frames[robot->getId()]);
 }
 
 

@@ -26,6 +26,7 @@ using std::cout, std::endl;
 
 GameState::GameState(QObject* parent) :
     QObject(parent),
+    Collisions(this),
     ball(new Ball),
     referee_command(Referee_Command_HALT),
     referee_command_previous(Referee_Command_HALT)
@@ -62,6 +63,8 @@ void GameState::update(){
 
     // update robot who has the ball
     setRobotWithBall();
+
+    updateAllCollisions();
 
 }
 
@@ -128,8 +131,8 @@ void GameState::setRobotWithBall(){
 bool GameState::hasBall(Robot* robot)
 {
     if(!robot) return false;
-    return Comparisons::isDistanceToLess(robot, ball->getPosition(), 300) &&
-           Comparisons::isFacingPoint(robot, ball->getPosition());
+    return Comparisons::isDistanceToLess(robot, *ball, 300) &&
+           Comparisons::isFacingPoint(robot, *ball);
 }
 
 void GameState::clearRefereeCommandChanged(){

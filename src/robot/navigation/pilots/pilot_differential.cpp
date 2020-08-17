@@ -39,7 +39,7 @@ void PilotDifferential::driveTo
     double left_motor_velocity = 0, right_motor_velocity = 0;
 
     /* Get initial information about the robot. */
-    Point robotPos       = robot->getPosition();
+    Point robotPos       = *robot;
     Point deltaPos       = goalPoint - robotPos;
     double angleToGoal   = atan2 (deltaPos.y , deltaPos.y);
     float angDiff        = Measurements::angleDiff(robot->getOrientation(), theta_goal);

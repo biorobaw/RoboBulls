@@ -1,8 +1,10 @@
 #include "strategy.h"
 #include <iostream>
 #include "model/game_state.h"
+#include "model/team.h"
 
-Strategy::Strategy(RobotTeam* _team) : team(_team) {
+Strategy::Strategy(RobotTeam* _team) : // note the initialization order is important
+    team(_team), game_state(team->getGameState()), ball(game_state->getBall()) {
 
 }
 

@@ -49,7 +49,7 @@ namespace impl {
 
         // Check ball
         if(avoidBall) {
-            Point bp = game_state->getBall()->getPosition();
+            Point bp = *game_state->getBall();
 
             if(Measurements::lineSegmentDistance(bp, beginPos, endPos) <= ROBOT_RADIUS+Field::BALL_RADIUS+10) {
                 obstacle_found = true;
@@ -97,7 +97,7 @@ namespace impl {
         // Check ball
         bool ball_in_the_way = false;
         if(avoid_ball)
-            ball_in_the_way = Measurements::isClose(toCheck, game_state->getBall()->getPosition(), ROBOT_RADIUS+Field::BALL_RADIUS + 50);
+            ball_in_the_way = Measurements::isClose(toCheck, *game_state->getBall(), ROBOT_RADIUS+Field::BALL_RADIUS + 50);
 
         // Check defence areas
         bool def_area_occupied = false;
@@ -194,7 +194,7 @@ namespace impl {
 
         for(Robot* rob : robots)
             if(rob != self)
-                impl::robotObstacles.push_back(rob->getPosition());
+                impl::robotObstacles.push_back(*rob);
     }
 
     Path genPath(GameState* game_state, const Point& start, Point end, bool avoidBall, bool use_def_areas) {

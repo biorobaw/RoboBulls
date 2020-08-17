@@ -19,7 +19,7 @@
 #include "model/team.h"
 
 IndirectKickStrategy::IndirectKickStrategy(RobotTeam* _team)
-    :Strategy(_team), initial_bp(_team->getGameState()->getBall()->getPosition())
+    :Strategy(_team), initial_bp(*ball)
 {
 
 }
@@ -34,8 +34,8 @@ void IndirectKickStrategy::assignBehaviors()
 
 
     // We are kicking
-    if ((team->getGameState()->getRefereeCommand() == 'I' && team->getID() == ROBOT_TEAM_BLUE) ||
-        (team->getGameState()->getRefereeCommand() == 'i' && team->getID() == ROBOT_TEAM_YELLOW))
+    if ((game_state->getRefereeCommand() == 'I' && team->getID() == ROBOT_TEAM_BLUE) ||
+        (game_state->getRefereeCommand() == 'i' && team->getID() == ROBOT_TEAM_YELLOW))
     {
         for(Robot* rob : team->getRobots())
             rob->clearBehavior();
@@ -75,8 +75,8 @@ void IndirectKickStrategy::assignBehaviors()
         if(goalie) goalie->assignBeh<Goalie>();
     }
     // We are defending against an indirect kick
-    else if ((team->getGameState()->getRefereeCommand() == 'i' && team->getID() == ROBOT_TEAM_BLUE) ||
-             (team->getGameState()->getRefereeCommand() == 'I' && team->getID() == ROBOT_TEAM_YELLOW))
+    else if ((game_state->getRefereeCommand() == 'i' && team->getID() == ROBOT_TEAM_BLUE) ||
+             (game_state->getRefereeCommand() == 'I' && team->getID() == ROBOT_TEAM_YELLOW))
     {
         if(wall1)
             wall1->assignBeh<Wall>();
@@ -96,7 +96,7 @@ void IndirectKickStrategy::assignBehaviors()
 int IndirectKickStrategy::getStatus()
 {
     if ((kicker && kicker->getKickSpeed() > 0)
-    || !Measurements::isClose(initial_bp, team->getGameState()->getBall()->getPosition(), 70))
+    || !Measurements::isClose(initial_bp, *ball, 70))
         return KICKING; // Go to normal game strategy
     else
         return KICKED;

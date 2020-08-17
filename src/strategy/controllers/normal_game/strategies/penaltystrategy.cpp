@@ -16,7 +16,7 @@ PenaltyStrategy::PenaltyStrategy(RobotTeam* _team) : Strategy(_team) {
 void PenaltyStrategy::assignBehaviors()
 {
     // If we are taking the penalty kick
-    char gs = team->getGameState()->getRefereeCommand();
+    char gs = game_state->getRefereeCommand();
     if ((gs == 'P' && team->getID() == ROBOT_TEAM_BLUE) || (gs == 'p' && team->getID() == ROBOT_TEAM_YELLOW))
     {
         // One of the defenders will take the penalty and move back
@@ -52,7 +52,7 @@ void PenaltyStrategy::assignBehaviors()
         for(Robot* robot: team->getRobots())
         {
             if(robot != nullptr)
-                robot->assignBeh<GenericMovementBehavior>(gp + Point(2000,(robot->getID() - 3)*300), 0);
+                robot->assignBeh<GenericMovementBehavior>(gp + Point(2000,(robot->getId() - 3)*300), 0);
 
         }
         // Position Goalie

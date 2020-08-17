@@ -7,16 +7,15 @@
 
 GuiInterface * GuiInterface::gi = NULL;
 
-GuiInterface::GuiInterface() {
+
+GuiInterface::GuiInterface(RobotTeam* teams[]) {
     dash = new MainWindow();
-    GuiRobot::connectWithModel();
-    GuiTeams::initData();
+    GuiRobot::connectWithModel(teams);
+    GuiTeams::initData(teams);
+    gi = this;
 }
 
 GuiInterface* GuiInterface::getGuiInterface() {
-    if (gi == NULL) {
-        gi = new GuiInterface();
-    }
     return gi;
 }
 

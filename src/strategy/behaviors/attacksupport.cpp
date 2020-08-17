@@ -19,13 +19,13 @@ AttackSupport::AttackSupport(Robot* robot)  : Behavior(robot)
 
 bool AttackSupport::perform()
 {
-    Point rp = robot->getPosition();
-    Point bp = *game_state->getBall();
+    Point rp = *robot;
+    Point bp = *ball;
 
     // We signal that we are done supporting if:
     // - We are closest member on our team to the ball
     // - The ball is close to us
-    finished = Comparisons::distance(bp).minInTeam(team)->getID() == robot->getID()
+    finished = Comparisons::distance(bp).minInTeam(team)->getId() == robot->getId()
             && Measurements::isClose(rp, bp, ROBOT_RADIUS+Field::BALL_RADIUS+200);
 
     switch(state)
@@ -37,7 +37,7 @@ bool AttackSupport::perform()
 //        std::cout << "Intercepting" << std::endl;
 
         // Evaluate transition to positioning
-        Point b_vel = game_state->getBall()->getVelocity();
+        Point b_vel = ball->getVelocity();
         Robot* ball_bot = game_state->getRobotWithBall();
 
         bool ball_bot_not_facing_us =
@@ -64,7 +64,7 @@ bool AttackSupport::perform()
         {
             if(ball_bot != nullptr &&  ball_bot->getTeamId()==robot->getTeamId())
             {
-                Point ball_bot_pos = ball_bot->getPosition();
+                Point ball_bot_pos = *ball_bot;
                 float ball_bot_ori = ball_bot->getOrientation();
 
                 Point facing_vector(cos(ball_bot_ori), sin(ball_bot_ori));
@@ -285,8 +285,8 @@ void AttackSupport::genDistanceFromTeammates()
 
             for(Robot* tmate: team->getRobots())
             {
-                if(tmate->getID() != robot->getID()
-                && (Measurements::distance(tmate->getPosition(), n.point) < 2000))
+                if(tmate->getId() != robot->getId()
+                && (Measurements::distance(*tmate, n.point) < 2000))
                         n.dynamic_val = -100.0;
             }
         }
@@ -297,14 +297,14 @@ void AttackSupport::genDistanceFromTeammates()
 void AttackSupport::genBallShadows()
 {
 
-    Point bp = *game_state->getBall();
+    Point bp = *ball;
 
     float R = ROBOT_RADIUS + 50;
 
-    for(Robot* opp: robot->getOpponentRobots())
+    for(Robot* opp: team->getOpponents())
     {
-        float rob_x = opp->getPosition().x;
-        float rob_y = opp->getPosition().y;
+        float rob_x = opp->x;
+        float rob_y = opp->y;
 
         // Calculations for line 1 starting from ball and tangent to robot
         float m1 = -(R*sqrt(pow(bp.x-rob_x,2) + pow(bp.y-rob_y,2) - R*R) + (rob_y-bp.y)*(bp.x-rob_x))/(pow(bp.x-rob_x,2) - R*R);
@@ -389,7 +389,7 @@ void AttackSupport::genBallShadows()
                 {
                     ProbNode& node = prob_field[PF_LENGTH_SUPP/2 + x/PND_SUPP][PF_WIDTH_SUPP/2 + y/PND_SUPP];
 
-                    float dist = Measurements::distance(bp, opp->getPosition());
+                    float dist = Measurements::distance(bp, *opp);
 
                     // Only cast shadows behind the opponents
                     if(Measurements::distance(bp, node.point) > dist)
@@ -407,7 +407,7 @@ std::vector<std::vector<Point>> AttackSupport::genClusters()
 
     std::vector<std::vector<Point>> clusters;
 
-    for(Robot* opp: robot->getOpponentRobots())
+    for(Robot* opp: team->getOpponents())
     {
         // Check if each opponent belongs to an existing cluster
         bool assigned = false;
@@ -416,9 +416,9 @@ std::vector<std::vector<Point>> AttackSupport::genClusters()
         {
             for(Point& p : cluster)
             {
-                if(Measurements::distance(opp->getPosition(), p) < cluster_tol)
+                if(Measurements::distance(*opp, p) < cluster_tol)
                 {
-                    cluster.push_back(opp->getPosition());
+                    cluster.push_back(*opp);
                     assigned = true;
                     break;
                 }
@@ -432,7 +432,7 @@ std::vector<std::vector<Point>> AttackSupport::genClusters()
         {
             // Add the robot position to a new cluster
             std::vector<Point> cluster;
-            cluster.push_back(opp->getPosition());
+            cluster.push_back(*opp);
             clusters.push_back(cluster);
         }
     }
@@ -455,7 +455,7 @@ void AttackSupport::genGoalShotAvoidance()
     float g2x = gp.x;
     float g2y = gp.y - Field::GOAL_LENGTH/2 - ROBOT_RADIUS - 500;
 
-    Point bp = *game_state->getBall();
+    Point bp = *ball;
 
     float min_x = bp.x;
     float max_x = g1x;

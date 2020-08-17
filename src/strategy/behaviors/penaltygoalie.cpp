@@ -12,7 +12,7 @@ PenaltyGoalie::PenaltyGoalie(Robot* robot) : Behavior(robot), GenericMovementBeh
 bool PenaltyGoalie::perform()
 {
     robot->setDribble(false);
-    Point bp = *game_state->getBall();
+    Point bp = *ball;
     float angleToBall = Measurements::angleBetween(robot, bp);
 
     Robot* kicker = game_state->getRobotWithBall();
@@ -20,7 +20,7 @@ bool PenaltyGoalie::perform()
     // Determine which opponent is taking the kick
     if(!kicker)
     {
-        for(Robot* opp : robot->getOpponentRobots())
+        for(Robot* opp : team->getOpponents())
             if(Measurements::distance(kicker, bp) > Measurements::distance(opp, bp))
                 kicker = opp;
     }
@@ -42,8 +42,8 @@ bool PenaltyGoalie::perform()
 
     if(kicker)
     {
-        x4 = kicker->getPosition().x;
-        y4 = kicker->getPosition().y;
+        x4 = kicker->x;
+        y4 = kicker->y;
     }
     else
     {
@@ -82,7 +82,6 @@ bool PenaltyGoalie::perform()
 bool PenaltyGoalie::isFinished()
 {
     DefenceArea our_da(TEAM_DEFFENCE_AREA);
-    auto ball = game_state->getBall();
     if(ball->getSpeed() < 100 &&
        our_da.contains(*ball, -ROBOT_RADIUS))
         return true;

@@ -5,6 +5,8 @@
 
 
 class Robot;
+class RobotTeam;
+class GameState;
 class CmdGoToPose;
 
 class Pilot
@@ -23,6 +25,8 @@ public:
 
 protected:
     Robot* robot;
+    RobotTeam* team;
+    GameState* game_state;
 
     CmdGoToPose* cmdGoToPose = nullptr;
 

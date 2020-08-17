@@ -5,6 +5,7 @@
 #include "robot/robot.h"
 #include "model/game_state.h"
 
+
 float AttackMain::SCORE_ANGLE_TOLERANCE = 7*M_PI/180;
 float AttackMain::PASS_ANGLE_TOLERANCE  = 7*M_PI/180;
 
@@ -273,7 +274,7 @@ std::vector<std::vector<Point>> AttackMain::genClusters()
 
     std::vector<std::vector<Point>> clusters;
 
-    for(Robot* opp: robot->getOpponentRobots())
+    for(Robot* opp: team->getOpponents())
     {
         // Check if each opponent belongs to an existing cluster
         bool assigned = false;
@@ -282,9 +283,9 @@ std::vector<std::vector<Point>> AttackMain::genClusters()
         {
             for(Point& p : cluster)
             {
-                if(Measurements::distance(opp->getPosition(), p) < cluster_tol)
+                if(Measurements::distance(*opp, p) < cluster_tol)
                 {
-                    cluster.push_back(opp->getPosition());
+                    cluster.push_back(*opp);
                     assigned = true;
                     break;
                 }
@@ -298,7 +299,7 @@ std::vector<std::vector<Point>> AttackMain::genClusters()
         {
             // Add the robot position to a new cluster
             std::vector<Point> cluster;
-            cluster.push_back(opp->getPosition());
+            cluster.push_back(*opp);
             clusters.push_back(cluster);
         }
     }
@@ -314,15 +315,15 @@ std::pair<bool, Point> AttackMain::calcBestGoalPoint()
     // Populate a vector with robot positions
     std::vector<Point> obstacles;
     auto myTeam = team->getRobots();
-    auto oppTeam = robot->getOpponentRobots();
+    auto oppTeam = team->getOpponents();
 
     obstacles.reserve(myTeam.size() + oppTeam.size());
 
     for(Robot* rob : myTeam)
-        if(rob->getID() != robot->getID())
-            obstacles.push_back(rob->getPosition());
+        if(rob->getId() != robot->getId())
+            obstacles.push_back(*rob);
     for(Robot* rob : oppTeam)
-        obstacles.push_back(rob->getPosition());
+        obstacles.push_back(*rob);
 
     // Store clusters of targets
     std::vector<std::vector<Point>> target_clusters;
@@ -340,7 +341,7 @@ std::pair<bool, Point> AttackMain::calcBestGoalPoint()
         for(const Point& obstacle : obstacles)
         {
             // If there is an obstacle in the way
-            if(Measurements::lineSegmentDistance(obstacle, *game_state->getBall(), target) <= Field::BALL_RADIUS+ROBOT_RADIUS+50)
+            if(Measurements::lineSegmentDistance(obstacle, *ball, target) <= Field::BALL_RADIUS+ROBOT_RADIUS+50)
             {
                 clear_shot = false;
                 break;
@@ -376,8 +377,8 @@ std::pair<bool, Point> AttackMain::calcBestGoalPoint()
 std::pair<bool, Point> AttackMain::calcBestPassPoint()
 {
     std::vector<Robot*> obstacles;
-    for(auto* r2 : robot->getOpponentRobots()) obstacles.push_back(r2);
-    Point bp = *game_state->getBall();
+    for(auto* r2 : team->getOpponents()) obstacles.push_back(r2);
+    Point bp = *ball;
     Robot* best_supp = nullptr;
     float best_prob = 0;
 
@@ -385,7 +386,7 @@ std::pair<bool, Point> AttackMain::calcBestPassPoint()
     {
         if(teammate != robot )
         {
-            Point tp = teammate->getPosition();
+            Point tp = *teammate;
             bool path_clear = Measurements::robotInPath(obstacles, bp, tp, ROBOT_RADIUS+Field::BALL_RADIUS+20) == nullptr;
 
             float t_prob = getScoreProb(tp);
@@ -408,7 +409,7 @@ std::pair<bool, Point> AttackMain::calcBestPassPoint()
     if(best_supp == nullptr)
         return std::pair<bool, Point>(false, Point(0,0));
     else
-        return std::pair<bool, Point>(true, best_supp->getPosition());
+        return std::pair<bool, Point>(true, *best_supp);
 }
 
 bool AttackMain::isFinished()

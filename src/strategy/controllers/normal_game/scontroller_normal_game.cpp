@@ -9,6 +9,7 @@
 #include "strategies/indirectkickstrategy.h"
 #include "strategies/haltstrategy.h"
 #include "ssl_referee.pb.h"
+#include "model/team.h"
 
 #include "utilities/my_yaml.h"
 #include <QDebug>
@@ -29,43 +30,42 @@ namespace  {
 SControllerNormalGame::SControllerNormalGame(RobotTeam* team, YAML::Node* c_node)
  : StrategyController(team,c_node)
 {
+    auto r_node = (*c_node)["ROLES"];
+
+    if(r_node.IsDefined()){
+
+        qInfo() << "        ROLES : ";
+        qInfo() << "            GOALIE  :" << r_node["GOALIE" ];
+        qInfo() << "            ATTACK1 :" << r_node["ATTACK1"];
+        qInfo() << "            ATTACK2 :" << r_node["ATTACK2"];
+        qInfo() << "            ATTACK3 :" << r_node["ATTACK3"];
+        qInfo() << "            DEFEND1 :" << r_node["DEFEND1"];
+        qInfo() << "            DEFEND2 :" << r_node["DEFEND2"];
+        qInfo() << "            DEFEND3 :" << r_node["DEFEND3"];
+    }
 
 
-        if((*c_node)["ROLES"].IsDefined()){
+    if(r_node.IsDefined()){
+        if(r_node["GOALIE" ].IsDefined())
+            team->setRobotRole(r_node["GOALIE" ].as<int>(),RobotRole::GOALIE );
 
-            qInfo() << "        ROLES : ";
-            qInfo() << "            GOALIE  :" << (*c_node)["ROLES"]["GOALIE" ];
-            qInfo() << "            ATTACK1 :" << (*c_node)["ROLES"]["ATTACK1"];
-            qInfo() << "            ATTACK2 :" << (*c_node)["ROLES"]["ATTACK2"];
-            qInfo() << "            ATTACK3 :" << (*c_node)["ROLES"]["ATTACK3"];
-            qInfo() << "            DEFEND1 :" << (*c_node)["ROLES"]["DEFEND1"];
-            qInfo() << "            DEFEND2 :" << (*c_node)["ROLES"]["DEFEND2"];
-            qInfo() << "            DEFEND3 :" << (*c_node)["ROLES"]["DEFEND3"];
-        }
+        if(r_node["ATTACK1" ].IsDefined())
+            team->setRobotRole(r_node["ATTACK1"].as<int>(),RobotRole::ATTACK1);
 
+        if(r_node["ATTACK2" ].IsDefined())
+            team->setRobotRole(r_node["ATTACK2"].as<int>(),RobotRole::ATTACK2);
 
+        if(r_node["ATTACK3" ].IsDefined())
+            team->setRobotRole(r_node["ATTACK3"].as<int>(),RobotRole::ATTACK3);
 
-    if((*c_node)["ROLES"].IsDefined()){
-        if((*c_node)["ROLES"]["GOALIE" ].IsDefined())
-            idToRole[(*c_node)["ROLES"]["GOALIE" ].as<int>()] = RobotRole::GOALIE;
+        if(r_node["DEFEND1" ].IsDefined())
+            team->setRobotRole(r_node["DEFEND1"].as<int>(),RobotRole::DEFEND1);
 
-        if((*c_node)["ROLES"]["ATTACK1" ].IsDefined())
-            idToRole[(*c_node)["ROLES"]["ATTACK1"].as<int>()] = RobotRole::ATTACK1;
+        if(r_node["DEFEND2" ].IsDefined())
+            team->setRobotRole(r_node["DEFEND2"].as<int>(),RobotRole::DEFEND2);
 
-        if((*c_node)["ROLES"]["ATTACK2" ].IsDefined())
-            idToRole[(*c_node)["ROLES"]["ATTACK2"].as<int>()] = RobotRole::ATTACK2;
-
-        if((*c_node)["ROLES"]["ATTACK3" ].IsDefined())
-            idToRole[(*c_node)["ROLES"]["ATTACK3"].as<int>()] = RobotRole::ATTACK3;
-
-        if((*c_node)["ROLES"]["DEFEND1" ].IsDefined())
-            idToRole[(*c_node)["ROLES"]["DEFEND1"].as<int>()] = RobotRole::DEFEND1;
-
-        if((*c_node)["ROLES"]["DEFEND2" ].IsDefined())
-            idToRole[(*c_node)["ROLES"]["DEFEND2"].as<int>()] = RobotRole::DEFEND2;
-
-        if((*c_node)["ROLES"]["DEFEND3" ].IsDefined())
-            idToRole[(*c_node)["ROLES"]["DEFEND3"].as<int>()] = RobotRole::DEFEND3;
+        if(r_node["DEFEND3" ].IsDefined())
+            team->setRobotRole(r_node["DEFEND3"].as<int>(),RobotRole::DEFEND3);
     }
 
 

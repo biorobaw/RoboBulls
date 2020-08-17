@@ -1,12 +1,15 @@
 #ifndef MOVE_COLLISIONS_H
 #define MOVE_COLLISIONS_H
 
-
+#include <QMap>
 #include "utilities/measurements.h"
 #include "utilities/comparisons.h"
+#include "model/constants.h"
 
 class Robot;
 class Point;
+class GameState;
+
 
 //! @brief Indicates the robot is free to move.
 #define MOVE_OK        0
@@ -28,21 +31,37 @@ class Point;
   * or both robots will back up. When yeilding, one robot will stop for another.
   * This is an internal file and should not be included directly. */
 
-namespace Collisions 
+struct CollisionStatus;
+class Collisions
 {
-    /*! @brief Updates the "moving" statuses of the provided robot and sets it to
-     *  MOVE_OK/MOVE_YIELDING/MOVE_COLLIDED based on some factors */
-    void update(Robot* robot);
-    
+
+public:
+    Collisions(GameState* game_state);
+    ~Collisions();
+
     //! @brief Returns the MOVE_OK...MOVE_COLLIDED for a given robot. */
     int getMoveStatus(Robot* robot);
+
 
     /*! @brief Returns the best direction the robot should back up in to exit a collision
      * @details If `robot` is collided (getMoveStatus(robot) == MOVE_COLLIDED) this returns
      * the best direction the robot should back up in to avoid the other robot
      * it collided with. */
     Point getBackupDirection(Robot* robot);
-}
+
+    void updateAllCollisions();
+
+protected:
+    /*! @brief Updates the "moving" statuses of the provided robot and sets it to
+     *  MOVE_OK/MOVE_YIELDING/MOVE_COLLIDED based on some factors */
+    void updateCollision(Robot* robot);
+    
+    GameState* game_state;
+
+    CollisionStatus* status[2][MAX_ROBOTS_PER_TEAM];
+
+
+};
 
 
 #endif

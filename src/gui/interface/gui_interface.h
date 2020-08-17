@@ -8,14 +8,14 @@
 class MainWindow;
 class Point;
 class Robot;
-
+class RobotTeam;
 // This class provides an interface to use the gui
 // It is meant to be used by the main program to control the gui
 
 class GuiInterface
 {
 public:
-    GuiInterface();
+    GuiInterface(RobotTeam* teams[]);
     static GuiInterface * getGuiInterface();
 
 

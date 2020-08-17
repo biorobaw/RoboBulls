@@ -38,6 +38,8 @@ public:
     Robot* getRobotByRole(int role);
     QSet<Robot*>& getRobots();
 
+    RobotTeam* setRobotRole(int robot_id, int robot_role);
+
     Robot* getOpponent(int robot_id);
     QSet<Robot*>& getOpponents();
 

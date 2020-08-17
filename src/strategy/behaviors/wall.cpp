@@ -24,8 +24,8 @@ Wall::~Wall()
 
 bool Wall::perform()
 {
-    id = robot->getID();
-    Point bp = *game_state->getBall();
+    id = robot->getId();
+    Point bp = *ball;
     float ang2ball = Measurements::angleBetween(robot, bp);
     switch(state)
     {
@@ -50,12 +50,12 @@ bool Wall::perform()
                 // and we are not already occupying a wall point
                 if(wp.id == -1 && !occupying)
                 {
-                    wp.id = robot->getID();
+                    wp.id = robot->getId();
                     occupying = true;
                 }
 
                 // If we are occupying it, move to it
-                if(wp.id == robot->getID())
+                if(wp.id == robot->getId())
                     cmd.setTarget(wp.position, ang2ball);
             }
         }
@@ -75,16 +75,16 @@ bool Wall::perform()
 
         for(Robot* tmate: team->getRobots())
         {
-            if (tmate->getID() != robot->getID())
+            if (tmate->getId() != robot->getId())
             {
                 auto remove_it = std::remove_if(obstacles.begin(), obstacles.end(), [&](Robot* r)
                 {
-                    return (r->getTeamId()==robot->getTeamId()) && (r->getID() == tmate->getID() || r->getID() == robot->getID());
+                    return (r->getTeamId()==robot->getTeamId()) && (r->getId() == tmate->getId() || r->getId() == robot->getId());
                 });
 
                 obstacles.erase(remove_it, obstacles.end());
 
-                Robot* obst = Measurements::robotInPath(obstacles, bp, tmate->getPosition(), ROBOT_RADIUS + Field::BALL_RADIUS + 20);
+                Robot* obst = Measurements::robotInPath(obstacles, bp, *tmate, ROBOT_RADIUS + Field::BALL_RADIUS + 20);
 
                 obstacles.push_back(tmate);
                 obstacles.push_back(robot);
@@ -101,13 +101,13 @@ bool Wall::perform()
             farthest = candidates.front();
             for(Robot* r: candidates)
             {
-                if(r->getPosition().x > farthest->getPosition().x)
+                if(r->x > farthest->x)
                     farthest = r;
             }
         }
 
-        if(farthest != nullptr && farthest->getPosition().x - robot->getPosition().x > 500)
-            kickPoint = farthest->getPosition();
+        if(farthest != nullptr && farthest->x - robot->x > 500)
+            kickPoint = *farthest;
         else
             kickPoint = Point(3000, 0);
 
@@ -126,10 +126,9 @@ bool Wall::perform()
 
 void Wall::calcWallPoints(Robot* robot)
 {
-    Point bp = *game_state->getBall();
+    Point bp = *ball;
     Robot* goalie = team->getRobotByRole(ROLE_GOALIE);
-    Point gp = goalie ? goalie->getPosition() :
-                        Field::getGoalPosition(OUR_SIDE);
+    Point gp = goalie ? *goalie : Field::getGoalPosition(OUR_SIDE);
 
 
     DefenceArea da(TEAM_DEFFENCE_AREA);
@@ -194,7 +193,7 @@ bool Wall::spaceForGoalKick()
     // Position for a goal-kick if the goal-keeper has the ball
     // and the ball is is inside the defence area
     bool b1 = possessor != nullptr && possessor->isGoalie();
-    bool b2 = da.contains(*game_state->getBall());
+    bool b2 = da.contains(*ball);
 
     return b1 && b2;
 }
@@ -204,15 +203,15 @@ bool Wall::shouldClear(Robot* robot)
     // Clear the ball if it is stopped on our side of the field
     // and we are the nearest robot to it and the ball is
     // free or if we possess it.
-    Point bp = *game_state->getBall();
+    Point bp = *ball;
     DefenceArea da(TEAM_DEFFENCE_AREA);
     Robot* possessor = game_state->getRobotWithBall();
 
-    bool b1 = game_state->getBall()->getSpeed() < 10;
+    bool b1 = ball->getSpeed() < 10;
     bool b2 = bp.x < -1000 && !da.contains(bp, 2*ROBOT_RADIUS);
-    bool b3 = Comparisons::distanceBall(bp).minInTeam(team)->getID() == robot->getID();
+    bool b3 = Comparisons::distanceBall(bp).minInTeam(team)->getId() == robot->getId();
     bool b4 = possessor == nullptr || (possessor != nullptr  &&
-                possessor->getID() == robot->getID());
+                possessor->getId() == robot->getId());
 
     return b1 && b2 && b3 && b4;
 }
@@ -225,11 +224,11 @@ bool Wall::shouldStopClearing(Robot* robot)
     DefenceArea da(TEAM_DEFFENCE_AREA);
     Robot* possessor = game_state->getRobotWithBall();
 
-    bool b1 = game_state->getBall()->getPosition().x > -1000;
+    bool b1 = ball->x > -1000;
     bool b2 = game_state->getRobotWithBall()
               && game_state->getRobotWithBall()->getTeamId()!=robot->getTeamId();
-    bool b3 = da.contains(*game_state->getBall(), ROBOT_RADIUS * 2);
-    bool b4 = possessor != nullptr && possessor->getID() != robot->getID();
+    bool b3 = da.contains(*ball, ROBOT_RADIUS * 2);
+    bool b4 = possessor != nullptr && possessor->getId() != robot->getId();
 
     return b1 || b2 || b3 || b4;
 }

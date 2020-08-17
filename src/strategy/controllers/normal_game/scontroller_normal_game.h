@@ -21,7 +21,7 @@ public:
 private:
     QMap<Referee_Command,int> cmd_to_state;
     QMap<int , QMap<int, int>> state_transitions;
-    QMap<int,int> idToRole; // user assigned map of roles
+
 
 };
 

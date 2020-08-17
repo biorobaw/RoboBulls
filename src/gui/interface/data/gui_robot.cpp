@@ -18,11 +18,12 @@ GuiRobot* GuiRobot::get(int team_id, int robot_id){
     return  GuiGameState::getRobot(team_id, robot_id);
 }
 
-void GuiRobot::connectWithModel(){
+void GuiRobot::connectWithModel(RobotTeam* teams[]){
     for(int i=0; i<2; i++)
         for(int j=0; j <MAX_ROBOTS_PER_TEAM; j++){
             auto gui_robot = get(i,j);
-            auto proxy = gui_robot->getProxy();
+            auto& proxy = gui_robot->model_robot_proxy;
+            proxy = teams[i]->getRobot(j);
             auto controls = proxy->getOverridenController();
             QObject::connect(gui_robot, &GuiRobot::overridenChanged     ,proxy, &Robot::useOverridenControls);
             QObject::connect(gui_robot, &GuiRobot::setGuiTargetVelocity ,controls, &RobotLowLevelControls::setTargetVelocity  );
@@ -46,13 +47,12 @@ void GuiRobot::update(){
 
     // We need to update all information other than the information provided by ssl vision
     // In other words, control information
-    auto proxy = getProxy();
-    auto controls = proxy->getActiveController();
+    auto controls = model_robot_proxy->getActiveController();
 
     // undo flip : see "Field side hypothesis" in documentation for details
     // in summary, teams assume their side is the negative field side
     // so we need to correct for this
-    flip_x = proxy->getFlipXCoordinates();
+    flip_x = model_robot_proxy->getFlipXCoordinates();
 
     auto v = controls->getTargetVelocity();
     v.x*=flip_x;
@@ -63,19 +63,15 @@ void GuiRobot::update(){
     dribble = controls->getDribble();
     chip = controls->getChip();
 
-    behaviorName = proxy->hasBehavior() ?
-                proxy->getBehavior()->getName().c_str() : "No Behavior";
-
-    move_status = Collisions::getMoveStatus(proxy);
-
-
-
+    behaviorName = model_robot_proxy->hasBehavior() ?
+                   model_robot_proxy->getBehavior()->getName().c_str()
+                   : "No Behavior";
 
 }
 
 
 int GuiRobot::getMoveStatus(){
-    return move_status;
+    return GuiGameState::get()->getMoveStatus(this);
 }
 
 
@@ -154,12 +150,6 @@ GuiRobot* GuiRobot::get_selected_robot(){
     return selected_robot;
 }
 
-
-
-
-Robot* GuiRobot::getProxy(){
-    return  getTeam()->getRobot(id);
-}
 
 int GuiRobot::getFlipXCoordinates(){
     return flip_x;

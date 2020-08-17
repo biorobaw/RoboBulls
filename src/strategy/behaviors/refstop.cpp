@@ -10,12 +10,12 @@ RefStop::RefStop(Robot* robot) : Behavior(robot), GenericMovementBehavior(robot)
 
 bool RefStop::perform()
 {
-    Point bp = *game_state->getBall();
+    Point bp = *ball;
 
     if(Measurements::isClose(robot, bp, 600))
     {
         // Generate position vector away from ball
-        Point reposition = bp + Measurements::unitVector(robot->getPosition() - bp) * 600;
+        Point reposition = bp + Measurements::unitVector(*robot - bp) * 600;
 
         // If the vector is unreachable send the robot
         // to the center of the field. This should eventually
@@ -31,7 +31,7 @@ bool RefStop::perform()
             reposition = Point(0,0);
 
         cmd.velocity_multiplier = 1;
-        cmd.setTarget(reposition, Measurements::angleBetween(robot->getPosition(), bp));
+        cmd.setTarget(reposition, Measurements::angleBetween(*robot, bp));
 
         finished  = false;
     }

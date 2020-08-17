@@ -80,7 +80,7 @@ void ProxyYisi::sendVels(const QSet<Robot*>& robots)
         Data8 transmitPacket[25] = {(Data8)0};
 
         transmitPacket[0] = (Data8)0xff;
-        int robotID = r->getID();
+        int robotID = r->getId();
 
 
         if(robotID > 7) {

@@ -57,7 +57,7 @@ void ProxyGrsim::sendPacket(Robot* r)
 {
 
     // Retrive robot information
-    int id = r->getID();
+    int id = r->getId();
     auto controls = r->getActiveController();
     float kick = controls->getKickSpeed();
     bool  dribble = controls->getDribble();

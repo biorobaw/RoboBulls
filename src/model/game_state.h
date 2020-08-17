@@ -5,13 +5,14 @@
 #include <QSet>
 #include "utilities/point.h"
 #include "constants.h"
+#include "robot/navigation/path_planning/move_collisions.h"
 
 enum Referee_Command : int;
 class Robot;
 class Ball;
 
 
-class GameState : public QObject
+class GameState : public QObject, public Collisions
 {
     Q_OBJECT
 public:

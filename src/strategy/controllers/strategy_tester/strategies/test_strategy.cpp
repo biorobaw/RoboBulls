@@ -134,8 +134,8 @@ class RotBeh : public GenericMovementBehavior
 
     bool perform() override
     {
-        float ang = Measurements::angleBetween(robot, *game_state->getBall());
-        cmd.setTarget(robot->getPosition(),ang);
+        float ang = Measurements::angleBetween(robot, *ball);
+        cmd.setTarget(*robot,ang);
         GenericMovementBehavior::perform();
     }
 
@@ -177,7 +177,7 @@ public:
         cmd.setTarget(target,0);
         cmd.avoidBall = cmd.avoidObstacles = false;
 
-        std::cout << "Distance Error: " << Measurements::distance(robot->getPosition(),target) << std::endl;
+        std::cout << "Distance Error: " << Measurements::distance(*robot,target) << std::endl;
         std::cout << "Angle Error in Degrees: " << robot->getOrientation()*180/M_PI << std::endl;
         GenericMovementBehavior::perform();
     }
@@ -200,8 +200,8 @@ public:
 
     bool perform() override
     {
-        Point rp = robot->getPosition();
-        double ori = Measurements::angleBetween(rp, *game_state->getBall());
+        Point rp = *robot;
+        double ori = Measurements::angleBetween(rp, *ball);
         switch(state)
         {
             case pos_one:
@@ -238,10 +238,10 @@ public:
     Point offset;
 
     bool perform() override  {
-        cout<< "/*performing*/: r"<< robot->getID() << endl;
-        Point b = *game_state->getBall();
+        cout<< "/*performing*/: r"<< robot->getId() << endl;
+        Point b = *ball;
         cmd.setTarget( b + offset, 0);
-                     // Measurements::angleBetween(robot->getPosition(),robot->getTeam()->getGameState()->getBall()->getPosition()));
+                     // Measurements::angleBetween(*robot,robot->getTeam()->getGameState()->getBall()->getPosition()));
         cmd.avoidBall = cmd.avoidObstacles = false;
         GenericMovementBehavior::perform();
     }

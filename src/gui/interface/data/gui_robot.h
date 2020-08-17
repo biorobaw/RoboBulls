@@ -8,13 +8,14 @@
 
 //Proxy between the gui and the ball
 
+class RobotTeam;
 class GuiRobot : public Robot
 {
     Q_OBJECT
 public:
 
     static GuiRobot* get(int team_id, int robot_id);
-    static void connectWithModel();
+    static void connectWithModel(RobotTeam* teams[]);
 
     GuiRobot(QObject* parent, int team, int id); // private constructor
     void update();
@@ -56,7 +57,7 @@ private:
     static GuiRobot* selected_robot; // pointer to the robot selected by the gui
 
 
-    Robot* getProxy();
+    Robot* model_robot_proxy = nullptr;
 
     // redefinition of variable in moving_object.h
     int flip_x = 1;

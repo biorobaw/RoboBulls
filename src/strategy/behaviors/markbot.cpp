@@ -13,7 +13,7 @@ MarkBot::MarkBot(Robot* robot) : Behavior(robot), GenericMovementBehavior(robot)
 
 bool MarkBot::perform()
 {
-    Point bp = *game_state->getBall();
+    Point bp = *ball;
     float ang2ball = Measurements::angleBetween(robot, bp);
 
     // Determine whether we can mark a robot
@@ -24,7 +24,7 @@ bool MarkBot::perform()
     // If an opponent can be marked, move between it and the ball
     if(marked_opp_id != -1)
     {
-        Point opp_pos = robot->getOpponentRobot(marked_opp_id)->getPosition();
+        Point opp_pos = *team->getOpponent(marked_opp_id);
         target = opp_pos + Measurements::unitVector(bp-opp_pos) * (2*ROBOT_RADIUS+50);
     }
 
@@ -36,30 +36,30 @@ bool MarkBot::perform()
 void MarkBot::updateMark(Robot* r)
 {
     // For every opponent
-    for(Robot* opp: r->getOpponentRobots())
+    for(Robot* opp: team->getOpponents())
     {
-        bool our_side = opp->getPosition().x < 0;
+        bool our_side = opp->x < 0;
         bool has_ball = game_state->getRobotWithBall()  &&
-                        game_state->getRobotWithBall()->getID() == opp->getID();
+                        game_state->getRobotWithBall()->getId() == opp->getId();
 
         // Check if it is on our side
         if(our_side && !has_ball)
         {
             // Mark it if it's not already marked
             // and we are not already marking another opp
-            if(mark_status[opp->getID()] == false && marked_opp_id == -1)
+            if(mark_status[opp->getId()] == false && marked_opp_id == -1)
             {
-                mark_status[opp->getID()] = true;
-                marked_opp_id = opp->getID();
+                mark_status[opp->getId()] = true;
+                marked_opp_id = opp->getId();
                 break;
             }
         }
         // Unmark it if it's not on our side if it received the ball
         else
         {
-            mark_status[opp->getID()] = false;
+            mark_status[opp->getId()] = false;
 
-            if(marked_opp_id == opp->getID())
+            if(marked_opp_id == opp->getId())
                 marked_opp_id = -1;
         }
     }

@@ -285,7 +285,7 @@ bool PanelField::eventFilter(QObject* obj, QEvent* e){
 
 void PanelField::setFollowingRobot(GuiRobot* robot){
     if(robot){
-        auto drawer = robot_drawers[robot->getTeamId()][robot->getID()];
+        auto drawer = robot_drawers[robot->getTeamId()][robot->getId()];
         if( followingRobot != drawer){
             zoomField(20);
             followingRobot = drawer;

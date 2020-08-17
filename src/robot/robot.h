@@ -8,7 +8,6 @@
 #include "model/moving_object.h"
 #include "robot/robot_low_level_controls.h"
 #include "navigation/commands/CmdGoToPose.h"
-#include "strategy/behaviors/genericskillbehavior.h"
 #include "strategy/behavior.h"
 
 #include <QSet>
@@ -40,7 +39,7 @@ public:
     Robot(int _team_id, int _robot_id);
     virtual ~Robot();
 
-    int  getID();
+    int  getId();
     std::string  toString();
 
     // ======= IMPLEMENTATION SPECIFIC FUNCTIONS ===================
@@ -53,10 +52,7 @@ public:
 
     int        getTeamId();
     RobotTeam* getTeam();
-
-    QSet<Robot*>& getOpponentRobots();
-    QSet<Robot*>& getOutRobots();
-    Robot* getOpponentRobot(int id);
+    Robot*     setTeam(RobotTeam* team);
 
 
     int        getRole(); // get the role of the robot in the team
@@ -102,9 +98,10 @@ protected:
     int id;
     int team_id;
     int team_role = -1; // robot has nor role until assigned
+    RobotTeam* team;
 
     // ====== HIGH LEVEL CONTROL =================================
-    Behavior * behavior;
+    Behavior * behavior = nullptr;
     bool has_ball = false;
 
     GameState* game_state;

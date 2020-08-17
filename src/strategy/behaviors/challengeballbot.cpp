@@ -19,7 +19,7 @@ bool ChallengeBallBot::perform()
     {
 //        std::cout << "block" << std::endl;
 
-        Point bp = *game_state->getBall();
+        Point bp = *ball;
         float oppAng2Ball = Measurements::angleBetween(ballBot, bp);
         Point lead = Point(cos(oppAng2Ball), sin(oppAng2Ball)) * ROBOT_RADIUS * 3;
         Point target = bp + lead;
@@ -32,7 +32,7 @@ bool ChallengeBallBot::perform()
     {
         //Case to stop robot from floating
 //        std::cout << "stop" << std::endl;
-        auto cmd = CmdGoToPose(robot->getPosition());
+        auto cmd = CmdGoToPose(*robot);
         robot->goToPose(cmd);
     }
     done = robot->completedGoToPoseCmd();

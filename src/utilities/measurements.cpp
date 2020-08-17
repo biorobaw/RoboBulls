@@ -16,13 +16,13 @@ float Measurements::distance(const Point& p1, const Point& p2) {
     return sqrt((dy * dy) + (dx * dx));
 }
 float Measurements::distance(const Point& p1, Robot* r1) {
-    return Measurements::distance(p1, r1->getPosition());
+    return Measurements::distance(p1, *r1);
 }
 float Measurements::distance(Robot* r1, const Point& p1) {
-    return Measurements::distance(r1->getPosition(), p1);
+    return Measurements::distance(*r1, p1);
 }
 float Measurements::distance(Robot* r1, Robot* r2) {
-    return Measurements::distance(r1->getPosition(), r2->getPosition());
+    return Measurements::distance(*r1, *r2);
 }
 
 
@@ -30,13 +30,13 @@ Point Measurements::midPoint(const Point& a, const Point& b){
     return Point((a.x + b.x) / 2, (a.y + b.y) / 2);
 }
 Point Measurements::midPoint(const Point& p1, Robot* r1) {
-    return Measurements::midPoint(p1, r1->getPosition());
+    return Measurements::midPoint(p1, *r1);
 }
 Point Measurements::midPoint(Robot* r1, const Point& p1) {
-    return Measurements::midPoint(r1->getPosition(), p1);
+    return Measurements::midPoint(*r1, p1);
 }
 Point Measurements::midPoint(Robot* r1, Robot* r2) {
-    return Measurements::midPoint(r1->getPosition(), r2->getPosition());
+    return Measurements::midPoint(*r1, *r2);
 }
 
 
@@ -45,13 +45,13 @@ float Measurements::angleBetween(const Point& p1, const Point& p2) {
     return atan2(p2.y - p1.y, p2.x - p1.x);
 }
 float Measurements::angleBetween(const Point& p1, Robot* r1) {
-    return Measurements::angleBetween(p1, r1->getPosition());
+    return Measurements::angleBetween(p1, *r1);
 }
 float Measurements::angleBetween(Robot* r1, const Point& p1) {
-    return Measurements::angleBetween(r1->getPosition(), p1);
+    return Measurements::angleBetween(*r1, p1);
 }
 float Measurements::angleBetween(Robot* r1, Robot* r2) {
-    return Measurements::angleBetween(r1->getPosition(), r2->getPosition());
+    return Measurements::angleBetween(*r1, *r2);
 }
 
 bool Measurements::isClose(const Point& p1, const Point& p2, float tol) {
@@ -59,13 +59,13 @@ bool Measurements::isClose(const Point& p1, const Point& p2, float tol) {
     return (fabs(p1.y - p2.y) <= tol) && (fabs(p2.x - p1.x) <= tol);
 }
 bool Measurements::isClose(const Point& p1, Robot* r1, float tol) {
-    return Measurements::isClose(p1, r1->getPosition(), tol);
+    return Measurements::isClose(p1, *r1, tol);
 }
 bool Measurements::isClose(Robot* r1, const Point& p1, float tol) {
-    return Measurements::isClose(r1->getPosition(), p1, tol);
+    return Measurements::isClose(*r1, p1, tol);
 }
 bool Measurements::isClose(Robot* r1, Robot* r2, float tol) {
-    return Measurements::isClose(r1->getPosition(), r2->getPosition(), tol);
+    return Measurements::isClose(*r1, *r2, tol);
 }
 
 
@@ -161,7 +161,7 @@ bool Measurements::noObstaclesInPath(const std::vector<Point>& obstacles, const 
 Robot* Measurements::robotInPath(const std::vector<Robot*>& robots, const Point& A, const Point& B, const int& tolerance)
 {
     for(Robot* r : robots)
-        if(lineSegmentDistance(r->getPosition(), A, B) < tolerance)
+        if(lineSegmentDistance(*r, A, B) < tolerance)
             return r;
     return nullptr;
 }

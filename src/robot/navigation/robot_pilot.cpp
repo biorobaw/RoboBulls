@@ -7,7 +7,7 @@
 
 #include <QDebug>
 
-Pilot::Pilot(Robot* robot) : robot(robot){
+Pilot::Pilot(Robot* robot) : robot(robot), team(robot->getTeam()), game_state(team->getGameState()){
 
 }
 
@@ -41,7 +41,7 @@ void Pilot::cancelCommand(){
 }
 
 bool Pilot::finishedCommand(){
-    return cmdGoToPose == nullptr || cmdGoToPose->completed(robot->getPosition(),robot->getOrientation());
+    return cmdGoToPose == nullptr || cmdGoToPose->completed(*robot,robot->getOrientation());
 }
 
 
@@ -55,7 +55,7 @@ bool Pilot::executeCommands(){
 }
 
 bool Pilot::executeCmdGoToPose(CmdGoToPose *cmd){
-    auto r_pos = robot->getPosition();
+    Point r_pos = *robot;
     Point nextPoint = cmd->targetPose;
     Point nextNextPoint = nextPoint;
 
@@ -66,10 +66,10 @@ bool Pilot::executeCmdGoToPose(CmdGoToPose *cmd){
         //std::cout << "---doing path planning\n";
 
         // Assign robots that are to be considered obstacles
-        FPPA::updateRobotObstacles(robot, robot->getTeam()->getGameState());
+        FPPA::updateRobotObstacles(robot, game_state);
 
         //TODO: ideally we should not recompute the path each time
-        FPPA::Path path = FPPA::genPath(robot->getTeam()->getGameState(), r_pos, cmd->targetPose, cmd->avoidBall, robot->isGoalie());
+        FPPA::Path path = FPPA::genPath(game_state, r_pos, cmd->targetPose, cmd->avoidBall, robot->isGoalie());
 
         qDebug().nospace() << "P: ";
         for(auto p : path)//int i=0; i<path.size(); i++)

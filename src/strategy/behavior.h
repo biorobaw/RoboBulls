@@ -2,6 +2,7 @@
 #define BEHAVIOR_H
 #include <string>
 using std::string;
+class Ball;
 class Robot;
 class RobotTeam;
 class GameState;
@@ -56,9 +57,10 @@ public:
     virtual string getName() = 0;
 
 protected:
-    Robot* robot;
-    RobotTeam* team;
     GameState* game_state;
+    RobotTeam* team;
+    Robot*     robot;
+    Ball*      ball;
 };
 
 //! @}

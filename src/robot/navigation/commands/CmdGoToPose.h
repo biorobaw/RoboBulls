@@ -8,7 +8,7 @@
 
 #define UNUSED_ANGLE_VALUE -10
 
-struct CmdGoToPose {
+class CmdGoToPose {
 
 
 public:

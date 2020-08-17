@@ -30,20 +30,26 @@ RobotTeam::RobotTeam(YAML::Node* t_node, int _color)
     side =  (*t_node)["SIDE"].as<int>();
     assert(side == FIELD_SIDE_NEGATIVE || side == FIELD_SIDE_POSITIVE);
 
+    // create game_state of the team
+    game_state = new GameState(this);
+    game_state->setFlipXCoorinates(side!=FIELD_SIDE_NEGATIVE);
+
+
     // load robot proxy
     auto proxy_node = (*t_node)["ROBOT_PROXY"];
     robot_proxy = RobotProxy::load(&proxy_node);
     robot_proxy->setParent(this);
 
+    // assign proxies and team to the robots in the team
+    // obs: team must be assigned before the proxy
+    for(int i=0; i<MAX_ROBOTS_PER_TEAM; i++)
+        game_state->getRobot(team_id,i)->setTeam(this)->setRobotProxy(robot_proxy);
+
     // load team controller
     auto s_controller = (*t_node)["STRATEGY_CONTROLLER"];
     controller = StrategyController::loadController(this, &s_controller);
 
-    game_state = new GameState(this);
-    game_state->setFlipXCoorinates(side!=FIELD_SIDE_NEGATIVE);
 
-    for(int i=0; i<MAX_ROBOTS_PER_TEAM; i++)
-        game_state->getRobot(team_id,i)->setRobotProxy(robot_proxy);
 
 
     teams[team_id] = this;
@@ -100,6 +106,13 @@ Robot* RobotTeam::getRobotByRole(int role){
 
 QSet<Robot*>& RobotTeam::getRobots(){
     return game_state->getFieldRobots(team_id);
+}
+
+RobotTeam* RobotTeam::setRobotRole(int robot_id, int robot_role){
+    auto r = getRobot(robot_id);
+    r->setRole(robot_role);
+    robotsByRoles[robot_role] = r;
+    return this;
 }
 
 Robot* RobotTeam::getOpponent(int robot_id){

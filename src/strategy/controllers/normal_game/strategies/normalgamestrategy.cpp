@@ -21,11 +21,11 @@
 
 NormalGameStrategy::NormalGameStrategy(RobotTeam* _team)
     : Strategy(_team)
-    , initialBallPos(team->getGameState()->getBall()->getPosition())
+    , initialBallPos(*ball)
     , our_def_area(true)
     , opp_def_area(false)
 {
-    auto prev_cmd = _team->getGameState()->getRefereePreviousCommand();
+    auto prev_cmd = game_state->getRefereePreviousCommand();
 
     // Opp Kick-Off
     if((prev_cmd == Referee_Command_PREPARE_KICKOFF_YELLOW && team->getID() == ROBOT_TEAM_BLUE)
@@ -77,8 +77,8 @@ void NormalGameStrategy::update()
     Robot* kick_off_rob = deffend1;
 
 
-    Point bp = team->getGameState()->getBall()->getPosition();
-    Robot* ball_bot = team->getGameState()->getRobotWithBall();
+    Point bp = *ball;
+    Robot* ball_bot = game_state->getRobotWithBall();
 
     assignGoalieIfOk(team);
 
@@ -109,8 +109,8 @@ void NormalGameStrategy::update()
         // behind the ball and attacker 1
         if(kick_off_rob)
         {
-            Point target = bp + Measurements::unitVector(bp-attack1->getPosition()) * 350;
-            float angle = Measurements::angleBetween(kick_off_rob->getPosition(), attack1->getPosition());
+            Point target = bp + Measurements::unitVector(bp-*attack1) * 350;
+            float angle = Measurements::angleBetween(*kick_off_rob, *attack1);
             kick_off_rob->assignBeh<GenericMovementBehavior>(target, angle);
             state = our_kickoff_2;
         }
@@ -123,7 +123,7 @@ void NormalGameStrategy::update()
         if(kick_off_rob && kick_off_rob->hasBehavior()
         && kick_off_rob->getBehavior()->isFinished())
         {
-            float angle = Measurements::angleBetween(kick_off_rob->getPosition(), attack1->getPosition());
+            float angle = Measurements::angleBetween(kick_off_rob, *attack1);
             kick_off_rob->clearBehavior();
             kick_off_rob->assignBeh<GenericMovementBehavior>(Point(ROBOT_RADIUS-50,0), angle, false, false);
             state = our_kickoff_3;
@@ -135,7 +135,7 @@ void NormalGameStrategy::update()
         std::cout << "Kick Off 3" << std::endl;
         // The previous actions should nudge the ball towards attacker 1
         // and so we can begin evaluating our options for play
-        if(!Measurements::isClose(initialBallPos, team->getGameState()->getBall()->getPosition(), 50))
+        if(!Measurements::isClose(initialBallPos, *ball, 50))
         {
             kick_off_rob->assignBeh<Wall>();
             state = evaluate;
@@ -145,7 +145,7 @@ void NormalGameStrategy::update()
     case opp_kickoff:
     {
         std::cout << "Opp Kick Off" << std::endl;
-        if(!Measurements::isClose(initialBallPos, team->getGameState()->getBall()->getPosition(), 50))
+        if(!Measurements::isClose(initialBallPos, *ball, 50))
             state = evaluate;
     }
         break;
@@ -235,8 +235,8 @@ void NormalGameStrategy::update()
         // to the ball as the main
         if(attack1 != nullptr && attack2 != nullptr)
         {
-            if(Measurements::distance(attack1, team->getGameState()->getBall()->getPosition()) <
-               Measurements::distance(attack2, team->getGameState()->getBall()->getPosition()))
+            if(Measurements::distance(attack1, *ball) <
+               Measurements::distance(attack2, *ball))
             {
                 attack1->assignBeh<AttackMain>();
                 main = attack1;

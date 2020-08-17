@@ -52,8 +52,8 @@ void PanelSelectedRobot::update_panel(){
     text_robot_output->verticalScrollBar()->setValue(sb->maximum());
 
     // display position and orientation
-    lcd_pos_x->display((int)robot->getPosition().x);
-    lcd_pos_y->display((int)robot->getPosition().y);
+    lcd_pos_x->display((int)robot->x);
+    lcd_pos_y->display((int)robot->y);
     lcd_orientation->display(robot->getOrientationAsString() + 90);
     dial_orientation->setValue(robot->getOrientationInDegrees() + 90);
 
@@ -92,7 +92,7 @@ void PanelSelectedRobot::update_selected_robot(){
         hide();
     } else {
 
-        box_selected->setTitle("Robot " + QString::number(robot->getID()) + " selected");
+        box_selected->setTitle("Robot " + QString::number(robot->getId()) + " selected");
         check_override->setChecked(robot->isOverriden());
         update_colors(robot->getTeamId());
         robot_drawer->setRobot(robot);

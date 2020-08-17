@@ -64,7 +64,7 @@ void FrameRobot::update_frame(){
         label_behavior->setText(robot->getBehaviorName());
 
         // set x, y coords and orientation:
-        auto pos = robot->getPosition();
+        Point pos = *robot;
         lcd_x->display((int)pos.x);
         lcd_y->display((int)pos.y);
         dial_orientation->setValue(robot->getOrientation() + 90);

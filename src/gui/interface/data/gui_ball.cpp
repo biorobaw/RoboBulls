@@ -10,7 +10,7 @@ GuiBall::GuiBall(){
 }
 
 Point GuiBall::getPosition(){
-    return GuiGameState::get()->getBall()->getPosition();
+    return *GuiGameState::get()->getBall();
 }
 
 Point GuiBall::getVelocity(){

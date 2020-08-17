@@ -7,7 +7,7 @@
 GraphicsRobot::GraphicsRobot(QObject* parent, int team, int id, bool is_icon) :
     QObject(parent), robot(GuiRobot::get(team,id)), draw_at_origin(is_icon)
 {
-    setToolTip("Robot " + QString::number(robot->getID()));
+    setToolTip("Robot " + QString::number(robot->getId()));
     setFlag(ItemIsSelectable);
 
     int radius = boundingRect().width() / 2;
@@ -28,7 +28,7 @@ QRectF GraphicsRobot::boundingRect() const
 
 void GraphicsRobot::setRobot(GuiRobot *robot){
     this->robot = robot;
-    setToolTip("Robot " + QString::number(robot->getID()));
+    setToolTip("Robot " + QString::number(robot->getId()));
 }
 
 GuiRobot* GraphicsRobot::getRobot(){
@@ -44,8 +44,8 @@ void GraphicsRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
     if(!robot->isInField()) return;
 
     if(!draw_at_origin){
-        setX(robot->getPosition().x);
-        setY(robot->getPosition().y);
+        setX(robot->x);
+        setY(robot->y);
         setRotation(robot->getOrientationInDegrees());
     }
 
@@ -83,7 +83,7 @@ void GraphicsRobot::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
 
 
     // Setting ID circles' colors
-    int id = robot->getID();
+    int id = robot->getId();
     if (id == 0) {
         lowLtBrush.setColor(Qt::green);
     } else if (id == 1) {

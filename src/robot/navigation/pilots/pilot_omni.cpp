@@ -21,7 +21,7 @@ PilotOmni::PilotOmni(Robot* robot,float TRANS_P_K, float TRANS_I_K, float ANGULA
 void PilotOmni::driveTo (Point goalPoint, float theta_goal, Point nextGoalPoint)
 {
     // Used to clear accumulated errors if goal changes significantly
-    Point rp = robot->getPosition();
+    Point rp = *robot;
     double theta_current = robot->getOrientation();
     float angle_to_goal = Measurements::angleBetween(rp, goalPoint);
 

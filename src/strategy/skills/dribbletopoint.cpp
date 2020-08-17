@@ -30,8 +30,8 @@ bool DribbleToPoint::perform()
 {
 //    std::cout << "Dribbling" << std::endl;
 
-    Point bp = robot->getTeam()->getGameState()->getBall()->getPosition();
-    Point rp = robot->getPosition();
+    Point bp = *ball;
+    Point rp = *robot;
     float ang_to_ball = Measurements::angleBetween(rp,bp);
     float dist_to_ball = Measurements::distance(rp,bp);
 
@@ -171,12 +171,12 @@ bool DribbleToPoint::targetIsAhead(const float& ang_to_ball, const Point& rp)
 
 bool DribbleToPoint::safeToAdjust(const Point& bp, Robot* robot)
 {
-    for(Robot* r : robot->getTeam()->getGameState()->getFieldRobots()){
+    for(Robot* r : game_state->getFieldRobots()){
         if(r->getTeamId()==robot->getTeamId()){
-            if(r!=robot && Measurements::distance(bp, r->getPosition()) < ROBOT_RADIUS + Field::BALL_RADIUS + 50)
+            if(r!=robot && Measurements::distance(bp, *r) < ROBOT_RADIUS + Field::BALL_RADIUS + 50)
                 return false;
         } else {
-            if(Measurements::distance(bp, r->getPosition()) < 500)
+            if(Measurements::distance(bp, *r) < 500)
                 return false;
         }
     }
@@ -186,7 +186,7 @@ bool DribbleToPoint::safeToAdjust(const Point& bp, Robot* robot)
 
 
 bool DribbleToPoint::isFinished(){
-    return Measurements::distance(*game_state->getBall(), *target) < 300;
+    return Measurements::distance(*ball, *target) < 300;
 }
 string DribbleToPoint::getName(){
     return "Dribble to point";

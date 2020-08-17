@@ -21,9 +21,7 @@ using std::cerr, std::cout, std::endl;
 Robot::Robot(int team, int id) :
     RobotLowLevelControls(nullptr),
     id(id),
-    team_id(team),
-    behavior(nullptr),
-    pilot(new PilotDummy(this))
+    team_id(team)
 {
 
 }
@@ -35,12 +33,12 @@ Robot::~Robot(){
 Robot* Robot::setRobotProxy(RobotProxy* proxy){
    has_kicker = proxy->hasKicker();
    is_holonomic = proxy->isHolonomic();
-   delete pilot; // delete old pilot
+   if(pilot!=nullptr) delete pilot; // delete old pilot
    pilot = proxy->createPilot(this);
    return this;
 }
 
-int Robot::getID() { return id; }
+int Robot::getId() { return id; }
 
 bool  Robot::hasKicker(){
     return has_kicker;
@@ -50,7 +48,7 @@ bool  Robot::hasKicker(){
 std::string Robot::toString()
 {
     std::stringstream ss;
-    ss << "\t" << getPosition().toString() << "\t ID66666: " << getID();
+    ss << "\t" << Point::toString() << "\t ID66666: " << getId();
     return ss.str();
 }
 
@@ -65,16 +63,15 @@ int Robot::getTeamId(){
 }
 
 RobotTeam* Robot::getTeam(){
-    return RobotTeam::teams[team_id];
+    return team;
 }
 
-QSet<Robot*>& Robot::getOpponentRobots(){
-    return getTeam()->getGameState()->getFieldRobots(1-team_id);
+Robot* Robot::setTeam(RobotTeam *t){
+    team = t;
+    return this;
 }
 
-Robot* Robot::getOpponentRobot(int r_id){
-    return getTeam()->getGameState()->getRobot(1-team_id,r_id);
-}
+
 
 int Robot::getRole(){
     return team_role;

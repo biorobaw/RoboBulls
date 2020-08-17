@@ -2,6 +2,8 @@
 #define STRATEGY_H
 #include <string>
 class RobotTeam;
+class GameState;
+class Ball;
 
 //! @addtogroup baseclasses
 //! @{
@@ -69,6 +71,8 @@ public:
 
 protected:
     RobotTeam* team;
+    GameState* game_state;
+    Ball* ball;
 };
 
 //! @}

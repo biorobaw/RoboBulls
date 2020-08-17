@@ -1,8 +1,9 @@
 #include "behavior.h"
 #include "robot/robot.h"
+#include "model/game_state.h"
 
 Behavior::Behavior(Robot* robot) :
-    robot(robot), team(robot->getTeam()), game_state(robot->getGameState())
+    game_state(robot->getGameState()), team(robot->getTeam()), robot(robot), ball(robot->getGameState()->getBall())
 {
 
 }

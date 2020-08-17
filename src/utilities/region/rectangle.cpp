@@ -60,7 +60,7 @@ int Rectangle::numOfRobots(std::set<Robot*>& robots)
 
     for (Robot * robot : robots)
     {
-        if(Rectangle::contains(robot->getPosition()))
+        if(Rectangle::contains(*robot))
         {
            number_of_robots++;
         }

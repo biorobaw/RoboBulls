@@ -88,7 +88,7 @@ KickToPointOmni::KickToPointOmni(Robot* robot, Point* targetPtr,
 
 bool KickToPointOmni::perform()
 {
-    Point bp = robot->getTeam()->getGameState()->getBall()->getPosition();
+    Point bp = *ball;
 //    GuiInterface::getGuiInterface()->drawLine(bp, *m_targetPointer);
 
     // Angle between the ball and the kick target
@@ -248,11 +248,11 @@ bool KickToPointOmni::isCloseToBall(Robot *robot) {
 }
 
 bool KickToPointOmni::isVeryFarFromBall(Robot *robot) {
-    return Measurements::distance(robot, robot->getTeam()->getGameState()->getBall()->getPosition()) > ROBOT_RADIUS*6;
+    return Measurements::distance(robot, *ball) > ROBOT_RADIUS*6;
 }
 
 bool KickToPointOmni::isFacingBall(Robot* robot) {
-    return Comparisons::isFacingPoint(robot, robot->getTeam()->getGameState()->getBall()->getPosition(), M_PI/3.0);
+    return Comparisons::isFacingPoint(robot, *ball, M_PI/3.0);
 }
 
 bool KickToPointOmni::isFacingTarget(Robot* robot) {
@@ -262,7 +262,7 @@ bool KickToPointOmni::isFacingTarget(Robot* robot) {
 bool KickToPointOmni::isInKickLock(Robot* robot)
 {
     bool close = isCloseToBall(robot);
-    bool facingBall = Comparisons::isFacingPoint(robot, robot->getTeam()->getGameState()->getBall()->getPosition(), KICK_LOCK_ANGLE);
+    bool facingBall = Comparisons::isFacingPoint(robot, *ball, KICK_LOCK_ANGLE);
     if(close && !facingBall) {
         if(++m_kickLockCount > KICKLOCK_COUNT) {
             m_kickLockCount = 0;
