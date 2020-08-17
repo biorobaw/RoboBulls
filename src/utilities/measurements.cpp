@@ -76,30 +76,13 @@ float Measurements::slope(Point p1, Point p2)
 
 
 float Measurements::angleDiff(float angle1, float angle2){
-    // Convert angles to unitary complex numbers z1 and z2
-    float r1 = cos(angle1);
-    float i1 = sin(angle1);
-    float r2 = cos(angle2);
-    float i2 = sin(angle2);
-    // Conjugate z1
-    i1 = -i1;
-    // Multiply to get z3
-    float r3 = r1*r2 - i1 * i2;
-    float i3 = i1*r2 + r1 * i2;
-    // Get the argument
-    float arg = atan2(i3, r3);
-
-    return arg;
+    return Point(angle1-angle2).angle();
 }
 
 
 float Measurements::angleSum(float angle1, float angle2)
 {
-    float sinA = sin(angle1);
-    float cosA = cos(angle1);
-    float sinB = sin(angle2);
-    float cosB = cos(angle2);
-    return atan2(sinA*cosB+sinB*cosA, cosA*cosB-sinA*sinB);
+    return Point(angle1+angle2).angle();
 }
 
 
@@ -119,11 +102,8 @@ bool Measurements::isClose(float angle1, float angle2, float tol)
 
 float Measurements::lineDistance(const Point& p0, const Point& LStart, const Point& LEnd)
 {
-	float y2 = LEnd.y;
-	float y1 = LStart.y;
-	float x2 = LEnd.x;
-	float x1 = LStart.x;
-    return abs((y2-y1)*p0.x - (x2-x1)*p0.y - x1*y2 + x2*y1) / Measurements::distance(LStart, LEnd);
+    auto delta = LEnd-LStart;
+    return abs((p0-LEnd).wedge(delta))/delta.norm();
 }
 
 

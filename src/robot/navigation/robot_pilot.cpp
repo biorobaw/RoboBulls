@@ -63,7 +63,7 @@ bool Pilot::executeCmdGoToPose(CmdGoToPose *cmd){
     if( ( cmd->avoidObstacles || cmd->avoidBall) &&
             Measurements::distance(r_pos, cmd->targetPose) > cmd->distance_tolerance){
 
-        //std::cout << "---doing path planning\n";
+        qDebug() << "---doing path planning\n";
 
         // Assign robots that are to be considered obstacles
         FPPA::updateRobotObstacles(robot, game_state);
@@ -82,10 +82,8 @@ bool Pilot::executeCmdGoToPose(CmdGoToPose *cmd){
     }
 
     // drive to the next position
-    DD qDebug().nospace()
-         << "---next point: (" << nextPoint.x << "," << nextPoint.y << "), "
-         << cmd->targetAngle << " , ("
-         << nextNextPoint.x  << "," << nextNextPoint.y << ")" << endl;
+    DD qDebug()
+         << "---next point:" << nextPoint << cmd->targetAngle << nextNextPoint;
     driveTo(nextPoint, cmd->targetAngle,nextNextPoint);
 
     // return whether action cempleted or not

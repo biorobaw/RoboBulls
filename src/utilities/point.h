@@ -17,6 +17,7 @@ public:
     Point() : x(0), y(0) { }
     Point(const Point&);
     Point(float nx, float ny) : x(nx), y(ny) { }
+    Point(float angle);
     virtual ~Point();
 
 
@@ -37,11 +38,12 @@ public:
 	
     // 2d vector operations
 
-    float norm();  // returns the norm of the vector
-    float norm2(); // returns the norm squared
-    float dot(const Point& rhs);    // returns the dot product
-    float wedge(const Point& rhs);  // returns the value of the wedge product (not considering the basis)
-    Point perpen(); // returns the perpendicular vector of same size using right hand rule
+    float norm() const;  // returns the norm of the vector
+    float norm2() const; // returns the norm squared
+    float dot(const Point& rhs) const;    // returns the dot product
+    float wedge(const Point& rhs) const;  // returns the value of the wedge product (not considering the basis)
+    float angle() const;
+    Point perpen() const; // returns the perpendicular vector of same size using right hand rule
     std::string toString() const;
 public:
     float x;    //!< The X coordinate

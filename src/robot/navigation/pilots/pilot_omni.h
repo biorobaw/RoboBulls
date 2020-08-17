@@ -34,7 +34,7 @@ private:
     double ANGULAR_P_K = 0.1;      // Multiplier for theta proportional
     double ANGULAR_I_K = 0;        // Multiplier for theta integral
 
-    double distance_error, angle_error;
+    double distance_error = 0, angle_error =0;
 
     const unsigned int DIST_ERROR_MAXSIZE = 100;
     const unsigned int ANGLE_ERROR_MAXSIZE = 50;
@@ -46,7 +46,7 @@ private:
     void updateErrors(Point goalPoint);
     void clearErrors();
 
-    Point prev_goal_target;
+    Point prev_goal_target = Point(15000,15000); // a very far away point
     float prev_speed = 0;
 };
 

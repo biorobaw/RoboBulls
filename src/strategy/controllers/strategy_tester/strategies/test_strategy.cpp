@@ -266,7 +266,7 @@ void TestStrategy::assignBehaviors()
     auto r = team->getRobot(6);
     if(r){
         std::cout << "Go to pose" << endl;
-        CmdGoToPose cmd = CmdGoToPose(Point(-650,-1500),0,true,true);
+        CmdGoToPose cmd = CmdGoToPose(Point(-650,-1500),0,false,false);
         r->goToPose(cmd);
     }
 //    r->assignBeh<GoToBehavior>(0);

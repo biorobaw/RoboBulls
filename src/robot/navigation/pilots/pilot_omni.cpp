@@ -4,7 +4,9 @@
 
 #include <cmath>
 #include <algorithm>
-using std::abs, std::cout, std::endl;
+#include <QDebug>
+#include <QDateTime>
+using std::abs;
 
 
 PilotOmni::PilotOmni(Robot* robot,float TRANS_P_K, float TRANS_I_K, float ANGULAR_P_K, float ANGULAR_I_K) :
@@ -20,71 +22,74 @@ PilotOmni::PilotOmni(Robot* robot,float TRANS_P_K, float TRANS_I_K, float ANGULA
 
 void PilotOmni::driveTo (Point goalPoint, float theta_goal, Point nextGoalPoint)
 {
+//    static qint64 time_stamp = robot->getTimeStamp();
+//    auto new_time = robot->getTimeStamp();
+//    auto delta_t = new_time-time_stamp;
+//    qDebug() << "Delta T: " << delta_t;
+//    time_stamp = new_time;
+//    if(delta_t > 0.200) delta_t = 0.100; // if delta_T is too big, its been a while since this loop was executed, set to averge
+
     // Used to clear accumulated errors if goal changes significantly
-    Point rp = *robot;
     double theta_current = robot->getOrientation();
-    float angle_to_goal = Measurements::angleBetween(rp, goalPoint);
 
-    DD cout << "---position (" << rp.x << " , "
-                   << rp.y << " , "
-                   << theta_current << ")"
-                   << endl;
-    DD cout << "---angle to goal: "  << angle_to_goal << endl;
+    auto error_vector   = goalPoint - *robot;
+    float angle_to_goal = error_vector.angle();
+    distance_error      = error_vector.norm();
+    angle_error         = Measurements::angleDiff(theta_current, theta_goal);
 
-    distance_error = Measurements::distance(rp,goalPoint);
-    angle_error = Measurements::angleDiff(theta_current, theta_goal);
-
-    DD cout << "---errorD: " << distance_error << " , " << dist_error_integral << endl;
-    DD cout << "---errorA: " << angle_error    << " , " << angle_error_integral << endl;
-
-    DD cout << endl;
+    DD qDebug() << "---position: " << *robot << theta_current;
+    DD qDebug() << "---error_T:  " << error_vector  << angle_to_goal ;
+    DD qDebug() << "---errorD:   " << distance_error << " , " << dist_error_integral;
+//    DD qDebug() << "---errorA: " << angle_error    << " , " << angle_error_integral;
 
     // Calulate error integral component
     updateErrors(goalPoint);
     prev_goal_target = goalPoint; // didnt make sense to compute this at start, thus moved it here
 
-    DD cout << "---errorD': " << distance_error << " , " << dist_error_integral << endl;
-    DD cout << "---errorA': " << angle_error    << " , " << angle_error_integral << endl;
+    DD qDebug() << "---D: t pk,pi: " << TRANS_P_K   << " , " << TRANS_I_K;
+    DD qDebug() << "---D: a pk,pi: " << ANGULAR_P_K << " , " << ANGULAR_I_K;
 
-    DD cout << endl;
+    DD qDebug() << "---errorD': " << distance_error << " , " << dist_error_integral;
+//    DD qDebug() << "---errorA': " << angle_error    << " , " << angle_error_integral << endl;
 
-    DD cout << "---D: pk,pd: " << TRANS_P_K << " , " << TRANS_I_K << endl;
-    DD cout << "---D: pk,pd: " << ANGULAR_P_K << " , " << ANGULAR_I_K << endl;
 
-    DD cout << endl;
+
     // Inertial Frame Velocities
 
-    double linear  =   TRANS_P_K * distance_error +   TRANS_I_K *  dist_error_integral;
+#define K 1500.0
+    double linear  =   (K/800) * distance_error +   TRANS_I_K *  dist_error_integral;
     float angular  = ANGULAR_P_K *    angle_error + ANGULAR_I_K * angle_error_integral;
-    double x_vel = linear*cos(angle_to_goal);
-    double y_vel = linear*sin(angle_to_goal);
 
-    DD cout << "---vels: " << linear << " (" << x_vel << " , " << y_vel << ") " << angular << endl;
+
+    DD qDebug() << "---linear(1), angular: " << linear << angular;
+
+    // Reduce speed near target
+//    bool is_final_target = (goalPoint - nextGoalPoint).norm() < 10; // next goal is 1 cm from final goal
+//    if (is_final_target && distance_error < 1000) // with in 1m ?
+//    {
+//        linear *= 0.4;
+//        DD qDebug() << "---linear(2): " << linear;
+//    }
+
+    if(linear > K) linear = K;
+#define TRANS_D_K 0.5
+    // calculate velocity in each direction from robot reference frame
+    auto target_vel = Point(angle_to_goal-theta_goal)*linear - robot->getVelocity()*TRANS_D_K;
+
+
+    //target_vel = target_vel*0.5 + error_vel*0.5;
+
+
+    DD qDebug() << "---vel: " << target_vel;
+
 
     // Adjust angular velocity to traverse the minor turn angle
-
     if (abs(Measurements::angleDiff(theta_goal,theta_current))<
         abs(Measurements::angleDiff(theta_goal,theta_current+angular)))
         angular=-angular;
 
 
-    // Reduce speed near target
-    bool is_final_target = Measurements::distance(goalPoint, nextGoalPoint) < 0.01;
-    if (is_final_target && distance_error < 1000) // with in 1m ?
-    {
-        x_vel *= 0.4;
-        y_vel *= 0.4;
-        DD cout << "---within 1m: " << x_vel << "," << y_vel <<endl;
-        DD cout << "---vels': " << (linear*0.4) << " (" << x_vel << " , " << y_vel << ") " << angular << endl;
-    }
-
-
-
-    // Robot Frame Velocities
-    double x_vel_robot = cos(theta_current)*x_vel - sin(theta_current)*y_vel;
-    double y_vel_robot = sin(theta_current)*x_vel + cos(theta_current)*y_vel;
-
-    DD cout << "---vels'': (" << x_vel_robot << " , " << y_vel_robot << ") " << angular << endl;
+    DD qDebug() << "---final'': " << target_vel << angular << endl;
 
 //    // Apply acceleration ramp (different for each move type)
 //    if (robot->getDribble()){
@@ -110,7 +115,8 @@ void PilotOmni::driveTo (Point goalPoint, float theta_goal, Point nextGoalPoint)
 //            y_vel_robot = (speed + ACC_PER_FRAME) * 100 * y_vel_robot/requested_speed;
 //        }
 //    }
-    setTargetVelocity(Point(x_vel_robot, y_vel_robot), angular);
+    angular = 0;
+    setTargetVelocity(target_vel, angular);
 }
 
 void PilotOmni::normalizeSpeeds(double& LF, double& LB, double& RF, double& RB, double max_mtr_spd) {
@@ -128,29 +134,36 @@ void PilotOmni::normalizeSpeeds(double& LF, double& LB, double& RF, double& RB, 
 
 void PilotOmni::updateErrors(Point goalPoint)
 {
+    // NOTE: integral error integrates only a window of time
+
     // Reset queues if the target has moved
     if(Measurements::distance(goalPoint, prev_goal_target) > 50)
         clearErrors();
 
-    //Integral Error for distance
-    if (dist_error_deque.size() == DIST_ERROR_MAXSIZE) {
-        double popped_integral = dist_error_integral - dist_error_deque.front();
-        double sign_popped_integral = (popped_integral > 0) - (popped_integral < 0);
-        dist_error_integral = std::min(1000000.0, fabs(popped_integral)) * sign_popped_integral;
-        dist_error_deque.pop_front();
-    }
-    double pushed_integral = dist_error_integral + distance_error;
-    double sign_pushed_integral = (pushed_integral > 0) - (pushed_integral < 0);
-    dist_error_integral = std::min(1000000.0, fabs(pushed_integral)) * sign_pushed_integral;
+    // increase integral error and append new error to buffer
+    dist_error_integral += distance_error;
     dist_error_deque.push_back(distance_error);
 
-    //Integral Error for orientation
+    // if buffer overflowed, remove first element
+    if (dist_error_deque.size() == DIST_ERROR_MAXSIZE) {
+        dist_error_integral -= dist_error_deque.front(); // integral of only last N times
+        dist_error_deque.pop_front();
+    }
+
+
+    // threshold the integral error
+    if     (dist_error_integral < -1000000) dist_error_integral = -1000000;
+    else if(dist_error_integral > 1000000 ) dist_error_integral =  1000000;
+
+
+    //Integral Error for orientation,  same steps:
+    angle_error_integral += angle_error;
+    angle_error_deque.push_back(angle_error);
+
     if (angle_error_deque.size() == ANGLE_ERROR_MAXSIZE) {
         angle_error_integral -= angle_error_deque.front();
         angle_error_deque.pop_front();
     }
-    angle_error_integral += angle_error;
-    angle_error_deque.push_back(angle_error);
 
     //std::cout << "DIST ERR INT: " << dist_error_integral << std::endl;
 }

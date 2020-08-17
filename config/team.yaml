@@ -1,6 +1,6 @@
 ---
 TEAM_BLUE :
-    SIDE: 1 # 0  negative side, 1 positive side
+    SIDE: 0 # 0  negative side, 1 positive side
     # Define the roles of each robot
 
 
@@ -40,7 +40,7 @@ TEAM_BLUE :
     # support for rpi_2019 is work in progress
     
 TEAM_YELLOW :
-    SIDE: 0
+    SIDE: 1
 
     ROBOT_PROXY: 
       TYPE : none 

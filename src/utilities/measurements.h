@@ -57,10 +57,10 @@ public:
     static float angleBetween(Robot*, const Point&);
     static float angleBetween(Robot*, Robot*);
 
-    //!@brief Calculates the smallest difference between two orientations (angle2 - angle1)
+    //!@brief Calculates the smallest difference between two orientations (angle1 - angle2)
     static float angleDiff(float angle1, float angle2);
 
-    //!@brief Calculates the sum of two orientations (angle2 + angle1) */
+    //!@brief Calculates the sum of two orientations (angle1 + angle2) */
     static float angleSum(float angle1, float angle2);
 
     /*! @brief isClose overload for angles

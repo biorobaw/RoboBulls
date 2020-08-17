@@ -11,6 +11,11 @@ QDebug operator<<(QDebug debug, const Point& p){
     return debug;
 }
 
+Point::Point(float angle) :
+    x(cos(angle)), y(sin(angle))
+{
+
+}
 
 Point::Point(const Point& p){
     x = p.x;
@@ -90,23 +95,27 @@ Point Point::operator/(float rhs) const
     return ret;
 }
 
-float Point::norm2(){
+float Point::norm2() const{
     return x*x+y*y;
 }
 
-float Point::norm(){
+float Point::norm() const{
     return sqrt(x*x+y*y);
 }
 
 
-float Point::dot(const Point& rhs){
+float Point::dot(const Point& rhs) const{
     return x*rhs.x + y*rhs.y;
 }
-float Point::wedge(const Point& rhs){
+float Point::wedge(const Point& rhs) const{
     return x*rhs.y - y*rhs.x;
 }
 
-Point Point::perpen(){
+float Point::angle() const{
+    return atan2(y,x);
+}
+
+Point Point::perpen() const{
     return Point(-y,x);
 }
 

@@ -44,7 +44,7 @@ bool DribbleToPoint::perform()
         robot->setDribble(false);
 
         bool dist_check = dist_to_ball < ROBOT_RADIUS + Field::BALL_RADIUS + 50;
-        bool ang_check = Measurements::angleDiff(ang_to_ball, robot->getOrientation()) < 5*M_PI/180;
+        bool ang_check = fabs(Measurements::angleDiff(ang_to_ball, robot->getOrientation())) < 5*M_PI/180;
 
         if(dist_check && ang_check)
         {
@@ -70,7 +70,7 @@ bool DribbleToPoint::perform()
             state = adjust1;
 
         bool dist_check = dist_to_ball < ROBOT_RADIUS + Field::BALL_RADIUS + 75;
-        bool ang_check = Measurements::angleDiff(ang_to_ball, robot->getOrientation()) < 20*M_PI/180;
+        bool ang_check = fabs(Measurements::angleDiff(ang_to_ball, robot->getOrientation()) < 20*M_PI/180);
 
         if(!dist_check || !ang_check)
         {
@@ -99,7 +99,7 @@ bool DribbleToPoint::perform()
             state = adjust1;
 
         bool dist_check = dist_to_ball < ROBOT_RADIUS + Field::BALL_RADIUS + 75;
-        bool ang_check = Measurements::angleDiff(ang_to_ball, robot->getOrientation()) < 30*M_PI/180;
+        bool ang_check = fabs(Measurements::angleDiff(ang_to_ball, robot->getOrientation()) < 30*M_PI/180);
 
         if(!dist_check || !ang_check)
         {
