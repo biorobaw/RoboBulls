@@ -216,7 +216,7 @@ public:
                 if (Measurements::isClose(rp,B,DIST_TOLERANCE))
                 state = pos_one;
         }
-        GenericMovementBehavior::perform();
+        return GenericMovementBehavior::perform();
     }
 
     string getName() override {
@@ -242,8 +242,8 @@ public:
         Point b = *ball;
         cmd.setTarget( b + offset, 0);
                      // Measurements::angleBetween(*robot,robot->getTeam()->getGameState()->getBall()->getPosition()));
-        cmd.avoidBall = cmd.avoidObstacles = false;
-        GenericMovementBehavior::perform();
+        cmd.avoidBall = cmd.avoidObstacles = true;
+        return GenericMovementBehavior::perform();
     }
 
     string getName() override {
@@ -264,21 +264,21 @@ void TestStrategy::assignBehaviors()
 //    //team->getRobot(0)->assignBeh<GenericMovementBehavior>(Point(-650, 300), 0);
 
     auto r = team->getRobot(0);
-    if(r){
-        std::cout << "Go to pose" << endl;
-        CmdGoToPose cmd = CmdGoToPose(Point(-650,-1500),-135.0/180*3.14,false,false);
-        r->goToPose(cmd);
-    }
+//    if(r){
+//        std::cout << "Go to pose" << endl;
+//        CmdGoToPose cmd = CmdGoToPose(Point(-905,-500),0/180*3.14,true,true);
+//        r->goToPose(cmd);
+//    }
 //    r->assignBeh<GoToBehavior>(0);
 
-//    auto robots = team->getRobots();
-//    int num_robots = robots.size();
-//    int i = 0;
-//    for(auto r : robots){
-//        if(i++ ==0) r->assignBeh<Strafe>();
-//        else r->assignBeh<GoToBehavior>(i*360.0/num_robots);
+    auto robots = team->getRobots();
+    int num_robots = robots.size();
+    int i = 0;
+    for(auto r : robots){
+        if(i++ ==0) r->assignBeh<Strafe>();
+        else r->assignBeh<GoToBehavior>(i*360.0/num_robots);
 
-//    }
+    }
 
 }
 

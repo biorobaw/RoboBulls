@@ -10,11 +10,11 @@ using std::abs;
 
 
 PilotOmni::PilotOmni(Robot* robot,float TRANS_P_K, float TRANS_I_K, float ANGULAR_P_K, float ANGULAR_I_K) :
-    Pilot(robot),
-    TRANS_P_K(TRANS_P_K),
-    TRANS_I_K(TRANS_I_K),
-    ANGULAR_P_K(ANGULAR_P_K),
-    ANGULAR_I_K(ANGULAR_I_K)
+    Pilot(robot)
+//    TRANS_P_K(TRANS_P_K),
+//    TRANS_I_K(TRANS_I_K),
+//    ANGULAR_P_K(ANGULAR_P_K),
+//    ANGULAR_I_K(ANGULAR_I_K)
 {
 }
 
@@ -24,20 +24,23 @@ void PilotOmni::driveTo (Point goalPoint, float theta_goal, Point nextGoalPoint)
 {
 
     // calculate time since last control cycle
-    static qint64 time_stamp = robot->getTimeStamp()-0.2;
     auto new_time = robot->getTimeStamp();
-    auto delta_t = (new_time-time_stamp)/2;
+    auto delta_t = new_time-time_stamp;
     time_stamp = new_time;
     if(delta_t > 0.300) delta_t = 0.100; // this will be true if the function hasn't been used in a while
+//    qDebug() << "delta:" << delta_t;
 
-#define MAX_ACC   1100
+
+    // TODO: change the following definitions into parameters
+#define MAX_ACC   2500
 #define MAX_DEACC  800
-#define MAX_SPEED 1300
+#define MAX_SPEED 1500
 
-#define MAX_ACC_ANG  1500/180.0*3.14
-#define MAX_DEACC_ANG 140/180.0*3.14
-#define MAX_ANGULAR   40/180.0*3.14
-#define ANG_TOLERANCE   4/180.0*3.14
+#define MAX_ACC_ANG   1500/180.0*3.14
+#define MAX_DEACC_ANG  100/180.0*3.14
+#define MAX_ANGULAR     80/180.0*3.14
+#define ANG_TOLERANCE    4/180.0*3.14
+
 
 
     auto robot_vel   = robot->getVelocity();
@@ -46,30 +49,7 @@ void PilotOmni::driveTo (Point goalPoint, float theta_goal, Point nextGoalPoint)
         return;
     }
 
-    Point pos_estimation    = *robot;// + robot->getVelocity()*delta_t;
-    auto  position_error    = goalPoint - pos_estimation;
-    auto  distance_to_goal  = position_error.norm();
-    float angle_to_goal     = position_error.angle();
-
-    auto target_speed = sqrt(2*MAX_DEACC*fmax(distance_to_goal-100,0));  // max speed for target distance based on max deacc
-    target_speed      = fmin(target_speed, MAX_SPEED);
-    auto target_vel   = Point(angle_to_goal)*target_speed;     // ideal velocity
-
-    auto error       = target_vel - robot_vel;
-    auto error_norm  = fmax(error.norm(),1);
-    auto learn_rate  = fmin(MAX_ACC*delta_t/error_norm, 1);
-
-
-    auto new_vel = robot_vel + error*learn_rate;
-    float new_vel_norm = new_vel.norm();
-    if(new_vel_norm > MAX_SPEED) new_vel_norm = MAX_SPEED;
-
-    // transform global to local coordinates:
-
-
-
-
-    // ====================================================
+    // ==== Calculate angular speed ================================
 
     float orientation = robot->getOrientation();
     float angular     = robot->getAngularSpeed();
@@ -85,71 +65,101 @@ void PilotOmni::driveTo (Point goalPoint, float theta_goal, Point nextGoalPoint)
     float new_angular = angular + angular_error*angular_learn_rate;
     float abs_angular = abs(angular);
     if(abs_angular > MAX_ANGULAR) new_angular = sign*MAX_ANGULAR;
+    abs_angular = abs(new_angular);
 
 
-    // ======================================================
+    // =============================================================
 
-    // rotate velocity from global to local orientation
+    Point pos_estimation    = *robot;// + robot->getVelocity()*delta_t;
+    auto  position_error    = goalPoint - pos_estimation;
+    auto  distance_to_goal  = position_error.norm();
+    float angle_to_goal     = position_error.angle();
+
+    auto delta_theta = new_angular * delta_t; //+angular)/2 * delta_t;
+    double target_angle = angle_to_goal - delta_theta/2; // correct for spin
+
+    auto target_speed = sqrt(2*MAX_DEACC*fmax(distance_to_goal-100,0));  // max speed for target distance based on max deacc
+    target_speed      = fmin(target_speed, MAX_SPEED);
+
+    auto target_vel   = Point(target_angle)*target_speed;     // ideal velocity (in global coordinates)
+
+
+    auto error       = target_vel - robot_vel;
+    auto error_norm  = fmax(error.norm(),1);
+    auto learn_rate  = fmin(MAX_ACC*delta_t/error_norm, 1);
+
+
+    auto new_vel = robot_vel + error*learn_rate;
+
+    float new_vel_norm = new_vel.norm();
+    if(new_vel_norm > MAX_SPEED) new_vel_norm = MAX_SPEED;
+
+
+
+
+
+    // transform global to local coordinates:
     new_vel = Point(new_vel.angle()-orientation)*new_vel_norm;
+
     setTargetVelocity(new_vel ,new_angular);// new_angular);
 
 
 }
 
-void PilotOmni::normalizeSpeeds(double& LF, double& LB, double& RF, double& RB, double max_mtr_spd) {
-    double highest_spd = std::max(fabs(LF), (std::max(fabs(LB), (std::max(fabs(RF), fabs(RB))))));
+//void PilotOmni::normalizeSpeeds(double& LF, double& LB, double& RF, double& RB, double max_mtr_spd) {
+//    double highest_spd = std::max(fabs(LF), (std::max(fabs(LB), (std::max(fabs(RF), fabs(RB))))));
 
-    if(highest_spd > max_mtr_spd){
-        LF*=max_mtr_spd/highest_spd;
-        LB*=max_mtr_spd/highest_spd;
-        RF*=max_mtr_spd/highest_spd;
-        RB*=max_mtr_spd/highest_spd;
-    }
-}
-
-
-
-void PilotOmni::updateErrors(Point goalPoint)
-{
-    // NOTE: integral error integrates only a window of time
-
-    // Reset queues if the target has moved
-    if(Measurements::distance(goalPoint, prev_goal_target) > 50)
-        clearErrors();
-
-    // increase integral error and append new error to buffer
-    dist_error_integral += distance_error;
-    dist_error_deque.push_back(distance_error);
-
-    // if buffer overflowed, remove first element
-    if (dist_error_deque.size() == DIST_ERROR_MAXSIZE) {
-        dist_error_integral -= dist_error_deque.front(); // integral of only last N times
-        dist_error_deque.pop_front();
-    }
+//    if(highest_spd > max_mtr_spd){
+//        LF*=max_mtr_spd/highest_spd;
+//        LB*=max_mtr_spd/highest_spd;
+//        RF*=max_mtr_spd/highest_spd;
+//        RB*=max_mtr_spd/highest_spd;
+//    }
+//}
 
 
-    // threshold the integral error
-    if     (dist_error_integral < -1000000) dist_error_integral = -1000000;
-    else if(dist_error_integral > 1000000 ) dist_error_integral =  1000000;
+
+//void PilotOmni::updateErrors(Point goalPoint)
+//{
+//    // NOTE: integral error integrates only a window of time
+
+//    // Reset queues if the target has moved
+//    if(Measurements::distance(goalPoint, prev_goal_target) > 50)
+//        clearErrors();
+
+//    // increase integral error and append new error to buffer
+//    dist_error_integral += distance_error;
+//    dist_error_deque.push_back(distance_error);
+
+//    // if buffer overflowed, remove first element
+//    if (dist_error_deque.size() == DIST_ERROR_MAXSIZE) {
+//        dist_error_integral -= dist_error_deque.front(); // integral of only last N times
+//        dist_error_deque.pop_front();
+//    }
 
 
-    //Integral Error for orientation,  same steps:
-    angle_error_integral += angle_error;
-    angle_error_deque.push_back(angle_error);
+//    // threshold the integral error
+//    if     (dist_error_integral < -1000000) dist_error_integral = -1000000;
+//    else if(dist_error_integral > 1000000 ) dist_error_integral =  1000000;
 
-    if (angle_error_deque.size() == ANGLE_ERROR_MAXSIZE) {
-        angle_error_integral -= angle_error_deque.front();
-        angle_error_deque.pop_front();
-    }
 
-    //std::cout << "DIST ERR INT: " << dist_error_integral << std::endl;
-}
+//    //Integral Error for orientation,  same steps:
+//    angle_error_integral += angle_error;
+//    angle_error_deque.push_back(angle_error);
 
-void PilotOmni::clearErrors()
-{
-    dist_error_deque.clear();
-    angle_error_deque.clear();
-    dist_error_integral = angle_error_integral = 0;
-}
+//    if (angle_error_deque.size() == ANGLE_ERROR_MAXSIZE) {
+//        angle_error_integral -= angle_error_deque.front();
+//        angle_error_deque.pop_front();
+//    }
+
+//    //std::cout << "DIST ERR INT: " << dist_error_integral << std::endl;
+//}
+
+//void PilotOmni::clearErrors()
+//{
+//    dist_error_deque.clear();
+//    angle_error_deque.clear();
+//    dist_error_integral = angle_error_integral = 0;
+//}
 
 

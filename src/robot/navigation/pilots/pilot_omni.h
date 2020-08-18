@@ -27,27 +27,30 @@ private:
 
 
     //! @brief Normalizes input speeds within -max_mtr_spd and max_mtr_spd
-    void normalizeSpeeds(double& vx, double& LB, double& RF, double& RB, double max_mtr_spd);
+//    void normalizeSpeeds(double& vx, double& LB, double& RF, double& RB, double max_mtr_spd);
 
-    double TRANS_P_K = 0.25;       // Multiplier for Proportional XY
-    double TRANS_I_K = 0;          // Multiplier for integral XY
-    double ANGULAR_P_K = 0.1;      // Multiplier for theta proportional
-    double ANGULAR_I_K = 0;        // Multiplier for theta integral
+//    double TRANS_P_K = 0.25;       // Multiplier for Proportional XY
+//    double TRANS_I_K = 0;          // Multiplier for integral XY
+//    double ANGULAR_P_K = 0.1;      // Multiplier for theta proportional
+//    double ANGULAR_I_K = 0;        // Multiplier for theta integral
 
-    double distance_error = 0, angle_error =0;
+//    double distance_error = 0, angle_error =0;
 
-    const unsigned int DIST_ERROR_MAXSIZE = 100;
-    const unsigned int ANGLE_ERROR_MAXSIZE = 50;
-    double dist_error_integral = 0;
-    double angle_error_integral = 0;
-    std::deque<double> dist_error_deque;
-    std::deque<double> angle_error_deque;
+//    const unsigned int DIST_ERROR_MAXSIZE = 100;
+//    const unsigned int ANGLE_ERROR_MAXSIZE = 50;
+//    double dist_error_integral = 0;
+//    double angle_error_integral = 0;
+//    std::deque<double> dist_error_deque;
+//    std::deque<double> angle_error_deque;
 
-    void updateErrors(Point goalPoint);
-    void clearErrors();
+//    void updateErrors(Point goalPoint);
+//    void clearErrors();
 
-    Point prev_goal_target = Point(15000,15000); // a very far away point
-    float prev_speed = 0;
+//    Point prev_goal_target = Point(15000,15000); // a very far away point
+//    float prev_speed = 0;
+
+
+    qint64 time_stamp = 0;
 };
 
 

@@ -44,6 +44,7 @@ public:
     float wedge(const Point& rhs) const;  // returns the value of the wedge product (not considering the basis)
     float angle() const;
     Point perpen() const; // returns the perpendicular vector of same size using right hand rule
+    Point complexMultiplication(const Point& rhs) const;
     std::string toString() const;
 public:
     float x;    //!< The X coordinate

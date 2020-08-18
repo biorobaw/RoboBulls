@@ -119,6 +119,10 @@ Point Point::perpen() const{
     return Point(-y,x);
 }
 
+Point Point::complexMultiplication(const Point& rhs) const {
+    return Point(x*rhs.x-y*rhs.y, x*rhs.y+y*rhs.x);
+}
+
 
 /*! @brief Returns a string representation of the Point
  *  Example: "(x, y) = (543.0, -1123.8)" */
