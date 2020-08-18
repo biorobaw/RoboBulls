@@ -238,7 +238,6 @@ public:
     Point offset;
 
     bool perform() override  {
-        cout<< "/*performing*/: r"<< robot->getId() << endl;
         Point b = *ball;
         cmd.setTarget( b + offset, 0);
                      // Measurements::angleBetween(*robot,robot->getTeam()->getGameState()->getBall()->getPosition()));
@@ -263,10 +262,10 @@ void TestStrategy::assignBehaviors()
     std::cout << "Assigning test strategy behaviors " << std::endl;
 //    //team->getRobot(0)->assignBeh<GenericMovementBehavior>(Point(-650, 300), 0);
 
-    auto r = team->getRobot(0);
+//    auto r = team->getRobot(0);
 //    if(r){
 //        std::cout << "Go to pose" << endl;
-//        CmdGoToPose cmd = CmdGoToPose(Point(-905,-500),0/180*3.14,true,true);
+//        CmdGoToPose cmd = CmdGoToPose(Point(-500,-1500),-145/180.0*3.14,false,false);
 //        r->goToPose(cmd);
 //    }
 //    r->assignBeh<GoToBehavior>(0);

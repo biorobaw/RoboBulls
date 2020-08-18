@@ -10,7 +10,7 @@ using std::abs;
 
 
 PilotOmni::PilotOmni(Robot* robot,float TRANS_P_K, float TRANS_I_K, float ANGULAR_P_K, float ANGULAR_I_K) :
-    Pilot(robot)
+    Pilot(robot),
 //    TRANS_P_K(TRANS_P_K),
 //    TRANS_I_K(TRANS_I_K),
 //    ANGULAR_P_K(ANGULAR_P_K),

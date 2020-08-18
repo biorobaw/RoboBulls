@@ -63,7 +63,7 @@ bool Pilot::executeCmdGoToPose(CmdGoToPose *cmd){
     if( ( cmd->avoidObstacles || cmd->avoidBall) &&
             Measurements::distance(r_pos, cmd->targetPose) > cmd->distance_tolerance){
 
-        qDebug() << "---doing path planning\n";
+//        qDebug() << "---doing path planning\n";
 
         // Assign robots that are to be considered obstacles
         FPPA::updateRobotObstacles(robot, game_state);
@@ -71,9 +71,9 @@ bool Pilot::executeCmdGoToPose(CmdGoToPose *cmd){
         //TODO: ideally we should not recompute the path each time
         FPPA::Path path = FPPA::genPath(game_state, r_pos, cmd->targetPose, cmd->avoidBall, robot->isGoalie());
 
-        qDebug().nospace() << "P: ";
+//        qDebug().nospace() << "P: ";
         for(auto p : path)//int i=0; i<path.size(); i++)
-            qDebug().nospace() << p << "->";
+//            qDebug().nospace() << p << "->";
         qDebug();
         if(path.size()>0){
             nextPoint = path[0];
