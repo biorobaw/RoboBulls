@@ -263,10 +263,10 @@ void TestStrategy::assignBehaviors()
     std::cout << "Assigning test strategy behaviors " << std::endl;
 //    //team->getRobot(0)->assignBeh<GenericMovementBehavior>(Point(-650, 300), 0);
 
-    auto r = team->getRobot(6);
+    auto r = team->getRobot(0);
     if(r){
         std::cout << "Go to pose" << endl;
-        CmdGoToPose cmd = CmdGoToPose(Point(-650,-1500),0,false,false);
+        CmdGoToPose cmd = CmdGoToPose(Point(-650,-1500),-135.0/180*3.14,false,false);
         r->goToPose(cmd);
     }
 //    r->assignBeh<GoToBehavior>(0);

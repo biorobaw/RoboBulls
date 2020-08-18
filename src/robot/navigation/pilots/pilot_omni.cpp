@@ -22,101 +22,78 @@ PilotOmni::PilotOmni(Robot* robot,float TRANS_P_K, float TRANS_I_K, float ANGULA
 
 void PilotOmni::driveTo (Point goalPoint, float theta_goal, Point nextGoalPoint)
 {
-//    static qint64 time_stamp = robot->getTimeStamp();
-//    auto new_time = robot->getTimeStamp();
-//    auto delta_t = new_time-time_stamp;
-//    qDebug() << "Delta T: " << delta_t;
-//    time_stamp = new_time;
-//    if(delta_t > 0.200) delta_t = 0.100; // if delta_T is too big, its been a while since this loop was executed, set to averge
 
-    // Used to clear accumulated errors if goal changes significantly
-    double theta_current = robot->getOrientation();
+    // calculate time since last control cycle
+    static qint64 time_stamp = robot->getTimeStamp()-0.2;
+    auto new_time = robot->getTimeStamp();
+    auto delta_t = (new_time-time_stamp)/2;
+    time_stamp = new_time;
+    if(delta_t > 0.300) delta_t = 0.100; // this will be true if the function hasn't been used in a while
 
-    auto error_vector   = goalPoint - *robot;
-    float angle_to_goal = error_vector.angle();
-    distance_error      = error_vector.norm();
-    angle_error         = Measurements::angleDiff(theta_current, theta_goal);
+#define MAX_ACC   1100
+#define MAX_DEACC  800
+#define MAX_SPEED 1300
 
-    DD qDebug() << "---position: " << *robot << theta_current;
-    DD qDebug() << "---error_T:  " << error_vector  << angle_to_goal ;
-    DD qDebug() << "---errorD:   " << distance_error << " , " << dist_error_integral;
-//    DD qDebug() << "---errorA: " << angle_error    << " , " << angle_error_integral;
-
-    // Calulate error integral component
-    updateErrors(goalPoint);
-    prev_goal_target = goalPoint; // didnt make sense to compute this at start, thus moved it here
-
-    DD qDebug() << "---D: t pk,pi: " << TRANS_P_K   << " , " << TRANS_I_K;
-    DD qDebug() << "---D: a pk,pi: " << ANGULAR_P_K << " , " << ANGULAR_I_K;
-
-    DD qDebug() << "---errorD': " << distance_error << " , " << dist_error_integral;
-//    DD qDebug() << "---errorA': " << angle_error    << " , " << angle_error_integral << endl;
+#define MAX_ACC_ANG  1500/180.0*3.14
+#define MAX_DEACC_ANG 140/180.0*3.14
+#define MAX_ANGULAR   40/180.0*3.14
+#define ANG_TOLERANCE   4/180.0*3.14
 
 
+    auto robot_vel   = robot->getVelocity();
+    if(robot_vel.norm() > 1.5*MAX_SPEED){
+        // this is an error due to "teleporting to robot", skip this cycle
+        return;
+    }
 
-    // Inertial Frame Velocities
+    Point pos_estimation    = *robot;// + robot->getVelocity()*delta_t;
+    auto  position_error    = goalPoint - pos_estimation;
+    auto  distance_to_goal  = position_error.norm();
+    float angle_to_goal     = position_error.angle();
 
-#define K 1500.0
-    double linear  =   (K/800) * distance_error +   TRANS_I_K *  dist_error_integral;
-    float angular  = ANGULAR_P_K *    angle_error + ANGULAR_I_K * angle_error_integral;
+    auto target_speed = sqrt(2*MAX_DEACC*fmax(distance_to_goal-100,0));  // max speed for target distance based on max deacc
+    target_speed      = fmin(target_speed, MAX_SPEED);
+    auto target_vel   = Point(angle_to_goal)*target_speed;     // ideal velocity
 
-
-    DD qDebug() << "---linear(1), angular: " << linear << angular;
-
-    // Reduce speed near target
-//    bool is_final_target = (goalPoint - nextGoalPoint).norm() < 10; // next goal is 1 cm from final goal
-//    if (is_final_target && distance_error < 1000) // with in 1m ?
-//    {
-//        linear *= 0.4;
-//        DD qDebug() << "---linear(2): " << linear;
-//    }
-
-    if(linear > K) linear = K;
-#define TRANS_D_K 0.5
-    // calculate velocity in each direction from robot reference frame
-    auto target_vel = Point(angle_to_goal-theta_goal)*linear - robot->getVelocity()*TRANS_D_K;
+    auto error       = target_vel - robot_vel;
+    auto error_norm  = fmax(error.norm(),1);
+    auto learn_rate  = fmin(MAX_ACC*delta_t/error_norm, 1);
 
 
-    //target_vel = target_vel*0.5 + error_vel*0.5;
+    auto new_vel = robot_vel + error*learn_rate;
+    float new_vel_norm = new_vel.norm();
+    if(new_vel_norm > MAX_SPEED) new_vel_norm = MAX_SPEED;
+
+    // transform global to local coordinates:
 
 
-    DD qDebug() << "---vel: " << target_vel;
 
 
-    // Adjust angular velocity to traverse the minor turn angle
-    if (abs(Measurements::angleDiff(theta_goal,theta_current))<
-        abs(Measurements::angleDiff(theta_goal,theta_current+angular)))
-        angular=-angular;
+    // ====================================================
+
+    float orientation = robot->getOrientation();
+    float angular     = robot->getAngularSpeed();
+    float orientationError = Measurements::angleDiff(theta_goal, orientation);
+    int sign = orientationError > 0 ? 1 : -1;
+
+    float target_angular = sqrt(2*MAX_DEACC_ANG*fmax(abs(orientationError)-ANG_TOLERANCE,0));
+    target_angular       = sign*fmin(target_angular, MAX_ANGULAR);
+    float angular_error  = target_angular - robot->getAngularSpeed();
+    float angular_norm   = fmax(abs(angular_error), 0.001);
+    float angular_learn_rate = fmin(MAX_ACC_ANG*delta_t/angular_norm, 1);
+
+    float new_angular = angular + angular_error*angular_learn_rate;
+    float abs_angular = abs(angular);
+    if(abs_angular > MAX_ANGULAR) new_angular = sign*MAX_ANGULAR;
 
 
-    DD qDebug() << "---final'': " << target_vel << angular << endl;
+    // ======================================================
 
-//    // Apply acceleration ramp (different for each move type)
-//    if (robot->getDribble()){
-//        double requested_speed = sqrt(x_vel_robot*x_vel_robot + y_vel_robot * y_vel_robot);
-//        if(requested_speed > prev_speed)
-//        {
-//            x_vel_robot = x_vel_robot * (prev_speed + 2) / requested_speed;
-//            y_vel_robot = y_vel_robot * (prev_speed + 2) / requested_speed;
-//            requested_speed = prev_speed + 2;
-//        }
-//        prev_speed = requested_speed;
+    // rotate velocity from global to local orientation
+    new_vel = Point(new_vel.angle()-orientation)*new_vel_norm;
+    setTargetVelocity(new_vel ,new_angular);// new_angular);
 
-//        // Cap velocities for dribbling
-//        y_vel_robot = fmin(y_vel_robot, DRIBBLE_FRWD_SPD);
-//        y_vel_robot = fmax(y_vel_robot, -DRIBBLE_BACK_SPD);
 
-//    } else {
-//        const double ACC_PER_FRAME = 1;
-//        double speed = robot->getSpeedMillimetersPerFrame();
-//        double requested_speed = sqrt(x_vel_robot*x_vel_robot + y_vel_robot*y_vel_robot);
-//        if(requested_speed > speed + ACC_PER_FRAME) {
-//            x_vel_robot = (speed + ACC_PER_FRAME) * 100 * x_vel_robot/requested_speed;
-//            y_vel_robot = (speed + ACC_PER_FRAME) * 100 * y_vel_robot/requested_speed;
-//        }
-//    }
-    angular = 0;
-    setTargetVelocity(target_vel, angular);
 }
 
 void PilotOmni::normalizeSpeeds(double& LF, double& LB, double& RF, double& RB, double max_mtr_spd) {

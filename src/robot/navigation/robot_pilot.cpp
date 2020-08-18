@@ -19,7 +19,7 @@ Pilot::~Pilot(){
 }
 
 
-#define DD if(true)
+#define DD if(false)
 
 void Pilot::setNewCommand(CmdGoToPose& newCommand){
     if(cmdGoToPose != nullptr) *cmdGoToPose = newCommand;
