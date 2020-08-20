@@ -1,6 +1,6 @@
 #ifndef ATTACK_SUPPORT_H
 #define ATTACK_SUPPORT_H
-#include "genericmovementbehavior.h"
+#include "model/robot/behaviors/genericmovementbehavior.h"
 #include "utilities/region/defencearea.h"
 #include <algorithm>
 #include "utilities/comparisons.h"

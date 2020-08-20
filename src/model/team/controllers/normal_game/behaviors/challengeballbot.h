@@ -1,7 +1,7 @@
 #ifndef CHALLENGEBALLBOT_H
 #define CHALLENGEBALLBOT_H
 
-#include "genericmovementbehavior.h"
+#include "model/robot/behaviors/genericmovementbehavior.h"
 
 
 /*! @file

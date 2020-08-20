@@ -1,7 +1,7 @@
 #ifndef DRIBBLEBACK_H
 #define DRIBBLEBACK_H
 
-#include "../behavior.h"
+#include "model/robot/behavior.h"
 #include "utilities/point.h"
 #include "model/robot/navigation/commands/CmdGoToPose.h"
 

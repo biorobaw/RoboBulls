@@ -1,11 +1,11 @@
 #include "freekickstrategy.h"
 #include "../normal_game_roles.h"
 
-#include "model/team/behaviors/attackmain.h"
-#include "model/team/behaviors/attacksupport.h"
-#include "model/team/behaviors/goalie.h"
-#include "model/team/behaviors/wall.h"
-#include "model/team/behaviors/markbot.h"
+#include "model/team/controllers/normal_game/behaviors/attackmain.h"
+#include "model/team/controllers/normal_game/behaviors/attacksupport.h"
+#include "model/team/controllers/normal_game/behaviors/goalie.h"
+#include "model/team/controllers/normal_game/behaviors/wall.h"
+#include "model/team/controllers/normal_game/behaviors/markbot.h"
 
 #include "model/game_state.h"
 #include "model/team/team.h"

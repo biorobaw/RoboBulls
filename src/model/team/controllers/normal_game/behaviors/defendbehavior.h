@@ -1,7 +1,7 @@
 #ifndef DEFENDBEHAVIOR_H
 #define DEFENDBEHAVIOR_H
-#include "genericmovementbehavior.h"
-#include "../skills/kicktopointomni.h"
+#include "model/robot/behaviors/genericmovementbehavior.h"
+#include "model/robot/behaviors/skills/kicktopointomni.h"
 
 
 // ================ OBSERVATION =====================================

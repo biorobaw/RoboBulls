@@ -1,9 +1,9 @@
 #ifndef Goalie_H
 #define Goalie_H
 #include <math.h>
-#include "../skills/kicktopointomni.h"
-#include "../skills/dribbleback.h"
-#include "genericmovementbehavior.h"
+#include "model/robot/behaviors/skills/kicktopointomni.h"
+#include "model/robot/behaviors/skills/dribbleback.h"
+#include "model/robot/behaviors/genericmovementbehavior.h"
 #include "utilities/region/defencearea.h"
 #include "utilities/measurements.h"
 #include "utilities/comparisons.h"

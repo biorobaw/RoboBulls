@@ -1,8 +1,8 @@
 #include "kickoffstrategy.h"
 #include "../normal_game_roles.h"
 
-#include "model/team/behaviors/genericmovementbehavior.h"
-#include "model/team/behaviors/goalie.h"
+#include "model/robot/behaviors/genericmovementbehavior.h"
+#include "model/team/controllers/normal_game/behaviors/goalie.h"
 #include "model/game_state.h"
 #include "model/robot/navigation/commands/CmdGoToPose.h"
 #include "model/team/team.h"

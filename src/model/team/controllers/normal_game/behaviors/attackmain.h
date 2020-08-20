@@ -1,12 +1,12 @@
 #ifndef ATTACK_MAIN_H
 #define ATTACK_MAIN_H
 
-#include "../behavior.h"
-#include "../skills/kicktopointomni.h"
-#include "../skills/dribbletopoint.h"
+#include "model/robot/behavior.h"
+#include "model/robot/behaviors/skills/kicktopointomni.h"
+#include "model/robot/behaviors/skills/dribbletopoint.h"
 #include "gui/interface/gui_interface.h"
 #include "utilities/region/sector.h"
-#include "genericmovementbehavior.h"
+#include "model/robot/behaviors/genericmovementbehavior.h"
 #include "algorithm"
 #include "utilities/region/defencearea.h"
 #include "utilities/comparisons.h"

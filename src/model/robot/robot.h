@@ -8,7 +8,7 @@
 #include "model/moving_object.h"
 #include "model/robot/robot_low_level_controls.h"
 #include "navigation/commands/CmdGoToPose.h"
-#include "model/team/behavior.h"
+#include "model/robot/behavior.h"
 
 #include <QSet>
 #include <QObject>

@@ -1,7 +1,7 @@
 #ifndef PENALTYGOALIE_H
 #define PENALTYGOALIE_H
 
-#include "genericmovementbehavior.h"
+#include "model/robot/behaviors/genericmovementbehavior.h"
 #include "utilities/region/defencearea.h"
 #include "gui/interface/gui_interface.h"
 

@@ -3,7 +3,7 @@
 
 #include "stopstrategy.h"
 #include "model/team/team.h"
-#include "model/team/behaviors/refstop.h"
+#include "model/team/controllers/normal_game/behaviors/refstop.h"
 
 
 StopStrategy::StopStrategy(RobotTeam* _team) : TeamStrategy(_team)

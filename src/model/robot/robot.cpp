@@ -4,7 +4,7 @@
 #include "robot.h"
 #include "model/team/team.h"
 #include <iostream>
-#include "model/team/behaviors/refstop.h"
+#include "model/team/controllers/normal_game/behaviors/refstop.h"
 #include "model/robot/robot_proxy.h"
 #include "model/robot/navigation/robot_pilot.h"
 #include "model/robot/navigation/pilots/pilot_dummy.h"

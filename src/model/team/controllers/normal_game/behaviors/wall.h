@@ -1,11 +1,11 @@
 #ifndef WALL_H
 #define WALL_H
 
-#include "genericmovementbehavior.h"
+#include "model/robot/behaviors/genericmovementbehavior.h"
 #include "utilities/region/defencearea.h"
 #include "utilities/comparisons.h"
 #include "gui/interface/gui_interface.h"
-#include "../skills/kicktopointomni.h"
+#include "model/robot/behaviors/skills/kicktopointomni.h"
 
 
 /*!

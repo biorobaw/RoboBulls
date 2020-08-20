@@ -1,7 +1,7 @@
 #ifndef REFSTOP_H
 #define REFSTOP_H
 
-#include "genericmovementbehavior.h"
+#include "model/robot/behaviors/genericmovementbehavior.h"
 #include "utilities/comparisons.h"
 #include "utilities/region/defencearea.h"
 

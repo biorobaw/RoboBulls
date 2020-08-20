@@ -5,7 +5,7 @@
 #include <ctime>
 #include "model/robot/robot.h"
 #include "model/game_state.h"
-#include "model/team/behaviors/genericmovementbehavior.h"
+#include "model/robot/behaviors/genericmovementbehavior.h"
 #include "configuration/motion_parameters.h"
 #include "model/ball.h"
 #include "utilities/my_yaml.h"

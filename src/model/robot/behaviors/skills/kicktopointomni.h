@@ -1,7 +1,7 @@
 #ifndef KTP_OMNI_H
 #define KTP_OMNI_H
 #include "utilities/point.h"
-#include "../behavior.h"
+#include "model/robot/behavior.h"
 #include "model/robot/navigation/commands/CmdGoToPose.h"
 #include "gui/interface/gui_interface.h"
 

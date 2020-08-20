@@ -1,7 +1,7 @@
 #ifndef DRIBBLETOPOINT_H
 #define DRIBBLETOPOINT_H
 
-#include "../behavior.h"
+#include "model/robot/behavior.h"
 #include "utilities/point.h"
 #include "model/robot/navigation/commands/CmdGoToPose.h"
 

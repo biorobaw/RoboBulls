@@ -71,6 +71,11 @@ SOURCES += src/main.cpp \
         src/model/field.cpp \
         src/model/game_state.cpp \
         src/model/moving_object.cpp \
+        src/model/robot/behavior.cpp \
+        src/model/robot/behaviors/genericmovementbehavior.cpp \
+        src/model/robot/behaviors/skills/dribbletopoint.cpp \
+        src/model/robot/behaviors/skills/dribbleback.cpp \
+        src/model/robot/behaviors/skills/kicktopointomni.cpp \
         src/model/robot/navigation/commands/CmdGoToPose.cpp \
         src/model/robot/navigation/drives/differential.cpp \
         src/model/robot/navigation/drives/omni_drive.cpp \
@@ -87,10 +92,18 @@ SOURCES += src/main.cpp \
         src/model/robot/robots/none/proxy_none.cpp \
         src/model/robot/robots/yisibot/proxy_yisibot.cpp \
         src/model/robot/robots/yisibot/crc.cpp \
-        src/model/team/behavior.cpp \
         src/model/team/controllers/joystick/mygamepad.cpp \
         src/model/team/controllers/joystick/scontroller_joystick.cpp \
         src/model/team/controllers/none/scontroller_none.cpp \
+        src/model/team/controllers/normal_game/behaviors/attackmain.cpp \
+        src/model/team/controllers/normal_game/behaviors/attacksupport.cpp \
+        src/model/team/controllers/normal_game/behaviors/challengeballbot.cpp \
+        src/model/team/controllers/normal_game/behaviors/defendbehavior.cpp \
+        src/model/team/controllers/normal_game/behaviors/goalie.cpp \
+        src/model/team/controllers/normal_game/behaviors/markbot.cpp \
+        src/model/team/controllers/normal_game/behaviors/penaltygoalie.cpp \
+        src/model/team/controllers/normal_game/behaviors/refstop.cpp \
+        src/model/team/controllers/normal_game/behaviors/wall.cpp \
         src/model/team/controllers/normal_game/scontroller_normal_game.cpp \
         src/model/team/controllers/normal_game/strategies/freekickstrategy.cpp \
         src/model/team/controllers/normal_game/strategies/haltstrategy.cpp \
@@ -101,19 +114,6 @@ SOURCES += src/main.cpp \
         src/model/team/controllers/normal_game/strategies/stopstrategy.cpp \
         src/model/team/controllers/strategy_tester/scontroller_strategy_tester.cpp \
         src/model/team/controllers/strategy_tester/strategies/test_strategy.cpp \
-        src/model/team/behaviors/attackmain.cpp \
-        src/model/team/behaviors/attacksupport.cpp \
-        src/model/team/behaviors/genericmovementbehavior.cpp \
-        src/model/team/behaviors/challengeballbot.cpp \
-        src/model/team/behaviors/defendbehavior.cpp \
-        src/model/team/behaviors/goalie.cpp \
-        src/model/team/behaviors/markbot.cpp \
-        src/model/team/behaviors/penaltygoalie.cpp \
-        src/model/team/behaviors/refstop.cpp \
-        src/model/team/behaviors/wall.cpp \
-        src/model/team/skills/dribbletopoint.cpp \
-        src/model/team/skills/dribbleback.cpp \
-        src/model/team/skills/kicktopointomni.cpp \
         src/model/team/team.cpp \
         src/model/team/team_strategy.cpp \
         src/model/team/team_strategy_controller.cpp \
@@ -170,6 +170,11 @@ HEADERS += \
         src/model/robot/navigation/pilots/pilot_dummy.h \
         src/model/robot/navigation/pilots/pilot_omni.h \
         src/model/robot/navigation/robot_pilot.h \
+        src/model/robot/behavior.h \
+        src/model/robot/behaviors/genericmovementbehavior.h \
+        src/model/robot/behaviors/skills/dribbleback.h \
+        src/model/robot/behaviors/skills/dribbletopoint.h \
+        src/model/robot/behaviors/skills/kicktopointomni.h \
         src/model/robot/robot.h \
         src/model/robot/robot_low_level_controls.h \
         src/model/robot/robot_proxy.h \
@@ -177,10 +182,18 @@ HEADERS += \
         src/model/robot/robots/none/proxy_none.h \
         src/model/robot/robots/yisibot/proxy_yisibot.h \
         src/model/robot/robots/yisibot/crc.h \
-        src/model/team/behavior.h \
         src/model/team/controllers/joystick/mygamepad.h \
         src/model/team/controllers/joystick/scontroller_joystick.h \
         src/model/team/controllers/none/scontroller_none.h \
+        src/model/team/controllers/normal_game/behaviors/attackmain.h \
+        src/model/team/controllers/normal_game/behaviors/attacksupport.h \
+        src/model/team/controllers/normal_game/behaviors/challengeballbot.h \
+        src/model/team/controllers/normal_game/behaviors/defendbehavior.h \
+        src/model/team/controllers/normal_game/behaviors/goalie.h \
+        src/model/team/controllers/normal_game/behaviors/markbot.h \
+        src/model/team/controllers/normal_game/behaviors/penaltygoalie.h \
+        src/model/team/controllers/normal_game/behaviors/refstop.h \
+        src/model/team/controllers/normal_game/behaviors/wall.h \
         src/model/team/controllers/normal_game/normal_game_roles.h \
         src/model/team/controllers/normal_game/scontroller_normal_game.h \
         src/model/team/controllers/normal_game/strategies/freekickstrategy.h \
@@ -192,19 +205,6 @@ HEADERS += \
         src/model/team/controllers/normal_game/strategies/stopstrategy.h \
         src/model/team/controllers/strategy_tester/scontroller_strategy_tester.h \
         src/model/team/controllers/strategy_tester/strategies/test_strategy.h \
-        src/model/team/behaviors/attackmain.h \
-        src/model/team/behaviors/attacksupport.h \
-        src/model/team/behaviors/challengeballbot.h \
-        src/model/team/behaviors/defendbehavior.h \
-        src/model/team/behaviors/genericmovementbehavior.h \
-        src/model/team/behaviors/goalie.h \
-        src/model/team/behaviors/markbot.h \
-        src/model/team/behaviors/penaltygoalie.h \
-        src/model/team/behaviors/refstop.h \
-        src/model/team/behaviors/wall.h \
-        src/model/team/skills/dribbleback.h \
-        src/model/team/skills/dribbletopoint.h \
-        src/model/team/skills/kicktopointomni.h \
         src/model/team/team.h \
         src/model/team/team_strategy.h \
         src/model/team/team_strategy_controller.h \
