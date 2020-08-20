@@ -17,13 +17,13 @@ TEAM_BLUE :
       PORT : 20011     # port of grsim
       
     STRATEGY_CONTROLLER:
-      # ID: STRATEGY_TESTER # options: NORMAL_GAME or STRATEGY_TESTER or JOYSTICK or none
+      ID: STRATEGY_TESTER # options: NORMAL_GAME or STRATEGY_TESTER or JOYSTICK or none
       # define your own 'key : value' pairs to load on your test strategies
       
-      ID : JOYSTICK        # options: NORMAL_GAME or STRATEGY_TESTER or JOYSTICK
-      JOY_TO_ROBOT_MAP :
-        - ROBOT : 0
-          JOY   : 0
+      # ID : JOYSTICK        # options: NORMAL_GAME or STRATEGY_TESTER or JOYSTICK
+      # JOY_TO_ROBOT_MAP :
+      #   - ROBOT : 0
+      #     JOY   : 0
       #  - ROBOT : 1
       #    JOY   : 1
       
