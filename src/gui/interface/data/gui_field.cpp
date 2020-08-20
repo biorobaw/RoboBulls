@@ -1,6 +1,6 @@
 #include "gui_field.h"
 #include "model/field.h"
-#include "model/constants.h"
+#include "configuration/constants.h"
 
 
 GuiField::GuiField()

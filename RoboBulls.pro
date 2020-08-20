@@ -24,24 +24,26 @@ INCLUDEPATH += src
 
 
 
-PROTOS += src/robot/robots/grsim/proto/grSim_Commands.proto \
-         src/robot/robots/grsim/proto/grSim_Packet.proto \
-         src/robot/robots/grsim/proto/grSim_Replacement.proto \
-         src/ssl/proto/messages_robocup_ssl_detection.proto \ #sss
-         src/ssl/proto/messages_robocup_ssl_geometry.proto \
-         src/ssl/proto/messages_robocup_ssl_refbox_log.proto \
-         src/ssl/proto/messages_robocup_ssl_wrapper.proto \
-         src/ssl/proto/ssl_referee.proto \ #sss
-         src/ssl/proto/ssl_game_controller_auto_ref.proto \
-         src/ssl/proto/ssl_game_controller_team.proto \
-         src/ssl/proto/ssl_game_event_2019.proto \
-         src/ssl/proto/ssl_game_event.proto \ #no deps
-         src/ssl/proto/ssl_game_controller_common.proto # no deps
+PROTOS += src/ssl/proto/grSim_Commands.proto \
+          src/ssl/proto/grSim_Packet.proto \
+          src/ssl/proto/grSim_Replacement.proto \
+          src/ssl/proto/messages_robocup_ssl_detection.proto \ #sss
+          src/ssl/proto/messages_robocup_ssl_geometry.proto \
+          src/ssl/proto/messages_robocup_ssl_refbox_log.proto \
+          src/ssl/proto/messages_robocup_ssl_wrapper.proto \
+          src/ssl/proto/ssl_referee.proto \ #sss
+          src/ssl/proto/ssl_game_controller_auto_ref.proto \
+          src/ssl/proto/ssl_game_controller_team.proto \
+          src/ssl/proto/ssl_game_event_2019.proto \
+          src/ssl/proto/ssl_game_event.proto \ #no deps
+          src/ssl/proto/ssl_game_controller_common.proto # no deps
 include(protobuf.pri)
 
 
 
 SOURCES += src/main.cpp \
+        src/configuration/configuration.cpp \
+        src/configuration/motion_parameters.cpp \
         src/gui/interface/data/gui_ball.cpp \
         src/gui/interface/data/gui_field.cpp \
         src/gui/interface/data/gui_game_state.cpp \
@@ -66,57 +68,57 @@ SOURCES += src/main.cpp \
         src/gui/graphics/graphics_robot.cpp \
         src/gui/graphics/graphics_robot_label.cpp \
         src/model/ball.cpp \
-        src/model/configuration.cpp \
         src/model/field.cpp \
         src/model/game_state.cpp \
         src/model/moving_object.cpp \
-        src/robot/navigation/commands/CmdGoToPose.cpp \
-        src/robot/navigation/drives/differential.cpp \
-        src/robot/navigation/drives/omni_drive.cpp \
-        src/robot/navigation/path_planning/fppa_pathfinding.cpp \
-        src/robot/navigation/path_planning/move_collisions.cpp \
-        src/robot/navigation/pilots/pilot_differential.cpp \
-        src/robot/navigation/pilots/pilot_dummy.cpp \
-        src/robot/navigation/pilots/pilot_omni.cpp \
-        src/robot/navigation/robot_pilot.cpp \
-        src/robot/robot.cpp \
-        src/robot/robot_low_level_control.cpp \
-        src/robot/robot_proxy.cpp \
-        src/robot/robots/grsim/proxy_grsim.cpp \
-        src/robot/robots/none/proxy_none.cpp \
-        src/robot/robots/yisibot/proxy_yisibot.cpp \
-        src/robot/robots/yisibot/crc.cpp \
+        src/model/robot/navigation/commands/CmdGoToPose.cpp \
+        src/model/robot/navigation/drives/differential.cpp \
+        src/model/robot/navigation/drives/omni_drive.cpp \
+        src/model/robot/navigation/path_planning/fppa_pathfinding.cpp \
+        src/model/robot/navigation/path_planning/move_collisions.cpp \
+        src/model/robot/navigation/pilots/pilot_differential.cpp \
+        src/model/robot/navigation/pilots/pilot_dummy.cpp \
+        src/model/robot/navigation/pilots/pilot_omni.cpp \
+        src/model/robot/navigation/robot_pilot.cpp \
+        src/model/robot/robot.cpp \
+        src/model/robot/robot_low_level_control.cpp \
+        src/model/robot/robot_proxy.cpp \
+        src/model/robot/robots/grsim/proxy_grsim.cpp \
+        src/model/robot/robots/none/proxy_none.cpp \
+        src/model/robot/robots/yisibot/proxy_yisibot.cpp \
+        src/model/robot/robots/yisibot/crc.cpp \
+        src/model/team/behavior.cpp \
+        src/model/team/controllers/joystick/mygamepad.cpp \
+        src/model/team/controllers/joystick/scontroller_joystick.cpp \
+        src/model/team/controllers/none/scontroller_none.cpp \
+        src/model/team/controllers/normal_game/scontroller_normal_game.cpp \
+        src/model/team/controllers/normal_game/strategies/freekickstrategy.cpp \
+        src/model/team/controllers/normal_game/strategies/haltstrategy.cpp \
+        src/model/team/controllers/normal_game/strategies/indirectkickstrategy.cpp \
+        src/model/team/controllers/normal_game/strategies/kickoffstrategy.cpp \
+        src/model/team/controllers/normal_game/strategies/normalgamestrategy.cpp \
+        src/model/team/controllers/normal_game/strategies/penaltystrategy.cpp \
+        src/model/team/controllers/normal_game/strategies/stopstrategy.cpp \
+        src/model/team/controllers/strategy_tester/scontroller_strategy_tester.cpp \
+        src/model/team/controllers/strategy_tester/strategies/test_strategy.cpp \
+        src/model/team/strategy.cpp \
+        src/model/team/strategycontroller.cpp \
+        src/model/team/behaviors/attackmain.cpp \
+        src/model/team/behaviors/attacksupport.cpp \
+        src/model/team/behaviors/genericmovementbehavior.cpp \
+        src/model/team/behaviors/challengeballbot.cpp \
+        src/model/team/behaviors/defendbehavior.cpp \
+        src/model/team/behaviors/goalie.cpp \
+        src/model/team/behaviors/markbot.cpp \
+        src/model/team/behaviors/penaltygoalie.cpp \
+        src/model/team/behaviors/refstop.cpp \
+        src/model/team/behaviors/wall.cpp \
+        src/model/team/skills/dribbletopoint.cpp \
+        src/model/team/skills/dribbleback.cpp \
+        src/model/team/skills/kicktopointomni.cpp \
+        src/model/team/team.cpp \
         src/ssl/ssl_game_controller_listener.cpp \
         src/ssl/ssl_vision_listener.cpp \
-        src/strategy/behavior.cpp \
-        src/strategy/controllers/joystick/mygamepad.cpp \
-        src/strategy/controllers/joystick/scontroller_joystick.cpp \
-        src/strategy/controllers/none/scontroller_none.cpp \
-        src/strategy/controllers/normal_game/scontroller_normal_game.cpp \
-        src/strategy/controllers/normal_game/strategies/freekickstrategy.cpp \
-        src/strategy/controllers/normal_game/strategies/haltstrategy.cpp \
-        src/strategy/controllers/normal_game/strategies/indirectkickstrategy.cpp \
-        src/strategy/controllers/normal_game/strategies/kickoffstrategy.cpp \
-        src/strategy/controllers/normal_game/strategies/normalgamestrategy.cpp \
-        src/strategy/controllers/normal_game/strategies/penaltystrategy.cpp \
-        src/strategy/controllers/normal_game/strategies/stopstrategy.cpp \
-        src/strategy/controllers/strategy_tester/scontroller_strategy_tester.cpp \
-        src/strategy/controllers/strategy_tester/strategies/test_strategy.cpp \
-        src/strategy/strategy.cpp \
-        src/strategy/strategycontroller.cpp \
-        src/strategy/behaviors/attackmain.cpp \
-        src/strategy/behaviors/attacksupport.cpp \
-        src/strategy/behaviors/genericmovementbehavior.cpp \
-        src/strategy/behaviors/challengeballbot.cpp \
-        src/strategy/behaviors/defendbehavior.cpp \
-        src/strategy/behaviors/goalie.cpp \
-        src/strategy/behaviors/markbot.cpp \
-        src/strategy/behaviors/penaltygoalie.cpp \
-        src/strategy/behaviors/refstop.cpp \
-        src/strategy/behaviors/wall.cpp \
-        src/strategy/skills/dribbletopoint.cpp \
-        src/strategy/skills/dribbleback.cpp \
-        src/strategy/skills/kicktopointomni.cpp \
         src/utilities/comparisons.cpp \
         src/utilities/debug.cpp \
         src/utilities/edges.cpp \
@@ -126,11 +128,12 @@ SOURCES += src/main.cpp \
         src/utilities/region/sector.cpp \
         src/utilities/region/rectangle.cpp \
         src/utilities/measurements.cpp \
-        src/utilities/region/defencearea.cpp \
-        src/model/team.cpp \
-        src/parameters/motion_parameters.cpp
+        src/utilities/region/defencearea.cpp
 
 HEADERS += \
+        src/configuration/constants.h \
+        src/configuration/configuration.h \
+        src/configuration/motion_parameters.h \
         src/gui/interface/data/gui_ball.h \
         src/gui/interface/data/gui_field.h \
         src/gui/interface/data/gui_game_state.h \
@@ -145,7 +148,6 @@ HEADERS += \
         src/gui/panels/panel_teams.h \
         src/gui/panels/panel_teams/frame_robot.h \
         src/gui/panels/panel_teams/tab_team.h \
-        src/gui/style_sheets/color_palettes.h \
         src/gui/graphics/graphics_ball.h \
         src/gui/graphics/graphics_field.h \
         src/gui/graphics/graphics_line.h \
@@ -154,62 +156,60 @@ HEADERS += \
         src/gui/graphics/graphics_polygon.h \
         src/gui/graphics/graphics_robot.h \
         src/gui/graphics/graphics_robot_label.h \
+        src/gui/style_sheets/color_palettes.h \
         src/model/ball.h \
-        src/model/configuration.h \
-        src/model/constants.h \
         src/model/field.h \
         src/model/game_state.h \
         src/model/moving_object.h \
-        src/model/team.h \
-        src/robot/navigation/commands/CmdGoToPose.h \
-        src/robot/navigation/drives/differential.h \
-        src/robot/navigation/drives/omni_drive.h \
-        src/robot/navigation/path_planning/fppa_pathfinding.h \
-        src/robot/navigation/path_planning/move_collisions.h \
-        src/robot/navigation/pilots/pilot_differential.h \
-        src/robot/navigation/pilots/pilot_dummy.h \
-        src/robot/navigation/pilots/pilot_omni.h \
-        src/robot/navigation/robot_pilot.h \
-        src/robot/robot.h \
-        src/robot/robot_low_level_controls.h \
-        src/robot/robot_proxy.h \
-        src/robot/robots/grsim/proxy_grsim.h \
-        src/robot/robots/none/proxy_none.h \
-        src/robot/robots/yisibot/proxy_yisibot.h \
-        src/robot/robots/yisibot/crc.h \
+        src/model/robot/navigation/commands/CmdGoToPose.h \
+        src/model/robot/navigation/drives/differential.h \
+        src/model/robot/navigation/drives/omni_drive.h \
+        src/model/robot/navigation/path_planning/fppa_pathfinding.h \
+        src/model/robot/navigation/path_planning/move_collisions.h \
+        src/model/robot/navigation/pilots/pilot_differential.h \
+        src/model/robot/navigation/pilots/pilot_dummy.h \
+        src/model/robot/navigation/pilots/pilot_omni.h \
+        src/model/robot/navigation/robot_pilot.h \
+        src/model/robot/robot.h \
+        src/model/robot/robot_low_level_controls.h \
+        src/model/robot/robot_proxy.h \
+        src/model/robot/robots/grsim/proxy_grsim.h \
+        src/model/robot/robots/none/proxy_none.h \
+        src/model/robot/robots/yisibot/proxy_yisibot.h \
+        src/model/robot/robots/yisibot/crc.h \
+        src/model/team/behavior.h \
+        src/model/team/controllers/joystick/mygamepad.h \
+        src/model/team/controllers/joystick/scontroller_joystick.h \
+        src/model/team/controllers/none/scontroller_none.h \
+        src/model/team/controllers/normal_game/normal_game_roles.h \
+        src/model/team/controllers/normal_game/scontroller_normal_game.h \
+        src/model/team/controllers/normal_game/strategies/freekickstrategy.h \
+        src/model/team/controllers/normal_game/strategies/haltstrategy.h \
+        src/model/team/controllers/normal_game/strategies/indirectkickstrategy.h \
+        src/model/team/controllers/normal_game/strategies/kickoffstrategy.h \
+        src/model/team/controllers/normal_game/strategies/normalgamestrategy.h \
+        src/model/team/controllers/normal_game/strategies/penaltystrategy.h \
+        src/model/team/controllers/normal_game/strategies/stopstrategy.h \
+        src/model/team/controllers/strategy_tester/scontroller_strategy_tester.h \
+        src/model/team/controllers/strategy_tester/strategies/test_strategy.h \
+        src/model/team/strategy.h \
+        src/model/team/strategycontroller.h \
+        src/model/team/behaviors/attackmain.h \
+        src/model/team/behaviors/attacksupport.h \
+        src/model/team/behaviors/challengeballbot.h \
+        src/model/team/behaviors/defendbehavior.h \
+        src/model/team/behaviors/genericmovementbehavior.h \
+        src/model/team/behaviors/goalie.h \
+        src/model/team/behaviors/markbot.h \
+        src/model/team/behaviors/penaltygoalie.h \
+        src/model/team/behaviors/refstop.h \
+        src/model/team/behaviors/wall.h \
+        src/model/team/skills/dribbleback.h \
+        src/model/team/skills/dribbletopoint.h \
+        src/model/team/skills/kicktopointomni.h \
+        src/model/team/team.h \
         src/ssl/ssl_game_controller_listener.h \
         src/ssl/ssl_vision_listener.h \
-        src/strategy/behavior.h \
-        src/strategy/controllers/joystick/mygamepad.h \
-        src/strategy/controllers/joystick/scontroller_joystick.h \
-        src/strategy/controllers/none/scontroller_none.h \
-        src/strategy/controllers/normal_game/normal_game_roles.h \
-        src/strategy/controllers/normal_game/scontroller_normal_game.h \
-        src/strategy/controllers/normal_game/strategies/freekickstrategy.h \
-        src/strategy/controllers/normal_game/strategies/haltstrategy.h \
-        src/strategy/controllers/normal_game/strategies/indirectkickstrategy.h \
-        src/strategy/controllers/normal_game/strategies/kickoffstrategy.h \
-        src/strategy/controllers/normal_game/strategies/normalgamestrategy.h \
-        src/strategy/controllers/normal_game/strategies/penaltystrategy.h \
-        src/strategy/controllers/normal_game/strategies/stopstrategy.h \
-        src/strategy/controllers/strategy_tester/scontroller_strategy_tester.h \
-        src/strategy/controllers/strategy_tester/strategies/test_strategy.h \
-        src/strategy/skill.h \
-        src/strategy/strategy.h \
-        src/strategy/strategycontroller.h \
-        src/strategy/behaviors/attackmain.h \
-        src/strategy/behaviors/attacksupport.h \
-        src/strategy/behaviors/challengeballbot.h \
-        src/strategy/behaviors/defendbehavior.h \
-        src/strategy/behaviors/genericmovementbehavior.h \
-        src/strategy/behaviors/goalie.h \
-        src/strategy/behaviors/markbot.h \
-        src/strategy/behaviors/penaltygoalie.h \
-        src/strategy/behaviors/refstop.h \
-        src/strategy/behaviors/wall.h \
-        src/strategy/skills/dribbleback.h \
-        src/strategy/skills/dribbletopoint.h \
-        src/strategy/skills/kicktopointomni.h \
         src/utilities/circular_buffer.h \
         src/utilities/comparisons.h \
         src/utilities/debug.h \
@@ -221,8 +221,7 @@ HEADERS += \
         src/utilities/region/rectangle.h \
         src/utilities/region/region.h \
         src/utilities/measurements.h \
-        src/utilities/region/defencearea.h \
-        src/parameters/motion_parameters.h
+        src/utilities/region/defencearea.h
 
 
 

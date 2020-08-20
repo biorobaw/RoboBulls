@@ -2,9 +2,9 @@
 #define GUI_ROBOT_H
 
 #include <QObject>
-#include "model/constants.h"
+#include "configuration/constants.h"
 #include "utilities/point.h"
-#include "robot/robot.h"
+#include "model/robot/robot.h"
 
 //Proxy between the gui and the ball
 

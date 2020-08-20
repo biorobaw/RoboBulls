@@ -1,7 +1,7 @@
 #include "color_palettes.h"
 
 
-#include "model/constants.h"
+#include "configuration/constants.h"
 
 
 // ================ BALL COLORS ===========================

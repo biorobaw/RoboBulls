@@ -2,7 +2,7 @@
 #define FIELD_H
 
 #include "utilities/point.h"
-#include "constants.h"
+#include "configuration/constants.h"
 
 namespace YAML {
     class Node;

@@ -1,5 +1,5 @@
 #include "model/ball.h"
-#include "robot/robot.h"
+#include "model/robot/robot.h"
 #include "utilities/measurements.h"
 #include "utilities/comparisons.h"
 #include <iostream>

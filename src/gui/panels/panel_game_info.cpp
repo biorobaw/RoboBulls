@@ -2,7 +2,7 @@
 #include "gui/interface/data/gui_ball.h"
 #include "gui/graphics/graphics_ball.h"
 #include "gui/interface/data/gui_game_state.h"
-#include "model/constants.h"
+#include "configuration/constants.h"
 
 PanelGameInfo::PanelGameInfo(QWidget *parent) :
     QFrame(parent)

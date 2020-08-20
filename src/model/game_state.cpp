@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 
-#include "strategy/strategycontroller.h"
+#include "model/team/strategycontroller.h"
 #include "utilities/comparisons.h"
 
 #include "utilities/edges.h"
@@ -10,12 +10,12 @@
 #include "gui/interface/gui_interface.h"
 #include "model/game_state.h"
 #include "model/ball.h"
-#include "model/team.h"
+#include "model/team/team.h"
 #include <assert.h>
 #include "ssl_referee.pb.h"
 #include "ssl/ssl_vision_listener.h"
 #include "ssl/ssl_game_controller_listener.h"
-#include "robot/robot.h"
+#include "model/robot/robot.h"
 #include "ball.h"
 
 #include "gui/interface/data/gui_robot.h"

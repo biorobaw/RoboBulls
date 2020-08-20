@@ -4,7 +4,7 @@
 #include "ui_panel_field.h"
 #include <QFrame>
 
-#include "model/constants.h"
+#include "configuration/constants.h"
 #include "utilities/point.h"
 #include <deque>
 #include <mutex>

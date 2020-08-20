@@ -5,7 +5,7 @@
 #include <vector>
 #include <set>
 #include "utilities/point.h"
-#include "parameters/motion_parameters.h"
+#include "configuration/motion_parameters.h"
 
 class Robot;
 

@@ -7,12 +7,12 @@
 #include "gui/interface/data/gui_robot.h"
 #include "ssl/ssl_vision_listener.h"
 #include "ssl/ssl_game_controller_listener.h"
-#include "strategy/controllers/joystick/scontroller_joystick.h"
+#include "model/team/controllers/joystick/scontroller_joystick.h"
 
-#include "parameters/motion_parameters.h"
+#include "configuration/motion_parameters.h"
 #include "model/field.h"
-#include "model/team.h"
-#include "model/configuration.h"
+#include "model/team/team.h"
+#include "configuration/configuration.h"
 #include "utilities/debug.h"
 
 

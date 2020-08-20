@@ -2,7 +2,7 @@
 #include <cmath>
 #include "defencearea.h"
 #include "model/field.h"
-#include "model/constants.h"
+#include "configuration/constants.h"
 
 DefenceArea::DefenceArea(int side) :
     side_sign(side == FIELD_SIDE_POSITIVE ? 1 : -1),

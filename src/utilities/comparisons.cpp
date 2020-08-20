@@ -3,8 +3,8 @@
 #include "model/game_state.h"
 #include "utilities/comparisons.h"
 #include "model/ball.h"
-#include "robot/robot.h"
-#include "model/team.h"
+#include "model/robot/robot.h"
+#include "model/team/team.h"
 #include "utilities/measurements.h"
 
 using namespace std::placeholders;

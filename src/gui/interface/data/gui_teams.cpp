@@ -1,7 +1,7 @@
 #include "gui_teams.h"
-#include "model/team.h"
-#include "robot/robot.h"
-#include "model/configuration.h"
+#include "model/team/team.h"
+#include "model/robot/robot.h"
+#include "configuration/configuration.h"
 
 GuiTeams* GuiTeams::instance = new GuiTeams;
 

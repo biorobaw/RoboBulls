@@ -1,9 +1,9 @@
 #include "gui_game_state.h"
 #include "model/game_state.h"
 #include "ssl/ssl_game_controller_listener.h"
-#include "model/team.h"
-#include "robot/robot.h"
-#include "robot/navigation/robot_pilot.h"
+#include "model/team/team.h"
+#include "model/robot/robot.h"
+#include "model/robot/navigation/robot_pilot.h"
 
 #include "ssl_referee.pb.h"
 

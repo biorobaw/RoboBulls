@@ -1,7 +1,7 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <stdlib.h>
-#include "robot/robot.h"
+#include "model/robot/robot.h"
 #include "measurements.h"
 #include <algorithm>
 

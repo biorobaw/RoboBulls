@@ -2,7 +2,7 @@
 #define COLOR_PALETTES_H
 
 
-#include "model/constants.h"
+#include "configuration/constants.h"
 
 #include <QMap>
 #include <QBrush>

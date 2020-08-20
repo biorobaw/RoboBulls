@@ -4,8 +4,8 @@
 #include "model/game_state.h"
 #include "model/ball.h"
 #include "model/field.h"
-#include "model/team.h"
-#include "robot/robot.h"
+#include "model/team/team.h"
+#include "model/robot/robot.h"
 
 #include <QThread>
 #include "utilities/my_yaml.h"

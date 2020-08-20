@@ -4,7 +4,7 @@
 #include <QFrame>
 
 #include "ui_tab_team.h"
-#include "model/constants.h"
+#include "configuration/constants.h"
 
 class FrameRobot;
 class GuiRobot;

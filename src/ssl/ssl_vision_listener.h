@@ -13,7 +13,7 @@
 #include <QUdpSocket>
 #include <QMutex>
 #include "model/moving_object.h"
-#include "model/constants.h"
+#include "configuration/constants.h"
 
 
 class GameState;

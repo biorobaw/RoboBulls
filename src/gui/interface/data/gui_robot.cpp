@@ -1,13 +1,13 @@
 #define _USE_MATH_DEFINES
 #include "gui_robot.h"
-#include "model/team.h"
+#include "model/team/team.h"
 #include "utilities/measurements.h"
-#include "robot/robot.h"
-#include "robot/navigation/robot_pilot.h"
+#include "model/robot/robot.h"
+#include "model/robot/navigation/robot_pilot.h"
 #include "gui/main_window.h"
-#include "robot/navigation/path_planning/move_collisions.h"
+#include "model/robot/navigation/path_planning/move_collisions.h"
 #include "model/ball.h"
-#include "robot/navigation/robot_pilot.h"
+#include "model/robot/navigation/robot_pilot.h"
 #include "gui_game_state.h"
 #include "gui_teams.h"
 
