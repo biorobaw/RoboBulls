@@ -38,11 +38,11 @@ class Ball;
 
 #include <QString>
 
-class Strategy
+class TeamStrategy
 {
 public:
-    Strategy(RobotTeam* _team);
-    virtual ~Strategy();
+    TeamStrategy(RobotTeam* _team);
+    virtual ~TeamStrategy();
 
     /*! Decides How to assign behaviors to each robot on the team.
      * This function is called when StrategyController is run with a

@@ -251,7 +251,7 @@ public:
 };
 
 
-TestStrategy::TestStrategy(RobotTeam* _team) : Strategy(_team) {
+TestStrategy::TestStrategy(RobotTeam* _team) : TeamStrategy(_team) {
 
 }
 

@@ -1,6 +1,6 @@
 #ifndef FREEKICKSTRATEGY_H
 #define FREEKICKSTRATEGY_H
-#include "model/team/strategy.h"
+#include "model/team/team_strategy.h"
 #include "utilities/point.h"
 class Robot;
 
@@ -12,7 +12,7 @@ class Robot;
 
 
 
-class FreeKickStrategy: public Strategy
+class FreeKickStrategy: public TeamStrategy
 {
 public:
     enum Status {KICKING, KICKED};

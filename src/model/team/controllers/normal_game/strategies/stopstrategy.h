@@ -1,6 +1,6 @@
 #ifndef STOPSTRATEGY_H
 #define STOPSTRATEGY_H
-#include "model/team/strategy.h"
+#include "model/team/team_strategy.h"
 
 
 /*! @file
@@ -8,7 +8,7 @@
  * To implement to stopped game state, we have all robots
  * move to a position that is at least 500mm from the ball */
 
-class StopStrategy:public Strategy
+class StopStrategy:public TeamStrategy
 {
 public:
     StopStrategy(RobotTeam* _team);

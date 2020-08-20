@@ -101,8 +101,6 @@ SOURCES += src/main.cpp \
         src/model/team/controllers/normal_game/strategies/stopstrategy.cpp \
         src/model/team/controllers/strategy_tester/scontroller_strategy_tester.cpp \
         src/model/team/controllers/strategy_tester/strategies/test_strategy.cpp \
-        src/model/team/strategy.cpp \
-        src/model/team/strategycontroller.cpp \
         src/model/team/behaviors/attackmain.cpp \
         src/model/team/behaviors/attacksupport.cpp \
         src/model/team/behaviors/genericmovementbehavior.cpp \
@@ -117,6 +115,8 @@ SOURCES += src/main.cpp \
         src/model/team/skills/dribbleback.cpp \
         src/model/team/skills/kicktopointomni.cpp \
         src/model/team/team.cpp \
+        src/model/team/team_strategy.cpp \
+        src/model/team/team_strategy_controller.cpp \
         src/ssl/ssl_game_controller_listener.cpp \
         src/ssl/ssl_vision_listener.cpp \
         src/utilities/comparisons.cpp \
@@ -192,8 +192,6 @@ HEADERS += \
         src/model/team/controllers/normal_game/strategies/stopstrategy.h \
         src/model/team/controllers/strategy_tester/scontroller_strategy_tester.h \
         src/model/team/controllers/strategy_tester/strategies/test_strategy.h \
-        src/model/team/strategy.h \
-        src/model/team/strategycontroller.h \
         src/model/team/behaviors/attackmain.h \
         src/model/team/behaviors/attacksupport.h \
         src/model/team/behaviors/challengeballbot.h \
@@ -208,6 +206,8 @@ HEADERS += \
         src/model/team/skills/dribbletopoint.h \
         src/model/team/skills/kicktopointomni.h \
         src/model/team/team.h \
+        src/model/team/team_strategy.h \
+        src/model/team/team_strategy_controller.h \
         src/ssl/ssl_game_controller_listener.h \
         src/ssl/ssl_vision_listener.h \
         src/utilities/circular_buffer.h \

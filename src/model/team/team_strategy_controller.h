@@ -8,7 +8,7 @@ namespace YAML {
     class Node;
 }
 
-class Strategy;
+class TeamStrategy;
 class RobotTeam;
 class GameState;
 enum Referee_Command : int;
@@ -28,13 +28,13 @@ enum Referee_Command : int;
  * uses the RobComm to sent the velocities to the robots for a frame. */
 
 
-class StrategyController : public QObject
+class TeamStrategyController : public QObject
 {
     Q_OBJECT
 public:
 
-    static StrategyController* loadController(RobotTeam* team, YAML::Node*);
-    virtual ~StrategyController();
+    static TeamStrategyController* loadController(RobotTeam* team, YAML::Node*);
+    virtual ~TeamStrategyController();
 
     QString getStrategyName();
 
@@ -46,15 +46,15 @@ public slots:
 
 
 protected:
-    StrategyController(RobotTeam*, YAML::Node*);
+    TeamStrategyController(RobotTeam*, YAML::Node*);
     virtual int getControllerState(Referee_Command command) = 0;
     virtual int getNextControllerState(int current_state,int strategy_status) = 0;
-    virtual Strategy* loadStateStrategy(int state) = 0;
+    virtual TeamStrategy* loadStateStrategy(int state) = 0;
 
     RobotTeam* team = nullptr;
     
 private:
-    Strategy*  activeStrategy = nullptr;
+    TeamStrategy*  activeStrategy = nullptr;
     int controller_state = UNINITIALIZED_STATE;
     bool is_paused = true;
 

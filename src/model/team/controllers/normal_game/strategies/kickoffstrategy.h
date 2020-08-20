@@ -1,6 +1,6 @@
 #ifndef KICKOFFSTRATEGY_H
 #define KICKOFFSTRATEGY_H
-#include "model/team/strategy.h"
+#include "model/team/team_strategy.h"
 #include "utilities/point.h"
 
 /*! @file
@@ -9,7 +9,7 @@
  *  There are different configs for both enemy and our kickoffs.
  */
 
-class KickOffStrategy : public Strategy
+class KickOffStrategy : public TeamStrategy
 {
 public:
     KickOffStrategy(RobotTeam* _team);

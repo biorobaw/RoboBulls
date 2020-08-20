@@ -1,6 +1,6 @@
 #ifndef NORMALGAMESTRATEGY_H
 #define NORMALGAMESTRATEGY_H
-#include "model/team/strategy.h"
+#include "model/team/team_strategy.h"
 #include "utilities/region/defencearea.h"
 class Robot;
 
@@ -9,7 +9,7 @@ class Robot;
  * This strategy is meant for the ' ' gamestate (space) which means
  * normal play.
  */
-class NormalGameStrategy : public Strategy
+class NormalGameStrategy : public TeamStrategy
 {
 public:
     NormalGameStrategy(RobotTeam* _team);

@@ -1,10 +1,10 @@
 #ifndef SCONTROLLERSTRATEGYTESTER_H
 #define SCONTROLLERSTRATEGYTESTER_H
 
-#include "../../strategycontroller.h"
+#include "../../team_strategy_controller.h"
 
 
-class SControllerStrategyTester : public StrategyController
+class SControllerStrategyTester : public TeamStrategyController
 {
 public:
     SControllerStrategyTester(RobotTeam* team, YAML::Node* node);
@@ -13,7 +13,7 @@ public:
 protected:
     int getControllerState(Referee_Command game_command) override;
     int getNextControllerState(int current_state,int strategy_status) override;
-    Strategy* loadStateStrategy(int state) override;
+    TeamStrategy* loadStateStrategy(int state) override;
 
 };
 

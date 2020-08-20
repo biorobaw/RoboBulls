@@ -1,7 +1,7 @@
 #include "scontroller_none.h"
 
 SControllerNone::SControllerNone(RobotTeam* team, YAML::Node* node) :
-    StrategyController(team,node)
+    TeamStrategyController(team,node)
 {
 
 }
@@ -16,7 +16,7 @@ int SControllerNone::getNextControllerState(int current_state,int strategy_statu
     (void) strategy_status;
     return UNINITIALIZED_STATE;
 }
-Strategy* SControllerNone::loadStateStrategy(int state){
+TeamStrategy* SControllerNone::loadStateStrategy(int state){
     (void) state;
     return nullptr;
 }

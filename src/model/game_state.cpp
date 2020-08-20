@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 
-#include "model/team/strategycontroller.h"
+#include "model/team/team_strategy_controller.h"
 #include "utilities/comparisons.h"
 
 #include "utilities/edges.h"

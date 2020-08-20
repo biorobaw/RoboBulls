@@ -2,7 +2,7 @@
 
 #include "model/team/team.h"
 
-HaltStrategy::HaltStrategy(RobotTeam* _team) : Strategy(_team) {
+HaltStrategy::HaltStrategy(RobotTeam* _team) : TeamStrategy(_team) {
 
 }
 

@@ -4,7 +4,7 @@
 #include "model/game_state.h"
 #include "model/robot/robot.h"
 #include "model/robot/robot_proxy.h"
-#include "model/team/strategycontroller.h"
+#include "model/team/team_strategy_controller.h"
 #include "utilities/my_yaml.h"
 
 #include "gui/interface/gui_interface.h"
@@ -47,7 +47,7 @@ RobotTeam::RobotTeam(YAML::Node* t_node, int _color)
 
     // load team controller
     auto s_controller = (*t_node)["STRATEGY_CONTROLLER"];
-    controller = StrategyController::loadController(this, &s_controller);
+    controller = TeamStrategyController::loadController(this, &s_controller);
 
 
 
@@ -150,7 +150,7 @@ void RobotTeam::startControlLoop(){
     connect(timer, &QTimer::timeout, this, &RobotTeam::runControlCycle);
     connect(thread, SIGNAL(started()), timer, SLOT(start()));
     connect(thread, &QThread::finished, this, &QObject::deleteLater);
-    QTimer::singleShot(7000,controller, &StrategyController::resume);
+    QTimer::singleShot(7000,controller, &TeamStrategyController::resume);
 
     // move QObject to thread and then start it
     moveToThread(thread);

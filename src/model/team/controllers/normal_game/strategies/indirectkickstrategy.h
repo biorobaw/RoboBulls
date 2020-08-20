@@ -1,7 +1,7 @@
 #ifndef INDIRECTKICKSTRATEGY_H
 #define INDIRECTKICKSTRATEGY_H
 
-#include "model/team/strategy.h"
+#include "model/team/team_strategy.h"
 #include "utilities/point.h"
 
 
@@ -13,7 +13,7 @@ class Robot;
     A goal cannot be scored directly from a free kick.
 */
 
-class IndirectKickStrategy : public Strategy
+class IndirectKickStrategy : public TeamStrategy
 {
 public:
     enum Status {KICKING, KICKED};

@@ -1,5 +1,5 @@
 #include "scontroller_joystick.h"
-#include "model/team/strategy.h"
+#include "model/team/team_strategy.h"
 
 #include "mygamepad.h"
 #include "model/robot/robot.h"
@@ -48,7 +48,7 @@ void SControllerJoystick::init_module(RobotTeam* teams[2]){
 
 
 SControllerJoystick::SControllerJoystick(RobotTeam* _team, YAML::Node* n)
-  : StrategyController(_team, n)
+  : TeamStrategyController(_team, n)
 {
     teams[_team->getID()] = _team;
     auto node_map = (*n)["JOY_TO_ROBOT_MAP"];
@@ -70,9 +70,9 @@ int SControllerJoystick::getNextControllerState(int current_state,int strategy_s
     (void) strategy_status;
     return 0; // we only have one state
 }
-Strategy* SControllerJoystick::loadStateStrategy(int state){
+TeamStrategy* SControllerJoystick::loadStateStrategy(int state){
     (void) state;
-    return new Strategy(team); // this strategy will not really be used
+    return new TeamStrategy(team); // this strategy will not really be used
 }
 
 

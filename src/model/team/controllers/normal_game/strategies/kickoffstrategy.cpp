@@ -18,7 +18,7 @@
  *             *
  ******************/
 
-KickOffStrategy::KickOffStrategy(RobotTeam* _team) : Strategy(_team) {
+KickOffStrategy::KickOffStrategy(RobotTeam* _team) : TeamStrategy(_team) {
 
 }
 

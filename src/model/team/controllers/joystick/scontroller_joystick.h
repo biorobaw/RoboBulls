@@ -1,7 +1,7 @@
 #ifndef SCONTROLLERJOYSTICK_H
 #define SCONTROLLERJOYSTICK_H
 
-#include "../../strategycontroller.h"
+#include "../../team_strategy_controller.h"
 #include <QThread>
 #include <QList>
 #include "configuration/constants.h"
@@ -10,7 +10,7 @@
 class MyGamepad;
 
 
-class SControllerJoystick : public StrategyController
+class SControllerJoystick : public TeamStrategyController
 {
 
 public:
@@ -31,7 +31,7 @@ private:
 protected:
     int getControllerState(Referee_Command game_command) override;
     int getNextControllerState(int current_state,int strategy_status) override;
-    Strategy* loadStateStrategy(int state) override;
+    TeamStrategy* loadStateStrategy(int state) override;
 
     static QThread*  thread;
     static QList<MyGamepad*> gamepads;

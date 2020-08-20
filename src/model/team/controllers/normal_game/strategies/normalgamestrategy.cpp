@@ -20,7 +20,7 @@
 #include "ssl_referee.pb.h"
 
 NormalGameStrategy::NormalGameStrategy(RobotTeam* _team)
-    : Strategy(_team)
+    : TeamStrategy(_team)
     , initialBallPos(*ball)
     , our_def_area(true)
     , opp_def_area(false)

@@ -19,7 +19,7 @@
 #include "model/team/team.h"
 
 IndirectKickStrategy::IndirectKickStrategy(RobotTeam* _team)
-    :Strategy(_team), initial_bp(*ball)
+    :TeamStrategy(_team), initial_bp(*ball)
 {
 
 }

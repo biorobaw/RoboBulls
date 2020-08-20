@@ -9,7 +9,7 @@
 #include "model/robot/robot.h"
 
 class RobotProxy;
-class StrategyController;
+class TeamStrategyController;
 class GameState;
 namespace YAML {
     class Node;
@@ -62,7 +62,7 @@ private:
     QThread* thread;
     QTimer* timer;
 
-    StrategyController* controller = nullptr; // controller to control the team
+    TeamStrategyController* controller = nullptr; // controller to control the team
     RobotProxy*         robot_proxy; // proxy to communicate with robots and create new pilots for them
 
     GameState*          game_state; // game state as seen by the team (each team has its own view)

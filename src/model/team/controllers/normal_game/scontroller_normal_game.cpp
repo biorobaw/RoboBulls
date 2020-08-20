@@ -28,7 +28,7 @@ namespace  {
 }
 
 SControllerNormalGame::SControllerNormalGame(RobotTeam* team, YAML::Node* c_node)
- : StrategyController(team,c_node)
+ : TeamStrategyController(team,c_node)
 {
     auto r_node = (*c_node)["ROLES"];
 
@@ -142,7 +142,7 @@ int SControllerNormalGame::getNextControllerState(int current_state,int strategy
 }
 
 
-Strategy* SControllerNormalGame::loadStateStrategy(int state){
+TeamStrategy* SControllerNormalGame::loadStateStrategy(int state){
     switch (state) {
     case INITIAL :       return new StopStrategy(team);
     case STOP :          return new StopStrategy(team);

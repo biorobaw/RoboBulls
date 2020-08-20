@@ -9,7 +9,7 @@
 
 
 
-PenaltyStrategy::PenaltyStrategy(RobotTeam* _team) : Strategy(_team) {
+PenaltyStrategy::PenaltyStrategy(RobotTeam* _team) : TeamStrategy(_team) {
 
 }
 

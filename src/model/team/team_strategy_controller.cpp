@@ -1,5 +1,5 @@
-#include "strategycontroller.h"
-#include "strategy.h"
+#include "team_strategy_controller.h"
+#include "team_strategy.h"
 
 #include "model/team/team.h"
 #include "model/game_state.h"
@@ -15,10 +15,10 @@
 #include <QDebug>
 
 
-StrategyController::StrategyController( RobotTeam* _team, YAML::Node* n)
+TeamStrategyController::TeamStrategyController( RobotTeam* _team, YAML::Node* n)
   : QObject(_team),
     team(_team),
-    activeStrategy(new Strategy(_team)) // set dummy strategy be default
+    activeStrategy(new TeamStrategy(_team)) // set dummy strategy be default
 {
     (void)n;
 }
@@ -26,19 +26,19 @@ StrategyController::StrategyController( RobotTeam* _team, YAML::Node* n)
 
 
 
-StrategyController::~StrategyController(){
+TeamStrategyController::~TeamStrategyController(){
 
 }
 
-void StrategyController::setPause(bool pause){
+void TeamStrategyController::setPause(bool pause){
     is_paused = pause;
 }
 
-void StrategyController::resume(){
+void TeamStrategyController::resume(){
     is_paused = false;
 }
 
-void StrategyController::runControlCycle(GameState* game_state)
+void TeamStrategyController::runControlCycle(GameState* game_state)
 {
     if(is_paused) return; // if the controller is paused, dont do anything
 
@@ -75,7 +75,7 @@ void StrategyController::runControlCycle(GameState* game_state)
 
 
 
-StrategyController* StrategyController::loadController(RobotTeam* team, YAML::Node* c_node){
+TeamStrategyController* TeamStrategyController::loadController(RobotTeam* team, YAML::Node* c_node){
     qInfo() << "        STRATEGY_CONTROLLER";
     qInfo() << "            ID            -" <<  (*c_node)["ID"];
     auto id = (*c_node)["ID"].as<string>();
@@ -98,6 +98,6 @@ StrategyController* StrategyController::loadController(RobotTeam* team, YAML::No
 
 }
 
-QString StrategyController::getStrategyName(){
+QString TeamStrategyController::getStrategyName(){
     return activeStrategy ? activeStrategy->getName() : "null";
 }

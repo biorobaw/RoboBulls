@@ -1,6 +1,6 @@
 #ifndef PENALTYSTRATEGY_H
 #define PENALTYSTRATEGY_H
-#include "model/team/strategy.h"
+#include "model/team/team_strategy.h"
 
 
 /*! @file
@@ -12,7 +12,7 @@
 
 class Behavior;
 
-class PenaltyStrategy:public Strategy
+class PenaltyStrategy:public TeamStrategy
 {
 public:
     PenaltyStrategy(RobotTeam* _team);

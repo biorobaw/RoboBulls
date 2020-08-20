@@ -6,7 +6,7 @@
 #include "model/team/behaviors/refstop.h"
 
 
-StopStrategy::StopStrategy(RobotTeam* _team) : Strategy(_team)
+StopStrategy::StopStrategy(RobotTeam* _team) : TeamStrategy(_team)
 {
 }
 

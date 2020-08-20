@@ -8,7 +8,7 @@ namespace  {
 }
 
 SControllerStrategyTester::SControllerStrategyTester(RobotTeam* team, YAML::Node* node)
-    : StrategyController(team,node)
+    : TeamStrategyController(team,node)
 {
 
 }
@@ -25,7 +25,7 @@ int SControllerStrategyTester::getNextControllerState(int current_state,int stra
     return 0;
 }
 
-Strategy* SControllerStrategyTester::loadStateStrategy(int state){
+TeamStrategy* SControllerStrategyTester::loadStateStrategy(int state){
     (void) state;
     return new TestStrategy(team);
 }

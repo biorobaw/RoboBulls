@@ -1,6 +1,6 @@
 #ifndef TESTSTRATEGY_H
 #define TESTSTRATEGY_H
-#include "../../../strategy.h"
+#include "../../../team_strategy.h"
 class Robot;
 
 /*! @file
@@ -14,7 +14,7 @@ class Robot;
  * @see StrategyController
  * @see config/comm.yaml */
 
-class TestStrategy : public Strategy
+class TestStrategy : public TeamStrategy
 {
 public:
     TestStrategy(RobotTeam* _team);
