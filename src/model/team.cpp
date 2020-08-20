@@ -127,6 +127,10 @@ int RobotTeam::getID(){
     return team_id;
 }
 
+int RobotTeam::getSide(){
+    return side;
+}
+
 
 
 GameState* RobotTeam::getGameState(){

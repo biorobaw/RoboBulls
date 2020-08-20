@@ -13,7 +13,7 @@ RobotProxy::~RobotProxy(){
 void RobotProxy::close_communication(const QSet<Robot*>& robots){
 
         for(Robot* rob : robots) {
-            rob->setTargetVelocity(Point(0,0),0);
+            rob->setTargetVelocityLocal(Point(0,0),0);
             rob->setDribble(0);
             rob->setKickSpeed(0);
         }

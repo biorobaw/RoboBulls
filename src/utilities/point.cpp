@@ -123,6 +123,9 @@ Point Point::complexMultiplication(const Point& rhs) const {
     return Point(x*rhs.x-y*rhs.y, x*rhs.y+y*rhs.x);
 }
 
+Point Point::rotate(float angle) const {
+    return this->complexMultiplication(Point(angle));
+}
 
 /*! @brief Returns a string representation of the Point
  *  Example: "(x, y) = (543.0, -1123.8)" */

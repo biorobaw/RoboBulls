@@ -107,7 +107,7 @@ protected:
     GameState* game_state;
 
     // ====== LOW LEVEL CONTROLS ================================
-    RobotLowLevelControls* overriden_controls = new RobotLowLevelControls(this);
+    RobotLowLevelControls* overriden_controls = new RobotLowLevelControls(this,this);
     bool use_overriden_controls = true;
 
 
@@ -119,6 +119,7 @@ protected:
     // ====== Friend classes =====================================
 
     friend class Pilot;
+    friend class RobotLowLevelControls;
 
 };
 

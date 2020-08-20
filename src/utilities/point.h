@@ -45,6 +45,7 @@ public:
     float angle() const;
     Point perpen() const; // returns the perpendicular vector of same size using right hand rule
     Point complexMultiplication(const Point& rhs) const;
+    Point rotate(float angle) const;
     std::string toString() const;
 public:
     float x;    //!< The X coordinate

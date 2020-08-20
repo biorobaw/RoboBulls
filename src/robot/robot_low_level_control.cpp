@@ -1,7 +1,8 @@
 #include "robot_low_level_controls.h"
+#include "robot.h"
 
-RobotLowLevelControls::RobotLowLevelControls(QObject* parent) :
-    QObject(parent)
+RobotLowLevelControls::RobotLowLevelControls(QObject* parent, Robot* robot) :
+    QObject(parent), robot(robot)
 {
 
 }
@@ -31,10 +32,19 @@ bool  RobotLowLevelControls::getChip(){
  * @details *Do not use;* use Skil::Kick instead
  * Sets the initial kick velocity for the robot in m/s
  * @see setDrible */
-void RobotLowLevelControls::setTargetVelocity(Point velocity, float angular_speed){
+void RobotLowLevelControls::setTargetVelocityLocal(Point velocity, float angular_speed){
     target_velocity = velocity;
     target_angular_speed = angular_speed;
 }
+
+void RobotLowLevelControls::setTargetVelocityGlobal(Point velocity, float angular_speed){
+    auto v_local = velocity.rotate(-robot->getOrientation());
+    auto flip_x = robot->flip_x;
+    v_local.y *= flip_x;
+    target_velocity = v_local;
+    target_angular_speed = flip_x*angular_speed;
+}
+
 void RobotLowLevelControls::setKickSpeed(int speed){
     kick_speed = speed;
 }

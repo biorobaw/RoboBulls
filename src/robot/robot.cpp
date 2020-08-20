@@ -19,7 +19,7 @@ using std::cerr, std::cout, std::endl;
 
 
 Robot::Robot(int team, int id) :
-    RobotLowLevelControls(nullptr),
+    RobotLowLevelControls(nullptr,this),
     id(id),
     team_id(team)
 {

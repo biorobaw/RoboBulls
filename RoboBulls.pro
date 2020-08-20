@@ -7,7 +7,7 @@
 
 
 QT_SELECT=5
-QT += core gui network widgets concurrent serialport
+QT += core gui network widgets concurrent serialport gamepad
 
 TARGET = RoboBulls
 CONFIG += console
@@ -89,7 +89,7 @@ SOURCES += src/main.cpp \
         src/ssl/ssl_game_controller_listener.cpp \
         src/ssl/ssl_vision_listener.cpp \
         src/strategy/behavior.cpp \
-        src/strategy/controllers/joystick/joystick.cpp \
+        src/strategy/controllers/joystick/mygamepad.cpp \
         src/strategy/controllers/joystick/scontroller_joystick.cpp \
         src/strategy/controllers/none/scontroller_none.cpp \
         src/strategy/controllers/normal_game/scontroller_normal_game.cpp \
@@ -180,7 +180,7 @@ HEADERS += \
         src/ssl/ssl_game_controller_listener.h \
         src/ssl/ssl_vision_listener.h \
         src/strategy/behavior.h \
-        src/strategy/controllers/joystick/joystick.h \
+        src/strategy/controllers/joystick/mygamepad.h \
         src/strategy/controllers/joystick/scontroller_joystick.h \
         src/strategy/controllers/none/scontroller_none.h \
         src/strategy/controllers/normal_game/normal_game_roles.h \

@@ -1,13 +1,12 @@
 #define _USE_MATH_DEFINES
 #include "moving_object.h"
 #include <math.h>
+#include <QDebug>
 
 namespace  {
     float flip_orientation(float o){
-        o = M_PI - o;
-        if(o >= M_PI) return o - M_2_PI;
-        else if(o < -M_PI) return o + M_2_PI;
-        return o;
+        if(o <= 0) return -M_PI - o;
+        else return M_PI-o;
     }
 }
 
@@ -33,6 +32,7 @@ void MovingObject::copyFromSSLVision(MovingObject* object){
 
     if(flip_x==1) orientation = object->orientation;
     else orientation = flip_orientation(object->orientation);
+
 
 }
 
@@ -75,6 +75,3 @@ void MovingObject::setFlipXCoordinates(bool do_flip_x){
     }
 }
 
-int MovingObject::getFlipXCoordinates(){
-    return flip_x;
-}

@@ -102,7 +102,7 @@ bool DribbleBack::perform()
         float vel = fmax(-3, prev_vel - 0.05);
         prev_vel = vel;
 
-        robot->setTargetVelocity(Point(0,0),vel/4);
+        robot->setTargetVelocityGlobal(Point(0,0),vel/4);
 
     }
 

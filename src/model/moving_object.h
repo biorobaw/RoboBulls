@@ -26,7 +26,6 @@ public:
         if theyr are not, coordinates are flipped for the logic and then
         fixed again before sending the speeds to the robots */
     void setFlipXCoordinates(bool do_flip_x);
-    virtual int getFlipXCoordinates();
 
     using Point::operator=;
 
@@ -42,7 +41,6 @@ protected:
 
     float time_stamp=0;  // time stamp of last detection
 
-private:
     int flip_x = 1; /* either 1 or -1, used to simplify team logic by assuming the team is
                        in the neagtive field side during the control logic, and then fixing
                        the speeds before sending them to the robots */

@@ -90,8 +90,3 @@ bool Pilot::executeCmdGoToPose(CmdGoToPose *cmd){
     return cmd->completed(r_pos,robot->getOrientation());
 }
 
-
-void Pilot::setTargetVelocity(Point velocity, float angular){
-    robot->target_velocity = velocity * cmdGoToPose->velocity_multiplier;
-    robot->target_angular_speed = angular * cmdGoToPose->velocity_multiplier;
-}

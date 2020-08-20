@@ -42,8 +42,6 @@ public:
     static void clearSelected(); // clears the selection
     static GuiRobot* get_selected_robot(); // returns the robot selected by the gui, null if none
 
-    int getFlipXCoordinates();
-
 private:
 
     // data storing game related information
@@ -59,8 +57,6 @@ private:
 
     Robot* model_robot_proxy = nullptr;
 
-    // redefinition of variable in moving_object.h
-    int flip_x = 1;
 
 
 signals:

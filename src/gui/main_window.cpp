@@ -87,24 +87,23 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
 
     if (robot != nullptr) {
 
-        int flip_x = robot->getFlipXCoordinates();
         if(robot->isOverriden()) switch(event->key()) {
             // Robot control bindings
             case Qt::Key_W:
             case Qt::UpArrow:
-                emit robot->setGuiTargetVelocity(Point(flip_x*250,0),0);
+                emit robot->setGuiTargetVelocity(Point(250,0),0);
                 break;
             case Qt::Key_S:
             case Qt::DownArrow:
-                emit robot->setGuiTargetVelocity(Point(-flip_x*250,0),0);
+                emit robot->setGuiTargetVelocity(Point(-250,0),0);
                 break;
             case Qt::Key_A:
             case Qt::LeftArrow:
-                emit robot->setGuiTargetVelocity(Point(0,0),flip_x*3.1415/2);
+                emit robot->setGuiTargetVelocity(Point(0,0),3.1415/2);
                 break;
             case Qt::Key_D:
             case Qt::RightArrow:
-                emit robot->setGuiTargetVelocity(Point(0,0),-flip_x*3.1415/2);
+                emit robot->setGuiTargetVelocity(Point(0,0),-3.1415/2);
                 break;
             case Qt::Key_Space:
                 emit robot->setGuiKickSpeed();

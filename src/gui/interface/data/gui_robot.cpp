@@ -26,7 +26,7 @@ void GuiRobot::connectWithModel(RobotTeam* teams[]){
             proxy = teams[i]->getRobot(j);
             auto controls = proxy->getOverridenController();
             QObject::connect(gui_robot, &GuiRobot::overridenChanged     ,proxy, &Robot::useOverridenControls);
-            QObject::connect(gui_robot, &GuiRobot::setGuiTargetVelocity ,controls, &RobotLowLevelControls::setTargetVelocity  );
+            QObject::connect(gui_robot, &GuiRobot::setGuiTargetVelocity ,controls, &RobotLowLevelControls::setTargetVelocityLocal  );
             QObject::connect(gui_robot, &GuiRobot::setGuiKickSpeed      ,controls, &RobotLowLevelControls::setKickSpeed       );
             QObject::connect(gui_robot, &GuiRobot::setGuiDribble        ,controls, &RobotLowLevelControls::setDribble         );
             QObject::connect(gui_robot, &GuiRobot::setGuiChip           ,controls, &RobotLowLevelControls::setChip            );
@@ -49,15 +49,11 @@ void GuiRobot::update(){
     // In other words, control information
     auto controls = model_robot_proxy->getActiveController();
 
-    // undo flip : see "Field side hypothesis" in documentation for details
-    // in summary, teams assume their side is the negative field side
-    // so we need to correct for this
-    flip_x = model_robot_proxy->getFlipXCoordinates();
+
 
     auto v = controls->getTargetVelocity();
-    v.x*=flip_x;
-    setTargetVelocity(controls->getTargetVelocity(),
-                      controls->getTargetAngularSpeed() * flip_x);
+    setTargetVelocityLocal(controls->getTargetVelocity(),
+                      controls->getTargetAngularSpeed());
 
 
     dribble = controls->getDribble();
@@ -150,7 +146,3 @@ GuiRobot* GuiRobot::get_selected_robot(){
     return selected_robot;
 }
 
-
-int GuiRobot::getFlipXCoordinates(){
-    return flip_x;
-}

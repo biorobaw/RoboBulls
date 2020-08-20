@@ -31,7 +31,7 @@ public:
     RobotTeam(YAML::Node* t_node, int _color);
     ~RobotTeam();
     int getID();
-
+    int getSide();
     // ======= Robot Getter functions ==============================
 
     Robot* getRobot(int robot_id);

@@ -10,7 +10,7 @@ void HaltStrategy::assignBehaviors()
 {
     for(Robot* robot : team->getRobots())
     {
-        robot->setTargetVelocity(Point(0,0),0);
+        robot->setTargetVelocityLocal(Point(0,0),0);
 
     }
 }

@@ -32,7 +32,6 @@ protected:
 
     bool executeCmdGoToPose(CmdGoToPose* cmd);
     virtual void driveTo(Point targetPose, float targetAngle, Point nextPose) = 0; // function to drive from current position to target position
-    void setTargetVelocity(Point velocity, float angular);
 };
 
 #endif // DRIVER_H

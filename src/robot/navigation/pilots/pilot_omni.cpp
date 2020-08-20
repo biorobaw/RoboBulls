@@ -92,16 +92,12 @@ void PilotOmni::driveTo (Point goalPoint, float theta_goal, Point nextGoalPoint)
     auto new_vel = robot_vel + error*learn_rate;
 
     float new_vel_norm = new_vel.norm();
-    if(new_vel_norm > MAX_SPEED) new_vel_norm = MAX_SPEED;
+    if(new_vel_norm > MAX_SPEED) new_vel *= (MAX_SPEED / new_vel_norm);
 
 
 
 
-
-    // transform global to local coordinates:
-    new_vel = Point(new_vel.angle()-orientation)*new_vel_norm;
-
-    setTargetVelocity(new_vel ,new_angular);// new_angular);
+    robot->setTargetVelocityGlobal(new_vel ,new_angular);// new_angular);
 
 
 }

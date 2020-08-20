@@ -4,11 +4,13 @@
 #include <QObject>
 #include "utilities/point.h"
 
+class Robot;
+
 class RobotLowLevelControls : public QObject
 {
     Q_OBJECT
 public:
-    RobotLowLevelControls(QObject* parent);
+    RobotLowLevelControls(QObject* parent, Robot* robot);
 
     float getTargetAngularSpeed();
     Point getTargetVelocity();
@@ -22,7 +24,8 @@ public slots:
     /*! @brief Set speed ath which the ball should be kicked in mm/s
      * @details *Do not use;* use Skil::Kick instead
      */
-    void  setTargetVelocity(Point velocity, float angular_speed);
+    void  setTargetVelocityLocal(Point velocity, float angular_speed);
+    void  setTargetVelocityGlobal(Point velocity, float angular_speed);
     void  setKickSpeed(int speed = 5000);
     void  setKickDistance(int distance = 6000); // sets kick speed based on desired distance
     void  setDribble(bool); // TODO: dribble speed can be set in the simulator
@@ -35,6 +38,8 @@ protected:
     int  kick_speed = 0;
     bool dribble = false;
     bool chip = false;
+
+    Robot* robot;
 
 
 

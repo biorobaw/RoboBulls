@@ -13,6 +13,7 @@
 #include "model/field.h"
 #include "model/team.h"
 #include "model/configuration.h"
+#include "utilities/debug.h"
 
 
 /*! @mainpage Welcome to the RoboBulls 2 Documentation.
@@ -164,7 +165,7 @@ int main(int argc, char *argv[])
 
 
     // Start debugger thread
-//    debug::listenStart();
+    debug::listenStart();
 
     // create gui last, only after creating model
     // since the gui assumes the existance of the model

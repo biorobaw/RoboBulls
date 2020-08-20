@@ -57,15 +57,13 @@ void ProxyGrsim::sendPacket(Robot* r)
 {
 
     // Retrive robot information
-    int id = r->getId();
+    int id        = r->getId();
     auto controls = r->getActiveController();
-    float kick = controls->getKickSpeed();
+    auto v        = controls->getTargetVelocity(); // in what value? m/s? mm/s? we assume mm/s
+    auto w        = controls->getTargetAngularSpeed(); // we assume rad/s
+    float kick    = controls->getKickSpeed();
     bool  dribble = controls->getDribble();
-    auto v = controls->getTargetVelocity(); // in what value? m/s? mm/s? we assume mm/s
-    auto w = controls->getTargetAngularSpeed(); // we assume rad/s
-    int flip_x = r->getFlipXCoordinates();
-    v.x*=flip_x;
-    w*=flip_x;
+
 
     // prepare command package
     grSim_Packet packet;
@@ -73,7 +71,7 @@ void ProxyGrsim::sendPacket(Robot* r)
     packet.mutable_commands()->set_timestamp(0.0);
     grSim_Robot_Command* command = packet.mutable_commands()->add_robot_commands();
     command->set_id(id);
-    command->set_kickspeedx(kick); // is the unit correct? robobulls is mm/s
+    command->set_kickspeedx((float)kick/1000); // convert mm/s to m/s
     command->set_kickspeedz(0); // No chipper
     command->set_spinner(dribble ? 300 : 0);
     command->set_veltangent(v.x / 1000.0); // set_veltangent expect m/s units

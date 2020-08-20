@@ -49,7 +49,7 @@ public:
         {
             wait4recharge = true;
             start = std::clock();
-            robot->setTargetVelocity(Point(0,0),0);
+            robot->setTargetVelocityLocal(Point(0,0),0);
         }
 
         // If 6 seconds have passed since starting recharge,
@@ -265,7 +265,10 @@ void TestStrategy::assignBehaviors()
 //    auto r = team->getRobot(0);
 //    if(r){
 //        std::cout << "Go to pose" << endl;
-//        CmdGoToPose cmd = CmdGoToPose(Point(-500,-1500),-145/180.0*3.14,false,false);
+//        auto goal = team->getSide() == FIELD_SIDE_NEGATIVE ? Point(-500,-1500) : Point(500,-1500);
+//        float angle = team->getSide() == FIELD_SIDE_NEGATIVE ? -145 : -35;
+//        angle =angle / 180.0 * 3.14;
+//        CmdGoToPose cmd = CmdGoToPose(goal,angle,false,false);
 //        r->goToPose(cmd);
 //    }
 //    r->assignBeh<GoToBehavior>(0);
