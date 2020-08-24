@@ -23,7 +23,7 @@ DribbleToPoint::DribbleToPoint(Robot* robot, Point* target, bool avoid_obstacles
     , prefer_forward_motion(prefer_forward_motion)
     , state(move_to_ball)
 {
-    cmd.avoidObstacles = avoid_obstacles;
+    cmd.avoid_obstacles = avoid_obstacles;
 }
 
 bool DribbleToPoint::perform()
@@ -55,7 +55,7 @@ bool DribbleToPoint::perform()
         else
         {
             cmd.setTarget(bp,ang_to_ball);
-            cmd.avoidBall = false;
+            cmd.avoid_ball = false;
             robot->goToPose(cmd);
         }
         break;
@@ -81,7 +81,7 @@ bool DribbleToPoint::perform()
         robot->setDribble(true);
 
         cmd.setTarget(grasp_point,ang_to_ball);
-        cmd.avoidBall = false;
+        cmd.avoid_ball = false;
         cmd.velocity_multiplier = 0.3;
         robot->goToPose(cmd);
         if(robot->completedGoToPoseCmd())
@@ -113,7 +113,7 @@ bool DribbleToPoint::perform()
 
         cmd.velocity_multiplier = 1;
         cmd.setTarget(*target, ang_to_target);
-        cmd.avoidBall = false;
+        cmd.avoid_ball = false;
         robot->goToPose(cmd);
         break;
     }
@@ -128,7 +128,7 @@ bool DribbleToPoint::perform()
         robot->setDribble(false);
         cmd.velocity_multiplier = 1;
         cmd.setTarget(adjust_point, ang_to_ball);
-        cmd.avoidBall = true;
+        cmd.avoid_ball = true;
         robot->goToPose(cmd);
 
 
@@ -148,7 +148,7 @@ bool DribbleToPoint::perform()
         robot->setDribble(false);
         cmd.velocity_multiplier = 1;
         cmd.setTarget(adjust_point, ang_to_ball);
-        cmd.avoidBall = true;
+        cmd.avoid_ball = true;
         robot->goToPose(cmd);
 
 

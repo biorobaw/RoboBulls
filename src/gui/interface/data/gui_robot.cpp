@@ -25,7 +25,7 @@ void GuiRobot::connectWithModel(RobotTeam* teams[]){
             auto& proxy = gui_robot->model_robot_proxy;
             proxy = teams[i]->getRobot(j);
             auto controls = proxy->getOverridenController();
-            QObject::connect(gui_robot, &GuiRobot::overridenChanged     ,proxy, &Robot::useOverridenControls);
+            QObject::connect(gui_robot, &GuiRobot::overridenChanged     ,proxy, &Robot::setUseOverridenControls);
             QObject::connect(gui_robot, &GuiRobot::setGuiTargetVelocity ,controls, &RobotLowLevelControls::setTargetVelocityLocal  );
             QObject::connect(gui_robot, &GuiRobot::setGuiKickSpeed      ,controls, &RobotLowLevelControls::setKickSpeed       );
             QObject::connect(gui_robot, &GuiRobot::setGuiDribble        ,controls, &RobotLowLevelControls::setDribble         );

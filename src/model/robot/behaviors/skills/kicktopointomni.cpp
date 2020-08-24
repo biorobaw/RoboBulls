@@ -120,7 +120,7 @@ bool KickToPointOmni::perform()
             behindBall = bp + Point(BEHIND_RAD_AVOID * cos(targetBallAng), BEHIND_RAD_AVOID * sin(targetBallAng));
             cmd.velocity_multiplier =1;
             cmd.setTarget(behindBall, ballTargetAng);
-            cmd.avoidBall = cmd.avoidObstacles = true;
+            cmd.avoid_ball = cmd.avoid_obstacles = true;
             robot->goToPose(cmd);
 
             //Make sure move_skill keeps the robot at the correct pose
@@ -149,7 +149,7 @@ bool KickToPointOmni::perform()
             cmd.angle_tolerance = 3*M_PI/180;
             cmd.velocity_multiplier = 1;
             cmd.setTarget(behindBall, ballTargetAng);
-            cmd.avoidBall = cmd.avoidObstacles = false;
+            cmd.avoid_ball = cmd.avoid_obstacles = false;
             robot->goToPose(cmd);
 
             //Make sure move_skill keeps the robot at the correct pose
@@ -172,7 +172,7 @@ bool KickToPointOmni::perform()
             // Move towards the ball at the angle to target (straight)
             cmd.velocity_multiplier = 0.2;
             cmd.setTarget(bp - Point(BEHIND_RAD * cos(targetBallAng), BEHIND_RAD * sin(targetBallAng)), ballTargetAng);
-            cmd.avoidBall = cmd.avoidObstacles = false;
+            cmd.avoid_ball = cmd.avoid_obstacles = false;
             robot->goToPose(cmd);
 
             /* Kick when in range, or go back to moving behind if it

@@ -9,12 +9,12 @@ class RobotTeam;
 class GameState;
 class CmdGoToPose;
 
-class Pilot
+class RobotPilot
 {
 public:
 
-    Pilot(Robot* robot);
-    virtual ~Pilot();
+    RobotPilot(Robot* robot);
+    virtual ~RobotPilot();
 
     void setNewCommand(CmdGoToPose& newCommand);
     void cancelCommand();

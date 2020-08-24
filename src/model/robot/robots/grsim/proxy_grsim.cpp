@@ -39,7 +39,7 @@ ProxyGrsim::ProxyGrsim(YAML::Node* t_node) :
     _port = port;
 }
 
-void ProxyGrsim::sendVels(const QSet<Robot*>& robots)
+void ProxyGrsim::sendCommands(const QSet<Robot*>& robots)
 {
     //Send standard robot packets
     for (Robot* rob : robots)
@@ -175,7 +175,7 @@ bool  ProxyGrsim::hasKicker() {
 bool  ProxyGrsim::isHolonomic() {
     return true;
 }
-Pilot* ProxyGrsim::createPilot(Robot* robot) {
+RobotPilot* ProxyGrsim::createPilot(Robot* robot) {
     return new PilotOmni(robot,10.0/7, 0, 0.5, 0.0015);
 }
 

@@ -109,18 +109,14 @@ float Measurements::lineDistance(const Point& p0, const Point& LStart, const Poi
 
 Point Measurements::lineSegmentPoint(const Point& p0, const Point& LStart, const Point& LEnd)
 {
-    // Return minimum distance between the line segment and point p0
-    const double l2 = pow((LStart.x - LEnd.x),2) + pow((LStart.y - LEnd.y),2);  // i.e. |w-v|^2 -  avoid a sqrt
-    if (l2 == 0.0) return LStart;   // v == w case
+    auto v = LEnd - LStart;
+    auto d = (p0-LStart).dot(v);
+    if(d <= 0) return LStart; // closest point in segment is LStart
 
-    // Consider the line extending the segment, parameterized as start + t (end - start).
-    // We find projection of point p onto the line.
-    // It falls where t = [(p0-start) . (end-start)] / |end-start|^2
-    // We clamp t from [0,1] to handle points outside the line segment.
-    Point A = p0 - LStart, B = LEnd - LStart;
-    const double t = std::max(0.0, std::min(1.0, (A.x*B.x + A.y*B.y) / l2));
-    Point projection = LStart + (LEnd - LStart) * t;  // Projection falls on the segment
-    return projection;
+    auto v2 = v.dot(v);
+    if( d >= v2) return LEnd; // closest point in segment is LEnd
+
+    return LStart + v*(d/v2); // closest point is in segment, calculate projection
 }
 
 

@@ -38,9 +38,9 @@ void RobotLowLevelControls::setTargetVelocityLocal(Point velocity, float angular
 }
 
 void RobotLowLevelControls::setTargetVelocityGlobal(Point velocity, float angular_speed){
-    auto v_local = velocity.rotate(-robot->getOrientation());
+    auto v_local = velocity.rotate(-robot->getOrientation()); // convert to local
     auto flip_x = robot->flip_x;
-    v_local.y *= flip_x;
+    v_local.y *= flip_x; // undo inversion, note here we flip y instead of x because we are flipping local coordinates, not global
     target_velocity = v_local;
     target_angular_speed = flip_x*angular_speed;
 }

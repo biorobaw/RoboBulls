@@ -12,7 +12,7 @@ TeamStrategy::~TeamStrategy()
 {
 }
 
-void TeamStrategy::update()
+void TeamStrategy::runControlCycle()
 {
 
 }

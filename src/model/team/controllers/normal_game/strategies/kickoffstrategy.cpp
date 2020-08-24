@@ -30,17 +30,17 @@ void KickOffStrategy::assignBehaviors()
     Robot* attack2 = team->getRobotByRole(RobotRole::ATTACK2);
 
     if(wall1)
-        wall1->assignBeh<GenericMovementBehavior>(Point(-650, 300), 0);
+        wall1->setBehavior<GenericMovementBehavior>(Point(-650, 300), 0);
     if(wall2)
-        wall2->assignBeh<GenericMovementBehavior>(Point(-1600, 0), 0);
+        wall2->setBehavior<GenericMovementBehavior>(Point(-1600, 0), 0);
     if(attack1)
-        attack1->assignBeh<GenericMovementBehavior>(Point(-650, 0), 0);
+        attack1->setBehavior<GenericMovementBehavior>(Point(-650, 0), 0);
     if(attack2)
-        attack2->assignBeh<GenericMovementBehavior>(Point(-650, -300), 0);
+        attack2->setBehavior<GenericMovementBehavior>(Point(-650, -300), 0);
 
     // Goalie is a special case
     Robot* goalie = team->getRobotByRole(RobotRole::GOALIE);
-    if(goalie) goalie->assignBeh<Goalie>();
+    if(goalie) goalie->setBehavior<Goalie>();
 }
 
 QString KickOffStrategy::getName(){

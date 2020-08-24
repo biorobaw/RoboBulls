@@ -43,52 +43,52 @@ void IndirectKickStrategy::assignBehaviors()
         auto opponent_goal = Field::getGoalPosition(OPPONENT_SIDE);
         if(attack1)
         {
-            attack1->assignBeh<KickToPointOmni>(opponent_goal);
+            attack1->setBehavior<KickToPointOmni>(opponent_goal);
             kicker = attack1;
         }
         else if(attack2)
         {
-            attack2->assignBeh<KickToPointOmni>(opponent_goal);
+            attack2->setBehavior<KickToPointOmni>(opponent_goal);
             kicker = attack2;
         }
         else if(wall1)
         {
-            wall1->assignBeh<KickToPointOmni>(opponent_goal);
+            wall1->setBehavior<KickToPointOmni>(opponent_goal);
             kicker = wall1;
         }
         else if(wall2)
         {
-            wall2->assignBeh<KickToPointOmni>(opponent_goal);
+            wall2->setBehavior<KickToPointOmni>(opponent_goal);
             kicker = wall2;
         }
 
         if(wall1 && !wall1->hasBehavior())
-            wall1->assignBeh<Wall>();
+            wall1->setBehavior<Wall>();
         if(wall2 && !wall2->hasBehavior())
-            wall2->assignBeh<Wall>();
+            wall2->setBehavior<Wall>();
         if(attack1 && !attack1->hasBehavior())
-            attack1->assignBeh<AttackSupport>();
+            attack1->setBehavior<AttackSupport>();
         if(attack2 && !attack2->hasBehavior())
-            attack2->assignBeh<MarkBot>();
+            attack2->setBehavior<MarkBot>();
 
         Robot* goalie = team->getRobotByRole(RobotRole::GOALIE);
-        if(goalie) goalie->assignBeh<Goalie>();
+        if(goalie) goalie->setBehavior<Goalie>();
     }
     // We are defending against an indirect kick
     else if ((game_state->getRefereeCommand() == 'i' && team->getID() == ROBOT_TEAM_BLUE) ||
              (game_state->getRefereeCommand() == 'I' && team->getID() == ROBOT_TEAM_YELLOW))
     {
         if(wall1)
-            wall1->assignBeh<Wall>();
+            wall1->setBehavior<Wall>();
         if(wall2)
-            wall2->assignBeh<Wall>();
+            wall2->setBehavior<Wall>();
         if(attack1)
-            attack1->assignBeh<MarkBot>();
+            attack1->setBehavior<MarkBot>();
         if(attack2)
-            attack2->assignBeh<MarkBot>();
+            attack2->setBehavior<MarkBot>();
 
         Robot* goalie = team->getRobotByRole(RobotRole::GOALIE);
-        if(goalie) goalie->assignBeh<Goalie>();
+        if(goalie) goalie->setBehavior<Goalie>();
     }
 }
 

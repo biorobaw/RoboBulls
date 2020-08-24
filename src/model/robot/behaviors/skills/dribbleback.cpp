@@ -53,7 +53,7 @@ bool DribbleBack::perform()
             Point move_point = bp + (*target - bp)*(ROBOT_RADIUS/Measurements::mag(*target - bp));
             cmd.velocity_multiplier = 1;
             cmd.setTarget(move_point,ang_to_ball);
-            cmd.avoidBall = cmd.avoidObstacles = false;
+            cmd.avoid_ball = cmd.avoid_obstacles = false;
             robot->goToPose(cmd);
         }
         break;
@@ -74,7 +74,7 @@ bool DribbleBack::perform()
         robot->setDribble(true);
 
         cmd.setTarget(grasp_point,ang_to_ball);
-        cmd.avoidBall = cmd.avoidObstacles = false;
+        cmd.avoid_ball = cmd.avoid_obstacles = false;
         cmd.velocity_multiplier = 0.2;
         robot->goToPose(cmd);
 

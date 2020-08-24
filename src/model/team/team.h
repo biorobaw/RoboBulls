@@ -8,7 +8,7 @@
 #include "configuration/constants.h"
 #include "model/robot/robot.h"
 
-class RobotProxy;
+class RobotImplementation;
 class TeamStrategyController;
 class GameState;
 namespace YAML {
@@ -63,7 +63,7 @@ private:
     QTimer* timer;
 
     TeamStrategyController* controller = nullptr; // controller to control the team
-    RobotProxy*         robot_proxy; // proxy to communicate with robots and create new pilots for them
+    RobotImplementation*         robot_proxy; // proxy to communicate with robots and create new pilots for them
 
     GameState*          game_state; // game state as seen by the team (each team has its own view)
     QMap<int,Robot*> robotsByRoles; // maps robots to roles, defined by the team controller
@@ -72,8 +72,6 @@ private:
     int opponent_id;
     int side;
 
-    // Friend functions
-    friend RobotTeam* Robot::getTeam();
 };
 
 

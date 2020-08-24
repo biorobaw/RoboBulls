@@ -2,7 +2,7 @@
 #include <QtGlobal>
 
 PilotDummy::PilotDummy(Robot* r) :
-    Pilot(r)
+    RobotPilot(r)
 {
 
 }

@@ -19,6 +19,10 @@ GuiGameState::GuiGameState()
             gui_robots[i][j] = new GuiRobot(nullptr,i,j); // do not delete this, it will be deleted by parent destructor
             robots[i][j] = gui_robots[i][j];
         }
+
+    connect(SSLGameControllerListener::get(), &SSLGameControllerListener::goalsChanged, this, &GameState::goalsChanged);
+    connect(SSLGameControllerListener::get(), &SSLGameControllerListener::refereeCommandChanged, this, &GameState::refereeCommandChanged);
+
 }
 
 

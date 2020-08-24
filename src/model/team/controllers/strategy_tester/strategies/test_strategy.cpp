@@ -175,7 +175,7 @@ public:
     {
         Point target = Point(1500,0);
         cmd.setTarget(target,0);
-        cmd.avoidBall = cmd.avoidObstacles = false;
+        cmd.avoid_ball = cmd.avoid_obstacles = false;
 
         std::cout << "Distance Error: " << Measurements::distance(*robot,target) << std::endl;
         std::cout << "Angle Error in Degrees: " << robot->getOrientation()*180/M_PI << std::endl;
@@ -206,13 +206,13 @@ public:
         {
             case pos_one:
                 cmd.setTarget(A,ori);
-                cmd.avoidBall = cmd.avoidObstacles = true;
+                cmd.avoid_ball = cmd.avoid_obstacles = true;
                 if (Measurements::isClose(rp,A,DIST_TOLERANCE))
                 state = pos_two;
                 break;
             case pos_two:
                 cmd.setTarget(B,ori);
-                cmd.avoidBall = cmd.avoidObstacles = true;
+                cmd.avoid_ball = cmd.avoid_obstacles = true;
                 if (Measurements::isClose(rp,B,DIST_TOLERANCE))
                 state = pos_one;
         }
@@ -241,7 +241,7 @@ public:
         Point b = *ball;
         cmd.setTarget( b + offset, 0);
                      // Measurements::angleBetween(*robot,robot->getTeam()->getGameState()->getBall()->getPosition()));
-        cmd.avoidBall = cmd.avoidObstacles = true;
+        cmd.avoid_ball = cmd.avoid_obstacles = true;
         return GenericMovementBehavior::perform();
     }
 
@@ -277,8 +277,8 @@ void TestStrategy::assignBehaviors()
     int num_robots = robots.size();
     int i = 0;
     for(auto r : robots){
-        if(i++ ==0) r->assignBeh<Strafe>();
-        else r->assignBeh<GoToBehavior>(i*360.0/num_robots);
+        if(i++ ==0) r->setBehavior<Strafe>();
+        else r->setBehavior<GoToBehavior>(i*360.0/num_robots);
 
     }
 

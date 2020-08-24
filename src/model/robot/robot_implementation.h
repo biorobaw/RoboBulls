@@ -4,7 +4,7 @@
 #include <QObject>
 
 class Robot;
-class Pilot;
+class RobotPilot;
 
 namespace YAML {
     class Node;
@@ -18,26 +18,26 @@ namespace YAML {
  * @author Narges Ghaedi
  */
 
-class RobotProxy : public QObject
+class RobotImplementation : public QObject
 {
     Q_OBJECT
 public:
 
     // === CONSTRUCTORS AND DESTRUCTORS =============================
 
-    static RobotProxy* load(YAML::Node* comm_node);
-    virtual ~RobotProxy();
+    static RobotImplementation* load(YAML::Node* comm_node);
+    virtual ~RobotImplementation();
 
     // === COMMUNICATION WITH ROBOTS ================================
 
-    void close_communication(const QSet<Robot*>& robots);
-    virtual void sendVels(const QSet<Robot*>& robots) = 0;
+    void stopAndClose(const QSet<Robot*>& robots);
+    virtual void sendCommands(const QSet<Robot*>& robots) = 0;
 
     // === FUNCTIONS THAT DEPEND ON THE CAPABILITIES OF THE ROBOT ===
 
     virtual bool hasKicker() = 0;
     virtual bool isHolonomic() = 0;
-    virtual Pilot* createPilot(Robot* robot) = 0;
+    virtual RobotPilot* createPilot(Robot* robot) = 0;
 
     virtual QString getName() =0;
 

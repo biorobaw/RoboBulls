@@ -11,7 +11,7 @@
 #include "../robot_pilot.h"
 
 
-class PilotOmni : public Pilot
+class PilotOmni : public RobotPilot
 {
 public:
     PilotOmni(Robot* robot,float TRANS_P_K, float TRANS_I_K, float ANGULAR_P_K, float ANGULAR_I_K);

@@ -5,7 +5,7 @@ ProxyNone::ProxyNone()
 
 }
 
-void ProxyNone::sendVels(const QSet<Robot*>&){
+void ProxyNone::sendCommands(const QSet<Robot*>&){
 
 };
 
@@ -19,7 +19,7 @@ bool ProxyNone::isHolonomic() {
     return true;
 }
 
-Pilot* ProxyNone::createPilot(Robot* robot){
+RobotPilot* ProxyNone::createPilot(Robot* robot){
     return new PilotDummy(robot);
 }
 

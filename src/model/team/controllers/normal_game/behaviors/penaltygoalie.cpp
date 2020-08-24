@@ -74,7 +74,7 @@ bool PenaltyGoalie::perform()
 
     cmd.velocity_multiplier = 1.5;
     cmd.setTarget(block_point, angleToBall);
-    cmd.avoidBall = cmd.avoidObstacles = false;
+    cmd.avoid_ball = cmd.avoid_obstacles = false;
     GenericMovementBehavior::perform();
     return isFinished();
 }

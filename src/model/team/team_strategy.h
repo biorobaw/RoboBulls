@@ -53,7 +53,7 @@ public:
      * This function is called when StrategyController is run with
      * a non-new command from GameModel. Return true to notify the strategy
      * is finished and have a new one assigned, false otherwise. */
-    virtual void update();
+    virtual void runControlCycle();
 
 
     /*!

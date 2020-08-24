@@ -3,7 +3,7 @@
 #include "model/field.h"
 #include "model/game_state.h"
 #include "model/robot/robot.h"
-#include "model/robot/robot_proxy.h"
+#include "model/robot/robot_implementation.h"
 #include "model/team/team_strategy_controller.h"
 #include "utilities/my_yaml.h"
 
@@ -37,13 +37,13 @@ RobotTeam::RobotTeam(YAML::Node* t_node, int _color)
 
     // load robot proxy
     auto proxy_node = (*t_node)["ROBOT_PROXY"];
-    robot_proxy = RobotProxy::load(&proxy_node);
+    robot_proxy = RobotImplementation::load(&proxy_node);
     robot_proxy->setParent(this);
 
     // assign proxies and team to the robots in the team
     // obs: team must be assigned before the proxy
     for(int i=0; i<MAX_ROBOTS_PER_TEAM; i++)
-        game_state->getRobot(team_id,i)->setTeam(this)->setRobotProxy(robot_proxy);
+        game_state->getRobot(team_id,i)->setTeam(this)->specifyImplementation(robot_proxy);
 
     // load team controller
     auto s_controller = (*t_node)["STRATEGY_CONTROLLER"];
@@ -60,7 +60,7 @@ RobotTeam::RobotTeam(YAML::Node* t_node, int _color)
 RobotTeam::~RobotTeam(){
 
     if(robot_proxy)
-        robot_proxy->close_communication(getRobots());
+        robot_proxy->stopAndClose(getRobots());
 
     if(thread){
         thread->exit();
@@ -167,8 +167,8 @@ void RobotTeam::runControlCycle(){
 
     // then run robot behaviors for all robots that are not overriden by the gui
     for (Robot *rob :  getRobots())
-        rob->performBehavior();
+        rob->runControlCycle();
 
-    robot_proxy->sendVels(game_state->getFieldRobots(team_id));
+    robot_proxy->sendCommands(game_state->getFieldRobots(team_id));
 
 }

@@ -1,28 +1,28 @@
 #include "robots/grsim/proxy_grsim.h"
 #include "robots/yisibot/proxy_yisibot.h"
 #include "robots/none/proxy_none.h"
-#include "robot_proxy.h"
+#include "robot_implementation.h"
 #include "model/robot/robot.h"
 #include "model/robot/navigation/robot_pilot.h"
 #include <QDebug>
 #include "utilities/my_yaml.h"
 
-RobotProxy::~RobotProxy(){
+RobotImplementation::~RobotImplementation(){
 }
 
-void RobotProxy::close_communication(const QSet<Robot*>& robots){
+void RobotImplementation::stopAndClose(const QSet<Robot*>& robots){
 
         for(Robot* rob : robots) {
             rob->setTargetVelocityLocal(Point(0,0),0);
             rob->setDribble(0);
             rob->setKickSpeed(0);
         }
-        sendVels(robots);
+        sendCommands(robots);
         close();
 }
 
 
-RobotProxy* RobotProxy::load(YAML::Node* proxy_node){
+RobotImplementation* RobotImplementation::load(YAML::Node* proxy_node){
     // set robot communication:
 
     qInfo() << "        ROBOT_PROXY";

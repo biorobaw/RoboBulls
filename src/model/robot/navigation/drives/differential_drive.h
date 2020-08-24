@@ -6,10 +6,10 @@
 #define WHEEL_LEFT 0
 #define WHEEL_RIGHT 1
 
-class Differential
+class DifferentialDrive
 {
 public:
-    Differential(double wheel_separation, double wheel_radius);
+    DifferentialDrive(double wheel_separation, double wheel_radius);
     Eigen::VectorXd getWheelSpeeds(float vx, float vy, float w);
 
 private:

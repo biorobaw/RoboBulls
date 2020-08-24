@@ -1,19 +1,19 @@
 #ifndef ROBOTNONE_H
 #define ROBOTNONE_H
 
-#include "../../robot_proxy.h"
+#include "../../robot_implementation.h"
 #include "../../navigation/pilots/pilot_dummy.h"
 
-class ProxyNone : public RobotProxy
+class ProxyNone : public RobotImplementation
 {
     Q_OBJECT
 public:
     ProxyNone();
-    void sendVels(const QSet<Robot*>&) override;
+    void sendCommands(const QSet<Robot*>&) override;
 
     bool hasKicker() override;
     bool isHolonomic() override;
-    Pilot* createPilot(Robot* robot) override;
+    RobotPilot* createPilot(Robot* robot) override;
 
     QString getName() override;
 

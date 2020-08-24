@@ -5,7 +5,7 @@
 #include "model/team/team.h"
 #include <iostream>
 #include "model/team/controllers/normal_game/behaviors/refstop.h"
-#include "model/robot/robot_proxy.h"
+#include "model/robot/robot_implementation.h"
 #include "model/robot/navigation/robot_pilot.h"
 #include "model/robot/navigation/pilots/pilot_dummy.h"
 #include "model/game_state.h"
@@ -30,11 +30,11 @@ Robot::~Robot(){
 }
 
 
-Robot* Robot::setRobotProxy(RobotProxy* proxy){
-   has_kicker = proxy->hasKicker();
-   is_holonomic = proxy->isHolonomic();
+Robot* Robot::specifyImplementation(RobotImplementation* impl){
+   has_kicker = impl->hasKicker();
+   is_holonomic = impl->isHolonomic();
    if(pilot!=nullptr) delete pilot; // delete old pilot
-   pilot = proxy->createPilot(this);
+   pilot = impl->createPilot(this);
    return this;
 }
 
@@ -95,7 +95,7 @@ bool Robot::isGoalie(){
 
 
 
-void Robot::useOverridenControls(bool ignore){
+void Robot::setUseOverridenControls(bool ignore){
     use_overriden_controls = ignore;
 }
 
@@ -104,7 +104,7 @@ void Robot::useOverridenControls(bool ignore){
 // ============================================================
 
 
-bool Robot::ignoresController(){
+bool Robot::useOverridenControls(){
     return use_overriden_controls;
 }
 
@@ -132,7 +132,7 @@ bool Robot::hasBehavior() {
     return behavior != nullptr ;
 }
 
-Robot* Robot::performBehavior(){
+Robot* Robot::runControlCycle(){
     if(use_overriden_controls) return this;
     if(behavior != nullptr) {
         behavior->perform();

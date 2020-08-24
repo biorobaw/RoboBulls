@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include <QDebug>
 
-PilotDifferential::PilotDifferential(Robot* robot) : Pilot(robot) {
+PilotDifferential::PilotDifferential(Robot* robot) : RobotPilot(robot) {
 
 }
 

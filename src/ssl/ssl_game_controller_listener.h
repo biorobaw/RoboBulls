@@ -9,6 +9,7 @@ using namespace std;
 
 enum Referee_Command : int;
 class GameState;
+class RobotTeam;
 
 namespace YAML {
     class Node;
@@ -27,16 +28,21 @@ class SSLGameControllerListener : public QObject
 {
     Q_OBJECT
 public:
-    SSLGameControllerListener(YAML::Node* comm_node);
+    SSLGameControllerListener(YAML::Node* comm_node, RobotTeam* teams[]);
     static void copyState(GameState*);
+    static SSLGameControllerListener* get();
 
     ~SSLGameControllerListener();
-
 
 public slots:
     void restart_socket();
 private slots:
     void process_package();
+
+
+signals:
+    void refereeCommandChanged(int new_value, int old_value);
+    void goalsChanged(int blue_goals, int yellow_goals);
 
 private:
 

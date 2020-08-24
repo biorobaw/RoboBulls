@@ -23,25 +23,25 @@ void PenaltyStrategy::assignBehaviors()
         Robot* kicker = team->getRobotByRole(RobotRole::DEFEND1);
         if(kicker){
             auto opponent_goal = Field::getGoalPosition(OPPONENT_SIDE);
-            kicker->assignBeh<GenericMovementBehavior>(Point(opponent_goal - Point(1300,0)), 0);
+            kicker->setBehavior<GenericMovementBehavior>(Point(opponent_goal - Point(1300,0)), 0);
         }
 
         // Position the usual attackers behind the 400 mm mark
         Robot* attack1 = team->getRobotByRole(RobotRole::ATTACK1);
         Robot* attack2 = team->getRobotByRole(RobotRole::ATTACK2);
         if(attack1)
-            attack1->assignBeh<GenericMovementBehavior>(Point(-500, 1000), 0);
+            attack1->setBehavior<GenericMovementBehavior>(Point(-500, 1000), 0);
         if(attack2)
-            attack2->assignBeh<GenericMovementBehavior>(Point(-500,-1000), 0);
+            attack2->setBehavior<GenericMovementBehavior>(Point(-500,-1000), 0);
 
         // The other defender walls our goal
         Robot* def = team->getRobotByRole(RobotRole::DEFEND2);
         if(def)
-            def->assignBeh<Wall>();
+            def->setBehavior<Wall>();
 
         // Goalie
         Robot* goalie = team->getRobotByRole(RobotRole::GOALIE);
-        if(goalie) goalie->assignBeh<Goalie>();
+        if(goalie) goalie->setBehavior<Goalie>();
 
     }
     // If we are on the receiving end of a penalty kick
@@ -52,7 +52,7 @@ void PenaltyStrategy::assignBehaviors()
         for(Robot* robot: team->getRobots())
         {
             if(robot != nullptr)
-                robot->assignBeh<GenericMovementBehavior>(gp + Point(2000,(robot->getId() - 3)*300), 0);
+                robot->setBehavior<GenericMovementBehavior>(gp + Point(2000,(robot->getId() - 3)*300), 0);
 
         }
         // Position Goalie
@@ -60,7 +60,7 @@ void PenaltyStrategy::assignBehaviors()
         if(goalie)
         {
             goalie->clearBehavior();
-            goalie->assignBeh<GenericMovementBehavior>(gp + Point(ROBOT_RADIUS,0),0);
+            goalie->setBehavior<GenericMovementBehavior>(gp + Point(ROBOT_RADIUS,0),0);
         }
 
 

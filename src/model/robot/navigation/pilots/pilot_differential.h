@@ -5,7 +5,7 @@
 #include <deque>
 
 #include "utilities/measurements.h"
-#include "../drives/differential.h"
+#include "../drives/differential_drive.h"
 #include "../robot_pilot.h"
 
     /*! @brief Constants for the differential-drive closed-loop control algorithm
@@ -29,14 +29,14 @@
      * used for code development. It uses the functions defined in closedloopcontrol.h
      * @see ThreeWheelCalculator
      * @see DifferentialCalculator */
-    class PilotDifferential : public Pilot
+    class PilotDifferential : public RobotPilot
     {
     public:
         PilotDifferential(Robot* robot);
         void driveTo (Point goalPoint, float theta_goal, Point nextPoint) override;
 
     private:
-        Differential differential = Differential(0.115 * 1000, 0.027 * 1000);
+        DifferentialDrive differential = DifferentialDrive(0.115 * 1000, 0.027 * 1000);
 
         static const unsigned int sizeRhoQ   = 100;
         static const unsigned int sizeAlphaQ = 300;

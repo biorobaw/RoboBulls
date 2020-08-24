@@ -14,7 +14,7 @@ class NormalGameStrategy : public TeamStrategy
 public:
     NormalGameStrategy(RobotTeam* _team);
     void assignBehaviors() override;
-    void update() override;
+    void runControlCycle() override;
     virtual QString getName() override;
 
 public:

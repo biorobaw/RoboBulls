@@ -77,7 +77,7 @@ SOURCES += src/main.cpp \
         src/model/robot/behaviors/skills/dribbleback.cpp \
         src/model/robot/behaviors/skills/kicktopointomni.cpp \
         src/model/robot/navigation/commands/CmdGoToPose.cpp \
-        src/model/robot/navigation/drives/differential.cpp \
+        src/model/robot/navigation/drives/differential_drive.cpp \
         src/model/robot/navigation/drives/omni_drive.cpp \
         src/model/robot/navigation/path_planning/fppa_pathfinding.cpp \
         src/model/robot/navigation/path_planning/move_collisions.cpp \
@@ -86,8 +86,8 @@ SOURCES += src/main.cpp \
         src/model/robot/navigation/pilots/pilot_omni.cpp \
         src/model/robot/navigation/robot_pilot.cpp \
         src/model/robot/robot.cpp \
+        src/model/robot/robot_implementation.cpp \
         src/model/robot/robot_low_level_control.cpp \
-        src/model/robot/robot_proxy.cpp \
         src/model/robot/robots/grsim/proxy_grsim.cpp \
         src/model/robot/robots/none/proxy_none.cpp \
         src/model/robot/robots/yisibot/proxy_yisibot.cpp \
@@ -162,7 +162,7 @@ HEADERS += \
         src/model/game_state.h \
         src/model/moving_object.h \
         src/model/robot/navigation/commands/CmdGoToPose.h \
-        src/model/robot/navigation/drives/differential.h \
+        src/model/robot/navigation/drives/differential_drive.h \
         src/model/robot/navigation/drives/omni_drive.h \
         src/model/robot/navigation/path_planning/fppa_pathfinding.h \
         src/model/robot/navigation/path_planning/move_collisions.h \
@@ -176,8 +176,8 @@ HEADERS += \
         src/model/robot/behaviors/skills/dribbletopoint.h \
         src/model/robot/behaviors/skills/kicktopointomni.h \
         src/model/robot/robot.h \
+        src/model/robot/robot_implementation.h \
         src/model/robot/robot_low_level_controls.h \
-        src/model/robot/robot_proxy.h \
         src/model/robot/robots/grsim/proxy_grsim.h \
         src/model/robot/robots/none/proxy_none.h \
         src/model/robot/robots/yisibot/proxy_yisibot.h \

@@ -7,11 +7,11 @@
 
 #include <QDebug>
 
-Pilot::Pilot(Robot* robot) : robot(robot), team(robot->getTeam()), game_state(team->getGameState()){
+RobotPilot::RobotPilot(Robot* robot) : robot(robot), team(robot->getTeam()), game_state(team->getGameState()){
 
 }
 
-Pilot::~Pilot(){
+RobotPilot::~RobotPilot(){
     if(cmdGoToPose != nullptr) {
         delete cmdGoToPose;
         cmdGoToPose = nullptr;
@@ -21,31 +21,31 @@ Pilot::~Pilot(){
 
 #define DD if(false)
 
-void Pilot::setNewCommand(CmdGoToPose& newCommand){
+void RobotPilot::setNewCommand(CmdGoToPose& newCommand){
     if(cmdGoToPose != nullptr) *cmdGoToPose = newCommand;
     else cmdGoToPose = new CmdGoToPose(newCommand);
 
     if(!cmdGoToPose->hasTargetAngle())
-        cmdGoToPose->targetAngle = Measurements::angleBetween(robot, cmdGoToPose->targetPose);
+        cmdGoToPose->target_angle = Measurements::angleBetween(robot, cmdGoToPose->target_pose);
 
-    DD qDebug() << "T: " << newCommand.targetPose
-                << newCommand.targetAngle
-                << newCommand.avoidBall
-                << newCommand.avoidObstacles
+    DD qDebug() << "T: " << newCommand.target_pose
+                << newCommand.target_angle
+                << newCommand.avoid_ball
+                << newCommand.avoid_obstacles
                 << newCommand.velocity_multiplier;
 }
 
-void Pilot::cancelCommand(){
+void RobotPilot::cancelCommand(){
     delete cmdGoToPose;
     cmdGoToPose = nullptr;
 }
 
-bool Pilot::finishedCommand(){
+bool RobotPilot::finishedCommand(){
     return cmdGoToPose == nullptr || cmdGoToPose->completed(*robot,robot->getOrientation());
 }
 
 
-bool Pilot::executeCommands(){
+bool RobotPilot::executeCommands(){
     //currently we only support cmdGoToPose, but in the future more commands could be implemented
     if(cmdGoToPose != nullptr) return executeCmdGoToPose(cmdGoToPose); // so far we only support cmdGoToPose
 
@@ -54,14 +54,14 @@ bool Pilot::executeCommands(){
 
 }
 
-bool Pilot::executeCmdGoToPose(CmdGoToPose *cmd){
+bool RobotPilot::executeCmdGoToPose(CmdGoToPose *cmd){
     Point r_pos = *robot;
-    Point nextPoint = cmd->targetPose;
+    Point nextPoint = cmd->target_pose;
     Point nextNextPoint = nextPoint;
 
     // do path planning if necessary
-    if( ( cmd->avoidObstacles || cmd->avoidBall) &&
-            Measurements::distance(r_pos, cmd->targetPose) > cmd->distance_tolerance){
+    if( ( cmd->avoid_obstacles || cmd->avoid_ball) &&
+            Measurements::distance(r_pos, cmd->target_pose) > cmd->distance_tolerance){
 
 //        qDebug() << "---doing path planning\n";
 
@@ -69,7 +69,7 @@ bool Pilot::executeCmdGoToPose(CmdGoToPose *cmd){
         FPPA::updateRobotObstacles(robot, game_state);
 
         //TODO: ideally we should not recompute the path each time
-        FPPA::Path path = FPPA::genPath(game_state, r_pos, cmd->targetPose, cmd->avoidBall, robot->isGoalie());
+        FPPA::Path path = FPPA::genPath(game_state, r_pos, cmd->target_pose, cmd->avoid_ball, robot->isGoalie());
 
 //        qDebug().nospace() << "P: ";
         for(auto p : path)//int i=0; i<path.size(); i++)
@@ -83,8 +83,8 @@ bool Pilot::executeCmdGoToPose(CmdGoToPose *cmd){
 
     // drive to the next position
     DD qDebug()
-         << "---next point:" << nextPoint << cmd->targetAngle << nextNextPoint;
-    driveTo(nextPoint, cmd->targetAngle,nextNextPoint);
+         << "---next point:" << nextPoint << cmd->target_angle << nextNextPoint;
+    driveTo(nextPoint, cmd->target_angle,nextNextPoint);
 
     // return whether action cempleted or not
     return cmd->completed(r_pos,robot->getOrientation());

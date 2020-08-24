@@ -14,8 +14,8 @@
 #include <QObject>
 
 class RobotTeam;
-class RobotProxy;
-class Pilot;
+class RobotImplementation;
+class RobotPilot;
 class GameState;
 
 #define ROLE_GOALIE 0
@@ -44,9 +44,9 @@ public:
 
     // ======= IMPLEMENTATION SPECIFIC FUNCTIONS ===================
 
-    Robot* setRobotProxy(RobotProxy* proxy);
-    bool hasKicker();
-    bool isHolonomic();
+    Robot* specifyImplementation(RobotImplementation* impl);
+    bool   hasKicker();
+    bool   isHolonomic();
 
     // ================ TEAM RELATED ==============================
 
@@ -61,11 +61,15 @@ public:
 
     // =============== High Level Control =========================
 
+    Robot*     runControlCycle();
+
+    template<typename BehaviorType, typename... Args>
+    bool setBehavior(Args&&... args);
+
     bool       hasBehavior();
     Behavior*  getBehavior();
-    Robot*     performBehavior();
     Robot*     clearBehavior();
-    bool       ignoresController();
+    bool       useOverridenControls();
 
     GameState* getGameState();
     Robot*     setGameState(GameState* state);
@@ -77,16 +81,13 @@ public:
     bool      hasBall();
     Robot*    setHasBall(bool new_value);
 
-    template<typename BehaviorType, typename... Args>
-    bool assignBeh(Args&&... args);
-
 
     // ============= LOW LEVEL CONTROL ==========================
     RobotLowLevelControls* getOverridenController();
     RobotLowLevelControls* getActiveController();
 
 public slots:
-    void  useOverridenControls(bool);
+    void  setUseOverridenControls(bool);
 
 protected:
 
@@ -114,11 +115,11 @@ protected:
     // ====== IMPLEMENTATION DEPENDENT VARIABLES =================
     bool has_kicker = false;
     bool is_holonomic = true;
-    Pilot* pilot = nullptr;
+    RobotPilot* pilot = nullptr;
 
     // ====== Friend classes =====================================
 
-    friend class Pilot;
+    friend class RobotPilot;
     friend class RobotLowLevelControls;
 
 };
@@ -135,7 +136,7 @@ protected:
  * @see Behavior
  * @see assignSkill */
 template<typename BehaviorType, typename... Args>
-bool Robot::assignBeh(Args&&... args)
+bool Robot::setBehavior(Args&&... args)
 {
     static_assert(std::is_constructible<BehaviorType, Robot*, Args...>::value,
         "Behavior must be constructible with these arguments");

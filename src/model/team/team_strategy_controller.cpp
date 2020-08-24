@@ -63,7 +63,7 @@ void TeamStrategyController::runControlCycle(GameState* game_state)
 
 
     // update strategy
-    activeStrategy->update();
+    activeStrategy->runControlCycle();
 
     // perform robot behaviors
 //    qInfo() << "updated";

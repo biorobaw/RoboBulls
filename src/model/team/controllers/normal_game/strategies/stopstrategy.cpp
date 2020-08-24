@@ -13,7 +13,7 @@ StopStrategy::StopStrategy(RobotTeam* _team) : TeamStrategy(_team)
 void StopStrategy::assignBehaviors()
 {
     for(Robot* robot: team->getRobots())
-        robot->assignBeh<RefStop>();
+        robot->setBehavior<RefStop>();
 }
 
 

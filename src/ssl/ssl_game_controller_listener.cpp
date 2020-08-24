@@ -6,6 +6,7 @@
 
 #include "ssl_game_controller_listener.h"
 #include "utilities/my_yaml.h"
+#include "model/team/team.h"
 #include "model/game_state.h"
 
 
@@ -14,7 +15,7 @@
 SSLGameControllerListener* SSLGameControllerListener::instance = nullptr;
 QThread* SSLGameControllerListener::thread = nullptr;
 
-SSLGameControllerListener::SSLGameControllerListener(YAML::Node* comm_node) :
+SSLGameControllerListener::SSLGameControllerListener(YAML::Node* comm_node, RobotTeam* teams[]) :
     QObject(nullptr)
 {
     qInfo() << "--REFBOX ";
@@ -35,6 +36,14 @@ SSLGameControllerListener::SSLGameControllerListener(YAML::Node* comm_node) :
 
     instance = this;
     qInfo() << "--Refbox DONE - thread: " << thread;
+
+    for(int i=0; i<2; i++){
+        auto game_state = teams[i]->getGameState();
+        connect(this, &SSLGameControllerListener::goalsChanged,game_state, &GameState::goalsChanged);
+        connect(this, &SSLGameControllerListener::refereeCommandChanged,game_state, &GameState::refereeCommandChanged);
+
+    }
+
 }
 
 
@@ -62,14 +71,13 @@ SSLGameControllerListener::~SSLGameControllerListener(){
 void SSLGameControllerListener::copyState(GameState* game_state){
     if(instance == nullptr) return;
     instance->mutex.lock();
-        game_state->referee_command_changed = game_state->referee_command != instance->command;
-        game_state->referee_command = instance->command;
-        game_state->referee_command_previous = instance->command_previous;
         game_state->remaining_time = instance->time_left;
-        game_state->goals[0] = instance->goals[0];
-        game_state->goals[1] = instance->goals[1];
     instance->mutex.unlock();
 
+}
+
+SSLGameControllerListener* SSLGameControllerListener::get(){
+    return instance;
 }
 
 
@@ -85,16 +93,32 @@ void SSLGameControllerListener::process_package(){
         if(!referee.ParseFromArray(datagram.data(),datagram.size())) continue;
 
 
+
+        if(referee.has_command() && referee.command() != command ) {
+            command_previous = command;
+            command = referee.command();
+            emit this->refereeCommandChanged(command, command_previous);
+        }
+
+
+        bool emit_goals_changed = false;
+        if(referee.has_blue() && referee.blue().has_score()){
+            emit_goals_changed |= goals[ROBOT_TEAM_BLUE] != referee.blue().score();
+            goals[ROBOT_TEAM_BLUE] = referee.blue().score();
+        }
+        if(referee.has_yellow() && referee.yellow().has_score()){
+            emit_goals_changed |= goals[ROBOT_TEAM_BLUE] != referee.blue().score();
+            goals[ROBOT_TEAM_YELLOW] = referee.yellow().score();
+        }
+        if(emit_goals_changed) emit this->goalsChanged(goals[ROBOT_TEAM_BLUE],goals[ROBOT_TEAM_YELLOW]);
+
+
+
+
         mutex.lock();
-            if(referee.has_command() && referee.command() != command ) {
-                command_previous = command;
-                command = referee.command();
-            }
+            // time left is polled so it is withing mutexes
             if(referee.has_stage_time_left()) time_left = referee.stage_time_left();
-            if(referee.has_blue() && referee.blue().has_score())
-                goals[ROBOT_TEAM_BLUE] = referee.blue().score();
-            if(referee.has_yellow() && referee.yellow().has_score())
-                goals[ROBOT_TEAM_YELLOW] = referee.yellow().score();
+
         mutex.unlock();
 
 

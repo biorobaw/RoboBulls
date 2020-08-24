@@ -159,7 +159,7 @@ int main(int argc, char *argv[])
     // Start ssl software
     // obs: object will be destroyed automatically when the thread ends
     new SSLVisionListener(&config["comm"]);
-    new SSLGameControllerListener( &config["comm"]);
+    new SSLGameControllerListener( &config["comm"], teams);
 
     qDebug() << "\nMain thread: " << QThread::currentThread() <<endl;
 
@@ -167,7 +167,7 @@ int main(int argc, char *argv[])
     // Start debugger thread
     debug::listenStart();
 
-    // create gui last, only after creating model
+    // must create gui last to connect to teams and ssl-listeners
     // since the gui assumes the existance of the model
     (new GuiInterface(teams))->show(); // singleton -> no need to save reference
 

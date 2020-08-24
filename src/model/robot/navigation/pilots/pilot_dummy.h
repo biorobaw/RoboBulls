@@ -3,7 +3,7 @@
 
 #include "../robot_pilot.h"
 
-class PilotDummy : public Pilot
+class PilotDummy : public RobotPilot
 {
 public:
     PilotDummy(Robot * r);

@@ -59,15 +59,15 @@ void NormalGameStrategy::assignBehaviors()
     Robot* wall2 = team->getRobotByRole(RobotRole::DEFEND2);
 
     if(wall1)
-        wall1->assignBeh<Wall>();
+        wall1->setBehavior<Wall>();
     if(wall2)
-        wall2->assignBeh<Wall>();
+        wall2->setBehavior<Wall>();
 
     assignGoalieIfOk(team);
 }
 
 
-void NormalGameStrategy::update()
+void NormalGameStrategy::runControlCycle()
 {
     Robot* deffend1 = team->getRobotByRole(RobotRole::DEFEND1);
     Robot* deffend2 = team->getRobotByRole(RobotRole::DEFEND2);
@@ -111,7 +111,7 @@ void NormalGameStrategy::update()
         {
             Point target = bp + Measurements::unitVector(bp-*attack1) * 350;
             float angle = Measurements::angleBetween(*kick_off_rob, *attack1);
-            kick_off_rob->assignBeh<GenericMovementBehavior>(target, angle);
+            kick_off_rob->setBehavior<GenericMovementBehavior>(target, angle);
             state = our_kickoff_2;
         }
     }
@@ -125,7 +125,7 @@ void NormalGameStrategy::update()
         {
             float angle = Measurements::angleBetween(kick_off_rob, *attack1);
             kick_off_rob->clearBehavior();
-            kick_off_rob->assignBeh<GenericMovementBehavior>(Point(ROBOT_RADIUS-50,0), angle, false, false);
+            kick_off_rob->setBehavior<GenericMovementBehavior>(Point(ROBOT_RADIUS-50,0), angle, false, false);
             state = our_kickoff_3;
         }
     }
@@ -137,7 +137,7 @@ void NormalGameStrategy::update()
         // and so we can begin evaluating our options for play
         if(!Measurements::isClose(initialBallPos, *ball, 50))
         {
-            kick_off_rob->assignBeh<Wall>();
+            kick_off_rob->setBehavior<Wall>();
             state = evaluate;
         }
     }
@@ -155,10 +155,10 @@ void NormalGameStrategy::update()
         Robot* shooter = deffend1;
         if(shooter)
         {
-            shooter->assignBeh<AttackMain>();
+            shooter->setBehavior<AttackMain>();
             if(dynamic_cast<AttackMain*>(shooter->getBehavior())->hasKickedToGoal())
             {
-                shooter->assignBeh<Wall>();
+                shooter->setBehavior<Wall>();
                 state = evaluate;
             }
         }
@@ -170,7 +170,7 @@ void NormalGameStrategy::update()
         Robot* goalie = team->getRobotByRole(RobotRole::GOALIE);
         Robot* wall1 = team->getRobotByRole(RobotRole::DEFEND1);
         Robot* wall2 = team->getRobotByRole(RobotRole::DEFEND2);
-        goalie->assignBeh<PenaltyGoalie>();
+        goalie->setBehavior<PenaltyGoalie>();
 
         if(wall1)
             wall1->clearBehavior();
@@ -183,9 +183,9 @@ void NormalGameStrategy::update()
             state = evaluate;
 
             if(wall1)
-                wall1->assignBeh<Wall>();
+                wall1->setBehavior<Wall>();
             if(wall2)
-                wall2->assignBeh<Wall>();
+                wall2->setBehavior<Wall>();
         }
     }
         break;
@@ -238,28 +238,28 @@ void NormalGameStrategy::update()
             if(Measurements::distance(attack1, *ball) <
                Measurements::distance(attack2, *ball))
             {
-                attack1->assignBeh<AttackMain>();
+                attack1->setBehavior<AttackMain>();
                 main = attack1;
-                attack2->assignBeh<AttackSupport>();
+                attack2->setBehavior<AttackSupport>();
                 supp = attack2;
             }
             else
             {
-                attack1->assignBeh<AttackSupport>();
+                attack1->setBehavior<AttackSupport>();
                 supp = attack1;
-                attack2->assignBeh<AttackMain>();
+                attack2->setBehavior<AttackMain>();
                 main = attack2;
             }
         }
         else if(attack1 != nullptr)
         {
-            attack1->assignBeh<AttackMain>();
+            attack1->setBehavior<AttackMain>();
             main = attack1;
             supp = nullptr;
         }
         else if(attack2 != nullptr)
         {
-            attack2->assignBeh<AttackMain>();
+            attack2->setBehavior<AttackMain>();
             main = attack2;
             supp = nullptr;
         }
@@ -273,9 +273,9 @@ void NormalGameStrategy::update()
         std::cout << "Assigning Defend Behaviors" << std::endl;
 
         if(attack1)
-            attack1->assignBeh<MarkBot>();
+            attack1->setBehavior<MarkBot>();
         if(attack2)
-            attack2->assignBeh<ChallengeBallBot>();
+            attack2->setBehavior<ChallengeBallBot>();
 
         prev_state = state;
         state = evaluate;
@@ -286,9 +286,9 @@ void NormalGameStrategy::update()
         std::cout << "Assigning Goal Kick Behaviors" << std::endl;
 
         if(attack1)
-            attack1->assignBeh<MarkBot>();
+            attack1->setBehavior<MarkBot>();
         if(attack2)
-            attack2->assignBeh<AttackSupport>();
+            attack2->setBehavior<AttackSupport>();
 
         prev_state = state;
         state = evaluate;
@@ -299,9 +299,9 @@ void NormalGameStrategy::update()
         std::cout << "Assigning Clear Behaviors" << std::endl;
 
         if(attack1)
-            attack1->assignBeh<AttackSupport>();
+            attack1->setBehavior<AttackSupport>();
         if(attack2)
-            attack2->assignBeh<AttackSupport>();
+            attack2->setBehavior<AttackSupport>();
 
         prev_state = state;
         state = evaluate;
@@ -316,7 +316,7 @@ void NormalGameStrategy::assignGoalieIfOk(RobotTeam* team)
 {
     Robot* goalie = team->getRobotByRole(RobotRole::GOALIE);
     if(goalie)
-        goalie->assignBeh<Goalie>();
+        goalie->setBehavior<Goalie>();
 }
 //! @endcond
 

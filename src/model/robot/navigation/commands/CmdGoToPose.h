@@ -20,22 +20,22 @@ public:
 public:
     //! @brief create a 'GoToPose' command given a target position and angle, optionally specify
     //! wheter to avoid obstacles and/or the ball
-    CmdGoToPose(Point targetPose, float targetAngle,bool avoidObstacles = true, bool avoidBall = false);
+    CmdGoToPose(Point target_pose, float target_angle,bool avoid_obstacles = true, bool avoid_ball = false);
 
     //! @brief create a 'GoToPose' command given a target position. Use this function when a
     //! target angle is not required. Optionally specify wheter to avoid obstacles and/or the ball
-    CmdGoToPose(Point targetPose,bool avoidObstacles = true, bool avoidBall = false);
+    CmdGoToPose(Point target_pose,bool avoid_obstacles = true, bool avoid_ball = false);
 
     CmdGoToPose(CmdGoToPose& cmd);
 
-    void setTarget(Point targetPose,float targetAngle = UNUSED_ANGLE_VALUE);
+    void setTarget(Point target_pose,float target_angle = UNUSED_ANGLE_VALUE);
     bool hasTargetAngle();
     bool completed(Point currentPosition, float currentAngle);
 
-    Point targetPose;
-    float targetAngle;
-    bool avoidObstacles;
-    bool avoidBall;
+    Point target_pose;
+    float target_angle;
+    bool avoid_obstacles;
+    bool avoid_ball;
 
     float velocity_multiplier = default_velocity_multiplier;
 

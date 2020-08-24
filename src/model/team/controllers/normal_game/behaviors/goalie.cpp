@@ -42,7 +42,7 @@ bool Goalie::perform()
         Point blockPoint = Measurements::lineSegmentPoint(*robot, lineSegment.first, lineSegment.second);
         cmd.velocity_multiplier = 1.5;
         cmd.setTarget(blockPoint,angleToBall);
-        cmd.avoidBall = cmd.avoidObstacles = false;
+        cmd.avoid_ball = cmd.avoid_obstacles = false;
         GenericMovementBehavior::perform();
     }
 
@@ -53,7 +53,7 @@ bool Goalie::perform()
         Point blockPoint = Measurements::lineSegmentPoint(*robot, lineSegment.first, lineSegment.second);
         cmd.velocity_multiplier = 1.5;
         cmd.setTarget(blockPoint,angleToBall);
-        cmd.avoidBall = cmd.avoidObstacles = false;
+        cmd.avoid_ball = cmd.avoid_obstacles = false;
         GenericMovementBehavior::perform();
     }
 
@@ -143,13 +143,13 @@ bool Goalie::perform()
         {
             cmd.velocity_multiplier = 1.5;
             cmd.setTarget(intercept_point, angleToBall);
-            cmd.avoidBall = cmd.avoidObstacles = false;
+            cmd.avoid_ball = cmd.avoid_obstacles = false;
         }
         else
         {
             cmd.velocity_multiplier = 1;
             cmd.setTarget(idlePoint, Measurements::angleBetween(robot, Point(0,0)));
-            cmd.avoidBall = cmd.avoidObstacles = false;
+            cmd.avoid_ball = cmd.avoid_obstacles = false;
         }
         GenericMovementBehavior::perform();
     }
@@ -162,7 +162,7 @@ bool Goalie::perform()
 //        std::cout << "Ball Out of Bounds" << std::endl;
         cmd.velocity_multiplier = 1;
         cmd.setTarget(idlePoint, Measurements::angleBetween(robot, Point(0,0)));
-        cmd.avoidBall = cmd.avoidObstacles = false;
+        cmd.avoid_ball = cmd.avoid_obstacles = false;
         GenericMovementBehavior::perform();
     }
     return isFinished();

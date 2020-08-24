@@ -59,7 +59,7 @@ ProxyYisi::ProxyYisi(YAML::Node* t_node)
 }
 
 std::time_t t_old = 0;
-void ProxyYisi::sendVels(const QSet<Robot*>& robots)
+void ProxyYisi::sendCommands(const QSet<Robot*>& robots)
 {
     if(!serial.isOpen()){
         qWarning() << "WARNING: speeds not sent, yisibot serial comm is closed" ;
@@ -141,7 +141,7 @@ bool ProxyYisi::hasKicker() {
 bool ProxyYisi::isHolonomic() {
     return true;
 }
-Pilot* ProxyYisi::createPilot(Robot* robot) {
+RobotPilot* ProxyYisi::createPilot(Robot* robot) {
     return new PilotOmni(robot, 0.25, 0, 0.1, 0);
 }
 

@@ -23,6 +23,8 @@ public:
 
 
     // ========= GETTER FUNCTIONS ==============
+
+    // vision related info
     QSet<Robot*>& getFieldRobots(int team_id);
     QSet<Robot*>& getFieldRobots();
 
@@ -32,6 +34,14 @@ public:
     Ball*  getBall();
 
     Robot* getRobotWithBall();
+
+    /*! setFlipXCoordinates is used to simplify team control logic assuming
+        teams are in the negative side of the field
+        if theyr are not, coordinates are flipped for the logic and then
+        fixed again before sending the speeds to the robots */
+    void setFlipXCoorinates(bool flip_x);
+
+    // game controller related info
 
     Referee_Command getRefereeCommand();
     Referee_Command getRefereePreviousCommand();
@@ -45,11 +55,9 @@ public:
     void clearRefereeCommandChanged();
 
 
-    /*! setFlipXCoordinates is used to simplify team control logic assuming
-        teams are in the negative side of the field
-        if theyr are not, coordinates are flipped for the logic and then
-        fixed again before sending the speeds to the robots */
-    void setFlipXCoorinates(bool flip_x);
+public slots:
+    void refereeCommandChanged(int new_value, int old_value);
+    void goalsChanged(int blue_goals, int yellow_goals);
 
 protected:
 
