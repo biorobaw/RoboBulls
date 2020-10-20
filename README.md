@@ -3,10 +3,12 @@ robobulls2
 
 Narges super version of the new architecture for Williams robobulls
 
-Installation
-------------
-Run the installation srcipt, **documents/scripts/install_robobulls.sh**, to download dependencies.
-
 Documentation
 -------------
-See **documents/Documentation.html**
+See **docs/Robobulls Documentation.docx**
+
+Installation
+------------
+See sections "Required Software" and "Compiling the code" in documentation file **docs/Robobulls Documentation.docx**
+For instractions on how to install grSim (required softwre) on windows, see file **docs/Install grSim on windows.docx**
+
