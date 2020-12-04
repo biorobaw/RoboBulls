@@ -1,13 +1,13 @@
 #include "robot_pilot.h"
 #include "utilities/measurements.h"
-#include "path_planning/fppa_pathfinding.h"
+#include "path_planning/planners/path_planner_fppa.h"
 #include "model/robot/robot.h"
 #include "commands/CmdGoToPose.h"
 #include "model/team/team.h"
 
 #include <QDebug>
 
-RobotPilot::RobotPilot(Robot* robot) : robot(robot), team(robot->getTeam()), game_state(team->getGameState()){
+RobotPilot::RobotPilot(Robot* robot) : robot(robot), team(robot->getTeam()), game_state(team->getGameState()), planner(new PathPlannerFPPA(robot)) {
 
 }
 
@@ -16,6 +16,7 @@ RobotPilot::~RobotPilot(){
         delete cmdGoToPose;
         cmdGoToPose = nullptr;
     }
+    if(planner!=nullptr) delete planner;
 }
 
 
@@ -65,16 +66,13 @@ bool RobotPilot::executeCmdGoToPose(CmdGoToPose *cmd){
 
 //        qDebug() << "---doing path planning\n";
 
-        // Assign robots that are to be considered obstacles
-        FPPA::updateRobotObstacles(robot, game_state);
-
         //TODO: ideally we should not recompute the path each time
-        FPPA::Path path = FPPA::genPath(game_state, r_pos, cmd->target_pose, cmd->avoid_ball, robot->isGoalie());
+        auto path = planner->genPath(cmd->target_pose, cmd->avoid_ball);
 
 //        qDebug().nospace() << "P: ";
-        for(auto p : path)//int i=0; i<path.size(); i++)
+//        for(auto p : path)//int i=0; i<path.size(); i++)
 //            qDebug().nospace() << p << "->";
-        qDebug();
+//        qDebug();
         if(path.size()>0){
             nextPoint = path[0];
             nextNextPoint = path[ path.size()>1 ? 1 : 0];

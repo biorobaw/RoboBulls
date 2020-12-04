@@ -79,8 +79,9 @@ SOURCES += src/main.cpp \
         src/model/robot/navigation/commands/CmdGoToPose.cpp \
         src/model/robot/navigation/drives/differential_drive.cpp \
         src/model/robot/navigation/drives/omni_drive.cpp \
-        src/model/robot/navigation/path_planning/fppa_pathfinding.cpp \
         src/model/robot/navigation/path_planning/move_collisions.cpp \
+        src/model/robot/navigation/path_planning/path_planner.cpp \
+        src/model/robot/navigation/path_planning/planners/path_planner_fppa.cpp \
         src/model/robot/navigation/pilots/pilot_differential.cpp \
         src/model/robot/navigation/pilots/pilot_dummy.cpp \
         src/model/robot/navigation/pilots/pilot_omni.cpp \
@@ -164,8 +165,9 @@ HEADERS += \
         src/model/robot/navigation/commands/CmdGoToPose.h \
         src/model/robot/navigation/drives/differential_drive.h \
         src/model/robot/navigation/drives/omni_drive.h \
-        src/model/robot/navigation/path_planning/fppa_pathfinding.h \
         src/model/robot/navigation/path_planning/move_collisions.h \
+        src/model/robot/navigation/path_planning/path_planner.h \
+        src/model/robot/navigation/path_planning/planners/path_planner_fppa.h \
         src/model/robot/navigation/pilots/pilot_differential.h \
         src/model/robot/navigation/pilots/pilot_dummy.h \
         src/model/robot/navigation/pilots/pilot_omni.h \

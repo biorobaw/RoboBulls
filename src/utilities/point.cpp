@@ -99,6 +99,16 @@ float Point::norm2() const{
     return x*x+y*y;
 }
 
+Point Point::normalized() const{
+    float length = norm();
+    return Point(x/length, y/length);
+}
+
+Point Point::normalizedPerpen() const {
+    float length = norm();
+    return Point(-y/length, x/length);
+}
+
 float Point::norm() const{
     return sqrt(x*x+y*y);
 }
@@ -118,6 +128,8 @@ float Point::angle() const{
 Point Point::perpen() const{
     return Point(-y,x);
 }
+
+
 
 Point Point::complexMultiplication(const Point& rhs) const {
     return Point(x*rhs.x-y*rhs.y, x*rhs.y+y*rhs.x);

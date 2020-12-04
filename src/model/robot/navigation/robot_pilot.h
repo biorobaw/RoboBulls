@@ -8,6 +8,7 @@ class Robot;
 class RobotTeam;
 class GameState;
 class CmdGoToPose;
+class PathPlanner;
 
 class RobotPilot
 {
@@ -27,6 +28,7 @@ protected:
     Robot* robot;
     RobotTeam* team;
     GameState* game_state;
+    PathPlanner* planner;
 
     CmdGoToPose* cmdGoToPose = nullptr;
 

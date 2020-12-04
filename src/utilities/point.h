@@ -40,6 +40,8 @@ public:
 
     float norm() const;  // returns the norm of the vector
     float norm2() const; // returns the norm squared
+    Point normalized() const; // returns a copy of the normalized vector
+    Point normalizedPerpen() const; // return a copy of the normalized perpendicular vector using right hand rule
     float dot(const Point& rhs) const;    // returns the dot product
     float wedge(const Point& rhs) const;  // returns the value of the wedge product (not considering the basis)
     float angle() const;
