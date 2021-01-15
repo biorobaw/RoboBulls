@@ -220,9 +220,10 @@ bool PathPlannerFPPA::isPointAtObstacle(const Point& point) {
 
 
 
-    // Check defence areas // TODO: does this condition make sense?
-    if(is_goalie && (our_deffence_area.contains(point, DEF_AREA_TOL) ||
-                         opponent_deffence_area.contains(point,DEF_AREA_TOL))) {
+    // Check defence areas
+    // no robot can use opponent deffence area
+    // only goalie can use our deffence area
+    if( opponent_deffence_area.contains(point,DEF_AREA_TOL) || (!is_goalie && our_deffence_area.contains(point, DEF_AREA_TOL)) ) {
         return true;
     }
 
