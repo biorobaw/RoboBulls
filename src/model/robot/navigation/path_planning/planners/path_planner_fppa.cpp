@@ -40,8 +40,8 @@ using std::cout , std::endl;
 
 namespace  {
 
-    DefenceArea our_deffence_area(TEAM_DEFFENCE_AREA);
-    DefenceArea opponent_deffence_area(OPPONENT_DEFFENCE_AREA);
+    DefenceArea our_deffence_area(OUR_SIDE);
+    DefenceArea opponent_deffence_area(OPPONENT_SIDE);
 }
 
 PathPlannerFPPA::PathPlannerFPPA(Robot* robot) : PathPlanner(robot) {
@@ -88,10 +88,10 @@ std::deque<Point> PathPlannerFPPA::genPath(Point _goal, bool _avoid_ball) {
 }
 
 
-void PathPlannerFPPA::recursiveFPPA(Path& path, const Point& next_goal, int depth) {
+void PathPlannerFPPA::recursiveFPPA(Path& current_path, const Point& next_goal, int depth) {
 
     // get the current position in the path (last point added)
-    Point& last_goal = path.back();
+    Point& last_goal = current_path.back();
 
     Point obstacle_position;
     if(segmentIntersectsObstacle(last_goal, next_goal, obstacle_position) && depth < MAX_RECURSION_DEPTH ){
@@ -100,20 +100,20 @@ void PathPlannerFPPA::recursiveFPPA(Path& path, const Point& next_goal, int dept
         // thus choose intermediate goal and then recurse:
         auto sub_goal = chooseSubGoal(last_goal, next_goal, obstacle_position);
 
-        recursiveFPPA(path, sub_goal, depth + 1);
-        recursiveFPPA(path,     goal, depth + 1);
+        recursiveFPPA(current_path, sub_goal, depth + 1); // after this, last point in current path will be sob_goal
+        recursiveFPPA(current_path,     goal, depth + 1);
 
     } else {
         // Either the segment lies in free space, or  have reached the maximum recursion depth
         // I do not need to recurse, just add the goal to the path
-        path.push_back(next_goal);
+        current_path.push_back(next_goal);
     }
 }
 
 
 
 bool PathPlannerFPPA::segmentIntersectsObstacle(const Point& start, const Point& end, Point& obstacle_position) {
-    // TODO: original algorithms states closest obstacle should be returns
+    // TODO: original algorithms states closest obstacle should be returned, can I return first obstacle insted?
 
     bool  obstacle_found = false;
 
@@ -121,42 +121,46 @@ bool PathPlannerFPPA::segmentIntersectsObstacle(const Point& start, const Point&
     if(avoid_ball && Measurements::lineSegmentDistance(*ball, start, end) <= ROBOT_RADIUS+Field::BALL_RADIUS+10) {
         obstacle_found = true;
         obstacle_position = *ball;
+        return obstacle_found;
     }
 
     // Check robots
     for(const Point& obstacle : robotObstacles) {
-        // Here we exclude obstacle points that are too close to the starting point,
+        // Here we exclude obstacle points that are too close to the starting point, WHY???
         if(Measurements::isClose(obstacle, start, ROBOT_RADIUS*2+10))
             continue;
 
         if(Measurements::lineSegmentDistance(obstacle, start, end) <= ROBOT_RADIUS*2+10) {
             obstacle_found = true;
             obstacle_position = obstacle;
-            break;
+            return obstacle_found;
         }
     }
 
-    // Determine if the robot we are planning for is the goalie
-    // and hence whether the def_areas are to be considered obstacles
-    // Check defence areas
-    if(is_goalie) {
-        std::vector<Point> intercepts;
 
-        // check opponent's deffence area
-        DefenceArea da0(OPPONENT_DEFFENCE_AREA);
-        intercepts = da0.intersectSegment(start, end);
+    // check opponent's deffence area (robots cant use opponents deffence area)
+    // NOTE: if we already are in an illegal area, we have to move out so we can momentarily move through it
+    if(!opponent_deffence_area.contains(*self)){
+        auto intercepts = opponent_deffence_area.intersectSegment(start, end);
         if(!intercepts.empty()) {
             obstacle_found = true;
             obstacle_position = (intercepts.front() + intercepts.back())*0.5; // why do we assume the obstacle is in half the intersect segment? why do we assume theres is an obstacle if we havent checked the goalie?
+            return obstacle_found;
         }
+    }
+
+
+
+    // Only goalie can use our deffence area (is this correct??), other robots have to avoid it
+    if(!is_goalie && !our_deffence_area.contains(start)) {
 
         // check our team's deffence area
-        DefenceArea da1(TEAM_DEFFENCE_AREA);
-        intercepts = da1.intersectSegment(start, end);
+        auto intercepts = our_deffence_area.intersectSegment(start, end);
         if(!intercepts.empty()) {
             obstacle_found = true;
             obstacle_position = (intercepts.front() + intercepts.back())*0.5;
         }
+
     }
 
     return obstacle_found;

@@ -171,7 +171,7 @@ void AttackMain::calcStaticProb()
     float dist = 0.0, angle = 0.0;
     float temp_p = 0.0;
 
-    DefenceArea def_area(OPPONENT_DEFFENCE_AREA);
+    DefenceArea def_area(OPPONENT_SIDE);
 
     for (int x = 0; x < PF_LENGTH_MAIN; ++x)
     {

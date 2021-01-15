@@ -81,7 +81,7 @@ bool PenaltyGoalie::perform()
 
 bool PenaltyGoalie::isFinished()
 {
-    DefenceArea our_da(TEAM_DEFFENCE_AREA);
+    DefenceArea our_da(OUR_SIDE);
     if(ball->getSpeed() < 100 &&
        our_da.contains(*ball, -ROBOT_RADIUS))
         return true;

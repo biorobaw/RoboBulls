@@ -10,7 +10,7 @@ Goalie::Goalie(Robot* r)
     , goalPoint(Field::getGoalPosition(OUR_SIDE))
     , idlePoint(goalPoint + Point(ROBOT_RADIUS+50,0))
     , kick_skill(nullptr)
-    , def_area(TEAM_DEFFENCE_AREA)
+    , def_area(OUR_SIDE)
 {
     dribble_skill = new DribbleBack(robot, idlePoint);
     kick_skill = new KickToPointOmni(robot, &kickPoint);

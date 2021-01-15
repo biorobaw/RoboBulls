@@ -180,8 +180,8 @@ std::vector<Point> Rectangle::intersectSegment(Point p0, Point p1)
                 p0.y = y;
                 outcode0 = ComputeOutCode(p0,this);
             } else {
-                p0.x = x;
-                p0.y = y;
+                p1.x = x;
+                p1.y = y;
                 outcode1 = ComputeOutCode(p1,this);
             }
         }

@@ -14,9 +14,6 @@
  * or @c !OUR_TEAM for the opponent defence area. @see Region.
  */
 
-#define TEAM_DEFFENCE_AREA true
-#define OPPONENT_DEFFENCE_AREA false
-
 class DefenceArea : public Region
 {
 public:

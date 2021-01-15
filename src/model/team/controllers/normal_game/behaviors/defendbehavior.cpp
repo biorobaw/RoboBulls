@@ -257,7 +257,7 @@ DefendState* DSIdle::action()
          * "AND the ball near the goal AND the ball is not moving away..." Kick it.
          */
         Rectangle our_half(-Field::HALF_FIELD_LENGTH, -Field::HALF_FIELD_WIDTH, 0, Field::HALF_FIELD_WIDTH);
-        DefenceArea our_da(TEAM_DEFFENCE_AREA);
+        DefenceArea our_da(OUR_SIDE);
 
         if( our_half.contains(bp)
             && our_da.contains(bp, 2000)

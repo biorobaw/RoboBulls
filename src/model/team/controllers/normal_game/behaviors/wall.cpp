@@ -131,7 +131,7 @@ void Wall::calcWallPoints(Robot* robot)
     Point gp = goalie ? *goalie : Field::getGoalPosition(OUR_SIDE);
 
 
-    DefenceArea da(TEAM_DEFFENCE_AREA);
+    DefenceArea da(OUR_SIDE);
 
     // Get interception of line bp->goalie
     // with defence area edge
@@ -188,7 +188,7 @@ bool Wall::spaceForGoalKick()
 {
     // Determine if the wall should space out for a goal-kick
     Robot* possessor = game_state->getRobotWithBall();
-    DefenceArea da(TEAM_DEFFENCE_AREA);
+    DefenceArea da(OUR_SIDE);
 
     // Position for a goal-kick if the goal-keeper has the ball
     // and the ball is is inside the defence area
@@ -204,7 +204,7 @@ bool Wall::shouldClear(Robot* robot)
     // and we are the nearest robot to it and the ball is
     // free or if we possess it.
     Point bp = *ball;
-    DefenceArea da(TEAM_DEFFENCE_AREA);
+    DefenceArea da(OUR_SIDE);
     Robot* possessor = game_state->getRobotWithBall();
 
     bool b1 = ball->getSpeed() < 10;
@@ -221,7 +221,7 @@ bool Wall::shouldStopClearing(Robot* robot)
     // We go back to other tasks if the ball is no longer
     // on our side of the field or if an opponent
     // has the ball or is too close the defence area
-    DefenceArea da(TEAM_DEFFENCE_AREA);
+    DefenceArea da(OUR_SIDE);
     Robot* possessor = game_state->getRobotWithBall();
 
     bool b1 = ball->x > -1000;

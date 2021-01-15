@@ -9,11 +9,11 @@ DefenceArea::DefenceArea(int side) :
     positive_area( Field::HALF_FIELD_LENGTH - Field::DEF_AREA_WIDTH,
                   -Field::DEF_AREA_LENGTH/2,
                    Field::HALF_FIELD_LENGTH,
-                   Field::DEF_AREA_LENGTH),
+                   Field::DEF_AREA_LENGTH/2),
     area( side_sign * positive_area.min_x,
          -Field::DEF_AREA_LENGTH/2,
           side_sign * positive_area.max_x,
-          Field::DEF_AREA_LENGTH)
+          Field::DEF_AREA_LENGTH/2)
 {
 
 
