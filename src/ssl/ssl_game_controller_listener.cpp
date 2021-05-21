@@ -44,6 +44,8 @@ SSLGameControllerListener::SSLGameControllerListener(YAML::Node* comm_node, Robo
 
     }
 
+    thread->start();
+
 }
 
 
