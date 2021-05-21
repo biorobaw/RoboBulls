@@ -29,15 +29,9 @@ void SControllerJoystick::init_module(RobotTeam* teams[2]){
     debug::registerFunction("mapjoy", map_joystick_fun);
     debug::registerFunction("p", print_joymap);
 
-    QTimer* timer = new QTimer;
-    timer->setInterval(30);
-    timer->moveToThread(thread);
-    connect(thread,&QThread::finished, timer, &QObject::deleteLater);
-    connect(timer,&QTimer::timeout, []{
-        qDebug( ) << "running joy thread" << endl;
-    });
+    // Add gamepad manager to thread (otherwise thread does not process joy events)
+    QGamepadManager::instance()->moveToThread(thread);
     thread->start();
-//    QtConcurrent::run(listen_commands);
 
 
 
