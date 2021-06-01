@@ -6,7 +6,7 @@
 #include "model/game_state.h"
 
 Goalie::Goalie(Robot* r)
-    : Behavior(robot), GenericMovementBehavior(robot)
+    : Behavior(r), GenericMovementBehavior(r)
     , goalPoint(Field::getGoalPosition(OUR_SIDE))
     , idlePoint(goalPoint + Point(ROBOT_RADIUS+50,0))
     , kick_skill(nullptr)
