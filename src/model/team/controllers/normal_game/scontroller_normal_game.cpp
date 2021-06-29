@@ -39,6 +39,7 @@ SControllerNormalGame::SControllerNormalGame(RobotTeam* team, YAML::Node* c_node
         qInfo() << "            ATTACK1 :" << r_node["ATTACK1"];
         qInfo() << "            ATTACK2 :" << r_node["ATTACK2"];
         qInfo() << "            ATTACK3 :" << r_node["ATTACK3"];
+        qInfo() << "            ATTACK4 :" << r_node["ATTACK4"];
         qInfo() << "            DEFEND1 :" << r_node["DEFEND1"];
         qInfo() << "            DEFEND2 :" << r_node["DEFEND2"];
         qInfo() << "            DEFEND3 :" << r_node["DEFEND3"];
@@ -57,6 +58,9 @@ SControllerNormalGame::SControllerNormalGame(RobotTeam* team, YAML::Node* c_node
 
         if(r_node["ATTACK3" ].IsDefined())
             team->setRobotRole(r_node["ATTACK3"].as<int>(),RobotRole::ATTACK3);
+
+        if(r_node["ATTACK4" ].IsDefined())
+            team->setRobotRole(r_node["ATTACK4"].as<int>(),RobotRole::ATTACK4);
 
         if(r_node["DEFEND1" ].IsDefined())
             team->setRobotRole(r_node["DEFEND1"].as<int>(),RobotRole::DEFEND1);
@@ -115,7 +119,13 @@ SControllerNormalGame::SControllerNormalGame(RobotTeam* team, YAML::Node* c_node
     // modular, and understandable.
     state_transitions[FREE_KICK][FreeKickStrategy::KICKED] = NORMAL_GAME;
     state_transitions[INDIRECT_KICK][IndirectKickStrategy::KICKED] = NORMAL_GAME;
-
+    state_transitions[STOP][0] = STOP;
+    state_transitions[KICK_OFF][0] = KICK_OFF;
+    state_transitions[NORMAL_GAME][0] = NORMAL_GAME;
+    state_transitions[PENALTY][0] = PENALTY;
+    state_transitions[FREE_KICK][0] = FREE_KICK;
+    state_transitions[INDIRECT_KICK][0] = INDIRECT_KICK;
+    state_transitions[HALT][0] = HALT;
 
 
 

@@ -1,6 +1,6 @@
 ---
 VISION_ADDR : 224.5.23.2 # must match vision multicast port (if not modified it should be 224.5.23.2)
-VISION_PORT : 10006      # must match vision port (if not modified defaults are 10006 for vision and , and 10020 for grSim
+VISION_PORT : 10020      # must match vision port (if not modified defaults are 10006 for vision and , and 10020 for grSim
 FOUR_CAMERA : true       # false if using ssl vision on the lab, otherwise it is usually true, currently the software only supports 2 and 4 camera setups
 
 REFBOX_ADDR : 224.5.23.1 # multicast ip of ssl-game-controller

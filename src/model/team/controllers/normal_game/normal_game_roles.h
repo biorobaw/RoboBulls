@@ -7,6 +7,7 @@ enum RobotRole
     ATTACK1,
     ATTACK2,
     ATTACK3,
+    ATTACK4,
     DEFEND1,
     DEFEND2,
     DEFEND3,

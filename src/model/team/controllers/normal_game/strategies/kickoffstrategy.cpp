@@ -29,14 +29,25 @@ void KickOffStrategy::assignBehaviors()
     Robot* attack1 = team->getRobotByRole(RobotRole::ATTACK1);
     Robot* attack2 = team->getRobotByRole(RobotRole::ATTACK2);
 
+    //New code - Param, to support 8 robots
+    Robot* wall3 = team->getRobotByRole(RobotRole::DEFEND3);
+    Robot* attack3 = team->getRobotByRole(RobotRole::ATTACK3);
+    Robot* attack4 = team->getRobotByRole(RobotRole::ATTACK4);
+
     if(wall1)
         wall1->setBehavior<GenericMovementBehavior>(Point(-650, 300), 0);
     if(wall2)
         wall2->setBehavior<GenericMovementBehavior>(Point(-1600, 0), 0);
+    if(wall3)
+        wall3->setBehavior<GenericMovementBehavior>(Point(-1000, 0), 0);
     if(attack1)
         attack1->setBehavior<GenericMovementBehavior>(Point(-650, 0), 0);
     if(attack2)
         attack2->setBehavior<GenericMovementBehavior>(Point(-650, -300), 0);
+    if(attack3)
+        attack3->setBehavior<GenericMovementBehavior>(Point(-100, 100), 0);
+    if(attack4)
+        attack4->setBehavior<GenericMovementBehavior>(Point(-100, -100), 0);
 
     // Goalie is a special case
     Robot* goalie = team->getRobotByRole(RobotRole::GOALIE);
