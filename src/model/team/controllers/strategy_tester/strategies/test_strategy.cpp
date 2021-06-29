@@ -11,6 +11,8 @@
 #include "model/team/controllers/normal_game/behaviors/refstop.h"
 #include "model/team/controllers/normal_game/behaviors/penaltygoalie.h"
 #include "model/team/controllers/normal_game/behaviors/wall.h"
+#include "model/team/controllers/normal_game/behaviors/challengeballbot.h"
+#include "model/team/controllers/normal_game/behaviors/markbot.h"
 #include "ctime"
 #include "model/ball.h"
 #include "model/robot/robot.h"
@@ -256,6 +258,7 @@ TestStrategy::TestStrategy(RobotTeam* _team) : TeamStrategy(_team) {
 }
 
 
+
 #include "model/robot/navigation/commands/CmdGoToPose.h"
 void TestStrategy::assignBehaviors()
 {
@@ -277,7 +280,7 @@ void TestStrategy::assignBehaviors()
     int num_robots = robots.size();
     int i = 0;
     for(auto r : robots){
-        if(i++ ==0) r->setBehavior<Strafe>();
+        if(i++ ==0) r->setBehavior<AttackMain>();
         else r->setBehavior<GoToBehavior>(i*360.0/num_robots);
 
     }

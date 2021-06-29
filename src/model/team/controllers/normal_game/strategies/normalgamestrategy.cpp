@@ -229,7 +229,7 @@ void NormalGameStrategy::runControlCycle()
         break;
     case attack:
     {
-        std::cout << "Assigning Attack Behaviors" << std::endl;
+        std::cout << "Assigning Attack Behaviors" << std::endl; // this statement before the code exits
 
         // If two attackers available, assign both the one closer
         // to the ball as the main
@@ -238,34 +238,46 @@ void NormalGameStrategy::runControlCycle()
             if(Measurements::distance(attack1, *ball) <
                Measurements::distance(attack2, *ball))
             {
-                attack1->setBehavior<AttackMain>();
+                std::cout << "start"<< std::endl;
+                attack1->setBehavior<AttackMain>(); // attackmain is the problem
+
                 main = attack1;
+                 std::cout << "end"<< std::endl;
                 attack2->setBehavior<AttackSupport>();
                 supp = attack2;
+
             }
             else
             {
+                std::cout << "start1"<< std::endl;
                 attack1->setBehavior<AttackSupport>();
                 supp = attack1;
+                std::cout << "end1"<< std::endl;
                 attack2->setBehavior<AttackMain>();
                 main = attack2;
+
             }
         }
         else if(attack1 != nullptr)
         {
+            std::cout << "start2"<< std::endl;
             attack1->setBehavior<AttackMain>();
             main = attack1;
             supp = nullptr;
+            std::cout << "end2"<< std::endl;
         }
         else if(attack2 != nullptr)
         {
+            std::cout << "start3"<< std::endl;
             attack2->setBehavior<AttackMain>();
             main = attack2;
             supp = nullptr;
+            std::cout << "end3"<< std::endl;
         }
-
+std::cout << "start4"<< std::endl;
         prev_state = state;
         state = evaluate;
+        std::cout << "end4"<< std::endl;
     }
         break;
     case defend:

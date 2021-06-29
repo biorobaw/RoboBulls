@@ -1,6 +1,6 @@
 ---
 TEAM_BLUE :
-    SIDE: 1 # 0  negative side, 1 positive side
+    SIDE: 0 # 0  negative side, 1 positive side
     # Define the roles of each robot
 
 
@@ -41,13 +41,24 @@ TEAM_BLUE :
     # support for rpi_2019 is work in progress
     
 TEAM_YELLOW :
-    SIDE: 0
+    SIDE: 1
     
-    ROBOT_PROXY: 
-      TYPE : none 
+    ROBOT_PROXY:
+        TYPE : grsim # alternatives: grsim yisibot rpi_2019 none
+        ADDR : 127.0.0.1 # ip of grsim
+        PORT : 20011     # port of grsim
     
     STRATEGY_CONTROLLER:
-      ID: none
+        ID: NORMAL_GAME # options: NORMAL_GAME or STRATEGY_TESTER or JOYSTICK
+        ROLES:
+            GOALIE : 5
+            ATTACK1 : 3
+            ATTACK2 : 0
+            ATTACK3 : 1
+            ATTACK4 : 2
+            DEFEND1 : 4
+            DEFEND2 : 6
+            DEFEND3 : 7
     
     
     

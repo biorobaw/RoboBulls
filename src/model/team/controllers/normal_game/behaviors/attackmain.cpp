@@ -21,6 +21,7 @@ AttackMain::AttackMain(Robot* robot) : Behavior(robot)
     prob_field_cols = (Field::FIELD_WIDTH+1)/PND_MAIN;
     prob_field = new ProbNode*[prob_field_rows];
     for(int i=0; i<prob_field_rows; i++) prob_field[i] = new ProbNode[prob_field_cols];
+    std::cout << "Attack Main Behavior created"<< std::endl;
 }
 
 bool AttackMain::perform()
