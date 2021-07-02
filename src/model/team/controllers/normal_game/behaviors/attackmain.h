@@ -78,6 +78,7 @@ private:
     int prob_field_cols;
     ProbNode** prob_field;
 
+
     KickToPointOmni* score_skill;
     KickToPointOmni* pass_skill;
     DribbleToPoint* dribble_skill;

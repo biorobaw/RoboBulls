@@ -8,13 +8,17 @@
 
 AttackSupport::AttackSupport(Robot* robot)  : Behavior(robot)
 {
-    calcStaticProb();
-    state = position;
-
     prob_field_rows = (Field::FIELD_LENGTH+1)/PND_SUPP;
     prob_field_cols = (Field::FIELD_WIDTH+1)/PND_SUPP;
     prob_field = new ProbNode*[prob_field_rows];
     for(int i=0; i<prob_field_rows; i++) prob_field[i] = new ProbNode[prob_field_cols];
+    calcStaticProb();
+    state = position;
+
+    /*prob_field_rows = (Field::FIELD_LENGTH+1)/PND_SUPP;
+    prob_field_cols = (Field::FIELD_WIDTH+1)/PND_SUPP;
+    prob_field = new ProbNode*[prob_field_rows];
+    for(int i=0; i<prob_field_rows; i++) prob_field[i] = new ProbNode[prob_field_cols];*/
 }
 
 bool AttackSupport::perform()

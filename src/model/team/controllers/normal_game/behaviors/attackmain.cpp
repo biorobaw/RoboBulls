@@ -437,7 +437,7 @@ AttackMain::~AttackMain()
     delete score_skill;
     delete pass_skill;
     delete dribble_skill;
-    for(int i=0; i < prob_field_rows; i++)
+    for(int i=1; i < prob_field_rows; i++)
         delete prob_field[i];
     delete prob_field;
 }

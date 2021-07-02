@@ -20,7 +20,7 @@ TEAM_BLUE :
       #FREQUENCY: 0
       
     STRATEGY_CONTROLLER:
-       ID: STRATEGY_TESTER # options: NORMAL_GAME or STRATEGY_TESTER or JOYSTICK or none
+      # ID: STRATEGY_TESTER # options: NORMAL_GAME or STRATEGY_TESTER or JOYSTICK or none
       # define your own 'key : value' pairs to load on your test strategies
       
       # ID : JOYSTICK        # options: NORMAL_GAME or STRATEGY_TESTER or JOYSTICK
@@ -30,16 +30,16 @@ TEAM_BLUE :
       #  - ROBOT : 1
       #    JOY   : 1
       
-       #ID: NORMAL_GAME # options: NORMAL_GAME or STRATEGY_TESTER or JOYSTICK
-       #ROLES:
-       #  GOALIE : 5
-       #  ATTACK1 : 3
-       #  ATTACK2 : 0
-       #  ATTACK3 : 1
-       #  ATTACK4 : 2
-       #  DEFEND1 : 4
-       # DEFEND2 : 6
-       #  DEFEND3 : 7
+       ID: NORMAL_GAME # options: NORMAL_GAME or STRATEGY_TESTER or JOYSTICK
+       ROLES:
+         GOALIE : 5
+         ATTACK1 : 3
+         ATTACK2 : 0
+         ATTACK3 : 1
+         ATTACK4 : 2
+         DEFEND1 : 4
+         DEFEND2 : 6
+         DEFEND3 : 7
     
     # support for rpi_2019 is work in progress
     
@@ -47,21 +47,21 @@ TEAM_YELLOW :
     SIDE: 1
     
     ROBOT_PROXY:
-        TYPE : none # alternatives: grsim yisibot rpi_2019 none
-        #ADDR : 127.0.0.1 # ip of grsim
-        #PORT : 20011     # port of grsim
+        TYPE : grsim # alternatives: grsim yisibot rpi_2019 none
+        ADDR : 127.0.0.1 # ip of grsim
+        PORT : 20011     # port of grsim
     
     STRATEGY_CONTROLLER:
-        ID: none # options: NORMAL_GAME or STRATEGY_TESTER or JOYSTICK
-        #ROLES:
-        #    GOALIE : 5
-        #    ATTACK1 : 3
-        #    ATTACK2 : 0
-        #    ATTACK3 : 1
-        #    ATTACK4 : 2
-        #    DEFEND1 : 4
-        #   DEFEND2 : 6
-        #    DEFEND3 : 7
+        ID: NORMAL_GAME # options: NORMAL_GAME or STRATEGY_TESTER or JOYSTICK
+        ROLES:
+            GOALIE : 5
+            ATTACK1 : 3
+            ATTACK2 : 0
+            ATTACK3 : 1
+            ATTACK4 : 2
+            DEFEND1 : 4
+            DEFEND2 : 6
+            DEFEND3 : 7
     
     
     
