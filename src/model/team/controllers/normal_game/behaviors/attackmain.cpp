@@ -11,16 +11,20 @@ float AttackMain::PASS_ANGLE_TOLERANCE  = 7*M_PI/180;
 
 AttackMain::AttackMain(Robot* robot) : Behavior(robot)
 {
+    prob_field_rows = (Field::FIELD_LENGTH+1)/PND_MAIN;
+    prob_field_cols = (Field::FIELD_WIDTH+1)/PND_MAIN;
+    prob_field = new ProbNode*[prob_field_rows];
+    for(int i=0; i<prob_field_rows; i++) prob_field[i] = new ProbNode[prob_field_cols];
     calcStaticProb();
     dribble_skill = new DribbleToPoint (robot, &kick_point);
     score_skill   = new KickToPointOmni(robot, &kick_point,SCORE_ANGLE_TOLERANCE,-1,true);
     pass_skill    = new KickToPointOmni(robot, &kick_point,PASS_ANGLE_TOLERANCE, -1,true);
     state = scoring;
 
-    prob_field_rows = (Field::FIELD_LENGTH+1)/PND_MAIN;
+    /*prob_field_rows = (Field::FIELD_LENGTH+1)/PND_MAIN;
     prob_field_cols = (Field::FIELD_WIDTH+1)/PND_MAIN;
     prob_field = new ProbNode*[prob_field_rows];
-    for(int i=0; i<prob_field_rows; i++) prob_field[i] = new ProbNode[prob_field_cols];
+    for(int i=0; i<prob_field_rows; i++) prob_field[i] = new ProbNode[prob_field_cols];*/
     std::cout << "Attack Main Behavior created"<< std::endl;
 }
 

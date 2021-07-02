@@ -13,7 +13,7 @@ CENTER_RADIUS    :  500 # Radius of the circle in the center of the field    #| 
 DEF_AREA_LENGTH  : 2000 # Length of the defence area (distance y direction)  #|   3600   ||   2000   ||   1000   |
 DEF_AREA_WIDTH   : 1000 # Width  of the defence area (distance x direction)  #|   1800   ||   1000   ||    500   |
 GOAL_LENGTH      : 1000 # Length of the goal post (distance y direction)     #|   1800   ||   1000   ||    500   |
-PENALTY_MARK     : 3000 # distance from goal at which penalties are taken    #|   8000   ||   6000   ||   3000   |
+PENALTY_MARK     : 6000 # distance from goal at which penalties are taken    #|   8000   ||   6000   ||   3000   |
 
 #
 #

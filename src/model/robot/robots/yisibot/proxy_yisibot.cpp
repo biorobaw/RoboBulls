@@ -73,8 +73,9 @@ void ProxyYisi::sendCommands(const QSet<Robot*>& robots)
     t_old = t;
     for(Robot* r: robots)
     {
-
+        //std::cout <<"A robot's active controller was retrieved"<<std::endl;
         RobotLowLevelControls* controls = r->getActiveController();
+        std::cout << "Target speed"<<controls->getTargetSpeed()<<std::endl;
 
         Data8 transmitPacket[25] = {(Data8)0};
 
@@ -110,7 +111,7 @@ void ProxyYisi::sendCommands(const QSet<Robot*>& robots)
         int velX = vel.x;        // Yisicomm robots expect flipped X/Y axis
         int velY = vel.y;
         int velR = controls->getTargetAngularSpeed() * 750 ;        // Mult by 750 to bring vals inline with yisi units (1/40 radians/sec)
-//        std::cout << "velx/y/ang  " << velX << "  " << velY << "  " << velR << std::endl;
+        std::cout << "velx/y/ang  " << velX << "  " << velY << "  " << velR << std::endl;
 
         transmitPacket[4] = ((velX >= 0)?0:0x80) | (abs(velX) & 0x7f);
         transmitPacket[5] = ((velY >= 0)?0:0x80) | (abs(velY) & 0x7f);
