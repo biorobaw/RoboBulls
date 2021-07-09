@@ -1,5 +1,7 @@
 #include "robots/grsim/proxy_grsim.h"
 #include "robots/yisibot/proxy_yisibot.h"
+#include "robots/rpi_2019/proxyrpi_2019.h"
+
 #include "robots/none/proxy_none.h"
 #include "robot_implementation.h"
 #include "model/robot/robot.h"
@@ -37,8 +39,9 @@ RobotImplementation* RobotImplementation::load(YAML::Node* proxy_node){
         return new ProxyYisi(proxy_node);
 
     } else if (robot_type == "rpi_2019"){
-        qCritical() << "ERROR: rpi_2019 is not yet supported" ;
-        exit (-1);
+        //qCritical() << "ERROR: rpi_2019 is not yet supported" ;
+        //exit (-1);
+        return new ProxyRpi_2019(proxy_node);
 
     } else if (robot_type == "none"){
         return new ProxyNone();
