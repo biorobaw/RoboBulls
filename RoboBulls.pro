@@ -36,7 +36,8 @@ PROTOS += src/ssl/proto/grSim_Commands.proto \
           src/ssl/proto/ssl_game_controller_team.proto \
           src/ssl/proto/ssl_game_event_2019.proto \
           src/ssl/proto/ssl_game_event.proto \ #no deps
-          src/ssl/proto/ssl_game_controller_common.proto # no deps
+          src/ssl/proto/ssl_game_controller_common.proto \# no deps
+          src/ssl/proto/pirobot2019.proto
 include(protobuf.pri)
 
 
@@ -91,6 +92,7 @@ SOURCES += src/main.cpp \
         src/model/robot/robot_low_level_control.cpp \
         src/model/robot/robots/grsim/proxy_grsim.cpp \
         src/model/robot/robots/none/proxy_none.cpp \
+        src/model/robot/robots/rpi_2019/proxyrpi_2019.cpp \
         src/model/robot/robots/yisibot/proxy_yisibot.cpp \
         src/model/robot/robots/yisibot/crc.cpp \
         src/model/team/controllers/joystick/mygamepad.cpp \
@@ -182,6 +184,7 @@ HEADERS += \
         src/model/robot/robot_low_level_controls.h \
         src/model/robot/robots/grsim/proxy_grsim.h \
         src/model/robot/robots/none/proxy_none.h \
+        src/model/robot/robots/rpi_2019/proxyrpi_2019.h \
         src/model/robot/robots/yisibot/proxy_yisibot.h \
         src/model/robot/robots/yisibot/crc.h \
         src/model/team/controllers/joystick/mygamepad.h \
@@ -276,6 +279,7 @@ DISTFILES += \
     src/ssl/proto/messages_robocup_ssl_geometry.proto \
     src/ssl/proto/messages_robocup_ssl_refbox_log.proto \
     src/ssl/proto/messages_robocup_ssl_wrapper.proto \
+    src/ssl/proto/pirobot2019.proto \
     src/ssl/proto/ssl_game_controller_auto_ref.proto \
     src/ssl/proto/ssl_game_controller_common.proto \
     src/ssl/proto/ssl_game_controller_team.proto \
