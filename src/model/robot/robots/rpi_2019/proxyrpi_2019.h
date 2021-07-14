@@ -5,6 +5,8 @@
 #include "model/robot/robot_implementation.h"
 #include <QtNetwork/QUdpSocket>
 #include "utilities/point.h"
+#include <map>
+#include <utility>
 
 
 //class ProxyRpi_2019
@@ -33,7 +35,7 @@ private:
     QUdpSocket* udpsocket = new QUdpSocket(this);
     QHostAddress _addr;
     quint16 _port;
-
+    std::map<int, std::pair<QHostAddress, int>> ROBOT_ADDRS;
     //! @brief Sends a standard packet to the rpi_219
     void sendPacket(Robot *robot);
 

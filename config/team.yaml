@@ -12,7 +12,14 @@ TEAM_BLUE :
     
     # if robot type == grsim, then must specify:
     ROBOT_PROXY:
-      TYPE : grsim # alternatives: grsim yisibot rpi_2019 none
+      TYPE : rpi_2019 # alternatives: grsim yisibot rpi_2019 none
+      ROBOT:
+        1:
+            ADDR: 127.0.0.1
+            PORT: 20012
+        2:
+            ADDR: 127.0.0.1
+            PORT: 20014
       ADDR : 127.0.0.1 # ip of grsim
       PORT : 20011     # port of grsim
       

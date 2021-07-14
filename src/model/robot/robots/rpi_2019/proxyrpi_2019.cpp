@@ -2,9 +2,13 @@
 #include "utilities/my_yaml.h"
 #include "model/robot/robot.h"
 #include "model/robot/navigation/pilots/pilot_differential.h"
+#include <map>
+#include <utility>
 
 #include "pirobot2019.pb.h"
 //#include
+
+
 
 
 
@@ -13,9 +17,17 @@ ProxyRpi_2019::ProxyRpi_2019(YAML::Node* t_node)
 
     qInfo() << "            ADDR          -" <<  (*t_node)["ADDR"];
     qInfo() << "            PORT          -" <<  (*t_node)["PORT"] ;
-
+   //AML::Node* robots = (*t_node)["ROBOT"];
     QString ip = (*t_node)["ADDR"].Scalar().c_str();
     int port = (*t_node)["PORT"].as<int>();
+    for (const auto& robots : (*t_node)["ROBOT"])
+    {
+       //int id = stoi(robots);
+        int id = robots.first.as<int>();
+        ROBOT_ADDRS.insert(std::make_pair(id, std::make_pair(QHostAddress(robots.second["ADDR"].Scalar().c_str()), robots.second["PORT"].as<int>())));
+        qInfo()<< "Robot Map: " << ROBOT_ADDRS[id].first << ROBOT_ADDRS[id].second;
+    }
+
 
     _addr = QHostAddress(ip);
     _port = port;
@@ -72,9 +84,9 @@ void ProxyRpi_2019::sendPacket(Robot* r)
     std::cout << temp2<<std::endl;
     dgram.push_front(char(0));
     qInfo() << dgram;
-
-    qInfo() << "Address: " <<_addr << "\nPort: " <<_port << "\n X, W: " << v.x << " "<<w;
-    udpsocket->writeDatagram(dgram, _addr, _port);
+    std::pair<QHostAddress, int> add_port = ROBOT_ADDRS[id];
+    qInfo() << "Address: " <<add_port.first << "\nPort: " << add_port.second << "\n X, W: " << v.x << " "<<w;
+    udpsocket->writeDatagram(dgram, add_port.first, add_port.second);
 
 //    packet.mutable_commands()->set_isteamyellow( r->getTeamId() == ROBOT_TEAM_YELLOW );
 //    packet.mutable_commands()->set_timestamp(0.0);
