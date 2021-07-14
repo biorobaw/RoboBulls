@@ -135,7 +135,9 @@ void Wall::calcWallPoints(Robot* robot)
 
     // Get interception of line bp->goalie
     // with defence area edge
+
     std::vector<Point> intercepts = da.intersectSegment(bp, gp);
+    //std::cout<<"point from the intersecSegment:"<< intercepts.front().x << " "<< intercepts.front().y<< std::endl;
     Point intercept;
 
     if(intercepts.empty())
@@ -144,7 +146,9 @@ void Wall::calcWallPoints(Robot* robot)
         // for no intercepts, so position between the ball
         // and the center of the goal
         auto gp = Field::getGoalPosition(OUR_SIDE);
+        std::cout<<"bp gp:" << bp.x<<" "<<bp.y<<" "<<gp.x<<" "<<gp.y<<std::endl;
         std::vector<Point> temp = da.intersectLine(bp, gp);
+        std::cout<<"is temp empty:"<< temp.empty()<<std::endl;
         if(temp.empty())
             intercept = Point (Field::DEF_AREA_WIDTH + 3*ROBOT_RADIUS, 0);
         else

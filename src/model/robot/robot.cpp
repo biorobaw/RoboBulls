@@ -177,7 +177,7 @@ Robot* Robot::setHasBall(bool val){
 
 
 // ============================================================
-// ============= LOE Level Control ============================
+// ============= LOW Level Control ============================
 // ============================================================
 
 
@@ -185,7 +185,7 @@ RobotLowLevelControls* Robot::getOverridenController(){
     return overriden_controls;
 }
 RobotLowLevelControls* Robot::getActiveController(){
-    return use_overriden_controls ? overriden_controls : this;
+    return use_overriden_controls ? overriden_controls : this; // this
 }
 
 
