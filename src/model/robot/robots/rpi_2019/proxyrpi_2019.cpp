@@ -15,11 +15,9 @@
 ProxyRpi_2019::ProxyRpi_2019(YAML::Node* t_node)
 {
 
-    qInfo() << "            ADDR          -" <<  (*t_node)["ADDR"];
-    qInfo() << "            PORT          -" <<  (*t_node)["PORT"] ;
+
    //AML::Node* robots = (*t_node)["ROBOT"];
-    QString ip = (*t_node)["ADDR"].Scalar().c_str();
-    int port = (*t_node)["PORT"].as<int>();
+
     for (const auto& robots : (*t_node)["ROBOT"])
     {
        //int id = stoi(robots);
@@ -29,8 +27,7 @@ ProxyRpi_2019::ProxyRpi_2019(YAML::Node* t_node)
     }
 
 
-    _addr = QHostAddress(ip);
-    _port = port;
+
 
 }
 
