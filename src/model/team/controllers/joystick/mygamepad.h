@@ -6,6 +6,9 @@
 #include <QDebug>
 #include "utilities/point.h"
 
+#include "model/team/team.h"
+
+
 class Robot;
 
 class MyGamepad : public QGamepad
@@ -14,14 +17,16 @@ class MyGamepad : public QGamepad
 public:
     MyGamepad(int pad_id, QObject* parent);
 
-    void connectToRobot(Robot* robot, bool use_overriden_controller);
+    void connectToRobot(Robot* robot, bool use_overriden_controller, RobotTeam *team);
 
 private:
     Robot* robot;
-
+    RobotTeam *team;
+    bool use_overriden_controller;
 private slots:
     void processMotionCommand();
     void processKickCommand();
+    void switchRobot();
 
 
 signals:

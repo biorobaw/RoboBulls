@@ -63,7 +63,7 @@ void ProxyRpi_2019::sendPacket(Robot* r)
     auto w        = controls->getTargetAngularSpeed(); // we assume rad/s
     float kick    = controls->getKickSpeed();
     bool  dribble = controls->getDribble();
-    qInfo() << "V: "<<v.x << " W: " <<w << "controls" << controls;
+    //qInfo() << "V: "<<v.x << " W: " <<w << "controls" << controls;
 
 //    // prepare command package
     pirobot2019::VelocityXYZ packet;
@@ -76,7 +76,7 @@ void ProxyRpi_2019::sendPacket(Robot* r)
     packet.SerializeToArray(dgram.data(), dgram.size());
     dgram.push_front(char(0)); //Push message type 0 means velocity packet
     std::pair<QHostAddress, int> add_port = ROBOT_ADDRS[id];
-    qInfo() << "Address: " <<add_port.first << "\nPort: " << add_port.second << "\n X, W: " << v.x << " "<<w;
+    //qInfo() << "Address: " <<add_port.first << "\nPort: " << add_port.second << "\n X, W: " << v.x << " "<<w;
     udpsocket->writeDatagram(dgram, add_port.first, add_port.second);
 
 //    packet.mutable_commands()->set_isteamyellow( r->getTeamId() == ROBOT_TEAM_YELLOW );

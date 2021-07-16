@@ -12,8 +12,10 @@ MyGamepad::MyGamepad(int pad_id, QObject* parent) :
 
 }
 
-void MyGamepad::connectToRobot(Robot* robot, bool use_overriden_controller){
+void MyGamepad::connectToRobot(Robot* robot, bool use_overriden_controller ,RobotTeam *team){
+    this->team = team;
     this->robot = robot;
+    this->use_overriden_controller = use_overriden_controller;
     auto controller = use_overriden_controller ? robot->getOverridenController() : robot;
     connect(this, &QGamepad::axisLeftXChanged , this, &MyGamepad::processMotionCommand);
     connect(this, &QGamepad::axisLeftYChanged , this, &MyGamepad::processMotionCommand);
@@ -25,7 +27,10 @@ void MyGamepad::connectToRobot(Robot* robot, bool use_overriden_controller){
     connect(this, &QGamepad::buttonR1Changed, this, &MyGamepad::processKickCommand);
     connect(this, &MyGamepad::setKickSpeed, controller, &RobotLowLevelControls::setKickSpeed);
 
+    connect(this, &QGamepad::buttonL1Changed, this, &MyGamepad::switchRobot);
 
+
+    //disconnect(this, nullptr, nullptr, nullptr);
 
 //    connect(this, SIGNAL(buttonAChanged), controller, [](bool pressed){
 //        qDebug() << "Button A" << pressed;
@@ -86,6 +91,34 @@ void MyGamepad::processKickCommand(){
     if(buttonR1())
         emit this->setKickSpeed();
 }
+
+void MyGamepad::switchRobot(){
+    //robot->getTeamId();
+    disconnect(this, nullptr, nullptr, nullptr);
+    this->robot = team->getRobot(robot->getId()+1);
+    qInfo() <<"switch: current id " <<robot->getId();
+
+
+    auto controller = this->use_overriden_controller ? robot->getOverridenController() : robot;
+    connect(this, &QGamepad::axisLeftXChanged , this, &MyGamepad::processMotionCommand);
+    connect(this, &QGamepad::axisLeftYChanged , this, &MyGamepad::processMotionCommand);
+    connect(this, &QGamepad::axisRightXChanged, this, &MyGamepad::processMotionCommand);
+    connect(this, &MyGamepad::setVelocity, controller, &RobotLowLevelControls::setTargetVelocityLocal);
+
+    connect(this, &QGamepad::buttonL1Changed, controller, &RobotLowLevelControls::setDribble);
+
+    connect(this, &QGamepad::buttonR1Changed, this, &MyGamepad::processKickCommand);
+    connect(this, &MyGamepad::setKickSpeed, controller, &RobotLowLevelControls::setKickSpeed);
+
+    connect(this, &QGamepad::buttonL1Changed, this, &MyGamepad::switchRobot);
+
+    //auto controller = use_overriden_controller ? robot->getOverridenController() : robot;
+
+            //teams[team_id]->getRobot(robot_id)
+    //if(buttonR1())
+    //    emit this->setKickSpeed();
+}
+
 
 
 

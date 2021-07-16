@@ -89,7 +89,7 @@ void SControllerJoystick::map_joystick(int joy_id, int team_id, int robot_id, bo
 
 
 
-    gpad->connectToRobot(teams[team_id]->getRobot(robot_id), override_controller);
+    gpad->connectToRobot(teams[team_id]->getRobot(robot_id), override_controller, teams[team_id]);
     gpad->moveToThread(thread);
     connect(thread, &QThread::finished, gpad, &QObject::deleteLater);
 
