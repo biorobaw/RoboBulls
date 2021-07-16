@@ -98,6 +98,7 @@ void PilotDifferential::driveTo
 //    // Set velocities on robot object
 //    robot->setL(left_motor_velocity);
 //    robot->setR(right_motor_velocity);
+        robot->setTargetVelocityGlobal(Point(robot_xvel,0), robot_turnrate);
 }
 
 void PilotDifferential::updateIntegralError(Point newTarget)

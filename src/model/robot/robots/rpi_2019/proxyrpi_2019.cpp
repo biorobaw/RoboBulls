@@ -135,9 +135,9 @@ bool  ProxyRpi_2019::isHolonomic() {
 //NOT IMPLEMENTED
 
 RobotPilot* ProxyRpi_2019::createPilot(Robot* robot) {
-    return new PilotOmni(robot,10.0/7, 0, 0.5, 0.0015);
+//    return new PilotOmni(robot,10.0/7, 0, 0.5, 0.0015);
 
-//    return new PilotDifferential(robot);
+    return new PilotDifferential(robot);
 }
 
 //NOT IMPLEMENTED
