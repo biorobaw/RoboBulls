@@ -2,6 +2,8 @@
 #include "utilities/my_yaml.h"
 #include "model/robot/robot.h"
 #include "model/robot/navigation/pilots/pilot_differential.h"
+#include "model/robot/navigation/pilots/pilot_omni.h"
+
 #include <map>
 #include <utility>
 
@@ -12,7 +14,8 @@
 
 
 
-ProxyRpi_2019::ProxyRpi_2019(YAML::Node* t_node)
+ProxyRpi_2019::ProxyRpi_2019(YAML::Node* t_node) :
+    drive( 105, 30)
 {
 
 
@@ -60,7 +63,7 @@ void ProxyRpi_2019::sendPacket(Robot* r)
     auto w        = controls->getTargetAngularSpeed(); // we assume rad/s
     float kick    = controls->getKickSpeed();
     bool  dribble = controls->getDribble();
-
+    qInfo() << "V: "<<v.x << " W: " <<w << "controls" << controls;
 
 //    // prepare command package
     pirobot2019::VelocityXYZ packet;
@@ -71,16 +74,7 @@ void ProxyRpi_2019::sendPacket(Robot* r)
     QByteArray dgram;
     dgram.resize(packet.ByteSizeLong());
     packet.SerializeToArray(dgram.data(), dgram.size());
-    string temp = packet.SerializeAsString();
-    string temp2;
-    for(int i = 0; i<temp.length(); i++){
-        int itemp = temp[i];
-        temp2+= std::to_string(itemp);
-    }
-    std::cout << "temp: "<<std::endl;
-    std::cout << temp2<<std::endl;
-    dgram.push_front(char(0));
-    qInfo() << dgram;
+    dgram.push_front(char(0)); //Push message type 0 means velocity packet
     std::pair<QHostAddress, int> add_port = ROBOT_ADDRS[id];
     qInfo() << "Address: " <<add_port.first << "\nPort: " << add_port.second << "\n X, W: " << v.x << " "<<w;
     udpsocket->writeDatagram(dgram, add_port.first, add_port.second);
@@ -141,15 +135,17 @@ bool  ProxyRpi_2019::isHolonomic() {
 //NOT IMPLEMENTED
 
 RobotPilot* ProxyRpi_2019::createPilot(Robot* robot) {
-    return new PilotDifferential(robot);
+    return new PilotOmni(robot,10.0/7, 0, 0.5, 0.0015);
+
+//    return new PilotDifferential(robot);
 }
 
 //NOT IMPLEMENTED
-//void ProxyRpi_2019::getWheelSpeeds(Point velocity, float angular_speed, double wheelSpeeds[4]){
-//    auto res = drive.getWheelSpeeds(velocity.x, velocity.y, angular_speed);
-//    for(int i=0; i<4; i++)
-//        wheelSpeeds[i] = res[i];
-//}
+void ProxyRpi_2019::getWheelSpeeds(Point velocity, float angular_speed, double wheelSpeeds[2]){
+    auto res = drive.getWheelSpeeds(velocity.x, velocity.y, angular_speed);
+    for(int i=0; i<2; i++)
+        wheelSpeeds[i] = res[i];
+}
 
 QString ProxyRpi_2019::getName(){
     return "rpi_2019";

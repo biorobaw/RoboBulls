@@ -5,6 +5,7 @@
 #include "model/robot/robot_implementation.h"
 #include <QtNetwork/QUdpSocket>
 #include "utilities/point.h"
+#include "model/robot/navigation/drives/differential_drive.h"
 #include <map>
 #include <utility>
 
@@ -32,6 +33,7 @@ public:
 
 private:
 //    OmniDrive drive;
+    DifferentialDrive drive;
     QUdpSocket* udpsocket = new QUdpSocket(this);
     QHostAddress _addr;
     quint16 _port;
@@ -43,7 +45,7 @@ private:
 //    void sendReplacementPackets();
 
 
-//    void getWheelSpeeds(Point velocity, float angular_speed, double wheelSpeeds[4]);
+    void getWheelSpeeds(Point velocity, float angular_speed, double wheelSpeeds[2]);
 
 protected:
     void close() override;
