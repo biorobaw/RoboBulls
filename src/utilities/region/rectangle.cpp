@@ -240,7 +240,7 @@ std::vector<Point> Rectangle::intersectLine(Point p0, Point p1){
         auto inter = (points[i]*hj + points[j]*hi)/(hi+hj);
         intersection.push_back(inter);
     }
-
+    return intersection;
 }
 
 

@@ -490,8 +490,8 @@ string AttackSupport::getName() {
 
 AttackSupport::~AttackSupport()
 {
-    for(int i=0; i < prob_field_rows; i++)
-        delete prob_field[i];
+    /*for(int i=0; i < prob_field_rows; i++)
+        delete prob_field[i];*/
     delete prob_field;
 }
 

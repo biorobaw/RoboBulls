@@ -127,7 +127,10 @@ SControllerNormalGame::SControllerNormalGame(RobotTeam* team, YAML::Node* c_node
     state_transitions[INDIRECT_KICK][0] = INDIRECT_KICK;
     state_transitions[HALT][0] = HALT;
 
+    for (int i = 0; i <= 10 ; i++){
+            state_transitions[NORMAL_GAME][i] = NORMAL_GAME;
 
+    }
 
 
 }

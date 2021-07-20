@@ -16,6 +16,7 @@ public:
     void assignBehaviors() override;
     void runControlCycle() override;
     virtual QString getName() override;
+    int getStatus() override;
 
 public:
     /*! Assigns goalie behavior to ID GOALIE_ID if it is on the team
