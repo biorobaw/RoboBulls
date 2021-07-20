@@ -27,7 +27,7 @@ void MyGamepad::connectToRobot(Robot* robot, bool use_overriden_controller ,Robo
     connect(this, &QGamepad::buttonR1Changed, this, &MyGamepad::processKickCommand);
     connect(this, &MyGamepad::setKickSpeed, controller, &RobotLowLevelControls::setKickSpeed);
 
-    connect(this, &QGamepad::buttonL1Changed, this, &MyGamepad::switchRobot);
+    connect(this, &QGamepad::buttonL2Changed, this, &MyGamepad::switchRobot);
 
 
     //disconnect(this, nullptr, nullptr, nullptr);
@@ -93,10 +93,11 @@ void MyGamepad::processKickCommand(){
 }
 
 void MyGamepad::switchRobot(){
-    //robot->getTeamId();
+    if(!buttonL2())
+        return;
     disconnect(this, nullptr, nullptr, nullptr);
     this->robot = team->getRobot(robot->getId()+1);
-    qInfo() <<"switch: current id " <<robot->getId();
+    qInfo() <<"Switched to robot:  " <<robot->getId();
 
 
     auto controller = this->use_overriden_controller ? robot->getOverridenController() : robot;
