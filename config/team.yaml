@@ -14,12 +14,8 @@ TEAM_BLUE :
       # FREQUENCY: 0            # radio frequency channel at which robots are communicating 
     
     # if robot type == grsim, then must specify:
-<<<<<<< Updated upstream
-    ROBOT_PROXY:
-      TYPE : grsim # alternatives: grsim yisibot rpi_2019 none
-      ADDR : 127.0.0.1 # ip of grsim
-      PORT : 20011     # port of grsim
-=======
+
+
     #ROBOT_PROXY:
      # TYPE : rpi_2019 # alternatives: grsim yisibot rpi_2019 none
      # ROBOT:
@@ -31,7 +27,7 @@ TEAM_BLUE :
      #       PORT: 20014
      # ADDR : 127.0.0.1 # ip of grsim
      # PORT : 20011     # port of grsim
->>>>>>> Stashed changes
+
       #TYPE: yisibot
       #USB_PORT: \\.\COM3
       #FREQUENCY: 0
@@ -69,7 +65,7 @@ TEAM_YELLOW :
         PORT : 20011     # port of grsim
     
     STRATEGY_CONTROLLER:
-        ID: NORMAL_GAME # options: NORMAL_GAME or STRATEGY_TESTER or JOYSTICK
+        ID: STRATEGY_TESTER # options: NORMAL_GAME or STRATEGY_TESTER or JOYSTICK
         ROLES:
             GOALIE : 5
             ATTACK1 : 3

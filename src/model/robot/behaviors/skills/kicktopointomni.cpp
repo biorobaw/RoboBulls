@@ -8,6 +8,7 @@
 #include "model/robot/navigation/robot_pilot.h"
 #include "model/game_state.h"
 #include "model/team/team.h"
+#include <iostream>
 #include "utilities/measurements.h"
 
 
@@ -49,7 +50,7 @@
 //#else
 float BEHIND_RAD_AVOID = ROBOT_RADIUS+Field::BALL_RADIUS + 50;
 float BEHIND_RAD = ROBOT_RADIUS+Field::BALL_RADIUS;
-float FORWARD_WAIT_COUNT = 60;
+float FORWARD_WAIT_COUNT = 5;
 float RECREATE_DIST_TOL = 25;
 float STRICTEST_ANG_TOL = 40 * (M_PI/180);
 float KICK_LOCK_ANGLE = 12 * (M_PI/180);
@@ -114,7 +115,7 @@ bool KickToPointOmni::perform()
     {
     case MOVE_BEHIND:
         {
-    //      std::cout << "KTPO STATE: MOVE BEHIND" << std::endl;
+          std::cout << "KTPO STATE: MOVE BEHIND" << std::endl;
             robot->setDribble(false);
 
             behindBall = bp + Point(BEHIND_RAD_AVOID * cos(targetBallAng), BEHIND_RAD_AVOID * sin(targetBallAng));
@@ -140,13 +141,13 @@ bool KickToPointOmni::perform()
 
     case MOVE_INTERMEDIATE:
         {
-//            std::cout << "KTPO STATE: MOVE INTERMEDIATE" << std::endl;
+           std::cout << "KTPO STATE: MOVE INTERMEDIATE" << std::endl;
             robot->setDribble(false);
             // Move towards the ball at the angle to target
             // Motion will be straight ahead, given the completion of MOVE_BEHIND
             behindBall = bp + Point(BEHIND_RAD * cos(targetBallAng), BEHIND_RAD * sin(targetBallAng));
             cmd.distance_tolerance = 20;
-            cmd.angle_tolerance = 3*M_PI/180;
+            cmd.angle_tolerance = 30*M_PI/180;
             cmd.velocity_multiplier = 1;
             cmd.setTarget(behindBall, ballTargetAng);
             cmd.avoid_ball = cmd.avoid_obstacles = false;
@@ -154,8 +155,9 @@ bool KickToPointOmni::perform()
 
             //Make sure move_skill keeps the robot at the correct pose
             //This is done by waiting for confirmation from the movement class
-            if(robot->completedGoToPoseCmd())
+            if(robot->completedGoToPoseCmd()){
                 ++m_moveCompletionCount;
+                std::cout << "mcc: " << m_moveCompletionCount <<std::endl;}
             if(m_moveCompletionCount > FORWARD_WAIT_COUNT) {
                 state = MOVE_FORWARD;
                 m_hasRecoveredKickLock = true;
@@ -166,7 +168,7 @@ bool KickToPointOmni::perform()
 
     case MOVE_FORWARD:
         {
-//            std::cout << "KTPO STATE: MOVE FORWARD" << std::endl;
+            std::cout << "KTPO STATE: MOVE FORWARD" << std::endl;
 
             robot->setDribble(true);
             // Move towards the ball at the angle to target (straight)
@@ -185,12 +187,13 @@ bool KickToPointOmni::perform()
         break;
     case KICK:
         {
-//            std::cout << "KTPO STATE: KICK" << std::endl;
+            std::cout << "KTPO STATE: KICK" << std::endl;
 
             // Are we using full power? Otherwise, use distance-based power
             float powerDistance = Measurements::distance(robot, *m_targetPointer);
-            if(m_useFullPower) robot->setKickDistance();
+            if(m_useFullPower) robot->setKickSpeed(5000);
             else robot->setKickDistance(powerDistance);
+            std::cout << "Kick signal sent"<< std::endl;
 
             if(m_kickCommandCount < 100)
             {

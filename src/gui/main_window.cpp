@@ -106,6 +106,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
                 emit robot->setGuiTargetVelocity(Point(0,0),-3.1415/2);
                 break;
             case Qt::Key_Space:
+            case Qt::Key_K:
                 emit robot->setGuiKickSpeed();
                 break;
             case Qt::Key_Shift:

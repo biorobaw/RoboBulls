@@ -169,6 +169,8 @@ void NormalGameStrategy::runControlCycle()
     {
         std::cout << "Shoot Penalty" << std::endl;
         Robot* shooter = deffend1;
+        if(attack1)
+            attack1->setBehavior<AttackSupport>();
         if(shooter)
         {
             shooter->setBehavior<AttackMain>();

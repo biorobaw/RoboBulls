@@ -54,7 +54,7 @@ bool AttackMain::perform()
     case scoring:
     {
 //        std::cout << "AttackMain: Score" << std::endl;
-        robot->setDribble(false);
+        robot->setDribble(true);
 
         std::pair<bool, Point> goal_eval = calcBestGoalPoint();
 

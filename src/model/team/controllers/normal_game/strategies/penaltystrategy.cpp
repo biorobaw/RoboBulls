@@ -17,7 +17,7 @@ void PenaltyStrategy::assignBehaviors()
 {
     // If we are taking the penalty kick
     char gs = game_state->getRefereeCommand();
-    if ((gs == 'P' && team->getID() == ROBOT_TEAM_BLUE) || (gs == 'p' && team->getID() == ROBOT_TEAM_YELLOW))
+    if ((gs == 7 && team->getID() == ROBOT_TEAM_BLUE) || (gs == 6 && team->getID() == ROBOT_TEAM_YELLOW))
     {
         // One of the defenders will take the penalty and move back
         Robot* kicker = team->getRobotByRole(RobotRole::DEFEND1);
@@ -36,8 +36,17 @@ void PenaltyStrategy::assignBehaviors()
 
         // The other defender walls our goal
         Robot* def = team->getRobotByRole(RobotRole::DEFEND2);
+        Robot* attack3 = team->getRobotByRole(RobotRole::ATTACK3);
+        Robot* attack4 = team->getRobotByRole(RobotRole::ATTACK4);
+        Robot* defender1 = team->getRobotByRole(RobotRole::DEFEND3);
         if(def)
             def->setBehavior<Wall>();
+        if(attack3)
+            attack3->setBehavior<Wall>();
+        if(attack4)
+            attack4->setBehavior<Wall>();
+        if(defender1)
+            defender1->setBehavior<Wall>();
 
         // Goalie
         Robot* goalie = team->getRobotByRole(RobotRole::GOALIE);

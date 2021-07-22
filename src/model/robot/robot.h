@@ -113,7 +113,7 @@ protected:
 
 
     // ====== IMPLEMENTATION DEPENDENT VARIABLES =================
-    bool has_kicker = false;
+    bool has_kicker = true;
     bool is_holonomic = true;
     RobotPilot* pilot = nullptr;
 
