@@ -29,14 +29,16 @@ void FreeKickStrategy::assignBehaviors()
     Robot* attack2 = team->getRobotByRole(RobotRole::ATTACK2);
     Robot* attack3 = team->getRobotByRole(RobotRole::ATTACK3);
     Robot* attack4 = team->getRobotByRole(RobotRole::ATTACK4);
-
+    int numRobots = 0;
     // We are taking the free kick
 
     if ((game_state->getRefereeCommand() == 9 && team->getID() == ROBOT_TEAM_BLUE) ||
         (game_state->getRefereeCommand() == 8 && team->getID() == ROBOT_TEAM_YELLOW))
     {
-        for(Robot* rob : team->getRobots())
+        for(Robot* rob : team->getRobots()){
             rob->clearBehavior();
+            numRobots++;
+        }
 
         auto opponent_goal = Field::getGoalPosition(OPPONENT_SIDE);
         if(attack1)
@@ -80,14 +82,13 @@ void FreeKickStrategy::assignBehaviors()
             defender1->setBehavior<KickToPointOmni>(opponent_goal);
             kicker = defender1;
              std::cout << "defender1 is the kicker" << std::endl;
-        }
 
         if(wall1 && !wall1->hasBehavior())
             wall1->setBehavior<Wall>();
         if(wall2 && !wall2->hasBehavior())
             wall2->setBehavior<Wall>();
         if(attack1 && !attack1->hasBehavior())
-            attack1->setBehavior<AttackMain>();
+            attack1->setBehavior<AttackSupport>();
         if(attack2 && !attack2->hasBehavior())
             attack2->setBehavior<AttackSupport>();
         if(attack3 && !attack3->hasBehavior())
@@ -124,7 +125,7 @@ void FreeKickStrategy::assignBehaviors()
         if(goalie) goalie->setBehavior<Goalie>();
     }
 }
-
+}
 int FreeKickStrategy::getStatus()
 {
     if ((kicker && kicker->getKickSpeed() > 0)

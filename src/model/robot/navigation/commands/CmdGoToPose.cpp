@@ -4,7 +4,7 @@
 
 
 float CmdGoToPose::default_velocity_multiplier = 1;
-float CmdGoToPose::default_distance_tolerance = 40;
+float CmdGoToPose::default_distance_tolerance = 5;
 float CmdGoToPose::default_angle_tolerance = 5*M_PI/180;
 
 

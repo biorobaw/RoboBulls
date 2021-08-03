@@ -24,13 +24,19 @@ void PenaltyStrategy::assignBehaviors()
         if(kicker){
             auto opponent_goal = Field::getGoalPosition(OPPONENT_SIDE);
             kicker->setBehavior<GenericMovementBehavior>(Point(opponent_goal - Point(1300,0)), 0);
+            Robot* attack1 = team->getRobotByRole(RobotRole::ATTACK1);
+            if(attack1)
+                attack1->setBehavior<GenericMovementBehavior>(Point(-500, 1000), 0);
+        }else {
+            auto opponent_goal = Field::getGoalPosition(OPPONENT_SIDE);
+            Robot* kicker = team->getRobotByRole(RobotRole::ATTACK1);
+            kicker->setBehavior<GenericMovementBehavior>(Point(opponent_goal - Point(1300,0)), 0);
         }
 
         // Position the usual attackers behind the 400 mm mark
-        Robot* attack1 = team->getRobotByRole(RobotRole::ATTACK1);
+
         Robot* attack2 = team->getRobotByRole(RobotRole::ATTACK2);
-        if(attack1)
-            attack1->setBehavior<GenericMovementBehavior>(Point(-500, 1000), 0);
+
         if(attack2)
             attack2->setBehavior<GenericMovementBehavior>(Point(-500,-1000), 0);
 

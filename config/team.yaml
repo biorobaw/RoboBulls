@@ -49,10 +49,10 @@ TEAM_BLUE :
          ATTACK1 : 3
          ATTACK2 : 0
          ATTACK3 : 1
-         ATTACK4 : 2
+        # ATTACK4 : 6
          DEFEND1 : 4
-         DEFEND2 : 6
-         DEFEND3 : 7
+         DEFEND2 : 2
+        # DEFEND3 : 7
     
     # support for rpi_2019 is work in progress
     

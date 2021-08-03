@@ -106,6 +106,7 @@ SOURCES += src/main.cpp \
         src/model/team/controllers/normal_game/behaviors/refstop.cpp \
         src/model/team/controllers/normal_game/behaviors/wall.cpp \
         src/model/team/controllers/normal_game/scontroller_normal_game.cpp \
+        src/model/team/controllers/normal_game/strategies/ballplacementstrategy.cpp \
         src/model/team/controllers/normal_game/strategies/freekickstrategy.cpp \
         src/model/team/controllers/normal_game/strategies/haltstrategy.cpp \
         src/model/team/controllers/normal_game/strategies/indirectkickstrategy.cpp \
@@ -198,6 +199,7 @@ HEADERS += \
         src/model/team/controllers/normal_game/behaviors/wall.h \
         src/model/team/controllers/normal_game/normal_game_roles.h \
         src/model/team/controllers/normal_game/scontroller_normal_game.h \
+        src/model/team/controllers/normal_game/strategies/ballplacementstrategy.h \
         src/model/team/controllers/normal_game/strategies/freekickstrategy.h \
         src/model/team/controllers/normal_game/strategies/haltstrategy.h \
         src/model/team/controllers/normal_game/strategies/indirectkickstrategy.h \
