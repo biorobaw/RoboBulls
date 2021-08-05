@@ -44,6 +44,7 @@ include(protobuf.pri)
 SOURCES += src/main.cpp \
         src/configuration/configuration.cpp \
         src/configuration/motion_parameters.cpp \
+        src/gui/inputconfig.cpp \
         src/gui/interface/data/gui_ball.cpp \
         src/gui/interface/data/gui_field.cpp \
         src/gui/interface/data/gui_game_state.cpp \
@@ -136,6 +137,7 @@ HEADERS += \
         src/configuration/constants.h \
         src/configuration/configuration.h \
         src/configuration/motion_parameters.h \
+        src/gui/inputconfig.h \
         src/gui/interface/data/gui_ball.h \
         src/gui/interface/data/gui_field.h \
         src/gui/interface/data/gui_game_state.h \
@@ -255,6 +257,7 @@ RESOURCES += \
     src/gui/images.qrc
 
 FORMS += \
+    src/gui/inputconfig.ui \
     src/gui/main_window.ui \
     src/gui/panels/panel_field.ui \
     src/gui/panels/panel_game_info.ui \

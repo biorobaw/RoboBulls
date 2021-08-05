@@ -14,6 +14,7 @@
 #include "model/team/team.h"
 #include "configuration/configuration.h"
 #include "utilities/debug.h"
+#include "gui/inputconfig.h"
 
 
 /*! @mainpage Welcome to the RoboBulls 2 Documentation.
@@ -139,7 +140,8 @@ int main(int argc, char *argv[])
     qInfo() << "-- COMMAND ARGS (" << argc << ")";
     for(int i=0; i < argc; i++)
         qInfo() << "        arg (" << i << ") : " << argv[i] ;
-
+    inputConfig newConfig;
+    newConfig.show();
     // Load config files:
     Configuration& config = *new Configuration(argc > 1 ? argv[1] : "./config");
 
