@@ -140,8 +140,12 @@ int main(int argc, char *argv[])
     qInfo() << "-- COMMAND ARGS (" << argc << ")";
     for(int i=0; i < argc; i++)
         qInfo() << "        arg (" << i << ") : " << argv[i] ;
-    inputConfig newConfig;
-    newConfig.show();
+    inputConfig newBlueConfig(nullptr, false);
+    newBlueConfig.show();
+    int result = a.exec();
+    inputConfig newYellowConfig(nullptr, true);
+    newYellowConfig.show();
+    result = a.exec();
     // Load config files:
     Configuration& config = *new Configuration(argc > 1 ? argv[1] : "./config");
 
@@ -175,7 +179,7 @@ int main(int argc, char *argv[])
 
 
     registerExitSignals();
-    int result = a.exec(); // starts main loop event
+    result = a.exec(); // starts main loop event
 
 
 

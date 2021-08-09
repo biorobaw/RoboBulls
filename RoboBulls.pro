@@ -270,6 +270,7 @@ FORMS += \
 
 
 DISTFILES += \
+    config/team_copy.yaml \
     src/robot/robots/grsim/proto/grSim_Commands.proto \
     src/robot/robots/grsim/proto/grSim_Packet.proto \
     src/robot/robots/grsim/proto/grSim_Replacement.proto \
