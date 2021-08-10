@@ -280,7 +280,7 @@ void TestStrategy::assignBehaviors()
     int num_robots = robots.size();
     int i = 0;
     for(auto r : robots){
-        if(i++ ==0) r->setBehavior<Goalie>();
+        r->setBehavior<AttackMain>();
         //else r->setBehavior<GoToBehavior>(i*360.0/num_robots);
 
     }

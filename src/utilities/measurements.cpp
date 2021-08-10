@@ -4,6 +4,7 @@
 #include "model/robot/robot.h"
 #include "measurements.h"
 #include <algorithm>
+#include <iostream>
 
 float Measurements::mag(const Point& p)
 {
@@ -96,6 +97,7 @@ bool Measurements::angleInRange(float angle, float start, float end)
 
 bool Measurements::isClose(float angle1, float angle2, float tol)
 {
+    std::cout << "Angle diff: " << fabs(Measurements::angleDiff(angle1, angle2)) << "  tol: " << tol <<std::endl;
     return fabs(Measurements::angleDiff(angle1, angle2)) < tol;
 }
 

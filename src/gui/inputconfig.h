@@ -22,6 +22,8 @@ public:
     void normal_game_submit(bool isClicked);
     void strategy_tester_submit(bool isClicked);
     void rpi2019_load_robots(int numRobots);
+
+
 private slots:
 
 
@@ -38,6 +40,9 @@ private:
     std::string team;
     YAML::Node team_node;
     std::map<std::string, QWidget*> params;
+    std::map<std::string, QWidget*> strategy_params;
+
+
 
 
 

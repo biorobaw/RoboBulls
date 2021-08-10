@@ -121,6 +121,8 @@ public:
 
 };
 
+
+
 #undef main // this is to prevent multiple definitions of main from external modules like SDL
 int main(int argc, char *argv[])
 {
@@ -175,6 +177,7 @@ int main(int argc, char *argv[])
 
     // must create gui last to connect to teams and ssl-listeners
     // since the gui assumes the existance of the model
+
     (new GuiInterface(teams))->show(); // singleton -> no need to save reference
 
 

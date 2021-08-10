@@ -30,33 +30,85 @@ void inputConfig::grsim_submit(bool isClicked)
     team_node[team]["ROBOT_PROXY"]["TYPE"] = "grsim";
     team_node[team]["ROBOT_PROXY"]["ADDR"] = ((QLineEdit*)params["grsim_addr"])->text().toStdString();
     team_node[team]["ROBOT_PROXY"]["PORT"] = ((QLineEdit*)params["grsim_port"])->text().toStdString();
-    qInfo() << team_node[team]["ROBOT_PROXY"]["ADDR"];
+    //qInfo() << team_node[team]["ROBOT_PROXY"]["ADDR"];
     std::ofstream fout("config/team.yaml");
     if (fout)
         fout << team_node;
     else
         qInfo() << "File not found";
+    ui->confirm_robot_proxy->setText("Robot Proxy Updated: GrSim");
 }
 void inputConfig::yisibot_submit(bool isClicked)
 {
-
+    team_node[team]["ROBOT_PROXY"]["TYPE"] = "yisibot";
+    team_node[team]["ROBOT_PROXY"]["FREQUENCY"] = ((QLineEdit*)params["yisibot_frequency"])->text().toStdString();
+    team_node[team]["ROBOT_PROXY"]["USB_PORT"] = ((QLineEdit*)params["yisibot_usb_port"])->text().toStdString();
+    //qInfo() << team_node[team]["ROBOT_PROXY"]["ADDR"];
+    std::ofstream fout("config/team.yaml");
+    if (fout)
+        fout << team_node;
+    else
+        qInfo() << "File not found";
+    ui->confirm_robot_proxy->setText("Robot Proxy Updated: Yisibot");
 }
 
 void inputConfig::rpi2019_submit(bool isClicked)
 {
-
+    team_node[team]["ROBOT_PROXY"]["TYPE"] = "rpi_2019";
+    for (int i = 0; i < params.size()/2 ; i ++ ) {
+        team_node[team]["ROBOT_PROXY"]["ROBOT"][i+1]["ADDR"] = ((QLineEdit*)params["robot" + std::to_string(i+1) + "_addr"])->text().toStdString();
+        team_node[team]["ROBOT_PROXY"]["ROBOT"][i+1]["PORT"] = ((QLineEdit*)params["robot" + std::to_string(i+1) + "_port"])->text().toStdString();
+    }
+    std::ofstream fout("config/team.yaml");
+    if (fout)
+        fout << team_node;
+    else
+        qInfo() << "File not found";
+    ui->confirm_robot_proxy->setText("Robot Proxy Updated: RPI_2019");
 }
 void inputConfig::normal_game_submit(bool isClicked)
 {
+    team_node[team]["STRATEGY_CONTROLLER"]["ID"] = "NORMAL_GAME";
+
+
+    if (((QSpinBox*)strategy_params["goalie"])->value() != 99) team_node[team]["STRATEGY_CONTROLLER"]["ROLES"]["GOALIE"] = ((QSpinBox*)strategy_params["goalie"])->value();
+        else team_node[team]["STRATEGY_CONTROLLER"]["ROLES"].remove("GOALIE");
+    if (((QSpinBox*)strategy_params["attack1"])->value() != 99)team_node[team]["STRATEGY_CONTROLLER"]["ROLES"]["ATTACK1"] = ((QSpinBox*)strategy_params["attack1"])->value();
+        else team_node[team]["STRATEGY_CONTROLLER"]["ROLES"].remove("ATTACK1");
+    if (((QSpinBox*)strategy_params["attack2"])->value() != 99)team_node[team]["STRATEGY_CONTROLLER"]["ROLES"]["ATTACK2"] = ((QSpinBox*)strategy_params["attack2"])->value();
+        else team_node[team]["STRATEGY_CONTROLLER"]["ROLES"].remove("ATTACK2");
+    if (((QSpinBox*)strategy_params["attack3"])->value() != 99)team_node[team]["STRATEGY_CONTROLLER"]["ROLES"]["ATTACK3"] = ((QSpinBox*)strategy_params["attack3"])->value();
+        else team_node[team]["STRATEGY_CONTROLLER"]["ROLES"].remove("ATTACK3");
+    if (((QSpinBox*)strategy_params["attack4"])->value() != 99)team_node[team]["STRATEGY_CONTROLLER"]["ROLES"]["ATTACK4"] = ((QSpinBox*)strategy_params["attack4"])->value();
+        else team_node[team]["STRATEGY_CONTROLLER"]["ROLES"].remove("ATTACK4");
+    if (((QSpinBox*)strategy_params["defend1"])->value() != 99)team_node[team]["STRATEGY_CONTROLLER"]["ROLES"]["DEFEND1"] = ((QSpinBox*)strategy_params["defend1"])->value();
+        else team_node[team]["STRATEGY_CONTROLLER"]["ROLES"].remove("DEFEND1");
+    if (((QSpinBox*)strategy_params["defend2"])->value() != 99)team_node[team]["STRATEGY_CONTROLLER"]["ROLES"]["DEFEND2"] = ((QSpinBox*)strategy_params["defend2"])->value();
+        else team_node[team]["STRATEGY_CONTROLLER"]["ROLES"].remove("DEFEND2");
+    if (((QSpinBox*)strategy_params["defend3"])->value() != 99)team_node[team]["STRATEGY_CONTROLLER"]["ROLES"]["DEFEND3"] = ((QSpinBox*)strategy_params["defend3"])->value();
+        else team_node[team]["STRATEGY_CONTROLLER"]["ROLES"].remove("DEFEND3");
+    std::ofstream fout("config/team.yaml");
+    if (fout)
+        fout << team_node;
+    else
+        qInfo() << "File not found";
+    ui->confirm_startegy->setText("Strategy Updated: Normal Game");
 
 }
 void inputConfig::strategy_tester_submit(bool isClicked)
 {
-
+    team_node[team]["STRATEGY_CONTROLLER"]["ID"] = "STRATEGY_TESTER";
+    std::ofstream fout("config/team.yaml");
+    if (fout)
+        fout << team_node;
+    else
+        qInfo() << "File not found";
+    ui->confirm_startegy->setText("Strategy Updated: Strategy Tester");
 }
 
 void inputConfig::rpi2019_load_robots(int numRobots)
 {
+    params.clear();
     int rcount = ui->robot_proxy_form->rowCount();
     for (int  i = 0; i <  rcount ; i++)
     {
@@ -140,7 +192,7 @@ void inputConfig::on_robot_proxy_activated(const QString &arg1)
         ui->robot_proxy_form->addRow(submit);
 
         params.insert(std::make_pair("yisibot_frequency", frequency));
-        params.insert(std::make_pair("yisibot_port", usb_port));
+        params.insert(std::make_pair("yisibot_usb_port", usb_port));
 
         connect(submit, &QPushButton::clicked, this, &inputConfig::yisibot_submit );
 
@@ -207,6 +259,16 @@ void inputConfig::on_strategy_controller_activated(const QString &arg1)
         defend2->setValue(def_defend2);
         defend3->setValue(def_defend3);
 
+
+        strategy_params.insert(std::make_pair("goalie", goalie));
+        strategy_params.insert(std::make_pair("attack1", attack1));
+        strategy_params.insert(std::make_pair("attack2", attack2));
+        strategy_params.insert(std::make_pair("attack3", attack3));
+        strategy_params.insert(std::make_pair("attack4", attack4));
+        strategy_params.insert(std::make_pair("defend1", defend1));
+        strategy_params.insert(std::make_pair("defend2", defend2));
+        strategy_params.insert(std::make_pair("defend3", defend3));
+
         ui->strategy_controller_form->addRow(goalie_label, goalie);
         ui->strategy_controller_form->addRow(attack1_label, attack1);
         ui->strategy_controller_form->addRow(attack2_label, attack2);
@@ -246,5 +308,7 @@ void inputConfig::on_pushButton_clicked()
 {
     this->setAttribute(Qt::WA_QuitOnClose, true);
     this->close();
+
+
 }
 

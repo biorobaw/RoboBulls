@@ -127,7 +127,10 @@ bool KickToPointOmni::perform()
             //Make sure move_skill keeps the robot at the correct pose
             //This is done by waiting for confirmation from the movement class
             if(robot->completedGoToPoseCmd())
-                ++m_moveCompletionCount;
+            {
+                            ++m_moveCompletionCount;
+                            std::cout << "mcc: " << m_moveCompletionCount <<std::endl;}
+
             if(m_moveCompletionCount > FORWARD_WAIT_COUNT) {
                 state = MOVE_INTERMEDIATE;
                 m_hasRecoveredKickLock = true;
