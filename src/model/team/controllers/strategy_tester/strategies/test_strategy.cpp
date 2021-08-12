@@ -279,8 +279,9 @@ void TestStrategy::assignBehaviors()
     auto robots = team->getRobots();
     int num_robots = robots.size();
     int i = 0;
+
     for(auto r : robots){
-        r->setBehavior<AttackMain>();
+        r->setBehavior<KickToPointOmni>(new Point(3000, 0));
         //else r->setBehavior<GoToBehavior>(i*360.0/num_robots);
 
     }

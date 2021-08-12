@@ -9,6 +9,7 @@
 #include "model/team/team.h"
 #include "model/game_state.h"
 #include "utilities/measurements.h"
+#include <iostream>
 
 
 
@@ -28,7 +29,7 @@ DribbleToPoint::DribbleToPoint(Robot* robot, Point* target, bool avoid_obstacles
 
 bool DribbleToPoint::perform()
 {
-//    std::cout << "Dribbling" << std::endl;
+    std::cout << "Dribbling" << std::endl;
 
     Point bp = *ball;
     Point rp = *robot;
@@ -39,12 +40,12 @@ bool DribbleToPoint::perform()
     {
     case move_to_ball:
     {
-//        std::cout << "Dribble: Travel" << std::endl;
+        std::cout << "Dribble: Travel" << std::endl;
 
         robot->setDribble(false);
 
-        bool dist_check = dist_to_ball < ROBOT_RADIUS + Field::BALL_RADIUS + 50;
-        bool ang_check = fabs(Measurements::angleDiff(ang_to_ball, robot->getOrientation())) < 5*M_PI/180;
+        bool dist_check = dist_to_ball < ROBOT_RADIUS + Field::BALL_RADIUS + DIST_TOLERANCE;
+        bool ang_check = fabs(Measurements::angleDiff(ang_to_ball, robot->getOrientation())) < ROT_TOLERANCE;
 
         if(dist_check && ang_check)
         {
@@ -62,15 +63,15 @@ bool DribbleToPoint::perform()
     }
     case grasp:
     {
-//        std::cout << "Dribble: Grasp" << std::endl;
+        std::cout << "Dribble: Grasp" << std::endl;
 
         if(!targetIsAhead(ang_to_ball, rp)
         && safeToAdjust(bp, robot)
         && prefer_forward_motion)
             state = adjust1;
 
-        bool dist_check = dist_to_ball < ROBOT_RADIUS + Field::BALL_RADIUS + 75;
-        bool ang_check = fabs(Measurements::angleDiff(ang_to_ball, robot->getOrientation()) < 20*M_PI/180);
+        bool dist_check = dist_to_ball < ROBOT_RADIUS + Field::BALL_RADIUS +dist_to_ball;
+        bool ang_check = fabs(Measurements::angleDiff(ang_to_ball, robot->getOrientation()) < ROT_TOLERANCE);
 
         if(!dist_check || !ang_check)
         {
@@ -91,15 +92,15 @@ bool DribbleToPoint::perform()
     }
     case move_to_target:
     {
-//        std::cout << "Dribble: Move" << std::endl;
+        std::cout << "Dribble: Move" << std::endl;
 
         if(!targetIsAhead(ang_to_ball, rp)
         && safeToAdjust(bp, robot)
         && prefer_forward_motion)
             state = adjust1;
 
-        bool dist_check = dist_to_ball < ROBOT_RADIUS + Field::BALL_RADIUS + 75;
-        bool ang_check = fabs(Measurements::angleDiff(ang_to_ball, robot->getOrientation()) < 30*M_PI/180);
+        bool dist_check = dist_to_ball < ROBOT_RADIUS + Field::BALL_RADIUS + dist_to_ball;
+        bool ang_check = fabs(Measurements::angleDiff(ang_to_ball, robot->getOrientation()) < ROT_TOLERANCE);
 
         if(!dist_check || !ang_check)
         {
@@ -119,7 +120,7 @@ bool DribbleToPoint::perform()
     }
     case adjust1:
     {
-//        std::cout << "Dribble: Adjust1" << std::endl;
+        std::cout << "Dribble: Adjust1" << std::endl;
 
         float theta = Measurements::angleBetween(bp,rp);
         Point adjust_point = Point(bp.x + ROBOT_RADIUS*2 * cos(theta),
@@ -139,7 +140,7 @@ bool DribbleToPoint::perform()
     }
     case adjust2:
     {
-//        std::cout << "Dribble: Adjust2" << std::endl;
+       std::cout << "Dribble: Adjust2" << std::endl;
 
         float theta = Measurements::angleBetween(*target,bp);
         Point adjust_point = Point(bp.x + ROBOT_RADIUS*2 * cos(theta),
@@ -186,6 +187,8 @@ bool DribbleToPoint::safeToAdjust(const Point& bp, Robot* robot)
 
 
 bool DribbleToPoint::isFinished(){
+    if (Measurements::distance(*ball, *target) < 300)
+        std::cout << "Finished" << std::endl;
     return Measurements::distance(*ball, *target) < 300;
 }
 string DribbleToPoint::getName(){

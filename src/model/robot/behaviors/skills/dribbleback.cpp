@@ -9,6 +9,7 @@
 #include "model/team/team.h"
 #include "model/game_state.h"
 #include "utilities/measurements.h"
+#include "iostream"
 
 
 
@@ -24,7 +25,7 @@ DribbleBack::DribbleBack(Robot* robot, Point* target)
 
 bool DribbleBack::perform()
 {
-//    std::cout << "Dribble Back" << std::endl;
+    std::cout << "Dribble Back" << std::endl;
 
     Point bp = *ball;
     Point rp = *robot;
@@ -35,12 +36,13 @@ bool DribbleBack::perform()
     {
     case move_to_ball:
     {
-//        std::cout << "Dribble Back: Move to Ball" << std::endl;
+        std::cout << "Dribble Back: Move to Ball" << std::endl;
 
         robot->setDribble(false);
 
-        bool dist_check = dist_to_ball < ROBOT_RADIUS + Field::BALL_RADIUS + 50;
-        bool ang_check = fabs(Measurements::angleDiff(ang_to_ball, robot->getOrientation())) < 5*M_PI/180;
+        bool dist_check = dist_to_ball < ROBOT_RADIUS + Field::BALL_RADIUS + DIST_TOLERANCE*2; // was 50
+        bool ang_check = fabs(Measurements::angleDiff(ang_to_ball, robot->getOrientation())) < ROT_TOLERANCE;
+        std::cout << "dist to ball: " << dist_to_ball << " tolerance total: " << ROBOT_RADIUS + Field::BALL_RADIUS + DIST_TOLERANCE*2 << std::endl;
 
         if(dist_check && ang_check)
         {
@@ -51,6 +53,7 @@ bool DribbleBack::perform()
         else
         {
             Point move_point = bp + (*target - bp)*(ROBOT_RADIUS/Measurements::mag(*target - bp));
+            std::cout << "move point: " << move_point.x << ", "<< move_point.y << " robot: " << rp.x << ", "<< rp.y << std::endl;
             cmd.velocity_multiplier = 1;
             cmd.setTarget(move_point,ang_to_ball);
             cmd.avoid_ball = cmd.avoid_obstacles = false;
@@ -60,10 +63,10 @@ bool DribbleBack::perform()
     }
     case grasp:
     {
-//        std::cout << "Dribble Back: Grasp" << std::endl;
+        std::cout << "Dribble Back: Grasp" << std::endl;
 
-        bool dist_check = dist_to_ball < ROBOT_RADIUS + Field::BALL_RADIUS + 75;
-        bool ang_check = fabs(Measurements::angleDiff(ang_to_ball, robot->getOrientation())) < 20*M_PI/180;
+        bool dist_check = dist_to_ball < ROBOT_RADIUS + Field::BALL_RADIUS + DIST_TOLERANCE*2; // was 75
+        bool ang_check = fabs(Measurements::angleDiff(ang_to_ball, robot->getOrientation())) < ROT_TOLERANCE; //was 20*m_pi/180
 
         if(!dist_check || !ang_check)
         {
@@ -85,10 +88,12 @@ bool DribbleBack::perform()
     }
     case move_back:
     {
-//        std::cout << "Dribble Back: Move" << std::endl;
+        std::cout << "Dribble Back: Move" << std::endl;
 
-        bool dist_check = dist_to_ball < ROBOT_RADIUS + Field::BALL_RADIUS + 75;
-        bool ang_check = fabs(Measurements::angleDiff(ang_to_ball, robot->getOrientation())) < 30*M_PI/180;
+        bool dist_check = dist_to_ball < ROBOT_RADIUS + Field::BALL_RADIUS + DIST_TOLERANCE*2; //was 75
+
+
+        bool ang_check = fabs(Measurements::angleDiff(ang_to_ball, robot->getOrientation())) < ROT_TOLERANCE; //was 30*m_pi/180
 
         if(!dist_check || !ang_check)
         {
@@ -99,10 +104,14 @@ bool DribbleBack::perform()
 
         robot->setDribble(true);
 
-        float vel = fmax(-3, prev_vel - 0.05);
+        /*float vel = fmax(-3, prev_vel - 0.05);
         prev_vel = vel;
 
-        robot->setTargetVelocityGlobal(Point(0,0),vel/4);
+        robot->setTargetVelocityGlobal(Point(0,0),vel/4);*/
+        cmd.setTarget(*target,ang_to_ball);
+        cmd.avoid_ball = cmd.avoid_obstacles = false;
+        cmd.velocity_multiplier = -0.2;
+        robot->goToPose(cmd);
 
     }
 
@@ -113,6 +122,7 @@ bool DribbleBack::perform()
 }
 
 bool DribbleBack::isFinished(){
+    if (Measurements::distance(*ball, *target) < 300) std::cout << "finished"<<std::endl;
     return Measurements::distance(*ball, *target) < 300;
 }
 string DribbleBack::getName(){
