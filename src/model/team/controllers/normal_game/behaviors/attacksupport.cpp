@@ -38,7 +38,7 @@ bool AttackSupport::perform()
     {
         robot->setDribble(true);
 
-//        std::cout << "Intercepting" << std::endl;
+        std::cout << "Intercepting" << std::endl;
 
         // Evaluate transition to positioning
         Point b_vel = ball->getVelocity();
@@ -95,7 +95,7 @@ bool AttackSupport::perform()
     case position:
     {
         robot->setDribble(false);
-//        std::cout << "Positioning" << std::endl;
+        std::cout << "Positioning" << std::endl;
 
         // Evaluate transition to intercepting by
         // Checking if a teammate with the ball is facing this robot

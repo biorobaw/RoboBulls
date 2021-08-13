@@ -22,6 +22,7 @@ public:
     void normal_game_submit(bool isClicked);
     void strategy_tester_submit(bool isClicked);
     void rpi2019_load_robots(int numRobots);
+    void none_submit(bool isClicked);
 
 
 private slots:

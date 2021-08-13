@@ -282,11 +282,10 @@ void TestStrategy::assignBehaviors()
 
 
     for(auto r : robots){
-        if(i%2 == 0)
-            r->setBehavior<AttackMain>();
-        else
-            r->setBehavior<AttackSupport>();
-        i++;
+        if (i++ == 0)
+            r->setBehavior<Goalie>();
+
+
         //else r->setBehavior<GoToBehavior>(i*360.0/num_robots);
 
     }

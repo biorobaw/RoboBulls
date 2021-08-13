@@ -24,6 +24,18 @@ inputConfig::~inputConfig()
     delete ui;
 }
 
+void inputConfig::none_submit(bool isClicked)
+{
+    team_node[team]["ROBOT_PROXY"]["TYPE"] = "none";
+
+    //qInfo() << team_node[team]["ROBOT_PROXY"]["ADDR"];
+    std::ofstream fout("config/team.yaml");
+    if (fout)
+        fout << team_node;
+    else
+        qInfo() << "File not found";
+    ui->confirm_robot_proxy->setText("Robot Proxy Updated: None");
+}
 
 void inputConfig::grsim_submit(bool isClicked)
 {
@@ -206,6 +218,12 @@ void inputConfig::on_robot_proxy_activated(const QString &arg1)
         connect(numRobots, QOverload<int>::of(&QSpinBox::valueChanged), this, &inputConfig::rpi2019_load_robots);
 
 
+    }
+    else if (proxy == "none")
+    {
+        QPushButton* submit = new QPushButton("Submit", this);
+        ui->robot_proxy_form->addRow(submit);
+        connect(submit, &QPushButton::clicked, this, &inputConfig::none_submit );
     }
 }
 

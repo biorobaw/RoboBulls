@@ -90,7 +90,7 @@ KickToPointOmni::KickToPointOmni(Robot* robot, Point* targetPtr,
 bool KickToPointOmni::perform()
 {
     Point bp = *ball;
-//    GuiInterface::getGuiInterface()->drawLine(bp, *m_targetPointer);
+    //GuiInterface::getGuiInterface()->drawLine(bp, *m_targetPointer);
 
     // Angle between the ball and the kick target
     float ballTargetAng = Measurements::angleBetween(bp, *m_targetPointer);
@@ -119,9 +119,10 @@ bool KickToPointOmni::perform()
             robot->setDribble(false);
 
             behindBall = bp + Point(BEHIND_RAD_AVOID * cos(targetBallAng), BEHIND_RAD_AVOID * sin(targetBallAng));
+            std::cout << " behind ball location: " << behindBall.x << " , " << behindBall.y << " robot location: "<< robot->x << " , " << robot->y << std::endl;
             cmd.velocity_multiplier =1;
             cmd.setTarget(behindBall, ballTargetAng);
-            cmd.avoid_ball = cmd.avoid_obstacles = true;
+            cmd.avoid_ball = cmd.avoid_obstacles = true; // true
             robot->goToPose(cmd);
 
             //Make sure move_skill keeps the robot at the correct pose

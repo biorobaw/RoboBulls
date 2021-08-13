@@ -4,6 +4,8 @@
 #include "model/robot/robot.h"
 #include "commands/CmdGoToPose.h"
 #include "model/team/team.h"
+#include "gui/interface/gui_interface.h"
+#include "gui/panels/panel_field.h"
 
 #include <QDebug>
 
@@ -68,6 +70,19 @@ bool RobotPilot::executeCmdGoToPose(CmdGoToPose *cmd){
 
         //TODO: ideally we should not recompute the path each time
         auto path = planner->genPath(cmd->target_pose, cmd->avoid_ball);
+
+        GuiInterface *gui = GuiInterface::getGuiInterface();
+
+        //gui->drawLine(*robot, cmd->target_pose);
+        gui->drawLine(r_pos, nextPoint);
+        Point prev_point = r_pos;
+        gui->setHidePaths(false);
+        for (auto i : path)
+        {
+            gui->drawLine(prev_point, i);
+            prev_point=i;
+           //gui->drawPoint(i);
+        }
 
 //        qDebug().nospace() << "P: ";
 //        for(auto p : path)//int i=0; i<path.size(); i++)
