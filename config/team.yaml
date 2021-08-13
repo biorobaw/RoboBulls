@@ -60,7 +60,7 @@ TEAM_YELLOW :
     SIDE: 1
     
     ROBOT_PROXY:
-        TYPE : grsim # alternatives: grsim yisibot rpi_2019 none
+        TYPE : none # alternatives: grsim yisibot rpi_2019 none
         ADDR : 127.0.0.1 # ip of grsim
         PORT : 20011     # port of grsim
     

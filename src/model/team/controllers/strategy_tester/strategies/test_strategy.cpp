@@ -280,8 +280,13 @@ void TestStrategy::assignBehaviors()
     int num_robots = robots.size();
     int i = 0;
 
+
     for(auto r : robots){
-        r->setBehavior<KickToPointOmni>(new Point(3000, 0));
+        if(i%2 == 0)
+            r->setBehavior<AttackMain>();
+        else
+            r->setBehavior<AttackSupport>();
+        i++;
         //else r->setBehavior<GoToBehavior>(i*360.0/num_robots);
 
     }

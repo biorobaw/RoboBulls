@@ -6,8 +6,8 @@
 #include "model/game_state.h"
 
 
-float AttackMain::SCORE_ANGLE_TOLERANCE = 7*M_PI/180;
-float AttackMain::PASS_ANGLE_TOLERANCE  = 7*M_PI/180;
+float AttackMain::SCORE_ANGLE_TOLERANCE = ROT_TOLERANCE; //7*M_PI/180;
+float AttackMain::PASS_ANGLE_TOLERANCE  = ROT_TOLERANCE; //7*M_PI/180;
 
 AttackMain::AttackMain(Robot* robot) : Behavior(robot)
 {
@@ -53,7 +53,7 @@ bool AttackMain::perform()
     {
     case scoring:
     {
-//        std::cout << "AttackMain: Score" << std::endl;
+        std::cout << "AttackMain: Score" << std::endl;
         robot->setDribble(true);
 
         std::pair<bool, Point> goal_eval = calcBestGoalPoint();
@@ -80,7 +80,7 @@ bool AttackMain::perform()
     }
     case passing:
     {
-//        std::cout << "AttackMain: Pass" << std::endl;
+        std::cout << "AttackMain: Pass" << std::endl;
         robot->setDribble(false);
 
         std::pair<bool, Point> pass_eval = calcBestPassPoint();
@@ -107,7 +107,7 @@ bool AttackMain::perform()
     }
     case dribbling:
     {
-//        std::cout << "AttackMain: Dribble" << std::endl;
+        std::cout << "AttackMain: Dribble" << std::endl;
 
         // Evaluate state transition to scoring
         std::pair<bool, Point> goal_eval = calcBestGoalPoint();

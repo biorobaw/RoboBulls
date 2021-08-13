@@ -97,9 +97,9 @@ void PilotOmni::driveTo (Point goalPoint, float theta_goal, Point nextGoalPoint)
 
 
 
-    qInfo() <<"New velocity: lin, ang"<< new_vel <<", "<<new_angular;
-    qInfo() << "Goal Point: " <<goalPoint;
-    qInfo()<<"Distance to goal: " <<distance_to_goal <<" \t learn rate: " <<learn_rate << "\t error: " << error;
+    //qInfo() <<"New velocity: lin, ang"<< new_vel <<", "<<new_angular;
+    //qInfo() << "Goal Point: " <<goalPoint;
+    //qInfo()<<"Distance to goal: " <<distance_to_goal <<" \t learn rate: " <<learn_rate << "\t error: " << error;
     robot->setTargetVelocityGlobal(new_vel ,new_angular);// new_angular);
 
 

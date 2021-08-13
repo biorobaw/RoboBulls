@@ -149,8 +149,8 @@ bool KickToPointOmni::perform()
             // Move towards the ball at the angle to target
             // Motion will be straight ahead, given the completion of MOVE_BEHIND
             behindBall = bp + Point(BEHIND_RAD * cos(targetBallAng), BEHIND_RAD * sin(targetBallAng));
-            cmd.distance_tolerance = 20;
-            cmd.angle_tolerance = 30*M_PI/180;
+            //cmd.distance_tolerance = 100; // 20
+            //cmd.angle_tolerance = 30*M_PI/180;
             cmd.velocity_multiplier = 1;
             cmd.setTarget(behindBall, ballTargetAng);
             cmd.avoid_ball = cmd.avoid_obstacles = false;
@@ -217,7 +217,7 @@ bool KickToPointOmni::perform()
         break;
     }
 
-    return false;
+    return false; // was false
 }
 
 //The following are utility functions to help switch state.
@@ -250,7 +250,7 @@ bool KickToPointOmni::isCloseToBall(Robot *robot) {
     // too much or too little. Instead we check how far the robot has travelled from
     // the behindball point.
     //std::cout << measurements::distance(robot, behindBall) << std::endl;
-    return Measurements::distance(robot, behindBall) >= 30;
+    return Measurements::distance(robot, behindBall) >= DIST_TOLERANCE; //was 30
 }
 
 bool KickToPointOmni::isVeryFarFromBall(Robot *robot) {
