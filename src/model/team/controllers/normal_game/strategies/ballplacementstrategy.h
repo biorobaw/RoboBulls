@@ -8,6 +8,7 @@ public:
     BallPlacementStrategy(RobotTeam* _team);
     void assignBehaviors() override;
     virtual QString getName() override;
+    void runControlCycle() override;
 };
 
 #endif // BALLPLACEMENTSTRATEGY_H

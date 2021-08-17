@@ -76,6 +76,7 @@ private:
     Point linePointB = Point(0,0);
     double lineLifeSpan = 0;
     bool needLine = false;
+    int numPreviousLines = 0;
 
     // Line drawing information
     deque<Point> lineAPoints;
@@ -85,6 +86,7 @@ private:
 
     // Point drawing information
     std::mutex points_mutex;
+    std::mutex lines_mutex;
     deque<Point> simple_points;
 
     // Region drawing information

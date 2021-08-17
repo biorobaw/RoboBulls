@@ -112,6 +112,7 @@ void PanelField::updateScene() {
 
 void PanelField::setupLine(Point start, Point stop, double seconds) {
     // Adding data from game's thread to deques for future reference by our thread
+    std::lock_guard<std::mutex> lines_guard(lines_mutex);
     if (seconds > 0 && !hide_paths) {
         lineAPoints.push_front(start);
         lineBPoints.push_front(stop);
@@ -131,13 +132,14 @@ void PanelField::setupRegion(std::vector<Point> p_vec) {
 }
 
 void PanelField::drawLine() {
+    std::lock_guard<std::mutex> lines_guard(lines_mutex);
     // Creating a new line based on received specs
     if (lineAPoints.size() > 0) {
         int startIter = 0;
-        int newLines = lineAPoints.size() - line_drawers.size();
+        int newLines = lineAPoints.size() -numPreviousLines;//- line_drawers.size();
         if (newLines > 0) {
             startIter = lineAPoints.size() - newLines;
-        }
+        //}
         for (unsigned int i=startIter; i<lineAPoints.size(); i++)
         {
             GraphicsLine * newLine = new GraphicsLine();
@@ -155,7 +157,9 @@ void PanelField::drawLine() {
             scene->addItem(newLine);
             line_drawers.push_front(newLine);
         }
+        }
     }
+numPreviousLines = lineAPoints.size();
 }
 
 void PanelField::drawPoint() {
@@ -201,6 +205,7 @@ void PanelField::drawRegion() {
 
 void PanelField::updateLineQueue() {
     // Refreshing the field if there are lines to draw
+    std::lock_guard<std::mutex> lines_guard(lines_mutex);
     if (line_drawers.size() > 0) {
         for (unsigned int i=0; i<line_drawers.size(); i++) {
             if (line_drawers[i] != NULL) {
@@ -217,6 +222,7 @@ void PanelField::updateLineQueue() {
         lineAPoints.clear();
         lineBPoints.clear();
         lineLifeSpans.clear();
+        numPreviousLines = 0;
     }
 }
 

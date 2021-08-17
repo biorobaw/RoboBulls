@@ -67,19 +67,20 @@ bool RobotPilot::executeCmdGoToPose(CmdGoToPose *cmd){
             Measurements::distance(r_pos, cmd->target_pose) > cmd->distance_tolerance){
 
 //        qDebug() << "---doing path planning\n";
+        //qInfo() << "Next point: " <<nextPoint << "\tTarget post:" <<cmd->target_pose;
 
         //TODO: ideally we should not recompute the path each time
         auto path = planner->genPath(cmd->target_pose, cmd->avoid_ball);
 
-        GuiInterface *gui = GuiInterface::getGuiInterface();
+        //GuiInterface *gui = GuiInterface::getGuiInterface();
 
         //gui->drawLine(*robot, cmd->target_pose);
-        gui->drawLine(r_pos, nextPoint);
+        //gui->drawLine(r_pos, nextPoint);
         Point prev_point = r_pos;
-        gui->setHidePaths(false);
+        //gui->setHidePaths(false);
         for (auto i : path)
         {
-            gui->drawLine(prev_point, i);
+            //gui->drawLine(prev_point, i);
             prev_point=i;
            //gui->drawPoint(i);
         }
