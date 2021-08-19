@@ -55,6 +55,7 @@ void TeamStrategyController::runControlCycle(GameState* game_state)
         qInfo() << "updating strategy \n";
         controller_state = new_state;
         delete activeStrategy;
+        qInfo() << "after delete";
         for(Robot* r : team->getRobots()) r->clearBehavior();
         activeStrategy = loadStateStrategy(controller_state);
         activeStrategy->assignBehaviors();

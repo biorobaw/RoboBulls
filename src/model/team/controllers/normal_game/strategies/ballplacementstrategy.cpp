@@ -12,11 +12,19 @@
 #include <QDebug>
 
 BallPlacementStrategy::BallPlacementStrategy(RobotTeam* _team) : TeamStrategy(_team) {
+    /*for(Robot* robot : team->getRobots())
+    {
+        robot->clearBehavior();
 
+    }*/
+    //dribble_CompletionCount = 0;
 }
+
+
 
 void BallPlacementStrategy::assignBehaviors()
 {
+
     if ((game_state->getRefereeCommand() == 17 && team->getID() == ROBOT_TEAM_BLUE) || (game_state->getRefereeCommand() == 16 && team->getID() == ROBOT_TEAM_YELLOW))
     {
         Robot* wall1 = team->getRobotByRole(RobotRole::DEFEND1);
@@ -26,59 +34,62 @@ void BallPlacementStrategy::assignBehaviors()
         Robot* attack2 = team->getRobotByRole(RobotRole::ATTACK2);
         Robot* attack3 = team->getRobotByRole(RobotRole::ATTACK3);
         Robot* attack4 = team->getRobotByRole(RobotRole::ATTACK4);
-        Point target_location = game_state->getBallPlacement();
-        qInfo() << "target location: " <<target_location;
+        //Point* game_state->getBallPlacement() = game_state->getBallPlacement();
+        qInfo() << "target location: " <<game_state->getBallPlacement();
         if(attack1)
-        {
-            attack1->setBehavior<DribbleToPoint>(target_location);
+        {   qInfo()<<"atack1" << game_state->getBallPlacement();
+            attack1->setBehavior<DribbleToPoint>(game_state->getBallPlacement());
 
             std::cout << "attack1 is the kicker" << std::endl;
         }
         else if(attack2)
         {
-            attack2->setBehavior<DribbleToPoint>(target_location);
+            attack2->setBehavior<DribbleToPoint>(game_state->getBallPlacement());
 
              std::cout << "attack2 is the kicker" << std::endl;
         }
         else if(attack3)
         {
-            attack3->setBehavior<DribbleToPoint>(target_location);
+            attack3->setBehavior<DribbleToPoint>(game_state->getBallPlacement());
 
              std::cout << "attack3 is the kicker" << std::endl;
         }
         else if(attack4)
         {
-            attack4->setBehavior<DribbleToPoint>(target_location);
+            attack4->setBehavior<DribbleToPoint>(game_state->getBallPlacement());
 
              std::cout << "attack4 is the kicker" << std::endl;
         }
         else if(wall1)
         {
-            wall1->setBehavior<DribbleToPoint>(target_location);
+            wall1->setBehavior<DribbleToPoint>(game_state->getBallPlacement());
 
              std::cout << "wall1 is the kicker" << std::endl;
         }
         else if(wall2)
         {
-            wall2->setBehavior<DribbleToPoint>(target_location);
+            wall2->setBehavior<DribbleToPoint>(game_state->getBallPlacement());
 
              std::cout << "wall2 is the kicker" << std::endl;
         }
         else if(defender1)
         {
-            defender1->setBehavior<DribbleToPoint>(target_location);
+            defender1->setBehavior<DribbleToPoint>(game_state->getBallPlacement());
 
              std::cout << "defender1 is the kicker" << std::endl;
 
+        }
+
         for (Robot* rob: team->getRobots())
         {
-
-            if (!rob->hasBehavior() && rob->getRole() != RobotRole::GOALIE){
+            //qInfo() << rob->hasBehavior() << "Role: " << rob->getRole();
+            if ((!rob->hasBehavior()  && rob->getRole() != RobotRole::GOALIE)){
                 rob->setBehavior<RefStop>();
                 qInfo() << "beh set to refstop";
             }
         }
-        /*if(wall1 && !wall1->hasBehavior())
+
+         /*if(wall1 && !wall1->hasBehavior())
             wall1->setTargetVelocityLocal(Point(0,0),0);
         if(wall2 && !wall2->hasBehavior())
             wall2->setTargetVelocityLocal(Point(0,0),0);
@@ -96,6 +107,7 @@ void BallPlacementStrategy::assignBehaviors()
         Robot* goalie = team->getRobotByRole(RobotRole::GOALIE);
         if(goalie) goalie->setBehavior<Goalie>();
 
+
     }
     else
     {
@@ -105,8 +117,9 @@ void BallPlacementStrategy::assignBehaviors()
 
         }
     }
+
 }
-}
+
 
 QString BallPlacementStrategy::getName()
 {
@@ -115,14 +128,37 @@ QString BallPlacementStrategy::getName()
 
 
 void BallPlacementStrategy::runControlCycle()
-{//qInfo()<<"control cycle";
+{
+
+    for (Robot* rob : team->getRobots())
+        if (rob->hasBehavior() && rob->getBehavior()->getName() == "Dribble to point" && rob->getBehavior()->isFinished() ){
+        qInfo() << "DTP is finished: " <<rob->getBehavior()->isFinished() << rob->getBehavior();
+         //++dribble_CompletionCount;
+        ++dribble_CompletionCount;
+
+        //if(dribble_CompletionCount > 50){;}
+
+//            rob->setDribble(false);
+//            rob->setBehavior<RefStop>();}
+        }
+
+    /*//qInfo()<<"control cycle";
     for (Robot* rob : team->getRobots())
 //    {   //if (rob->hasBehavior())
 //          //  qInfo() << "Robot id: " << QString::fromStdString(rob->getBehavior()->getName());
-        if (rob->hasBehavior() && rob->getBehavior()->getName() == "Dribble to point" && rob->getBehavior()->isFinished()){
-            rob->setBehavior<RefStop>();}
+        if (rob->hasBehavior() && rob->getBehavior()->getName() == "Dribble to point" ){
+             std::cout << "robot is finished: " << rob->getBehavior()->isFinished() <<std::endl;
+            if(rob->getBehavior()->isFinished())
+            {
+                            ++dribble_CompletionCount;
+                            std::cout << "mcc ball placement: " << dribble_CompletionCount <<std::endl;}
+
+            if(dribble_CompletionCount > 5) {
+                rob->setBehavior<RefStop>();
+            }
+        }
 //            qInfo() << "beh changed to refstop";
 //        }
 //    }
-//
+//*/
 }

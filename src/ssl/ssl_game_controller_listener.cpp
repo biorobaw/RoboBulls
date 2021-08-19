@@ -100,10 +100,10 @@ void SSLGameControllerListener::process_package(){
             command_previous = command;
             command = referee.command();
             if (referee.has_designated_position()){
-                ball_placement = (referee.designated_position().x(), referee.designated_position().y());
+                ball_placement = new Point(referee.designated_position().x(), referee.designated_position().y());
                 emit this->refereeCommandChanged(command, command_previous, ball_placement);
             }else
-                emit this->refereeCommandChanged(command, command_previous, Point(0,0));
+                emit this->refereeCommandChanged(command, command_previous, new Point(0,0));
         }
 
 

@@ -285,7 +285,7 @@ void TestStrategy::assignBehaviors()
         if (i++ == 0){
             r->setBehavior<Goalie>();
 
-            r->setRole(ROLE_GOALIE);
+            //r->setRole(ROLE_GOALIE);
         } else r->setBehavior<Wall>();
 
 

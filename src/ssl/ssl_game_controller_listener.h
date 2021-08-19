@@ -42,7 +42,7 @@ private slots:
 
 
 signals:
-    void refereeCommandChanged(int new_value, int old_value, Point designated_position);
+    void refereeCommandChanged(int new_value, int old_value, Point* designated_position);
     void goalsChanged(int blue_goals, int yellow_goals);
 
 private:
@@ -54,7 +54,7 @@ private:
 
     QString net_address;
     int    net_port;
-    Point ball_placement;
+    Point* ball_placement;
     Referee_Command command;
     Referee_Command command_previous;
     int time_left = 0;

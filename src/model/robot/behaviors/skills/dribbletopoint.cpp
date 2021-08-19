@@ -10,6 +10,8 @@
 #include "model/game_state.h"
 #include "utilities/measurements.h"
 #include <iostream>
+#include <QDebug>
+
 
 
 
@@ -23,13 +25,13 @@ DribbleToPoint::DribbleToPoint(Robot* robot, Point* target, bool avoid_obstacles
     , target(target)
     , prefer_forward_motion(prefer_forward_motion)
     , state(move_to_ball)
-{
+{   qInfo() << "Target constrcutor: "<<*this->target;
     cmd.avoid_obstacles = avoid_obstacles;
 }
 
 bool DribbleToPoint::perform()
 {
-    std::cout << "Dribbling" << std::endl;
+    qInfo() << "Dribbling to target: " <<  *target;
 
     Point bp = *ball;
     Point rp = *robot;
@@ -96,7 +98,7 @@ bool DribbleToPoint::perform()
 
         if(!targetIsAhead(ang_to_ball, rp)
         && safeToAdjust(bp, robot)
-        && prefer_forward_motion)
+        && !prefer_forward_motion)
             state = adjust1;
 
         bool dist_check = dist_to_ball < ROBOT_RADIUS + Field::BALL_RADIUS + dist_to_ball;
@@ -187,9 +189,12 @@ bool DribbleToPoint::safeToAdjust(const Point& bp, Robot* robot)
 
 
 bool DribbleToPoint::isFinished(){
-    if (Measurements::distance(*ball, *target) < 300)
-        std::cout << "Finished" << std::endl;
-    return Measurements::distance(*ball, *target) < 300;
+    qInfo() <<*target;
+    //return false;
+    if (Measurements::distance(*ball, *target) < 300){
+        qInfo() << "isFinished: " << (Measurements::distance(*ball, *target) < 300) <<" ball: " <<*ball << " target: "<<*target;}
+    qInfo() << "This add: " << this;
+    return (Measurements::distance(*ball, *target) < 300);
 }
 string DribbleToPoint::getName(){
     return "Dribble to point";
