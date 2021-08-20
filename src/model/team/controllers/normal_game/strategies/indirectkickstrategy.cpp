@@ -115,7 +115,7 @@ void IndirectKickStrategy::assignBehaviors()
         if(wall2)
             wall2->setBehavior<Wall>();
         if(attack1)
-            attack1->setBehavior<MarkBot>();
+            attack1->setBehavior<Wall>();
         if(attack2)
             attack2->setBehavior<MarkBot>();
         if(attack3)

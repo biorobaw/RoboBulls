@@ -41,7 +41,7 @@ void KickOffStrategy::assignBehaviors()
     if(wall3)
         wall3->setBehavior<GenericMovementBehavior>(Point(-2000, 0), 0);
     if(attack1)
-        attack1->setBehavior<GenericMovementBehavior>(Point(100, 0), 0);
+        attack1->setBehavior<GenericMovementBehavior>(Point(-200, 0), 0);
     if(attack2)
         attack2->setBehavior<GenericMovementBehavior>(Point(-1000, -1500), 0);
     if(attack3)

@@ -90,7 +90,7 @@ void NormalGameStrategy::runControlCycle()
     Robot* attack1 = team->getRobotByRole(RobotRole::ATTACK1);
     Robot* attack2 = team->getRobotByRole(RobotRole::ATTACK2);
 
-    Robot* kick_off_rob = deffend1;
+    Robot* kick_off_rob = deffend1; // was deffend1
 
 
     Point bp = *ball;
@@ -129,6 +129,10 @@ void NormalGameStrategy::runControlCycle()
             float angle = Measurements::angleBetween(*kick_off_rob, *attack1);
             kick_off_rob->setBehavior<GenericMovementBehavior>(target, angle);
             state = our_kickoff_2;
+        } else
+        {
+            attack1->setBehavior<GenericMovementBehavior>(bp, Measurements::angleBetween(*attack1, bp));
+            state = evaluate;
         }
     }
         break;
@@ -169,6 +173,9 @@ void NormalGameStrategy::runControlCycle()
     {
         std::cout << "Shoot Penalty" << std::endl;
         Robot* shooter = deffend1;
+        if (!shooter)
+            shooter = attack1;
+
         if(attack1)
             attack1->setBehavior<AttackSupport>();
         if(shooter)

@@ -286,7 +286,7 @@ void TestStrategy::assignBehaviors()
             r->setBehavior<Goalie>();
 
             //r->setRole(ROLE_GOALIE);
-        } else r->setBehavior<Wall>();
+        } else r->setBehavior<DefendBehavior>();
 
 
         //else r->setBehavior<GoToBehavior>(i*360.0/num_robots);
