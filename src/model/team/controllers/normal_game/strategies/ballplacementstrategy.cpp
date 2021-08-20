@@ -11,15 +11,23 @@
 #include "model/team/controllers/normal_game/behaviors/refstop.h"
 #include <QDebug>
 
-BallPlacementStrategy::BallPlacementStrategy(RobotTeam* _team) : TeamStrategy(_team) {
+BallPlacementStrategy::BallPlacementStrategy(RobotTeam* _team)
+    : TeamStrategy(_team), dribble_CompletionCount(0) {
     /*for(Robot* robot : team->getRobots())
     {
         robot->clearBehavior();
 
     }*/
-    //dribble_CompletionCount = 0;
+    //dribble_CompletionCount = new int(0);
 }
 
+BallPlacementStrategy::~BallPlacementStrategy(){
+    qInfo() <<"delete";
+    //delete dribble_CompletionCount;
+    //mutex.lock();
+    //mutex.unlock();
+    qInfo() << "After";
+}
 
 
 void BallPlacementStrategy::assignBehaviors()
@@ -89,20 +97,7 @@ void BallPlacementStrategy::assignBehaviors()
             }
         }
 
-         /*if(wall1 && !wall1->hasBehavior())
-            wall1->setTargetVelocityLocal(Point(0,0),0);
-        if(wall2 && !wall2->hasBehavior())
-            wall2->setTargetVelocityLocal(Point(0,0),0);
-        if(attack1 && !attack1->hasBehavior())
-            attack1->setTargetVelocityLocal(Point(0,0),0);
-        if(attack2 && !attack2->hasBehavior())
-            attack2->setTargetVelocityLocal(Point(0,0),0);
-        if(attack3 && !attack3->hasBehavior())
-            attack3->setTargetVelocityLocal(Point(0,0),0);
-        if(attack4 && !attack4->hasBehavior())
-            attack4->setTargetVelocityLocal(Point(0,0),0);
-        if(defender1 && !defender1->hasBehavior())
-            defender1->setTargetVelocityLocal(Point(0,0),0);*/
+
 
         Robot* goalie = team->getRobotByRole(RobotRole::GOALIE);
         if(goalie) goalie->setBehavior<Goalie>();
@@ -128,37 +123,23 @@ QString BallPlacementStrategy::getName()
 
 
 void BallPlacementStrategy::runControlCycle()
-{
-
+{qInfo() << "enter";
+    //mutex.lock();
     for (Robot* rob : team->getRobots())
         if (rob->hasBehavior() && rob->getBehavior()->getName() == "Dribble to point" && rob->getBehavior()->isFinished() ){
         qInfo() << "DTP is finished: " <<rob->getBehavior()->isFinished() << rob->getBehavior();
-         //++dribble_CompletionCount;
-        ++dribble_CompletionCount;
+         ++dribble_CompletionCount;
 
-        //if(dribble_CompletionCount > 50){;}
+//        ++(*dribble_CompletionCount);
 
-//            rob->setDribble(false);
-//            rob->setBehavior<RefStop>();}
+        if(dribble_CompletionCount > 50){
+
+            rob->setDribble(false);
+            rob->setBehavior<RefStop>();}
+
         }
-
-    /*//qInfo()<<"control cycle";
-    for (Robot* rob : team->getRobots())
-//    {   //if (rob->hasBehavior())
-//          //  qInfo() << "Robot id: " << QString::fromStdString(rob->getBehavior()->getName());
-        if (rob->hasBehavior() && rob->getBehavior()->getName() == "Dribble to point" ){
-             std::cout << "robot is finished: " << rob->getBehavior()->isFinished() <<std::endl;
-            if(rob->getBehavior()->isFinished())
-            {
-                            ++dribble_CompletionCount;
-                            std::cout << "mcc ball placement: " << dribble_CompletionCount <<std::endl;}
-
-            if(dribble_CompletionCount > 5) {
-                rob->setBehavior<RefStop>();
-            }
-        }
-//            qInfo() << "beh changed to refstop";
-//        }
-//    }
-//*/
+    //mutex.unlock();
+    qInfo() <<"exit";
 }
+
+
