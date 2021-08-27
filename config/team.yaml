@@ -48,10 +48,10 @@ TEAM_BLUE :
             GOALIE : 0
             ATTACK1 : 1
             ATTACK2 : 2
-            #ATTACK3 : 1
+            #ATTACK3 : 3
             #ATTACK4 : 6
             #DEFEND1 : 4
-            #DEFEND2 : 2
+            #DEFEND2 : 5
             #DEFEND3 : 7
     
     # support for rpi_2019 is work in progress
@@ -65,16 +65,16 @@ TEAM_YELLOW :
         PORT : 20011     # port of grsim
     
     STRATEGY_CONTROLLER:
-        ID: STRATEGY_TESTER # options: NORMAL_GAME or STRATEGY_TESTER or JOYSTICK
+        ID: NORMAL_GAME # options: NORMAL_GAME or STRATEGY_TESTER or JOYSTICK
         ROLES:
-            GOALIE : 5
-            ATTACK1 : 3
-            ATTACK2 : 0
-            ATTACK3 : 1
-            ATTACK4 : 2
-            DEFEND1 : 4
-            DEFEND2 : 6
-            DEFEND3 : 7
+            GOALIE : 0
+            ATTACK1 : 1
+            ATTACK2 : 2
+            #ATTACK3 : 3
+            #ATTACK4 : 2
+            #DEFEND1 : 4
+            #DEFEND2 : 5
+            #DEFEND3 : 7
     
     
     

@@ -448,8 +448,11 @@ float AttackMain::getScoreProb(const Point& p)
 {
     if(Comparisons::isPointInsideField(p))
     {
+
         int rows = PF_LENGTH_MAIN/2+(int)p.x/PND_MAIN > PF_LENGTH_MAIN-1 ? PF_LENGTH_MAIN-1 : PF_LENGTH_MAIN/2+(int)p.x/PND_MAIN;
+        rows = rows < 0 ? 0 : rows;
         int cols = PF_WIDTH_MAIN/2+(int)p.y/PND_MAIN > PF_WIDTH_MAIN-1 ? PF_WIDTH_MAIN-1 : PF_WIDTH_MAIN/2+(int)p.y/PND_MAIN;
+        cols = cols < 0 ? 0 : cols;
         ProbNode pn = prob_field[rows][cols];
         return fmax(0, pn.dynamic_val + pn.static_val);
     }

@@ -5,6 +5,7 @@
 #include "model/robot/robot.h"
 #include "model/robot/navigation/robot_pilot.h"
 #include "model/game_state.h"
+#include <QDebug>
 
 AttackSupport::AttackSupport(Robot* robot)  : Behavior(robot)
 {
@@ -116,7 +117,9 @@ bool AttackSupport::perform()
         }
 
         // Move towards node with highest prob of scoring while facing ball
+        std::cout << "calcdynamic prob start:" << std::this_thread::get_id() << std::endl;
         calcDynamicProb();
+        std::cout << "calcdynamic prob end:" << std::this_thread::get_id() << std::endl;
 
 
         auto cmd = CmdGoToPose(findMaxNode().point,Measurements::angleBetween(rp, bp),true,false);
@@ -129,7 +132,7 @@ bool AttackSupport::perform()
     }
 
 
-    for(int x = PF_LENGTH_SUPP/2; x < PF_LENGTH_SUPP; ++x)
+    /*for(int x = PF_LENGTH_SUPP/2; x < PF_LENGTH_SUPP; ++x)
     {
         for(int y = 0; y < PF_WIDTH_SUPP; ++y)
         {
@@ -137,7 +140,8 @@ bool AttackSupport::perform()
             if(curr.static_val+curr.dynamic_val >= 0.4)
                 GuiInterface::getGuiInterface()->drawPoint(curr.point);
         }
-    }
+    }*/
+    qInfo() << "Attack Support finished: " << isFinished();
     return isFinished();
 }
 
@@ -170,11 +174,12 @@ void AttackSupport::calcStaticProb()
     float temp_p = 0.0;
 
     DefenceArea def_area(OPPONENT_SIDE);
-
+    qInfo() << "Creating prob field";
     for (int x = 0; x < PF_LENGTH_SUPP; ++x)
     {
         for (int y = 0; y < PF_WIDTH_SUPP; ++y)
         {
+
             ProbNode& n = prob_field[x][y];
 
             n.point = Point(x*PND_SUPP - Field::HALF_FIELD_LENGTH, y*PND_SUPP - Field::HALF_FIELD_WIDTH);
