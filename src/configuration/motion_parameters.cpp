@@ -7,7 +7,7 @@
 
 float ROBOT_RADIUS      = 100;
 float DEF_AREA_TOL      = ROBOT_RADIUS + 10;
-float DIST_TOLERANCE    = 40;
+float DIST_TOLERANCE    = 5;
 float ROT_TOLERANCE     = 5*M_PI/180;
 float DRIBBLE_FRWD_SPD  = 70;
 float DRIBBLE_BACK_SPD  = 7;

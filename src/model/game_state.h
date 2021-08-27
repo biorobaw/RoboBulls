@@ -32,6 +32,7 @@ public:
     Robot* getBlueRobot(int id);
     Robot* getYellowRobot(int id);
     Ball*  getBall();
+    Point* getBallPlacement();
 
     Robot* getRobotWithBall();
 
@@ -56,7 +57,7 @@ public:
 
 
 public slots:
-    void refereeCommandChanged(int new_value, int old_value);
+    void refereeCommandChanged(int new_value, int old_value,  Point* designated_position);
     void goalsChanged(int blue_goals, int yellow_goals);
 
 protected:
@@ -69,6 +70,7 @@ protected:
     QSet<Robot*> team_robots_in_field[2];
     QSet<Robot*> all_robots_in_field;
     Ball*  ball;
+    Point* ball_placement;
 
     // state of objects
     Robot* robot_with_ball     = nullptr;

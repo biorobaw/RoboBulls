@@ -216,7 +216,7 @@ bool Goalie::botOnBallIsAimedAtOurGoal(Robot* robot, std::pair<Point,Point>& lin
 
 bool Goalie::isBallReachable()
 {
-    return abs(Measurements::angleBetween(idlePoint, *ball) <= M_PI_2);
+    return (abs(Measurements::angleBetween(idlePoint, *ball)) <= M_PI_2);
 }
 
 bool Goalie::shouldClearBall()

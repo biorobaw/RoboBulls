@@ -1,11 +1,12 @@
 #include "CmdGoToPose.h"
 #include "utilities/measurements.h"
+#include "model/field.h"
 
 
 
 float CmdGoToPose::default_velocity_multiplier = 1;
-float CmdGoToPose::default_distance_tolerance = 40;
-float CmdGoToPose::default_angle_tolerance = 5*M_PI/180;
+float CmdGoToPose::default_distance_tolerance = ROBOT_RADIUS;
+float CmdGoToPose::default_angle_tolerance = ROT_TOLERANCE;
 
 
 

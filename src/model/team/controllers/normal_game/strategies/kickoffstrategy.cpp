@@ -35,19 +35,19 @@ void KickOffStrategy::assignBehaviors()
     Robot* attack4 = team->getRobotByRole(RobotRole::ATTACK4);
 
     if(wall1)
-        wall1->setBehavior<GenericMovementBehavior>(Point(-650, 300), 0);
+        wall1->setBehavior<GenericMovementBehavior>(Point(-3000, -750), 0);
     if(wall2)
-        wall2->setBehavior<GenericMovementBehavior>(Point(-1600, 0), 0);
+        wall2->setBehavior<GenericMovementBehavior>(Point(-3000, 750), 0);
     if(wall3)
-        wall3->setBehavior<GenericMovementBehavior>(Point(-1000, 0), 0);
+        wall3->setBehavior<GenericMovementBehavior>(Point(-2000, 0), 0);
     if(attack1)
-        attack1->setBehavior<GenericMovementBehavior>(Point(-650, 0), 0);
+        attack1->setBehavior<GenericMovementBehavior>(Point(-200, 0), 0);
     if(attack2)
-        attack2->setBehavior<GenericMovementBehavior>(Point(-650, -300), 0);
+        attack2->setBehavior<GenericMovementBehavior>(Point(-1000, -1500), 0);
     if(attack3)
-        attack3->setBehavior<GenericMovementBehavior>(Point(-100, 100), 0);
+        attack3->setBehavior<GenericMovementBehavior>(Point(-1000, 1500), 0);
     if(attack4)
-        attack4->setBehavior<GenericMovementBehavior>(Point(-100, -100), 0);
+        attack4->setBehavior<GenericMovementBehavior>(Point(-1000, 0), 0);
 
     // Goalie is a special case
     Robot* goalie = team->getRobotByRole(RobotRole::GOALIE);

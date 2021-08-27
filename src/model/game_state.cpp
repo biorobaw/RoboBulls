@@ -42,6 +42,7 @@ GameState::GameState(QObject* parent) :
 
 GameState::~GameState(){
     delete ball;
+    delete ball_placement;
 }
 
 void GameState::update(){
@@ -153,10 +154,11 @@ void GameState::setFlipXCoorinates(bool flip_x){
 
 
 
-void GameState::refereeCommandChanged(int new_value, int old_value){
+void GameState::refereeCommandChanged(int new_value, int old_value, Point* designated_position){
     referee_command_changed  = true;
     referee_command          = (Referee_Command)new_value;
     referee_command_previous = (Referee_Command)old_value;
+    ball_placement = designated_position;
 
 }
 
@@ -164,5 +166,9 @@ void GameState::goalsChanged(int blue_goals, int yellow_goals){
     goals[0] = blue_goals;
     goals[1] = yellow_goals;
 
+}
+
+Point* GameState::getBallPlacement(){
+    return ball_placement;
 }
 

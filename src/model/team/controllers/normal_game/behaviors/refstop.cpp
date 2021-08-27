@@ -38,9 +38,8 @@ bool RefStop::perform()
     else
         cmd.velocity_multiplier = 0;
 
-    GenericMovementBehavior::perform();
-
-    finished = true;
+    if (GenericMovementBehavior::perform())
+        finished = true;
     return isFinished();
 }
 

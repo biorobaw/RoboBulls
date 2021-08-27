@@ -8,6 +8,7 @@
 #include "strategies/penaltystrategy.h"
 #include "strategies/indirectkickstrategy.h"
 #include "strategies/haltstrategy.h"
+#include "strategies/ballplacementstrategy.h"
 #include "ssl_referee.pb.h"
 #include "model/team/team.h"
 
@@ -23,7 +24,8 @@ namespace  {
                            FREE_KICK,
                            INDIRECT_KICK,
                            HALT,
-                           NORMAL_GAME
+                           NORMAL_GAME,
+                           BALL_PLACEMENT
                          };
 }
 
@@ -97,6 +99,9 @@ SControllerNormalGame::SControllerNormalGame(RobotTeam* team, YAML::Node* c_node
     cmd_to_state[Referee_Command_NORMAL_START] = NORMAL_GAME; // normal game play
     cmd_to_state[Referee_Command_FORCE_START] = NORMAL_GAME; // force start
 
+    cmd_to_state[Referee_Command_BALL_PLACEMENT_YELLOW] = BALL_PLACEMENT;
+    cmd_to_state[Referee_Command_BALL_PLACEMENT_BLUE] = BALL_PLACEMENT;
+
     //TODO: add states for the following messages:
 //    Referee_Command_BALL_PLACEMENT_YELLOW = 16,
 //    Referee_Command_BALL_PLACEMENT_BLUE = 17
@@ -110,6 +115,7 @@ SControllerNormalGame::SControllerNormalGame(RobotTeam* team, YAML::Node* c_node
     state_transitions[FREE_KICK] = QMap<int,int>();
     state_transitions[INDIRECT_KICK] = QMap<int,int>();
     state_transitions[NORMAL_GAME] = QMap<int,int>();
+    state_transitions[BALL_PLACEMENT] = QMap<int, int>();
 
 
     // now define the state transitions
@@ -126,8 +132,12 @@ SControllerNormalGame::SControllerNormalGame(RobotTeam* team, YAML::Node* c_node
     state_transitions[FREE_KICK][0] = FREE_KICK;
     state_transitions[INDIRECT_KICK][0] = INDIRECT_KICK;
     state_transitions[HALT][0] = HALT;
+    state_transitions[BALL_PLACEMENT][0] = BALL_PLACEMENT;
 
+    for (int i = 0; i <= 10 ; i++){
+            state_transitions[NORMAL_GAME][i] = NORMAL_GAME;
 
+    }
 
 
 }
@@ -161,6 +171,7 @@ TeamStrategy* SControllerNormalGame::loadStateStrategy(int state){
     case FREE_KICK :     return new FreeKickStrategy(team);
     case INDIRECT_KICK : return new IndirectKickStrategy(team);
     case HALT :          return new HaltStrategy(team);
+    case BALL_PLACEMENT: return new BallPlacementStrategy(team);
     case NORMAL_GAME :   return new NormalGameStrategy(team);
     }
     return new HaltStrategy(team);

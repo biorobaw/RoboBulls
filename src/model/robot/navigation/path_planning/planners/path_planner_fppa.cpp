@@ -27,7 +27,7 @@ using std::cout , std::endl;
 /* Defines the maximum recursions buildPathimpl makes(the number of segments in a path)
  * before no more serch is made
  */
-#define MAX_RECURSION_DEPTH 10
+#define MAX_RECURSION_DEPTH 15
 
 /* Defines, when sub-divding a path to avoid an obstacle, the minimum perpendicular distance
  * from the segment it samples to avoid it. Reducing the search size by a factor can
@@ -71,7 +71,10 @@ std::deque<Point> PathPlannerFPPA::genPath(Point _goal, bool _avoid_ball) {
 
 
     // If the end point is not reachable, make it reachable
+    //qInfo() <<"Goal: " <<goal;
     moveToValidLocation(goal);
+    //qInfo() <<"Goal after: " <<goal;
+
 
     // init path
     std::deque<Point> path;
@@ -89,13 +92,11 @@ std::deque<Point> PathPlannerFPPA::genPath(Point _goal, bool _avoid_ball) {
 
 
 void PathPlannerFPPA::recursiveFPPA(Path& current_path, const Point& next_goal, int depth) {
-
     // get the current position in the path (last point added)
     Point& last_goal = current_path.back();
 
     Point obstacle_position;
     if(segmentIntersectsObstacle(last_goal, next_goal, obstacle_position) && depth < MAX_RECURSION_DEPTH ){
-
         // an obstacle intersects the segment to the next goal and I can still recurse,
         // thus choose intermediate goal and then recurse:
         auto sub_goal = chooseSubGoal(last_goal, next_goal, obstacle_position);
@@ -103,10 +104,11 @@ void PathPlannerFPPA::recursiveFPPA(Path& current_path, const Point& next_goal, 
         recursiveFPPA(current_path, sub_goal, depth + 1); // after this, last point in current path will be sob_goal
         recursiveFPPA(current_path,     goal, depth + 1);
 
-    } else {
+    } else {// qInfo() <<"End: "<<next_goal<< " depth: " << depth;
         // Either the segment lies in free space, or  have reached the maximum recursion depth
         // I do not need to recurse, just add the goal to the path
         current_path.push_back(next_goal);
+        //qInfo() << "Goal point added: "<< next_goal << "actual goal: " << goal;
     }
 }
 
@@ -198,14 +200,15 @@ Point PathPlannerFPPA::chooseSubGoal(const Point& start, const Point& end, const
 
 
 
-void PathPlannerFPPA::moveToValidLocation(Point& dest) {
+void PathPlannerFPPA::moveToValidLocation(Point& dest) { //qInfo() <<"Before clamp: " <<dest;
     // Clamp points that are outside the field // TODO: this deforms path, rather than clamping, clipping should be performed
     dest.x = Measurements::clamp(dest.x, -Field::HALF_FIELD_LENGTH+100.f,  Field::HALF_FIELD_LENGTH-100.f);
     dest.y = Measurements::clamp(dest.y, -Field::HALF_FIELD_WIDTH +100.f,  Field::HALF_FIELD_WIDTH -100.f);
 
+                                                         //qInfo() <<"after clamp: " <<dest;
     // Push points to edge of defence areas
-    if(dest.x > 0) opponent_deffence_area.expelPoint(dest);
-    else if(!is_goalie) our_deffence_area.expelPoint(dest);
+    if(dest.x > 0){ opponent_deffence_area.expelPoint(dest);} //qInfo() <<"x>0 clamp: " <<dest;}
+    else if(!is_goalie){ our_deffence_area.expelPoint(dest);}// qInfo() <<"GOALIE clamp: " <<dest;}
 
 }
 

@@ -45,6 +45,7 @@ include(protobuf.pri)
 SOURCES += src/main.cpp \
         src/configuration/configuration.cpp \
         src/configuration/motion_parameters.cpp \
+        src/gui/inputconfig.cpp \
         src/gui/interface/data/gui_ball.cpp \
         src/gui/interface/data/gui_field.cpp \
         src/gui/interface/data/gui_game_state.cpp \
@@ -108,6 +109,7 @@ SOURCES += src/main.cpp \
         src/model/team/controllers/normal_game/behaviors/refstop.cpp \
         src/model/team/controllers/normal_game/behaviors/wall.cpp \
         src/model/team/controllers/normal_game/scontroller_normal_game.cpp \
+        src/model/team/controllers/normal_game/strategies/ballplacementstrategy.cpp \
         src/model/team/controllers/normal_game/strategies/freekickstrategy.cpp \
         src/model/team/controllers/normal_game/strategies/haltstrategy.cpp \
         src/model/team/controllers/normal_game/strategies/indirectkickstrategy.cpp \
@@ -137,6 +139,7 @@ HEADERS += \
         src/configuration/constants.h \
         src/configuration/configuration.h \
         src/configuration/motion_parameters.h \
+        src/gui/inputconfig.h \
         src/gui/interface/data/gui_ball.h \
         src/gui/interface/data/gui_field.h \
         src/gui/interface/data/gui_game_state.h \
@@ -201,6 +204,7 @@ HEADERS += \
         src/model/team/controllers/normal_game/behaviors/wall.h \
         src/model/team/controllers/normal_game/normal_game_roles.h \
         src/model/team/controllers/normal_game/scontroller_normal_game.h \
+        src/model/team/controllers/normal_game/strategies/ballplacementstrategy.h \
         src/model/team/controllers/normal_game/strategies/freekickstrategy.h \
         src/model/team/controllers/normal_game/strategies/haltstrategy.h \
         src/model/team/controllers/normal_game/strategies/indirectkickstrategy.h \
@@ -256,6 +260,7 @@ RESOURCES += \
     src/gui/images.qrc
 
 FORMS += \
+    src/gui/inputconfig.ui \
     src/gui/main_window.ui \
     src/gui/panels/panel_field.ui \
     src/gui/panels/panel_game_info.ui \
@@ -268,6 +273,7 @@ FORMS += \
 
 
 DISTFILES += \
+    config/team_copy.yaml \
     src/robot/robots/grsim/proto/grSim_Commands.proto \
     src/robot/robots/grsim/proto/grSim_Packet.proto \
     src/robot/robots/grsim/proto/grSim_Replacement.proto \

@@ -78,7 +78,8 @@ void PilotOmni::driveTo (Point goalPoint, float theta_goal, Point nextGoalPoint)
     auto delta_theta = new_angular * delta_t; //+angular)/2 * delta_t;
     double target_angle = angle_to_goal - delta_theta/2; // correct for spin
 
-    auto target_speed = sqrt(2*MAX_DEACC*fmax(distance_to_goal-100,0));  // max speed for target distance based on max deacc
+    //auto target_speed = sqrt(2*MAX_DEACC*fmax(distance_to_goal-100,0));
+    auto target_speed = sqrt(2*MAX_DEACC*fmax(distance_to_goal-DIST_TOLERANCE,0));// max speed for target distance based on max deacc
     target_speed      = fmin(target_speed, MAX_SPEED);
 
     auto target_vel   = Point(target_angle)*target_speed;     // ideal velocity (in global coordinates)
@@ -96,7 +97,9 @@ void PilotOmni::driveTo (Point goalPoint, float theta_goal, Point nextGoalPoint)
 
 
 
-
+    //qInfo() <<"New velocity: lin, ang"<< new_vel <<", "<<new_angular;
+    //qInfo() << "Goal Point: " <<goalPoint;
+    //qInfo()<<"Distance to goal: " <<distance_to_goal <<" \t learn rate: " <<learn_rate << "\t error: " << error;
     robot->setTargetVelocityGlobal(new_vel ,new_angular);// new_angular);
 
 

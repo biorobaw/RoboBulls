@@ -14,6 +14,7 @@
 #include "model/team/team.h"
 #include "configuration/configuration.h"
 #include "utilities/debug.h"
+#include "gui/inputconfig.h"
 
 
 /*! @mainpage Welcome to the RoboBulls 2 Documentation.
@@ -120,6 +121,8 @@ public:
 
 };
 
+
+
 #undef main // this is to prevent multiple definitions of main from external modules like SDL
 int main(int argc, char *argv[])
 {
@@ -139,7 +142,12 @@ int main(int argc, char *argv[])
     qInfo() << "-- COMMAND ARGS (" << argc << ")";
     for(int i=0; i < argc; i++)
         qInfo() << "        arg (" << i << ") : " << argv[i] ;
-
+    inputConfig newBlueConfig(nullptr, false);
+    newBlueConfig.show();
+    int result = a.exec();
+    inputConfig newYellowConfig(nullptr, true);
+    newYellowConfig.show();
+    result = a.exec();
     // Load config files:
     Configuration& config = *new Configuration(argc > 1 ? argv[1] : "./config");
 
@@ -169,11 +177,12 @@ int main(int argc, char *argv[])
 
     // must create gui last to connect to teams and ssl-listeners
     // since the gui assumes the existance of the model
+
     (new GuiInterface(teams))->show(); // singleton -> no need to save reference
 
 
     registerExitSignals();
-    int result = a.exec(); // starts main loop event
+    result = a.exec(); // starts main loop event
 
 
 

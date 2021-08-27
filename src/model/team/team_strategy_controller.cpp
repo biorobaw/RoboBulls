@@ -11,7 +11,7 @@
 #include "controllers/joystick/scontroller_joystick.h"
 #include "controllers/none/scontroller_none.h"
 #include "utilities/my_yaml.h"
-
+#include <iostream>
 #include <QDebug>
 
 
@@ -52,12 +52,14 @@ void TeamStrategyController::runControlCycle(GameState* game_state)
 
     // if state changed, update strategy
     if(new_state!=controller_state){
+        qInfo() << "updating strategy \n";
         controller_state = new_state;
         delete activeStrategy;
+        qInfo() << "after delete";
         for(Robot* r : team->getRobots()) r->clearBehavior();
         activeStrategy = loadStateStrategy(controller_state);
         activeStrategy->assignBehaviors();
-
+        qInfo() << "Strategy changed to:" << activeStrategy->getName();
         emit team->strategyChanged(team->getID(), activeStrategy->getName());
     }
 

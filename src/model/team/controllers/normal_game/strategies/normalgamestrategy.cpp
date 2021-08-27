@@ -57,11 +57,27 @@ void NormalGameStrategy::assignBehaviors()
 {
     Robot* wall1 = team->getRobotByRole(RobotRole::DEFEND1);
     Robot* wall2 = team->getRobotByRole(RobotRole::DEFEND2);
+    Robot* defender1 = team->getRobotByRole(RobotRole::DEFEND3);
+    Robot* attack1 = team->getRobotByRole(RobotRole::ATTACK1);
+    Robot* attack2 = team->getRobotByRole(RobotRole::ATTACK2);
+    Robot* attack3 = team->getRobotByRole(RobotRole::ATTACK3);
+    Robot* attack4 = team->getRobotByRole(RobotRole::ATTACK4);
 
     if(wall1)
         wall1->setBehavior<Wall>();
     if(wall2)
         wall2->setBehavior<Wall>();
+    if(attack1)
+        attack1->setBehavior<AttackMain>();
+    if(attack2)
+        attack2->setBehavior<AttackSupport>();
+    if(attack3)
+        attack3->setBehavior<AttackSupport>();
+    if(attack4)
+        attack4->setBehavior<AttackSupport>();
+    if(defender1)
+        defender1->setBehavior<DefendBehavior>();
+
 
     assignGoalieIfOk(team);
 }
@@ -74,7 +90,7 @@ void NormalGameStrategy::runControlCycle()
     Robot* attack1 = team->getRobotByRole(RobotRole::ATTACK1);
     Robot* attack2 = team->getRobotByRole(RobotRole::ATTACK2);
 
-    Robot* kick_off_rob = deffend1;
+    Robot* kick_off_rob = deffend1; // was deffend1
 
 
     Point bp = *ball;
@@ -113,6 +129,10 @@ void NormalGameStrategy::runControlCycle()
             float angle = Measurements::angleBetween(*kick_off_rob, *attack1);
             kick_off_rob->setBehavior<GenericMovementBehavior>(target, angle);
             state = our_kickoff_2;
+        } else
+        {
+            attack1->setBehavior<GenericMovementBehavior>(bp, Measurements::angleBetween(*attack1, bp));
+            state = evaluate;
         }
     }
         break;
@@ -135,7 +155,7 @@ void NormalGameStrategy::runControlCycle()
         std::cout << "Kick Off 3" << std::endl;
         // The previous actions should nudge the ball towards attacker 1
         // and so we can begin evaluating our options for play
-        if(!Measurements::isClose(initialBallPos, *ball, 50))
+        if(!Measurements::isClose(initialBallPos, *ball, 50) && kick_off_rob)
         {
             kick_off_rob->setBehavior<Wall>();
             state = evaluate;
@@ -153,6 +173,11 @@ void NormalGameStrategy::runControlCycle()
     {
         std::cout << "Shoot Penalty" << std::endl;
         Robot* shooter = deffend1;
+        if (!shooter)
+            shooter = attack1;
+
+        if(attack1)
+            attack1->setBehavior<AttackSupport>();
         if(shooter)
         {
             shooter->setBehavior<AttackMain>();
@@ -334,4 +359,8 @@ void NormalGameStrategy::assignGoalieIfOk(RobotTeam* team)
 
 QString NormalGameStrategy::getName(){
     return "normal game";
+}
+
+int NormalGameStrategy::getStatus(){
+    return state;
 }

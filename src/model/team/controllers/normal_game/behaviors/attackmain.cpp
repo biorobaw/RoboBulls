@@ -6,8 +6,8 @@
 #include "model/game_state.h"
 
 
-float AttackMain::SCORE_ANGLE_TOLERANCE = 7*M_PI/180;
-float AttackMain::PASS_ANGLE_TOLERANCE  = 7*M_PI/180;
+float AttackMain::SCORE_ANGLE_TOLERANCE = ROT_TOLERANCE; //7*M_PI/180;
+float AttackMain::PASS_ANGLE_TOLERANCE  = ROT_TOLERANCE; //7*M_PI/180;
 
 AttackMain::AttackMain(Robot* robot) : Behavior(robot)
 {
@@ -53,8 +53,8 @@ bool AttackMain::perform()
     {
     case scoring:
     {
-//        std::cout << "AttackMain: Score" << std::endl;
-        robot->setDribble(false);
+        std::cout << "AttackMain: Score" << std::endl;
+        robot->setDribble(true);
 
         std::pair<bool, Point> goal_eval = calcBestGoalPoint();
 
@@ -80,7 +80,7 @@ bool AttackMain::perform()
     }
     case passing:
     {
-//        std::cout << "AttackMain: Pass" << std::endl;
+        std::cout << "AttackMain: Pass" << std::endl;
         robot->setDribble(false);
 
         std::pair<bool, Point> pass_eval = calcBestPassPoint();
@@ -107,7 +107,7 @@ bool AttackMain::perform()
     }
     case dribbling:
     {
-//        std::cout << "AttackMain: Dribble" << std::endl;
+        std::cout << "AttackMain: Dribble" << std::endl;
 
         // Evaluate state transition to scoring
         std::pair<bool, Point> goal_eval = calcBestGoalPoint();
@@ -437,8 +437,10 @@ AttackMain::~AttackMain()
     delete score_skill;
     delete pass_skill;
     delete dribble_skill;
-    for(int i=1; i < prob_field_rows; i++)
-        delete prob_field[i];
+    /*for(int i=0; i < prob_field_rows; i++)
+        for (int j = 0 ; j < prob_field_cols; j++)
+             delete prob_field[i][j].point;*/
+
     delete prob_field;
 }
 
@@ -446,7 +448,9 @@ float AttackMain::getScoreProb(const Point& p)
 {
     if(Comparisons::isPointInsideField(p))
     {
-        ProbNode pn = prob_field[PF_LENGTH_MAIN/2+(int)p.x/PND_MAIN][PF_WIDTH_MAIN/2+(int)p.y/PND_MAIN];
+        int rows = PF_LENGTH_MAIN/2+(int)p.x/PND_MAIN > PF_LENGTH_MAIN-1 ? PF_LENGTH_MAIN-1 : PF_LENGTH_MAIN/2+(int)p.x/PND_MAIN;
+        int cols = PF_WIDTH_MAIN/2+(int)p.y/PND_MAIN > PF_WIDTH_MAIN-1 ? PF_WIDTH_MAIN-1 : PF_WIDTH_MAIN/2+(int)p.y/PND_MAIN;
+        ProbNode pn = prob_field[rows][cols];
         return fmax(0, pn.dynamic_val + pn.static_val);
     }
     return 0;
