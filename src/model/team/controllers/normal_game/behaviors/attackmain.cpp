@@ -5,6 +5,8 @@
 #include "model/robot/robot.h"
 #include "model/game_state.h"
 
+#include <QDebug>
+
 
 float AttackMain::SCORE_ANGLE_TOLERANCE = ROT_TOLERANCE; //7*M_PI/180;
 float AttackMain::PASS_ANGLE_TOLERANCE  = ROT_TOLERANCE; //7*M_PI/180;
@@ -29,7 +31,7 @@ AttackMain::AttackMain(Robot* robot) : Behavior(robot)
 }
 
 bool AttackMain::perform()
-{
+{ if(team->getID() == 0 ) qInfo() << "Attack Main  Team Blue!!!!";
 //    auto clusters = genClusters();
 //    for(std::vector<Point> cluster : clusters)
 //    {

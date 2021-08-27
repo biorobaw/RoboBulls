@@ -4,7 +4,7 @@
 #include "model/team/team.h"
 #include "model/robot/robot.h"
 #include "model/game_state.h"
-
+#include <QDebug>
 Goalie::Goalie(Robot* r)
     : Behavior(r), GenericMovementBehavior(r)
     , goalPoint(Field::getGoalPosition(OUR_SIDE))
@@ -23,7 +23,7 @@ Goalie::~Goalie()
 }
 
 bool Goalie::perform()
-{
+{if(team->getID() == 0 ) qInfo() << "Goalie Team Blue!!!!";
     robot->setDribble(false);
     Point bp = *ball;
     float angleToBall = Measurements::angleBetween(robot, bp);
@@ -171,7 +171,7 @@ bool Goalie::perform()
 bool Goalie::isBallMovingTowardsGoal(std::pair<Point,Point>& lineSegOut)
 {
     // Filter out balls not moving towards goal
-    std::cout << "goal point:" << std::endl;
+    //std::cout << "goal point:" << std::endl;
     Point bVel = ball->getVelocity();
     if(bVel.x > -10)
         return false;

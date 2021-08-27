@@ -158,7 +158,7 @@ void RobotTeam::startControlLoop(){
 }
 
 void RobotTeam::runControlCycle(){
-    qInfo() << "Team is running: " << this->team_id;
+    //qInfo() << "Team is running: " << this->team_id;
     // first update game state:
     game_state->update();
 

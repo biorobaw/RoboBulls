@@ -59,6 +59,8 @@ bool RobotPilot::executeCommands(){
 
 bool RobotPilot::executeCmdGoToPose(CmdGoToPose *cmd){
     Point r_pos = *robot;
+    //if(robot->getTeamId() == 0)
+    //    qInfo() << "Robot team " <<robot->getTeamId() << " # "<<robot->getId() << " Goal: " <<cmd->target_pose << " Current: " <<robot->getPosition();
     Point nextPoint = cmd->target_pose;
     Point nextNextPoint = nextPoint;
 

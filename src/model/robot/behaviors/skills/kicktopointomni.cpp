@@ -119,7 +119,7 @@ bool KickToPointOmni::perform()
             robot->setDribble(false);
 
             behindBall = bp + Point(BEHIND_RAD_AVOID * cos(targetBallAng), BEHIND_RAD_AVOID * sin(targetBallAng));
-            std::cout << " behind ball location: " << behindBall.x << " , " << behindBall.y << " robot location: "<< robot->x << " , " << robot->y << std::endl;
+            //std::cout << " behind ball location: " << behindBall.x << " , " << behindBall.y << " robot location: "<< robot->x << " , " << robot->y << std::endl;
             cmd.velocity_multiplier =1;
             cmd.setTarget(behindBall, ballTargetAng);
             cmd.avoid_ball = cmd.avoid_obstacles = true; // true
@@ -130,7 +130,8 @@ bool KickToPointOmni::perform()
             if(robot->completedGoToPoseCmd())
             {
                             ++m_moveCompletionCount;
-                            std::cout << "mcc: " << m_moveCompletionCount <<std::endl;}
+                            //std::cout << "mcc: " << m_moveCompletionCount <<std::endl;
+            }
 
             if(m_moveCompletionCount > FORWARD_WAIT_COUNT) {
                 state = MOVE_INTERMEDIATE;

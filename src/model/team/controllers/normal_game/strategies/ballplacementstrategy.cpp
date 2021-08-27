@@ -22,11 +22,7 @@ BallPlacementStrategy::BallPlacementStrategy(RobotTeam* _team)
 }
 
 BallPlacementStrategy::~BallPlacementStrategy(){
-    qInfo() <<"delete";
-    //delete dribble_CompletionCount;
-    //mutex.lock();
-    //mutex.unlock();
-    qInfo() << "After";
+
 }
 
 

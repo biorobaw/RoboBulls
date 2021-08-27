@@ -23,7 +23,8 @@ AttackSupport::AttackSupport(Robot* robot)  : Behavior(robot)
 }
 
 bool AttackSupport::perform()
-{
+{if(team->getID() == 0 ) qInfo() << "Attack Support  Team Blue!!!!";
+
     Point rp = *robot;
     Point bp = *ball;
 
@@ -117,9 +118,9 @@ bool AttackSupport::perform()
         }
 
         // Move towards node with highest prob of scoring while facing ball
-        std::cout << "calcdynamic prob start:" << std::this_thread::get_id() << std::endl;
+        //std::cout << "calcdynamic prob start:" << std::this_thread::get_id() << std::endl;
         calcDynamicProb();
-        std::cout << "calcdynamic prob end:" << std::this_thread::get_id() << std::endl;
+        //std::cout << "calcdynamic prob end:" << std::this_thread::get_id() << std::endl;
 
 
         auto cmd = CmdGoToPose(findMaxNode().point,Measurements::angleBetween(rp, bp),true,false);
@@ -141,13 +142,14 @@ bool AttackSupport::perform()
                 GuiInterface::getGuiInterface()->drawPoint(curr.point);
         }
     }*/
-    qInfo() << "Attack Support finished: " << isFinished();
+    //qInfo() << "Attack Support finished: " << isFinished();
     return isFinished();
 }
 
 AttackSupport::ProbNode AttackSupport::findMaxNode()
 {
     // Find max probability node in opponent side of field
+
     ProbNode max_node = prob_field[PF_LENGTH_SUPP/2][0];
 
     for(int x = PF_LENGTH_SUPP/2; x < PF_LENGTH_SUPP; ++x)
@@ -160,7 +162,8 @@ AttackSupport::ProbNode AttackSupport::findMaxNode()
                max_node = curr;
         }
     }
-
+    if (robot->getTeamId() ==0)
+        qInfo() << "Robot Id: " << robot->getId() << " Max Node: " << max_node.point;
     return max_node;
 }
 
@@ -174,7 +177,7 @@ void AttackSupport::calcStaticProb()
     float temp_p = 0.0;
 
     DefenceArea def_area(OPPONENT_SIDE);
-    qInfo() << "Creating prob field";
+    //qInfo() << "Creating prob field";
     for (int x = 0; x < PF_LENGTH_SUPP; ++x)
     {
         for (int y = 0; y < PF_WIDTH_SUPP; ++y)

@@ -25,7 +25,7 @@ DribbleToPoint::DribbleToPoint(Robot* robot, Point* target, bool avoid_obstacles
     , target(target)
     , prefer_forward_motion(prefer_forward_motion)
     , state(move_to_ball)
-{   qInfo() << "Target constrcutor: "<<*this->target;
+{
     cmd.avoid_obstacles = avoid_obstacles;
 }
 
@@ -189,11 +189,11 @@ bool DribbleToPoint::safeToAdjust(const Point& bp, Robot* robot)
 
 
 bool DribbleToPoint::isFinished(){
-    qInfo() <<*target;
+    //qInfo() <<*target;
     //return false;
-    if (Measurements::distance(*ball, *target) < 300){
-        qInfo() << "isFinished: " << (Measurements::distance(*ball, *target) < 300) <<" ball: " <<*ball << " target: "<<*target;}
-    qInfo() << "This add: " << this;
+    //if (Measurements::distance(*ball, *target) < 300){
+        //qInfo() << "isFinished: " << (Measurements::distance(*ball, *target) < 300) <<" ball: " <<*ball << " target: "<<*target;}
+    //qInfo() << "This add: " << this;
     return (Measurements::distance(*ball, *target) < 300);
 }
 string DribbleToPoint::getName(){

@@ -263,11 +263,11 @@ void NormalGameStrategy::runControlCycle()
             if(Measurements::distance(attack1, *ball) <
                Measurements::distance(attack2, *ball))
             {
-                std::cout << "start"<< std::endl;
+                //std::cout << "start"<< std::endl;
                 attack1->setBehavior<AttackMain>(); // attackmain is the problem
 
                 main = attack1;
-                 std::cout << "end"<< std::endl;
+                 //std::cout << "end"<< std::endl;
                 attack2->setBehavior<AttackSupport>();
                 supp = attack2;
 
@@ -299,10 +299,10 @@ void NormalGameStrategy::runControlCycle()
             supp = nullptr;
             std::cout << "end3"<< std::endl;
         }
-std::cout << "start4"<< std::endl;
+//std::cout << "start4"<< std::endl;
         prev_state = state;
         state = evaluate;
-        std::cout << "end4"<< std::endl;
+        //std::cout << "end4"<< std::endl;
     }
         break;
     case defend:
