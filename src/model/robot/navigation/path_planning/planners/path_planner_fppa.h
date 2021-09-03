@@ -66,6 +66,7 @@ private:
     Point goal;
     bool avoid_ball;
     bool is_goalie;
+    bool obstacleIsBall = false;
 
 };
 

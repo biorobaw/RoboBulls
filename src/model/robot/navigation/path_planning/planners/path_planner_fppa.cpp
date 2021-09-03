@@ -27,7 +27,7 @@ using std::cout , std::endl;
 /* Defines the maximum recursions buildPathimpl makes(the number of segments in a path)
  * before no more serch is made
  */
-#define MAX_RECURSION_DEPTH 15
+#define MAX_RECURSION_DEPTH 5
 
 /* Defines, when sub-divding a path to avoid an obstacle, the minimum perpendicular distance
  * from the segment it samples to avoid it. Reducing the search size by a factor can
@@ -123,6 +123,7 @@ bool PathPlannerFPPA::segmentIntersectsObstacle(const Point& start, const Point&
     if(avoid_ball && Measurements::lineSegmentDistance(*ball, start, end) <= ROBOT_RADIUS+Field::BALL_RADIUS+10) {
         obstacle_found = true;
         obstacle_position = *ball;
+        obstacleIsBall = true;
         return obstacle_found;
     }
 
@@ -177,17 +178,26 @@ Point PathPlannerFPPA::chooseSubGoal(const Point& start, const Point& end, const
     Point search_vector = (end-start).normalizedPerpen()*SRCH_INCR;
     Point sub_goal[2] = {nearest_to_obstacle, nearest_to_obstacle};
     int cycles[2] = {0, 0};
-
+    bool isPointOutsideField[2] = {false, false};
     for(int i : {0,1}){
         do {
             cycles[i]++;
             sub_goal[i] += search_vector;
+            if (Comparisons::isPointOutsideField(sub_goal[i])){
+                isPointOutsideField[i] = true;
+                break;
+            }
+
         } while (isPointAtObstacle(sub_goal[i]));
         search_vector *= -1;
     }
 
     // Choose closest sub_goal
-    int closest_point_id = cycles[0] < cycles[1] ? 0 : 1;
+    int closest_point_id;
+        if(isPointOutsideField[1])
+            closest_point_id=0;
+        else
+            closest_point_id=1;
 
     // TODO: move goal to valid location before choosing
     moveToValidLocation(sub_goal[closest_point_id]);
@@ -218,7 +228,7 @@ void PathPlannerFPPA::moveToValidLocation(Point& dest) { //qInfo() <<"Before cla
 
 bool PathPlannerFPPA::isPointAtObstacle(const Point& point) {
     // Check ball
-    if(avoid_ball && Measurements::isClose(point, *ball, ROBOT_RADIUS+Field::BALL_RADIUS + 50))
+    if(avoid_ball && Measurements::isClose(point, *ball, ROBOT_RADIUS+Field::BALL_RADIUS + 50) && obstacleIsBall)
         return true;
 
 

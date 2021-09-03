@@ -116,7 +116,7 @@ bool Goalie::perform()
         if(farthest != nullptr)
             kickPoint = *farthest;
         else
-            kickPoint = Point(3000, 0);
+            kickPoint = Point(1000, 0);
 
 //        GuiInterface::getGuiInterface()->drawLine(bp, kickPoint);
 

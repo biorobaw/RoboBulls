@@ -80,12 +80,12 @@ bool RobotPilot::executeCmdGoToPose(CmdGoToPose *cmd){
         //gui->drawLine(r_pos, nextPoint);
         Point prev_point = r_pos;
         //gui->setHidePaths(false);
-        for (auto i : path)
+        /*for (auto i : path)
         {
             //gui->drawLine(prev_point, i);
             prev_point=i;
            //gui->drawPoint(i);
-        }
+        }*/
 
 //        qDebug().nospace() << "P: ";
 //        for(auto p : path)//int i=0; i<path.size(); i++)
