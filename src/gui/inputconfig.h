@@ -23,7 +23,7 @@ public:
     void strategy_tester_submit(bool isClicked);
     void rpi2019_load_robots(int numRobots);
     void none_submit(bool isClicked);
-
+    bool use_joypad;
 
 private slots:
 

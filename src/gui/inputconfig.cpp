@@ -323,7 +323,12 @@ void inputConfig::on_strategy_controller_activated(const QString &arg1)
 
 
 void inputConfig::on_pushButton_clicked()
-{
+{   //setting joypad
+    if(ui->joypad_box->isChecked())
+        use_joypad = true;
+    else
+        use_joypad = false;
+
     this->setAttribute(Qt::WA_QuitOnClose, true);
     this->close();
 

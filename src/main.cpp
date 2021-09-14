@@ -15,7 +15,7 @@
 #include "configuration/configuration.h"
 #include "utilities/debug.h"
 #include "gui/inputconfig.h"
-
+#include <QProcess>
 
 /*! @mainpage Welcome to the RoboBulls 2 Documentation.
  *
@@ -162,8 +162,6 @@ int main(int argc, char *argv[])
     SControllerJoystick::init_module(teams); // init joystick listener module
 
 
-
-
     // Start ssl software
     // obs: object will be destroyed automatically when the thread ends
     new SSLVisionListener(&config["comm"]);
@@ -177,6 +175,13 @@ int main(int argc, char *argv[])
 
     // must create gui last to connect to teams and ssl-listeners
     // since the gui assumes the existance of the model
+
+    //Initiallizing joypad from Initial Config menu.
+    if(newBlueConfig.use_joypad)
+        debug::debugCallFn("call mapjoy 0 0 0");
+    if(newYellowConfig.use_joypad)
+        debug::debugCallFn("call mapjoy 1 1 0");
+
 
     (new GuiInterface(teams))->show(); // singleton -> no need to save reference
 

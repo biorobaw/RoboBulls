@@ -60,6 +60,8 @@ void registerFunction(const std::string& name, debug_fn function);
  * @details Starts a new thread that listens for commands */
 void listenStart();
 
+void debugCallFn(std::string args);
+
 }
 
 #endif

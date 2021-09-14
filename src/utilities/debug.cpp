@@ -36,6 +36,73 @@ static std::vector<std::string> stringSplit(const std::string& target, const std
     return result;
 }
 
+void debugCallFn(string args)
+{
+    std::vector<std::string> arguments = stringSplit(args, " ");
+    if(arguments.empty() || arguments[0].length() <= 1)
+        return;
+
+    if(arguments[0] == "help")
+    {
+        std::cout << "set <i>          Set an integer\n"
+                  << "get <i>          Retrieve integer value\n"
+                  << "get              Retrieve all registered values\n"
+                  << "call <f> [args]  Call a registerd function\n"
+                  << "help             Show this help text" << std::endl;
+    }
+    else if(arguments[0] == "set") //Set a variable
+    {
+        if(arguments.size() == 3) {
+            auto it = commandMap.find(arguments[1]);
+            if( it != commandMap.end() ) {
+                *(it->second) = std::atof(arguments[2].c_str()); //pointer is set here
+            } else {
+                std::cout << "No entry \"" << arguments[1] << "\" exists" << std::endl;
+            }
+        }
+    }
+    else if(arguments[0] == "get")
+    {
+        //Print only a selected variable
+        if(arguments.size() == 2) {
+            auto it = commandMap.find(arguments[1]);
+            if( it != commandMap.end() ) {
+                std::cout << arguments[1] << " " << *(it->second) << std::endl;
+            } else {
+                std::cout << "No entry \"" << arguments[1] << "\" exists" << std::endl;
+            }
+        }
+        //Print all registered variables and functions
+        else if(arguments.size() == 1) {
+            for(const auto& entry : commandMap) {
+                std::cout << "i  " << entry.first << " " << *(entry.second) << std::endl;
+            }
+            for(const auto& entry : funcMap) {
+                std::cout << "f  " << entry.first << std::endl;
+            }
+        }
+    }
+    else if(arguments[0] == "call")
+    {
+        if(arguments.size() > 1) {
+            const std::string& funcName = arguments[1];
+            if(funcMap.find(funcName) != funcMap.end()) {
+                std::vector<std::string> args(arguments.begin()+2, arguments.end());
+                funcMap[funcName](args);    //Function is called here
+            } else {
+                std::cout << "No registed function \"" << funcName << "\"" << std::endl;
+            }
+        } else {
+            std::cout << "Enter a function name to call" << std::endl;
+        }
+    }
+    else {
+        std::cout << "Unrecognized command \"" << arguments[0] << "\"" << std::endl;
+    }
+
+    std::cout << std::endl;
+}
+
 
 static void debugListenFn()
 {
@@ -73,13 +140,13 @@ static void debugListenFn()
                 }
             }
         }
-        else if(arguments[0] == "get") 
+        else if(arguments[0] == "get")
         {
             //Print only a selected variable
-            if(arguments.size() == 2) {                     
+            if(arguments.size() == 2) {
                 auto it = commandMap.find(arguments[1]);
                 if( it != commandMap.end() ) {
-                    std::cout << arguments[1] << " " << *(it->second) << std::endl;    
+                    std::cout << arguments[1] << " " << *(it->second) << std::endl;
                 } else {
                     std::cout << "No entry \"" << arguments[1] << "\" exists" << std::endl;
                 }
@@ -111,7 +178,7 @@ static void debugListenFn()
         else {
             std::cout << "Unrecognized command \"" << arguments[0] << "\"" << std::endl;
         }
-        
+
         std::cout << std::endl;
     }
 }
