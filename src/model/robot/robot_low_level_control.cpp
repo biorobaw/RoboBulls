@@ -1,5 +1,6 @@
 #include "robot_low_level_controls.h"
 #include "robot.h"
+#include <iostream>
 
 RobotLowLevelControls::RobotLowLevelControls(QObject* parent, Robot* robot) :
     QObject(parent), robot(robot)
@@ -46,6 +47,7 @@ void RobotLowLevelControls::setTargetVelocityGlobal(Point velocity, float angula
 }
 
 void RobotLowLevelControls::setKickSpeed(int speed){
+
     kick_speed = speed;
 }
 void RobotLowLevelControls::setKickDistance(int distance){
@@ -66,9 +68,17 @@ void RobotLowLevelControls::setKickDistance(int distance){
      * 3.000        4.5
      * 3.768        5
      * 4.512        5.5
+     *
+     *
+     *
+     *
      */
-    float d = (float)distance / 1000; // calculations were done in m/s
-    setKickSpeed((0.083*(d*d*d) - 0.759*(d*d) + 2.8812*(d) + 0.3785)*1000);
+    float d = distance;
+    //float d = (float)distance / 1000; // calculations were done in m/s
+    //setKickSpeed((0.083*(d*d*d) - 0.759*(d*d) + 2.8812*(d) + 0.3785)*1000);
+    setKickSpeed(( - 0.0000386164*(d*d) + 0.808328*(d) + 716.488));
+    //setKickSpeed(5000);
+    std::cout << "Kickspeed: " << kick_speed << std::endl;
 }
 void RobotLowLevelControls::setDribble(bool on){
     dribble = on; }

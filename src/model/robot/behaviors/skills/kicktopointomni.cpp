@@ -85,11 +85,13 @@ KickToPointOmni::KickToPointOmni(Robot* robot, Point* targetPtr,
 
 {
     //debug::registerVariable("ktpo_rc", &RECREATE_DIST_TOL);
+
 }
 
 bool KickToPointOmni::perform()
 {
     Point bp = *ball;
+
     //GuiInterface::getGuiInterface()->drawLine(bp, *m_targetPointer);
 
     // Angle between the ball and the kick target
@@ -192,14 +194,20 @@ bool KickToPointOmni::perform()
         break;
     case KICK:
         {
+            //robot->setTargetVelocityGlobal(Point(0,0), 0);
             std::cout << "KTPO STATE: KICK" << std::endl;
-
-            // Are we using full power? Otherwise, use distance-based power
-            float powerDistance = Measurements::distance(robot, *m_targetPointer);
-            if(m_useFullPower) robot->setKickSpeed(5000);
-            else robot->setKickDistance(powerDistance);
-            std::cout << "Kick signal sent"<< std::endl;
-
+            //if(m_kickCommandCount == 100){
+                Original_bp = *ball;
+                // Are we using full power? Otherwise, use distance-based power
+                float powerDistance = Measurements::distance(robot, *m_targetPointer);
+                if(m_useFullPower)
+                    robot->setKickSpeed(5000);
+                else
+                    robot->setKickDistance(powerDistance);
+                std::cout << "Kick signal sent"<< std::endl;
+                //}
+            //if(!canKick(robot))
+            //    state = MOVE_BEHIND;
             if(m_kickCommandCount < 100)
             {
                 // We sent the command several times to ensure the robot receives it
@@ -218,7 +226,7 @@ bool KickToPointOmni::perform()
         }
         break;
     }
-
+    std::cout << "distance travelled: " << Measurements::distance(Original_bp, *ball) <<std::endl;
     return false; // was false
 }
 

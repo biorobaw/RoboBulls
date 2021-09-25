@@ -60,6 +60,8 @@ private:
       int  m_kickCommandCount;
      bool  m_hasKicked;
 
+     Point Original_bp;
+
     // Current skill state
     enum { MOVE_BEHIND,  //We are far from the ball and are moving behind it to face target
            MOVE_INTERMEDIATE,   // We are moving closer to the ball
