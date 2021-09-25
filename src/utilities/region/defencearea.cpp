@@ -32,13 +32,15 @@ bool DefenceArea::contains(Point p, const float tol)
     p.x *= side_sign;
 
     // add tolerance  // dont we also want to expand y directions?
-    positive_area.min_x -=tol;
+
+    //Issue with mutal exclusion adding tolerance and subtracting tolerance(function access by different threads...) - Justin
+    //positive_area.min_x -=tol;
 
     // calculate result
-    bool result = positive_area.contains(p);
+    bool result = positive_area.contains(p, tol);
 
     // remove tolerance
-    positive_area.min_x +=tol;
+    //positive_area.min_x +=tol;
 
     // return result
     return result;
@@ -49,7 +51,7 @@ void DefenceArea::draw()
 {
     area.draw();
 }
-
+#include <QDebug>
 void DefenceArea::expelPoint(Point& p)
 {
     //   delta_x             obs weareae_area for
@@ -69,6 +71,15 @@ void DefenceArea::expelPoint(Point& p)
     p.x *= side_sign;
 
     if(positive_area.contains(p)){
+        qInfo() <<"HEEERE" << p;
+        //qInfo() << (p.x >= positive_area.min_x && p.x <= positive_area.max_x && p.y >= positive_area.min_y && p.y <= positive_area.max_y);
+        qInfo() << "P.x" << p.x <<" min" << positive_area.min_x  <<" Max"<< positive_area.max_x ;
+        qInfo() << (p.x >= positive_area.min_x && p.x <= positive_area.max_x) ;
+
+        qInfo()  <<"P.y"<< p.y <<" min" <<positive_area.min_y <<"max"<< positive_area.max_y;
+        qInfo()  <<(p.y >= positive_area.min_y && p.y <= positive_area.max_y);
+
+
         int delta_y = positive_area.max_y - abs(p.y);
         int delta_x = p.x - positive_area.min_x;
 

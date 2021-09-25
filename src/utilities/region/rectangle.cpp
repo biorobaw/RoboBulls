@@ -20,6 +20,10 @@ bool Rectangle::contains(const Point& point)
 {
     return point.x >= min_x && point.x <= max_x && point.y >= min_y && point.y <= max_y;
 }
+bool Rectangle::contains(const Point& point, float tolerance)
+{
+    return point.x >= min_x-tolerance && point.x <= max_x && point.y >= min_y && point.y <= max_y;
+}
 
 //See http://stackoverflow.com/questions/1585525/
 bool Rectangle::containsLine(const Point& p0, const Point& p1)

@@ -26,6 +26,10 @@ public:
     /*! Returns true if a point is inside the rectangular region */
     bool contains(const Point& point) override;
 
+    /*! Contains function with tolerance */
+    bool contains(const Point& point, float tolerance);
+
+
     /*! Displays the region on the GUI using a point cloud*/
     void draw() override;
 
