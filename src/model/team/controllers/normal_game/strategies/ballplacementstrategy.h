@@ -14,6 +14,9 @@ public:
     void runControlCycle() override;
 private:
     int  dribble_CompletionCount;
+    enum states{OUTSIDE_FIELD, INSIDE_FIELD};
+    states cur_state;
+    int has_ball_ct;
     //QMutex mutex;
 };
 

@@ -200,4 +200,7 @@ string DribbleToPoint::getName(){
     return "Dribble to point";
 }
 
+void DribbleToPoint::setAvoidObstacles(bool avoid_obstacles){
+    cmd.avoid_obstacles = avoid_obstacles;
+}
 

@@ -83,7 +83,7 @@ bool AttackMain::perform()
     case passing:
     {
         std::cout << "AttackMain: Pass" << std::endl;
-        robot->setDribble(false);
+        robot->setDribble(true);
 
         std::pair<bool, Point> pass_eval = calcBestPassPoint();
 

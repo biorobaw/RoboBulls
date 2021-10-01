@@ -29,6 +29,7 @@ public:
     bool perform() override;
     bool isFinished() override;
     string getName() override;
+    void setAvoidObstacles(bool avoid_obstacles);
 
 private:
 

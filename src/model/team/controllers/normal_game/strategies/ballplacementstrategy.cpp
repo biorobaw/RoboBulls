@@ -9,10 +9,12 @@
 #include "model/robot/robot.h"
 #include "model/team/controllers/normal_game/behaviors/goalie.h"
 #include "model/team/controllers/normal_game/behaviors/refstop.h"
+#include "utilities/comparisons.h"
 #include <QDebug>
 
 BallPlacementStrategy::BallPlacementStrategy(RobotTeam* _team)
     : TeamStrategy(_team), dribble_CompletionCount(0) {
+    cur_state=INSIDE_FIELD; has_ball_ct=0;
     /*for(Robot* robot : team->getRobots())
     {
         robot->clearBehavior();
@@ -42,7 +44,7 @@ void BallPlacementStrategy::assignBehaviors()
         qInfo() << "target location: " <<game_state->getBallPlacement();
         if(attack1)
         {   qInfo()<<"atack1" << game_state->getBallPlacement();
-            attack1->setBehavior<DribbleToPoint>(game_state->getBallPlacement());
+            attack1->setBehavior<DribbleToPoint>(game_state->getBallPlacement(), false, false);
 
             std::cout << "attack1 is the kicker" << std::endl;
         }
@@ -119,7 +121,28 @@ QString BallPlacementStrategy::getName()
 
 
 void BallPlacementStrategy::runControlCycle()
-{qInfo() << "enter";
+{//qInfo() << "enter";
+//    if (Comparisons::isPointOutsideField(*game_state->getBall()))
+//    for (Robot* rob : team->getRobots())
+//        if (rob->hasBehavior() && rob->getBehavior()->getName() == "Dribble to point"){
+//            if ((abs(rob->x)-Field::FIELD_LENGTH/2 <ROBOT_RADIUS+50 || abs(rob->y)-Field::FIELD_WIDTH/2 <ROBOT_RADIUS+50))
+//            {
+//                ((DribbleToPoint*)rob->getBehavior())->setAvoidObstacles(false);
+//                cur_state = OUTSIDE_FIELD;
+//             }
+//         }
+//    if (cur_state == OUTSIDE_FIELD)
+//        for (Robot* rob : team->getRobots())
+//            if (rob->hasBehavior() && rob->getBehavior()->getName() == "Dribble to point"){
+//                if(rob->hasBall() && !Comparisons::isPointOutsideField(*rob)){
+//                    has_ball_ct++;
+//                    if(has_ball_ct>100){
+//                        ((DribbleToPoint*)rob->getBehavior())->setAvoidObstacles(true);
+//                        cur_state = INSIDE_FIELD;}
+//                    }
+//                else has_ball_ct= fmin(has_ball_ct-1,0);
+//             }
+
     //mutex.lock();
     for (Robot* rob : team->getRobots())
         if (rob->hasBehavior() && rob->getBehavior()->getName() == "Dribble to point" && rob->getBehavior()->isFinished() ){
@@ -135,7 +158,7 @@ void BallPlacementStrategy::runControlCycle()
 
         }
     //mutex.unlock();
-    qInfo() <<"exit";
+    //qInfo() <<"exit";
 }
 
 

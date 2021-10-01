@@ -188,9 +188,11 @@ bool KickToPointOmni::perform()
              * moves too far or we are in kick lock */
             if(canKick(robot))
                 state = KICK;
-            else if(!isFacingTarget(robot) || isVeryFarFromBall(robot))
+            else if(isVeryFarFromBall(robot))
                 state = MOVE_BEHIND;
-        }
+            else if (isInKickLock(robot))
+                state = MOVE_BEHIND;
+    }
         break;
     case KICK:
         {
@@ -201,7 +203,7 @@ bool KickToPointOmni::perform()
                 // Are we using full power? Otherwise, use distance-based power
                 float powerDistance = Measurements::distance(robot, *m_targetPointer);
                 if(m_useFullPower)
-                    robot->setKickSpeed(5000);
+                    robot->setKickSpeed(7500);
                 else
                     robot->setKickDistance(powerDistance);
                 std::cout << "Kick signal sent"<< std::endl;

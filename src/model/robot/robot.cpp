@@ -144,8 +144,9 @@ Robot* Robot::runControlCycle(){
 Robot* Robot::clearBehavior()
 {
     if(behavior != nullptr) {
-        delete behavior;
+        Behavior* temp = behavior;
         this->behavior = nullptr;
+        delete temp;
     }
     return this;
 }
