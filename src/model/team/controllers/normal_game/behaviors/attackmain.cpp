@@ -31,7 +31,7 @@ AttackMain::AttackMain(Robot* robot) : Behavior(robot)
 }
 
 bool AttackMain::perform()
-{ if(team->getID() == 0 ) qInfo() << "Attack Main  Team Blue!!!!";
+{ //if(team->getID() == 0 ) qInfo() << "Attack Main  Team Blue!!!!";
 //    auto clusters = genClusters();
 //    for(std::vector<Point> cluster : clusters)
 //    {
@@ -59,9 +59,9 @@ bool AttackMain::perform()
         robot->setDribble(true);
 
         std::pair<bool, Point> goal_eval = calcBestGoalPoint();
-
         if(goal_eval.first)
         {
+            //qInfo() << "Kick point " << goal_eval.second;
             kick_point = goal_eval.second;
             clear_shot_count = std::min(30, clear_shot_count+1);
         }
@@ -348,7 +348,7 @@ std::pair<bool, Point> AttackMain::calcBestGoalPoint()
         for(const Point& obstacle : obstacles)
         {
             // If there is an obstacle in the way
-            if(Measurements::lineSegmentDistance(obstacle, *ball, target) <= Field::BALL_RADIUS+ROBOT_RADIUS+50)
+            if(Measurements::lineSegmentDistance(obstacle, *ball, target) <= Field::BALL_RADIUS+ROBOT_RADIUS+75)//changed constant from 50(prob need to take into account distance from target...)
             {
                 clear_shot = false;
                 break;
