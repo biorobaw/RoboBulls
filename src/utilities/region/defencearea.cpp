@@ -71,13 +71,13 @@ void DefenceArea::expelPoint(Point& p)
     p.x *= side_sign;
 
     if(positive_area.contains(p)){
-        qInfo() <<"HEEERE" << p;
+        //qInfo() <<"HEEERE" << p;
         //qInfo() << (p.x >= positive_area.min_x && p.x <= positive_area.max_x && p.y >= positive_area.min_y && p.y <= positive_area.max_y);
-        qInfo() << "P.x" << p.x <<" min" << positive_area.min_x  <<" Max"<< positive_area.max_x ;
-        qInfo() << (p.x >= positive_area.min_x && p.x <= positive_area.max_x) ;
+        //qInfo() << "P.x" << p.x <<" min" << positive_area.min_x  <<" Max"<< positive_area.max_x ;
+        //qInfo() << (p.x >= positive_area.min_x && p.x <= positive_area.max_x) ;
 
-        qInfo()  <<"P.y"<< p.y <<" min" <<positive_area.min_y <<"max"<< positive_area.max_y;
-        qInfo()  <<(p.y >= positive_area.min_y && p.y <= positive_area.max_y);
+        //qInfo()  <<"P.y"<< p.y <<" min" <<positive_area.min_y <<"max"<< positive_area.max_y;
+        //qInfo()  <<(p.y >= positive_area.min_y && p.y <= positive_area.max_y);
 
 
         int delta_y = positive_area.max_y - abs(p.y);

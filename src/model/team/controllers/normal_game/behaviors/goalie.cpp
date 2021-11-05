@@ -23,7 +23,7 @@ Goalie::~Goalie()
 }
 
 bool Goalie::perform()
-{if(team->getID() == 0 ) qInfo() << "Goalie Team Blue!!!!";
+{//if(team->getID() == 0 ) qInfo() << "Goalie Team Blue!!!!";
     robot->setDribble(false);
     Point bp = *ball;
     float angleToBall = Measurements::angleBetween(robot, bp);

@@ -19,6 +19,8 @@
 #include "model/team/team.h"
 #include "ssl_referee.pb.h"
 
+
+#include <QDebug>
 NormalGameStrategy::NormalGameStrategy(RobotTeam* _team)
     : TeamStrategy(_team)
     , initialBallPos(*ball)
@@ -238,7 +240,7 @@ void NormalGameStrategy::runControlCycle()
 
         // Evaluate goalkick
         if(prev_state != goalkick)
-        {
+        {   //qInfo() << our_def_area.s
             if(our_def_area.contains(bp))
                 state = goalkick;
         }
@@ -274,10 +276,10 @@ void NormalGameStrategy::runControlCycle()
             }
             else
             {
-                std::cout << "start1"<< std::endl;
+                //std::cout << "start1"<< std::endl;
                 attack1->setBehavior<AttackSupport>();
                 supp = attack1;
-                std::cout << "end1"<< std::endl;
+                //std::cout << "end1"<< std::endl;
                 attack2->setBehavior<AttackMain>();
                 main = attack2;
 
@@ -319,8 +321,11 @@ void NormalGameStrategy::runControlCycle()
     }
         break;
     case goalkick:
-    {
+    {   //this is getting trigger when in opponents goal area.
         std::cout << "Assigning Goal Kick Behaviors" << std::endl;
+        if(ball_bot!=nullptr)
+            qInfo() << "Robot with ball: "<<ball_bot->getId() << "Team" <<ball_bot->getTeamId();
+
 
         if(attack1)
             attack1->setBehavior<MarkBot>();
