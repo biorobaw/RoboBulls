@@ -72,6 +72,7 @@ bool DribbleToPoint::perform()
         && prefer_forward_motion)
             state = adjust1;
 
+        //In what case would this(dist_check) ever be false?
         bool dist_check = dist_to_ball < ROBOT_RADIUS + Field::BALL_RADIUS +dist_to_ball;
         bool ang_check = fabs(Measurements::angleDiff(ang_to_ball, robot->getOrientation()) < ROT_TOLERANCE);
 
