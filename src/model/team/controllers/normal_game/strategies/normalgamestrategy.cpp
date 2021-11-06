@@ -322,7 +322,7 @@ void NormalGameStrategy::runControlCycle()
         break;
     case goalkick:
     {   //this is getting trigger when in opponents goal area.
-        //std::cout << "Assigning Goal Kick Behaviors" << std::endl;
+        std::cout << "Assigning Goal Kick Behaviors" << std::endl;
         //if(ball_bot!=nullptr)
         //    qInfo() << "Robot with ball: "<<ball_bot->getId() << "Team" <<ball_bot->getTeamId();
 
