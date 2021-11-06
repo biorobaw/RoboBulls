@@ -23,7 +23,7 @@ AttackSupport::AttackSupport(Robot* robot)  : Behavior(robot)
 }
 
 bool AttackSupport::perform()
-{if(team->getID() == 0 ) qInfo() << "Attack Support  Team Blue!!!!";
+{//if(team->getID() == 0 ) qInfo() << "Attack Support  Team Blue!!!!";
 
     Point rp = *robot;
     Point bp = *ball;
@@ -40,7 +40,7 @@ bool AttackSupport::perform()
     {
         robot->setDribble(true);
 
-        std::cout << "Intercepting" << std::endl;
+        //std::cout << "Intercepting" << std::endl;
 
         // Evaluate transition to positioning
         Point b_vel = ball->getVelocity();
@@ -97,7 +97,7 @@ bool AttackSupport::perform()
     case position:
     {
         robot->setDribble(false);
-        std::cout << "Positioning" << std::endl;
+        //std::cout << "Positioning" << std::endl;
 
         // Evaluate transition to intercepting by
         // Checking if a teammate with the ball is facing this robot
@@ -162,8 +162,8 @@ AttackSupport::ProbNode AttackSupport::findMaxNode()
                max_node = curr;
         }
     }
-    if (robot->getTeamId() ==0)
-        qInfo() << "Robot Id: " << robot->getId() << " Max Node: " << max_node.point;
+    //if (robot->getTeamId() ==0)
+        //qInfo() << "Robot Id: " << robot->getId() << " Max Node: " << max_node.point;
     return max_node;
 }
 
@@ -184,7 +184,8 @@ void AttackSupport::calcStaticProb()
         {
 
             ProbNode& n = prob_field[x][y];
-
+            n.static_val=0;
+            n.dynamic_val=0;
             n.point = Point(x*PND_SUPP - Field::HALF_FIELD_LENGTH, y*PND_SUPP - Field::HALF_FIELD_WIDTH);
 
             // Probability of scoring is a decreasing function of distance from
@@ -498,9 +499,11 @@ string AttackSupport::getName() {
 
 AttackSupport::~AttackSupport()
 {
-    /*for(int i=0; i < prob_field_rows; i++)
-        delete prob_field[i];*/
-    delete prob_field;
+    for(int i=0; i < prob_field_rows; i++)
+    {
+        delete[] prob_field[i];
+    }
+    delete[] prob_field;
 }
 
 float AttackSupport::getScoreProb(const Point& p)
