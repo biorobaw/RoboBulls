@@ -146,18 +146,25 @@ bool AttackMain::perform()
         // Find max probability node in opponent side of field
         ProbNode max_node = prob_field[PF_LENGTH_MAIN/2][0];
 
+        //Perhaps we need to add distance to max node as a part of the dynamic
+        //probabilities heuristic - Justin
+
         for(int x = PF_LENGTH_MAIN/2; x < PF_LENGTH_MAIN; ++x)
-        {
+        {//string test = "";
             for(int y = 0; y < PF_WIDTH_MAIN; ++y)
             {
                 ProbNode& curr = prob_field[x][y];
-
+                //test+="N[" +std::to_string(x) +"]["+std::to_string(y)+"]=" +std::to_string(curr.static_val)+"  ";
+                //qInfo()<<" N" << curr.static_val;
                 if(max_node.static_val+max_node.dynamic_val <= curr.static_val+curr.dynamic_val)
                    max_node = curr;
             }
+            //test+="/n";
+            //qInfo() << QString(test.c_str());
         }
 
         // Dribble Towards Max Node
+        qInfo()<< "Max node points: "<<max_node.point;
         kick_point = max_node.point;
         dribble_skill->perform();
 
@@ -185,26 +192,31 @@ void AttackMain::calcStaticProb()
         for (int y = 0; y < PF_WIDTH_MAIN; ++y)
         {
             ProbNode& n = prob_field[x][y];
+            n.static_val =0;
+            n.dynamic_val =0;
 
             n.point = Point(x*PND_MAIN - Field::HALF_FIELD_LENGTH, y*PND_MAIN - Field::HALF_FIELD_WIDTH);
-
+            //qInfo() << n.point;
             // Probability of scoring is a decreasing function of distance from
             // the goal. Anything beyond 3000 points gets a probability of zero.
             // It is also a decreasing function of the angle to the goal.
             dist = Measurements::distance(n.point, opp_goal);
             angle = fabs(Measurements::angleBetween(n.point, opp_goal));
-
+            //qInfo() <<"distL " <<dist <<" angle: " <<angle;
             if(dist < 3000 && angle < 1.484) // 85 degrees
             {
                 // probability = 1 - (1/3000) * distance
                 temp_p = 1.0 - 0.000333 * dist;
                 temp_p *= w_dist;
                 n.static_val += temp_p;
+                //qInfo() << "Weighted dist: " << temp_p;
 
                 // probability = 1 - (1/(85*pi/180)) * angle
                 temp_p = 1.0 - 0.674 * angle;
                 temp_p *= w_ang;
                 n.static_val += temp_p;
+                //qInfo() << "Weighted angle: " << temp_p;
+
             }
 
             // Remove Points from defence area
@@ -213,6 +225,7 @@ void AttackMain::calcStaticProb()
 
             // Normalize probabilities
             n.static_val /= (w_dist + w_ang);
+            //qInfo() << x<<"," << y<< " "<<n.static_val;
         }
     }
 }
@@ -254,8 +267,8 @@ void AttackMain::calcDynamicProb()
         // Gradient of line starting from bottom end of goal post and tangent to bottom robot (found using MATLAB)
         float m2 = (R*sqrt(pow(A2-bot_x,2) + pow(B2-bot_y,2) - R*R) + (B2-bot_y)*(A2-bot_x))/(pow(A2-bot_x,2) - R*R);
 
-//        GuiInterface::getGuiInterface()->drawLine(Point(A1,B1), Point(top_x, top_y), 0.01);
-//        GuiInterface::getGuiInterface()->drawLine(Point(A2,B2), Point(bot_x, bot_y), 0.01);
+        GuiInterface::getGuiInterface()->drawLine(Point(A1,B1), Point(top_x, top_y));
+        GuiInterface::getGuiInterface()->drawLine(Point(A2,B2), Point(bot_x, bot_y));
 
         // Set probabilities
         for(int x = PF_LENGTH_MAIN/2; x < PF_LENGTH_MAIN; ++x)
@@ -283,7 +296,7 @@ std::vector<std::vector<Point>> AttackMain::genClusters()
 
     for(Robot* opp: team->getOpponents())
     {
-        // Check if each opponent belongs to an existing cluster
+        // Check if each opponent belongs(should go in a) to an existing cluster
         bool assigned = false;
 
         for(std::vector<Point>& cluster: clusters)
@@ -311,7 +324,7 @@ std::vector<std::vector<Point>> AttackMain::genClusters()
         }
     }
 
-    for(std::vector<Point>& cluster : clusters)
+    for(std::vector<Point>& cluster : clusters) //Looks like it is sorting based on vertical location of clusters-Justin
         std::sort(cluster.begin(),cluster.end(), [](const Point& A, const Point& B){return A.y > B.y;});
 
     return clusters;
@@ -443,7 +456,12 @@ AttackMain::~AttackMain()
         for (int j = 0 ; j < prob_field_cols; j++)
              delete prob_field[i][j].point;*/
 
-    delete prob_field;
+    for(int i=0; i < prob_field_rows; i++)
+    {
+        delete[] prob_field[i];
+    }
+
+    delete[] prob_field;
 }
 
 float AttackMain::getScoreProb(const Point& p)
