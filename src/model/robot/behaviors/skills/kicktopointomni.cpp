@@ -117,11 +117,14 @@ bool KickToPointOmni::perform()
     {
     case MOVE_BEHIND:
         {
-          std::cout << "KTPO STATE: MOVE BEHIND" << std::endl;
-            robot->setDribble(false);
-
+          //std::cout << "KTPO STATE: MOVE BEHIND" << std::endl;
+            robot->setDribble(false);            
             behindBall = bp + Point(BEHIND_RAD_AVOID * cos(targetBallAng), BEHIND_RAD_AVOID * sin(targetBallAng));
             //std::cout << " behind ball location: " << behindBall.x << " , " << behindBall.y << " robot location: "<< robot->x << " , " << robot->y << std::endl;
+            //GuiInterface::getGuiInterface()->drawLine(*robot, behindBall);
+            //GuiInterface::getGuiInterface()->drawLine(*robot, *m_targetPointer);
+
+
             cmd.velocity_multiplier =1;
             cmd.setTarget(behindBall, ballTargetAng);
             cmd.avoid_ball = cmd.avoid_obstacles = true; // true
@@ -148,7 +151,7 @@ bool KickToPointOmni::perform()
 
     case MOVE_INTERMEDIATE:
         {
-           std::cout << "KTPO STATE: MOVE INTERMEDIATE" << std::endl;
+           //std::cout << "KTPO STATE: MOVE INTERMEDIATE" << std::endl;
             robot->setDribble(false);
             // Move towards the ball at the angle to target
             // Motion will be straight ahead, given the completion of MOVE_BEHIND
@@ -175,7 +178,7 @@ bool KickToPointOmni::perform()
 
     case MOVE_FORWARD:
         {
-            std::cout << "KTPO STATE: MOVE FORWARD" << std::endl;
+            //std::cout << "KTPO STATE: MOVE FORWARD" << std::endl;
 
             robot->setDribble(true);
             // Move towards the ball at the angle to target (straight)
@@ -197,7 +200,7 @@ bool KickToPointOmni::perform()
     case KICK:
         {
             //robot->setTargetVelocityGlobal(Point(0,0), 0);
-            std::cout << "KTPO STATE: KICK" << std::endl;
+            //std::cout << "KTPO STATE: KICK" << std::endl;
             //if(m_kickCommandCount == 100){
                 Original_bp = *ball;
                 // Are we using full power? Otherwise, use distance-based power
@@ -206,7 +209,7 @@ bool KickToPointOmni::perform()
                     robot->setKickSpeed(7500);
                 else
                     robot->setKickDistance(powerDistance);
-                std::cout << "Kick signal sent"<< std::endl;
+                //std::cout << "Kick signal sent"<< std::endl;
                 //}
             //if(!canKick(robot))
             //    state = MOVE_BEHIND;
@@ -228,7 +231,7 @@ bool KickToPointOmni::perform()
         }
         break;
     }
-    std::cout << "distance travelled: " << Measurements::distance(Original_bp, *ball) <<std::endl;
+    //std::cout << "distance travelled: " << Measurements::distance(Original_bp, *ball) <<std::endl;
     return false; // was false
 }
 
