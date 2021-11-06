@@ -167,7 +167,8 @@ bool KickToPointOmni::perform()
             //This is done by waiting for confirmation from the movement class
             if(robot->completedGoToPoseCmd()){
                 ++m_moveCompletionCount;
-                std::cout << "mcc: " << m_moveCompletionCount <<std::endl;}
+                //std::cout << "mcc: " << m_moveCompletionCount <<std::endl;
+            }
             if(m_moveCompletionCount > FORWARD_WAIT_COUNT) {
                 state = MOVE_FORWARD;
                 m_hasRecoveredKickLock = true;

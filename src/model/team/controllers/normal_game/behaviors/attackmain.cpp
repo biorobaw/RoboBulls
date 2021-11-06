@@ -5,7 +5,7 @@
 #include "model/robot/robot.h"
 #include "model/game_state.h"
 
-#include <QDebug>
+//#include <QDebug>
 
 
 float AttackMain::SCORE_ANGLE_TOLERANCE = ROT_TOLERANCE; //7*M_PI/180;
@@ -27,7 +27,7 @@ AttackMain::AttackMain(Robot* robot) : Behavior(robot)
     prob_field_cols = (Field::FIELD_WIDTH+1)/PND_MAIN;
     prob_field = new ProbNode*[prob_field_rows];
     for(int i=0; i<prob_field_rows; i++) prob_field[i] = new ProbNode[prob_field_cols];*/
-    std::cout << "Attack Main Behavior created"<< std::endl;
+    //std::cout << "Attack Main Behavior created"<< std::endl;
 }
 
 bool AttackMain::perform()
@@ -55,7 +55,7 @@ bool AttackMain::perform()
     {
     case scoring:
     {
-        std::cout << "AttackMain: Score" << std::endl;
+        //std::cout << "AttackMain: Score" << std::endl;
         robot->setDribble(true);
 
         std::pair<bool, Point> goal_eval = calcBestGoalPoint();
@@ -82,7 +82,7 @@ bool AttackMain::perform()
     }
     case passing:
     {
-        std::cout << "AttackMain: Pass" << std::endl;
+        //std::cout << "AttackMain: Pass" << std::endl;
         robot->setDribble(true);
 
         std::pair<bool, Point> pass_eval = calcBestPassPoint();
@@ -109,7 +109,7 @@ bool AttackMain::perform()
     }
     case dribbling:
     {
-        std::cout << "AttackMain: Dribble" << std::endl;
+        //std::cout << "AttackMain: Dribble" << std::endl;
 
         // Evaluate state transition to scoring
         std::pair<bool, Point> goal_eval = calcBestGoalPoint();
@@ -164,7 +164,7 @@ bool AttackMain::perform()
         }
 
         // Dribble Towards Max Node
-        qInfo()<< "Max node points: "<<max_node.point;
+        //qInfo()<< "Max node points: "<<max_node.point;
         kick_point = max_node.point;
         dribble_skill->perform();
 
@@ -267,8 +267,8 @@ void AttackMain::calcDynamicProb()
         // Gradient of line starting from bottom end of goal post and tangent to bottom robot (found using MATLAB)
         float m2 = (R*sqrt(pow(A2-bot_x,2) + pow(B2-bot_y,2) - R*R) + (B2-bot_y)*(A2-bot_x))/(pow(A2-bot_x,2) - R*R);
 
-        GuiInterface::getGuiInterface()->drawLine(Point(A1,B1), Point(top_x, top_y));
-        GuiInterface::getGuiInterface()->drawLine(Point(A2,B2), Point(bot_x, bot_y));
+//        GuiInterface::getGuiInterface()->drawLine(Point(A1,B1), Point(top_x, top_y));
+//        GuiInterface::getGuiInterface()->drawLine(Point(A2,B2), Point(bot_x, bot_y));
 
         // Set probabilities
         for(int x = PF_LENGTH_MAIN/2; x < PF_LENGTH_MAIN; ++x)

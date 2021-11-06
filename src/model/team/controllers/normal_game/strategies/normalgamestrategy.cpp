@@ -287,19 +287,19 @@ void NormalGameStrategy::runControlCycle()
         }
         else if(attack1 != nullptr)
         {
-            std::cout << "start2"<< std::endl;
+            //std::cout << "start2"<< std::endl;
             attack1->setBehavior<AttackMain>();
             main = attack1;
             supp = nullptr;
-            std::cout << "end2"<< std::endl;
+            //std::cout << "end2"<< std::endl;
         }
         else if(attack2 != nullptr)
         {
-            std::cout << "start3"<< std::endl;
+            //std::cout << "start3"<< std::endl;
             attack2->setBehavior<AttackMain>();
             main = attack2;
             supp = nullptr;
-            std::cout << "end3"<< std::endl;
+            //std::cout << "end3"<< std::endl;
         }
 //std::cout << "start4"<< std::endl;
         prev_state = state;
@@ -322,9 +322,9 @@ void NormalGameStrategy::runControlCycle()
         break;
     case goalkick:
     {   //this is getting trigger when in opponents goal area.
-        std::cout << "Assigning Goal Kick Behaviors" << std::endl;
-        if(ball_bot!=nullptr)
-            qInfo() << "Robot with ball: "<<ball_bot->getId() << "Team" <<ball_bot->getTeamId();
+        //std::cout << "Assigning Goal Kick Behaviors" << std::endl;
+        //if(ball_bot!=nullptr)
+        //    qInfo() << "Robot with ball: "<<ball_bot->getId() << "Team" <<ball_bot->getTeamId();
 
 
         if(attack1)
