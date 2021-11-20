@@ -214,6 +214,8 @@ bool KickToPointOmni::perform()
                 //}
             //if(!canKick(robot))
             //    state = MOVE_BEHIND;
+            m_hasKicked = true;// added because waits 6 second to say its kicked.... this is  way too long, behavior exits before then. - justin
+
             if(m_kickCommandCount < 100)
             {
                 // We sent the command several times to ensure the robot receives it
