@@ -31,7 +31,7 @@ DribbleToPoint::DribbleToPoint(Robot* robot, Point* target, bool avoid_obstacles
 
 bool DribbleToPoint::perform()
 {
-    qInfo() << "Dribbling to target: " <<  *target;
+    //qInfo() << "Dribbling to target: " <<  *target;
 
     Point bp = *ball;
     Point rp = *robot;
@@ -42,7 +42,7 @@ bool DribbleToPoint::perform()
     {
     case move_to_ball:
     {
-        std::cout << "Dribble: Travel" << std::endl;
+        //std::cout << "Dribble: Travel" << std::endl;
 
         robot->setDribble(false);
 
@@ -65,7 +65,7 @@ bool DribbleToPoint::perform()
     }
     case grasp:
     {
-        std::cout << "Dribble: Grasp" << std::endl;
+        //std::cout << "Dribble: Grasp" << std::endl;
 
         if(!targetIsAhead(ang_to_ball, rp)
         && safeToAdjust(bp, robot)
@@ -95,7 +95,7 @@ bool DribbleToPoint::perform()
     }
     case move_to_target:
     {
-        std::cout << "Dribble: Move" << std::endl;
+        //std::cout << "Dribble: Move" << std::endl;
 
         if(!targetIsAhead(ang_to_ball, rp)
         && safeToAdjust(bp, robot)
@@ -123,7 +123,7 @@ bool DribbleToPoint::perform()
     }
     case adjust1:
     {
-        std::cout << "Dribble: Adjust1" << std::endl;
+        //std::cout << "Dribble: Adjust1" << std::endl;
 
         float theta = Measurements::angleBetween(bp,rp);
         Point adjust_point = Point(bp.x + ROBOT_RADIUS*2 * cos(theta),
@@ -143,7 +143,7 @@ bool DribbleToPoint::perform()
     }
     case adjust2:
     {
-       std::cout << "Dribble: Adjust2" << std::endl;
+       //std::cout << "Dribble: Adjust2" << std::endl;
 
         float theta = Measurements::angleBetween(*target,bp);
         Point adjust_point = Point(bp.x + ROBOT_RADIUS*2 * cos(theta),
