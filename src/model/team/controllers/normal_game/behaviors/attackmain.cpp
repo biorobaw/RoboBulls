@@ -55,8 +55,8 @@ bool AttackMain::perform()
     switch (state)
     {
     case scoring:
-    {   state = passing;
-        break;
+    {   //state = passing;
+        //break;
         //std::cout << "AttackMain: Score" << std::endl;
         robot->setDribble(true);
 
