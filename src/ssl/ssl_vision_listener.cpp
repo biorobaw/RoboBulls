@@ -169,6 +169,13 @@ void SSLVisionListener::recieveRobotTeam(const SSL_DetectionFrame& frame, int wh
                 if(robot.in_field){
                     auto newPosition = Point(detection.x(), detection.y());
 
+                    //Added this line because GR-sim reports robots outside field limits
+                    //Using this to run drills with more oponents on other team
+                    //Might want to remove from final version for performance- Justin
+                    if(Comparisons::isPointOutsideField(newPosition))
+                        robot.in_field = false;
+
+
                     // if robot was already in field, calculate time derivatives
                     if(was_in_field){
                         float delta_t = time_stamp - robot.time_stamp;
