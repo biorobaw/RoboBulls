@@ -5,14 +5,16 @@
 #include "model/robot/robot.h"
 #include "model/game_state.h"
 
-//#include <QDebug>
+#include <QDebug>
 
 
 float AttackMain::SCORE_ANGLE_TOLERANCE = ROT_TOLERANCE; //7*M_PI/180;
 float AttackMain::PASS_ANGLE_TOLERANCE  = ROT_TOLERANCE; //7*M_PI/180;
 
 AttackMain::AttackMain(Robot* robot) : Behavior(robot)
-{
+{   if(robot->getId() == 2 )
+     qInfo() << "RObot 2 now attacl";
+
     prob_field_rows = (Field::FIELD_LENGTH+1)/PND_MAIN;
     prob_field_cols = (Field::FIELD_WIDTH+1)/PND_MAIN;
     prob_field = new ProbNode*[prob_field_rows];
@@ -50,11 +52,11 @@ bool AttackMain::perform()
 //                GuiInterface::getGuiInterface()->drawPoint(curr.point);
 //        }
 //    }
-
     switch (state)
     {
     case scoring:
-    {
+    {   state = passing;
+        break;
         //std::cout << "AttackMain: Score" << std::endl;
         robot->setDribble(true);
 
@@ -101,9 +103,10 @@ bool AttackMain::perform()
         {
             clear_pass_count = 0;
             state = dribbling;
+            has_passed = false;
         }
 
-        has_passed = false;
+        //has_passed = false;
 
         break;
     }
@@ -404,7 +407,7 @@ std::pair<bool, Point> AttackMain::calcBestPassPoint()
 
     for(Robot* teammate : team->getRobots())
     {
-        if(teammate != robot )
+        if(teammate != robot && teammate->isInField())
         {
             Point tp = *teammate;
             bool path_clear = Measurements::robotInPath(obstacles, bp, tp, ROBOT_RADIUS+Field::BALL_RADIUS+20) == nullptr;
@@ -413,7 +416,7 @@ std::pair<bool, Point> AttackMain::calcBestPassPoint()
             bool has_score_potential =  t_prob > 0.4;
 
             bool far_enough = !Measurements::isClose(robot, teammate, 500);
-
+            //qInfo() <<"Path clear: "<<path_clear <<" has_score_potential: "<<has_score_potential <<" Far enough: "<<far_enough ;
             if(path_clear && has_score_potential && far_enough)
             {
                 if (best_supp == nullptr
@@ -423,6 +426,7 @@ std::pair<bool, Point> AttackMain::calcBestPassPoint()
                     best_prob = t_prob;
                 }
             }
+
         }
     }
 
@@ -434,7 +438,8 @@ std::pair<bool, Point> AttackMain::calcBestPassPoint()
 
 bool AttackMain::isFinished()
 {
-    return has_passed;
+    //return has_passed;
+    return has_passed || has_kicked_to_goal;
 }
 
 bool AttackMain::hasPassed()

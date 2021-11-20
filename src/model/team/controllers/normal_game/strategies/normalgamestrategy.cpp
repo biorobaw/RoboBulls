@@ -221,8 +221,13 @@ void NormalGameStrategy::runControlCycle()
         //std::cout << "Evaluate" << std::endl;
         // Evaluate attack
         if((prev_state != attack && !clearing_ball)
-        || (main != nullptr && supp != nullptr && (Measurements::distance(supp,bp) < Measurements::distance(main, bp))))
+        || (main != nullptr && supp != nullptr && (Measurements::distance(supp,bp) < Measurements::distance(main, bp)))) //this condition is too leniant.
+                                                                                                                           //Interupts attack support from recieving
         {
+            //If we prebiously assigned attack, but supp is not saying its finished
+            //It must not have recieved a pass.
+            if(prev_state == attack && supp !=nullptr && !supp->getBehavior()->isFinished())
+                break;
             if (ball_bot == nullptr
             || (ball_bot != nullptr && ball_bot->getTeamId() == team->getID()
                                     && ball_bot->getRole() != RobotRole::GOALIE
@@ -234,8 +239,10 @@ void NormalGameStrategy::runControlCycle()
         // Evaluate defend
         if(prev_state != defend)
         {
-            if(ball_bot != nullptr && ball_bot->getTeamId()!=team->getID())
+            if(ball_bot != nullptr && ball_bot->getTeamId()!=team->getID()){
                 state = defend;
+                qInfo() << "Team id" << ball_bot->getTeamId()<< " RObot id: " << ball_bot->getId() << "our id:" << team->getID();
+            }
         }
 
         // Evaluate goalkick
@@ -263,8 +270,8 @@ void NormalGameStrategy::runControlCycle()
         if(attack1 != nullptr && attack2 != nullptr)
         {
             if(Measurements::distance(attack1, *ball) <
-               Measurements::distance(attack2, *ball))
-            {
+               Measurements::distance(attack2, *ball)) //If one robot is closer to ball than the
+            {                                         //other, assign that to attack main
                 //std::cout << "start"<< std::endl;
                 attack1->setBehavior<AttackMain>(); // attackmain is the problem
 

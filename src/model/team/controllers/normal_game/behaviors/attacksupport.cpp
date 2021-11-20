@@ -1,4 +1,6 @@
 #include "attacksupport.h"
+#include "attackmain.h"
+
 #include "model/ball.h"
 #include "model/field.h"
 #include "model/team/team.h"
@@ -23,20 +25,44 @@ AttackSupport::AttackSupport(Robot* robot)  : Behavior(robot)
 }
 
 bool AttackSupport::perform()
-{//if(team->getID() == 0 ) qInfo() << "Attack Support  Team Blue!!!!";
+{
 
     Point rp = *robot;
     Point bp = *ball;
+    Robot* ball_bot = game_state->getRobotWithBall();
 
+
+
+    //If not recieving pass, check if it should be recieving pass
+    if(!recievingPass){
+        recievingPass = (ball_bot!=nullptr
+            && ball_bot->getTeamId()==robot->getTeamId() && ball_bot->getBehavior() != nullptr
+            && ball_bot->getBehavior()->getName()=="Attack Main" && ((AttackMain*)ball_bot->getBehavior())->hasPassed());
+        recieve_from = ball_bot;
+     }
+    //If recieving pass, check if we recieved ball, or check if other robot intercepted it
+    if(recievingPass){
+        finished = robot->hasBall();
+
+        qInfo()<< "Finished: " <<finished;
+        //if another robot other than passing robot and this robot has ball. No longer recieving pass.
+        if(ball_bot!=nullptr && (recieve_from != ball_bot &&!finished)){
+            recievingPass = false;
+            recieve_from = nullptr;
+            qInfo() << "Intercepted by "<<ball_bot->getTeamId()<<" r: "<<ball_bot->getId();
+        }
+    }
     // We signal that we are done supporting if:
     // - We are closest member on our team to the ball
     // - The ball is close to us
-    finished = Comparisons::distance(bp).minInTeam(team)->getId() == robot->getId()
-            && Measurements::isClose(rp, bp, ROBOT_RADIUS+Field::BALL_RADIUS+200);
+    else
+        finished = Comparisons::distance(bp).minInTeam(team)->getId() == robot->getId()
+                && Measurements::isClose(rp, bp, ROBOT_RADIUS+Field::BALL_RADIUS+200);
+
 
     switch(state)
     {
-    case intercept:
+    case intercept: //we only get into this state when our attack main passes to us or faces us for so many time-steps... Recieve might be a better description -Justin
     {
         robot->setDribble(true);
 
@@ -44,22 +70,29 @@ bool AttackSupport::perform()
 
         // Evaluate transition to positioning
         Point b_vel = ball->getVelocity();
-        Robot* ball_bot = game_state->getRobotWithBall();
 
-        bool ball_bot_not_facing_us =
-                ball_bot != nullptr && ball_bot->getTeamId()==robot->getTeamId()
-                && Comparisons::isNotFacingPoint(ball_bot, rp, 15*M_PI/180);
+        if(!recievingPass){
+            bool ball_bot_not_facing_us =
+                    ball_bot != nullptr && ball_bot->getTeamId()==robot->getTeamId()
+                    && Comparisons::isNotFacingPoint(ball_bot, rp, 15*M_PI/180);//was 15 degrees
+            //if(ball_bot != nullptr)
+            //qInfo() <<"Ball bot: "<<ball_bot << " COmp: "<<(ball_bot->getTeamId()==robot->getTeamId()
+            //          && Comparisons::isNotFacingPoint(ball_bot, rp, 15*M_PI/180));//was 15 degrees;
+            if(ball_bot_not_facing_us)
+                switch2position_count++;
+            else
+                switch2position_count = 0;
 
-        if(ball_bot_not_facing_us)
-            switch2position_count++;
-        else
-            switch2position_count = 0;
+            if(switch2position_count >= 30)
+            {
+                switch2position_count = 0;
+                state = position;
+                break;
+            }
+//            InitialPassPoint = *bp;
+//            float ball_bot_ori = *bp->getOrientation();
+//            if()
 
-        if(switch2position_count >= 30)
-        {
-            switch2position_count = 0;
-            state = position;
-            break;
         }
 
         // Move into the line that the passing robot
@@ -74,14 +107,21 @@ bool AttackSupport::perform()
                 float ball_bot_ori = ball_bot->getOrientation();
 
                 Point facing_vector(cos(ball_bot_ori), sin(ball_bot_ori));
-                intercept_pt = Measurements::lineSegmentPoint(rp, ball_bot_pos, ball_bot_pos+(facing_vector*10000));
+                intercept_pt = Measurements::lineSegmentPoint(rp, ball_bot_pos, ball_bot_pos+(facing_vector*10000)); //I imagine *10000 cause unit vector?
+                //qInfo() << "Robots: " <<rp << " Ballbot:" <<ball_bot_pos << " Facing vec: " << facing_vector;
             }
         }
         else
-            intercept_pt = Measurements::lineSegmentPoint(rp, bp, bp+(b_vel*10000));
+            intercept_pt = Measurements::lineSegmentPoint(rp, bp, bp+(b_vel));//removed b_vel*10000
+                                                                              // Ball velocity in mm, dont think conversion was required -justin
+        //qInfo() << "Robots: " <<rp << " bp:" <<bp << " ip: "<<intercept_pt;
 
+        //GuiInterface::getGuiInterface()->drawLine(rp, intercept_pt);
+
+        //GuiInterface::getGuiInterface()->drawLine(bp, bp+(b_vel*10000));
+        //qInfo() << "ball vekl: "<<b_vel;
         // Move to intercept only if the intercept point is near
-        if(Measurements::isClose(robot, intercept_pt, 200))
+        if(Measurements::isClose(robot, intercept_pt, 500)) //used to be 200
         {
             auto cmd = CmdGoToPose(intercept_pt,Measurements::angleBetween(rp, bp),true,false);
             cmd.distance_tolerance = 1;
@@ -89,7 +129,15 @@ bool AttackSupport::perform()
             cmd.velocity_multiplier = 1.5;
             robot->goToPose(cmd);
         }
-        else
+        else if(recievingPass){//If point not close, keep current position, update angle
+            auto cmd = CmdGoToPose(rp,Measurements::angleBetween(rp, bp),true,false);
+            cmd.distance_tolerance = 1;
+            cmd.angle_tolerance = 0.001;
+            cmd.velocity_multiplier = 1.5;
+            robot->goToPose(cmd);
+        }
+
+        else//else break
             state = position;
 
         break;
@@ -101,7 +149,8 @@ bool AttackSupport::perform()
 
         // Evaluate transition to intercepting by
         // Checking if a teammate with the ball is facing this robot
-        Robot* ball_bot = game_state->getRobotWithBall();
+        //if(ball_bot != nullptr)
+        //    qInfo() << "facing points: "<<Comparisons::isFacingPoint(ball_bot, rp, 10*M_PI/180)<<" NotIsclose: " <<!Measurements::isClose(rp, ball_bot, 1000);
 
         if(ball_bot != nullptr &&  ball_bot->getTeamId()==robot->getTeamId()
         && Comparisons::isFacingPoint(ball_bot, rp, 10*M_PI/180)
@@ -110,11 +159,19 @@ bool AttackSupport::perform()
         else
             switch2intercept_count = 0;
 
-        if(switch2intercept_count >= 30)
-        {
-            switch2intercept_count = 0;
-            state = intercept;
-            break;
+//        if(ball_bot != nullptr && ball_bot->getBehavior() != nullptr){
+//            qInfo() << "Name: "<<(ball_bot->getBehavior()->getName()=="Attack Main");
+//                    if((ball_bot->getBehavior()->getName()=="Attack Main"))
+//                    qInfo()<< " Haspassed: " <<((AttackMain*)ball_bot->getBehavior())->hasPassed();
+//            }
+
+
+
+        if(switch2intercept_count >= 30 || recievingPass)                                       //Added condition if our robot passed We want
+        {   qInfo() <<"SWITCH INTERCEPT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";   //to intercept if robot passed ratherThan
+            switch2intercept_count = 0;                                                       // waiting for this counter Regardless
+            state = intercept;                                                               // of other conditions..
+            break;                                                                          //stop moving to higher prob points - Justin
         }
 
         // Move towards node with highest prob of scoring while facing ball
@@ -312,7 +369,7 @@ void AttackSupport::genBallShadows()
 
     Point bp = *ball;
 
-    float R = ROBOT_RADIUS + 50;
+    float R = ROBOT_RADIUS + 75;//changed from 50
 
     for(Robot* opp: team->getOpponents())
     {
@@ -324,6 +381,8 @@ void AttackSupport::genBallShadows()
         float x1 = (2*rob_x + 2*m1*rob_y + 2*m1*m1*bp.x - 2*m1*bp.y)/(2*m1*m1 + 2);
         float y1 = m1*x1 - m1*bp.x + bp.y;
 
+
+        //Finding points on endpoints of shadows on the edge of field
         float line1_dir = bp.y < y1? 1 : -1;
         float y1_edge = line1_dir * Field::HALF_FIELD_WIDTH;
         float x1_edge = bp.x + (y1_edge - bp.y)/m1;
@@ -344,6 +403,7 @@ void AttackSupport::genBallShadows()
         float x2 = (2*rob_x + 2*m2*rob_y + 2*m2*m2*bp.x - 2*m2*bp.y)/(2*m2*m2 + 2);
         float y2 = m2*x2 - m2*bp.x + bp.y;
 
+        //Finding points on endpoints of shadows on the edge of field
         float line2_dir = bp.y < y2? 1 : -1;
         float y2_edge = line2_dir * Field::HALF_FIELD_WIDTH;
         float x2_edge = bp.x + (y2_edge - bp.y)/m2;
@@ -364,9 +424,10 @@ void AttackSupport::genBallShadows()
         max_x = fmin(max_x, fmax(bp.x, fmax(x1_edge, x2_edge)));
         min_x = fmax(min_x, fmin(bp.x, fmin(x1_edge, x2_edge)));
 
+//        if(opp->getId()==5){
 //        GuiInterface::getGuiInterface()->drawLine(Point(bp.x, bp.y), Point(x1_edge, y1_edge));
 //        GuiInterface::getGuiInterface()->drawLine(Point(bp.x, bp.y), Point(x2_edge, y2_edge));
-
+//        }
         // Shade in the shadows with vertical strokes from from left to right
         for(int x = min_x; x < max_x; x+=PND_SUPP)
         {
@@ -374,10 +435,10 @@ void AttackSupport::genBallShadows()
             float min_y = m1*x - m1*bp.x + bp.y;
             float min_y_dir = bp.y < min_y? 1 : -1;
 
-            if(min_y_dir == line1_dir)
+            if(min_y_dir == line1_dir)// Has to do if coordinate behind robot projection from ball
             {
                 if(min_y < -Field::HALF_FIELD_WIDTH) min_y = -Field::HALF_FIELD_WIDTH;
-                else if(min_y > Field::HALF_FIELD_WIDTH) min_y = Field::HALF_FIELD_LENGTH;
+                else if(min_y > Field::HALF_FIELD_WIDTH) min_y = Field::HALF_FIELD_WIDTH;//Used to be length? Think thats wrong - Justin
             }
             else
                 min_y = line1_dir * Field::HALF_FIELD_WIDTH;
@@ -388,7 +449,7 @@ void AttackSupport::genBallShadows()
             if(max_y_dir == line2_dir)
             {
                 if(max_y < -Field::HALF_FIELD_WIDTH) max_y = -Field::HALF_FIELD_WIDTH;
-                else if(max_y > Field::HALF_FIELD_WIDTH) max_y = Field::HALF_FIELD_LENGTH;
+                else if(max_y > Field::HALF_FIELD_WIDTH) max_y = Field::HALF_FIELD_WIDTH; //Used to be length? Think thats wrong - Justin
             }
             else
                 max_y = line2_dir * Field::HALF_FIELD_WIDTH;
@@ -504,6 +565,7 @@ AttackSupport::~AttackSupport()
         delete[] prob_field[i];
     }
     delete[] prob_field;
+    //delete InitialPassPoint;
 }
 
 float AttackSupport::getScoreProb(const Point& p)
