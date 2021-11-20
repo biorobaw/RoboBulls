@@ -17,6 +17,8 @@
 #include "ssl/ssl_game_controller_listener.h"
 #include "model/robot/robot.h"
 #include "ball.h"
+#include "model/field.h"
+
 
 #include "gui/interface/data/gui_robot.h"
 
@@ -132,8 +134,8 @@ void GameState::setRobotWithBall(){
 bool GameState::hasBall(Robot* robot)
 {
     if(!robot) return false;
-    return Comparisons::isDistanceToLess(robot, *ball, 300) &&
-           Comparisons::isFacingPoint(robot, *ball);
+    return Comparisons::isDistanceToLess(robot, *ball,  ROBOT_RADIUS + Field::BALL_RADIUS + 20) &&
+           Comparisons::isFacingPoint(robot, *ball);  //Was 300 before
 }
 
 void GameState::clearRefereeCommandChanged(){
