@@ -11,7 +11,7 @@
 #include <iostream>
 #include "utilities/measurements.h"
 
-
+#include <QDebug>
 
 /************************************************************************/
 /* USER CONFIGURATION */
@@ -84,6 +84,7 @@ KickToPointOmni::KickToPointOmni(Robot* robot, Point* targetPtr,
     , state(MOVE_BEHIND)
 
 {
+    //qInfo() <<"New kick to point omni robot "<<robot->getId();
     //debug::registerVariable("ktpo_rc", &RECREATE_DIST_TOL);
 
 }
@@ -103,9 +104,11 @@ bool KickToPointOmni::perform()
 
     // If at any time we HAVE kicked the ball, and it is moving away, stop. We've finished.
     // This should eventually happen by going through the states below.
-    if(m_hasKicked)
+    //if(m_hasKicked && )
+    if(m_hasKicked && !robot->hasBall())
     {
         m_hasKicked = false;
+        state = MOVE_BEHIND;
         return true;
     }
 
@@ -118,7 +121,8 @@ bool KickToPointOmni::perform()
     case MOVE_BEHIND:
         {
           //std::cout << "KTPO STATE: MOVE BEHIND" << std::endl;
-            robot->setDribble(false);            
+            if(!robot->hasBall())
+                robot->setDribble(false);
             behindBall = bp + Point(BEHIND_RAD_AVOID * cos(targetBallAng), BEHIND_RAD_AVOID * sin(targetBallAng));
             //std::cout << " behind ball location: " << behindBall.x << " , " << behindBall.y << " robot location: "<< robot->x << " , " << robot->y << std::endl;
             //GuiInterface::getGuiInterface()->drawLine(*robot, behindBall);
@@ -152,7 +156,8 @@ bool KickToPointOmni::perform()
     case MOVE_INTERMEDIATE:
         {
            //std::cout << "KTPO STATE: MOVE INTERMEDIATE" << std::endl;
-            robot->setDribble(false);
+            if(!robot->hasBall())
+                robot->setDribble(false);
             // Move towards the ball at the angle to target
             // Motion will be straight ahead, given the completion of MOVE_BEHIND
             behindBall = bp + Point(BEHIND_RAD * cos(targetBallAng), BEHIND_RAD * sin(targetBallAng));
@@ -202,19 +207,30 @@ bool KickToPointOmni::perform()
         {
             //robot->setTargetVelocityGlobal(Point(0,0), 0);
             //std::cout << "KTPO STATE: KICK" << std::endl;
-            //if(m_kickCommandCount == 100){
-                Original_bp = *ball;
-                // Are we using full power? Otherwise, use distance-based power
-                float powerDistance = Measurements::distance(robot, *m_targetPointer);
-                if(m_useFullPower)
-                    robot->setKickSpeed(7500);
-                else
-                    robot->setKickDistance(powerDistance);
-                //std::cout << "Kick signal sent"<< std::endl;
-                //}
-            //if(!canKick(robot))
-            //    state = MOVE_BEHIND;
-            m_hasKicked = true;// added because waits 6 second to say its kicked.... this is  way too long, behavior exits before then. - justin
+//        if(){
+//            std::cout << "Testing this" << std::endl;
+//            robot->setKickSpeed(0);
+//            m_kickCommandCount+=25;
+//           }
+//        else{
+            //qInfo() <<"Kicking to: "<<*m_targetPointer;
+            //qInfo() <<"Dist to target: "<< Measurements::distance(robot, *m_targetPointer);;
+
+                //if(m_kickCommandCount == 100){
+                    Original_bp = *ball;
+                    // Are we using full power? Otherwise, use distance-based power
+                    float powerDistance = Measurements::distance(robot, *m_targetPointer);
+                    if(m_useFullPower)
+                        robot->setKickSpeed(7500);
+                    else
+                        robot->setKickDistance(powerDistance);
+                    //std::cout << "Kick signal sent"<< std::endl;
+                    //}
+                //if(!canKick(robot))
+                //    state = MOVE_BEHIND;
+                m_hasKicked = true;// added because waits 6 second to say its kicked.... this is  way too long, behavior exits before then. - justin
+//        }
+
 
             if(m_kickCommandCount < 100)
             {
@@ -222,6 +238,9 @@ bool KickToPointOmni::perform()
                 // The robot should actuate one kick every 6 seconds regardless of
                 // how many kick commands it receives
                 m_kickCommandCount++;
+
+                //If robot has probably already kicked, turn off kicker,
+
             }
             else
             {
@@ -229,6 +248,7 @@ bool KickToPointOmni::perform()
                 state = MOVE_BEHIND;
                 m_hasKicked = true;
                 m_kickCommandCount = 0;
+                robot->setKickSpeed(0);
                 robot->setDribble(false);
             }
         }

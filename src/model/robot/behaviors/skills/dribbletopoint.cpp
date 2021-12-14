@@ -43,8 +43,8 @@ bool DribbleToPoint::perform()
     case move_to_ball:
     {
         //std::cout << "Dribble: Travel" << std::endl;
-
-        robot->setDribble(false);
+        if(!robot->hasBall())
+            robot->setDribble(false);
 
         bool dist_check = dist_to_ball < ROBOT_RADIUS + Field::BALL_RADIUS + DIST_TOLERANCE;
         bool ang_check = fabs(Measurements::angleDiff(ang_to_ball, robot->getOrientation())) < ROT_TOLERANCE;
@@ -128,8 +128,8 @@ bool DribbleToPoint::perform()
         float theta = Measurements::angleBetween(bp,rp);
         Point adjust_point = Point(bp.x + ROBOT_RADIUS*2 * cos(theta),
                                    bp.y + ROBOT_RADIUS*2 * sin(theta));
-
-        robot->setDribble(false);
+        if(!robot->hasBall())
+            robot->setDribble(false);
         cmd.velocity_multiplier = 1;
         cmd.setTarget(adjust_point, ang_to_ball);
         cmd.avoid_ball = true;
@@ -148,8 +148,8 @@ bool DribbleToPoint::perform()
         float theta = Measurements::angleBetween(*target,bp);
         Point adjust_point = Point(bp.x + ROBOT_RADIUS*2 * cos(theta),
                                    bp.y + ROBOT_RADIUS*2 * sin(theta));
-
-        robot->setDribble(false);
+        if(!robot->hasBall())
+            robot->setDribble(false);
         cmd.velocity_multiplier = 1;
         cmd.setTarget(adjust_point, ang_to_ball);
         cmd.avoid_ball = true;

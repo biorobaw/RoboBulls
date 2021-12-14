@@ -37,8 +37,8 @@ bool DribbleBack::perform()
     case move_to_ball:
     {
         std::cout << "Dribble Back: Move to Ball" << std::endl;
-
-        robot->setDribble(false);
+        if(!robot->hasBall())
+            robot->setDribble(false);
 
         bool dist_check = dist_to_ball < ROBOT_RADIUS + Field::BALL_RADIUS + DIST_TOLERANCE*2; // was 50
         bool ang_check = fabs(Measurements::angleDiff(ang_to_ball, robot->getOrientation())) < ROT_TOLERANCE;
