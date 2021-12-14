@@ -70,13 +70,19 @@ bool AttackMain::perform()
         else
             clear_shot_count--;
 
-        has_kicked_to_goal = score_skill->perform();
 
-        if(clear_shot_count < 0)
+        if(clear_shot_count < 0 || has_kicked_to_goal)//if kicked to goal
         {
             clear_shot_count = 0;
             state = passing;
         }
+
+        //If kicked previous cycle, will return false.
+        has_kicked_to_goal = score_skill->perform();
+
+        if(has_kicked_to_goal)
+            qInfo() << "Shoot to score to point " << goal_eval.second;
+
 
         has_passed = false;
 
@@ -97,14 +103,19 @@ bool AttackMain::perform()
         else
             clear_pass_count--;
 
-        has_passed = pass_skill->perform();
 
-        if(clear_pass_count < 0)
+        if(clear_pass_count < 0 || has_passed)//if we passed
         {
             clear_pass_count = 0;
             state = dribbling;
-            has_passed = false;
+            //has_passed = false;
+            //break;
         }
+        //If kicked previous cycle, will return false.
+        has_passed = pass_skill->perform();
+        GuiInterface::getGuiInterface()->drawLine(*robot, kick_point);
+        if(has_passed)
+            qInfo() <<"Passing to "<< kick_point;
 
         //has_passed = false;
 
@@ -410,7 +421,7 @@ std::pair<bool, Point> AttackMain::calcBestPassPoint()
         if(teammate != robot && teammate->isInField())
         {
             Point tp = *teammate;
-            bool path_clear = Measurements::robotInPath(obstacles, bp, tp, ROBOT_RADIUS+Field::BALL_RADIUS+20) == nullptr;
+            bool path_clear = Measurements::robotInPath(obstacles, bp, tp, 2*ROBOT_RADIUS+Field::BALL_RADIUS+20) == nullptr;//added 2x
 
             float t_prob = getScoreProb(tp);
             bool has_score_potential =  t_prob > 0.4;

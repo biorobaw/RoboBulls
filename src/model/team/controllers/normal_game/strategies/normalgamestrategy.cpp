@@ -24,8 +24,8 @@
 NormalGameStrategy::NormalGameStrategy(RobotTeam* _team)
     : TeamStrategy(_team)
     , initialBallPos(*ball)
-    , our_def_area(true)
-    , opp_def_area(false)
+    , our_def_area(false)
+    , opp_def_area(true)
 {
     auto prev_cmd = game_state->getRefereePreviousCommand();
 
@@ -220,14 +220,19 @@ void NormalGameStrategy::runControlCycle()
     {
         //std::cout << "Evaluate" << std::endl;
         // Evaluate attack
-        if((prev_state != attack && !clearing_ball)
+        if((prev_state != attack && !clearing_ball && !opp_def_area.contains(bp))
         || (main != nullptr && supp != nullptr && (Measurements::distance(supp,bp) < Measurements::distance(main, bp)))) //this condition is too leniant.
                                                                                                                            //Interupts attack support from recieving
         {
-            //If we prebiously assigned attack, but supp is not saying its finished
+//            if(supp!= nullptr)
+//                qInfo() <<"Supp == " << supp->getBehavior()->isFinished();
+//            if(supp!=nullptr && main!=nullptr)
+//                qInfo() <<"Supp: "<< Measurements::distance(supp,bp) <<" Main: " <<Measurements::distance(main,bp);
+
+            //If we previously assigned attack, but supp is not saying its finished
             //It must not have recieved a pass.
             if(prev_state == attack && supp !=nullptr && !supp->getBehavior()->isFinished())
-                break;
+                ;//wait
             if (ball_bot == nullptr
             || (ball_bot != nullptr && ball_bot->getTeamId() == team->getID()
                                     && ball_bot->getRole() != RobotRole::GOALIE
@@ -248,7 +253,7 @@ void NormalGameStrategy::runControlCycle()
         // Evaluate goalkick
         if(prev_state != goalkick)
         {   //qInfo() << our_def_area.s
-            if(our_def_area.contains(bp))
+            if(opp_def_area.contains(bp))
                 state = goalkick;
         }
 

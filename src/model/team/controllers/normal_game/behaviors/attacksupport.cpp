@@ -44,8 +44,11 @@ bool AttackSupport::perform()
     if(recievingPass){
         finished = robot->hasBall();
 
-        qInfo()<< "Finished: " <<finished;
+        if(finished)
+            qInfo()<< "Recieved pass: " <<finished;
         //if another robot other than passing robot and this robot has ball. No longer recieving pass.
+        //Maybe add time or velocity of ball to this condition to break if ball not going to make it to
+        //Attack support
         if(ball_bot!=nullptr && (recieve_from != ball_bot &&!finished)){
             recievingPass = false;
             recieve_from = nullptr;
@@ -56,8 +59,8 @@ bool AttackSupport::perform()
     // - We are closest member on our team to the ball
     // - The ball is close to us
     else
-        finished = Comparisons::distance(bp).minInTeam(team)->getId() == robot->getId()
-                && Measurements::isClose(rp, bp, ROBOT_RADIUS+Field::BALL_RADIUS+200);
+        finished = Comparisons::distance(bp).minInTeam(team)->getId() == robot->getId();
+                //&& Measurements::isClose(rp, bp, ROBOT_RADIUS+Field::BALL_RADIUS+200);
 
 
     switch(state)
@@ -67,10 +70,12 @@ bool AttackSupport::perform()
         robot->setDribble(true);
 
         //std::cout << "Intercepting" << std::endl;
+        //qInfo() << "Recieving" << recievingPass;
+
+        Point b_vel = ball->getVelocity();
+         bool ball_slow= Measurements::mag(b_vel) < 200;
 
         // Evaluate transition to positioning
-        Point b_vel = ball->getVelocity();
-
         if(!recievingPass){
             bool ball_bot_not_facing_us =
                     ball_bot != nullptr && ball_bot->getTeamId()==robot->getTeamId()
@@ -83,23 +88,40 @@ bool AttackSupport::perform()
             else
                 switch2position_count = 0;
 
-            if(switch2position_count >= 30)
-            {
-                switch2position_count = 0;
-                state = position;
-                break;
-            }
+
 //            InitialPassPoint = *bp;
 //            float ball_bot_ori = *bp->getOrientation();
 //            if()
 
+        }
+        //else recieving pass, if ball moving away from robot, or ball too slow
+        else
+        {   if(Measurements::distance(robot, bp+b_vel) >Measurements::distance(robot, bp)+100){
+                qInfo() <<"Testing distance away from support";
+                switch2position_count++;
+            }
+            else if(ball_slow){
+                qInfo()<<"Ball too slow";
+                switch2position_count++;
+            }
+            else
+                switch2position_count=0;
+        }
+
+        if(switch2position_count >= 30)
+        {   if(recievingPass)
+                recievingPass = false;
+            qInfo()<<"Broke from recieving";
+            switch2position_count = 0;
+            state = position;
+            break;
         }
 
         // Move into the line that the passing robot
         // is facing if ball velocity is low
         Point intercept_pt;
 
-        if(Measurements::mag(b_vel) < 200)
+        if(ball_slow)
         {
             if(ball_bot != nullptr &&  ball_bot->getTeamId()==robot->getTeamId())
             {
@@ -139,6 +161,7 @@ bool AttackSupport::perform()
 
         else//else break
             state = position;
+
 
         break;
     }
@@ -369,7 +392,7 @@ void AttackSupport::genBallShadows()
 
     Point bp = *ball;
 
-    float R = ROBOT_RADIUS + 75;//changed from 50
+    float R = 2*ROBOT_RADIUS + 75;//changed from 50 + added 2x
 
     for(Robot* opp: team->getOpponents())
     {
