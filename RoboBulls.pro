@@ -391,6 +391,13 @@ INSTALLS += install_config_files
 
 
 
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../Downloads/libtensorflow-cpu-windows-x86_64-2.7.0/lib/ -ltensorflow
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../Downloads/libtensorflow-cpu-windows-x86_64-2.7.0/lib/ -ltensorflow
+else:unix: LIBS += -L$$PWD/../../Downloads/libtensorflow-cpu-windows-x86_64-2.7.0/lib/ -ltensorflow
+
+INCLUDEPATH += $$PWD/../../Downloads/libtensorflow-cpu-windows-x86_64-2.7.0/include
+DEPENDPATH += $$PWD/../../Downloads/libtensorflow-cpu-windows-x86_64-2.7.0/include
+
 
 
 #QMAKE_DISTCLEAN += $$PWD/bin/
@@ -399,4 +406,14 @@ INSTALLS += install_config_files
 
 
 
+
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../Downloads/libtorch-win-shared-with-deps-debug-1.10.1+cpu/libtorch/lib/ -ltorch -ltorch_cpu -lc10
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../Downloads/libtorch-win-shared-with-deps-debug-1.10.1+cpu/libtorch/lib/ -ltorch -ltorch_cpu -lc10
+else:unix: LIBS += -L$$PWD/../../Downloads/libtorch-win-shared-with-deps-debug-1.10.1+cpu/libtorch/lib/ -ltorch
+
+INCLUDEPATH += $$PWD/../../Downloads/libtorch-win-shared-with-deps-debug-1.10.1+cpu/libtorch/include
+INCLUDEPATH += $$PWD/../../Downloads/libtorch-win-shared-with-deps-debug-1.10.1+cpu/libtorch/include/torch/csrc/api/include
+DEPENDPATH += $$PWD/../../Downloads/libtorch-win-shared-with-deps-debug-1.10.1+cpu/libtorch/include
+DEPENDPATH += $$PWD/../../Downloads/libtorch-win-shared-with-deps-debug-1.10.1+cpu/libtorch/include/torch/csrc/api/include
 

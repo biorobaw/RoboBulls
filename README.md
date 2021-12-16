@@ -1,3 +1,11 @@
+This is a branch from the Robobulls repository that implements(work in progress) 
+neural networks for determining shooting probabilities and DDPG for reinforcement learning
+for low level move-to-ball, shooting, and intercepting behaviors.
+
+You will need Tensorflow and LibTorch(PyTorch C++) to run this project and update
+their paths in the .pro file.
+
+
 robobulls2
 ==========
 
