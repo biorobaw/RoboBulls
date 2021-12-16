@@ -416,4 +416,3 @@ INCLUDEPATH += $$PWD/../../Downloads/libtorch-win-shared-with-deps-debug-1.10.1+
 INCLUDEPATH += $$PWD/../../Downloads/libtorch-win-shared-with-deps-debug-1.10.1+cpu/libtorch/include/torch/csrc/api/include
 DEPENDPATH += $$PWD/../../Downloads/libtorch-win-shared-with-deps-debug-1.10.1+cpu/libtorch/include
 DEPENDPATH += $$PWD/../../Downloads/libtorch-win-shared-with-deps-debug-1.10.1+cpu/libtorch/include/torch/csrc/api/include
-

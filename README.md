@@ -2,9 +2,13 @@ This is a branch from the Robobulls repository that implements(work in progress)
 neural networks for determining shooting probabilities and DDPG for reinforcement learning
 for low level move-to-ball, shooting, and intercepting behaviors.
 
-You will need Tensorflow and LibTorch(PyTorch C++) to run this project and update
+You will need libTensorflow and LibTorch(PyTorch C++) to run this project and update
 their paths in the .pro file.
 
+I had luck with the PyTorch precompiled binaries located here(https://download.pytorch.org/libtorch/cu102/libtorch-win-shared-with-deps-debug-1.10.1%2Bcu102.zip) 
+I encountered issus when compiling LibTorch from source.
+
+libTensorflow binaries can be found here: https://www.tensorflow.org/install/lang_c
 
 robobulls2
 ==========
