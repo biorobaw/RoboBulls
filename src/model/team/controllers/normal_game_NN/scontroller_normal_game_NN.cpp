@@ -1,6 +1,5 @@
 #include "scontroller_normal_game_NN.h"
-#include "strategies/normalgamestrategyNN.h"
-
+#include "../normal_game_templated/strategies/normalgamestrategytemplated.h"
 #include "../normal_game/normal_game_roles.h"
 #include "../normal_game/strategies/stopstrategy.h"
 #include "../normal_game/strategies/kickoffstrategy.h"
@@ -11,6 +10,9 @@
 #include "../normal_game/strategies/ballplacementstrategy.h"
 #include "ssl_referee.pb.h"
 #include "model/team/team.h"
+
+#include "behaviors/attacksupportNN.h"
+#include "behaviors/attackmainNN.h"
 
 
 
@@ -40,10 +42,8 @@ TeamStrategy* SControllerNormalGameNN::loadStateStrategy(int state){
     case INDIRECT_KICK : return new IndirectKickStrategy(team);
     case HALT :          return new HaltStrategy(team);
     case BALL_PLACEMENT: return new BallPlacementStrategy(team);
-    case NORMAL_GAME :   return new NormalGameStrategyNN(team);
+    case NORMAL_GAME :   return new NormalGameStrategyTemplated<AttackMainNN, AttackSupportNN>(team);
     }
     return new HaltStrategy(team);
 }
-
-
 

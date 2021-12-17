@@ -279,14 +279,17 @@ void TestStrategy::assignBehaviors()
     auto robots = team->getRobots();
     int num_robots = robots.size();
     int i = 0;
-
+    Point original_bp = *ball;
 
     for(auto r : robots){
         if (i++ == 0){
-            r->setBehavior<Goalie>();
+            //r->setBehavior<Goalie>();
+            //qInfo() << "*"
+            r->setBehavior<KickToPointOmni>(Point(0,0));
+
 
             //r->setRole(ROLE_GOALIE);
-        } else r->setBehavior<DefendBehavior>();
+        } //else r->setBehavior<DefendBehavior>();
 
 
         //else r->setBehavior<GoToBehavior>(i*360.0/num_robots);
