@@ -1,5 +1,5 @@
 #include "scontroller_normal_game_RL.h"
-#include "../normal_game_templated/strategies/normalgamestrategytemplated.h"
+#include "strategies/normalgamestrategyRL.h"
 
 #include "../normal_game/normal_game_roles.h"
 
@@ -12,9 +12,6 @@
 #include "../normal_game/strategies/ballplacementstrategy.h"
 #include "ssl_referee.pb.h"
 #include "model/team/team.h"
-
-#include "model/team/controllers/normal_game_RL/behaviors/attackmainRL.h"
-#include "model/team/controllers/normal_game_RL/behaviors/attacksupportRL.h"
 
 
 
@@ -31,13 +28,7 @@ namespace  {
                          };
 }
 
-SControllerNormalGameRL::SControllerNormalGameRL(RobotTeam* team, YAML::Node* c_node) : SControllerNormalGame(team, c_node){};
-
-
 TeamStrategy* SControllerNormalGameRL::loadStateStrategy(int state){
-    //NormalGameStrategyRL<AttackMainRL, AttackSupportRL> newgame();
-    //TeamStrategy *newg = (TeamStrategy*)new NormalGameStrategyRL(team, encodeType<AttackMainRL>(),encodeType<AttackSupportRL>());
-
     switch (state) {
     case INITIAL :       return new StopStrategy(team);
     case STOP :          return new StopStrategy(team);
@@ -47,8 +38,10 @@ TeamStrategy* SControllerNormalGameRL::loadStateStrategy(int state){
     case INDIRECT_KICK : return new IndirectKickStrategy(team);
     case HALT :          return new HaltStrategy(team);
     case BALL_PLACEMENT: return new BallPlacementStrategy(team);
-    case NORMAL_GAME :   return new NormalGameStrategyTemplated<AttackMainRL, AttackSupportRL>(team);;
+    case NORMAL_GAME :   return new NormalGameStrategyRL(team);
     }
     return new HaltStrategy(team);
 }
+
+
 

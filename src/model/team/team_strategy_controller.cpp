@@ -92,11 +92,9 @@ TeamStrategyController* TeamStrategyController::loadController(RobotTeam* team, 
     }
     else if( id == "NORMAL_GAME_NN"){
             return new SControllerNormalGameNN(team,c_node);
-        //return new SControllerNormalGameNN<AttackMainNN, AttackSupportNN>(team,c_node);
     }
     else if( id == "NORMAL_GAME_RL"){
             return new SControllerNormalGameRL(team,c_node);
-        //return new SControllerNormalGameRL<AttackMainNN, AttackSupportNN>(team,c_node);
     }
     else if( id == "STRATEGY_TESTER"){
         return new SControllerStrategyTester(team,c_node);

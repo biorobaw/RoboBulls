@@ -122,20 +122,10 @@ public:
 };
 
 
-//#include <tensorflow/c/c_api.h>
-////Need to undef and redef to avoid conflicts.
-//#undef slots
-//#include <torch/torch.h>
-//#define slots Q_SLOTS
-
 
 #undef main // this is to prevent multiple definitions of main from external modules like SDL
 int main(int argc, char *argv[])
 {
-    //torch::Tensor tensor = torch::rand({2, 3});
-    //std::cout << tensor << std::endl;
-    //printf("Hello from TensorFlow C library version %s\n", TF_Version());
-
 
     // We need the application to be created before we can connnect slots
     // thus the following line should run first to initialize the system
