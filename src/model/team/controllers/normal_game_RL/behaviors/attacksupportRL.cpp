@@ -8,7 +8,7 @@
 #include "model/game_state.h"
 #include <QDebug>
 
-AttackSupportRL::AttackSupportRL(Robot* robot)  : AttackSupport(robot)
+AttackSupportRL::AttackSupportRL(Robot* robot)  : Behavior(robot)
 {
     prob_field_rows = (Field::FIELD_LENGTH+1)/PND_SUPP;
     prob_field_cols = (Field::FIELD_WIDTH+1)/PND_SUPP;

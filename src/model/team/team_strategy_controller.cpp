@@ -88,7 +88,14 @@ TeamStrategyController* TeamStrategyController::loadController(RobotTeam* team, 
 
     if(id == "NORMAL_GAME"){
         return new SControllerNormalGame(team,c_node);
-    } else if( id == "STRATEGY_TESTER"){
+    }
+    else if( id == "NORMAL_GAME_NN"){
+            return new SControllerNormalGameNN(team,c_node);
+    }
+    else if( id == "NORMAL_GAME_RL"){
+            return new SControllerNormalGameRL(team,c_node);
+    }
+    else if( id == "STRATEGY_TESTER"){
         return new SControllerStrategyTester(team,c_node);
     } else if ( id == "JOYSTICK" ) {
         return new SControllerJoystick(team,c_node);

@@ -32,7 +32,7 @@
 #define PF_WIDTH_SUPP  (Field::FIELD_WIDTH +1)/PND_SUPP
 #define PF_SIZE_SUPP  PF_LENGTH_SUPP * PF_WIDTH_SUPP
 
-class AttackSupportNN : public AttackSupport //public GenericMovementBehavior
+class AttackSupportNN : public Behavior //public GenericMovementBehavior
 {
 public:
     // Fills in prob_field with scoring probabilities based on static factors

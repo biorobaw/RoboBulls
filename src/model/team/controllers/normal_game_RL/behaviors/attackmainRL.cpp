@@ -11,9 +11,9 @@
 float AttackMainRL::SCORE_ANGLE_TOLERANCE = ROT_TOLERANCE; //7*M_PI/180;
 float AttackMainRL::PASS_ANGLE_TOLERANCE  = ROT_TOLERANCE; //7*M_PI/180;
 
-AttackMainRL::AttackMainRL(Robot* robot) : AttackMain(robot)
+AttackMainRL::AttackMainRL(Robot* robot) : Behavior(robot)
 {   if(robot->getId() == 2 )
-     qInfo() << "RObot 2 now attacl";
+     qInfo() << "Reinforcement Learning Main";
 
     prob_field_rows = (Field::FIELD_LENGTH+1)/PND_MAIN;
     prob_field_cols = (Field::FIELD_WIDTH+1)/PND_MAIN;
