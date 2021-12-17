@@ -100,10 +100,15 @@ SOURCES += src/main.cpp \
         src/model/team/controllers/joystick/scontroller_joystick.cpp \
         src/model/team/controllers/none/scontroller_none.cpp \
         src/model/team/controllers/normal_game/behaviors/attackmain.cpp \
+        src/model/team/controllers/normal_game/behaviors/attackmainNN.cpp \
+        src/model/team/controllers/normal_game/behaviors/attackmainRL.cpp \
         src/model/team/controllers/normal_game/behaviors/attacksupport.cpp \
+        src/model/team/controllers/normal_game/behaviors/attacksupportNN.cpp \
+        src/model/team/controllers/normal_game/behaviors/attacksupportRL.cpp \
         src/model/team/controllers/normal_game/behaviors/challengeballbot.cpp \
         src/model/team/controllers/normal_game/behaviors/defendbehavior.cpp \
         src/model/team/controllers/normal_game/behaviors/goalie.cpp \
+        src/model/team/controllers/normal_game/behaviors/goalieRL.cpp \
         src/model/team/controllers/normal_game/behaviors/markbot.cpp \
         src/model/team/controllers/normal_game/behaviors/penaltygoalie.cpp \
         src/model/team/controllers/normal_game/behaviors/refstop.cpp \
@@ -194,10 +199,15 @@ HEADERS += \
         src/model/team/controllers/joystick/scontroller_joystick.h \
         src/model/team/controllers/none/scontroller_none.h \
         src/model/team/controllers/normal_game/behaviors/attackmain.h \
+        src/model/team/controllers/normal_game/behaviors/attackmainNN.h \
+        src/model/team/controllers/normal_game/behaviors/attackmainRL.h \
         src/model/team/controllers/normal_game/behaviors/attacksupport.h \
+        src/model/team/controllers/normal_game/behaviors/attacksupportNN.h \
+        src/model/team/controllers/normal_game/behaviors/attacksupportRL.h \
         src/model/team/controllers/normal_game/behaviors/challengeballbot.h \
         src/model/team/controllers/normal_game/behaviors/defendbehavior.h \
         src/model/team/controllers/normal_game/behaviors/goalie.h \
+        src/model/team/controllers/normal_game/behaviors/goalieRL.h \
         src/model/team/controllers/normal_game/behaviors/markbot.h \
         src/model/team/controllers/normal_game/behaviors/penaltygoalie.h \
         src/model/team/controllers/normal_game/behaviors/refstop.h \
