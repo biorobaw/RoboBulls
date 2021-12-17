@@ -42,7 +42,7 @@
 
 
 
-class AttackMainNN : public Behavior//:public GenericMovementBehavior
+class AttackMainNN : public AttackMain//:public GenericMovementBehavior
 {
 public:
     AttackMainNN(Robot*);

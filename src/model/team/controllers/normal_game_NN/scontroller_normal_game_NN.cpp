@@ -27,9 +27,6 @@ namespace  {
                          };
 }
 
-SControllerNormalGameNN::SControllerNormalGameNN(RobotTeam* team, YAML::Node* c_node) : SControllerNormalGame(team, c_node){};
-
-
 TeamStrategy* SControllerNormalGameNN::loadStateStrategy(int state){
     switch (state) {
     case INITIAL :       return new StopStrategy(team);

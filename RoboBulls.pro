@@ -120,6 +120,7 @@ SOURCES += src/main.cpp \
         src/model/team/controllers/normal_game_NN/behaviors/attackmainNN.cpp \
         src/model/team/controllers/normal_game_NN/behaviors/attacksupportNN.cpp \
         src/model/team/controllers/normal_game_NN/scontroller_normal_game_NN.cpp \
+        src/model/team/controllers/normal_game_NN/strategies/normalgamestrategyNN.cpp \
         src/model/team/controllers/normal_game_RL/behaviors/attackmainRL.cpp \
         src/model/team/controllers/normal_game_RL/behaviors/attacksupportRL.cpp \
         src/model/team/controllers/normal_game_RL/behaviors/goalieRL.cpp \
@@ -223,6 +224,7 @@ HEADERS += \
         src/model/team/controllers/normal_game_NN/behaviors/attackmainNN.h \
         src/model/team/controllers/normal_game_NN/behaviors/attacksupportNN.h \
         src/model/team/controllers/normal_game_NN/scontroller_normal_game_NN.h \
+        src/model/team/controllers/normal_game_NN/strategies/normalgamestrategyNN.h \
         src/model/team/controllers/normal_game_RL/behaviors/attackmainRL.h \
         src/model/team/controllers/normal_game_RL/behaviors/attacksupportRL.h \
         src/model/team/controllers/normal_game_RL/behaviors/goalieRL.h \

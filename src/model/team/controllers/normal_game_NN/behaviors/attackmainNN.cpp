@@ -11,7 +11,7 @@
 float AttackMainNN::SCORE_ANGLE_TOLERANCE = ROT_TOLERANCE; //7*M_PI/180;
 float AttackMainNN::PASS_ANGLE_TOLERANCE  = ROT_TOLERANCE; //7*M_PI/180;
 
-AttackMainNN::AttackMainNN(Robot* robot) : Behavior(robot)
+AttackMainNN::AttackMainNN(Robot* robot) : AttackMain(robot)
 {   if(robot->getId() == 2 )
      qInfo() << "RObot 2 now attacl";
 
@@ -52,7 +52,6 @@ bool AttackMainNN::perform()
 //                GuiInterface::getGuiInterface()->drawPoint(curr.point);
 //        }
 //    }
-    qInfo() <<" NNNNNN";
     switch (state)
     {
     case scoring:
