@@ -7,10 +7,6 @@
 #include "gui/interface/gui_interface.h"
 
 #include "controllers/normal_game/scontroller_normal_game.h"
-#include "controllers/normal_game_NN/scontroller_normal_game_NN.h"
-#include "controllers/normal_game_RL/scontroller_normal_game_RL.h"
-
-
 #include "controllers/strategy_tester/scontroller_strategy_tester.h"
 #include "controllers/joystick/scontroller_joystick.h"
 #include "controllers/none/scontroller_none.h"
