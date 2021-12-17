@@ -117,6 +117,13 @@ SOURCES += src/main.cpp \
         src/model/team/controllers/normal_game/strategies/normalgamestrategy.cpp \
         src/model/team/controllers/normal_game/strategies/penaltystrategy.cpp \
         src/model/team/controllers/normal_game/strategies/stopstrategy.cpp \
+        src/model/team/controllers/normal_game_NN/behaviors/attackmainNN.cpp \
+        src/model/team/controllers/normal_game_NN/behaviors/attacksupportNN.cpp \
+        src/model/team/controllers/normal_game_NN/scontroller_normal_game_NN.cpp \
+        src/model/team/controllers/normal_game_NN/strategies/normalgamestrategyNN.cpp \
+        src/model/team/controllers/normal_game_RL/behaviors/attackmainRL.cpp \
+        src/model/team/controllers/normal_game_RL/behaviors/attacksupportRL.cpp \
+        src/model/team/controllers/normal_game_RL/behaviors/goalieRL.cpp \
         src/model/team/controllers/strategy_tester/scontroller_strategy_tester.cpp \
         src/model/team/controllers/strategy_tester/strategies/test_strategy.cpp \
         src/model/team/team.cpp \
@@ -133,7 +140,9 @@ SOURCES += src/main.cpp \
         src/utilities/region/sector.cpp \
         src/utilities/region/rectangle.cpp \
         src/utilities/measurements.cpp \
-        src/utilities/region/defencearea.cpp
+        src/utilities/region/defencearea.cpp \
+        src/model/team/controllers/normal_game_RL/scontroller_normal_game_RL.cpp \
+        src/model/team/controllers/normal_game_RL/strategies/normalgamestrategyRL.cpp
 
 HEADERS += \
         src/configuration/constants.h \
@@ -212,6 +221,13 @@ HEADERS += \
         src/model/team/controllers/normal_game/strategies/normalgamestrategy.h \
         src/model/team/controllers/normal_game/strategies/penaltystrategy.h \
         src/model/team/controllers/normal_game/strategies/stopstrategy.h \
+        src/model/team/controllers/normal_game_NN/behaviors/attackmainNN.h \
+        src/model/team/controllers/normal_game_NN/behaviors/attacksupportNN.h \
+        src/model/team/controllers/normal_game_NN/scontroller_normal_game_NN.h \
+        src/model/team/controllers/normal_game_NN/strategies/normalgamestrategyNN.h \
+        src/model/team/controllers/normal_game_RL/behaviors/attackmainRL.h \
+        src/model/team/controllers/normal_game_RL/behaviors/attacksupportRL.h \
+        src/model/team/controllers/normal_game_RL/behaviors/goalieRL.h \
         src/model/team/controllers/strategy_tester/scontroller_strategy_tester.h \
         src/model/team/controllers/strategy_tester/strategies/test_strategy.h \
         src/model/team/team.h \
@@ -230,7 +246,9 @@ HEADERS += \
         src/utilities/region/rectangle.h \
         src/utilities/region/region.h \
         src/utilities/measurements.h \
-        src/utilities/region/defencearea.h
+        src/utilities/region/defencearea.h\
+        src/model/team/controllers/normal_game_RL/scontroller_normal_game_RL.h \
+        src/model/team/controllers/normal_game_RL/strategies/normalgamestrategyRL.h
 
 
 
