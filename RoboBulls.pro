@@ -141,7 +141,9 @@ SOURCES += src/main.cpp \
         src/utilities/measurements.cpp \
         src/utilities/region/defencearea.cpp \
         src/model/team/controllers/normal_game_RL/scontroller_normal_game_RL.cpp \
-        src/model/team/controllers/normal_game_RL/strategies/normalgamestrategyRL.cpp
+        src/model/team/controllers/normal_game_templated/scontroller_normal_game_templated.cpp \
+        src/model/team/controllers/normal_game_templated/strategies/normalgamestrategytemplated.cpp
+
 
 HEADERS += \
         src/configuration/constants.h \
@@ -246,7 +248,8 @@ HEADERS += \
         src/utilities/measurements.h \
         src/utilities/region/defencearea.h\
         src/model/team/controllers/normal_game_RL/scontroller_normal_game_RL.h \
-        src/model/team/controllers/normal_game_RL/strategies/normalgamestrategyRL.h
+        src/model/team/controllers/normal_game_templated/scontroller_normal_game_templated.h \
+        src/model/team/controllers/normal_game_templated/strategies/normalgamestrategytemplated.h
 
 
 
