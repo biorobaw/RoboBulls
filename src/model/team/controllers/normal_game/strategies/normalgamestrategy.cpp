@@ -70,7 +70,9 @@ void NormalGameStrategy::assignBehaviors()
     if(wall2)
         wall2->setBehavior<Wall>();
     if(attack1)
-        attack1->setBehavior<AttackMain>();
+        //attack1->setBehavior<AttackMain>();"
+        attack1->setBehavior("AttackMain");
+        //attack1->setBehavior(BehaviorCreator::createInstance("AttackMain",attack1));
     if(attack2)
         attack2->setBehavior<AttackSupport>();
     if(attack3)
@@ -182,7 +184,8 @@ void NormalGameStrategy::runControlCycle()
             attack1->setBehavior<AttackSupport>();
         if(shooter)
         {
-            shooter->setBehavior<AttackMain>();
+            //shooter->setBehavior<AttackMain>();
+            shooter->setBehavior("AttackMain");
             if(dynamic_cast<AttackMain*>(shooter->getBehavior())->hasKickedToGoal())
             {
                 shooter->setBehavior<Wall>();
@@ -278,7 +281,8 @@ void NormalGameStrategy::runControlCycle()
                Measurements::distance(attack2, *ball)) //If one robot is closer to ball than the
             {                                         //other, assign that to attack main
                 //std::cout << "start"<< std::endl;
-                attack1->setBehavior<AttackMain>(); // attackmain is the problem
+                //attack1->setBehavior<AttackMain>(); // attackmain is the problem
+                attack1->setBehavior("AttackMain");
 
                 main = attack1;
                  //std::cout << "end"<< std::endl;
@@ -292,7 +296,8 @@ void NormalGameStrategy::runControlCycle()
                 attack1->setBehavior<AttackSupport>();
                 supp = attack1;
                 //std::cout << "end1"<< std::endl;
-                attack2->setBehavior<AttackMain>();
+//                attack2->setBehavior<AttackMain>();
+                attack2->setBehavior("AttackMain");
                 main = attack2;
 
             }
@@ -300,7 +305,8 @@ void NormalGameStrategy::runControlCycle()
         else if(attack1 != nullptr)
         {
             //std::cout << "start2"<< std::endl;
-            attack1->setBehavior<AttackMain>();
+            //attack1->setBehavior<AttackMain>();
+            attack1->setBehavior("AttackMain");
             main = attack1;
             supp = nullptr;
             //std::cout << "end2"<< std::endl;
@@ -308,7 +314,8 @@ void NormalGameStrategy::runControlCycle()
         else if(attack2 != nullptr)
         {
             //std::cout << "start3"<< std::endl;
-            attack2->setBehavior<AttackMain>();
+            //attack2->setBehavior<AttackMain>();
+            attack2->setBehavior("AttackMain");
             main = attack2;
             supp = nullptr;
             //std::cout << "end3"<< std::endl;

@@ -1,6 +1,7 @@
 #ifndef BEHAVIOR_H
 #define BEHAVIOR_H
 #include <string>
+#include <map>
 using std::string;
 class Ball;
 class Robot;
@@ -34,12 +35,19 @@ class GameState;
  * any number of robots with robot->assignBeh, typically in a Strategy.
  */
 
+/*!
+ * Additions by Justin Rodney
+ * In order to use variable behaviors at runtime you will need
+ * to register each behavior with the BehaviorCreator. See the
+ * robot.h & robot.cpp for more details, and reference attackmain.cpp
+ * & attackmain.h
+ */\
+
 class Behavior
 {
 public:
     Behavior(Robot*);
     virtual ~Behavior();
-    
     /*! Perform this behavior's action
      * The <i>perform</i> function
      * of a Behavior defines how to
@@ -62,7 +70,6 @@ protected:
     Robot*     robot;
     Ball*      ball;
 };
-
 //! @}
 
 #endif

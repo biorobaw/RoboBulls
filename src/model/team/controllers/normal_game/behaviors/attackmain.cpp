@@ -7,13 +7,16 @@
 
 #include <QDebug>
 
-
+//Line to register in factory map.
+BehaviorRegister<AttackMain> AttackMain::reg("AttackMain");
 float AttackMain::SCORE_ANGLE_TOLERANCE = ROT_TOLERANCE; //7*M_PI/180;
 float AttackMain::PASS_ANGLE_TOLERANCE  = ROT_TOLERANCE; //7*M_PI/180;
 
 AttackMain::AttackMain(Robot* robot) : Behavior(robot)
 {   if(robot->getId() == 2 )
      qInfo() << "RObot 2 now attacl";
+
+
 
     prob_field_rows = (Field::FIELD_LENGTH+1)/PND_MAIN;
     prob_field_cols = (Field::FIELD_WIDTH+1)/PND_MAIN;

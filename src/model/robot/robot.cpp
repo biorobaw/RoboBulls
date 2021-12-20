@@ -12,11 +12,10 @@
 #include "model/team/team.h"
 
 using std::cerr, std::cout, std::endl;
-
 // ============================================================
 // ====== Constructor and basic info ==========================
 // ============================================================
-
+BehaviorCreator::behavior_map_type *BehaviorCreator::behavior_map = nullptr; //just for linker issues?
 
 Robot::Robot(int team, int id) :
     RobotLowLevelControls(nullptr,this),
@@ -127,6 +126,9 @@ Robot* Robot::setBehavior(Behavior *currentBeh)
     behavior = currentBeh;
     return this;
 }
+
+bool Robot::setBehavior(std::string BehaviorName)
+{return BehaviorCreator::createInstance(BehaviorName, robot);}
 
 bool Robot::hasBehavior() {
     return behavior != nullptr ;

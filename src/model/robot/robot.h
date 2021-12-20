@@ -12,6 +12,8 @@
 
 #include <QSet>
 #include <QObject>
+#include <QDebug>
+
 
 class RobotTeam;
 class RobotImplementation;
@@ -65,6 +67,9 @@ public:
 
     template<typename BehaviorType, typename... Args>
     bool setBehavior(Args&&... args);
+
+    //sets behavior using factory constructor.
+    bool setBehavior(std::string BehaviorName);
 
     bool       hasBehavior();
     Behavior*  getBehavior();
@@ -151,5 +156,47 @@ bool Robot::setBehavior(Args&&... args)
     return false;
 }
 
+/*! Following are functions to allow easy swapping in and out of behaviors
+ *  loosely following the factory constructor structure.
+*/
+// ============= Allows For Interchangable Behavior at Runtime ==========================
+
+template<typename B> bool createB(Robot *robot){return robot->setBehavior<B>();}
+
+struct BehaviorCreator
+{
+    typedef std::map<std::string, bool(*)(Robot *robot)> behavior_map_type;
+
+    static bool createInstance(std::string const& str,Robot* robot)
+    {
+        behavior_map_type::iterator it = getBehaviorMap()->find(str);
+        if(it == getBehaviorMap()->end())//If behavior is not registered.
+            return false;
+        return it->second(robot);
+    }
+protected:
+    static behavior_map_type * getBehaviorMap() //This might not be thread safe?
+    {
+        if(!behavior_map)
+            behavior_map = new behavior_map_type;
+        return behavior_map;
+    }
+
+private:
+    static behavior_map_type * behavior_map;
+};
+
+template<typename B>
+struct BehaviorRegister : BehaviorCreator
+{
+    BehaviorRegister(std::string const& str)
+    {
+        getBehaviorMap()->insert(std::pair(str, &createB<B>));
+    }
+
+};
+/*! Each behavior that needs to be registered will need to
+ have a private static BehaviorRegister<BehaviorName> reg; and will need to initialize
+ it in its corresponding cpp file. see attackmain for reference.*/
 
 #endif // ROBOT_H

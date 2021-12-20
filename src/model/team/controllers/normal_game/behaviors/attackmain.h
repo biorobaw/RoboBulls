@@ -14,6 +14,9 @@
 
 #include <vector>
 
+template<typename B>
+struct BehaviorRegister;
+
 /*! @file
  * AttackMain tries to emulate the behavior of a striker/forward attacker in real soccer.
  *
@@ -65,7 +68,8 @@ public:
     string getName() override;
 
 private:
-
+    /*! Needed to register behavior name for factory constructor*/
+    static BehaviorRegister<AttackMain> reg;
 
     struct ProbNode
     {
