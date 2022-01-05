@@ -75,9 +75,14 @@ SOURCES += src/main.cpp \
         src/model/moving_object.cpp \
         src/model/robot/behavior.cpp \
         src/model/robot/behaviors/genericmovementbehavior.cpp \
+        src/model/robot/behaviors/skills/actorcritic.cpp \
+        src/model/robot/behaviors/skills/ddpg.cpp \
         src/model/robot/behaviors/skills/dribbletopoint.cpp \
         src/model/robot/behaviors/skills/dribbleback.cpp \
+        src/model/robot/behaviors/skills/gotoballRL.cpp \
         src/model/robot/behaviors/skills/kicktopointomni.cpp \
+        src/model/robot/behaviors/skills/kicktopointomniRL.cpp \
+        src/model/robot/behaviors/skills/replaybuffer.cpp \
         src/model/robot/navigation/commands/CmdGoToPose.cpp \
         src/model/robot/navigation/drives/differential_drive.cpp \
         src/model/robot/navigation/drives/omni_drive.cpp \
@@ -107,6 +112,7 @@ SOURCES += src/main.cpp \
         src/model/team/controllers/normal_game/behaviors/attacksupportRL.cpp \
         src/model/team/controllers/normal_game/behaviors/challengeballbot.cpp \
         src/model/team/controllers/normal_game/behaviors/defendbehavior.cpp \
+        src/model/team/controllers/normal_game/behaviors/dummy.cpp \
         src/model/team/controllers/normal_game/behaviors/goalie.cpp \
         src/model/team/controllers/normal_game/behaviors/goalieRL.cpp \
         src/model/team/controllers/normal_game/behaviors/markbot.cpp \
@@ -172,6 +178,11 @@ HEADERS += \
         src/model/field.h \
         src/model/game_state.h \
         src/model/moving_object.h \
+        src/model/robot/behaviors/skills/actorcritic.h \
+        src/model/robot/behaviors/skills/ddpg.h \
+        src/model/robot/behaviors/skills/gotoballRL.h \
+        src/model/robot/behaviors/skills/kicktopointomniRL.h \
+        src/model/robot/behaviors/skills/replaybuffer.h \
         src/model/robot/navigation/commands/CmdGoToPose.h \
         src/model/robot/navigation/drives/differential_drive.h \
         src/model/robot/navigation/drives/omni_drive.h \
@@ -206,6 +217,7 @@ HEADERS += \
         src/model/team/controllers/normal_game/behaviors/attacksupportRL.h \
         src/model/team/controllers/normal_game/behaviors/challengeballbot.h \
         src/model/team/controllers/normal_game/behaviors/defendbehavior.h \
+        src/model/team/controllers/normal_game/behaviors/dummy.h \
         src/model/team/controllers/normal_game/behaviors/goalie.h \
         src/model/team/controllers/normal_game/behaviors/goalieRL.h \
         src/model/team/controllers/normal_game/behaviors/markbot.h \

@@ -13,6 +13,8 @@
 
 
 #include <vector>
+template<typename B>
+struct BehaviorRegister;
 
 /*! @file
  * AttackMain tries to emulate the behavior of a striker/forward attacker in real soccer.
@@ -49,7 +51,8 @@
 #define PF_WIDTH_MAIN  (Field::FIELD_WIDTH +1)/PND_MAIN
 #define PF_SIZE_MAIN  PF_LENGTH_MAIN * PF_WIDTH_MAIN
 
-
+#include <iostream>
+#include <fstream>
 
 
 class AttackMainNN : public Behavior//:public GenericMovementBehavior
@@ -65,6 +68,12 @@ public:
     string getName() override;
 
 private:
+    static BehaviorRegister<AttackMainNN> reg;
+    std::ofstream file_out;
+    std::ofstream file_out2;
+    string fo;
+    string fo2;
+
 
 
     struct ProbNode

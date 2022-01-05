@@ -6,8 +6,18 @@
 #include "utilities/comparisons.h"
 #include "model/team/controllers/normal_game/behaviors/defendbehavior.h"
 #include "model/team/controllers/normal_game/behaviors/goalie.h"
+#include "model/team/controllers/normal_game/behaviors/goalieRL.h"
+
+#include "model/team/controllers/normal_game/behaviors/dummy.h"
+
 #include "model/team/controllers/normal_game/behaviors/attackmain.h"
+#include "model/team/controllers/normal_game/behaviors/attackmainNN.h"
+#include "model/team/controllers/normal_game/behaviors/attackmainRL.h"
+
 #include "model/team/controllers/normal_game/behaviors/attacksupport.h"
+#include "model/team/controllers/normal_game/behaviors/attacksupportRL.h"
+#include "model/team/controllers/normal_game/behaviors/attacksupportNN.h"
+
 #include "model/team/controllers/normal_game/behaviors/refstop.h"
 #include "model/team/controllers/normal_game/behaviors/penaltygoalie.h"
 #include "model/team/controllers/normal_game/behaviors/wall.h"
@@ -283,10 +293,12 @@ void TestStrategy::assignBehaviors()
 
     for(auto r : robots){
         if (i++ == 0){
-            r->setBehavior<Goalie>();
+            r->setBehavior<AttackMainNN>();
 
             //r->setRole(ROLE_GOALIE);
-        } else r->setBehavior<DefendBehavior>();
+        } else r->setBehavior<AttackMainNN>();
+        if(team->getID() == 1)
+            r->setBehavior<Dummy>();
 
 
         //else r->setBehavior<GoToBehavior>(i*360.0/num_robots);

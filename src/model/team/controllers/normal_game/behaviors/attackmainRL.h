@@ -13,7 +13,8 @@
 
 
 #include <vector>
-
+template<typename B>
+struct BehaviorRegister;
 /*! @file
  * AttackMain tries to emulate the behavior of a striker/forward attacker in real soccer.
  *
@@ -65,6 +66,7 @@ public:
     string getName() override;
 
 private:
+    static BehaviorRegister<AttackMainRL> reg;
 
 
     struct ProbNode

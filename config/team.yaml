@@ -43,7 +43,7 @@ TEAM_BLUE :
       #  - ROBOT : 1
       #    JOY   : 1
       
-        ID: NORMAL_GAME # options: NORMAL_GAME or STRATEGY_TESTER or JOYSTICK
+        ID: STRATEGY_TESTER # options: NORMAL_GAME or STRATEGY_TESTER or JOYSTICK
         ROLES:
             GOALIE : 0
             ATTACK1 : 1
@@ -65,7 +65,7 @@ TEAM_YELLOW :
         PORT : 20011     # port of grsim
     
     STRATEGY_CONTROLLER:
-        ID: NORMAL_GAME # options: NORMAL_GAME or STRATEGY_TESTER or JOYSTICK
+        ID: STRATEGY_TESTER # options: NORMAL_GAME or STRATEGY_TESTER or JOYSTICK
         ROLES:
             GOALIE : 0
             ATTACK1 : 1

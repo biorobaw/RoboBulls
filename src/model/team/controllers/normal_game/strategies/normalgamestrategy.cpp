@@ -3,8 +3,16 @@
 
 //#include "../behaviors/genericmovementbehavior.h"
 #include "model/team/controllers/normal_game/behaviors/goalie.h"
+#include "model/team/controllers/normal_game/behaviors/goalieRL.h"
+
 #include "model/team/controllers/normal_game/behaviors/attackmain.h"
+#include "model/team/controllers/normal_game/behaviors/attackmainNN.h"
+#include "model/team/controllers/normal_game/behaviors/attackmainRL.h"
+
 #include "model/team/controllers/normal_game/behaviors/attacksupport.h"
+#include "model/team/controllers/normal_game/behaviors/attacksupportNN.h"
+#include "model/team/controllers/normal_game/behaviors/attacksupportRL.h"
+
 #include "model/team/controllers/normal_game/behaviors/defendbehavior.h"
 #include "model/team/controllers/normal_game/behaviors/refstop.h"
 #include "model/team/controllers/normal_game/behaviors/wall.h"
@@ -71,8 +79,7 @@ void NormalGameStrategy::assignBehaviors()
         wall2->setBehavior<Wall>();
     if(attack1)
         //attack1->setBehavior<AttackMain>();"
-        attack1->setBehavior("AttackMain");
-        //attack1->setBehavior(BehaviorCreator::createInstance("AttackMain",attack1));
+        attack1->setBehavior("AttackMainNN");
     if(attack2)
         attack2->setBehavior<AttackSupport>();
     if(attack3)
@@ -185,8 +192,8 @@ void NormalGameStrategy::runControlCycle()
         if(shooter)
         {
             //shooter->setBehavior<AttackMain>();
-            shooter->setBehavior("AttackMain");
-            if(dynamic_cast<AttackMain*>(shooter->getBehavior())->hasKickedToGoal())
+            shooter->setBehavior("AttackMainNN");
+            if(dynamic_cast<AttackMainNN*>(shooter->getBehavior())->hasKickedToGoal())
             {
                 shooter->setBehavior<Wall>();
                 state = evaluate;
@@ -282,7 +289,7 @@ void NormalGameStrategy::runControlCycle()
             {                                         //other, assign that to attack main
                 //std::cout << "start"<< std::endl;
                 //attack1->setBehavior<AttackMain>(); // attackmain is the problem
-                attack1->setBehavior("AttackMain");
+                attack1->setBehavior("AttackMainNN");
 
                 main = attack1;
                  //std::cout << "end"<< std::endl;
@@ -297,7 +304,7 @@ void NormalGameStrategy::runControlCycle()
                 supp = attack1;
                 //std::cout << "end1"<< std::endl;
 //                attack2->setBehavior<AttackMain>();
-                attack2->setBehavior("AttackMain");
+                attack2->setBehavior("AttackMainNN");
                 main = attack2;
 
             }
@@ -306,7 +313,7 @@ void NormalGameStrategy::runControlCycle()
         {
             //std::cout << "start2"<< std::endl;
             //attack1->setBehavior<AttackMain>();
-            attack1->setBehavior("AttackMain");
+            attack1->setBehavior("AttackMainNN");
             main = attack1;
             supp = nullptr;
             //std::cout << "end2"<< std::endl;
@@ -315,7 +322,7 @@ void NormalGameStrategy::runControlCycle()
         {
             //std::cout << "start3"<< std::endl;
             //attack2->setBehavior<AttackMain>();
-            attack2->setBehavior("AttackMain");
+            attack2->setBehavior("AttackMainNN");
             main = attack2;
             supp = nullptr;
             //std::cout << "end3"<< std::endl;

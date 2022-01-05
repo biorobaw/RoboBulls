@@ -7,6 +7,7 @@
 
 #include <QDebug>
 
+BehaviorRegister<AttackMainRL> AttackMainRL::reg("AttackMainRL");
 
 float AttackMainRL::SCORE_ANGLE_TOLERANCE = ROT_TOLERANCE; //7*M_PI/180;
 float AttackMainRL::PASS_ANGLE_TOLERANCE  = ROT_TOLERANCE; //7*M_PI/180;
