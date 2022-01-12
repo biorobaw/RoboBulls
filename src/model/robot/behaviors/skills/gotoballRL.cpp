@@ -28,27 +28,32 @@
 //float KICK_LOCK_ANGLE =  ROT_TOLERANCE;  //12 * (M_PI/180);
 //float KICKLOCK_COUNT = 15;
 //#endif
+#include <regex>
+string getTimeStamp(){
+std::time_t ts_t = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+string time_stamp = string(ctime(&ts_t));
+std::regex r(" |\n");   time_stamp = std::regex_replace(time_stamp, r, "_");
+r= (":");      time_stamp = std::regex_replace(time_stamp, r, "-");
 
-int steps_per_epoch = 4000;
-int num_epochs = 5;
+return time_stamp;
+}
+
+int max_episode_length= 350;
+int num_episodes = 100/*500*/ /*1500*/;
+int burn_in_time = 3;
+#include <chrono>
+
+std::chrono::time_point<std::chrono::high_resolution_clock> time_start, time_stop, time_last;
 /************************************************************************/
 
-GoToBallRL::GoToBallRL(Robot* robot, const Point& target,
-                                 float targetTolerance, float kickDistance, bool useFullPower)
-    : GoToBallRL(robot, &m_targetPoint, targetTolerance, kickDistance, useFullPower)
-{
-    m_targetPoint = target;
-    train = true;
-    episode_complete = false;
-}
+
 //DDPG_Agent(int o_size, int a_size, int update_after_numsteps = 1000, int update_every_numsteps = 50,
 //int batchsize = 32, int steps_per_epoch = 4000);
-GoToBallRL::GoToBallRL(Robot* robot, Point* targetPtr,
+GoToBallRL::GoToBallRL(Robot* robot,
                                  float targetTolerance, float kickDistance, bool useFullPower)
     : Behavior(robot)
-    , agent(/*num observations*/9,/*num actions*/ 3, steps_per_epoch, num_epochs)
-    , m_targetPointer(targetPtr)
     , m_moveCompletionCount(0)
+    , agent(/*num observations*/9,/*num actions*/ 3, max_episode_length, num_episodes)
 //    , m_targetTolerance((targetTolerance < 0) ? STRICTEST_ANG_TOL : targetTolerance)
 //    , m_kickDistance(kickDistance)
 //    , m_kickLockCount(0)
@@ -61,143 +66,210 @@ GoToBallRL::GoToBallRL(Robot* robot, Point* targetPtr,
 
 {
     train = true;
-    episode_complete = false;
+    episode_status.episode_complete = false; episode_status.train_complete = false;
     done = false;
     //qInfo() <<"New kick to point omni robot "<<robot->getId();
     //debug::registerVariable("ktpo_rc", &RECREATE_DIST_TOL);
+    time_start = std::chrono::high_resolution_clock::now();
+    time_last = time_start;
+}
 
-}
-std::vector<float> GoToBallRL::getState(){
-//State input
-Point ball_pos = (*robot - *ball).rotate(-(robot->angle())); //relative to robot
-Point velocity = robot->getVelocity().rotate(-(robot->angle())); //translational
-float dist_to_ball = Measurements::distance(*ball, *robot);
-float dist_to_top_field = Field::FIELD_LENGTH/2 - robot->y;
-float dist_to_right_field = Field::FIELD_WIDTH/2 - robot->x;
-float dist_to_bot_field =  robot->y - (-Field::FIELD_LENGTH/2);
-float dist_to_left_field = robot->x - (-Field::FIELD_WIDTH/2);
-return {ball_pos.x, ball_pos.y, velocity.x, velocity.y, dist_to_ball, dist_to_top_field, dist_to_right_field, dist_to_bot_field, dist_to_left_field};
-}
 
 
 
 float angularVel;
-bool GoToBallRL::perform()
-{
-    std::vector<float> observation = getState();
 
-    if(episode_complete){
-        if(train){
-            resetEnvironment();
-            if(agent.endTraining()){
-                qInfo() <<"Max number episodes trained";
-                return false;
-            }
-        }
-        episode_complete = false;
-        step_num = 0;
-        total_reward = 0;
-        done = false;
 
-    }
-    else if (step_num != 0){
-        //Algorithm updates after each step, in other examples they are
-        //able to step the simulation, but here we must perform the update
-        //steps on the next call to perform.. cant do on step 0 since timestep needs to pass.
-        //calculate reward and determine if done
-       float reward = getReward(dist_to_ball);
-       total_reward += reward;
-       done = robot->hasBall(); // add comparison
 
-       //update stores replay buffer and performs updating to the networks.
-       //returns whether episode is complete
-       if(train)
-            episode_complete = agent.step(prev_observation, action, reward,observation, done);
-       else
-           episode_complete = done || agent.endEpisode();
 
-    }
-    if(episode_complete)
-            return done;
+bool GoToBallRL::perform(){
+    if(train)
+        return Train();
+    else
+        return Test();
 
-    //Get action from ddpg_agent actor_critic network.
-    action = agent.Act(observation, train /*adds noise if training*/);
 
-    //Action space
-    Point vel(action[0], action[1]);
-    float angularVel = action[2];
-
-    robot->setTargetVelocityLocal(vel, angularVel);
-    prev_observation = observation; step_num++;
-
-    //Normally we would update here(simulator examples), but we must wait for the next cycle
-
-    //DDPG
-    return done; // was false
 }
 
-//The following are utility functions to help switch state.
-//- canKick: All conditions okay to actuate the kicker
-//- isWithinKickDistnace: "Within kick distance" means we are close to the target to kick to it
-//- isCloseToBall: We are close to the ball if we are within kicking distance
-//- isVeryFarFromBall: True if we are pretty far away from the ball
-//- isFacingBall: True if facing the ball. The tolerance angle is the user-given m_targetTolerance
-/*- isInKickLock: "Kick-lock" is a side-effect of robot physical geometry.
-    * Sometimes the robot gets too close to the ball while not facing it, and keeps
-    * pushing the ball along in which it cannot get behind it. This helps to detect that */
 
-//bool GoToBallRL::canKick(Robot* robot) {
-//    bool closeToBall = isCloseToBall(robot);
-//    bool facingBall = isFacingBall(robot);
-//    bool facingTarget = isFacingTarget(robot);
-//    bool withinKickDist =  isWithinKickDistance(robot);
-//    return m_hasRecoveredKickLock &&
-//           closeToBall && facingBall && facingTarget
-//           && withinKickDist;
-//}
 
-//bool GoToBallRL::isWithinKickDistance(Robot *robot) {
-//    return m_kickDistance == -1 || Measurements::distance(robot, *m_targetPointer) < m_kickDistance;
-//}
+bool GoToBallRL::Train(){
+  if(step_num ==0){
+            time_start = std::chrono::high_resolution_clock::now();
+            time_last = time_start;
+        }
+        auto time_now = std::chrono::high_resolution_clock::now();
+        auto cycle_dur = std::chrono::duration_cast<std::chrono::milliseconds>(time_now - time_last);
+        time_last = time_now;
+        //if(step_num % 50 == 0)qInfo() << "Cycle num: "<< step_num << " Dur(ms): "<<cycle_dur.count();
+        bool burning_in = cur_ep<burn_in_time;
 
-//bool GoToBallRL::isCloseToBall(Robot *robot) {
-//    // We cannot simply check the distance to the ball because it is unreliable
-//    // A misplacement of the markings on top of the robot can render the check tolerance
-//    // too much or too little. Instead we check how far the robot has travelled from
-//    // the behindball point.
-//    //std::cout << measurements::distance(robot, behindBall) << std::endl;
-//    return Measurements::distance(robot, behindBall) >= DIST_TOLERANCE; //was 30
-//}
+        std::vector<float> observation = getState();
+        //printState(observation);
 
-//bool GoToBallRL::isVeryFarFromBall(Robot *robot) {
-//    return Measurements::distance(robot, *ball) > ROBOT_RADIUS*6;
-//}
+        if(episode_status.episode_complete)
+        {
+                    qInfo() << robot->getTargetAngularSpeed() <<" "<<robot->getTargetVelocity();
+                    time_stop = std::chrono::high_resolution_clock::now();  qInfo() << "Episode duration(seconds): " << std::chrono::duration_cast<std::chrono::milliseconds>(time_stop - time_start).count()/1000.0;       time_start = time_stop;
+                    if(episode_status.train_complete)
+                    {       endTraining();
+                            return false;
+                    }
 
-//bool GoToBallRL::isFacingBall(Robot* robot) {
-//    return Comparisons::isFacingPoint(robot, *ball, M_PI/3.0);
-//}
+                episode_status.episode_complete = false; cur_ep++;
+                step_num = 0;   total_reward = 0;   done = false;
+       }
+        else if (step_num != 0)
+        {   //Algorithm updates after each step, in other examples they are able to step the simulation, but here we must perform the update
+            //steps on the next call to perform.. cant do on step 0 since timestep needs to pass.calculate reward and determine if done
+           float reward = getReward(dist_to_ball);
+           total_reward += reward;
+           done = robot->hasBall(); // add comparison
 
-//bool GoToBallRL::isFacingTarget(Robot* robot) {
-    //return Comparisons::isFacingPoint(robot, *m_targetPointer, m_targetTolerance);
-//}
+           if(burning_in)                       //This is a really weird way around the fact pilot commands override setting the  robot velocity
+               action = getBurnInAction();      //mannualy and are executed AFTERWARDS, need to get burned in action on NEXT cycle
 
-//bool GoToBallRL::isInKickLock(Robot* robot)
-//{
-//    bool close = isCloseToBall(robot);
-//    bool facingBall = Comparisons::isFacingPoint(robot, *ball, KICK_LOCK_ANGLE);
-//    if(close && !facingBall) {
-//        if(++m_kickLockCount > KICKLOCK_COUNT) {
-//            m_kickLockCount = 0;
-//            m_hasRecoveredKickLock = false;
-//            return true;
-//        }
-//    }
-//    return false;
-//}
+           //step stores replay buffer and updates networks. returns if episode is complete. test just checks if episode is over
+           episode_status =  agent.step(prev_observation, action, reward, observation, done);
+        }
+
+        if(episode_status.episode_complete){
+            qInfo() << "episode complete, reset training environment(move ball and robot) and release the robot: ";
+            robot->clearCmd();//
+            robot->setUseOverridenControls(1);
+            return done;
+        }
+
+        //Get action from ddpg_agent actor_critic network. or burn in via random actions or hardcoded behaviors. Burn in does not need to step
+        if(burning_in)
+                BurnIn();
+        else{
+            action = agent.Act(observation, true /*adds noise if training*/);
+            Step(); //Step just sets robot commands by the action
+        }
+
+        prev_observation = observation; step_num++;
+
+        //Normally we would update here(simulator examples), but we must wait for the next cycle
+
+        //DDPG
+        /*return false;*/ //if it hit this point, then it was not complete
+        return done; // was false
+
+
+    return true;
+}
+bool GoToBallRL::Test(){
+    if(step_num ==0){
+              time_start = std::chrono::high_resolution_clock::now();
+              time_last = time_start;
+          }
+          auto time_now = std::chrono::high_resolution_clock::now();
+          auto cycle_dur = std::chrono::duration_cast<std::chrono::milliseconds>(time_now - time_last);
+          time_last = time_now;
+          //if(step_num % 50 == 0)qInfo() << "Cycle num: "<< step_num << " Dur(ms): "<<cycle_dur.count();
+
+          std::vector<float> observation = getState();
+          printState(observation);
+
+          if(episode_status.episode_complete)
+          {
+                  episode_status.episode_complete = false; cur_ep++;
+                  step_num = 0;   total_reward = 0;   done = false;
+         }
+          else if (step_num != 0)
+          {   //Algorithm updates after each step, in other examples they are able to step the simulation, but here we must perform the update
+              //steps on the next call to perform.. cant do on step 0 since timestep needs to pass.calculate reward and determine if done
+             float reward = getReward(dist_to_ball);
+             total_reward += reward;
+             done = robot->hasBall(); // add comparison
+
+             //Store state or reward history for stats????
+             episode_status.episode_complete = done;
+          }
+
+          if(episode_status.episode_complete)
+                  return done;
+
+          //Get action from ddpg_agent actor_critic network.
+          action = agent.Act(observation, false /*adds noise if training*/);
+          Step();   //Step just sets robot commands by the action
+
+
+          prev_observation = observation; step_num++;
+
+          //Normally we would update here(simulator examples), but we must wait for the next cycle
+
+          /*return false;*/ //if it hit this point, then it was not complete
+          return done; // was false
+
+
+      return true;
+}
+
+std::vector<float> GoToBallRL::getState(){
+    //State input
+    Point ball_pos = (*ball - *robot).rotate(-(robot->getOrientation())); //relative to robot
+    Point velocity = robot->getVelocity().rotate(-(robot->getOrientation())); //translational
+    float dist_to_ball = Measurements::distance(*ball, *robot);
+    float dist_to_top_field = Field::FIELD_WIDTH/2 - robot->y;
+    float dist_to_right_field = Field::FIELD_LENGTH/2 - robot->x;
+    float dist_to_bot_field =  robot->y - (-Field::FIELD_WIDTH/2);
+    float dist_to_left_field = robot->x - (-Field::FIELD_LENGTH/2);
+    return {ball_pos.x, ball_pos.y, velocity.x, velocity.y, dist_to_ball, dist_to_top_field, dist_to_right_field, dist_to_bot_field, dist_to_left_field};
+}
+
+float max_speed = 1500;     float max_ang_speed = 80/180.0*3.14;
+void GoToBallRL::Step(){
+    //Action space
+    Point vel(action[0], action[1]);                    //max speeds defined in omni pilot. No function to get max velocity
+    float angularVel = action[2];           // for different robots? Is there a robocup limitation?
+
+//    qInfo() << "speed: " <<(vel*max_speed) <<" angular: "<<(angularVel*max_ang_speed) << " Max ang: "<<max_ang_speed;
+    robot->setTargetVelocityLocal(vel*max_speed, angularVel*max_ang_speed);
+}
+
+//float max_ang =0;
+
+float random_float(float low, float high){
+    return low + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX/(high- low)));
+};
+void GoToBallRL::BurnIn(){
+    cmd.velocity_multiplier =1;
+    if(cur_ep%2 == 0)
+        cmd.setTarget(*ball, Measurements::angleBetween(*robot,*ball));
+    else{
+        float rand_ang =  random_float(-3.14, 3.14);
+        float rand_x =  random_float((-Field::FIELD_LENGTH/2.0), (Field::FIELD_LENGTH/2.0));
+        float rand_y =  random_float((-Field::FIELD_WIDTH/2.0), Field::FIELD_WIDTH/2.0);
+
+        cmd.setTarget(Point(rand_x, rand_y), rand_ang);
+    }
+
+    //cmd.avoid_ball = cmd.avoid_obstacles = true; // true
+    robot->goToPose(cmd);
+}
+    //robot->pilo->executeCommands();
+
+std::vector<float> GoToBallRL::getBurnInAction(){
+    Point vel = robot->getTargetVelocity();
+    float ang_speed = robot->getTargetAngularSpeed() / (80/180.0*3.14);
+                ///**/max_ang= (max_ang<robot->getTargetAngularSpeed())? robot->getTargetAngularSpeed(): max_ang;/**/ /**/qInfo() << "Max ang: " <<max_ang;/**/
+    return std::vector<float>({vel.x/max_speed,vel.y/max_speed,ang_speed/max_ang_speed});
+}
 
 void GoToBallRL::resetEnvironment(){
-    qInfo() << "episode complete, reset training environment(hit enter to continue):";
-    std::cin >>;
+    qInfo() << "episode complete, reset training environment(move ball and robot)(hit enter, then any key then enter to continue):\n**I'm a grad student with no time to add this to debug console I'm sorry**";
+    std::string dummy;
+    std::cin >>dummy;
+}
+
+void GoToBallRL::endTraining(){
+    qInfo() <<"Max number episodes trained(hit enter to save)";
+    std::string dummy;
+    std::cin >>dummy;
+    string time_stamp=getTimeStamp();
+    agent.save("actor1"+time_stamp,"critic1"+time_stamp);
 }
 float GoToBallRL::getReward(float d){
    float reward = 0;
@@ -217,6 +289,23 @@ float GoToBallRL::getReward(float d){
    return reward;
     // return m_hasKicked; // TODO: Actually this will always return false, needs to be fixed
 }
+
+void GoToBallRL::printState(std::vector<float> observation){
+        qInfo() << "#-------------------------------Observation"
+                <<"\nBall position relative" <<observation[0] <<", " <<observation[1] <<"\trobot angle: "
+                << robot->getOrientation()<<"\n"
+                <<"Robot velocity" << observation[2] <<", "<< observation[3] << "\n"
+               << "dist_to_ball" << observation[4]
+               <<"Dist to field\n Top:" <<observation[5] << "\tright:" <<observation[6] <<"\tbottom: " <<observation[7] << "\tleft: " <<observation[8]
+              <<"#-------------------------------";
+
+}
+void GoToBallRL::printAction(){
+        qInfo() << "#-------------------------------ActionVelocity (" <<action[0]*max_speed<<", " << action[1]*max_speed    <<")\tAngular_vel:"
+                <<action[2]*max_ang_speed  <<"\n("<<action[0]<<", " << action[1] <<  ")\t" <<action[2]  <<"#-------------------------------";
+}
+
+
 bool GoToBallRL::isFinished(){
    return true;
     // return m_hasKicked; // TODO: Actually this will always return false, needs to be fixed
@@ -224,5 +313,148 @@ bool GoToBallRL::isFinished(){
 string GoToBallRL::getName(){
     return "Kick 2 point omni";
 }
+//********************************************
+//bool GoToBallRL::perform()
+//{   if(step_num ==0){
+//        time_start = std::chrono::high_resolution_clock::now();
+//        time_last = time_start;
+//    }
+//    auto time_now = std::chrono::high_resolution_clock::now();
+//    auto cycle_dur = std::chrono::duration_cast<std::chrono::milliseconds>(time_now - time_last);
+//    time_last = time_now;
+//    //if(step_num % 50 == 0)qInfo() << "Cycle num: "<< step_num << " Dur(ms): "<<cycle_dur.count();
+
+//    std::vector<float> observation = getState();
+////    qInfo() << "Ball position relative" <<observation[0] <<", " <<observation[1] <<" robot angle: "
+////            << robot->getOrientation()<<"\n"
+////            <<"Robot velocity" << observation[2] <<", "<< observation[3] << "\n"
+////           << "dist_to_ball" << observation[4]
+////           <<"Dist to field\n Top:" <<observation[5] << " right:" <<observation[6] <<" bottom: " <<observation[7] << " left: " <<observation[8];
+
+////    std::string dummy;
+////    std::cin >>dummy;
+////    return false;
+//    if(episode_status.episode_complete)
+//    {
+//            if(train)
+//            {qInfo() << robot->getTargetAngularSpeed() <<" "<<robot->getTargetVelocity();
+//                    time_stop = std::chrono::high_resolution_clock::now();
+//                    qInfo() << "Episode duration(seconds): " << std::chrono::duration_cast<std::chrono::milliseconds>(time_stop - time_start).count()/1000.0;
+//                    time_start = time_stop;
+//                    if(episode_status.train_complete)
+//                    {       endTraining();
+//                            return false;
+//                    }
+//                    /*resetEnvironment();*/
+
+//            }
+//            episode_status.episode_complete = false; cur_ep++;
+//            step_num = 0;   total_reward = 0;   done = false;
+//   }
+//    else if (step_num != 0)
+//    {   //Algorithm updates after each step, in other examples they are able to step the simulation, but here we must perform the update
+//        //steps on the next call to perform.. cant do on step 0 since timestep needs to pass.calculate reward and determine if done
+//       float reward = getReward(dist_to_ball);
+//       total_reward += reward;
+//       done = robot->hasBall(); // add comparison
+
+//       //**if training** step stores replay buffer and updates networks. returns if episode is complete. test just checks if episode is over
+//       episode_status = (train) ? /*training*/ agent.step(prev_observation, action, reward, observation, done)
+//                                  : /*testing*/ EpisodeStatus(done || agent.endEpisode(), false);
+//    }
+
+//    if(episode_status.episode_complete){
+//            if(train){ qInfo() << "episode complete, reset training environment(move ball and robot) and release the robot: ";
+//                robot->setUseOverridenControls(1);
+//            }
+//            return done;
+//    }
+
+//    //Get action from ddpg_agent actor_critic network.
+//    if(train && cur_ep<burn_in_time)
+//            action = BurnIn();
+//    else{
+//        action = agent.Act(observation, train /*adds noise if training*/);
+
+//        //Action space
+//        Point vel(action[0], action[1]);        float max_speed = 1500;             //max speeds defined in omni pilot. No function to get max velocity
+//        float angularVel = action[2];           float max_ang_speed = 80/180.0*3.14;// for different robots? Is there a robocup limitation?
+
+//        qInfo() << "speed: " <<(vel*max_speed) <<" angular: "<<(angularVel*max_ang_speed);
+//        robot->setTargetVelocityLocal(vel*max_speed, angularVel*max_ang_speed);
+//    }
 
 
+
+//    prev_observation = observation; step_num++;
+
+//    //Normally we would update here(simulator examples), but we must wait for the next cycle
+
+//    //DDPG
+//    /*return false;*/ //if it hit this point, then it was not complete
+//    return done; // was false
+
+//}
+
+//*********************************************
+
+
+
+
+
+
+
+
+//bool GoToBallRL::perform()
+//{
+//    std::vector<float> observation = getState();
+
+//    if(episode_complete){
+//        if(train){
+//            resetEnvironment();
+//            if(agent.endTraining()){
+//                qInfo() <<"Max number episodes trained";
+//                return false;
+//            }
+//        }
+//        episode_complete = false;
+//        step_num = 0;
+//        total_reward = 0;
+//        done = false;
+
+//    }
+//    else if (step_num != 0){
+//        //Algorithm updates after each step, in other examples they are
+//        //able to step the simulation, but here we must perform the update
+//        //steps on the next call to perform.. cant do on step 0 since timestep needs to pass.
+//        //calculate reward and determine if done
+//       float reward = getReward(dist_to_ball);
+//       total_reward += reward;
+//       done = robot->hasBall(); // add comparison
+
+//       //update stores replay buffer and performs updating to the networks.
+//       //returns whether episode is complete
+//       if(train)
+//            episode_complete = agent.step(prev_observation, action, reward,observation, done);
+//       else
+//           episode_complete = done || agent.endEpisode();
+
+//    }
+//    if(episode_complete)
+//            return done;
+
+//    //Get action from ddpg_agent actor_critic network.
+//    action = agent.Act(observation, train /*adds noise if training*/);
+
+//    //Action space
+//    Point vel(action[0], action[1]);
+//    float angularVel = action[2];
+
+//    robot->setTargetVelocityLocal(vel, angularVel);
+//    prev_observation = observation; step_num++;
+
+//    //Normally we would update here(simulator examples), but we must wait for the next cycle
+
+//    //DDPG
+//    return done; // was false
+//}

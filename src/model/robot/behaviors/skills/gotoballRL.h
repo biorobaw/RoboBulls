@@ -21,18 +21,10 @@ public:
     * @param kickDistance: How close should the robot be to the target before kicking.
     * leave blank to kick as soon as possible
     * @param useFullPower: Use a full-power kick instead of a variable power one to the target */
-    GoToBallRL(Robot* robot, const Point& target,
+    GoToBallRL(Robot* robot,
                     float targetTolerance = -1,
                     float kickDistance = -1,
                     bool  useFullPower = false);
-
-    /*! @brief <b>variable-point</b> constructor, for kicking to a changing point
-     * @param targetPtr Pointer to a point to kick to. Can change while skill is created
-     * @see KickToPointOmni */
-    GoToBallRL(Robot* robot, Point* targetPtr,
-                    float  targetTolerance = -1,
-                    float  kickDistance = -1,
-                     bool  useFullPower = false);
 
     bool perform() override;
     bool isFinished() override;
@@ -61,13 +53,26 @@ private:
      Point vel;
      float angularVel;
      int step_num = 0;
+     int cur_ep = 0;
      float total_reward = 0;
-     bool train, episode_complete, done;
+     bool train, /*episode_complete, train_complete,*/ done;
+     EpisodeStatus episode_status;
      void resetEnvironment();
+     void endTraining();
      float getReward(float d);
      std::vector<float> getState();
-     std::vector<float> Train(std::vector<float> observation);
-     std::vector<float> Test(std::vector<float> observation);
+     void printState(std::vector<float> observation);
+     void printAction();
+     /*!
+      * The steps after taking an action for Training and Testing are slightly different
+      *  Could be condensed, but might reduce understandability
+     */
+     bool Train();
+     bool Test();
+     void Step();
+     void BurnIn();
+     std::vector<float> getBurnInAction();
+
 
 
 
