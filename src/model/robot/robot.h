@@ -79,6 +79,7 @@ public:
     GameState* getGameState();
     Robot*     setGameState(GameState* state);
 
+    Robot* clearCmd();
 
     Robot* goToPose(CmdGoToPose& newCommand);
     bool   completedGoToPoseCmd();

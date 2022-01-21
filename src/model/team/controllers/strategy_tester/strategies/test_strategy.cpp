@@ -10,6 +10,8 @@
 
 #include "model/team/controllers/normal_game/behaviors/dummy.h"
 
+#include "model/robot/behaviors/skills/gotoballRL.h"
+
 #include "model/team/controllers/normal_game/behaviors/attackmain.h"
 #include "model/team/controllers/normal_game/behaviors/attackmainNN.h"
 #include "model/team/controllers/normal_game/behaviors/attackmainRL.h"
@@ -293,7 +295,7 @@ void TestStrategy::assignBehaviors()
 
     for(auto r : robots){
         if (i++ == 0){
-            r->setBehavior<AttackMainNN>();
+            r->setBehavior<GoToBallRL>();
 
             //r->setRole(ROLE_GOALIE);
         } else r->setBehavior<AttackMainNN>();

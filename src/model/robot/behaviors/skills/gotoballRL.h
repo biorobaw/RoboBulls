@@ -14,17 +14,12 @@
 class GoToBallRL : public Behavior
 {
 public:
-    /*! @brief <b>Static-point</b> constructor, for kicking to a static point
-    * @param target Target point to kick toarwards
-    * @param targetTolerance: Tolerance for the robot angle facing the target point before
-    * a kick is made, for accuracy or non-accuracy reasons. Leave blank to use default.
-    * @param kickDistance: How close should the robot be to the target before kicking.
-    * leave blank to kick as soon as possible
-    * @param useFullPower: Use a full-power kick instead of a variable power one to the target */
-    GoToBallRL(Robot* robot,
-                    float targetTolerance = -1,
-                    float kickDistance = -1,
-                    bool  useFullPower = false);
+    /*!
+     * \brief GoToBallRL
+     * \param robot
+     * \param targetTolerance
+     */
+    GoToBallRL(Robot* robot, float targetTolerance = -1);
 
     bool perform() override;
     bool isFinished() override;
@@ -41,17 +36,17 @@ private:
      Point Original_bp;
 
      //State input
-     Point ball_pos; //relative to robot
-     Point velocity; //translational
-     float dist_to_ball;
-     float dist_to_top_field;
-     float dist_to_right_field;
-     float dist_to_bot_field;
-     float dist_to_left_field;
+//     Point ball_pos; //relative to robot
+//     Point velocity; //translational
+//     float dist_to_ball;
+//     float dist_to_top_field;
+//     float dist_to_right_field;
+//     float dist_to_bot_field;
+//     float dist_to_left_field;
 
      //Action space
-     Point vel;
-     float angularVel;
+//     Point vel;
+//     float angularVel;
      int step_num = 0;
      int cur_ep = 0;
      float total_reward = 0;
@@ -59,6 +54,7 @@ private:
      EpisodeStatus episode_status;
      void resetEnvironment();
      void endTraining();
+     void savePrompt();
      float getReward(float d);
      std::vector<float> getState();
      void printState(std::vector<float> observation);
@@ -73,6 +69,7 @@ private:
      void BurnIn();
      std::vector<float> getBurnInAction();
 
+     bool almost_out_of_bounds();
 
 
 
@@ -87,6 +84,8 @@ private:
     DDPG_Agent agent;
     std::vector<float> prev_observation;
     std::vector<float> action;
+    torch::jit::script::Module test;
+
 };
 
 

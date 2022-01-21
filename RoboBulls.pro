@@ -413,12 +413,12 @@ INSTALLS += install_config_files
 
 
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../Downloads/libtensorflow-cpu-windows-x86_64-2.7.0/lib/ -ltensorflow
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../Downloads/libtensorflow-cpu-windows-x86_64-2.7.0/lib/ -ltensorflow
-else:unix: LIBS += -L$$PWD/../../Downloads/libtensorflow-cpu-windows-x86_64-2.7.0/lib/ -ltensorflow
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../Documents/libtensorflow-cpu-windows-x86_64-2.7.0/lib/ -ltensorflow
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../Documents/libtensorflow-cpu-windows-x86_64-2.7.0/lib/ -ltensorflow
+else:unix: LIBS += -L$$PWD/../../Documents/libtensorflow-cpu-windows-x86_64-2.7.0/lib/ -ltensorflow
 
-INCLUDEPATH += $$PWD/../../Downloads/libtensorflow-cpu-windows-x86_64-2.7.0/include
-DEPENDPATH += $$PWD/../../Downloads/libtensorflow-cpu-windows-x86_64-2.7.0/include
+INCLUDEPATH += $$PWD/../../Documents/libtensorflow-cpu-windows-x86_64-2.7.0/include
+DEPENDPATH += $$PWD/../../Documents/libtensorflow-cpu-windows-x86_64-2.7.0/include
 
 
 
@@ -427,14 +427,44 @@ DEPENDPATH += $$PWD/../../Downloads/libtensorflow-cpu-windows-x86_64-2.7.0/inclu
 
 
 
+#GPU
+#Possible source for any linking issues: https://medium.com/codex/integrate-libtorch-library-to-qt-for-gpu-inference-8c523d682e51
+#QMAKE_LFLAGS += -INCLUDE:?warp_size@cuda@at@@YAHXZ
+
+win32 {
+QMAKE_LFLAGS += -INCLUDE:?warp_size@cuda@at@@YAHXZ
+QMAKE_LFLAGS += -INCLUDE:?searchsorted_cuda@native@at@@YA?AVTensor@2@AEBV32@0_N1@Z
+QMAKE_LFLAGS += /machine:x64
+}
+unix {
+QMAKE_LFLAGS += -Wl,--no-as-needed
+}
+
+win32:CONFIG(release, debug|release){
+LIBS += -L$$PWD/../../Documents/libtorch-win-shared-with-deps-1.10.1+cu113/libtorch/lib/ -ltorch_cpu -ltorch  -lc10 -ltorch_cuda  -lc10_cuda   \
+                                            -lcaffe2_nvrtc -lcaffe2_detectron_ops_gpu -ltorch -ltorch_cuda_cpp -ltorch_cuda_cu
+INCLUDEPATH += $$PWD/../../Documents/libtorch-win-shared-with-deps-1.10.1+cu113/libtorch/include
+INCLUDEPATH += $$PWD/../../Documents/libtorch-win-shared-with-deps-1.10.1+cu113/libtorch/include/torch/csrc/api/include
+DEPENDPATH += $$PWD/../../Documents/libtorch-win-shared-with-deps-1.10.1+cu113/libtorch/include
+DEPENDPATH += $$PWD/../../Documents/libtorch-win-shared-with-deps-1.10.1+cu113/libtorch/include/torch/csrc/api/include
+}
+else:win32:CONFIG(debug, debug|release){
+LIBS += -L$$PWD/../../Documents/libtorch-win-shared-with-deps-debug-1.10.1+cu113/libtorch/lib/ -ltorch_cpu -ltorch  -lc10 -ltorch_cuda  -lc10_cuda  \
+                                                 -lcaffe2_nvrtc -lcaffe2_detectron_ops_gpu -ltorch -ltorch_cuda_cpp -ltorch_cuda_cu
+INCLUDEPATH += $$PWD/../../Documents/libtorch-win-shared-with-deps-debug-1.10.1+cu113/libtorch/include
+INCLUDEPATH += $$PWD/../../Documents/libtorch-win-shared-with-deps-debug-1.10.1+cu113/libtorch/include/torch/csrc/api/include
+DEPENDPATH += $$PWD/../../Documents/libtorch-win-shared-with-deps-debug-1.10.1+cu113/libtorch/include
+DEPENDPATH += $$PWD/../../Documents/libtorch-win-shared-with-deps-debug-1.10.1+cu113/libtorch/include/torch/csrc/api/include
+}
+else:unix: LIBS += -L$$PWD/../../Documents/libtorch-win-shared-with-deps-debug-1.10.1+cu113/libtorch/lib/ -ltorch
 
 
+#CPU
+#win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../Downloads/libtorch-win-shared-with-deps-debug-1.10.1+cpu/libtorch/lib/ -ltorch -ltorch_cpu -lc10
+#else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../Downloads/libtorch-win-shared-with-deps-debug-1.10.1+cpu/libtorch/lib/ -ltorch -ltorch_cpu -lc10
+#else:unix: LIBS += -L$$PWD/../../Downloads/libtorch-win-shared-with-deps-debug-1.10.1+cpu/libtorch/lib/ -ltorch
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../Downloads/libtorch-win-shared-with-deps-debug-1.10.1+cpu/libtorch/lib/ -ltorch -ltorch_cpu -lc10
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../Downloads/libtorch-win-shared-with-deps-debug-1.10.1+cpu/libtorch/lib/ -ltorch -ltorch_cpu -lc10
-else:unix: LIBS += -L$$PWD/../../Downloads/libtorch-win-shared-with-deps-debug-1.10.1+cpu/libtorch/lib/ -ltorch
-
-INCLUDEPATH += $$PWD/../../Downloads/libtorch-win-shared-with-deps-debug-1.10.1+cpu/libtorch/include
-INCLUDEPATH += $$PWD/../../Downloads/libtorch-win-shared-with-deps-debug-1.10.1+cpu/libtorch/include/torch/csrc/api/include
-DEPENDPATH += $$PWD/../../Downloads/libtorch-win-shared-with-deps-debug-1.10.1+cpu/libtorch/include
-DEPENDPATH += $$PWD/../../Downloads/libtorch-win-shared-with-deps-debug-1.10.1+cpu/libtorch/include/torch/csrc/api/include
+#INCLUDEPATH += $$PWD/../../Downloads/libtorch-win-shared-with-deps-debug-1.10.1+cpu/libtorch/include
+#INCLUDEPATH += $$PWD/../../Downloads/libtorch-win-shared-with-deps-debug-1.10.1+cpu/libtorch/include/torch/csrc/api/include
+#DEPENDPATH += $$PWD/../../Downloads/libtorch-win-shared-with-deps-debug-1.10.1+cpu/libtorch/include
+#DEPENDPATH += $$PWD/../../Downloads/libtorch-win-shared-with-deps-debug-1.10.1+cpu/libtorch/include/torch/csrc/api/include

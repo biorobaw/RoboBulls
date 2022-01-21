@@ -158,7 +158,10 @@ Robot* Robot::clearBehavior()
 //Pilot* Robot::getPilot(){
 //    return pilot;
 //}
-
+Robot* Robot::clearCmd(){
+    pilot->cancelCommand();
+    return this;
+}
 Robot* Robot::goToPose(CmdGoToPose& newCommand){
     pilot->setNewCommand(newCommand);
     return this;
