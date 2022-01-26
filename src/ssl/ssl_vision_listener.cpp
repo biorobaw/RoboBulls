@@ -172,8 +172,8 @@ void SSLVisionListener::recieveRobotTeam(const SSL_DetectionFrame& frame, int wh
                     //Added this line because GR-sim reports robots outside field limits
                     //Using this to run drills with more oponents on other team
                     //Might want to remove from final version for performance- Justin
-                    if(Comparisons::isPointOutsideField(newPosition))
-                        robot.in_field = false;
+                    //if(Comparisons::isPointOutsideField(newPosition))
+                    //    robot.in_field = false;
 
 
                     // if robot was already in field, calculate time derivatives
