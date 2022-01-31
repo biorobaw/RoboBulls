@@ -11,17 +11,25 @@
 
 BehaviorRegister<AttackMainNN> AttackMainNN::reg("AttackMainNN");
 
-float AttackMainNN::SCORE_ANGLE_TOLERANCE = ROT_TOLERANCE; //7*M_PI/180;
+bool Shot_flag = false;
+
+
+float AttackMainNN::SCORE_ANGLE_TOLERANCE = 1/180.0*3.14;//ROT_TOLERANCE/2; //7*M_PI/180;
 float AttackMainNN::PASS_ANGLE_TOLERANCE  = ROT_TOLERANCE; //7*M_PI/180;
 
 AttackMainNN::AttackMainNN(Robot* robot) : Behavior(robot)
 {   if(robot->getId() == 2 )
      qInfo() << "RObot 2 now attacl";
-    string filename("C:\\Users\\justi\\Downloads\\CanShoot.txt");
+
+    qInfo()<<"Score tolerance "<<SCORE_ANGLE_TOLERANCE;
+
+    string filename("C:\\Users\\justi\\Downloads\\CanShoot.csv");
     file_out.open(filename, std::ios_base::app);
-    string filename2("C:\\Users\\justi\\Downloads\\CanShootmoreinfo.txt");
+    string filename2("C:\\Users\\justi\\Downloads\\CanShootRawInfo.csv");
     file_out2.open(filename2, std::ios_base::app);
 
+    string filename3("C:\\Users\\justi\\Downloads\\CanShoot2.csv");
+    file_out3.open(filename3, std::ios_base::app);
 
     prob_field_rows = (Field::FIELD_LENGTH+1)/PND_MAIN;
     prob_field_cols = (Field::FIELD_WIDTH+1)/PND_MAIN;
@@ -29,8 +37,10 @@ AttackMainNN::AttackMainNN(Robot* robot) : Behavior(robot)
     for(int i=0; i<prob_field_rows; i++) prob_field[i] = new ProbNode[prob_field_cols];
     calcStaticProb();
     dribble_skill = new DribbleToPoint (robot, &kick_point);
-    score_skill   = new KickToPointOmni(robot, &kick_point,SCORE_ANGLE_TOLERANCE,-1,true);
-    pass_skill    = new KickToPointOmni(robot, &kick_point,PASS_ANGLE_TOLERANCE, -1,true);
+    score_skill   = new KickToPointOmniNN(robot, &kick_point,SCORE_ANGLE_TOLERANCE,-1,true);
+    pass_skill    = new KickToPointOmniNN(robot, &kick_point,PASS_ANGLE_TOLERANCE, -1,true);
+    //wait_skill    = new DribbleToPoint(robot, robot);
+
     state = scoring;
 
     /*prob_field_rows = (Field::FIELD_LENGTH+1)/PND_MAIN;
@@ -40,6 +50,7 @@ AttackMainNN::AttackMainNN(Robot* robot) : Behavior(robot)
     //std::cout << "Attack Main Behavior created"<< std::endl;
 }
 
+bool write_flag = false;
 bool AttackMainNN::perform()
 { //if(team->getID() == 0 ) qInfo() << "Attack Main  Team Blue!!!!";
 //    auto clusters = genClusters();
@@ -61,12 +72,63 @@ bool AttackMainNN::perform()
 //        }
 //    }
     //if(Measurements::distance(kick_point, *ball)<Field::BALL_RADIUS*3 + ROBOT_RADIUS +20)
-   //
-    if(ball->x >4500.0 && (abs(ball->y) <Field::DEF_AREA_LENGTH/2)){
-        qInfo()<< "YES";
-        file_out<< "YES,"<<std::endl;
-        file_out2<< "YES,"<<std::endl;
+    //state = scoring;
+
+    if(write_flag){
+        std::string input;
+
+        std::cin >> input;
+        if(input[0] == 'y'){
+            file_out2 << to_write2<<std::endl;
+            file_out3 << to_write3<<std::endl;
+            qInfo() <<"Writing:"<<to_write3.c_str();
+
+        }
+        else qInfo()<<"Discarding";
+        to_write2 = ""; to_write3 = "";
+        write_flag = false;
+        robot->setUseOverridenControls(true);
+
     }
+   //
+   bool inGoal =  ( ball->x >4500.0 && (abs(ball->y) <Field::DEF_AREA_LENGTH/2) );
+    if(Shot_flag){
+        CmdGoToPose cmd = CmdGoToPose(Point(0,0),0,true,false);
+        robot->goToPose(cmd);
+
+        Robot* ball_bot = game_state->getRobotWithBall();
+        if(ball_bot != nullptr && ball_bot->getTeamId() != robot->getTeamId())
+        {   qInfo()<< "NO is this correct? Y(es) or N(o)";
+            to_write1 += "NO,";
+            to_write2 += "NO,";
+            to_write3 += "NO,";
+
+            Shot_flag = false;
+            write_flag = true;
+            robot->setUseOverridenControls(true);
+            return false;
+        }
+        else if(inGoal){
+                qInfo()<< "YES is this correct? Y(es) or N(o)";
+                to_write1 +=  "YES,";
+                to_write2 += "YES,";
+                to_write3 += "YES,";
+                Shot_flag = false;
+                write_flag = true;
+                robot->setUseOverridenControls(true);
+
+            }
+            else if(Measurements::mag(ball->getVelocity()) == 0){
+                qInfo()<< "NO is this correct? Y(es) or N(o)";
+                to_write1 += "NO,";
+                to_write2 += "NO,";
+                to_write3 += "NO,";
+                Shot_flag = false;
+                write_flag = true;
+                robot->setUseOverridenControls(true);
+            }
+        return false;
+        }
 //    else qInfo()<<Measurements::distance(kick_point, *ball);
 
     switch (state)
@@ -74,10 +136,11 @@ bool AttackMainNN::perform()
     case scoring:
     {   //state = passing;
         //break;
-        //std::cout << "AttackMainNN: Score" << std::endl;
+        std::cout << "AttackMainNN: Score" << std::endl;
         robot->setDribble(true);
 
-        std::pair<bool, Point> goal_eval = calcBestGoalPoint();
+        //std::pair<bool, Point> goal_eval = calcBestGoalPoint();
+        std::pair<bool, Point> goal_eval = std::make_pair<bool, Point>(true, Point(4500, 0));
         if(goal_eval.first)
         {
             //qInfo() << "Kick point " << goal_eval.second;
@@ -95,13 +158,16 @@ bool AttackMainNN::perform()
         }
 
         //If kicked previous cycle, will return false.
-        has_kicked_to_goal = score_skill->perform();
+        has_kicked_to_goal = score_skill->perform() || score_skill->isFinished();
 
         if(has_kicked_to_goal){
+           Shot_flag = true;
 
             qInfo() << "Shoot to score to point " << goal_eval.second;
 
             float DistanceToPoint = Measurements::distance(robot, goal_eval.second);
+            Point goal_point = goal_eval.second;
+            float angle_to_goal = atan2(goal_point.y-robot->y,goal_point.x-robot->x);
 
             qInfo() << robot->getId() << " Shot from" << *robot << " To: " << goal_eval.second<<
                        "Distance: " <<DistanceToPoint;
@@ -109,51 +175,67 @@ bool AttackMainNN::perform()
                 if(opp->x >robot->x - 500)//Only checking robots between robot and the goal on the horizontal axis. This is not ideal but calculation is cheap.
                 {
                     float DistanceToOpp = Measurements::distance(robot, opp);
-                    float OppDistToIntersect= Measurements::lineDistance(*opp, *robot, goal_eval.second); //Technically Py in terms of the line segment
-                    float OppDistanceOnLine= Measurements::distance(*robot, Measurements::lineSegmentPoint(*opp, *robot, goal_eval.second));  //Technically Px in terms of the line segment
                     Point OppVelocity =  opp->getVelocity();
-                    Point UnitVectorBallToGoal = Measurements::unitVector(goal_eval.second - *robot);
 
-                    //Project velocity onto the unit vector in direction from ball to kickpoint to determine movement to or from kickpoint
-                    Point projection= UnitVectorBallToGoal*(OppVelocity.dot(UnitVectorBallToGoal));
-                    //This is the rejection, or the movement orthogonal to the unit vector direction from ball to kickpoint.
-                    Point rejection = (OppVelocity - projection);
+//                    float OppDistToIntersect= Measurements::lineDistance(*opp, *robot, goal_eval.second); //Technically Py in terms of the line segment
+//                    float OppDistanceOnLine= Measurements::distance(*robot, Measurements::lineSegmentPoint(*opp, *robot, goal_eval.second));  //Technically Px in terms of the line segment
+//                    Point UnitVectorBallToGoal = Measurements::unitVector(goal_eval.second - *robot);
 
-
-                    //If opp moving towards goal, Vx is positive. moving towards robot, negative. For some reason comparing the angle doesnt work even if they're the same?
-                    float Vx = Measurements::mag(projection) * ((projection.x/UnitVectorBallToGoal.x>0 && projection.y/UnitVectorBallToGoal.y>0)? 1 : -1);
-                    //If opp moving towards line between robot and kick_point, it is positive, else negative.
-                    float Vy = Measurements::mag(rejection) *(Measurements::lineDistance(*opp+Measurements::unitVector(OppVelocity),*robot,goal_eval.second)<OppDistToIntersect ? 1 : -1);
-                    if(projection.angle()!= UnitVectorBallToGoal.angle())
-                        qInfo() << "Angle inconsistent: " <<projection.angle() <<" Unit vec: " <<UnitVectorBallToGoal.angle();
-                    if(!(projection.x/UnitVectorBallToGoal.x>0 && projection.y/UnitVectorBallToGoal.y>0))
-                        qInfo() << "Messed up: " <<projection <<" Unit vec: " <<UnitVectorBallToGoal;
-                    Point VxVy = OppVelocity.rotate(-UnitVectorBallToGoal.angle());
-
-                    qInfo() <<"Opponent"<< opp->getId() << " at: " << *opp
-                           << "Distance from robot to opp" << DistanceToOpp
-                           <<"Oppdist to intersect(Py)"
-                           << OppDistToIntersect <<" Opp distance on line(Px)"
-                           <<OppDistanceOnLine
-                           <<"Velocity" << opp->getVelocity()
-                          <<"Line to project on" << ((goal_eval.second - *robot).normalized())
-                         <<"Vx: " << Vx
-                           <<"Vy: " << Vy
-                          <<"Projection" <<projection
-                         <<"Rejection " <<rejection
-                       <<"mag of vx vy " << (Measurements::mag(Point(Vx, Vy)))
-                      <<"ahhh" <<VxVy
-                          ;
-                    //<<"Should be velocity: " <<(projection+rejection)
+//                    //Project velocity onto the unit vector in direction from ball to kickpoint to determine movement to or from kickpoint
+//                    Point projection= UnitVectorBallToGoal*(OppVelocity.dot(UnitVectorBallToGoal));
+//                    //This is the rejection, or the movement orthogonal to the unit vector direction from ball to kickpoint.
+//                    Point rejection = (OppVelocity - projection);
 
 
-                    //DistanceToPoint,DistanceToOpp,OppDistToIntersect,OppDistanceOnLine,Vx,Vy,
-                    file_out<< std::to_string(DistanceToPoint) <<',' << std::to_string(DistanceToOpp)<<','
-                            <<std::to_string(OppDistToIntersect) <<','<< std::to_string(OppDistanceOnLine)<<','<< Vx <<','<<Vy<<',';
+//                    //If opp moving towards goal, Vx is positive. moving towards robot, negative. For some reason comparing the angle doesnt work even if they're the same?
+//                    float Vx = Measurements::mag(projection) * ((projection.x/UnitVectorBallToGoal.x>0 && projection.y/UnitVectorBallToGoal.y>0)? 1 : -1);
+//                    //If opp moving towards line between robot and kick_point, it is positive, else negative.
+//                    float Vy = Measurements::mag(rejection) *(Measurements::lineDistance(*opp+Measurements::unitVector(OppVelocity),*robot,goal_eval.second)<OppDistToIntersect ? 1 : -1);
+//                    if(projection.angle()!= UnitVectorBallToGoal.angle())
+//                        qInfo() << "Angle inconsistent: " <<projection.angle() <<" Unit vec: " <<UnitVectorBallToGoal.angle();
+//                    if(!(projection.x/UnitVectorBallToGoal.x>0 && projection.y/UnitVectorBallToGoal.y>0))
+//                        qInfo() << "Messed up: " <<projection <<" Unit vec: " <<UnitVectorBallToGoal;
+//                    Point VxVy = OppVelocity.rotate(-UnitVectorBallToGoal.angle());
 
-                    file_out2 << std::to_string(DistanceToPoint) <<',' << std::to_string(DistanceToOpp)<<','
-                              <<std::to_string(OppDistToIntersect) <<','<< std::to_string(OppDistanceOnLine)<<','<< Vx <<','<<Vy<<',' <<robot->toString() << ','<<opp->toString() <<','
-                             <<std::to_string(OppVelocity.x)<<','<<std::to_string(OppVelocity.y)<<',';
+//                    qInfo() <<"Opponent"<< opp->getId() << " at: " << *opp
+//                           << "Distance from robot to opp" << DistanceToOpp
+//                           <<"Oppdist to intersect(Py)"
+//                           << OppDistToIntersect <<" Opp distance on line(Px)"
+//                           <<OppDistanceOnLine
+//                           <<"Velocity" << opp->getVelocity()
+//                          <<"Line to project on" << ((goal_eval.second - *robot).normalized())
+//                         <<"Vx: " << Vx
+//                           <<"Vy: " << Vy
+//                          <<"Projection" <<projection
+//                         <<"Rejection " <<rejection
+//                       <<"mag of vx vy " << (Measurements::mag(Point(Vx, Vy)))
+//                      <<"ahhh" <<VxVy
+//                          ;
+//                    //<<"Should be velocity: " <<(projection+rejection)
+
+
+//                    //DistanceToPoint,DistanceToOpp,OppDistToIntersect,OppDistanceOnLine,Vx,Vy,
+//                    file_out<< std::to_string(DistanceToPoint) <<',' << std::to_string(DistanceToOpp)<<','
+//                            <<std::to_string(OppDistToIntersect) <<','<< std::to_string(OppDistanceOnLine)<<','<< Vx <<','<<Vy<<',';
+
+
+                    float opp_x_proj = (opp->x  - robot->x)*cos(angle_to_goal) + (opp->y    -   robot->y)*sin(angle_to_goal);
+                    float opp_y_proj = -(opp->x -   robot->x)*sin(angle_to_goal) + (opp->y  -   robot->y)*cos(angle_to_goal);
+
+                    float opp_vx_proj = (opp->getVelocity().x)*cos(angle_to_goal) + (opp->getVelocity().y)*sin(angle_to_goal);
+                    float opp_vy_proj = -(opp->getVelocity().x)*sin(angle_to_goal) + (opp->getVelocity().y)*cos(angle_to_goal);
+                    float v_towards_ball =opp_vy_proj;
+                    if(opp_y_proj>0)
+                        v_towards_ball *=-1;
+
+
+                    to_write3 = std::to_string(DistanceToPoint) +','+std::to_string(angle_to_goal)+','+std::to_string(DistanceToOpp)+','+std::to_string(opp_x_proj)+','+std::to_string(opp_y_proj)+','
+                                            +std::to_string(opp_vx_proj)+','+std::to_string(opp_vy_proj)+','+std::to_string(v_towards_ball)+',';
+                    qInfo() <<"Dist_to_goal: " <<DistanceToPoint <<"\tAngle_to_goal: " << angle_to_goal<<"\tRobot angle: "<<robot->getOrientation() <<"\tDist_to_opp: "<<DistanceToOpp<<"\tOpp_x: "<<opp_x_proj<<"\tOpp_y: "<< opp_y_proj
+                           <<"\nOppV_x"<< opp_vx_proj<<"\tOppV_y: "<< opp_vy_proj<<"\tVtowards_ball: "<<v_towards_ball;
+
+                    to_write2 = std::to_string(robot->x) + ',' + std::to_string(robot->y) + ','+std::to_string(opp->x) +','+ std::to_string(opp->y)+','
+                            + std::to_string(OppVelocity.x) +','+std::to_string(OppVelocity.y)+',' +std::to_string(goal_eval.second.x) + ','+std::to_string(goal_eval.second.y) +','+',';
 
                     /*file_out << "Opponent" + std::to_string(rob->getId())+ " at: " + (*rob).toString().c_str()
                                                                            << "Distance from robot to opp" << std::to_string(Measurements::distance(robot, rob))
@@ -162,6 +244,9 @@ bool AttackMainNN::perform()
                                                                           <<"Line to project on" << ((goal_eval.second - *robot).normalized()).toString().c_str()<<std::endl;*/
                 }
             }
+        delete score_skill;
+        score_skill   = new KickToPointOmniNN(robot, &kick_point,SCORE_ANGLE_TOLERANCE,-1,true);
+
 
         }
 
@@ -172,7 +257,7 @@ bool AttackMainNN::perform()
     }
     case passing:
     {
-        //std::cout << "AttackMainNN: Pass" << std::endl;
+        std::cout << "AttackMainNN: Pass" << std::endl;
         robot->setDribble(true);
 
         std::pair<bool, Point> pass_eval = calcBestPassPoint();
@@ -205,7 +290,7 @@ bool AttackMainNN::perform()
     }
     case dribbling:
     {
-        //std::cout << "AttackMainNN: Dribble" << std::endl;
+        std::cout << "AttackMainNN: Dribble" << std::endl;
 
         // Evaluate state transition to scoring
         std::pair<bool, Point> goal_eval = calcBestGoalPoint();
@@ -216,7 +301,7 @@ bool AttackMainNN::perform()
         else
             clear_shot_count = std::max(0, clear_shot_count-1);
 
-        if(clear_shot_count > 30)
+        if(clear_shot_count > 10)
         {
             clear_shot_count = 0;
             state = scoring;
@@ -457,8 +542,9 @@ std::pair<bool, Point> AttackMainNN::calcBestGoalPoint()
         for(const Point& obstacle : obstacles)
         {
             // If there is an obstacle in the way
-            if(Measurements::lineSegmentDistance(obstacle, *ball, target) <= Field::BALL_RADIUS+ROBOT_RADIUS+75)//changed constant from 50(prob need to take into account distance from target...)
+            if(Measurements::lineSegmentDistance(obstacle, *ball, target) <= (Field::BALL_RADIUS+ROBOT_RADIUS)*3)//75)//changed constant from 50(prob need to take into account distance from target...)
             {
+                //qInfo() <<"Not clear" << target <<"Obstacle"<< obstacle;
                 clear_shot = false;
                 break;
             }

@@ -295,7 +295,8 @@ void TestStrategy::assignBehaviors()
 
     for(auto r : robots){
         if (i++ == 0){
-            r->setBehavior<GoToBallRL>();
+            //r->setBehavior<GoToBallRL>();
+            r->setBehavior<AttackMainNN>();
 
             //r->setRole(ROLE_GOALIE);
         } else r->setBehavior<AttackMainNN>();

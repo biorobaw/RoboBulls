@@ -1,7 +1,7 @@
 #include "model/game_state.h"
 #include "utilities/comparisons.h"
 #include "utilities/debug.h"
-#include "kicktopointomni.h"
+#include "kicktopointomniNN.h"
 #include "model/ball.h"
 #include "model/field.h"
 #include "model/robot/robot.h"
@@ -23,7 +23,7 @@
  * BEHIND_RAD Defines the distance behind the ball that the robot will move to
  * without considering the ball as an obstacle.
  *
- * FORWARD_WAIT_COUNT Defines the number of times the movement skill must finish
+ * FORWARD_WAIT_COUNT_NN Defines the number of times the movement skill must finish
  * (return true) until the robot starts to move forward. On the field, this ensures
  * the robot is actually facing the ball somewhat.
  *
@@ -31,7 +31,7 @@
  * before it takes action. Kicklock occurs when the robot is close to the ball but not facing it,
  * resulting in the robot continually in a lock pushing the ball in a line.
  *
- * RECREATE_DIST_TOL Defines the distance tolerance that the ball must move to be
+ * RECREATE_DIST_TOL_NN Defines the distance tolerance that the ball must move to be
  * recreated in the MOVE_BEHIND state. Helps make on-field motion less jittery.
  *
  * STRICTEST_ANGLE_TOL Defines the tightest angle tolerance in degrees that
@@ -42,38 +42,38 @@
 //#if SIMULATED // SIMULATED is no longer a compiler tag
 //float BEHIND_RAD_AVOID = ROBOT_RADIUS + Field::BALL_RADIUS+30;
 //float BEHIND_RAD = ROBOT_RADIUS + Field::BALL_RADIUS;
-//float FORWARD_WAIT_COUNT = 15;
-//float RECREATE_DIST_TOL = 25;
+//float FORWARD_WAIT_COUNT_NN = 15;
+//float RECREATE_DIST_TOL_NN = 25;
 //float STRICTEST_ANG_TOL = 10 * (M_PI/180);
 //float KICK_LOCK_ANGLE = 3 * (M_PI/180);
 //float KICKLOCK_COUNT = 15;
 //#else
-float BEHIND_RAD_AVOID = ROBOT_RADIUS+Field::BALL_RADIUS + DIST_TOLERANCE; //was 50
-float BEHIND_RAD = ROBOT_RADIUS+Field::BALL_RADIUS;
-float FORWARD_WAIT_COUNT = 5;
-float RECREATE_DIST_TOL = 25;
-float STRICTEST_ANG_TOL = 1/180.0*3.14;//4ROT_TOLERANCE/4;  //40 * (M_PI/180);
+float BEHIND_RAD_AVOID_NN = ROBOT_RADIUS+Field::BALL_RADIUS + DIST_TOLERANCE; //was 50
+float BEHIND_RAD_NN = ROBOT_RADIUS+Field::BALL_RADIUS;
+float FORWARD_WAIT_COUNT_NN = 1;
+float RECREATE_DIST_TOL_NN = 25;
+float STRICTEST_ANG_TOL_NN = 1/180.0*3.14;//4ROT_TOLERANCE/4;  //40 * (M_PI/180);
 
-float KICK_LOCK_ANGLE =  ROT_TOLERANCE;  //12 * (M_PI/180);
-float KICKLOCK_COUNT = 15;
+float KICK_LOCK_ANGLE_NN =  ROT_TOLERANCE;  //12 * (M_PI/180);
+float KICKLOCK_COUNT_NN = 15;
 //#endif
 
 
 /************************************************************************/
 
-KickToPointOmni::KickToPointOmni(Robot* robot, const Point& target,
+KickToPointOmniNN::KickToPointOmniNN(Robot* robot, const Point& target,
                                  float targetTolerance, float kickDistance, bool useFullPower)
-    : KickToPointOmni(robot, &m_targetPoint, targetTolerance, kickDistance, useFullPower)
+    : KickToPointOmniNN(robot, &m_targetPoint, targetTolerance, kickDistance, useFullPower)
 {
     m_targetPoint = target;
 }
 
-KickToPointOmni::KickToPointOmni(Robot* robot, Point* targetPtr,
+KickToPointOmniNN::KickToPointOmniNN(Robot* robot, Point* targetPtr,
                                  float targetTolerance, float kickDistance, bool useFullPower)
     : Behavior(robot)
     , m_targetPointer(targetPtr)
     , m_moveCompletionCount(0)
-    , m_targetTolerance((targetTolerance < 0) ? STRICTEST_ANG_TOL : targetTolerance)
+    , m_targetTolerance((targetTolerance < 0) ? STRICTEST_ANG_TOL_NN : targetTolerance)
     , m_kickDistance(kickDistance)
     , m_kickLockCount(0)
     , m_hasRecoveredKickLock(true)
@@ -86,11 +86,11 @@ KickToPointOmni::KickToPointOmni(Robot* robot, Point* targetPtr,
 
 {
     //qInfo() <<"New kick to point omni robot "<<robot->getId();
-    //debug::registerVariable("ktpo_rc", &RECREATE_DIST_TOL);
+    //debug::registerVariable("ktpo_rc", &RECREATE_DIST_TOL_NN);
 
 }
 
-bool KickToPointOmni::perform()
+bool KickToPointOmniNN::perform()
 {
     Point bp = *ball;
 
@@ -121,10 +121,10 @@ bool KickToPointOmni::perform()
     {
     case MOVE_BEHIND:
         {
-          //std::cout << "KTPO STATE: MOVE BEHIND" << std::endl;
+          std::cout << "KTPO STATE: MOVE BEHIND" << std::endl;
             if(!robot->hasBall())
                 robot->setDribble(false);
-            behindBall = bp + Point(BEHIND_RAD_AVOID * cos(targetBallAng), BEHIND_RAD_AVOID * sin(targetBallAng));
+            behindBall = bp + Point(BEHIND_RAD_AVOID_NN * cos(targetBallAng), BEHIND_RAD_AVOID_NN * sin(targetBallAng));
             //std::cout << " behind ball location: " << behindBall.x << " , " << behindBall.y << " robot location: "<< robot->x << " , " << robot->y << std::endl;
             //GuiInterface::getGuiInterface()->drawLine(*robot, behindBall);
             //GuiInterface::getGuiInterface()->drawLine(*robot, *m_targetPointer);
@@ -143,7 +143,7 @@ bool KickToPointOmni::perform()
                             //std::cout << "mcc: " << m_moveCompletionCount <<std::endl;
             }
 
-            if(m_moveCompletionCount > FORWARD_WAIT_COUNT) {
+            if(m_moveCompletionCount > FORWARD_WAIT_COUNT_NN) {
                 state = MOVE_INTERMEDIATE;
                 m_hasRecoveredKickLock = true;
                 m_moveCompletionCount = 0;
@@ -161,10 +161,10 @@ bool KickToPointOmni::perform()
                 robot->setDribble(false);
             // Move towards the ball at the angle to target
             // Motion will be straight ahead, given the completion of MOVE_BEHIND
-            behindBall = bp + Point(BEHIND_RAD * cos(targetBallAng), BEHIND_RAD * sin(targetBallAng));
+            behindBall = bp + Point(BEHIND_RAD_NN * cos(targetBallAng), BEHIND_RAD_NN * sin(targetBallAng));
             //cmd.distance_tolerance = 100; // 20
             //cmd.angle_tolerance = 30*M_PI/180;
-            cmd.velocity_multiplier = 1;
+            cmd.velocity_multiplier = .2;
             cmd.setTarget(behindBall, ballTargetAng);
             cmd.avoid_ball = cmd.avoid_obstacles = false;
             robot->goToPose(cmd);
@@ -175,7 +175,7 @@ bool KickToPointOmni::perform()
                 ++m_moveCompletionCount;
                 //std::cout << "mcc: " << m_moveCompletionCount <<std::endl;
             }
-            if(m_moveCompletionCount > FORWARD_WAIT_COUNT) {
+            if(m_moveCompletionCount > FORWARD_WAIT_COUNT_NN) {
                 state = MOVE_FORWARD;
                 m_hasRecoveredKickLock = true;
                 m_moveCompletionCount = 0;
@@ -185,12 +185,14 @@ bool KickToPointOmni::perform()
 
     case MOVE_FORWARD:
         {
-            //std::cout << "KTPO STATE: MOVE FORWARD" << std::endl;
+            std::cout << "KTPO STATE: MOVE FORWARD" << std::endl;
 
             robot->setDribble(true);
             // Move towards the ball at the angle to target (straight)
             cmd.velocity_multiplier = 0.2;
-            cmd.setTarget(bp - Point(BEHIND_RAD * cos(targetBallAng), BEHIND_RAD * sin(targetBallAng)), ballTargetAng);
+            cmd.setTarget(bp - Point(BEHIND_RAD_NN * cos(targetBallAng), BEHIND_RAD_NN * sin(targetBallAng)), ballTargetAng);
+            //cmd.setTarget(*robot, ballTargetAng);
+
             cmd.avoid_ball = cmd.avoid_obstacles = false;
             //cmd.angle_tolerance = m_targetTolerance;
 
@@ -200,16 +202,14 @@ bool KickToPointOmni::perform()
              * moves too far or we are in kick lock */
             if(canKick(robot))
                 state = KICK;
-            else if(isVeryFarFromBall(robot))
-                state = MOVE_BEHIND;
-            else if (isInKickLock(robot))
-                state = MOVE_BEHIND;
+            else if(!robot->hasBall())
+                    state = MOVE_BEHIND;
     }
         break;
     case KICK:
         {
             //robot->setTargetVelocityGlobal(Point(0,0), 0);
-            //std::cout << "KTPO STATE: KICK" << std::endl;
+            std::cout << "KTPO STATE: KICK" << std::endl;
 //        if(){
 //            std::cout << "Testing this" << std::endl;
 //            robot->setKickSpeed(0);
@@ -220,6 +220,8 @@ bool KickToPointOmni::perform()
             //qInfo() <<"Dist to target: "<< Measurements::distance(robot, *m_targetPointer);;
 
                 //if(m_kickCommandCount == 100){
+
+                    qInfo() <<"Kicking to: " << *m_targetPointer;
                     Original_bp = *ball;
                     // Are we using full power? Otherwise, use distance-based power
                     float powerDistance = Measurements::distance(robot, *m_targetPointer);
@@ -271,7 +273,7 @@ bool KickToPointOmni::perform()
     * Sometimes the robot gets too close to the ball while not facing it, and keeps
     * pushing the ball along in which it cannot get behind it. This helps to detect that */
 
-bool KickToPointOmni::canKick(Robot* robot) {
+bool KickToPointOmniNN::canKick(Robot* robot) {
     bool closeToBall = isCloseToBall(robot);
     bool facingBall = isFacingBall(robot);
     bool facingTarget = isFacingTarget(robot);
@@ -281,11 +283,11 @@ bool KickToPointOmni::canKick(Robot* robot) {
            && withinKickDist;
 }
 
-bool KickToPointOmni::isWithinKickDistance(Robot *robot) {
+bool KickToPointOmniNN::isWithinKickDistance(Robot *robot) {
     return m_kickDistance == -1 || Measurements::distance(robot, *m_targetPointer) < m_kickDistance;
 }
 
-bool KickToPointOmni::isCloseToBall(Robot *robot) {
+bool KickToPointOmniNN::isCloseToBall(Robot *robot) {
     // We cannot simply check the distance to the ball because it is unreliable
     // A misplacement of the markings on top of the robot can render the check tolerance
     // too much or too little. Instead we check how far the robot has travelled from
@@ -294,24 +296,24 @@ bool KickToPointOmni::isCloseToBall(Robot *robot) {
     return Measurements::distance(robot, behindBall) >= DIST_TOLERANCE; //was 30
 }
 
-bool KickToPointOmni::isVeryFarFromBall(Robot *robot) {
+bool KickToPointOmniNN::isVeryFarFromBall(Robot *robot) {
     return Measurements::distance(robot, *ball) > ROBOT_RADIUS*6;
 }
 
-bool KickToPointOmni::isFacingBall(Robot* robot) {
+bool KickToPointOmniNN::isFacingBall(Robot* robot) {
     return Comparisons::isFacingPoint(robot, *ball, M_PI/3.0);
 }
 
-bool KickToPointOmni::isFacingTarget(Robot* robot) {
+bool KickToPointOmniNN::isFacingTarget(Robot* robot) {
     return Comparisons::isFacingPoint(robot, *m_targetPointer, m_targetTolerance);
 }
 
-bool KickToPointOmni::isInKickLock(Robot* robot)
+bool KickToPointOmniNN::isInKickLock(Robot* robot)
 {
     bool close = isCloseToBall(robot);
-    bool facingBall = Comparisons::isFacingPoint(robot, *ball, KICK_LOCK_ANGLE);
+    bool facingBall = Comparisons::isFacingPoint(robot, *ball, KICK_LOCK_ANGLE_NN);
     if(close && !facingBall) {
-        if(++m_kickLockCount > KICKLOCK_COUNT) {
+        if(++m_kickLockCount > KICKLOCK_COUNT_NN) {
             m_kickLockCount = 0;
             m_hasRecoveredKickLock = false;
             return true;
@@ -320,10 +322,10 @@ bool KickToPointOmni::isInKickLock(Robot* robot)
     return false;
 }
 
-bool KickToPointOmni::isFinished(){
+bool KickToPointOmniNN::isFinished(){
     return m_hasKicked; // TODO: Actually this will always return false, needs to be fixed
 }
-string KickToPointOmni::getName(){
+string KickToPointOmniNN::getName(){
     return "Kick 2 point omni";
 }
 

@@ -39,7 +39,9 @@ void PilotOmni::driveTo (Point goalPoint, float theta_goal, Point nextGoalPoint)
 #define MAX_ACC_ANG   1500/180.0*3.14
 #define MAX_DEACC_ANG  100/180.0*3.14
 #define MAX_ANGULAR     80/180.0*3.14
-#define ANG_TOLERANCE    4/180.0*3.14
+//#define ANG_TOLERANCE    4/180.0*3.14
+#define ANG_TOLERANCE    .5/180.0*3.14
+
 
 
 
@@ -100,6 +102,7 @@ void PilotOmni::driveTo (Point goalPoint, float theta_goal, Point nextGoalPoint)
     //qInfo() <<"New velocity: lin, ang"<< new_vel <<", "<<new_angular;
     //qInfo() << "Goal Point: " <<goalPoint;
     //qInfo()<<"Distance to goal: " <<distance_to_goal <<" \t learn rate: " <<learn_rate << "\t error: " << error;
+    //qInfo() <<new_vel<<"new angular "<<new_angular <<"Target abgke"<<theta_goal <<" error: "<< Measurements::angleDiff(theta_goal, orientation);
     robot->setTargetVelocityGlobal(new_vel ,new_angular);// new_angular);
 
 

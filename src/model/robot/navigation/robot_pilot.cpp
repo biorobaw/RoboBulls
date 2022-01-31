@@ -60,7 +60,6 @@ bool RobotPilot::executeCommands(){
 bool RobotPilot::executeCmdGoToPose(CmdGoToPose *cmd){
     Point r_pos = *robot;
     //if(robot->getTeamId() == 0)
-    //    qInfo() << "Robot team " <<robot->getTeamId() << " # "<<robot->getId() << " Goal: " <<cmd->target_pose << " Current: " <<robot->getPosition();
     Point nextPoint = cmd->target_pose;
     Point nextNextPoint = nextPoint;
 
@@ -100,7 +99,10 @@ bool RobotPilot::executeCmdGoToPose(CmdGoToPose *cmd){
     // drive to the next position
     DD qDebug()
          << "---next point:" << nextPoint << cmd->target_angle << nextNextPoint;
-    driveTo(nextPoint, cmd->target_angle,nextNextPoint);
+
+    //qInfo() << "Robot team " <<robot->getTeamId() << " # "<<robot->getId() << " Goal: " <<cmd->target_pose << " Current: " <<robot->getPosition();
+
+    driveTo(nextPoint, cmd->target_angle, nextNextPoint);
 
     // return whether action cempleted or not
     return cmd->completed(r_pos,robot->getOrientation());

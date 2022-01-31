@@ -11,12 +11,12 @@
 
 Dummy::Dummy(Robot* robot) : Behavior(robot)
 {
-
+finished = true;
 }
 
 bool Dummy::perform()
 {
-    finished = Measurements::distance(*robot, Target)<300;
+    finished = Measurements::distance(*robot, Target)<50;
     //qInfo() <<Measurements::distance(*robot, Target);
 
     if(finished){
@@ -24,8 +24,10 @@ bool Dummy::perform()
     }
 
     if(!finished){
-    Target = Point(robot->x, sign*Field::FIELD_WIDTH/2);
-    auto cmd = CmdGoToPose(Target,robot->getOrientation(),true,false);
+
+    Target = Point(robot->x, sign*Field::GOAL_LENGTH/(4));
+    //qInfo() << Target;
+    auto cmd = CmdGoToPose(Target,robot->getOrientation(),false,false);
     cmd.velocity_multiplier = 1.0;
     robot->goToPose(cmd);
     }
@@ -40,5 +42,5 @@ bool Dummy::isFinished()
     return finished;
 }
 string Dummy::getName() {
-    return "Dummy";
+    return "Goalie"; //so it can be in goal
 }

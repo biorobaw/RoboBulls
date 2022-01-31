@@ -2,7 +2,7 @@
 #define ATTACK_MAINNN_H
 
 #include "model/robot/behavior.h"
-#include "model/robot/behaviors/skills/kicktopointomni.h"
+#include "model/robot/behaviors/skills/kicktopointomniNN.h"
 #include "model/robot/behaviors/skills/dribbletopoint.h"
 #include "gui/interface/gui_interface.h"
 #include "utilities/region/sector.h"
@@ -71,6 +71,11 @@ private:
     static BehaviorRegister<AttackMainNN> reg;
     std::ofstream file_out;
     std::ofstream file_out2;
+    std::ofstream file_out3;
+    std::string to_write1;
+    std::string to_write2;
+    std::string to_write3;
+
     string fo;
     string fo2;
 
@@ -88,9 +93,11 @@ private:
     ProbNode** prob_field;
 
 
-    KickToPointOmni* score_skill;
-    KickToPointOmni* pass_skill;
+    KickToPointOmniNN* score_skill;
+    KickToPointOmniNN* pass_skill;
     DribbleToPoint* dribble_skill;
+    DribbleToPoint* wait_skill;
+
 
     Point kick_point;
     bool has_kicked_to_goal = false;
