@@ -190,6 +190,16 @@ bool KickToPointOmni::perform()
             robot->setDribble(true);
             // Move towards the ball at the angle to target (straight)
             cmd.velocity_multiplier = 0.2;
+
+            /*Point target =   (bp - Point(BEHIND_RAD_NN * cos(targetBallAng), BEHIND_RAD_NN * sin(targetBallAng)));
+            qInfo() << "Old target: " <<target;
+            target = *robot + (target- *robot)*.2;
+
+            qInfo() << "new target: " <<target;
+            qInfo() << "robot: " <<*robot << "\tball: "<<*ball;
+            //cmd.setTarget(*robot, ballTargetAng);
+            cmd.setTarget(target, ballTargetAng);*/
+
             cmd.setTarget(bp - Point(BEHIND_RAD * cos(targetBallAng), BEHIND_RAD * sin(targetBallAng)), ballTargetAng);
             cmd.avoid_ball = cmd.avoid_obstacles = false;
             //cmd.angle_tolerance = m_targetTolerance;
@@ -204,6 +214,7 @@ bool KickToPointOmni::perform()
                 state = MOVE_BEHIND;
             else if (isInKickLock(robot))
                 state = MOVE_BEHIND;
+
     }
         break;
     case KICK:
