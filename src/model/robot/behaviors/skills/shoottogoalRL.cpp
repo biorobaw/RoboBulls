@@ -1,4 +1,4 @@
-#include "gotoballRL.h"
+#include "shoottogoalRL.h"
 #include "model/game_state.h"
 #include "utilities/comparisons.h"
 #include "utilities/debug.h"
@@ -28,18 +28,18 @@
 //#endif
 string getTimeStamp();
 
+
 #include <chrono>
 
-std::chrono::time_point<std::chrono::high_resolution_clock> time_start, time_stop, time_last;
 /************************************************************************/
 
 
-GoToBallRL::GoToBallRL(Robot* robot, float targetTolerance)
+ShootToGoalRL::ShootToGoalRL(Robot* robot, float targetTolerance)
     : Behavior(robot)
 {
+
     max_v = 2.5;/*rSoccer is in meters, we set in mm*/
     max_w = 10;/*rSoccer is in radians, we set in ??*/
-
     //debug::registerVariable("ktpo_rc", &RECREATE_DIST_TOL);
     time_start = std::chrono::high_resolution_clock::now();
     time_last = time_start;
@@ -56,42 +56,51 @@ GoToBallRL::GoToBallRL(Robot* robot, float targetTolerance)
 
 }
 
-std::vector<float> GoToBallRL::getState(){
-    float angle_to_ball =Measurements::angleDiff(Measurements::angleBetween(*robot, *ball), robot->getOrientation());
-
-    float angle_2ball_s = sin(angle_to_ball);
-    float angle_2ball_c = cos(angle_to_ball);
+std::vector<float> ShootToGoalRL::getState(){
     float dist_to_ball = Measurements::distance(*ball, *robot) / 1000.f;
 
+    float theta_s = sin(robot->getOrientation());
+    float theta_c = cos(robot->getOrientation());
 
-    Point velocity = (robot->getVelocity().rotate(-(robot->getOrientation())) / 1000.f); //translational
+    //# ωR
     float v_theta = robot->getAngularSpeed();
 
-    return {angle_2ball_s, angle_2ball_c, dist_to_ball, velocity.x, velocity.y, v_theta};
+
+            //# dr−g
+            float dist_to_goal = Measurements::distance(*robot, Point(Field::FIELD_LENGTH/2, 0) ) / 1000.0;//Convert to m
+
+            //# sin(θl), cos(θl)
+            //angle_2top_s, angle_2top_c, dist_robot_top = self.get_sin_angle_dist(the_robot, rob_ang, self.goal_post_top)
+            //observation.append(angle_2top_s)
+            //observation.append(angle_2top_c)
+
+            //#sin(θr), cos(θr) right or bottom
+            //angle_2bottom_s, angle_2bottom_c, dist_robot_bottom = self.get_sin_angle_dist(the_robot, rob_ang, self.goal_post_bot)
+            //observation.append(angle_2bottom_s)
+           // observation.append(angle_2bottom_c)
+
+
+
+    return {dist_to_ball, theta_s, theta_c, v_theta, dist_to_goal};
+    //return {angle_2ball_s, angle_2ball_c, dist_to_ball, velocity.x, velocity.y, v_theta};
 }
 
 
 
-void GoToBallRL::takeAction(std::vector<float> action){
+void ShootToGoalRL::takeAction(std::vector<float> action){
     //Output of network range [-1, 1]
-    float v_x = action[0] * max_v;
-    float v_y = action[1] * max_v;
-    float v_theta = action[2] * max_w;
+    float v_theta = action[0] * max_w;
+    bool kick = (action[1] > 0) ? true : false;
 
-    //# clip by max absolute
-    Point v(v_x,v_y);
-    float v_norm = Measurements::mag(v);
-    if(v_norm > max_v)
-        v *= (max_v / v_norm);
-
-    qInfo() <<"Target Vel: "<<v <<"\tv_theta: "<<v_theta;
-    robot->setTargetVelocityLocal(v*1000.0, v_theta);
+    robot->setTargetVelocityLocal(Point(0,0), v_theta);
+    if(kick)
+        robot->setKickSpeed(5000); /*our max was: 7500... used train env max instead*/
 
     return;
 }
 
 #include <torch/script.h>
-bool GoToBallRL::perform(){
+bool ShootToGoalRL::perform(){
     auto cycle_time = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()-time_start);
     qInfo()<<"cycle time: " <<cycle_time.count()/1000.0;
     //get Observation and convert it to tensor
@@ -125,7 +134,7 @@ bool GoToBallRL::perform(){
 }
 
 
-std::pair<float, bool> GoToBallRL::getRewardAndDone(float d, float theta_r_b){
+std::pair<float, bool> ShootToGoalRL::getRewardAndDone(float d, float theta_r_b){
    float reward = 0;    //rtotal = rcontact + rdistance + rorientation
 
    if(robot->hasBall()){ //contact...perhaps change to robot has ball on dribbler like in paper?
@@ -142,7 +151,7 @@ std::pair<float, bool> GoToBallRL::getRewardAndDone(float d, float theta_r_b){
    return std::pair(reward, done);
 }
 
-void GoToBallRL::printState(std::vector<float> observation){
+void ShootToGoalRL::printState(std::vector<float> observation){
            qInfo() << "#-------------------------------Observation"
                      <<"Theta: "<<atan2(observation[0], observation[1])<<"\tsin(theta): " <<observation[0] << "\tcos(theta): " <<observation[1]
                      <<"\ndistance_to_ball: " <<observation[2] << "\nvx(meters): " <<observation[3] << "\tvy(meters): "
@@ -151,21 +160,10 @@ void GoToBallRL::printState(std::vector<float> observation){
 
 
 
-bool GoToBallRL::isFinished(){
+bool ShootToGoalRL::isFinished(){
    return done;
 }
 
-string GoToBallRL::getName(){
-    return "Go to ball RL";
-}
-
-
-#include <regex>
-string getTimeStamp(){
-std::time_t ts_t = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-string time_stamp = string(ctime(&ts_t));
-std::regex r(" |\n");   time_stamp = std::regex_replace(time_stamp, r, "_");
-r= (":");      time_stamp = std::regex_replace(time_stamp, r, "-");
-
-return time_stamp;
+string ShootToGoalRL::getName(){
+    return "Shoot to goal RL";
 }

@@ -1,5 +1,5 @@
-#ifndef GOTOBALL_RL_H
-#define GOTOBALL_RL_H
+#ifndef SHOOTTOGOAL_RL_H
+#define SHOOTTOGOAL_RL_H
 #include "utilities/point.h"
 #include "model/robot/behavior.h"
 #include "model/robot/navigation/commands/CmdGoToPose.h"
@@ -22,15 +22,17 @@
  * interface through html, but this no longer works. Be careful that the State space and Action space is defined the same(using same units of measurement
  * and same reference frame). see https://github.com/justinandrewrodney/SSL_DDPG_rSoccer for more details.
  */
-class GoToBallRL : public Behavior
+class ShootToGoalRL : public Behavior
 {
 public:
+    std::chrono::time_point<std::chrono::high_resolution_clock> time_start, time_stop, time_last;
+
     /*!
-     * \brief GoToBallRL
+     * \brief ShootToGoalRL
      * \param robot
      * \param targetTolerance
      */
-    GoToBallRL(Robot* robot, float targetTolerance = -1);
+    ShootToGoalRL(Robot* robot, float targetTolerance = -1);
 
     bool perform() override;
     bool isFinished() override;
@@ -40,20 +42,21 @@ private:
     torch::jit::script::Module actor;
     bool done;
     void takeAction(std::vector<float> actions);
-    int max_episode_length= 330/*350*/;
 
-
-
-//    CmdGoToPose cmd = CmdGoToPose(Point(0,0),0,true,false);
-//    Point  m_targetPoint;         //Local (static-point) target stored only by first ctor
-//    Point* m_targetPointer;       //Pointer to point we are kicking to (m_targetPoint for static)
-//    int  m_moveCompletionCount; //Number of times move_skill says we are behind ball
-//    Point behindBall;             //Point behind the ball to navigate to for alighnment with target
-
-    Point Original_bp;
+    int max_episode_length= 58/*350*/;
 
     float max_v;
     float max_w;
+
+
+
+    CmdGoToPose cmd = CmdGoToPose(Point(0,0),0,true,false);
+    Point  m_targetPoint;         //Local (static-point) target stored only by first ctor
+    Point* m_targetPointer;       //Pointer to point we are kicking to (m_targetPoint for static)
+    int  m_moveCompletionCount; //Number of times move_skill says we are behind ball
+    Point behindBall;             //Point behind the ball to navigate to for alighnment with target
+
+    Point Original_bp;
 
     int step_num = 0;
     int cur_ep = 0;
@@ -80,4 +83,4 @@ private:
 
 
 
-#endif //GOTOBALL_RL_H
+#endif //SHOOTTOGOAL_RL_H
