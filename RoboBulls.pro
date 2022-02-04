@@ -81,8 +81,10 @@ SOURCES += src/main.cpp \
         src/model/robot/behaviors/skills/dribbleback.cpp \
         src/model/robot/behaviors/skills/gotoballRL.cpp \
         src/model/robot/behaviors/skills/kicktopointomni.cpp \
+        src/model/robot/behaviors/skills/kicktopointomniNN.cpp \
         src/model/robot/behaviors/skills/kicktopointomniRL.cpp \
         src/model/robot/behaviors/skills/replaybuffer.cpp \
+        src/model/robot/behaviors/skills/shoottogoalRL.cpp \
         src/model/robot/navigation/commands/CmdGoToPose.cpp \
         src/model/robot/navigation/drives/differential_drive.cpp \
         src/model/robot/navigation/drives/omni_drive.cpp \
@@ -115,6 +117,7 @@ SOURCES += src/main.cpp \
         src/model/team/controllers/normal_game/behaviors/dummy.cpp \
         src/model/team/controllers/normal_game/behaviors/goalie.cpp \
         src/model/team/controllers/normal_game/behaviors/goalieRL.cpp \
+        src/model/team/controllers/normal_game/behaviors/goalieSlow.cpp \
         src/model/team/controllers/normal_game/behaviors/markbot.cpp \
         src/model/team/controllers/normal_game/behaviors/penaltygoalie.cpp \
         src/model/team/controllers/normal_game/behaviors/refstop.cpp \
@@ -183,6 +186,7 @@ HEADERS += \
         src/model/robot/behaviors/skills/gotoballRL.h \
         src/model/robot/behaviors/skills/kicktopointomniRL.h \
         src/model/robot/behaviors/skills/replaybuffer.h \
+        src/model/robot/behaviors/skills/shoottogoalRL.h \
         src/model/robot/navigation/commands/CmdGoToPose.h \
         src/model/robot/navigation/drives/differential_drive.h \
         src/model/robot/navigation/drives/omni_drive.h \
@@ -198,6 +202,7 @@ HEADERS += \
         src/model/robot/behaviors/skills/dribbleback.h \
         src/model/robot/behaviors/skills/dribbletopoint.h \
         src/model/robot/behaviors/skills/kicktopointomni.h \
+        src/model/robot/behaviors/skills/kicktopointomniNN.h \
         src/model/robot/robot.h \
         src/model/robot/robot_implementation.h \
         src/model/robot/robot_low_level_controls.h \
@@ -220,6 +225,7 @@ HEADERS += \
         src/model/team/controllers/normal_game/behaviors/dummy.h \
         src/model/team/controllers/normal_game/behaviors/goalie.h \
         src/model/team/controllers/normal_game/behaviors/goalieRL.h \
+        src/model/team/controllers/normal_game/behaviors/goalieSlow.h \
         src/model/team/controllers/normal_game/behaviors/markbot.h \
         src/model/team/controllers/normal_game/behaviors/penaltygoalie.h \
         src/model/team/controllers/normal_game/behaviors/refstop.h \
