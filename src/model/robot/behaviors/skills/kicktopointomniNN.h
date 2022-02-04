@@ -43,6 +43,9 @@ public:
     bool perform() override;
     bool isFinished() override;
     string getName() override;
+    Point* getShotPoint();
+    bool isKicking();
+
 
 private:
     CmdGoToPose cmd = CmdGoToPose(Point(0,0),0,true,false);
@@ -61,12 +64,14 @@ private:
      bool  m_hasKicked;
 
      Point Original_bp;
-
+    Point *shot_to;
     // Current skill state
     enum { MOVE_BEHIND,  //We are far from the ball and are moving behind it to face target
            MOVE_INTERMEDIATE,   // We are moving closer to the ball
            MOVE_FORWARD, //We are behind the ball facing target, and are moving forward to kick
-           KICK          //We are kicking the ball
+           KICK,          //We are kicking the ball
+           FACE_GOAL
+
          } state;
 
     // Querying information to help switch states

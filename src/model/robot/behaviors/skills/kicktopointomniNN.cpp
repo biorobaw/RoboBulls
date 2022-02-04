@@ -50,7 +50,7 @@
 //#else
 float BEHIND_RAD_AVOID_NN = ROBOT_RADIUS+Field::BALL_RADIUS + DIST_TOLERANCE; //was 50
 float BEHIND_RAD_NN = ROBOT_RADIUS+Field::BALL_RADIUS;
-float FORWARD_WAIT_COUNT_NN = 1;
+float FORWARD_WAIT_COUNT_NN = 5;
 float RECREATE_DIST_TOL_NN = 25;
 float STRICTEST_ANG_TOL_NN = 1/180.0*3.14;//4ROT_TOLERANCE/4;  //40 * (M_PI/180);
 
@@ -85,6 +85,7 @@ KickToPointOmniNN::KickToPointOmniNN(Robot* robot, Point* targetPtr,
     , state(MOVE_BEHIND)
 
 {
+    shot_to=nullptr;
     //qInfo() <<"New kick to point omni robot "<<robot->getId();
     //debug::registerVariable("ktpo_rc", &RECREATE_DIST_TOL_NN);
 
@@ -117,11 +118,12 @@ bool KickToPointOmniNN::perform()
     //TODO: factor in ball prediction
     float targetBallAng = Measurements::angleBetween(*m_targetPointer, bp);
 
+    delete shot_to; shot_to = nullptr;//this should be reset each cycle.
     switch(state)
     {
     case MOVE_BEHIND:
         {
-          std::cout << "KTPO STATE: MOVE BEHIND" << std::endl;
+          //std::cout << "KTPO STATE: MOVE BEHIND" << std::endl;
             if(!robot->hasBall())
                 robot->setDribble(false);
             behindBall = bp + Point(BEHIND_RAD_AVOID_NN * cos(targetBallAng), BEHIND_RAD_AVOID_NN * sin(targetBallAng));
@@ -156,7 +158,7 @@ bool KickToPointOmniNN::perform()
 
     case MOVE_INTERMEDIATE:
         {
-           //std::cout << "KTPO STATE: MOVE INTERMEDIATE" << std::endl;
+           std::cout << "KTPO STATE: MOVE INTERMEDIATE" << std::endl;
             if(!robot->hasBall())
                 robot->setDribble(false);
             // Move towards the ball at the angle to target
@@ -164,7 +166,7 @@ bool KickToPointOmniNN::perform()
             behindBall = bp + Point(BEHIND_RAD_NN * cos(targetBallAng), BEHIND_RAD_NN * sin(targetBallAng));
             //cmd.distance_tolerance = 100; // 20
             //cmd.angle_tolerance = 30*M_PI/180;
-            cmd.velocity_multiplier = .2;
+            cmd.velocity_multiplier = .5;
             cmd.setTarget(behindBall, ballTargetAng);
             cmd.avoid_ball = cmd.avoid_obstacles = false;
             robot->goToPose(cmd);
@@ -185,13 +187,20 @@ bool KickToPointOmniNN::perform()
 
     case MOVE_FORWARD:
         {
-            std::cout << "KTPO STATE: MOVE FORWARD" << std::endl;
+            //std::cout << "KTPO STATE: MOVE FORWARD" << std::endl;
 
             robot->setDribble(true);
             // Move towards the ball at the angle to target (straight)
-            cmd.velocity_multiplier = 0.2;
-            cmd.setTarget(bp - Point(BEHIND_RAD_NN * cos(targetBallAng), BEHIND_RAD_NN * sin(targetBallAng)), ballTargetAng);
+            cmd.velocity_multiplier = 1;
+            //cmd.setTarget(bp - Point(BEHIND_RAD_NN * cos(targetBallAng), BEHIND_RAD_NN * sin(targetBallAng)), ballTargetAng);
+            Point target =   (bp - Point(BEHIND_RAD_NN * cos(targetBallAng), BEHIND_RAD_NN * sin(targetBallAng)));
+            qInfo() << "Old target: " <<target;
+            target = *robot + (target- *robot)*.2;
+
+            qInfo() << "new target: " <<target;
+            qInfo() << "robot: " <<*robot << "\tball: "<<*ball;
             //cmd.setTarget(*robot, ballTargetAng);
+            cmd.setTarget(target, ballTargetAng);
 
             cmd.avoid_ball = cmd.avoid_obstacles = false;
             //cmd.angle_tolerance = m_targetTolerance;
@@ -200,40 +209,35 @@ bool KickToPointOmniNN::perform()
 
             /* Kick when in range, or go back to moving behind if it
              * moves too far or we are in kick lock */
-            if(canKick(robot))
+            if(canKick(robot) && robot->hasBall()){
+                shot_to = new Point(*m_targetPointer); // store the last point we shot to"
+
                 state = KICK;
-            else if(!robot->hasBall())
-                    state = MOVE_BEHIND;
+            }
+            else{break;}
+
+
+            //else if(!robot->hasBall())
+            //        state = MOVE_BEHIND;
     }
-        break;
     case KICK:
         {
-            //robot->setTargetVelocityGlobal(Point(0,0), 0);
-            std::cout << "KTPO STATE: KICK" << std::endl;
-//        if(){
-//            std::cout << "Testing this" << std::endl;
-//            robot->setKickSpeed(0);
-//            m_kickCommandCount+=25;
-//           }
-//        else{
-            //qInfo() <<"Kicking to: "<<*m_targetPointer;
-            //qInfo() <<"Dist to target: "<< Measurements::distance(robot, *m_targetPointer);;
+            std::cout << "KTPO STATE: KICK" << /*std::endl;*/
+            /*qInfo() <<*/                    "\tKicking to: " << m_targetPointer->toString() <<std::endl;
 
-                //if(m_kickCommandCount == 100){
 
-                    qInfo() <<"Kicking to: " << *m_targetPointer;
-                    Original_bp = *ball;
-                    // Are we using full power? Otherwise, use distance-based power
-                    float powerDistance = Measurements::distance(robot, *m_targetPointer);
-                    if(m_useFullPower)
-                        robot->setKickSpeed(7500);
-                    else
-                        robot->setKickDistance(powerDistance);
-                    //std::cout << "Kick signal sent"<< std::endl;
-                    //}
-                //if(!canKick(robot))
-                //    state = MOVE_BEHIND;
-                m_hasKicked = true;// added because waits 6 second to say its kicked.... this is  way too long, behavior exits before then. - justin
+            Original_bp = *ball;
+            // Are we using full power? Otherwise, use distance-based power
+            float powerDistance = Measurements::distance(robot, *m_targetPointer);
+            if(m_useFullPower)
+                robot->setKickSpeed(7500);
+            else
+                robot->setKickDistance(powerDistance);
+            //std::cout << "Kick signal sent"<< std::endl;
+            //}
+            //if(!canKick(robot))
+            //    state = MOVE_BEHIND;
+            m_hasKicked = true;// added because waits 6 second to say its kicked.... this is  way too long, behavior exits before then. - justin
 //        }
 
 
@@ -293,7 +297,7 @@ bool KickToPointOmniNN::isCloseToBall(Robot *robot) {
     // too much or too little. Instead we check how far the robot has travelled from
     // the behindball point.
     //std::cout << measurements::distance(robot, behindBall) << std::endl;
-    return Measurements::distance(robot, behindBall) >= DIST_TOLERANCE; //was 30
+    return Measurements::distance(robot, behindBall) >= DIST_TOLERANCE+10; //was 30
 }
 
 bool KickToPointOmniNN::isVeryFarFromBall(Robot *robot) {
@@ -328,5 +332,14 @@ bool KickToPointOmniNN::isFinished(){
 string KickToPointOmniNN::getName(){
     return "Kick 2 point omni";
 }
+
+Point* KickToPointOmniNN::getShotPoint(){
+    return shot_to;
+};
+
+bool KickToPointOmniNN::isKicking(){
+    return state==KICK;
+};
+
 
 

@@ -12,6 +12,10 @@
 #include "utilities/comparisons.h"
 
 
+
+#include "tensorflow/c/c_api.h"
+
+
 #include <vector>
 template<typename B>
 struct BehaviorRegister;
@@ -68,6 +72,25 @@ public:
     string getName() override;
 
 private:
+
+    int writecounter=0;
+
+    int yes_counter=0;
+    int no_counter=0;
+
+    float PredictShot(float dist_goal, float dist_opp, float oppx, float oppy);
+
+    /*Tensorflow stuff*/
+     TF_Graph* Graph;
+     TF_Status* Status;
+     TF_SessionOptions* SessionOptions;
+     TF_Session* Session;
+
+     TF_Output *Input;
+     TF_Output *Output;
+
+
+
     static BehaviorRegister<AttackMainNN> reg;
     std::ofstream file_out;
     std::ofstream file_out2;
@@ -75,7 +98,8 @@ private:
     std::string to_write1;
     std::string to_write2;
     std::string to_write3;
-
+    bool prediction = false;
+    float nn_prob = -1;
     string fo;
     string fo2;
 
