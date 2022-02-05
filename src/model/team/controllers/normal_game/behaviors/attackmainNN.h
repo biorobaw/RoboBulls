@@ -3,6 +3,8 @@
 
 #include "model/robot/behavior.h"
 #include "model/robot/behaviors/skills/kicktopointomniNN.h"
+#include "model/robot/behaviors/skills/kicktopointomni.h"
+
 #include "model/robot/behaviors/skills/dribbletopoint.h"
 #include "gui/interface/gui_interface.h"
 #include "utilities/region/sector.h"
@@ -117,8 +119,11 @@ private:
     ProbNode** prob_field;
 
 
-    KickToPointOmniNN* score_skill;
-    KickToPointOmniNN* pass_skill;
+    KickToPointOmni* score_skill;
+    KickToPointOmni* pass_skill;
+
+//    KickToPointOmniNN* score_skill;
+//    KickToPointOmniNN* pass_skill;
     DribbleToPoint* dribble_skill;
     DribbleToPoint* wait_skill;
 

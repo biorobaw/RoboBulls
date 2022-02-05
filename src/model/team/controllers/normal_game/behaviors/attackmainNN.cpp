@@ -80,8 +80,10 @@ AttackMainNN::AttackMainNN(Robot* robot) : Behavior(robot)
     for(int i=0; i<prob_field_rows; i++) prob_field[i] = new ProbNode[prob_field_cols];
     calcStaticProb();
     dribble_skill = new DribbleToPoint (robot, &kick_point);
-    score_skill   = new KickToPointOmniNN(robot, &kick_point,SCORE_ANGLE_TOLERANCE,-1,true);
-    pass_skill    = new KickToPointOmniNN(robot, &kick_point,PASS_ANGLE_TOLERANCE, -1,true);
+    //score_skill   = new KickToPointOmniNN(robot, &kick_point,SCORE_ANGLE_TOLERANCE,-1,true);
+    //pass_skill    = new KickToPointOmniNN(robot, &kick_point,PASS_ANGLE_TOLERANCE, -1,true);
+    score_skill   = new KickToPointOmni(robot, &kick_point,SCORE_ANGLE_TOLERANCE,-1,true);
+    pass_skill    = new KickToPointOmni(robot, &kick_point,PASS_ANGLE_TOLERANCE, -1,true);
     //wait_skill    = new DribbleToPoint(robot, robot);
 
     state = scoring;
@@ -269,16 +271,14 @@ bool AttackMainNN::perform()
 
         //If we kicked the previous cycle or are kicking this cycle(kicking this cycle should take dominance)
         score_skill->perform();
-        has_kicked_to_goal = /*score_skill->perform() ||*/ score_skill->isFinished();
-        Point* shot_to = score_skill->getShotPoint();
+        has_kicked_to_goal =  score_skill->isFinished(); //Returns whether we have kicked
+        //Point* shot_to = score_skill->getShotPoint();
 
+        //Now log info
         if(has_kicked_to_goal){
                Shot_flag = true;
 
-               //if(shot_to != nullptr) qInfo() << "Shoot to score to point " << goal_eval.second <<"\tactual: " << *shot_to;
-               //else                   qInfo() << "Shoot to score to point " << goal_eval.second <<"\tactual: error";
-
-                Point goal_point = *shot_to;
+               Point goal_point = kick_point;   //Point goal_point = *shot_to;
 
                 float DistanceToPoint = Measurements::distance(robot, goal_point);
                 float angle_to_goal = atan2(goal_point.y-robot->y,goal_point.x-robot->x);
@@ -303,8 +303,6 @@ bool AttackMainNN::perform()
                             nn_prob = PredictShot(DistanceToPoint, DistanceToOpp, opp_x_proj, opp_y_proj);
                             prediction = (nn_prob>=0.5 ? true : false);
 
-
-
                             to_write3 = std::to_string(DistanceToPoint) +','+ std::to_string(angle_to_goal)  +',' + std::to_string(DistanceToOpp) +','
                                       + std::to_string(opp_x_proj)      +','+ std::to_string(opp_y_proj)     +','
                                       + std::to_string(opp_vx_proj)     +','+ std::to_string(opp_vy_proj)    +',' +std::to_string(v_towards_ball)+',';
@@ -312,6 +310,7 @@ bool AttackMainNN::perform()
                             qInfo() << "Probability from neural network: " <<nn_prob<<"\nDist_to_goal: " <<DistanceToPoint <<"\tAngle_to_goal: " << angle_to_goal<<"\tRobot angle: "<<robot->getOrientation()
                                                        <<"\tDist_to_opp: "  <<DistanceToOpp <<  "\tOpp_x: " <<opp_x_proj    <<  "\tOpp_y: " << opp_y_proj
                                                        <<"\nOppV_x"         << opp_vx_proj  <<"\tOppV_y: "  << opp_vy_proj  <<  "\tVtowards_ball: " <<v_towards_ball;
+
                             to_write2 = std::to_string(robot->x)      + ',' + std::to_string(robot->y)  + ','+std::to_string(robot->getVelocity().x)       +',' + std::to_string(robot->getVelocity().y)
                                       +','+std::to_string(robot->getAngularSpeed())
                                       +','+ std::to_string(ball->x)   +','  + std::to_string(ball->y)   +',' + std::to_string(ball->getVelocity().x)       +','  + std::to_string(ball->getVelocity().y)
@@ -320,9 +319,10 @@ bool AttackMainNN::perform()
 
                         }
                 }
-
+            //Deleting this to avoid double writing since skill is still **Finished**
             delete score_skill;
-            score_skill   = new KickToPointOmniNN(robot, &kick_point,SCORE_ANGLE_TOLERANCE,-1,true);
+            //score_skill   = new KickToPointOmniNN(robot, &kick_point,SCORE_ANGLE_TOLERANCE,-1,true);
+            score_skill   = new KickToPointOmni(robot, &kick_point,SCORE_ANGLE_TOLERANCE,-1,true);
             qInfo() <<"Score Skill reset";
 
         }
@@ -372,10 +372,10 @@ bool AttackMainNN::perform()
         std::pair<bool, Point> goal_eval = calcBestGoalPoint();
         std::pair<bool, Point> pass_eval = calcBestPassPoint();
 
-        Point targ_point = (goal_eval.first ? goal_eval.second : Point(Field::FIELD_LENGTH/2, 0));
-        float targ_angle = Measurements::angleBetween(*robot, targ_point);
-        CmdGoToPose temp_cmd(/*Point target_pose*/ *robot, /*float target_angle*/targ_angle,/*bool avoid_obstacles */false,/* bool avoid_ball */ false);
-        robot->goToPose(temp_cmd);
+        //Point targ_point = (goal_eval.first ? goal_eval.second : Point(Field::FIELD_LENGTH/2, 0));
+        //float targ_angle = Measurements::angleBetween(*robot, targ_point);
+        //CmdGoToPose temp_cmd(/*Point target_pose*/ *robot, /*float target_angle*/targ_angle,/*bool avoid_obstacles */false,/* bool avoid_ball */ false);
+        //robot->goToPose(temp_cmd);
 
 
 
@@ -394,9 +394,10 @@ bool AttackMainNN::perform()
         }
 
 
-        has_kicked_to_goal = false;
-        has_passed = false;
-        break;
+//        has_kicked_to_goal = false;
+//        has_passed = false;
+//        break;
+
         // Evaluate state transition to passing
 //        if(pass_eval.first)
 //            clear_pass_count++;
@@ -438,9 +439,8 @@ bool AttackMainNN::perform()
 
         kick_point = max_node.point;
 
-        //kick_point = *robot;//so robot stays in place
 
-        //dribble_skill->perform();
+        dribble_skill->perform();
 
 
         has_kicked_to_goal = false;
@@ -636,7 +636,7 @@ std::pair<bool, Point> AttackMainNN::calcBestGoalPoint()
         for(const Point& obstacle : obstacles)
         {
             // If there is an obstacle in the way
-            if(Measurements::lineSegmentDistance(obstacle, *ball, target) <= Field::BALL_RADIUS+ROBOT_RADIUS+75/*(Field::BALL_RADIUS+ROBOT_RADIUS)*3*/)//75)//changed constant from 50(prob need to take into account distance from target...)
+            if(Measurements::lineSegmentDistance(obstacle, *ball, target) <= /*Field::BALL_RADIUS+ROBOT_RADIUS+75 */(Field::BALL_RADIUS+ROBOT_RADIUS)*3)//75)//changed constant from 50(prob need to take into account distance from target...)
             {
                 //qInfo() <<"Not clear" << target <<"Obstacle"<< obstacle;
                 clear_shot = false;

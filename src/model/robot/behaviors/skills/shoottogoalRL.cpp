@@ -37,6 +37,11 @@ string getTimeStamp();
 ShootToGoalRL::ShootToGoalRL(Robot* robot, float targetTolerance)
     : Behavior(robot)
 {
+    //It is important to note the model may have been trained on a different size field and may not work.
+    model_field_length = 3 * 1000;
+    model_goal_width = .35 * 1000;
+    gp_top = Point(model_field_length       /*Field::FIELD_LENGTH/2*/,  model_goal_width /*Field::GOAL_LENGTH/2*/);
+    gp_bottom = Point(model_field_length    /*Field::FIELD_LENGTH/2*/, -model_goal_width/*(Field::GOAL_LENGTH/2)*/);
 
     max_v = 2.5;/*rSoccer is in meters, we set in mm*/
     max_w = 10;/*rSoccer is in radians, we set in ??*/
@@ -47,7 +52,7 @@ ShootToGoalRL::ShootToGoalRL(Robot* robot, float targetTolerance)
     //Load TorchScript model of our trained actor(pi/policy) to predict actions.
     try {
       // Deserialize the ScriptModule from a file using torch::jit::load().
-      actor = torch::jit::load("C:\\Users\\justi\\Documents\\ThesisRL\\rSoccer\\ddpg_spinuptester_actor_local_50.pt");
+      actor = torch::jit::load("C:\\Users\\justi\\Documents\\ThesisRL\\rSoccer\\Short100.pt");
     }
     catch (const c10::Error& e) {
       std::cerr << "error loading the model\n";
@@ -65,23 +70,32 @@ std::vector<float> ShootToGoalRL::getState(){
     //# ωR
     float v_theta = robot->getAngularSpeed();
 
-
-            //# dr−g
-            float dist_to_goal = Measurements::distance(*robot, Point(Field::FIELD_LENGTH/2, 0) ) / 1000.0;//Convert to m
-
-            //# sin(θl), cos(θl)
-            //angle_2top_s, angle_2top_c, dist_robot_top = self.get_sin_angle_dist(the_robot, rob_ang, self.goal_post_top)
-            //observation.append(angle_2top_s)
-            //observation.append(angle_2top_c)
-
-            //#sin(θr), cos(θr) right or bottom
-            //angle_2bottom_s, angle_2bottom_c, dist_robot_bottom = self.get_sin_angle_dist(the_robot, rob_ang, self.goal_post_bot)
-            //observation.append(angle_2bottom_s)
-           // observation.append(angle_2bottom_c)
+    float r_sim_goal_width = 350;
+    float r_sim_field_length = 3000;
+    //# dr−g
+    float dist_to_goal = Measurements::distance(*robot, Point( model_field_length/*Field::FIELD_LENGTH/2*/, 0) ) / 1000.f;//Convert to m
 
 
 
-    return {dist_to_ball, theta_s, theta_c, v_theta, dist_to_goal};
+
+    //float top_angle_between = atan2(gp_top.y - robot->y, gp_top.x - robot->x);
+
+    float top_angle_diff= Measurements::angleDiff(Measurements::angleBetween(*robot, gp_top), robot->getOrientation());
+    //float top_angle_diff = atan2(sin(top_angle_between-robot->getOrientation()), cos(top_angle_between-robot->getOrientation()));
+    float top_angle_s = sin(top_angle_diff);
+    float top_angle_c = cos(top_angle_diff);
+    float top_dist = Measurements::distance(*robot,  gp_top) / 1000.f;
+
+
+    //float bottom_angle_between = atan2(gp_bottom.y - robot->y, gp_bottom.x - robot->x);
+    float bottom_angle_diff= Measurements::angleDiff(Measurements::angleBetween(*robot, gp_bottom), robot->getOrientation());
+    //float bottom_angle_diff = atan2(sin(bottom_angle_between-robot->getOrientation()), cos(bottom_angle_between-robot->getOrientation()));
+    float bottom_angle_s = sin(bottom_angle_diff);
+    float bottom_angle_c = cos(bottom_angle_diff);
+    float bottom_dist = Measurements::distance(*robot,  gp_bottom) / 1000.f;
+
+
+    return {dist_to_ball, theta_s, theta_c, v_theta, dist_to_goal, top_angle_s, top_angle_c /*,top_dist*/, bottom_angle_s, bottom_angle_c /*, bottom_dist*/};
     //return {angle_2ball_s, angle_2ball_c, dist_to_ball, velocity.x, velocity.y, v_theta};
 }
 
@@ -90,7 +104,11 @@ std::vector<float> ShootToGoalRL::getState(){
 void ShootToGoalRL::takeAction(std::vector<float> action){
     //Output of network range [-1, 1]
     float v_theta = action[0] * max_w;
+
     bool kick = (action[1] > 0) ? true : false;
+
+    bool dribble  = (!kick && robot->hasBall()) ? true : false;
+    robot->setDribble(dribble);
 
     robot->setTargetVelocityLocal(Point(0,0), v_theta);
     if(kick)

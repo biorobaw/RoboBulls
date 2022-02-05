@@ -47,6 +47,11 @@ private:
 
     float max_v;
     float max_w;
+    float model_field_length;
+    float model_goal_width;
+
+    Point gp_top;
+    Point gp_bottom;
 
 
 
