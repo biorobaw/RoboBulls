@@ -105,7 +105,6 @@ bool KickToPointOmni::perform()
 
     // If at any time we HAVE kicked the ball, and it is moving away, stop. We've finished.
     // This should eventually happen by going through the states below.
-    //if(m_hasKicked && )
     if(m_hasKicked && !robot->hasBall())
     {
         m_hasKicked = false;
@@ -191,12 +190,9 @@ bool KickToPointOmni::perform()
             // Move towards the ball at the angle to target (straight)
             cmd.velocity_multiplier = 0.2;
 
-            /*Point target =   (bp - Point(BEHIND_RAD_NN * cos(targetBallAng), BEHIND_RAD_NN * sin(targetBallAng)));
-            qInfo() << "Old target: " <<target;
+            /*alternative target.
+             Point target =   (bp - Point(BEHIND_RAD_NN * cos(targetBallAng), BEHIND_RAD_NN * sin(targetBallAng)));
             target = *robot + (target- *robot)*.2;
-
-            qInfo() << "new target: " <<target;
-            qInfo() << "robot: " <<*robot << "\tball: "<<*ball;
             //cmd.setTarget(*robot, ballTargetAng);
             cmd.setTarget(target, ballTargetAng);*/
 
@@ -208,27 +204,27 @@ bool KickToPointOmni::perform()
 
             /* Kick when in range, or go back to moving behind if it
              * moves too far or we are in kick lock */
-            if(canKick(robot))
+
+            //This is super important! If we can kick, kick! dont break
+            //We want to kick that cycle!
+            if(canKick(robot)){
                 state = KICK;
-            else if(isVeryFarFromBall(robot))
-                state = MOVE_BEHIND;
-            else if (isInKickLock(robot))
-                state = MOVE_BEHIND;
+            }
+            else{
+                if(isVeryFarFromBall(robot))
+                    state = MOVE_BEHIND;
+                else if (isInKickLock(robot))
+                    state = MOVE_BEHIND;
+
+                break;
+            }
 
     }
-        break;
     case KICK:
         {
-            //robot->setTargetVelocityGlobal(Point(0,0), 0);
             //std::cout << "KTPO STATE: KICK" << std::endl;
-//        if(){
-//            std::cout << "Testing this" << std::endl;
-//            robot->setKickSpeed(0);
-//            m_kickCommandCount+=25;
-//           }
-//        else{
-            //qInfo() <<"Kicking to: "<<*m_targetPointer;
-            //qInfo() <<"Dist to target: "<< Measurements::distance(robot, *m_targetPointer);;
+
+            qInfo() <<"Kicking to: "<<*m_targetPointer;
 
                 //if(m_kickCommandCount == 100){
                     Original_bp = *ball;
