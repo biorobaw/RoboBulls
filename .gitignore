@@ -10,3 +10,5 @@ RoboBulls-build-desktop-Qt_4_8_3_in_PATH__System__Release
 *.pdb
 src/model/team/controllers/normal_game/behaviors/dummy.cpp
 src/model/team/controllers/strategy_tester/strategies/test_strategy.cpp
+src/model/team/controllers/strategy_tester/strategies/test_strategy.cpp
+src/model/team/controllers/normal_game/behaviors/dummy.cpp
