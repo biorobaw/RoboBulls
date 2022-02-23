@@ -10,38 +10,7 @@
 
 #include <QDebug>
 
-
-//#include "tensorflow/c/c_api.h"
-
-//#include "tensorflow/core/public/session.h"
-//#include "tensorflow/core/platform/env.h"
-//#include "tensorflow/cc/ops/image_ops.h"
-
-
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-std::vector<std::vector<float>> samps
-{
-{3168.156,2577.349,2529.922,-492.165},  {2769.937,2426.636,2388.003,431.281},   {2897.41,2777.918,2737.355,-472.986},   {3268.939,2400.97,2360.632,-438.262},   {3270.526,2302.523,2268.59,-393.846},   {3536.929,2868.707,2840.562,400.86},    {2949.132,2668.031,2607.894,563.272},   {3290.528,3135.006,3101.448,457.474},
-{3671.171,3487.215,3446.999,528.082},   {3230.483,2393.862,2362.003,389.249},   {2736.166,2311.375,2276.244,-401.458},  {2572.556,1943.382,1906.071,378.983},   {3324.646,2763.532,2730.862,-423.679},  {3640.88,3302.903,3268.215,-477.432},   {4828.906,4733.643,4713.543,435.75},    {3308.738,2973.083,2939.672,-444.471},  {3299.784,2910.163,2882.757,398.446},   {3065.208,2584.273,2550.521,-416.305},
-{3170.439,2966.62,2939.891,397.338},    {2925.01,2731.902,2673.991,559.519},    {3642.861,3299.906,3272.797,-422.115},  {2670.714,2307.666,2274.432,390.227},   {3158.798,2762.996,2721.957,474.44,},   {3347.33,3089.659,3041.493,543.427},    {3129.673,2704.658,2668.215,-442.499},  {2929.921,2620.466,2587.505,414.322},
-{3204.707,2315.551,2278.66,-411.686},   {3032.161,2462.843,2417.334,471.261},   {3238.767,2445.34,2416.733,-372.944},   {3081.35,2732.85,2691.677,-472.593},        {2152.068,1899.571,1857.752,396.392},   {3053.561,2858.584,2826.604,426.396},   {3152.209,2385.345,2355.916,-373.533},  {3159.502,2849.427,2817.307,426.635},
-{2304.448,1784.394,1733.627,-422.609},  {2760.888,1836.825,1794.412,-392.442},  {3397.238,3136.72,3083.229,576.815},    {3344.082,2839.312,2810.7,-402.067},        {2903.621,2557.403,2511.28,483.51,},    {2870.324,2351.403,2319.327,387.064},   {3823.418,3427.157,3398.684,440.856},   {3138.003,3003.541,2973.137,-426.276},
-{2475.62,2185.156,2148.245,399.935},    {2790.41,2584.027,2543.598,455.307},    {2555.262,2221.939,2187.766,388.19,},   {2828.096,1957.056,1893.892,-493.197},  {2396.002,2190.377,2116.006,-565.923},  {3973.751,3865.334,3836.315,-472.754},  {3081.069,2214.174,2180.432,-385.073},  {3115.34,3008.131,2973.052,458.051},
-{3213.585,2916.11,2869.197,-520.964},   {3199.73,2680.399,2644.089,439.697},    {2874.101,2572.904,2524.856,494.909},   {2896.655,2583.833,2540.76,469.823},    {2706.718,2427.227,2385.023,450.66,},   {3479.363,3332.146,3306.206,-414.969},  {2521.014,2348.845,2313.111,-408.152},  {4116.724,3716.616,3695.176,398.64,},
-{3916.684,3776.351,3744.159,492.032},   {4023.992,3859.026,3805.632,-639.722},  {3249.888,2258.229,2213.352,447.961},   {3017.535,2409.11,2380.185,-372.202},   {3095.273,2825.317,2787.504,460.688},   {3341.901,2372.956,2328.,459.71},   {3025.805,2679.671,2643.998,-435.788},  {2736.761,2149.797,2109.128,-416.176},
-{4140.657,3819.603,3777.711,564.153},   {3697.415,3443.881,3409.677,484.169},   {4017.626,3736.793,3714.862,-404.25,},  {3454.347,2490.639,2457.959,402.141},
-{3085.199,2815.702,2777.207,-464.006},  {3163.941,2995.831,2965.356,426.225},   {3410.385,2422.544,2390.64,391.869},    {2426.079,2207.97,2170.746,403.73,},    {2887.056,2238.841,2172.16,-542.341},   {2600.529,2430.207,2380.751,487.777},   {2942.603,2795.294,2766.283,401.681},   {3448.615,3217.297,3169.898,-550.221},
-{3107.253,2931.917,2899.248,436.464},   {3025.261,2832.277,2803.039,-405.911},  {3368.411,3085.294,3041.272,-519.331},  {3250.883,2876.755,2839.747,-459.951},  {3366.849,3063.166,3033.443,-425.689},  {3082.619,2853.423,2800.433,547.358},   {3285.242,2682.497,2655.942,-376.517},  {3258.026,2769.435,2739.846,403.748},   {4112.292,3992.507,3970.835,-415.427},  {3939.352,3562.604,3540.899,392.656},
-{2517.315,1862.228,1812.491,-427.511},  {3133.1,2857.892,2822.01,451.455},  {3339.714,3211.055,3174.771,-481.351},  {3740.49,3497.798,3455.822,540.266},
-{2901.907,2792.202,2750.234,-482.286},  {3771.146,2987.099,2956.378,-427.303},  {3194.473,2485.77,2452.909,-402.85,},   {3286.182,3066.358,3028.297,-481.635},
-{2854.426,2652.078,2593.318,555.174},   {3752.269,3075.883,3041.836,456.39,},   {2999.219,2082.659,2031.491,-458.819},  {2368.531,2045.447,2004.638,-406.544},
-{3747.571,2828.787,2798.192,414.917},   {2623.791,2268.812,2223.08,-453.232},   {3013.288,2104.401,2061.909,-420.757},  {2973.624,2571.478,2521.346,-505.284},  {2179.458,1880.949,1834.34,416.132},
-{3383.767,3139.53,3104.513,467.596},    {4316.053,3636.113,3609.262,-441.072},  {3589.949,3122.279,3093.069,426.09,},   {2405.931,2016.513,1960.981,-469.977},
-{2681.21,2496.43,2464.55,-397.69,}, {2710.969,2015.816,1972.256,416.796},   {2495.636,2103.749,2054.834,-451.016},{3348.532,2499.502,2467.38,-399.432}, {3213.546, 2847.354, 2819.091, -400.188},   {3104.243, 2775.31,  2723.537,  533.566},
-{3433.785, 3076.634, 3043.447,  450.681},   {4026.809, 3796.957, 3770.829,  444.674}
-};
-
+//for tensorflow
 void NoOpDeallocator(void* data, size_t a, void* b) {}
 
 
@@ -80,11 +49,9 @@ AttackMainNN::AttackMainNN(Robot* robot) : Behavior(robot)
     for(int i=0; i<prob_field_rows; i++) prob_field[i] = new ProbNode[prob_field_cols];
     calcStaticProb();
     dribble_skill = new DribbleToPoint (robot, &kick_point);
-    //score_skill   = new KickToPointOmniNN(robot, &kick_point,SCORE_ANGLE_TOLERANCE,-1,true);
-    //pass_skill    = new KickToPointOmniNN(robot, &kick_point,PASS_ANGLE_TOLERANCE, -1,true);
+
     score_skill   = new KickToPointOmni(robot, &kick_point,SCORE_ANGLE_TOLERANCE,-1,true);
     pass_skill    = new KickToPointOmni(robot, &kick_point,PASS_ANGLE_TOLERANCE, -1,true);
-    //wait_skill    = new DribbleToPoint(robot, robot);
 
     state = scoring;
 
@@ -95,7 +62,10 @@ AttackMainNN::AttackMainNN(Robot* robot) : Behavior(robot)
     Status = TF_NewStatus();
     SessionOptions = TF_NewSessionOptions();
 
-    const char* saved_model_folder = "C:\\Users\\justi\\Documents\\ThesisRL\\model\\";
+//    const char* saved_model_folder = "C:\\Users\\justi\\Documents\\ThesisRL\\Feb11_undersampling\\";
+    const char* saved_model_folder = "C:\\Users\\justi\\Documents\\ThesisRL\\FilesToTurnIn\\Feb13StratifiedModel\\";
+
+
     const char* tags = "serve";
 
     Session = TF_LoadSessionFromSavedModel(SessionOptions, /*run_opts*/NULL, saved_model_folder, &tags, /*num_tags*/1, Graph, /*meta_graph_def*/NULL, Status);
@@ -107,7 +77,7 @@ AttackMainNN::AttackMainNN(Robot* robot) : Behavior(robot)
 
     //****** Get input tensor
     Input = (TF_Output*) malloc(sizeof(TF_Output) * NumInputs);
-    TF_Output t0 = {TF_GraphOperationByName(Graph, "serving_default_batch_normalization_6_input"), 0};
+    TF_Output t0 = {TF_GraphOperationByName(Graph, "serving_default_batch_normalization_input"), 0};
 
     if(t0.oper == NULL)
         printf("ERROR: Failed TF_GraphOperationByName\n");
@@ -135,15 +105,15 @@ AttackMainNN::AttackMainNN(Robot* robot) : Behavior(robot)
 }
 
 
-int num_ins= 4;
+int num_ins= 5;
 //state input: DistanceToGoal  DistanceToOpp         OppX        OppY. (Takes ~ 1 ms avg. (1-5 seconds range on cpu)
-float AttackMainNN::PredictShot(float dist_goal, float dist_opp, float oppx, float oppy){
+float AttackMainNN::PredictShot(float angle, float dist_goal, float dist_opp, float oppx, float oppy){
         //********* Allocate data for inputs & outputs
         TF_Tensor** InputValues  = (TF_Tensor**)malloc(sizeof(TF_Tensor*)*NumInputs);
         TF_Tensor** OutputValues = (TF_Tensor**)malloc(sizeof(TF_Tensor*)*NumOutputs);
 
         int ndims = 2;      int64_t dims[] = {1,num_ins};       int ndata = sizeof(float_t)*num_ins;
-        float_t data[] = {dist_goal, dist_opp, oppx, oppy};
+        float_t data[] = {angle, dist_goal, dist_opp, oppx, oppy};
 
         TF_Tensor* float_tensor = TF_NewTensor(TF_FLOAT, dims, ndims, data, ndata, &NoOpDeallocator, 0);
 
@@ -169,6 +139,28 @@ float AttackMainNN::PredictShot(float dist_goal, float dist_opp, float oppx, flo
         return result;
 }
 
+float AttackMainNN::PredictShot(const Point kick_to, const Robot *opp){
+    if(robot->x > opp->x)
+        return 1.0;
+    Point goal_point = kick_to;
+
+    float DistanceToPoint = Measurements::distance(robot, goal_point);
+    float angle_to_goal = atan2(goal_point.y-robot->y,goal_point.x-robot->x);
+
+
+    float DistanceToOpp = Measurements::distance(robot, *opp);
+
+    float opp_x_proj = (opp->x  - robot->x)*cos(angle_to_goal) + (opp->y    -   robot->y)*sin(angle_to_goal);
+    float opp_y_proj = -(opp->x -   robot->x)*sin(angle_to_goal) + (opp->y  -   robot->y)*cos(angle_to_goal);
+
+    float angle_nn = abs(atan2(opp_y_proj, opp_x_proj));
+
+    float nn_prob = PredictShot(angle_nn, DistanceToPoint, DistanceToOpp, opp_x_proj, abs(opp_y_proj));
+    //qInfo() << robot->getId() << " Shot from" << *robot << " To: " << goal_point<<"Distance: " <<DistanceToPoint << "\nNN Prob: " <<nn_prob;
+
+    return nn_prob;
+}
+
 bool write_flag = false;
 
 typedef std::chrono::high_resolution_clock Time;
@@ -182,6 +174,8 @@ bool AttackMainNN::perform()
 //        out.push_back(PredictShot(entry[0], entry[1], entry[2],  entry[3]));
 //    }
     //qInfo()<<"Out: ";   for(auto res : out) qInfo()<<res;
+    if(robot->x  < 500)
+        state = dribbling;
 
 
     if(write_flag){
@@ -218,7 +212,7 @@ bool AttackMainNN::perform()
 
                 qInfo() /*<< "BallLoc: " <<*ball */<<"\nGoal was successful(YES) is this correct? Y(es) or N(o)" <<"\nPredicted: " <<pred_string.c_str() <<"Numyes"<<++yes_counter;
                 to_write1 +=  "YES";   to_write2 += "YES";    to_write3 += "YES";
-                to_write1 +=pred_string;   to_write2 +=pred_string;    to_write3 +=pred_string;
+                to_write1 +=pred_string;   to_write2 +=pred_string;    to_write3 +=pred_string + rv_str; rv_str="";
 
                 Shot_flag = false;  write_flag = true;
 
@@ -230,7 +224,7 @@ bool AttackMainNN::perform()
 
                 qInfo() /*<< "BallLoc: " <<*ball*/<< "Goal was unsuccessful(NO) is this correct? Y(es) or N(o)" <<"\nPredicted: " <<pred_string.c_str()<<"Numno"<<++no_counter;
                 to_write1 += "NO";     to_write2 += "NO";     to_write3 += "NO";
-                to_write1 +=pred_string;   to_write2 +=pred_string;    to_write3 +=pred_string;
+                to_write1 +=pred_string;   to_write2 +=pred_string;    to_write3 +=pred_string  +rv_str; rv_str="";
 
                 Shot_flag = false;  write_flag = true;
 
@@ -244,6 +238,8 @@ bool AttackMainNN::perform()
     {
     case scoring:
     {
+        if(robot->x  < (Field::FIELD_LENGTH/2)/8)
+            state = dribbling;
         //std::cout << "AttackMainNN: Score" << std::endl;
         robot->setDribble(true);
 
@@ -253,7 +249,7 @@ bool AttackMainNN::perform()
         {
             //qInfo() << "Kick point " << goal_eval.second;
             kick_point = goal_eval.second;
-            clear_shot_count = std::min(15/*30*/, clear_shot_count+1);
+            clear_shot_count = std::min(3/*30*/, clear_shot_count+1);
         }
         else
             clear_shot_count--;
@@ -270,6 +266,11 @@ bool AttackMainNN::perform()
 
 
         //If we kicked the previous cycle or are kicking this cycle(kicking this cycle should take dominance)
+//        if(PredictShot(kick_point, team->getOpponent(0)) <.5){
+//            state = dribbling;
+//            break;
+//        }
+
         score_skill->perform();
         has_kicked_to_goal =  score_skill->isFinished(); //Returns whether we have kicked
         //Point* shot_to = score_skill->getShotPoint();
@@ -283,7 +284,7 @@ bool AttackMainNN::perform()
                 float DistanceToPoint = Measurements::distance(robot, goal_point);
                 float angle_to_goal = atan2(goal_point.y-robot->y,goal_point.x-robot->x);
 
-                qInfo() << robot->getId() << " Shot from" << *robot << " To: " << goal_eval.second<<"Distance: " <<DistanceToPoint;
+                qInfo() << robot->getId() << " Shot from" << *robot << " To: " << kick_point<<"Distance: " <<DistanceToPoint <<"\nClearshotcount"<<clear_shot_count;
 
                 for(Robot* opp : team->getOpponents()){
                     if(opp->x >robot->x - 500){//Only checking robots between robot and the goal on the horizontal axis. This is not ideal but calculation is cheap.
@@ -295,17 +296,25 @@ bool AttackMainNN::perform()
 
                             float opp_vx_proj = (opp->getVelocity().x)*cos(angle_to_goal) + (opp->getVelocity().y)*sin(angle_to_goal);
                             float opp_vy_proj = -(opp->getVelocity().x)*sin(angle_to_goal) + (opp->getVelocity().y)*cos(angle_to_goal);
+
+                            float r_vx_proj = (robot->getVelocity().x)*cos(angle_to_goal) + (robot->getVelocity().y)*sin(angle_to_goal);
+                            float r_vy_proj = -(robot->getVelocity().x)*sin(angle_to_goal) + (robot->getVelocity().y)*cos(angle_to_goal);
+
+                            float angle_nn = abs(atan2(opp_y_proj, opp_x_proj));
+
                             float v_towards_ball =opp_vy_proj;
                             if(opp_y_proj>0)
                                 v_towards_ball *=-1;
 
 
-                            nn_prob = PredictShot(DistanceToPoint, DistanceToOpp, opp_x_proj, opp_y_proj);
+                            nn_prob = PredictShot(angle_nn, DistanceToPoint, DistanceToOpp, opp_x_proj, abs(opp_y_proj));
                             prediction = (nn_prob>=0.5 ? true : false);
 
                             to_write3 = std::to_string(DistanceToPoint) +','+ std::to_string(angle_to_goal)  +',' + std::to_string(DistanceToOpp) +','
                                       + std::to_string(opp_x_proj)      +','+ std::to_string(opp_y_proj)     +','
                                       + std::to_string(opp_vx_proj)     +','+ std::to_string(opp_vy_proj)    +',' +std::to_string(v_towards_ball)+',';
+
+                            rv_str = ',' +std::to_string(r_vx_proj) + ',' +std::to_string(r_vy_proj);
 
                             qInfo() << "Probability from neural network: " <<nn_prob<<"\nDist_to_goal: " <<DistanceToPoint <<"\tAngle_to_goal: " << angle_to_goal<<"\tRobot angle: "<<robot->getOrientation()
                                                        <<"\tDist_to_opp: "  <<DistanceToOpp <<  "\tOpp_x: " <<opp_x_proj    <<  "\tOpp_y: " << opp_y_proj
@@ -321,7 +330,6 @@ bool AttackMainNN::perform()
                 }
             //Deleting this to avoid double writing since skill is still **Finished**
             delete score_skill;
-            //score_skill   = new KickToPointOmniNN(robot, &kick_point,SCORE_ANGLE_TOLERANCE,-1,true);
             score_skill   = new KickToPointOmni(robot, &kick_point,SCORE_ANGLE_TOLERANCE,-1,true);
             qInfo() <<"Score Skill reset";
 
@@ -390,7 +398,7 @@ bool AttackMainNN::perform()
         {
             clear_shot_count = 0;
             state = scoring;
-            break;
+            //break;
         }
 
 
@@ -608,7 +616,7 @@ std::vector<std::vector<Point>> AttackMainNN::genClusters()
 std::pair<bool, Point> AttackMainNN::calcBestGoalPoint()
 {
     // Populate a vector with robot positions
-    std::vector<Point> obstacles;
+    std::vector<Robot *> obstacles;
     auto myTeam = team->getRobots();
     auto oppTeam = team->getOpponents();
 
@@ -616,9 +624,9 @@ std::pair<bool, Point> AttackMainNN::calcBestGoalPoint()
 
     for(Robot* rob : myTeam)
         if(rob->getId() != robot->getId())
-            obstacles.push_back(*rob);
+            obstacles.push_back(rob);
     for(Robot* rob : oppTeam)
-        obstacles.push_back(*rob);
+        obstacles.push_back(rob);
 
     // Store clusters of targets
     std::vector<std::vector<Point>> target_clusters;
@@ -633,15 +641,25 @@ std::pair<bool, Point> AttackMainNN::calcBestGoalPoint()
         Point target = gp + Point(0, goal_y);
         bool clear_shot = true;
 
-        for(const Point& obstacle : obstacles)
+        for(const auto obstacle : obstacles)
         {
             // If there is an obstacle in the way
-            if(Measurements::lineSegmentDistance(obstacle, *ball, target) <= /*Field::BALL_RADIUS+ROBOT_RADIUS+75 */(Field::BALL_RADIUS+ROBOT_RADIUS)*3)//75)//changed constant from 50(prob need to take into account distance from target...)
+            if(Measurements::lineSegmentDistance(*obstacle, *ball, target) <= /*Field::BALL_RADIUS+ROBOT_RADIUS+75*/ (Field::BALL_RADIUS+ROBOT_RADIUS)*3
+                  /*  || PredictShot(target, obstacle)<.5*/)//75)//changed constant from 50(prob need to take into account distance from target...)
             {
                 //qInfo() <<"Not clear" << target <<"Obstacle"<< obstacle;
                 clear_shot = false;
                 break;
             }
+
+
+//            if(Measurements::lineSegmentDistance(*obstacle, *ball, target) > (Field::BALL_RADIUS+ROBOT_RADIUS)*4)//75)//changed constant from 50(prob need to take into account distance from target...)
+//            {
+//                //qInfo() <<"Not clear" << target <<"Obstacle"<< obstacle;
+//                clear_shot = true;
+//                break;
+//            }
+//            && PredictShot(target, obstacle)>=.5
         }
 
         if(clear_shot)

@@ -80,7 +80,9 @@ private:
     int yes_counter=0;
     int no_counter=0;
 
-    float PredictShot(float dist_goal, float dist_opp, float oppx, float oppy);
+    float PredictShot(float angle, float dist_goal, float dist_opp, float oppx, float oppy);
+    float PredictShot(const Point kick_to, const Robot *opp);
+
 
     /*Tensorflow stuff*/
      TF_Graph* Graph;
@@ -100,6 +102,9 @@ private:
     std::string to_write1;
     std::string to_write2;
     std::string to_write3;
+    std::string rv_str;
+
+
     bool prediction = false;
     float nn_prob = -1;
     string fo;
@@ -122,10 +127,7 @@ private:
     KickToPointOmni* score_skill;
     KickToPointOmni* pass_skill;
 
-//    KickToPointOmniNN* score_skill;
-//    KickToPointOmniNN* pass_skill;
     DribbleToPoint* dribble_skill;
-    DribbleToPoint* wait_skill;
 
 
     Point kick_point;
