@@ -141,7 +141,7 @@ bool AttackMain::perform()
         {
             clear_shot_count = 0;
             state = scoring;
-            break;
+            //break;
         }
 
         // Evaluate state transition to passing
@@ -154,7 +154,7 @@ bool AttackMain::perform()
         {
             clear_pass_count = 0;
             state = passing;
-            break;
+            //break;
         }
 
         // Update dynamic probabilities
