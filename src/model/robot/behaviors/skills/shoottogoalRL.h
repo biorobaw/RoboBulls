@@ -47,11 +47,15 @@ private:
 
     float max_v;
     float max_w;
-    float model_field_length;
-    float model_goal_width;
+    float half_model_field_length;
+    float half_model_goal_width;
 
     Point gp_top;
     Point gp_bottom;
+    Point gp_mid;
+
+    Point prev_ball;
+    float prev_angle;
 
 
 

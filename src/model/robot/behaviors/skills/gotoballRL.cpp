@@ -18,13 +18,6 @@
  *
  */
 
-//float BEHIND_RAD_AVOID = ROBOT_RADIUS+Field::BALL_RADIUS + DIST_TOLERANCE; //was 50
-//float BEHIND_RAD = ROBOT_RADIUS+Field::BALL_RADIUS;
-//float FORWARD_WAIT_COUNT = 5;
-//float RECREATE_DIST_TOL = 25;
-//float STRICTEST_ANG_TOL = ROT_TOLERANCE;  //40 * (M_PI/180);
-//float KICK_LOCK_ANGLE =  ROT_TOLERANCE;  //12 * (M_PI/180);
-//float KICKLOCK_COUNT = 15;
 //#endif
 string getTimeStamp();
 
@@ -37,8 +30,8 @@ std::chrono::time_point<std::chrono::high_resolution_clock> time_start, time_sto
 GoToBallRL::GoToBallRL(Robot* robot, float targetTolerance)
     : Behavior(robot)
 {
-    max_v = 2.5;/*rSoccer is in meters, we set in mm*/
-    max_w = 10;/*rSoccer is in radians, we set in ??*/
+    max_v = 1.5; /*2.5;*//*rSoccer is in meters, we set in mm*/
+    max_w = 1.395; /*10;*//*rSoccer is in radians, we set in ??*/
 
     //debug::registerVariable("ktpo_rc", &RECREATE_DIST_TOL);
     time_start = std::chrono::high_resolution_clock::now();
@@ -47,7 +40,8 @@ GoToBallRL::GoToBallRL(Robot* robot, float targetTolerance)
     //Load TorchScript model of our trained actor(pi/policy) to predict actions.
     try {
       // Deserialize the ScriptModule from a file using torch::jit::load().
-      actor = torch::jit::load("C:\\Users\\justi\\Documents\\ThesisRL\\rSoccer\\ddpg_spinuptester_actor_local_50.pt");
+      //actor = torch::jit::load("C:\\Users\\justi\\Documents\\ThesisRL\\rSoccer\\ddpg_spinuptester_actor_local_50.pt");
+      actor = torch::jit::load("C:\\Users\\justi\\Documents\\ThesisRL\\rSoccer\\Feb_6GTB_robobullspeeds100.pt");
     }
     catch (const c10::Error& e) {
       std::cerr << "error loading the model\n";
@@ -84,7 +78,7 @@ void GoToBallRL::takeAction(std::vector<float> action){
     if(v_norm > max_v)
         v *= (max_v / v_norm);
 
-    qInfo() <<"Target Vel: "<<v <<"\tv_theta: "<<v_theta;
+    //qInfo() <<"Target Vel: "<<v <<"\tv_theta: "<<v_theta;
     robot->setTargetVelocityLocal(v*1000.0, v_theta);
 
     return;
@@ -93,29 +87,21 @@ void GoToBallRL::takeAction(std::vector<float> action){
 #include <torch/script.h>
 bool GoToBallRL::perform(){
     auto cycle_time = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()-time_start);
-    qInfo()<<"cycle time: " <<cycle_time.count()/1000.0;
+    //qInfo()<<"cycle time: " <<cycle_time.count()/1000.0;
+
     //get Observation and convert it to tensor
     std::vector<float> observation = getState();
     torch::Tensor t_observation = torch::tensor(observation, torch::dtype(torch::kFloat)).to(torch::kCUDA);
-    printState(observation);
+    //printState(observation);
 
     //Need another conversion to use TorchScript model (see: https://pytorch.org/tutorials/advanced/cpp_export.html)
     std::vector<torch::jit::IValue> inputs;
     inputs.push_back(t_observation);
 
     //Get actions from our trained actor
-//    at::Tensor t_actions =actor.forward(inputs).toTensor();
-//    std::cout << "\n**********\nActions"<<t_actions<<"\n***************"<<std::endl;
-//    t_actions = t_actions.to(torch::kCPU);
 
     at::Tensor t_actions =actor.forward(inputs).toTensor().to(torch::kCPU);
     std::vector<float> actions(t_actions.data_ptr<float>(), t_actions.data_ptr<float>() + t_actions.numel());
-    //qInfo()<<"Actions as vector";
-    //for(auto action : actions)
-        //qInfo() << action;
-    //set actions
-
-    //calculate reward from previous action.
 
     time_start = std::chrono::high_resolution_clock::now();
     takeAction(actions);
@@ -160,12 +146,3 @@ string GoToBallRL::getName(){
 }
 
 
-#include <regex>
-string getTimeStamp(){
-std::time_t ts_t = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-string time_stamp = string(ctime(&ts_t));
-std::regex r(" |\n");   time_stamp = std::regex_replace(time_stamp, r, "_");
-r= (":");      time_stamp = std::regex_replace(time_stamp, r, "-");
-
-return time_stamp;
-}
