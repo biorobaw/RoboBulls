@@ -188,15 +188,15 @@ bool KickToPointOmni::perform()
 
             robot->setDribble(true);
             // Move towards the ball at the angle to target (straight)
-            cmd.velocity_multiplier = 0.2;
+            cmd.velocity_multiplier = 1/* 0.2*/;
 
-            /*alternative target.
-             Point target =   (bp - Point(BEHIND_RAD_NN * cos(targetBallAng), BEHIND_RAD_NN * sin(targetBallAng)));
-            target = *robot + (target- *robot)*.2;
+            /*alternative target. this might be better cause we can still rotate at full speed*/
+             Point target =   (bp - Point(BEHIND_RAD * cos(targetBallAng), BEHIND_RAD * sin(targetBallAng)));
+            target = *robot + (target- *robot) * 0.2;
             //cmd.setTarget(*robot, ballTargetAng);
-            cmd.setTarget(target, ballTargetAng);*/
+            cmd.setTarget(target, ballTargetAng);
 
-            cmd.setTarget(bp - Point(BEHIND_RAD * cos(targetBallAng), BEHIND_RAD * sin(targetBallAng)), ballTargetAng);
+            //cmd.setTarget(bp - Point(BEHIND_RAD * cos(targetBallAng), BEHIND_RAD * sin(targetBallAng)), ballTargetAng);
             cmd.avoid_ball = cmd.avoid_obstacles = false;
             //cmd.angle_tolerance = m_targetTolerance;
 
