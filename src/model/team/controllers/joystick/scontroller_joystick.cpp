@@ -11,8 +11,11 @@
 #include <QDebug>
 
 #define SLOW_MULT 0.2    // Multiplier for slow-mode
-#define MAX_ANGUAR 3.14  // 2pi radians per second
-#define MAX_LINEAR 500   // 500mm/s = 0.5m/s
+//#define MAX_ANGUAR 3.14  // 2pi radians per second
+//#define MAX_LINEAR 500   // 500mm/s = 0.5m/s
+
+#define MAX_ANGUAR 80/180.0*3.14
+#define MAX_LINEAR 1500
 
 
 
