@@ -3,8 +3,8 @@
 
 #include "model/robot/robot.h"
 
-#define MAX_ANGUAR 3.14  // 2pi radians per second
-#define MAX_LINEAR 500   // 500mm/s = 0.5m/s
+#define MAX_ANGUAR 1.395 //3.14  // 2pi radians per second
+#define MAX_LINEAR 1500   // 500mm/s = 0.5m/s
 
 MyGamepad::MyGamepad(int pad_id, QObject* parent) :
     QGamepad(pad_id,parent)
@@ -17,6 +17,10 @@ void MyGamepad::connectToRobot(Robot* robot, bool use_overriden_controller ,Robo
     this->robot = robot;
     this->use_overriden_controller = use_overriden_controller;
     auto controller = use_overriden_controller ? robot->getOverridenController() : robot;
+
+    //This does not seem like the most efficient way to do this. Each time this happens, we send a new velocity command,
+    //if this overlaps with when the frame is being sent, theres some weird behavior,
+    //At each cycle we should check the status of the joysticks and or buttons,
     connect(this, &QGamepad::axisLeftXChanged , this, &MyGamepad::processMotionCommand);
     connect(this, &QGamepad::axisLeftYChanged , this, &MyGamepad::processMotionCommand);
     connect(this, &QGamepad::axisRightXChanged, this, &MyGamepad::processMotionCommand);
@@ -72,6 +76,7 @@ void MyGamepad::connectToRobot(Robot* robot, bool use_overriden_controller ,Robo
 
 namespace  {
     double removeDeadZone(double value){
+        value = fmax(fmin(value, 1.0),-1.0);
         if(value < -0.1) value +=0.1;
         else if(value > 0.1) value -= 0.1;
         else value = 0;
@@ -81,15 +86,20 @@ namespace  {
 
 void MyGamepad::processMotionCommand(){
     auto x   = -removeDeadZone(axisLeftY() );
-    auto y   = -removeDeadZone(axisRightX() );
+    auto y   = -removeDeadZone(axisLeftX() );
     auto vel = Point(x,y)*MAX_LINEAR;
-    auto w   = -removeDeadZone(axisLeftX())*MAX_ANGUAR;
+    if(hypot(vel.x, vel.y) > MAX_LINEAR)
+        vel *= (MAX_LINEAR / hypot(vel.x, vel.y) );
+
+    auto w   = -removeDeadZone(axisRightX())*MAX_ANGUAR;
     emit this->setVelocity(vel,w);
 }
 
 void MyGamepad::processKickCommand(){
     if(buttonR1())
         emit this->setKickSpeed();
+    else
+        emit this->setKickSpeed(0);
 }
 
 void MyGamepad::switchRobot(){

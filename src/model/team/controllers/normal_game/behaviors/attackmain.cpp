@@ -9,14 +9,14 @@
 
 //Line to register in factory map.
 BehaviorRegister<AttackMain> AttackMain::reg("AttackMain");
-float AttackMain::SCORE_ANGLE_TOLERANCE = ROT_TOLERANCE; //7*M_PI/180;
+float AttackMain::SCORE_ANGLE_TOLERANCE = 1/180.0*3.14;/*ROT_TOLERANCE; *///7*M_PI/180;
 float AttackMain::PASS_ANGLE_TOLERANCE  = ROT_TOLERANCE; //7*M_PI/180;
 
 AttackMain::AttackMain(Robot* robot) : Behavior(robot)
 {   if(robot->getId() == 2 )
      qInfo() << "RObot 2 now attacl";
 
-
+    qInfo()<<"Score tolerance "<<SCORE_ANGLE_TOLERANCE;
 
     prob_field_rows = (Field::FIELD_LENGTH+1)/PND_MAIN;
     prob_field_cols = (Field::FIELD_WIDTH+1)/PND_MAIN;
@@ -36,7 +36,7 @@ AttackMain::AttackMain(Robot* robot) : Behavior(robot)
 }
 
 bool AttackMain::perform()
-{ //if(team->getID() == 0 ) qInfo() << "Attack Main  Team Blue!!!!";
+{ //if(team->getID() == 0 ) qInfo() << "Attack Main  Team Blue!!!!" << has_kicked_to_goal;
 //    auto clusters = genClusters();
 //    for(std::vector<Point> cluster : clusters)
 //    {
@@ -75,12 +75,15 @@ bool AttackMain::perform()
 
 
         if(clear_shot_count < 0 || has_kicked_to_goal)//if kicked to goal
-        {
+        {//qInfo() <<"CLSC: "<<clear_shot_count << "\tKicked to goal:"<<hasKickedToGoal();
             clear_shot_count = 0;
             state = passing;
         }
 
         //If kicked previous cycle, will return false.
+        //score_skill->perform();
+        has_kicked_to_goal = score_skill->isFinished();//Returns whether we have kicked
+
         has_kicked_to_goal = score_skill->perform();
 
         if(has_kicked_to_goal)
@@ -116,7 +119,7 @@ bool AttackMain::perform()
         }
         //If kicked previous cycle, will return false.
         has_passed = pass_skill->perform();
-        GuiInterface::getGuiInterface()->drawLine(*robot, kick_point);
+        //GuiInterface::getGuiInterface()->drawLine(*robot, kick_point);
         if(has_passed)
             qInfo() <<"Passing to "<< kick_point;
 

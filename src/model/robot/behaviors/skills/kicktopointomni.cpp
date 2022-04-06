@@ -207,7 +207,7 @@ bool KickToPointOmni::perform()
 
             //This is super important! If we can kick, kick! dont break
             //We want to kick that cycle!
-            if(canKick(robot)){
+            if(canKick(robot) && robot->hasBall()){
                 state = KICK;
             }
             else{
