@@ -35,12 +35,12 @@ AttackMainNN::AttackMainNN(Robot* robot) : Behavior(robot)
 
     qInfo()<<"Score tolerance "<<SCORE_ANGLE_TOLERANCE;
 
-    string filename("C:\\Users\\justi\\Downloads\\CanShoot.csv");
+    string filename("C:\\Users\\justi\\Downloads\\BaselineFullGoalieCanShoot.csv");
     file_out.open(filename, std::ios_base::app);
-    string filename2("C:\\Users\\justi\\Downloads\\CanShootRawInfo.csv");
+    string filename2("C:\\Users\\justi\\Downloads\\BaseLineFullGoalieCanShootRawInfo.csv");
     file_out2.open(filename2, std::ios_base::app);
 
-    string filename3("C:\\Users\\justi\\Downloads\\CanShoot2.csv");
+    string filename3("C:\\Users\\justi\\Downloads\\BaselineFullGoalieCanShoot2.csv");
     file_out3.open(filename3, std::ios_base::app);
 
     prob_field_rows = (Field::FIELD_LENGTH+1)/PND_MAIN;
@@ -106,8 +106,13 @@ AttackMainNN::AttackMainNN(Robot* robot) : Behavior(robot)
 
 
 int num_ins= 5;
-//state input: DistanceToGoal  DistanceToOpp         OppX        OppY. (Takes ~ 1 ms avg. (1-5 seconds range on cpu)
+//state input: DistanceToGoal  DistanceToOpp         OppX        OppY. (Takes ~ 0.191 ms avg. on cpu)
 float AttackMainNN::PredictShot(float angle, float dist_goal, float dist_opp, float oppx, float oppy){
+        //LLR coefficients. takes 45.35783366 nano-seconds
+    //[[ 0.0018335686493680826 -0.001815020190297834   0.005378647991601562 -0.00862947931490611    0.03296512379693194  ]] + [0.011938457842768207]
+    //Will return a prediction centered on 0. 0> == true, <0 == false
+//    float LLR_pred = 0.0018335686493680826*angle + -0.001815020190297834*dist_goal +   0.005378647991601562*dist_opp + -0.00862947931490611*oppx    +0.03296512379693194 *oppy + 0.011938457842768207;
+//    return LLR_pred;
         //********* Allocate data for inputs & outputs
         TF_Tensor** InputValues  = (TF_Tensor**)malloc(sizeof(TF_Tensor*)*NumInputs);
         TF_Tensor** OutputValues = (TF_Tensor**)malloc(sizeof(TF_Tensor*)*NumOutputs);
@@ -169,13 +174,45 @@ typedef std::chrono::duration<float> fsec;
 
 bool AttackMainNN::perform()
 {
+    int i = 0;
+    auto t_s = std::chrono::high_resolution_clock::now();
+    for(int goal_y = -Field::GOAL_LENGTH/2+Field::BALL_RADIUS+10; goal_y <= Field::GOAL_LENGTH/2-Field::BALL_RADIUS-10; goal_y += 10)
+    {
+        auto gp = Field::getGoalPosition(OPPONENT_SIDE);
+        Point target = gp + Point(0, goal_y);
+        for(Robot* opp : team->getOpponents())
+        {
+            // If there is an obstacle in the way
+//            /if(Measurements::lineSegmentDistance(*opp, *robot, target) <= /*Field::BALL_RADIUS+ROBOT_RADIUS+75*/ (Field::BALL_RADIUS+ROBOT_RADIUS)*3
+//                    /*|| PredictShot(target, obstacle)<.5*/)//75)//changed constant from 50(prob need to take into account distance from target...)
+//            {
+//                //qInfo() <<"Not clear" << target <<"Obstacle"<< obstacle;
+//                clear_shot = false;
+//                break;
+//             auto t_s = std::chrono::high_resolution_clock::now();
+
+            PredictShot(target, opp);
+
+//            auto t_l = std::chrono::high_resolution_clock::now();
+//            auto bmark = std::chrono::duration_cast<std::chrono::nanoseconds>(t_l-t_s);
+//            qInfo()<<"cycle time: " <<bmark.count() << "\t"<<i<<" iterations"; // /1000000.0;
+
+            i++;
+            }
+
+
+        }
+    auto t_l = std::chrono::high_resolution_clock::now();
+    auto bmark = std::chrono::duration_cast<std::chrono::nanoseconds>(t_l-t_s);
+    qInfo()<<"cycle time: " <<bmark.count() << "\t"<<i<<" iterations"; // /1000000.0;
+    return false;
 //    std::vector<float> out;
 //    for(auto entry : samps){
 //        out.push_back(PredictShot(entry[0], entry[1], entry[2],  entry[3]));
 //    }
-    //qInfo()<<"Out: ";   for(auto res : out) qInfo()<<res;
-    if(robot->x  < 500)
-        state = dribbling;
+//    qInfo()<<"Out: ";   for(auto res : out) qInfo()<<res;
+//    if(robot->x  < 500)
+//        state = dribbling;
 
 
     if(write_flag){
@@ -238,9 +275,9 @@ bool AttackMainNN::perform()
     {
     case scoring:
     {
-        if(robot->x  < (Field::FIELD_LENGTH/2)/8)
-            state = dribbling;
-        //std::cout << "AttackMainNN: Score" << std::endl;
+//        if(robot->x  < (Field::FIELD_LENGTH/2)/2)
+//            state = dribbling;
+        std::cout << "AttackMainNN: Score" << std::endl;
         robot->setDribble(true);
 
         std::pair<bool, Point> goal_eval = calcBestGoalPoint();
@@ -273,6 +310,8 @@ bool AttackMainNN::perform()
 
         score_skill->perform();
         has_kicked_to_goal =  score_skill->isFinished(); //Returns whether we have kicked
+
+        //has_kicked_to_goal = score_skill->perform();
         //Point* shot_to = score_skill->getShotPoint();
 
         //Now log info
@@ -645,7 +684,7 @@ std::pair<bool, Point> AttackMainNN::calcBestGoalPoint()
         {
             // If there is an obstacle in the way
             if(Measurements::lineSegmentDistance(*obstacle, *ball, target) <= /*Field::BALL_RADIUS+ROBOT_RADIUS+75*/ (Field::BALL_RADIUS+ROBOT_RADIUS)*3
-                  /*  || PredictShot(target, obstacle)<.5*/)//75)//changed constant from 50(prob need to take into account distance from target...)
+                    /*|| PredictShot(target, obstacle)<.5*/)//75)//changed constant from 50(prob need to take into account distance from target...)
             {
                 //qInfo() <<"Not clear" << target <<"Obstacle"<< obstacle;
                 clear_shot = false;
