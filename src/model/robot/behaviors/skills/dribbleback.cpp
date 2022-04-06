@@ -25,7 +25,7 @@ DribbleBack::DribbleBack(Robot* robot, Point* target)
 
 bool DribbleBack::perform()
 {
-    std::cout << "Dribble Back" << std::endl;
+    //std::cout << "Dribble Back" << std::endl;
 
     Point bp = *ball;
     Point rp = *robot;
@@ -36,7 +36,7 @@ bool DribbleBack::perform()
     {
     case move_to_ball:
     {
-        std::cout << "Dribble Back: Move to Ball" << std::endl;
+        //std::cout << "Dribble Back: Move to Ball" << std::endl;
         if(!robot->hasBall())
             robot->setDribble(false);
 
@@ -63,7 +63,7 @@ bool DribbleBack::perform()
     }
     case grasp:
     {
-        std::cout << "Dribble Back: Grasp" << std::endl;
+        //std::cout << "Dribble Back: Grasp" << std::endl;
 
         bool dist_check = dist_to_ball < ROBOT_RADIUS + Field::BALL_RADIUS + DIST_TOLERANCE*2; // was 75
         bool ang_check = fabs(Measurements::angleDiff(ang_to_ball, robot->getOrientation())) < ROT_TOLERANCE; //was 20*m_pi/180
@@ -88,7 +88,7 @@ bool DribbleBack::perform()
     }
     case move_back:
     {
-        std::cout << "Dribble Back: Move" << std::endl;
+        //std::cout << "Dribble Back: Move" << std::endl;
 
         bool dist_check = dist_to_ball < ROBOT_RADIUS + Field::BALL_RADIUS + DIST_TOLERANCE*2; //was 75
 
