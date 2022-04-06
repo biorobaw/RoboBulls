@@ -58,6 +58,10 @@ ShootToGoalRL::ShootToGoalRL(Robot* robot, float targetTolerance)
     try {
       // Deserialize the ScriptModule from a file using torch::jit::load().
       actor = torch::jit::load("C:\\Users\\justi\\Documents\\ThesisRL\\rSoccer\\Feb13_Shoot100.pt");
+      //actor = torch::jit::load("C:\\Users\\justi\\Documents\\ThesisRL\\rSoccer\\March5Shoot100.pt");
+
+
+      //March5Shoot100
       //actor = torch::jit::load("C:\\Users\\justi\\Documents\\ThesisRL\\Feb_6100.pt");
 
     }
@@ -160,7 +164,7 @@ bool ShootToGoalRL::perform(){
 
     //Set done
 
-    time_start = std::chrono::high_resolution_clock::now();
+    //time_start = std::chrono::high_resolution_clock::now();
 
     return false;
 }

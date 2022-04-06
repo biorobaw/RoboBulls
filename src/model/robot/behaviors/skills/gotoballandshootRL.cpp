@@ -45,7 +45,7 @@ GoToBallAndShootRL::GoToBallAndShootRL(Robot* robot, float targetTolerance)
 
     state = GOTOBALL;
 
-    write_file = "C:\\Users\\justi\\Downloads\\GTBDDPGTime.csv";
+    write_file = "C:\\Users\\justi\\Downloads\\GTBDDPGTimeMarch5.csv";
     file_out.open(write_file, std::ios_base::app);
 
 }
@@ -55,32 +55,35 @@ GoToBallAndShootRL::GoToBallAndShootRL(Robot* robot, float targetTolerance)
 bool GoToBallAndShootRL::perform(){
 //    auto cycle_time = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()-time_start);
 //    qInfo()<<"cycle time: " <<cycle_time.count()/1000.0;
-    if(start_flag){
-         time_start =std::chrono::high_resolution_clock::now();
-         start_flag = false;
-         qInfo() <<"Start:";
-    }
-    else if(end_flag){
-        qInfo() <<"End:";
-        auto dur_to_get_ball = std::chrono::duration_cast<std::chrono::milliseconds>(time_got_ball-time_start).count()/1000.f;
-        auto dur_to_shoot = std::chrono::duration_cast<std::chrono::milliseconds>(time_shot-time_got_ball).count()/1000.f;
-        auto dur_total = std::chrono::duration_cast<std::chrono::milliseconds>(time_shot-time_start).count()/1000.f;
-        qInfo() <<"Time taken to get ball: "<<dur_to_get_ball <<"\nTime taken to shoot: "<<dur_to_shoot<<"Total time: "<<dur_total;
+//    if(start_flag){
+//         time_start =std::chrono::high_resolution_clock::now();
+//         start_flag = false;
+//         qInfo() <<"Start:";
+//    }
+//    else if(end_flag){
+//        qInfo() <<"End:";
+//        auto dur_to_get_ball = std::chrono::duration_cast<std::chrono::milliseconds>(time_got_ball-time_start).count()/1000.f;
+//        auto dur_to_shoot = std::chrono::duration_cast<std::chrono::milliseconds>(time_shot-time_got_ball).count()/1000.f;
+//        auto dur_total = std::chrono::duration_cast<std::chrono::milliseconds>(time_shot-time_start).count()/1000.f;
+//        qInfo() <<"Time taken to get ball: "<<dur_to_get_ball <<"\nTime taken to shoot: "<<dur_to_shoot<<"Total time: "<<dur_total;
 
-        string write_str =  std::to_string(dur_to_get_ball)+','+std::to_string(dur_to_shoot)+','+std::to_string(dur_total);
-        end_flag=false; start_flag=true;
+//        string write_str =  std::to_string(dur_to_get_ball)+','+std::to_string(dur_to_shoot)+','+std::to_string(dur_total);
+//        end_flag=false; start_flag=true;
 
-        qInfo() <<"Hit enter, then hit y or n if the shot was sucessful:";std::string input;      std::cin >> input;
-        if(input[0] == 'y')
-                file_out<<write_str<<",YES"<<std::endl;
-        else    file_out<<write_str<<",NO" <<std::endl;
-        return false;
-    }
+//        qInfo() <<"Hit enter, then hit y or n if the shot was sucessful:";std::string input;      std::cin >> input;
+//        if(input[0] == 'y')
+//                file_out<<write_str<<",YES"<<std::endl;
+//        else if(input[0] == 'd') qInfo()<<"Discarding";
+//        else file_out<<write_str<<",NO" <<std::endl;
+//        return false;
+//    }
+    if(end_flag){end_flag = false; robot->setUseOverridenControls(true);}
+
 
     switch(state){
         case GOTOBALL:
         {
-            qInfo() << "GoToBall";
+            //qInfo() << "GoToBall";
             go_to_ball_skill->perform();
 
             if(Measurements::distance(*robot, *ball) < 200)
@@ -89,12 +92,12 @@ bool GoToBallAndShootRL::perform(){
         }
         case PICKUPBALL:
         {
-        qInfo() << "PickupBall";
+        //qInfo() << "PickupBall";
             robot->setDribble(true);
 
             float angle_to_ball = Measurements::angleDiff(Measurements::angleBetween(*robot, *ball), robot->getOrientation());
 
-            robot->setTargetVelocityLocal(Point(500, 0), angle_to_ball*.25);
+            robot->setTargetVelocityLocal(Point(200, 0), angle_to_ball*.25);
 
             if(robot->hasBall()){
                 state=SHOOTTOGOAL;
@@ -108,7 +111,7 @@ bool GoToBallAndShootRL::perform(){
         }
         case SHOOTTOGOAL:
         {
-            qInfo() << "ShootToGoal";
+            //qInfo() << "ShootToGoal";
             shoot_to_goal_skill->perform();
 
             if(!robot->hasBall()){
@@ -116,6 +119,7 @@ bool GoToBallAndShootRL::perform(){
                 end_flag = true;
                 //start_flag = true;
                 time_shot = std::chrono::high_resolution_clock::now();
+                robot->setTargetVelocityLocal(Point(0,0),0);
             //end
             }
             break;

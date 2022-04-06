@@ -42,6 +42,9 @@ GoToBallRL::GoToBallRL(Robot* robot, float targetTolerance)
       // Deserialize the ScriptModule from a file using torch::jit::load().
       //actor = torch::jit::load("C:\\Users\\justi\\Documents\\ThesisRL\\rSoccer\\ddpg_spinuptester_actor_local_50.pt");
       actor = torch::jit::load("C:\\Users\\justi\\Documents\\ThesisRL\\rSoccer\\Feb_6GTB_robobullspeeds100.pt");
+      //actor = torch::jit::load("C:\\Users\\justi\\Documents\\ThesisRL\\rSoccer\\Feb13GTB100.pt");
+
+
     }
     catch (const c10::Error& e) {
       std::cerr << "error loading the model\n";
@@ -86,7 +89,7 @@ void GoToBallRL::takeAction(std::vector<float> action){
 
 #include <torch/script.h>
 bool GoToBallRL::perform(){
-    auto cycle_time = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()-time_start);
+    //auto cycle_time = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()-time_start);
     //qInfo()<<"cycle time: " <<cycle_time.count()/1000.0;
 
     //get Observation and convert it to tensor
@@ -103,7 +106,7 @@ bool GoToBallRL::perform(){
     at::Tensor t_actions =actor.forward(inputs).toTensor().to(torch::kCPU);
     std::vector<float> actions(t_actions.data_ptr<float>(), t_actions.data_ptr<float>() + t_actions.numel());
 
-    time_start = std::chrono::high_resolution_clock::now();
+    //time_start = std::chrono::high_resolution_clock::now();
     takeAction(actions);
 
     //Set done
