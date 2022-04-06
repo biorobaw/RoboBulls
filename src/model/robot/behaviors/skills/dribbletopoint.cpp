@@ -13,7 +13,8 @@
 #include <QDebug>
 
 
-
+//Note: there is an issue with uniformity between tolerance values. this needs to be fixed. ROT_TOLERANCE
+//Is used for scoring and also determining whether you have the ball... this shouldnt happen.
 
 DribbleToPoint::DribbleToPoint(Robot* robot, Point& target, bool avoid_obstacles, bool prefer_forward_motion)
     : DribbleToPoint(robot, &target, avoid_obstacles, prefer_forward_motion)
@@ -47,7 +48,7 @@ bool DribbleToPoint::perform()
             robot->setDribble(false);
 
         bool dist_check = dist_to_ball < ROBOT_RADIUS + Field::BALL_RADIUS + DIST_TOLERANCE;
-        bool ang_check = fabs(Measurements::angleDiff(ang_to_ball, robot->getOrientation())) < ROT_TOLERANCE;
+        bool ang_check = fabs(Measurements::angleDiff(ang_to_ball, robot->getOrientation())) < ROT_TOLERANCE*5;
 
         if(dist_check && ang_check)
         {
@@ -74,7 +75,7 @@ bool DribbleToPoint::perform()
 
         //In what case would this(dist_check) ever be false?
         bool dist_check = dist_to_ball < ROBOT_RADIUS + Field::BALL_RADIUS +dist_to_ball;
-        bool ang_check = fabs(Measurements::angleDiff(ang_to_ball, robot->getOrientation()) < ROT_TOLERANCE);
+        bool ang_check = fabs(Measurements::angleDiff(ang_to_ball, robot->getOrientation()) < ROT_TOLERANCE*5);
 
         if(!dist_check || !ang_check)
         {
@@ -102,11 +103,12 @@ bool DribbleToPoint::perform()
         && !prefer_forward_motion)
             state = adjust1;
 
-        bool dist_check = dist_to_ball < ROBOT_RADIUS + Field::BALL_RADIUS + dist_to_ball;
-        bool ang_check = fabs(Measurements::angleDiff(ang_to_ball, robot->getOrientation()) < ROT_TOLERANCE);
+        bool dist_check = dist_to_ball < ROBOT_RADIUS + Field::BALL_RADIUS;
+        bool ang_check = fabs(Measurements::angleDiff(ang_to_ball, robot->getOrientation()) < ROT_TOLERANCE*5);
 
         if(!dist_check || !ang_check)
         {
+            //std::cout << "Ang check "<<ang_check <<"\n" << std::to_string(Measurements::angleDiff(ang_to_ball, robot->getOrientation())) <<"\nTOl: "<<ROT_TOLERANCE*5<<std::endl;
             state = move_to_ball;
             break;
         }
