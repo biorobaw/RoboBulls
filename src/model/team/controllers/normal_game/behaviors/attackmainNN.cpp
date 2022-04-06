@@ -684,7 +684,7 @@ std::pair<bool, Point> AttackMainNN::calcBestGoalPoint()
         {
             // If there is an obstacle in the way
             if(Measurements::lineSegmentDistance(*obstacle, *ball, target) <= /*Field::BALL_RADIUS+ROBOT_RADIUS+75*/ (Field::BALL_RADIUS+ROBOT_RADIUS)*3
-                    /*|| PredictShot(target, obstacle)<.5*/)//75)//changed constant from 50(prob need to take into account distance from target...)
+                    || PredictShot(target, obstacle)<.5)//75)//changed constant from 50(prob need to take into account distance from target...)
             {
                 //qInfo() <<"Not clear" << target <<"Obstacle"<< obstacle;
                 clear_shot = false;
