@@ -195,7 +195,10 @@ bool KickToPointOmni::perform()
 
             /* Kick when in range, or go back to moving behind if it
              * moves too far or we are in kick lock */
-            if(canKick(robot))
+
+            //This is super important! If we can kick, kick! dont break
+            //We want to kick that cycle!
+            if(canKick(robot) && robot->hasBall()){
                 state = KICK;
             else if(isVeryFarFromBall(robot))
                 state = MOVE_BEHIND;
