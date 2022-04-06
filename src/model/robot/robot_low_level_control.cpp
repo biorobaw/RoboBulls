@@ -77,8 +77,6 @@ void RobotLowLevelControls::setKickDistance(int distance){
     //float d = (float)distance / 1000; // calculations were done in m/s
     //setKickSpeed((0.083*(d*d*d) - 0.759*(d*d) + 2.8812*(d) + 0.3785)*1000);
     setKickSpeed(( - 0.0000386164*(d*d) + 0.808328*(d) + 716.488));
-    //setKickSpeed(5000);
-    std::cout << "Kickspeed: " << kick_speed << std::endl;
 }
 void RobotLowLevelControls::setDribble(bool on){
     dribble = on; }
