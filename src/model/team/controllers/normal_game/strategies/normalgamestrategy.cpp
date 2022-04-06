@@ -3,15 +3,11 @@
 
 //#include "../behaviors/genericmovementbehavior.h"
 #include "model/team/controllers/normal_game/behaviors/goalie.h"
-#include "model/team/controllers/normal_game/behaviors/goalieRL.h"
 
 #include "model/team/controllers/normal_game/behaviors/attackmain.h"
 #include "model/team/controllers/normal_game/behaviors/attackmainNN.h"
-#include "model/team/controllers/normal_game/behaviors/attackmainRL.h"
 
 #include "model/team/controllers/normal_game/behaviors/attacksupport.h"
-#include "model/team/controllers/normal_game/behaviors/attacksupportNN.h"
-#include "model/team/controllers/normal_game/behaviors/attacksupportRL.h"
 
 #include "model/team/controllers/normal_game/behaviors/defendbehavior.h"
 #include "model/team/controllers/normal_game/behaviors/refstop.h"
