@@ -7,13 +7,16 @@
 
 #include <QDebug>
 
-
+//Line to register in factory map.
+BehaviorRegister<AttackMain> AttackMain::reg("AttackMain");
 float AttackMain::SCORE_ANGLE_TOLERANCE = 1/180.0*3.14;/*ROT_TOLERANCE; *///7*M_PI/180;
 float AttackMain::PASS_ANGLE_TOLERANCE  = ROT_TOLERANCE; //7*M_PI/180;
 
 AttackMain::AttackMain(Robot* robot) : Behavior(robot)
 {   if(robot->getId() == 2 )
      qInfo() << "RObot 2 now attacl";
+
+    qInfo()<<"Score tolerance "<<SCORE_ANGLE_TOLERANCE;
 
     prob_field_rows = (Field::FIELD_LENGTH+1)/PND_MAIN;
     prob_field_cols = (Field::FIELD_WIDTH+1)/PND_MAIN;
@@ -141,7 +144,7 @@ bool AttackMain::perform()
         {
             clear_shot_count = 0;
             state = scoring;
-            break;
+            //break;
         }
 
         // Evaluate state transition to passing
@@ -154,7 +157,7 @@ bool AttackMain::perform()
         {
             clear_pass_count = 0;
             state = passing;
-            break;
+            //break;
         }
 
         // Update dynamic probabilities

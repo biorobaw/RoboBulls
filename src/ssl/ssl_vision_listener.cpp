@@ -96,7 +96,9 @@ bool SSLVisionListener::isGoodDetection(float x, float y, int cam)
         return  (x >= 0 && cam == 1) ||
                 (x  < 0 && cam == 0);
     } else {
-
+        bool grsim=false; if(grsim)
+                            return true; //This NEEDS to be fixed if you are using grSIM this MIGHT be okay
+        else
         return  (cam == 0 && x >  -0.01 && y >  -0.01 ) ||
                 (cam == 1 && x >  -0.01 && y <=  0.01 ) ||
                 (cam == 2 && x <=  0.01 && y <=  0.01 ) ||
@@ -136,6 +138,8 @@ void SSLVisionListener::recieveBall(const SSL_DetectionFrame& frame)
         mutex.unlock();
 
     }
+//    else
+//        qInfo()<<"Serious issue here";
 }
 
 /* Used to parse and recieve a generic Robot team and update GameModel with
@@ -169,12 +173,8 @@ void SSLVisionListener::recieveRobotTeam(const SSL_DetectionFrame& frame, int wh
                 if(robot.in_field){
                     auto newPosition = Point(detection.x(), detection.y());
 
-                    //Added this line because GR-sim reports robots outside field limits
-                    //Using this to run drills with more oponents on other team
-                    //Might want to remove from final version for performance- Justin
-                    if(Comparisons::isPointOutsideField(newPosition))
-                        robot.in_field = false;
-
+                    // why not use ssls tracked detection so we dont need to do speed calculations? messages_robocup_ssl_detection_tracked.proto
+                    // looks like were using an old version so might be useful to switch over to that
 
                     // if robot was already in field, calculate time derivatives
                     if(was_in_field){
