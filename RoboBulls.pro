@@ -80,6 +80,7 @@ SOURCES += src/main.cpp \
         src/model/robot/behaviors/skills/dribbletopoint.cpp \
         src/model/robot/behaviors/skills/dribbleback.cpp \
         src/model/robot/behaviors/skills/gotoballRL.cpp \
+        src/model/robot/behaviors/skills/gotoballandshootRL.cpp \
         src/model/robot/behaviors/skills/kicktopointomni.cpp \
         src/model/robot/behaviors/skills/kicktopointomniNN.cpp \
         src/model/robot/behaviors/skills/kicktopointomniRL.cpp \
@@ -184,6 +185,7 @@ HEADERS += \
         src/model/robot/behaviors/skills/actorcritic.h \
         src/model/robot/behaviors/skills/ddpg.h \
         src/model/robot/behaviors/skills/gotoballRL.h \
+        src/model/robot/behaviors/skills/gotoballandshootRL.h \
         src/model/robot/behaviors/skills/kicktopointomniRL.h \
         src/model/robot/behaviors/skills/replaybuffer.h \
         src/model/robot/behaviors/skills/shoottogoalRL.h \
@@ -419,12 +421,19 @@ INSTALLS += install_config_files
 
 
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../Documents/libtensorflow-cpu-windows-x86_64-2.7.0/lib/ -ltensorflow
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../Documents/libtensorflow-cpu-windows-x86_64-2.7.0/lib/ -ltensorflow
-else:unix: LIBS += -L$$PWD/../../Documents/libtensorflow-cpu-windows-x86_64-2.7.0/lib/ -ltensorflow
+#win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../Documents/libtensorflow-cpu-windows-x86_64-2.7.0/lib/ -ltensorflow
+#else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../Documents/libtensorflow-cpu-windows-x86_64-2.7.0/lib/ -ltensorflow
+#else:unix: LIBS += -L$$PWD/../../Documents/libtensorflow-cpu-windows-x86_64-2.7.0/lib/ -ltensorflow
 
-INCLUDEPATH += $$PWD/../../Documents/libtensorflow-cpu-windows-x86_64-2.7.0/include
-DEPENDPATH += $$PWD/../../Documents/libtensorflow-cpu-windows-x86_64-2.7.0/include
+#INCLUDEPATH += $$PWD/../../Documents/libtensorflow-cpu-windows-x86_64-2.7.0/include
+#DEPENDPATH += $$PWD/../../Documents/libtensorflow-cpu-windows-x86_64-2.7.0/include
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../Documents/libtensorflow-gpu-windows-x86_64-2.7.0/lib/ -ltensorflow
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../Documents/libtensorflow-gpu-windows-x86_64-2.7.0/lib/ -ltensorflow
+else:unix: LIBS += -L$$PWD/../../Documents/libtensorflow-gpu-windows-x86_64-2.7.0/lib/ -ltensorflow
+
+INCLUDEPATH += $$PWD/../../Documents/libtensorflow-gpu-windows-x86_64-2.7.0/include
+DEPENDPATH += $$PWD/../../Documents/libtensorflow-gpu-windows-x86_64-2.7.0/include
 
 
 
