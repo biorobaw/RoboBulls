@@ -4,6 +4,9 @@
 #include "utilities/region/defencearea.h"
 class Robot;
 
+//delete
+#include <fstream>      // std::ofstream
+
 
 /*! @file
  * This strategy is meant for the ' ' gamestate (space) which means
@@ -25,6 +28,15 @@ public:
     static void assignGoalieIfOk(RobotTeam* team);
 
 private:
+    //ToDelete
+    bool start_flag, end_flag;
+    std::chrono::time_point<std::chrono::high_resolution_clock> time_start, time_got_ball, time_shot;
+    std::string write_file;
+    std::ofstream file_out;
+    bool picked_up_ball_flag;
+    //***********
+
+
     Point initialBallPos;
     DefenceArea our_def_area;
     DefenceArea opp_def_area;

@@ -61,6 +61,16 @@ NormalGameStrategy::NormalGameStrategy(RobotTeam* _team)
     // states ignored.
     else
         state = evaluate;
+
+
+
+    //DELETE THIS
+    start_flag = true;
+    end_flag = false;
+    picked_up_ball_flag = false;
+    write_file = "C:\\Users\\justi\\Downloads\\ImprovedbaselineShootTime.csv";
+    file_out.open(write_file, std::ios_base::app);
+    //***********
 }
 
 void NormalGameStrategy::assignBehaviors()
@@ -79,7 +89,7 @@ void NormalGameStrategy::assignBehaviors()
         wall2->setBehavior<Wall>();
     if(attack1)
         //attack1->setBehavior<AttackMain>();"
-        attack1->setBehavior("AttackMainNN");
+        attack1->setBehavior("AttackMain"/*"AttackMainNN"*/);
     if(attack2)
         attack2->setBehavior<AttackSupport>();
     if(attack3)
@@ -96,6 +106,44 @@ void NormalGameStrategy::assignBehaviors()
 
 void NormalGameStrategy::runControlCycle()
 {
+    //This stuff added for benchmarking against reinforcment leanring behaviors
+    if(start_flag){
+         time_start =std::chrono::high_resolution_clock::now();
+         start_flag = false;
+         qInfo() <<"Start:";
+    }
+    else if(end_flag){
+        qInfo() <<"End:";
+        auto dur_to_get_ball = std::chrono::duration_cast<std::chrono::milliseconds>(time_got_ball-time_start).count()/1000.f;
+        auto dur_to_shoot = std::chrono::duration_cast<std::chrono::milliseconds>(time_shot-time_got_ball).count()/1000.f;
+        auto dur_total = std::chrono::duration_cast<std::chrono::milliseconds>(time_shot-time_start).count()/1000.f;
+        qInfo() <<"Time taken to get ball: "<<dur_to_get_ball <<"\nTime taken to shoot: "<<dur_to_shoot<<"Total time: "<<dur_total;
+
+        string write_str =  std::to_string(dur_to_get_ball)+','+std::to_string(dur_to_shoot)+','+std::to_string(dur_total);
+        end_flag=false; start_flag=true; picked_up_ball_flag= false;
+
+        qInfo() <<"Hit enter, then hit y or n if the shot was sucessful(d to discard):";std::string input;      std::cin >> input;
+        if(input[0] == 'y')
+                file_out<<write_str<<",YES"<<std::endl;
+        else if(input[0] == 'd') qInfo()<<"Discarding";
+        else file_out<<write_str<<",NO" <<std::endl;
+        _sleep(1000);
+        return;
+    }
+
+    if((!picked_up_ball_flag) && team->getRobot(0)->hasBall()){
+        time_got_ball = std::chrono::high_resolution_clock::now();
+        picked_up_ball_flag = true;
+    }
+    else if(picked_up_ball_flag  && (!team->getRobot(0)->hasBall()) ){
+     time_shot = std::chrono::high_resolution_clock::now();
+     end_flag= true;
+    }
+
+
+
+    //End benchmark(***************************************************************
+
     Robot* deffend1 = team->getRobotByRole(RobotRole::DEFEND1);
     Robot* deffend2 = team->getRobotByRole(RobotRole::DEFEND2);
     Robot* attack1 = team->getRobotByRole(RobotRole::ATTACK1);
@@ -192,8 +240,10 @@ void NormalGameStrategy::runControlCycle()
         if(shooter)
         {
             //shooter->setBehavior<AttackMain>();
-            shooter->setBehavior("AttackMainNN");
-            if(dynamic_cast<AttackMainNN*>(shooter->getBehavior())->hasKickedToGoal())
+            //shooter->setBehavior("AttackMainNN");
+            shooter->setBehavior("AttackMain");
+
+            if(dynamic_cast<AttackMain*>(shooter->getBehavior())->hasKickedToGoal())
             {
                 shooter->setBehavior<Wall>();
                 state = evaluate;
@@ -289,7 +339,9 @@ void NormalGameStrategy::runControlCycle()
             {                                         //other, assign that to attack main
                 //std::cout << "start"<< std::endl;
                 //attack1->setBehavior<AttackMain>(); // attackmain is the problem
-                attack1->setBehavior("AttackMainNN");
+                //attack1->setBehavior("AttackMainNN");
+                attack1->setBehavior("AttackMain");
+
 
                 main = attack1;
                  //std::cout << "end"<< std::endl;
@@ -304,7 +356,9 @@ void NormalGameStrategy::runControlCycle()
                 supp = attack1;
                 //std::cout << "end1"<< std::endl;
 //                attack2->setBehavior<AttackMain>();
-                attack2->setBehavior("AttackMainNN");
+                //attack2->setBehavior("AttackMainNN");
+                attack2->setBehavior("AttackMain");
+
                 main = attack2;
 
             }
@@ -313,7 +367,9 @@ void NormalGameStrategy::runControlCycle()
         {
             //std::cout << "start2"<< std::endl;
             //attack1->setBehavior<AttackMain>();
-            attack1->setBehavior("AttackMainNN");
+            //attack1->setBehavior("AttackMainNN");
+
+            attack1->setBehavior("AttackMain");
             main = attack1;
             supp = nullptr;
             //std::cout << "end2"<< std::endl;
@@ -322,7 +378,9 @@ void NormalGameStrategy::runControlCycle()
         {
             //std::cout << "start3"<< std::endl;
             //attack2->setBehavior<AttackMain>();
-            attack2->setBehavior("AttackMainNN");
+//            attack2->setBehavior("AttackMainNN");
+            attack2->setBehavior("AttackMain");
+
             main = attack2;
             supp = nullptr;
             //std::cout << "end3"<< std::endl;
