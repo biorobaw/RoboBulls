@@ -83,7 +83,6 @@ SOURCES += src/main.cpp \
         src/model/robot/behaviors/skills/gotoballandshootRL.cpp \
         src/model/robot/behaviors/skills/kicktopointomni.cpp \
         src/model/robot/behaviors/skills/kicktopointomniNN.cpp \
-        src/model/robot/behaviors/skills/kicktopointomniRL.cpp \
         src/model/robot/behaviors/skills/replaybuffer.cpp \
         src/model/robot/behaviors/skills/shoottogoalRL.cpp \
         src/model/robot/navigation/commands/CmdGoToPose.cpp \
