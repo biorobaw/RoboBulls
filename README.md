@@ -16,7 +16,7 @@ I encountered issus when compiling LibTorch from source.
 
 libTensorflow binaries can be found [here](https://www.tensorflow.org/install/lang_c).
 
-Main Changes
+# Main Changes
 
 [attackmainNN.cpp](src/model/team/controllers/normal_game/behaviors/attackmainNN.cpp)
 
