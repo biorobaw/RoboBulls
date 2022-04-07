@@ -7,8 +7,6 @@ for low level move-to-ball and shooting behaviors.
 
 [Deeplearning trainer](https://github.com/justinandrewrodney/SSL_DDPG_rSoccer)
 
-\n
-==========
 
 You will need libTensorflow and LibTorch(PyTorch C++) to run this project and update
 their paths in the .pro file.
