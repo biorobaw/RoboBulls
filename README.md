@@ -18,7 +18,14 @@ libTensorflow binaries can be found here: https://www.tensorflow.org/install/lan
 
 Main Changes
 
-[attackmainNN.cpp](RoboBulls/src/model/team/controllers/normal_game/behaviors/attackmainNN.cpp)
+[attackmainNN.cpp](src/model/team/controllers/normal_game/behaviors/attackmainNN.cpp)
+
+[gotoballRL.cpp](src/model/robot/behaviors/skills/gotoballRL.cpp)
+
+[shoottogoalRL.cpp](src/model/robot/behaviors/skills/shoottogoalRL.cpp)
+
+[gotoballandshootRL.cpp](src/model/robot/behaviors/skills/gotoballandshootRL.cpp)
+
 
 
 
