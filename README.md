@@ -11,10 +11,10 @@ for low level move-to-ball and shooting behaviors.
 You will need libTensorflow and LibTorch(PyTorch C++) to run this project and update
 their paths in the .pro file.
 
-I had luck with the PyTorch precompiled binaries located here(https://download.pytorch.org/libtorch/cu102/libtorch-win-shared-with-deps-debug-1.10.1%2Bcu102.zip) 
+I had luck with the PyTorch precompiled binaries located [here](https://download.pytorch.org/libtorch/cu102/libtorch-win-shared-with-deps-debug-1.10.1%2Bcu102.zip).
 I encountered issus when compiling LibTorch from source.
 
-libTensorflow binaries can be found here: https://www.tensorflow.org/install/lang_c
+libTensorflow binaries can be found [here](https://www.tensorflow.org/install/lang_c).
 
 Main Changes
 
