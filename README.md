@@ -3,9 +3,9 @@ neural networks for determining shooting probabilities and DDPG for reinforcemen
 for low level move-to-ball and shooting behaviors.
 
 # Training Scripts
-[Shot predictor](https://github.com/justinandrewrodney/CanShootTrainer)
+[Shot Predictor](https://github.com/justinandrewrodney/CanShootTrainer)
 
-[Deeplearning trainer](https://github.com/justinandrewrodney/SSL_DDPG_rSoccer)
+[Deep Reinforcment Learning trainer](https://github.com/justinandrewrodney/SSL_DDPG_rSoccer)
 
 
 You will need libTensorflow and LibTorch(PyTorch C++) to run this project and update
